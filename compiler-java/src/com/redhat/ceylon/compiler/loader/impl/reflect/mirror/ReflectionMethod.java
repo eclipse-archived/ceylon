@@ -92,6 +92,13 @@ public class ReflectionMethod implements MethodMirror {
     }
 
     @Override
+    public boolean isVariadic() {
+        return method instanceof Method ?
+                ((Method)method).isVarArgs()
+                : ((Constructor<?>)method).isVarArgs();
+    }
+    
+    @Override
     public List<VariableMirror> getParameters() {
         if(parameters != null)
             return parameters;

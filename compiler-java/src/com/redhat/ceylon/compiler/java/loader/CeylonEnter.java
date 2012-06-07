@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
@@ -38,6 +39,7 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.java.tools.LanguageCompiler.PhasedUnitsManager;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
@@ -85,6 +87,7 @@ public class CeylonEnter extends Enter {
     private CeylonTransformer gen;
     private boolean hasRun = false;
     private PhasedUnits phasedUnits;
+    private PhasedUnitsManager phasedUnitsManager;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private Log log;
     private AbstractModelLoader modelLoader;
@@ -106,6 +109,7 @@ public class CeylonEnter extends Enter {
             e.printStackTrace();
         }
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
+        phasedUnitsManager = LanguageCompiler.getPhasedUnitsManagerInstance(context);
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         log = CeylonLog.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
@@ -189,7 +193,7 @@ public class CeylonEnter extends Enter {
         // make sure we don't load the files we are compiling from their class files
         modelLoader.setupSourceFileObjects(trees);
         // resolve module dependencies
-        resolveModuleDependencies();
+        phasedUnitsManager.resolveDependencies();
         // now load package descriptors
         modelLoader.loadPackageDescriptors();
     }
@@ -226,14 +230,6 @@ public class CeylonEnter extends Enter {
 
     private boolean isVerbose(String key) {
         return verbose || options.get(OptionName.VERBOSE + ":" + key) != null;
-    }
-
-    // FIXME: this needs to be replaced when we deal with modules
-    private void resolveModuleDependencies() {
-        if (! ((LanguageCompiler)compiler).usingExternalPhasedUnits()) {
-            ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
-            validator.verifyModuleDependencyTree();
-        }
     }
 
     public void addOutputModuleToClassPath(Module module){
@@ -293,7 +289,7 @@ public class CeylonEnter extends Enter {
 
     private void typeCheck() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
-
+        
         for (PhasedUnit pu : listOfUnits) {
             pu.validateTree();
             pu.scanDeclarations();
@@ -304,14 +300,17 @@ public class CeylonEnter extends Enter {
         for (PhasedUnit pu: listOfUnits) { 
             pu.validateRefinement();
         }
+        
         for (PhasedUnit pu : listOfUnits) { 
             pu.analyseTypes(); 
         }
+        
         for (PhasedUnit pu : listOfUnits) { 
             pu.analyseFlow();
         }
         
-        for (PhasedUnit pu : listOfUnits) {
+        Iterable<PhasedUnit> phasedUnitsForExtraPhase = phasedUnitsManager.getPhasedUnitsForExtraPhase(listOfUnits);
+        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             Unit unit = pu.getUnit();
             final CompilationUnit compilationUnit = pu.getCompilationUnit();
             for (Declaration d: unit.getDeclarations()) {
@@ -320,15 +319,19 @@ public class CeylonEnter extends Enter {
                 }
             }
         }
+        
         BoxingDeclarationVisitor boxingDeclarationVisitor = new BoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new BoxingVisitor(gen);
         // Extra phases for the compiler
-        for (PhasedUnit pu : listOfUnits) {
+        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
         }
-        for (PhasedUnit pu : listOfUnits) {
+        for (PhasedUnit pu : phasedUnitsForExtraPhase) {
             pu.getCompilationUnit().visit(boxingVisitor);
         }
+        
+        phasedUnitsManager.extraPhasesApplied();
+        
         for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
                 @Override

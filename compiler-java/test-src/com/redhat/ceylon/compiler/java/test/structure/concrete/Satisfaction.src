@@ -17,6 +17,16 @@ final class I1$impl {
         return $this.i1();
     }
     
+    public final long m1() {
+        return (
+            let
+            {
+                long $ceylontmp$n$3 = m1$n();
+            }
+            returning m1($ceylontmp$n$3);
+        );
+    }
+    
     public long m1(final long n) {
         return n + $this.i1();
     }
@@ -35,13 +45,7 @@ class CI1 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1
     
     @.java.lang.Override
     public final long m1() {
-        return (
-            let
-            {
-                long $ceylontmp$n$3 = m1$n();
-            }
-            returning m1($ceylontmp$n$3);
-        );
+        return $I1$impl.m1();
     }
     
     @.java.lang.Override
@@ -80,6 +84,16 @@ final class I2$impl {
         return $this.i2();
     }
     
+    public final long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$n$7 = m2$n();
+            }
+            returning m2($ceylontmp$n$7);
+        );
+    }
+    
     public long m2(final long n) {
         return n + $this.i2();
     }
@@ -114,6 +128,16 @@ final class I4$impl {
         return $this.i4();
     }
     
+    public final long m4() {
+        return (
+            let
+            {
+                long $ceylontmp$n$11 = m4$n();
+            }
+            returning m4($ceylontmp$n$11);
+        );
+    }
+    
     public long m4(final long n) {
         return n;
     }
@@ -132,13 +156,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1
     
     @.java.lang.Override
     public final long m1() {
-        return (
-            let
-            {
-                long $ceylontmp$n$9 = m1$n();
-            }
-            returning m1($ceylontmp$n$9);
-        );
+        return $I1$impl.m1();
     }
     
     @.java.lang.Override
@@ -154,13 +172,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1
     
     @.java.lang.Override
     public final long m2() {
-        return (
-            let
-            {
-                long $ceylontmp$n$11 = m2$n();
-            }
-            returning m2($ceylontmp$n$11);
-        );
+        return $I2$impl.m2();
     }
     
     @.java.lang.Override
@@ -199,13 +211,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.test.structure.con
     
     @.java.lang.Override
     public final long m1() {
-        return (
-            let
-            {
-                long $ceylontmp$n$13 = m1$n();
-            }
-            returning m1($ceylontmp$n$13);
-        );
+        return $I1$impl.m1();
     }
     
     @.java.lang.Override
@@ -221,13 +227,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.test.structure.con
     
     @.java.lang.Override
     public final long m2() {
-        return (
-            let
-            {
-                long $ceylontmp$n$15 = m2$n();
-            }
-            returning m2($ceylontmp$n$15);
-        );
+        return $I2$impl.m2();
     }
     
     @.java.lang.Override
@@ -243,13 +243,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.test.structure.con
     
     @.java.lang.Override
     public final long m4() {
-        return (
-            let
-            {
-                long $ceylontmp$n$17 = m4$n();
-            }
-            returning m4($ceylontmp$n$17);
-        );
+        return $I4$impl.m4();
     }
     
     @.java.lang.Override

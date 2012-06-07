@@ -21,7 +21,7 @@ class NamedArgumentInvocationInitWithEmptySequence {
         final .java.lang.Object o = (
             let
             {
-                .ceylon.language.Iterable $arg$2$0 = .ceylon.language.$empty.getEmpty();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$2$0 = .ceylon.language.$empty.getEmpty();
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence($arg$2$0);
         );

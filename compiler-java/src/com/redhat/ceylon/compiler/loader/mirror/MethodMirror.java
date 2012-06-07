@@ -74,6 +74,11 @@ public interface MethodMirror extends AnnotatedMirror {
     boolean isStaticInit();
 
     /**
+     * Returns true if this method is variadic
+     */
+    boolean isVariadic();
+    
+    /**
      * Returns the list of parameters
      */
     List<VariableMirror> getParameters();

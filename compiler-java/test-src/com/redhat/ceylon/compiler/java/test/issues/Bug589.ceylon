@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Package package {
-    name='com.redhat.ceylon.compiler.java.test.issues.bug569';
-    shared=true;
+@nomodel
+shared abstract class Bug589() {
+    shared formal void inc(Integer i=1);
 }

@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -167,9 +168,9 @@ public class ModelLoaderTest extends CompilerTest {
         }
         compareAnnotations(validDeclaration, modelDeclaration);
         // full check
-        if(validDeclaration instanceof Class){
-            Assert.assertTrue(name+" [Class]", modelDeclaration instanceof Class);
-            compareClassDeclarations((Class)validDeclaration, (Class)modelDeclaration);
+        if(validDeclaration instanceof ClassOrInterface){
+            Assert.assertTrue(name+" [ClassOrInterface]", modelDeclaration instanceof ClassOrInterface);
+            compareClassOrInterfaceDeclarations((ClassOrInterface)validDeclaration, (ClassOrInterface)modelDeclaration);
         }else if(validDeclaration instanceof Method){
             Assert.assertTrue(name+" [Method]", modelDeclaration instanceof Method);
             compareMethodDeclarations((Method)validDeclaration, (Method)modelDeclaration);
@@ -230,7 +231,7 @@ public class ModelLoaderTest extends CompilerTest {
         compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
     }
 
-    private void compareClassDeclarations(Class validDeclaration, Class modelDeclaration) {
+    private void compareClassOrInterfaceDeclarations(ClassOrInterface validDeclaration, ClassOrInterface modelDeclaration) {
         String name = validDeclaration.getQualifiedNameString();
         Assert.assertEquals(name+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
         // extended type
@@ -240,10 +241,21 @@ public class ModelLoaderTest extends CompilerTest {
             compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
         // satisfied types!
         compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
-        // self type
-        compareSelfTypes(validDeclaration, modelDeclaration, name);
-        // parameters
-        compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
+        // case types
+        compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
+        // tests specific to classes
+        if(validDeclaration instanceof Class){
+            Assert.assertTrue(name+" [is class]", modelDeclaration instanceof Class);
+            // self type
+            compareSelfTypes((Class)validDeclaration, (Class)modelDeclaration, name);
+            // parameters
+            compareParameterLists(validDeclaration.getQualifiedNameString(), 
+                    ((Class)validDeclaration).getParameterLists(), 
+                    ((Class)modelDeclaration).getParameterLists());
+        }else{
+            // tests specific to interfaces
+            Assert.assertTrue(name+" [is interface]", modelDeclaration instanceof Interface);
+        }
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
             // skip non-shared members
@@ -263,6 +275,23 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
 
+    private void compareCaseTypes(String name,
+            List<TypeDeclaration> validTypeDeclarations,
+            List<TypeDeclaration> modelTypeDeclarations) {
+        if(validTypeDeclarations != null){
+            Assert.assertNotNull(name+ " [null case types]", modelTypeDeclarations);
+        }else{
+            Assert.assertNull(name+ " [non-null case types]", modelTypeDeclarations);
+            return;
+        }
+        Assert.assertEquals(name+ " [case types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
+        for(int i=0;i<validTypeDeclarations.size();i++){
+            TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
+            TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
+            compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
+        }
+    }
+
     private void compareSelfTypes(Class validDeclaration,
             Class modelDeclaration, String name) {
         if(validDeclaration.getSelfType() == null)
@@ -276,7 +305,7 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
     
-    private Declaration lookupMember(Class container, Declaration referenceMember) {
+    private Declaration lookupMember(ClassOrInterface container, Declaration referenceMember) {
         String name = referenceMember.getName();
         for(Declaration member : container.getMembers()){
             if(member.getName() != null 

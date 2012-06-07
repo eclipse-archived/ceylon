@@ -1365,7 +1365,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primaryExpr = null;
                 qualExpr = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName()));
                 selector = null;
-            } else if (decl.isClassMember()) {
+            } else if (decl.isClassMember()
+                        || decl.isInterfaceMember()) {
                 selector = Util.getGetterName(decl.getName());
             } else {
                 // method local attr
@@ -1486,9 +1487,23 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private boolean needDollarThis(Tree.StaticMemberOrTypeExpression expr) {
         if (expr instanceof Tree.BaseMemberExpression) {
+            // We need to add a `$this` prefix to the member expression if:
+            // * The member was declared on an interface I and
+            // * The member is being used in the companion class of I or 
+            //   some subinterface of I, and 
+            // * The member is shared (non-shared means its only on the companion class)
             final Declaration decl = expr.getDeclaration();
-            return decl.isInterfaceMember()
-                && decl.getContainer() == expr.getScope().getContainer();
+            
+            // Find the method/getter/setter where the expr is being used
+            Scope scope = expr.getScope();
+            while (Decl.isLocalScope(scope)) {
+                scope = scope.getContainer();
+            }
+            // Is it being used in an interface (=> impl) which is a subtyle of the declaration
+            if (scope instanceof Interface
+                    && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
+                return decl.isShared();
+            }
         }
         return false;
     }
@@ -1597,7 +1612,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // TODO: array access (M2)
         JCExpression expr = null;
         if(leftTerm instanceof Tree.BaseMemberExpression)
-            expr = null;
+            if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
+                expr = makeUnquotedIdent("$this");
+            } else {
+                expr = null;
+            }
         else if(leftTerm instanceof Tree.QualifiedMemberExpression){
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
             expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());

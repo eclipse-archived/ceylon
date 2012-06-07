@@ -17,13 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Module module {
-    name='com.redhat.ceylon.compiler.java.test.issues.bug569.z';
-    version='1.0.0';
-    dependencies = {
-        Import {
-            name='com.redhat.ceylon.compiler.java.test.issues.bug569';
-            version='1.0.0';
-        }
-    };
+shared interface TopInterface {
+    shared formal Integer topFormalAttr;
+    shared default Integer concreteDefaultAttr { return 1; }
+
+    shared formal Integer topFormalMethod(Integer p1);
+    shared default Integer concreteDefaultMethod(Integer p1){ return p1; }
+}
+
+shared interface Interface satisfies TopInterface {
+    shared actual Integer topFormalAttr { return 1; }
+    shared Integer concreteAttr { return 1; }
+    shared actual formal Integer concreteDefaultAttr;
+
+    shared actual Integer topFormalMethod(Integer p1){ return p1; }
+    shared formal Integer formalMethod(Integer p1);
+    shared Integer concreteMethod(Integer p1){ return p1; }
+    shared actual formal Integer concreteDefaultMethod(Integer p1);
 }

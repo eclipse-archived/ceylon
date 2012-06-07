@@ -18,3 +18,4 @@
  * MA  02110-1301, USA.
  */
 CaseTypes<String> caseTypesTest = CaseTypes<String>();
+CaseTypes2 caseTypesTest2 = CaseTypesLeft();

@@ -19,3 +19,7 @@
  */
 shared class CaseTypes <T> () of T {
 }
+
+shared abstract class CaseTypes2() of CaseTypesLeft | CaseTypesRight {}
+shared class CaseTypesLeft() extends CaseTypes2() {}
+shared class CaseTypesRight() extends CaseTypes2() {}

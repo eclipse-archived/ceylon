@@ -19,12 +19,6 @@ interface Local$I$local3$2$IL$ICI {
     public long m();
 }
 interface Local$I {
-    
-    public void local3(final long i);
-    
-    public void local3();
-    
-    public abstract long local3$i();
 }
 class Local {
     
@@ -306,7 +300,18 @@ class Local {
             return 0L;
         }
         
-        public void local3(final long i) {
+        private final void local3() {
+            (
+                let
+                {
+                    long $ceylontmp$i$17 = local3$i();
+                    local3($ceylontmp$i$17);
+                }
+                returning null;
+            );
+        }
+        
+        private void local3(final long i) {
             
             final class IL$impl {
                 

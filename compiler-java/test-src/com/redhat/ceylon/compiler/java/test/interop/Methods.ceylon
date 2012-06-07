@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import java.lang { JString = String, JInteger = Integer }
 import java.io{File}
 
 @nomodel
@@ -75,4 +76,51 @@ class OverloadedMembersAndSubClasses() extends JavaWithOverloadedMembersSubClass
 @error
 @nomodel
 class OverloadedMembersAndSubClasses2() extends JavaWithOverloadedMembersSubClass(2) {
+}
+
+@nomodel
+@error
+void variadicMethods() {
+    T box<T>(T t){return t;}
+    @error
+    TypesJava java = TypesJava();
+
+    @error
+    java.variadicByte(1, box(2), 3);
+
+    @error
+    java.variadicLong(1, box(2), 3);
+    @error
+    java.variadicLong(1);
+    @error
+    java.variadicLong(box(1));
+    @error
+    java.variadicLong();
+
+    @error
+    java.variadicJavaString("a", box("b"), "c");
+    @error
+    java.variadicJavaString("a");
+    @error
+    java.variadicJavaString(box("a"));
+    @error
+    java.variadicJavaString();
+    String? string = "a";
+    @error
+    java.variadicJavaString(string);
+
+    @error
+    java.variadicCeylonString("a", box("b"), "c");
+
+    @error
+    java.variadicObject("a", box("b"), 1, box(2));
+
+    @error
+    java.variadicObject(JString("a"), JInteger(1));
+    
+    @error
+    java.variadicT<Integer>(1, box(2), 3);
+
+    @error
+    java.variadicT<String>("a", box("b"), "c");
 }

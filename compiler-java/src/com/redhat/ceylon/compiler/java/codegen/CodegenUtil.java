@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -229,7 +230,7 @@ class CodegenUtil {
 
     static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
         if (decl instanceof Method) {
-            return decl.getName() + "$" + param.getName();
+            return ((Method) decl).getName() + "$" + getTopmostRefinedDeclaration(param).getName();
         } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
             return "$init$" + param.getName();
         } else {
@@ -250,6 +251,34 @@ class CodegenUtil {
                 && !decl.isClassOrInterfaceMember()
                 && !decl.isCaptured()
                 && !decl.isShared();
+    }
+
+    static Declaration getTopmostRefinedDeclaration(Declaration decl){
+        if(decl instanceof Parameter && decl.getContainer() instanceof Functional){
+            // Parameters in a refined class, interface or method are not considered refinements themselves
+            // so we have to look up the corresponding parameter in the container's refined declaration
+            Functional func = (Functional)decl.getContainer();
+            Parameter param = (Parameter)decl;
+            Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)decl.getContainer());
+            // shortcut if the functional doesn't override anything
+            if(refinedFunc == decl.getContainer())
+                return decl;
+            if (func.getParameterLists().size() != refinedFunc.getParameterLists().size()) {
+                throw new RuntimeException("Different numbers of parameter lists");
+            }
+            for (int ii = 0; ii < func.getParameterLists().size(); ii++) {
+                // find the index of the parameter
+                int index = func.getParameterLists().get(ii).getParameters().indexOf(param);
+                if (index == -1) {
+                    continue;
+                }
+                return refinedFunc.getParameterLists().get(ii).getParameters().get(index);
+            }
+        }
+        Declaration refinedDecl = decl.getRefinedDeclaration();
+        if(refinedDecl != null && refinedDecl != decl)
+            return getTopmostRefinedDeclaration(refinedDecl);
+        return decl;
     }
     
 }

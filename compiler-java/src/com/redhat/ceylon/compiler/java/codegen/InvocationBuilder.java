@@ -19,9 +19,9 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.COMPANION;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.NO_PRIMITIVES;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.TYPE_ARGUMENT;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.WANT_RAW_TYPE;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
@@ -361,7 +361,8 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
             final JCExpression expr;
             if (!isParameterSequenced(argIndex)
-                    || dontBoxSequence()) {
+                    || dontBoxSequence()
+                    || isJavaMethod()) {
                 expr = this.getTransformedArgumentExpression(argIndex);
             } else {
                 // box with an ArraySequence<T>
@@ -373,6 +374,12 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
             }
             appendArgument(expr);
         }
+    }
+
+    private boolean isJavaMethod() {
+        if(!(primaryDeclaration instanceof Method))
+            return false;
+        return gen.isJavaMethod((Method) primaryDeclaration);
     }
 
     protected abstract Tree.Expression getArgumentExpression(int argIndex);
@@ -965,11 +972,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         return result;
     }
     
-    private final void appendDefaulted(Parameter param, boolean isRaw, JCExpression argExpr) {
+    private final void appendDefaulted(Parameter param, JCExpression argExpr) {
         int flags = 0;
-        if (isRaw) {
-            flags |= WANT_RAW_TYPE;
-        } else if (CodegenUtil.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
+        if (CodegenUtil.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= TYPE_ARGUMENT;
         }
         ProducedType type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
@@ -981,7 +986,6 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
     private boolean appendVarsForDefaulted(java.util.List<Parameter> declaredParams) {
         boolean hasDefaulted = false;
-        boolean isRaw = primaryTypeArguments.isEmpty();
         if (!Decl.isOverloaded(primaryDeclaration)) {
             // append any arguments for defaulted parameters
             for (Parameter param : declaredParams) {
@@ -1006,7 +1010,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 } else {
                     argExpr = gen.makeErroneous(this.node, "Missing argument, and parameter is not defaulted");
                 }
-                appendDefaulted(param, isRaw, argExpr);
+                appendDefaulted(param, argExpr);
             }
         }
         return hasDefaulted;
@@ -1039,11 +1043,11 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 typeArgs.append(gen.makeJavaType(producedType, TYPE_ARGUMENT));
             }
             ClassOrInterface declaration = (ClassOrInterface)((Tree.BaseTypeExpression) primary).getDeclaration();
-            thisType = gen.makeCompanionType(declaration, typeArgs.toList());
+            thisType = gen.makeJavaType(declaration.getType(), COMPANION);
             defaultedParameterInstance = gen.make().NewClass(
                     null, 
                     null,
-                    gen.makeCompanionType(declaration, typeArgs.toList()), 
+                    gen.makeJavaType(declaration.getType(), COMPANION), 
                     List.<JCExpression>nil(), null);
         } else {
             thisType = gen.makeJavaType(target.getQualifyingType(), NO_PRIMITIVES);

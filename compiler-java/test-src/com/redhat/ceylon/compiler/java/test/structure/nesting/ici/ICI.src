@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting.ici;
 
 interface I$IC$ICI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
-    
-    public T m2();
 }
 interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
@@ -15,8 +13,14 @@ interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolea
 final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this;
     
-    private final <U>T m1(final X b) {
-        return $this.<U>m1(b);
+    public final <U>T m1(final X b) {
+        return (
+            let
+            {
+                U $ceylontmp$u$3 = m1$u(b);
+            }
+            returning $this.m1(b, $ceylontmp$u$3);
+        );
     }
     
     public final <U>U m1$u(final X b) {
@@ -28,7 +32,7 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
         final class ICI$impl {
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this;
             
-            public T m2() {
+            private T m2() {
                 return m1(null);
             }
             

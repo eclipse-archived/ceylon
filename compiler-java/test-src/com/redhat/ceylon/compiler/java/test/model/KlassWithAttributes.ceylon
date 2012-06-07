@@ -20,6 +20,12 @@
 shared interface InterfaceWithAttributes {
  shared formal Integer formalAttr;
  shared formal variable Integer formalAttr2;
+ shared default Integer defaultAttr{ return 1; }
+ shared Integer concreteAttr{ return 1; }
+}
+
+shared interface InterfacewithAttributes2 satisfies InterfaceWithAttributes {
+    shared actual formal Integer defaultAttr;
 }
 
 shared abstract class KlassWithAttributesSuper2() {

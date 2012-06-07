@@ -57,5 +57,4 @@ public class JavacVariable implements VariableMirror {
     public String getName() {
         return varSymbol.name.toString();
     }
-
 }

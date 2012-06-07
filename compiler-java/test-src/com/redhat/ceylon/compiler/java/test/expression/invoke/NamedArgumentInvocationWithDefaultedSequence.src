@@ -70,7 +70,7 @@ final class namedArgumentInvocationWithDefaultedSequence {
                 callFunction $arg$9$this$ = callFunction;
                 .java.lang.String $arg$9$1 = "s";
                 long $arg$9$0 = 0L;
-                .ceylon.language.Iterable $arg$9$2 = $arg$9$this$.callFunction$c($arg$9$0, $arg$9$1);
+                .ceylon.language.Iterable<? extends .ceylon.language.Character> $arg$9$2 = $arg$9$this$.callFunction$c($arg$9$0, $arg$9$1);
                 callFunction.callFunction($arg$9$0, $arg$9$1, $arg$9$2);
             }
             returning null;

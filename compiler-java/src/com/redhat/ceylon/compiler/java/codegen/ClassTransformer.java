@@ -31,12 +31,11 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.loader.ModelResolutionException;
+import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -48,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -200,11 +200,6 @@ public class ClassTransformer extends AbstractTransformer {
             }
             Interface iface = (Interface)decl;
             concreteMembersFromSuperinterfaces((Class)model, classBuilder, satisfiedType, satisfiedInterfaces);
-            
-            /*if (Decl.withinClassOrInterface(decl)) {// TODO What about local interfaces?
-                // Generate $outer() impl if implementing an inner interface
-                classBuilder.defs(makeOuterImpl(model, iface));
-            }*/
         }
     }
 
@@ -218,17 +213,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (satisfiedInterfaces.contains(iface)) {
             return;
         }
-        boolean goRaw = false;
-        Map<TypeDeclaration, java.util.List<ProducedType>> m = new HashMap<TypeDeclaration, java.util.List<ProducedType>>();
-        for (ProducedType t : model.getType().getSupertypes()) {
-            TypeDeclaration declaration = t.getDeclaration();
-            java.util.List<ProducedType> typeArguments = t.getTypeArgumentList();
-            java.util.List<ProducedType> existingTypeArgs = m.put(declaration, typeArguments);
-            if (existingTypeArgs != null) {
-                goRaw = true;
-                break;
-            }
-        }   
+     
         // If there is no $impl (e.g. implementing a Java interface) 
         // then don't instantiate it...
         if (hasImpl(iface)) {
@@ -237,35 +222,49 @@ public class ClassTransformer extends AbstractTransformer {
             // companion class in the constructor and assign it to a
             // $Interface$impl field
             transformInstantiateCompanions(classBuilder,
-                    iface, satisfiedType, goRaw);
+                    iface, satisfiedType);
         }
         
         // For each super interface
         for (Declaration member : iface.getMembers()) {
+            if (Strategy.onlyOnCompanion(member)) {
+                // non-shared interface methods don't need implementing
+                // (they're just private methods on the $impl)
+                continue;
+            }
             if (member instanceof Method) {
                 Method method = (Method)member;
+                final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<ProducedType>emptyList());
                 final java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
                 final java.util.List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
                 if (!satisfiedInterfaces.contains((Interface)method.getContainer())) {
                     
                     for (Parameter param : parameters) {
-                        if (param.isDefaulted()) {
+                        if (param.isDefaulted()
+                                || param.isSequenced()) {
+                            final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
                             // If that method has a defaulted parameter, 
                             // we need to generate a default value method
                             // which also delegates to the $impl
-                            final JCMethodDecl defaultValueDelegate = makeDelegateToCompanion(iface, 
-                                    PUBLIC | FINAL, typeParameters, param, param.getType(), 
-                                    CodegenUtil.getDefaultedParamMethodName(method, param), parameters.subList(0, parameters.indexOf(param)),
+                            final JCMethodDecl defaultValueDelegate = makeDelegateToCompanion(iface,
+                                    typedParameter,
+                                    PUBLIC | FINAL, 
+                                    typeParameters, 
+                                    typedParameter.getType(), 
+                                    CodegenUtil.getDefaultedParamMethodName(method, param), 
+                                    parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model));
                             classBuilder.defs(defaultValueDelegate);
-                            // If that method has a defaulted parameter, 
-                            // we need to generate a overload method
-                            // which also delegates to the $impl
-                            MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(
-                                    gen(), Decl.isAncestorLocal(model), true, method.getName());
-                            final MethodDefinitionBuilder overload = makeOverloadsForDefaultedParameter(true, true,  
-                                    overloadBuilder, method, parameters, param);
-                            classBuilder.defs(overload.build());
+                            
+                            final JCMethodDecl overload = makeDelegateToCompanion(iface,
+                                    typedMember,
+                                    PUBLIC | FINAL, 
+                                    typeParameters,  
+                                    typedMember.getType(), 
+                                    CodegenUtil.quoteMethodName(method.getName()), 
+                                    parameters.subList(0, parameters.indexOf(param)),
+                                    Decl.isAncestorLocal(model));
+                            classBuilder.defs(overload);
                         }
                     }
                 }
@@ -273,64 +272,105 @@ public class ClassTransformer extends AbstractTransformer {
                 // then generate a method on the class
                 // delegating to the $impl instance
                 if (needsCompanionDelegate(model, member)) {
+                    
                     final JCMethodDecl concreteMemberDelegate = makeDelegateToCompanion(iface,
-                            PUBLIC, method.getTypeParameters(), 
-                            method,
-                            method.getType(), method.getName(), method.getParameterLists().get(0).getParameters(),
+                            typedMember,
+                            PUBLIC, 
+                            method.getTypeParameters(), 
+                            method.getType(), 
+                            CodegenUtil.quoteMethodName(method.getName()), 
+                            method.getParameterLists().get(0).getParameters(),
                             Decl.isAncestorLocal(model));
                     classBuilder.defs(concreteMemberDelegate);
                      
                 }
-            } else if (member instanceof Getter) {// Concrete getter
-                Getter getter = (Getter)member;
+            } else if (member instanceof Getter
+                    || member instanceof Setter
+                    || member instanceof Value) {
+                TypedDeclaration attr = (TypedDeclaration)member;
+                final ProducedTypedReference typedMember = satisfiedType.getTypedMember(attr, null);
                 if (needsCompanionDelegate(model, member)) {
-                    final JCMethodDecl getterDelegate = makeDelegateToCompanion(iface, 
-                            PUBLIC | (getter.isDefault() ? 0 : FINAL), 
-                            Collections.<TypeParameter>emptyList(), 
-                            getter, 
-                            getter.getType(), 
-                            CodegenUtil.getGetterName(member), 
-                            Collections.<Parameter>emptyList(),
-                            Decl.isAncestorLocal(model));
-                    classBuilder.defs(getterDelegate);
+                    if (member instanceof Value 
+                            || member instanceof Getter) {
+                        final JCMethodDecl getterDelegate = makeDelegateToCompanion(iface, 
+                                typedMember,
+                                PUBLIC | (attr.isDefault() ? 0 : FINAL), 
+                                Collections.<TypeParameter>emptyList(), 
+                                typedMember.getType(), 
+                                CodegenUtil.getGetterName(attr), 
+                                Collections.<Parameter>emptyList(),
+                                Decl.isAncestorLocal(model));
+                        classBuilder.defs(getterDelegate);
+                    }
+                    if (member instanceof Setter) { 
+                        final JCMethodDecl setterDelegate = makeDelegateToCompanion(iface, 
+                                typedMember,
+                                PUBLIC | (attr.isDefault() ? 0 : FINAL), 
+                                Collections.<TypeParameter>emptyList(), 
+                                typeFact().getVoidDeclaration().getType(), 
+                                CodegenUtil.getSetterName(attr), 
+                                Collections.<Parameter>singletonList(((Setter)member).getParameter()),
+                                Decl.isAncestorLocal(model));
+                        classBuilder.defs(setterDelegate);
+                    }
+                    if (member instanceof Value 
+                            && ((Value)attr).isVariable()) {
+                        // I don't *think* this can happen because although a 
+                        // variable Value can be declared on an interface it 
+                        // will need to we refined as a Getter+Setter on a 
+                        // subinterface in order for there to be a method in a 
+                        // $impl to delegate to
+                        throw new RuntimeException();
+                    }
                 }
             } else if (needsCompanionDelegate(model, member)) {
-                log.error("ceylon", "Unhandled concrete interface member " + member.getName());
+                log.error("ceylon", "Unhandled concrete interface member " + member.getQualifiedNameString() + " " + member.getClass());
             }
         }
         
         // Add $impl instances for the whole interface hierarchy
         satisfiedInterfaces.add(iface);
         for (ProducedType sat : iface.getSatisfiedTypes()) {
+            sat = satisfiedType.getSupertype(sat.getDeclaration());
             concreteMembersFromSuperinterfaces(model, classBuilder, sat, satisfiedInterfaces);
         }
         
     }
 
     private boolean needsCompanionDelegate(final Class model, Declaration member) {
-        return member.equals(model.getMember(member.getName(), null))
-                && member.isDefault();
+        final boolean mostRefined;
+        if (member instanceof Setter) {
+            mostRefined = member.equals(((Getter)model.getMember(member.getName(), null)).getSetter());
+        } else {
+            mostRefined = member.equals(model.getMember(member.getName(), null));
+        }
+        return mostRefined
+                && (member.isDefault() || !member.isFormal());
     }
 
     /**
      * Generates a method which delegates to the companion instance $Foo$impl
      */
     private JCMethodDecl makeDelegateToCompanion(Interface iface,
-            final long mods,
+            ProducedTypedReference typedMember, final long mods,
             final java.util.List<TypeParameter> typeParameters,
-            TypedDeclaration resultType,
             final ProducedType methodType,
             final String methodName, final java.util.List<Parameter> parameters, boolean ancestorLocal) {
-        final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.method(gen(), ancestorLocal, true, methodName);
-        concreteWrapper.modifiers(mods);//TODO
-        concreteWrapper.annotations(makeAtOverride());// TODO Other Annos?
+        final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), ancestorLocal, methodName);
+        concreteWrapper.modifiers(mods);
+        concreteWrapper.annotations(makeAtOverride());
         for (TypeParameter tp : typeParameters) {
             concreteWrapper.typeParameter(tp);
         }
-        concreteWrapper.resultType(resultType);
+        
+        if (!isVoid(methodType)) {
+            concreteWrapper.resultType(typedMember.getDeclaration(), typedMember.getType());
+        }
+        
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         for (Parameter param : parameters) {
-            concreteWrapper.parameter(param);
+            final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
+            concreteWrapper.parameter(param, typedParameter.getType());
             arguments.add(makeQuotedIdent(param.getName()));
         }
         JCExpression expr = make().Apply(
@@ -351,53 +391,28 @@ public class ClassTransformer extends AbstractTransformer {
         if (gen().hasInterface(iface)) {
             return true;
         }
-        // Otherwise, ask the model loader
-        try {
-            Declaration implDecl = gen().loader().convertToDeclaration(gen().getCompanionClassName(iface), 
-                    com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType.TYPE);
-            return implDecl != null;
-        } catch (ModelResolutionException e) {
-            return false;
+        if (iface instanceof LazyInterface) {
+            return ((LazyInterface)iface).isCeylon();
         }
+        return false;
     }
 
     private void transformInstantiateCompanions(
             ClassDefinitionBuilder classBuilder, 
-            Interface iface, ProducedType satisfiedType, boolean goRaw) {
+            Interface iface, ProducedType satisfiedType) {
         at(null);
         final List<JCExpression> state = List.<JCExpression>of(makeUnquotedIdent("this"));
-        Map<TypeParameter, ProducedType> typeArguments = satisfiedType.getTypeArguments();
         final String fieldName = getCompanionFieldName(iface);
         classBuilder.init(make().Exec(make().Assign(
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
                 make().NewClass(null, 
                         null, // TODO Type args 
-                        makeCompanionType(iface, typeArguments, goRaw),
+                        makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES),
                         state,
                         null))));
         
         classBuilder.field(PRIVATE | FINAL, fieldName, 
-                makeCompanionType(iface, typeArguments, false), null, false);
-    }
-
-    private JCMethodDecl makeOuterImpl(final ClassOrInterface model, Interface iface) {
-        at(null);
-        
-        MethodDefinitionBuilder outerBuilder = MethodDefinitionBuilder.method(gen(), true, true, "$outer");// TODO ancestorLocal
-        outerBuilder.annotations(makeAtOverride());
-        outerBuilder.annotations(makeAtIgnore());
-        outerBuilder.modifiers(FINAL | PUBLIC);
-        outerBuilder.resultType(null, makeJavaType(iface.getType().getQualifyingType()));
-        Scope container = model.getContainer();
-        final JCExpression expr;
-        if (container instanceof Class) {
-            expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((Class)container)), "this");
-        } else {
-            expr = makeNull();//TODO makeQuotedIdent("$outer");// TODO Need to have a $outer field and pass in the outer instance to the ctor
-        }
-        outerBuilder.body(make().Return(expr));
-        JCMethodDecl build = outerBuilder.build();
-        return build;
+                makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES), null, false);
     }
 
     private void buildCompanion(final Tree.ClassOrInterface def,
@@ -421,62 +436,6 @@ public class ClassTransformer extends AbstractTransformer {
                                 makeSelect("this", "$this"), 
                                 makeUnquotedIdent("$this"))));
         ctor.body(bodyStatements.toList());
-        /*if (Strategy.needsOuterMethodInCompanion(model)) {
-            // interfaces inner to local types have a different type in the 
-            // interface and on the $impl because the real outer type is not 
-            // visible because the interfaces is hoisted to top level
-            final ProducedType outerTypeInterface;
-            final ProducedType outerTypeCompanion;
-            if (Decl.isAncestorLocal(model)) {
-                Scope container = Decl.container(model);
-                while (!(container instanceof TypeDeclaration)) {
-                    container = container.getContainer();
-                }
-                outerTypeCompanion = ((TypeDeclaration)container).getType();
-                outerTypeInterface = typeFact().getObjectDeclaration().getType();
-            } else {
-                outerTypeInterface = thisType.getQualifyingType();
-                outerTypeCompanion = outerTypeInterface;
-            }
-            // ...add a $outer() method to the impl
-            
-            MethodDefinitionBuilder outerBuilderCompanion = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
-            outerBuilderCompanion.modifiers(PRIVATE | FINAL);
-            JCExpression jt = makeJavaType(outerTypeCompanion);
-            outerBuilderCompanion.resultType(null, jt);
-            boolean requiresCast = false;
-            JCExpression expr = makeErroneous();
-            Scope container = model.getContainer();
-            if (container instanceof Class) {
-                expr = makeSelect(makeQuotedQualIdentFromString(getFQDeclarationName((Class)container)), "this");
-            } else if (container instanceof Interface) {
-                expr = make().Apply(null,// TODO Type args
-                        makeSelect("$this", "$outer"),
-                        List.<JCExpression>nil());
-                requiresCast = Decl.isLocal((Interface)container);
-            } else if (Decl.isLocal((model))) {
-                while (!(container instanceof TypeDeclaration)) {
-                    container = container.getContainer();
-                }
-                expr = makeSelect(
-                                makeQuotedQualIdentFromString(getFQDeclarationName((TypeDeclaration)container)), 
-                                "this");
-            } else {
-                throw new RuntimeException();
-            }
-            if (requiresCast) {
-                expr = make().TypeCast(makeJavaType(outerTypeCompanion), expr);
-            }
-            outerBuilderCompanion.body(make().Return(expr));
-            companionBuilder.defs(outerBuilderCompanion.build());
-
-            // Add an $outer() method to the interface
-            MethodDefinitionBuilder outerBuilderInterface = MethodDefinitionBuilder.method(gen(), false, true, "$outer");// TODO ancestorLocal
-            outerBuilderInterface.annotations(makeAtIgnore());
-            outerBuilderInterface.modifiers(PUBLIC | ABSTRACT);
-            outerBuilderInterface.resultType(null, makeJavaType(outerTypeInterface));
-            classBuilder.defs(outerBuilderInterface.build());
-        }*/
     }
 
     public List<JCStatement> transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
@@ -626,21 +585,36 @@ public class ClassTransformer extends AbstractTransformer {
 		return null;
 	}
 
-	public List<JCTree> transform(AttributeSetterDefinition decl) {
-        JCBlock body = statementGen().transform(decl.getBlock());
+	public List<JCTree> transform(AttributeSetterDefinition decl, boolean forCompanion) {
+	    ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         String name = decl.getIdentifier().getText();
-        return AttributeDefinitionBuilder
+        final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                 /* 
                  * We use the getter as TypedDeclaration here because this is the same type but has a refined
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
             .setter(this, name, decl.getDeclarationModel().getGetter())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false))
-            .setterBlock(body)
-            .build();
+            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), false));
+        
+        // companion class members are never actual no matter what the Declaration says
+        if(forCompanion)
+            builder.notActual();
+        
+        if (Decl.withinClass(decl) || forCompanion) {
+            JCBlock body = statementGen().transform(decl.getBlock());
+            builder.setterBlock(body);
+        } else {
+            builder.isFormal(true);
+        }
+        if (!Strategy.onlyOnCompanion(decl.getDeclarationModel()) || forCompanion) {
+            lb.appendList(builder.build());
+        }
+        
+        return lb.toList();
     }
 
     public List<JCTree> transform(AttributeGetterDefinition decl, boolean forCompanion) {
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         String name = decl.getIdentifier().getText();
         
         // TODO Support concrete getters on interfaces
@@ -648,13 +622,21 @@ public class ClassTransformer extends AbstractTransformer {
             .getter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
         
+        // companion class members are never actual no matter what the Declaration says
+        if(forCompanion)
+            builder.notActual();
+        
         if (Decl.withinClass(decl) || forCompanion) {
             JCBlock body = statementGen().transform(decl.getBlock());
             builder.getterBlock(body);
         } else {
             builder.isFormal(true);
         }
-        return builder.build();
+        if (!Strategy.onlyOnCompanion(decl.getDeclarationModel()) || forCompanion) {
+            lb.appendList(builder.build());
+        }
+        
+        return lb.toList();
     }
 
     private int transformClassDeclFlags(ClassOrInterface cdecl) {
@@ -688,7 +670,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (Decl.isLocal(def)) {
             result |= def.isShared() ? PUBLIC : 0;
         } else {
-            result |= def.isShared() || def.getContainer() instanceof Interface ? PUBLIC : PRIVATE;
+            result |= def.isShared() ? PUBLIC : PRIVATE;
             result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
             result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
         }
@@ -737,7 +719,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= tdecl.isShared() ? PUBLIC : PRIVATE;
         result |= (tdecl.isFormal() && !tdecl.isDefault() && !forCompanion) ? ABSTRACT : 0;
-        result |= !(tdecl.isFormal() || tdecl.isDefault()) || forCompanion ? FINAL : 0;
+        result |= !(tdecl.isFormal() || tdecl.isDefault() || tdecl.getContainer() instanceof Interface) || forCompanion ? FINAL : 0;
 
         return result;
     }
@@ -840,10 +822,15 @@ public class ClassTransformer extends AbstractTransformer {
     List<JCTree> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
-        ListBuffer<JCTree> lb = transformMethod(model, classBuilder, body,
+        
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+        
+        if (!Strategy.onlyOnCompanion(model)) {
+            lb.appendList(transformMethod(model, classBuilder, body,
                 def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() == null,
-                CodegenUtil.hasCompilerAnnotation(def, "test"));
+                CodegenUtil.hasCompilerAnnotation(def, "test")));
+        }
         
         final Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
@@ -856,7 +843,9 @@ public class ClassTransformer extends AbstractTransformer {
                 if (Strategy.defaultParameterMethodOnSelf(model)) {
                     lb.add(defaultValueMethodImpl);    
                 } else {
-                    lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
+                    if (!Strategy.onlyOnCompanion(model)) {
+                        lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
+                    }
                     classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(defaultValueMethodImpl);
                 }    
             }
@@ -891,21 +880,26 @@ public class ClassTransformer extends AbstractTransformer {
                         || parameter.isSequenced())) {
                 MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
                         methodName);
-                JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), false, 
+                JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), false, false, 
                         overloadBuilder, 
                         model, parameterList.getParameters(), parameter).build();
+                if (!Decl.withinInterface(model)) {
+                    overloadBuilder.annotations(makeAtOverride());
+                }
                 lb.prepend(overloadedMethod);
             }
             if (parameter.isDefaulted()
-                    || isLastParameter(parameterList, parameter)) {        
+                    || parameter.isSequenced()) {        
                 if (Decl.withinInterface(model)
                         && unspecified) {
                     // interface methods without concrete implementation (including 
                     // overloaded versions) on the companion class by delegating to 
                     // $this (for closure purposes)
-                    JCMethodDecl result = makeConcreteInterfaceMethodsForClosure(
-                            model, methodName, parameterList, parameter);
-                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(result);
+                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
+                            methodName);
+                    makeOverloadsForDefaultedParameter(true, true, true, 
+                            overloadBuilder, model, parameterList.getParameters(), parameter);
+                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(overloadBuilder.build());
                 }
             }    
         }
@@ -1082,115 +1076,6 @@ public class ClassTransformer extends AbstractTransformer {
         throw new RuntimeException();
     }
 
-    private JCMethodDecl makeConcreteInterfaceMethodsForClosure(
-            Method model, final String methodName,
-            final ParameterList paramList, Parameter currentParam) {
-        
-        MethodDefinitionBuilder delegateBuilder = MethodDefinitionBuilder.method(gen(), false, true, methodName);
-        delegateBuilder.modifiers(PRIVATE | FINAL);
-        copyTypeParameters(model, delegateBuilder);
-        delegateBuilder.resultType(model);
-        ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
-        for (Parameter p : paramList.getParameters().subList(0, paramList.getParameters().indexOf(currentParam))) {
-            delegateBuilder.parameter(p);
-            arguments.append(makeQuotedIdent(p.getName()));
-        }
-        JCExpression expr = make().Apply(
-                typeArguments(model),
-                makeSelect("$this", methodName), 
-                arguments.toList());
-        if (isVoid(model)) {
-            delegateBuilder.body(make().Exec(expr));
-        } else {
-            delegateBuilder.body(make().Return(expr));
-        }
-        JCMethodDecl result = delegateBuilder.build();
-        return result;
-    }
-
-    private boolean isLastParameter(final ParameterList paramList,
-            Parameter param) {
-        return paramList.getParameters().indexOf(param) == paramList.getParameters().size();
-    }
-
-    private JCMethodDecl transformDefaultValueMethodImpl(Tree.AnyMethod def,
-            java.util.List<Parameter> parameters, Parameter p) {
-        final Method method = def.getDeclarationModel();
-        String name = CodegenUtil.getDefaultedParamMethodName(method, p);
-        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, name);// TODO ancestorLocal
-        overloadBuilder.annotations(makeAtOverride());
-        overloadBuilder.annotations(makeAtIgnore());
-        overloadBuilder.modifiers(transformOverloadMethodImplFlags(method));
-        for (TypeParameter tp : method.getTypeParameters()) {
-            overloadBuilder.typeParameter(tp);
-        }
-        overloadBuilder.resultType(null, makeJavaType(p.getType()));
-        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb(); 
-        for (Parameter p2 : parameters.subList(0, parameters.indexOf(p))) {
-            overloadBuilder.parameter(p2);
-            args.append(makeQuotedIdent(p2.getName()));
-        }
-        overloadBuilder.body(make().Return(
-                make().Apply(typeArguments(def),
-                        makeDefaultedParamMethodIdent(method, p),
-                        args.toList())));
-        return overloadBuilder.build();
-    }
-    
-    private JCMethodDecl overloadMethodImpl(
-            Tree.AnyMethod def, java.util.List<Parameter> parameters, Parameter p) {
-        final Method method = def.getDeclarationModel();
-        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(gen(), false, true, method.getName());// TODO ancestorLocal
-        overloadBuilder.annotations(makeAtOverride());
-        overloadBuilder.annotations(makeAtIgnore());
-        overloadBuilder.modifiers(transformOverloadMethodImplFlags(method));
-        
-        for (TypeParameter tp : method.getTypeParameters()) {
-            overloadBuilder.typeParameter(tp);
-        }
-        overloadBuilder.resultType(method);
-        final ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
-        final ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();        
-        boolean seen = false;
-        // TODO This code is very similar to transformForDefaultedParameter() but
-        // operates on model.Parameter not Tree.Parameter
-        
-        for (Parameter p2 : parameters) {
-            if (p2 == p) {
-                seen = true;
-            }
-            if (!seen) {
-                args.append(makeQuotedIdent(p2.getName()));
-                overloadBuilder.parameter(p2);
-            } else {
-                String tempName = tempName(p2.getName());
-                vars.append(makeVar(
-                        tempName, 
-                        makeJavaType(p2.getType()), 
-                        make().Apply(typeArguments(def),
-                                makeDefaultedParamMethodIdent(method, p2), 
-                            args.toList())));
-                args.append(makeQuotedIdent(tempName));
-            }
-        }
-        
-        JCExpression invocation = make().Apply(
-                typeArguments(def),
-                makeQuotedIdent(method.getName()),
-                args.toList());
-        
-        if (isVoid(method.getType())) {
-            vars.append(make().Exec(invocation));
-            invocation = make().LetExpr(vars.toList(), makeNull());
-            overloadBuilder.body(make().Exec(invocation));
-        } else {
-            invocation = make().LetExpr(vars.toList(), invocation);
-            overloadBuilder.body(make().Return(invocation));
-        }
-        
-        return overloadBuilder.build();
-    }
-
     /**
      * Generates an overloaded method where all the defaulted parameters after 
      * and including the given {@code currentParam} are given their default 
@@ -1209,7 +1094,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (Tree.Parameter param : paramList.getParameters()) {
             parameters.add(param.getDeclarationModel());
         }
-        return makeOverloadsForDefaultedParameter(generateBody, false, 
+        return makeOverloadsForDefaultedParameter(generateBody, false, false,
                 overloadBuilder, model,
                 parameters, currentParam.getDeclarationModel());
     }
@@ -1223,23 +1108,27 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private MethodDefinitionBuilder makeOverloadsForDefaultedParameter(
             boolean generateBody, 
-            boolean forImplementor, MethodDefinitionBuilder overloadBuilder,
+            boolean forImplementor, 
+            boolean forDelegator, MethodDefinitionBuilder overloadBuilder,
             final Declaration model, java.util.List<Parameter> parameters,
             final Parameter currentParam) {
         overloadBuilder.annotations(makeAtIgnore());
-        if (forImplementor) {
-            overloadBuilder.annotations(makeAtOverride());
-        }
         
         final JCExpression methName;
         if (model instanceof Method) {
             long mods = transformOverloadMethodDeclFlags((Method)model);
-            if (forImplementor) {
+            if (generateBody) {
                 mods &= ~ABSTRACT;
+            }
+            if (forImplementor || forDelegator) {
                 mods |= FINAL;
             }
             overloadBuilder.modifiers(mods);
-            methName = makeQuotedIdent(CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
+            if (forDelegator) {
+                methName = makeSelect(makeUnquotedIdent("$this"), CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
+            } else {
+                methName = makeQuotedIdent(CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
+            }
             overloadBuilder.resultType((Method)model);
         } else if (model instanceof Class) {
             overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
@@ -1268,14 +1157,10 @@ public class ClassTransformer extends AbstractTransformer {
             Class classModel = (Class)model;
             Map<TypeParameter, ProducedType> typeArguments = classModel.getType().getTypeArguments();
             vars.append(makeVar(companionInstanceName, 
-                    makeCompanionType(classModel,
-                            typeArguments, 
-                            false),
+                    makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
                     make().NewClass(null, // TODO encl == null ???
                             null,
-                            makeCompanionType(classModel,
-                                    typeArguments,
-                                    false),
+                            makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
                             List.<JCExpression>nil(), null)));
         }
         
@@ -1344,10 +1229,26 @@ public class ClassTransformer extends AbstractTransformer {
 
 
     
-    public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
+    public List<JCTree> transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+        Method model = def.getDeclarationModel();
+        Tree.ParameterList paramList = def.getParameterLists().get(0);
+        for (Tree.Parameter p : paramList.getParameters()) {
+            Parameter param = p.getDeclarationModel();
+            if (param.isDefaulted()
+                    || param.isSequenced()) {
+                MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
+                        model.getName());
+                final MethodDefinitionBuilder om = makeOverloadsForDefaultedParameter(true, true, false,
+                        overloadBuilder, def.getDeclarationModel(), 
+                        model.getParameterLists().get(0).getParameters(), param);
+                lb.append(overloadBuilder.build());
+            }
+        }
+        
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(def), true, CodegenUtil.quoteMethodNameIfProperty(def.getDeclarationModel(), gen()));
         
-        for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
+        for (Tree.Parameter param : paramList.getParameters()) {
             methodBuilder.parameter(param);
         }
 
@@ -1360,11 +1261,10 @@ public class ClassTransformer extends AbstractTransformer {
         // FIXME: this needs rewriting to map non-qualified refs to $this
         JCBlock body = statementGen().transform(def.getBlock());
         methodBuilder.block(body);
-                
-        return methodBuilder
+        lb.append(methodBuilder
             .modifiers(transformMethodDeclFlags(def))
-            .isActual(Decl.isActual(def))
-            .build();
+            .build());
+        return lb.toList();
     }
 
     /**

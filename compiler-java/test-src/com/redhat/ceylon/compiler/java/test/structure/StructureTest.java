@@ -273,6 +273,10 @@ public class StructureTest extends CompilerTest {
     public void testKlsDeferredFunctionInitialization(){
         compareWithJavaSource("klass/DeferredFunctionInitialization");
     }
+    @Test
+    public void testKlsTypeParamRename(){
+        compareWithJavaSource("klass/TypeParamRename");
+    }
     
     //
     // Methods

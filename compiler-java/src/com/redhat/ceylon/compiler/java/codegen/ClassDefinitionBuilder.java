@@ -214,44 +214,6 @@ public class ClassDefinitionBuilder {
         defs.appendList(body);
     }
 
-    private List<JCTree> appendConcreteInterfaceMembers(java.util.List<ProducedType> satisfies) {
-        ListBuffer<JCTree> members = new ListBuffer<JCTree>();
-        // FIXME: recurse in parent interfaces
-        // FIXME: do not produce method if we override it
-        for(ProducedType type : satisfies){
-            TypeDeclaration decl = type.getDeclaration();
-            for(Declaration member : decl.getMembers()){
-                if(member instanceof Method && !member.isFormal()){
-                    // this member has a body so we need to add a definition for it
-                    MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, Decl.isAncestorLocal(member), true, CodegenUtil.quoteMethodNameIfProperty((Method) member, gen));
-                    Method method = (Method) member;
-                    ListBuffer<JCTree.JCExpression> params = ListBuffer.lb();
-                    params.append(gen.makeUnquotedIdent("this"));
-                    for(Parameter param : method.getParameterLists().get(0).getParameters()){
-                        methodBuilder.parameter(param);
-                        params.append(gen.makeUnquotedIdent(param.getName()));
-                    }
-                    
-                    boolean isVoid = method.getType().getProducedTypeQualifiedName().equals("ceylon.language.Void");
-                    JCMethodInvocation expr = gen.make().Apply(/*FIXME*/List.<JCTree.JCExpression>nil(), 
-                            gen.makeQuotedQualIdentFromString(CodegenUtil.getCompanionClassName(decl.getName())+"."+method.getName()), 
-                            params.toList());
-                    JCTree.JCStatement body;
-                    if (!isVoid) {
-                        methodBuilder.resultType(method);
-                        body = gen.make().Return(expr);
-                    }else{
-                        body = gen.make().Exec(expr);
-                    }
-                    methodBuilder.body(body);
-                    methodBuilder.modifiers(PUBLIC);
-                    members.add(methodBuilder.build());
-                }
-            }
-        }
-        return members.toList();
-    }
-
     private JCExpression getSuperclass(ProducedType extendedType) {
         JCExpression superclass;
         if (extendedType != null) {

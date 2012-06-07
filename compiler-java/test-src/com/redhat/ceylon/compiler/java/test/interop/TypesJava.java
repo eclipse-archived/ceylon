@@ -96,4 +96,11 @@ public class TypesJava {
     java.util.List<ceylon.language.String> stringList(){ return null; }
     java.util.List<java.lang.String> jstringList(){ return null; }
     java.util.List<java.lang.Object> objectList(){ return null; }
+    
+    void variadicByte(byte... vars){}
+    void variadicLong(long... vars){}
+    void variadicObject(java.lang.Object... vars){}
+    void variadicJavaString(java.lang.String... vars){}
+    void variadicCeylonString(ceylon.language.String... vars){}
+    <T> void variadicT(T... vars){}
 }

@@ -133,8 +133,14 @@ public abstract class CompilerTest {
     public static class CompilerError implements Comparable<CompilerError>{
         private final long lineNumber;
         private final String message;
+        private Diagnostic.Kind kind;
 
         public CompilerError(long lineNumber, String message) {
+            this(Diagnostic.Kind.ERROR, lineNumber, message);
+        }
+        
+        public CompilerError(Diagnostic.Kind kind, long lineNumber, String message) {
+            this.kind = kind;
             this.lineNumber = lineNumber;
             this.message = message;
         }
@@ -143,6 +149,7 @@ public abstract class CompilerTest {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
+            result = prime * result + ((kind == null) ? 0 : kind.hashCode());
             result = prime * result + (int) (lineNumber ^ (lineNumber >>> 32));
             result = prime * result
                     + ((message == null) ? 0 : message.hashCode());
@@ -158,6 +165,8 @@ public abstract class CompilerTest {
             if (getClass() != obj.getClass())
                 return false;
             CompilerError other = (CompilerError) obj;
+            if (kind != other.kind)
+                return false;
             if (lineNumber != other.lineNumber)
                 return false;
             if (message == null) {
@@ -167,31 +176,49 @@ public abstract class CompilerTest {
                 return false;
             return true;
         }
-        
+
         public String toString() {
             return lineNumber + ": " + message;
         }
 
         @Override
         public int compareTo(CompilerError o) {
-            long cmp = this.lineNumber - o.lineNumber;
+            long cmp = this.kind.compareTo(o.kind);
+            if (cmp == 0) {
+                cmp = this.lineNumber - o.lineNumber;
+            }
             if (cmp == 0) {
                 cmp = this.message.compareTo(o.message);
             }
-            return cmp > 0 ? 1 : cmp < 0 ? -1 : 0;
+            return Long.signum(cmp);
         }
     }
     
-    public static class ErrorCollector implements DiagnosticListener {
-        public final TreeSet<CompilerError> actualErrors = new TreeSet<CompilerError>();
+    public static class ErrorCollector implements DiagnosticListener<FileObject> {
+        private final TreeSet<CompilerError> actualErrors = new TreeSet<CompilerError>();
 
         @Override
-        public void report(Diagnostic diagnostic) {
-            if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
-                actualErrors.add(new CompilerError(diagnostic.getLineNumber(),
-                        diagnostic.getMessage(Locale.getDefault())));
-            }
+        public void report(Diagnostic<? extends FileObject> diagnostic) {
+            System.err.println(diagnostic.getSource().getName() + ":"
+                    + diagnostic.getLineNumber() + ":" 
+                    + diagnostic.getKind().toString() + ":" 
+                    + diagnostic.getMessage(null));
+            actualErrors.add(new CompilerError(diagnostic.getKind(), 
+                    diagnostic.getLineNumber(),
+                    diagnostic.getMessage(Locale.getDefault())));
         }
+        
+        public TreeSet<CompilerError> get(Diagnostic.Kind kind) {
+            TreeSet<CompilerError> result = new TreeSet<CompilerError>();
+            for (CompilerError diagnostic : actualErrors) {
+                if (diagnostic.kind == kind) {
+                    result.add(diagnostic);
+                }
+            }
+            return result;
+        }
+        
+        
     }
     
     protected void assertErrors(String ceylon, CompilerError... expectedErrors) {
@@ -206,7 +233,7 @@ public abstract class CompilerTest {
 
         Assert.assertFalse("Compilation succeeded", success);
         
-        TreeSet<CompilerError> actualErrors = collector.actualErrors;
+        TreeSet<CompilerError> actualErrors = collector.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors, expectedErrors);
     }
     
@@ -408,6 +435,14 @@ public abstract class CompilerTest {
     protected void compile(String... ceylon) {
         Boolean success = getCompilerTask(ceylon).call();
         Assert.assertTrue(success);
+    }
+    
+    protected void compilesWithoutWarnings(String... ceylon) {
+        ErrorCollector dl = new ErrorCollector();
+        Boolean success = getCompilerTask(defaultOptions, dl, ceylon).call();
+        Assert.assertTrue(success);
+        Assert.assertEquals("The code compiled with javac warnings", 
+                0, dl.get(Diagnostic.Kind.WARNING).size() + dl.get(Diagnostic.Kind.MANDATORY_WARNING).size());
     }
 
     protected void compileAndRun(String main, String... ceylon) {

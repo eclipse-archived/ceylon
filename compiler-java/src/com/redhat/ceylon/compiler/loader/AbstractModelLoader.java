@@ -1137,10 +1137,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void setMethodOrValueFlags(ClassOrInterface klass, MethodMirror methodMirror, MethodOrValue decl) {
         decl.setShared(methodMirror.isPublic() || methodMirror.isProtected());
         decl.setProtectedVisibility(methodMirror.isProtected());
-        if(methodMirror.isAbstract() || klass instanceof Interface) {
+        if(// for class members we rely on abstract bit
+           (klass instanceof Class 
+                   && methodMirror.isAbstract())
+           // Java interfaces are formal
+           || (klass instanceof Interface
+                   && !((LazyInterface)klass).isCeylon())
+           // For Ceylon interfaces we rely on annotation
+           || isAnnotated(methodMirror, "formal")) {
             decl.setFormal(true);
         } else {
-            if (!methodMirror.isFinal() && !methodMirror.isStatic()) {
+            if (// for class members we rely on final/static bits
+                (klass instanceof Class
+                        && !methodMirror.isFinal() 
+                        && !methodMirror.isStatic())
+                // Java interfaces are never final
+                || (klass instanceof Interface
+                        && !((LazyInterface)klass).isCeylon())
+                // For Ceylon interfaces we rely on annotation
+                || isAnnotated(methodMirror, "default")){
                 decl.setDefault(true);
             }
         }
@@ -1150,6 +1165,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
+    private boolean isAnnotated(MethodMirror methodMirror, String name) {
+        AnnotationMirror annotations = methodMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION);
+        if(annotations == null)
+            return false;
+        @SuppressWarnings("unchecked")
+        List<AnnotationMirror> annotationsList = (List<AnnotationMirror>)annotations.getValue();
+        for(AnnotationMirror annotation : annotationsList){
+            if(name.equals(annotation.getValue()))
+                return true;
+        }
+        return false;
+    }
+
     private void setExtendedType(ClassOrInterface klass, ClassMirror classMirror) {
         // look at its super type
         TypeMirror superClass = classMirror.getSuperclass();
@@ -1203,7 +1231,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         ParameterList parameters = new ParameterList();
         parameters.setNamedParametersSupported(isCeylon);
         decl.addParameterList(parameters);
+        int parameterCount = methodMirror.getParameters().size();
+        int parameterIndex = 0;
+        
         for(VariableMirror paramMirror : methodMirror.getParameters()){
+            boolean isLastParameter = parameterIndex == parameterCount - 1;
+            boolean isVariadic = isLastParameter && methodMirror.isVariadic();
+            
             ValueParameter parameter = new ValueParameter();
             parameter.setContainer((Scope) decl);
             parameter.setUnit(((Element)decl).getUnit());
@@ -1218,30 +1252,61 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeMirror typeMirror = paramMirror.getType();
             try{
                 ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl);
-                if(!isCeylon && !typeMirror.isPrimitive()){
-                    // Java parameters are all optional unless primitives
-                    ProducedType optionalType = typeFactory.getOptionalType(type);
-                    optionalType.setUnderlyingType(type.getUnderlyingType());
-                    type = optionalType;
+                if(isVariadic){
+                    // we have a varargs param, we should have an Array<T> type, which we need to turn into T[]
+                    if(type.getDeclaration() != typeFactory.getArrayDeclaration()
+                            || type.getTypeArgumentList().isEmpty()){
+                        logError("Variadic argument is not of type Array<T>, this is most likely a bug in the compiler");
+                    }else{
+                        // get its first type param
+                        type = type.getTypeArgumentList().get(0);
+                        // possibly make it optional
+                        TypeMirror variadicType = typeMirror.getComponentType();
+                        if(!isCeylon && !variadicType.isPrimitive()){
+                            // Java parameters are all optional unless primitives
+                            ProducedType optionalType = typeFactory.getOptionalType(type);
+                            optionalType.setUnderlyingType(type.getUnderlyingType());
+                            type = optionalType;
+                        }
+                        // turn it into a T[]
+                        type = typeFactory.getEmptyType(typeFactory.getSequenceType(type));
+                    }
+                }else{
+                    // variadic params may technically be null in Java, but it Ceylon sequenced params may not
+                    // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
+                    // in the java side so let's not allow this
+                    if(!isCeylon && !typeMirror.isPrimitive()){
+                        // Java parameters are all optional unless primitives
+                        ProducedType optionalType = typeFactory.getOptionalType(type);
+                        optionalType.setUnderlyingType(type.getUnderlyingType());
+                        type = optionalType;
+                    }
                 }
                 parameter.setType(type );
             }catch(TypeParserException x){
                 logError("Invalid type signature for parameter "+paramName+" of "+container.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
                 throw x;
             }
-            if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null)
+            if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null
+                    || isVariadic)
                 parameter.setSequenced(true);
             if(paramMirror.getAnnotation(CEYLON_DEFAULTED_ANNOTATION) != null)
                 parameter.setDefaulted(true);
-            markUnboxed(parameter, paramMirror.getType());
+            // if it's variadic, consider the array element type (T[] == T...) for boxing rules
+            markUnboxed(parameter, isVariadic ? 
+                    paramMirror.getType().getComponentType()
+                    : paramMirror.getType());
             parameter.setDeclaration((Declaration) decl);
             parameters.getParameters().add(parameter);
+            
+            parameterIndex++;
         }
     }
 
     private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
         boolean unboxed = false;
-        if(type.isPrimitive() || type.getKind() == TypeKind.ARRAY
+        if(type.isPrimitive() 
+                || type.getKind() == TypeKind.ARRAY
                 || sameType(type, STRING_TYPE)
                 || Util.isUnboxedVoid(decl)) {
             unboxed = true;

@@ -324,3 +324,13 @@ void typeParameters(){
     List<Object> objectList = java.objectList();
     objectList.add("foo");
 }
+
+@nomodel
+@error
+void optionalTypes(){
+    @error
+    TypesJava java = TypesJava();
+
+    String? string = "foo";
+    java.stringParams(string, string);
+}

@@ -13,8 +13,14 @@ interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolea
 final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I<? extends T, ? super X> $this;
     
-    private final <U>T m1(final X b) {
-        return $this.<U>m1(b);
+    public final <U>T m1(final X b) {
+        return (
+            let
+            {
+                U $ceylontmp$u$3 = m1$u(b);
+            }
+            returning $this.m1(b, $ceylontmp$u$3);
+        );
     }
     
     public final <U>U m1$u(final X b) {

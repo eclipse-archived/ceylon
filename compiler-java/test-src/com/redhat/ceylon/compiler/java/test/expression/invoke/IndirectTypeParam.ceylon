@@ -21,7 +21,7 @@
 T indirectTypeParam_topLevel<T>(T t) {return t;}
 
 @nomodel
-void indirectTypeParam() {
+void indirectTypeParam<X>() {
     value f1 = indirectTypeParam_topLevel<Integer>;
     variable Integer i := f1(1);
 
@@ -36,4 +36,7 @@ void indirectTypeParam() {
     
     function f3(Integer i)() = mpl<Integer>;
     f3(1)();
+    
+    value j = join<Object>;
+    value j2 = join<X>;
 }

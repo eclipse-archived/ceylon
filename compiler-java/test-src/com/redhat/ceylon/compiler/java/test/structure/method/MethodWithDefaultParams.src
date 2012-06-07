@@ -231,28 +231,57 @@ final class MethodWithDefaultParams2$impl {
         return $this.getProp();
     }
     
-    private final void f1() {
-        $this.f1();
+    public final void f1() {
+        (
+            let
+            {
+                long $ceylontmp$n$24 = f1$n();
+                $this.f1($ceylontmp$n$24);
+            }
+            returning null;
+        );
     }
     
     public final long f1$n() {
         return 5L;
     }
     
-    private final void f2(final long n) {
-        $this.f2(n);
+    public final void f2(final long n) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$28 = f2$s(n);
+                $this.f2(n, $ceylontmp$s$28);
+            }
+            returning null;
+        );
     }
     
     public final .java.lang.String f2$s(final long n) {
         return "test";
     }
     
-    private final void f3() {
-        $this.f3();
+    public final void f3() {
+        (
+            let
+            {
+                long $ceylontmp$n$33 = f3$n();
+                long $ceylontmp$m$34 = f3$m($ceylontmp$n$33);
+                $this.f3($ceylontmp$n$33, $ceylontmp$m$34);
+            }
+            returning null;
+        );
     }
     
-    private final void f3(final long n) {
-        $this.f3(n);
+    public final void f3(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$38 = f3$m(n);
+                $this.f3(n, $ceylontmp$m$38);
+            }
+            returning null;
+        );
     }
     
     public final long f3$n() {
@@ -263,12 +292,27 @@ final class MethodWithDefaultParams2$impl {
         return n;
     }
     
-    private final void f4() {
-        $this.f4();
+    public final void f4() {
+        (
+            let
+            {
+                long $ceylontmp$n$43 = f4$n();
+                long $ceylontmp$m$44 = f4$m($ceylontmp$n$43);
+                $this.f4($ceylontmp$n$43, $ceylontmp$m$44);
+            }
+            returning null;
+        );
     }
     
-    private final void f4(final long n) {
-        $this.f4(n);
+    public final void f4(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$48 = f4$m(n);
+                $this.f4(n, $ceylontmp$m$48);
+            }
+            returning null;
+        );
     }
     
     public final long f4$n() {
@@ -279,16 +323,42 @@ final class MethodWithDefaultParams2$impl {
         return n + 1L;
     }
     
-    private final void f5() {
-        $this.f5();
+    public final void f5() {
+        (
+            let
+            {
+                long $ceylontmp$n$52 = f5$n();
+                $this.f5($ceylontmp$n$52);
+            }
+            returning null;
+        );
     }
     
     public final long f5$n() {
         return $this.getProp();
     }
     
-    private final void f6() {
-        $this.f6();
+    public final void f6() {
+        (
+            let
+            {
+                long $ceylontmp$n$57 = f6$n();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$58 = f6$seq($ceylontmp$n$57);
+                $this.f6($ceylontmp$n$57, $ceylontmp$seq$58);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f6(final long n) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$62 = f6$seq(n);
+                $this.f6(n, $ceylontmp$seq$62);
+            }
+            returning null;
+        );
     }
     
     public final long f6$n() {

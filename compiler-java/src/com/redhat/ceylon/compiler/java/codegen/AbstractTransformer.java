@@ -20,9 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.QUALIFIED;
 import static com.sun.tools.javac.code.Flags.FINAL;
-
-import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +32,7 @@ import java.util.Map.Entry;
 
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -41,7 +41,6 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -642,6 +641,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     static final int CATCH = 1 << 4;
     static final int SMALL_TYPE = 1 << 5;
     static final int CLASS_NEW = 1 << 6;
+    static final int COMPANION = 1 << 7;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -814,7 +814,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                                 && firstQualifyingTypeWithTypeParameters == 0) {
                             name = getCompanionClassName(tdecl);
                         } else {
-                            name = getFQDeclarationName(tdecl);
+                            if ((flags & COMPANION) != 0) {
+                                name = declName(tdecl, QUALIFIED, NameFlag.COMPANION);
+                            } else {
+                                name = declName(tdecl, QUALIFIED);
+                            }
                         }
                         baseType = makeQuotedQualIdentFromString(name);
                     } else {
@@ -838,7 +842,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 jt = makeQuotedIdent(tdecl.getName());
             // don't use underlying type if we want no primitives
             else if((flags & (SATISFIES | NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null)
-                jt = makeDeclarationName(tdecl);
+                if ((flags & COMPANION) != 0) {
+                    jt = makeQuotedQualIdentFromString(declName(tdecl, QUALIFIED, NameFlag.COMPANION));
+                } else {
+                    jt = makeQuotedQualIdentFromString(declName(tdecl, QUALIFIED));
+                }
             else
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
         }
@@ -871,7 +879,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             if (isOptional(ta)) {
                 // For an optional type T?:
                 // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
-                ta = typeFact().getDefiniteType(ta);
+                ta = getNonNullType(ta);
             }
             if (typeFact().isUnion(ta) || typeFact().isIntersection(ta)) {
                 // For any other union type U|V (U nor V is Optional):
@@ -958,6 +966,18 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         }
         return typeArgs;
     }
+
+    private ProducedType getNonNullType(ProducedType pt) {
+        // typeFact().getDefiniteType() intersects with Object, which isn't 
+        // always right for working with the java type system.
+        if (typeFact().getVoidDeclaration().equals(pt.getDeclaration())) {
+            pt = typeFact().getObjectDeclaration().getType();
+        }
+        else {
+            pt = pt.minus(typeFact().getNothingDeclaration());
+        }
+        return pt;
+    }
     
     private boolean isJavaString(ProducedType type) {
         return "java.lang.String".equals(type.getUnderlyingType());
@@ -1028,7 +1048,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     String getCompanionClassName(Declaration decl){
-        return declName(decl, QUALIFIED, COMPANION);
+        return declName(decl, QUALIFIED, NameFlag.COMPANION);
     }
     
     /**
@@ -1105,6 +1125,15 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         final TypedDeclaration producedParameterDecl = producedTypedReference.getDeclaration();
         final ProducedType declType = producedParameterDecl.getType();
         final TypeDeclaration declTypeDecl = declType.getDeclaration();
+        if(isJavaVariadic(parameter)){
+            // type of param must be T[]
+            ProducedType elementType = typeFact.getElementType(type);
+            if(elementType == null){
+                log.error("ceylon", "Invalid type for Java variadic parameter: "+type.getProducedTypeQualifiedName());
+                return type;
+            }
+            return elementType;
+        }
         if (type.getDeclaration() instanceof ClassOrInterface) {
             // Explicit type parameter
             return producedTypedReference.getType();
@@ -1118,6 +1147,17 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             }
          }
         return type;
+    }
+
+    private boolean isJavaVariadic(Parameter parameter) {
+        return parameter.isSequenced()
+                && parameter.getContainer() instanceof Method
+                && isJavaMethod((Method) parameter.getContainer());
+    }
+
+    boolean isJavaMethod(Method method) {
+        ClassOrInterface container = Decl.getClassOrInterfaceContainer(method);
+        return container != null && !Decl.isCeylon(container);
     }
 
     private ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {
@@ -1441,6 +1481,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             expr = unboxBoolean(expr);
         } else if (isCeylonArray(targetType)) {
             expr = unboxArray(expr);
+        } else if (isOptional(targetType)) {
+            targetType = typeFact().getDefiniteType(targetType);
+            if (isCeylonString(targetType)){
+                expr = unboxOptionalString(expr);
+            }
         }
         return expr;
     }
@@ -1501,12 +1546,29 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     private JCExpression unboxString(JCExpression value) {
-        if (value instanceof JCLiteral
-                && ((JCLiteral)value).value instanceof String) {
+        if (isStringLiteral(value)) {
             // If it's already a String literal, why call .toString on it?
             return value;
         }
         return makeUnboxType(value, "toString");
+    }
+
+    private boolean isStringLiteral(JCExpression value) {
+        return value instanceof JCLiteral
+                && ((JCLiteral)value).value instanceof String;
+    }
+    
+    private JCExpression unboxOptionalString(JCExpression value){
+        if (isStringLiteral(value)) {
+            // If it's already a String literal, why call .toString on it?
+            return value;
+        }
+        String name = tempName();
+        JCExpression type = makeJavaType(typeFact().getStringDeclaration().getType(), NO_PRIMITIVES);
+        JCExpression expr = make().Conditional(make().Binary(JCTree.NE, makeUnquotedIdent(name), makeNull()), 
+                unboxString(makeUnquotedIdent(name)),
+                makeNull());
+        return makeLetExpr(name, null, type, value, expr);
     }
     
     private JCTree.JCMethodInvocation unboxCharacter(JCExpression value, boolean isJava) {
@@ -1538,7 +1600,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return a JCExpression
      * @see #makeSequenceRaw(java.util.List)
      */
-    JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
+    private JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
         ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
         JCExpression typeExpr = makeJavaType(seqType, makeJavaTypeOpts);
         return makeNewClass(typeExpr, elems);
@@ -1574,7 +1636,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             // no need for erasure casts here
             elems.append(expressionGen().transformExpression(expr));
         }
-        return makeSequence(elems.toList(), typeFact().getObjectDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
+        return makeSequenceRaw(elems.toList());
     }
     
     JCExpression makeSequenceRaw(List<JCExpression> elems) {
@@ -1826,27 +1888,6 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
         return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
                 CodegenUtil.getDefaultedParamMethodName(method, param));
-    }
-    
-    final JCExpression makeCompanionType(final ClassOrInterface decl, Map<TypeParameter, ProducedType> typeParameters, boolean goRaw) {
-        List<JCExpression> typeArgs;
-        if (goRaw) {
-            typeArgs = List.<JCExpression>nil();
-        } else {
-            typeArgs = typeArguments(decl.getTypeParameters(), typeParameters);
-        }
-        return makeCompanionType(decl, typeArgs);
-    }
-
-    final JCExpression makeCompanionType(final ClassOrInterface decl,
-            List<JCExpression> typeArgs) {
-        String companionClassName = getCompanionClassName(decl);
-        JCExpression baseName = makeQuotedQualIdentFromString(companionClassName);
-        
-        if (!typeArgs.isEmpty()) {
-            return make().TypeApply(baseName, typeArgs);
-        }
-        return baseName;
     }
     
     private int getPosition(Node node) {

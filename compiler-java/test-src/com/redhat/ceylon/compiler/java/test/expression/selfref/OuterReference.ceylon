@@ -18,10 +18,35 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class OuterReference(){
-    class Inner() {
-        Boolean inner() {
+class OuterReferenceSuper() {
+    shared Boolean superTest() {
+        return true;
+    }
+}
+@nomodel
+class OuterReference() extends OuterReferenceSuper() {
+    class InnerClass(Boolean b = outer.superTest()) {
+        Boolean m(Boolean b = outer.superTest()) {
+            outer.superTest();
             return outer.test();
+        }
+    }
+    interface InnerIface {
+        Boolean m(Boolean b = outer.superTest()) {
+            outer.superTest();
+            return outer.test();
+        }
+    }
+    void m() {
+        class LocalClass(Boolean b = outer.superTest()) {
+            outer.superTest();
+            outer.test();
+        }
+        interface LocalIface {
+            void m(Boolean b = outer.superTest()) {
+                outer.superTest();
+                outer.test();
+            }
         }
     }
     shared Boolean test() {

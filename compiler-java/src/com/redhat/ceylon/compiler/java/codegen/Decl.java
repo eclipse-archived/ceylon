@@ -24,8 +24,10 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -316,5 +318,17 @@ class Decl {
     
     public static boolean isMpl(Functional decl) {
         return decl.getParameterLists().size() > 1;
+    }
+    
+    public static ClassOrInterface getClassOrInterfaceContainer(Element decl){
+        // stop when null or when it's a ClassOrInterface
+        while(decl != null
+                && !(decl instanceof ClassOrInterface)){
+            // stop if the container is not an Element
+            if(!(decl.getContainer() instanceof Element))
+                return null;
+            decl = (Element) decl.getContainer();
+        }
+        return (ClassOrInterface) decl;
     }
 }

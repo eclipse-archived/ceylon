@@ -233,9 +233,13 @@ public class MethodDefinitionBuilder {
         return parameter(param.getDeclarationModel());
     }
 
+    public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType) {
+        String name = paramDecl.getName();
+        return parameter(FINAL, name, paramDecl, paramDecl, paramType);
+    }
+    
     public MethodDefinitionBuilder parameter(Parameter param) {
-        String name = param.getName();
-        return parameter(FINAL, name, param, param, param.getType());
+        return parameter(param, param.getType());
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -287,7 +291,11 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder resultType(TypedDeclaration resultType) {
-        return resultType(makeResultType(resultType, resultType.getType()), resultType);
+        return resultType(resultType, resultType.getType());
+    }
+    
+    public MethodDefinitionBuilder resultType(TypedDeclaration resultType, ProducedType type) {
+        return resultType(makeResultType(resultType, type), resultType);
     }
 
     public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {

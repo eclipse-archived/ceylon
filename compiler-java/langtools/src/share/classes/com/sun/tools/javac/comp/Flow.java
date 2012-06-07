@@ -1157,9 +1157,11 @@ public class Flow extends TreeScanner {
             log.error(pos, "except.already.caught", exc);
         } else if (!chk.isUnchecked(pos, exc) &&
                 !isExceptionOrThrowable(exc) &&
-                !chk.intersects(exc, thrownInTry)) {
+                !chk.intersects(exc, thrownInTry) &&
+                !Context.isCeylon()) {
             log.error(pos, "except.never.thrown.in.try", exc);
-        } else if (allowImprovedCatchAnalysis) {
+        } else if (allowImprovedCatchAnalysis &&
+                !Context.isCeylon()) {
             List<Type> catchableThrownTypes = chk.intersect(List.of(exc), thrownInTry);
             // 'catchableThrownTypes' cannnot possibly be empty - if 'exc' was an
             // unchecked exception, the result list would not be empty, as the augmented
