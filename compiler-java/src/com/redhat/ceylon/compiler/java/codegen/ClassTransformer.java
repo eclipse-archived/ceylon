@@ -263,7 +263,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     PUBLIC | FINAL, 
                                     typeParameters,  
                                     typedMember.getType(), 
-                                    method.getName(), 
+                                    CodegenUtil.quoteMethodName(method.getName()), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model));
                             classBuilder.defs(overload);
@@ -280,7 +280,7 @@ public class ClassTransformer extends AbstractTransformer {
                             PUBLIC, 
                             method.getTypeParameters(), 
                             method.getType(), 
-                            method.getName(), 
+                            CodegenUtil.quoteMethodName(method.getName()), 
                             method.getParameterLists().get(0).getParameters(),
                             Decl.isAncestorLocal(model));
                     classBuilder.defs(concreteMemberDelegate);
@@ -296,7 +296,7 @@ public class ClassTransformer extends AbstractTransformer {
                             PUBLIC | (getter.isDefault() ? 0 : FINAL), 
                             Collections.<TypeParameter>emptyList(), 
                             getter.getType(), 
-                            CodegenUtil.getGetterName(member), 
+                            CodegenUtil.getGetterName(getter), 
                             Collections.<Parameter>emptyList(),
                             Decl.isAncestorLocal(model));
                     classBuilder.defs(getterDelegate);
@@ -328,7 +328,7 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
             final String methodName, final java.util.List<Parameter> parameters, boolean ancestorLocal) {
-        final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.method(gen(), ancestorLocal, true, methodName);
+        final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), ancestorLocal, methodName);
         concreteWrapper.modifiers(mods);//TODO
         concreteWrapper.annotations(makeAtOverride());// TODO Other Annos?
         for (TypeParameter tp : typeParameters) {
