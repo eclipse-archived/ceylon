@@ -404,7 +404,7 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.init(make().Exec(make().Assign(
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
                 make().NewClass(null, 
-                        null, // TODO Type args 
+                        null,
                         makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES),
                         state,
                         null))));
@@ -614,8 +614,6 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transform(AttributeGetterDefinition decl, boolean forCompanion) {
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         String name = decl.getIdentifier().getText();
-        
-        // TODO Support concrete getters on interfaces
         final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
@@ -731,7 +729,6 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         if (forCompanion) {
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                // TODO Concrete attributes 
                 builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(makeErroneous()))));
             } else {
                 String accessorName = isGetter ? 
@@ -741,14 +738,14 @@ public class ClassTransformer extends AbstractTransformer {
                 if (isGetter) {
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(
                             make().Apply(
-                                    null,// TODO Typeargs 
+                                    null, 
                                     makeSelect("$this", accessorName), 
                                     List.<JCExpression>nil())))));
                 } else {
                     List<JCExpression> args = List.<JCExpression>of(makeQuotedIdent(decl.getIdentifier().getText()));
                     builder.setterBlock(make().Block(0, List.<JCStatement>of(make().Exec(
                             make().Apply(
-                                    null,// TODO Typeargs 
+                                    null, 
                                     makeSelect("$this", accessorName), 
                                     args)))));
                 }
@@ -1142,7 +1139,7 @@ public class ClassTransformer extends AbstractTransformer {
             Class classModel = (Class)model;
             vars.append(makeVar(companionInstanceName, 
                     makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
-                    make().NewClass(null, // TODO encl == null ???
+                    make().NewClass(null, 
                             null,
                             makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
                             List.<JCExpression>nil(), null)));
