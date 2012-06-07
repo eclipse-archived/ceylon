@@ -861,10 +861,6 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         final String methodName = CodegenUtil.quoteMethodNameIfProperty(model, gen());
         
-        body = transformMplBody(model, body);
-        
-        // Finally construct the outermost method using the body we've built so far
-        
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
                 methodName);
         
@@ -875,21 +871,20 @@ public class ClassTransformer extends AbstractTransformer {
         ParameterList parameterList = model.getParameterLists().get(0);
         for (Parameter parameter : parameterList.getParameters()) {
             methodBuilder.parameter(parameter);
-            if (model.getRefinedDeclaration() == model 
-                    && (parameter.isDefaulted()
-                        || parameter.isSequenced())) {
-                MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
-                        methodName);
-                JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), false, false, 
-                        overloadBuilder, 
-                        model, parameterList.getParameters(), parameter).build();
-                if (!Decl.withinInterface(model)) {
-                    overloadBuilder.annotations(makeAtOverride());
-                }
-                lb.prepend(overloadedMethod);
-            }
             if (parameter.isDefaulted()
-                    || parameter.isSequenced()) {        
+                    || parameter.isSequenced()) {
+                if (model.getRefinedDeclaration() == model) {
+                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
+                            methodName);
+                    JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), false, false, 
+                            overloadBuilder, 
+                            model, parameterList.getParameters(), parameter).build();
+                    if (!Decl.withinInterface(model)) {
+                        overloadBuilder.annotations(makeAtOverride());
+                    }
+                    lb.prepend(overloadedMethod);
+                }
+            
                 if (Decl.withinInterface(model)
                         && unspecified) {
                     // interface methods without concrete implementation (including 
@@ -903,9 +898,10 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }    
         }
-
         
         if (body != null) {
+            // Construct the outermost method using the body we've built so far
+            body = transformMplBody(model, body);
             methodBuilder.body(body);
         } else {
             methodBuilder.noBody();
@@ -919,19 +915,6 @@ public class ClassTransformer extends AbstractTransformer {
         if(addTestAnno){
             methodBuilder.annotations(List.of(make().Annotation(makeSelect("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
         }
-        // Generate an impl for overloaded methods using the $impl instance
-        // TODO MPL
-        /*if (Decl.withinInterface(model.getRefinedDeclaration())
-                && !Decl.withinInterface(model)) {
-            java.util.List<Parameter> parameters = model.getParameterLists().get(0).getParameters();
-            for (Parameter p : parameters) {
-                if (p.isDefaulted() 
-                        || p.isSequenced()) {
-                    classBuilder.defs(transformDefaultValueMethodImpl(def, parameters, p));
-                    classBuilder.defs(overloadMethodImpl(def, parameters, p));
-                }
-            }
-        }*/
         
         lb.prepend(methodBuilder.build());
         return lb;
