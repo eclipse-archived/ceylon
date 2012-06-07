@@ -823,63 +823,75 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
         final String methodName = CodegenUtil.quoteMethodNameIfProperty(model, gen());
-        transformForCompanion(def, classBuilder, model, methodName);
-        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
-        if (!Strategy.onlyOnCompanion(model)) {
-            final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(
-                    this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
-                    methodName);
-            methodBuilder.resultType(model);
-            copyTypeParameters(model, methodBuilder);
-            final ParameterList parameterList = model.getParameterLists().get(0);
-            Tree.ParameterList paramList = def.getParameterLists().get(0);
-            for (Tree.Parameter param : paramList.getParameters()) {
-                Parameter parameter = param.getDeclarationModel();
-                methodBuilder.parameter(parameter);
-                if (parameter.isDefaulted()
-                        || parameter.isSequenced()) {
-                    if (model.getRefinedDeclaration() == model) {
-                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
-                                methodName);
-                        JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(!Decl.withinInterface(model), false, false, 
-                                overloadBuilder, 
-                                model, parameterList.getParameters(), parameter).build();
-                        lb.prepend(overloadedMethod);
-                        
-                        if (Strategy.defaultParameterMethodOnSelf(model)) {
-                            lb.add(makeParamDefaultValueMethod(false, model, paramList, param));    
-                        } else {    
-                            lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
-                        }
-                    }
-                }    
-            }
-            if (body != null) {
-                // Construct the outermost method using the body we've built so far
-                body = transformMplBody(model, body);
-                methodBuilder.body(body);
-            } else {
-                methodBuilder.noBody();
-            }
-            methodBuilder
-                .modifiers(transformMethodDeclFlags(model))
-                .isActual(model.isActual())
-                .modelAnnotations(model.getAnnotations());
-            if(CodegenUtil.hasCompilerAnnotation(def, "test")){
-                methodBuilder.annotations(List.of(make().Annotation(makeSelect("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
-            }   
-            lb.prepend(methodBuilder.build());
+        final List<JCTree> companionDefs = transformForCompanion(def, classBuilder, model, methodName);
+        if (!companionDefs.isEmpty()) {
+            classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(companionDefs);
         }
+        final List<JCTree> defs = transformNotCompanion(def, body, model,
+                methodName);
+        return defs;
+    }
+
+    private List<JCTree> transformNotCompanion(Tree.AnyMethod def,
+            List<JCStatement> body, final Method model, final String methodName) {
+        if (Strategy.onlyOnCompanion(model)) {
+            return List.<JCTree>nil();
+        }
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(
+                this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
+                methodName);
+        methodBuilder.resultType(model);
+        copyTypeParameters(model, methodBuilder);
+        final ParameterList parameterList = model.getParameterLists().get(0);
+        Tree.ParameterList paramList = def.getParameterLists().get(0);
+        for (Tree.Parameter param : paramList.getParameters()) {
+            Parameter parameter = param.getDeclarationModel();
+            methodBuilder.parameter(parameter);
+            if (parameter.isDefaulted()
+                    || parameter.isSequenced()) {
+                if (model.getRefinedDeclaration() == model) {
+                    MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
+                            methodName);
+                    JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(
+                            !Decl.withinInterface(model), false, false, 
+                            overloadBuilder, 
+                            model, parameterList.getParameters(), parameter).build();
+                    lb.prepend(overloadedMethod);
+                    
+                    if (Strategy.defaultParameterMethodOnSelf(model)) {
+                        lb.add(makeParamDefaultValueMethod(false, model, paramList, param));    
+                    } else {    
+                        lb.add(makeParamDefaultValueMethod(true, model, paramList, param));
+                    }
+                }
+            }    
+        }
+        if (!model.isInterfaceMember()) {
+            // Construct the outermost method using the body we've built so far
+            body = transformMplBody(model, body);
+            methodBuilder.body(body);
+        } else {
+            methodBuilder.noBody();
+        }
+        methodBuilder
+            .modifiers(transformMethodDeclFlags(model))
+            .isActual(model.isActual())
+            .modelAnnotations(model.getAnnotations());
+        if(CodegenUtil.hasCompilerAnnotation(def, "test")){
+            methodBuilder.annotations(List.of(make().Annotation(makeSelect("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
+        }   
+        lb.prepend(methodBuilder.build());
         return lb.toList();
     }
 
-    private void transformForCompanion(Tree.AnyMethod def,
+    private List<JCTree> transformForCompanion(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, final Method model,
             final String methodName) {
         if (!Decl.withinInterface(model)) {
-            return;
+            return List.<JCTree>nil();
         }
-        final ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder((Declaration)model.getContainer());
+        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
         final Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
             Parameter parameter = param.getDeclarationModel();
@@ -888,7 +900,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (model.getRefinedDeclaration() == model) {  
                     if (!Strategy.defaultParameterMethodOnSelf(model)) {
                         JCMethodDecl defaultValueMethodImpl = makeParamDefaultValueMethod(false, model, paramList, param);
-                        companionBuilder.defs(defaultValueMethodImpl);
+                        lb.append(defaultValueMethodImpl);
                     }
                     if (def instanceof MethodDeclaration
                             && ((MethodDeclaration) def).getSpecifierExpression() == null) {
@@ -899,14 +911,15 @@ public class ClassTransformer extends AbstractTransformer {
                                 methodName);
                         makeOverloadsForDefaultedParameter(true, true, true, 
                                 overloadBuilder, model, paramList, param);
-                        companionBuilder.defs(overloadBuilder.build());
+                        lb.append(overloadBuilder.build());
                     }
                 }
             }
         }
+        return lb.toList();
     }
 
-    ListBuffer<JCTree> transformMethod(Method model,
+    private ListBuffer<JCTree> transformMethod(Method model,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body,
             boolean unspecified, boolean addTestAnno) {
         
