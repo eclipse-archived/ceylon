@@ -2,7 +2,37 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 abstract class Bug446<T> implements .ceylon.language.List<T> {
     private final .ceylon.language.List$impl<T> $List$impl;
+    
+    @.java.lang.Override
+    public long getSize() {
+        return $List$impl.getSize();
+    }
+    
+    @.java.lang.Override
+    public boolean defines(final .ceylon.language.Integer index) {
+        return $List$impl.defines(index);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterator<? extends T> getIterator() {
+        return $List$impl.getIterator();
+    }
     private final .ceylon.language.Collection$impl<T> $Collection$impl;
+    
+    @.java.lang.Override
+    public boolean getEmpty() {
+        return $Collection$impl.getEmpty();
+    }
+    
+    @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $Collection$impl.contains(element);
+    }
+    
+    @.java.lang.Override
+    public long count(final .java.lang.Object element) {
+        return $Collection$impl.count(element);
+    }
     private final .ceylon.language.Iterable$impl<T> $Iterable$impl;
     private final .ceylon.language.Container$impl $Container$impl;
     private final .ceylon.language.Sized$impl $Sized$impl;
@@ -19,6 +49,11 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
+        return $Category$impl.containsEvery(elements);
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsAny$elements() {
         return $Category$impl.containsAny$elements();
     }
@@ -27,8 +62,18 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     public final boolean containsAny() {
         return $Category$impl.containsAny();
     }
+    
+    @.java.lang.Override
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
+        return $Category$impl.containsAny(elements);
+    }
     private final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $Cloneable$impl;
     private final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T> $Correspondence$impl;
+    
+    @.java.lang.Override
+    public .ceylon.language.Category getKeys() {
+        return $Correspondence$impl.getKeys();
+    }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesEvery$keys() {
@@ -41,6 +86,11 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
+    public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+        return $Correspondence$impl.definesEvery(keys);
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesAny$keys() {
         return $Correspondence$impl.definesAny$keys();
     }
@@ -48,6 +98,11 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public final boolean definesAny() {
         return $Correspondence$impl.definesAny();
+    }
+    
+    @.java.lang.Override
+    public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+        return $Correspondence$impl.definesAny(keys);
     }
     
     @.java.lang.Override
