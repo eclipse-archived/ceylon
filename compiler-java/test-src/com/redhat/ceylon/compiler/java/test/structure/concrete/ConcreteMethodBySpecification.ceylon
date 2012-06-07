@@ -23,12 +23,23 @@ Integer concreteMethodBySpecificationMethod() {
 }
 @nomodel
 interface ConcreteMethodBySpecification {
-    shared Integer m1() = concreteMethodBySpecificationMethod;
-    shared formal String mFormal(Integer i);
-    shared String m2(Integer i = 1) = mFormal;
+    shared formal Integer mFormal(Integer i);
+    
+    shared Integer mSharedFn() = concreteMethodBySpecificationMethod;
+    shared Integer mSharedMem(Integer i = 1) = mFormal;
+    
+    shared default Integer mDefaultFn() = concreteMethodBySpecificationMethod;
+    shared default Integer mDefaultMem(Integer i = 1) = mFormal;
 }
 @nomodel
 interface ConcreteMethodBySpecificationSub satisfies ConcreteMethodBySpecification {
     
-    shared String m3(Integer i = 1) = mFormal;
+    shared Integer mSharedSup(Integer i = 1) = mFormal;
+    shared default Integer mDefaultSup(Integer i = 1) = mFormal;
+}
+@nomodel
+class ConcreteMethodBySpecificationImpl() satisfies ConcreteMethodBySpecificationSub {
+    shared actual Integer mFormal(Integer i) {
+        return i;
+    }
 }
