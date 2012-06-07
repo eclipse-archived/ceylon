@@ -351,5 +351,10 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("Bug589");
     }
     
+    @Test
+    public void testBug592(){
+        compilesWithoutWarnings("Bug592.ceylon");
+    }
+    
 }
 
