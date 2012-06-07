@@ -306,7 +306,7 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.defs(getterDelegate);
                 }
             } else if (needsCompanionDelegate(model, member)) {
-                log.error("ceylon", "Unhandled concrete interface member " + member.getName() + " " + member.getClass());
+                log.error("ceylon", "Unhandled concrete interface member " + member.getQualifiedNameString() + " " + member.getClass());
             }
         }
         
