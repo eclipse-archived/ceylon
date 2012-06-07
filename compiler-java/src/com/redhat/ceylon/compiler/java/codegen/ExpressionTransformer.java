@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
@@ -1683,6 +1684,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         int idx = 0;
         ExpressionComprehensionClause excc = null;
         String prevItemVar = null;
+        String ctxtName = null;
         //Iterator fields
         ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
         while (clause != null) {
@@ -1707,7 +1709,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     fields.add(make().VarDef(make().Modifiers(2), names().fromString(iterVar), iterTypeExpr, null));
                     JCBlock body = make().Block(0l, List.<JCStatement>of(
                             make().If(make().Binary(JCTree.EQ, makeUnquotedIdent(iterVar), makeNull()),
-                                    make().Exec(make().Apply(null, makeSelect("this", prevItemVar), List.<JCExpression>nil())),
+                                    make().Exec(make().Apply(null, makeSelect("this", ctxtName), List.<JCExpression>nil())),
                                     null),
                             make().Exec(make().Assign(makeUnquotedIdent(iterVar), make().Apply(null,
                                     make().Select(transformExpression(specexpr.getExpression()),
@@ -1775,7 +1777,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
                 if (idx>0) {
                     innerBody.add(make().If(make().Binary(JCTree.EQ,
-                            make().Apply(null, makeSelect("this", prevItemVar), List.<JCExpression>nil()), makeBoolean(true)),
+                            make().Apply(null, makeSelect("this", ctxtName), List.<JCExpression>nil()), makeBoolean(true)),
                             make().Block(0, List.<JCStatement>of(
                                 make().Exec(make().Assign(makeUnquotedIdent(iterVar),
                                         make().Apply(null, makeSelect("this", iterVar), List.<JCExpression>nil()))),
@@ -1789,6 +1791,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     make().Block(0, innerBody.toList()),
                     make().Block(0, elseBody.toList())));
                 contextBody.add(make().Return(makeBoolean(true)));
+                //Create the context method that returns the next item for this iterator
+                ctxtName = itemVar;
                 fields.add(make().MethodDef(make().Modifiers(2), names().fromString(itemVar),
                     makeJavaType(typeFact().getBooleanDeclaration().getType()),
                     List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
@@ -1809,15 +1813,24 @@ public class ExpressionTransformer extends AbstractTransformer {
                             makeJavaType(typeFact().getObjectDeclaration().getType()), makeFinished()));
                 }
                 JCExpression condExpr = make().Binary(JCTree.EQ, make().Apply(null,
-                    make().Select(makeUnquotedIdent("this"), names().fromString(prevItemVar)), List.<JCExpression>nil()),
+                    make().Select(makeUnquotedIdent("this"), names().fromString(ctxtName)), List.<JCExpression>nil()),
                     makeBoolean(true));
-                if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
-                    //TODO AND condExpr with negated transformed cond
+                //AND previous iterator condition with the comprehension's
+                final JCExpression otherCondition;
+                if (cond instanceof IsCondition) {
+                    otherCondition = transformExpression(((IsCondition) cond).getExpression());
+                } else if (cond instanceof ExistsOrNonemptyCondition) {
+                    otherCondition = transformExpression(((ExistsOrNonemptyCondition) cond).getExpression());
+                } else if (cond instanceof BooleanCondition) {
+                    otherCondition = transformExpression(((BooleanCondition) cond).getExpression(),
+                            BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType());
                 } else {
-                    //TODO AND condExpr with negated transformed cond
+                    return makeErroneous(cond, "This type of condition is not supported yet for comprehensions");
                 }
-                itemVar = "next" + idx;
-                fields.add(make().MethodDef(make().Modifiers(2), names().fromString(itemVar),
+                condExpr = make().Binary(JCTree.AND, condExpr, make().Unary(JCTree.NOT, otherCondition));
+                //Create the context method that filters from the last iterator
+                ctxtName = "next"+idx;
+                fields.add(make().MethodDef(make().Modifiers(2), names().fromString(ctxtName),
                     makeJavaType(typeFact().getBooleanDeclaration().getType()),
                     List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(),
                     List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
@@ -1825,6 +1838,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         make().Return(make().Unary(JCTree.NOT, makeUnquotedIdent(prevItemVar+"$exhausted")))
                 )), null));
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
+                itemVar = prevItemVar;
 
             } else if (clause instanceof ExpressionComprehensionClause) {
 
@@ -1847,7 +1861,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 make().Return(
                     make().Conditional(
                         make().Binary(JCTree.EQ, make().Apply(null, make().Select(makeUnquotedIdent("this"),
-                            names().fromString(prevItemVar)), List.<JCExpression>nil()), makeBoolean(true)),
+                            names().fromString(ctxtName)), List.<JCExpression>nil()), makeBoolean(true)),
                         transformExpression(excc.getExpression(), BoxingStrategy.BOXED, typeFact().getIteratedType(targetIterType)),
                         makeFinished()))
         )), null));
