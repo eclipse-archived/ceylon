@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@nomodel
 class ListImplementor<X>() satisfies List<X> {
 
     shared actual ListImplementor<X> clone { 
@@ -40,6 +41,10 @@ class ListImplementor<X>() satisfies List<X> {
     }
     
     shared actual Boolean equals(Object other) {
+        throw;
+    }
+    
+    shared actual X item(Integer index) {
         throw;
     }
 
