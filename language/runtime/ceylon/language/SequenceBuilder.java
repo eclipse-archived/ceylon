@@ -42,7 +42,12 @@ public class SequenceBuilder<Element> implements Sized {
     @TypeInfo("ceylon.language.Iterable<Element>") 
     Iterable<? extends Element> elements) {
     	if (list==null) {
-    	    list = new ArrayList<Element>( (int) ((Sized) elements).getSize() );
+    	    //we don't always receive a Sized
+    	    if (elements instanceof Sized) {
+                list = new ArrayList<Element>((int) ((Sized) elements).getSize());
+    	    } else {
+                list = new ArrayList<Element>();
+    	    }
     	}
     	java.lang.Object elem;
     	for (Iterator<? extends Element> iter=elements.getIterator(); !((elem = iter.next()) instanceof Finished);) {
