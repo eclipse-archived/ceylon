@@ -484,7 +484,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(value);
         if (value.getComprehension() != null) {
             return transformComprehension(value.getComprehension());
-            //return makeErroneous(value, "Comprehensions not supported yet [1]");
         } else if (value.getSequencedArgument() != null) {
             java.util.List<Tree.Expression> list = value.getSequencedArgument().getExpressionList().getExpressions();
             ProducedType seqElemType = value.getTypeModel().getTypeArgumentList().get(0);
@@ -1849,7 +1848,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     make().Conditional(
                         make().Binary(JCTree.EQ, make().Apply(null, make().Select(makeUnquotedIdent("this"),
                             names().fromString(prevItemVar)), List.<JCExpression>nil()), makeBoolean(true)),
-                        transformExpression(excc.getExpression()),
+                        transformExpression(excc.getExpression(), BoxingStrategy.BOXED, typeFact().getIteratedType(targetIterType)),
                         makeFinished()))
         )), null));
         ProducedType iteratorType = typeFact().getIteratorType(typeFact().getIteratedType(targetIterType));
