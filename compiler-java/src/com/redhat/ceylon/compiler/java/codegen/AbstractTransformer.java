@@ -1457,6 +1457,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         UNBOXED, BOXED, INDIFFERENT;
     }
 
+    public boolean canUnbox(ProducedType type){
+        // all the rest is boxed
+        return isCeylonBasicType(type) || isJavaString(type);
+    }
+    
     JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr,
             ProducedType exprType,
             BoxingStrategy boxingStrategy) {
