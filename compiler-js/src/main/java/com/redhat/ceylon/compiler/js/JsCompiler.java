@@ -1,18 +1,27 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -21,18 +30,17 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class JsCompiler {
     
     protected final TypeChecker tc;
-    
-    private boolean optimize = false;
+    protected final Options opts;
+    protected final RepositoryManager outRepo;
+
     private boolean stopOnErrors = true;
-    private boolean indent = true;
-    private boolean comment = true;
-    private boolean modulify = false;
     private int errCount = 0;
-    private Writer systemOut = new OutputStreamWriter(System.out);
+    protected File root;
 
     protected List<Message> errors = new ArrayList<Message>();
     protected List<Message> unitErrors = new ArrayList<Message>();
-    
+    private final Map<Module, Writer> output = new HashMap<Module, Writer>();
+
     private final Visitor unitVisitor = new Visitor() {
         @Override
         public void visitAny(Node that) {
@@ -43,8 +51,20 @@ public class JsCompiler {
         }
     };
 
-    public JsCompiler(TypeChecker tc) {
+    public JsCompiler(TypeChecker tc, Options options) {
         this.tc = tc;
+        opts = options;
+        outRepo = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(options.getOutDir(), new JULLogger(), options.getUser(), options.getPass());
+        root = new File(options.getOutDir());
+        if (root.exists()) {
+            if (!(root.isDirectory() && root.canWrite())) {
+                System.err.printf("Cannot write to %s. Stop.%n", root);
+            }
+        } else {
+            if (!root.mkdirs()) {
+                System.err.printf("Cannot create %s. Stop.%n", root);
+            }
+        }
     }
 
     /** Specifies whether the compiler should stop when errors are found in a compilation unit (default true). */
@@ -53,23 +73,6 @@ public class JsCompiler {
         return this;
     }
 
-    public JsCompiler optimize(boolean optimize) {
-        this.optimize = optimize;
-        return this;
-    }
-    public JsCompiler indent(boolean flag) {
-        indent=flag;
-        return this;
-    }
-    public JsCompiler comment(boolean flag) {
-        comment=flag;
-        return this;
-    }
-    public JsCompiler modulify(boolean flag) {
-        modulify=flag;
-        return this;
-    }
-    
     public List<Message> listErrors() {
         return Collections.unmodifiableList(errors);
     }
@@ -80,9 +83,9 @@ public class JsCompiler {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
         if (errCount == 0 || !stopOnErrors) {
-            GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), optimize, names);
-            jsv.setAddComments(comment);
-            jsv.setIndent(indent);
+            GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), opts.isOptimize(), names);
+            jsv.setAddComments(opts.isComment());
+            jsv.setIndent(opts.isIndent());
             pu.getCompilationUnit().visit(jsv);
             pu.getCompilationUnit().visit(unitVisitor);
         }
@@ -104,17 +107,12 @@ public class JsCompiler {
     /** Compile all the phased units in the typechecker.
      * @return true is compilation was successful (0 errors/warnings), false otherwise. */
     public boolean generate() throws IOException {
-        boolean modDone = false;
         errors.clear();
         try {
-            JsIdentifierNames names = new JsIdentifierNames(optimize);
+            JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
                 String name = pu.getUnitFile().getName();
                 if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
-                    if (modulify && !modDone) {
-                        beginWrapper(getWriter(pu));
-                        modDone = true;
-                    }
                     compileUnit(pu, names);
                     if (stopOnError()) {
                         System.err.println("Errors found. Compilation stopped.");
@@ -122,21 +120,38 @@ public class JsCompiler {
                     }
                 }
             }
-            if (modulify) {
-                endWrapper(getWriter(tc.getPhasedUnits().getPhasedUnits().get(tc.getPhasedUnits().getPhasedUnits().size()-1)));
-            }
         } finally {
             finish();
         }
         return errCount == 0;
     }
 
+    /** Creates a writer if needed. Right now it's one file per package. */
     protected Writer getWriter(PhasedUnit pu) throws IOException {
-        return systemOut;
+        Module mod = pu.getPackage().getModule();
+        Writer writer = output.get(mod);
+        if (writer==null) {
+            writer = new StringWriter();
+            output.put(mod, writer);
+            if (opts.isModulify()) {
+                beginWrapper(writer);
+            }
+        }
+        return writer;
     }
-    
+
+    /** Closes all output writers and puts resulting artifacts in the output repo. */
     protected void finish() throws IOException {
-        systemOut.flush();
+        for (Map.Entry<Module,Writer> entry: output.entrySet()) {
+            if (opts.isModulify()) {
+                endWrapper(entry.getValue());
+            }
+            String out = ((StringWriter)entry.getValue()).getBuffer().toString();
+            ArtifactContext artifact = new ArtifactContext(entry.getKey().getNameAsString(), entry.getKey().getVersion());
+            artifact.setFetchSingleArtifact(true);
+            artifact.setSuffix(".js");
+            outRepo.putArtifact(artifact, new ByteArrayInputStream(out.getBytes()));
+        }
     }
 
     /** Print all the errors found during compilation to the specified stream. */

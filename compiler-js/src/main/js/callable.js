@@ -6,45 +6,33 @@ var exports;//IGNORE
 function Callable(wat) {
     return wat;
 }
-initType(Callable, 'ceylon.language.Callable');
 exports.Callable=Callable;
+initType(Callable, 'ceylon.language.Callable');
+
+function $JsCallable(callable) {
+    return callable;
+}
+initExistingTypeProto($JsCallable, Function, 'ceylon.language.JsCallable',
+        IdentifiableObject, Callable);
+
+function noop() { return null; }
 
 //This is used for plain method references
 function JsCallable(o,f) {
-    var c = function() {
-        if (o === null) return null;
-        var al=[];
-        if (arguments !== undefined && arguments.length > 0) {
-            for (var i=0; i<arguments.length;i++) {
-                al.push(arguments[i]);
-            }
-        }
-        return f.apply(o,al);
-    };
-    c.getString = function() { return String$('ceylon.language.Callable'); }
-    initTypeProtoI(c, 'ceylon.language.JsCallable', Callable);
-    return c;
+	return (o !== null) ? function() { return f.apply(o, arguments); }
+	                    : noop;
 }
 
 //This is used for spread method references
 function JsCallableList(value) {
-    var c = function() {
-        var al=[];
-        if (arguments !== undefined && arguments.length > 0) {
-            for (var i=0; i<arguments.length;i++) {
-                al.push(arguments[i]);
-            }
-        }
-        var rval = [];
+    return function() {
+        var rval = Array(value.length);
         for (var i = 0; i < value.length; i++) {
             var c = value[i];
-            rval.push(c.f.apply(c.o, al));
+            rval[i] = c.f.apply(c.o, arguments);
         }
         return ArraySequence(rval);
     };
-    c.getString = function() { return String$('ceylon.language.Callable[]'); }
-    initTypeProtoI(c, 'ceylon.language.JsCallableList', Callable);
-    return c;
 }
 
 exports.JsCallableList=JsCallableList;

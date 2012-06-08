@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -41,6 +42,8 @@ public class GenerateJsVisitor extends Visitor
      * because the code referencing them needs to be treated differently; similar to the directAccess but it gets cleared
      * after the comprehension has been generated. */
     private final List<Declaration> comprehensions = new ArrayList<Declaration>();
+    private final List<String> retainedTempVars = new ArrayList<String>();
+    private final Set<Module> importedModules = new HashSet<Module>();
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -173,28 +176,39 @@ public class GenerateJsVisitor extends Visitor
         root = that;
         Module clm = that.getUnit().getPackage().getModule()
                 .getLanguageModule();
-        Package clPackage = clm.getPackage(clm.getNameAsString());
-        setCLAlias(names.packageAlias(clPackage));
-        require(clPackage);
+        if (require(clm)) {
+            setCLAlias(names.moduleAlias(clm));
+        }
         super.visit(that);
     }
 
     public void visit(Import that) {
-        Package pkg = that.getImportList().getImportedPackage();
-        require(pkg);
+    	ImportableScope scope =
+    			that.getImportMemberOrTypeList().getImportList().getImportedScope();
+    	if (scope instanceof Package) {
+    		require(((Package) scope).getModule());
+    	}
     }
 
-    private void require(Package pkg) {
-        out("var ", names.packageAlias(pkg), "=require('", scriptPath(pkg), "');");
-        endLine();
-    }
-
-    private String scriptPath(Package pkg) {
-        StringBuilder path = new StringBuilder(pkg.getModule().getNameAsString().replace('.', '/')).append('/');
-        if (!pkg.getModule().isDefault()) {
-            path.append(pkg.getModule().getVersion()).append('/');
+    private boolean require(Module mod) {
+        if (importedModules.contains(mod)) {
+            return false;
         }
-        path.append(pkg.getNameAsString());
+        out("var ", names.moduleAlias(mod), "=require('", scriptPath(mod), "');");
+        endLine();
+        importedModules.add(mod);
+        return true;
+    }
+
+    private String scriptPath(Module mod) {
+        StringBuilder path = new StringBuilder(mod.getNameAsString().replace('.', '/')).append('/');
+        if (!mod.isDefault()) {
+            path.append(mod.getVersion()).append('/');
+        }
+        path.append(mod.getNameAsString());
+        if (!(mod.isDefault() || mod==mod.getLanguageModule())) {
+            path.append('-').append(mod.getVersion());
+        }
         return path.toString();
     }
 
@@ -219,8 +233,23 @@ public class GenerateJsVisitor extends Visitor
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             s.visit(this);
-            if ((endLastLine || (i<statements.size()-1)) &&
-                        s instanceof ExecutableStatement) {
+
+            boolean needNewline = s instanceof ExecutableStatement;
+            if (!retainedTempVars.isEmpty()) {
+                if (needNewline) { endLine(); }
+                needNewline = true;
+                out("var ");
+                boolean first = true;
+                for (String varName : retainedTempVars) {
+                    if (!first) { out(","); }
+                    first = false;
+                    out(varName);
+                }
+                out(";");
+                retainedTempVars.clear();
+            }
+
+            if (needNewline && (endLastLine || (i<statements.size()-1))) {
                 endLine();
             }
         }
@@ -820,6 +849,26 @@ public class GenerateJsVisitor extends Visitor
             out(";");
             endLine();
             share(that.getDeclarationModel(), false);
+        } else {
+            //Check for refinement of simple param declaration
+            Method m = that.getDeclarationModel();
+            if (m == that.getScope()) {
+                if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
+                    //Declare the method just by pointing to the param function
+                    final String name = names.name(((Class)m.getContainer()).getParameter(m.getName()));
+                    if (name != null) {
+                        self((Class)m.getContainer());
+                        out(".", names.name(m), "=", name, ";");
+                        endLine();
+                    }
+                } else if (m.getContainer() instanceof Method) {
+                    //Declare the function just by forcing the name we used in the param list
+                    final String name = names.name(((Method)m.getContainer()).getParameter(m.getName()));
+                    if (names != null) {
+                        names.forceName(m, name);
+                    }
+                }
+            }
         }
     }
 
@@ -869,8 +918,14 @@ public class GenerateJsVisitor extends Visitor
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
         for (Parameter param : params.getParameters()) {
-            String paramName = names.name(param.getDeclarationModel());
-            if (param.getDefaultArgument() != null || param.getDeclarationModel().isSequenced()) {
+            com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getDeclarationModel();
+            /*if (param instanceof ValueParameterDeclaration && ((ValueParameterDeclaration)param).getDeclarationModel().isHidden()) {
+                //TODO support new syntax for class and method parameters
+                //the declaration is actually different from the one we usually use
+                out("//HIDDEN! ", pd.getName(), "(", names.name(pd), ")"); endLine();
+            }*/
+            String paramName = names.name(pd);
+            if (param.getDefaultArgument() != null || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
                 if (param.getDefaultArgument() == null) {
                     out(clAlias, ".empty");
@@ -880,7 +935,7 @@ public class GenerateJsVisitor extends Visitor
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null) && param.getDeclarationModel().isCaptured()) {
+            if ((typeDecl != null) && pd.isCaptured()) {
                 self(typeDecl);
                 out(".", paramName, "=", paramName, ";");
                 endLine();
@@ -976,16 +1031,8 @@ public class GenerateJsVisitor extends Visitor
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
         String classParam = null;
-        if (that.getScope() instanceof Class) {
-            Class container = (Class)that.getScope();
-            if (container.getParameterList() != null) {
-                for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : container.getParameterList().getParameters()) {
-                    if (p.getName().equals(d.getName())) {
-                        classParam = names.name(p);
-                        break;
-                    }
-                }
-            }
+        if (that.getScope() instanceof Functional) {
+            classParam = names.name(((Functional)that.getScope()).getParameter(d.getName()));
         }
         if (!d.isFormal()) {
             comment(that);
@@ -1026,8 +1073,8 @@ public class GenerateJsVisitor extends Visitor
                 shareGetter(d);
                 if (d.isVariable()) {
                     String paramVarName = names.createTempVariable(d.getName());
-                    out("var ", names.setter(d), "=function(", paramVarName, "){");
-                    out(varName, "=", paramVarName, "; return ", varName, ";};");
+                    out("var ", names.setter(d), "=function(", paramVarName, "){return ");
+                    out(varName, "=", paramVarName, ";};");
                     endLine();
                     shareSetter(d);
                 }
@@ -1051,7 +1098,7 @@ public class GenerateJsVisitor extends Visitor
                 out(names.self(outer), ".", names.setter(d), "=");
                 out(function, names.setter(d), "(", paramVarName, ")");
                 beginBlock();
-                out("this.", names.name(d), "=", paramVarName, "; return ", paramVarName, ";");
+                out("return this.", names.name(d), "=", paramVarName, ";");
                 endBlock();
             }
         }
@@ -1163,6 +1210,7 @@ public class GenerateJsVisitor extends Visitor
                   || (d instanceof Method));
     }
 
+    /** Returns true if the top-level declaration for the term is annotated "nativejs" */
     private static boolean isNative(Term t) {
         if (t instanceof MemberOrTypeExpression) {
             return isNative(((MemberOrTypeExpression)t).getDeclaration());
@@ -1170,6 +1218,7 @@ public class GenerateJsVisitor extends Visitor
         return false;
     }
 
+    /** Returns true if the declaration is annotated "nativejs" */
     private static boolean isNative(Declaration d) {
         return hasAnnotationByName(getToplevel(d), "nativejs");
     }
@@ -1197,19 +1246,19 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void generateSafeOp(QualifiedMemberOrTypeExpression that) {
-        if (that.getDeclaration() instanceof Method) {
-            String tmp=names.createTempVariable();
-            out("(function(){var ", tmp, "=");
-            super.visit(that);
-            out("; return ", clAlias, ".JsCallable(", tmp, ",", tmp, "===null?null:", tmp, ".");
-            qualifiedMemberRHS(that);
-            out(");}())");
-        } else {
-            out("(function($){return $===null?null:$.");
-            qualifiedMemberRHS(that);
-            out("}(");
-            super.visit(that);
-            out("))");
+        boolean isMethod = that.getDeclaration() instanceof Method;
+        String lhsVar = createRetainedTempVar("opt");
+        out("(", lhsVar, "=");
+        super.visit(that);
+        out(",");
+        if (isMethod) {
+            out(clAlias, ".JsCallable(", lhsVar, ",");
+        }
+        out(lhsVar, "!==null?", lhsVar, ".");
+        qualifiedMemberRHS(that);
+        out(":null)");
+        if (isMethod) {
+            out(")");
         }
     }
 
@@ -1283,15 +1332,17 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void generateCallable(QualifiedMemberOrTypeExpression that, String name) {
-        out("(function(){var $=");
+        String primaryVar = createRetainedTempVar("opt");
+        out("(", primaryVar, "=");
         that.getPrimary().visit(this);
-        out(";return ", clAlias, ".JsCallable($, $==null?null:$.");
+        out(",", clAlias, ".JsCallable(", primaryVar, ",", primaryVar, "!==null?",
+                primaryVar, ".");
         if (name == null) {
             qualifiedMemberRHS(that);
         } else {
             out(name);
         }
-        out(")})()");
+        out(":null))");
     }
 
     private void qualifiedMemberRHS(QualifiedMemberOrTypeExpression that) {
@@ -1714,7 +1765,7 @@ public class GenerateJsVisitor extends Visitor
         endBlock(false);
         out("())");
     }
-
+    
     @Override
     public void visit(SpecifierStatement that) {
         BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
@@ -1729,26 +1780,52 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(AssignOp that) {
         boolean paren=false;
+        String returnValue = null;
         if (that.getLeftTerm() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) that.getLeftTerm();
-            qualify(that, bme.getDeclaration());
+            Declaration bmeDecl = bme.getDeclaration();
+            boolean simpleSetter = hasSimpleGetterSetter(bmeDecl);
+            if (!simpleSetter) {
+                out("(");
+            }
+            String path = qualifiedPath(that, bmeDecl);
+            if (path.length() > 0) { path += '.'; }
+            out(path);
             if (isNative(bme.getDeclaration())) {
-                out(bme.getDeclaration().getName());
+                out(bmeDecl.getName());
                 out("=");
             } else {
-                out(names.setter(bme.getDeclaration()));
+                out(names.setter(bmeDecl));
                 out("(");
-                paren = !(bme.getDeclaration() instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
+                if (!simpleSetter) {
+                    returnValue = accessDirectly(bmeDecl)
+                            ? (path + names.name(bmeDecl))
+                            : (path + names.getter(bmeDecl) + "()");
+                }
+                paren = true;//!(bmeDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
             }
         } else if (that.getLeftTerm() instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression qme = (QualifiedMemberExpression)that.getLeftTerm();
-            super.visit(qme);
+            boolean simpleSetter = hasSimpleGetterSetter(qme.getDeclaration());
+            String lhsVar = null;
+            if (!simpleSetter) {
+                lhsVar = createRetainedTempVar();
+                out("(", lhsVar, "=");
+                super.visit(qme);
+                out(",", lhsVar);
+                paren=true;
+            } else {
+                super.visit(qme);
+            }
             if (isNative(qme.getDeclaration())) {
                 out(".", qme.getDeclaration().getName());
                 out("=");
             } else {
                 out(".", names.setter(qme.getDeclaration()));
                 out("(");
+                if (!simpleSetter) {
+                    returnValue = lhsVar + "." + names.getter(qme.getDeclaration()) + "()";
+                }
                 paren = true;
             }
         }
@@ -1757,6 +1834,9 @@ public class GenerateJsVisitor extends Visitor
         boxUnboxEnd(boxType);
         if (paren) {
             out(")");
+        }
+        if (returnValue != null) {
+            out(",", returnValue, ")");
         }
     }
 
@@ -1774,7 +1854,7 @@ public class GenerateJsVisitor extends Visitor
 
     private String qualifiedPath(Node that, Declaration d, boolean inProto) {
         if (isImported(that, d)) {
-            return names.packageAlias(d.getUnit().getPackage());
+            return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (prototypeStyle && !inProto) {
             if (d.isClassOrInterfaceMember() &&
@@ -1846,6 +1926,20 @@ public class GenerateJsVisitor extends Visitor
     public void visit(ExecutableStatement that) {
         super.visit(that);
         out(";");
+    }
+    
+    /** Creates a new temporary variable which can be used immediately, even
+     * inside an expression. The declaration for that temporary variable will be
+     * emitted after the current Ceylon statement has been completely processed.
+     * The resulting code is valid because JavaScript variables may be used before
+     * they are declared. */
+    private String createRetainedTempVar(String baseName) {
+        String varName = names.createTempVariable(baseName);
+        retainedTempVars.add(varName);
+        return varName;
+    }
+    private String createRetainedTempVar() {
+        return createRetainedTempVar("tmp");
     }
 
 //    @Override
@@ -2021,12 +2115,17 @@ public class GenerateJsVisitor extends Visitor
                 lhsPath += '.';
             }
 
-            String svar = accessDirectly(lhsDecl) ? names.name(lhsDecl)
-                    : comprehensions.contains(lhsDecl) ? "this." + names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
-            out("(", lhsPath, names.setter(lhsDecl), "(", lhsPath,
+            boolean simpleSetter = hasSimpleGetterSetter(lhsDecl);
+            String svar = accessDirectly(lhsDecl)
+                    ? names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
+            if (!simpleSetter) { out("("); }
+            out(lhsPath, names.setter(lhsDecl), "(", lhsPath,
                     svar, ".", functionName, "(");
             that.getRightTerm().visit(this);
-            out(")),", lhsPath, svar, ")");
+            out("))");
+            if (!simpleSetter) {
+                out(",", lhsPath, svar, ")");
+            }
         } else if (lhs instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
             if (isNative(lhsQME)) {
@@ -2043,15 +2142,18 @@ public class GenerateJsVisitor extends Visitor
                 that.getRightTerm().visit(this);
                 out("))");
             } else {
-                out("(function($1,$2){var $=");
-                out("$1.", names.getter(lhsQME.getDeclaration()), "()");
-                out(".", functionName, "($2);");
-                out("$1.", names.setter(lhsQME.getDeclaration()), "($)");
-                out(";return $}(");
+                String lhsPrimaryVar = createRetainedTempVar();
+                String member = names.getter(lhsQME.getDeclaration()) + "()";
+                out("(", lhsPrimaryVar, "=");
                 lhsQME.getPrimary().visit(this);
-                out(",");
+                out(",", lhsPrimaryVar, ".", names.setter(lhsQME.getDeclaration()), "(",
+                        lhsPrimaryVar, ".", member, ".", functionName, "(");
                 that.getRightTerm().visit(this);
                 out("))");
+                if (!hasSimpleGetterSetter(lhsQME.getDeclaration())) {
+                    out(",", lhsPrimaryVar, ".", member);
+                }
+                out(")");
             }
         }
     }
@@ -2264,10 +2366,11 @@ public class GenerateJsVisitor extends Visitor
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               out("function($){return $!==null?$:");
-               termgen.right();
-               out("}(");
+               String lhsVar = createRetainedTempVar("opt");
+               out("(", lhsVar, "=");
                termgen.left();
+               out(",", lhsVar, "!==null?", lhsVar, ":");
+               termgen.right();
                out(")");
            }
        });
@@ -2294,6 +2397,10 @@ public class GenerateJsVisitor extends Visitor
        prefixIncrementOrDecrement(that.getTerm(), "getPredecessor");
    }
 
+   private boolean hasSimpleGetterSetter(Declaration decl) {
+       return !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal()); 
+   }
+   
    private void prefixIncrementOrDecrement(Term term, String functionName) {
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
@@ -2302,20 +2409,27 @@ public class GenerateJsVisitor extends Visitor
                path += '.';
            }
 
-           out("(", path, names.setter(bme.getDeclaration()), "(", path);
-           String bmeGetter = null;
-           if (accessDirectly(bme.getDeclaration())) {
-               bmeGetter = names.name(bme.getDeclaration());
-           } else {
-               bmeGetter = comprehensions.contains(bme.getDeclaration())
-                       ? "this."+names.name(bme.getDeclaration()) : names.getter(bme.getDeclaration()) + "()";
+           boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
+           String member = accessDirectly(bme.getDeclaration())
+                   ? names.name(bme.getDeclaration())
+                   : (names.getter(bme.getDeclaration()) + "()");
+           if (!simpleSetter) { out("("); }
+           out(path, names.setter(bme.getDeclaration()), "(", path, member, ".",
+                   functionName, "())");
+           if (!simpleSetter) {
+               out(",", path, member, ")");
            }
-           out(bmeGetter, ".", functionName, "()),", path, bmeGetter, ")");
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-           out("function($){var $2=$.", names.getter(qme.getDeclaration()), "().",
-               functionName, "();$.", names.setter(qme.getDeclaration()), "($2);return $2}(");
+           String member = names.getter(qme.getDeclaration()) + "()";
+           String primaryVar = createRetainedTempVar();
+           out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
+           out(",", primaryVar, ".", names.setter(qme.getDeclaration()), "(",
+                   primaryVar, ".", member, ".", functionName, "())");
+           if (!hasSimpleGetterSetter(qme.getDeclaration())) {
+               out(",", primaryVar, ".", member);
+           }
            out(")");
        }
    }
@@ -2336,21 +2450,28 @@ public class GenerateJsVisitor extends Visitor
                path += '.';
            }
 
-           out("(function($){", path, names.setter(bme.getDeclaration()), "($.", functionName,
-               "());return $}(", path);
-           if (accessDirectly(bme.getDeclaration())) {
-               out(names.name(bme.getDeclaration()), "))");
-           } else if (comprehensions.contains(bme.getDeclaration())) {
-               out("this.", names.name(bme.getDeclaration()), "))");
+           String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
+           out("(", oldValueVar, "=", path);
+           if (!accessDirectly(bme.getDeclaration())) {
+               out(names.getter(bme.getDeclaration()), "()");
            } else {
-               out(names.getter(bme.getDeclaration()), "()))");
+               out(names.name(bme.getDeclaration()));
            }
+           out(",", path, names.setter(bme.getDeclaration()), "(",
+                   oldValueVar, ".", functionName, "()),",
+                   oldValueVar, ")");
+           
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-           out("function($){var $2=$.", names.getter(qme.getDeclaration()), "();$.",
-                   names.setter(qme.getDeclaration()), "($2.", functionName, "());return $2}(");
+           String primaryVar = createRetainedTempVar();
+           String oldValueVar = createRetainedTempVar("old" + qme.getDeclaration().getName());
+           out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
-           out(")");
+           out(",", oldValueVar, "=",
+                   primaryVar, ".", names.getter(qme.getDeclaration()), "(),",
+                   primaryVar, ".", names.setter(qme.getDeclaration()), "(",
+                   oldValueVar, ".", functionName, "()),",
+                   oldValueVar, ")");
        }
    }
 
@@ -2486,29 +2607,42 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    /** Appends an object with the type's type and list of union/instersection types. */
+    /** Appends an object with the type's type and list of union/intersection types. */
     private void getTypeList(StaticType type) {
         out("{ t:'");
-        if (type instanceof UnionType) {
-            out("u");
-        } else {
+        if (type instanceof IntersectionType) {
             out("i");
+        } else {
+            out("u");
         }
         out("', l:[");
-        List<StaticType> types = type instanceof UnionType ? ((UnionType)type).getStaticTypes() : ((IntersectionType)type).getStaticTypes();
-        boolean first = true;
-        for (StaticType t : types) {
-            if (!first) out(",");
-            if (t instanceof SimpleType) {
-                out("'");
-                out(((SimpleType)t).getDeclarationModel().getQualifiedNameString());
-                out("'");
-            } else {
-                getTypeList(t);
-            }
-            first = false;
+        if (type instanceof OptionalType) {
+        	out("'ceylon.language.Nothing',");
+        	typeNameOrList(((OptionalType) type).getDefiniteType());
+        } else {
+	        List<StaticType> types = type instanceof UnionType
+	        		? ((UnionType)type).getStaticTypes()
+	        		: ((IntersectionType)type).getStaticTypes();
+	        boolean first = true;
+	        for (StaticType t : types) {
+	            if (!first) out(",");
+	            typeNameOrList(t);
+	            first = false;
+	        }
         }
         out("]}");
+    }
+    
+    private void typeNameOrList(StaticType type) {
+    	if (type instanceof SimpleType) {
+            out("'");
+            out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
+            out("'");
+        } else if (type instanceof EntryType) {
+        	out("'ceylon.language.Entry'"); //TODO: type parameters
+        } else {
+            getTypeList(type);
+        }
     }
 
     /** Generates js code to check if a term is of a certain type. We solve this in JS by
@@ -2520,7 +2654,7 @@ public class GenerateJsVisitor extends Visitor
      * @param tmpvar (optional) a variable to which the term is assigned
      */
     private void generateIsOfType(Term term, String termString, Type type, String tmpvar) {
-        if (type instanceof SimpleType) {
+        if ((type instanceof SimpleType) || (type instanceof EntryType))  {
             out(clAlias, ".isOfType(");
         } else {
             out(clAlias, ".Boolean(", clAlias, ".isOfTypes(");
@@ -2545,11 +2679,14 @@ public class GenerateJsVisitor extends Visitor
                 }
                 out("*/");
             }
+        } else if (type instanceof EntryType) {
+        	out("'ceylon.language.Entry')"); //TODO: type parameters
         } else {
             getTypeList((StaticType)type);
             out("))");
         }
     }
+    
     @Override
     public void visit(IsOp that) {
         generateIsOfType(that.getTerm(), null, that.getType(), null);

@@ -22,6 +22,7 @@ shared void test() {
     assertEqual(x, 5, "local getter");
     x := 7;
     assertEqual(flag, 2, "local setter");
-    
+
+    testNewSyntax();    
     results();
 }

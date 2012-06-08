@@ -12,6 +12,7 @@ shared class Foo(name) {
     shared default void printName() {
         print("foo name = " + name);
     }
+    shared default actual String string = "Foo(" name ")";
     inc();
 }
 

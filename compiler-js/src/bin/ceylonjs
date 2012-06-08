@@ -19,6 +19,7 @@ done
 JAVA_CP="$CEYLON_REPO/com/redhat/ceylon/compiler/java/$CEYLON_VERSION/com.redhat.ceylon.compiler.java-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com.redhat.ceylon.typechecker-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/module-resolver/$CEYLON_VERSION/com.redhat.ceylon.module-resolver-$CEYLON_VERSION.jar"
+JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/ant/$CEYLON_VERSION/com.redhat.ceylon.ant-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/../../ceylon-compiler/lib/antlr-3.4-complete.jar"
 
 java \

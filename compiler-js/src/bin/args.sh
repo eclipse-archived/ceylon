@@ -1,6 +1,6 @@
 # This file is intended to be sourced, not run directly
 
-CEYLON_VERSION=0.2
+CEYLON_VERSION=0.3
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -17,7 +17,7 @@ done
 # Set CEYLON_HOME if not already set by the user
 if test -z "$CEYLON_HOME"
 then
-    CEYLON_HOME="$(dirname "$PRG)")/.."
+    CEYLON_HOME="$HOME/.ceylon"
 fi
 
 # Set CEYLON_REPO if not already set
@@ -38,7 +38,7 @@ if hash java 2>&-
 then
     true #nothing
 else
-    echo "Java not found, you must install Java in order to compiler and run Ceylon programs"
+    echo "Java not found, you must install Java in order to compile and run Ceylon programs"
     echo "Go to http://www.java.com/getjava/ to download the latest version of Java"
 fi
 
