@@ -505,12 +505,17 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return typeFact.getObjectDeclaration().getType().isExactly(type);
     }
 
-    ProducedType simplifyType(ProducedType type) {
+    ProducedType simplifyType(ProducedType orgType) {
+        ProducedType type = orgType;
         if (isOptional(type)) {
             // For an optional type T?:
             //  - The Ceylon type T? results in the Java type T
-            // Nasty cast because we just so happen to know that nothingType is a Class
             type = typeFact().getDefiniteType(type);
+            if (type.getUnderlyingType() != null) {
+                // A definite type should not have its underlyingType set so we make a copy
+                type = type.getProducedType(null, type.getDeclaration(), type.getTypeArgumentList());
+                type.setUnderlyingType(null);
+            }
         }
         
         TypeDeclaration tdecl = type.getDeclaration();
@@ -518,17 +523,17 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             // Special case when the Union contains only a single CaseType
             // FIXME This is not correct! We might lose information about type arguments!
             type = tdecl.getCaseTypes().get(0);
-        } else if (tdecl instanceof IntersectionType){
+        } else if (tdecl instanceof IntersectionType) {
             java.util.List<ProducedType> satisfiedTypes = tdecl.getSatisfiedTypes();
-            if(satisfiedTypes.size() == 1) {
+            if (satisfiedTypes.size() == 1) {
                 // Special case when the Intersection contains only a single SatisfiedType
                 // FIXME This is not correct! We might lose information about type arguments!
                 type = satisfiedTypes.get(0);
-            }else if(satisfiedTypes.size() == 2){
+            } else if (satisfiedTypes.size() == 2) {
                 // special case for T? simplified as T&Object
-                if(isTypeParameter(satisfiedTypes.get(0))
-                        && isObject(satisfiedTypes.get(1)))
+                if (isTypeParameter(satisfiedTypes.get(0)) && isObject(satisfiedTypes.get(1))) {
                     type = satisfiedTypes.get(0);
+                }
             }
         }
         

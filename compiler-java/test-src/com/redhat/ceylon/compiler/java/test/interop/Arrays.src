@@ -416,7 +416,7 @@ final class test_Strings {
             final .java.lang.String s2 = ((.ceylon.language.String)$elem$32).toString();
             .ceylon.language.print.print(.ceylon.language.String.instance(s2));
         }
-        java.take_Strings((java.lang.String[])items.toArray());
+        java.take_Strings((.java.lang.String[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
