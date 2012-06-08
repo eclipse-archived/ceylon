@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -99,7 +100,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             
             Map<String, List<String>> testMethods = loadTestMethods(srcDir);
             
-            this.children = new HashMap<Runner, Description>(testMethods.size());
+            this.children = new LinkedHashMap<Runner, Description>(testMethods.size());
             for (Map.Entry<String, List<String>> entry : testMethods.entrySet()) {
                 final String className = entry.getKey();
                 final Runner runner;
