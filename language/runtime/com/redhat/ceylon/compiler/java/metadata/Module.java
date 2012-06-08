@@ -7,5 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Module {
     public String version();
     public String name();
+    public String doc() default "";
+    public String[] by() default {};
+    public String license() default "";
     public Import[] dependencies() default {};
 }
