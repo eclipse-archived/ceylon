@@ -63,6 +63,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class BoxingVisitor extends Visitor {
@@ -295,27 +296,19 @@ public class BoxingVisitor extends Visitor {
         super.visit(that);
     }
     @Override public void visit(IfComprehensionClause that) {
+        Variable var = null;
         if (that.getCondition() instanceof IsCondition) {
-            ((IsCondition)that.getCondition()).getVariable().getDeclarationModel().setUnboxed(false);
+            var = ((IsCondition)that.getCondition()).getVariable();
         } else if (that.getCondition() instanceof ExistsOrNonemptyCondition) {
-            ((ExistsOrNonemptyCondition)that.getCondition()).getVariable().getDeclarationModel().setUnboxed(false);
+            var = ((ExistsOrNonemptyCondition)that.getCondition()).getVariable();
+        }
+        if (var != null) {
+            var.getDeclarationModel().setUnboxed(false);
         }
         super.visit(that);
     }
     @Override
     public void visit(ExpressionComprehensionClause that) {
-        Term t = that.getExpression().getTerm();
-        if (t instanceof QualifiedMemberExpression) {
-            /*if (((QualifiedMemberExpression) t).getDeclaration() instanceof TypedDeclaration) {
-                ((TypedDeclaration)((QualifiedMemberExpression) t).getDeclaration()).setUnboxed(false);
-            }*/
-            Tree.Primary p = ((QualifiedMemberExpression) t).getPrimary();
-            if (p instanceof BaseMemberExpression) {
-                if (((BaseMemberExpression) p).getDeclaration() instanceof TypedDeclaration) {
-                    ((TypedDeclaration)((BaseMemberExpression) p).getDeclaration()).setUnboxed(false);
-                }
-            }
-        }
         super.visit(that);
     }
 
