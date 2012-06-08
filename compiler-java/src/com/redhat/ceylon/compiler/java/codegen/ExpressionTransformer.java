@@ -1800,7 +1800,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 innerBody.add(make().Return(makeBoolean(false)));
                 //Assign the next item to the corresponding variables if not exhausted yet
-                contextBody.add(make().If(make().Binary(JCTree.EQ, makeUnquotedIdent(itemVar+"$exhausted"), makeBoolean(true)),
+                contextBody.add(make().If( makeUnquotedIdent(itemVar+"$exhausted"),
                     make().Block(0, innerBody.toList()),
                     make().Block(0, elseBody.toList())));
                 contextBody.add(make().Return(makeBoolean(true)));
@@ -1831,35 +1831,48 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 }
                 //Filter contexts need to check if the previous context applies and then check the condition
-                JCExpression condExpr = make().Binary(JCTree.EQ, make().Apply(null,
-                    make().Select(makeUnquotedIdent("this"), names().fromString(ctxtName)), List.<JCExpression>nil()),
-                    makeBoolean(true));
+                JCExpression condExpr = make().Apply(null,
+                    make().Select(makeUnquotedIdent("this"), names().fromString(ctxtName)), List.<JCExpression>nil());
                 //_AND_ the previous iterator condition with the comprehension's
                 final JCExpression otherCondition;
                 if (cond instanceof IsCondition) {
                     JCExpression _expr = transformExpression(var.getSpecifierExpression().getExpression());
                     String _varName = tempName("compr");
                     JCExpression test = makeTypeTest(null, _varName, ((IsCondition) cond).getType().getTypeModel());
+                    test = makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test);
                     if (reassign) {
-                        otherCondition = makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test);
+                        _expr = make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()),
+                                make().Conditional(test, make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), NO_PRIMITIVES), _expr), makeNull()));
+                        otherCondition = make().Binary(JCTree.EQ, _expr, makeNull());
                     } else {
-                        otherCondition = make().Unary(JCTree.NOT, makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test));
+                        otherCondition = make().Unary(JCTree.NOT, test);
                     }
+
                 } else if (cond instanceof ExistsCondition) {
                     JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
-                    otherCondition =  make().Binary(reassign ? JCTree.NE : JCTree.EQ, expression, makeNull());
+                    if (reassign) {
+                        //Assign the expression, check it's not null
+                        expression = make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()), expression);
+                    }
+                    otherCondition =  make().Binary(JCTree.EQ, expression, makeNull());
+
                 } else if (cond instanceof NonemptyCondition) {
                     JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
-                    String varName = tempName();
+                    String varName = tempName("compr");
                     JCExpression test = makeNonEmptyTest(null, varName);
+                    test = makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
                     if (reassign) {
-                        otherCondition = makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
+                        //Assign the expression if it's nonempty
+                        expression = make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()),
+                                make().Conditional(test, make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), NO_PRIMITIVES), expression), makeNull()));
+                        otherCondition = make().Binary(JCTree.EQ, expression, makeNull());
                     } else {
-                        otherCondition = make().Unary(JCTree.NOT, makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test));
+                        otherCondition = make().Unary(JCTree.NOT, test);
                     }
+
                 } else if (cond instanceof BooleanCondition) {
                     otherCondition = make().Unary(JCTree.NOT, transformExpression(((BooleanCondition) cond).getExpression(),
-                            BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType()));
+                        BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType()));
                 } else {
                     return makeErroneous(cond, "This type of condition is not supported yet for comprehensions");
                 }
@@ -1870,13 +1883,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     makeJavaType(typeFact().getBooleanDeclaration().getType()),
                     List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(),
                     List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
-                        make().WhileLoop(condExpr, make().Block(0, reassign ? List.<JCStatement>of(
-                            //If there's a var, assign the last item to it
-                            make().If(make().Unary(JCTree.NOT, makeUnquotedIdent(prevItemVar+"$exhausted")),
-                                make().Exec(make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()),
-                                    make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), NO_PRIMITIVES), transformExpression(var.getSpecifierExpression().getExpression())
-                                ))), null)
-                        ) : List.<JCStatement>nil())),
+                        make().WhileLoop(condExpr, make().Block(0, List.<JCStatement>nil())),
                         make().Return(make().Unary(JCTree.NOT, makeUnquotedIdent(prevItemVar+"$exhausted")))
                 )), null));
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
@@ -1902,8 +1909,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
                 make().Return(
                     make().Conditional(
-                        make().Binary(JCTree.EQ, make().Apply(null, make().Select(makeUnquotedIdent("this"),
-                            names().fromString(ctxtName)), List.<JCExpression>nil()), makeBoolean(true)),
+                        make().Apply(null, make().Select(makeUnquotedIdent("this"),
+                            names().fromString(ctxtName)), List.<JCExpression>nil()),
                         transformExpression(excc.getExpression(), BoxingStrategy.BOXED, typeFact().getIteratedType(targetIterType)),
                         makeFinished()))
         )), null));
