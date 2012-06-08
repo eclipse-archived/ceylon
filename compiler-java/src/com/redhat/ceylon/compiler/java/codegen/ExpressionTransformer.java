@@ -1701,7 +1701,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
                 ProducedType iterType = specexpr.getExpression().getTypeModel();
                 JCExpression iterTypeExpr = makeJavaType(typeFact().getIteratorType(
-                        typeFact().getIteratedType(iterType)), CLASS_NEW|EXTENDS);
+                        typeFact().getIteratedType(iterType)));
                 if (clause == comp.getForComprehensionClause()) {
                     //The first iterator can be initialized as a field
                     fields.add(make().VarDef(make().Modifiers(2), names().fromString(iterVar), iterTypeExpr,
@@ -1726,26 +1726,32 @@ public class ExpressionTransformer extends AbstractTransformer {
                             names().fromString(iterVar), iterTypeExpr, List.<JCTree.JCTypeParameter>nil(),
                             List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
                 }
-                //Add the item var
                 if (fcl.getForIterator() instanceof ValueIterator) {
+
+                    //Add the item variable as a field in the iterator
                     Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
                     itemVar = item.getName();
                     fields.add(make().VarDef(make().Modifiers(2), names().fromString(itemVar), makeJavaType(item.getType(),NO_PRIMITIVES), null));
-                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(itemVar+"$exhausted"),
-                        makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
                     fieldNames.add(itemVar);
+
                 } else if (fcl.getForIterator() instanceof KeyValueIterator) {
+                    //Add the key and value variables as fields in the iterator
                     KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
-                    itemVar = null;//compname+"$item$"+idx;
-                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(kviter.getKeyVariable().getDeclarationModel().getName()),
-                            makeJavaType(kviter.getKeyVariable().getDeclarationModel().getType()), null));
-                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(kviter.getValueVariable().getDeclarationModel().getName()),
-                            makeJavaType(kviter.getValueVariable().getDeclarationModel().getType()), null));
-                    fieldNames.add(kviter.getKeyVariable().getDeclarationModel().getName());
-                    fieldNames.add(kviter.getValueVariable().getDeclarationModel().getName());
+                    Value kdec = kviter.getKeyVariable().getDeclarationModel();
+                    Value vdec = kviter.getValueVariable().getDeclarationModel();
+                    //But we'll use this as the name for the context function and base for the exhausted field
+                    itemVar = "kv$" + kdec.getName() + "$" + vdec.getName();
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(kdec.getName()),
+                            makeJavaType(kdec.getType(), NO_PRIMITIVES), null));
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(vdec.getName()),
+                            makeJavaType(vdec.getType(), NO_PRIMITIVES), null));
+                    fieldNames.add(kdec.getName());
+                    fieldNames.add(vdec.getName());
                 } else {
                     return makeErroneous(fcl, "No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
                 }
+                fields.add(make().VarDef(make().Modifiers(2), names().fromString(itemVar+"$exhausted"),
+                        makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
 
                 //Now the context for this iterator
                 ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
@@ -1773,23 +1779,28 @@ public class ExpressionTransformer extends AbstractTransformer {
                     KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
                     Value key = kviter.getKeyVariable().getDeclarationModel();
                     Value item = kviter.getValueVariable().getDeclarationModel();
+                    //Assign the key and item to the corresponding fields with the proper type casts
+                    //equivalent to k=(KeyType)((Entry<KeyType,ItemType>)tmpItem).getKey()
+                    JCExpression castEntryExpr = make().TypeCast(
+                        makeJavaType(typeFact().getIteratedType(iterType)),
+                        makeUnquotedIdent(tmpItem));
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(key.getName()),
-                            make().TypeCast(makeJavaType(key.getType()), make().TypeCast(
-                                    makeJavaType(typeFact().getEntryType(key.getType(), item.getType())),
-                                    make().Apply(null, make().Select(makeUnquotedIdent(tmpItem),
-                                            names().fromString("getKey")), List.<JCExpression>nil()))))));
+                        make().TypeCast(makeJavaType(key.getType(), NO_PRIMITIVES),
+                            make().Apply(null, make().Select(castEntryExpr, names().fromString("getKey")),
+                                List.<JCExpression>nil())
+                    ))));
+                    //equivalent to v=(ItemType)((Entry<KeyType,ItemType>)tmpItem).getItem()
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(item.getName()),
-                            make().TypeCast(makeJavaType(item.getType()), make().TypeCast(
-                                    makeJavaType(typeFact().getEntryType(key.getType(), item.getType())),
-                                    make().Apply(null, make().Select(makeUnquotedIdent(tmpItem),
-                                            names().fromString("getItem")), List.<JCExpression>nil()))))));
+                        make().TypeCast(makeJavaType(item.getType(), NO_PRIMITIVES),
+                            make().Apply(null, make().Select(castEntryExpr, names().fromString("getItem")),
+                                List.<JCExpression>nil())
+                    ))));
                 }
                 ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
                 if (idx>0) {
                     //Subsequent contexts run once for every iteration of the previous loop
                     //This will reset our previous context by getting a new iterator if the previous loop isn't done
-                    innerBody.add(make().If(make().Binary(JCTree.EQ,
-                            make().Apply(null, makeSelect("this", ctxtName), List.<JCExpression>nil()), makeBoolean(true)),
+                    innerBody.add(make().If(make().Apply(null, makeSelect("this", ctxtName), List.<JCExpression>nil()),
                             make().Block(0, List.<JCStatement>of(
                                 make().Exec(make().Assign(makeUnquotedIdent(iterVar),
                                         make().Apply(null, makeSelect("this", iterVar), List.<JCExpression>nil()))),
@@ -1823,7 +1834,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                             : ((ExistsOrNonemptyCondition)cond).getVariable();
                     //Initialize the condition's attribute to finished so that this is returned
                     //in case the condition is not met and the iterator is exhausted
-                    var.getDeclarationModel().setUnboxed(false);
                     if (!fieldNames.contains(var.getDeclarationModel().getName())) {
                         fields.add(make().VarDef(make().Modifiers(2), names().fromString(var.getDeclarationModel().getName()),
                                 makeJavaType(var.getDeclarationModel().getType(),NO_PRIMITIVES), null));
