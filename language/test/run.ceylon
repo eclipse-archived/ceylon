@@ -36,6 +36,8 @@ shared void run() {
     testMaps();
     print("Set tests");
     testSets();
+	print("Iterables test (map/fold/filter/find)");
+	testIterables();
     results();
 }
 

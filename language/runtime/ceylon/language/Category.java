@@ -16,7 +16,7 @@ public interface Category {
     
     @Annotations(@Annotation("default"))
     public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements);
     @Ignore
     public boolean containsEvery();
@@ -25,7 +25,7 @@ public interface Category {
 
     @Annotations(@Annotation("default"))
     public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements);
     @Ignore
     public boolean containsAny();

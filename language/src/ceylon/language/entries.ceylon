@@ -1,15 +1,20 @@
-doc "Produces a `Ordered` iterator of each index to element 
-     `Entry` for the given sequence of values."
-shared Entry<Integer,Element>[] entries<Element>(Element... sequence) 
+doc "An alias for `Integer->Element`."
+shared class Indexed<Element>(Integer index, Element element)
+        given Element satisfies Object 
+        = Entry<Integer,Element>;
+
+doc "Produces a sequence of each index to element `Entry` 
+     for the given sequence of values."
+shared Indexed<Element>[] entries<Element>(Element... elements) 
         given Element satisfies Object {
     
-    if (nonempty sequence) {
+    if (nonempty elems = elements.sequence) {
         
         object sequenceEntries
                 extends Object()
-                satisfies Sequence<Integer->Element> {
+                satisfies Sequence<Indexed<Element>> {
             
-            shared actual Sequence<Integer->Element> clone { 
+            shared actual Sequence<Indexed<Element>> clone { 
                 return this;
             }
             
@@ -18,19 +23,19 @@ shared Entry<Integer,Element>[] entries<Element>(Element... sequence)
             }
             
             shared actual Integer lastIndex { 
-                return sequence.lastIndex;
+                return elems.lastIndex;
             }
             
-            shared actual Integer->Element first {
-                return 0->sequence.first;
+            shared actual Indexed<Element> first {
+                return 0->elems.first;
             }
 
-            shared actual Entry<Integer,Element>[] rest { 
-                return entries(sequence.rest...);
+            shared actual Indexed<Element>[] rest { 
+                return entries(elems.rest...);
             }
 
-            shared actual Entry<Integer,Element>? item(Integer index) {
-                if (exists element = sequence[index]) {
+            shared actual Indexed<Element>? item(Integer index) {
+                if (exists element = elems[index]) {
                     return index->element;    
                 }
                 else {
@@ -38,20 +43,20 @@ shared Entry<Integer,Element>[] entries<Element>(Element... sequence)
                 }
             }
 
-            shared actual Entry<Integer,Element>[] span(Integer from, Integer? to) {
-                return entries(sequence.span(from, to)...);
+            shared actual Indexed<Element>[] span(Integer from, Integer? to) {
+                return entries(elems.span(from, to)...);
             }
 
-            shared actual Entry<Integer,Element>[] segment(Integer from, Integer length) {
-                return entries(sequence.segment(from, length)...);
+            shared actual Indexed<Element>[] segment(Integer from, Integer length) {
+                return entries(elems.segment(from, length)...);
             }
             
-            shared actual Iterator<Integer->Element> iterator {
+            shared actual Iterator<Indexed<Element>> iterator {
                 class EntryIterator(Integer from)
-                        satisfies Iterator<Integer->Element> {
+                        satisfies Iterator<Indexed<Element>> {
                     variable Integer idx := from;
-                    shared actual Entry<Integer,Element>|Finished next() {
-                        if (exists Element item = sequence[idx]) {
+                    shared actual Indexed<Element>|Finished next() {
+                        if (exists Element item = elems[idx]) {
                             return idx++->item;
                         }
                         else {
@@ -64,27 +69,11 @@ shared Entry<Integer,Element>[] entries<Element>(Element... sequence)
                 }
                 return EntryIterator(0);
             }
-                        
-            shared actual Integer hash {
-                return sequence.hash;
-            }
-            
-            /*shared actual Element? item(Integer index) {
-                return sequence[index];
-            }
             
             shared actual Integer size {
-                return sequence.size;
+                return elems.size;
             }
             
-            shared actual Map<Integer,Element> clone {
-                if (nonempty sequence) {
-                    return entries<Element>(sequence.clone...);
-                }
-                else {
-                    return entries<Element>();
-                }
-            }*/
         }
         
         return sequenceEntries;

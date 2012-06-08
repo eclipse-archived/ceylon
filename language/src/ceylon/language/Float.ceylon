@@ -1,4 +1,5 @@
-doc "The Float representing positive infinity."
+doc "An instance of `Float` representing 
+     positive infinity \{221E}."
 shared Float infinity = 1.0/0.0;
 
 doc "A 64-bit floating point number."

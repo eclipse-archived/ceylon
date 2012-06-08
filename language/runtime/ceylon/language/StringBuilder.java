@@ -24,7 +24,7 @@ public class StringBuilder {
     }
     
     public final synchronized StringBuilder appendAll(@Sequenced @Name("strings") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     Iterable<? extends String> strings) {
         java.lang.Object elem;
         for (Iterator<? extends String> iter=strings.getIterator(); !((elem = iter.next()) instanceof Finished);) {

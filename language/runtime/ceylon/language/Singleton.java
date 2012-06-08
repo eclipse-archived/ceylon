@@ -44,7 +44,7 @@ public class Singleton<Element>
 	
 	@Override
 	public boolean definesEvery(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._definesEvery(this, keys);
 	}
@@ -61,7 +61,7 @@ public class Singleton<Element>
 	
 	@Override
 	public boolean definesAny(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._definesAny(this, keys);
 	}
@@ -79,7 +79,7 @@ public class Singleton<Element>
 	@Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
 	public List<? extends Element> items(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._items(this, keys);
 	}
@@ -233,4 +233,9 @@ public class Singleton<Element>
         return 1;
     }
     
+    @Override public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
+    @Override public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
 }

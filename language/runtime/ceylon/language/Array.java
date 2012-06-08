@@ -365,7 +365,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Override
     public boolean definesEvery(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
@@ -380,7 +380,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Override
     public boolean definesAny(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
@@ -396,7 +396,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
     public Iterable<? extends Element> items(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys){
         return Correspondence$impl._items(this, keys);
     }
@@ -468,7 +468,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
@@ -485,7 +485,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
@@ -522,7 +522,12 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     public Element getFirst() {
         return null;
     }
-    
+
+    public Iterable<? extends Element> getSequence() { return $empty.getEmpty(); }
+    public Element find(Callable<? extends Boolean> f) { return null; }
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { return $empty.getEmpty(); }
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
 }
 
 @Ignore
@@ -617,4 +622,9 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
         return unsafeItem(0); //FixedSized$impl._getFirst(this);
     }
     
+    public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
+    public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
 }

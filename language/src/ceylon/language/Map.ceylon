@@ -6,7 +6,7 @@ doc "Represents a collection which maps keys to values,
      |Correspondence| from keys to values."
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
-                  Correspondence<Object, Item> &
+                  Correspondence<Object,Item> &
                   Cloneable<Map<Key,Item>>
         given Key satisfies Object
         given Item satisfies Object {

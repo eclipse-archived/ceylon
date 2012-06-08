@@ -20,7 +20,7 @@ public final class entries {
     @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Object"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Entry<ceylon.language.Integer,Element>>")
     public static <Element> Iterable<? extends Entry<? extends Integer,? extends Element>> entries(@Name("sequence")
-    @Sequenced @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @Sequenced @TypeInfo("ceylon.language.Iterable<Element>")
     final ceylon.language.Iterable<? extends Element> sequence) {
         if (sequence.getEmpty()) {
             return $empty.getEmpty();

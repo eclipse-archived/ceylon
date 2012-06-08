@@ -31,7 +31,7 @@ public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("default"))
     public boolean definesEvery(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public boolean definesEvery();
@@ -40,7 +40,7 @@ public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("default"))
     public boolean definesAny(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public boolean definesAny();
@@ -50,7 +50,7 @@ public interface Correspondence<Key,Item> {
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
     public Iterable<? extends Item> items(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public Iterable<? extends Item> items();
@@ -211,5 +211,11 @@ public interface Correspondence<Key,Item> {
         public int hashCode() {
             return keys.hashCode();
         }
+
+    @Override public Iterable<? extends Item> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Item find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Item, Result>(this, f); }
+    @Override public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { return new FilterIterable<Item>(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
     }
 }

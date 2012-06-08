@@ -11,7 +11,7 @@ interface SetTestBase<out Element> satisfies Set<Element>
 class SetTest<Element>(Element... element)
             satisfies SetTestBase<Element>
             given Element satisfies Object {
-    shared actual Element[] elements = element;
+    shared actual Element[] elements = element.sequence;
     shared actual Integer size { return elements.size; }
     shared actual Boolean empty { return elements.empty; }
     shared actual SetTest<Element> clone { return this; }
@@ -128,7 +128,7 @@ class MapTest<Key, Item>(Key->Item... entry)
             satisfies MapTestBase<Key, Item>
             given Key satisfies Object
             given Item satisfies Object {
-    shared actual Entry<Key, Item>[] entries = entry;
+    shared actual Entry<Key, Item>[] entries = entry.sequence;
     //REMOVE as soon as interfaces can have concrete members
     shared actual Boolean equals(Object other) {
         if (is MapTestBase<Object, Object> other) {

@@ -306,7 +306,7 @@ public abstract class String
     
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
@@ -323,7 +323,7 @@ public abstract class String
 
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
@@ -397,7 +397,7 @@ public abstract class String
     }
     
     public java.lang.String join(@Name("strings") @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     Iterable<? extends String> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
@@ -572,6 +572,11 @@ public abstract class String
             java.lang.Object result = getIterator().next();
             return (String) ((result != exhausted.getExhausted()) ? result : null);
         }*/
+    @Override public Iterable<? extends String> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public String find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<String, Result>(this, f); }
+    @Override public Iterable<? extends String> filter(Callable<? extends Boolean> f) { return new FilterIterable<String>(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
     }
 
     private static final class Occurs implements Iterable<Integer> {
@@ -612,6 +617,11 @@ public abstract class String
             java.lang.Object result = getIterator().next();
             return (String) ((result != exhausted.getExhausted()) ? result : null);
         }*/
+    @Override public Iterable<? extends Integer> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override public Integer find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Integer, Result>(this, f); }
+    @Override public Iterable<? extends Integer> filter(Callable<? extends Boolean> f) { return new FilterIterable<Integer>(this, f); }
+    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
     }
 
     @Override

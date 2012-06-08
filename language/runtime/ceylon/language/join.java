@@ -23,7 +23,7 @@ public final class join {
     public static <Element> Iterable<? extends Element> join(
     @Name("sequences")
     @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Empty|ceylon.language.Sequence<Element>>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Empty|ceylon.language.Sequence<Element>>")
     final Iterable<? extends Iterable<? extends Element>> sequences) {
 		List<Element> list = new ArrayList<Element>();
 		java.lang.Object $tmp1;
