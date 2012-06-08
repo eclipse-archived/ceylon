@@ -27,11 +27,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComparisonOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualityOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsOrNonemptyCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
@@ -41,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalAssignmentOp;
@@ -292,6 +295,11 @@ public class BoxingVisitor extends Visitor {
         super.visit(that);
     }
     @Override public void visit(IfComprehensionClause that) {
+        if (that.getCondition() instanceof IsCondition) {
+            ((IsCondition)that.getCondition()).getVariable().getDeclarationModel().setUnboxed(false);
+        } else if (that.getCondition() instanceof ExistsOrNonemptyCondition) {
+            ((ExistsOrNonemptyCondition)that.getCondition()).getVariable().getDeclarationModel().setUnboxed(false);
+        }
         super.visit(that);
     }
     @Override
