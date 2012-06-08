@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+final class bug410 {
+    
+    private bug410() {
+    }
+    
+    static void bug410() {
+        final .ceylon.language.Collection<? extends .ceylon.language.Character> s = .ceylon.language.String.instance("foo");
+        final boolean b = (
+            let
+            {
+                .java.lang.Object $ceylontmp0 = s;
+            }
+            returning $ceylontmp0 instanceof .java.lang.String;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug410.bug410();
+    }
+}
