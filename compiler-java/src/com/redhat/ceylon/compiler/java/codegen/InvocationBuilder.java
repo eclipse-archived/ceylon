@@ -397,9 +397,17 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
         final Tree.Term expr = getArgumentExpression(argIndex);
         if (hasParameter(argIndex)) {
             ProducedType type = getParameterType(argIndex);
-            return gen.expressionGen().transformExpression(expr, 
-                    getParameterBoxingStrategy(argIndex), 
+            BoxingStrategy boxingStrategy = getParameterBoxingStrategy(argIndex);
+            JCExpression ret = gen.expressionGen().transformExpression(expr, 
+                    boxingStrategy, 
                     type);
+            if(isParameterSequenced(argIndex)
+                    && isJavaMethod()
+                    && dontBoxSequence()){
+                // must translate it into a Util call
+                ret = gen.sequenceToJavaArray(ret, type, boxingStrategy);
+            }
+            return ret;
         } else {
             // Overloaded methods don't have a reference to a parameter
             // so we have to treat them differently. Also knowing it's
