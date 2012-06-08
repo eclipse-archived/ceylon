@@ -523,7 +523,12 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     
     @Override
     protected ProducedType getParameterType(int argIndex) {
-        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), producedReference, gen.TP_TO_BOUND);
+        int flags = AbstractTransformer.TP_TO_BOUND;
+        if(isParameterSequenced(argIndex)
+                && isJavaMethod()
+                && dontBoxSequence())
+            flags |= AbstractTransformer.TP_SEQUENCED_TYPE;
+        return gen.expressionGen().getTypeForParameter(getParameter(argIndex), producedReference, flags);
     }
     
     @Override
