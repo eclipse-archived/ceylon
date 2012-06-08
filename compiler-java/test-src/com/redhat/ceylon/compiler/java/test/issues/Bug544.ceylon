@@ -21,5 +21,5 @@
 class Bug544(String s) {}
 @nomodel
 class Bug544sub(s) extends Bug544(s) {
-    shared default String s;
+    shared String s;
 }
