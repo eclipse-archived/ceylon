@@ -1710,9 +1710,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     methodName = "toCharArray";
                 // else it must be boxed, right?
             } else if (isCeylonBoolean(type)) {
-                if ("boolean".equals(type.getUnderlyingType()))
-                    methodName = "toBooleanArray";
-                // else it must be boxed, right?
+                methodName = "toBooleanArray";
             } else if (isJavaString(type)) {
                 methodName = "toJavaStringArray";
             } else if (isCeylonString(type)) {
