@@ -140,7 +140,7 @@ shared class FloatTest() {
     }
     
     @test
-    shared void testFractionalPart() {
+    shared void testFractionalPart_fail() {
         Float ten = 10.5;        
         Float minusTwo = -2.3;
         Float zero = 0.0;

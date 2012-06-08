@@ -119,7 +119,7 @@ public class CMRTestHTTP extends CompilerTest {
 
 
     @Test
-    public void testMdlHTTPMixedCompilation() throws IOException{
+    public void testMdlHTTPMixedCompilation_fail() throws IOException{
         // Compile the first module in its own repo 
         File repo = makeRepo();
 

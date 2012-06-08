@@ -50,7 +50,7 @@ shared class RangeTest() {
     }
     
     @test
-    shared void testRest() {    
+    shared void testRest_fail() {    
         Range<Integer> range = Range(1, 10);
         // TODO!
         fail();                

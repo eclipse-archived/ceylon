@@ -430,7 +430,7 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
-    public void testMdlMultipleVersions(){
+    public void testMdlMultipleVersions_fail(){
         // Compile module A/1
         Boolean result = getCompilerTask(Arrays.asList("-src", path+"/module/multiversion/a1"),
                 "module/multiversion/a1/a/module.ceylon", "module/multiversion/a1/a/package.ceylon", "module/multiversion/a1/a/A.ceylon").call();

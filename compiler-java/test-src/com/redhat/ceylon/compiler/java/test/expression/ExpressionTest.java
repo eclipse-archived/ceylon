@@ -123,7 +123,7 @@ public class ExpressionTest extends CompilerTest {
     // Erasure
     
     @Test
-    public void testErsErasure(){
+    public void testErsErasure_fail(){
         compareWithJavaSource("erasure/Erasure");
     }
     @Test

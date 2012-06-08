@@ -58,7 +58,7 @@ public class PackageIssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug542(){
+    public void testBug542_fail(){
         compareWithJavaSource("Bug542");
     }
     

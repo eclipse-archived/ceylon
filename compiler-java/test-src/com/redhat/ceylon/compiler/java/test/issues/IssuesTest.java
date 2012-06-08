@@ -133,7 +133,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug283() {
+    public void testBug283_fail() {
         compareWithJavaSource("Bug283");
     }
     
@@ -356,7 +356,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug588(){
+    public void testBug588_fail(){
         compareWithJavaSource("Bug588");
     }
     
