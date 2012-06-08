@@ -14,7 +14,7 @@ shared interface Iterable<out Element>
 
     doc "Determines if the iterable object is empty, that is
          to say, if the iterator returns no elements."
-    shared default Boolean empty {
+    shared actual default Boolean empty {
         return is Finished iterator.next();
     }
 
