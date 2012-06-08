@@ -26,7 +26,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -354,6 +353,11 @@ public class IssuesTest extends CompilerTest {
     @Test
     public void testBug592(){
         compilesWithoutWarnings("Bug592.ceylon");
+    }
+
+    @Test
+    public void testBug594(){
+        compareWithJavaSource("Bug594");
     }
     
 }
