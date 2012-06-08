@@ -188,7 +188,11 @@ public class StatementTransformer extends AbstractTransformer {
                     tmpVarExpr = unboxType(tmpVarExpr, toType);
                     tmpVarTypeExpr = makeJavaType(tmpVarType, NO_PRIMITIVES);
                 } else if(cond instanceof Tree.IsCondition){
-                    tmpVarExpr = unboxType(at(cond).TypeCast(rawToTypeExpr, tmpVarExpr), toType);
+                    JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, tmpVarExpr);
+                    if(canUnbox(toType))
+                        tmpVarExpr = unboxType(castedExpr, toType);
+                    else
+                        tmpVarExpr = castedExpr;
                     tmpVarTypeExpr = make().Type(syms().objectType);
                 } else {
                     tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarExpr);
