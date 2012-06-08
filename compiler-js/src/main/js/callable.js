@@ -6,14 +6,13 @@ var exports;//IGNORE
 function Callable(wat) {
     return wat;
 }
-exports.Callable=Callable;
 initType(Callable, 'ceylon.language.Callable');
+exports.Callable=Callable;
 
 function $JsCallable(callable) {
     return callable;
 }
-initExistingTypeProto($JsCallable, Function, 'ceylon.language.JsCallable',
-        IdentifiableObject, Callable);
+initExistingTypeProto($JsCallable, Function, 'ceylon.language.JsCallable', Callable);
 
 function noop() { return null; }
 
