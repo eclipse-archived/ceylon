@@ -56,5 +56,8 @@ public class AnnotationsTest extends CompilerTest {
     public void testLocalObject(){
         compareWithJavaSource("LocalObject");
     }
-    
+    @Test
+    public void testModule(){
+        compareWithJavaSource("module");
+    }
 }
