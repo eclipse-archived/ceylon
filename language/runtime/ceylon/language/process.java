@@ -3,6 +3,7 @@ package ceylon.language;
 import java.io.IOException;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -194,6 +195,7 @@ public final class process {
         return args;
     }
     
+    @Ignore
     public void setupArguments(java.lang.String[] args) {
     	if (args.length>0) {
 	        String[] newArgs = new String[args.length];
@@ -275,6 +277,7 @@ public final class process {
     
     @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
     public String namedArgumentValue(@Name("name") java.lang.String name) {
+        if (name.isEmpty()) return null;
         Iterator<? extends String> iterator = args.getIterator();
         java.lang.Object next;
         while ((next = iterator.next()) instanceof String) {
@@ -296,6 +299,7 @@ public final class process {
     }
     
     public boolean namedArgumentPresent(@Name("name") java.lang.String name) {
+        if (name.isEmpty()) return false;
         Iterator<? extends String> iterator = args.getIterator();
         java.lang.Object next;
         while ((next = iterator.next()) instanceof String) {
@@ -312,8 +316,13 @@ public final class process {
     
     @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
     public String propertyValue(@Name("name") java.lang.String name) {
-        java.lang.String property = System.getProperty(name);
-        return property==null ? null : String.instance(property);
+        if (name.isEmpty()) {
+            return null;
+        }
+        else {
+            java.lang.String property = System.getProperty(name);
+            return property==null ? null : String.instance(property);
+        }
     }
     
     public java.lang.String getNewline() {
