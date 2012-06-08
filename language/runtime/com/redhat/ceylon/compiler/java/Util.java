@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -95,4 +96,135 @@ public class Util {
         // no luck
         return false;
     }
+    
+    public static boolean[] toBooleanArray(ceylon.language.FixedSized<? extends ceylon.language.Boolean> sequence){
+        boolean[] ret = new boolean[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = sequence.getFirst().booleanValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Boolean>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+    
+    public static byte[] toByteArray(ceylon.language.FixedSized<? extends ceylon.language.Integer> sequence){
+        byte[] ret = new byte[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = (byte) sequence.getFirst().longValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Integer>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+    
+    public static short[] toShortArray(ceylon.language.FixedSized<? extends ceylon.language.Integer> sequence){
+        short[] ret = new short[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = (short) sequence.getFirst().longValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Integer>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+    
+    public static int[] toIntArray(ceylon.language.FixedSized<? extends ceylon.language.Integer> sequence){
+        int[] ret = new int[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = (int) sequence.getFirst().longValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Integer>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+    
+    public static long[] toLongArray(ceylon.language.FixedSized<? extends ceylon.language.Integer> sequence){
+        long[] ret = new long[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = sequence.getFirst().longValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Integer>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+
+    public static float[] toFloatArray(ceylon.language.FixedSized<? extends ceylon.language.Float> sequence){
+        float[] ret = new float[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = (float) sequence.getFirst().doubleValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Float>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+
+    public static double[] toDoubleArray(ceylon.language.FixedSized<? extends ceylon.language.Float> sequence){
+        double[] ret = new double[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = sequence.getFirst().doubleValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Float>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+
+    public static char[] toCharArray(ceylon.language.FixedSized<? extends ceylon.language.Character> sequence){
+        char[] ret = new char[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = (char) sequence.getFirst().intValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Character>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+
+    public static java.lang.String[] toJavaStringArray(ceylon.language.FixedSized<? extends ceylon.language.String> sequence){
+        java.lang.String[] ret = new java.lang.String[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = sequence.getFirst().toString();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.String>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+
+    public static <T> T[] toArray(ceylon.language.FixedSized<? extends T> sequence,
+            T[] ret){
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = sequence.getFirst();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends T>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+
 }
