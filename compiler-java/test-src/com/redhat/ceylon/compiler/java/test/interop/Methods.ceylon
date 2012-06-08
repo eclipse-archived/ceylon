@@ -86,6 +86,27 @@ void variadicMethods() {
     TypesJava java = TypesJava();
 
     @error
+    java.variadicBoolean(true, box(false), true);
+    @error
+    java.variadicBoolean({}...);
+    @error
+    java.variadicBoolean({true, box(false), true}...);
+
+    @error
+    java.variadicCeylonBoolean(true, box(false), true);
+    @error
+    java.variadicCeylonBoolean({}...);
+    @error
+    java.variadicCeylonBoolean({true, box(false), true}...);
+
+    @error
+    java.variadicChar(`a`, box(`b`), `c`);
+    @error
+    java.variadicChar({}...);
+    @error
+    java.variadicChar({`a`, box(`b`), `c`}...);
+
+    @error
     java.variadicByte(1, box(2), 3);
     @error
     java.variadicByte({}...);

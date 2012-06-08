@@ -99,7 +99,9 @@ public class TypesJava {
     
     void variadicBoolean(boolean... vars){}
     void variadicCeylonBoolean(ceylon.language.Boolean... vars){}
-    
+
+    void variadicChar(char... vars){}
+
     void variadicByte(byte... vars){}
     void variadicShort(short... vars){}
     void variadicInt(int... vars){}
