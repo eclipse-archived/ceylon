@@ -1205,9 +1205,16 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     List<JCAnnotation> makeAtModule(Module module) {
         String name = module.getNameAsString();
         String version = module.getVersion();
-        java.util.List<ModuleImport> dependencies = module.getImports();
+        String doc = module.getDoc();
+        String license = module.getLicense();
+        
+        ListBuffer<JCExpression> authors = new ListBuffer<JCTree.JCExpression>();
+        for(String author : module.getAuthors()){
+        	authors.add(make().Literal(author));
+        }
+        
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
-        for(ModuleImport dependency : dependencies){
+        for(ModuleImport dependency : module.getImports()){
             Module dependencyModule = dependency.getModule();
             // do not include the implicit java module as a dependency
             if(dependencyModule.getNameAsString().equals("java")
@@ -1227,11 +1234,23 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             // TODO : add the export & optional annotations also ?
             imports.add(atImport);
         }
+        
         JCExpression nameAttribute = make().Assign(makeUnquotedIdent("name"), make().Literal(name));
         JCExpression versionAttribute = make().Assign(makeUnquotedIdent("version"), make().Literal(version));
+        JCExpression byAttribute = make().Assign(makeUnquotedIdent("by"), make().NewArray(null, null, authors.toList()));
         JCExpression importAttribute = make().Assign(makeUnquotedIdent("dependencies"), make().NewArray(null, null, imports.toList()));
-        return makeModelAnnotation(syms().ceylonAtModuleType, 
-                List.<JCExpression>of(nameAttribute, versionAttribute, importAttribute));
+        
+        List<JCExpression> annotationArgs = List.<JCExpression>of(nameAttribute, versionAttribute, byAttribute, importAttribute);
+        if( doc != null ) {
+        	JCExpression docAttribute = make().Assign(makeUnquotedIdent("doc"), make().Literal(doc));
+        	annotationArgs = annotationArgs.append(docAttribute);
+        }
+        if( license != null ) {
+        	JCExpression licenseAttribute = make().Assign(makeUnquotedIdent("license"), make().Literal(license));
+        	annotationArgs = annotationArgs.append(licenseAttribute);
+        }
+        
+        return makeModelAnnotation(syms().ceylonAtModuleType, annotationArgs);
     }
 
     List<JCAnnotation> makeAtPackage(Package pkg) {
