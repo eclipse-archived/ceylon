@@ -1686,7 +1686,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     JCExpression makeFinished() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                makeFQIdent("ceylon", "language", "$finished", Util.getGetterName("$finished")),
+                makeFQIdent("ceylon", "language", "exhausted", Util.getGetterName("exhausted")),
                 List.<JCTree.JCExpression>nil());
     }
 
