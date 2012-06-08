@@ -8,14 +8,14 @@ public final class Iterable$impl<Element> {
     public Iterable$impl(Iterable<Element> $this) {
         this.$this = $this;
     }
-    public boolean _getEmpty(){
-        return _getEmpty($this);
+    public boolean getEmpty(){
+        return Iterable$impl._getEmpty($this);
     }
     static <Element> boolean _getEmpty(Iterable<Element> $this){
         return $this.getIterator().next() instanceof Finished;
     }
 
-    public Iterable<? extends Element> _getSequence() {
+    public Iterable<? extends Element> getSequence() {
         return Iterable$impl._getSequence($this);
     }
     static <Element> Iterable<? extends Element> _getSequence(Iterable<Element> $this) {
@@ -28,11 +28,11 @@ public final class Iterable$impl<Element> {
         return new MapIterable<Element, Result>($this, collecting);
     }
 
-    public Iterable<? extends Element> filter(Callable<Boolean> selecting) {
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> selecting) {
         return new FilterIterable<Element>($this, selecting);
     }
 
-    public <Result> Result fold(Result initial, Callable<Result> accumulating) {
+    public <Result> Result fold(Result initial, Callable<? extends Result> accumulating) {
         return Iterable$impl._fold($this, initial, accumulating);
     }
     static <Result> Result _fold(Iterable<?> $this, Result initial, Callable<? extends Result> accum) {
@@ -44,7 +44,7 @@ public final class Iterable$impl<Element> {
         return initial;
     }
 
-    public Element find(Callable<Boolean> selecting) {
+    public Element find(Callable<? extends Boolean> selecting) {
         return Iterable$impl._find($this, selecting);
     }
     static <Element> Element _find(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
