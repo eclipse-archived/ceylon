@@ -87,6 +87,20 @@ void variadicMethods() {
 
     @error
     java.variadicByte(1, box(2), 3);
+    @error
+    java.variadicByte({}...);
+    @error
+    java.variadicByte({1, box(2), 3}...);
+
+    @error
+    java.variadicShort({}...);
+    @error
+    java.variadicShort({1, box(2), 3}...);
+
+    @error
+    java.variadicInt({}...);
+    @error
+    java.variadicInt({1, box(2), 3}...);
 
     @error
     java.variadicLong(1, box(2), 3);
@@ -96,6 +110,26 @@ void variadicMethods() {
     java.variadicLong(box(1));
     @error
     java.variadicLong();
+    @error
+    java.variadicLong({}...);
+    @error
+    java.variadicLong({1, box(2), 3}...);
+    Integer[] empty = {};
+    Integer[] full = {1, 2};
+    @error
+    java.variadicLong(empty...);
+    @error
+    java.variadicLong(full...);
+
+    @error
+    java.variadicFloat({}...);
+    @error
+    java.variadicFloat({1.0, box(2.0), 3.0}...);
+
+    @error
+    java.variadicDouble({}...);
+    @error
+    java.variadicDouble({1.0, box(2.0), 3.0}...);
 
     @error
     java.variadicJavaString("a", box("b"), "c");
@@ -108,18 +142,42 @@ void variadicMethods() {
     String? string = "a";
     @error
     java.variadicJavaString(string);
+    @error
+    java.variadicJavaString({}...);
+    @error
+    java.variadicJavaString({"a", box("b"), "c"}...);
 
     @error
     java.variadicCeylonString("a", box("b"), "c");
+    @error
+    java.variadicCeylonString({}...);
+    @error
+    java.variadicCeylonString({"a", box("b"), "c"}...);
+    String[] emptyString = {};
+    String[] fullString = {"a", "b"};
+    @error
+    java.variadicCeylonString(emptyString...);
+    @error
+    java.variadicCeylonString(fullString...);
 
     @error
     java.variadicObject("a", box("b"), 1, box(2));
+    @error
+    java.variadicObject({}...);
+    @error
+    java.variadicObject({"a", box("b"), 1, box(2)}...);
 
     @error
     java.variadicObject(JString("a"), JInteger(1));
+    @error
+    java.variadicObject({JString("a"), JInteger(1)}...);
     
     @error
     java.variadicT<Integer>(1, box(2), 3);
+    @error
+    java.variadicT<Integer>({}...);
+    @error
+    java.variadicT<Integer>({1, box(2), 3}...);
 
     @error
     java.variadicT<String>("a", box("b"), "c");

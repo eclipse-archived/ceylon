@@ -97,10 +97,22 @@ public class TypesJava {
     java.util.List<java.lang.String> jstringList(){ return null; }
     java.util.List<java.lang.Object> objectList(){ return null; }
     
+    void variadicBoolean(boolean... vars){}
+    void variadicCeylonBoolean(ceylon.language.Boolean... vars){}
+    
     void variadicByte(byte... vars){}
+    void variadicShort(short... vars){}
+    void variadicInt(int... vars){}
     void variadicLong(long... vars){}
-    void variadicObject(java.lang.Object... vars){}
+    void variadicCeylonInteger(ceylon.language.Integer... vars){}
+    
+    void variadicFloat(float... vars){}
+    void variadicDouble(double... vars){}
+    void variadicCeylonFloat(ceylon.language.Float... vars){}
+    
     void variadicJavaString(java.lang.String... vars){}
     void variadicCeylonString(ceylon.language.String... vars){}
+    
+    void variadicObject(java.lang.Object... vars){}
     <T> void variadicT(T... vars){}
 }
