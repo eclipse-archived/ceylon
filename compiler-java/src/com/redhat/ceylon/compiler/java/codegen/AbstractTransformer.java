@@ -1818,7 +1818,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
             } else if (type.isExactly(typeFact().getIdentifiableObjectDeclaration().getType())){
                 // it's erased
-                return makeUtilInvocation("isIdentifiable", List.of(varExpr));
+                return makeUtilInvocation("isIdentifiable", List.of(varExpr), null);
             } else if (type.getDeclaration() instanceof BottomType){
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
@@ -1850,9 +1850,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @param params parameters
      * @return the invocation AST
      */
-    private JCExpression makeUtilInvocation(String methodName, List<JCExpression> params) {
-        return make().Apply(null, make().Select(make().QualIdent(syms().ceylonUtilType.tsym), 
-                                                names().fromString(methodName)), 
+    public JCExpression makeUtilInvocation(String methodName, List<JCExpression> params, List<JCExpression> typeParams) {
+        return make().Apply(typeParams, 
+                            make().Select(make().QualIdent(syms().ceylonUtilType.tsym), 
+                                          names().fromString(methodName)), 
                             params);
     }
 
