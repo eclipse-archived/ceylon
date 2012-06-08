@@ -526,7 +526,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-            that.setTypeModel(unit.getEmptyType(unit.getSequenceType(type)));
+            that.setTypeModel(unit.getIterableType(type));
         }
     }
 

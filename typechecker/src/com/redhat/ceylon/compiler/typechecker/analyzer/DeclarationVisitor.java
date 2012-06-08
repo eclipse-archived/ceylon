@@ -966,11 +966,11 @@ public class DeclarationVisitor extends Visitor {
         that.addWarning("satisfies conditions are not yet supported");
     }
 
-    @Override
+    /*@Override
     public void visit(Tree.Comprehension that) {
         super.visit(that);
         that.addWarning("comprehensions are not yet supported");
-    }
+    }*/
 
     @Override
     public void visit(Tree.AnnotationList that) {

@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -205,12 +206,15 @@ public class ModuleVisitor extends Visitor {
         Tree.SpecifierExpression se = sa.getSpecifierExpression();
         if (se!=null && se.getExpression()!=null) {
             Tree.Term term = se.getExpression().getTerm();
-            if ( term instanceof Tree.SequenceEnumeration) {
+            if (term instanceof Tree.SequenceEnumeration) {
                 List<String> result = new ArrayList<String>();
-                ExpressionList el = ((Tree.SequenceEnumeration) term).getExpressionList();
-                if (el!=null) {
-                    for (Tree.Expression exp: el.getExpressions()) {
-                        result.add(termToString(exp.getTerm()));
+                SequencedArgument sqa = ((Tree.SequenceEnumeration) term).getSequencedArgument();
+                if (sqa!=null) {
+                    ExpressionList el = sqa.getExpressionList();
+                    if (el!=null) {
+                        for (Tree.Expression exp: el.getExpressions()) {
+                            result.add(termToString(exp.getTerm()));
+                        }
                     }
                 }
                 return result;

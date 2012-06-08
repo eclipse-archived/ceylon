@@ -537,6 +537,7 @@ argument list."
 
 ^(SEQUENCED_ARGUMENT:STATEMENT_OR_ARGUMENT
     EXPRESSION_LIST
+    ELLIPSIS?
     Parameter parameter;)
 
 "A list of positional arguments."
@@ -607,7 +608,7 @@ argument list."
 
 "Enumerated elements of a sequence."
 ^(SEQUENCE_ENUMERATION:ATOM 
-    EXPRESSION_LIST?
+    SEQUENCED_ARGUMENT?
     COMPREHENSION?)
 
 "A string template."
@@ -632,7 +633,8 @@ argument list."
 ^(COMPREHENSION:STATEMENT_OR_ARGUMENT
     FOR_COMPREHENSION_CLAUSE)
 
-^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE)
+^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE
+    ProducedType typeModel;)
 
 ^(EXPRESSION_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
     EXPRESSION)

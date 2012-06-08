@@ -130,8 +130,8 @@ class Union() {
     String|Integer sssnf = sssn.first;
     
     function first<T>(T... args) {
-        if (nonempty args) {
-            return args.first;
+        if (nonempty seq = args.sequence) {
+            return seq.first;
         }
         else {
             throw;
@@ -193,7 +193,7 @@ class Union() {
     
     class Sorted<out Elem>(Elem... them) 
             given Elem satisfies Comparable<Elem> {
-        shared Elem[] elements = them;
+        shared Elem[] elements = them.sequence;
     }
     Sorted<Integer>|Sorted<String> sorted = Sorted(+1,-1);
     @type["Empty|Sequence<Integer|String>"] value elems = sorted.elements;

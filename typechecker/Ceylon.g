@@ -1222,8 +1222,8 @@ elementSelectionOperator returns [IndexOperator operator]
 enumeration returns [SequenceEnumeration sequenceEnumeration]
     : LBRACE { $sequenceEnumeration = new SequenceEnumeration($LBRACE); } 
       (
-        expressions
-        { $sequenceEnumeration.setExpressionList($expressions.expressionList); }
+        sequencedArgument
+        { $sequenceEnumeration.setSequencedArgument($sequencedArgument.sequencedArgument); }
       | 
         comprehension
         { $sequenceEnumeration.setComprehension($comprehension.comprehension); }
@@ -1347,6 +1347,10 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
       { sequencedArgument = new SequencedArgument(null);
         sequencedArgument.setExpressionList($expressions.expressionList);
         sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+      (
+        ELLIPSIS
+        { sequencedArgument.setEllipsis(new Ellipsis($ELLIPSIS)); }
+      )?
     ;
 
 namedArgument returns [NamedArgument namedArgument]

@@ -17,7 +17,7 @@ class Cell(String... content) {
 }
 
 class Row(Cell... cell) {
-    shared Cell[] cells = cell;
+    shared Cell[] cells = cell.sequence;
     shared actual String string {
         value result = StringBuilder();
         result.append("|");
