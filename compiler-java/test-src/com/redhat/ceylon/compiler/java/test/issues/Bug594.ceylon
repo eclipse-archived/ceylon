@@ -18,9 +18,13 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bug594() {
+void bug594<T>(T t) {
     Void s = "s";
+    String? s2 = "s";
     if (is String? s) {
+        // Empty
+    }
+    if (is String? t) {
         // Empty
     }
 }
