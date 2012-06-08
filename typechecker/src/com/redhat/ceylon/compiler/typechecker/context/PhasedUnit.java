@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.TypeHierarchyVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ValueVisitor;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -32,7 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Validator;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
-import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 
 /**
  * Represent a unit and each of the type checking phases
@@ -94,10 +94,11 @@ public class PhasedUnit {
         this.tokens = other.tokens;
         this.moduleVisitor = other.moduleVisitor;
         this.srcDir = other.srcDir;
-        this.treeValidated = treeValidated;
+        this.treeValidated = other.treeValidated;
         this.declarationsScanned = other.declarationsScanned;
         this.scanningDeclarations = other.scanningDeclarations;
         this.typeDeclarationsScanned = other.typeDeclarationsScanned;
+        this.fullyTyped = other.fullyTyped;
         this.refinementValidated = other.refinementValidated;
         this.flowAnalyzed = other.flowAnalyzed;
     }
