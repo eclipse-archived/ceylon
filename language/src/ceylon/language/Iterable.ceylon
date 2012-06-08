@@ -29,9 +29,12 @@ shared interface Iterable<out Element>
     doc "Returns an Iterable that will return the transformation of the original elements."
     shared default Iterable<Result> map<Result>(Result collecting(Element elem)) {
         object mapped satisfies Iterable<Result> {
+            value outerIterator {
+               return outer.iterator;
+            }
             shared actual Iterator<Result> iterator {
                 object mappedIterator satisfies Iterator<Result> {
-                    Iterator<Element> iter = outer.iterator;
+                    Iterator<Element> iter = outerIterator;
                     shared actual Result|Finished next() {
                         value e = iter.next();
                         if (is Element x=e) {
