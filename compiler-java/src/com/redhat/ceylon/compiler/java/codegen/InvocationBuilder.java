@@ -376,7 +376,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
         }
     }
 
-    private boolean isJavaMethod() {
+    protected boolean isJavaMethod() {
         if(!(primaryDeclaration instanceof Method))
             return false;
         return gen.isJavaMethod((Method) primaryDeclaration);
