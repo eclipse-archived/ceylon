@@ -213,13 +213,13 @@ class WithRefiningMethod() extends WithRefinedMethod() {
 
 class Qux() {
     shared default void print(String... strings) {}
-    shared default void print2(String[] strings) {}
+    shared default void print2(Iterable<String> strings) {}
     shared default void print3(String... strings) {}
 }
 
 class QuxQux() extends Qux() {
     actual shared default 
-    void print(String[] strings) {
+    void print(Iterable<String> strings) {
         for (string in strings) {
             pr(string);
         }
