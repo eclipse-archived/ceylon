@@ -1112,6 +1112,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * parameter itself 
      */
     static final int TP_TO_BOUND = 1<<0;
+    /** 
+     * Return the type of the sequenced parameter (T[]) rather than its element type (T) 
+     */
+    static final int TP_SEQUENCED_TYPE = 1<<1;
     
     ProducedType getTypeForParameter(Parameter parameter, ProducedReference producedReference, int flags) {
         if (parameter instanceof FunctionalParameter) {
@@ -1125,7 +1129,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         final TypedDeclaration producedParameterDecl = producedTypedReference.getDeclaration();
         final ProducedType declType = producedParameterDecl.getType();
         final TypeDeclaration declTypeDecl = declType.getDeclaration();
-        if(isJavaVariadic(parameter)){
+        if(isJavaVariadic(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
             // type of param must be T[]
             ProducedType elementType = typeFact.getElementType(type);
             if(elementType == null){
