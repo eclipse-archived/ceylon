@@ -37,6 +37,7 @@ public abstract class String
 
     @Ignore
     public static ceylon.language.String instance(java.lang.String s) {
+        if (s==null) return null;
         return s.isEmpty() ? StringOfNone.instance : new StringOfSome(s);
     }
 
