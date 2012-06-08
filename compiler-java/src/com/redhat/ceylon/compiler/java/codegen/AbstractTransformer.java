@@ -1660,6 +1660,84 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 makeFQIdent("ceylon", "language", "$finished", Util.getGetterName("$finished")),
                 List.<JCTree.JCExpression>nil());
     }
+
+    /**
+     * Turns a sequence into a Java array
+     * @param expr the sequence
+     * @param sequenceType the sequence type
+     * @param boxingStrategy the boxing strategy for expr
+     */
+    JCExpression sequenceToJavaArray(JCExpression expr, ProducedType sequenceType, BoxingStrategy boxingStrategy) {
+        String methodName = null;
+        // find the sequence element type
+        ProducedType type = typeFact().getElementType(sequenceType);
+        if(boxingStrategy == BoxingStrategy.UNBOXED){
+            if(isCeylonInteger(type)){
+                if("byte".equals(type.getUnderlyingType()))
+                    methodName = "toByteArray";
+                else if("short".equals(type.getUnderlyingType()))
+                    methodName = "toShortArray";
+                else if("int".equals(type.getUnderlyingType()))
+                    methodName = "toIntArray";
+                else
+                    methodName = "toLongArray";
+            }else if(isCeylonFloat(type)){
+                if("float".equals(type.getUnderlyingType()))
+                    methodName = "toFloatArray";
+                else
+                    methodName = "toDoubleArray";
+            } else if (isCeylonCharacter(type)) {
+                if ("char".equals(type.getUnderlyingType()))
+                    methodName = "toCharArray";
+                // else it must be boxed, right?
+            } else if (isCeylonBoolean(type)) {
+                if ("boolean".equals(type.getUnderlyingType()))
+                    methodName = "toBooleanArray";
+                // else it must be boxed, right?
+            } else if (isJavaString(type)) {
+                methodName = "toJavaStringArray";
+            } else if (isCeylonString(type)) {
+                return objectSequenceToJavaArray(type, sequenceType, expr);
+            }
+            if(methodName == null){
+                log.error("ceylon", "Don't know how to convert sequences of type "+type+" to Java array (This is a compiler bug)");
+                return expr;
+            }
+            // since T[] is erased to Iterable<T> we probably need a cast to FixedSized<T>
+            JCExpression seqTypeExpr = makeJavaType(typeFact().getFixedSizedType(sequenceType));
+            expr = make().TypeCast(seqTypeExpr, expr);
+            return makeUtilInvocation(methodName, List.of(expr), null);
+        }else{
+            return objectSequenceToJavaArray(type, sequenceType, expr);
+        }
+    }
+
+    private JCExpression objectSequenceToJavaArray(ProducedType type,
+            ProducedType sequenceType, JCExpression expr) {
+        JCExpression klass1 = makeJavaType(type, AbstractTransformer.CLASS_NEW | AbstractTransformer.NO_PRIMITIVES);
+        JCExpression klass2 = makeJavaType(type, AbstractTransformer.CLASS_NEW | AbstractTransformer.NO_PRIMITIVES);
+        String baseName = tempName();
+
+        String seqName = baseName +"$0";
+        JCExpression seqTypeExpr1 = makeJavaType(typeFact().getFixedSizedType(sequenceType));
+        JCExpression seqTypeExpr2 = makeJavaType(typeFact().getFixedSizedType(sequenceType));
+
+        JCExpression sizeExpr = make().Apply(List.<JCExpression>nil(), 
+                make().Select(makeUnquotedIdent(seqName), names().fromString("getSize")),
+                List.<JCExpression>nil());
+        sizeExpr = make().TypeCast(syms().intType, sizeExpr);
+
+        JCExpression newArrayExpr = make().NewArray(klass1, List.of(sizeExpr), null);
+        JCExpression sequenceToArrayExpr = makeUtilInvocation("toArray", 
+                List.of(makeUnquotedIdent(seqName), 
+                        newArrayExpr),
+                List.of(klass2));
+        
+        // since T[] is erased to Iterable<T> we probably need a cast to FixedSized<T>
+        JCExpression castedExpr = make().TypeCast(seqTypeExpr2, expr);
+        
+        return makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, castedExpr, sequenceToArrayExpr);
+    }
     
     /*
      * Variable name substitution
