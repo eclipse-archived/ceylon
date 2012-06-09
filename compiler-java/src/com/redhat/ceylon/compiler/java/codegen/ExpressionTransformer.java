@@ -487,10 +487,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.SequenceEnumeration value) {
         at(value);
         if (value.getComprehension() != null) {
-            return transformComprehension(value.getComprehension());
+            return make().Apply(null, make().Select(transformComprehension(value.getComprehension()), names().fromString("getSequence")), List.<JCExpression>nil());
         } else if (value.getSequencedArgument() != null) {
             java.util.List<Tree.Expression> list = value.getSequencedArgument().getExpressionList().getExpressions();
-            ProducedType seqElemType = value.getTypeModel().getTypeArgumentList().get(0);
+            ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
             return makeSequence(list, seqElemType);
         } else {
             return makeEmpty();
