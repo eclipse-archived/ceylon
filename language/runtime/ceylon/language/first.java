@@ -15,7 +15,7 @@ public final class first {
     private first() {
     }
     
-    @TypeInfo("Element")
+    @TypeInfo("Element|Nothing")
     @TypeParameters(@TypeParameter(value="Element"))
     public static <Element> Element first(@Name("elements") 
     @Sequenced @TypeInfo("ceylon.language.Iterable<Element>")
