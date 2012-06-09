@@ -19,7 +19,7 @@
  */
 class Foo(first = 1, Integer... initialRest={2, 3, 4}) {
     shared Integer first;
-    shared Integer[] rest = initialRest;
+    shared Iterable<Integer> rest = initialRest;
 }
 
 shared class InvocationTest() {
