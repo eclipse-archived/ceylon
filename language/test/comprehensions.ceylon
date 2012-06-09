@@ -25,6 +25,9 @@ void comprehensions() {
   assert({for (x in {1,2,"3.1",4}) if (is String x) x}.sequence=={"3.1"}, "comprehensions w/is 1");
   assert({for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i}.sequence=={3}, "comprehensions w/is 2");
   assert(array {for (k->v in entries("a","b","c","d","e")) if (k%2==0) v.uppercased}==array("A","C","E"), "key-value comprehensions");
+  //new comprehension-related functions
+  assert(any(for (x in 1..5) x>4), "any");
+  assert(every(for (x in 1..5) x>0), "every");
   //Newly found bugs here
   //ceylon-compiler#598
   value b598 = { for (x in 0..10) if (x%2==0) x**2 };
@@ -33,6 +36,6 @@ void comprehensions() {
   //ceylon-compiler#599
   value b599_1 = elements { for (x in "hello") x };
   value b599_2 = {b599_1...};
-  assert(b599_2 is Sequence<Void>, "ceylon-compiler #599 [2]");
-  assert(b599_1.sequence == b599_2, "ceylon-compiler #599 [3]");
+  assert(b599_2 is Sequence<Void>, "ceylon-compiler #599 [1]");
+  assert(b599_1.sequence == b599_2, "ceylon-compiler #599 [2]");
 }
