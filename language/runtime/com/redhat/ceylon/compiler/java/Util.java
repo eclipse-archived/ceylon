@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java;
 
-import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
