@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon @Object
 public final class process {
 	
-    java.lang.String newline = System.getProperty("line.separator");
+    java.lang.String newline = System.lineSeparator();
 
     /*@Ignore
     private static final class PropertiesMap implements Map<String, String> {
