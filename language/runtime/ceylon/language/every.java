@@ -14,7 +14,7 @@ public final class every {
     }
     
     @TypeInfo("ceylon.language.Boolean")
-    public static  boolean every(@Name("values") @Sequenced
+    public static boolean every(@Name("values") @Sequenced
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Boolean>")
     final Iterable<? extends Boolean> values) {
         java.lang.Object $tmp;
