@@ -50,12 +50,54 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
         return $Collection$impl.count(element);
     }
     private final .ceylon.language.Iterable$impl<T> $Iterable$impl;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public final .ceylon.language.Iterable<? extends T> getSequence() {
+        return $Iterable$impl.getSequence();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Result>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Result", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+    public <Result>.ceylon.language.Iterable<? extends Result> map(@.com.redhat.ceylon.compiler.java.metadata.Name("collecting")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<Result,Element>")
+    final .ceylon.language.Callable<? extends Result> collecting) {
+        return $Iterable$impl.map(collecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Element>")
+    public .ceylon.language.Iterable<? extends T> filter(@.com.redhat.ceylon.compiler.java.metadata.Name("selecting")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $Iterable$impl.filter(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Result")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Result", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+    public <Result>Result fold(@.com.redhat.ceylon.compiler.java.metadata.Name("initial")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Result")
+    final Result initial, @.com.redhat.ceylon.compiler.java.metadata.Name("accumulating")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<Result,Result,Element>")
+    final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $Iterable$impl.fold(initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element?")
+    public T find(@.com.redhat.ceylon.compiler.java.metadata.Name("selecting")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $Iterable$impl.find(selecting);
+    }
     private final .ceylon.language.Container$impl $Container$impl;
     private final .ceylon.language.Sized$impl $Sized$impl;
     private final .ceylon.language.Category$impl $Category$impl;
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsEvery$elements() {
         return $Category$impl.containsEvery$elements();
     }
@@ -70,13 +112,13 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
     public boolean containsEvery(@.com.redhat.ceylon.compiler.java.metadata.Name("elements")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
         return $Category$impl.containsEvery(elements);
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsAny$elements() {
         return $Category$impl.containsAny$elements();
     }
@@ -91,7 +133,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
     public boolean containsAny(@.com.redhat.ceylon.compiler.java.metadata.Name("elements")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
         return $Category$impl.containsAny(elements);
     }
@@ -105,7 +147,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesEvery$keys() {
         return $Correspondence$impl.definesEvery$keys();
     }
@@ -120,13 +162,13 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
     public boolean definesEvery(@.com.redhat.ceylon.compiler.java.metadata.Name("keys")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return $Correspondence$impl.definesEvery(keys);
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesAny$keys() {
         return $Correspondence$impl.definesAny$keys();
     }
@@ -141,13 +183,13 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
     public boolean definesAny(@.com.redhat.ceylon.compiler.java.metadata.Name("keys")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return $Correspondence$impl.definesAny(keys);
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> items$keys() {
         return $Correspondence$impl.items$keys();
     }
@@ -162,7 +204,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
     public .ceylon.language.Iterable<? extends T> items(@.com.redhat.ceylon.compiler.java.metadata.Name("keys")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return $Correspondence$impl.items(keys);
     }
@@ -266,12 +308,54 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
         return $Collection$impl.count(element);
     }
     private final .ceylon.language.Iterable$impl<T> $Iterable$impl;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public final .ceylon.language.Iterable<? extends T> getSequence() {
+        return $Iterable$impl.getSequence();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Result>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Result", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+    public <Result>.ceylon.language.Iterable<? extends Result> map(@.com.redhat.ceylon.compiler.java.metadata.Name("collecting")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<Result,Element>")
+    final .ceylon.language.Callable<? extends Result> collecting) {
+        return $Iterable$impl.map(collecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Element>")
+    public .ceylon.language.Iterable<? extends T> filter(@.com.redhat.ceylon.compiler.java.metadata.Name("selecting")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $Iterable$impl.filter(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Result")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Result", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+    public <Result>Result fold(@.com.redhat.ceylon.compiler.java.metadata.Name("initial")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Result")
+    final Result initial, @.com.redhat.ceylon.compiler.java.metadata.Name("accumulating")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<Result,Result,Element>")
+    final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $Iterable$impl.fold(initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element?")
+    public T find(@.com.redhat.ceylon.compiler.java.metadata.Name("selecting")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+    final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $Iterable$impl.find(selecting);
+    }
     private final .ceylon.language.Container$impl $Container$impl;
     private final .ceylon.language.Sized$impl $Sized$impl;
     private final .ceylon.language.Category$impl $Category$impl;
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsEvery$elements() {
         return $Category$impl.containsEvery$elements();
     }
@@ -286,13 +370,13 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
     public boolean containsEvery(@.com.redhat.ceylon.compiler.java.metadata.Name("elements")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
         return $Category$impl.containsEvery(elements);
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsAny$elements() {
         return $Category$impl.containsAny$elements();
     }
@@ -307,7 +391,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
     public boolean containsAny(@.com.redhat.ceylon.compiler.java.metadata.Name("elements")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
         return $Category$impl.containsAny(elements);
     }
@@ -321,7 +405,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesEvery$keys() {
         return $Correspondence$impl.definesEvery$keys();
     }
@@ -336,13 +420,13 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
     public boolean definesEvery(@.com.redhat.ceylon.compiler.java.metadata.Name("keys")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return $Correspondence$impl.definesEvery(keys);
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesAny$keys() {
         return $Correspondence$impl.definesAny$keys();
     }
@@ -357,13 +441,13 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
     public boolean definesAny(@.com.redhat.ceylon.compiler.java.metadata.Name("keys")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return $Correspondence$impl.definesAny(keys);
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> items$keys() {
         return $Correspondence$impl.items$keys();
     }
@@ -378,7 +462,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
     public .ceylon.language.Iterable<? extends T> items(@.com.redhat.ceylon.compiler.java.metadata.Name("keys")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<Key>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return $Correspondence$impl.items(keys);
     }
