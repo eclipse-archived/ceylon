@@ -38,6 +38,8 @@ shared void run() {
     testSets();
 	print("Iterables test (map/fold/filter/find)");
 	testIterables();
+    print("Testing comprehensions");
+    comprehensions();
     results();
 }
 
