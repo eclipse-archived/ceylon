@@ -172,6 +172,11 @@ function identityHash(obj) {
     return obj.identifiableObjectID;
 }
 
+//This is just so that you can pass a comprehension and return it as iterable
+function elements(iter) {
+    return iter;
+}
+exports.elements=elements;
 exports.exists=exists;
 exports.nonempty=nonempty;
 exports.isOfType=isOfType;
