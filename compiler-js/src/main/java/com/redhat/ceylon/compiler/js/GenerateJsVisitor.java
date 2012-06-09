@@ -1604,15 +1604,22 @@ public class GenerateJsVisitor extends Visitor
     public void visit(SequenceEnumeration that) {
         if (that.getComprehension() != null) {
             that.getComprehension().visit(this);
+            out(".getSequence()");
         } else if (that.getSequencedArgument() != null) {
-            out(clAlias, ".ArraySequence([");
-            boolean first=true;
-            for (Expression arg: that.getSequencedArgument().getExpressionList().getExpressions()) {
-                if (!first) out(",");
-                arg.visit(this);
-                first = false;
+            SequencedArgument sarg = that.getSequencedArgument();
+            if (sarg.getEllipsis() == null) {
+                out(clAlias, ".ArraySequence([");
+                boolean first=true;
+                for (Expression arg: sarg.getExpressionList().getExpressions()) {
+                    if (!first) out(",");
+                    arg.visit(this);
+                    first = false;
+                }
+                out("])");
+            } else {
+                sarg.getExpressionList().getExpressions().get(0).visit(this);
+                out(".getSequence()");
             }
-            out("])");
         } else {
             out(clAlias, ".empty");
         }
@@ -1633,8 +1640,10 @@ public class GenerateJsVisitor extends Visitor
         ComprehensionClause clause = that.getForComprehensionClause();
         int idx = 0;
         ExpressionComprehensionClause excc = null;
+        String prevItemVar = null;
         while (clause != null) {
             idx++;
+            String itemVar = null;
             if (clause instanceof ForComprehensionClause) {
                 ForComprehensionClause fcl = (ForComprehensionClause)clause;
                 SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
@@ -1656,7 +1665,6 @@ public class GenerateJsVisitor extends Visitor
                     endBlock(false); out(";");
                     endLine();
                 }
-                String itemVar = null;
                 if (fcl.getForIterator() instanceof ValueIterator) {
                     Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
                     comprehensions.add(item);
@@ -1664,9 +1672,8 @@ public class GenerateJsVisitor extends Visitor
                 } else if (fcl.getForIterator() instanceof KeyValueIterator) {
                     itemVar = String.format("item$%d", idx);
                     KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
-                    out("$cmp$.", names.getter(kviter.getKeyVariable().getDeclarationModel()), "=function(){return this.", itemVar, ".getKey();}");
-                    endLine();
-                    out("$cmp$.", names.getter(kviter.getValueVariable().getDeclarationModel()), "=function(){return this,", itemVar, ".getItem();}");
+                    comprehensions.add(kviter.getKeyVariable().getDeclarationModel());
+                    comprehensions.add(kviter.getValueVariable().getDeclarationModel());
                 } else {
                     that.addError("No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
                     return;
@@ -1696,6 +1703,13 @@ public class GenerateJsVisitor extends Visitor
                 }
                 out("return false;");
                 endBlock();
+                if (fcl.getForIterator() instanceof KeyValueIterator) {
+                    KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
+                    out("this.", names.name(kviter.getKeyVariable().getDeclarationModel()), "=this.", itemVar, ".getKey();");
+                    endLine();
+                    out("this.", names.name(kviter.getValueVariable().getDeclarationModel()), "=this.", itemVar, ".getItem();");
+                    endLine();
+                }
                 out("return true;");
                 endBlock(false); out(";"); endLine();
                 clause = fcl.getComprehensionClause();
@@ -1728,13 +1742,15 @@ public class GenerateJsVisitor extends Visitor
                 if (var!=null) {
                     comprehensions.remove(comprehensions.size()-1);
                 }
-                out("return this.", names.name(comprehensions.get(comprehensions.size()-1)), "!==", clAlias, ".getExhausted();");
+                out("return this.", prevItemVar, "!==", clAlias, ".getExhausted();");
+                //out("return this.", names.name(comprehensions.get(comprehensions.size()-1)), "!==", clAlias, ".getExhausted();");
                 //Add back the condition's attribute if present
                 if (var!=null) {
                     comprehensions.add(var.getDeclarationModel());
                 }
                 endBlock(false); out(";"); endLine();
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
+                itemVar = prevItemVar;
             } else if (clause instanceof ExpressionComprehensionClause) {
                 //Just keep a ref to the expression
                 excc = (ExpressionComprehensionClause)clause;
@@ -1743,6 +1759,7 @@ public class GenerateJsVisitor extends Visitor
                 that.addError("No support for comprehension clause of type " + clause.getClass().getName());
                 return;
             }
+            if (itemVar != null) prevItemVar = itemVar;
         }
         //Implement Iterator.next()
         out("$cmp$.next=function()"); beginBlock();
@@ -1761,7 +1778,7 @@ public class GenerateJsVisitor extends Visitor
         out(clAlias, ".initTypeProto(", compName, ", 'ceylon.language.ComprehensionIterator', ", clAlias, ".IdentifiableObject, ", clAlias, ".Iterator);");
         endLine();
         //Create the Iterable and return it
-        out("return ", clAlias, ".Comprehension(", compName, "());");
+        out("return ", clAlias, ".Comprehension(", compName, ");");
         endBlock(false);
         out("())");
     }
