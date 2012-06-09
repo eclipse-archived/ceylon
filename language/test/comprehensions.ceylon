@@ -25,10 +25,16 @@ void comprehensions() {
   assert({for (x in {1,2,"3.1",4}) if (is String x) x}.sequence=={"3.1"}, "comprehensions w/is 1");
   assert({for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i}.sequence=={3}, "comprehensions w/is 2");
   assert(array {for (k->v in entries("a","b","c","d","e")) if (k%2==0) v.uppercased}==array("A","C","E"), "key-value comprehensions");
+
   //new comprehension-related functions
   assert(any(for (x in 1..5) x>4), "any");
   assert(every(for (x in 1..5) x>0), "every");
-  //Newly found bugs here
+  if (exists ff=first(for (x in 1..5) if (x>3) x)) {
+    assert(ff==4, "first [1]");
+  } else { fail("first [1]"); }
+  assert(!exists first(for (x in 1..5) if (x%6==0) x), "first [2]");
+
+  //*************Newly found bugs here
   //ceylon-compiler#598
   value b598 = { for (x in 0..10) if (x%2==0) x**2 };
   assert(b598 is Sequence<Void>, "ceylon-compiler #598 [1]");
