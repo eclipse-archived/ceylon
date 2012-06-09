@@ -57,6 +57,10 @@ shared object process {
          1 January 1970."
     shared Integer milliseconds { throw; }
     
+    doc "The elapsed time in nanoseconds since an arbitrary
+         starting point."
+    shared Integer nanoseconds { throw; }
+    
     shared void exit(Integer code) { throw; }
     
     shared actual String string {

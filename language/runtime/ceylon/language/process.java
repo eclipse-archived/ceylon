@@ -241,6 +241,10 @@ public final class process {
     	return System.currentTimeMillis();
     }
     
+    public long getNanoseconds() {
+        return System.nanoTime();
+    }
+    
     public void exit(long code) {
     	System.exit((int) code);
     }
