@@ -35,7 +35,8 @@ Iterable.$$.prototype.getSequence = function() {
     return ArraySequence(a);
 }
 Iterable.$$.prototype.map = function(mapper) {
-    function mapped$iter(iter, mapper){
+    var iter = this.getIterator();
+    function mapped$iter(){
         var $cmp$=new mapped$iter.$$;
         IdentifiableObject(mapped$iter);
         $cmp$.iter=iter;
@@ -49,10 +50,11 @@ Iterable.$$.prototype.map = function(mapper) {
         return $cmp$;
     }
     initTypeProto(mapped$iter, 'ceylon.language.MappedIterator', IdentifiableObject, Iterator);
-    return Comprehension(mapped$iter(this.getIterator(), mapper));
+    return Comprehension(mapped$iter);
 }
 Iterable.$$.prototype.filter = function(select) {
-    function filtered$iter(iter, select){
+    var iter = this.getIterator();
+    function filtered$iter(){
         var $cmp$=new filtered$iter.$$;
         IdentifiableObject(filtered$iter);
         $cmp$.iter=iter;
@@ -69,7 +71,7 @@ Iterable.$$.prototype.filter = function(select) {
         return $cmp$;
     }
     initTypeProto(filtered$iter, 'ceylon.language.FilteredIterator', IdentifiableObject, Iterator);
-    return Comprehension(filtered$iter(this.getIterator(), select));
+    return Comprehension(filtered$iter);
 }
 Iterable.$$.prototype.fold = function(ini, accum) {
     var r = ini;
@@ -475,6 +477,6 @@ function Comprehension(iterator) {
 }
 initTypeProto(Comprehension, 'ceylon.language.Comprehension', IdentifiableObject, Iterable);
 Comprehension.$$.prototype.getIterator=function() {
-    return this.iterator;
+    return this.iterator();
 };
 exports.Comprehension=Comprehension;
