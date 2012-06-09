@@ -208,6 +208,11 @@ shared void strings() {
     assert(!"".split(null, true).empty, "\"\".split(null,true) is empty");
     assert(!"hello".split(null, true).empty, "hello.split(null,true) is empty");
     assert("hello world".split(null, true).iterator.next()=="hello", "string split first 3");
+    assert({"hello world".split(" ", true)...}.size==2, "string split 1");
+    assert({"hello world".split(" ")...}.size==3, "string split 2");
+    assert({"hello world".split()...}.size==3, "string split 3");
+    assert({"hello world".split("l", true)...}.size==3, "string split 4");
+    assert({"hello world".split("l")...}.size==6, "string split 5");
     variable value count:=0;
     for (tok in "hello world goodbye".split(" ", true)) {
         count++;
