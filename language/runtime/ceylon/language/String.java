@@ -502,7 +502,18 @@ public abstract class String
         }
         java.lang.String delims;
         if (separators==null) {
-            delims = " \t\n\r\f";
+            //scan the string looking for unicode
+            //whitespace characters
+            //TODO: this is *really* inefficient!
+            java.lang.StringBuilder buf = new java.lang.StringBuilder();
+            for (int i=0; i<value.length(); i++){
+                char ch = value.charAt(i);
+                if (java.lang.Character.isWhitespace(ch) &&
+                        buf.indexOf(java.lang.String.valueOf(ch))<0) {
+                    buf.append(ch);
+                }
+            }
+            delims = buf.toString();
         }
         else if (separators instanceof String) {
             delims = separators.toString();
@@ -510,14 +521,28 @@ public abstract class String
         else {
             java.lang.StringBuilder builder = new java.lang.StringBuilder();
             java.lang.Object elem;
-            for (Iterator<? extends Character> iter=separators.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+            for (Iterator<? extends Character> iter=separators.getIterator(); 
+                    !((elem = iter.next()) instanceof Finished);) {
                 builder.append(elem);
             }
             delims = builder.toString();
         }
         return new Tokens(value, delims, !discardSeparators);
     }
+    
+    @Ignore
+    public Iterable<? extends String> split(
+            Iterable<? extends Character> separators) {
+        return split(separators, split$discardSeparators(separators));
 
+    }
+    
+    @Ignore
+    public Iterable<? extends String> split() {
+        return split(split$separators());
+
+    }
+    
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     public Iterable<? extends String> getLines() {
         return split(instance("\n"), true);

@@ -24,7 +24,14 @@ shared abstract class String()
          are given, split the string at any unicode 
          whitespace character."
     shared formal Iterable<String> split(
+            doc "The separator characters at which to split.
+                 If `null`, split at any unicode whitespace
+                 character."
             Iterable<Character>? separators=null,
+            doc "Specifies that the separator characters
+                 occurring in the string should be discarded.
+                 If `false`, they will be included in the
+                 resulting iterator."
             Boolean discardSeparators=false);
     
     doc "Join the given strings, using this string as a 
