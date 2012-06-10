@@ -15,5 +15,5 @@ public interface Closeable {
     @Annotations(@Annotation("formal"))
     void close(@Name("exception") 
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Exception") 
-    Exception exception);
+    java.lang.Throwable exception);
 }
