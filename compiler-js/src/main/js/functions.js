@@ -201,27 +201,6 @@ function identityHash(obj) {
 function elements(iter) {
     return iter;
 }
-//TODO any, every, first
-function any(iter /*booleans*/) {
-    var iter = iter.getIterator();
-    var elem; while ((elem = iter.next()) !== $finished) {
-        if (elem === $true) return $true;
-    }
-    return $false;
-}
-function every(iter /*booleans*/) {
-    var iter = iter.getIterator();
-    var elem; while ((elem = iter.next()) !== $finished) {
-        if (elem === $false) return $false;
-    }
-    return $true;
-}
-function first() {
-    
-}
-
-exports.any=any;
-exports.every=every;
 exports.elements=elements;
 exports.exists=exists;
 exports.nonempty=nonempty;
