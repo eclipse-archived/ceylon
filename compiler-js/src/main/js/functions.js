@@ -100,6 +100,28 @@ function entries(seq) {
     return ArraySequence(e);
 }
 
+function any(/*Boolean...*/ values) {
+    var it = values.getIterator();
+    var v;
+    while ((v = it.next()) !== $finished) {
+        if (v === $true) {return $true;}
+    }
+    return $false;
+}
+function every(/*Boolean...*/ values) {
+    var it = values.getIterator();
+    var v;
+    while ((v = it.next()) !== $finished) {
+        if (v === $false) {return $false;}
+    }
+    return $true;
+}
+
+function first(/*Element...*/ elements) {
+    var e = elements.getIterator().next();
+    return (e !== $finished) ? e : null;
+}
+
 exports.min=min;
 exports.max=max;
 exports.join=join;
@@ -108,6 +130,9 @@ exports.coalesce=coalesce;
 exports.append=append;
 exports.prepend=prepend;
 exports.entries=entries;
+exports.any=any;
+exports.every=every;
+exports.first=first;
 
 //These are operators for handling nulls
 function exists(value) {
