@@ -1515,5 +1515,13 @@ public class ProducedType extends ProducedReference {
         return getDeclaration().getQualifiedNameString()
                 .equals("ceylon.language.Callable");
     }
-
+    
+    public ProducedType withoutUnderlyingType() {
+        ProducedType pt = new ProducedType();
+        pt.setDeclaration(getDeclaration());
+        pt.setQualifyingType(getQualifyingType());
+        pt.setTypeArguments(getTypeArguments());
+        return pt;
+    }
+    
 }
