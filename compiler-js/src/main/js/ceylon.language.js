@@ -301,6 +301,7 @@ Comparison$proto.getString = function() { return this.name; }
 
 //#include functions.js
 //#include sequences.js
+//#include process.js
 
 function Range(first, last) {
     var that = new Range.$$;

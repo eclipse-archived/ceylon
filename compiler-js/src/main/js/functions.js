@@ -8,7 +8,7 @@ function Integer(x){}//IGNORE
 function Boolean$(f){}//IGNORE
 function String$(f,x){}//IGNORE
 
-function print(line) { console.log(line.getString().value) }
+function print(line) { process$.writeLine(line.getString()); }
 exports.print=print;
 
 var larger = Comparison("larger");
