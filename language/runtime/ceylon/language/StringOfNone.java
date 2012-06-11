@@ -1,8 +1,10 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
+@Ceylon
 class StringOfNone extends String implements None<Character> {
     
     static StringOfNone instance = new StringOfNone();

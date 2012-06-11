@@ -502,6 +502,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 }
 
 @Ignore
+@Ceylon
 class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
     public ArrayOfNone() {
@@ -531,6 +532,7 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 }
 
 @Ignore
+@Ceylon
 class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
 
     public ArrayOfSome(char... array) {

@@ -58,6 +58,7 @@ public interface Correspondence<Key,Item> {
     public Iterable<? extends Key> items$keys();
 
     @Ignore
+    @Ceylon
     class Items<Key,Item>
             implements Sequence<Item> {
         private Sequence<? extends Key> keys;

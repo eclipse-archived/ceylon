@@ -1,8 +1,10 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
+@Ceylon
 class StringOfSome extends String implements Some<Character> {
     
     StringOfSome(java.lang.String s) { 

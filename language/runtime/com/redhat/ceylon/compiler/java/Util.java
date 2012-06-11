@@ -35,18 +35,31 @@ public class Util {
     private static boolean classExtendsClass(java.lang.Class<?> klass, String className) {
         if(klass == null)
             return false;
-        if ((className.equals("ceylon.language.IdentifiableObject") /*|| 
-             className.equals("ceylon.language.Equality")*/)
+        if (klass.getName().equals(className))
+            return true;
+        if ((className.equals("ceylon.language.IdentifiableObject"))
                 && klass!=java.lang.Object.class
+                //&& klass!=java.lang.String.class
         		&& !klass.isAnnotationPresent(Ceylon.class)) {
         	//TODO: this is broken for a Java class that
         	//      extends a Ceylon class
         	return true;
         }
         Class classAnnotation = klass.getAnnotation(Class.class);
-        if(classAnnotation != null
-                && classAnnotation.extendsType().equals(className))
-            return true;
+        if (classAnnotation != null) {
+            String superclassName = classAnnotation.extendsType();
+            int i = superclassName.indexOf('<');
+            if (i>0) {
+                superclassName = superclassName.substring(0, i);
+            }
+            try {
+                return classExtendsClass(
+                        java.lang.Class.forName(superclassName), 
+                        className);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return classExtendsClass(klass.getSuperclass(), className);
     }
     
@@ -67,29 +80,67 @@ public class Util {
             Set<java.lang.Class<?>> alreadyVisited) {
         if(klass == null)
             return false;
+        if ((className.equals("ceylon.language.Identifiable"))
+                && klass!=java.lang.Object.class
+                //&& klass!=java.lang.String.class
+                && !klass.isAnnotationPresent(Ceylon.class)) {
+            //TODO: this is broken for a Java class that
+            //      extends a Ceylon class
+            return true;
+        }
         // try the interfaces
         if(lookForInterface(klass, className, alreadyVisited))
             return true;
         // try its superclass
+        Class classAnnotation = klass.getAnnotation(Class.class);
+        if (classAnnotation!=null) {
+            String superclassName = classAnnotation.extendsType();
+            int i = superclassName.indexOf('<');
+            if (i>0) {
+                superclassName = superclassName.substring(0, i);
+            }
+            if (!superclassName.isEmpty()) {
+                try {
+                    return classSatisfiesInterface(
+                            java.lang.Class.forName(superclassName), 
+                            className, alreadyVisited);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
         return classSatisfiesInterface(klass.getSuperclass(), className, alreadyVisited);
     }
 
     private static boolean lookForInterface(java.lang.Class<?> klass, String className, 
             Set<java.lang.Class<?>> alreadyVisited){
+        if (klass.getName().equals(className))
+            return true;
         // did we already visit this type?
         if(!alreadyVisited.add(klass))
             return false;
         // first see if it satisfies it directly
-        SatisfiedTypes classAnnotation = klass.getAnnotation(SatisfiedTypes.class);
-        if(classAnnotation != null){
-            for(String satisfiedType : classAnnotation.value()){
-                if(satisfiedType.equals(className))
-                    return true;
+        SatisfiedTypes satisfiesAnnotation = klass.getAnnotation(SatisfiedTypes.class);
+        if (satisfiesAnnotation!=null){
+            for (String satisfiedType : satisfiesAnnotation.value()){
+                int i = satisfiedType.indexOf('<');
+                if (i>0) {
+                    satisfiedType = satisfiedType.substring(0, i);
+                }
+                try {
+                    if (lookForInterface(
+                            java.lang.Class.forName(satisfiedType), 
+                            className, alreadyVisited)) {
+                        return true;
+                    }
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         // now look at this class's interfaces
-        for(java.lang.Class<?> intrface : klass.getInterfaces()){
-            if(lookForInterface(intrface, className, alreadyVisited))
+        for (java.lang.Class<?> intrface : klass.getInterfaces()){
+            if (lookForInterface(intrface, className, alreadyVisited))
                 return true;
         }
         // no luck

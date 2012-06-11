@@ -2,12 +2,14 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
+@Ceylon
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes("ceylon.language.Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {
