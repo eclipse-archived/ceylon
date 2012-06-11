@@ -3252,9 +3252,12 @@ public class ExpressionVisitor extends Visitor {
                     e.addError("case must refer to a toplevel object declaration");
                 }
                 if (switchExpression!=null) {
-                    if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
-                        checkAssignable(t, switchExpression.getTypeModel(), e, 
-                                "case must be assignable to switch expression type");
+                    ProducedType st = switchExpression.getTypeModel();
+                    if (st!=null && !(st.getDeclaration() instanceof UnknownType)) {
+                        if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(t)) {
+                            checkAssignable(t, st, e, 
+                                    "case must be assignable to switch expression type");
+                        }
                     }
                 }
             }
