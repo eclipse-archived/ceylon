@@ -497,7 +497,7 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     @Test
-    public void loadGettersWithUnderscores_error(){
+    public void loadGettersWithUnderscores(){
         verifyClassLoading("GettersWithUnderscores.ceylon");
     }
 
