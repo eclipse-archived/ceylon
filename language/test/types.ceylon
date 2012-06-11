@@ -103,7 +103,6 @@ void types() {
     
     assert(is Object bool, "boolean type is object");
     assert(is IdentifiableObject bool, "boolean type is identifiable");
-    print(className(bool else "foobar"));
     //assert(is Equality bool, "boolean type is equality");
     assert(!is Nothing bool, "not null boolean type is not nothing");
     assert(is Boolean bool, "boolean type 1");
@@ -215,8 +214,10 @@ void types() {
     assert(className(1.0)=="ceylon.language.Float", "float classname");
     assert(className("hello")=="ceylon.language.StringOfSome", "string classname");
     assert(className("")=="ceylon.language.StringOfNone", "string classname");
-    assert(className(` `)=="ceylon.language.Character", "string classname");
+    assert(className(` `)=="ceylon.language.Character", "character classname");
     assert(className(1->"hello")=="ceylon.language.Entry", "entry classname");
+    assert(className(true)=="ceylon.language.true", "true classname");
+    assert(className(false)=="ceylon.language.false", "false classname");
 
     //from ceylon-js
     value pair = TypesPair("hello", "world");
