@@ -35,6 +35,8 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -64,6 +66,37 @@ public class CMRTest extends CompilerTest {
     //
     // Modules
     
+    @Test
+    public void testMdlByName() throws IOException{
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(path+"/module/byName");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                null,
+                Arrays.asList("default", "mod"));
+        Boolean ret = task.call();
+        assertTrue(ret);
+
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry moduleClass = car.getEntry("def/Foo.class");
+        assertNotNull(moduleClass);
+        car.close();
+
+        carFile = getModuleArchive("mod", "1");
+        assertTrue(carFile.exists());
+
+        car = new JarFile(carFile);
+
+        moduleClass = car.getEntry("mod/module.class");
+        assertNotNull(moduleClass);
+        car.close();
+    }
+
     @Test
     public void testMdlModuleDefault() throws IOException{
         compile("module/def/CeylonClass.ceylon");
