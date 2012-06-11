@@ -48,7 +48,6 @@ public class PhasedUnit {
     private final ModuleManager moduleManager;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
-    private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
     private List<CommonToken> tokens;
     private ModuleVisitor moduleVisitor;
     private VirtualFile srcDir;
@@ -90,7 +89,6 @@ public class PhasedUnit {
         this.moduleManager = other.moduleManager;
         this.pathRelativeToSrcDir = other.pathRelativeToSrcDir;
         this.unitFile = other.unitFile;
-        this.dependentsOf.addAll(other.dependentsOf);
         this.tokens = other.tokens;
         this.moduleVisitor = other.moduleVisitor;
         this.srcDir = other.srcDir;
@@ -297,13 +295,6 @@ public class PhasedUnit {
         return compilationUnit;
     }
 
-    /**
-     * @return the dependentsOf
-     */
-    public Set<PhasedUnit> getDependentsOf() {
-        return dependentsOf;
-    }
-    
     public List<CommonToken> getTokens() {
         return tokens;
     }

@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 
 public class Unit {
@@ -24,6 +25,8 @@ public class Unit {
 	private List<ImportList> importLists = new ArrayList<ImportList>();
 	private Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
 	private Set<Declaration> duplicateDeclarations = new HashSet<Declaration>();
+    private final Set<String> dependentsOf = new HashSet<String>();
+
     
     public List<Import> getImports() {
         return imports;
@@ -33,6 +36,13 @@ public class Unit {
         return importLists;
     }
 
+    /**
+     * @return the dependentsOf
+     */
+    public Set<String> getDependentsOf() {
+        return dependentsOf;
+    }
+    
     public Set<Identifier> getUnresolvedReferences() {
         return unresolvedReferences;
     }

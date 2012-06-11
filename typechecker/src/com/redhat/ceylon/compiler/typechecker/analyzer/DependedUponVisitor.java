@@ -67,21 +67,23 @@ public class DependedUponVisitor extends Visitor {
             }
             Unit declarationUnit = d.getUnit();
             Unit currentUnit = phasedUnit.getUnit();
+            String currentUnitPath = phasedUnit.getUnitFile().getPath();
             if (declarationUnit != null) {
                 String currentUnitName = getSrcFolderRelativePath(currentUnit);
                 String dependedOnUnitName = getSrcFolderRelativePath(declarationUnit);
                 if (! dependedOnUnitName.equals(currentUnitName)) {
                     if (declarationUnit instanceof ExternalUnit) {
-                        ((ExternalUnit) declarationUnit).getDependentsOf().add(phasedUnit);
+                        declarationUnit.getDependentsOf().add(currentUnitPath);
                     } else {
+                        // TODO : this else block might probably be treatd now just as the if one.
                         PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
-                        if (dependedOnPhasedUnit != null) {
-                            dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);
+                        if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
+                            dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
                         } else {
                             for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
                                 dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitName);
-                                if (dependedOnPhasedUnit != null) {
-                                    dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);
+                                if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
+                                    dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
                                     break;
                                 }
                             }
