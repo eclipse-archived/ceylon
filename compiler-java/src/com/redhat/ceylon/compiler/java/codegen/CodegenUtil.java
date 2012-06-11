@@ -184,10 +184,14 @@ class CodegenUtil {
     static String getGetterName(Declaration decl) {
         // always use the refined decl
         decl = decl.getRefinedDeclaration();
-        if(decl instanceof JavaBeanValue){
+        if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getGetterName();
         }
-        return Util.getGetterName(decl.getName());
+        if (Decl.withinClassOrInterface(decl)) {
+            return Util.getErasedGetterName(decl.getName());
+        } else {
+            return Util.getGetterName(decl.getName());
+        }
     }
 
     static String getSetterName(Declaration decl){
