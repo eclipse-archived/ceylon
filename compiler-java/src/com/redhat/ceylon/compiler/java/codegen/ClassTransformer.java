@@ -1386,10 +1386,8 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private JCMethodDecl makeMainForFunction(Method method) {
         at(null);
-        String name = method.getName();
         String path = method.getQualifiedNameString();
-        path += "." + name;
-        JCExpression qualifiedName = makeQuotedFQIdent(path);
+        JCExpression qualifiedName = makeSelect(makeQuotedFQIdent(path), CodegenUtil.quoteMethodName(method));
         JCMethodDecl mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil()));
         return mainMethod;
     }

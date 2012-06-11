@@ -1441,7 +1441,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primaryExpr = null;
                 // Only want to quote the method name 
                 // e.g. enum.$enum()
-                qualExpr = makeQuotedQualIdent(makeQualIdent(path), decl.getName());
+                qualExpr = makeQuotedQualIdent(makeQualIdent(path), CodegenUtil.quoteMethodName(decl));
                 selector = null;
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
@@ -1456,7 +1456,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // class
                 path.add(topClsName);
                 // method
-                path.add(decl.getName());
+                path.add(CodegenUtil.quoteMethodName(decl));
                 primaryExpr = null;
                 qualExpr = makeQuotedQualIdent(path);
                 selector = null;
