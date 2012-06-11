@@ -212,7 +212,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(willEraseToObject(exprType)){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
-                exprType = expectedType.getDeclaration().getProducedType(expectedType.getQualifyingType(), expectedType.getTypeArgumentList());
+                exprType = expectedType.withoutUnderlyingType();
                 // Erased types need a type cast
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
                 result = make().TypeCast(targetType, result);

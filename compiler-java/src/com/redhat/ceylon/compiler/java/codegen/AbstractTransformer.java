@@ -514,8 +514,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             type = typeFact().getDefiniteType(type);
             if (type.getUnderlyingType() != null) {
                 // A definite type should not have its underlyingType set so we make a copy
-                type = type.getProducedType(null, type.getDeclaration(), type.getTypeArgumentList());
-                type.setUnderlyingType(null);
+                type = type.withoutUnderlyingType();
             }
         }
         
