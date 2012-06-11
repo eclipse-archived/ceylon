@@ -1007,10 +1007,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return refinedDeclaration;
     }
 
+    private boolean isStartOfJavaBeanPropertyName(char c){
+        return Character.isUpperCase(c) || c == '_'; 
+    }
+    
     private boolean isGetter(MethodMirror methodMirror) {
         String name = methodMirror.getName();
-        boolean matchesGet = name.length() > 3 && name.startsWith("get") && Character.isUpperCase(name.charAt(3));
-        boolean matchesIs = name.length() > 2 && name.startsWith("is") && Character.isUpperCase(name.charAt(2));
+        boolean matchesGet = name.length() > 3 && name.startsWith("get") && isStartOfJavaBeanPropertyName(name.charAt(3));
+        boolean matchesIs = name.length() > 2 && name.startsWith("is") && isStartOfJavaBeanPropertyName(name.charAt(2));
         boolean hasNoParams = methodMirror.getParameters().size() == 0;
         boolean hasNonVoidReturn = (methodMirror.getReturnType().getKind() != TypeKind.VOID);
         return (matchesGet || matchesIs) && hasNoParams && hasNonVoidReturn;
@@ -1018,7 +1022,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private boolean isSetter(MethodMirror methodMirror) {
         String name = methodMirror.getName();
-        boolean matchesSet = name.length() > 3 && name.startsWith("set") && Character.isUpperCase(name.charAt(3));
+        boolean matchesSet = name.length() > 3 && name.startsWith("set") && isStartOfJavaBeanPropertyName(name.charAt(3));
         boolean hasOneParam = methodMirror.getParameters().size() == 1;
         boolean hasVoidReturn = (methodMirror.getReturnType().getKind() == TypeKind.VOID);
         return matchesSet && hasOneParam && hasVoidReturn;
