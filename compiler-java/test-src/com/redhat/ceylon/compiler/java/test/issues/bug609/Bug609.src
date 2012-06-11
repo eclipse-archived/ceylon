@@ -1,0 +1,257 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug609;
+
+final class wait {
+    
+    private wait() {
+    }
+    
+    static void $wait() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.wait.$wait();
+    }
+}
+final class notify {
+    
+    private notify() {
+    }
+    
+    static void $notify() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.notify.$notify();
+    }
+}
+final class notifyAll {
+    
+    private notifyAll() {
+    }
+    
+    static void $notifyAll() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.notifyAll.$notifyAll();
+    }
+}
+final class getClass {
+    
+    private getClass() {
+    }
+    
+    static void $getClass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.getClass.$getClass();
+    }
+}
+final class finalize {
+    
+    private finalize() {
+    }
+    
+    static void $finalize() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.finalize.$finalize();
+    }
+}
+final class clone {
+    
+    private clone() {
+    }
+    
+    static void $clone() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.clone.$clone();
+    }
+}
+final class bug609test {
+    
+    private bug609test() {
+    }
+    
+    static void bug609test() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.wait.$wait();
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.notify.$notify();
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.notifyAll.$notifyAll();
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.getClass.$getClass();
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.finalize.$finalize();
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.clone.$clone();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.bug609test.bug609test();
+    }
+}
+final class bug609mth {
+    
+    private bug609mth() {
+    }
+    
+    static void bug609mth() {
+        
+        final class wait {
+            
+            private wait() {
+            }
+            
+            void $wait() {
+            }
+        }
+        final wait wait = new wait();
+        
+        final class notify {
+            
+            private notify() {
+            }
+            
+            void $notify() {
+            }
+        }
+        final notify notify = new notify();
+        
+        final class notifyAll {
+            
+            private notifyAll() {
+            }
+            
+            void $notifyAll() {
+            }
+        }
+        final notifyAll notifyAll = new notifyAll();
+        
+        final class getClass {
+            
+            private getClass() {
+            }
+            
+            void $getClass() {
+            }
+        }
+        final getClass getClass = new getClass();
+        
+        final class finalize {
+            
+            private finalize() {
+            }
+            
+            void $finalize() {
+            }
+        }
+        final finalize finalize = new finalize();
+        
+        final class clone {
+            
+            private clone() {
+            }
+            
+            void $clone() {
+            }
+        }
+        final clone clone = new clone();
+        wait.$wait();
+        notify.$notify();
+        notifyAll.$notifyAll();
+        getClass.$getClass();
+        finalize.$finalize();
+        clone.$clone();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug609.bug609mth.bug609mth();
+    }
+}
+class Bug609cls {
+    
+    private final void mth() {
+        
+        final class wait {
+            
+            private wait() {
+            }
+            
+            void $wait() {
+            }
+        }
+        final wait wait = new wait();
+        
+        final class notify {
+            
+            private notify() {
+            }
+            
+            void $notify() {
+            }
+        }
+        final notify notify = new notify();
+        
+        final class notifyAll {
+            
+            private notifyAll() {
+            }
+            
+            void $notifyAll() {
+            }
+        }
+        final notifyAll notifyAll = new notifyAll();
+        
+        final class getClass {
+            
+            private getClass() {
+            }
+            
+            void $getClass() {
+            }
+        }
+        final getClass getClass = new getClass();
+        
+        final class finalize {
+            
+            private finalize() {
+            }
+            
+            void $finalize() {
+            }
+        }
+        final finalize finalize = new finalize();
+        
+        final class clone {
+            
+            private clone() {
+            }
+            
+            void $clone() {
+            }
+        }
+        final clone clone = new clone();
+        wait.$wait();
+        notify.$notify();
+        notifyAll.$notifyAll();
+        getClass.$getClass();
+        finalize.$finalize();
+        clone.$clone();
+    }
+    
+    Bug609cls() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug609.Bug609cls();
+    }
+}
