@@ -504,7 +504,8 @@ public class Main extends com.sun.tools.javac.main.Main {
             boolean gotOne = false;
             for(JavaFileObject file : files){
                 File f = new File(file.toUri().getPath());
-                filenames = filenames.prepend(f);
+                if(!filenames.contains(f))
+                    filenames = filenames.prepend(f);
                 gotOne = true;
             }
             if(!gotOne){
