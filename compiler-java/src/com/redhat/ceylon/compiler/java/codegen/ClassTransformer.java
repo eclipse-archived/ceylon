@@ -259,7 +259,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     PUBLIC | FINAL, 
                                     typeParameters,  
                                     typedMember.getType(), 
-                                    CodegenUtil.quoteMethodName(method.getName()), 
+                                    CodegenUtil.quoteMethodName(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model));
                             classBuilder.defs(overload);
@@ -276,7 +276,7 @@ public class ClassTransformer extends AbstractTransformer {
                             PUBLIC, 
                             method.getTypeParameters(), 
                             method.getType(), 
-                            CodegenUtil.quoteMethodName(method.getName()), 
+                            CodegenUtil.quoteMethodName(method), 
                             method.getParameterLists().get(0).getParameters(),
                             Decl.isAncestorLocal(model));
                     classBuilder.defs(concreteMemberDelegate);

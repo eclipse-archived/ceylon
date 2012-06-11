@@ -1462,7 +1462,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                selector = CodegenUtil.quoteMethodName(CodegenUtil.quoteMethodNameIfProperty((Method) decl, gen()));
+                selector = Util.getErasedMethodName(CodegenUtil.quoteMethodNameIfProperty((Method) decl, gen()));
             }
         }
         if (result == null) {
@@ -1470,7 +1470,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (qualExpr == null && selector == null) {
                 useGetter = decl.isClassOrInterfaceMember() && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
-                    selector = CodegenUtil.quoteMethodName(decl.getName());
+                    selector = CodegenUtil.quoteMethodName(decl);
                 } else {
                     selector = substitute(decl.getName());
                 }
