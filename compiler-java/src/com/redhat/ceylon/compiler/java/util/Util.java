@@ -116,11 +116,36 @@ public class Util {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
+    public static String getErasedMethodName(String name) {
+        // ERASURE
+        if ("hash".equals(name)) {
+            return "hashCode";
+        } else if ("string".equals(name)) {
+            return "toString";
+        } else if ("equals".equals(name)) {
+            // This is a special case where we override the mangling of getMethodName()
+            return "equals";
+        } else {
+            return getMethodName(name);
+        }
+    }
+
+    public static String getMethodName(String name) {
+        // ERASURE
+        if ("hashCode".equals(name)) {
+            return "$hashCode";
+        } else if ("toString".equals(name)) {
+            return "$toString";
+        } else if ("equals".equals(name)) {
+            return "$equals";
+        } else {
+            return quoteIfJavaKeyword(name);
+        }
+    }
+
     public static String getErasedGetterName(String property) {
         // ERASURE
         if ("hash".equals(property)) {
-            // FIXME This is NOT the way to handle this, we should check that we're
-            // actually trying to override the hash attribute defined in Equality
             return "hashCode";
         } else if ("string".equals(property)) {
             return "toString";

@@ -166,18 +166,14 @@ class CodegenUtil {
         return name;
     }
 
-    static String quoteMethodName(String name){
-        // ERASURE
-        if ("hash".equals(name)) {
-            return "hashCode";
-        } else if ("string".equals(name)) {
-            return "toString";
-        } else if ("hashCode".equals(name)) {
-            return "$hashCode";
-        } else if ("toString".equals(name)) {
-            return "$toString";
+    static String quoteMethodName(Declaration decl){
+        // always use the refined decl
+        decl = decl.getRefinedDeclaration();
+        String name = decl.getName();
+        if (Decl.withinClassOrInterface(decl)) {
+            return Util.getErasedMethodName(name);
         } else {
-            return Util.quoteIfJavaKeyword(name);
+            return Util.getMethodName(name);
         }
     }
 
