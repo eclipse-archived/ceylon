@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class SequenceMethodSpecifyingMethodWithVarargs {
+class IterableMethodSpecifyingMethodWithVarargs {
     
     private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
@@ -24,11 +24,11 @@ class SequenceMethodSpecifyingMethodWithVarargs {
         foo(ints);
     }
     
-    SequenceMethodSpecifyingMethodWithVarargs() {
+    IterableMethodSpecifyingMethodWithVarargs() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.method.SequenceMethodSpecifyingMethodWithVarargs();
+        new .com.redhat.ceylon.compiler.java.test.structure.method.IterableMethodSpecifyingMethodWithVarargs();
     }
 }

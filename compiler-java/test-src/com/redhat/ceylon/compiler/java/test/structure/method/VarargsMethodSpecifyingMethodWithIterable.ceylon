@@ -18,8 +18,8 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class VarargsMethodSpecifyingMethodWithSequence() {
-    void foo(Integer[] seq) {
+class VarargsMethodSpecifyingMethodWithIterable() {
+    void foo(Iterable<Integer> seq) {
     }
     void bar(Integer... ints) = foo;
 }

@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void callableArgumentVarargs_f(void foo(String[] s)) {
+void callableArgumentVarargs_f(void foo(Iterable<String> s)) {
 }
 @nomodel
 void callableArgumentVarargs_g(String... s) {

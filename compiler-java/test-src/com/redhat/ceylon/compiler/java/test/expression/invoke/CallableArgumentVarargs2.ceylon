@@ -21,7 +21,7 @@
 void callableArgumentVarargs2_f(void foo(String... s)) {
 }
 @nomodel
-void callableArgumentVarargs2_g(String[] s) {
+void callableArgumentVarargs2_g(Iterable<String> s) {
 }
 @nomodel
 void callableArgumentVarargs2_m() {

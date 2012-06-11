@@ -391,16 +391,16 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/LocalMethodSpecifyingParam");
     }
     @Test
-    public void testMthVarargsMethodSpecifyingMethodWithSequence(){
-        compareWithJavaSource("method/VarargsMethodSpecifyingMethodWithSequence");
+    public void testMthVarargsMethodSpecifyingMethodWithIterable(){
+        compareWithJavaSource("method/VarargsMethodSpecifyingMethodWithIterable");
     }
     @Test
     public void testMthVarargsMethodSpecifyingMethodWithVarargs(){
         compareWithJavaSource("method/VarargsMethodSpecifyingMethodWithVarargs");
     }
     @Test
-    public void testMthSequenceMethodSpecifyingMethodWithVarargs(){
-        compareWithJavaSource("method/SequenceMethodSpecifyingMethodWithVarargs");
+    public void testMthIterableMethodSpecifyingMethodWithVarargs(){
+        compareWithJavaSource("method/IterableMethodSpecifyingMethodWithVarargs");
     }
     @Test
     public void testTwoParamLists(){
