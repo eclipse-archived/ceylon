@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -647,6 +648,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     static final int SMALL_TYPE = 1 << 5;
     static final int CLASS_NEW = 1 << 6;
     static final int COMPANION = 1 << 7;
+    static final int NON_QUALIFIED = 1 << 8;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -795,49 +797,14 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 } else {
                     jt = baseType;
                 }
-            }else{
-                JCExpression baseType = makeErroneous();
+            }else if((flags & NON_QUALIFIED) == 0){
                 int index = 0;
                 for (ProducedType qualifyingType : qualifyingTypes) {
-                    TypeDeclaration tdecl = qualifyingType.getDeclaration();
-                    ListBuffer<JCExpression> typeArgs = null;
-                    if(index >= firstQualifyingTypeWithTypeParameters)
-                        typeArgs = makeTypeArgs( 
-                                qualifyingType, 
-                                //tdecl, 
-                                flags);
-                    if (isCeylonCallable(type) && 
-                            (flags & CLASS_NEW) != 0) {
-                        baseType = makeIdent(syms().ceylonAbstractCallableType);
-                    } else if (index == 0) {
-                        String name;
-                        // in Ceylon we'd move the nested decl to a companion class
-                        // but in Java we just don't have type params to the qualifying type if the
-                        // qualified type is static
-                        if (tdecl instanceof Interface
-                                && qualifyingTypes.size() > 1
-                                && firstQualifyingTypeWithTypeParameters == 0) {
-                            name = getCompanionClassName(tdecl);
-                        } else {
-                            if ((flags & COMPANION) != 0) {
-                                name = declName(tdecl, QUALIFIED, NameFlag.COMPANION);
-                            } else {
-                                name = declName(tdecl, QUALIFIED);
-                            }
-                        }
-                        baseType = makeQuotedQualIdentFromString(name);
-                    } else {
-                        baseType = makeSelect(jt, tdecl.getName());
-                    }
-
-                    if (typeArgs != null && typeArgs.size() > 0) {
-                        jt = make().TypeApply(baseType, typeArgs.toList());
-                    } else {
-                        jt = baseType;
-                    }
-
+                    jt = makeParameterisedType(qualifyingType, type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
                     index++;
                 }
+            }else{
+                jt = makeParameterisedType(type, type, flags, jt, qualifyingTypes, 0, 0);
             }
         } else {
             TypeDeclaration tdecl = simpleType.getDeclaration();            
@@ -846,17 +813,52 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             if(tdecl instanceof TypeParameter)
                 jt = makeQuotedIdent(tdecl.getName());
             // don't use underlying type if we want no primitives
-            else if((flags & (SATISFIES | NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null)
-                if ((flags & COMPANION) != 0) {
-                    jt = makeQuotedQualIdentFromString(declName(tdecl, QUALIFIED, NameFlag.COMPANION));
-                } else {
-                    jt = makeQuotedQualIdentFromString(declName(tdecl, QUALIFIED));
-                }
-            else
+            else if((flags & (SATISFIES | NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null){
+                jt = makeQuotedQualIdentFromString(declName(tdecl, flags));
+            }else
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
         }
         
         return jt;
+    }
+
+    public JCExpression makeParameterisedType(ProducedType type, ProducedType generalType, final int flags, 
+            JCExpression qualifyingExpression, java.util.List<ProducedType> qualifyingTypes, 
+            int firstQualifyingTypeWithTypeParameters, int index) {
+        JCExpression baseType;
+        TypeDeclaration tdecl = type.getDeclaration();
+        ListBuffer<JCExpression> typeArgs = null;
+        if(index >= firstQualifyingTypeWithTypeParameters)
+            typeArgs = makeTypeArgs( 
+                    type, 
+                    //tdecl, 
+                    flags);
+        if (isCeylonCallable(generalType) && 
+                (flags & CLASS_NEW) != 0) {
+            baseType = makeIdent(syms().ceylonAbstractCallableType);
+        } else if (index == 0) {
+            String name;
+            // in Ceylon we'd move the nested decl to a companion class
+            // but in Java we just don't have type params to the qualifying type if the
+            // qualified type is static
+            if (tdecl instanceof Interface
+                    && qualifyingTypes.size() > 1
+                    && firstQualifyingTypeWithTypeParameters == 0) {
+                name = getCompanionClassName(tdecl);
+            } else {
+                name = declName(tdecl, flags);
+            }
+            baseType = makeQuotedQualIdentFromString(name);
+        } else {
+            baseType = makeSelect(qualifyingExpression, tdecl.getName());
+        }
+
+        if (typeArgs != null && typeArgs.size() > 0) {
+            qualifyingExpression = make().TypeApply(baseType, typeArgs.toList());
+        } else {
+            qualifyingExpression = baseType;
+        }
+        return qualifyingExpression;
     }
 
     private ListBuffer<JCExpression> makeTypeArgs(
@@ -1043,7 +1045,18 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     String getFQDeclarationName(final Declaration decl) {
         return declName(decl, QUALIFIED);
     }
-    
+
+    private String declName(TypeDeclaration tdecl, int flags) {
+        java.util.List<NameFlag> args = new LinkedList<NameFlag>();
+        if ((flags & COMPANION) != 0) {
+            args.add(NameFlag.COMPANION);
+        }
+        if ((flags & NON_QUALIFIED) == 0) {
+            args.add(NameFlag.QUALIFIED);
+        }
+        return declName(tdecl, args.toArray(new NameFlag[args.size()]));
+    }
+
     String declName(final Declaration decl, CodegenUtil.NameFlag... flags) {
         return CodegenUtil.declName(this, decl, flags);
     }
