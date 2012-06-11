@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.Bug604<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.issues.Bug604<N, E>.Edge> {
+    
+    public class Edge {
+        private final N n1;
+        
+        public final N getN1() {
+            return n1;
+        }
+        private final N n2;
+        
+        public final N getN2() {
+            return n2;
+        }
+        
+        public final boolean touches(final N node) {
+            return getN1().equals(node) || getN2().equals(node);
+        }
+        
+        public Edge(N n1, N n2) {
+            this.n1 = n1;
+            this.n2 = n2;
+        }
+    }
+    
+    public class Node {
+        
+        public boolean touches(final E edge) {
+            return edge.touches((N)this);
+        }
+        
+        public Node() {
+        }
+    }
+    
+    Bug604() {
+    }
+}
