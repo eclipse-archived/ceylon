@@ -1383,17 +1383,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             // invoke the getter
             if (decl.isToplevel()) {
                 primaryExpr = null;
-                qualExpr = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName()));
+                qualExpr = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), CodegenUtil.getGetterName(decl));
                 selector = null;
             } else if (decl.isClassMember()
                         || decl.isInterfaceMember()) {
-                selector = Util.getGetterName(decl.getName());
+                selector = CodegenUtil.getGetterName(decl);
             } else {
                 // method local attr
                 if (!isRecursiveReference(expr)) {
                     primaryExpr = makeQualIdent(primaryExpr, decl.getName() + "$getter");
                 }
-                selector = Util.getGetterName(decl.getName());
+                selector = CodegenUtil.getGetterName(decl);
             }
         } else if (decl instanceof Value) {
             if (decl.isToplevel()) {
@@ -1409,7 +1409,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // it's a toplevel attribute
                     String topClsName = (decl instanceof LazyValue) ? ((LazyValue)decl).getRealName() : decl.getName();
                     primaryExpr = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(topClsName));
-                    selector = Util.getGetterName(decl.getName());
+                    selector = CodegenUtil.getGetterName(decl);
                 }
             } else if (Decl.isClassAttribute(decl)) {
                 if (Decl.isJavaField(decl) || isWithinSuperInvocation()){
@@ -1429,7 +1429,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // accessing a local that is not getter wrapped
                 } else {
                     primaryExpr = makeQualIdent(primaryExpr, decl.getName());
-                    selector = Util.getGetterName(decl.getName());
+                    selector = CodegenUtil.getGetterName(decl);
                 }
             }
         } else if (decl instanceof Method) {

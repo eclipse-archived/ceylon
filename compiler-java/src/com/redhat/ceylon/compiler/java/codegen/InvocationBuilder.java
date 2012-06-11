@@ -960,7 +960,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 ProducedType type = parameterType(declaredParam, model.getType(), 0);
                 final BoxingStrategy boxType = declaredParam != null ? CodegenUtil.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
                 JCExpression initValue = gen.make().Apply(null, 
-                        gen.makeSelect(alias, Util.getGetterName(name)),
+                        gen.makeSelect(alias, CodegenUtil.getGetterName(model)),
                         List.<JCExpression>nil());
                 initValue = gen.expressionGen().applyErasureAndBoxing(
                         initValue, 
