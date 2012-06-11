@@ -139,10 +139,13 @@ abstract class InvocationBuilder {
         JCExpression actualPrimExpr = transformInvocationPrimary(primaryExpr, selector);
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
-            ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)primary).getTarget();
+            ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
             resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
-            resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeQuotedIdent(selector), args.toList(), null);
+            // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
+            // is qualified relative to it
+            ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
+            resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.CLASS_NEW | AbstractTransformer.NON_QUALIFIED), args.toList(), null);
         } else {
             if (primaryDeclaration instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
