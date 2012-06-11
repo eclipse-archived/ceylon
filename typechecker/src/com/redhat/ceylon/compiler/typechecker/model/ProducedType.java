@@ -1023,7 +1023,7 @@ public class ProducedType extends ProducedReference {
         return extendedType==null?null:extendedType.substitute(getTypeArguments());
     }
 
-    private List<ProducedType> getCaseTypes() {
+    public List<ProducedType> getCaseTypes() {
         if (getDeclaration().getCaseTypes()==null) {
             return null;
         }
