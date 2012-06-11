@@ -21,7 +21,28 @@ final class selfType {
     private selfType() {
     }
     
-    static <T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>>void selfType(final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T> y) {
-        ((T)x).compareTo((T)y);
+    static <X extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>>void selfType(final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> y) {
+        x.compareTo((X)y);
+    }
+}
+abstract class SelfType2<T> {
+    
+    public abstract long compareTo(final T other);
+    
+    public final T self() {
+        final T x = (T)this;
+        return (T)this;
+    }
+    
+    SelfType2() {
+    }
+}
+final class selfType2 {
+    
+    private selfType2() {
+    }
+    
+    static <X>void selfType2(final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> y) {
+        x.compareTo((X)y);
     }
 }

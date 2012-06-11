@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class SelfTypeInstantiation<T> {
+    
+    SelfTypeInstantiation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation();
+    }
+}
+final class selfTypeInstantiation {
+    private static final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.ceylon.language.String>[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation[]{new .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.ceylon.language.String>()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.ceylon.language.String> getSelfTypeInstantiation() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    private selfTypeInstantiation() {
+    }
+}

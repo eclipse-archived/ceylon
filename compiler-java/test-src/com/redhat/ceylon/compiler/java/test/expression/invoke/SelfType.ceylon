@@ -29,7 +29,20 @@ abstract class SelfType<T>() of T given T satisfies SelfType<T> {
     }
 }
 @nomodel
-void selfType<T>(SelfType<T> x, SelfType<T> y) 
-        given T satisfies SelfType<T> {
+void selfType<X>(SelfType<X> x, SelfType<X> y) 
+        given X satisfies SelfType<X> {
+    x.compareTo(y);
+}
+
+@nomodel
+abstract class SelfType2<T>() of T {
+    shared formal Integer compareTo(T other);
+    shared T self() {
+        T x = this;
+        return this;
+    }
+}
+@nomodel
+void selfType2<X>(SelfType2<X> x, SelfType2<X> y) {
     x.compareTo(y);
 }

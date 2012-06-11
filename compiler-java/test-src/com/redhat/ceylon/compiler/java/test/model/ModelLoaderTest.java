@@ -502,7 +502,7 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     @Test
-    public void loadCaseTypes_fail(){
+    public void loadCaseTypes(){
         verifyClassLoading("CaseTypes.ceylon");
     }
     

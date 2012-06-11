@@ -18,23 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Bug283() {
-    variable Ordinal<Integer> oi:=0;
-    void m(Bug283 x) {
-        oi++;
-        oi--;
-        ++oi;
-        --oi;
-        x.oi++;
-        x.oi--;
-        ++x.oi;
-        --x.oi;
-    }
-    void m2() {
-        variable Ordinal<Integer> oi2:=0;
-        oi2++;
-        oi2--;
-        ++oi2;
-        --oi2;    
-    }
+class SelfTypeInstantiation<T>() of T {
 }
+@nomodel
+SelfTypeInstantiation<String> selfTypeInstantiation = SelfTypeInstantiation<String>();
