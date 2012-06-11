@@ -529,8 +529,13 @@ public abstract class CompilerTest {
         return getCompilerTask(options, null, sourcePaths);
     }
 
-    protected CeyloncTaskImpl getCompilerTask(List<String> initialOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
+    protected CeyloncTaskImpl getCompilerTask(List<String> options, DiagnosticListener<? super FileObject> diagnosticListener, 
             String... sourcePaths){
+        return getCompilerTask(options, diagnosticListener, null, sourcePaths);
+    }
+    
+    protected CeyloncTaskImpl getCompilerTask(List<String> initialOptions, DiagnosticListener<? super FileObject> diagnosticListener, 
+            List<String> modules, String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
         // FIXME: make this only get rid of the jars we produce, to win 2s out of 17s
         ZipFileIndexCache.getSharedInstance().clearCache();
@@ -553,7 +558,7 @@ public abstract class CompilerTest {
         Iterable<? extends JavaFileObject> compilationUnits1 =
                 runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, diagnosticListener, 
-                options, null, compilationUnits1);
+                options, modules, compilationUnits1);
     }
 
     protected String getSourcePath() {
