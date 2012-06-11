@@ -371,6 +371,12 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
+    public void testBug591(){
+        compile("bug591/Bug591_1.ceylon", "bug591/Bug591_2.ceylon");
+        compile("bug591/Bug591_2.ceylon");
+    }
+
+    @Test
     public void testBug592(){
         compilesWithoutWarnings("Bug592.ceylon");
     }
