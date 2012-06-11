@@ -385,14 +385,10 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private Boolean hasImpl(Interface iface) {
-        // If we're already transformed the interface then it will have a $impl
-        if (gen().hasInterface(iface)) {
-            return true;
-        }
         if (iface instanceof LazyInterface) {
             return ((LazyInterface)iface).isCeylon();
         }
-        return false;
+        return true;
     }
 
     private void transformInstantiateCompanions(
