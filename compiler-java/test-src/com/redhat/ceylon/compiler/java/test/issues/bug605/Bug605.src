@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.issues;
+package com.redhat.ceylon.compiler.java.test.issues.bug605;
 
 final class equals {
     
@@ -52,7 +52,7 @@ final class bug605mth {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug605mth.bug605mth();
+        .com.redhat.ceylon.compiler.java.test.issues.bug605.bug605mth.bug605mth();
     }
 }
 class Bug605cls {
@@ -98,7 +98,7 @@ class Bug605cls {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.issues.Bug605cls();
+        new .com.redhat.ceylon.compiler.java.test.issues.bug605.Bug605cls();
     }
 }
 final class hash {

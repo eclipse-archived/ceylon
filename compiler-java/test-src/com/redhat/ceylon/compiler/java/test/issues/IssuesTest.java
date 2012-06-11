@@ -403,7 +403,7 @@ public class IssuesTest extends CompilerTest {
     
     @Test
     public void testBug605(){
-        compareWithJavaSource("Bug605");
+        compareWithJavaSource("bug605/Bug605");
     }
     
     @Test
