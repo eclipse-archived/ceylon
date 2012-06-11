@@ -20,5 +20,7 @@
 @nomodel
 void bug588() {
     Comparable<String>[] comparables = { "hello" };
-    for (String c in comparables) {}
+    for (String c in comparables) {
+        print(c);
+    }
 }
