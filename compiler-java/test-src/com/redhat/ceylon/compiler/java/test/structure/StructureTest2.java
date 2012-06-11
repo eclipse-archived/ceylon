@@ -1,8 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.structure;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 
 public class StructureTest2 extends CompilerTest {
     
@@ -147,6 +152,17 @@ public class StructureTest2 extends CompilerTest {
         compareWithJavaSource("import_/ImportWildcard");
     }
     
+    @Test
+    public void testImpImportWildcardSinglePass(){
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(path+"/import_/src");
+        CeyloncTaskImpl task = getCompilerTask(options, "import_/src/pkg/File.ceylon", "import_/src/pkg/sub/ConcreteDirectory.ceylon");
+        Assert.assertTrue(task.call());
+        task = getCompilerTask(options, "import_/src/pkg/File.ceylon", "import_/src/pkg/sub/ConcreteDirectory.ceylon");
+        Assert.assertTrue(task.call());
+    }
+
     @Test
     public void testImpImportJavaRuntimeTypeSingle(){
         compareWithJavaSource("import_/ImportJavaRuntimeTypeSingle");
