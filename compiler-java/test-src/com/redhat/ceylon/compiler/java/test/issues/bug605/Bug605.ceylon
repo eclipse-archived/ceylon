@@ -24,10 +24,20 @@ String string { return "hello"; }
 @nomodel
 String equals(Object o) { return ""; }
 @nomodel
+void bug605test() {
+    Integer i = hash;
+    String s = string;
+    String q = equals("");
+}
+@nomodel
 void bug605mth() {
     Integer hash { return 1; }
     String string { return "hello"; }
     String equals(Object o) { return ""; }
+    
+    Integer i = hash;
+    String s = string;
+    String q = equals("");
 }
 @nomodel
 class Bug605cls() {
@@ -35,5 +45,9 @@ class Bug605cls() {
         Integer hash { return 1; }
         String string { return "hello"; }
         String equals(Object o) { return ""; }
+        
+        Integer i = hash;
+        String s = string;
+        String q = equals("");
     }
 }

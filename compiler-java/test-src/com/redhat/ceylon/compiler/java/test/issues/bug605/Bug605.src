@@ -9,6 +9,22 @@ final class equals {
         return "";
     }
 }
+final class bug605test {
+    
+    private bug605test() {
+    }
+    
+    static void bug605test() {
+        final long i = .com.redhat.ceylon.compiler.java.test.issues.bug605.hash.getHash();
+        final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.issues.bug605.string.getString();
+        final .java.lang.String q = .com.redhat.ceylon.compiler.java.test.issues.bug605.equals.$equals(.ceylon.language.String.instance(""));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug605.bug605test.bug605test();
+    }
+}
 final class bug605mth {
     
     private bug605mth() {
@@ -48,6 +64,9 @@ final class bug605mth {
             }
         }
         final equals equals = new equals();
+        final long i = hash$getter.getHash();
+        final .java.lang.String s = string$getter.getString();
+        final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {
@@ -91,6 +110,9 @@ class Bug605cls {
             }
         }
         final equals equals = new equals();
+        final long i = hash$getter.getHash();
+        final .java.lang.String s = string$getter.getString();
+        final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
     }
     
     Bug605cls() {
