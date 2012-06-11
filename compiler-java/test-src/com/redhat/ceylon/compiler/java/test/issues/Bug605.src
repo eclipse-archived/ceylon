@@ -1,1 +1,121 @@
 package com.redhat.ceylon.compiler.java.test.issues;
+
+final class equals {
+    
+    private equals() {
+    }
+    
+    static .java.lang.String $equals(final .java.lang.Object o) {
+        return "";
+    }
+}
+final class bug605mth {
+    
+    private bug605mth() {
+    }
+    
+    static void bug605mth() {
+        
+        final class hash$getter {
+            
+            long getHash() {
+                return 1L;
+            }
+            
+            private hash$getter() {
+            }
+        }
+        final hash$getter hash$getter = new hash$getter();
+        
+        final class string$getter {
+            
+            .java.lang.String getString() {
+                return "hello";
+            }
+            
+            private string$getter() {
+            }
+        }
+        final string$getter string$getter = new string$getter();
+        
+        final class equals {
+            
+            private equals() {
+            }
+            
+            .java.lang.String $equals(final .java.lang.Object o) {
+                return "";
+            }
+        }
+        final equals equals = new equals();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug605mth.bug605mth();
+    }
+}
+class Bug605cls {
+    
+    private final void mth() {
+        
+        final class hash$getter {
+            
+            long getHash() {
+                return 1L;
+            }
+            
+            private hash$getter() {
+            }
+        }
+        final hash$getter hash$getter = new hash$getter();
+        
+        final class string$getter {
+            
+            .java.lang.String getString() {
+                return "hello";
+            }
+            
+            private string$getter() {
+            }
+        }
+        final string$getter string$getter = new string$getter();
+        
+        final class equals {
+            
+            private equals() {
+            }
+            
+            .java.lang.String $equals(final .java.lang.Object o) {
+                return "";
+            }
+        }
+        final equals equals = new equals();
+    }
+    
+    Bug605cls() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug605cls();
+    }
+}
+final class hash {
+    
+    static long getHash() {
+        return 1L;
+    }
+    
+    private hash() {
+    }
+}
+final class string {
+    
+    static .java.lang.String getString() {
+        return "hello";
+    }
+    
+    private string() {
+    }
+}
