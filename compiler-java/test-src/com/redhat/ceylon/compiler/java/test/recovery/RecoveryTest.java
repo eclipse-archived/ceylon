@@ -51,8 +51,8 @@ public class RecoveryTest extends CompilerTest {
     }
 
     @Test
-    public void testRcvClassWithBrokenMembers_fail(){
-        compile(31, "ClassWithBrokenMembers.ceylon");
+    public void testRcvClassWithBrokenMembers(){
+        compile(29, "ClassWithBrokenMembers.ceylon");
     }
 
     @Test
