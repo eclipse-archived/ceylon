@@ -3367,7 +3367,8 @@ public class ExpressionVisitor extends Visitor {
                 //if the union of the case types covers 
                 //the switch expression type then the 
                 //switch is exhaustive
-                if (!ut.getType().covers(st)) {
+                if (!ut.getType().covers(st) && 
+                        !(st.getDeclaration() instanceof UnknownType)) {
                     that.addError("case types must cover all cases of the switch type or an else clause must appear: " +
                             ut.getType().getProducedTypeName() + " does not cover " + st.getProducedTypeName());
                 }
