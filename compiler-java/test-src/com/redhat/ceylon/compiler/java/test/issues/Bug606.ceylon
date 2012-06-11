@@ -18,8 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bug601() {
-//    first({"hello", "world"}, {""});
-    first({"hello world".split()...}, {""});
-//    first({for (str in "hello world".split()) str}, {""});
-}
+class MyIdentifiable() satisfies Identifiable {}
