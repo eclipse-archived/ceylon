@@ -116,7 +116,7 @@ public class Util {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    public static String getGetterName(String property) {
+    public static String getErasedGetterName(String property) {
         // ERASURE
         if ("hash".equals(property)) {
             // FIXME This is NOT the way to handle this, we should check that we're
@@ -126,6 +126,10 @@ public class Util {
             return "toString";
         }
         
+        return getGetterName(property);
+    }
+
+    public static String getGetterName(String property) {
         return "get"+capitalize(strip(property));
     }
 
