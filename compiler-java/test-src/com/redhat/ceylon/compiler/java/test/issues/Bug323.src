@@ -1,0 +1,65 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug323 {
+    
+    final class Inner$impl {
+        
+        Inner$impl() {
+            super();
+        }
+        
+        private final long $init$f() {
+            return 2L;
+        }
+        
+        private final long $init$g(final long f) {
+            return 4L;
+        }
+    }
+    
+    class Inner {
+        
+        Inner() {
+            (
+                let
+                {
+                    .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner$impl $ceylontmp$impl$0 = new .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner$impl();
+                    long $ceylontmp$f$1 = $ceylontmp$impl$0.$init$f();
+                    long $ceylontmp$g$2 = $ceylontmp$impl$0.$init$g($ceylontmp$f$1);
+                    this($ceylontmp$f$1, $ceylontmp$g$2);
+                }
+                returning null;
+            );
+        }
+        
+        Inner(final long f) {
+            (
+                let
+                {
+                    .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner$impl $ceylontmp$impl$3 = new .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner$impl();
+                    long $ceylontmp$g$4 = $ceylontmp$impl$3.$init$g(f);
+                    this(f, $ceylontmp$g$4);
+                }
+                returning null;
+            );
+        }
+        
+        Inner(long f, long g) {
+        }
+    }
+    
+    private final void m() {
+        final .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner v1 = new .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner();
+        final .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner v2 = new .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner(3L);
+        final .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner v3 = this.new Inner();
+        final .com.redhat.ceylon.compiler.java.test.issues.Bug323.Inner v4 = this.new Inner(3L);
+    }
+    
+    Bug323() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug323();
+    }
+}
