@@ -125,6 +125,10 @@ public class Util {
         } else if ("equals".equals(name)) {
             // This is a special case where we override the mangling of getMethodName()
             return "equals";
+        } else if ("clone".equals(name)) {
+            // This is a special case where we override the mangling of getMethodName()
+            // FIXME we should only do this when implementing Cloneable!
+            return "clone";
         } else {
             return getMethodName(name);
         }
@@ -138,6 +142,18 @@ public class Util {
             return "$toString";
         } else if ("equals".equals(name)) {
             return "$equals";
+        } else if ("wait".equals(name)) {
+            return "$wait";
+        } else if ("notify".equals(name)) {
+            return "$notify";
+        } else if ("notifyAll".equals(name)) {
+            return "$notifyAll";
+        } else if ("getClass".equals(name)) {
+            return "$getClass";
+        } else if ("finalize".equals(name)) {
+            return "$finalize";
+        } else if ("clone".equals(name)) {
+            return "$clone";
         } else {
             return quoteIfJavaKeyword(name);
         }
