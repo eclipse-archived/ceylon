@@ -1359,8 +1359,8 @@ value comp = order(1,-1);</programlisting>
         <section id="sequencedarguments">
             <title>Sequenced and tuple arguments</title>
             
-        <para>For a sequenced parameter in a direct invocation expression, there may be 
-        either:</para> 
+        <para>For a sequenced parameter of type <literal>T...</literal> in a direct 
+        invocation expression, there may be either:</para> 
         
         <itemizedlist>
             <listitem>
@@ -1372,11 +1372,12 @@ value comp = order(1,-1);</programlisting>
         </itemizedlist>
 
         <para>In the first case, the argument expressions are evaluated and collected into 
-        an instance of <literal>T[]</literal> when the invocation is executed.</para>
+        an instance of <literal>Iterable&lt;T&gt;</literal> when the invocation is executed.</para>
                 
-        <para>In the second case, the single argument expression must be followed by an
-        ellipsis <literal>...</literal>, to indicate that it is <emphasis>not</emphasis>
-        necessary to wrap the value in a <literal>Sequence</literal>.</para>
+        <para>In the second case, the single argument expression must be of type 
+        <literal>Iterable&lt;T&gt;</literal>, and must be followed by an ellipsis 
+        <literal>...</literal>, to indicate that it is <emphasis>not</emphasis> necessary 
+        to wrap the value in an <literal>Iterable</literal>.</para>
         
         <para>An argument to a tuple parameter is always a single expression followed by 
         an ellipsis.</para>

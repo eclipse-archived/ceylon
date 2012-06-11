@@ -3238,8 +3238,8 @@ SequencedParam?
             <listitem>
                 <para>A <emphasis>sequenced parameter</emphasis>, which accepts a list of 
                 arguments of the specified type <literal>T</literal>, or a single argument of 
-                type <literal>T[]</literal>. Inside the method or class, the sequenced parameter 
-                has type <literal>T[]</literal>.</para>
+                type <literal>Iterable&lt;T&gt;</literal>. Inside the method or class, the 
+                sequenced parameter has type <literal>Iterable&lt;T&gt;</literal>.</para>
             </listitem>
             <listitem>
                 <para>A <emphasis>tuple parameter</emphasis> representing a list of parameters 
