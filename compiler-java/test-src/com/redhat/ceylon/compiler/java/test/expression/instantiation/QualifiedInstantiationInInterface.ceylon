@@ -18,38 +18,19 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Single<Element>(Element e) {
-}
+interface QualifiedInstantiationInInterface<G> {
+    class Inner<T>(String s) {}
+    void m() {
+        value other = this;
 
-@nomodel
-shared class KlassTypeParams<U,V>(U u, V v) {
-    shared U foo(U u, V v){
-        return u;
-    }
-}
-
-@nomodel
-class KlassTypeParamsInstantiation(){
-    shared KlassTypeParams<String, Integer> m() {
-        return KlassTypeParams<String, Integer>("foo", 2);
-    }
-    shared String m2() {
-        value k = KlassTypeParams<String, Integer>("foo", 2);
-        return k.foo("hello", 1);
-    }
-    shared String m3() {
-        value k = KlassTypeParams<String, Integer>("foo", 2);
-        return k.foo{u = "hello"; v = 1;};
-    }
-    shared void typeArgumentInference(){
-        value s = Single(69);
-    }
-}
-
-@nomodel
-class KlassTypeParamsInstantiationT<T>(){
-    class Inner<G>(){}
-    void m(){
-        Inner<String>();
+        // FIXME: this may not be valid after all: https://github.com/ceylon/ceylon-spec/issues/326
+        QualifiedInstantiationInInterface<String>.Inner<Integer>("");
+        this.Inner<Integer>("");
+        other.Inner<Integer>("");
+        
+        // FIXME: this may not be valid after all: https://github.com/ceylon/ceylon-spec/issues/326
+        QualifiedInstantiationInInterface<String>.Inner<Integer>{s="";};
+        this.Inner<Integer>{s="";};
+        other.Inner<Integer>{s="";};
     }
 }

@@ -233,6 +233,14 @@ public class ExpressionTest extends CompilerTest {
     public void testQualifiedInstantiation(){
         compareWithJavaSource("instantiation/QualifiedInstantiation");
     }
+    @Test
+    public void testQualifiedParameterisedInstantiation(){
+        compareWithJavaSource("instantiation/QualifiedParameterisedInstantiation");
+    }
+    @Test
+    public void testQualifiedInstantiationInInterface(){
+        compareWithJavaSource("instantiation/QualifiedInstantiationInInterface");
+    }
     // Operators
     
     @Test

@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class QualifiedParameterisedInstantiation<G> {
+    
+    class Inner<T> {
+        
+        Inner(.java.lang.String s) {
+        }
+    }
+    
+    private final void m() {
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> other = this;
+        QualifiedParameterisedInstantiation.this.new Inner<.ceylon.language.Integer>("");
+        this.new Inner<.ceylon.language.Integer>("");
+        other.new Inner<.ceylon.language.Integer>("");
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> $arg$0$callable$ = QualifiedParameterisedInstantiation.this;
+                .java.lang.String $arg$0$0 = "";
+            }
+            returning $arg$0$callable$.new Inner<.ceylon.language.Integer>($arg$0$0);
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> $arg$1$callable$ = this;
+                .java.lang.String $arg$1$0 = "";
+            }
+            returning $arg$1$callable$.new Inner<.ceylon.language.Integer>($arg$1$0);
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<.ceylon.language.String> $arg$2$callable$ = other;
+                .java.lang.String $arg$2$0 = "";
+            }
+            returning $arg$2$callable$.new Inner<.ceylon.language.Integer>($arg$2$0);
+        );
+    }
+    
+    QualifiedParameterisedInstantiation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation();
+    }
+}

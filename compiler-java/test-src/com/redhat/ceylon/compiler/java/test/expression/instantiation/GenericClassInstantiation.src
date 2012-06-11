@@ -50,3 +50,23 @@ class KlassTypeParamsInstantiation {
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiation();
     }
 }
+class KlassTypeParamsInstantiationT<T> {
+    
+    class Inner<G> {
+        
+        Inner() {
+        }
+    }
+    
+    private final void m() {
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT<T>.Inner<.ceylon.language.String>();
+    }
+    
+    KlassTypeParamsInstantiationT() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT();
+    }
+}
