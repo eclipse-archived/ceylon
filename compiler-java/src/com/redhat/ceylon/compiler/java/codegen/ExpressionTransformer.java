@@ -260,8 +260,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
         final ProducedType selfType = exprType.getDeclaration().getSelfType();
         if (selfType != null) {
-            JCExpression targetType = makeJavaType(selfType, AbstractTransformer.TYPE_ARGUMENT);
-            result = make().TypeCast(targetType, result);
+            if (selfType.isExactly(exprType) // self-type within its own scope
+                    || (expectedType != null && !exprType.isExactly(expectedType))) { // self type within another scope
+                final ProducedType castType = exprType.getTypeArguments().get(selfType.getDeclaration());
+                JCExpression targetType = makeJavaType(castType, exprBoxed ? AbstractTransformer.TYPE_ARGUMENT : 0);
+                result = make().TypeCast(targetType, result);
+            }
         }
         return result;
     }
