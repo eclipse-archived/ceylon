@@ -114,9 +114,10 @@ public class AutocompleteVisitor extends Visitor {
             comps.putAll(c2);
             units.add(pu);
         }
-        for (PhasedUnit sub : pu.getDependentsOf()) {
+        /* COMMENTING OUT until I figure out if I really need to do this and how to get the units by name/path
+         * for (String sub : pu.getUnit().getDependentsOf()) {
             addCompletions(comps, units, packs, sub);
-        }
+        }*/
     }
 
     /** Looks for declarations matching the node's text and returns them as strings. */
