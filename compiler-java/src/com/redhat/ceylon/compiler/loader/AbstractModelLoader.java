@@ -864,7 +864,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 Value value = (Value)decl;
                 VariableMirror setterParam = setter.getParameters().get(0);
                 try{
-                    ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass);
+                    ProducedType paramType = obtainType(setterParam.getType(), setterParam, klass, VarianceLocation.INVARIANT);
                     // only add the setter if it has exactly the same type as the getter
                     if(paramType.isExactly(value.getType())){
                         foundGetter = true;
@@ -960,7 +960,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         // and its return type
         try{
-            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method);
+            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, method, VarianceLocation.COVARIANT);
             method.setType(type);
             method.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
             method.setDeclaredVoid(methodMirror.isDeclaredVoid());
@@ -1058,7 +1058,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         parameter.setUnit(decl.getUnit());
         parameter.setContainer((Scope) decl);
         parameter.setName("that");
-        parameter.setType(getType(CEYLON_OBJECT_TYPE, decl));
+        parameter.setType(getType(CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
         parameter.setDeclaration((Declaration) decl);
         parameters.getParameters().add(parameter);
     }
@@ -1107,7 +1107,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // FIXME: for the same reason, can it be an overriding field? (actual)
         value.setVariable(!fieldMirror.isFinal());
         try{
-            ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass);
+            ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, VarianceLocation.INVARIANT);
             value.setType(type);
             value.setUncheckedNullType(!isCeylon && !fieldMirror.getType().isPrimitive());
         }catch(TypeParserException x){
@@ -1126,7 +1126,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setUnit(klass.getUnit());
         setMethodOrValueFlags(klass, methodMirror, value);
         try{
-            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass);
+            ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, VarianceLocation.INVARIANT);
             value.setType(type);
             value.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
         }catch(TypeParserException x){
@@ -1190,9 +1190,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(klass instanceof Interface){
             // interfaces need to have their superclass set to Object
             if(superClass == null || superClass.getKind() == TypeKind.NONE)
-                extendedType = getType(CEYLON_OBJECT_TYPE, klass);
+                extendedType = getType(CEYLON_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
             else
-                extendedType = getType(superClass, klass);
+                extendedType = getType(superClass, klass, VarianceLocation.INVARIANT);
         }else{
             String className = classMirror.getQualifiedName();
             String superClassName = superClass == null ? null : superClass.getQualifiedName();
@@ -1202,10 +1202,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }else if(className.equals("java.lang.Object")){
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
-                extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass);
+                extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
             }else if("java.lang.Exception".equals(superClassName)){
                 // we pretend that a subclass of j.l.Excpetion is really a subclass of c.l.Excpetion
-                extendedType = getType(CEYLON_EXCEPTION_TYPE, klass);
+                extendedType = getType(CEYLON_EXCEPTION_TYPE, klass, VarianceLocation.INVARIANT);
             }else{
                 // read it from annotation first
                 String annotationSuperClassName = getAnnotationStringValue(classMirror, CEYLON_CLASS_ANNOTATION, "extendsType");
@@ -1220,9 +1220,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // read it from the Java super type
                     // now deal with type erasure, avoid having Object as superclass
                     if("java.lang.Object".equals(superClassName)){
-                        extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass);
+                        extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
                     }else{
-                        extendedType = getType(superClass, klass);
+                        extendedType = getType(superClass, klass, VarianceLocation.INVARIANT);
                     }
                 }
             }
@@ -1255,7 +1255,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameter.setName(paramName);
             TypeMirror typeMirror = paramMirror.getType();
             try{
-                ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl);
+                ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl, VarianceLocation.CONTRAVARIANT);
                 if(isVariadic){
                     // we have a varargs param, we should have an Array<T> type, which we need to turn into T[]
                     if(type.getDeclaration() != typeFactory.getArrayDeclaration()
@@ -1341,7 +1341,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             throw new ModelResolutionException("Failed to find toplevel attribute "+value.getName());
         
         try{
-            value.setType(obtainType(meth.getReturnType(), meth, null));
+            value.setType(obtainType(meth.getReturnType(), meth, null, VarianceLocation.INVARIANT));
         }catch(TypeParserException x){
             logError("Invalid type signature for toplevel attribute of "+value.getQualifiedNameString()+": "+x.getMessage());
             throw x;
@@ -1373,7 +1373,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // now its parameters
         setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
         try{
-            method.setType(obtainType(meth.getReturnType(), meth, method));
+            method.setType(obtainType(meth.getReturnType(), meth, method, VarianceLocation.COVARIANT));
             method.setDeclaredVoid(meth.isDeclaredVoid());
         }catch(TypeParserException x){
             logError("Invalid type signature for toplevel method of "+method.getQualifiedNameString()+": "+x.getMessage());
@@ -1402,7 +1402,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }else{
             for(TypeMirror iface : classMirror.getInterfaces()){
-                klass.getSatisfiedTypes().add(getType(iface, klass));
+                klass.getSatisfiedTypes().add(getType(iface, klass, VarianceLocation.INVARIANT));
             }
         }
     }
@@ -1535,9 +1535,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // avoid adding java's default upper bound if it's just there with no meaning
                     if(bounds.size() == 1)
                         break;
-                    boundType = getType(CEYLON_OBJECT_TYPE, scope);
+                    boundType = getType(CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
                 }else
-                    boundType = getType(bound, scope);
+                    boundType = getType(bound, scope, VarianceLocation.INVARIANT);
                 param.getSatisfiedTypes().add(boundType);
             }
         }
@@ -1573,12 +1573,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     /** Warning: only valid for toplevel types, not for type parameters */
-    private ProducedType obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope) {
+    private ProducedType obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope, VarianceLocation variance) {
         String typeName = getAnnotationStringValue(symbol, CEYLON_TYPE_INFO_ANNOTATION);
         if (typeName != null) {
             return decodeType(typeName, scope);
         } else {
-            return obtainType(type, scope, TypeLocation.TOPLEVEL);
+            return obtainType(type, scope, TypeLocation.TOPLEVEL, variance);
         }
     }
     
@@ -1586,7 +1586,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         TOPLEVEL, TYPE_PARAM;
     }
     
-    private ProducedType obtainType(TypeMirror type, Scope scope, TypeLocation location) {
+    private enum VarianceLocation {
+        /**
+         * Used in parameter
+         */
+        CONTRAVARIANT,
+        /**
+         * Used in method return value
+         */
+        COVARIANT,
+        /**
+         * For field
+         */
+        INVARIANT;
+    }
+    
+    private ProducedType obtainType(TypeMirror type, Scope scope, TypeLocation location, VarianceLocation variance) {
         String underlyingType = null;
         // ERASURE
         
@@ -1628,7 +1643,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             type = CEYLON_OBJECT_TYPE;
         }
         
-        ProducedType ret = getType(type, scope);
+        ProducedType ret = getType(type, scope, variance);
         if(underlyingType != null)
             ret.setUnderlyingType(underlyingType);
         return ret;
@@ -1652,7 +1667,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return convertToDeclaration(typeName, declarationType);
     }
 
-    private ProducedType getType(TypeMirror type, Scope scope) {
+    private ProducedType getType(TypeMirror type, Scope scope, VarianceLocation variance) {
         Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
         TypeDeclaration declaration = (TypeDeclaration) decl;
         if (type.getKind() == TypeKind.ARRAY) {
@@ -1660,7 +1675,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             TypeMirror ct = type.getComponentType();
             // Although we are putting that type into a type param, we have special handling
             // for arrays and so we should treat it as a toplevel (magic boxing of strings)
-            ProducedType ctpt = (ProducedType) obtainType(ct, scope, TypeLocation.TOPLEVEL);
+            ProducedType ctpt = (ProducedType) obtainType(ct, scope, TypeLocation.TOPLEVEL, variance);
             typeArguments.add(ctpt);
             ProducedType arrayType = declaration.getProducedType(getQualifyingType(declaration), typeArguments);
             if (ctpt.getUnderlyingType() != null) {
@@ -1673,9 +1688,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
                 for(TypeMirror typeArgument : javacTypeArguments){
                     // if a single type argument is a wildcard, we erase to Object
-                    if(typeArgument.getKind() == TypeKind.WILDCARD)
-                        return typeFactory.getObjectDeclaration().getType();
-                    typeArguments.add((ProducedType) obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM));
+                    if(typeArgument.getKind() == TypeKind.WILDCARD){
+                        if(variance == VarianceLocation.CONTRAVARIANT){
+                            TypeMirror bound = typeArgument.getUpperBound();
+                            if(bound == null)
+                                bound = typeArgument.getLowerBound();
+                            // if it has no bound let's take Object
+                            if(bound == null){
+                                // add the type arg and move to the next one
+                                typeArguments.add(typeFactory.getObjectDeclaration().getType());
+                                continue;
+                            }
+                            typeArgument = bound;
+                        }else
+                            return typeFactory.getObjectDeclaration().getType();
+                    }
+                    typeArguments.add((ProducedType) obtainType(typeArgument, scope, TypeLocation.TYPE_PARAM, variance));
                 }
                 return declaration.getProducedType(getQualifyingType(declaration), typeArguments);
             }
