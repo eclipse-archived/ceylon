@@ -1,1 +1,42 @@
 package com.redhat.ceylon.compiler.java.test.issues;
+
+final class bug601 {
+    
+    private bug601() {
+    }
+    
+    static void bug601() {
+        .ceylon.language.first.<.ceylon.language.Sequence<? extends .ceylon.language.String>>first(new .ceylon.language.ArraySequence(new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+        .ceylon.language.first.first(new .ceylon.language.ArraySequence(.ceylon.language.String.instance("hello world").split().getSequence(), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+        .ceylon.language.first.first(new .ceylon.language.ArraySequence(new .ceylon.language.AbstractIterable<.ceylon.language.String>(){
+            
+            public .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.instance("hello world").split().getIterator();
+                    private .ceylon.language.String str;
+                    private boolean str$exhausted;
+                    
+                    private boolean str() {
+                        .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted.getExhausted();
+                        if (str$exhausted) {
+                            return false;
+                        } else {
+                            str = (.ceylon.language.String)$ceylontmpitem0;
+                        }
+                        return true;
+                    }
+                    
+                    public .java.lang.Object next() {
+                        return this.str() ? str : .ceylon.language.exhausted.getExhausted();
+                    }
+                };
+            }
+        }.getSequence(), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug601.bug601();
+    }
+}
