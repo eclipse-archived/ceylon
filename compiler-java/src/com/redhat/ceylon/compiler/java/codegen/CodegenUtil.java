@@ -97,8 +97,10 @@ class CodegenUtil {
         } else if (scope instanceof Interface) {
             Interface iface = (Interface)scope;
             sb.append(iface.getName());
-            if ((decl instanceof Class) || 
-                    flags.contains(NameFlag.COMPANION)) {
+            if (Decl.isCeylon(iface)
+                &&
+                 (decl instanceof Class) 
+                 || flags.contains(NameFlag.COMPANION)) {
                 sb.append("$impl");
             }
         } else if (Decl.isLocalScope(scope)) {
@@ -121,7 +123,7 @@ class CodegenUtil {
             return;
         }
         if (!last) {
-            if (decl instanceof Interface) {
+            if (decl instanceof Interface && Decl.isCeylon((Interface)decl)) {
                 sb.append(flags.contains(NameFlag.COMPANION) ? '.' : '$');
             } else {
                 sb.append('.');
