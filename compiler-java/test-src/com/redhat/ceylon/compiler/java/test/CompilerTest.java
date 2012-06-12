@@ -199,9 +199,11 @@ public abstract class CompilerTest {
 
         @Override
         public void report(Diagnostic<? extends FileObject> diagnostic) {
-            System.err.println(diagnostic.getSource().getName() + ":"
-                    + diagnostic.getLineNumber() + ":" 
-                    + diagnostic.getKind().toString() + ":" 
+            if(diagnostic.getSource() != null)
+                System.err.print(diagnostic.getSource().getName() + ":");
+            if(diagnostic.getLineNumber() != -1)
+                System.err.print(diagnostic.getLineNumber() + ":");
+            System.err.println(diagnostic.getKind().toString() + ":" 
                     + diagnostic.getMessage(null));
             actualErrors.add(new CompilerError(diagnostic.getKind(), 
                     diagnostic.getLineNumber(),
