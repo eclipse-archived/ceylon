@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -291,6 +292,26 @@ class CodegenUtil {
         if(refinedDecl != null && refinedDecl != decl)
             return getTopmostRefinedDeclaration(refinedDecl);
         return decl;
+    }
+    
+    static Parameter findParamForAttr(AttributeDeclaration decl) {
+        Parameter result = null;
+        String attrName = decl.getIdentifier().getText();
+        if (decl.getDeclarationModel().getContainer() instanceof Functional) {
+            Functional f = (Functional)decl.getDeclarationModel().getContainer();
+            result = f.getParameter(attrName);
+        }
+        return result;
+    }
+    
+    static Value findAttrForParam(Parameter param) {
+        Value result = null;
+        String attrName = param.getName();
+        Declaration member = param.getContainer().getDirectMember(attrName, null);
+        if (member instanceof Value) {
+            result = (Value)member;
+        }
+        return result;
     }
     
 }
