@@ -1389,26 +1389,7 @@ public class ExpressionVisitor extends Visitor {
     private void inferTypeArgument(TypeParameter tp, ParameterList parameters,
             Tree.NamedArgumentList args, List<ProducedType> inferredTypes) {
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
-            ProducedType type = null;
-            if (arg instanceof Tree.SpecifiedArgument) {
-                Tree.Expression e = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
-                                .getExpression();
-                if (e!=null) {
-                    type = e.getTypeModel();
-                }
-            }
-            else if (arg instanceof Tree.TypedArgument) {
-                //TODO: broken for method args
-                type = ((Tree.TypedArgument) arg).getType().getTypeModel();
-            }
-            if (type!=null) {
-                Parameter parameter = getMatchingParameter(parameters, arg);
-                if (parameter!=null) {
-                    addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
-                            type, new ArrayList<TypeParameter>()));
-                }
-            }
-            //inferTypeArg(arg, tp, parameters, inferredTypes);
+            inferTypeArg(arg, tp, parameters, inferredTypes);
         }
         Tree.SequencedArgument sa = args.getSequencedArgument();
         if (sa!=null) {
@@ -1454,8 +1435,11 @@ public class ExpressionVisitor extends Visitor {
             ParameterList parameters, List<ProducedType> inferredTypes) {
         ProducedType type = null;
         if (arg instanceof Tree.SpecifiedArgument) {
-            type = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
-                            .getExpression().getTypeModel();
+            Tree.Expression e = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
+                            .getExpression();
+            if (e!=null) {
+                type = e.getTypeModel();
+            }
         }
         else if (arg instanceof Tree.TypedArgument) {
             //TODO: broken for method args
