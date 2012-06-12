@@ -104,6 +104,19 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testIopVariance(){
+        compile("JavaVariance.java");
+        compareWithJavaSource("Variance");
+    }
+
+    @Ignore("M4")
+    @Test
+    public void testIopVariance2(){
+        compile("JavaVariance.java");
+        compareWithJavaSource("Variance2");
+    }
+
+    @Test
     public void testIopCaseMismatch(){
         compile("javaCaseMismatch.java");
         compareWithJavaSource("CaseMismatch");
