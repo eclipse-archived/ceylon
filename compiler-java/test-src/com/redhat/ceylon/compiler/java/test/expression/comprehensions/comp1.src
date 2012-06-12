@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+final class x {
+    private static final .ceylon.language.Iterable<? extends .ceylon.language.String>[] value;
+    static {
+        value = new .ceylon.language.Iterable[]{new .ceylon.language.AbstractIterable<.ceylon.language.String>(){
+            
+            public .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.instance("hello world").split().getIterator();
+                    private .ceylon.language.String str;
+                    private boolean str$exhausted;
+                    
+                    private boolean str() {
+                        .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted.getExhausted();
+                        if (str$exhausted) {
+                            return false;
+                        } else {
+                            str = (.ceylon.language.String)$ceylontmpitem0;
+                        }
+                        return true;
+                    }
+                    
+                    public .java.lang.Object next() {
+                        return this.str() ? str : .ceylon.language.exhausted.getExhausted();
+                    }
+                };
+            }
+        }.getSequence()};
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    static .ceylon.language.Iterable<? extends .ceylon.language.String> getX() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    private x() {
+    }
+}

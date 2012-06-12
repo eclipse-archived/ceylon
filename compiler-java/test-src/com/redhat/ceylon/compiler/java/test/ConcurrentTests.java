@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest2;
+import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest3;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
@@ -65,7 +66,8 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
     QuotingTest.class,
     CMRTest.class,
     RuntimeSuite.class,
-    BcTests.class
+    BcTests.class,
+    ExpressionTest3.class,
 })
 public class ConcurrentTests {
 }
