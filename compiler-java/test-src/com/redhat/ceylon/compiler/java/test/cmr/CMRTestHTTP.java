@@ -123,11 +123,6 @@ public class CMRTestHTTP extends CompilerTest {
         // Compile the first module in its own repo 
         File repo = makeRepo();
 
-        // Create modules repo
-        File modules = new File("modules");
-        cleanCars(modules.getPath());
-        modules.mkdirs();
-
         // now serve the first repo over HTTP
         HttpServer server = startServer(port, repo); 
         
@@ -142,7 +137,7 @@ public class CMRTestHTTP extends CompilerTest {
             server.stop(0);
         }
 
-        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.mixed", "6.6.6", modules.getPath());
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.mixed", "6.6.6", repo.getPath());
         assertTrue(carFile.exists());
 
         JarFile car = new JarFile(carFile);
@@ -156,7 +151,7 @@ public class CMRTestHTTP extends CompilerTest {
         assertNotNull(entry);
         car.close();
 
-        File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.module.mixed", "6.6.6", modules.getPath());
+        File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.module.mixed", "6.6.6", repo.getPath());
         assertTrue(srcFile.exists());
 
         JarFile src = new JarFile(srcFile);
