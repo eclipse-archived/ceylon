@@ -512,8 +512,8 @@ public class ClassTransformer extends AbstractTransformer {
 
         // Only a non-formal attribute has a corresponding field
         // and if a captured class parameter exists with the same name we skip this part as well
-        Parameter p = findParamForAttr(decl);
-        boolean createField = Strategy.createField(p, model);
+        Parameter parameter = CodegenUtil.findParamForAttr(decl);
+        boolean createField = Strategy.createField(parameter, model);
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
         if (concrete || 
@@ -537,19 +537,16 @@ public class ClassTransformer extends AbstractTransformer {
 
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
             
-            if (model.getContainer() instanceof Functional) {
-                // If the attribute is really from a parameter then don't generate a field
-                // (The ClassDefinitionBuilder does it in that case)
-                Parameter parameter = ((Functional)model.getContainer()).getParameter(model.getName());
-                if (parameter == null
-                        || ((parameter instanceof ValueParameter) 
-                                && ((ValueParameter)parameter).isHidden())) {
-                    if (concrete) {
-                        classBuilder.getCompanionBuilder((Declaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
-                    } else {
-                        classBuilder.field(modifiers, attrName, type, initialValue, !useField);
-                    }        
-                }
+            // If the attribute is really from a parameter then don't generate a field
+            // (The ClassDefinitionBuilder does it in that case)
+            if (parameter == null
+                    || ((parameter instanceof ValueParameter) 
+                            && ((ValueParameter)parameter).isHidden())) {
+                if (concrete) {
+                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
+                } else {
+                    classBuilder.field(modifiers, attrName, type, initialValue, !useField);
+                }        
             }
         }
 
@@ -566,21 +563,6 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
     }
-    
-    private Parameter findParamForAttr(AttributeDeclaration decl) {
-        String attrName = decl.getIdentifier().getText();
-    	if (Decl.withinClass(decl)) {
-    		Class c = (Class)decl.getDeclarationModel().getContainer();
-    		if (!c.getParameterLists().isEmpty()) {
-	    		for (Parameter p : c.getParameterLists().get(0).getParameters()) {
-	    			if (attrName.equals(p.getName())) {
-	    				return p;
-	    			}
-	    		}
-    		}
-    	}
-		return null;
-	}
 
 	public List<JCTree> transform(AttributeSetterDefinition decl, boolean forCompanion) {
 	    ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
