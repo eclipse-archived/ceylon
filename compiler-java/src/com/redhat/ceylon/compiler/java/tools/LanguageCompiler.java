@@ -343,7 +343,7 @@ public class LanguageCompiler extends JavaCompiler {
         // now make sure the phase units have their modules and packages set correctly
         for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
             Package pkg = pu.getPackage();
-            loadModuleFromSource(pkg, modules, moduleTrees);
+            loadModuleFromSource(pkg, modules, moduleTrees, trees);
         }
         // also make sure we have packages and modules set up for every Java file we compile
         for(JCCompilationUnit cu : trees){
@@ -354,11 +354,11 @@ public class LanguageCompiler extends JavaCompiler {
             if(cu.pid != null)
                 packageName = TreeInfo.fullName(cu.pid).toString();
             Package pkg = modelLoader.findOrCreatePackage(null, packageName);
-            loadModuleFromSource(pkg, modules, moduleTrees);
+            loadModuleFromSource(pkg, modules, moduleTrees, trees);
         }
     }
 
-    private void loadModuleFromSource(Package pkg, Modules modules, LinkedList<JCCompilationUnit> moduleTrees) {
+    private void loadModuleFromSource(Package pkg, Modules modules, LinkedList<JCCompilationUnit> moduleTrees, List<JCCompilationUnit> parsedTrees) {
         // skip it if we already resolved the package
         if(pkg.getModule() != null)
             return;
@@ -376,10 +376,10 @@ public class LanguageCompiler extends JavaCompiler {
                 }
             }
             if(module == null){
-                module = loadModuleFromSource(pkgName, moduleTrees);
+                module = loadModuleFromSource(pkgName, moduleTrees, parsedTrees);
             }
             else if (! module.isAvailable()) {
-                loadModuleFromSource(pkgName, moduleTrees);
+                loadModuleFromSource(pkgName, moduleTrees, parsedTrees);
             }
 
             if(module == null){
@@ -394,7 +394,7 @@ public class LanguageCompiler extends JavaCompiler {
         ceylonEnter.addOutputModuleToClassPath(module);
     }
 
-    private Module loadModuleFromSource(String pkgName, LinkedList<JCCompilationUnit> moduleTrees) {
+    private Module loadModuleFromSource(String pkgName, LinkedList<JCCompilationUnit> moduleTrees, List<JCCompilationUnit> parsedTrees) {
         if(pkgName.isEmpty())
             return null;
         String moduleClassName = pkgName + ".module";
@@ -409,9 +409,19 @@ public class LanguageCompiler extends JavaCompiler {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return loadModuleFromSource(getParentPackage(pkgName), moduleTrees);
+            return loadModuleFromSource(getParentPackage(pkgName), moduleTrees, parsedTrees);
         }
         if(fileObject != null){
+            // first make sure we're not already compiling it: this can happen if we have several versions of the
+            // same module already loaded: we will get one which isn't the one we compile, but that's not the one
+            // we really want to compile.
+            for(JCCompilationUnit parsedTree : parsedTrees){
+                if(parsedTree.sourcefile.equals(fileObject)
+                        && parsedTree instanceof CeylonCompilationUnit){
+                    // same file! we already parsed it, let's return this one's module
+                    return ((CeylonCompilationUnit)parsedTree).phasedUnit.getPackage().getModule();
+                }
+            }
             CeylonCompilationUnit ceylonCompilationUnit = (CeylonCompilationUnit) parse(fileObject);
             moduleTrees.add(ceylonCompilationUnit);
             // parse the module info from there
@@ -423,7 +433,7 @@ public class LanguageCompiler extends JavaCompiler {
                 return module;
             }
         }
-        return loadModuleFromSource(getParentPackage(pkgName), moduleTrees);
+        return loadModuleFromSource(getParentPackage(pkgName), moduleTrees, parsedTrees);
     }
 
     private String getParentPackage(String pkgName) {
