@@ -33,6 +33,7 @@ import java.io.InputStream;
 public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
 
     private RepositoryManager caching;
+    private final File cachingDir;
 
     public CachingRepositoryManager(StructureBuilder root, File cachingDir, Logger log) {
         super(log);
@@ -41,6 +42,7 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
 
         setRoot(new DefaultRepository(root.createRoot()));
         this.caching = new SimpleRepositoryManager(new FileContentStore(cachingDir), log);
+        this.cachingDir = cachingDir;
     }
 
     public CachingRepositoryManager(Repository root, File cachingDir, Logger log) {
@@ -50,6 +52,7 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
 
         setRoot(root);
         this.caching = new SimpleRepositoryManager(new FileContentStore(cachingDir), log);
+        this.cachingDir = cachingDir;
     }
 
     public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
@@ -99,5 +102,9 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
     @Override
     public String toString() {
         return "CachingRepositoryManager: " + getRoot();
+    }
+    
+    public File getCacheFolder(){
+        return cachingDir;
     }
 }
