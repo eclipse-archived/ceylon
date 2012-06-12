@@ -140,7 +140,7 @@ public class TypeVisitor extends Visitor {
                 }
                 //check that the package really does belong to
                 //an imported module, to work around bug where
-                //default package things it can see stuff in
+                //default package thinks it can see stuff in
                 //all modules in the same source dir
                 for (ModuleImport mi: module.getImports()) {
                     if (mi.getModule().equals(pkg.getModule())) {
