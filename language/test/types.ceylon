@@ -212,12 +212,13 @@ void types() {
     
     assert(className(1)=="ceylon.language.Integer", "natural classname");
     assert(className(1.0)=="ceylon.language.Float", "float classname");
-    assert(className("hello")=="ceylon.language.StringOfSome", "string classname");
-    assert(className("")=="ceylon.language.StringOfNone", "string classname");
+    //TODO js compatibility
+    assert(className("hello")=="ceylon.language.StringOfSome", "string classname [1] (fails in js)");
+    assert(className("")=="ceylon.language.StringOfNone", "string classname [2] (fails in js)");
     assert(className(` `)=="ceylon.language.Character", "character classname");
     assert(className(1->"hello")=="ceylon.language.Entry", "entry classname");
-    assert(className(true)=="ceylon.language.true", "true classname");
-    assert(className(false)=="ceylon.language.false", "false classname");
+    assert(className(true)=="ceylon.language.true", "true classname (fails in js)");
+    assert(className(false)=="ceylon.language.false", "false classname fails in js)");
 
     //from ceylon-js
     value pair = TypesPair("hello", "world");
