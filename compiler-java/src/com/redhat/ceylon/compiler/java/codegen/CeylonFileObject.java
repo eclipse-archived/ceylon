@@ -118,4 +118,11 @@ public class CeylonFileObject extends ForwardingFileObject<JavaFileObject> imple
     public String toString() {
         return f.toString();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof CeylonFileObject)
+            return f.equals(((CeylonFileObject)obj).f);
+        return f.equals(obj);
+    }
 }
