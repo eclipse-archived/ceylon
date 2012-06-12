@@ -52,6 +52,7 @@ import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.sun.tools.javac.util.Abort;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.Log;
@@ -301,5 +302,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
     @Override
     protected boolean isOverridingMethod(MethodMirror methodSymbol) {
         return getOverriddenMethod(((JavacMethod)methodSymbol).methodSymbol, types) != null;
+    }
+
+    @Override
+    public void logDuplicateModuleError(Module module, Module loadedModule) {
+        super.logDuplicateModuleError(module, loadedModule);
+        // let's just give up, otherwise typechecking will likely throw some more and confuse the users
+        throw new Abort();
     }
 }
