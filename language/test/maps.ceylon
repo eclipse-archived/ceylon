@@ -23,38 +23,8 @@ class SetTest<Element>(Element... element)
         }
         return false;
     }
-    shared actual Boolean contains(Object element) {
-        for (e in elements) {
-            if (e == element) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean containsAny(Object... elems) {
-        for (e in elems) {
-            if (contains(e)) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean containsEvery(Object... elems) {
-        for (e in elems) {
-            if (!contains(e)) { return false; }
-        }
-        return true;
-    }
     shared actual Integer count(Object element) {
         return contains(element) then 1 else 0;
-    }
-    shared actual Boolean superset(Set<Object> set) {
-        for (e in set) {
-            if (!contains(e)) { return false; }
-        }
-        return true;
-    }
-    shared actual Boolean subset(Set<Object> set) {
-        for (e in elements) {
-            if (!(e in set)) { return false; }
-        }
-        return true;
     }
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
@@ -147,46 +117,11 @@ class MapTest<Key, Item>(Key->Item... entry)
         }
         return null;
     }
-    shared actual Item?[] items(Object... keys) {
-        value sb = SequenceBuilder<Item?>();
-        for (k in keys) { sb.append(item(k)); }
-        return sb.sequence;
-    }
-    shared actual Boolean defines(Object key) {
-        for (e in entries) {
-            if (e.key == key) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean definesAny(Object... keys) {
-        for (k in keys) {
-            if (defines(k)) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean definesEvery(Object... keys) {
-        for (k in keys) {
-            if (!defines(k)) { return false; }
-        }
-        return true;
-    }
     shared actual Boolean contains(Object element) {
         if (is Object->Object element) {
             if (exists it = item(element.key)) { return it == element.item; }
         }
         return false;
-    }
-    shared actual Boolean containsAny(Object... element) {
-        for (e in element) {
-            if (contains(e)) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean containsEvery(Object... element) {
-        for (e in element) {
-            if (!contains(e)) { return false; }
-        }
-        return true;
     }
     //REMOVE as soon as interfaces can have concrete members
     shared actual Integer count(Object element) {
