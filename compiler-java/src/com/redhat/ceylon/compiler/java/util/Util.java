@@ -297,21 +297,14 @@ public class Util {
             StructureBuilder structureBuilder = new FileContentStore(repoFolder);
             return new SimpleRepositoryManager(structureBuilder, log);
         }else{
-            File modules = new File("modules"); // TODO -- tmp dir?
-            if(modules.exists()){
-                if(!modules.isDirectory())
-                    log.error("Output repository is not a directory: "+outRepo);
-                else if(!modules.canWrite())
-                    log.error("Output repository is not writable: "+outRepo);
-            }else if(!modules.mkdirs())
-                log.error("Failed to create output repository: "+outRepo);
+            File cachingDir = makeTempDir("ceylonc");
 
             // HTTP
             WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log);
             davContentStore.setUsername(user);
             davContentStore.setPassword(password);
 
-            return new CachingRepositoryManager(davContentStore, modules, log);
+            return new CachingRepositoryManager(davContentStore, cachingDir, log);
         }
     }
 
@@ -344,5 +337,26 @@ public class Util {
     public static boolean isUnboxedVoid(Declaration decl) {
         return (decl instanceof Method)
                 && ((Method)decl).isDeclaredVoid();
+    }
+
+    public static File makeTempDir(String prefix){
+        try {
+            File dir = File.createTempFile(prefix, "");
+            if(!dir.delete()
+                    || !dir.mkdirs())
+                throw new RuntimeException("Failed to create tmp dir: "+dir);
+            return dir;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public static void delete(File f){
+        if (f.isDirectory()) {
+            for (File c : f.listFiles())
+                delete(c);
+        }
+        if (!f.delete())
+            throw new RuntimeException("Failed to delete file: " + f.getPath());
     }
 }

@@ -48,6 +48,7 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -212,9 +213,22 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     @Override
     public void flush() throws IOException {
         super.flush();
-        getJarRepository().flush();
+        try{
+            getJarRepository().flush();
+        }finally{
+            clearOutputRepositoryManager();
+        }
     }
     
+    private void clearOutputRepositoryManager() {
+        if(outputRepoManager instanceof CachingRepositoryManager){
+            File tmpDir = ((CachingRepositoryManager)outputRepoManager).getCacheFolder();
+            Util.delete(tmpDir);
+            // invalidate it
+            outputRepoManager = null;
+        }
+    }
+
     public void setModule(Module module) {
         currentModule = module;
     }
