@@ -25,6 +25,8 @@
 
 package com.sun.tools.javac.comp;
 
+import javax.lang.model.type.TypeKind;
+
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCTypeCast;
 import com.sun.tools.javac.tree.TreeInfo;
@@ -193,7 +195,12 @@ public class Infer {
                         }
                     }
                 };
-                return constraintScanner.visit(uv);
+                boolean outerCyclic = false;
+                if (uv.inst instanceof Type.ClassType
+                        && ((Type.ClassType)uv.inst).getEnclosingType().getKind() != TypeKind.NONE) {
+                    outerCyclic = constraintScanner.visit(((Type.ClassType)uv.inst).getEnclosingType());
+                }
+                return outerCyclic || constraintScanner.visit(uv);
             }
         };
 
