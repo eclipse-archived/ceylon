@@ -124,6 +124,7 @@ void methodInvocationWithDefaultedParameters() {
     f.fa{n=6;};
     f.fa{n=6; 1, 2, 3};
     f.fa{n=6; seq={1, 2, 3};};
+    f.fa{n=6; {1, 2, 3}...};
     
     Foosubkls f2 = Foosubkls(88);
     f2.f1();
@@ -177,6 +178,7 @@ void methodInvocationWithDefaultedParameters() {
     f2.fa{n=6;};
     f2.fa{n=6; 1, 2, 3};
     f2.fa{n=6; seq={1, 2, 3};};
+    f2.fa{n=6; {1, 2, 3}...};
     
     Barface b = Barkls();
     b.f1();
@@ -221,6 +223,7 @@ void methodInvocationWithDefaultedParameters() {
     b.fa{n=6;};
     b.fa{n=6; 1, 2, 3};
     b.fa{n=6; seq={1, 2, 3};};
+    b.fa{n=6; {1, 2, 3}...};
     
     Barkls b2 = Barkls();
     b2.f1();
@@ -265,4 +268,5 @@ void methodInvocationWithDefaultedParameters() {
     b2.fa{n=6;};
     b2.fa{n=6; 1, 2, 3};
     b2.fa{n=6; seq={1, 2, 3};};
+    b2.fa{n=6; {1, 2, 3}...};
 }
