@@ -258,14 +258,37 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression applySelfTypeCasts(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
+        if (expectedType == null) {
+            return result;
+        }
         final ProducedType selfType = exprType.getDeclaration().getSelfType();
         if (selfType != null) {
             if (selfType.isExactly(exprType) // self-type within its own scope
-                    || (expectedType != null && !exprType.isExactly(expectedType))) { // self type within another scope
+                    || !exprType.isExactly(expectedType)) { // self type within another scope
                 final ProducedType castType = findTypeArgument(exprType, selfType.getDeclaration());
                 JCExpression targetType = makeJavaType(castType, exprBoxed ? AbstractTransformer.TYPE_ARGUMENT : 0);
                 result = make().TypeCast(targetType, result);
             }
+        }
+        // Self type as a type arg:
+        for (ProducedType typeArgument : expectedType.getTypeArgumentList()) {
+            result = applyGenericSelfTypeCasts(result, expectedType, typeArgument);            
+        }
+        for (ProducedType typeArgument : exprType.getTypeArgumentList()) {
+            result = applyGenericSelfTypeCasts(result, expectedType, typeArgument);
+        }
+        
+        return result;
+    }
+
+    private JCExpression applyGenericSelfTypeCasts(JCExpression result, ProducedType expectedType,
+            ProducedType typeArgument) {
+        if (typeArgument.getDeclaration() != null 
+                && typeArgument.getDeclaration().getSelfType() != null) {
+            JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT );
+            // Need a raw cast to cast away the type argument before casting its self type back
+            JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
+            result = make().TypeCast(targetType, make().TypeCast(rawType, result));
         }
         return result;
     }
