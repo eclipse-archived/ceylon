@@ -1039,13 +1039,15 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         } else {
                             argExpr = gen.expressionGen().transformExpression(sequencedArgument.getExpressionList().getExpressions().get(0));
                         }
-                        // TODO I suspect the above is wrong and we should use
-                        // argExpr = makeDefaultedArgumentMethodCall(param);
-                        //hasDefaulted |= true;
                     } else if (namedArgumentList.getComprehension() != null) {
                         argExpr = gen.expressionGen().transformComprehension(namedArgumentList.getComprehension());
                     } else {
-                        argExpr = gen.makeEmpty();
+                        if (primaryDeclaration instanceof FunctionalParameter) {
+                            argExpr = gen.makeEmpty();
+                        } else {
+                            argExpr = makeDefaultedArgumentMethodCall(param);
+                            hasDefaulted |= true;
+                        }
                     }
                 } else {
                     argExpr = gen.makeErroneous(this.node, "Missing argument, and parameter is not defaulted");
