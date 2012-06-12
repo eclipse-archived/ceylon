@@ -440,6 +440,12 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    @Ignore("M4: See #611")
+    public void testInvTypeFamilyGeneric(){
+        compareWithJavaSource("invoke/TypeFamilyGeneric");
+    }
+    
+    @Test
     public void testInvSelfTypeInstantiation(){
         compareWithJavaSource("invoke/SelfTypeInstantiation");
     }
