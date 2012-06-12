@@ -469,9 +469,9 @@ Entry$proto.getString = function() {
 Entry$proto.getKey = function() { return this.key; }
 Entry$proto.getItem = function() { return this.item; }
 Entry$proto.equals = function(other) {
-    return Boolean$(other && this.getKey().equals(other.getKey()) === $true && this.getItem().equals(other.getItem()) === $true);
+    return Boolean$(other && isOfType(other, 'ceylon.language.Entry') && this.getKey().equals(other.getKey()) === $true && this.getItem().equals(other.getItem()) === $true);
 }
-Entry$proto.getHash = function() { Integer(this.key.getHash().value ^ this.item.getHash().value); }
+Entry$proto.getHash = function() { Integer((31 + this.key.getHash().value) * 31 + this.item.getHash().value); }
 
 
 exports.Exception=Exception;
