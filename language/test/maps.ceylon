@@ -23,9 +23,6 @@ class SetTest<Element>(Element... element)
         }
         return false;
     }
-    shared actual Integer count(Object element) {
-        return contains(element) then 1 else 0;
-    }
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
         value sb = SequenceBuilder<Element|Other>();
@@ -117,16 +114,7 @@ class MapTest<Key, Item>(Key->Item... entry)
         }
         return null;
     }
-    shared actual Boolean contains(Object element) {
-        if (is Object->Object element) {
-            if (exists it = item(element.key)) { return it == element.item; }
-        }
-        return false;
-    }
     //REMOVE as soon as interfaces can have concrete members
-    shared actual Integer count(Object element) {
-        return contains(element) then 1 else 0;
-    }
     shared actual Set<Key> keys {
         value sb = SequenceBuilder<Key>();
         for (e in entries) { sb.append(e.key); }
