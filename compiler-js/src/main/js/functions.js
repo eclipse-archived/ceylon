@@ -151,7 +151,7 @@ function isOfType(obj, typeName) {
     }
     var cons = obj.$$;
     if (cons === undefined) cons = obj.constructor;
-    return Boolean$(typeName in cons.T$all);
+    return Boolean$(cons && cons.T$all && typeName in cons.T$all);
 }
 function isOfTypes(obj, types) {
     if (obj===null) {
