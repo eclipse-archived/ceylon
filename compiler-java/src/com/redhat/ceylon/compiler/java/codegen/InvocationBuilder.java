@@ -401,6 +401,13 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
         final Tree.Term expr = getArgumentExpression(argIndex);
         if (hasParameter(argIndex)) {
             ProducedType type = getParameterType(argIndex);
+            if (isParameterSequenced(argIndex)
+                    && !isJavaMethod()
+                    && !dontBoxSequence()) {
+                // If the parameter is sequenced and the argument is not ...
+                // then the expected type of the *argument* is the type arg to Iterator
+                type = gen.typeFact().getIteratedType(type);
+            }
             BoxingStrategy boxingStrategy = getParameterBoxingStrategy(argIndex);
             JCExpression ret = gen.expressionGen().transformExpression(expr, 
                     boxingStrategy, 
