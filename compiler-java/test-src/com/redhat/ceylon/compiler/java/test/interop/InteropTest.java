@@ -97,6 +97,13 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testIopNesting_fail(){
+        // FIXME: depends on https://github.com/ceylon/ceylon-spec/issues/328
+        compile("JavaNesting.java");
+        compareWithJavaSource("Nesting");
+    }
+
+    @Test
     public void testIopCaseMismatch(){
         compile("javaCaseMismatch.java");
         compareWithJavaSource("CaseMismatch");
