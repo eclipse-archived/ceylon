@@ -18,11 +18,13 @@ var process$proto = processClass.$$.prototype;
 var argv = $empty;
 var namedArgs = {};
 if ((typeof process !== "undefined") && (process.argv !== undefined)) {
+    // parse command line arguments
     if (process.argv.length > 2) {
         var args = process.argv.slice(2);
         var argStrings = new Array(args.length);
         for (i in args) { argStrings[i] = String$(args[i]); }
         argv = ArraySequence(argStrings);
+        
         for (var i=0; i<args.length; ++i) {
             var arg = args[i];
             if (arg.charAt(0) == '-') {
@@ -45,16 +47,19 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         }
     }
 } else if (typeof window !== "undefined") {
-    var parts = window.location.search.substr(1).split('&');
+    // parse URL parameters
+    var parts = window.location.search.substr(1).replace('+', ' ').split('&');
     if (parts.length > 0) {
         var argStrings = new Array(parts.length);
         for (i in parts) { argStrings[i] = String$(parts[i]); }
         argv = ArraySequence(argStrings);
+        
         for (i in parts) {
             var part = parts[i];
             var pos = part.indexOf('=');
             if (pos >= 0) {
-                namedArgs[part.substr(0, pos)] = String$(part.substr(pos+1));
+                var value = decodeURIComponent(part.substr(pos+1));
+                namedArgs[part.substr(0, pos)] = String$(value);
             } else {
                 namedArgs[part] = null;
             }
@@ -70,16 +75,48 @@ process$proto.namedArgumentValue = function(name) {
     return (value !== undefined) ? value : null;
 }
 
-process$proto.propertyValue = function(name) {
-    return null;//TODO
+var properties = {};
+if (typeof navigator !== "undefined") {
+    if (navigator.language !== undefined) {
+        properties["user.language"] = String$(navigator.language);
+    }
+    if (navigator.platform !== undefined) {
+        properties["os.name"] = String$(navigator.platform);
+    }
+}
+if (typeof process !== "undefined") {
+    if (process.platform !== undefined) {
+        properties["os.name"] = String$(process.platform);
+    }
+    if (process.arch !== undefined) {
+        properties["os.arch"] = String$(process.arch);
+    }
+}
+if (typeof document !== "undefined") {
+    if (document.defaultCharset !== undefined) {
+        properties["file.encoding"] = String$(document.defaultCharset);
+    }
 }
 
-var newline = String$("\n", 1);
-if ((typeof process !== "undefined") && (process.platform !== undefined)
-        && (process.platform.search(/windows/i) >= 0)) {
-    newline = String$("\r\n", 2);
+var linesep = String$('\n', 1);
+var filesep = String$('/', 1);
+var pathsep = String$(':', 1);
+var osname = properties["os.name"];
+if ((osname !== undefined) && (osname.value.search(/windows/i) >= 0)) {
+    linesep = String$("\r\n", 2);
+    filesep = String$('\\', 1);
+    pathsep = String$(';', 1);
 }
-process$proto.getNewline = function() { return newline; }
+properties["line.separator"] = linesep;
+properties["file.separator"] = filesep;
+properties["path.separator"] = pathsep;
+
+process$proto.propertyValue = function(name) {
+    var value = properties[name.value];
+    return (value !== undefined) ? value : null;
+}
+
+process$proto.getNewline = function() { return linesep; }
 
 if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
     process$proto.write = function(string) {
@@ -87,7 +124,7 @@ if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
     }
     process$proto.writeLine = function(line) {
         this.write(line);
-        this.write(newline);
+        this.write(linesep);
     }
 } else if ((typeof console !== "undefined") && (console.log !== undefined)) {
     process$proto.writeLine = function(line) {
@@ -105,7 +142,7 @@ if ((typeof process !== "undefined") && (process.stderr !== undefined)) {
     }
     process$proto.writeErrorLine = function(line) {
         this.writeError(line);
-        this.writeError(newline);
+        this.writeError(linesep);
     }
 } else if ((typeof console !== "undefined") && (console.error !== undefined)) {
     process$proto.writeErrorLine = function(line) {
