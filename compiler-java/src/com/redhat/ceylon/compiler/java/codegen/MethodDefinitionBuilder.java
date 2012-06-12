@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -233,13 +234,15 @@ public class MethodDefinitionBuilder {
         return parameter(param.getDeclarationModel());
     }
 
-    public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType) {
+    public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int flags) {
         String name = paramDecl.getName();
-        return parameter(FINAL, name, paramDecl, paramDecl, paramType);
+        return parameter(flags, name, paramDecl, paramDecl, paramType);
     }
     
     public MethodDefinitionBuilder parameter(Parameter param) {
-        return parameter(param, param.getType());
+        Value attr = CodegenUtil.findAttrForParam(param);
+        int flags = (attr != null && attr.isVariable()) ? 0 : FINAL;
+        return parameter(param, param.getType(), flags);
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {

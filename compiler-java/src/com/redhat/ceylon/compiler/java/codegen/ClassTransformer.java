@@ -368,7 +368,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         for (Parameter param : parameters) {
             final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
-            concreteWrapper.parameter(param, typedParameter.getType());
+            concreteWrapper.parameter(param, typedParameter.getType(), FINAL);
             arguments.add(makeQuotedIdent(param.getName()));
         }
         JCExpression expr = make().Apply(
