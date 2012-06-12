@@ -223,6 +223,11 @@ public class ClassTransformer extends AbstractTransformer {
                     iface, satisfiedType);
         }
         
+        if(!Decl.isCeylon(iface)){
+            // let's not try to implement CMI for Java interfaces
+            return;
+        }
+        
         // For each super interface
         for (Declaration member : iface.getMembers()) {
             if (Strategy.onlyOnCompanion(member)) {
