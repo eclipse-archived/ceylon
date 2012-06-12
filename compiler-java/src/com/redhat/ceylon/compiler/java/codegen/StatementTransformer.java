@@ -23,8 +23,10 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
@@ -393,22 +395,28 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     // FIXME There is a similar implementation in ClassGen!
-    public JCStatement transform(AttributeDeclaration decl) {
-        Name atrrName = names().fromString(decl.getIdentifier().getText());
-        ProducedType t = actualType(decl);
-        
-        JCExpression initialValue = null;
-        if (decl.getSpecifierOrInitializerExpression() != null) {
-            initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
-                    CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()), 
-                    decl.getDeclarationModel().getType());
+    public List<JCStatement> transform(AttributeDeclaration decl) {
+        // If the attribute is really from a parameter then don't generate a local variable
+        Parameter parameter = CodegenUtil.findParamForAttr(decl);
+        if (parameter == null) {
+            Name atrrName = names().fromString(decl.getIdentifier().getText());
+            ProducedType t = actualType(decl);
+            
+            JCExpression initialValue = null;
+            if (decl.getSpecifierOrInitializerExpression() != null) {
+                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
+                        CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()), 
+                        decl.getDeclarationModel().getType());
+            }
+    
+            JCExpression type = makeJavaType(t);
+            List<JCAnnotation> annots = makeJavaTypeAnnotations(decl.getDeclarationModel());
+    
+            int modifiers = transformLocalFieldDeclFlags(decl);
+            return List.<JCStatement> of(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), atrrName, type, initialValue));
+        } else {
+            return List.<JCStatement> nil();
         }
-
-        JCExpression type = makeJavaType(t);
-        List<JCAnnotation> annots = makeJavaTypeAnnotations(decl.getDeclarationModel());
-
-        int modifiers = transformLocalFieldDeclFlags(decl);
-        return at(decl).VarDef(at(decl).Modifiers(modifiers, annots), atrrName, type, initialValue);
     }
     
     List<JCStatement> transform(Tree.Break stmt) {

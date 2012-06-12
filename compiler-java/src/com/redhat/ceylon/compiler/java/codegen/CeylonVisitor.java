@@ -110,7 +110,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             appendList(gen.transform(decl));
         } else {
             // All other local attributes
-            append(gen.statementGen().transform(decl));
+            appendList(gen.statementGen().transform(decl));
         }
         gen.resetCompilerAnnotations(annots);
     }
