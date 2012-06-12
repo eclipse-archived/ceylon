@@ -1034,7 +1034,11 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     Tree.SequencedArgument sequencedArgument = namedArgumentList.getSequencedArgument();
                     if (sequencedArgument != null) {
                         gen.at(sequencedArgument);
-                        argExpr = gen.makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
+                        if (sequencedArgument.getEllipsis() == null) {
+                            argExpr = gen.makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
+                        } else {
+                            argExpr = gen.expressionGen().transformExpression(sequencedArgument.getExpressionList().getExpressions().get(0));
+                        }
                         // TODO I suspect the above is wrong and we should use
                         // argExpr = makeDefaultedArgumentMethodCall(param);
                         //hasDefaulted |= true;
