@@ -135,6 +135,16 @@ public class Module {
     final ceylon.language.Iterable<? extends ceylon.language.String> by) {
         return null;
     }
+    
+    @Ignore
+    public static final ceylon.language.Iterable<? extends Import> $init$dependencies(
+            final ceylon.language.Quoted name, 
+            final ceylon.language.Quoted version, 
+            final java.lang.String doc, 
+            final ceylon.language.Iterable<? extends ceylon.language.String> by,
+            ceylon.language.Quoted license) {
+        return $empty.getEmpty();
+    }
 
 }
 
