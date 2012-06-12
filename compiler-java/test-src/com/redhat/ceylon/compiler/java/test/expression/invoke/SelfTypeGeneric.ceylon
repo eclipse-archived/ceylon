@@ -18,25 +18,18 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-interface Bug583Self<T> of T given T satisfies Bug583Self<T> {}
-@nomodel
-class Bug583X() satisfies Bug583Self<Bug583X> {}
-@nomodel
-interface Bug583Inv<T> {}
+interface Self<T> of T given T satisfies Self<T> {}
 
 @nomodel
-Bug583Inv<Bug583Self<Bug583X>> l1 { throw; }
-@nomodel
-Bug583Inv<Bug583X> l2 { throw; }
-@nomodel
-Bug583Inv<Bug583Self<Bug583X>> l3 = l2;
-@nomodel
-Bug583Inv<Bug583X> l4 = l1;
+class X() satisfies Self<X> {}
 
 @nomodel
-void bug583() {    
-    Bug583Inv<Bug583Self<Bug583X>> l1 { throw; }
-    Bug583Inv<Bug583X> l2 { throw; }
-    Bug583Inv<Bug583Self<Bug583X>> l3 = l2;
-    Bug583Inv<Bug583X> l4 = l1;
+interface Inv<T> {}
+
+@nomodel
+void selfTypeGeneric() {
+    Inv<Self<X>> l1 { throw; }
+    Inv<X> l2 { throw; }
+    Inv<Self<X>> l3 = l2;
+    Inv<X> l4 = l1;
 }

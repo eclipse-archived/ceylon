@@ -435,6 +435,11 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testInvSelfTypeGeneric(){
+        compareWithJavaSource("invoke/SelfTypeGeneric");
+    }
+    
+    @Test
     public void testInvSelfTypeInstantiation(){
         compareWithJavaSource("invoke/SelfTypeInstantiation");
     }
