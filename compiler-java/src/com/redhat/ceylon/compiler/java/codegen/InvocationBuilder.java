@@ -416,7 +416,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
                     && isJavaMethod()
                     && dontBoxSequence()){
                 // must translate it into a Util call
-                ret = gen.sequenceToJavaArray(ret, type, boxingStrategy);
+                ret = gen.sequenceToJavaArray(ret, type, boxingStrategy, expr.getTypeModel());
             }
             return ret;
         } else {

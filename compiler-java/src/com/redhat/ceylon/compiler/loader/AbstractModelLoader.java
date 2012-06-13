@@ -1262,7 +1262,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             try{
                 ProducedType type = obtainType(typeMirror, paramMirror, (Scope) decl, VarianceLocation.CONTRAVARIANT);
                 if(isVariadic){
-                    // we have a varargs param, we should have an Array<T> type, which we need to turn into T[]
+                    // we have a varargs param, we should have an Array<T> type, which we need to turn into Iterable<T>
                     if(type.getDeclaration() != typeFactory.getArrayDeclaration()
                             || type.getTypeArgumentList().isEmpty()){
                         logError("Variadic argument is not of type Array<T>, this is most likely a bug in the compiler");
@@ -1277,8 +1277,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             optionalType.setUnderlyingType(type.getUnderlyingType());
                             type = optionalType;
                         }
-                        // turn it into a T[]
-                        type = typeFactory.getEmptyType(typeFactory.getSequenceType(type));
+                        // turn it into an Iterable<T>
+                        type = typeFactory.getIterableType(type);
                     }
                 }else{
                     // variadic params may technically be null in Java, but it Ceylon sequenced params may not

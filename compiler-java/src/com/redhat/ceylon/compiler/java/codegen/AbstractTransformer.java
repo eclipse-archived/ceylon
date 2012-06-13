@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.QUALI
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1147,8 +1148,8 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         final ProducedType declType = producedParameterDecl.getType();
         final TypeDeclaration declTypeDecl = declType.getDeclaration();
         if(isJavaVariadic(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
-            // type of param must be T[]
-            ProducedType elementType = typeFact.getElementType(type);
+            // type of param must be Iterable<T>
+            ProducedType elementType = typeFact.getIteratedType(type);
             if(elementType == null){
                 log.error("ceylon", "Invalid type for Java variadic parameter: "+type.getProducedTypeQualifiedName());
                 return type;
@@ -1707,11 +1708,12 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @param expr the sequence
      * @param sequenceType the sequence type
      * @param boxingStrategy the boxing strategy for expr
+     * @param exprType 
      */
-    JCExpression sequenceToJavaArray(JCExpression expr, ProducedType sequenceType, BoxingStrategy boxingStrategy) {
+    JCExpression sequenceToJavaArray(JCExpression expr, ProducedType sequenceType, BoxingStrategy boxingStrategy, ProducedType exprType) {
         String methodName = null;
         // find the sequence element type
-        ProducedType type = typeFact().getElementType(sequenceType);
+        ProducedType type = typeFact().getIteratedType(sequenceType);
         if(boxingStrategy == BoxingStrategy.UNBOXED){
             if(isCeylonInteger(type)){
                 if("byte".equals(type.getUnderlyingType()))
@@ -1736,30 +1738,42 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             } else if (isJavaString(type)) {
                 methodName = "toJavaStringArray";
             } else if (isCeylonString(type)) {
-                return objectSequenceToJavaArray(type, sequenceType, expr);
+                return objectVariadicToJavaArray(type, sequenceType, expr, exprType);
             }
             if(methodName == null){
                 log.error("ceylon", "Don't know how to convert sequences of type "+type+" to Java array (This is a compiler bug)");
                 return expr;
             }
-            // since T[] is erased to Iterable<T> we probably need a cast to FixedSized<T>
-            JCExpression seqTypeExpr = makeJavaType(typeFact().getFixedSizedType(sequenceType));
-            expr = make().TypeCast(seqTypeExpr, expr);
             return makeUtilInvocation(methodName, List.of(expr), null);
         }else{
-            return objectSequenceToJavaArray(type, sequenceType, expr);
+            return objectVariadicToJavaArray(type, sequenceType, expr, exprType);
         }
     }
 
-    private JCExpression objectSequenceToJavaArray(ProducedType type,
-            ProducedType sequenceType, JCExpression expr) {
+    private JCExpression objectVariadicToJavaArray(ProducedType type,
+            ProducedType sequenceType, JCExpression expr, ProducedType exprType) {
+        if(typeFact().getFixedSizedType(exprType) != null){
+            return objectFixedSizedToJavaArray(type, expr);
+        }
+        return objectIterableToJavaArray(type, typeFact().getIterableType(sequenceType), expr);
+    }
+
+    private JCExpression objectIterableToJavaArray(ProducedType type,
+            ProducedType iterableType, JCExpression expr) {
+        JCExpression klass = makeJavaType(type, AbstractTransformer.CLASS_NEW | AbstractTransformer.NO_PRIMITIVES);
+        JCExpression klassLiteral = make().Select(klass, names.fromString("class"));
+        return makeUtilInvocation("toArray", List.of(expr, klassLiteral), null);
+    }
+    
+    private JCExpression objectFixedSizedToJavaArray(ProducedType type, JCExpression expr) {
         JCExpression klass1 = makeJavaType(type, AbstractTransformer.CLASS_NEW | AbstractTransformer.NO_PRIMITIVES);
         JCExpression klass2 = makeJavaType(type, AbstractTransformer.CLASS_NEW | AbstractTransformer.NO_PRIMITIVES);
         String baseName = tempName();
 
         String seqName = baseName +"$0";
-        JCExpression seqTypeExpr1 = makeJavaType(typeFact().getFixedSizedType(sequenceType));
-        JCExpression seqTypeExpr2 = makeJavaType(typeFact().getFixedSizedType(sequenceType));
+        ProducedType fixedSizedType = typeFact().getFixedSizedDeclaration().getProducedType(null, Arrays.asList(type));
+        JCExpression seqTypeExpr1 = makeJavaType(fixedSizedType);
+        JCExpression seqTypeExpr2 = makeJavaType(fixedSizedType);
 
         JCExpression sizeExpr = make().Apply(List.<JCExpression>nil(), 
                 make().Select(makeUnquotedIdent(seqName), names().fromString("getSize")),
