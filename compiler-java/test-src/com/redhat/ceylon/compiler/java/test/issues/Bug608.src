@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+final class bug608 {
+    
+    private bug608() {
+    }
+    
+    static void bug608() {
+        final .java.lang.ProcessBuilder b = new .java.lang.ProcessBuilder();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> args = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+        b.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(args));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug608.bug608();
+    }
+}
