@@ -1,1 +1,1 @@
-shared class B(A a){}
+shared class B(A a, A.Inner i){}
