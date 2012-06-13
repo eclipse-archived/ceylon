@@ -149,10 +149,7 @@ function isOfType(obj, typeName) {
     if (typeof obj === 'function') {
         return Boolean$(typeName === 'ceylon.language.Callable');
     }
-    //var cons = obj.$$;
-    //if (cons === undefined)
-    var cons = obj.constructor;
-    return Boolean$(cons && cons.getT$all && typeName in cons.getT$all());
+    return Boolean$(obj.getT$all && typeName in obj.getT$all());
 }
 function isOfTypes(obj, types) {
     if (obj===null) {
@@ -164,14 +161,12 @@ function isOfTypes(obj, types) {
     var unions = false;
     var inters = true;
     var _ints=false;
-    //var cons = obj.$$;
-    //if (cons === undefined)
-    var cons = obj.constructor;
+    var objTypes = obj.getT$all();
     for (var i = 0; i < types.l.length; i++) {
         var t = types.l[i];
         var partial = false;
         if (typeof t === 'string') {
-            partial = t in cons.getT$all();
+            partial = t in objTypes;
         } else {
             partial = isOfTypes(obj, t);
         }
@@ -187,13 +182,7 @@ function isOfTypes(obj, types) {
 
 function className(obj) {
     if (obj === null) return String$('ceylon.language.Nothing');
-    //var cons = obj.$$;
-    //if (cons === undefined)
-    var cons = obj.constructor;
-    //if (cons.T$name === undefined) {
-    //    return String$('ceylon.language.Callable');
-    //}
-    return String$(cons.getT$name());
+    return String$(obj.getT$name());
 }
 
 function identityHash(obj) {

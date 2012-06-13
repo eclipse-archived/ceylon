@@ -12,8 +12,8 @@ function className(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
 var larger,smaller,Sequence,Category,$empty,equal; //IGNORE
 
-function getT$name() {return this.T$name;}
-function getT$all() {return this.T$all;}
+function getT$name() {return this.constructor.T$name;}
+function getT$all() {return this.constructor.T$all;}
 function initType(type, typeName) {
     var cons = function() {}
     type.$$ = cons;
@@ -24,8 +24,8 @@ function initType(type, typeName) {
         var superTypes = arguments[i].$$.T$all;
         for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
-    cons.getT$name = getT$name;
-    cons.getT$all = getT$all;
+    cons.prototype.getT$name = getT$name;
+    cons.prototype.getT$all = getT$all;
 }
 function initTypeProto(type, typeName) {
     initType.apply(this, arguments);
@@ -48,8 +48,15 @@ function initExistingType(type, cons, typeName) {
         var superTypes = arguments[i].$$.T$all;
         for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
-    cons.getT$name = getT$name;
-    cons.getT$all = getT$all;
+    var proto = cons.prototype;
+    if (cons !== undefined) {
+        try {
+            cons.prototype.getT$name = getT$name;
+            cons.prototype.getT$all = getT$all;
+        } catch (exc) {
+            // browser probably prevented access to the prototype
+        }
+    }
 }
 function lazyInitGetHash() {
     if (this.identifiableObjectID === undefined) {
