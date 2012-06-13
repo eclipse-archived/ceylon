@@ -28,12 +28,12 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -362,9 +362,19 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
+    // Create a parameter for the constructor
     private ClassDefinitionBuilder parameter(String name, Parameter decl, boolean isSequenced, boolean isDefaulted) {
-        // Create a parameter for the constructor
-        JCExpression type = gen.makeJavaType(decl, decl.getType());
+        JCExpression type;
+        Value attr = CodegenUtil.findAttrForParam(decl);
+        if (attr != null) {
+            TypedDeclaration nonWideningTypeDeclaration = gen.nonWideningTypeDecl(attr);
+            ProducedType paramType = gen.nonWideningType(attr, nonWideningTypeDeclaration);
+            type = gen.makeJavaType(nonWideningTypeDeclaration, paramType);
+        } else {
+            ProducedType paramType = decl.getType();
+            type = gen.makeJavaType(decl, paramType);
+        }
+        
         List<JCAnnotation> annots = List.nil();
         if (gen.needsAnnotations(decl)) {
             annots = annots.appendList(gen.makeAtName(name));
