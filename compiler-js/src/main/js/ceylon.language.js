@@ -293,6 +293,16 @@ function getNull() { return null }
 //function getFalse() { return $false; }
 function Boolean$(value) {return Boolean(value)}
 initExistingTypeProto(Boolean$, Boolean, 'ceylon.language.Boolean');
+function trueClass() {}
+initType(trueClass, "ceylon.language.true", Boolean$);
+function falseClass() {}
+initType(falseClass, "ceylon.language.false", Boolean$);
+Boolean.prototype.getT$name = function() {
+    return (this.valueOf()?trueClass:falseClass).$$.T$name;
+}
+Boolean.prototype.getT$all = function() {
+    return (this.valueOf()?trueClass:falseClass).$$.T$all;
+}
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
 var trueString = String$("true", 4);
 var falseString = String$("false", 5);
