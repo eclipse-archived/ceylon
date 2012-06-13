@@ -4,6 +4,8 @@ interface I$IC$ICI<T extends .ceylon.language.String, X extends .ceylon.language
 }
 interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<? extends T, ? super X> $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl();
+    
     public abstract <U>T m1(final X b, final U u);
     
     public abstract <U>T m1(final X b);

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 interface Bug445<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.Bug445$impl<T> $com$redhat$ceylon$compiler$java$test$issues$Bug445$impl();
 }
 final class Bug445$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug445<T> $this;

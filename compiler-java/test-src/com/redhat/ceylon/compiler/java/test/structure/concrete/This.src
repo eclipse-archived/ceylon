@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface This {
     
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$This$impl();
+    
     public abstract long m1();
     
     public long m2(final long i1, final long i2);

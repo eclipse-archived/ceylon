@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting;
 interface Objects$objects_o$DummyI {
 }
 interface Objects$ObjectsI {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Objects$ObjectsI$impl();
 }
 class Objects {
     
