@@ -17,7 +17,17 @@ function String$(value,size) {
 }
 initTypeProto(String$, 'ceylon.language.String', Object$, List, Comparable, Ranged, FixedSized,
     Summable, Castable, Cloneable);
+function StringOfSome() {}
+initType(StringOfSome, "ceylon.language.StringOfSome", String$);
+function StringOfNone() {}
+initType(StringOfNone, "ceylon.language.StringOfNone", String$);
 var String$proto = String$.$$.prototype;
+String$proto.getT$name = function() {
+    return ((this.value.length!==0)?StringOfSome:StringOfNone).$$.T$name;
+}
+String$proto.getT$all = function() {
+    return ((this.value.length!==0)?StringOfSome:StringOfNone).$$.T$all;
+}
 String$proto.getString = function() { return this }
 String$proto.toString = function() { return this.value }
 String$proto.plus = function(other) {
