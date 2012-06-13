@@ -1065,6 +1065,9 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return makeQuotedQualIdentFromString(getFQDeclarationName(decl));
     }
     
+    /**
+     * Returns the name of the companion class of the given class or interface
+     */
     String getCompanionClassName(Declaration decl){
         return declName(decl, QUALIFIED, NameFlag.COMPANION);
     }
@@ -2015,9 +2018,19 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         }
         return typeArgs.toList();
     }
-    
+    /**
+     * Returns the name of the field in classes which holds the companion 
+     * instance.
+     */
     final String getCompanionFieldName(Interface def) {
         return "$" + CodegenUtil.getCompanionClassName(def.getName());
+    }
+    /** 
+     * Returns the name of the method in interfaces and classes used to get 
+     * the companion instance.
+     */
+    final String getCompanionAccessorName(Interface def) {
+        return getCompanionClassName(def).replace('.', '$');
     }
     
     final JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
