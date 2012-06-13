@@ -23,13 +23,9 @@ class QualifiedParameterisedInstantiation<G>() {
     void m() {
         value other = this;
 
-        // FIXME: this may not be valid after all: https://github.com/ceylon/ceylon-spec/issues/326
-        QualifiedParameterisedInstantiation<String>.Inner<Integer>("");
         this.Inner<Integer>("");
         other.Inner<Integer>("");
         
-        // FIXME: this may not be valid after all: https://github.com/ceylon/ceylon-spec/issues/326
-        QualifiedParameterisedInstantiation<String>.Inner<Integer>{s="";};
         this.Inner<Integer>{s="";};
         other.Inner<Integer>{s="";};
     }
