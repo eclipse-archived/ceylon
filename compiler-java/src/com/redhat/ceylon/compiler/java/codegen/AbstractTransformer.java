@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -1183,6 +1184,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     boolean isJavaMethod(Method method) {
         ClassOrInterface container = Decl.getClassOrInterfaceContainer(method);
         return container != null && !Decl.isCeylon(container);
+    }
+    
+    boolean isJavaCtor(Class cls) {
+        return !Decl.isCeylon(cls);
     }
 
     private ProducedType getTypeForFunctionalParameter(FunctionalParameter fp) {

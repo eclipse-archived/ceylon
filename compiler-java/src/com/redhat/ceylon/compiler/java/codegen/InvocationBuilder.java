@@ -33,6 +33,7 @@ import java.util.TreeMap;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -397,9 +398,12 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
     }
 
     protected boolean isJavaMethod() {
-        if(!(primaryDeclaration instanceof Method))
-            return false;
-        return gen.isJavaMethod((Method) primaryDeclaration);
+        if(primaryDeclaration instanceof Method) {
+            return gen.isJavaMethod((Method) primaryDeclaration);
+        } else if (primaryDeclaration instanceof Class) {
+            return gen.isJavaCtor((Class) primaryDeclaration);
+        }
+        return false;
     }
 
     protected abstract Tree.Expression getArgumentExpression(int argIndex);
