@@ -193,7 +193,7 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
         this.$Container$impl = new .ceylon.language.Container$impl(this);
         this.$Sized$impl = new .ceylon.language.Sized$impl(this);
         this.$Category$impl = new .ceylon.language.Category$impl(this);
-        this.$Cloneable$impl = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends X>>(this);
+        this.$Cloneable$impl = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends X>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends X>>)(.ceylon.language.Cloneable)this);
         this.$Correspondence$impl = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, X>(this);
         this.$Ranged$impl = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends X>>(this);
     }

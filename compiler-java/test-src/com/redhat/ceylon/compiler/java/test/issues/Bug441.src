@@ -20,7 +20,7 @@ class Bug441 implements .com.redhat.ceylon.compiler.java.test.issues.IBug441, .c
     
     Bug441() {
         this.$IBug441$impl = new .com.redhat.ceylon.compiler.java.test.issues.IBug441$impl(this);
-        this.$Cloneable$impl = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.IBug441>(this);
+        this.$Cloneable$impl = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.IBug441>((.ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.IBug441>)(.ceylon.language.Cloneable)this);
     }
     
     public static void main(.java.lang.String[] args) {
