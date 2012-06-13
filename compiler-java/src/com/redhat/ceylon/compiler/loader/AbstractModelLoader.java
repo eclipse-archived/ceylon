@@ -460,6 +460,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             throw new ModelResolutionException("Failed to resolve "+typeName);
         }
+        // we only allow source loading when it's java code we're compiling in the same go
+        // (well, technically before the ceylon code)
+        if(classMirror.isLoadedFromSource() && !classMirror.isJavaSource())
+            return null;
         return convertToDeclaration(classMirror, declarationType);
     }
 

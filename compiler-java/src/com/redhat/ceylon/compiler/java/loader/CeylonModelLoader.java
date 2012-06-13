@@ -209,6 +209,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
         do{
             classSymbol = symtab.classes.get(names.fromString(outerName));
             if(classSymbol != null){
+                // if we got a source symbol for something non-Java it's a slipery slope
+                if(Util.isLoadedFromSource(classSymbol) && !Util.isJavaSource(classSymbol))
+                    return null;
                 if(outerName.length() != name.length())
                     classSymbol = lookupInnerClass(classSymbol, name.substring(outerName.length()+1).split("\\."));
                 if(classSymbol.classfile == null && classSymbol.sourcefile == null){
