@@ -70,15 +70,14 @@ class MyException(String? m, Exception? x)
  satisfies EmptyInterface {}
 
 @nomodel
-class Test() {
+class Test(Integer&EmptyInterface n) {
+    
     void takesTop(Top top){}
     void takesLeft(Left left){}
     Left & Right givesLeftAndRight(){ return CMiddle(); }
     
     shared variable Left leftAttribute := CLeft();
     shared variable Left&Right middleAttribute := CMiddle();
-    shared variable Numeric<Integer>&Ordinal<Integer> n := 1;
-    shared variable Integral<Integer>&Castable<Integer> m := 1;
 
     void testUnion(){
         Left|Right middle = CLeft();
@@ -180,32 +179,18 @@ class Test() {
                                  Test&EmptyInterface erasedTest){
         // with boxing
         Integer unboxed = p1;
-        Numeric<Integer>&Ordinal<Integer> boxed = 1;
+        Integer&EmptyInterface boxed = this.n;
 
         // arithmetic operators
-        variable Numeric<Integer>&Ordinal<Integer> n := 1;
-        n := n + n;
-        n := n - n;
-        n := n * n;
-        n := n += n;
-        n := n -= n;
-        n := n *= n;
-        erasedTest.n := erasedTest.n += erasedTest.n;
-        erasedTest.n := erasedTest.n -= erasedTest.n;
-        erasedTest.n := erasedTest.n *= erasedTest.n;
+        variable Integer&EmptyInterface n := this.n;
+        variable Integer sync;
+        sync := n + n;
+        sync := n - n;
+        sync := n * n;
+        sync := n % n;
 
-        n := n++;
-        n := ++n;
-        erasedTest.n := erasedTest.n++;
-        erasedTest.n := ++erasedTest.n;
-
-        variable Integral<Integer>&Castable<Integer> m := 1;
-        m := m % m;
-        m := m %= m;
-        erasedTest.m := erasedTest.m %= erasedTest.m;
-
-        Integer i1 = -n;
-        Integer i2 = +n;
+        sync := -n;
+        sync := +n;
     }
 
     void testComparisonOperators(Integer&EmptyInterface p1,
