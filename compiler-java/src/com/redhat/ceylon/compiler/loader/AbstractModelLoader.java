@@ -1735,8 +1735,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(scope != null && pkgName != null){
                 Package containingPackage = Decl.getPackageContainer(scope);
                 Package pkg = containingPackage.getModule().getPackage(pkgName);
-                if(pkg == null)
-                    "".toString();
                 String relativeName = null;
                 String unquotedName = name.replace("$", "");
                 if(!pkgName.isEmpty()){
