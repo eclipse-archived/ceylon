@@ -395,11 +395,13 @@ public class ClassDefinitionBuilder {
             init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", name), gen.makeUnquotedIdent(name))));
         } else if ((decl instanceof ValueParameter) 
                         && ((ValueParameter)decl).isHidden()
-                        && (decl.getContainer() instanceof TypeDeclaration)
-                        && ((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null) != null
-                        && Strategy.createField((ValueParameter)decl, (Value)((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null))) {
-            // The field itself is created by the ClassTransformer
-            init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", name), gen.makeUnquotedIdent(name))));
+                        && (decl.getContainer() instanceof TypeDeclaration)) {
+            Declaration member = ((TypeDeclaration)decl.getContainer()).getMember(decl.getName(), null);
+            if (member instanceof Value 
+                    && Strategy.createField((ValueParameter)decl, (Value)member)) {
+                // The field itself is created by the ClassTransformer
+                init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", name), gen.makeUnquotedIdent(name))));
+            }
         }
         return this;
     }
