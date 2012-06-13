@@ -115,7 +115,7 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public boolean isLoadedFromSource() {
-        return classSymbol.classfile == null || classSymbol.classfile.getKind() != Kind.CLASS;
+        return Util.isLoadedFromSource(classSymbol);
     }
 
     @Override
@@ -215,8 +215,6 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public boolean isJavaSource() {
-        if(classSymbol.classfile != null)
-            return classSymbol.classfile.getKind() == Kind.SOURCE && classSymbol.classfile.getName().endsWith(".java");
-        return classSymbol.sourcefile.getKind() == Kind.SOURCE && classSymbol.sourcefile.getName().endsWith(".java");
+        return Util.isJavaSource(classSymbol);
     }
 }

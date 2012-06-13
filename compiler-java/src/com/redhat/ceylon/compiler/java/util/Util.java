@@ -28,6 +28,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import javax.tools.JavaFileObject.Kind;
+
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -41,6 +43,7 @@ import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.parser.Token;
 
 /**
@@ -358,5 +361,23 @@ public class Util {
         }
         if (!f.delete())
             throw new RuntimeException("Failed to delete file: " + f.getPath());
+    }
+
+    public static boolean isJavaSource(ClassSymbol classSymbol) {
+        if(classSymbol.classfile != null)
+            return classSymbol.classfile.getKind() == Kind.SOURCE && classSymbol.classfile.getName().endsWith(".java");
+        if(classSymbol.sourcefile != null)
+            return classSymbol.sourcefile.getKind() == Kind.SOURCE && classSymbol.sourcefile.getName().endsWith(".java");
+        // we don't know but it's probably not
+        return false;
+    }
+
+    public static boolean isLoadedFromSource(ClassSymbol classSymbol) {
+        if(classSymbol.classfile != null)
+            return classSymbol.classfile.getKind() != Kind.CLASS;
+        if(classSymbol.sourcefile != null)
+            return classSymbol.sourcefile.getKind() != Kind.CLASS;
+        // we don't know but it's probably not
+        return false;
     }
 }
