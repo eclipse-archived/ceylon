@@ -36,13 +36,14 @@ import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /**
  * Utility functions telling you about Ceylon declarations
  * @see Strategy
  */
-class Decl {
+public class Decl {
     private Decl() {
     }
 
@@ -330,5 +331,17 @@ class Decl {
             decl = (Element) decl.getContainer();
         }
         return (ClassOrInterface) decl;
+    }
+
+    public static Package getPackageContainer(Scope scope){
+        // stop when null or when it's a Package
+        while(scope != null
+                && !(scope instanceof Package)){
+            // stop if the container is not a Scope
+            if(!(scope.getContainer() instanceof Scope))
+                return null;
+            scope = (Scope) scope.getContainer();
+        }
+        return (Package) scope;
     }
 }
