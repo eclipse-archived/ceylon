@@ -493,4 +493,15 @@ class Generics() {
     @type["String"] genericMethod2(true then "hello");
     
     @type["Empty|Sequence<String>"] coalesce({null, "hello"});
+    
+    class ParamOuter<T>() {
+        class Inner<Y>(){
+            class Innerest() {}
+            @error ParamOuter<String>.Inner<Y>.Innerest();
+            @error ParamOuter<T>.Inner<Integer>.Innerest();
+            ParamOuter<T>.Inner<Y>.Innerest();
+        }
+        @error ParamOuter<String>.Inner<Integer>();
+        ParamOuter<T>.Inner<Integer>();
+    }
 }
