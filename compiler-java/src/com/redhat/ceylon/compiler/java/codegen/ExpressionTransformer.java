@@ -248,7 +248,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // now, because a raw cast is losing a lot of info, can we do better?
                 if(varianceCastResult.isBetterCastAvailable()){
                     // let's recast that to something finer than a raw cast
-                    targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.TYPE_ARGUMENT);
+                    targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.TYPE_ARGUMENT | SATISFIES);
                     result = make().TypeCast(targetType, result);
                 }
             }
