@@ -1,3 +1,5 @@
+interface MyIdentifiable satisfies Identifiable {}
+
 class T() extends Object() {
     shared actual String string = "hello";
     shared actual Boolean equals(Object that) {
@@ -234,4 +236,9 @@ void types() {
 
     TypeTestC1|TypeTestC3 c1 = TypeTestC1();
     if (is TypeTestI1&TypeTestI2|TypeTestI3&TypeTestI4 c1) {} else { fail("is A&B|C&D"); }
+    
+    object myId satisfies MyIdentifiable {}
+    Object my = myId;
+    assert(my is Identifiable, "is custom identifiable");
+    assert(!my is IdentifiableObject, "is not standard identifiable");
 }
