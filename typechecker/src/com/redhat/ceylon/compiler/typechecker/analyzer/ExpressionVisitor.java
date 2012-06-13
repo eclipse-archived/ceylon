@@ -2871,8 +2871,17 @@ public class ExpressionVisitor extends Visitor {
         if (that.getPrimary() instanceof Tree.QualifiedTypeExpression || 
                 that.getPrimary() instanceof Tree.BaseTypeExpression) {
             //this is a qualified type name, not member reference
-            ProducedReference target = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
-            pt = target==null ? null : target.getType();
+            ProducedType target = (ProducedType) ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget();
+            if (target==null) {
+                pt = null;
+            }
+            else {
+                pt = target.getType();
+                //TODO: this error doesn't make sense for metamodel refs,
+                //      only for instantiation expressions
+                checkIsExactly(pt, target.getDeclaration().getType(), 
+                        that, "qualifying type is not a containing type");
+            }
         }
         if (pt!=null) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
