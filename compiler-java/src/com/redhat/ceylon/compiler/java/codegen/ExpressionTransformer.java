@@ -569,7 +569,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.Outer expr) {
         at(expr);
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
-        return makeSelect(makeQuotedIdent(outerClass.getDeclaration().getName()), "this");
+        final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
+        if (outerDeclaration instanceof Interface) {
+            return makeSelect(makeJavaType(outerClass, COMPANION | WANT_RAW_TYPE), "this");
+        }
+        return makeSelect(makeQuotedIdent(outerDeclaration.getName()), "this");
     }
 
     //
