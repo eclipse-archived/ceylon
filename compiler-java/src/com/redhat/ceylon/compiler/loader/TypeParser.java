@@ -4,11 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class TypeParser {
     public class Part {
@@ -113,9 +117,19 @@ public class TypeParser {
     }
 
     private ProducedType loadType(String pkg, String fullName, Part part, ProducedType qualifyingType) {
-        // try to find a qualifying type
+        // try to find a qualified type
         try{
-            ProducedType newType = loader.getType(pkg, fullName, scope);
+            ProducedType newType;
+            if(qualifyingType == null)
+                newType = loader.getType(pkg, fullName, scope);
+            else{
+                // look it up via its qualifying type
+                TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
+                Declaration member = getDirectMember(qualifyingDeclaration, part.name);
+                if(!(member instanceof TypeDeclaration))
+                    throw new ModelResolutionException("Failed to resolve inner type "+part.name+" in "+qualifyingDeclaration.getQualifiedNameString());
+                newType = ((TypeDeclaration)member).getType();
+            }
             return newType == null ? null : newType.getDeclaration().getProducedType(qualifyingType, part.parameters);
         }catch(ModelResolutionException x){
             // allow this only if we don't have any qualifying type or parameters:
@@ -127,6 +141,21 @@ public class TypeParser {
                 throw x;
             return null;
         }
+    }
+
+    /**
+     * Looks for a direct member of type ClassOrInterface. We're not using Class.getDirectMember()
+     * because it skips object types and we want them.
+     */
+    private Declaration getDirectMember(TypeDeclaration container, String name) {
+        for (Declaration member : container.getMembers()) {
+            if (member instanceof ClassOrInterface
+                    && member.getName() != null
+                    && member.getName().equals(name)) {
+                return member;
+            }
+        }
+        return null;
     }
 
     /*
