@@ -10,4 +10,20 @@ public class ExpressionTest3 extends CompilerTest {
     public void testComprehensions1() {
         compareWithJavaSource("comprehensions/comp1");
     }
+
+    @Test
+    public void testComprehensionForForIf() {
+        compareWithJavaSource("comprehensions/for_for_if");
+    }
+
+    @Test
+    public void testComprehensionForIfFor() {
+        compareWithJavaSource("comprehensions/for_if_for");
+    }
+
+    @Test
+    public void testComprehensionForIfIf() {
+        compareWithJavaSource("comprehensions/for_if_if");
+    }
+
 }
