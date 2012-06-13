@@ -20,7 +20,10 @@
 package com.redhat.ceylon.compiler.java.test.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -34,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -44,24 +48,68 @@ public class TypeParserTest {
     static class MockLoader implements ModelLoader {
 
         static final ModelLoader instance = new MockLoader();
+
+        private Map<String, Class> classes = new HashMap<String,Class>();
+        private Package pkg = new Package();
+        
+        private MockLoader(){
+            pkg.setName(Arrays.asList(""));
+            Class a = makeClass("a");
+            makeClass("b", a);
+            makeClass("b");
+            makeClass("c");
+            makeClass("d");
+            makeClass("e");
+            makeClass("f");
+            Class t2 = makeParameterisedClass("t2");
+            makeParameterisedClass("t2", t2);
+            Package otherPkg = new Package();
+            otherPkg.setName(Arrays.asList("pkg"));
+            makeClass("b", otherPkg);
+        }
+
         
         @Override
         public ProducedType getType(String pkg, String name, Scope scope) {
-            if(name.equals("unknown") || name.endsWith(".unknown"))
+            Class klass = classes.get(name);
+            if(klass == null)
                 throw new ModelResolutionException("Unknown type: "+name);
+            return klass.getType();
+        }
+
+        private Class makeParameterisedClass(String name) {
+            return makeParameterisedClass(name, null);
+        }
+        
+        private Class makeParameterisedClass(String name, Class container) {
+            Class klass = makeClass(name, container);
+            List<TypeParameter> typeParameters = new ArrayList<TypeParameter>(2);
+            TypeParameter typeParam = new TypeParameter();
+            typeParam.setName("A");
+            typeParameters.add(typeParam);
+            typeParam = new TypeParameter();
+            typeParam.setName("B");
+            typeParameters.add(typeParam);
+            klass.setTypeParameters(typeParameters );
+            return klass;
+        }
+
+        private Class makeClass(String name) {
+            return makeClass(name, null);
+        }
+        
+        private Class makeClass(String name, Scope container) {
             Class klass = new Class();
             klass.setName(name);
-            if(name.equals("t2") || name.endsWith(".t2")){
-                List<TypeParameter> typeParameters = new ArrayList<TypeParameter>(2);
-                TypeParameter typeParam = new TypeParameter();
-                typeParam.setName("A");
-                typeParameters.add(typeParam);
-                typeParam = new TypeParameter();
-                typeParam.setName("B");
-                typeParameters.add(typeParam);
-                klass.setTypeParameters(typeParameters );
+            if(container != null){
+                container.getMembers().add(klass);
+                klass.setContainer(container);
+                classes.put(container.getQualifiedNameString()+"."+name, klass);
+            }else{
+                klass.setContainer(pkg);
+                classes .put(name, klass);
             }
-            return klass.getType();
+            return klass;
         }
 
         @Override
@@ -224,7 +272,7 @@ public class TypeParserTest {
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
-        Assert.assertEquals("a.b", declaration.getName());
+        Assert.assertEquals("a.b", declaration.getQualifiedNameString());
 
         ProducedType qualifyingType = type.getQualifyingType();
         Assert.assertNotNull(qualifyingType);
@@ -241,7 +289,7 @@ public class TypeParserTest {
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
-        Assert.assertEquals("t2.t2", declaration.getName());
+        Assert.assertEquals("t2.t2", declaration.getQualifiedNameString());
         Assert.assertEquals(2, type.getTypeArgumentList().size());
         
         // c
@@ -275,12 +323,12 @@ public class TypeParserTest {
 
     @Test
     public void testPackageQualified(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("unknown.b", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("pkg.b", null);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
-        Assert.assertEquals("unknown.b", declaration.getName());
+        Assert.assertEquals("pkg.b", declaration.getQualifiedNameString());
 
         Assert.assertNull(type.getQualifyingType());
     }
