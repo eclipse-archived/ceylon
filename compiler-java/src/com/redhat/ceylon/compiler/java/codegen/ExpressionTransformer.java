@@ -1293,8 +1293,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 expr.getTarget().getQualifyingType());
         JCExpression appliedExpr = transformMemberExpression(expr, sequenceItemExpr, transformer);
         
-        if (!isWithinInvocation()
-                && isCeylonCallable(expr.getTypeModel())) {
+        // This short-circuit is here for spread invocations
+        // The code has been called recursively and the part after this if-statement will
+        // be handled by the previous recursion
+        if (!isWithinInvocation() && isCeylonCallable(expr.getTypeModel())) {
             return appliedExpr;
         }
         
