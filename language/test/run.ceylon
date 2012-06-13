@@ -36,10 +36,12 @@ shared void run() {
     testMaps();
     print("Set tests");
     testSets();
-	print("Iterables test (map/fold/filter/find)");
-	testIterables();
+    print("Iterables test (map/fold/filter/find)");
+    testIterables();
     print("Testing comprehensions");
     comprehensions();
+    print("Testing process");
+    testProcess();
     results();
 }
 
