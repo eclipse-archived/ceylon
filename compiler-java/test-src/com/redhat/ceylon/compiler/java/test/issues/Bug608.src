@@ -9,6 +9,18 @@ final class bug608 {
         final .java.lang.ProcessBuilder b = new .java.lang.ProcessBuilder();
         final .ceylon.language.Iterable<? extends .ceylon.language.String> args = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
         b.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(args));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> commandWithArgs = (
+            let
+            {
+                .ceylon.language.String $arg$0$callable$ = .ceylon.language.String.instance("");
+                .ceylon.language.String $arg$0$this$ = $arg$0$callable$;
+                boolean $arg$0$1 = true;
+                .ceylon.language.Iterable<? extends .ceylon.language.Character> $arg$0$0 = $arg$0$this$.split$separators();
+            }
+            returning $arg$0$callable$.split($arg$0$0, $arg$0$1);
+        );
+        final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs));
+        builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs));
     }
     
     public static void main(.java.lang.String[] args) {
