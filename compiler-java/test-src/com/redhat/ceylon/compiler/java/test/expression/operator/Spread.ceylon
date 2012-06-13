@@ -22,4 +22,6 @@ void spread(String[] seq2) {
     value seq = {"Hello", "World"};
     value ini = seq[].size;
     value ini2 = seq2[].size;
+    value ini3 = seq[].replace(x, x);
 }
+String x = "x";

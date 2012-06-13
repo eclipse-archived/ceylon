@@ -39,5 +39,41 @@ final class spread {
                 returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$4$4);
             ) : .ceylon.language.$empty.getEmpty());
         );
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> ini3 = (
+            let
+            {
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$6 = seq;
+            }
+            returning (
+                let
+                {
+                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$7$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$6;
+                    int $spread$7$2 = (int)$spread$7$0.getSize();
+                    .ceylon.language.String[] $spread$7$4 = new .ceylon.language.String[$spread$7$2];
+                    for (int $index$8 = 0; $index$8 < $spread$7$2; $index$8++) $spread$7$4[$index$8] = .ceylon.language.String.instance($spread$7$0.item(.ceylon.language.Integer.instance($index$8)).replace(.com.redhat.ceylon.compiler.java.test.expression.operator.x.getX(), .com.redhat.ceylon.compiler.java.test.expression.operator.x.getX()));
+                }
+                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$7$4);
+            );
+        );
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+final class x {
+    private static final .java.lang.String[] value;
+    static {
+        value = new .java.lang.String[]{"x"};
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
+    static .java.lang.String getX() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    private x() {
     }
 }
