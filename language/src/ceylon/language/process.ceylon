@@ -37,13 +37,12 @@ shared object process {
         write(newline); 
     }
     
-    doc "Print a string to the standard output of the 
+    doc "Print a string to the standard error of the 
          virtual machine process."
     shared void writeError(String string) { throw; }
     
-    doc "Print a line to the standard output of the 
+    doc "Print a line to the standard error of the 
          virtual machine process."
-    see (print)
     shared void writeErrorLine(String line) { 
         writeError(line);
         writeError(newline);

@@ -494,7 +494,7 @@ public abstract class String
     public Iterable<? extends String> split(
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterable<ceylon.language.Character>")
             @Defaulted
-            @Name("separator") Iterable<? extends Character> separators,
+            @Name("separators") Iterable<? extends Character> separators,
             @Defaulted
             @Name("discardSeparators") boolean discardSeparators) {
         if (value.isEmpty()) {
