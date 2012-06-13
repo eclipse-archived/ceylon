@@ -408,7 +408,7 @@ public class ClassTransformer extends AbstractTransformer {
         final List<JCExpression> state = List.<JCExpression>of(
                 expressionGen().applyErasureAndBoxing(makeUnquotedIdent("this"), 
                         model.getType(), true, BoxingStrategy.BOXED, 
-                        satisfiedType));
+                        satisfiedType, true));
         final String fieldName = getCompanionFieldName(iface);
         classBuilder.init(make().Exec(make().Assign(
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
