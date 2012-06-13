@@ -151,8 +151,8 @@ public class SequenceOperators {
         final .java.lang.String string = "";
         final .ceylon.language.Character c = .ceylon.language.String.instance(string).item(.ceylon.language.Integer.instance(0L));
         .java.lang.String sync;
-        sync = ((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L)).toString();
-        sync = ((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), null).toString();
+        sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L)).toString();
+        sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), null).toString();
     }
     
     public SequenceOperators() {
