@@ -1007,20 +1007,33 @@ public class ProducedType extends ProducedReference {
 
     private ProducedType getSelfType() {
         ProducedType selfType = getDeclaration().getSelfType();
-        return selfType==null?null:selfType.substitute(getTypeArguments());
+        if (selfType==null) {
+            return null;
+        }
+        else {
+            Map<TypeParameter, ProducedType> args = getTypeArguments();
+            return args.isEmpty() ? selfType : selfType.substitute(args);
+        }
     }
 
     private List<ProducedType> getSatisfiedTypes() {
         List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
-        for (ProducedType st: getDeclaration().getSatisfiedTypes()) {
-            satisfiedTypes.add(st.substitute(getTypeArguments()));
+        Map<TypeParameter, ProducedType> args = getTypeArguments();
+        for (ProducedType satisfiedType: getDeclaration().getSatisfiedTypes()) {
+            satisfiedTypes.add(args.isEmpty() ? satisfiedType : satisfiedType.substitute(args));
         }
         return satisfiedTypes;
     }
 
     private ProducedType getExtendedType() {
         ProducedType extendedType = getDeclaration().getExtendedType();
-        return extendedType==null?null:extendedType.substitute(getTypeArguments());
+        if (extendedType==null) {
+            return null;
+        }
+        else {
+            Map<TypeParameter, ProducedType> args = getTypeArguments();
+            return args.isEmpty() ? extendedType : extendedType.substitute(args);
+        }
     }
 
     public List<ProducedType> getCaseTypes() {
