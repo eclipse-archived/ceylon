@@ -46,7 +46,7 @@ public class TypeParserTest {
         static final ModelLoader instance = new MockLoader();
         
         @Override
-        public ProducedType getType(String name, Scope scope) {
+        public ProducedType getType(String pkg, String name, Scope scope) {
             if(name.equals("unknown") || name.endsWith(".unknown"))
                 throw new ModelResolutionException("Unknown type: "+name);
             Class klass = new Class();

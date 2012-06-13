@@ -578,7 +578,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     private ProducedType toPType(com.sun.tools.javac.code.Type t) {
-        return loader().getType(t.tsym.getQualifiedName().toString(), null);
+        return loader().getType(t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
     
     private boolean sameType(Type t1, ProducedType t2) {

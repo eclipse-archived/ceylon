@@ -94,12 +94,17 @@ public class TypeParser {
     private ProducedType parseQualifiedType() {
         Part part = parseTypeNameWithArguments();
         String fullName = part.name;
-        ProducedType qualifyingType = loadType(fullName, part, null);
+        // start with the toplevel package
+        String pkg = "";
+        ProducedType qualifyingType = loadType(pkg, fullName, part, null);
         while(lexer.lookingAt(TypeLexer.DOT)){
             lexer.eat();
             part = parseTypeNameWithArguments();
+            // if we didn't find a type it must be part of the package name
+            if(qualifyingType == null)
+                pkg = fullName;
             fullName = fullName + '.' + part.name;
-            qualifyingType = loadType(fullName, part, qualifyingType);
+            qualifyingType = loadType(pkg, fullName, part, qualifyingType);
         }
         if(qualifyingType == null){
             throw new ModelResolutionException("Could not find type "+fullName);
@@ -107,10 +112,10 @@ public class TypeParser {
         return qualifyingType;
     }
 
-    private ProducedType loadType(String fullName, Part part, ProducedType qualifyingType) {
+    private ProducedType loadType(String pkg, String fullName, Part part, ProducedType qualifyingType) {
         // try to find a qualifying type
         try{
-            ProducedType newType = loader.getType(fullName, scope);
+            ProducedType newType = loader.getType(pkg, fullName, scope);
             return newType == null ? null : newType.getDeclaration().getProducedType(qualifyingType, part.parameters);
         }catch(ModelResolutionException x){
             // allow this only if we don't have any qualifying type or parameters:

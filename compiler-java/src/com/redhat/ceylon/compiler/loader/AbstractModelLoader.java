@@ -1720,7 +1720,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public ProducedType getType(String name, Scope scope) {
+    public ProducedType getType(String pkgName, String name, Scope scope) {
         if(scope != null){
             TypeParameter typeParameter = lookupTypeParameter(scope, name);
             if(typeParameter != null)

@@ -58,9 +58,10 @@ public interface ModelLoader {
     
     /**
      * Returns the ProducedType of a name in a given scope
-     * @param name the name of the type
+     * @param pkg the package name
+     * @param name the fully-qualified name of the type
      * @param scope the scope in which to find it
      * @return the ProducedType found
      */
-    public ProducedType getType(String name, Scope scope);
+    public ProducedType getType(String pkg, String name, Scope scope);
 }
