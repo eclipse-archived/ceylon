@@ -35,6 +35,7 @@ import java.util.Set;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
@@ -1731,6 +1732,34 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return typeParameter.getType();
         }
         if(!isBootstrap || !name.startsWith("ceylon.language")) {
+            if(scope != null && pkgName != null){
+                Package containingPackage = Decl.getPackageContainer(scope);
+                Package pkg = containingPackage.getModule().getPackage(pkgName);
+                if(pkg == null)
+                    "".toString();
+                String relativeName = null;
+                String unquotedName = name.replace("$", "");
+                if(!pkgName.isEmpty()){
+                    if(unquotedName.startsWith(pkgName+"."))
+                        relativeName = unquotedName.substring(pkgName.length()+1);
+                    // else we don't try it's not in this package
+                }else
+                    relativeName = unquotedName;
+                if(relativeName != null && pkg != null){
+                    Declaration declaration = pkg.getDirectMember(relativeName, null);
+                    // if we get a value, we want its type
+                    if(declaration instanceof Value
+                            && ((Value)declaration).getTypeDeclaration().getName().equals(relativeName))
+                        declaration = ((Value)declaration).getTypeDeclaration();
+                    if(declaration instanceof TypeDeclaration)
+                        return ((TypeDeclaration)declaration).getType();
+                    // if we have something but it's not a type decl, it's a:
+                    // - value that's not an object (why would we get its type here?)
+                    // - method (doesn't have a type of the same name)
+                    if(declaration != null)
+                        return null;
+                }
+            }
             TypeDeclaration td = (TypeDeclaration)convertToDeclaration(name, DeclarationType.TYPE);
             return td == null ? null : td.getType();
         }
