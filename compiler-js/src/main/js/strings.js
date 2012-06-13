@@ -18,9 +18,9 @@ function String$(value,size) {
 initTypeProto(String$, 'ceylon.language.String', Object$, List, Comparable, Ranged, FixedSized,
     Summable, Castable, Cloneable);
 function StringOfSome() {}
-initType(StringOfSome, "ceylon.language.StringOfSome", String$);
+initType(StringOfSome, "ceylon.language.StringOfSome", String$, Some);
 function StringOfNone() {}
-initType(StringOfNone, "ceylon.language.StringOfNone", String$);
+initType(StringOfNone, "ceylon.language.StringOfNone", String$, None);
 var String$proto = String$.$$.prototype;
 String$proto.getT$name = function() {
     return ((this.value.length!==0)?StringOfSome:StringOfNone).$$.T$name;
