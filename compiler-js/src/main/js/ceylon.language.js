@@ -47,7 +47,7 @@ function initExistingType(type, cons, typeName) {
 }
 function lazyInitGetHash() {
     if (this.identifiableObjectID === undefined) {
-        IdentifiableObject.call(this, this);
+        Identifiable.call(this, this);
     }
     return this.identifiableObjectID;
 }
@@ -105,24 +105,29 @@ function Object$(wat) {
 }
 initTypeProto(Object$, 'ceylon.language.Object', Void);
 var Object$proto = Object$.$$.prototype;
-Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
+Object$proto.getString = function() { return String$(className(this).value + "@" + this.getHash().value); }
+//Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
 Object$proto.toString=function() { return this.getString().value };
 
 var identifiableObjectID=1;
-function IdentifiableObject(obj) {
+function Identifiable(obj) {
     obj.identifiableObjectID=Integer(identifiableObjectID++);
-    return obj;
 }
-initTypeProto(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$);
-var IdentifiableObject$proto = IdentifiableObject.$$.prototype;
-IdentifiableObject$proto.getHash = function() { return this.identifiableObjectID; }
-IdentifiableObject$proto.getString = function() { return String$(className(this).value + "@" + this.getHash().value); }
-IdentifiableObject$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language.IdentifiableObject')) {
-        return Boolean$(other===this);
+initType(Identifiable, "ceylon.language.Identifiable");
+var Identifiable$proto = Identifiable.$$.prototype;
+Identifiable$proto.equals = function(that) {
+    if (isOfType(that, 'ceylon.language.Identifiable')) {
+        return Boolean$(that===this);
     }
     return false;
 }
+Identifiable$proto.getHash = function() { return this.identifiableObjectID; }
+
+function IdentifiableObject(obj) {
+    Identifiable(obj);
+    return obj;
+}
+initTypeProto(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$, Identifiable);
 
 //INTERFACES
 function Cloneable(wat) {
@@ -475,6 +480,7 @@ Entry$proto.getHash = function() { Integer((31 + this.key.getHash().value) * 31 
 
 
 exports.Exception=Exception;
+exports.Identifiable=Identifiable;
 exports.IdentifiableObject=IdentifiableObject;
 exports.Object=Object$;
 exports.Boolean=Boolean$;
