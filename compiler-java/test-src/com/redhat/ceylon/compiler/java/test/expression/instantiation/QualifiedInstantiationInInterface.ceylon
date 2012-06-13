@@ -29,4 +29,20 @@ interface QualifiedInstantiationInInterface<G> {
         this.Inner<Integer>{s="";};
         other.Inner<Integer>{s="";};
     }
+    void m2() {
+        interface Local<T> {
+            class LocalInner<X>(String t) {
+            }
+            void m3(Local<String> l) {
+                this.LocalInner<Integer>("");
+                l.LocalInner<Integer>("");
+                
+                this.LocalInner<Integer>{t="";};
+                l.LocalInner<Integer>{t="";};
+ 
+                outer.Inner<Integer>("");               
+                outer.Inner<Integer>{s="";};
+            }
+        }
+    }
 }

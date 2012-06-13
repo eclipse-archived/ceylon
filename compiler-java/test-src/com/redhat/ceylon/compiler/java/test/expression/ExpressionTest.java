@@ -242,7 +242,7 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("instantiation/QualifiedParameterisedInstantiation");
     }
     @Test
-    public void testQualifiedInstantiationInInterface_fail(){
+    public void testQualifiedInstantiationInInterface(){
         compareWithJavaSource("instantiation/QualifiedInstantiationInInterface");
     }
     // Operators
