@@ -150,6 +150,8 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 type = type.getQualifyingType();
             }
+            
+            classBuilder.defs(makeCompanionAccessor((Interface)model, model.getType(), false));
             // Build the companion class
             buildCompanion(def, (Interface)model, classBuilder);   
         }
@@ -406,7 +408,7 @@ public class ClassTransformer extends AbstractTransformer {
         final List<JCExpression> state = List.<JCExpression>of(
                 expressionGen().applyErasureAndBoxing(makeUnquotedIdent("this"), 
                         model.getType(), true, BoxingStrategy.BOXED, 
-                        satisfiedType));
+                        satisfiedType, true));
         final String fieldName = getCompanionFieldName(iface);
         classBuilder.init(make().Exec(make().Assign(
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
@@ -418,6 +420,44 @@ public class ClassTransformer extends AbstractTransformer {
         
         classBuilder.field(PRIVATE | FINAL, fieldName, 
                 makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES), null, false);
+
+        classBuilder.defs(makeCompanionAccessor(iface, satisfiedType, true));
+        
+    }
+    
+    private List<JCTree> makeCompanionAccessor(Interface iface, ProducedType satisfiedType, boolean forImplementor) {
+        // Doing this only for interfaces with inner classes breaks BC for implementors
+        // when an inner class is added to the interface. OTOH it means we 
+        // don't have to have an access on every Ceylon interface when it 
+        // isn't used on most of them.
+        boolean hasInnerClasses = false;
+        for (Declaration member : iface.getMembers()) {
+            if (member instanceof Class) {
+                hasInnerClasses = true;
+                break;
+            }
+        }
+        if (hasInnerClasses) {
+            MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.method(
+                    this, true, true, getCompanionAccessorName(iface));
+            if (!forImplementor && Decl.isAncestorLocal(iface)) {
+                // For a local interface the return type cannot be a local
+                // companion class, because that won't be visible at the 
+                // top level, so use Object instead
+                thisMethod.resultType(null, make().Type(syms().objectType));
+            } else {
+                thisMethod.resultType(null, makeJavaType(satisfiedType, COMPANION));
+            }
+            thisMethod.annotations(forImplementor ? makeAtOverride() : makeAtIgnore());
+            thisMethod.modifiers(PUBLIC);
+            if (forImplementor) {
+                thisMethod.body(make().Return(makeUnquotedIdent(getCompanionFieldName(iface))));
+            } else {
+                thisMethod.noBody();
+            }
+            return List.<JCTree>of(thisMethod.build());
+        }
+        return List.<JCTree>nil();
     }
 
     private void buildCompanion(final Tree.ClassOrInterface def,

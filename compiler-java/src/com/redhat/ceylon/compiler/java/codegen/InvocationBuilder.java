@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -52,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -142,6 +144,20 @@ abstract class InvocationBuilder {
             ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
             resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
+            // When doing qualified invocation through an interface we need
+            // to get the companion.
+            if (((Tree.QualifiedTypeExpression)primary).getDeclaration().getContainer() instanceof Interface
+                    && !(((Tree.QualifiedTypeExpression)primary).getPrimary() instanceof Tree.Outer)) {
+                Interface qualifyingInterface = (Interface)((Tree.QualifiedTypeExpression)primary).getDeclaration().getContainer();
+                actualPrimExpr = gen.make().Apply(null, 
+                        gen.makeSelect(actualPrimExpr, gen.getCompanionAccessorName(qualifyingInterface)), 
+                        List.<JCExpression>nil());
+                // But when the interface is local the accessor returns Object
+                // so we need to cast it to the type of the companion
+                if (Decl.isAncestorLocal(((Tree.QualifiedTypeExpression)primary).getDeclaration())) {
+                    actualPrimExpr = gen.make().TypeCast(gen.makeJavaType(qualifyingInterface.getType(), COMPANION), actualPrimExpr);
+                }
+            }
             // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
             // is qualified relative to it
             ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
@@ -1132,7 +1148,14 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 && selector != null) {
             // Prepare the first argument holding the primary for the call
             ProducedType type = ((Tree.MemberOrTypeExpression)primary).getTarget().getQualifyingType();
-            vars.prepend(gen.makeVar(callVarName, gen.makeJavaType(type, NO_PRIMITIVES), actualPrimExpr));
+            JCExpression varType;
+            if (primary instanceof QualifiedTypeExpression
+                    && (((QualifiedTypeExpression)primary).getPrimary() instanceof Tree.Outer)) {
+                varType = gen.makeJavaType(type, NO_PRIMITIVES | COMPANION);
+            } else {
+                varType = gen.makeJavaType(type, NO_PRIMITIVES);
+            }
+            vars.prepend(gen.makeVar(callVarName, varType, actualPrimExpr));
             actualPrimExpr = gen.makeUnquotedIdent(callVarName);
         }
         return actualPrimExpr;

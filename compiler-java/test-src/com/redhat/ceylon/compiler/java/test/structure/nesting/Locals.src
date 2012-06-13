@@ -9,6 +9,8 @@ interface Local$local$1$LI$LII {
     public long m();
 }
 interface Local$local$1$LI {
+    
+    public .java.lang.Object LI$impl();
 }
 interface Local$C$local2$1$CL$LCI {
     

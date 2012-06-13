@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+interface OuterInterface<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl<T> $com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl();
+    
+    public void m2();
+}
+final class OuterInterface$impl<T> {
+    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this;
+    
+    private void m() {
+    }
+    
+    public void m2() {
+    }
+    
+    class InnerClass {
+        
+        private final void m3() {
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.m();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.m2();
+        }
+        
+        InnerClass() {
+        }
+    }
+    
+    OuterInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this) {
+        this.$this = $this;
+    }
+}

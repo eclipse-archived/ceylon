@@ -18,31 +18,11 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-interface QualifiedInstantiationInInterface<G> {
-    class Inner<T>(String s) {}
-    void m() {
-        value other = this;
-
-        this.Inner<Integer>("");
-        other.Inner<Integer>("");
-        
-        this.Inner<Integer>{s="";};
-        other.Inner<Integer>{s="";};
-    }
-    void m2() {
-        interface Local<T> {
-            class LocalInner<X>(String t) {
-            }
-            void m3(Local<String> l) {
-                this.LocalInner<Integer>("");
-                l.LocalInner<Integer>("");
-                
-                this.LocalInner<Integer>{t="";};
-                l.LocalInner<Integer>{t="";};
- 
-                outer.Inner<Integer>("");               
-                outer.Inner<Integer>{s="";};
-            }
-        }
+class Bug620<T>()
+    given T satisfies Numeric<T> {
+    
+    void m(Numeric<T> init){
+        variable Numeric<T> n := init;
+        n := n + n;
     }
 }

@@ -123,7 +123,7 @@ public class ExpressionTest extends CompilerTest {
     // Erasure
     
     @Test
-    public void testErsErasure_fail(){
+    public void testErsErasure(){
         compareWithJavaSource("erasure/Erasure");
     }
     @Test
@@ -173,6 +173,10 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testSlfOuterReference(){
         compareWithJavaSource("selfref/OuterReference");
+    }
+    @Test
+    public void testSlfOuterInterface(){
+        compareWithJavaSource("selfref/OuterInterface");
     }
     
     // Instantiation
@@ -238,7 +242,7 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("instantiation/QualifiedParameterisedInstantiation");
     }
     @Test
-    public void testQualifiedInstantiationInInterface_fail(){
+    public void testQualifiedInstantiationInInterface(){
         compareWithJavaSource("instantiation/QualifiedInstantiationInInterface");
     }
     // Operators

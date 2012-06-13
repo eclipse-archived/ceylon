@@ -201,6 +201,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
+        return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType, false);
+    }
+    
+    JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
+            boolean exprBoxed,
+            BoxingStrategy boxingStrategy, ProducedType expectedType, boolean forCompanion) {
         
         boolean canCast = false;
         
@@ -225,7 +231,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
         // now check if we need variance casts
         if (canCast) {
-            ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
+            ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, forCompanion);
         }
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy);
@@ -234,7 +240,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private JCExpression applyVarianceCasts(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
-            BoxingStrategy boxingStrategy, ProducedType expectedType) {
+            BoxingStrategy boxingStrategy, ProducedType expectedType, boolean forCompanion) {
         // unboxed types certainly don't need casting for variance
         if(exprBoxed || boxingStrategy == BoxingStrategy.BOXED){
             VarianceCastResult varianceCastResult = getVarianceCastResult(expectedType, exprType);
@@ -248,7 +254,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // now, because a raw cast is losing a lot of info, can we do better?
                 if(varianceCastResult.isBetterCastAvailable()){
                     // let's recast that to something finer than a raw cast
-                    targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.TYPE_ARGUMENT | SATISFIES);
+                    targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.TYPE_ARGUMENT | (forCompanion ? SATISFIES : 0));
                     result = make().TypeCast(targetType, result);
                 }
             }
@@ -569,7 +575,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.Outer expr) {
         at(expr);
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
-        return makeSelect(makeQuotedIdent(outerClass.getDeclaration().getName()), "this");
+        final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
+        if (outerDeclaration instanceof Interface) {
+            return makeSelect(makeJavaType(outerClass, COMPANION | WANT_RAW_TYPE), "this");
+        }
+        return makeSelect(makeQuotedIdent(outerDeclaration.getName()), "this");
     }
 
     //
