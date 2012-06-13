@@ -174,6 +174,10 @@ public class ExpressionTest extends CompilerTest {
     public void testSlfOuterReference(){
         compareWithJavaSource("selfref/OuterReference");
     }
+    @Test
+    public void testSlfOuterInterface(){
+        compareWithJavaSource("selfref/OuterInterface");
+    }
     
     // Instantiation
     
