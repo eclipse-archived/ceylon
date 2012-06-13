@@ -12,6 +12,8 @@ function className(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
 var larger,smaller,Sequence,Category,$empty,equal; //IGNORE
 
+function getT$name() {return this.T$name;}
+function getT$all() {return this.T$all;}
 function initType(type, typeName) {
     var cons = function() {}
     type.$$ = cons;
@@ -22,6 +24,8 @@ function initType(type, typeName) {
         var superTypes = arguments[i].$$.T$all;
         for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
+    cons.getT$name = getT$name;
+    cons.getT$all = getT$all;
 }
 function initTypeProto(type, typeName) {
     initType.apply(this, arguments);
@@ -44,6 +48,8 @@ function initExistingType(type, cons, typeName) {
         var superTypes = arguments[i].$$.T$all;
         for (var $ in superTypes) {cons.T$all[$] = superTypes[$]}
     }
+    cons.getT$name = getT$name;
+    cons.getT$all = getT$all;
 }
 function lazyInitGetHash() {
     if (this.identifiableObjectID === undefined) {
