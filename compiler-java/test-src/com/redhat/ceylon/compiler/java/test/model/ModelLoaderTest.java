@@ -534,4 +534,10 @@ public class ModelLoaderTest extends CompilerTest {
             }
         });
     }
+    
+    @Test
+    public void testTypeParserUsingSourceModel(){
+        compile("A.ceylon", "B.ceylon");
+        compile("A.ceylon");
+    }
 }
