@@ -2634,18 +2634,20 @@ public class GenerateJsVisitor extends Visitor
         }
         out("', l:[");
         if (type instanceof OptionalType) {
-        	out("'ceylon.language.Nothing',");
-        	typeNameOrList(((OptionalType) type).getDefiniteType());
+            out("'ceylon.language.Nothing',");
+            typeNameOrList(((OptionalType) type).getDefiniteType());
+        } else if (type instanceof SequenceType) {
+            out("'ceylon.language.Empty','ceylon.language.Sequence'");
         } else {
-	        List<StaticType> types = type instanceof UnionType
-	        		? ((UnionType)type).getStaticTypes()
-	        		: ((IntersectionType)type).getStaticTypes();
-	        boolean first = true;
-	        for (StaticType t : types) {
-	            if (!first) out(",");
-	            typeNameOrList(t);
-	            first = false;
-	        }
+            List<StaticType> types = type instanceof UnionType
+                        ? ((UnionType)type).getStaticTypes()
+                        : ((IntersectionType)type).getStaticTypes();
+            boolean first = true;
+            for (StaticType t : types) {
+                if (!first) out(",");
+                typeNameOrList(t);
+                first = false;
+            }
         }
         out("]}");
     }
@@ -2656,7 +2658,7 @@ public class GenerateJsVisitor extends Visitor
             out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
             out("'");
         } else if (type instanceof EntryType) {
-        	out("'ceylon.language.Entry'"); //TODO: type parameters
+            out("'ceylon.language.Entry'"); //TODO: type parameters
         } else {
             getTypeList(type);
         }
