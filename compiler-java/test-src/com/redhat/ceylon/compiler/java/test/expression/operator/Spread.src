@@ -57,15 +57,12 @@ final class spread {
         );
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class x {
     private static final .java.lang.String[] value;
     static {
         value = new .java.lang.String[]{"x"};
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
     static .java.lang.String getX() {
         try {
             return value[0];

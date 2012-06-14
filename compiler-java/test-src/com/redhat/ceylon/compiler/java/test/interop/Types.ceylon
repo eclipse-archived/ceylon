@@ -263,6 +263,7 @@ void operationsOnBytes2() {
     sync := java.byte < java.byte;
 }
 
+@nomodel
 class OperationsOnBytes() extends TypesJava(){
     void m(){
         byte_attr := byte_attr + byte_attr;

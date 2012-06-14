@@ -17,4 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@nomodel
 Integer[] x = { for (x in 1..6) if (x % 2 == 0) for (y in 1..3) x*y };

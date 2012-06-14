@@ -44,6 +44,7 @@ interface Bug260_Interface3 {
 class Bug260_Intersection() satisfies Bug260_Interface2 & Bug260_Interface3 {
 }
 
+@nomodel
 class Bug260() satisfies Bug260_Interface & Bug260_Interface2 {
     // narrow to Nothing
     shared actual Nothing attr = null;

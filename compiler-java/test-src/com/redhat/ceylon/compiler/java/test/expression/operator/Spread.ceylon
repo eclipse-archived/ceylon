@@ -24,4 +24,5 @@ void spread(String[] seq2) {
     value ini2 = seq2[].size;
     value ini3 = seq[].replace(x, x);
 }
+@nomodel
 String x = "x";

@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@nomodel
 abstract class Bug477_1<out T>() satisfies List<T> {
 
     shared actual Bug477_1<T> clone = bottom;
@@ -28,6 +29,7 @@ abstract class Bug477_1<out T>() satisfies List<T> {
     }
 }
 
+@nomodel
 abstract class Bug477_2<out T>() satisfies List<T> {
 
     shared actual List<T> clone = bottom;

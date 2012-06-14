@@ -24,6 +24,7 @@ void bug607mth(arg1, arg2) {
     
     arg2 := "foo";
 }
+@nomodel
 class Bug607cls() {
     void mth(arg1, arg2) {
         String arg1;

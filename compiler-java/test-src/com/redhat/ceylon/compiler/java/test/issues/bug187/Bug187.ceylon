@@ -18,6 +18,8 @@
  * MA  02110-1301, USA.
  */
 import bug187 { main }
+
+@nomodel
 void bar() {
     main();
 }
