@@ -42,6 +42,9 @@ public class Stitcher {
             System.err.println("This program requires 2 arguments to run:");
             System.err.println("1. The path to the main JS file");
             System.err.println("2. The destination directory for the processed file");
+            System.err.println();
+            System.err.println("You can specify a third parameter which is a version number,");
+            System.err.println("which will be inserted between filename and extension.");
             System.exit(1);
             return;
         }
@@ -49,7 +52,12 @@ public class Stitcher {
         if (infile.exists() && infile.isFile() && infile.canRead()) {
             File outdir = new File(args[1]);
             if (outdir.exists() && outdir.isDirectory() && outdir.canWrite()) {
-                File outfile = new File(outdir, infile.getName());
+                String outname = infile.getName();
+                if (args.length>2) {
+                    final int dotpos = outname.lastIndexOf('.');
+                    outname = String.format("%s-%s%s", outname.substring(0, dotpos), args[2], outname.substring(dotpos));
+                }
+                File outfile = new File(outdir, outname);
                 PrintWriter writer = new PrintWriter(outfile, "UTF-8");
                 stitch(infile, writer);
                 writer.close();

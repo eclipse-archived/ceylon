@@ -1743,7 +1743,6 @@ public class GenerateJsVisitor extends Visitor
                     comprehensions.remove(comprehensions.size()-1);
                 }
                 out("return this.", prevItemVar, "!==", clAlias, ".getExhausted();");
-                //out("return this.", names.name(comprehensions.get(comprehensions.size()-1)), "!==", clAlias, ".getExhausted();");
                 //Add back the condition's attribute if present
                 if (var!=null) {
                     comprehensions.add(var.getDeclarationModel());
