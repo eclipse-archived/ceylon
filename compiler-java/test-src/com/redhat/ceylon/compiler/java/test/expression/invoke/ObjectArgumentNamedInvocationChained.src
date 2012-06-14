@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
 class ObjectArgumentNamedInvocationChained {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -21,7 +21,7 @@ class ObjectArgumentNamedInvocationChained {
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class objectArgumentNamedInvocationChained {
     
