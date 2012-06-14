@@ -283,6 +283,11 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/MethodInitializerParameter");
     }
     
+    @Test
+    public void testKlsOverrideDefaultedInitParam_fail(){
+        compareWithJavaSource("klass/OverrideDefaultedInitParam");
+    }
+    
     //
     // Methods
     
