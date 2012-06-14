@@ -1019,6 +1019,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void fillRefinedDeclarations(ClassOrInterface klass) {
         for(Declaration member : klass.getMembers()){
+            // do not trigger a type load (by calling isActual()) for Java inner classes since they
+            // can never be actual
+            if(member instanceof ClassOrInterface && !Decl.isCeylon((ClassOrInterface)member))
+                continue;
             if(member.isActual()){
                 member.setRefinedDeclaration(findRefinedDeclaration(klass, member.getName(), getSignature(member)));
             }
