@@ -35,6 +35,9 @@ public class ProducedType extends ProducedReference {
      * given type? 
      */
     public boolean isExactly(ProducedType type) {
+        return isExactly(type, true);
+    }
+    public boolean isExactly(ProducedType type, boolean selftypesSame) {
         if (getDeclaration() instanceof BottomType) {
             return type.getDeclaration() instanceof BottomType;
         }
@@ -121,7 +124,7 @@ public class ProducedType extends ProducedReference {
             }
         }
         else {
-            if (!type.getDeclaration().equals(getDeclaration())) {
+            if (selftypesSame && !type.getDeclaration().equals(getDeclaration())) {
             	ProducedType selfType = getDeclaration().getSelfType();
     			if (selfType!=null &&
     			        type.isSubtypeOf(this) &&
