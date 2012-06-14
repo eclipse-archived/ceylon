@@ -169,6 +169,11 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testUsesJDKTypes(){
+        compile("JDKTypes.ceylon");
+    }
+
+    @Test
     public void testIopCallsProtectedAccessMethod(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/CallsProtectedAccessMethod",
