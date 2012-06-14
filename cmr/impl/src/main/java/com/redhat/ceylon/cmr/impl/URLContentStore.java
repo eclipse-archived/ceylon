@@ -56,18 +56,20 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     public OpenNode find(Node parent, String child) {
         final String path = getFullPath(parent, child);
-        if (urlExists(path)) {
-            final RemoteNode node = createNode(child);
-            ContentHandle handle;
-            if (hasContent(child))
-                handle = createContentHandle(parent, child, path, node);
-            else
-                handle = DefaultNode.HANDLE_MARKER;
-            node.setHandle(handle);
-            return node;
-        } else {
+        // only test the URL if we are looking at the child level
+        // otherwise, pretend that folders exist, we'll find out soon
+        // enough
+        if (hasContent(child) && !urlExists(path)) {
             return null;
         }
+        final RemoteNode node = createNode(child);
+        ContentHandle handle;
+        if (hasContent(child))
+            handle = createContentHandle(parent, child, path, node);
+        else
+            handle = DefaultNode.HANDLE_MARKER;
+        node.setHandle(handle);
+        return node;
     }
 
     protected abstract ContentHandle createContentHandle(Node parent, String child, String path, Node node);
