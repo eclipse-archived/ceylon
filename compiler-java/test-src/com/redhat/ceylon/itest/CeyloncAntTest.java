@@ -185,5 +185,13 @@ public class CeyloncAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src").exists());
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src.sha1").exists());
     }
+    
+    @Test
+    public void testFailOnError() throws Exception {
+        AntResult result = ant("bad-fail-on-error");
+        Assert.assertEquals(0, result.getStatusCode());
+        assertContainsMatch(result.getStdout(), "I'll carry on regardless");
+        assertContainsMatch(result.getStdout(), "continued: true");
+    }
 
 }

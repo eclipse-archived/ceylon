@@ -88,5 +88,19 @@
        <module name="com.example.bar"/>
     </ceylonc>
   </target>
+  
+  <target name="bad-fail-on-error" depends="ant-tasks">
+    <ceylonc
+      executable="${script.ceylonc}"
+      src="${arg.src}"
+      out="${arg.out}"
+      verbose="${arg.verbose}"
+      failonerror="false"
+      errorproperty="continued">
+        <module name="com.example.bad"/>
+    </ceylonc>
+    <echo message="I'll carry on regardless"/>
+    <echo message="continued: ${continued}"/>
+  </target>
 
 </project>
