@@ -278,6 +278,11 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/TypeParamRename");
     }
     
+    @Test
+    public void testKlsMethodInitializerParameter(){
+        compareWithJavaSource("klass/MethodInitializerParameter");
+    }
+    
     //
     // Methods
     
