@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+public class SetOperators {
+    
+    private final void set(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
+        .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
+        sync = (.ceylon.language.Set)a.union(b);
+        sync = (.ceylon.language.Set)a.intersection(b);
+        sync = (.ceylon.language.Set)a.exclusiveUnion(b);
+        sync = (.ceylon.language.Set)a.complement(b);
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop0 = (.ceylon.language.Set)sync.union(a);
+                sync = $ceylontmpop0;
+            }
+            returning $ceylontmpop0;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop1 = (.ceylon.language.Set)sync.intersection(a);
+                sync = $ceylontmpop1;
+            }
+            returning $ceylontmpop1;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop2 = (.ceylon.language.Set)sync.exclusiveUnion(a);
+                sync = $ceylontmpop2;
+            }
+            returning $ceylontmpop2;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop3 = (.ceylon.language.Set)sync.complement(a);
+                sync = $ceylontmpop3;
+            }
+            returning $ceylontmpop3;
+        );
+    }
+    
+    public SetOperators() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.SetOperators();
+    }
+}

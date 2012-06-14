@@ -17,17 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@nomodel
 shared class SetOperators() {
     
     void set(Set<Integer> a, Set<Integer> b) {
         variable Set<Integer> sync;
         sync := a | b;
         sync := a & b;
-        sync := a & b;
+        sync := a ^ b;
         sync := a ~ b;
         sync |= a;
         sync &= a;
-        sync ~= a;
         sync ^= a;
+        sync ~= a;
     }
+    
 }
