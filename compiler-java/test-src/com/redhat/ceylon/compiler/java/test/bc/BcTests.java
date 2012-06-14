@@ -21,6 +21,8 @@ package com.redhat.ceylon.compiler.java.test.bc;
 
 import java.io.File;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -108,4 +110,10 @@ public class BcTests extends CompilerTest {
                 "ClassInitAddDefaultedParam");
     }
 
+    @Test
+    public void testBinaryVersionIncompatible(){
+        compile("JavaOldVersion.java");
+        assertErrors("CeylonNewVersion", 
+                new CompilerError(-1, "You are using a Ceylon class compiled for an incompatible version of the Ceylon compiler (0.0).\n  This compiler supports 1.0.\n  Please try to recompile your module using a compatible compiler.\n  Binary compatibility will only be supported after Ceylon 1.0."));
+    }
 }
