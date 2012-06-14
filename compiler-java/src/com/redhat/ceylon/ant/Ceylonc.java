@@ -68,6 +68,8 @@ public class Ceylonc extends LazyTask {
     private Boolean verbose;
     private String user;
     private String pass;
+    private Boolean failOnError;
+
     /**
      * Sets the user name for the output module repository (HTTP only)
      */
@@ -105,6 +107,10 @@ public class Ceylonc extends LazyTask {
             return this.classpath = new Path(getProject());
         else
             return this.classpath.createPath(); 
+    }
+
+    public void setFailonerror(Boolean failOnError) {
+        this.failOnError = failOnError;
     }
     
     /**
@@ -299,7 +305,7 @@ public class Ceylonc extends LazyTask {
             log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
             exe.setCommandline(cmd.getCommandline());
             exe.execute();
-            if (exe.getExitValue() != 0)
+            if (exe.getExitValue() != 0 && this.failOnError)
                 throw new BuildException(FAIL_MSG, getLocation());
         } catch (IOException e) {
             throw new BuildException("Error running Ceylon compiler", e, getLocation());
