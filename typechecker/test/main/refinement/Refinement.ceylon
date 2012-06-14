@@ -240,6 +240,8 @@ class Elephant() {
     default shared String name;
     name = "Trompon";
     default shared Float size=1000.0;
+    @error default shared Integer count;
+    @error count++;
     @error print(name);
     @error print(size);
 }
@@ -247,7 +249,9 @@ class Elephant() {
 class MyElephant() extends Elephant() {
     actual shared String name = "Trompon";
     actual shared Float size;
-    size = 2000.0;    
+    size = 2000.0;
+    actual shared Integer count;
+    count=0;
     print(name);
     print(size);
 }
