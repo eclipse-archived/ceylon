@@ -1268,7 +1268,14 @@ public class ClassTransformer extends AbstractTransformer {
         String name = CodegenUtil.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(container), true, name);
         methodBuilder.annotations(makeAtIgnore());
-        int modifiers = noBody ? PUBLIC | ABSTRACT : FINAL;
+        int modifiers = 0;
+        if (noBody) {
+            modifiers |= PUBLIC | ABSTRACT;
+        } else if (!(container instanceof Class 
+                && Strategy.defaultParameterMethodStatic(container))) {
+            // initializers can override parameter defaults
+            modifiers |= FINAL;
+        }
         if (container.isShared()) {
             modifiers |= PUBLIC;
         } else if (!container.isToplevel()
