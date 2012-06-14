@@ -426,7 +426,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             logError("You are using a Ceylon class compiled for an incompatible version of the Ceylon compiler ("+major+"."+minor+")."
                     +"\nThis compiler supports "+AbstractTransformer.BINARY_MAJOR_VERSION+"."+AbstractTransformer.BINARY_MINOR_VERSION+"."
                     +"\nPlease try to recompile your module using a compatible compiler."
-                    +"\nBinary compatibility will only be supported after Ceylon 1.0.");
+                    +"\nBinary compatibility will only be supported after Ceylon 1.0."
+                    +"\nOffending class: "+classMirror.getQualifiedName());
             binaryCompatibilityErrorRaised = true;
         }
     }
