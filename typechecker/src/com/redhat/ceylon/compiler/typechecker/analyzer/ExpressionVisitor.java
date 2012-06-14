@@ -1630,8 +1630,15 @@ public class ExpressionVisitor extends Visitor {
         if (prf==null || !prf.isFunctional()) {
             ProducedType pt = that.getPrimary().getTypeModel();
             if (pt!=null) {
-                if (checkCallable(pt, that.getPrimary(), 
-                        "invoked expression must be callable")) {
+                if (that instanceof Tree.SyntheticInvocationExpression) {
+                    Declaration d = ((Tree.BaseTypeExpression) that.getPrimary()).getDeclaration();
+                    if (!(d instanceof Class) || 
+                            ((Class) d).isAbstract()) {
+                        that.getPrimary().addError("cannot build an instance of abstract type (missing return statement)");
+                        return; //NOTE EARLY EXIT
+                    }
+                }
+                if (checkCallable(pt, that.getPrimary(), "invoked expression must be callable")) {
                     List<ProducedType> typeArgs = pt.getTypeArgumentList();
                     if (!typeArgs.isEmpty()) {
                         that.setTypeModel(typeArgs.get(0));

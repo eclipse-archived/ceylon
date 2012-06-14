@@ -701,6 +701,15 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.SyntheticInvocationExpression that) {
+        super.visit(that);
+        Tree.NamedArgumentList nal = that.getNamedArgumentList();
+        if (nal!=null) {
+            nal.getNamedArgumentList().setSynthetic(true);
+        }
+    }
+    
+    @Override
     public void visit(Tree.Variable that) {
         if (that.getSpecifierExpression()!=null) {
             Scope s = scope;

@@ -564,7 +564,7 @@ attributeBody[StaticType type] returns [Node result]
       { SpecifierExpression specifier = new SyntheticSpecifierExpression(null);
         SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
         Expression e = new Expression(null);
-        InvocationExpression ie = new InvocationExpression(null);
+        InvocationExpression ie = new SyntheticInvocationExpression(null);
         BaseTypeExpression bme = new BaseTypeExpression(null);
         if (t!=null) bme.setIdentifier(t.getIdentifier());
         bme.setTypeArguments(new InferredTypeArguments(null));
@@ -592,7 +592,7 @@ methodBody[StaticType type] returns [Block block]
         SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
         Return r = new Return(null);
         Expression e = new Expression(null);
-        InvocationExpression ie = new InvocationExpression(null);
+        InvocationExpression ie = new SyntheticInvocationExpression(null);
         BaseTypeExpression bme = new BaseTypeExpression(null);
         if (t!=null) bme.setIdentifier(t.getIdentifier());
         bme.setTypeArguments(new InferredTypeArguments(null));
