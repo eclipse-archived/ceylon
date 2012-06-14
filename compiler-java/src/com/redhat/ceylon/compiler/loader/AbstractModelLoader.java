@@ -883,6 +883,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             if(isCeylon && fieldMirror.isStatic())
                 continue;
+            // FIXME: temporary, because some private classes from the jdk are
+            // referenced in private methods but not available
+            if(isFromJDK && !fieldMirror.isPublic())
+                continue;
             String name = fieldMirror.getName();
             // skip the field if "we've already got one"
             if(klass.getDirectMember(name, null) != null)
