@@ -135,7 +135,7 @@ public class RemoteContentStore extends URLContentStore {
 
         public long getLastModified() throws IOException {
             final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
-            return url.openConnection().getLastModified();
+            return lastModified(url);
         }
 
         public void clean() {
