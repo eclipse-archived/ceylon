@@ -15,7 +15,7 @@ class Bug283 {
         (
             let
             {
-                long $ceylontmpop0 = getOi();
+                long $ceylontmpop0 = (long)getOi();
                 setOi($ceylontmpop0 + 1);
             }
             returning $ceylontmpop0;
@@ -23,7 +23,7 @@ class Bug283 {
         (
             let
             {
-                long $ceylontmpop1 = getOi();
+                long $ceylontmpop1 = (long)getOi();
                 setOi($ceylontmpop1 - 1);
             }
             returning $ceylontmpop1;
@@ -48,7 +48,7 @@ class Bug283 {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.Bug283 $ceylontmpopE4 = x;
-                long $ceylontmpopV5 = $ceylontmpopE4.getOi();
+                long $ceylontmpopV5 = (long)$ceylontmpopE4.getOi();
                 $ceylontmpopE4.setOi($ceylontmpopV5 + 1);
             }
             returning $ceylontmpopV5;
@@ -57,7 +57,7 @@ class Bug283 {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.Bug283 $ceylontmpopE6 = x;
-                long $ceylontmpopV7 = $ceylontmpopE6.getOi();
+                long $ceylontmpopV7 = (long)$ceylontmpopE6.getOi();
                 $ceylontmpopE6.setOi($ceylontmpopV7 - 1);
             }
             returning $ceylontmpopV7;
@@ -88,6 +88,42 @@ class Bug283 {
         oi2--;
         ++oi2;
         --oi2;
+    }
+    
+    private final <T extends .ceylon.language.Ordinal<? extends T>>void m3(final T t0) {
+        .ceylon.language.Ordinal<? extends T> t = t0;
+        (
+            let
+            {
+                T $ceylontmpop12 = (T)t;
+                t = $ceylontmpop12.getSuccessor();
+            }
+            returning $ceylontmpop12;
+        );
+        (
+            let
+            {
+                T $ceylontmpop13 = t.getSuccessor();
+                t = $ceylontmpop13;
+            }
+            returning $ceylontmpop13;
+        );
+        (
+            let
+            {
+                T $ceylontmpop14 = (T)t;
+                t = $ceylontmpop14.getPredecessor();
+            }
+            returning $ceylontmpop14;
+        );
+        (
+            let
+            {
+                T $ceylontmpop15 = t.getPredecessor();
+                t = $ceylontmpop15;
+            }
+            returning $ceylontmpop15;
+        );
     }
     
     Bug283() {

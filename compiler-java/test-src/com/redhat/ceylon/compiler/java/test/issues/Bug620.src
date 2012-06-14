@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug620<T extends .ceylon.language.Numeric<T>> {
+    
+    private final void m(final .ceylon.language.Numeric<T> init) {
+        .ceylon.language.Numeric<T> n = init;
+        n = ((T)n).plus((T)n);
+    }
+    
+    Bug620() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug620();
+    }
+}

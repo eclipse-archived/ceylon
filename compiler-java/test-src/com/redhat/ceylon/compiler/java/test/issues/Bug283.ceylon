@@ -37,4 +37,11 @@ class Bug283() {
         ++oi2;
         --oi2;    
     }
+    void m3<T>(T t0) given T satisfies Ordinal<T> {
+        variable Ordinal<T> t := t0;
+        t++;
+        ++t;
+        t--;
+        --t;   
+    }
 }

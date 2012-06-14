@@ -443,7 +443,7 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
-    public void testBug620_fail(){
+    public void testBug620(){
         compareWithJavaSource("Bug620");
     }
 }

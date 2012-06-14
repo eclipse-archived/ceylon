@@ -24,5 +24,6 @@ class Bug620<T>()
     void m(Numeric<T> init){
         variable Numeric<T> n := init;
         n := n + n;
+        
     }
 }
