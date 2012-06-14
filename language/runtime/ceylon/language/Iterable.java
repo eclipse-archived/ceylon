@@ -23,23 +23,23 @@ public interface Iterable<Element> extends Container {
     @TypeInfo("ceylon.language.Iterator<Element>")
     public Iterator<? extends Element> getIterator();
 
-    @Annotations(@Annotation("actual"))
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> getSequence();
 
-    @Annotations(@Annotation("actual"))
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Iterable<Result>")
     public <Result> Iterable<? extends Result> map(@Name("collecting")
         @TypeInfo("ceylon.language.Callable<Result,Element>")
         Callable<? extends Result> collecting);
 
-    @Annotations(@Annotation("actual"))
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Iterable<Element>")
     public Iterable<? extends Element> filter(@Name("selecting")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
         Callable<? extends Boolean> selecting);
 
-    @Annotations(@Annotation("actual"))
+    @Annotations(@Annotation("default"))
     @TypeInfo("Result")
     public <Result> Result fold(@Name("initial")
 		@TypeInfo("Result") Result initial,
@@ -47,7 +47,7 @@ public interface Iterable<Element> extends Container {
         @TypeInfo("ceylon.language.Callable<Result,Result,Element>")
         Callable<? extends Result> accumulating);
 
-    @Annotations(@Annotation("actual"))
+    @Annotations(@Annotation("default"))
     @TypeInfo("Element|ceylon.language.Nothing")
     public Element find(@Name("selecting")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
