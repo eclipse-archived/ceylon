@@ -68,7 +68,7 @@ public class Ceylonc extends LazyTask {
     private Boolean verbose;
     private String user;
     private String pass;
-    private Boolean failOnError = true;
+    private ExitHandler exitHandler = new ExitHandler();
 
     /**
      * Sets the user name for the output module repository (HTTP only)
@@ -109,8 +109,12 @@ public class Ceylonc extends LazyTask {
             return this.classpath.createPath(); 
     }
 
-    public void setFailonerror(Boolean failOnError) {
-        this.failOnError = failOnError;
+    public boolean getFailOnError() {
+        return exitHandler.isFailOnError();
+    }
+
+    public void setFailOnError(boolean failOnError) {
+        this.exitHandler.setFailOnError(failOnError);
     }
     
     /**
@@ -134,6 +138,14 @@ public class Ceylonc extends LazyTask {
             throw new BuildException("<ceylonc> only supports a single <files> element");
         }
         this.files = fileset;
+    }
+
+    public String getErrorProperty() {
+        return exitHandler.getErrorProperty();
+    }
+
+    public void setErrorProperty(String errorProperty) {
+        this.exitHandler.setErrorProperty(errorProperty);
     }
 
     /**
@@ -305,11 +317,14 @@ public class Ceylonc extends LazyTask {
             log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
             exe.setCommandline(cmd.getCommandline());
             exe.execute();
-            if (exe.getExitValue() != 0 && this.failOnError)
-                throw new BuildException(FAIL_MSG, getLocation());
+            if (exe.getExitValue() != 0) {
+                exitHandler.handleExit(this, exe.getExitValue(), FAIL_MSG);
+            }
         } catch (IOException e) {
             throw new BuildException("Error running Ceylon compiler", e, getLocation());
         }
+        
+        
     }
 
     /**

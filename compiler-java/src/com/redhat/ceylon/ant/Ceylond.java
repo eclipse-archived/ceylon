@@ -55,7 +55,7 @@ public class Ceylond extends LazyTask {
     private boolean includeSourceCode;
     private String user;
     private String pass;
-
+    private ExitHandler exitHandler = new ExitHandler();
     /**
      * Sets the user name for the output module repository (HTTP only)
      */
@@ -101,6 +101,22 @@ public class Ceylond extends LazyTask {
     @Override
     protected FileFilter getArtifactFilter() {
         return ARTIFACT_FILTER;
+    }
+
+    public String getErrorProperty() {
+        return exitHandler.getErrorProperty();
+    }
+
+    public void setErrorProperty(String errorProperty) {
+        this.exitHandler.setErrorProperty(errorProperty);
+    }
+
+    public boolean getFailOnError() {
+        return exitHandler.isFailOnError();
+    }
+
+    public void setFailOnError(boolean failOnError) {
+        this.exitHandler.setFailOnError(failOnError);
     }
 
     /**
@@ -185,8 +201,11 @@ public class Ceylond extends LazyTask {
             log("Command line " + Arrays.toString(cmd.getCommandline()), Project.MSG_VERBOSE);
             exe.setCommandline(cmd.getCommandline());
             exe.execute();
-            if (exe.getExitValue() != 0)
-                throw new BuildException(FAIL_MSG, getLocation());
+            if (exe.getExitValue() != 0) {
+                if (exe.getExitValue() != 0) {
+                    exitHandler.handleExit(this, exe.getExitValue(), FAIL_MSG);
+                }
+            }
         } catch (IOException e) {
             throw new BuildException("Error running Ceylon compiler", e, getLocation());
         }
