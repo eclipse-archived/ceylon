@@ -170,7 +170,7 @@ public final class NodeUtils {
             break; // just use the first one
         }
         path.append(node.getLabel());
-        if (appendSeparator && node.hasBinaries() == false)
+        if (appendSeparator)
             path.append(separator);
     }
 }
