@@ -87,7 +87,8 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             final String sha1 = IOUtils.sha1(new FileInputStream(file));
             if (sha1 != null) {
                 ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
-                Node sha = node.getChild(SHA1);
+                Node parent = node.getParents().iterator().next();
+                Node sha = parent.getChild(on.getLabel() + SHA1);
                 if (sha == null) {
                     // put it to ext node as well, if supported
                     on.addContent(SHA1, shaStream, context);
@@ -104,7 +105,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     }
                 }
                 // create empty marker node
-                OpenNode sl = on.addNode(SHA1 + LOCAL);
+                OpenNode sl = ((OpenNode)parent).addNode(on.getLabel() + SHA1 + LOCAL);
                 // put sha to local store as well
                 fileContentStore.putContent(sl, shaStream, context);
             }
