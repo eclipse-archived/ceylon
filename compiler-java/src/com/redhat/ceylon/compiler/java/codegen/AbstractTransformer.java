@@ -1264,7 +1264,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         for(ModuleImport dependency : module.getImports()){
             Module dependencyModule = dependency.getModule();
             // do not include the implicit java module as a dependency
-            if(dependencyModule.getNameAsString().equals("java")
+            if(dependencyModule.getNameAsString().equals(AbstractModelLoader.JDK_MODULE)
                     // nor ceylon.language
                     || dependencyModule.getNameAsString().equals("ceylon.language"))
                 continue;

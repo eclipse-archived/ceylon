@@ -30,6 +30,7 @@ import java.util.zip.ZipFile;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.JDKPackageList;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -150,9 +151,10 @@ public abstract class LazyModule extends Module {
             return Util.isSubPackage(moduleName, pkgName);
         }else{
             // special rules for the JDK which we don't load from the repo
-            if(moduleName.equals("java")
-                    || moduleName.equals("sun"))
-                return Util.isSubPackage(moduleName, pkgName);
+            if(moduleName.equals(AbstractModelLoader.JDK_MODULE))
+                return JDKPackageList.isJDKPackage(pkgName);
+            if(moduleName.equals(AbstractModelLoader.ORACLE_JDK_MODULE))
+                return JDKPackageList.isOracleJDKPackage(pkgName);
             // otherwise we have the list of packages contained in that module jar
             return jarPackages.contains(pkgName);
         }

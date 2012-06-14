@@ -92,6 +92,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
  */
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
 
+    public static final String ORACLE_JDK_MODULE = "oracle";
+    public static final String JDK_MODULE = "java";
+    
     public static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
     private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
     private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
@@ -621,11 +624,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(pkgName == null){
             pkgName = Module.DEFAULT_MODULE_NAME;
             defaultModule = true;
-        } else if(pkgName.startsWith("java.")){
-            pkgName = "java";
+        } else if(pkgName.equals(JDK_MODULE) || JDKPackageList.isJDKPackage(pkgName)){
+            pkgName = JDK_MODULE;
             isJava = true;
-        } else if(pkgName.startsWith("sun.")){
-            pkgName = "sun";
+        } else if(pkgName.equals(ORACLE_JDK_MODULE) || JDKPackageList.isOracleJDKPackage(pkgName)){
+            pkgName = ORACLE_JDK_MODULE;
             isJava = true;
         } else if(pkgName.startsWith("ceylon.language.")){
             pkgName = "ceylon.language";
@@ -692,7 +695,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for (AnnotationMirror importAttribute : imports) {
             String dependencyName = (String) importAttribute.getValue("name");
             if (dependencyName != null) {
-                if (! dependencyName.equals("java")) {
+                if (! dependencyName.equals(JDK_MODULE)) {
                     String dependencyVersion = (String) importAttribute.getValue("version");
                     
                     Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
@@ -795,7 +798,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void complete(ClassOrInterface klass, ClassMirror classMirror) {
         Map<MethodMirror, List<MethodMirror>> variables = new HashMap<MethodMirror, List<MethodMirror>>();
         String qualifiedName = classMirror.getQualifiedName();
-        boolean isJava = qualifiedName.startsWith("java.");
+        String pkgName = classMirror.getPackage().getQualifiedName();
+        boolean isFromJDK = JDKPackageList.isJDKPackage(pkgName) || JDKPackageList.isOracleJDKPackage(pkgName);
         boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
         
         // Java classes with multiple constructors get turned into multiple Ceylon classes
@@ -818,7 +822,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             // FIXME: temporary, because some private classes from the jdk are
             // referenced in private methods but not available
-            if(isJava && !methodMirror.isPublic())
+            if(isFromJDK && !methodMirror.isPublic())
                 continue;
             String methodName = methodMirror.getName();
             List<MethodMirror> homonyms = methods.get(methodName);

@@ -90,13 +90,13 @@ public abstract class LazyModuleManager extends ModuleManager {
 
     @Override
     public void addImplicitImports() {
-        // every module depends on java.lang implicitely
-        Module javaModule = getModelLoader().findOrCreateModule("java.lang");
+        // every module depends on java implicitely
+        Module javaModule = getModelLoader().findOrCreateModule(AbstractModelLoader.JDK_MODULE);
         // make sure java.lang is available
         getModelLoader().findOrCreatePackage(javaModule, "java.lang");
         Module languageModule = getContext().getModules().getLanguageModule();
         for(Module m : getContext().getModules().getListOfModules()){
-            if(!m.getName().equals("java")){
+            if(!m.getName().equals(AbstractModelLoader.JDK_MODULE)){
                 // add java
                 ModuleImport moduleImport = findImport(m, javaModule);
                 if (moduleImport == null) {
