@@ -220,8 +220,11 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         // by default we don't check sha1 on remote nodes, it should be done after download
         if (context.isIgnoreSHA() == false && node.isRemote() == false && node.hasBinaries()) {
             Boolean result = null;
-            Node parent = node.getParents().iterator().next();
-            Node shaResult = (parent instanceof OpenNode) ? ((OpenNode)parent).peekChild(node.getLabel() + SHA1 + CACHED) : parent.getChild(node.getLabel() + SHA1 + CACHED);
+            Node parent = NodeUtils.firstParent(node);
+            if (parent == null) {
+                throw new IllegalArgumentException("Parent should not be null: " + node);
+            }
+            Node shaResult = (parent instanceof OpenNode) ? ((OpenNode) parent).peekChild(node.getLabel() + SHA1 + CACHED) : parent.getChild(node.getLabel() + SHA1 + CACHED);
             if (shaResult == null) {
                 try {
                     result = checkSHA(node);

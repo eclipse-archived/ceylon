@@ -87,7 +87,10 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             final String sha1 = IOUtils.sha1(new FileInputStream(file));
             if (sha1 != null) {
                 ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
-                Node parent = node.getParents().iterator().next();
+                Node parent = NodeUtils.firstParent(node);
+                if (parent == null) {
+                    throw new IllegalArgumentException("Parent should not be null: " + node);
+                }
                 Node sha = parent.getChild(on.getLabel() + SHA1);
                 if (sha == null) {
                     // put it to ext node as well, if supported
@@ -105,7 +108,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     }
                 }
                 // create empty marker node
-                OpenNode sl = ((OpenNode)parent).addNode(on.getLabel() + SHA1 + LOCAL);
+                OpenNode sl = ((OpenNode) parent).addNode(on.getLabel() + SHA1 + LOCAL);
                 // put sha to local store as well
                 fileContentStore.putContent(sl, shaStream, context);
             }
