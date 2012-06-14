@@ -34,6 +34,7 @@ import org.apache.http.client.ClientProtocolException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +49,7 @@ import java.util.List;
 public class WebDAVContentStore extends URLContentStore {
 
     private volatile Sardine sardine;
+    private boolean _isHerd;
 
     public WebDAVContentStore(String root, Logger log) {
         super(root, log);
@@ -58,15 +60,42 @@ public class WebDAVContentStore extends URLContentStore {
             synchronized (this) {
                 if (sardine == null) {
                     sardine = (username == null || password == null) ? SardineFactory.begin() : SardineFactory.begin(username, password);
+                    _isHerd = testHerd();
                 }
             }
         }
         return sardine;
     }
 
+    private boolean isHerd(){
+        getSardine();
+        return _isHerd;
+    }
+    
+    private boolean testHerd() {
+        try{
+            URL rootURL = getURL("");
+            HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
+            try{
+                con.setRequestMethod("OPTIONS");
+                if(con.getResponseCode() != HttpURLConnection.HTTP_OK)
+                    return false;
+                String herdVersion = con.getHeaderField("X-Herd-Version");
+                log.debug("Herd version: "+herdVersion);
+                return herdVersion != null && !herdVersion.isEmpty();
+            }finally{
+                con.disconnect();
+            }
+        }catch(Exception x){
+            log.debug("Failed to determine if remote host is a Herd repo: "+x.getMessage());
+            return false;
+        }
+    }
+
     public OpenNode create(Node parent, String child) {
         try {
-            mkdirs(getSardine(), parent);
+            if(!isHerd())
+                mkdirs(getSardine(), parent);
             return createNode(child);
         } catch (IOException e) {
             throw convertIOException(e);
@@ -91,16 +120,20 @@ public class WebDAVContentStore extends URLContentStore {
 
         try {
             final Node parent = NodeUtils.firstParent(node);
-            mkdirs(s, parent);
+            if(!isHerd())
+                mkdirs(s, parent);
 
             final String pUrl = getUrlAsString(parent);
-            final String token = s.lock(pUrl); // local parent
+            String token = null;
+            if(!isHerd())
+                token = s.lock(pUrl); // local parent
             try {
                 final String url = getUrlAsString(node);
                 s.put(url, stream);
                 return new WebDAVContentHandle(url);
             } finally {
-                s.unlock(pUrl, token);
+                if(!isHerd())
+                    s.unlock(pUrl, token);
             }
         } catch (IOException x) {
             throw convertIOException(x);
@@ -210,6 +243,8 @@ public class WebDAVContentStore extends URLContentStore {
         }
 
         public long getLastModified() throws IOException {
+            if(isHerd())
+                return lastModified(new URL(url));
             final List<DavResource> list = getSardine().list(url);
             if (list.isEmpty() == false && list.get(0).isDirectory() == false) {
                 Date modified = list.get(0).getModified();
