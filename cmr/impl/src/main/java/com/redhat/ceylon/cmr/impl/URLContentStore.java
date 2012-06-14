@@ -107,6 +107,27 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     public String getDisplayString() {
         return root;
     }
+    
+    protected long lastModified(final URL url) throws IOException {
+        HttpURLConnection con = head(url);
+        return con != null ? con.getLastModified() : -1;
+    }
+
+    protected HttpURLConnection head(final URL url) throws IOException {
+        final URLConnection conn = url.openConnection();
+        if (conn instanceof HttpURLConnection) {
+            HttpURLConnection huc = (HttpURLConnection) conn;
+            huc.setRequestMethod("HEAD");
+            addCredentials(huc);
+            int code = huc.getResponseCode();
+            huc.disconnect();
+            if (code == 200) {
+                log.info("Got " + code + " for url: " + url);
+                return huc;
+            }
+        }
+        return null;
+    }
 
     protected void addCredentials(HttpURLConnection conn) throws IOException {
         if (username != null && password != null) {
