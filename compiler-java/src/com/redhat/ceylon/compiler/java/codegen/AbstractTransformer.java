@@ -95,6 +95,14 @@ import com.sun.tools.javac.util.Position.LineMap;
  * Base class for all delegating transformers
  */
 public abstract class AbstractTransformer implements Transformation, LocalId {
+    
+    /**
+     * M1 and M2 are 0.0 since they were not tagged at the time
+     * M3 is 1.0 as the first version with binary version information
+     */
+    public static final int BINARY_MAJOR_VERSION = 1;
+    public static final int BINARY_MINOR_VERSION = 0;
+    
     private Context context;
     private TreeMaker make;
     private Names names;
@@ -1229,7 +1237,16 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
 
     List<JCAnnotation> makeAtCeylon() {
-        return makeModelAnnotation(syms().ceylonAtCeylonType);
+        JCExpression majorAttribute = make().Assign(makeUnquotedIdent("major"), make().Literal(BINARY_MAJOR_VERSION));
+        List<JCExpression> annotationArgs;
+        if(BINARY_MINOR_VERSION != 0){
+            JCExpression minorAttribute = make().Assign(makeUnquotedIdent("minor"), make().Literal(BINARY_MINOR_VERSION));
+            annotationArgs = List.<JCExpression>of(majorAttribute, minorAttribute);
+        }else{
+            // keep the minor implicit value of 0 to reduce bytecode size
+            annotationArgs = List.<JCExpression>of(majorAttribute);
+        }
+        return makeModelAnnotation(syms().ceylonAtCeylonType, annotationArgs);
     }
 
     List<JCAnnotation> makeAtModule(Module module) {
