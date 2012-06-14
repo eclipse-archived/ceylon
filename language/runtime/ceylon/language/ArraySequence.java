@@ -123,7 +123,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return new ArrayListIterator();
     }
 
-    public class ArrayListIterator implements Iterator<Element> {
+    public class ArrayListIterator 
+            implements Iterator<Element> {
         private long idx = first;
         
         @Override
