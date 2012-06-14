@@ -68,7 +68,7 @@ public class Ceylonc extends LazyTask {
     private Boolean verbose;
     private String user;
     private String pass;
-    private Boolean failOnError;
+    private Boolean failOnError = true;
 
     /**
      * Sets the user name for the output module repository (HTTP only)
