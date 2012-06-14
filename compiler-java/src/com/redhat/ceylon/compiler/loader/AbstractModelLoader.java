@@ -35,6 +35,7 @@ import java.util.Set;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
@@ -162,6 +163,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected ModuleManager moduleManager;
     protected Modules modules;
     protected Map<String, ClassMirror> classMirrorCache = new HashMap<String, ClassMirror>();
+    protected boolean binaryCompatibilityErrorRaised = false;
 
     /**
      * Loads a given package, if required. This is mostly useful for the javac reflection impl.
@@ -317,6 +319,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return declarationsByName.get(key);
         }
         
+        checkBinaryCompatibility(classMirror);
+        
         // make it
         Declaration decl = null;
         List<Declaration> decls = new ArrayList<Declaration>();
@@ -399,6 +403,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         return decl;
+    }
+
+    private void checkBinaryCompatibility(ClassMirror classMirror) {
+        // let's not report it twice
+        if(binaryCompatibilityErrorRaised)
+            return;
+        AnnotationMirror annotation = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION);
+        if(annotation == null)
+            return; // Java class, no check
+        Integer major = (Integer) annotation.getValue("major");
+        if(major == null)
+            major = 0;
+        Integer minor = (Integer) annotation.getValue("minor");
+        if(minor == null)
+            minor = 0;
+        if(major != AbstractTransformer.BINARY_MAJOR_VERSION
+                || minor != AbstractTransformer.BINARY_MINOR_VERSION){
+            logError("You are using a Ceylon class compiled for an incompatible version of the Ceylon compiler ("+major+"."+minor+")."
+                    +"\nThis compiler supports "+AbstractTransformer.BINARY_MAJOR_VERSION+"."+AbstractTransformer.BINARY_MINOR_VERSION+"."
+                    +"\nPlease try to recompile your module using a compatible compiler."
+                    +"\nBinary compatibility will only be supported after Ceylon 1.0.");
+            binaryCompatibilityErrorRaised = true;
+        }
     }
 
     private List<MethodMirror> getClassConstructors(ClassMirror classMirror) {
