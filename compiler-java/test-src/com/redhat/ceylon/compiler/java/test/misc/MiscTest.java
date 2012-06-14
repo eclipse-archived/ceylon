@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
+import com.redhat.ceylon.compiler.loader.JDKPackageList;
 
 public class MiscTest extends CompilerTest {
 
@@ -123,5 +124,28 @@ public class MiscTest extends CompilerTest {
     @Test
     public void testKeywordParameter(){
         compareWithJavaSource("keyword/Parameter");
+    }
+    
+    @Test
+    public void testJDKPackages(){
+        Assert.assertTrue(JDKPackageList.isJDKPackage("java.awt"));
+        Assert.assertTrue(JDKPackageList.isJDKPackage("java.lang"));
+        Assert.assertTrue(JDKPackageList.isJDKPackage("java.util"));
+        Assert.assertTrue(JDKPackageList.isJDKPackage("javax.swing"));
+        Assert.assertTrue(JDKPackageList.isJDKPackage("org.w3c.dom"));
+        Assert.assertTrue(JDKPackageList.isJDKPackage("org.xml.sax.helpers"));// last one
+        Assert.assertFalse(JDKPackageList.isJDKPackage("fr.epardaud"));
+    }
+
+    @Test
+    public void testOracleJDKPackages(){
+        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.oracle.net"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.sun.awt"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.sun.imageio.plugins.bmp"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.sun.java.swing.plaf.gtk"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.sun.nio.sctp"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("sun.nio"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("sunw.util"));// last one
+        Assert.assertFalse(JDKPackageList.isOracleJDKPackage("fr.epardaud"));
     }
 }
