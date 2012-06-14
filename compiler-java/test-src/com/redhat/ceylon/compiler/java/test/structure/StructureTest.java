@@ -284,7 +284,7 @@ public class StructureTest extends CompilerTest {
     }
     
     @Test
-    public void testKlsOverrideDefaultedInitParam_fail(){
+    public void testKlsOverrideDefaultedInitParam(){
         compareWithJavaSource("klass/OverrideDefaultedInitParam");
     }
     
