@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP.RequestCounter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -53,13 +54,19 @@ public class RepoFileHandler implements HttpHandler {
             +"</lockdiscovery>"
           +"</prop>";
     private String folder;
+    private RequestCounter rq;
+    private boolean herd;
 
-    public RepoFileHandler(String destdir) {
+    public RepoFileHandler(String destdir, boolean herd, RequestCounter rq) {
         this.folder = destdir;
+        this.rq = rq;
+        this.herd = herd;
     }
 
     @Override
     public void handle(HttpExchange t) throws IOException {
+        if(rq != null)
+            rq.add();
         String path = t.getRequestURI().getPath();
         String method = t.getRequestMethod();
         
@@ -67,6 +74,14 @@ public class RepoFileHandler implements HttpHandler {
 
         // filter on our prefix
         if(path.equals("/repo") || path.startsWith("/repo/")){
+            // ignore this if not Herd, to simulate a non-responsive server
+            if(herd && "OPTIONS".equals(method)){
+                t.getResponseHeaders().add("X-Herd-Version", "1");
+                t.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
+                t.close();
+                return;
+            }
+
             if("LOCK".equals(method)){
                 // we need to send a lock response: http://www.webdav.org/specs/rfc2518.html#rfc.figure.u.26
                 byte[] bytes = DAV_LOCK_RESPONSE.getBytes();

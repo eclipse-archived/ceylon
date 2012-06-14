@@ -26,9 +26,19 @@ public class CMRTestHTTP extends CompilerTest {
     int port = 18000;
     String repoAURL = "http://localhost:"+port+"/repo";
 
-    private HttpServer startServer(int port, File repo) throws IOException{
+    class RequestCounter{
+        int count;
+        void add(){
+            count++;
+        }
+        void check(int count){
+            Assert.assertEquals(count, this.count);
+        }
+    }
+    
+    private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq) throws IOException{
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 1);
-        server.createContext("/repo", new RepoFileHandler(repo.getPath()));
+        server.createContext("/repo", new RepoFileHandler(repo.getPath(), herd, rq));
         // make sure we serve at least two concurrent connections, as each one might take a few ms to close
         ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(2);
         server.setExecutor(tpool);
@@ -45,6 +55,7 @@ public class CMRTestHTTP extends CompilerTest {
 
     @Test
     public void testMdlHTTPRepos() throws IOException{
+        RequestCounter rq = new RequestCounter();
         String moduleA = "com.redhat.ceylon.compiler.java.test.cmr.module.depend.a";
         
         // Clean up any cached version
@@ -63,7 +74,7 @@ public class CMRTestHTTP extends CompilerTest {
         assertTrue(carFile.exists());
 
         // now serve the first repo over HTTP
-        HttpServer server = startServer(port, repo); 
+        HttpServer server = startServer(port, repo, false, rq); 
         
         try{
             // then try to compile only one module (the other being loaded from its car) 
@@ -83,16 +94,25 @@ public class CMRTestHTTP extends CompilerTest {
         // make sure it didn't cache it in the output repo
         carFile = getModuleArchive(moduleA, "6.6.6");
         assertFalse(carFile.exists());
+        
+        rq.check(4);
     }
 
     
     @Test
     public void testMdlHTTPOutputRepo() throws IOException{
+        testMdlHTTPOutputRepo(true, 8);
+        testMdlHTTPOutputRepo(false, 70);
+    }
+    
+    private void testMdlHTTPOutputRepo(boolean herd, int requests) throws IOException{
+        RequestCounter rq = new RequestCounter();
+        
         // Compile the module in its own repo
         File repo = makeRepo();
 
         // now serve the first repo over HTTP
-        HttpServer server = startServer(port, repo); 
+        HttpServer server = startServer(port, repo, herd, rq); 
         
         try{
             // then try to compile our module by outputting to HTTP 
@@ -115,16 +135,24 @@ public class CMRTestHTTP extends CompilerTest {
 
         File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.module.single", "6.6.6", repo.getPath());
         assertTrue(srcFile.exists());
+        
+        rq.check(requests);
     }
 
 
     @Test
-    public void testMdlHTTPMixedCompilation_fail() throws IOException{
+    public void testMdlHTTPMixedCompilation() throws IOException{
+        testMdlHTTPMixedCompilation(false, 133);
+        testMdlHTTPMixedCompilation(true, 18);
+    }
+    
+    private void testMdlHTTPMixedCompilation(boolean herd, int requests) throws IOException{
+        RequestCounter rq = new RequestCounter();
         // Compile the first module in its own repo 
         File repo = makeRepo();
 
         // now serve the first repo over HTTP
-        HttpServer server = startServer(port, repo); 
+        HttpServer server = startServer(port, repo, herd, rq); 
         
         try{
             // then try to compile our module by outputting to HTTP 
@@ -164,5 +192,7 @@ public class CMRTestHTTP extends CompilerTest {
         entry = src.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/JavaClass.java");
         assertNotNull(entry);
         src.close();
+
+        rq.check(requests);
     }
 }
