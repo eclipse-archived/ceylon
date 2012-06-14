@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 1)
 @Method
 public final class parseFloat
 {

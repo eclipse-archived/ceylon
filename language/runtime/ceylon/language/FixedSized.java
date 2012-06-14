@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon
+@Ceylon(major = 1)
 @CaseTypes({"ceylon.language.Some<Element>", 
             "ceylon.language.None<Element>"})
 @SatisfiedTypes("ceylon.language.Collection<Element>")

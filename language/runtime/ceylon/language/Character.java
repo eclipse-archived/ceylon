@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 1)
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({"ceylon.language.Comparable<ceylon.language.Character>",
 		        "ceylon.language.Ordinal<ceylon.language.Character>"})

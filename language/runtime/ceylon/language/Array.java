@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon
+@Ceylon(major = 1)
 @Class(extendsType="ceylon.language.Object")
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
@@ -502,7 +502,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 }
 
 @Ignore
-@Ceylon
+@Ceylon(major = 1)
 class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
     public ArrayOfNone() {
@@ -532,7 +532,7 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 }
 
 @Ignore
-@Ceylon
+@Ceylon(major = 1)
 class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
 
     public ArrayOfSome(char... array) {

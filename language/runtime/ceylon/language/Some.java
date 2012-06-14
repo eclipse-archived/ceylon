@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon
+@Ceylon(major = 1)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 public interface Some<Element> extends FixedSized<Element> {
     

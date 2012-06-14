@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon
+@Ceylon(major = 1)
 @TypeParameters(@TypeParameter(value="Inverse", variance=OUT))
 public interface Invertable<Inverse> {
 

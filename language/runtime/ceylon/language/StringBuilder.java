@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 1)
 @Class(extendsType="ceylon.language.IdentifiableObject")
 public class StringBuilder {
     

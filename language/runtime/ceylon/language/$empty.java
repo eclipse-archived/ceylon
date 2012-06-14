@@ -3,7 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 
-@Ceylon @Attribute
+@Ceylon(major = 1) @Attribute
 public class $empty {
     private final static Empty value = new Empty() {
 

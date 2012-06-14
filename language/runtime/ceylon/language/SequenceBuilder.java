@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon
+@Ceylon(major = 1)
 @Class(extendsType="ceylon.language.IdentifiableObject")
 @TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceBuilder<Element> implements Sized {

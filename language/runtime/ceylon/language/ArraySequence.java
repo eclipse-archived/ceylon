@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
-@Ceylon
+@Ceylon(major = 1)
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes("ceylon.language.Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {

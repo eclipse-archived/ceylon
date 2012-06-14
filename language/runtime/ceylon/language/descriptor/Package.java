@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 1)
 public class Package {
     private final ceylon.language.Quoted name;
     

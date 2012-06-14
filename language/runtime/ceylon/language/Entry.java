@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon
+@Ceylon(major = 1)
 @TypeParameters({
     @TypeParameter(value = "Key", variance = Variance.OUT, 
             satisfies="ceylon.language.Object"),

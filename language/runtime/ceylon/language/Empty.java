@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 1)
 @SatisfiedTypes({
     "ceylon.language.List<ceylon.language.Bottom>",
     "ceylon.language.None<ceylon.language.Bottom>",
