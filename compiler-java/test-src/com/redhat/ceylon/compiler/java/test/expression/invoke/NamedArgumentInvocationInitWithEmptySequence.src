@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentInvocationInitWithEmptySequence {
     
-    static final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$b() {
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$b() {
         return .ceylon.language.$empty.getEmpty();
     }
     

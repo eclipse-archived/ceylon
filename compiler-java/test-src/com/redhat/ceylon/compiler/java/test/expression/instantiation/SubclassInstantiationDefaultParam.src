@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class SubclassInstantiationDefaultParam {
     
-    static final .java.lang.String $init$name() {
+    static .java.lang.String $init$name() {
         return "tom";
     }
     

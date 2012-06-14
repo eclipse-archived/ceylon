@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class SequencedParameterClassInstantiation {
     
-    static final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$args(final long a) {
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$args(final long a) {
         return .ceylon.language.$empty.getEmpty();
     }
     

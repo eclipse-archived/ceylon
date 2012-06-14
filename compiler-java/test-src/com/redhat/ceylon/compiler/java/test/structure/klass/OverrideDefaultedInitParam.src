@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class OverrideDefaultedInitParam {
+    
+    static .java.lang.String $init$id() {
+        return "";
+    }
+    
+    OverrideDefaultedInitParam() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$id$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.$init$id();
+                this($ceylontmp$id$1);
+            }
+            returning null;
+        );
+    }
+    
+    OverrideDefaultedInitParam(.java.lang.String id) {
+    }
+}
+class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam {
+    
+    static .java.lang.String $init$id() {
+        return "";
+    }
+    
+    OverrideDefaultedInitParamSub() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$id$3 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.$init$id();
+                this($ceylontmp$id$3);
+            }
+            returning null;
+        );
+    }
+    
+    OverrideDefaultedInitParamSub(.java.lang.String id) {
+        super(id);
+    }
+}

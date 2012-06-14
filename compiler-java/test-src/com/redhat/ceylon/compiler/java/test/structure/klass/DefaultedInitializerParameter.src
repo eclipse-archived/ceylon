@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 public class DefaultedInitializerParameter {
     
-    public static final long $init$n() {
+    public static long $init$n() {
         return 5L;
     }
     
@@ -22,7 +22,7 @@ public class DefaultedInitializerParameter {
 }
 class DefaultedInitializerParameter2 {
     
-    static final .java.lang.String $init$s(final long n) {
+    static .java.lang.String $init$s(final long n) {
         return "test";
     }
     
@@ -42,11 +42,11 @@ class DefaultedInitializerParameter2 {
 }
 class DefaultedInitializerParameter3 {
     
-    static final long $init$n() {
+    static long $init$n() {
         return 5L;
     }
     
-    static final long $init$m(final long n) {
+    static long $init$m(final long n) {
         return n;
     }
     
@@ -78,11 +78,11 @@ class DefaultedInitializerParameter3 {
 }
 class DefaultedInitializerParameter4 {
     
-    static final long $init$n() {
+    static long $init$n() {
         return 5L;
     }
     
-    static final long $init$m(final long n) {
+    static long $init$m(final long n) {
         return n + 1L;
     }
     
@@ -114,11 +114,11 @@ class DefaultedInitializerParameter4 {
 }
 class DefaultedInitializerParameter5 {
     
-    static final long $init$n() {
+    static long $init$n() {
         return 5L;
     }
     
-    static final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$seq(final long n) {
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$seq(final long n) {
         return .ceylon.language.$empty.getEmpty();
     }
     

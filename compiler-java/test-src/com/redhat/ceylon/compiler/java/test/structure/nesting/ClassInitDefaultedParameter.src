@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 class C1 {
     
-    static final long $init$i() {
+    static long $init$i() {
         return 1L;
     }
     
@@ -22,11 +22,11 @@ class C1 {
 }
 class C3 {
     
-    static final long $init$i() {
+    static long $init$i() {
         return 1L;
     }
     
-    static final long $init$n(final long i) {
+    static long $init$n(final long i) {
         return 2L * i;
     }
     
@@ -58,7 +58,7 @@ class C3 {
 }
 class C4 {
     
-    static final long $init$n(final long i) {
+    static long $init$n(final long i) {
         return 2L * i;
     }
     
@@ -78,7 +78,7 @@ class C4 {
 }
 class C5<U> {
     
-    static final <U>U $init$u(final long i) {
+    static <U>U $init$u(final long i) {
         return null;
     }
     
