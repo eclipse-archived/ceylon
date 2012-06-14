@@ -40,7 +40,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -237,6 +236,11 @@ public class TypeVisitor extends Visitor {
             addImport(member, il, i);
             checkAliasCase(alias, d);
         }
+        importMembers(member, d);
+        return name;
+    }
+
+    public void importMembers(Tree.ImportMemberOrType member, Declaration d) {
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
             if (imtl.getImportMemberOrTypes().isEmpty()) {
@@ -253,7 +257,6 @@ public class TypeVisitor extends Visitor {
         		imtl.addError("member alias list must follow a type");
         	}
         }
-        return name;
     }
 
     private void checkAliasCase(Tree.Alias alias, Declaration d) {
@@ -321,10 +324,8 @@ public class TypeVisitor extends Visitor {
             }
             checkAliasCase(alias, m);
         }
-        ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
-        if (imtl!=null) {
-            imtl.addError("member aliases may not have member aliases");
-        }
+        importMembers(member, m);
+        //imtl.addError("member aliases may not have member aliases");
     }
 
     private void addMemberImport(Tree.ImportMemberOrType member, ImportList il,
