@@ -236,7 +236,7 @@ void types() {
     TypeTestC1|TypeTestC3 c1 = TypeTestC1();
     if (is TypeTestI1&TypeTestI2|TypeTestI3&TypeTestI4 c1) {} else { fail("is A&B|C&D"); }
     
-    object myId satisfies MyIdentifiable {}
+    object myId extends Object() satisfies MyIdentifiable {}
     Object my = myId;
     assert(my is Identifiable, "is custom identifiable");
     assert(!my is IdentifiableObject, "is not standard identifiable");
