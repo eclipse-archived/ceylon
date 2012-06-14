@@ -21,7 +21,12 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * URL based content store.
@@ -101,5 +106,17 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     @Override
     public String getDisplayString() {
         return root;
+    }
+
+    protected void addCredentials(HttpURLConnection conn) throws IOException {
+        if (username != null && password != null) {
+            try {
+                String authString = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+                conn.setRequestProperty("Authorization", "Basic " + authString);
+                conn.connect();
+            } catch (Exception e) {
+                throw new IOException("Cannot set basic authorization.", e);
+            }
+        }
     }
 }

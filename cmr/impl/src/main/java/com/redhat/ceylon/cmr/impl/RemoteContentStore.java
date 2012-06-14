@@ -46,25 +46,18 @@ public class RemoteContentStore extends URLContentStore {
 
     protected InputStream openStream(final URL url) throws IOException {
         final URLConnection conn = url.openConnection();
-        if (username != null && password != null) {
-            try {
-                String authString = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
-                conn.setRequestProperty("Authorization", "Basic " + authString);
-                conn.connect();
-            } catch (Exception e) {
-                throw new IOException("Cannot set basic authorization.", e);
-            }
-        }
-        InputStream stream = conn.getInputStream();
         if (conn instanceof HttpURLConnection) {
             HttpURLConnection huc = (HttpURLConnection) conn;
+            addCredentials(huc);
+            InputStream stream = conn.getInputStream();
             int code = huc.getResponseCode();
             if (code != -1 && code != 200) {
                 log.info("Got " + code + " for url: " + url);
                 return null;
             }
+            return stream;
         }
-        return stream;
+        return null;
     }
 
     public ContentHandle peekContent(Node node) {
