@@ -1758,8 +1758,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         return null;
                 }
             }
-            TypeDeclaration td = (TypeDeclaration)convertToDeclaration(name, DeclarationType.TYPE);
-            return td == null ? null : td.getType();
+            Declaration declaration = convertToDeclaration(name, DeclarationType.TYPE);
+            if(declaration instanceof TypeDeclaration)
+                return ((TypeDeclaration)declaration).getType();
+            // we're looking for type declarations, so anything else doesn't work for us
+            return null;
         }
             
         // we're bootstrapping ceylon.language so we need to return the ProducedTypes straight from the model we're compiling
