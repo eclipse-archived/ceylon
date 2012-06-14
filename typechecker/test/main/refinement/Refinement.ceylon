@@ -236,6 +236,22 @@ class QuxQux() extends Qux() {
     }
 }
 
+class Elephant() {
+    default shared String name;
+    name = "Trompon";
+    default shared Float size=1000.0;
+    @error print(name);
+    @error print(size);
+}
+
+class MyElephant() extends Elephant() {
+    actual shared String name = "Trompon";
+    actual shared Float size;
+    size = 2000.0;    
+    print(name);
+    print(size);
+}
+
 void testQux() {
     Qux().print2({"hello", "world"});
     QuxQux().print2("hello", "world");

@@ -475,7 +475,8 @@ argument list."
     ProducedReference target;
     Declaration declaration;
     List<ProducedType> signature;
-    boolean directlyInvoked;)
+    boolean directlyInvoked;
+    boolean assigned;)
 
 ^(EXTENDED_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION)
 
