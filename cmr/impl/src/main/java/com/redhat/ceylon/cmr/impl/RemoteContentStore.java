@@ -59,6 +59,10 @@ public class RemoteContentStore extends URLContentStore {
         return null;
     }
 
+    protected boolean exists(final URL url) throws IOException {
+        return head(url) != null;
+    }
+
     public ContentHandle peekContent(Node node) {
         return urlExists(node) ? createContentHandle(null, null, null, node) : null;
     }
@@ -91,14 +95,10 @@ public class RemoteContentStore extends URLContentStore {
         if (url == null)
             return false;
 
-        InputStream is = null;
         try {
-            is = openStream(url);
-            return (is != null); // should this do?
+            return exists(url);
         } catch (IOException ignored) {
             return false;
-        } finally {
-            IOUtils.safeClose(is);
         }
     }
 
