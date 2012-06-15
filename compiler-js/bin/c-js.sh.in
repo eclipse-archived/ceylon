@@ -39,5 +39,5 @@ then
     true #nothing
 else
     echo "node.js not found, you need it to run ceylon scripts compiled to Javascript"
-    echo "Go to http://nodejs.org/ to download the latest version of Java"
+    echo "Go to http://nodejs.org/ to download the latest version of node.js for your platform"
 fi

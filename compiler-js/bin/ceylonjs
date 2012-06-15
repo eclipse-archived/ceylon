@@ -1,13 +1,4 @@
 #!/bin/sh
-if hash node 2>&-
-then
-    true #nothing
-else
-    echo "node.js not found, you need it to run ceylon scripts compiled to Javascript"
-    echo "Go to http://nodejs.org/ to download the latest version of Java"
-fi
-
-CEYLON_VERSION=@VERSION@
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -20,6 +11,16 @@ while [ -h "$PRG" ]; do
     PRG=`dirname "$PRG"`/"$link"
   fi
 done
+
+DIR=$(dirname "$PRG")
+
+# Only set CEYLON_HOME if not already set
+if test -z "$CEYLON_HOME"
+then
+    CEYLON_HOME="$DIR/.."
+fi
+
+. $DIR/c-js.sh
 
 # Set CEYLON_HOME if not already set by the user
 if test -z "$CEYLON_HOME"
