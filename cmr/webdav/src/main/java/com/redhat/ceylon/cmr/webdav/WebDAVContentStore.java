@@ -68,7 +68,8 @@ public class WebDAVContentStore extends URLContentStore {
         return sardine;
     }
 
-    private boolean isHerd(){
+    @Override
+    public boolean isHerd(){
         getSardine();
         return _isHerd;
     }

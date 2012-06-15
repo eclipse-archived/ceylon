@@ -245,4 +245,9 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             }
         }
     }
+
+    @Override
+    public boolean isHerd() {
+        return false;
+    }
 }

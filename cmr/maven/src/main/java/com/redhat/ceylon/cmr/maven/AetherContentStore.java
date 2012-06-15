@@ -152,4 +152,9 @@ public class AetherContentStore extends AbstractContentStore {
     public String getDisplayString() {
         return "Aether";
     }
+
+    @Override
+    public boolean isHerd() {
+        return false;
+    }
 }

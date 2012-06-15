@@ -122,4 +122,9 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     public String getDisplayString() {
         return "InMemoryContentStore";
     }
+
+    @Override
+    public boolean isHerd() {
+        return false;
+    }
 }
