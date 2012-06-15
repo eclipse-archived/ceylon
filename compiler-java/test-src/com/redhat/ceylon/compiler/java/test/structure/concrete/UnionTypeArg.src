@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+class UnionTypeArg implements .ceylon.language.Iterable {
+    private final .ceylon.language.Iterable$impl $Iterable$impl;
+    
+    @.java.lang.Override
+    public boolean getEmpty() {
+        return $Iterable$impl.getEmpty();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getSequence() {
+        return $Iterable$impl.getSequence();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable map(final .ceylon.language.Callable collecting) {
+        return $Iterable$impl.map(collecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable filter(final .ceylon.language.Callable selecting) {
+        return $Iterable$impl.filter(selecting);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object fold(final .java.lang.Object initial, final .ceylon.language.Callable accumulating) {
+        return $Iterable$impl.fold(initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object find(final .ceylon.language.Callable selecting) {
+        return $Iterable$impl.find(selecting);
+    }
+    private final .ceylon.language.Container$impl $Container$impl;
+    private final .ceylon.language.Iterator iterator;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterator getIterator() {
+        return iterator;
+    }
+    
+    UnionTypeArg() {
+        this.$Iterable$impl = new .ceylon.language.Iterable$impl(this);
+        this.$Container$impl = new .ceylon.language.Container$impl(this);
+        this.iterator = (.ceylon.language.Iterator).ceylon.language.bottom.getBottom();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg();
+    }
+}

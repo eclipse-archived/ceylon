@@ -274,6 +274,11 @@ public class StructureTest2 extends CompilerTest {
     public void testCncListImplementor(){
         compareWithJavaSource("concrete/ListImplementor");
     }
+
+    @Test
+    public void testCncUnionTypeArg(){
+        compareWithJavaSource("concrete/UnionTypeArg");
+    }
     
     @Test
     public void testCncThis(){
