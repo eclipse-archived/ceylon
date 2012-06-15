@@ -97,8 +97,7 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
-    public void testIopNesting_fail(){
-        // FIXME: depends on https://github.com/ceylon/ceylon-spec/issues/328
+    public void testIopNesting(){
         compile("JavaNesting.java");
         compareWithJavaSource("Nesting");
     }
