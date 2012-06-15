@@ -960,7 +960,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     // - Foo<?> if Foo<T> is covariant in T, or
                     // - Foo<?> if Foo<T> is contravariant in T
                     if (tp.isContravariant() || tp.isCovariant()) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta));
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), null);
                     } else {
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
