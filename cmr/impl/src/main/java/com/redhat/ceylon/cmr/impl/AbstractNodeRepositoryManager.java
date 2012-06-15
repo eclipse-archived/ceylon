@@ -17,11 +17,6 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.*;
-import com.redhat.ceylon.cmr.spi.ContentOptions;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,6 +25,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.spi.ContentOptions;
+import com.redhat.ceylon.cmr.spi.ContentStore;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -113,6 +119,13 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         Node parent = getOrCreateParent(context);
         log.debug("Adding folder " + context + " to repository " + root.getDisplayString());
         log.debug(" -> " + NodeUtils.getFullPath(parent));
+
+        // fast-path for Herd
+        if(isHerd()){
+            uploadToHerd(parent, context, folder);
+            return;
+        }
+        
         final String label = root.getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
@@ -128,6 +141,28 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             throw new RepositoryException("Cannot put folder [" + folder + "] to non-open node: " + context);
         }
         log.debug(" -> [done]");
+    }
+
+    private boolean isHerd() {
+        ContentStore cs = root.getRoot().getService(ContentStore.class);
+        return cs != null && cs.isHerd();
+    }
+
+    private void uploadToHerd(Node parent, ArtifactContext context, File folder) {
+        log.info("Uploading folder to Herd");
+        try {
+            File zip = IOUtils.zipFolder(folder);
+            log.info("Herd module-doc zip file is at "+zip.getAbsolutePath());
+            try{
+                context.setSuffix(ArtifactContext.DOCS_ZIPPED);
+                final String label = root.getArtifactName(context);
+                ((OpenNode)parent).addContent(label, new FileInputStream(zip), context);
+            }finally{
+                zip.delete();
+            }
+        } catch (IOException e) {
+            throw new RepositoryException("Failed to upload module-doc zip to Herd repository", e);
+        }
     }
 
     protected void putFiles(OpenNode current, File file, ContentOptions options) throws IOException {
