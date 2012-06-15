@@ -206,7 +206,8 @@ public class GenerateJsVisitor extends Visitor
             path.append(mod.getVersion()).append('/');
         }
         path.append(mod.getNameAsString());
-        if (!(mod.isDefault() || mod==mod.getLanguageModule())) {
+        //TODO remove second condition when CL is standardized with version name
+        if (!mod.isDefault()) {
             path.append('-').append(mod.getVersion());
         }
         return path.toString();
