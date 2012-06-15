@@ -53,9 +53,9 @@ class MethodInitializerParameter<T> {
     }
     
     MethodInitializerParameter(.ceylon.language.Callable<? extends .java.lang.Object> m, .ceylon.language.Callable<? extends .java.lang.Object> m2, .ceylon.language.Callable<? extends T> m3, .ceylon.language.Callable<? extends .java.lang.Object> m4) {
-        this.m = null;
-        this.m2 = null;
-        this.m3 = null;
-        this.m4 = null;
+        this.m = m;
+        this.m2 = m2;
+        this.m3 = m3;
+        this.m4 = m4;
     }
 }
