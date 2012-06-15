@@ -34,6 +34,7 @@ public class GenerateJsVisitor extends Visitor
 
     private boolean indent=true;
     private boolean comment=true;
+    private boolean verbose=false;
     private final Stack<Continuation> continues = new Stack<Continuation>();
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
@@ -114,6 +115,8 @@ public class GenerateJsVisitor extends Visitor
     public void setAddComments(boolean flag) { comment = flag; }
     /** Tells the receiver whether to indent the generated code. Default is true. */
     public void setIndent(boolean flag) { indent = flag; }
+    /** Tells the receiver to be verbose (prints generated code to STDOUT in addition to writer) */
+    public void setVerbose(boolean flag) { verbose = flag; }
 
     /** Print generated code to the Writer specified at creation time.
      * @param code The main code
@@ -123,6 +126,12 @@ public class GenerateJsVisitor extends Visitor
             out.write(code);
             for (String s : codez) {
                 out.write(s);
+            }
+            if (verbose) {
+                System.out.print(code);
+                for (String s : codez) {
+                    System.out.print(s);
+                }
             }
         }
         catch (IOException ioe) {
