@@ -58,12 +58,6 @@ function initExistingType(type, cons, typeName) {
         }
     }
 }
-function lazyInitGetHash() {
-    if (this.identifiableObjectID === undefined) {
-        Identifiable.call(this, this);
-    }
-    return this.identifiableObjectID;
-}
 function initExistingTypeProto(type, cons, typeName) {
     var args = [].slice.call(arguments, 0);
     args.push(IdentifiableObject);
@@ -74,7 +68,6 @@ function initExistingTypeProto(type, cons, typeName) {
         try {
             inheritProtoI(type, IdentifiableObject);
             proto.toString = origToString;
-            proto.getHash = lazyInitGetHash;
         } catch (exc) {
             // browser probably prevented access to the prototype
         }
@@ -123,9 +116,13 @@ Object$proto.getString = function() { return String$(className(this).value + "@"
 Object$proto.toString=function() { return this.getString().value };
 
 var identifiableObjectID=1;
-function Identifiable(obj) {
-    obj.identifiableObjectID=Integer(identifiableObjectID++);
+function $identityHash(x) {
+    var hash = x.identifiableObjectID;
+    return (hash !== undefined)
+            ? hash : (x.identifiableObjectID = Integer(identifiableObjectID++));
 }
+
+function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language.Identifiable");
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
@@ -134,10 +131,9 @@ Identifiable$proto.equals = function(that) {
     }
     return false;
 }
-Identifiable$proto.getHash = function() { return this.identifiableObjectID; }
+Identifiable$proto.getHash = function() { return $identityHash(this); }
 
 function IdentifiableObject(obj) {
-    Identifiable(obj);
     return obj;
 }
 initTypeProto(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$, Identifiable);
@@ -504,6 +500,7 @@ Entry$proto.getHash = function() { Integer((31 + this.key.getHash().value) * 31 
 
 exports.Exception=Exception;
 exports.Identifiable=Identifiable;
+exports.identityHash=$identityHash;
 exports.IdentifiableObject=IdentifiableObject;
 exports.Object=Object$;
 exports.Boolean=Boolean$;
