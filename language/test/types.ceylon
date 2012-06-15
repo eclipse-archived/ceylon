@@ -1,4 +1,5 @@
 interface MyIdentifiable satisfies Identifiable {}
+class MyIdentifiableObject() {}
 
 class T() extends Object() {
     shared actual String string = "hello";
@@ -237,7 +238,14 @@ void types() {
     if (is TypeTestI1&TypeTestI2|TypeTestI3&TypeTestI4 c1) {} else { fail("is A&B|C&D"); }
     
     object myId extends Object() satisfies MyIdentifiable {}
-    Object my = myId;
-    assert(my is Identifiable, "is custom identifiable");
-    assert(!my is IdentifiableObject, "is not standard identifiable");
+    object myIdo extends MyIdentifiableObject() {}
+    Object yourId = myId;
+    Object yourIdo = myIdo;
+    Object ido = MyIdentifiableObject();
+    assert(yourId is Identifiable, "is identifiable");
+    assert(!yourId is IdentifiableObject, "is not identifiable object");
+    assert(yourIdo is Identifiable, "is identifiable 1");
+    assert(yourIdo is IdentifiableObject, "is identifiable object 1");
+    assert(ido is Identifiable, "is identifiable 2");
+    assert(ido is IdentifiableObject, "is identifiable object 2");
 }
