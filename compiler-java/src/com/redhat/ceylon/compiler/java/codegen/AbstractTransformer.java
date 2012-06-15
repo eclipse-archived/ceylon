@@ -937,7 +937,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     if (tp.isContravariant()) {
                         jta = make().Type(syms().objectType);
                     } else if (tp.isCovariant()) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags));
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags | TYPE_ARGUMENT));
                     } else {
                         jta = make().Type(syms().objectType);
                     }
