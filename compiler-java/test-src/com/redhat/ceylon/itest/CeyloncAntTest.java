@@ -86,7 +86,7 @@ public class CeyloncAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/foo/1.0/com.example.foo-1.0.src.sha1").exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
         
-        assertContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] Model tree for .*?com.example.foo.a.foo\\.ceylon$", Pattern.MULTILINE));
+        assertContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] Model tree for .*?com/example/foo/a/foo\\.ceylon\\]$", Pattern.MULTILINE));
     }
     
     @Test
@@ -115,7 +115,7 @@ public class CeyloncAntTest extends AntBasedTest {
         
         result = ant("foo-file-mtime");
         Assert.assertEquals(0, result.getStatusCode());
-        assertContains(result.getStdout(), "[ceylonc] No need to compile /home/tom/ceylon/ceylon-compiler/test-src/com/redhat/ceylon/itest/com/example/foo/a/foo.ceylon, it's up to date");
+        assertContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] No need to compile .*?/test-src/com/redhat/ceylon/itest/com/example/foo/a/foo.ceylon, it's up to date$", Pattern.MULTILINE));
         assertContains(result.getStdout(), "[ceylonc] Everything's up to date");
         Assert.assertEquals(lastModified, car.lastModified());
     }
