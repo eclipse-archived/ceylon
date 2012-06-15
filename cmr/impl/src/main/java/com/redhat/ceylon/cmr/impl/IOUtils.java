@@ -21,6 +21,8 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * I/O utils.
@@ -69,16 +71,20 @@ public class IOUtils {
      */
     public static void copyStream(InputStream in, OutputStream out) throws IOException {
         try {
-            final byte[] bytes = new byte[8192];
-            int cnt;
-            while ((cnt = in.read(bytes)) != -1) {
-                out.write(bytes, 0, cnt);
-            }
-            out.flush();
+            copyStreamNoClose(in, out);
         } finally {
             safeClose(in);
             safeClose(out);
         }
+    }
+
+    private static void copyStreamNoClose(InputStream in, OutputStream out) throws IOException {
+        final byte[] bytes = new byte[8192];
+        int cnt;
+        while ((cnt = in.read(bytes)) != -1) {
+            out.write(bytes, 0, cnt);
+        }
+        out.flush();
     }
 
     static InputStream toInputStream(File file) throws IOException {
@@ -165,5 +171,43 @@ public class IOUtils {
             chars[c++] = Hexadecimal[v % 16];
         }
         return new String(chars);
+    }
+    
+    static File zipFolder(File root) throws IOException{
+        if(!root.isDirectory())
+            throw new IOException("Zip root must be a folder");
+        File zipFile = File.createTempFile("module-doc", ".zip");
+        try{
+            ZipOutputStream os = new ZipOutputStream(new FileOutputStream(zipFile));
+            try{
+                for(File f : root.listFiles())
+                    zipInternal("", f, os);
+            }finally{
+                os.flush();
+                os.close();
+            }
+            return zipFile;
+        }catch(IOException x){
+            zipFile.delete();
+            throw x;
+        }
+    }
+
+    private static void zipInternal(String path, File file, ZipOutputStream os) throws IOException {
+        String filePath = path+"/"+file.getName();
+        if(file.isDirectory()){
+            for(File f : file.listFiles())
+                zipInternal(filePath, f, os);
+        }else{
+            ZipEntry entry = new ZipEntry(filePath);
+            os.putNextEntry(entry);
+            FileInputStream in = new FileInputStream(file);
+            try{
+                copyStreamNoClose(in, os);
+            }finally{
+                in.close();
+            }
+            os.closeEntry();
+        }
     }
 }
