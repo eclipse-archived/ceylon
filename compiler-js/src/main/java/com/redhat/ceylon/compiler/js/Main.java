@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler;
+package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,7 +10,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.JULLogger;
-import com.redhat.ceylon.compiler.js.JsCompiler;
+import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
  * @author Gavin King <gavin@hibernate.org>
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class MainForJs {
+public class Main {
 
     /** Print a help message with the available options. */
     private static void help() {
