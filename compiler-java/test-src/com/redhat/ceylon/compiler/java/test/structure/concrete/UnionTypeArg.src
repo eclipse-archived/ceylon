@@ -33,17 +33,17 @@ class UnionTypeArg implements .ceylon.language.Iterable {
         return $Iterable$impl.find(selecting);
     }
     private final .ceylon.language.Container$impl $Container$impl;
-    private final .ceylon.language.Iterator iterator;
+    private final .ceylon.language.Iterator<?> iterator;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator getIterator() {
+    public final .ceylon.language.Iterator<?> getIterator() {
         return iterator;
     }
     
     UnionTypeArg() {
         this.$Iterable$impl = new .ceylon.language.Iterable$impl(this);
         this.$Container$impl = new .ceylon.language.Container$impl(this);
-        this.iterator = (.ceylon.language.Iterator).ceylon.language.bottom.getBottom();
+        this.iterator = (.ceylon.language.Iterator<?>).ceylon.language.bottom.getBottom();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -74,10 +74,10 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable {
         return $Iterable$impl.filter(selecting);
     }
     private final .ceylon.language.Container$impl $Container$impl;
-    private final .ceylon.language.Iterator iterator;
+    private final .ceylon.language.Iterator<?> iterator;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator getIterator() {
+    public final .ceylon.language.Iterator<?> getIterator() {
         return iterator;
     }
     
@@ -94,7 +94,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable {
     UnionTypeArgOverride() {
         this.$Iterable$impl = new .ceylon.language.Iterable$impl(this);
         this.$Container$impl = new .ceylon.language.Container$impl(this);
-        this.iterator = (.ceylon.language.Iterator).ceylon.language.bottom.getBottom();
+        this.iterator = (.ceylon.language.Iterator<?>).ceylon.language.bottom.getBottom();
     }
     
     public static void main(.java.lang.String[] args) {
