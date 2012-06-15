@@ -948,8 +948,8 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     || ((flags & TYPE_ARGUMENT) != 0
                         && (typeFact().isUnion(ta) || typeFact().isIntersection(ta)))) {
                 // For the bottom type Bottom:
-                if ((flags & (SATISFIES | EXTENDS)) != 0) {
-                    // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies
+                if ((flags & (SATISFIES | EXTENDS | CLASS_NEW)) != 0) {
+                    // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies or instantiation
                     //   clause results in the Java raw type Foo
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                     typeArgs = null;
