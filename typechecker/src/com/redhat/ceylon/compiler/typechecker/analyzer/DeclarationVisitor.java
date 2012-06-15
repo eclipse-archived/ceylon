@@ -599,9 +599,6 @@ public class DeclarationVisitor extends Visitor {
         visitDeclaration(that, p);
         super.visit(that);
         parameterList.getParameters().add(p);
-        if (scope instanceof Method && p.isHidden()) {
-            that.addWarning("shortcut parameter declaration syntax for methods not yet supported");
-        }
     }
 
     @Override
