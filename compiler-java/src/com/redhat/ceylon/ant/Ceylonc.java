@@ -43,8 +43,6 @@ import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
-import org.apache.tools.ant.util.GlobPatternMapper;
-import org.apache.tools.ant.util.SourceFileScanner;
 
 public class Ceylonc extends LazyTask {
 
@@ -169,7 +167,8 @@ public class Ceylonc extends LazyTask {
                 DirectoryScanner ds = fs.getDirectoryScanner(getProject());
                 String[] files = ds.getIncludedFiles();
     
-                scanDir(srcDir, getOut(), files);
+                for(String fileName : files)
+                    compileList.add(new File(srcDir, fileName));
             }
         }
 
@@ -188,38 +187,6 @@ public class Ceylonc extends LazyTask {
      */
     protected void resetFileLists() {
         compileList.clear();
-    }
-
-    /**
-     * Scans the directory looking for source files to be compiled. The results
-     * are returned in the class variable compileList
-     * 
-     * @param srcDir The source directory
-     * @param destDir The destination directory
-     * @param files An array of filenames
-     */
-    private void scanDir(File srcDir, File destDir, String[] files) {
-        // FIXME: we can't compile java at the same time in M1
-        //scanDir(srcDir, destDir, files, "*.java");
-        scanDir(srcDir, destDir, files, "*.ceylon");
-    }
-
-    /**
-     * Scans the directory looking for source files to be compiled. The results
-     * are returned in the class variable compileList
-     * 
-     * @param srcDir The source directory
-     * @param destDir The destination directory
-     * @param files An array of filenames
-     * @param pattern The pattern to match source files
-     */
-    private void scanDir(File srcDir, File destDir, String[] files, String pattern) {
-        GlobPatternMapper m = new GlobPatternMapper();
-        m.setFrom(pattern);
-        m.setTo("*.class");
-        SourceFileScanner sfs = new SourceFileScanner(this);
-        File[] newFiles = sfs.restrictAsFiles(files, srcDir, destDir, m);
-        compileList.addAll(Arrays.asList(newFiles));    
     }
 
     @Override
