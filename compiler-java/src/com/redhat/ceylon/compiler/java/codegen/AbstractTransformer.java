@@ -902,12 +902,18 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
                 // For any other intersection type U|V:
                 // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
-                // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                 ProducedType iterType = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(ta));
                 // don't break if the union type is erased to something better than Object
                 if(iterType == null){
-                    typeArgs = null;
-                    break;
+                    // use raw types if:
+                    // - we're calling a constructor
+                    // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
+                    if((flags & CLASS_NEW) != 0 || (flags & TYPE_ARGUMENT) == 0){
+                        // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                        typeArgs = null;
+                        break;
+                    }
+                    // otherwise just go on
                 }else
                     ta = iterType;
             }
@@ -936,7 +942,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                         jta = make().Type(syms().objectType);
                     }
                 }
-            } else if (ta.getDeclaration() instanceof BottomType) {
+            } else if (ta.getDeclaration() instanceof BottomType
+                    // if we're in a type argument already, union and intersection types should use the same erasure rules
+                    // as bottom: prefer wildcards
+                    || ((flags & TYPE_ARGUMENT) != 0
+                        && (typeFact().isUnion(ta) || typeFact().isIntersection(ta)))) {
                 // For the bottom type Bottom:
                 if ((flags & (SATISFIES | EXTENDS)) != 0) {
                     // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies
@@ -947,9 +957,9 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 } else {
                     // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
                     // - raw Foo if Foo<T> is invariant in T,
-                    // - raw Foo if Foo<T> is covariant in T, or
+                    // - Foo<?> if Foo<T> is covariant in T, or
                     // - Foo<?> if Foo<T> is contravariant in T
-                    if (tp.isContravariant()) {
+                    if (tp.isContravariant() || tp.isCovariant()) {
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta));
                     } else {
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
