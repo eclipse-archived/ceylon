@@ -50,6 +50,7 @@ public class WebDAVContentStore extends URLContentStore {
 
     private volatile Sardine sardine;
     private boolean _isHerd;
+    private boolean forcedAuthenticationForPutOnHerd = false;
 
     public WebDAVContentStore(String root, Logger log) {
         super(root, log);
@@ -119,6 +120,18 @@ public class WebDAVContentStore extends URLContentStore {
         final Sardine s = getSardine();
 
         try {
+            /*
+             * Most disgusting trick ever. Stef failed to set up Sardine to do preemptive auth on all hosts
+             * and ports (may only work on port 80, reading the code), so when not using Herd we generate a ton
+             * of requests that will trigger auth, but not for Herd. So we start with a PUT and that replies with
+             * an UNAUTHORIZED response, which Sardine can't handle because the InputStream is not "restartable".
+             * By making an extra HEAD request (restartable because no entity body) we force the auth to happen.
+             * Yuk.
+             */
+            if(isHerd() && !forcedAuthenticationForPutOnHerd){
+                s.exists(getUrlAsString(node));
+                forcedAuthenticationForPutOnHerd = true;
+            }
             final Node parent = NodeUtils.firstParent(node);
             if(!isHerd())
                 mkdirs(s, parent);
