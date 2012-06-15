@@ -100,8 +100,7 @@ public class Unit {
     public Declaration getImportedDeclaration(String name, 
             List<ProducedType> signature) {
         for (Import i: getImports()) {
-            if (i.getTypeDeclaration()==null && 
-            		i.getAlias().equals(name)) {
+            if (i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
                 //correct overloaded version
