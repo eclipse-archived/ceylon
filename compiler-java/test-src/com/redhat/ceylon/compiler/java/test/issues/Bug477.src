@@ -36,7 +36,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     private final .ceylon.language.Iterable$impl<T> $Iterable$impl;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends T> getSequence() {
+    public .ceylon.language.Iterable<? extends T> getSequence() {
         return $Iterable$impl.getSequence();
     }
     
@@ -220,7 +220,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     private final .ceylon.language.Iterable$impl<T> $Iterable$impl;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends T> getSequence() {
+    public .ceylon.language.Iterable<? extends T> getSequence() {
         return $Iterable$impl.getSequence();
     }
     

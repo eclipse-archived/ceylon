@@ -41,7 +41,7 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     private final .ceylon.language.Iterable$impl<X> $Iterable$impl;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends X> getSequence() {
+    public .ceylon.language.Iterable<? extends X> getSequence() {
         return $Iterable$impl.getSequence();
     }
     
