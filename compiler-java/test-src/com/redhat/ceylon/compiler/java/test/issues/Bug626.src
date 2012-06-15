@@ -1,0 +1,83 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> {
+    private final .ceylon.language.Iterable$impl<.ceylon.language.Iterable<?>> $Iterable$impl;
+    
+    @.java.lang.Override
+    public boolean getEmpty() {
+        return $Iterable$impl.getEmpty();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> getSequence() {
+        return $Iterable$impl.getSequence();
+    }
+    
+    @.java.lang.Override
+    public <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
+        return $Iterable$impl.map(collecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $Iterable$impl.filter(selecting);
+    }
+    
+    @.java.lang.Override
+    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $Iterable$impl.fold(initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<?> find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $Iterable$impl.find(selecting);
+    }
+    private final .ceylon.language.Container$impl $Container$impl;
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
+        return ((.ceylon.language.Boolean).ceylon.language.bottom.getBottom()).booleanValue();
+    }
+    private final int hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return hash;
+    }
+    private final .ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>> iterator;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>> getIterator() {
+        return iterator;
+    }
+    
+    Bug626() {
+        this.$Iterable$impl = new .ceylon.language.Iterable$impl<.ceylon.language.Iterable<?>>(this);
+        this.$Container$impl = new .ceylon.language.Container$impl(this);
+        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
+        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>>).ceylon.language.bottom.getBottom();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug626();
+    }
+}
+final class bug626f {
+    
+    private bug626f() {
+    }
+    
+    static void bug626f(final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> f, final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> f2, final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> f3) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i = f;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i2 = f2;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i3 = f3;
+        final .ceylon.language.Iterable<?> temp = (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> $arg$0$0 = new .com.redhat.ceylon.compiler.java.test.issues.Bug626();
+            }
+            returning .ceylon.language.join.join($arg$0$0);
+        );
+    }
+}
