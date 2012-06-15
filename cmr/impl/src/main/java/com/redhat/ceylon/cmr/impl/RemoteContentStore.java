@@ -54,6 +54,7 @@ public class RemoteContentStore extends URLContentStore {
                 log.info("Got " + code + " for url: " + url);
                 return null;
             }
+            log.debug("Got " + code + " for url: " + url);
             return stream;
         }
         return null;

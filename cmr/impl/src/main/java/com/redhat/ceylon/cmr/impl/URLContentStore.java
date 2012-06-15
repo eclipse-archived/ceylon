@@ -123,8 +123,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             addCredentials(huc);
             int code = huc.getResponseCode();
             huc.disconnect();
+            log.debug("Got " + code + " for url: " + url);
             if (code == 200) {
-                log.info("Got " + code + " for url: " + url);
                 return huc;
             }
         }
