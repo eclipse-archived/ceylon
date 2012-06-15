@@ -10,10 +10,10 @@
     <property name="build.lib" location="${build.dir}/lib" />
     <property name="build.test" location="${build.dir}/test" />
 
-    <property name="test-src" location="src/test/java" />
-    <property name="src" location="src/main/java" />
-    <property name="js-src" location="src/main/js" />
-    <property name="runtime" value="build/runtime" />
+    <property name="test-src" location="${basedir}/src/test/java" />
+    <property name="src" location="${basedir}/src/main/java" />
+    <property name="js-src" location="${basedir}/src/main/js" />
+    <property name="runtime" value="${basedir}/build/runtime" />
 
     <property name="jslangfile" value="ceylon.language.js" />
     <property name="jslangpath" value="ceylon/language/${module.com.redhat.ceylon.compiler.js.version}" />
