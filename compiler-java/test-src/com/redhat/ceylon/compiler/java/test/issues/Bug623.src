@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug623Direct extends .java.lang.Object {
+    
+    Bug623Direct() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug623Direct();
+    }
+}
+interface Bug623 {
+}
+final class Bug623$impl {
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug623 $this;
+    
+    Bug623$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug623 $this) {
+        this.$this = $this;
+    }
+}
+class Bug623Indirect extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.test.issues.Bug623 {
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl $Bug623$impl;
+    
+    Bug623Indirect() {
+        super();
+        this.$Bug623$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug623Indirect();
+    }
+}

@@ -18,6 +18,8 @@
  * MA  02110-1301, USA.
  */
 @nomodel
+class Bug623Direct() extends Object() satisfies Identifiable {}
+@nomodel
 interface Bug623 satisfies Identifiable {}
 @nomodel
-class Bug623Class() extends Object() satisfies Bug623 {}
+class Bug623Indirect() extends Object() satisfies Bug623 {}
