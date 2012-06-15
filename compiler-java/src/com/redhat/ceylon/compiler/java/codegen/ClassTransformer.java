@@ -210,7 +210,8 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder classBuilder, 
             ProducedType satisfiedType, Set<Interface> satisfiedInterfaces) {
         Interface iface = (Interface)satisfiedType.getDeclaration();
-        if (satisfiedInterfaces.contains(iface)) {
+        if (satisfiedInterfaces.contains(iface)
+                || iface.getType().isExactly(typeFact().getIdentifiableDeclaration().getType())) {
             return;
         }
      
