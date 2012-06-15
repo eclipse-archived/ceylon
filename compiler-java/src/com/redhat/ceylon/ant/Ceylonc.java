@@ -245,7 +245,7 @@ public class Ceylonc extends LazyTask {
         }
         
         cmd.createArgument().setValue("-out");
-        cmd.createArgument().setValue(getOut().getAbsolutePath());
+        cmd.createArgument().setValue(getOut());
         
         
         for (File src : getSrc()) {

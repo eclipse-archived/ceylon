@@ -21,6 +21,8 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -66,7 +68,7 @@ abstract class LazyTask extends Task {
     }
 
     private Path src;
-    private File out;
+    private String out;
     private List<Rep> repositories = new LinkedList<Rep>();
     private Boolean noMtimeCheck = false;
 
@@ -115,17 +117,17 @@ abstract class LazyTask extends Task {
     }
 
     /**
-     * Set the destination directory into which the Java source files should be
+     * Set the destination repository into which the Java source files should be
      * compiled.
-     * @param out the destination director
+     * @param out the destination repository
      */
-    public void setOut(File out) {
+    public void setOut(String out) {
         this.out = out;
     }
 
-    protected File getOut() {
+    protected String getOut() {
         if (this.out == null) {
-            return new File(getProject().getBaseDir(), "modules");
+            return new File(getProject().getBaseDir(), "modules").getPath();
         }
         return this.out;
     }
@@ -184,7 +186,7 @@ abstract class LazyTask extends Task {
      * @return true if everything was filtered out 
      */
     protected <M extends Module> boolean filterModules(List<M> modules) {
-        if (noMtimeCheck) {
+        if (noMtimeCheck || isOutputRepositoryURL()) {
             return false;
         }
         Iterator<M> iterator = modules.iterator();
@@ -215,13 +217,25 @@ abstract class LazyTask extends Task {
         return modules.size() == 0;
     }
     
+    private boolean isOutputRepositoryURL() {
+        String out = getOut();
+        if(out == null || out.isEmpty())
+            return false;
+        try{
+            new URL(out);
+            return true;
+        }catch(MalformedURLException x){
+            return false;
+        }
+    }
+
     /**
      * Filters out all the source files which appear to not require 
      * compilation based on comparison of file modification times
      * @return true if everything was filtered out 
      */
     protected boolean filterFiles(List<File> files) {
-        if (noMtimeCheck) {
+        if (noMtimeCheck || isOutputRepositoryURL()) {
             return false;
         }
         long newestFile = Long.MIN_VALUE;
