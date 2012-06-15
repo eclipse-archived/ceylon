@@ -355,8 +355,11 @@ public class ClassTransformer extends AbstractTransformer {
         boolean rawifyParametersAndResults = false;
         for (ProducedType typeArg : type.getTypeArgumentList()) {
             if (typeFact().isIntersection(typeArg) || typeFact().isUnion(typeArg)) {
-                rawifyParametersAndResults = true;
-                break;
+                // Use the same hack that makeJavaType() does when handling iterables
+                if (typeFact().getNonemptyIterableType(typeFact().getDefiniteType(typeArg)) == null) {
+                    rawifyParametersAndResults = true;
+                    break;
+                }
             }
         }
         return rawifyParametersAndResults;
