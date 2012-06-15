@@ -1,0 +1,43 @@
+# This file is intended to be sourced, not run directly
+
+CEYLON_VERSION=@VERSION@
+
+# resolve links - $0 may be a softlink
+PRG="$0"
+while [ -h "$PRG" ]; do
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG=`dirname "$PRG"`/"$link"
+  fi
+done
+
+# Set CEYLON_HOME if not already set by the user
+if test -z "$CEYLON_HOME"
+then
+    CEYLON_HOME="$(dirname "$PRG)")/.."
+fi
+
+# Set CEYLON_REPO if not already set
+if test -z "$CEYLON_REPO"
+then
+    # Try the distribution repo
+    CEYLON_REPO="$CEYLON_HOME/repo"
+    # If it does not exist let's use the user repo
+    if test \! -d "$CEYLON_REPO"
+    then
+        echo "Could not find distribution repo, using $HOME/.ceylon/repo"
+        CEYLON_REPO="$HOME/.ceylon/repo"
+    fi
+fi
+
+# Make sure we have node.js installed
+if hash node 2>&-
+then
+    true #nothing
+else
+    echo "node.js not found, you need it to run ceylon scripts compiled to Javascript"
+    echo "Go to http://nodejs.org/ to download the latest version of Java"
+fi
