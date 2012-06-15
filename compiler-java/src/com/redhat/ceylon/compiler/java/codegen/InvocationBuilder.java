@@ -19,9 +19,9 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.COMPANION;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.NO_PRIMITIVES;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.TYPE_ARGUMENT;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_COMPANION;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_TYPE_ARGUMENT;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ abstract class InvocationBuilder {
                 // cancel type parameters and go raw if we can't specify them
                 if(gen.willEraseToObject(arg))
                     return List.nil();
-                result = result.append(gen.makeJavaType(arg, TYPE_ARGUMENT));
+                result = result.append(gen.makeJavaType(arg, JT_TYPE_ARGUMENT));
             }
         }
         return result;
@@ -143,7 +143,7 @@ abstract class InvocationBuilder {
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
-            resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.CLASS_NEW), args.toList(), null);
+            resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW), args.toList(), null);
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             // When doing qualified invocation through an interface we need
             // to get the companion.
@@ -156,13 +156,13 @@ abstract class InvocationBuilder {
                 // But when the interface is local the accessor returns Object
                 // so we need to cast it to the type of the companion
                 if (Decl.isAncestorLocal(((Tree.QualifiedTypeExpression)primary).getDeclaration())) {
-                    actualPrimExpr = gen.make().TypeCast(gen.makeJavaType(qualifyingInterface.getType(), COMPANION), actualPrimExpr);
+                    actualPrimExpr = gen.make().TypeCast(gen.makeJavaType(qualifyingInterface.getType(), JT_COMPANION), actualPrimExpr);
                 }
             }
             // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
             // is qualified relative to it
             ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
-            resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.CLASS_NEW | AbstractTransformer.NON_QUALIFIED), args.toList(), null);
+            resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), args.toList(), null);
         } else {
             if (primaryDeclaration instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
@@ -937,7 +937,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
                 ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
                 final BoxingStrategy boxType = declaredParam != null ? CodegenUtil.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
-                JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
+                JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? JT_TYPE_ARGUMENT : 0);
                 JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
                 statements = ListBuffer.<JCStatement>of(varDecl);
@@ -998,7 +998,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 JCTree.JCVariableDecl var = gen.make().VarDef(
                         gen.make().Modifiers(FINAL, List.<JCAnnotation>nil()), 
                         gen.names().fromString(argName), 
-                        gen.makeJavaType(type, boxType==BoxingStrategy.BOXED ? NO_PRIMITIVES : 0), 
+                        gen.makeJavaType(type, boxType==BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), 
                         initValue);
                 statements = toStmts(attrArg, attrClass).append(var);
             } else {
@@ -1029,7 +1029,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     private final void appendDefaulted(Parameter param, JCExpression argExpr) {
         int flags = 0;
         if (CodegenUtil.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
-            flags |= TYPE_ARGUMENT;
+            flags |= JT_TYPE_ARGUMENT;
         }
         ProducedType type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
         String argName = argName(param);
@@ -1089,7 +1089,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         if (primary instanceof Tree.BaseMemberExpression) {
             if (Decl.withinClassOrInterface(primaryDeclaration)) {
                 // a member method
-                thisType = gen.makeJavaType(target.getQualifyingType(), NO_PRIMITIVES);
+                thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
                 defaultedParameterInstance = gen.makeUnquotedIdent("this");
             } else {
                 // a local or toplevel function
@@ -1102,17 +1102,17 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
             for (TypeParameter tp : ((TypeDeclaration)target.getDeclaration()).getTypeParameters()) {
                 ProducedType producedType = typeA.get(tp);
-                typeArgs.append(gen.makeJavaType(producedType, TYPE_ARGUMENT));
+                typeArgs.append(gen.makeJavaType(producedType, JT_TYPE_ARGUMENT));
             }
             ClassOrInterface declaration = (ClassOrInterface)((Tree.BaseTypeExpression) primary).getDeclaration();
-            thisType = gen.makeJavaType(declaration.getType(), COMPANION);
+            thisType = gen.makeJavaType(declaration.getType(), JT_COMPANION);
             defaultedParameterInstance = gen.make().NewClass(
                     null, 
                     null,
-                    gen.makeJavaType(declaration.getType(), COMPANION), 
+                    gen.makeJavaType(declaration.getType(), JT_COMPANION), 
                     List.<JCExpression>nil(), null);
         } else {
-            thisType = gen.makeJavaType(target.getQualifyingType(), NO_PRIMITIVES);
+            thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
             defaultedParameterInstance = gen.makeUnquotedIdent(callVarName);
         }
         JCVariableDecl thisDecl = gen.makeVar(varBaseName + "$this$", 
@@ -1155,9 +1155,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             JCExpression varType;
             if (primary instanceof QualifiedTypeExpression
                     && (((QualifiedTypeExpression)primary).getPrimary() instanceof Tree.Outer)) {
-                varType = gen.makeJavaType(type, NO_PRIMITIVES | COMPANION);
+                varType = gen.makeJavaType(type, JT_NO_PRIMITIVES | JT_COMPANION);
             } else {
-                varType = gen.makeJavaType(type, NO_PRIMITIVES);
+                varType = gen.makeJavaType(type, JT_NO_PRIMITIVES);
             }
             vars.prepend(gen.makeVar(callVarName, varType, actualPrimExpr));
             actualPrimExpr = gen.makeUnquotedIdent(callVarName);

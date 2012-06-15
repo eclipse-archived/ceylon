@@ -65,12 +65,12 @@ public class AttributeDefinitionBuilder {
         TypedDeclaration nonWideningTypeDeclaration = owner.nonWideningTypeDecl(attrType);
         ProducedType nonWideningType = owner.nonWideningType(attrType, nonWideningTypeDeclaration);
         if (!CodegenUtil.isUnBoxed(nonWideningTypeDeclaration)) {
-            typeFlags |= AbstractTransformer.NO_PRIMITIVES;
+            typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
         
         this.ancestorLocal = Decl.isAncestorLocal(attrType);
         this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
-        this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.WANT_RAW_TYPE);
+        this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
         this.owner = owner;
         this.className = className;
         this.attrName = attrName;

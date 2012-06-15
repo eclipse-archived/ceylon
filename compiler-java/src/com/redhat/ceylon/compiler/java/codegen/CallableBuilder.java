@@ -37,9 +37,9 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.EXTENDS;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.NO_PRIMITIVES;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.CLASS_NEW;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLASS_NEW;
 
 public class CallableBuilder {
 
@@ -131,7 +131,7 @@ public class CallableBuilder {
             JCExpression init = unpickCallableParameter(gen, null, p, null, ii, parameterList.getParameters().size());
             JCVariableDecl varDef = gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), 
                     gen.names().fromString(p.getName()), 
-                    gen.makeJavaType(p.getType(), Boolean.TRUE.equals(p.getUnboxed()) ? 0 : NO_PRIMITIVES), 
+                    gen.makeJavaType(p.getType(), Boolean.TRUE.equals(p.getUnboxed()) ? 0 : JT_NO_PRIMITIVES), 
                     init);
             body = body.prepend(varDef);
             ii++;
@@ -145,7 +145,7 @@ public class CallableBuilder {
         callMethod.isActual(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
-        callMethod.resultType(gen.makeJavaType(returnType, NO_PRIMITIVES), null);
+        callMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
         // Now append formal parameters
         int numParams = paramLists.getParameters().size();
         switch (numParams) {
@@ -171,7 +171,7 @@ public class CallableBuilder {
         
         JCNewClass instance = gen.make().NewClass(null, 
                 null, 
-                gen.makeJavaType(typeModel, EXTENDS | CLASS_NEW), 
+                gen.makeJavaType(typeModel, JT_EXTENDS | JT_CLASS_NEW), 
                 List.<JCExpression>of(gen.make().Literal(typeModel.getProducedTypeQualifiedName())), 
                 classDef);
         return instance;
@@ -215,7 +215,7 @@ public class CallableBuilder {
         } else {
             castType = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
         }
-        JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, NO_PRIMITIVES), argExpr);
+        JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, JT_NO_PRIMITIVES), argExpr);
         // TODO Should this be calling applyErasureAndBoxing() instead?
         BoxingStrategy boxingStrategy;
         if (param.getUnboxed() == null) {

@@ -212,7 +212,7 @@ public class ClassDefinitionBuilder {
     private JCExpression getSuperclass(ProducedType extendedType) {
         JCExpression superclass;
         if (extendedType != null) {
-            superclass = gen.makeJavaType(extendedType, CeylonTransformer.EXTENDS);
+            superclass = gen.makeJavaType(extendedType, CeylonTransformer.JT_EXTENDS);
             // simplify if we can
 // FIXME superclass.sym can be null
 //            if (superclass instanceof JCTree.JCFieldAccess 
@@ -236,7 +236,7 @@ public class ClassDefinitionBuilder {
         }
         ListBuffer<JCExpression> typesList = new ListBuffer<JCExpression>();
         for (ProducedType t : types) {
-            JCExpression jt = gen.makeJavaType(t, CeylonTransformer.SATISFIES);
+            JCExpression jt = gen.makeJavaType(t, CeylonTransformer.JT_SATISFIES);
             if (jt != null) {
                 typesList.append(jt);
             }
@@ -292,7 +292,7 @@ public class ClassDefinitionBuilder {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : satisfiedTypes) {
             if (!gen.willEraseToObject(t)) {
-                bounds.append(gen.makeJavaType(t, AbstractTransformer.NO_PRIMITIVES));
+                bounds.append(gen.makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES));
             }
         }
         typeParams.append(typeParam(name, bounds));

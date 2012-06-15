@@ -648,21 +648,33 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * Java Type creation
      */
     
-    static final int SATISFIES = 1 << 0;
-    static final int EXTENDS = 1 << 1;
-    static final int TYPE_ARGUMENT = 1 << 2;
-    static final int NO_PRIMITIVES = 1 << 2; // Yes, same as TYPE_ARGUMENT
-    static final int WANT_RAW_TYPE = 1 << 3;
-    static final int CATCH = 1 << 4;
-    static final int SMALL_TYPE = 1 << 5;
-    static final int CLASS_NEW = 1 << 6;
-    static final int COMPANION = 1 << 7;
-    static final int NON_QUALIFIED = 1 << 8;
+    /** For use in {@code implements} clauses. */
+    static final int JT_SATISFIES = 1 << 0;
+    /** For use in {@code extends} clauses. */
+    static final int JT_EXTENDS = 1 << 1;
+    /** For use when generating a type argument */
+    static final int JT_TYPE_ARGUMENT = 1 << 2;
+    /** For use when a primitive type won't do. */
+    static final int JT_NO_PRIMITIVES = 1 << 2; // Yes, same as TYPE_ARGUMENT
+    /** For generating a type without type arguments. */
+    static final int JT_RAW = 1 << 3;
+    /** For use in {@code catch} statements. */
+    static final int JT_CATCH = 1 << 4;
+    /** 
+     * Generate a 'small' primitive type (if the type is primitive and has a 
+     * small variant). 
+     */
+    static final int JT_SMALL = 1 << 5;
+    /** For use in {@code new} expressions. */
+    static final int JT_CLASS_NEW = 1 << 6;
+    /** Generates the Java type of the companion class of the given type */
+    static final int JT_COMPANION = 1 << 7;
+    static final int JT_NON_QUALIFIED = 1 << 8;
     /** 
      * If the type is a type parameter, return the Java type for its upper bound. 
-     * Implies {@link #WANT_RAW_TYPE}   
+     * Implies {@link #JT_RAW}   
      */
-    static final int RAW_TP_BOUND = WANT_RAW_TYPE | 1 << 9;
+    static final int JT_RAW_TP_BOUND = JT_RAW | 1 << 9;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -677,7 +689,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             return makeJavaType(typeFact().getCallableType(pt), flags);
         } else {
             boolean usePrimitives = CodegenUtil.isUnBoxed(typeDecl);
-            return makeJavaType(type, flags | (usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES));
+            return makeJavaType(type, flags | (usePrimitives ? 0 : AbstractTransformer.JT_NO_PRIMITIVES));
         }
     }
 
@@ -706,22 +718,22 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 // We special case the erasure of X[] and X[]?
                 type = iterType;
             } else {
-                if ((flags & SATISFIES) != 0) {
+                if ((flags & JT_SATISFIES) != 0) {
                     return null;
                 } else {
                     return make().Type(syms().objectType);
                 }
             }
         } else if (willEraseToException(type)) {
-            if ((flags & CLASS_NEW) != 0
-                    || (flags & EXTENDS) != 0) {
+            if ((flags & JT_CLASS_NEW) != 0
+                    || (flags & JT_EXTENDS) != 0) {
                 return make().Type(syms().ceylonExceptionType);
-            } else if ((flags & CATCH) != 0) {
+            } else if ((flags & JT_CATCH) != 0) {
                 return make().Type(syms().exceptionType);
             } else {
                 return make().Type(syms().throwableType);
             }
-        } else if ((flags & (SATISFIES | EXTENDS | TYPE_ARGUMENT | CLASS_NEW)) == 0 
+        } else if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_TYPE_ARGUMENT | JT_CLASS_NEW)) == 0 
                 && (!isOptional(type) || isJavaString(type))) {
             if (isCeylonString(type) || isJavaString(type)) {
                 return make().Type(syms().stringType);
@@ -732,13 +744,13 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     return make().TypeIdent(TypeTags.BYTE);
                 } else if ("short".equals(type.getUnderlyingType())) {
                     return make().TypeIdent(TypeTags.SHORT);
-                } else if ((flags & SMALL_TYPE) != 0 || "int".equals(type.getUnderlyingType())) {
+                } else if ((flags & JT_SMALL) != 0 || "int".equals(type.getUnderlyingType())) {
                     return make().TypeIdent(TypeTags.INT);
                 } else {
                     return make().TypeIdent(TypeTags.LONG);
                 }
             } else if (isCeylonFloat(type)) {
-                if ((flags & SMALL_TYPE) != 0 || "float".equals(type.getUnderlyingType())) {
+                if ((flags & JT_SMALL) != 0 || "float".equals(type.getUnderlyingType())) {
                     return make().TypeIdent(TypeTags.FLOAT);
                 } else {
                     return make().TypeIdent(TypeTags.DOUBLE);
@@ -783,7 +795,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         // put them in outer->inner order
         Collections.reverse(qualifyingTypes);
         
-        if (((flags & WANT_RAW_TYPE) == 0) && hasTypeParameters) {
+        if (((flags & JT_RAW) == 0) && hasTypeParameters) {
             // special case for interfaces because we pull them into toplevel types
             if(Decl.isCeylon(simpleType.getDeclaration())
                     && qualifyingTypes.size() > 1
@@ -805,7 +817,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                         flags, 
                         qualifyingTypeArguments, qualifyingTypeParameters);
                 if (isCeylonCallable(type) && 
-                        (flags & CLASS_NEW) != 0) {
+                        (flags & JT_CLASS_NEW) != 0) {
                     baseType = makeIdent(syms().ceylonAbstractCallableType);
                 } else {
                     baseType = makeDeclarationName(tdecl);
@@ -816,7 +828,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 } else {
                     jt = baseType;
                 }
-            }else if((flags & NON_QUALIFIED) == 0){
+            }else if((flags & JT_NON_QUALIFIED) == 0){
                 int index = 0;
                 for (ProducedType qualifyingType : qualifyingTypes) {
                     jt = makeParameterisedType(qualifyingType, type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
@@ -832,7 +844,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             if(tdecl instanceof TypeParameter)
                 jt = makeQuotedIdent(tdecl.getName());
             // don't use underlying type if we want no primitives
-            else if((flags & (SATISFIES | NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null){
+            else if((flags & (JT_SATISFIES | JT_NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null){
                 jt = makeQuotedQualIdentFromString(declName(tdecl, flags));
             }else
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
@@ -853,7 +865,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     //tdecl, 
                     flags);
         if (isCeylonCallable(generalType) && 
-                (flags & CLASS_NEW) != 0) {
+                (flags & JT_CLASS_NEW) != 0) {
             baseType = makeIdent(syms().ceylonAbstractCallableType);
         } else if (index == 0) {
             String name;
@@ -918,7 +930,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     // use raw types if:
                     // - we're calling a constructor
                     // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
-                    if((flags & CLASS_NEW) != 0 || (flags & TYPE_ARGUMENT) == 0){
+                    if((flags & JT_CLASS_NEW) != 0 || (flags & JT_TYPE_ARGUMENT) == 0){
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
                         break;
@@ -935,7 +947,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             
             if (sameType(syms().ceylonVoidType, ta)) {
                 // For the root type Void:
-                if ((flags & (SATISFIES | EXTENDS)) != 0) {
+                if ((flags & (JT_SATISFIES | JT_EXTENDS)) != 0) {
                     // - The Ceylon type Foo<Void> appearing in an extends or satisfies
                     //   clause results in the Java raw type Foo<Object>
                     jta = make().Type(syms().objectType);
@@ -947,7 +959,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     if (tp.isContravariant()) {
                         jta = make().Type(syms().objectType);
                     } else if (tp.isCovariant()) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags | TYPE_ARGUMENT));
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags | JT_TYPE_ARGUMENT));
                     } else {
                         jta = make().Type(syms().objectType);
                     }
@@ -955,10 +967,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             } else if (ta.getDeclaration() instanceof BottomType
                     // if we're in a type argument already, union and intersection types should use the same erasure rules
                     // as bottom: prefer wildcards
-                    || ((flags & TYPE_ARGUMENT) != 0
+                    || ((flags & JT_TYPE_ARGUMENT) != 0
                         && (typeFact().isUnion(ta) || typeFact().isIntersection(ta)))) {
                 // For the bottom type Bottom:
-                if ((flags & (SATISFIES | EXTENDS | CLASS_NEW)) != 0) {
+                if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_CLASS_NEW)) != 0) {
                     // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies or instantiation
                     //   clause results in the Java raw type Foo
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
@@ -979,21 +991,21 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 }
             } else {
                 // For an ordinary class or interface type T:
-                if ((flags & (SATISFIES | EXTENDS)) != 0) {
+                if ((flags & (JT_SATISFIES | JT_EXTENDS)) != 0) {
                     // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
                     //   results in the Java type Foo<T>
-                    jta = makeJavaType(ta, TYPE_ARGUMENT);
+                    jta = makeJavaType(ta, JT_TYPE_ARGUMENT);
                 } else {
                     // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
                     // - Foo<T> if Foo is invariant in T,
                     // - Foo<? extends T> if Foo is covariant in T, or
                     // - Foo<? super T> if Foo is contravariant in T
-                    if (((flags & CLASS_NEW) == 0) && tp.isContravariant()) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, TYPE_ARGUMENT));
-                    } else if (((flags & CLASS_NEW) == 0) && tp.isCovariant()) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, TYPE_ARGUMENT));
+                    if (((flags & JT_CLASS_NEW) == 0) && tp.isContravariant()) {
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
+                    } else if (((flags & JT_CLASS_NEW) == 0) && tp.isCovariant()) {
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
                     } else {
-                        jta = makeJavaType(ta, TYPE_ARGUMENT);
+                        jta = makeJavaType(ta, JT_TYPE_ARGUMENT);
                     }
                 }
             }
@@ -1077,10 +1089,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
 
     private String declName(TypeDeclaration tdecl, int flags) {
         java.util.List<NameFlag> args = new LinkedList<NameFlag>();
-        if ((flags & COMPANION) != 0) {
+        if ((flags & JT_COMPANION) != 0) {
             args.add(NameFlag.COMPANION);
         }
-        if ((flags & NON_QUALIFIED) == 0) {
+        if ((flags & JT_NON_QUALIFIED) == 0) {
             args.add(NameFlag.QUALIFIED);
         }
         return declName(tdecl, args.toArray(new NameFlag[args.size()]));
@@ -1655,7 +1667,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             return value;
         }
         String name = tempName();
-        JCExpression type = makeJavaType(typeFact().getStringDeclaration().getType(), NO_PRIMITIVES);
+        JCExpression type = makeJavaType(typeFact().getStringDeclaration().getType(), JT_NO_PRIMITIVES);
         JCExpression expr = make().Conditional(make().Binary(JCTree.NE, makeUnquotedIdent(name), makeNull()), 
                 unboxString(makeUnquotedIdent(name)),
                 makeNull());
@@ -1711,7 +1723,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             // no need for erasure casts here
             elems.append(expressionGen().transformExpression(expr));
         }
-        return makeSequence(elems.toList(), seqElemType,CeylonTransformer.TYPE_ARGUMENT);
+        return makeSequence(elems.toList(), seqElemType,CeylonTransformer.JT_TYPE_ARGUMENT);
     }
     
     /**
@@ -1731,7 +1743,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     JCExpression makeSequenceRaw(List<JCExpression> elems) {
-        return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
+        return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.JT_RAW);
     }
     
     JCExpression makeEmpty() {
@@ -1805,14 +1817,14 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
 
     private JCExpression objectIterableToJavaArray(ProducedType type,
             ProducedType iterableType, JCExpression expr) {
-        JCExpression klass = makeJavaType(type, AbstractTransformer.CLASS_NEW | AbstractTransformer.NO_PRIMITIVES);
+        JCExpression klass = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
         JCExpression klassLiteral = make().Select(klass, names.fromString("class"));
         return makeUtilInvocation("toArray", List.of(expr, klassLiteral), null);
     }
     
     private JCExpression objectFixedSizedToJavaArray(ProducedType type, JCExpression expr) {
-        JCExpression klass1 = makeJavaType(type, AbstractTransformer.CLASS_NEW | AbstractTransformer.NO_PRIMITIVES);
-        JCExpression klass2 = makeJavaType(type, AbstractTransformer.CLASS_NEW | AbstractTransformer.NO_PRIMITIVES);
+        JCExpression klass1 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
+        JCExpression klass2 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
         String baseName = tempName();
 
         String seqName = baseName +"$0";
@@ -1921,7 +1933,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
             } else {
-                JCExpression rawTypeExpr = makeJavaType(type, NO_PRIMITIVES | WANT_RAW_TYPE);
+                JCExpression rawTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW);
                 result = make().TypeTest(varExpr, rawTypeExpr);
             }
         }
@@ -1931,7 +1943,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     JCExpression makeNonEmptyTest(JCExpression firstTimeExpr, String varName) {
         Interface fixedSize = typeFact().getFixedSizedDeclaration();
         JCExpression test = makeTypeTest(firstTimeExpr, varName, fixedSize.getType());
-        JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), NO_PRIMITIVES | WANT_RAW_TYPE);
+        JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), JT_NO_PRIMITIVES | JT_RAW);
         JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, makeUnquotedIdent(varName)));
         return make().Binary(JCTree.AND, test, nonEmpty);
     }
@@ -2002,7 +2014,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : satisfiedTypes) {
             if (!willEraseToObject(t)) {
-                bounds.append(makeJavaType(t, AbstractTransformer.NO_PRIMITIVES));
+                bounds.append(makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES));
             }
         }
         return make().TypeParameter(names().fromString(name), bounds.toList());
@@ -2053,9 +2065,9 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         for (TypeParameter tp : typeParameters) {
             ProducedType type = typeArguments.get(tp);
             if (type != null) {
-                typeArgs.append(makeJavaType(type, TYPE_ARGUMENT));
+                typeArgs.append(makeJavaType(type, JT_TYPE_ARGUMENT));
             } else {
-                typeArgs.append(makeJavaType(tp.getType(), TYPE_ARGUMENT));
+                typeArgs.append(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
             }
         }
         return typeArgs.toList();

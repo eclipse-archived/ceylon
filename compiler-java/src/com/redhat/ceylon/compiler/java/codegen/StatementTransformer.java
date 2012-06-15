@@ -183,13 +183,13 @@ public class StatementTransformer extends AbstractTransformer {
                 ProducedType tmpVarType = specifierExpr.getTypeModel();
                 JCExpression tmpVarTypeExpr;
                 // Want raw type for instanceof since it can't be used with generic types
-                JCExpression rawToTypeExpr = makeJavaType(toType, NO_PRIMITIVES | WANT_RAW_TYPE);
+                JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
     
                 // Substitute variable with the correct type to use in the rest of the code block
                 JCExpression tmpVarExpr = makeUnquotedIdent(tmpVarName);
                 if (cond instanceof Tree.ExistsCondition) {
                     tmpVarExpr = unboxType(tmpVarExpr, toType);
-                    tmpVarTypeExpr = makeJavaType(tmpVarType, NO_PRIMITIVES);
+                    tmpVarTypeExpr = makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
                 } else if(cond instanceof Tree.IsCondition){
                     JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, tmpVarExpr);
                     if(canUnbox(toType))
@@ -199,7 +199,7 @@ public class StatementTransformer extends AbstractTransformer {
                     tmpVarTypeExpr = make().Type(syms().objectType);
                 } else {
                     tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarExpr);
-                    tmpVarTypeExpr = makeJavaType(tmpVarType, NO_PRIMITIVES);
+                    tmpVarTypeExpr = makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
                 }
                 
                 // Temporary variable holding the result of the expression/variable to test
@@ -318,8 +318,8 @@ public class StatementTransformer extends AbstractTransformer {
                     variable2.getType().getTypeModel());
         }
         ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
-        JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.TYPE_ARGUMENT);
-        JCExpression cast_elem = at(stmt).TypeCast(makeJavaType(sequence_element_type, CeylonTransformer.NO_PRIMITIVES), makeUnquotedIdent(elem_name));
+        JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.JT_TYPE_ARGUMENT);
+        JCExpression cast_elem = at(stmt).TypeCast(makeJavaType(sequence_element_type, CeylonTransformer.JT_NO_PRIMITIVES), makeUnquotedIdent(elem_name));
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
@@ -500,7 +500,7 @@ public class StatementTransformer extends AbstractTransformer {
             for (ProducedType type : exceptionTypes) {
                 // catch blocks for each exception in the union
                 JCVariableDecl param = make().VarDef(make().Modifiers(Flags.FINAL), names().fromString(variable.getIdentifier().getText()),
-                        makeJavaType(type, CATCH), null);
+                        makeJavaType(type, JT_CATCH), null);
                 catches.add(make().Catch(param, transform(catchClause.getBlock())));
             }
         }
@@ -612,7 +612,7 @@ public class StatementTransformer extends AbstractTransformer {
         Name substVarName = names().fromString(aliasName(name));
 
         // Want raw type for instanceof since it can't be used with generic types
-        JCExpression rawToTypeExpr = makeJavaType(type, NO_PRIMITIVES | WANT_RAW_TYPE);
+        JCExpression rawToTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW);
 
         // Substitute variable with the correct type to use in the rest of the code block
         JCExpression tmpVarExpr = makeUnquotedIdent(tmpVarName);

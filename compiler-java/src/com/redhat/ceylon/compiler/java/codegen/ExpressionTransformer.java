@@ -221,7 +221,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 expectedType = getTypeOrSelfType(expectedType);
                 exprType = expectedType.withoutUnderlyingType();
                 // Erased types need a type cast
-                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
+                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                 result = make().TypeCast(targetType, result);
             }else 
                 canCast = true;
@@ -248,13 +248,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // Types with variance types need a type cast, let's start with a raw cast to get rid
                 // of Java's type system constraint (javac doesn't grok multiple implementations of the same
                 // interface with different type params, which the JVM allows)
-                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
+                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
                 // do not change exprType here since this is just a Java workaround
                 result = make().TypeCast(targetType, result);
                 // now, because a raw cast is losing a lot of info, can we do better?
                 if(varianceCastResult.isBetterCastAvailable()){
                     // let's recast that to something finer than a raw cast
-                    targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.TYPE_ARGUMENT | (forCompanion ? SATISFIES : 0));
+                    targetType = makeJavaType(varianceCastResult.castType, AbstractTransformer.JT_TYPE_ARGUMENT | (forCompanion ? JT_SATISFIES : 0));
                     result = make().TypeCast(targetType, result);
                 }
             }
@@ -285,7 +285,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // as boxing transformations occur before this method
                 boolean resultBoxed = boxingStrategy == BoxingStrategy.BOXED
                         || (boxingStrategy == BoxingStrategy.INDIFFERENT && exprBoxed);
-                JCExpression targetType = makeJavaType(castType, resultBoxed ? AbstractTransformer.TYPE_ARGUMENT : 0);
+                JCExpression targetType = makeJavaType(castType, resultBoxed ? AbstractTransformer.JT_TYPE_ARGUMENT : 0);
                 result = make().TypeCast(targetType, result);
             }
         }
@@ -304,9 +304,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType typeArgument) {
         if (typeArgument.getDeclaration() != null 
                 && typeArgument.getDeclaration().getSelfType() != null) {
-            JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT );
+            JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT );
             // Need a raw cast to cast away the type argument before casting its self type back
-            JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.WANT_RAW_TYPE);
+            JCExpression rawType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
             result = make().TypeCast(targetType, make().TypeCast(rawType, result));
         }
         return result;
@@ -577,7 +577,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
         final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
         if (outerDeclaration instanceof Interface) {
-            return makeSelect(makeJavaType(outerClass, COMPANION | WANT_RAW_TYPE), "this");
+            return makeSelect(makeJavaType(outerClass, JT_COMPANION | JT_RAW), "this");
         }
         return makeSelect(makeQuotedIdent(outerDeclaration.getName()), "this");
     }
@@ -686,7 +686,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression lower = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, paramType);
         JCExpression upper = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, paramType);
         ProducedType rangeType = typeFact().getRangeType(op.getLeftTerm().getTypeModel());
-        JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.CLASS_NEW);
+        JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.JT_CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(lower, upper), null);
     }
 
@@ -695,7 +695,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression key = transformExpression(op.getLeftTerm());
         JCExpression elem = transformExpression(op.getRightTerm());
         ProducedType entryType = typeFact().getEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
-        JCExpression typeExpr = makeJavaType(entryType, CeylonTransformer.CLASS_NEW);
+        JCExpression typeExpr = makeJavaType(entryType, CeylonTransformer.JT_CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);
     }
 
@@ -706,7 +706,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression varIdent = makeUnquotedIdent(varName);
         JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
         JCExpression cond = make().Conditional(test , varIdent, right);
-        JCExpression typeExpr = makeJavaType(op.getTypeModel(), NO_PRIMITIVES);
+        JCExpression typeExpr = makeJavaType(op.getTypeModel(), JT_NO_PRIMITIVES);
         return makeLetExpr(varName, null, typeExpr, left, cond);
     }
 
@@ -722,7 +722,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         String varName = tempName();
         JCExpression varIdent = makeUnquotedIdent(varName);
         JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
-        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), NO_PRIMITIVES);
+        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), JT_NO_PRIMITIVES);
         return makeLetExpr(varName, null, typeExpr, left, contains);
     }
 
@@ -952,7 +952,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression getter = transform((Tree.BaseMemberExpression)term, null);
             at(expr);
             // Type $tmp = attr
-            JCExpression exprType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
+            JCExpression exprType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varName = names().fromString(tempName("op"));
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, returnType);
@@ -989,12 +989,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(expr);
             
             // Type $tmpE = e
-            JCExpression exprType = makeJavaType(qualified.getTarget().getQualifyingType(), NO_PRIMITIVES);
+            JCExpression exprType = makeJavaType(qualified.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
             Name varEName = names().fromString(tempName("opE"));
             JCVariableDecl tmpEVar = make().VarDef(make().Modifiers(0), varEName, exprType, e);
 
             // Type $tmpV = $tmpE.attr
-            JCExpression attrType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
+            JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varVName = names().fromString(tempName("opV"));
             JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
             // make sure we box the results if necessary
@@ -1097,7 +1097,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression getter = transform((Tree.BaseMemberExpression)term, null);
             at(operator);
             // Type $tmp = OP(attr);
-            JCExpression exprType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
+            JCExpression exprType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varName = names().fromString(tempName("op"));
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
@@ -1127,12 +1127,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(operator);
             
             // Type $tmpE = e
-            JCExpression exprType = makeJavaType(qualified.getTarget().getQualifyingType(), NO_PRIMITIVES);
+            JCExpression exprType = makeJavaType(qualified.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
             Name varEName = names().fromString(tempName("opE"));
             JCVariableDecl tmpEVar = make().VarDef(make().Modifiers(0), varEName, exprType, e);
 
             // Type $tmpV = OP($tmpE.attr)
-            JCExpression attrType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
+            JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varVName = names().fromString(tempName("opV"));
             JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
             // make sure we box the results if necessary
@@ -1217,7 +1217,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
             JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
             String tmpVarName = aliasName("safe");
-            JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), NO_PRIMITIVES);
+            JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
             JCExpression transExpr = transformMemberExpression(expr, makeUnquotedIdent(tmpVarName), transformer);
             if (!isWithinInvocation()
                     && isCeylonCallable(expr.getTypeModel())) {
@@ -1242,7 +1242,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // this holds the ternary test for empty
         String testVarName = aliasName("spreadTest");
         ProducedType testSequenceType = typeFact().getFixedSizedType(expr.getPrimary().getTypeModel());
-        JCExpression testSequenceTypeExpr = makeJavaType(testSequenceType, NO_PRIMITIVES);
+        JCExpression testSequenceTypeExpr = makeJavaType(testSequenceType, JT_NO_PRIMITIVES);
         JCExpression testSequenceExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, testSequenceType);
 
         // reset back here after transformExpression
@@ -1254,7 +1254,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         String srcSequenceName = varBaseName+"$0";
         ProducedType srcSequenceType = typeFact().getNonemptySequenceType(expr.getPrimary().getTypeModel());
         ProducedType srcElementType = typeFact().getElementType(srcSequenceType);
-        JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, NO_PRIMITIVES);
+        JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, JT_NO_PRIMITIVES);
         JCExpression srcSequenceExpr = make().TypeCast(srcSequenceTypeExpr, makeUnquotedIdent(testVarName));
 
         // size, getSize() always unboxed, but we need to cast to int for Java array access
@@ -1266,12 +1266,12 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // new array
         String newArrayName = varBaseName+"$4";
-        JCExpression arrayElementType = makeJavaType(expr.getTarget().getType(), NO_PRIMITIVES);
+        JCExpression arrayElementType = makeJavaType(expr.getTarget().getType(), JT_NO_PRIMITIVES);
         JCExpression newArrayType = make().TypeArray(arrayElementType);
         JCNewArray newArrayExpr = make().NewArray(arrayElementType, List.of(makeUnquotedIdent(sizeName)), null);
 
         // return the new array
-        JCExpression returnArrayType = makeJavaType(expr.getTarget().getType(), SATISFIES);
+        JCExpression returnArrayType = makeJavaType(expr.getTarget().getType(), JT_SATISFIES);
         JCExpression returnArrayIdent = make().QualIdent(syms().ceylonArraySequenceType.tsym);
         JCExpression returnArrayTypeExpr;
         // avoid putting type parameters such as j.l.Object
@@ -1796,7 +1796,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     //Add the item variable as a field in the iterator
                     Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
                     itemVar = item.getName();
-                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(itemVar), makeJavaType(item.getType(),NO_PRIMITIVES), null));
+                    fields.add(make().VarDef(make().Modifiers(2), names().fromString(itemVar), makeJavaType(item.getType(),JT_NO_PRIMITIVES), null));
                     fieldNames.add(itemVar);
 
                 } else if (fcl.getForIterator() instanceof KeyValueIterator) {
@@ -1807,9 +1807,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     //But we'll use this as the name for the context function and base for the exhausted field
                     itemVar = "kv$" + kdec.getName() + "$" + vdec.getName();
                     fields.add(make().VarDef(make().Modifiers(2), names().fromString(kdec.getName()),
-                            makeJavaType(kdec.getType(), NO_PRIMITIVES), null));
+                            makeJavaType(kdec.getType(), JT_NO_PRIMITIVES), null));
                     fields.add(make().VarDef(make().Modifiers(2), names().fromString(vdec.getName()),
-                            makeJavaType(vdec.getType(), NO_PRIMITIVES), null));
+                            makeJavaType(vdec.getType(), JT_NO_PRIMITIVES), null));
                     fieldNames.add(kdec.getName());
                     fieldNames.add(vdec.getName());
                 } else {
@@ -1839,7 +1839,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (fcl.getForIterator() instanceof ValueIterator) {
                     ProducedType itemType = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel().getType();
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(itemVar),
-                            make().TypeCast(makeJavaType(itemType,NO_PRIMITIVES), makeUnquotedIdent(tmpItem)))));
+                            make().TypeCast(makeJavaType(itemType,JT_NO_PRIMITIVES), makeUnquotedIdent(tmpItem)))));
                 } else {
                     KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
                     Value key = kviter.getKeyVariable().getDeclarationModel();
@@ -1850,13 +1850,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                         makeJavaType(typeFact().getIteratedType(iterType)),
                         makeUnquotedIdent(tmpItem));
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(key.getName()),
-                        make().TypeCast(makeJavaType(key.getType(), NO_PRIMITIVES),
+                        make().TypeCast(makeJavaType(key.getType(), JT_NO_PRIMITIVES),
                             make().Apply(null, make().Select(castEntryExpr, names().fromString("getKey")),
                                 List.<JCExpression>nil())
                     ))));
                     //equivalent to v=(ItemType)((Entry<KeyType,ItemType>)tmpItem).getItem()
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(item.getName()),
-                        make().TypeCast(makeJavaType(item.getType(), NO_PRIMITIVES),
+                        make().TypeCast(makeJavaType(item.getType(), JT_NO_PRIMITIVES),
                             make().Apply(null, make().Select(castEntryExpr, names().fromString("getItem")),
                                 List.<JCExpression>nil())
                     ))));
@@ -1901,7 +1901,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     //in case the condition is not met and the iterator is exhausted
                     if (!fieldNames.contains(var.getDeclarationModel().getName())) {
                         fields.add(make().VarDef(make().Modifiers(2), names().fromString(var.getDeclarationModel().getName()),
-                                makeJavaType(var.getDeclarationModel().getType(),NO_PRIMITIVES), null));
+                                makeJavaType(var.getDeclarationModel().getType(),JT_NO_PRIMITIVES), null));
                         reassign = true;
                     }
                 }
@@ -1917,7 +1917,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     test = makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test);
                     if (reassign) {
                         _expr = make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()),
-                                make().Conditional(test, make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), NO_PRIMITIVES), _expr), makeNull()));
+                                make().Conditional(test, make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES), _expr), makeNull()));
                         otherCondition = make().Binary(JCTree.EQ, _expr, makeNull());
                     } else {
                         otherCondition = make().Unary(JCTree.NOT, test);
@@ -1939,7 +1939,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if (reassign) {
                         //Assign the expression if it's nonempty
                         expression = make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()),
-                                make().Conditional(test, make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), NO_PRIMITIVES), expression), makeNull()));
+                                make().Conditional(test, make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES), expression), makeNull()));
                         otherCondition = make().Binary(JCTree.EQ, expression, makeNull());
                     } else {
                         otherCondition = make().Unary(JCTree.NOT, test);
@@ -1991,15 +1991,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         )), null));
         //Define the inner iterator class
         ProducedType iteratorType = typeFact().getIteratorType(typeFact().getIteratedType(targetIterType));
-        JCExpression iterator = make().NewClass(null, null,makeJavaType(iteratorType, CLASS_NEW|EXTENDS),
+        JCExpression iterator = make().NewClass(null, null,makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
                 List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
         //Define the anonymous iterable class
         JCExpression iterable = make().NewClass(null, null,
                 make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
-                    List.<JCExpression>of(makeJavaType(typeFact().getIteratedType(targetIterType), NO_PRIMITIVES))),
+                    List.<JCExpression>of(makeJavaType(typeFact().getIteratedType(targetIterType), JT_NO_PRIMITIVES))),
                 List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(
                     make().MethodDef(make().Modifiers(1), names().fromString("getIterator"),
-                        makeJavaType(iteratorType, CLASS_NEW|EXTENDS),
+                        makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
                     List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
                     make().Block(0, List.<JCStatement>of(make().Return(iterator))), null)
         )));

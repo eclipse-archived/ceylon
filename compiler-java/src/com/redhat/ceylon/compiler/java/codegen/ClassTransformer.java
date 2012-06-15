@@ -396,13 +396,13 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (!isVoid(methodType)) {
             concreteWrapper.resultType(typedMember.getDeclaration(), typedMember.getType(),
-                    rawifyParametersAndResults ? RAW_TP_BOUND : 0);
+                    rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
         }
         
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         for (Parameter param : parameters) {
             final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
-            concreteWrapper.parameter(param, typedParameter.getType(), FINAL, rawifyParametersAndResults ? RAW_TP_BOUND : 0);
+            concreteWrapper.parameter(param, typedParameter.getType(), FINAL, rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
             arguments.add(makeQuotedIdent(param.getName()));
         }
         JCExpression expr = make().Apply(
@@ -441,12 +441,12 @@ public class ClassTransformer extends AbstractTransformer {
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
                 make().NewClass(null, 
                         null,
-                        makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES),
+                        makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES),
                         state,
                         null))));
         
         classBuilder.field(PRIVATE | FINAL, fieldName, 
-                makeJavaType(satisfiedType, AbstractTransformer.COMPANION | SATISFIES), null, false);
+                makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES), null, false);
 
         classBuilder.defs(makeCompanionAccessor(iface, satisfiedType, true));
         
@@ -473,7 +473,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // top level, so use Object instead
                 thisMethod.resultType(null, make().Type(syms().objectType));
             } else {
-                thisMethod.resultType(null, makeJavaType(satisfiedType, COMPANION));
+                thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
             }
             thisMethod.annotations(forImplementor ? makeAtOverride() : makeAtIgnore());
             thisMethod.modifiers(PUBLIC);
@@ -606,7 +606,7 @@ public class ClassTransformer extends AbstractTransformer {
             TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(model);
             ProducedType nonWideningType = nonWideningType(model, nonWideningTypeDeclaration);
             if (!CodegenUtil.isUnBoxed(nonWideningTypeDeclaration)) {
-                flags |= NO_PRIMITIVES;
+                flags |= JT_NO_PRIMITIVES;
             }
             JCExpression type = makeJavaType(nonWideningType, flags);
 
@@ -954,7 +954,7 @@ public class ClassTransformer extends AbstractTransformer {
         Tree.ParameterList paramList = def.getParameterLists().get(0);
         for (Tree.Parameter param : paramList.getParameters()) {
             Parameter parameter = param.getDeclarationModel();
-            methodBuilder.parameter(parameter, needsRaw ? RAW_TP_BOUND : 0);
+            methodBuilder.parameter(parameter, needsRaw ? JT_RAW_TP_BOUND : 0);
             if (parameter.isDefaulted()
                     || parameter.isSequenced()) {
                 if (model.getRefinedDeclaration() == model) {
@@ -977,7 +977,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (transformMethod) {
-            methodBuilder.resultType(model, needsRaw ? RAW_TP_BOUND : 0);
+            methodBuilder.resultType(model, needsRaw ? JT_RAW_TP_BOUND : 0);
             if (!needsRaw) {
                 copyTypeParameters(model, methodBuilder);
             }
@@ -1221,10 +1221,10 @@ public class ClassTransformer extends AbstractTransformer {
                 && !Strategy.defaultParameterMethodStatic(model)) {
             Class classModel = (Class)model;
             vars.append(makeVar(companionInstanceName, 
-                    makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
+                    makeJavaType(classModel.getType(), AbstractTransformer.JT_COMPANION),
                     make().NewClass(null, 
                             null,
-                            makeJavaType(classModel.getType(), AbstractTransformer.COMPANION),
+                            makeJavaType(classModel.getType(), AbstractTransformer.JT_COMPANION),
                             List.<JCExpression>nil(), null)));
         }
         
