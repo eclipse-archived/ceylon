@@ -304,7 +304,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     @Override
     protected boolean isOverridingMethod(MethodMirror methodSymbol) {
-        return getOverriddenMethod(((JavacMethod)methodSymbol).methodSymbol, types) != null;
+        final MethodSymbol method = ((JavacMethod)methodSymbol).methodSymbol;
+        if (method.owner.getQualifiedName().contentEquals("ceylon.language.Identifiable")) {
+            if (method.name.contentEquals("equals") || method.name.contentEquals("hashCode")) {
+                return true;
+            }
+        }
+        return getOverriddenMethod(method, types) != null;
     }
 
     @Override
