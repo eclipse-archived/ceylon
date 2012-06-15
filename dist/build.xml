@@ -98,6 +98,8 @@
         <copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon-js.dir}/build/dist">
             </fileset>
+            <fileset dir="${ceylon-js.dir}/build/runtime">
+            </fileset>
         </copy>
     </target>
 
