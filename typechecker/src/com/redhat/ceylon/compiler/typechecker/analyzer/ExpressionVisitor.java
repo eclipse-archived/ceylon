@@ -429,13 +429,13 @@ public class ExpressionVisitor extends Visitor {
         Declaration d = ref.getDeclaration();
         if (d!=null) {
             if (d instanceof Getter) {
-                ref.addError("referenced value is a getter: " + d.getName());
+                ref.addError("referenced value is a getter: " + d.getName(), 3100);
             }
             if ( ( (TypedDeclaration) d ).isVariable() ) {
-                ref.addError("referenced value is variable: " + d.getName());
+                ref.addError("referenced value is variable: " + d.getName(), 3100);
             }
             if ( d.isDefault() ) {
-                ref.addError("referenced value is default and may be refined: " + d.getName());
+                ref.addError("referenced value is default and may be refined: " + d.getName(), 3100);
             }
         }
     }
