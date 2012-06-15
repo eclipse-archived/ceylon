@@ -230,8 +230,18 @@ public class ClassTransformer extends AbstractTransformer {
             return;
         }
         
+        // When we implement an interface with union or intersection type arguments
+        // we have to make method results and parameters raw too
+        boolean rawifyParametersAndResults = false;
+        for (ProducedType typeArg : satisfiedType.getTypeArgumentList()) {
+            if (typeFact().isIntersection(typeArg) || typeFact().isUnion(typeArg)) {
+                rawifyParametersAndResults = true;
+                break;
+            }
+        }
         // For each super interface
         for (Declaration member : iface.getMembers()) {
+            
             if (Strategy.onlyOnCompanion(member)) {
                 // non-shared interface methods don't need implementing
                 // (they're just private methods on the $impl)
@@ -258,7 +268,8 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedParameter.getType(), 
                                     CodegenUtil.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    Decl.isAncestorLocal(model));
+                                    Decl.isAncestorLocal(model),
+                                    rawifyParametersAndResults);
                             classBuilder.defs(defaultValueDelegate);
                             
                             final JCMethodDecl overload = makeDelegateToCompanion(iface,
@@ -268,7 +279,8 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedMember.getType(), 
                                     CodegenUtil.quoteMethodName(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    Decl.isAncestorLocal(model));
+                                    Decl.isAncestorLocal(model),
+                                    rawifyParametersAndResults);
                             classBuilder.defs(overload);
                         }
                     }
@@ -285,7 +297,8 @@ public class ClassTransformer extends AbstractTransformer {
                             method.getType(), 
                             CodegenUtil.quoteMethodName(method), 
                             method.getParameterLists().get(0).getParameters(),
-                            Decl.isAncestorLocal(model));
+                            Decl.isAncestorLocal(model),
+                            rawifyParametersAndResults);
                     classBuilder.defs(concreteMemberDelegate);
                      
                 }
@@ -304,7 +317,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 typedMember.getType(), 
                                 CodegenUtil.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
-                                Decl.isAncestorLocal(model));
+                                Decl.isAncestorLocal(model),
+                                rawifyParametersAndResults);
                         classBuilder.defs(getterDelegate);
                     }
                     if (member instanceof Setter) { 
@@ -315,7 +329,8 @@ public class ClassTransformer extends AbstractTransformer {
                                 typeFact().getVoidDeclaration().getType(), 
                                 CodegenUtil.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
-                                Decl.isAncestorLocal(model));
+                                Decl.isAncestorLocal(model),
+                                rawifyParametersAndResults);
                         classBuilder.defs(setterDelegate);
                     }
                     if (member instanceof Value 
@@ -360,22 +375,28 @@ public class ClassTransformer extends AbstractTransformer {
             ProducedTypedReference typedMember, final long mods,
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
-            final String methodName, final java.util.List<Parameter> parameters, boolean ancestorLocal) {
+            final String methodName, final java.util.List<Parameter> parameters, boolean ancestorLocal,
+            boolean rawifyParametersAndResults) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), ancestorLocal, methodName);
         concreteWrapper.modifiers(mods);
         concreteWrapper.annotations(makeAtOverride());
-        for (TypeParameter tp : typeParameters) {
-            concreteWrapper.typeParameter(tp);
+        if (!rawifyParametersAndResults) {
+            for (TypeParameter tp : typeParameters) {
+                concreteWrapper.typeParameter(tp);
+            }
         }
         
         if (!isVoid(methodType)) {
-            concreteWrapper.resultType(typedMember.getDeclaration(), typedMember.getType());
+            ProducedType resultType = getRawifiedType(rawifyParametersAndResults, typedMember.getType());
+            concreteWrapper.resultType(typedMember.getDeclaration(), resultType,
+                    rawifyParametersAndResults ? WANT_RAW_TYPE : 0);
         }
         
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         for (Parameter param : parameters) {
             final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
-            concreteWrapper.parameter(param, typedParameter.getType(), FINAL);
+            ProducedType parameterType = getRawifiedType(rawifyParametersAndResults, typedParameter.getType());
+            concreteWrapper.parameter(param, parameterType, FINAL, rawifyParametersAndResults ? WANT_RAW_TYPE : 0);
             arguments.add(makeQuotedIdent(param.getName()));
         }
         JCExpression expr = make().Apply(
@@ -389,6 +410,14 @@ public class ClassTransformer extends AbstractTransformer {
         }
         final JCMethodDecl build = concreteWrapper.build();
         return build;
+    }
+
+    private ProducedType getRawifiedType(boolean rawifyParametersAndResults,
+            ProducedType type) {
+        if (rawifyParametersAndResults && type.getDeclaration() instanceof TypeParameter) {
+            type = ((TypeParameter)type.getDeclaration()).getExtendedType();
+        }
+        return type;
     }
 
     private Boolean hasImpl(Interface iface) {
@@ -1299,11 +1328,12 @@ public class ClassTransformer extends AbstractTransformer {
             if (p == currentParam) {
                 break;
             }
-            methodBuilder.parameter(p);
+            at(p);
+            methodBuilder.parameter(p.getDeclarationModel());
         }
 
         // The method's return type is the same as the parameter's type
-        methodBuilder.resultType(parameter);
+        methodBuilder.resultType(parameter, parameter.getType(), 0);
 
         // The implementation of the method
         if (noBody) {

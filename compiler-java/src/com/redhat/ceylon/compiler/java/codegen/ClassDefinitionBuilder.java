@@ -369,10 +369,10 @@ public class ClassDefinitionBuilder {
         if (attr != null) {
             TypedDeclaration nonWideningTypeDeclaration = gen.nonWideningTypeDecl(attr);
             ProducedType paramType = gen.nonWideningType(attr, nonWideningTypeDeclaration);
-            type = gen.makeJavaType(nonWideningTypeDeclaration, paramType);
+            type = gen.makeJavaType(nonWideningTypeDeclaration, paramType, 0);
         } else {
             ProducedType paramType = decl.getType();
-            type = gen.makeJavaType(decl, paramType);
+            type = gen.makeJavaType(decl, paramType, 0);
         }
         
         List<JCAnnotation> annots = List.nil();

@@ -145,7 +145,7 @@ public class MethodDefinitionBuilder {
         return gen.make().TypeIdent(VOID);
     }
 
-    JCExpression makeResultType(TypedDeclaration typedDeclaration, ProducedType type) {
+    JCExpression makeResultType(TypedDeclaration typedDeclaration, ProducedType type, int flags) {
         if (typedDeclaration == null
                 || (!(typedDeclaration instanceof FunctionalParameter)
                         && gen.isVoid(type))) {
@@ -153,10 +153,10 @@ public class MethodDefinitionBuilder {
                     && ((Method)typedDeclaration).isDeclaredVoid()) {
                 return makeVoidType();
             } else {
-                return gen.makeJavaType(typedDeclaration, gen.typeFact().getVoidDeclaration().getType());
+                return gen.makeJavaType(typedDeclaration, gen.typeFact().getVoidDeclaration().getType(), flags);
             }
         } else {
-            return gen.makeJavaType(typedDeclaration, type);
+            return gen.makeJavaType(typedDeclaration, type, flags);
         }
     }
 
@@ -206,8 +206,8 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
-    public MethodDefinitionBuilder parameter(long modifiers, String name, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType) {
-        JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType);
+    public MethodDefinitionBuilder parameter(long modifiers, String name, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags) {
+        JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
         List<JCAnnotation> annots = List.nil();
         if (gen.needsAnnotations(decl)) {
             annots = annots.appendList(gen.makeAtName(name));
@@ -228,21 +228,16 @@ public class MethodDefinitionBuilder {
         }
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), paramType, null));
     }
-    
-    public MethodDefinitionBuilder parameter(Tree.Parameter param) {
-        gen.at(param);
-        return parameter(param.getDeclarationModel());
-    }
 
-    public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int flags) {
+    public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int mods, int flags) {
         String name = paramDecl.getName();
-        return parameter(flags, name, paramDecl, paramDecl, paramType);
+        return parameter(mods, name, paramDecl, paramDecl, paramType, flags);
     }
     
     public MethodDefinitionBuilder parameter(Parameter param) {
         Value attr = CodegenUtil.findAttrForParam(param);
-        int flags = (attr != null && attr.isVariable()) ? 0 : FINAL;
-        return parameter(param, param.getType(), flags);
+        int mods = (attr != null && attr.isVariable()) ? 0 : FINAL;
+        return parameter(param, param.getType(), mods, 0);
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -289,16 +284,12 @@ public class MethodDefinitionBuilder {
         } else {
             TypedDeclaration nonWideningTypeDecl = gen.nonWideningTypeDecl(method);
             ProducedType nonWideningType = gen.nonWideningType(method, nonWideningTypeDecl);
-            return resultType(makeResultType(nonWideningTypeDecl, nonWideningType), method);
+            return resultType(makeResultType(nonWideningTypeDecl, nonWideningType, 0), method);
         }
     }
-
-    public MethodDefinitionBuilder resultType(TypedDeclaration resultType) {
-        return resultType(resultType, resultType.getType());
-    }
     
-    public MethodDefinitionBuilder resultType(TypedDeclaration resultType, ProducedType type) {
-        return resultType(makeResultType(resultType, type), resultType);
+    public MethodDefinitionBuilder resultType(TypedDeclaration resultType, ProducedType type, int flags) {
+        return resultType(makeResultType(resultType, type, flags), resultType);
     }
 
     public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {

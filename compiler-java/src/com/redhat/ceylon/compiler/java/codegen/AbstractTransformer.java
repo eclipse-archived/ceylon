@@ -662,17 +662,17 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     /**
      * This function is used solely for method return types and parameters 
      */
-    JCExpression makeJavaType(TypedDeclaration typeDecl, ProducedType type) {
+    JCExpression makeJavaType(TypedDeclaration typeDecl, ProducedType type, int flags) {
         if (typeDecl instanceof FunctionalParameter) {
             FunctionalParameter p = (FunctionalParameter)typeDecl;
             ProducedType pt = type;
             for (int ii = 1; ii < p.getParameterLists().size(); ii++) {
                 pt = typeFact().getCallableType(pt);
             }
-            return makeJavaType(typeFact().getCallableType(pt), 0);    
+            return makeJavaType(typeFact().getCallableType(pt), flags);
         } else {
             boolean usePrimitives = CodegenUtil.isUnBoxed(typeDecl);
-            return makeJavaType(type, usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES);
+            return makeJavaType(type, flags | (usePrimitives ? 0 : AbstractTransformer.NO_PRIMITIVES));
         }
     }
 
