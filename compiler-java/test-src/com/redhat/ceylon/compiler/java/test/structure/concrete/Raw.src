@@ -1,0 +1,269 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface RawInv<T, U> {
+    
+    public abstract T getA();
+    
+    public T getADefault();
+    
+    public void setADefault(T aDefault);
+    
+    public abstract T m(final T t);
+    
+    public T mDefault(final T t);
+    
+    public abstract T mDefaulted(final T t);
+    
+    public abstract T mDefaulted();
+    
+    public abstract T mDefaulted$t();
+    
+    public abstract U getA2();
+}
+final class RawInv$impl<T, U> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv<T, U> $this;
+    
+    public final T getA() {
+        return $this.getA();
+    }
+    
+    public final T getADefault() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public void setADefault(T aDefault) {
+    }
+    
+    public T mDefault(final T t) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public final T mDefaulted() {
+        return (
+            let
+            {
+                T $ceylontmp$t$1 = mDefaulted$t();
+            }
+            returning $this.mDefaulted($ceylontmp$t$1);
+        );
+    }
+    
+    public final T mDefaulted$t() {
+        return null;
+    }
+    
+    public final U getA2() {
+        return $this.getA2();
+    }
+    
+    RawInv$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv<T, U> $this) {
+        this.$this = $this;
+    }
+}
+class RawInvImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl $RawInv$impl;
+    
+    @.java.lang.Override
+    public .java.lang.Object getADefault() {
+        return $RawInv$impl.getADefault();
+    }
+    
+    @.java.lang.Override
+    public final void setADefault(final .java.lang.Object aDefault) {
+        $RawInv$impl.setADefault(aDefault);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object mDefault(final .java.lang.Object t) {
+        return $RawInv$impl.mDefault(t);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mDefaulted$t() {
+        return $RawInv$impl.mDefaulted$t();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mDefaulted() {
+        return $RawInv$impl.mDefaulted();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getA() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public final Y getA2() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m(final .java.lang.Object t) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mDefaulted(final .java.lang.Object t) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    RawInvImplementor() {
+        this.$RawInv$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInvImplementor();
+    }
+}
+interface RawIn<T, U> {
+    
+    public abstract void m(final T t);
+    
+    public void mDefault(final T t);
+    
+    public abstract void mDefaulted(final T t);
+    
+    public abstract void mDefaulted();
+    
+    public abstract T mDefaulted$t();
+    
+    public abstract void m2(final U u);
+}
+final class RawIn$impl<T, U> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn<? super T, U> $this;
+    
+    public void mDefault(final T t) {
+    }
+    
+    public final void mDefaulted() {
+        (
+            let
+            {
+                T $ceylontmp$t$5 = mDefaulted$t();
+                $this.mDefaulted($ceylontmp$t$5);
+            }
+            returning null;
+        );
+    }
+    
+    public final T mDefaulted$t() {
+        return null;
+    }
+    
+    RawIn$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn<? super T, U> $this) {
+        this.$this = $this;
+    }
+}
+class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl $RawIn$impl;
+    
+    @.java.lang.Override
+    public void mDefault(final .java.lang.Object t) {
+        $RawIn$impl.mDefault(t);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mDefaulted$t() {
+        return $RawIn$impl.mDefaulted$t();
+    }
+    
+    @.java.lang.Override
+    public final void mDefaulted() {
+        $RawIn$impl.mDefaulted();
+    }
+    
+    @.java.lang.Override
+    public final void m2(final .java.lang.Object u) {
+    }
+    
+    @.java.lang.Override
+    public final void m(final .java.lang.Object t) {
+    }
+    
+    @.java.lang.Override
+    public final void mDefaulted(final .java.lang.Object t) {
+    }
+    
+    RawInImplementor() {
+        this.$RawIn$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInImplementor();
+    }
+}
+interface RawOut<T, U> {
+    
+    public abstract T getA();
+    
+    public T getADefault();
+    
+    public abstract T m();
+    
+    public T mDefault();
+    
+    public abstract U getA2();
+}
+final class RawOut$impl<T, U> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut<? extends T, U> $this;
+    
+    public final T getA() {
+        return $this.getA();
+    }
+    
+    public final T getADefault() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public T mDefault() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public final U getA2() {
+        return $this.getA2();
+    }
+    
+    RawOut$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut<? extends T, U> $this) {
+        this.$this = $this;
+    }
+}
+class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl $RawOut$impl;
+    
+    @.java.lang.Override
+    public final .java.lang.Object getADefault() {
+        return $RawOut$impl.getADefault();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object mDefault() {
+        return $RawOut$impl.mDefault();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getA() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public final Y getA2() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    RawOutImplementor() {
+        this.$RawOut$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOutImplementor();
+    }
+}
