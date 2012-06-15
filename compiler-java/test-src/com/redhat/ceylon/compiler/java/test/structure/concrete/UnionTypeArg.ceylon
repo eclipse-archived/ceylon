@@ -21,3 +21,14 @@
 class UnionTypeArg() satisfies Iterable<String|Integer>{
     shared actual Iterator<String|Integer> iterator = bottom;
 }
+@nomodel
+class UnionTypeArgOverride() satisfies Iterable<String|Integer>{
+    shared actual Iterator<String|Integer> iterator = bottom;
+    shared actual default String|Integer? find(Boolean selecting(String|Integer elem)) {
+        throw;
+    }
+    shared actual default Result fold<Result>(Result initial,
+            Result accumulating(Result partial, String|Integer elem)) {
+        throw;
+    }
+}

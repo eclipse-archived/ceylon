@@ -51,3 +51,54 @@ class UnionTypeArg implements .ceylon.language.Iterable {
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg();
     }
 }
+class UnionTypeArgOverride implements .ceylon.language.Iterable {
+    private final .ceylon.language.Iterable$impl $Iterable$impl;
+    
+    @.java.lang.Override
+    public boolean getEmpty() {
+        return $Iterable$impl.getEmpty();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getSequence() {
+        return $Iterable$impl.getSequence();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable map(final .ceylon.language.Callable collecting) {
+        return $Iterable$impl.map(collecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable filter(final .ceylon.language.Callable selecting) {
+        return $Iterable$impl.filter(selecting);
+    }
+    private final .ceylon.language.Container$impl $Container$impl;
+    private final .ceylon.language.Iterator iterator;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterator getIterator() {
+        return iterator;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object find(final .ceylon.language.Callable selecting) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object fold(final .java.lang.Object initial, final .ceylon.language.Callable accumulating) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    UnionTypeArgOverride() {
+        this.$Iterable$impl = new .ceylon.language.Iterable$impl(this);
+        this.$Container$impl = new .ceylon.language.Container$impl(this);
+        this.iterator = (.ceylon.language.Iterator).ceylon.language.bottom.getBottom();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArgOverride();
+    }
+}
