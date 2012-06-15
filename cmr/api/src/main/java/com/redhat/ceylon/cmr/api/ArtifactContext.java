@@ -34,6 +34,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String ZIP = ".zip";
     public static final String SRC = ".src";
     public static final String DOCS = "module-doc";
+    public static final String DOCS_ZIPPED = "module-doc.zip";
     public static final String SHA1 = ".sha1";
     public static final String INFO = ".info";
 

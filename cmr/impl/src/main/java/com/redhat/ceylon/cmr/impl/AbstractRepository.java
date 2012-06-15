@@ -64,6 +64,8 @@ public abstract class AbstractRepository implements Repository {
     protected static String getArtifactName(String name, String version, String suffix) {
         if (ArtifactContext.DOCS.equals(suffix))
             return ArtifactContext.DOCS;
+        else if (ArtifactContext.DOCS_ZIPPED.equals(suffix))
+            return ArtifactContext.DOCS_ZIPPED;
         else if (RepositoryManager.DEFAULT_MODULE.equals(name))
             return name + suffix;
         else
