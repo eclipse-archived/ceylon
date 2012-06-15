@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -41,7 +39,7 @@ public class Main {
         System.err.println();
         System.err.println("Javascript code generation options:");
         System.err.println("  -optimize    Create prototype-style JS code");
-        System.err.println("  -module      Wrap generated code as CommonJS module");
+        System.err.println("  -nomodule    Do NOT wrap generated code as CommonJS module");
         System.err.println("  -noindent    Do NOT indent code");
         System.err.println("  -nocomments  Do not generate any comments");
         System.err.println("  -compact     Same as -noindent -nocomments");
@@ -64,6 +62,12 @@ public class Main {
         }
         if (opts.isHelp()) {
             help();
+            return;
+        }
+        if (args.size() == 0) {
+            System.out.println("ceylonjs: no source files");
+            System.out.println("Usage: ceylonjs <options> <source files>");
+            System.out.println("use -help for a list of possible options");
             return;
         }
 
@@ -120,17 +124,12 @@ public class Main {
             tcb.setRepositoryManager(repoman);
             final File root = new File(opts.getSrcDir());
             final String path = root.getAbsolutePath();
-            tcb.addSrcDirectory(root);
-            //TODO we should only compile specified files
             for (String filedir : args) {
                 File f = new File(filedir);
-                if (!f.getAbsolutePath().startsWith(path)) {
-                    while (f != null && !f.isDirectory()) {
-                        f = f.getParentFile();
-                    }
-                    if (f != null) {
-                        tcb.addSrcDirectory(f);
-                    }
+                if (f.getAbsolutePath().startsWith(path)) {
+                    tcb.addSrcDirectory(f);
+                } else {
+                    System.err.printf("%s is not in the current source path: [%s]%n", f.getAbsolutePath(), root);
                 }
             }
             typeChecker = tcb.getTypeChecker();
@@ -145,12 +144,13 @@ public class Main {
             jsc.printErrors(System.out);
         }
         t4=System.nanoTime();
-        if (opts.isProfile()) {
+        if (opts.isProfile() || opts.isVerbose()) {
             System.err.println("PROFILING INFORMATION");
             System.err.printf("TypeChecker creation:   %6d nanos%n", t1-t0);
             System.err.printf("TypeChecker processing: %6d nanos%n", t2-t1);
             System.err.printf("JS compiler creation:   %6d nanos%n", t3-t2);
             System.err.printf("JS compilation:         %6d nanos%n", t4-t3);
         }
+        System.out.println("Compilation finished.");
     }
 }
