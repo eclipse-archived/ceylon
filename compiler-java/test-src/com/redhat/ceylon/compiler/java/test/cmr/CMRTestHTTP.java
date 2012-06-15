@@ -101,7 +101,7 @@ public class CMRTestHTTP extends CompilerTest {
     
     @Test
     public void testMdlHTTPOutputRepo() throws IOException{
-        testMdlHTTPOutputRepo(true, 8);
+        testMdlHTTPOutputRepo(true, 9);
         testMdlHTTPOutputRepo(false, 70);
     }
     
@@ -142,7 +142,7 @@ public class CMRTestHTTP extends CompilerTest {
 
     @Test
     public void testMdlHTTPMixedCompilation() throws IOException{
-        testMdlHTTPMixedCompilation(false, 133);
+        testMdlHTTPMixedCompilation(false, 132);
         testMdlHTTPMixedCompilation(true, 18);
     }
     
