@@ -1,6 +1,6 @@
 # This file is intended to be sourced, not run directly
 
-CEYLON_VERSION=0.3
+CEYLON_VERSION=@VERSION@
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -17,7 +17,7 @@ done
 # Set CEYLON_HOME if not already set by the user
 if test -z "$CEYLON_HOME"
 then
-    CEYLON_HOME="$HOME/.ceylon"
+    CEYLON_HOME="$(dirname "$PRG)")/.."
 fi
 
 # Set CEYLON_REPO if not already set
