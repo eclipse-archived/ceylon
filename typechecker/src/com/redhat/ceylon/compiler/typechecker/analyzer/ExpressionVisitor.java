@@ -1524,7 +1524,7 @@ public class ExpressionVisitor extends Visitor {
     
     private ProducedType inferTypeArg(TypeParameter tp, ProducedType paramType,
             ProducedType argType, List<TypeParameter> visited) {
-        if (paramType!=null) {
+        if (paramType!=null && argType!=null) {
             if (paramType.getDeclaration() instanceof TypeParameter &&
                     paramType.getDeclaration().equals(tp)) {
                 return unit.denotableType(argType);
