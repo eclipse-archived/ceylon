@@ -50,8 +50,12 @@
                 <include name="ceylond.bat"/>
             </fileset>
             <fileset dir="${ceylon-js.dir}/build/bin">
+                <include name="ceylonc-js"/>
+                <include name="ceylonc-js.bat"/>
                 <include name="ceylonjs"/>
                 <include name="ceylonjs.bat"/>
+                <include name="c-js.sh" />
+                <include name="c-js.bat" />
             </fileset>
         </copy>
         <chmod perm="0755">
@@ -59,6 +63,7 @@
                 <include name="ceylonc"/>
                 <include name="ceylond"/>
                 <include name="ceylonjs"/>
+                <include name="ceylonc-js"/>
             </fileset>
         </chmod>
     </target>
