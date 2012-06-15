@@ -1,12 +1,10 @@
 package com.redhat.ceylon.compiler.java;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ceylon.language.Boolean;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.exhausted;
@@ -30,6 +28,13 @@ public class Util {
     }
     
     /**
+     * Returns true if the given object extends ceylon.language.IdentifiableObject
+     */
+    public static boolean isIdentifiableObject(java.lang.Object o){
+        return extendsClass(o, "ceylon.language.IdentifiableObject");
+    }
+    
+    /**
      * Returns true if the given object extends the given class
      */
     public static boolean extendsClass(java.lang.Object o, String className) {
@@ -48,7 +53,8 @@ public class Util {
         if ((className.equals("ceylon.language.IdentifiableObject"))
                 && klass!=java.lang.Object.class
                 //&& klass!=java.lang.String.class
-        		&& !klass.isAnnotationPresent(Ceylon.class)) {
+        		&& !klass.isAnnotationPresent(Class.class)
+        		&& (!klass.isInterface() || !klass.isAnnotationPresent(Ceylon.class))) {
         	//TODO: this is broken for a Java class that
         	//      extends a Ceylon class
         	return true;
