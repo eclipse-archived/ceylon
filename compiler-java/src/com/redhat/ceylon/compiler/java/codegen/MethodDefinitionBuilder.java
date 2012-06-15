@@ -234,10 +234,10 @@ public class MethodDefinitionBuilder {
         return parameter(mods, name, paramDecl, paramDecl, paramType, flags);
     }
     
-    public MethodDefinitionBuilder parameter(Parameter param) {
+    public MethodDefinitionBuilder parameter(Parameter param, int flags) {
         Value attr = CodegenUtil.findAttrForParam(param);
         int mods = (attr != null && attr.isVariable()) ? 0 : FINAL;
-        return parameter(param, param.getType(), mods, 0);
+        return parameter(param, param.getType(), mods, flags);
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -278,13 +278,13 @@ public class MethodDefinitionBuilder {
         }
     }
 
-    public MethodDefinitionBuilder resultType(Method method) {
+    public MethodDefinitionBuilder resultType(Method method, int flags) {
         if (Decl.isMpl(method)) {
-            return resultType(null, gen.makeJavaType(gen.functionalReturnType(method)));
+            return resultType(null, gen.makeJavaType(gen.functionalReturnType(method), flags));
         } else {
             TypedDeclaration nonWideningTypeDecl = gen.nonWideningTypeDecl(method);
             ProducedType nonWideningType = gen.nonWideningType(method, nonWideningTypeDecl);
-            return resultType(makeResultType(nonWideningTypeDecl, nonWideningType, 0), method);
+            return resultType(makeResultType(nonWideningTypeDecl, nonWideningType, flags), method);
         }
     }
     

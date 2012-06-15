@@ -658,6 +658,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     static final int CLASS_NEW = 1 << 6;
     static final int COMPANION = 1 << 7;
     static final int NON_QUALIFIED = 1 << 8;
+    /** 
+     * If the type is a type parameter, return the Java type for its upper bound. 
+     * Implies {@link #WANT_RAW_TYPE}   
+     */
+    static final int RAW_TP_BOUND = WANT_RAW_TYPE | 1 << 9;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -683,6 +688,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     JCExpression makeJavaType(ProducedType type, final int flags) {
         if(type == null)
             return make().Erroneous();
+        
+        if ((flags & 1<<9) != 0
+                && type.getDeclaration() instanceof TypeParameter) {
+            type = ((TypeParameter)type.getDeclaration()).getExtendedType();    
+        }
         
         // ERASURE
         if (willEraseToObject(type)) {
