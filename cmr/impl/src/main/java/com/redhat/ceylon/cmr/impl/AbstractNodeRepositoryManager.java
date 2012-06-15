@@ -149,10 +149,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     private void uploadToHerd(Node parent, ArtifactContext context, File folder) {
-        log.info("Uploading folder to Herd");
+        log.debug("Uploading folder to Herd");
         try {
             File zip = IOUtils.zipFolder(folder);
-            log.info("Herd module-doc zip file is at "+zip.getAbsolutePath());
+            log.debug("Herd module-doc zip file is at "+zip.getAbsolutePath());
             try{
                 context.setSuffix(ArtifactContext.DOCS_ZIPPED);
                 final String label = root.getArtifactName(context);
