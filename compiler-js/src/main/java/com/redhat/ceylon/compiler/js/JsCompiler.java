@@ -54,7 +54,8 @@ public class JsCompiler {
     public JsCompiler(TypeChecker tc, Options options) {
         this.tc = tc;
         opts = options;
-        outRepo = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(options.getOutDir(), new JULLogger(), options.getUser(), options.getPass());
+        outRepo = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(
+                options.getOutDir(), new JULLogger(), options.getUser(), options.getPass());
         root = new File(options.getOutDir());
         if (root.exists()) {
             if (!(root.isDirectory() && root.canWrite())) {
@@ -83,9 +84,13 @@ public class JsCompiler {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
         if (errCount == 0 || !stopOnErrors) {
+            if (opts.isVerbose()) {
+                System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
+            }
             GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), opts.isOptimize(), names);
             jsv.setAddComments(opts.isComment());
             jsv.setIndent(opts.isIndent());
+            jsv.setVerbose(opts.isVerbose());
             pu.getCompilationUnit().visit(jsv);
             pu.getCompilationUnit().visit(unitVisitor);
         }
