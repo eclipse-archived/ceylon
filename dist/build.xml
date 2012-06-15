@@ -7,10 +7,11 @@
     <property name="ceylon.language.dir" value="${basedir}/../ceylon.language"/>
     <property name="ceylon-module-resolver.dir" value="${basedir}/../ceylon-module-resolver"/>
     <property name="ceylon-runtime.dir" value="${basedir}/../ceylon-runtime"/>
+    <property name="ceylon-js.dir" value="${basedir}/../ceylon-js"/>
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
     <property name="dist.dir" value="${basedir}/dist"/>
 
-    <target name="package" depends="install-compiler, copy-compiler-binaries, copy-samples, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
+    <target name="package" depends="install-compiler, install-js, copy-compiler-binaries, copy-samples, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
@@ -48,16 +49,21 @@
                 <include name="ceylond"/>
                 <include name="ceylond.bat"/>
             </fileset>
+            <fileset dir="${ceylon-js.dir}/build/bin">
+                <include name="ceylonjs"/>
+                <include name="ceylonjs.bat"/>
+            </fileset>
         </copy>
         <chmod perm="0755">
             <fileset dir="${dist.dir}/bin">
                 <include name="ceylonc"/>
                 <include name="ceylond"/>
+                <include name="ceylonjs"/>
             </fileset>
         </chmod>
     </target>
 
-	<target name="copy-compiler-libraries">
+    <target name="copy-compiler-libraries">
         <mkdir dir="${dist.dir}/lib"/>
         <copy todir="${dist.dir}/lib">
             <fileset dir="${ceylon-compiler.dir}/build/lib">
@@ -77,11 +83,20 @@
         </copy>
     </target>
 
-	<target name="install-compiler">
+    <target name="install-compiler">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="clean" dir="${ceylon-compiler.dir}" inheritall="false"/>
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="dist" dir="${ceylon-compiler.dir}" inheritall="false"/>
         <copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon-compiler.dir}/build/dist">
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="install-js">
+        <ant antfile="${ceylon-js.dir}/build.xml" target="clean" dir="${ceylon-js.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-js.dir}/build.xml" target="dist" dir="${ceylon-js.dir}" inheritall="false"/>
+        <copy todir="${dist.dir}/repo">
+            <fileset dir="${ceylon-js.dir}/build/dist">
             </fileset>
         </copy>
     </target>
