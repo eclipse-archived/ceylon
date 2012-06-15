@@ -16,7 +16,7 @@ public class Options {
     private String srcDir = "source";
     private String outDir = "modules";
     private boolean optimize;
-    private boolean modulify;
+    private boolean modulify = true;
     private boolean indent = true;
     private boolean comment = true;
     private boolean verbose;
@@ -42,9 +42,9 @@ public class Options {
             opts.optimize=true;
             args.remove("-optimize");
         }
-        if (args.contains("-module")) {
-            opts.modulify=true;
-            args.remove("-module");
+        if (args.contains("-nomodule")) {
+            opts.modulify=false;
+            args.remove("-nomodule");
         }
         if (args.contains("-noindent") || args.contains("-compact")) {
             opts.indent=false;
