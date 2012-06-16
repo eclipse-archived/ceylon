@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 
 /**
@@ -314,6 +315,30 @@ class CodegenUtil {
             result = (Value)member;
         }
         return result;
+    }
+    
+    static Parameter findParamForMethod(MethodDeclaration decl) {
+        Parameter result = null;
+        String attrName = decl.getIdentifier().getText();
+        if (decl.getDeclarationModel().getContainer() instanceof Functional) {
+            Functional f = (Functional)decl.getDeclarationModel().getContainer();
+            result = f.getParameter(attrName);
+        }
+        return result;
+    }
+    
+    static Method findMethodForParam(Parameter param) {
+        Method result = null;
+        String methodName = param.getName();
+        Declaration member = param.getContainer().getDirectMember(methodName, null);
+        if (member instanceof Method) {
+            result = (Method)member;
+        }
+        return result;
+    }
+
+    static String getAliasedParameterName(Parameter parameter) {
+        return parameter.getName()+"$";
     }
     
 }

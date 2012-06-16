@@ -307,7 +307,7 @@ public class Decl {
         return true;
     }
 
-    public static boolean isDeferredInitialization(Tree.AnyMethod def) {
+    public static boolean isDeferredOrParamInitialized(Tree.AnyMethod def) {
         return !Decl.isFormal(def)
             && def instanceof Tree.MethodDeclaration
             && ((Tree.MethodDeclaration)def).getSpecifierExpression() == null;

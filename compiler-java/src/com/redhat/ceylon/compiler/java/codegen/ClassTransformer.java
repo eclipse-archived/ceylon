@@ -1023,20 +1023,30 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> body = null;
         final Method model = def.getDeclarationModel();
         
-        if (Decl.isDeferredInitialization(def)) {
+        if (Decl.isDeferredOrParamInitialized(def)) {
             // Uninitialized or deferred initialized method => Make a Callable field
-            current().field(PRIVATE, model.getName(), makeJavaType(typeFact().getCallableType(model.getType())), makeNull(), false);
-            
+            final Parameter initializingParameter = CodegenUtil.findParamForMethod((Tree.MethodDeclaration)def);
+            int mods = PRIVATE;
+            JCExpression initialValue;
+            if (initializingParameter != null) {
+                mods |= FINAL;
+                if (initializingParameter.getContainer() instanceof Method) {
+                    // We're initializing a local method, which will have a 
+                    // class wrapper of the same name as the param, so 
+                    // the param gets renamed
+                    initialValue = makeUnquotedIdent(CodegenUtil.getAliasedParameterName(initializingParameter));
+                } else {
+                    initialValue = makeUnquotedIdent(initializingParameter.getName());
+                }
+            } else {
+                // The field isn't initialized by a parameter, but later in the block
+                initialValue = makeNull();
+            }
+            current().field(mods, model.getName(), makeJavaType(typeFact().getCallableType(model.getType())), initialValue, false);
             ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
             for (Parameter param : model.getParameterLists().get(0).getParameters()) {
                 args.append(makeQuotedIdent(param.getName()));
             }
-            
-            final JCBinary cond = make().Binary(JCTree.EQ, makeQuotedIdent(model.getName()), makeNull());
-            final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
-                    make().Type(syms().ceylonUninitializedMethodErrorType), 
-                    List.<JCExpression>nil(), 
-                    null));
             JCExpression call = make().Apply(null, makeSelect(
                     model.getName(), "$call"), args.toList());
             call = gen().expressionGen().applyErasureAndBoxing(call, model.getType(), 
@@ -1047,7 +1057,21 @@ public class ClassTransformer extends AbstractTransformer {
             } else {
                 stmt = make().Return(call);
             }
-            return List.<JCStatement>of(make().If(cond, throw_, stmt));
+            
+            JCStatement result;
+            if (initializingParameter == null) {
+                // If the field isn't initialized by a parameter we have to 
+                // cope with the possibility that it's never initialized
+                final JCBinary cond = make().Binary(JCTree.EQ, makeQuotedIdent(model.getName()), makeNull());
+                final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
+                        make().Type(syms().ceylonUninitializedMethodErrorType), 
+                        List.<JCExpression>nil(), 
+                        null));
+                result = make().If(cond, throw_, stmt);
+            } else {
+                result = stmt;
+            }
+            return List.<JCStatement>of(result);
         } else if (def instanceof Tree.MethodDefinition) {
             Scope container = model.getContainer();
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;

@@ -205,8 +205,12 @@ public class MethodDefinitionBuilder {
         params.append(decl);
         return this;
     }
-    
+
     public MethodDefinitionBuilder parameter(long modifiers, String name, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags) {
+        return parameter(modifiers, name, name, decl, nonWideningDecl, nonWideningType, flags);
+    }
+    
+    private MethodDefinitionBuilder parameter(long modifiers, String name, String aliasedName, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags) {
         JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
         List<JCAnnotation> annots = List.nil();
         if (gen.needsAnnotations(decl)) {
@@ -219,7 +223,7 @@ public class MethodDefinitionBuilder {
             }
             annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
         }
-        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));
+        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(aliasedName), type, null));
     }
     
     public MethodDefinitionBuilder parameter(long modifiers, String name, JCExpression paramType, List<JCAnnotation> annots) {
@@ -236,8 +240,14 @@ public class MethodDefinitionBuilder {
     
     public MethodDefinitionBuilder parameter(Parameter param, int flags) {
         Value attr = CodegenUtil.findAttrForParam(param);
-        int mods = (attr != null && attr.isVariable()) ? 0 : FINAL;
-        return parameter(param, param.getType(), mods, flags);
+        Method meth = CodegenUtil.findMethodForParam(param);
+        int mods = 0;
+        if (attr == null || attr.isVariable()) {
+            mods |= FINAL;
+        }
+        String paramName = param.getName();
+        final String aliasedName = meth == null ? param.getName() : CodegenUtil.getAliasedParameterName(param);
+        return parameter(mods, paramName, aliasedName, param, param, param.getType(), flags);
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
