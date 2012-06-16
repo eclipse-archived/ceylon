@@ -299,10 +299,14 @@ class CodegenUtil {
     }
     
     static Parameter findParamForDecl(Tree.TypedDeclaration decl) {
-        Parameter result = null;
         String attrName = decl.getIdentifier().getText();
-        if (decl.getDeclarationModel().getContainer() instanceof Functional) {
-            Functional f = (Functional)decl.getDeclarationModel().getContainer();
+        return findParamForDecl(attrName, decl.getDeclarationModel());
+    }
+    
+    static Parameter findParamForDecl(String attrName, TypedDeclaration decl) {
+        Parameter result = null;
+        if (decl.getContainer() instanceof Functional) {
+            Functional f = (Functional)decl.getContainer();
             result = f.getParameter(attrName);
         }
         return result;
