@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -239,14 +240,13 @@ public class MethodDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder parameter(Parameter param, int flags) {
-        Value attr = CodegenUtil.findAttrForParam(param);
-        Method meth = CodegenUtil.findMethodForParam(param);
+        MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
         int mods = 0;
-        if (attr == null || attr.isVariable()) {
+        if (!(mov instanceof Value) || !mov.isVariable()) {
             mods |= FINAL;
         }
         String paramName = param.getName();
-        final String aliasedName = meth == null ? param.getName() : CodegenUtil.getAliasedParameterName(param);
+        final String aliasedName = (mov instanceof Method) ? CodegenUtil.getAliasedParameterName(param) : param.getName();
         return parameter(mods, paramName, aliasedName, param, param, param.getType(), flags);
     }
 

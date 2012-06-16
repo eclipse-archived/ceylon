@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -297,7 +298,7 @@ class CodegenUtil {
         return decl;
     }
     
-    static Parameter findParamForAttr(AttributeDeclaration decl) {
+    static Parameter findParamForDecl(Tree.TypedDeclaration decl) {
         Parameter result = null;
         String attrName = decl.getIdentifier().getText();
         if (decl.getDeclarationModel().getContainer() instanceof Functional) {
@@ -307,32 +308,12 @@ class CodegenUtil {
         return result;
     }
     
-    static Value findAttrForParam(Parameter param) {
-        Value result = null;
+    static MethodOrValue findMethodOrValueForParam(Parameter param) {
+        MethodOrValue result = null;
         String attrName = param.getName();
         Declaration member = param.getContainer().getDirectMember(attrName, null);
-        if (member instanceof Value) {
-            result = (Value)member;
-        }
-        return result;
-    }
-    
-    static Parameter findParamForMethod(MethodDeclaration decl) {
-        Parameter result = null;
-        String attrName = decl.getIdentifier().getText();
-        if (decl.getDeclarationModel().getContainer() instanceof Functional) {
-            Functional f = (Functional)decl.getDeclarationModel().getContainer();
-            result = f.getParameter(attrName);
-        }
-        return result;
-    }
-    
-    static Method findMethodForParam(Parameter param) {
-        Method result = null;
-        String methodName = param.getName();
-        Declaration member = param.getContainer().getDirectMember(methodName, null);
-        if (member instanceof Method) {
-            result = (Method)member;
+        if (member instanceof MethodOrValue) {
+            result = (MethodOrValue)member;
         }
         return result;
     }

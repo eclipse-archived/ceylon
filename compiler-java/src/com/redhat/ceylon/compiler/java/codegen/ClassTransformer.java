@@ -588,7 +588,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         // Only a non-formal attribute has a corresponding field
         // and if a captured class parameter exists with the same name we skip this part as well
-        Parameter parameter = CodegenUtil.findParamForAttr(decl);
+        Parameter parameter = CodegenUtil.findParamForDecl(decl);
         boolean createField = Strategy.createField(parameter, model);
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
@@ -1025,7 +1025,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (Decl.isDeferredOrParamInitialized(def)) {
             // Uninitialized or deferred initialized method => Make a Callable field
-            final Parameter initializingParameter = CodegenUtil.findParamForMethod((Tree.MethodDeclaration)def);
+            final Parameter initializingParameter = CodegenUtil.findParamForDecl(def);
             int mods = PRIVATE;
             JCExpression initialValue;
             if (initializingParameter != null) {

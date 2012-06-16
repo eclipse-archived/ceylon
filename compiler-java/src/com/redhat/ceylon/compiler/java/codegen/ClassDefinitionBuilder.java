@@ -29,6 +29,7 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -365,8 +366,8 @@ public class ClassDefinitionBuilder {
     // Create a parameter for the constructor
     private ClassDefinitionBuilder parameter(String name, Parameter decl, boolean isSequenced, boolean isDefaulted) {
         JCExpression type;
-        Value attr = CodegenUtil.findAttrForParam(decl);
-        if (attr != null) {
+        MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
+        if (attr instanceof Value) {
             TypedDeclaration nonWideningTypeDeclaration = gen.nonWideningTypeDecl(attr);
             ProducedType paramType = gen.nonWideningType(attr, nonWideningTypeDeclaration);
             type = gen.makeJavaType(nonWideningTypeDeclaration, paramType, 0);

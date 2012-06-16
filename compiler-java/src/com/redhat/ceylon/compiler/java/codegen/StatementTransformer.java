@@ -397,7 +397,7 @@ public class StatementTransformer extends AbstractTransformer {
     // FIXME There is a similar implementation in ClassGen!
     public List<JCStatement> transform(AttributeDeclaration decl) {
         // If the attribute is really from a parameter then don't generate a local variable
-        Parameter parameter = CodegenUtil.findParamForAttr(decl);
+        Parameter parameter = CodegenUtil.findParamForDecl(decl);
         if (parameter == null) {
             Name atrrName = names().fromString(decl.getIdentifier().getText());
             ProducedType t = actualType(decl);
