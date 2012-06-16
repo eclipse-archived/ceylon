@@ -1,4 +1,4 @@
-doc "Produces elements if an `Iterable` object. Classes that 
+doc "Produces elements of an `Iterable` object. Classes that 
      implement this interface should be immutable."
 see (Iterable)
 by "Gavin"

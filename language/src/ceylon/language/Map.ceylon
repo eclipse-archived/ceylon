@@ -12,7 +12,7 @@ shared interface Map<out Key,out Item>
         given Item satisfies Object {
 
     doc "Returns 1 if the argument is an entry and its
-         key and item match an entry in this map."
+         key and item match an entry in this `Map`."
     shared actual default Integer count(Object element) {
         if (is Key->Item element) {
             if (exists item = item(element.key)) {
@@ -27,7 +27,7 @@ shared interface Map<out Key,out Item>
         }
     }
 
-    doc "Two maps are considered equal if they have the same size,
+    doc "Two `Map`s are considered equal if they have the same size,
          the same set of keys, and equal elements stored under each key."
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Object> that) {
@@ -57,7 +57,7 @@ shared interface Map<out Key,out Item>
         return hashCode;
     }
 
-    doc "Returns the set of keys contained in this map."
+    doc "Returns the set of keys contained in this `Map`."
     actual shared default Set<Key> keys {
         object keySet satisfies Set<Key> {
             shared actual Set<Key> clone {
@@ -98,8 +98,8 @@ shared interface Map<out Key,out Item>
         return keySet;
     }
 
-    doc "Returns all the values stored in this map. An element
-         can be stored under more than one key in the map, and so
+    doc "Returns all the values stored in this `Map`. An element
+         can be stored under more than one key in the `Map`, and so
          it can be contained more than once in the resulting collection."
     shared default Collection<Item> values {
         object valueCollection satisfies Collection<Item> {
@@ -126,8 +126,8 @@ shared interface Map<out Key,out Item>
         return valueCollection;
     }
 
-    doc "Returns a map in which every key is an Item in this map,
-         and every value is the set of keys that stored the Item
+    doc "Returns a map in which every key is an `Item` in this map,
+         and every value is the set of keys that stored the `Item`
          in this map."
     shared default Map<Item, Set<Key>> inverse {
         object inverse satisfies Map<Item, Set<Key>> {

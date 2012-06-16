@@ -63,7 +63,7 @@ shared interface List<out Element>
          sequence."
     shared formal Sequence<Element> reversed;*/
 
-    /*doc "Select the elements between the given indexes. If 
+    /*doc "Select the elements between the given indices. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 
          index is larger than the end index, return the

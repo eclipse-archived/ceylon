@@ -1,5 +1,5 @@
 doc "A string of characters. Each character in the string is 
-     a 32-bit unicode character. The internal UTF-16 
+     a 32-bit Unicode character. The internal UTF-16 
      encoding is hidden from clients."
 by "Gavin"
 shared abstract class String()
@@ -21,11 +21,11 @@ shared abstract class String()
     
     doc "Split the string into tokens, using the given
          separator characters. If no separator characters
-         are given, split the string at any unicode 
+         are given, split the string at any Unicode 
          whitespace character."
     shared formal Iterable<String> split(
             doc "The separator characters at which to split.
-                 If `null`, split at any unicode whitespace
+                 If `null`, split at any Unicode whitespace
                  character."
             Iterable<Character>? separators=null,
             doc "Specifies that the separator characters
@@ -56,7 +56,7 @@ shared abstract class String()
     doc "Select the characters between the given indexes.
          If the start index is the same as the end index,
          return a string with a single character.
-         If the start index larger than the end index, 
+         If the start index is larger than the end index, 
          return the characters in the reverse order from
          the order in which they appear in this string.
          If both the start index and the end index are 
@@ -69,8 +69,10 @@ shared abstract class String()
     
     doc "Select the characters of this string beginning at 
          the given index, returning a string no longer than 
-         the given length. If this string is shorter than 
-         the given length, return this string. Otherwise 
+         the given length. If the portion of this string
+         starting at the given index is shorter than 
+         the given length, return the portion of this string
+         from the given index until the end of this string. Otherwise 
          return a string of the given length. If the start
          index is larger than the last index of the string,
          return the empty string."
@@ -149,7 +151,7 @@ shared abstract class String()
          not occur in this string."
     shared formal Integer? lastCharacterOccurrence(Character substring);
     
-        doc "Determines if the given object is a `String` and, 
+    doc "Determines if the given object is a `String` and, 
          if so, if it occurs as a substring of this string,
          or if the object is a `Character` that occurs in
          this string. That is to say, a string is considered 

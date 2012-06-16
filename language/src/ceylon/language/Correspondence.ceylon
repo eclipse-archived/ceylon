@@ -1,7 +1,7 @@
 doc "Abstract supertype of objects which associate values 
      with keys. `Correspondence` does not satisfy `Category`,
      since in some cases, for examples lists, it is 
-     convenient to consider the subtype a `Category` of its
+     convenient to consider the subtype a `Container` of its
      values, and in other cases, for example maps, it is
      convenient to treat the subtype as a `Category` of its
      entries."

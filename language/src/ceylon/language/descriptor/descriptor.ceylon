@@ -13,7 +13,7 @@ shared class Package(
         String doc="",
 
         desc "The names of the authors of the
-             package"
+             package."
         String[] by = {}) {
 
     //TODO implement
@@ -56,7 +56,7 @@ shared class Module(
         String doc = "",
         
         desc "The names of the authors of the
-             module"
+             module."
         String[] by = {},
 
         desc "The license under which the module

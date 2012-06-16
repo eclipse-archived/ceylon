@@ -1,4 +1,4 @@
-doc "A key, together with a value associated with the key,
+doc "A pair containing a key and an associated value
      called the item. Used primarily to represent the
      elements of a `Map`."
 by "Gavin"
@@ -13,7 +13,7 @@ shared class Entry<out Key, out Item>(key, item)
     doc "The value associated with the key."
     shared Item item;
 
-    doc "Determines if the this entry is equal to the given
+    doc "Determines if this entry is equal to the given
          entry. Two entries are equal if they have the same
          key and the same value."
     shared actual Boolean equals(Object that) {
