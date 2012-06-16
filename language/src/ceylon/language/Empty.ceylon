@@ -14,36 +14,36 @@ shared interface Empty
         return emptyIterator;
     }
 
-    doc "Returns null for any given key."
+    doc "Returns `null` for any given key."
     shared actual Nothing item(Integer key) {
         return null;
     }
 
-    doc "Returns an Empty for any given segment."
+    doc "Returns an `Empty` for any given segment."
     shared actual Empty segment(Integer from, Integer length) {
         return this;
     }
 
-    doc "Returns an Empty for any given span."
+    doc "Returns an `Empty` for any given span."
     shared actual Empty span(Integer from, Integer? to) {
         return this;
     }
 
-    doc "Returns a string description of the empty List: `{}`"
+    doc "Returns a string description of the empty List: `{}`."
     shared actual String string {
         return "{}";
     }
-    doc "Returns null."
+    doc "Returns `null`."
     shared actual Nothing lastIndex { return null; }
 
     //shared actual Empty rest { return this; }
 
-    doc "Returns an Empty."
+    doc "Returns an `Empty`."
     shared actual Empty clone {
         return this;
     }
 
-    doc "Returns false for any given element."
+    doc "Returns `false` for any given element."
     shared actual Boolean contains(Object element) {
         return false;
     }

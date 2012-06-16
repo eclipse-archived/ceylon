@@ -14,7 +14,7 @@ shared interface None<out Element>
         return null;
     }
 
-    doc "Returns an emptyIterator."
+    doc "Returns `emptyIterator`."
     shared actual default Iterator<Element> iterator {
         return emptyIterator;
     }
