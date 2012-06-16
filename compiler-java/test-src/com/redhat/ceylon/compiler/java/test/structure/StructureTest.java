@@ -436,5 +436,9 @@ public class StructureTest extends CompilerTest {
     public void testCallableEscaping(){
         compareWithJavaSource("method/CallableEscaping");
     }
+    @Test
+    public void testMethodInitializerParameter() {
+        compareWithJavaSource("method/MethodInitializerParameter");
+    }
     
 }

@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class MethodInitializerParameter<T> {
-    private .ceylon.language.Callable<? extends .java.lang.Object> m;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> m;
     
     private final void m(final long i) {
-        if (m == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else m.$call(i);
+        m.$call(i);
     }
-    private .ceylon.language.Callable<? extends .java.lang.Object> m2;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> m2;
     
     private final void m2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
-        if (m2 == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else m2.$call(i, seq);
+        m2.$call(i, seq);
     }
     
     private final void m2(final long i) {
@@ -26,15 +26,15 @@ class MethodInitializerParameter<T> {
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m2$seq(final long i) {
         return .ceylon.language.$empty.getEmpty();
     }
-    private .ceylon.language.Callable<? extends T> m3;
+    private final .ceylon.language.Callable<? extends T> m3;
     
     private final T m3(final T t) {
-        if (m3 == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return m3.$call(t);
+        return m3.$call(t);
     }
-    private .ceylon.language.Callable<? extends .java.lang.Object> m4;
+    private final .ceylon.language.Callable<? extends .java.lang.Object> m4;
     
     private final void m4(final long i) {
-        if (m4 == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else m4.$call(i);
+        m4.$call(i);
     }
     
     private final void m4() {
