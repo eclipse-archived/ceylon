@@ -6,8 +6,8 @@ shared interface Set<out Element>
                   Cloneable<Set<Element>>
         given Element satisfies Object {
 
-    doc "Returns 1 if the element is part of this `Set`, or 
-         `0` otherwise."
+    doc "Returns `1` if the element is part of this `Set`, 
+         or `0` otherwise."
     shared actual default Integer count(Object element) {
         return contains(element) then 1 else 0;
     }
