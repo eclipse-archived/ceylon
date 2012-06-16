@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -933,6 +934,9 @@ public class TypeVisitor extends Visitor {
             else if (a.isFormal()) {
                 that.addError("initializer parameter refers to a formal attribute: " + 
                         d.getName());
+            }
+            else {
+                ((MethodOrValue) a).setInitializerParameter(d);
             }
             /*if (d.isHidden() && d.getDeclaration() instanceof Method) {
                 if (a instanceof Method) {
