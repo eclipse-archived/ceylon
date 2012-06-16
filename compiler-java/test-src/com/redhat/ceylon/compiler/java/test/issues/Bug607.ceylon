@@ -18,18 +18,24 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bug607mth(arg1, arg2) {
+void bug607mth(arg1, arg2, arg3) {
     String arg1;
     variable String arg2;
-    
+    variable String arg3;
     arg2 := "foo";
+    void cap() {
+        arg3 := "bar";
+    }
 }
 @nomodel
 class Bug607cls() {
-    void mth(arg1, arg2) {
+    void mth(arg1, arg2, arg3) {
         String arg1;
         variable String arg2;
-        
+        variable String arg3;
         arg2 := "bar";
+        void cap() {
+            arg3 := "bar";
+        }
     }
 }

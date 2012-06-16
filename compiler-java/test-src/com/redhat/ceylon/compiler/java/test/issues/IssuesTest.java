@@ -418,8 +418,6 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("Bug606");
     }
     
-    // This was working in M3 but incomplete so disallowed after https://github.com/ceylon/ceylon-compiler/issues/566
-    @Ignore("M4")
     @Test
     public void testBug607(){
         compareWithJavaSource("Bug607");
