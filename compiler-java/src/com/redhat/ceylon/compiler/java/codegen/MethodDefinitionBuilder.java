@@ -240,13 +240,17 @@ public class MethodDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder parameter(Parameter param, int flags) {
+        String paramName = param.getName();
+        String aliasedName = paramName;
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
         int mods = 0;
-        if (!(mov instanceof Value) || !mov.isVariable()) {
+        if (!(mov instanceof Value) || !mov.isVariable() || mov.isCaptured()) {
             mods |= FINAL;
         }
-        String paramName = param.getName();
-        final String aliasedName = (mov instanceof Method) ? CodegenUtil.getAliasedParameterName(param) : param.getName();
+        if (mov instanceof Method
+                || mov instanceof Value && mov.isVariable() && mov.isCaptured()) {
+            aliasedName = CodegenUtil.getAliasedParameterName(param);
+        }
         return parameter(mods, paramName, aliasedName, param, param, param.getType(), flags);
     }
 
