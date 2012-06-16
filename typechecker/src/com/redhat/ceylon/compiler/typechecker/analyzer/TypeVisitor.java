@@ -934,7 +934,7 @@ public class TypeVisitor extends Visitor {
                 that.addError("initializer parameter refers to a formal attribute: " + 
                         d.getName());
             }
-            if (d.isHidden() && d.getDeclaration() instanceof Method) {
+            /*if (d.isHidden() && d.getDeclaration() instanceof Method) {
                 if (a instanceof Method) {
                     that.addWarning("initializer parameters for inner methods of methods not yet supported");
                 }
@@ -942,7 +942,7 @@ public class TypeVisitor extends Visitor {
                     that.addWarning("initializer parameters for variables of methods not yet supported");
                     
                 }
-            }
+            }*/
         }
     }
     
