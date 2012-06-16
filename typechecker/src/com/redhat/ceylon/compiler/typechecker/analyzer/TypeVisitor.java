@@ -750,7 +750,7 @@ public class TypeVisitor extends Visitor {
                     et.addError("directly extends itself: " + td.getName());
                     return;
                 }
-                if (!isExtendable(type) && !inLanguageModule(that)) {
+                if (!type.getDeclaration().isExtendable() && !inLanguageModule(that)) {
                     et.addError("directly extends a special language type: " +
                         type.getProducedTypeName());
                 }
@@ -789,17 +789,6 @@ public class TypeVisitor extends Visitor {
     private boolean inLanguageModule(Tree.ExtendedType that) {
         return that.getUnit().getPackage().getQualifiedNameString()
                 .startsWith("ceylon.language");
-    }
-    
-    private boolean isExtendable(ProducedType type) {
-        TypeDeclaration d = type.getDeclaration();
-        return !d.equals(unit.getBooleanDeclaration()) &&
-                !d.equals(unit.getCharacterDeclaration()) &&
-                !d.equals(unit.getIntegerDeclaration()) &&
-                !d.equals(unit.getFloatDeclaration()) &&
-                !d.equals(unit.getEntryDeclaration()) &&
-                !d.equals(unit.getRangeDeclaration()) &&
-                !d.equals(unit.getStringDeclaration());
     }
     
     @Override 

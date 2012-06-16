@@ -510,6 +510,16 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
 
+    public boolean isExtendable() {
+        return !equals(unit.getBooleanDeclaration()) &&
+                !equals(unit.getCharacterDeclaration()) &&
+                !equals(unit.getIntegerDeclaration()) &&
+                !equals(unit.getFloatDeclaration()) &&
+                !equals(unit.getEntryDeclaration()) &&
+                !equals(unit.getRangeDeclaration()) &&
+                !equals(unit.getStringDeclaration());
+    }
+    
     /**
      * Is this a class or interface alias? 
      */
