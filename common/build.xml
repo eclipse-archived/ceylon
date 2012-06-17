@@ -23,11 +23,12 @@
     <!-- ################################################################## -->
 
     <target name="clean">
-        <delete dir="${build}"/>
+        <delete dir="${build.dir}"/>
     </target>
 
     <!-- project compilation -->
     <target name="compile" description="compile the type checker">
+        <mkdir dir="${build.classes}" />
         <javac
                 srcdir="${src}"
                 destdir="${build.classes}"
