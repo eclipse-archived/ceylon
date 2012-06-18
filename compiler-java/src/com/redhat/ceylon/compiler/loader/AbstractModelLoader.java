@@ -34,6 +34,8 @@ import java.util.Set;
 
 import javax.lang.model.type.TypeKind;
 
+import org.omg.CORBA.BooleanHolder;
+
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
@@ -296,6 +298,44 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected Declaration convertToDeclaration(ClassMirror classMirror, DeclarationType declarationType) {
+        List<Declaration> decls = new ArrayList<Declaration>();
+        boolean[] alreadyExists = new boolean[1];
+        Declaration decl = getOrCreateDeclaration(classMirror, declarationType,
+                decls, alreadyExists);
+        
+        if (alreadyExists[0]) {
+            return decl;
+        }
+        
+        // find its module
+        String pkgName = classMirror.getPackage().getQualifiedName();
+        Module module = findOrCreateModule(pkgName);
+        LazyPackage pkg = findOrCreatePackage(module, pkgName);
+
+        // find/make its Unit
+        Unit unit = getCompiledUnit(pkg, classMirror);
+
+        for(Declaration d : decls){
+            d.setShared(classMirror.isPublic());
+        
+            // add it to its Unit
+            d.setUnit(unit);
+            unit.addDeclaration(d);
+            
+            // add it to its package if it's not an inner class
+            if(!classMirror.isInnerClass()){
+                pkg.addMember(d);
+                d.setContainer(pkg);
+            }
+        }
+        
+        return decl;
+    }
+
+    public Declaration getOrCreateDeclaration(ClassMirror classMirror,
+            DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
+        alreadyExists[0] = false;
+        Declaration decl = null;
         String className = classMirror.getQualifiedName();
         ClassType type;
         String prefix;
@@ -319,14 +359,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String key = prefix + className;
         // see if we already have it
         if(declarationsByName.containsKey(key)){
+            alreadyExists[0] = true;
             return declarationsByName.get(key);
         }
         
         checkBinaryCompatibility(classMirror);
         
         // make it
-        Declaration decl = null;
-        List<Declaration> decls = new ArrayList<Declaration>();
         switch(type){
         case ATTRIBUTE:
             decl = makeToplevelAttribute(classMirror);
@@ -377,34 +416,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             break;
         }
 
+
         // objects have special handling above
         if(type != ClassType.OBJECT){
             declarationsByName.put(key, decl);
             decls.add(decl);
         }
-
-        // find its module
-        String pkgName = classMirror.getPackage().getQualifiedName();
-        Module module = findOrCreateModule(pkgName);
-        LazyPackage pkg = findOrCreatePackage(module, pkgName);
-
-        // find/make its Unit
-        Unit unit = getCompiledUnit(pkg, classMirror);
-
-        for(Declaration d : decls){
-            d.setShared(classMirror.isPublic());
-        
-            // add it to its Unit
-            d.setUnit(unit);
-            unit.addDeclaration(d);
-            
-            // add it to its package if it's not an inner class
-            if(!classMirror.isInnerClass()){
-                pkg.addMember(d);
-                d.setContainer(pkg);
-            }
-        }
-        
         return decl;
     }
 
