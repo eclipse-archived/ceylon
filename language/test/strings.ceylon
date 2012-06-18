@@ -5,6 +5,19 @@ void iterate<Element>(List<Element> list)
     }
 }
 
+void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String message)
+    given T satisfies Object {
+    
+    Iterator<T> bIterator = bIterable.iterator;
+    for(T a in aIterable){
+        T|Finished b = bIterator.next();
+        assert(b != exhausted, "" message ": Iterator B empty while expecting '" a "'");
+        assert(a == b, "" message ": Element '" a "' != '" b "'");
+    }
+    T|Finished b = bIterator.next();
+    assert(b == exhausted, "" message ": Iterator B not empty: extra '" b "'");
+}
+
 shared void strings() {
     value hello = "hello";
     
@@ -212,16 +225,29 @@ shared void strings() {
     assert({"hello world".split(" ")...}.size==3, "string split 2");
     assert({"hello world".split()...}.size==3, "string split 3");
     assert({"hello world".split("l", true)...}.size==3, "string split 4");
-    assert({"hello world".split("l")...}.size==6, "string split 5");
+    assert({"hello world".split("l")...}.size==5, "string split 5");
+    assert({"hello world".split("l", false, false)...}.size==7, "string split 6");
     variable value count:=0;
     for (tok in "hello world goodbye".split(" ", true)) {
         count++;
         assert(tok.size>4, "string token");
     }
     assert(count==3, "string tokens");
-    for (tok in "  ".split(" ", true)) {
-        fail("no string tokens");
-    }
+    
+    compareIterables({""}, "".split(), "Empty string");
+    compareIterables({"", ""}, " ".split(" ", true), "Two empty tokens");
+    compareIterables({"", " ", ""}, " ".split(" ", false), "Two empty tokens with WS");
+    compareIterables({"hello", "world"}, "hello world".split(" ", true), "Two parts");
+    compareIterables({"", "hello", "world", ""}, " hello world ".split(" ", true), "Two parts surounded with WS");
+    compareIterables({"hello", " ", "world"}, "hello world".split(" ", false), "Two parts with space token");
+    compareIterables({"", " ", "hello", " ", "world", " ", ""}, " hello world ".split(" ", false), "Two parts surounded with space tokens");
+    compareIterables({"hello", "   ", "world"}, "hello   world".split(" ", false), "Two parts with grouped space token");
+    compareIterables({"", "  ", "hello", "   ", "world", "    ", ""}, "  hello   world    ".split(" ", false), "Two parts surounded with grouped space tokens");
+    compareIterables({"a", "b"}, "a/b".split("/", true, false), "a/b");
+    compareIterables({"", "a", "b", ""}, "/a/b/".split("/", true, false), "/a/b/");
+    compareIterables({"", "", "a", "", "b", "", ""}, "//a//b//".split("/", true, false), "//a//b//");
+    compareIterables({"", "", "a", "", "b", "", ""}, "/?a/&b#/".split("/&#?", true, false), "/?a/&b#/ no tokens");
+    compareIterables({"", "/", "", "?", "a", "/", "", "&", "b", "#", "", "/", ""}, "/?a/&b#/".split("/&#?", false, false), "/?a/&b#/ with tokens");
     
     assert("".reversed=="", "string reversed 1");
     assert("x".reversed=="x", "string reversed 2");

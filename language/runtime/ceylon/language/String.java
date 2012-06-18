@@ -1,7 +1,5 @@
 package ceylon.language;
 
-import java.util.StringTokenizer;
-
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -496,7 +494,9 @@ public abstract class String
             @Defaulted
             @Name("separators") Iterable<? extends Character> separators,
             @Defaulted
-            @Name("discardSeparators") boolean discardSeparators) {
+            @Name("discardSeparators") boolean discardSeparators,
+            @Defaulted
+            @Name("groupSeparators") boolean groupSeparators) {
         if (value.isEmpty()) {
             return new Singleton<String>(this);
         }
@@ -527,14 +527,20 @@ public abstract class String
             }
             delims = builder.toString();
         }
-        return new Tokens(value, delims, !discardSeparators);
+        return new Tokens(value, delims, !discardSeparators, groupSeparators);
     }
     
     @Ignore
     public Iterable<? extends String> split(
+            Iterable<? extends Character> separators,
+            boolean discardSeparators) {
+        return split(separators, discardSeparators, split$groupSeparators(separators, discardSeparators));
+    }
+
+    @Ignore
+    public Iterable<? extends String> split(
             Iterable<? extends Character> separators) {
         return split(separators, split$discardSeparators(separators));
-
     }
     
     @Ignore
@@ -557,35 +563,92 @@ public abstract class String
         private final java.lang.String str;
         private final java.lang.String delims;
         private final boolean keepSeparators;
+        private final boolean groupSeparators;
         
-        public Tokens(java.lang.String str, java.lang.String delims, boolean keepSeparators) {
+        public Tokens(java.lang.String str, java.lang.String delims, boolean keepSeparators, boolean groupSeparators) {
             this.str = str;
             this.delims = delims;
             this.keepSeparators = keepSeparators;
+            this.groupSeparators = groupSeparators;
         }
 
         @Override
         public Iterator<? extends String> getIterator() {
             class TokenIterator implements Iterator<String> {
-                private final StringTokenizer tokens;
-
-                private TokenIterator(StringTokenizer tokens) {
-                    this.tokens = tokens;
-                }
+                private final char[] chars = str.toCharArray();
+                private final char[] delimitors = delims.toCharArray();
+                private int index = 0;
+                private boolean first = true;
+                private boolean lastTokenWasSeparator = false;
 
                 @Override
                 public java.lang.Object next() {
-                    java.lang.Object result;
-                    if (tokens.hasMoreTokens()) {
-                        result = String.instance(tokens.nextToken());
+                    if (!eof()) {
+                        int start = index;
+                        // if we start with a separator, or if we returned a separator the last time
+                        // and we are still looking at a separator: return an empty token once
+                        if(((first && start == 0)
+                                || lastTokenWasSeparator)
+                                && peekSeparator()){
+                            first = false;
+                            lastTokenWasSeparator = false;
+                            return String.instance("");
+                        }
+                        // are we looking at a separator
+                        if(eatSeparator()){
+                            if(groupSeparators){
+                                // eat them all in one go if we group them
+                                do{}while(eatSeparator());
+                            }
+                            // do we return them?
+                            if(keepSeparators){
+                                lastTokenWasSeparator = true;
+                                return String.instance(new java.lang.String(chars, start, index-start));
+                            }
+                            // keep going and eat the next word
+                            start = index;
+                        }
+                        // eat until the next separator
+                        while(!eof() && !peekSeparator()){
+                            index++;
+                        }
+                        lastTokenWasSeparator = false;
+                        return String.instance(new java.lang.String(chars, start, index-start));
+                    } else if (lastTokenWasSeparator){
+                        // we're missing a last empty token before the EOF because the string ended
+                        // with a returned separator
+                        lastTokenWasSeparator = false;
+                        return String.instance("");
                     } else {
-                        result = exhausted.getExhausted();
+                        return exhausted.getExhausted();
                     }
-                    return result;
+                }
+                
+                private boolean eof(){
+                    return index >= chars.length;
+                }
+
+                private boolean eatSeparator() {
+                    boolean ret = peekSeparator();
+                    if(ret)
+                        index++;
+                    return ret;
+                }
+                
+                private boolean peekSeparator() {
+                    if(eof())
+                        return false;
+                    char c = chars[index];
+                    for(int i=0;i<delimitors.length;i++){
+                        if(c == delimitors[i]){
+                            return true;
+                        }
+                    }
+                    return false;
                 }
             }
             
-            return new TokenIterator(new StringTokenizer(str, delims, keepSeparators));
+            return new TokenIterator();
         }
 
         @Override
@@ -663,5 +726,8 @@ public abstract class String
     public boolean split$discardSeparators(Iterable<? extends Character> separators){
         return false;
     }
-
+    @Ignore
+    public boolean split$groupSeparators(Iterable<? extends Character> separators, boolean discardSeparators){
+        return true;
+    }
 }

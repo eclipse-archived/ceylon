@@ -32,7 +32,12 @@ shared abstract class String()
                  occurring in the string should be discarded.
                  If `false`, they will be included in the
                  resulting iterator."
-            Boolean discardSeparators=false);
+            Boolean discardSeparators=false,
+            doc "Specifies that the separator tokens should be grouped
+                 eagerly and not be treated as single-character
+                 separator tokens. If `false` each separator token
+                 will be of at size `1`."
+            Boolean groupSeparators=true);
     
     doc "Join the given strings, using this string as a 
          separator."
