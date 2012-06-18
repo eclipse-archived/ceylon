@@ -124,19 +124,21 @@ public class ProducedType extends ProducedReference {
             }
         }
         else {
-            if (selftypesSame && !type.getDeclaration().equals(getDeclaration())) {
-            	ProducedType selfType = getDeclaration().getSelfType();
-    			if (selfType!=null &&
-    			        type.isSubtypeOf(this) &&
-    					type.isExactly(selfType.substitute(getTypeArguments()))) {
-    				return true;
-    			}
-            	ProducedType typeSelfType = type.getDeclaration().getSelfType();
-    			if (typeSelfType!=null &&
-    			        isSubtypeOf(type) &&
-    					isExactly(typeSelfType.substitute(type.getTypeArguments()))) {
-    				return true;
-    			}
+            if (!type.getDeclaration().equals(getDeclaration())) {
+                if (selftypesSame) {
+                	ProducedType selfType = getDeclaration().getSelfType();
+        			if (selfType!=null &&
+        			        type.isSubtypeOf(this) &&
+        					type.isExactly(selfType.substitute(getTypeArguments()))) {
+        				return true;
+        			}
+                	ProducedType typeSelfType = type.getDeclaration().getSelfType();
+        			if (typeSelfType!=null &&
+        			        isSubtypeOf(type) &&
+        					isExactly(typeSelfType.substitute(type.getTypeArguments()))) {
+        				return true;
+        			}
+                }
                 return false;
             }
             else {
