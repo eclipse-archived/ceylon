@@ -8,5 +8,5 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Class {
-    String extendsType() default "";
+    String extendsType() default "ceylon.language.IdentifiableObject";
 }
