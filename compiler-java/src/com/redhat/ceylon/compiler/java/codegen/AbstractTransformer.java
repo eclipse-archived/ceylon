@@ -563,6 +563,14 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             ProducedType refinedDeclType = refinedDeclaration.getType();
             boolean isWidening = isWidening(declType, refinedDeclType);
             
+            if(!isWidening){
+                // make sure we get the instantiated refined decl
+                if(refinedDeclType.getDeclaration() instanceof TypeParameter
+                        && !(declType.getDeclaration() instanceof TypeParameter))
+                    refinedDeclType = nonWideningType(decl, refinedDeclaration);
+                isWidening = isWideningTypeArguments(declType, refinedDeclType, true);
+            }
+            
             if(isWidening)
                 return refinedDeclaration;
         }
@@ -573,6 +581,45 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return !sameType(syms().ceylonObjectType, declType)
                 && willEraseToObject(declType)
                 && !willEraseToObject(refinedDeclType);
+    }
+
+    private boolean isWideningTypeArguments(ProducedType declType, ProducedType refinedDeclType, boolean allowSubtypes) {
+        if(declType.getDeclaration() instanceof TypeParameter
+                && refinedDeclType.getDeclaration() instanceof TypeParameter){
+            // consider them equivalent if they have the same bounds
+            TypeParameter tp = (TypeParameter) declType.getDeclaration();
+            TypeParameter refinedTP = (TypeParameter) refinedDeclType.getDeclaration();
+            
+            return !haveSameBounds(tp, refinedTP);
+        }
+        if(allowSubtypes){
+            // if we have exactly the same type don't bother finding a common ancestor
+            if(!declType.isExactly(refinedDeclType)){
+                // check if we can form an informed decision
+                if(refinedDeclType.getDeclaration() == null)
+                    return true;
+                // find the instantiation of the refined decl type in the decl type
+                declType = declType.getSupertype(refinedDeclType.getDeclaration());
+                // could not find common type, we must be widening somehow
+                if(declType == null)
+                    return true;
+            }
+        }
+        Map<TypeParameter, ProducedType> typeArguments = declType.getTypeArguments();
+        Map<TypeParameter, ProducedType> refinedTypeArguments = refinedDeclType.getTypeArguments();
+        for(Entry<TypeParameter, ProducedType> typeArgument : typeArguments.entrySet()){
+            ProducedType refinedTypeArgument = refinedTypeArguments.get(typeArgument.getKey());
+            if(refinedTypeArgument == null)
+                return true; // something fishy here
+            // check if the type arg is widening due to erasure
+            if(isWidening(typeArgument.getValue(), refinedTypeArgument))
+                return true;
+            // check if the type arg is a subtype, or if its type args are widening
+            if(isWideningTypeArguments(typeArgument.getValue(), refinedTypeArgument, false))
+                return true;
+        }
+        // so far so good
+        return false;
     }
 
     public boolean haveSameBounds(TypeParameter tp, TypeParameter refinedTP) {
