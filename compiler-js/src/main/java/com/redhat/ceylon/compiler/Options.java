@@ -92,14 +92,6 @@ public class Options {
                 }
             }
         }
-        //Get the repositories
-        for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
-            String s = iter.next();
-            if (!s.endsWith(".ceylon")) {
-                iter.remove();
-                opts.repos.add(s);
-            }
-        }
         return opts;
     }
 
