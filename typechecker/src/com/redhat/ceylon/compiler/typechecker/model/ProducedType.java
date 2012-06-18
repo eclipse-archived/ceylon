@@ -37,7 +37,8 @@ public class ProducedType extends ProducedReference {
     public boolean isExactly(ProducedType type) {
         return isExactly(type, true);
     }
-    public boolean isExactly(ProducedType type, boolean selftypesSame) {
+    
+    public boolean isExactly(ProducedType type, boolean selfTypesSame) {
         if (getDeclaration() instanceof BottomType) {
             return type.getDeclaration() instanceof BottomType;
         }
@@ -125,19 +126,19 @@ public class ProducedType extends ProducedReference {
         }
         else {
             if (!type.getDeclaration().equals(getDeclaration())) {
-                if (selftypesSame) {
-                	ProducedType selfType = getDeclaration().getSelfType();
-        			if (selfType!=null &&
-        			        type.isSubtypeOf(this) &&
-        					type.isExactly(selfType.substitute(getTypeArguments()))) {
-        				return true;
-        			}
-                	ProducedType typeSelfType = type.getDeclaration().getSelfType();
-        			if (typeSelfType!=null &&
-        			        isSubtypeOf(type) &&
-        					isExactly(typeSelfType.substitute(type.getTypeArguments()))) {
-        				return true;
-        			}
+                if (selfTypesSame) {
+                    ProducedType selfType = getDeclaration().getSelfType();
+                    if (selfType!=null &&
+                            type.isSubtypeOf(this) &&
+                            type.isExactly(selfType.substitute(getTypeArguments()))) {
+                        return true;
+                    }
+                    ProducedType typeSelfType = type.getDeclaration().getSelfType();
+                    if (typeSelfType!=null &&
+                            isSubtypeOf(type) &&
+                            isExactly(typeSelfType.substitute(type.getTypeArguments()))) {
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -751,9 +752,9 @@ public class ProducedType extends ProducedReference {
             ProducedType result;
             if (tp.isContravariant()) { 
                 for (ProducedType pt: caseTypes) {
-                	if (pt==null) {
-                		return null;
-                	}
+                    if (pt==null) {
+                        return null;
+                    }
                     ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
                     if (st==null) {
                         return null;
@@ -766,9 +767,9 @@ public class ProducedType extends ProducedReference {
             }
             else {
                 for (ProducedType pt: caseTypes) {
-                	if (pt==null) {
-                		return null;
-                	}
+                    if (pt==null) {
+                        return null;
+                    }
                     ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
                     if (st==null) {
                         return null;
@@ -798,9 +799,9 @@ public class ProducedType extends ProducedReference {
             TypeDeclaration outer = (TypeDeclaration) dec.getContainer();
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (ProducedType pt: caseTypes) {
-            	if (pt==null) {
-            		return null;
-            	}
+                if (pt==null) {
+                    return null;
+                }
                 ProducedType st = pt.getQualifyingType().getSupertype(outer, null);
                 list.add(st);
             }
