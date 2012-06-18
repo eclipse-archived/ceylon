@@ -25,9 +25,9 @@ public class Main {
 
     /** Print a help message with the available options. */
     private static void help() {
-        System.err.println("Usage ceylonjs [options] [file|dir]...");
+        System.err.println("Usage ceylonc-js <options> <source files> <module names>");
         System.err.println();
-        System.err.println("Options:");
+        System.err.println("where possible options include:");
         System.err.println("  -rep <url>         Module repository (default: ./modules).");
         System.err.println("                     Can be specified multiple times.");
         System.err.println("  -user <value>      User name for output repository (HTTP only)");
@@ -65,8 +65,8 @@ public class Main {
             return;
         }
         if (args.size() == 0) {
-            System.out.println("ceylonjs: no source files");
-            System.out.println("Usage: ceylonjs <options> <source files>");
+            System.out.println("ceylonc-js: no source files");
+            System.out.println("Usage: ceylonc-js <options> <source files> <module names>");
             System.out.println("use -help for a list of possible options");
             return;
         }
@@ -124,14 +124,24 @@ public class Main {
             tcb.setRepositoryManager(repoman);
             final File root = new File(opts.getSrcDir());
             final String path = root.getAbsolutePath();
+            tcb.addSrcDirectory(root);
+            final List<String> modfilters = new ArrayList<String>();
             for (String filedir : args) {
                 File f = new File(filedir);
                 if (f.getAbsolutePath().startsWith(path)) {
-                    tcb.addSrcDirectory(f);
+                    if ("module.ceylon".equals(f.getName().toLowerCase())) {
+                        modfilters.add(f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
+                    } else if (new File(f.getParentFile(), "module.ceylon").exists()) {
+                        modfilters.add(f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
+                    }
                 } else {
                     System.err.printf("%s is not in the current source path: [%s]%n", f.getAbsolutePath(), root);
                 }
             }
+            if (!modfilters.isEmpty()) {
+                tcb.setModuleFilters(modfilters);
+            }
+            tcb.statistics(opts.isProfile());
             typeChecker = tcb.getTypeChecker();
             t1=System.nanoTime();
         }
