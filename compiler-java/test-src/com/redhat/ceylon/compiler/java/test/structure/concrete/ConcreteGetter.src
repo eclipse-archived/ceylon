@@ -16,15 +16,15 @@ final class ConcreteGetter$impl {
     }
 }
 class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $ConcreteGetter$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public long getI() {
-        return $ConcreteGetter$impl.getI();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this.getI();
     }
     
     ConcreteGetterImplementor() {
-        this.$ConcreteGetter$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -33,7 +33,7 @@ class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.test
     }
 }
 class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $ConcreteGetter$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public final long getI() {
@@ -41,7 +41,7 @@ class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.test.s
     }
     
     ConcreteGetterOverrider() {
-        this.$ConcreteGetter$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -50,7 +50,7 @@ class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.test.s
     }
 }
 class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $ConcreteGetter$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public long getI() {
@@ -58,7 +58,7 @@ class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.test.
     }
     
     ConcreteGetterOverrider2() {
-        this.$ConcreteGetter$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

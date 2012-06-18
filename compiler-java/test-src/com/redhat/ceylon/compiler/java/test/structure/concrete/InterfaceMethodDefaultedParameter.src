@@ -259,76 +259,76 @@ final class named {
     }
 }
 class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $I$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this;
     
     @.java.lang.Override
     public final long m$i() {
-        return $I$impl.m$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m$i();
     }
     
     @.java.lang.Override
     public final void m() {
-        $I$impl.m();
+        $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m();
     }
     
     @.java.lang.Override
     public final long m2$i() {
-        return $I$impl.m2$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m2$i();
     }
     
     @.java.lang.Override
     public final long m2() {
-        return $I$impl.m2();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m2();
     }
     
     @.java.lang.Override
     public final long m3$i() {
-        return $I$impl.m3$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m3$i();
     }
     
     @.java.lang.Override
     public final long m3() {
-        return $I$impl.m3();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m3();
     }
     
     @.java.lang.Override
     public final long m3$n(final long i) {
-        return $I$impl.m3$n(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m3$n(i);
     }
     
     @.java.lang.Override
     public final long m3(final long i) {
-        return $I$impl.m3(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m3(i);
     }
     
     @.java.lang.Override
     public final long m4$n(final long i) {
-        return $I$impl.m4$n(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m4$n(i);
     }
     
     @.java.lang.Override
     public final long m4(final long i) {
-        return $I$impl.m4(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m4(i);
     }
     
     @.java.lang.Override
     public final <U>T m5$t(final long i) {
-        return $I$impl.m5$t(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m5$t(i);
     }
     
     @.java.lang.Override
     public final <U>long m5(final long i) {
-        return $I$impl.m5(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m5(i);
     }
     
     @.java.lang.Override
     public final <U>U m5$u(final long i, final T t) {
-        return $I$impl.m5$u(i, t);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m5$u(i, t);
     }
     
     @.java.lang.Override
     public final <U>long m5(final long i, final T t) {
-        return $I$impl.m5(i, t);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m5(i, t);
     }
     
     @.java.lang.Override
@@ -356,7 +356,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
     }
     
     C() {
-        this.$I$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>(this);
     }
     
     public static void main(.java.lang.String[] args) {

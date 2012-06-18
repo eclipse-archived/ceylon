@@ -1,150 +1,150 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 abstract class Bug477_1<T> implements .ceylon.language.List<T> {
-    private final .ceylon.language.List$impl<T> $List$impl;
+    private final .ceylon.language.List$impl<T> $ceylon$language$List$this;
     
     @.java.lang.Override
     public long getSize() {
-        return $List$impl.getSize();
+        return $ceylon$language$List$this.getSize();
     }
     
     @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
-        return $List$impl.defines(index);
+        return $ceylon$language$List$this.defines(index);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterator<? extends T> getIterator() {
-        return $List$impl.getIterator();
+        return $ceylon$language$List$this.getIterator();
     }
-    private final .ceylon.language.Collection$impl<T> $Collection$impl;
+    private final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
-        return $Collection$impl.getEmpty();
+        return $ceylon$language$Collection$this.getEmpty();
     }
     
     @.java.lang.Override
     public boolean contains(final .java.lang.Object element) {
-        return $Collection$impl.contains(element);
+        return $ceylon$language$Collection$this.contains(element);
     }
     
     @.java.lang.Override
     public long count(final .java.lang.Object element) {
-        return $Collection$impl.count(element);
+        return $ceylon$language$Collection$this.count(element);
     }
-    private final .ceylon.language.Iterable$impl<T> $Iterable$impl;
+    private final .ceylon.language.Iterable$impl<T> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> getSequence() {
-        return $Iterable$impl.getSequence();
+        return $ceylon$language$Iterable$this.getSequence();
     }
     
     @.java.lang.Override
     public <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $Iterable$impl.map(collecting);
+        return $ceylon$language$Iterable$this.map(collecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $Iterable$impl.filter(selecting);
+        return $ceylon$language$Iterable$this.filter(selecting);
     }
     
     @.java.lang.Override
     public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $Iterable$impl.fold(initial, accumulating);
+        return $ceylon$language$Iterable$this.fold(initial, accumulating);
     }
     
     @.java.lang.Override
     public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $Iterable$impl.find(selecting);
+        return $ceylon$language$Iterable$this.find(selecting);
     }
-    private final .ceylon.language.Container$impl $Container$impl;
-    private final .ceylon.language.Sized$impl $Sized$impl;
-    private final .ceylon.language.Category$impl $Category$impl;
+    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
+    private final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsEvery$elements() {
-        return $Category$impl.containsEvery$elements();
+        return $ceylon$language$Category$this.containsEvery$elements();
     }
     
     @.java.lang.Override
     public final boolean containsEvery() {
-        return $Category$impl.containsEvery();
+        return $ceylon$language$Category$this.containsEvery();
     }
     
     @.java.lang.Override
     public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
-        return $Category$impl.containsEvery(elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsAny$elements() {
-        return $Category$impl.containsAny$elements();
+        return $ceylon$language$Category$this.containsAny$elements();
     }
     
     @.java.lang.Override
     public final boolean containsAny() {
-        return $Category$impl.containsAny();
+        return $ceylon$language$Category$this.containsAny();
     }
     
     @.java.lang.Override
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
-        return $Category$impl.containsAny(elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
-    private final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $Cloneable$impl;
-    private final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T> $Correspondence$impl;
+    private final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$this;
+    private final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T> $ceylon$language$Correspondence$this;
     
     @.java.lang.Override
     public .ceylon.language.Category getKeys() {
-        return $Correspondence$impl.getKeys();
+        return $ceylon$language$Correspondence$this.getKeys();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesEvery$keys() {
-        return $Correspondence$impl.definesEvery$keys();
+        return $ceylon$language$Correspondence$this.definesEvery$keys();
     }
     
     @.java.lang.Override
     public final boolean definesEvery() {
-        return $Correspondence$impl.definesEvery();
+        return $ceylon$language$Correspondence$this.definesEvery();
     }
     
     @.java.lang.Override
     public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
-        return $Correspondence$impl.definesEvery(keys);
+        return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesAny$keys() {
-        return $Correspondence$impl.definesAny$keys();
+        return $ceylon$language$Correspondence$this.definesAny$keys();
     }
     
     @.java.lang.Override
     public final boolean definesAny() {
-        return $Correspondence$impl.definesAny();
+        return $ceylon$language$Correspondence$this.definesAny();
     }
     
     @.java.lang.Override
     public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
-        return $Correspondence$impl.definesAny(keys);
+        return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> items$keys() {
-        return $Correspondence$impl.items$keys();
+        return $ceylon$language$Correspondence$this.items$keys();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends T> items() {
-        return $Correspondence$impl.items();
+        return $ceylon$language$Correspondence$this.items();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
-        return $Correspondence$impl.items(keys);
+        return $ceylon$language$Correspondence$this.items(keys);
     }
-    private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $Ranged$impl;
+    private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this;
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug477_1<? extends T> clone;
     
     @.java.lang.Override
@@ -170,165 +170,165 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     Bug477_1() {
-        this.$List$impl = new .ceylon.language.List$impl<T>(this);
-        this.$Collection$impl = new .ceylon.language.Collection$impl<T>(this);
-        this.$Iterable$impl = new .ceylon.language.Iterable$impl<T>(this);
-        this.$Container$impl = new .ceylon.language.Container$impl(this);
-        this.$Sized$impl = new .ceylon.language.Sized$impl(this);
-        this.$Category$impl = new .ceylon.language.Category$impl(this);
-        this.$Cloneable$impl = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
-        this.$Correspondence$impl = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
-        this.$Ranged$impl = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
+        this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>(this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<T>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
+        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
         this.clone = (.com.redhat.ceylon.compiler.java.test.issues.Bug477_1<? extends T>).ceylon.language.bottom.getBottom();
         this.string = ((.ceylon.language.String).ceylon.language.bottom.getBottom()).toString();
         this.hash = (int)1L;
     }
 }
 abstract class Bug477_2<T> implements .ceylon.language.List<T> {
-    private final .ceylon.language.List$impl<T> $List$impl;
+    private final .ceylon.language.List$impl<T> $ceylon$language$List$this;
     
     @.java.lang.Override
     public long getSize() {
-        return $List$impl.getSize();
+        return $ceylon$language$List$this.getSize();
     }
     
     @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
-        return $List$impl.defines(index);
+        return $ceylon$language$List$this.defines(index);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterator<? extends T> getIterator() {
-        return $List$impl.getIterator();
+        return $ceylon$language$List$this.getIterator();
     }
-    private final .ceylon.language.Collection$impl<T> $Collection$impl;
+    private final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
-        return $Collection$impl.getEmpty();
+        return $ceylon$language$Collection$this.getEmpty();
     }
     
     @.java.lang.Override
     public boolean contains(final .java.lang.Object element) {
-        return $Collection$impl.contains(element);
+        return $ceylon$language$Collection$this.contains(element);
     }
     
     @.java.lang.Override
     public long count(final .java.lang.Object element) {
-        return $Collection$impl.count(element);
+        return $ceylon$language$Collection$this.count(element);
     }
-    private final .ceylon.language.Iterable$impl<T> $Iterable$impl;
+    private final .ceylon.language.Iterable$impl<T> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> getSequence() {
-        return $Iterable$impl.getSequence();
+        return $ceylon$language$Iterable$this.getSequence();
     }
     
     @.java.lang.Override
     public <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
-        return $Iterable$impl.map(collecting);
+        return $ceylon$language$Iterable$this.map(collecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $Iterable$impl.filter(selecting);
+        return $ceylon$language$Iterable$this.filter(selecting);
     }
     
     @.java.lang.Override
     public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
-        return $Iterable$impl.fold(initial, accumulating);
+        return $ceylon$language$Iterable$this.fold(initial, accumulating);
     }
     
     @.java.lang.Override
     public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $Iterable$impl.find(selecting);
+        return $ceylon$language$Iterable$this.find(selecting);
     }
-    private final .ceylon.language.Container$impl $Container$impl;
-    private final .ceylon.language.Sized$impl $Sized$impl;
-    private final .ceylon.language.Category$impl $Category$impl;
+    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
+    private final .ceylon.language.Category$impl $ceylon$language$Category$this;
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsEvery$elements() {
-        return $Category$impl.containsEvery$elements();
+        return $ceylon$language$Category$this.containsEvery$elements();
     }
     
     @.java.lang.Override
     public final boolean containsEvery() {
-        return $Category$impl.containsEvery();
+        return $ceylon$language$Category$this.containsEvery();
     }
     
     @.java.lang.Override
     public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
-        return $Category$impl.containsEvery(elements);
+        return $ceylon$language$Category$this.containsEvery(elements);
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .java.lang.Object> containsAny$elements() {
-        return $Category$impl.containsAny$elements();
+        return $ceylon$language$Category$this.containsAny$elements();
     }
     
     @.java.lang.Override
     public final boolean containsAny() {
-        return $Category$impl.containsAny();
+        return $ceylon$language$Category$this.containsAny();
     }
     
     @.java.lang.Override
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
-        return $Category$impl.containsAny(elements);
+        return $ceylon$language$Category$this.containsAny(elements);
     }
-    private final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $Cloneable$impl;
-    private final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T> $Correspondence$impl;
+    private final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$this;
+    private final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T> $ceylon$language$Correspondence$this;
     
     @.java.lang.Override
     public .ceylon.language.Category getKeys() {
-        return $Correspondence$impl.getKeys();
+        return $ceylon$language$Correspondence$this.getKeys();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesEvery$keys() {
-        return $Correspondence$impl.definesEvery$keys();
+        return $ceylon$language$Correspondence$this.definesEvery$keys();
     }
     
     @.java.lang.Override
     public final boolean definesEvery() {
-        return $Correspondence$impl.definesEvery();
+        return $ceylon$language$Correspondence$this.definesEvery();
     }
     
     @.java.lang.Override
     public boolean definesEvery(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
-        return $Correspondence$impl.definesEvery(keys);
+        return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> definesAny$keys() {
-        return $Correspondence$impl.definesAny$keys();
+        return $ceylon$language$Correspondence$this.definesAny$keys();
     }
     
     @.java.lang.Override
     public final boolean definesAny() {
-        return $Correspondence$impl.definesAny();
+        return $ceylon$language$Correspondence$this.definesAny();
     }
     
     @.java.lang.Override
     public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
-        return $Correspondence$impl.definesAny(keys);
+        return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> items$keys() {
-        return $Correspondence$impl.items$keys();
+        return $ceylon$language$Correspondence$this.items$keys();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends T> items() {
-        return $Correspondence$impl.items();
+        return $ceylon$language$Correspondence$this.items();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
-        return $Correspondence$impl.items(keys);
+        return $ceylon$language$Correspondence$this.items(keys);
     }
-    private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $Ranged$impl;
+    private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this;
     private final .ceylon.language.List<? extends T> clone;
     
     @.java.lang.Override
@@ -354,15 +354,15 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     Bug477_2() {
-        this.$List$impl = new .ceylon.language.List$impl<T>(this);
-        this.$Collection$impl = new .ceylon.language.Collection$impl<T>(this);
-        this.$Iterable$impl = new .ceylon.language.Iterable$impl<T>(this);
-        this.$Container$impl = new .ceylon.language.Container$impl(this);
-        this.$Sized$impl = new .ceylon.language.Sized$impl(this);
-        this.$Category$impl = new .ceylon.language.Category$impl(this);
-        this.$Cloneable$impl = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
-        this.$Correspondence$impl = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
-        this.$Ranged$impl = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
+        this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>(this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<T>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
+        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
         this.clone = (.ceylon.language.List<? extends T>).ceylon.language.bottom.getBottom();
         this.string = ((.ceylon.language.String).ceylon.language.bottom.getBottom()).toString();
         this.hash = (int)1L;

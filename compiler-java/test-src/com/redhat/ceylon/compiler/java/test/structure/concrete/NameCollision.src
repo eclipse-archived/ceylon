@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface Container {
+}
+final class Container$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container $this;
+    
+    Container$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Container $this) {
+        this.$this = $this;
+    }
+}
+class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Container, .ceylon.language.Container {
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this;
+    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    private final boolean empty;
+    
+    @.java.lang.Override
+    public final boolean getEmpty() {
+        return empty;
+    }
+    
+    NameCollision() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.empty = true;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.NameCollision();
+    }
+}

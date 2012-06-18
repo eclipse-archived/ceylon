@@ -13,19 +13,19 @@ final class interfaceWithinObject {
     }
     
     public class ZI implements .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl $Z$impl;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
         
         public ZI() {
-            this.$Z$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl(this);
         }
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.z z;
     
     public final class z implements .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl $Z$impl;
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
         
         private z() {
-            this.$Z$impl = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject.Z$impl(this);
         }
     }
     

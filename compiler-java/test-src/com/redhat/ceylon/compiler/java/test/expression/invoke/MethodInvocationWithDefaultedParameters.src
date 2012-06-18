@@ -541,116 +541,116 @@ final class Barface$impl {
     }
 }
 class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface {
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $Barface$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this;
     
     @.java.lang.Override
     public final long f1$n() {
-        return $Barface$impl.f1$n();
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f1$n();
     }
     
     @.java.lang.Override
     public final void f1() {
-        $Barface$impl.f1();
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f1();
     }
     
     @.java.lang.Override
     public final .java.lang.String f2$s(final long n) {
-        return $Barface$impl.f2$s(n);
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f2$s(n);
     }
     
     @.java.lang.Override
     public final void f2(final long n) {
-        $Barface$impl.f2(n);
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f2(n);
     }
     
     @.java.lang.Override
     public final long f3$n() {
-        return $Barface$impl.f3$n();
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f3$n();
     }
     
     @.java.lang.Override
     public final void f3() {
-        $Barface$impl.f3();
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f3();
     }
     
     @.java.lang.Override
     public final long f3$m(final long n) {
-        return $Barface$impl.f3$m(n);
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f3$m(n);
     }
     
     @.java.lang.Override
     public final void f3(final long n) {
-        $Barface$impl.f3(n);
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f3(n);
     }
     
     @.java.lang.Override
     public final long f4$n() {
-        return $Barface$impl.f4$n();
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f4$n();
     }
     
     @.java.lang.Override
     public final void f4() {
-        $Barface$impl.f4();
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f4();
     }
     
     @.java.lang.Override
     public final long f4$m(final long n) {
-        return $Barface$impl.f4$m(n);
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f4$m(n);
     }
     
     @.java.lang.Override
     public final void f4(final long n) {
-        $Barface$impl.f4(n);
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f4(n);
     }
     
     @.java.lang.Override
     public final long f5$n() {
-        return $Barface$impl.f5$n();
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f5$n();
     }
     
     @.java.lang.Override
     public final void f5() {
-        $Barface$impl.f5();
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f5();
     }
     
     @.java.lang.Override
     public final long f7$n() {
-        return $Barface$impl.f7$n();
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f7$n();
     }
     
     @.java.lang.Override
     public final void f7() {
-        $Barface$impl.f7();
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f7();
     }
     
     @.java.lang.Override
     public final long f9$n() {
-        return $Barface$impl.f9$n();
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f9$n();
     }
     
     @.java.lang.Override
     public final void f9() {
-        $Barface$impl.f9();
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f9();
     }
     
     @.java.lang.Override
     public final long fa$n() {
-        return $Barface$impl.fa$n();
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.fa$n();
     }
     
     @.java.lang.Override
     public final void fa() {
-        $Barface$impl.fa();
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.fa();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
-        return $Barface$impl.fa$seq(n);
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.fa$seq(n);
     }
     
     @.java.lang.Override
     public final void fa(final long n) {
-        $Barface$impl.fa(n);
+        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.fa(n);
     }
     private final long prop;
     
@@ -692,7 +692,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     Barkls() {
-        this.$Barface$impl = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl(this);
         this.prop = 42L;
     }
     

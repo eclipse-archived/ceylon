@@ -30,7 +30,7 @@ final class SatisfiesWithMembers$impl {
     }
 }
 class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $SatisfiesWithMembers$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this;
     private final boolean b;
     
     @.java.lang.Override
@@ -55,7 +55,7 @@ class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test
     }
     
     SatisfiesWithMembersClass() {
-        this.$SatisfiesWithMembers$impl = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl(this);
         this.b = true;
         this.b2 = false;
     }

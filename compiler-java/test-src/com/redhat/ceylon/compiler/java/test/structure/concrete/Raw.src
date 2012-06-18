@@ -61,31 +61,31 @@ final class RawInv$impl<T, U> {
     }
 }
 class RawInvImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl $RawInv$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this;
     
     @.java.lang.Override
     public .java.lang.Object getADefault() {
-        return $RawInv$impl.getADefault();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this.getADefault();
     }
     
     @.java.lang.Override
     public final void setADefault(final .java.lang.Object aDefault) {
-        $RawInv$impl.setADefault(aDefault);
+        $com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this.setADefault(aDefault);
     }
     
     @.java.lang.Override
     public .java.lang.Object mDefault(final .java.lang.Object t) {
-        return $RawInv$impl.mDefault(t);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this.mDefault(t);
     }
     
     @.java.lang.Override
     public final .java.lang.Object mDefaulted$t() {
-        return $RawInv$impl.mDefaulted$t();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this.mDefaulted$t();
     }
     
     @.java.lang.Override
     public final .java.lang.Object mDefaulted() {
-        return $RawInv$impl.mDefaulted();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this.mDefaulted();
     }
     
     @.java.lang.Override
@@ -109,7 +109,7 @@ class RawInvImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.s
     }
     
     RawInvImplementor() {
-        this.$RawInv$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -157,21 +157,21 @@ final class RawIn$impl<T, U> {
     }
 }
 class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl $RawIn$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this;
     
     @.java.lang.Override
     public void mDefault(final .java.lang.Object t) {
-        $RawIn$impl.mDefault(t);
+        $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this.mDefault(t);
     }
     
     @.java.lang.Override
     public final .java.lang.Object mDefaulted$t() {
-        return $RawIn$impl.mDefaulted$t();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this.mDefaulted$t();
     }
     
     @.java.lang.Override
     public final void mDefaulted() {
-        $RawIn$impl.mDefaulted();
+        $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this.mDefaulted();
     }
     
     @.java.lang.Override
@@ -187,7 +187,7 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.st
     }
     
     RawInImplementor() {
-        this.$RawIn$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -231,16 +231,16 @@ final class RawOut$impl<T, U> {
     }
 }
 class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl $RawOut$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this;
     
     @.java.lang.Override
     public final .java.lang.Object getADefault() {
-        return $RawOut$impl.getADefault();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this.getADefault();
     }
     
     @.java.lang.Override
     public .java.lang.Object mDefault() {
-        return $RawOut$impl.mDefault();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this.mDefault();
     }
     
     @.java.lang.Override
@@ -259,7 +259,7 @@ class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.s
     }
     
     RawOutImplementor() {
-        this.$RawOut$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

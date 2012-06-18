@@ -143,77 +143,77 @@ final class ConcreteMethodBySpecificationSub$impl {
     }
 }
 class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $ConcreteMethodBySpecificationSub$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this;
     
     @.java.lang.Override
     public final long mSharedSup$i() {
-        return $ConcreteMethodBySpecificationSub$impl.mSharedSup$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mSharedSup$i();
     }
     
     @.java.lang.Override
     public final long mSharedSup() {
-        return $ConcreteMethodBySpecificationSub$impl.mSharedSup();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mSharedSup();
     }
     
     @.java.lang.Override
     public long mSharedSup(final long i) {
-        return $ConcreteMethodBySpecificationSub$impl.mSharedSup(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mSharedSup(i);
     }
     
     @.java.lang.Override
     public final long mDefaultSup$i() {
-        return $ConcreteMethodBySpecificationSub$impl.mDefaultSup$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mDefaultSup$i();
     }
     
     @.java.lang.Override
     public final long mDefaultSup() {
-        return $ConcreteMethodBySpecificationSub$impl.mDefaultSup();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mDefaultSup();
     }
     
     @.java.lang.Override
     public long mDefaultSup(final long i) {
-        return $ConcreteMethodBySpecificationSub$impl.mDefaultSup(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mDefaultSup(i);
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $ConcreteMethodBySpecification$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this;
     
     @.java.lang.Override
     public long mSharedFn() {
-        return $ConcreteMethodBySpecification$impl.mSharedFn();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mSharedFn();
     }
     
     @.java.lang.Override
     public final long mSharedMem$i() {
-        return $ConcreteMethodBySpecification$impl.mSharedMem$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mSharedMem$i();
     }
     
     @.java.lang.Override
     public final long mSharedMem() {
-        return $ConcreteMethodBySpecification$impl.mSharedMem();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mSharedMem();
     }
     
     @.java.lang.Override
     public long mSharedMem(final long i) {
-        return $ConcreteMethodBySpecification$impl.mSharedMem(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mSharedMem(i);
     }
     
     @.java.lang.Override
     public long mDefaultFn() {
-        return $ConcreteMethodBySpecification$impl.mDefaultFn();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mDefaultFn();
     }
     
     @.java.lang.Override
     public final long mDefaultMem$i() {
-        return $ConcreteMethodBySpecification$impl.mDefaultMem$i();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mDefaultMem$i();
     }
     
     @.java.lang.Override
     public final long mDefaultMem() {
-        return $ConcreteMethodBySpecification$impl.mDefaultMem();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mDefaultMem();
     }
     
     @.java.lang.Override
     public long mDefaultMem(final long i) {
-        return $ConcreteMethodBySpecification$impl.mDefaultMem(i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mDefaultMem(i);
     }
     
     @.java.lang.Override
@@ -222,8 +222,8 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
     }
     
     ConcreteMethodBySpecificationImpl() {
-        this.$ConcreteMethodBySpecificationSub$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl(this);
-        this.$ConcreteMethodBySpecification$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

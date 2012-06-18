@@ -52,8 +52,8 @@ final class TPERight$impl {
     }
 }
 class TPECLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft {
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $TPELeft$impl;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $TPETop$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
     
     @.java.lang.Override
     public final void left() {
@@ -76,8 +76,8 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasu
     }
     
     TPECLeft() {
-        this.$TPELeft$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl(this);
-        this.$TPETop$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl(this);
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
     }
@@ -88,9 +88,9 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasu
     }
 }
 class TPECMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight {
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $TPELeft$impl;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $TPETop$impl;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl $TPERight$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPERight$this;
     
     @.java.lang.Override
     public final void left() {
@@ -123,9 +123,9 @@ class TPECMiddle implements .com.redhat.ceylon.compiler.java.test.expression.era
     }
     
     TPECMiddle() {
-        this.$TPELeft$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl(this);
-        this.$TPETop$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl(this);
-        this.$TPERight$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPERight$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl(this);
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
         this.rightAttribute = 1L;

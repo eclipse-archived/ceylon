@@ -60,9 +60,9 @@ final class Right$impl {
     }
 }
 class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right {
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $Left$impl;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $Top$impl;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl $Right$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Right$this;
     
     @.java.lang.Override
     public final void left() {
@@ -106,9 +106,9 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasur
     }
     
     CMiddle() {
-        this.$Left$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl(this);
-        this.$Top$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl(this);
-        this.$Right$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Right$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl(this);
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
         this.rightAttribute = 1L;
@@ -121,8 +121,8 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasur
     }
 }
 class CLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.Left {
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $Left$impl;
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $Top$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this;
     
     @.java.lang.Override
     public final void left() {
@@ -156,8 +156,8 @@ class CLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.
     }
     
     CLeft() {
-        this.$Left$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl(this);
-        this.$Top$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl(this);
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
         this.leftAndRightAttribute = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
@@ -199,11 +199,11 @@ final class topLevelLeftAttribute {
     }
 }
 class MyException extends .ceylon.language.Exception implements .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface {
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl $EmptyInterface$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EmptyInterface$this;
     
     MyException(.ceylon.language.String m, .java.lang.Throwable x) {
         super(m, x);
-        this.$EmptyInterface$impl = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$EmptyInterface$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl(this);
     }
 }
 class Test {

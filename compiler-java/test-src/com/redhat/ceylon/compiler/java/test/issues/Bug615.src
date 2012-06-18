@@ -16,7 +16,7 @@ final class I$impl {
     }
 }
 class C implements .com.redhat.ceylon.compiler.java.test.issues.I {
-    private final .com.redhat.ceylon.compiler.java.test.issues.I$impl $I$impl;
+    private final .com.redhat.ceylon.compiler.java.test.issues.I$impl $com$redhat$ceylon$compiler$java$test$issues$I$this;
     private final .ceylon.language.Integer x;
     
     @.java.lang.Override
@@ -26,6 +26,6 @@ class C implements .com.redhat.ceylon.compiler.java.test.issues.I {
     
     C(.ceylon.language.Integer x) {
         this.x = x;
-        this.$I$impl = new .com.redhat.ceylon.compiler.java.test.issues.I$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$I$this = new .com.redhat.ceylon.compiler.java.test.issues.I$impl(this);
     }
 }

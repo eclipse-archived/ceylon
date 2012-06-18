@@ -286,7 +286,7 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
-    public void testCncNameCollision_fail(){
+    public void testCncNameCollision(){
         compareWithJavaSource("concrete/NameCollision");
     }
 

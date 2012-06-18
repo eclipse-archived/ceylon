@@ -10,10 +10,10 @@ final class Self$impl<T extends .com.redhat.ceylon.compiler.java.test.expression
     }
 }
 class X implements .com.redhat.ceylon.compiler.java.test.expression.invoke.Self<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> {
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> $Self$impl;
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> $com$redhat$ceylon$compiler$java$test$expression$invoke$Self$this;
     
     X() {
-        this.$Self$impl = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X>(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Self$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X>(this);
     }
     
     public static void main(.java.lang.String[] args) {

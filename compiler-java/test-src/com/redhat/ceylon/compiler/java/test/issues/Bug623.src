@@ -21,11 +21,11 @@ final class Bug623$impl {
     }
 }
 class Bug623Indirect extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.test.issues.Bug623 {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl $Bug623$impl;
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$Bug623$this;
     
     Bug623Indirect() {
         super();
-        this.$Bug623$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug623$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

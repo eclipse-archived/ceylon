@@ -58,31 +58,31 @@ final class TypeParamRename$impl<T, U> {
     }
 }
 class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y> {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $TypeParamRename$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this;
     
     @.java.lang.Override
     public final X m$t() {
-        return $TypeParamRename$impl.m$t();
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m$t();
     }
     
     @.java.lang.Override
     public final Y m() {
-        return $TypeParamRename$impl.m();
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m();
     }
     
     @.java.lang.Override
     public Y m(final X t) {
-        return $TypeParamRename$impl.m(t);
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m(t);
     }
     
     @.java.lang.Override
     public final <V, W>V m2$v() {
-        return $TypeParamRename$impl.m2$v();
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2$v();
     }
     
     @.java.lang.Override
     public final <V, W>W m2() {
-        return $TypeParamRename$impl.m2();
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m2();
     }
     
     @.java.lang.Override
@@ -91,7 +91,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.
     }
     
     TypeParamRenameKls() {
-        this.$TypeParamRename$impl = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
     }
     
     public static void main(.java.lang.String[] args) {

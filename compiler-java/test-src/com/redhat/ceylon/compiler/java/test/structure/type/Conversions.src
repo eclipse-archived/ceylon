@@ -105,7 +105,7 @@ class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats>
     }
 }
 class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar implements .com.redhat.ceylon.compiler.java.test.structure.type.ISats {
-    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $ISats$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this;
     
     @.java.lang.Override
     public final void z() {
@@ -113,7 +113,7 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
     
     BarSats() {
         super();
-        this.$ISats$impl = new .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$type$ISats$this = new .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

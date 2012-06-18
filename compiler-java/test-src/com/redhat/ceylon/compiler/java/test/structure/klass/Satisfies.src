@@ -10,10 +10,10 @@ final class Satisfies$impl {
     }
 }
 class SatisfiesClass implements .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $Satisfies$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
     
     SatisfiesClass() {
-        this.$Satisfies$impl = new .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

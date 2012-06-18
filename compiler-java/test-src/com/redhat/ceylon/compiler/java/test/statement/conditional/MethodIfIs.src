@@ -23,8 +23,8 @@ final class FooInterface$impl {
     }
 }
 class Foo implements .com.redhat.ceylon.compiler.java.test.statement.conditional.Common, .com.redhat.ceylon.compiler.java.test.statement.conditional.FooInterface {
-    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Common$impl $Common$impl;
-    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooInterface$impl $FooInterface$impl;
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Common$impl $com$redhat$ceylon$compiler$java$test$statement$conditional$Common$this;
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooInterface$impl $com$redhat$ceylon$compiler$java$test$statement$conditional$FooInterface$this;
     
     @.java.lang.Override
     public final void common() {
@@ -35,8 +35,8 @@ class Foo implements .com.redhat.ceylon.compiler.java.test.statement.conditional
     }
     
     Foo() {
-        this.$Common$impl = new .com.redhat.ceylon.compiler.java.test.statement.conditional.Common$impl(this);
-        this.$FooInterface$impl = new .com.redhat.ceylon.compiler.java.test.statement.conditional.FooInterface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$statement$conditional$Common$this = new .com.redhat.ceylon.compiler.java.test.statement.conditional.Common$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$statement$conditional$FooInterface$this = new .com.redhat.ceylon.compiler.java.test.statement.conditional.FooInterface$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -70,8 +70,8 @@ final class BarInterface$impl {
     }
 }
 class Bar implements .com.redhat.ceylon.compiler.java.test.statement.conditional.Common, .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface {
-    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Common$impl $Common$impl;
-    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface$impl $BarInterface$impl;
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Common$impl $com$redhat$ceylon$compiler$java$test$statement$conditional$Common$this;
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface$impl $com$redhat$ceylon$compiler$java$test$statement$conditional$BarInterface$this;
     
     @.java.lang.Override
     public final void common() {
@@ -82,8 +82,8 @@ class Bar implements .com.redhat.ceylon.compiler.java.test.statement.conditional
     }
     
     Bar() {
-        this.$Common$impl = new .com.redhat.ceylon.compiler.java.test.statement.conditional.Common$impl(this);
-        this.$BarInterface$impl = new .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$statement$conditional$Common$this = new .com.redhat.ceylon.compiler.java.test.statement.conditional.Common$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$statement$conditional$BarInterface$this = new .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

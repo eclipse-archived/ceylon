@@ -22,11 +22,11 @@ final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bu
     public final .ceylon.language.String getSomething() {
         return something;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl $Bug329_Something$impl;
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this;
     
     private bug329_se() {
         this.something = .ceylon.language.String.instance("somethingElse");
-        this.$Bug329_Something$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se[] value;
     static {
@@ -47,10 +47,10 @@ final class bug329_se2 implements .com.redhat.ceylon.compiler.java.test.issues.B
     public final .ceylon.language.String getSomething() {
         return .ceylon.language.String.instance("somethingElse");
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl $Bug329_Something$impl;
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this;
     
     private bug329_se2() {
-        this.$Bug329_Something$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se2[] value;
     static {

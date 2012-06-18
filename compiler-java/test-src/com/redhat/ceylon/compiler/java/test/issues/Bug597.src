@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug597 implements .com.redhat.ceylon.compiler.java.test.issues.Super {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Super$impl $Super$impl;
+    private final .com.redhat.ceylon.compiler.java.test.issues.Super$impl $com$redhat$ceylon$compiler$java$test$issues$Super$this;
     
     @.java.lang.Override
     public .java.lang.String getFoo() {
-        return $Super$impl.getFoo();
+        return $com$redhat$ceylon$compiler$java$test$issues$Super$this.getFoo();
     }
     
     Bug597() {
-        this.$Super$impl = new .com.redhat.ceylon.compiler.java.test.issues.Super$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Super$this = new .com.redhat.ceylon.compiler.java.test.issues.Super$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

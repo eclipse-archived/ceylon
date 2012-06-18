@@ -56,16 +56,16 @@ class DefaultSetter {
     }
     
     abstract class Abstract implements .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I {
-        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $I$impl;
+        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this;
         
         @.java.lang.Override
         public long getADefault() {
-            return $I$impl.getADefault();
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this.getADefault();
         }
         
         @.java.lang.Override
         public final void setADefault(final long aDefault) {
-            $I$impl.setADefault(aDefault);
+            $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this.setADefault(aDefault);
         }
         
         @.java.lang.Override
@@ -79,21 +79,21 @@ class DefaultSetter {
         }
         
         Abstract() {
-            this.$I$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
         }
     }
     
     class Concrete implements .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I {
-        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $I$impl;
+        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this;
         
         @.java.lang.Override
         public long getADefault() {
-            return $I$impl.getADefault();
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this.getADefault();
         }
         
         @.java.lang.Override
         public final void setADefault(final long aDefault) {
-            $I$impl.setADefault(aDefault);
+            $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this.setADefault(aDefault);
         }
         
         @.java.lang.Override
@@ -106,7 +106,7 @@ class DefaultSetter {
         }
         
         Concrete() {
-            this.$I$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
         }
     }
     
@@ -138,37 +138,37 @@ class DefaultSetter {
     }
     
     class Sub implements .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$ISub {
-        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl $ISub$impl;
+        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this;
         
         @.java.lang.Override
         public long getAFormal() {
-            return $ISub$impl.getAFormal();
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this.getAFormal();
         }
         
         @.java.lang.Override
         public final void setAFormal(final long aFormal) {
-            $ISub$impl.setAFormal(aFormal);
+            $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this.setAFormal(aFormal);
         }
         
         @.java.lang.Override
         public long inc() {
-            return $ISub$impl.inc();
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this.inc();
         }
-        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $I$impl;
+        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this;
         
         @.java.lang.Override
         public long getADefault() {
-            return $I$impl.getADefault();
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this.getADefault();
         }
         
         @.java.lang.Override
         public final void setADefault(final long aDefault) {
-            $I$impl.setADefault(aDefault);
+            $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this.setADefault(aDefault);
         }
         
         Sub() {
-            this.$ISub$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl(this);
-            this.$I$impl = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
         }
     }
     

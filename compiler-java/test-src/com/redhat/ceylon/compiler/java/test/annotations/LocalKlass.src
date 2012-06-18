@@ -8,8 +8,8 @@ public class LocalKlass {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         class Inner<T> implements .ceylon.language.Sized {
-            private final .ceylon.language.Sized$impl $Sized$impl;
-            private final .ceylon.language.Container$impl $Container$impl;
+            private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
+            private final .ceylon.language.Container$impl $ceylon$language$Container$this;
             private final long i1;
             
             public final long getI1() {
@@ -52,8 +52,8 @@ public class LocalKlass {
             }
             
             Inner() {
-                this.$Sized$impl = new .ceylon.language.Sized$impl(this);
-                this.$Container$impl = new .ceylon.language.Container$impl(this);
+                this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
+                this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
                 this.i1 = 1L;
             }
         }

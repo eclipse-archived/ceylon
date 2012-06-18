@@ -37,10 +37,10 @@ final class SatisfiesGeneric$impl<X, Y, Z> {
     }
 }
 class SatisfiesGenericImpl implements .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric<.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>> {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>> $SatisfiesGeneric$impl;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>> $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric$this;
     
     SatisfiesGenericImpl() {
-        this.$SatisfiesGeneric$impl = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>>(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesGeneric$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends .ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<.ceylon.language.String>>(this);
     }
     
     public static void main(.java.lang.String[] args) {

@@ -58,12 +58,12 @@ final class Bug260_Interface3$impl {
     }
 }
 class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2, .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3 {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2$impl $Bug260_Interface2$impl;
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3$impl $Bug260_Interface3$impl;
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2$impl $com$redhat$ceylon$compiler$java$test$issues$Bug260_Interface2$this;
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3$impl $com$redhat$ceylon$compiler$java$test$issues$Bug260_Interface3$this;
     
     Bug260_Intersection() {
-        this.$Bug260_Interface2$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2$impl(this);
-        this.$Bug260_Interface3$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug260_Interface2$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug260_Interface3$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface3$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -72,8 +72,8 @@ class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.test.issue
     }
 }
 class Bug260 implements .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface, .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2 {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface$impl $Bug260_Interface$impl;
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2$impl $Bug260_Interface2$impl;
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$Bug260_Interface$this;
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2$impl $com$redhat$ceylon$compiler$java$test$issues$Bug260_Interface2$this;
     private final .ceylon.language.Integer attr;
     
     @.java.lang.Override
@@ -114,8 +114,8 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.test.issues.Bug260_Inte
     }
     
     Bug260() {
-        this.$Bug260_Interface$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface$impl(this);
-        this.$Bug260_Interface2$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug260_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug260_Interface2$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Interface2$impl(this);
         this.attr = null;
         this.attr2 = .ceylon.language.bottom.getBottom();
         this.attr3 = new .com.redhat.ceylon.compiler.java.test.issues.Bug260_Intersection();
