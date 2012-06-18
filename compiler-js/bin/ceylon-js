@@ -46,7 +46,6 @@ MODS=modules
 #Default function to run
 FUN=run
 #Default version
-MPATH=$MOD
 MVER=1.0.0
 while getopts p:m:v:f: o
 do	case "$o" in
@@ -69,6 +68,7 @@ then
     exit
 fi
 
+MPATH=$MOD
 if [ "$MOD" != "default" ]; then
   MPATH="$MOD/$MVER"
   MOD="$MOD-$MVER"
