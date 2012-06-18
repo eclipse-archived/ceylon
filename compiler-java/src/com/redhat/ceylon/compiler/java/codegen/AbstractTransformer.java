@@ -1917,18 +1917,21 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             }
         } else {
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : makeUnquotedIdent(varName);
-            if (type.isExactly(typeFact().getNothingDeclaration().getType())){
+            if (isVoid(type)){
+                // everything is Void, it's the root of the hierarchy
+                return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
+            } else if (type.isExactly(typeFact().getNothingDeclaration().getType())){
                 // is Nothing => is null
                 return make().Binary(JCTree.EQ, varExpr, makeNull());
             } else if (type.isExactly(typeFact().getObjectDeclaration().getType())){
                 // is Object => is not null
                 return make().Binary(JCTree.NE, varExpr, makeNull());
-            } else if (isVoid(type)){
-                // everything is Void, it's the root of the hierarchy
-                return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
-            } else if (type.isExactly(typeFact().getIdentifiableObjectDeclaration().getType())){
+            } else if (type.isExactly(typeFact().getIdentifiableDeclaration().getType())){
                 // it's erased
                 return makeUtilInvocation("isIdentifiable", List.of(varExpr), null);
+            } else if (type.isExactly(typeFact().getIdentifiableObjectDeclaration().getType())){
+                // it's erased
+                return makeUtilInvocation("isIdentifiableObject", List.of(varExpr), null);
             } else if (type.getDeclaration() instanceof BottomType){
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
