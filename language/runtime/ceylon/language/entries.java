@@ -19,17 +19,17 @@ public final class entries {
     
     @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Object"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Entry<ceylon.language.Integer,Element>>")
-    public static <Element> Iterable<? extends Entry<? extends Integer,? extends Element>> entries(@Name("sequence")
+    public static <Element> Iterable<? extends Entry<? extends Integer,? extends Element>> entries(@Name("elements")
     @Sequenced @TypeInfo("ceylon.language.Iterable<Element>")
-    final ceylon.language.Iterable<? extends Element> sequence) {
-        if (sequence.getEmpty()) {
+    final ceylon.language.Iterable<? extends Element> elements) {
+        if (elements.getEmpty()) {
             return $empty.getEmpty();
         }
         else {
         	long i=0;
             List<Entry<? extends Integer,? extends Element>> list = new ArrayList<Entry<? extends Integer,? extends Element>>();
             java.lang.Object elem;
-            for (Iterator<? extends Element> iter=sequence.getIterator(); !((elem = iter.next()) instanceof Finished);) {
+            for (Iterator<? extends Element> iter=elements.getIterator(); !((elem = iter.next()) instanceof Finished);) {
                 list.add(new Entry<Integer,Element>(Integer.instance(i++), (Element) elem));
             }
             return new ArraySequence<Entry<? extends Integer,? extends Element>>(list);

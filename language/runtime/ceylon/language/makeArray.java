@@ -22,7 +22,7 @@ public final class makeArray {
     @Name("size")
     @TypeInfo("ceylon.language.Integer")
     final Integer size,
-    @Name("init")
+    @Name("index")
     @TypeInfo("ceylon.language.Callable<Element,ceylon.language.Integer>")
     final Callable<Element> init) {
         List<Element> list = new ArrayList<Element>();
