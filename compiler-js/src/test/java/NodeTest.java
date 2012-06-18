@@ -3,6 +3,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.redhat.ceylon.compiler.js.Runner;
+
 
 /** Runs the test() function in each js module that was generated.
  * 
@@ -47,19 +49,6 @@ public class NodeTest {
         }
     }
 
-    /** Finds the full path to the node.js executable. */
-    public static String findNode() {
-        //TODO add windows executable
-        String[] paths = { "/usr/bin/node", "/usr/local/bin/node", "/bin/node", "/opt/bin/node" };
-        for (String p : paths) {
-            File f = new File(p);
-            if (f.exists() && f.canExecute()) {
-                return p;
-            }
-        }
-        return null;
-    }
-
     public static void main(String[] args) throws IOException, InterruptedException {
         File root = new File(args[0]);
         if (!(root.exists() && root.isDirectory() && root.canRead())) {
@@ -71,11 +60,7 @@ public class NodeTest {
                 File jsf = subdir.getName().equals("default") ? new File(subdir, "default.js") :
                     new File(subdir, "0.1/" + subdir.getName() + "-0.1.js");
                 System.out.printf("RUNNING %s%n", jsf.getName());
-                String nodePath = findNode();
-                if (nodePath == null) {
-                    System.err.println("Could not find 'node' executable. Please install node.js and retry.");
-                    System.exit(1);
-                }
+                String nodePath = Runner.findNode(); //if not found, prints error and exits
                 byte[] b1 = new byte[16834];
                 byte[] b2 = new byte[16834];
                 String path = jsf.getPath();
