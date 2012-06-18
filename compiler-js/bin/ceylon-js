@@ -41,37 +41,6 @@ then
     fi
 fi
 
-#Default place to look for modules (besides bootstrap repo)
-MODS=modules
-#Default function to run
-FUN=run
-#Default version
-MVER=1.0.0
-while getopts p:m:v:f: o
-do	case "$o" in
-	m)	MOD="$OPTARG";;
-	f)	FUN="$OPTARG";;
-	p)	MODS="$OPTARG";;
-	v)	MVER="$OPTARG";;
-	[?]) echo >%2 "Usage: $0 [-p path to modules directory] [-m module to run] [-v module version] [-f function to run]"
-         exit 1;;
-	esac
-done
+NODE_PATH="$NODE_PATH" CEYLON_REPO="$CEYLON_REPO" java -cp $CEYLON_REPO/com/redhat/ceylon/compiler/js/$CEYLON_VERSION/com.redhat.ceylon.compiler.js-${CEYLON_VERSION}.jar com.redhat.ceylon.compiler.js.Runner $ARGS
 
-if test -z "$MOD"
-then
-	echo "Usage:"
-	echo "      ceylonjs [-p path to modules directory] [-m module to run] [-v module version] [-f function to run]"
-	echo "          -p defaults to ./modules"
-	echo "          -f defaults to 'run' which must be an exported function of the JS module"
-	echo "          -v defaults to 1.0.0"
-    exit
-fi
-
-MPATH=$MOD
-if [ "$MOD" != "default" ]; then
-  MPATH="$MOD/$MVER"
-  MOD="$MOD-$MVER"
-fi
-
-NODE_PATH=$NODEPATH:$CEYLON_REPO:$MODS node -e "require('$MPATH/$MOD').${FUN}();"
+#NODE_PATH=$NODEPATH:$CEYLON_REPO:$MODS node -e "require('$MPATH/$MOD').${FUN}();"
