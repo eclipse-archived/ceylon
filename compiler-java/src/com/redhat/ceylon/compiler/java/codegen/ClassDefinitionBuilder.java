@@ -117,7 +117,10 @@ public class ClassDefinitionBuilder {
         
         extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
-        if (aliasedName != null && !aliasedName.equals(name)) {
+        if (aliasedName == null) {
+            aliasedName = name;
+        }
+        if (!aliasedName.equals(Util.quoteIfJavaKeyword(name))) {
             annotations(gen.makeAtName(aliasedName));
         }
         if (ancestorLocal) {
