@@ -93,15 +93,15 @@ public class ClassDefinitionBuilder {
 
     private ClassDefinitionBuilder containingClassBuilder;
 
-    public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String name) {
-        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name);
+    public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
+        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name, aliasedName);
         builder.containingClassBuilder = gen.current();
         gen.replace(builder);
         return builder;
     }
     
     public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String name, boolean shared) {
-        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name);
+        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name, null);
         builder.containingClassBuilder = gen.current();
         gen.replace(builder);
         return builder
@@ -110,13 +110,16 @@ public class ClassDefinitionBuilder {
             .constructorModifiers(PRIVATE);
     }
 
-    private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name) {
+    private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
         this.gen = gen;
         this.name = name;
         this.ancestorLocal = ancestorLocal;
         
         extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
+        if (aliasedName != null && !aliasedName.equals(name)) {
+            annotations(gen.makeAtName(aliasedName));
+        }
         if (ancestorLocal) {
             this.annotations.appendList(gen.makeAtIgnore());
         }
@@ -461,7 +464,7 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder getCompanionBuilder(Declaration decl) {
         if (concreteInterfaceMemberDefs == null) {
-            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, gen.getCompanionClassName(decl).replaceFirst(".*\\.", ""))
+            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, gen.getCompanionClassName(decl).replaceFirst(".*\\.", ""), null)
                 .annotations(gen.makeAtIgnore());
             concreteInterfaceMemberDefs.isCompanion = true;
         }
