@@ -559,13 +559,20 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
              * - is erased to object
              * - refines a declaration that is not erased to object
              */
-            boolean isWidening = !sameType(syms().ceylonObjectType, decl.getType())
-                    && willEraseToObject(decl.getType())
-                    && !willEraseToObject(refinedDeclaration.getType());
+            ProducedType declType = decl.getType();
+            ProducedType refinedDeclType = refinedDeclaration.getType();
+            boolean isWidening = isWidening(declType, refinedDeclType);
+            
             if(isWidening)
                 return refinedDeclaration;
         }
         return decl;
+    }
+
+    public boolean isWidening(ProducedType declType, ProducedType refinedDeclType) {
+        return !sameType(syms().ceylonObjectType, declType)
+                && willEraseToObject(declType)
+                && !willEraseToObject(refinedDeclType);
     }
 
     public boolean haveSameBounds(TypeParameter tp, TypeParameter refinedTP) {
