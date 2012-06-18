@@ -1625,7 +1625,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private ProducedType obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope, VarianceLocation variance) {
         String typeName = getAnnotationStringValue(symbol, CEYLON_TYPE_INFO_ANNOTATION);
         if (typeName != null) {
-            return decodeType(typeName, scope);
+            ProducedType ret = decodeType(typeName, scope);
+            // even decoded types need to fit with the reality of the underlying type
+            ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TOPLEVEL));
+            return ret;
         } else {
             return obtainType(type, scope, TypeLocation.TOPLEVEL, variance);
         }
@@ -1649,43 +1652,50 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
          */
         INVARIANT;
     }
+
+    private String getUnderlyingType(TypeMirror type, TypeLocation location){
+        // don't erase to c.l.String if in a type param location
+        if ((sameType(type, STRING_TYPE) && location != TypeLocation.TYPE_PARAM)
+            || sameType(type, PRIM_BYTE_TYPE)
+            || sameType(type, PRIM_SHORT_TYPE)
+            || sameType(type, PRIM_INT_TYPE)
+            || sameType(type, PRIM_FLOAT_TYPE)
+            || sameType(type, PRIM_CHAR_TYPE)) {
+            return type.getQualifiedName();
+        }
+        return null;
+    }
     
     private ProducedType obtainType(TypeMirror type, Scope scope, TypeLocation location, VarianceLocation variance) {
-        String underlyingType = null;
+        TypeMirror originalType = type;
         // ERASURE
         
         // don't erase to c.l.String if in a type param location
         if (sameType(type, STRING_TYPE) && location != TypeLocation.TYPE_PARAM) {
-            underlyingType = type.getQualifiedName();
             type = CEYLON_STRING_TYPE;
             
         } else if (sameType(type, PRIM_BOOLEAN_TYPE)) {
             type = CEYLON_BOOLEAN_TYPE;
             
         } else if (sameType(type, PRIM_BYTE_TYPE)) {
-            underlyingType = type.getQualifiedName();
             type = CEYLON_INTEGER_TYPE;
             
         } else if (sameType(type, PRIM_SHORT_TYPE)) {
-            underlyingType = type.getQualifiedName();
             type = CEYLON_INTEGER_TYPE;
             
         } else if (sameType(type, PRIM_INT_TYPE)) {
-            underlyingType = type.getQualifiedName();
             type = CEYLON_INTEGER_TYPE;
             
         } else if (sameType(type, PRIM_LONG_TYPE)) {
             type = CEYLON_INTEGER_TYPE;
             
         } else if (sameType(type, PRIM_FLOAT_TYPE)) {
-            underlyingType = type.getQualifiedName();
             type = CEYLON_FLOAT_TYPE;
             
         } else if (sameType(type, PRIM_DOUBLE_TYPE)) {
             type = CEYLON_FLOAT_TYPE;
             
         } else if (sameType(type, PRIM_CHAR_TYPE)) {
-            underlyingType = type.getQualifiedName();
             type = CEYLON_CHARACTER_TYPE;
             
         } else if (sameType(type, OBJECT_TYPE)) {
@@ -1693,8 +1703,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         ProducedType ret = getType(type, scope, variance);
-        if(underlyingType != null)
-            ret.setUnderlyingType(underlyingType);
+        ret.setUnderlyingType(getUnderlyingType(originalType, location));
         return ret;
     }
     
