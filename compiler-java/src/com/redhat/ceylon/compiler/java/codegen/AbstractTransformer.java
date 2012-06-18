@@ -615,6 +615,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         ProducedType refinedType = refinedDeclaration.getType();
         if(producedReference != null)
             refinedType = refinedType.substitute(producedReference.getTypeArguments());
+        // if the refined type is a method TypeParam, use the original decl that will be more correct
+        if(refinedType.getDeclaration() instanceof TypeParameter
+                && refinedType.getDeclaration().getContainer() instanceof Method){
+            return declaration.getType();
+        }
         return refinedType;
     }
     
