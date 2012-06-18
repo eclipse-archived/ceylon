@@ -65,7 +65,7 @@ public class LazyClass extends Class implements LazyContainer {
         this.constructor = constructor;
         this.forTopLevelObject = forTopLevelObject;
         this.realName = classMirror.getName();
-        setName(Util.strip(this.realName));
+        setName(Util.getMirrorName(classMirror));
         setAbstract(classMirror.isAbstract());
         this.isStatic = classMirror.isStatic();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;

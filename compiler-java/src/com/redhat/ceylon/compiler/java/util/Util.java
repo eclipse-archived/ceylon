@@ -40,6 +40,9 @@ import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
+import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -379,5 +382,14 @@ public class Util {
             return classSymbol.sourcefile.getKind() != Kind.CLASS;
         // we don't know but it's probably not
         return false;
+    }
+    
+    public static String getMirrorName(AnnotatedMirror mirror) {
+        String name = strip(mirror.getName()); // FIXME The strip() really should't be necessary
+        AnnotationMirror annot = mirror.getAnnotation(AbstractModelLoader.CEYLON_NAME_ANNOTATION);
+        if (annot != null) {
+            name = (String)annot.getValue();
+        }
+        return name;
     }
 }
