@@ -12,7 +12,7 @@ shared object process {
          the virtual machine."
     shared Boolean namedArgumentPresent(String name) { throw; }
 
-    doc "The value of an argument of form `-name=value`, 
+    doc "The value of the first argument of form `-name=value`, 
          `--name=value`, or `-name value` specified among the 
          command line arguments to the virtual machine, if
          any."
