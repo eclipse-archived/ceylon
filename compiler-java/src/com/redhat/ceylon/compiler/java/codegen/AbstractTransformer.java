@@ -568,6 +568,30 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return decl;
     }
 
+    public boolean haveSameBounds(TypeParameter tp, TypeParameter refinedTP) {
+        java.util.List<ProducedType> satTP = tp.getSatisfiedTypes();
+        java.util.List<ProducedType> satRefinedTP = new LinkedList<ProducedType>();
+        satRefinedTP.addAll(refinedTP.getSatisfiedTypes());
+        // same number of bounds
+        if(satTP.size() != satRefinedTP.size())
+            return false;
+        // make sure all the bounds are the same
+        OUT:
+        for(ProducedType satisfiedType : satTP){
+            for(ProducedType refinedSatisfiedType : satRefinedTP){
+                // if we found it, remove it from the second list to not match it again
+                if(satisfiedType.isExactly(refinedSatisfiedType)){
+                    satRefinedTP.remove(satRefinedTP);
+                    continue OUT;
+                }
+            }
+            // not found
+            return false;
+        }
+        // all bounds are equal
+        return true;
+    }
+
     ProducedType nonWideningType(TypedDeclaration declaration, TypedDeclaration refinedDeclaration){
         if(declaration == refinedDeclaration)
             return declaration.getType();
