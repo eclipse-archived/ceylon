@@ -19,8 +19,8 @@
  */
 @nomodel
 shared class SetOperators() {
-    
-    void set(Set<Integer> a, Set<Integer> b) {
+
+    void testSetOperatorsWithSameTypes(Set<Integer> a, Set<Integer> b) {
         variable Set<Integer> sync;
         sync := a | b;
         sync := a & b;
@@ -31,5 +31,14 @@ shared class SetOperators() {
         sync ^= a;
         sync ~= a;
     }
-    
+
+    void testSetOperatorsWithDifferentTypes(Set<Integer> a, Set<Float> b) {
+        variable Set<Integer|Float> x1 := a | b;
+        variable Set<Integer&Float> x2 := a & b;
+        variable Set<Integer|Float> x3 := a ^ b;
+        variable Set<Integer> x4 := a ~ b;
+        x4 &= b;
+        x4 ~= b;
+    }
+
 }

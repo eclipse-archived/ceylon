@@ -2,16 +2,16 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 public class SetOperators {
     
-    private final void set(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
+    private final void testSetOperatorsWithSameTypes(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
         .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
-        sync = (.ceylon.language.Set)a.union(b);
-        sync = (.ceylon.language.Set)a.intersection(b);
-        sync = (.ceylon.language.Set)a.exclusiveUnion(b);
-        sync = (.ceylon.language.Set)a.complement(b);
+        sync = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.union(b);
+        sync = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.intersection(b);
+        sync = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.exclusiveUnion(b);
+        sync = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.complement(b);
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop0 = (.ceylon.language.Set)sync.union(a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop0 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)sync.union(a);
                 sync = $ceylontmpop0;
             }
             returning $ceylontmpop0;
@@ -19,7 +19,7 @@ public class SetOperators {
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop1 = (.ceylon.language.Set)sync.intersection(a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop1 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)sync.intersection(a);
                 sync = $ceylontmpop1;
             }
             returning $ceylontmpop1;
@@ -27,7 +27,7 @@ public class SetOperators {
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop2 = (.ceylon.language.Set)sync.exclusiveUnion(a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)sync.exclusiveUnion(a);
                 sync = $ceylontmpop2;
             }
             returning $ceylontmpop2;
@@ -35,10 +35,33 @@ public class SetOperators {
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop3 = (.ceylon.language.Set)sync.complement(a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop3 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)sync.complement(a);
                 sync = $ceylontmpop3;
             }
             returning $ceylontmpop3;
+        );
+    }
+    
+    private final void testSetOperatorsWithDifferentTypes(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Float> b) {
+        .ceylon.language.Set x1 = (.ceylon.language.Set)a.union(b);
+        .ceylon.language.Set x2 = (.ceylon.language.Set)a.intersection(b);
+        .ceylon.language.Set x3 = (.ceylon.language.Set)a.exclusiveUnion(b);
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x4 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.complement(b);
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop4 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)x4.intersection(b);
+                x4 = $ceylontmpop4;
+            }
+            returning $ceylontmpop4;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop5 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)x4.complement(b);
+                x4 = $ceylontmpop5;
+            }
+            returning $ceylontmpop5;
         );
     }
     
