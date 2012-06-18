@@ -113,7 +113,7 @@ public class EqualityAndComparisonOperators {
             {
                 .java.lang.Object $ceylontmp5 = foo;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.isIdentifiable($ceylontmp5);
+            returning .com.redhat.ceylon.compiler.java.Util.isIdentifiableObject($ceylontmp5);
         );
         sync = (
             let
