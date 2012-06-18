@@ -2182,7 +2182,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * instance.
      */
     final String getCompanionFieldName(Interface def) {
-        return "$" + CodegenUtil.getCompanionClassName(def.getName());
+        return "$" + def.getQualifiedNameString().replace('.', '$') + "$this";
     }
     /** 
      * Returns the name of the method in interfaces and classes used to get 

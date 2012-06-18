@@ -204,18 +204,6 @@ class CodegenUtil {
         return Util.getSetterName(decl.getName());
     }
 
-    /**
-     * Deprecated in favour of 
-     * {@link AbstractTransformer#getCompanionClassName(Declaration)} which 
-     * understands interface renaming and local types.
-     * @param name
-     * @return
-     */
-    @Deprecated
-    static String getCompanionClassName(String name){
-        return name + "$impl";
-    }
-
     static boolean isUnBoxed(Term node){
         return node.getUnboxed();
     }
