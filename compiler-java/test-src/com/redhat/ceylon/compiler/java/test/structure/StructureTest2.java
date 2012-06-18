@@ -276,6 +276,11 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
+    public void testCncEmptyImplementor_fail(){
+        compareWithJavaSource("concrete/EmptyImplementor");
+    }
+    
+    @Test
     public void testCncNameCollision_fail(){
         compareWithJavaSource("concrete/NameCollision");
     }
