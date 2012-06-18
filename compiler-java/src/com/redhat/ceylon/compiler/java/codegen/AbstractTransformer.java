@@ -2107,10 +2107,29 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
 
     JCTypeParameter makeTypeParameter(TypeParameter declarationModel) {
+        TypeParameter typeParameterForBounds = declarationModel;
+        // special case for method refinenement where Java doesn't let us refine the parameter bounds
+        if(declarationModel.getContainer() instanceof Method){
+            Method method = (Method) declarationModel.getContainer();
+            Method refinedMethod = (Method) method.getRefinedDeclaration();
+            if(method != refinedMethod){
+                // find the param index
+                int index = method.getTypeParameters().indexOf(declarationModel);
+                if(index == -1){
+                    log.error("Failed to find type parameter index: "+declarationModel.getName());
+                }else if(refinedMethod.getTypeParameters().size() > index){
+                    // ignore smaller index than size since the typechecker would have found the error
+                    TypeParameter refinedTP = refinedMethod.getTypeParameters().get(index);
+                    if(!haveSameBounds(declarationModel, refinedTP)){
+                        typeParameterForBounds = refinedTP;
+                    }
+                }
+            }
+        }
         return makeTypeParameter(declarationModel.getName(), 
-                declarationModel.getSatisfiedTypes(),
-                declarationModel.isCovariant(),
-                declarationModel.isContravariant());
+                typeParameterForBounds.getSatisfiedTypes(),
+                typeParameterForBounds.isCovariant(),
+                typeParameterForBounds.isContravariant());
     }
     
     JCTypeParameter makeTypeParameter(Tree.TypeParameterDeclaration param) {
