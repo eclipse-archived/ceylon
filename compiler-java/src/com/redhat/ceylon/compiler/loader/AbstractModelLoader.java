@@ -1209,7 +1209,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         decl.setStaticallyImportable(methodMirror.isStatic());
-        if(isOverridingMethod(methodMirror)){
+        if(isOverridingMethod(methodMirror)
+                // For Ceylon interfaces we rely on annotation
+                || (klass instanceof LazyInterface 
+                        && ((LazyInterface)klass).isCeylon()
+                        && isAnnotated(methodMirror, "actual"))){
             decl.setActual(true);
         }
     }
