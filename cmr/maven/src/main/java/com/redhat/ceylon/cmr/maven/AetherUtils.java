@@ -75,35 +75,35 @@ class AetherUtils {
         }
     }
 
-    private static File getMavenSettings() {
+    private static String getMavenSettings() {
         String path = System.getProperty("maven.repo.local");
         if (path != null) {
             File file = new File(path, "settings.xml");
             if (file.exists())
-                return file;
+                return file.getPath();
         }
 
         path = System.getProperty("user.home");
         if (path != null) {
             File file = new File(path, ".m2/settings.xml");
             if (file.exists())
-                return file;
+                return file.getPath();
         }
 
         path = System.getenv("M2_HOME");
         if (path != null) {
             File file = new File(path, "conf/settings.xml");
             if (file.exists())
-                return file;
+                return file.getPath();
         }
 
-        throw new IllegalArgumentException("No known default path to Maven settings.xml!");
+		return "classpath:settings.xml";
     }
 
     private static MavenDependencyResolver getResolver() {
         if (resolver == null) {
-            final File settingsXml = getMavenSettings();
-            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml.getPath());
+            final String settingsXml = getMavenSettings();
+            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml);
         }
         return resolver;
     }
