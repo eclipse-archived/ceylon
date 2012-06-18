@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -66,10 +67,12 @@ public class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(method == null)
             return;
-        Method refinedMethod = (Method) CodegenUtil.getTopmostRefinedDeclaration(method);
+        Declaration refined = CodegenUtil.getTopmostRefinedDeclaration(method);
         // deal with invalid input
-        if(refinedMethod == null)
+        if(refined == null
+                || (!(refined instanceof Method)))
             return;
+        Method refinedMethod = (Method)refined;
         List<ParameterList> methodParameterLists = method.getParameterLists();
         List<ParameterList> refinedParameterLists = refinedMethod.getParameterLists();
         // A Callable, which never have primitive parameters
