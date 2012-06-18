@@ -16,8 +16,9 @@ final class bug608 {
                 .ceylon.language.String $arg$0$this$ = $arg$0$callable$;
                 boolean $arg$0$1 = true;
                 .ceylon.language.Iterable<? extends .ceylon.language.Character> $arg$0$0 = $arg$0$this$.split$separators();
+                boolean $arg$0$2 = $arg$0$this$.split$groupSeparators($arg$0$0, $arg$0$1);
             }
-            returning $arg$0$callable$.split($arg$0$0, $arg$0$1);
+            returning $arg$0$callable$.split($arg$0$0, $arg$0$1, $arg$0$2);
         );
         final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs));
         builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(commandWithArgs));
