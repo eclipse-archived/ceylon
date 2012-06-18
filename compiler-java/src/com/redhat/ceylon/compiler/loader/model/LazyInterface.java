@@ -56,7 +56,7 @@ public class LazyInterface extends Interface implements LazyContainer {
     public LazyInterface(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;
-        this.realName = classMirror.getSimpleName();
+        this.realName = classMirror.getName();
         setName(Util.strip(this.realName));
         this.isStatic = classMirror.isStatic();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;

@@ -27,6 +27,11 @@ package com.redhat.ceylon.compiler.loader.mirror;
 public interface AnnotatedMirror {
 
     /**
+     * Returns the program element's name
+     */
+    String getName();
+
+    /**
      * Gets an annotation by annotation type name (fully qualified annotation class name)
      */
     AnnotationMirror getAnnotation(String type);

@@ -69,7 +69,7 @@ public class ReflectionClass implements ClassMirror {
     }
 
     @Override
-    public String getSimpleName() {
+    public String getName() {
         return klass.getSimpleName();
     }
 

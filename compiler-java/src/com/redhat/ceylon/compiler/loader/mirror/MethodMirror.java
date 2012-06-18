@@ -29,11 +29,6 @@ import java.util.List;
 public interface MethodMirror extends AnnotatedMirror {
 
     /**
-     * Returns the method name
-     */
-    String getName();
-
-    /**
      * Returns true if this method is static
      */
     boolean isStatic();

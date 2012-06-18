@@ -56,7 +56,7 @@ public class LazyMethod extends Method implements LazyElement {
     public LazyMethod(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;
-        this.realName = classMirror.getSimpleName();
+        this.realName = classMirror.getName();
         setName(Util.strip(this.realName));
     }
 

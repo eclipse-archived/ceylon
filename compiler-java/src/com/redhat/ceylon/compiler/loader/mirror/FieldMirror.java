@@ -28,11 +28,6 @@ package com.redhat.ceylon.compiler.loader.mirror;
 public interface FieldMirror extends AnnotatedMirror {
 
     /**
-     * Returns the field name
-     */
-    String getName();
-
-    /**
      * Returns true if this field is static
      */
     boolean isStatic();

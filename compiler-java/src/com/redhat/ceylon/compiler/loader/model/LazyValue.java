@@ -54,7 +54,7 @@ public class LazyValue extends Value implements LazyElement {
     public LazyValue(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;
-        this.realName = classMirror.getSimpleName();
+        this.realName = classMirror.getName();
         setName(Util.strip(this.realName));
     }
 

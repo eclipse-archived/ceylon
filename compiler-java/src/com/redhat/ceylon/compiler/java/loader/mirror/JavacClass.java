@@ -119,7 +119,7 @@ public class JavacClass implements ClassMirror {
     }
 
     @Override
-    public String getSimpleName() {
+    public String getName() {
         return classSymbol.getSimpleName().toString();
     }
 

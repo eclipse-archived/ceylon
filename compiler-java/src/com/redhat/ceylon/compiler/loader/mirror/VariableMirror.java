@@ -25,11 +25,6 @@ package com.redhat.ceylon.compiler.loader.mirror;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public interface VariableMirror extends AnnotatedMirror {
-
-    /**
-     * Returns this parameter's name
-     */
-    String getName();
     
     /**
      * Returns this parameter's type

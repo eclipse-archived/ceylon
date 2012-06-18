@@ -56,11 +56,6 @@ public interface ClassMirror extends AnnotatedMirror {
      * Returns true if this class is an anonymous class
      */
     boolean isAnonymous();
-
-    /**
-     * Returns the non-qualified class name
-     */
-    String getSimpleName();
     
     /**
      * Returns the fully-qualified class name
