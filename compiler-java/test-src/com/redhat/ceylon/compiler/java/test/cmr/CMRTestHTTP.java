@@ -142,8 +142,8 @@ public class CMRTestHTTP extends CompilerTest {
 
     @Test
     public void testMdlHTTPMixedCompilation() throws IOException{
-        testMdlHTTPMixedCompilation(false, 132);
-        testMdlHTTPMixedCompilation(true, 18);
+        testMdlHTTPMixedCompilation(false, 133);
+        testMdlHTTPMixedCompilation(true, 20);
     }
     
     private void testMdlHTTPMixedCompilation(boolean herd, int requests) throws IOException{
