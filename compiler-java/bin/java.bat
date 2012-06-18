@@ -29,5 +29,5 @@ if "%JAVA_CURRENT%" == "" (
 :: get the javahome
 ::
 FOR /F "usebackq skip=2 tokens=3*" %%A IN (`REG QUERY "%JAVA_CURRENT%" /v JavaHome 2^>nul`) DO (
-    set "JAVA_HOME=%%A%%B"
+    set "JAVA_HOME=%%A %%B"
 )
