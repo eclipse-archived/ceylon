@@ -1,0 +1,68 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+abstract class Bug627Enum {
+    
+    Bug627Enum() {
+    }
+}
+class Bug627Four extends .com.redhat.ceylon.compiler.java.test.issues.Bug627Enum {
+    
+    Bug627Four() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug627Four();
+    }
+}
+class Bug627Three extends .com.redhat.ceylon.compiler.java.test.issues.Bug627Enum {
+    
+    Bug627Three() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug627Three();
+    }
+}
+class Bug627Two extends .com.redhat.ceylon.compiler.java.test.issues.Bug627Enum {
+    
+    Bug627Two() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug627Two();
+    }
+}
+interface Bug627Abstract {
+    
+    public abstract .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.Bug627Enum> elements();
+}
+final class Bug627Abstract$impl {
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract $this;
+    
+    Bug627Abstract$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract $this) {
+        this.$this = $this;
+    }
+}
+class Bug627Concrete implements .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract {
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract$impl $Bug627Abstract$impl;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.Bug627Enum> elements() {
+        return .ceylon.language.$empty.getEmpty();
+    }
+    
+    Bug627Concrete() {
+        this.$Bug627Abstract$impl = new .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract$impl(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug627Concrete();
+    }
+}
