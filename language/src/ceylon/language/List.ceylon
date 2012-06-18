@@ -113,39 +113,23 @@ shared interface List<out Element>
     }
 
     shared actual default Integer hash {
-        variable Integer hashCode := 1;
-        for(Element elem in this) {
-            hashCode *= 31;
-            if(is Object elem){
-                hashCode += elem.hash;
+        variable value hash := 1;
+        for (elem in this) {
+            hash *= 31;
+            if (is Object elem) {
+                hash += elem.hash;
             }
         }
-        return hashCode;
+        return hash;
     }
-
+    
+    value elementsString {
+        return ", ".join { for (elem in this) elem?.string else "null" };
+    }
+    
     shared default actual String string {
         return empty then "{}" 
                else "{ " elementsString " }";
-    }
-
-    String elementsString {
-        variable Boolean first := true;
-        value result = StringBuilder();
-        for (elem in this) {
-            if (first) {
-                first := false;
-            }
-            else {
-                result.append(", ");
-            }
-            if (exists elem) {
-                result.append(elem.string);
-            }
-            else {
-                result.append("null");
-            }
-        }
-        return result.string;
     }
 
 }
