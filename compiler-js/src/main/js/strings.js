@@ -286,10 +286,10 @@ String$proto.join = function(strings) {
     }
     return String$(result, isNaN(len)?undefined:len);
 }
-String$proto.split = function(seps, discard) {
-    if (this.getEmpty() === $true) {
-        return Singleton(this);
-    }
+String$proto.split = function(seps, discard, group) {
+    // shortcut for empty input
+    if (this.value.length === 0) {return Singleton(this);}
+    
     var sepChars = $WS;
     if (seps!==undefined && seps!==null) {
         sepChars = {}
@@ -297,30 +297,63 @@ String$proto.split = function(seps, discard) {
         var c; while ((c=it.next()) !== $finished) {sepChars[c.value] = true}
     }
     if (discard === undefined) {discard = false}
+    if (group === undefined) {group = true}
     
     //TODO: return an iterable which determines the next token on demand
     var tokens = [];
     var tokenBegin = 0;
     var tokenBeginCount = 0;
+    var separator = true;
     for (var i=0, count=0; i<this.value.length;) {
         var j = i;
         var cp = this.value.charCodeAt(i++);
         if ((cp&0xfc00)===0xd800 && i<this.value.length) {
             cp = (cp<<10) + this.value.charCodeAt(i++) - 0x35fdc00;
         }
-        ++count;
+        
         if (cp in sepChars) {
-            if (tokenBegin != j) {
-                tokens.push(String$(this.value.substring(tokenBegin, j), count-tokenBeginCount-1))
+            if (!group) {
+                // ungrouped separator: store preceding token
+                tokens.push(String$(this.value.substring(tokenBegin, j), count-tokenBeginCount));
+                if (!discard) {
+                    // store separator as token
+                    tokens.push(String$(this.value.substring(j, i), 1));
+                }
+                // next token begins after this character
+                tokenBegin = i;
+                tokenBeginCount = count + 1;
+            } else if (!separator || (j == 0)) {
+                // begin of grouped separator: store preceding token
+                tokens.push(String$(this.value.substring(tokenBegin, j), count-tokenBeginCount));
+                // separator token begins at this character
+                tokenBegin = j;
+                tokenBeginCount = count;
             }
-            if (!discard) {tokens.push(String$(this.value.substring(j, i), 1))}
-            tokenBegin = i;
+            separator = true;
+            
+        } else if (separator) {
+            // first non-separator after separators or at beginning
+            if (!discard && (tokenBegin != j)) {
+                // store preceding grouped separator (if group=false then tokenBegin=j)
+                tokens.push(String$(this.value.substring(tokenBegin, j), count-tokenBeginCount));
+            }
+            // non-separator token begins at this character
+            tokenBegin = j;
             tokenBeginCount = count;
+            separator = false;
         }
+        ++count;
     }
-    if (tokenBegin != i) {
-        tokens.push(String$(this.value.substring(tokenBegin, i), count-tokenBeginCount))
+    
+    if ((tokenBegin != i) && !(separator && discard)) {
+        // store preceding token (may be a grouped separator)
+        tokens.push(String$(this.value.substring(tokenBegin, i), count-tokenBeginCount));
     }
+    if (separator) {
+        // if last character was a separator then there's another empty token
+        tokens.push(String$("", 0));
+    }
+    
     this.codePoints = count;
     return ArraySequence(tokens);
 }
