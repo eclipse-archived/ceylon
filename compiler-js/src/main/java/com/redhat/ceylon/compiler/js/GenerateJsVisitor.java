@@ -215,7 +215,6 @@ public class GenerateJsVisitor extends Visitor
             path.append(mod.getVersion()).append('/');
         }
         path.append(mod.getNameAsString());
-        //TODO remove second condition when CL is standardized with version name
         if (!mod.isDefault()) {
             path.append('-').append(mod.getVersion());
         }

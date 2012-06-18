@@ -24,29 +24,33 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 public class Main {
 
     /** Print a help message with the available options. */
-    private static void help() {
+    private static void help(boolean all) {
         System.err.println("Usage ceylonc-js <options> <source files> <module names>");
-        System.err.println();
-        System.err.println("where possible options include:");
-        System.err.println("  -rep <url>         Module repository (default: ./modules).");
-        System.err.println("                     Can be specified multiple times.");
-        System.err.println("  -user <value>      User name for output repository (HTTP only)");
-        System.err.println("  -pass <value>      Password for output repository (HTTP only)");
-        System.err.println("  -src <directory>   Path to source files (default: ./source)");
-        System.err.println("  -out <url>         Output module repository (default: ./modules)");
-        System.err.println("  -version           Version information");
-        System.err.println("  -help              Print a synopsis of standard options");
-        System.err.println();
-        System.err.println("Javascript code generation options:");
-        System.err.println("  -optimize    Create prototype-style JS code");
-        System.err.println("  -nomodule    Do NOT wrap generated code as CommonJS module");
-        System.err.println("  -noindent    Do NOT indent code");
-        System.err.println("  -nocomments  Do not generate any comments");
-        System.err.println("  -compact     Same as -noindent -nocomments");
-        System.err.println("  -verbose     Print messages while compiling");
-        System.err.println("  -profile     Time the compilation phases (results are printed to STDERR)");
-        System.err.println();
-        System.err.println("If no files are specified or '--' is used, STDIN is read.");
+        if (all) {
+            System.err.println();
+            System.err.println("where possible options include:");
+            System.err.println("  -rep <url>         Module repository (default: ./modules).");
+            System.err.println("                     Can be specified multiple times.");
+            System.err.println("  -user <value>      User name for output repository (HTTP only)");
+            System.err.println("  -pass <value>      Password for output repository (HTTP only)");
+            System.err.println("  -src <directory>   Path to source files (default: ./source)");
+            System.err.println("  -out <url>         Output module repository (default: ./modules)");
+            System.err.println("  -version           Version information");
+            System.err.println("  -help              Print a synopsis of standard options");
+            System.err.println();
+            System.err.println("Javascript code generation options:");
+            System.err.println("  -optimize    Create prototype-style JS code");
+            System.err.println("  -nomodule    Do NOT wrap generated code as CommonJS module");
+            System.err.println("  -noindent    Do NOT indent code");
+            System.err.println("  -nocomments  Do not generate any comments");
+            System.err.println("  -compact     Same as -noindent -nocomments");
+            System.err.println("  -verbose     Print messages while compiling");
+            System.err.println("  -profile     Time the compilation phases (results are printed to STDERR)");
+            System.err.println();
+            System.err.println("If no files are specified or '--' is used, STDIN is read.");
+        } else {
+            System.out.println("use -help for a list of possible options");
+        }
     }
 
     /**
@@ -61,13 +65,11 @@ public class Main {
             return;
         }
         if (opts.isHelp()) {
-            help();
+            help(true);
             return;
         }
         if (args.size() == 0) {
-            System.out.println("ceylonc-js: no source files");
-            System.out.println("Usage: ceylonc-js <options> <source files> <module names>");
-            System.out.println("use -help for a list of possible options");
+            help(false);
             return;
         }
 
@@ -126,17 +128,45 @@ public class Main {
             final String path = root.getAbsolutePath();
             tcb.addSrcDirectory(root);
             final List<String> modfilters = new ArrayList<String>();
+            boolean stop = false;
             for (String filedir : args) {
                 File f = new File(filedir);
-                if (f.getAbsolutePath().startsWith(path)) {
+                if (f.exists() && f.isFile()) {
+                    if (!f.getAbsolutePath().startsWith(path)) {
+                        System.err.printf("%s is not in the current source path: [%s]%n", f.getAbsolutePath(), root);
+                        stop=true;
+                        f=null;
+                    }
+                } else {
+                    //Parse, may be a module name
+                    String[] modpath = filedir.split("\\.");
+                    f = root;
+                    for (String pe : modpath) {
+                        f = new File(f, pe);
+                        if (!(f.exists() && f.isDirectory())) {
+                            System.err.printf("ceylonc: Could not find source files for module: %s%n", filedir);
+                            f=null;
+                            break;
+                        }
+                    }
+                    if (f == null) {
+                        System.err.printf("ceylonc-js: file not found: %s%n", filedir);
+                        stop=true;
+                    } else {
+                        modfilters.add(filedir);
+                    }
+                }
+                if (f != null) {
                     if ("module.ceylon".equals(f.getName().toLowerCase())) {
                         modfilters.add(f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
                     } else if (new File(f.getParentFile(), "module.ceylon").exists()) {
                         modfilters.add(f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
                     }
-                } else {
-                    System.err.printf("%s is not in the current source path: [%s]%n", f.getAbsolutePath(), root);
                 }
+            }
+            if (stop) {
+                help(false);
+                return;
             }
             if (!modfilters.isEmpty()) {
                 tcb.setModuleFilters(modfilters);
