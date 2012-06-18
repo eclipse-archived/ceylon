@@ -66,6 +66,9 @@ public class Util {
             if (i>0) {
                 superclassName = superclassName.substring(0, i);
             }
+            if (superclassName.isEmpty()) {
+                return false;
+            }
             try {
                 return classExtendsClass(
                         java.lang.Class.forName(superclassName), 
