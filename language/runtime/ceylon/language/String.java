@@ -610,7 +610,7 @@ public abstract class String
                         }
                         // eat until the next separator
                         while(!eof() && !peekSeparator()){
-                            index++;
+                            eatChar();
                         }
                         lastTokenWasSeparator = false;
                         return String.instance(new java.lang.String(chars, start, index-start));
@@ -631,16 +631,32 @@ public abstract class String
                 private boolean eatSeparator() {
                     boolean ret = peekSeparator();
                     if(ret)
-                        index++;
+                        eatChar();
                     return ret;
                 }
                 
+                private void eatChar() {
+                    if(java.lang.Character.isHighSurrogate(chars[index]))
+                        index += 2;
+                    else
+                        index++;
+                }
+
                 private boolean peekSeparator() {
                     if(eof())
                         return false;
-                    char c = chars[index];
+                    int charCodePoint = java.lang.Character.codePointAt(chars, index);
                     for(int i=0;i<delimitors.length;i++){
-                        if(c == delimitors[i]){
+                        char delimitorChar = delimitors[i];
+                        int delimitorCodePoint;
+                        if(java.lang.Character.isHighSurrogate(delimitorChar)){
+                            delimitorCodePoint = java.lang.Character.codePointAt(delimitors, i);
+                            // eat one more char
+                            i++;
+                        }else{
+                            delimitorCodePoint = delimitorChar;
+                        }
+                        if(charCodePoint == delimitorCodePoint){
                             return true;
                         }
                     }
