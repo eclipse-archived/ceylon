@@ -159,6 +159,7 @@ public class Main {
                         stop=true;
                     } else {
                         modfilters.add(filedir);
+                        f = null;
                     }
                 }
                 if (f != null) {
