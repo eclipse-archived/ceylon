@@ -255,15 +255,16 @@ public class Util {
     }
 
     public static String getUnitPackageName(PhasedUnit unit) {
+        // WARNING: TypeChecker VFS alyways uses '/' chars and not platform-dependent ones
         String path = unit.getPathRelativeToSrcDir();
         String file = unit.getUnitFile().getName();
         if(!path.endsWith(file)){
             throw new RuntimeException("Unit relative path does not end with unit file name: "+path+" and "+file);
         }
         path = path.substring(0, path.length() - file.length());
-        if(path.endsWith(File.separator))
+        if(path.endsWith("/"))
             path = path.substring(0, path.length() - 1);
-        return path.replace(File.separatorChar, '.');
+        return path.replace('/', '.');
     }
 
     public static String getQuotedFQN(String pkgName, com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration decl) {
