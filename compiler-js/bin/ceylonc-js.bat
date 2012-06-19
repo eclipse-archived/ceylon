@@ -13,6 +13,14 @@ set "JAVA_CP=%JAVA_CP%;%CEYLON_REPO%\com\redhat\ceylon\typechecker\%CEYLON_VERSI
 set "JAVA_CP=%JAVA_CP%;%CEYLON_REPO%\com\redhat\ceylon\module-resolver\%CEYLON_VERSION%\com.redhat.ceylon.module-resolver-%CEYLON_VERSION%.jar"
 set "JAVA_CP=%JAVA_CP%;%CEYLON_REPO%\com\redhat\ceylon\ant\%CEYLON_VERSION%\com.redhat.ceylon.ant-%CEYLON_VERSION%.jar"
 set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\antlr-3.4-complete.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\sardine-314.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\slf4j-api-1.6.1.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\slf4j-simple-1.6.1.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\httpclient-4.1.1.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\httpcore-4.1.1.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\commons-logging-1.1.1.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\commons-codec-1.4.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\jandex-1.0.3.Final.jar"
 set "JAVA_CP=%JAVA_CP%;%CEYLON_REPO%\com\redhat\ceylon\compiler\js\%CEYLON_VERSION%\com.redhat.ceylon.compiler.js-%CEYLON_VERSION%.jar"
 
 "%JAVA%" ^
