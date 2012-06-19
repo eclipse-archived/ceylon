@@ -17,7 +17,7 @@ final class bug494 {
             }
         }
         final indice indice = new indice();
-        final .ceylon.language.Array<.ceylon.language.String> a2 = .ceylon.language.makeArray.<.ceylon.language.String>makeArray(.ceylon.language.Integer.instance(20L), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String,ceylon.language.Integer>"){
+        final .ceylon.language.Array<.ceylon.language.String> a2 = .ceylon.language.makeArray.<.ceylon.language.String>makeArray(.ceylon.language.String.class, .ceylon.language.Integer.instance(20L), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String,ceylon.language.Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
