@@ -76,9 +76,4 @@ public interface Empty
     public boolean defines(@Name("key") @TypeInfo("ceylon.language.Integer")
     Integer key);
 
-    @Override public Empty getSequence();
-    @Override public java.lang.Object find(Callable f);
-    @Override public Empty map(Callable f);
-    @Override public Empty filter(Callable f);
-    @Override public java.lang.Object fold(java.lang.Object ini, Callable f);
 }
