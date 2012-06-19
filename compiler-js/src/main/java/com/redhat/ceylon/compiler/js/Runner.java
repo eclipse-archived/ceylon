@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +19,9 @@ public class Runner {
 
     /** A thread dedicated to reading from a stream and storing the result to return it as a String. */
     public static class ReadStream extends Thread {
-        private final InputStream in;
-        private final PrintStream out;
-        private final byte[] buf  = new byte[16384];
+        protected final InputStream in;
+        protected final PrintStream out;
+        protected final byte[] buf  = new byte[16384];
         public ReadStream(InputStream from, PrintStream to) {
             this.in = from;
             this.out = to;
@@ -30,6 +32,39 @@ public class Runner {
                 while (count > 0) {
                     out.write(buf, 0, count);
                     count = in.read(buf);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace(out);
+            }
+        }
+    }
+
+    /** A thread dedicated to reading from a stream and storing the result to return it as a String. */
+    public static class ReadErrorStream extends Thread {
+        protected final BufferedReader in;
+        protected final PrintStream out;
+        protected final byte[] buf  = new byte[16384];
+        protected boolean printing = true;
+        public ReadErrorStream(InputStream from, PrintStream to) {
+            this.in = new BufferedReader(new InputStreamReader(from));
+            this.out = to;
+        }
+        public void run() {
+            try {
+                String line = in.readLine();
+                while (line != null) {
+                    if (line.trim().startsWith("throw new")) {
+                        printing = false;
+                    } else if (line.startsWith("Error: Cannot find module")) {
+                        out.println(line);
+                        printing = false;
+                    } else if (!printing) {
+                        printing = !(line.isEmpty() || line.startsWith("    at "));
+                    }
+                    if (printing) {
+                        out.println(line);
+                    }
+                    line = in.readLine();
                 }
             } catch (IOException ex) {
                 ex.printStackTrace(out);
@@ -152,7 +187,7 @@ public class Runner {
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
         new ReadStream(nodeProcess.getInputStream(), System.out).start();
-        new ReadStream(nodeProcess.getErrorStream(), System.err).start();
+        new ReadErrorStream(nodeProcess.getErrorStream(), System.err).start();
         int exitCode = nodeProcess.waitFor();
         if (exitCode != 0) {
             System.err.println("Exit code: "+exitCode);
