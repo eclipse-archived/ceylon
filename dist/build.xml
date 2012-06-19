@@ -48,6 +48,8 @@
                 <include name="ceylonc.bat"/>
                 <include name="ceylond"/>
                 <include name="ceylond.bat"/>
+                <include name="ceylon-import-jar"/>
+                <include name="ceylon-import-jar.bat"/>
             </fileset>
             <fileset dir="${ceylon-js.dir}/build/bin">
                 <include name="ceylonc-js"/>
@@ -62,6 +64,7 @@
             <fileset dir="${dist.dir}/bin">
                 <include name="ceylonc"/>
                 <include name="ceylond"/>
+                <include name="ceylon-import-jar"/>
                 <include name="ceylon-js"/>
                 <include name="ceylonc-js"/>
             </fileset>
