@@ -22,20 +22,26 @@ public class Runner {
 
     /** Finds the full path to the node.js executable. */
     public static String findNode() {
-        //TODO also look for windows executable
-        String[] paths = { "/usr/bin/node", "/usr/local/bin/node", "/bin/node", "/opt/bin/node" };
+    	String path = getNodeExe();
+    	if(path != null && !path.isEmpty() && isExe(path))
+    		return path;
+        String[] paths = { "/usr/bin/node", "/usr/local/bin/node", "/bin/node", "/opt/bin/node", 
+        		"C:\\Program Files\\nodejs\\node.exe", "C:\\Program Files (x86)\\nodejs\\node.exe" };
         for (String p : paths) {
-            File f = new File(p);
-            if (f.exists() && f.canExecute()) {
-                return p;
-            }
+        	if(isExe(p))
+        		return p;
         }
-        System.err.println("Could not find 'node' executable. Please install node.js and retry.");
+        System.err.println("Could not find 'node' executable. Please install node.js (from http://nodejs.org).");
         System.exit(2);
         return null;
     }
 
-    public static String findOptionValue(String optionName, List<String> options) {
+    private static boolean isExe(String p) {
+        File f = new File(p);
+        return f.exists() && f.canExecute();
+	}
+
+	public static String findOptionValue(String optionName, List<String> options) {
         int idx = options.indexOf(optionName);
         if (idx >=0 && idx < options.size() - 2 && !options.get(idx+1).startsWith("-")) {
             return options.get(idx+1);
@@ -43,7 +49,7 @@ public class Runner {
         return null;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length == 0) {
             usage();
             System.exit(1);
@@ -58,10 +64,11 @@ public class Runner {
             return;
         }
         final String node = findNode();
+        System.err.println("Found node at "+node);
         String repo = findOptionValue("-rep", opts);
         String func = findOptionValue("-run", opts);
         if (repo == null) {
-            repo = "./modules";
+            repo = "modules";
         }
         if (func == null) {
             func = "run";
@@ -78,13 +85,46 @@ public class Runner {
             version = module.substring(module.indexOf('/')+1);
             module = module.substring(0, module.indexOf('/'));
         }
-        final String eval = String.format("require('%s%s/%s%s').%s();",
-                module.replace('.', File.separatorChar), isDefault ? "" : "/" + version,
-                module, isDefault ? "" : "-" + version, func);
-        ProcessBuilder proc = new ProcessBuilder(node, "-e", eval).directory(new File("."));
-        proc.environment().put("NODE_PATH", System.getenv("NODE_PATH") + ":" + System.getenv("CEYLON_REPO") + ":"+ repo);
+        String sep = File.separator;
+//        if(File.separatorChar == '\\')
+//        	sep = "\\\\"; // we need to double it in the eval arg on windows
+        
+        final String eval = String.format("require('%s%s%s%s%s').%s();",
+                module.replace(".", sep), 
+                isDefault ? "" : sep + version,
+                sep,
+                module, 
+                isDefault ? "" : "-" + version, 
+                func);
+        System.err.println("Eval: "+eval);
+        ProcessBuilder proc = new ProcessBuilder(node, "-e", eval);
+        String nodePath = getNodePath() + File.pathSeparator + getCeylonRepo() + File.pathSeparator + repo;
+        proc.environment().put("NODE_PATH", nodePath);
+        System.err.println("Setting NODE_PATH to "+nodePath);
         proc.inheritIO();
-        proc.start();
+        Process nodeProcess = proc.start();
+        int exitCode = nodeProcess.waitFor();
+        System.err.println("Exit code: "+exitCode);
+        System.exit(exitCode);
     }
+
+	private static String getNodePath() {
+		return getFromEnv("NODE_PATH", "node.path");
+	}
+
+	private static String getNodeExe() {
+		return getFromEnv("NODE_EXE", "node.exe");
+	}
+
+	private static String getCeylonRepo() {
+		return getFromEnv("CEYLON_REPO", "ceylon.repo");
+	}
+
+	private static String getFromEnv(String env, String prop){
+		String path = System.getenv(env);
+		if(path != null)
+			return path;
+		return System.getProperty(prop);
+	}
 
 }

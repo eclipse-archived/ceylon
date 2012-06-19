@@ -1,0 +1,79 @@
+rem User HOME
+
+set CEYLON_VERSION=@VERSION@
+
+if "%HOME" == "" ( 
+    set "HOME=%USERPROFILE%" 
+)
+
+rem Find CEYLON_HOME
+if not "%CEYLON_HOME%" == "" goto ceylon_home_set
+rem Get absolute value for CEYLON_HOME
+pushd "%~dp0.."
+set "CEYLON_HOME=%CD%"
+popd
+:ceylon_home_set
+
+rem Set CEYLON_REPO if not already set
+if "%CEYLON_REPO%" == "" (
+    rem Try the destribution repo
+    set "CEYLON_REPO=%CEYLON_HOME%\repo"
+)
+
+rem If it does not exist let's use the user repo
+if not exist "%CEYLON_REPO%" (
+    @echo "Could not find distribution repo, using %HOME%\.ceylon\repo"
+    set "CEYLON_REPO=%HOME%\.ceylon\repo"
+)
+
+rem Find Java
+call %~dp0\java.bat
+
+if "%JAVA_HOME%" == "" (
+    set "exit=true"
+    exit /b 1
+)
+
+set "JAVA=%JAVA_HOME%\bin\java.exe"
+
+rem Check that Java executable actually exists
+if not exist "%JAVA%" (
+    @echo "Cannot find java.exe at %JAVA%, check that your JAVA_HOME variable is pointing to the right place"
+    set "exit=true"
+    exit /b 1
+)
+
+set "NODE=C:\Program Files\nodejs\node.exe"
+set "NODE64=C:\Program Files (x86)\nodejs\node.exe"
+
+rem Check that node.js executable actually exists
+if not exist "%NODE%" (
+    if not exist "%NODE64%" (
+        @echo "Cannot find node.exe at %NODE% or %NODE64%, please install it from http://nodejs.org"
+        set "exit=true"
+        exit /b 1
+    )
+    set "NODE=%NODE64%"
+)
+
+rem Process -cp and other args
+set USER_CP=
+set ARGS=
+
+:loop_args
+if "%~1" == "" goto :done_args
+
+if "%~1" == "-cp" (
+    set "USER_CP=%~2"
+    shift
+) else if "%~1" == "-classpath" (
+    set "USER_CP=%~2"
+    shift
+) else (
+    set "ARGS=%ARGS% %1"
+)
+
+shift
+goto loop_args
+
+:done_args
