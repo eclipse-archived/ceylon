@@ -9,7 +9,7 @@ get things done. And it's easy to learn for programmers who are familiar with
 mainstream languages used in business computing. Ceylon has a full-featured 
 Eclipse-based development environment, allowing developers to take best advantage 
 of the powerful static type system. Programs written in Ceylon execute on any 
-Java 6 compatible JVM.
+Java 7 compatible JVM or Node.js.
 
 Read more about Ceylon at <http://ceylon-lang.org>.
 
@@ -27,8 +27,10 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 The command line tools are located in the `bin` directory.
 
-- `bin/ceylon`     - Run a Ceylon program
-- `bin/ceylonc`    - Compile a Ceylon program
+- `bin/ceylon`     - Run a Ceylon program on the Java VM
+- `bin/ceylon-js`  - Run a Ceylon program on node.js (JavaScript)
+- `bin/ceylonc`    - Compile a Ceylon program for the Java backend
+- `bin/ceylonc-js` - Compile a Ceylon program for the JavaScript backend
 - `bin/ceylond`    - Document a Ceylon program
 
 The API documentation for the language module `ceylon.language` may be found here:
@@ -40,27 +42,49 @@ The API documentation for the language module `ceylon.language` may be found her
 To compile and run the samples, start from the distribution directory containing
 this file.
 
+### Sample module
+
 To run the "hello world" program, type:
 
     cd samples/helloworld
+
+For Java:
+
     ../../bin/ceylonc com.acme.helloworld
     ../../bin/ceylond -non-shared -source-code com.acme.helloworld
     ../../bin/ceylon com.acme.helloworld/1.0.0 John
 
+For JavaScript:
+
+    ../../bin/ceylonc-js com.acme.helloworld
+    ../../bin/ceylon-js com.acme.helloworld/1.0.0 John
+
+### Sample with no module
+
 To run a program defined in the default module, type:
 
     cd samples/no-module
+
+For Java:
+
     ../../bin/ceylonc default
     ../../bin/ceylond -non-shared -source-code default
     ../../bin/ceylon default
+
+For JavaScript:
+
+    ../../bin/ceylonc-js default
+    ../../bin/ceylon-js default
 
 ## Tool usage
 
 To see a list of command line options, type one of:
 
     ./bin/ceylonc -help
+    ./bin/ceylonc-js -help
     ./bin/ceylond -help
     ./bin/ceylon -help
+    ./bin/ceylon-js -help
 
 ## Ant tasks for Ceylon
 
@@ -85,7 +109,7 @@ Bugs and suggestions may be reported in GitHub's issue tracker.
 ## Systems where Ceylon is known to work
 
 Since Ceylon is running on the JVM it should work on every platform that 
-supports a Java 6 compatible JVM. However we have tested the following 
+supports a Java 7 compatible JVM. However we have tested the following 
 platforms to make sure it works:
 
 ### Linux
