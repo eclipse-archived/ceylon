@@ -24,61 +24,74 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public abstract class Array<Element> implements List<Element>, FixedSized<Element> {
     
     protected final java.lang.Object array;
+    protected final java.lang.Class typeClass;
     
     public Array(char... array) {
         this.array = array;
+        this.typeClass = char.class;
     }
     
     public Array(byte... array) {
         this.array = array;
+        this.typeClass = byte.class;
     }
     
     public Array(short... array) {
         this.array = array;
+        this.typeClass = short.class;
     }
     
     public Array(int... array) {
         this.array = array;
+        this.typeClass = int.class;
     }
     
     public Array(long... array) {
         this.array = array;
+        this.typeClass = long.class;
     }
     
     public Array(float... array) {
         this.array = array;
+        this.typeClass = float.class;
     }
     
     public Array(double... array) {
         this.array = array;
+        this.typeClass = double.class;
     }
     
     public Array(boolean... array) {
         this.array = array;
+        this.typeClass = boolean.class;
     }
 
     public Array(java.lang.String... array) {
         this.array = array;
+        this.typeClass = java.lang.String.class;
     }
 
     public Array(Element... array) {
         this.array = array;
+        this.typeClass = array.getClass().getComponentType();
     }
     
     @Ignore
-    Array(java.util.List<Element> list) {
-        this.array = list.toArray();
+    Array(java.lang.Class<Element> typeClass, java.util.List<Element> list) {
+        this.array = list.toArray((Element[])java.lang.reflect.Array.newInstance(typeClass, list.size()));
+        this.typeClass = typeClass;
     }
 
     @Ignore
-    Array(int size) {
-        this.array = new Object[size];
+    Array(java.lang.Class<Element> typeClass, int size) {
+        this.array = java.lang.reflect.Array.newInstance(typeClass, size);
+        this.typeClass = typeClass;
     }
     
     @Ignore
     public static Array<Character> instance(char[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Character>();
+            return new ArrayOfNone<Character>(Character.class);
         } else {
             return new ArrayOfSome<Character>(array);
         }
@@ -87,7 +100,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Integer> instance(byte[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>();
+            return new ArrayOfNone<Integer>(Integer.class);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
@@ -96,7 +109,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Integer> instance(short[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>();
+            return new ArrayOfNone<Integer>(Integer.class);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
@@ -105,7 +118,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Integer> instance(int[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>();
+            return new ArrayOfNone<Integer>(Integer.class);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
@@ -114,7 +127,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Integer> instance(long[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>();
+            return new ArrayOfNone<Integer>(Integer.class);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
@@ -123,7 +136,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Float> instance(float[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Float>();
+            return new ArrayOfNone<Float>(Float.class);
         } else {
             return new ArrayOfSome<Float>(array);
         }
@@ -132,7 +145,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Float> instance(double[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Float>();
+            return new ArrayOfNone<Float>(Float.class);
         } else {
             return new ArrayOfSome<Float>(array);
         }
@@ -141,7 +154,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Boolean> instance(boolean[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Boolean>();
+            return new ArrayOfNone<Boolean>(Boolean.class);
         } else {
             return new ArrayOfSome<Boolean>(array);
         }
@@ -150,7 +163,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<String> instance(java.lang.String[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<String>();
+            return new ArrayOfNone<String>(String.class);
         } else {
             return new ArrayOfSome<String>(array);
         }
@@ -159,7 +172,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static <T> Array<T> instance(T[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<T>();
+            return new ArrayOfNone<T>((java.lang.Class<T>)array.getClass().getComponentType());
         } else {
             return new ArrayOfSome<T>(array);
         }
@@ -183,7 +196,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long toIndex = to==null ? getSize()-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return new ArrayOfNone<Element>();
+            return new ArrayOfNone<Element>(typeClass);
         } else {
             if (array instanceof char[]) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
@@ -217,7 +230,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long resultLength = length;
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return new ArrayOfNone<Element>();
+            return new ArrayOfNone<Element>(typeClass);
         } else {
             if (array instanceof char[]) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
@@ -505,8 +518,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 @Ceylon(major = 1)
 class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
-    public ArrayOfNone() {
-        super(0);
+    public ArrayOfNone(java.lang.Class<Element> typeClass) {
+        super(typeClass, 0);
     }
     
     @Override
@@ -576,8 +589,8 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     }
     
     @Ignore
-    public ArrayOfSome(java.util.List<Element> list) {
-        super(list);
+    public ArrayOfSome(java.lang.Class<Element> typeClass, java.util.List<Element> list) {
+        super(typeClass, list);
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -31,9 +32,26 @@ public final class makeArray {
             list.add(elem);
         }
         if (list.size() > 0) {
-            return new ArrayOfSome<Element>(list);
+            return new ArrayOfSome<Element>(null, list);
         } else {
-            return new ArrayOfNone<Element>();
+            return new ArrayOfNone<Element>(null);
+        }
+    }
+    
+    @Ignore
+    public static <Element> Array<Element> makeArray(
+            Class typeClass,
+            final Integer size,
+            final Callable<Element> init) {
+        List<Element> list = new ArrayList<Element>();
+        for (int i=0; i<size.value; i++) {
+            Element elem = init.$call(Integer.instance(i));
+            list.add(elem);
+        }
+        if (list.size() > 0) {
+            return new ArrayOfSome<Element>(typeClass, list);
+        } else {
+            return new ArrayOfNone<Element>(typeClass);
         }
     }
 }

@@ -30,6 +30,22 @@ public final class $array {
     }
     
     @Ignore
+    public static <Element> Array<Element> array(
+            Class<Element> typeClass,
+            final ceylon.language.Iterable<? extends Element> elements) {
+        if (elements.getEmpty()) {
+            return $arrayOfNone.<Element>arrayOfNone(typeClass);
+        } else {
+            return $arrayOfSome.arrayOfSome(typeClass, elements);
+        }
+    }
+    
+    @Ignore
+    public static <Element> Array<Element> array(Class<Element> typeClass) {
+        return $arrayOfNone.<Element>arrayOfNone();
+    }
+    
+    @Ignore
     public static <Element> Array<Element> array() {
         return $arrayOfNone.<Element>arrayOfNone();
     }
