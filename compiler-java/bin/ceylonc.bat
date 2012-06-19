@@ -28,7 +28,7 @@ set "COMPILE_CP=%CEYLON_REPO%\ceylon\language\%CEYLON_VERSION%\ceylon.language-%
     -enableassertions ^
     -classpath "%JAVA_CP%;%COMPILE_CP%" ^
     "-Dceylon.home=%CEYLON_HOME%" ^
-    com.redhat.ceylon.compiler.java.Main ^
+    com.redhat.ceylon.compiler.java.Main5 ^
     %ARGS%
 
 endlocal

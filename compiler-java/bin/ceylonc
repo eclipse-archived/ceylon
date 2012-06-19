@@ -50,7 +50,7 @@ java \
     -enableassertions \
     -Xbootclasspath/p:"$JAVA_CP" \
     "-Dceylon.home=$CEYLON_HOME" \
-    com.redhat.ceylon.compiler.java.Main \
+    com.redhat.ceylon.compiler.java.Main5 \
     -classpath "$COMPILE_CP" \
     $ARGS
 

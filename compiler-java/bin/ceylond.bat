@@ -31,7 +31,7 @@ if "%USER_CP%" NEQ "" (
     -enableassertions ^
     -classpath "%JAVA_CP%" ^
     "-Dceylon.home=%CEYLON_HOME%" ^
-    com.redhat.ceylon.ceylondoc.Main ^
+    com.redhat.ceylon.ceylondoc.Main5 ^
     %ARGS%
 
 endlocal

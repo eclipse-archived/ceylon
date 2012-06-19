@@ -47,5 +47,5 @@ java \
     -enableassertions \
     -classpath "$JAVA_CP" \
     "-Dceylon.home=$CEYLON_HOME" \
-    com.redhat.ceylon.ceylondoc.Main \
+    com.redhat.ceylon.ceylondoc.Main5 \
     $ARGS
