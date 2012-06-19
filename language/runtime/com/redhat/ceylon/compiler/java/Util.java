@@ -52,6 +52,7 @@ public class Util {
             return true;
         if ((className.equals("ceylon.language.IdentifiableObject"))
                 && klass!=java.lang.Object.class
+                && !(klass.getName().equals("ceylon.language.StringOfNone") || klass.getName().equals("ceylon.language.StringOfSome"))
                 //&& klass!=java.lang.String.class
         		&& !klass.isAnnotationPresent(Class.class)
         		&& (!klass.isInterface() || !klass.isAnnotationPresent(Ceylon.class))) {
