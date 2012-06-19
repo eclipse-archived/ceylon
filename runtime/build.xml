@@ -46,6 +46,7 @@
     <property name="runtime-api.src" location="${basedir}/api/src/main/java"/>
     <property name="runtime-impl.src" location="${basedir}/impl/src/main/java"/>
     <property name="runtime-spi.src" location="${basedir}/spi/src/main/java"/>
+    <property name="runtime-bootstrap.src" location="${basedir}/bootstrap/src/main/java"/>
 
     <!-- jar generated -->
     <property name="bootstrap.jar" value="ceylon-runtime-bootstrap.jar"/>
@@ -102,6 +103,7 @@
     <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
+    	<delete dir="${dist.dir}/lib"/>
     </target>
 
     <target name="dist"
@@ -162,10 +164,25 @@
     <target name="bootstrap.classes">
         <mkdir dir="${build.bootstrap}"/>
         <javac debug="true"
-               srcdir="${runtime-spi.src}"
+               srcdir="${runtime-bootstrap.src}"
                destdir="${build.bootstrap}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
+    	<!-- Need an extra pass for Java 7 testing -->
+    	<delete dir="${build.bootstrap}">
+            <include name="**/*Main5.class"/>
+            <include name="**/Java7Checker.class"/>
+    	</delete>
+        <javac debug="true"
+               srcdir="${runtime-bootstrap.src}"
+               destdir="${build.bootstrap}"
+               classpathref="compiler.classpath"
+        	   source="1.5"
+        	   target="1.5"
+               includeantruntime="false">
+        	<include name="**/*Main5.java"/>
+            <include name="**/Java7Checker.java"/>
+    	</javac>
     </target>
 
     <!-- Rule to build runtime jar -->

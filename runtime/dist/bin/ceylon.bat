@@ -13,7 +13,7 @@ set "RUNTIME_REPO=%CEYLON_HOME%\runtime-repo"
 "%JAVA%" ^
     -cp "%LIB%\jboss-modules.jar;%LIB%\ceylon-runtime-bootstrap.jar" ^
     "-Dceylon.home=%CEYLON_HOME%" ^
-    org.jboss.modules.Main ^
+    ceylon.modules.bootstrap.Main5 ^
     -mp "%RUNTIME_REPO%" ceylon.runtime ^
     +executable ceylon.modules.jboss.runtime.JBossRuntime ^
     %ARGS%

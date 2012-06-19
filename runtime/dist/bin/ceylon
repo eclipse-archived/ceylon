@@ -35,7 +35,7 @@ RUNTIME_REPO="$CEYLON_HOME/runtime-repo"
 java \
  -cp $LIB/jboss-modules.jar:$LIB/ceylon-runtime-bootstrap.jar \
  "-Dcelon.home=$CEYLON_HOME" \
- org.jboss.modules.Main \
+ ceylon.modules.bootstrap.Main5 \
  -mp $RUNTIME_REPO ceylon.runtime \
   +executable ceylon.modules.jboss.runtime.JBossRuntime \
   $@
