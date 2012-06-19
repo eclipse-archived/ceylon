@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug640;
+
+public final class bug640 {
+    
+    private bug640() {
+    }
+    
+    public static void bug640() {
+        final .ceylon.language.Array<.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept> x = .ceylon.language.$array.<.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept>array(.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept.class, new .ceylon.language.ArraySequence(new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept()));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept().accepts((.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept[])x.toArray());
+        final .ceylon.language.Array<.ceylon.language.String> y = .ceylon.language.$array.<.ceylon.language.String>array(.ceylon.language.String.class, new .ceylon.language.ArraySequence(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept().strings((.java.lang.String[])y.toArray());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug640.bug640.bug640();
+    }
+}
