@@ -164,8 +164,14 @@ public class Main {
                 if (f != null) {
                     if ("module.ceylon".equals(f.getName().toLowerCase())) {
                         modfilters.add(f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
-                    } else if (new File(f.getParentFile(), "module.ceylon").exists()) {
-                        modfilters.add(f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
+                    } else {
+                        File middir = f.getParentFile();
+                        while (!middir.getAbsolutePath().equals(root.getAbsolutePath())) {
+                            if (new File(middir, "module.ceylon").exists()) {
+                                modfilters.add(middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
+                            }
+                            middir = middir.getParentFile();
+                        }
                     }
                 }
             }
