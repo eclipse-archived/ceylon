@@ -123,15 +123,19 @@
     <target name="install-language">
         <ant antfile="${ceylon.language.dir}/build.xml" target="clean" dir="${ceylon.language.dir}" inheritall="false"/>
         <ant antfile="${ceylon.language.dir}/build.xml" target="dist" dir="${ceylon.language.dir}" inheritall="false"/>
+    	<!-- runtime requires it to be installed -->
+        <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false"/>
         <copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon.language.dir}/build/dist">
             </fileset>
         </copy>
     </target>
 
-    <target name="compile-module-resolver" depends="install-language">
+    <target name="compile-module-resolver">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="clean" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="dist" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
+        <!-- runtime requires it to be installed -->
+        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
         <copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon-module-resolver.dir}/build/dist">
             </fileset>
