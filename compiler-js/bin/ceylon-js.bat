@@ -20,7 +20,7 @@ set "JAVA_CP=%JAVA_CP%;%CEYLON_REPO%\com\redhat\ceylon\compiler\js\%CEYLON_VERSI
     -classpath "%JAVA_CP%" ^
     "-Dnode.path=%NODE%" ^
     "-Dceylon.repo=%CEYLON_REPO%" ^
-    com.redhat.ceylon.compiler.js.Runner ^
+    com.redhat.ceylon.compiler.js.RunnerMain5 ^
     %ARGS%
 
 
