@@ -34,8 +34,6 @@ import java.util.Set;
 
 import javax.lang.model.type.TypeKind;
 
-import org.omg.CORBA.BooleanHolder;
-
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
