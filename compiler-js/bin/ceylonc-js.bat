@@ -27,7 +27,7 @@ set "JAVA_CP=%JAVA_CP%;%CEYLON_REPO%\com\redhat\ceylon\compiler\js\%CEYLON_VERSI
     -enableassertions ^
     -classpath "%JAVA_CP%" ^
     "-Dceylon.home=%CEYLON_HOME%" ^
-    com.redhat.ceylon.compiler.js.Main ^
+    com.redhat.ceylon.compiler.js.Main5 ^
     %ARGS%
 
 endlocal

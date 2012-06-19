@@ -68,6 +68,24 @@
             </classpath>
             <include name="**/*.java" />
         </javac>
+        <!-- 
+         We need a second compilation step to compile entry points compatible with Java 5
+         to be able to produce nice error messages for older Java versions 
+        -->
+        <delete dir="${build.classes}">
+            <include name="**/*Main5.class"/>
+            <include name="**/Java7Checker.class"/>
+        </delete>
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true" source="1.5" target="1.5">
+            <classpath>
+                <pathelement path="${antlr.lib}"/>
+                <pathelement path="${ceylon.typechecker.lib}" />
+                <pathelement path="${ceylon.module-resolver.lib}" />
+                <pathelement path="${ceylon.compiler.lib}" />
+            </classpath>
+            <include name="**/*Main5.java" />
+            <include name="**/Java7Checker.java"/>
+        </javac>
         <!-- generate the ceylon.language.js file -->
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpath="${build.classes}">
             <arg value="${js-src}/${jslangfile}" />

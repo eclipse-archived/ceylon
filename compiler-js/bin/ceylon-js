@@ -46,6 +46,6 @@ java \
  "-Dnode.path=$NODE_PATH" \
  "-Dceylon.repo=$CEYLON_REPO" \
  -cp $CEYLON_REPO/com/redhat/ceylon/compiler/js/$CEYLON_VERSION/com.redhat.ceylon.compiler.js-${CEYLON_VERSION}.jar \
- com.redhat.ceylon.compiler.js.Runner $ARGS
+ com.redhat.ceylon.compiler.js.RunnerMain5 $ARGS
 
 #NODE_PATH=$NODEPATH:$CEYLON_REPO:$MODS node -e "require('$MPATH/$MOD').${FUN}();"
