@@ -95,6 +95,30 @@ public class Options {
         return opts;
     }
 
+    /** Find all the repos specified in the argument list (pairs of "-rep x").
+     * @param args The argument list from which to parse repositories
+     * @param remove If true, removes found repos from arguments, otherwise leaves list intact.
+     * @return The list of found repositories. */
+    public static List<String> findRepos(List<String> args, boolean remove) {
+        ArrayList<String> repos = new ArrayList<String>(args.size() / 2);
+        for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
+            String s = iter.next();
+            if ("-rep".equals(s)) {
+                if (remove) {
+                    iter.remove();
+                }
+                if (iter.hasNext()) {
+                    s = iter.next();
+                    repos.add(s);
+                    if (remove) {
+                        iter.remove();
+                    }
+                }
+            }
+        }
+        return repos;
+    }
+
     /** Returns the list of repositories that were parsed from the command line. */
     public List<String> getRepos() {
         return repos;

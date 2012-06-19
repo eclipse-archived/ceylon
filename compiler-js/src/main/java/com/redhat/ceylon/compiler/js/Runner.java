@@ -7,6 +7,8 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.Options;
+
 /** Command-line runner for ceylonc-js compiled code, using node.js
  *
  * @author Enrique Zamudio
@@ -101,10 +103,10 @@ public class Runner {
             return;
         }
         final String node = findNode();
-        String repo = findOptionValue("-rep", opts);
+        List<String> repos = Options.findRepos(opts, false);
         String func = findOptionValue("-run", opts);
-        if (repo == null) {
-            repo = "modules";
+        if (repos.isEmpty()) {
+            repos.add("modules");
         }
         if (func == null) {
             func = "run";
@@ -132,17 +134,20 @@ public class Runner {
         ProcessBuilder proc = new ProcessBuilder(node, "-e", eval);
         String nodePath = getNodePath();
         String ceylonRepo = getCeylonRepo();
-        if (nodePath == null) {
-            if (ceylonRepo == null) {
+        if (nodePath == null || nodePath.isEmpty()) {
+            nodePath = ceylonRepo;
+        } else if (ceylonRepo != null && !ceylonRepo.isEmpty()) {
+            nodePath = nodePath + File.pathSeparator + ceylonRepo;
+        }
+        //Now append repositories
+        for (String repo : repos) {
+            if (nodePath == null || nodePath.isEmpty()) {
                 nodePath = repo;
             } else {
-                nodePath = ceylonRepo + File.pathSeparator + repo;
+                nodePath = nodePath + File.pathSeparator + repo;
             }
-        } else if (ceylonRepo == null) {
-            nodePath = nodePath + File.pathSeparator + repo;
-        } else {
-            nodePath = nodePath + File.pathSeparator + ceylonRepo + File.pathSeparator + repo;
         }
+        System.out.println("node_path " + nodePath);
         proc.environment().put("NODE_PATH", nodePath);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
