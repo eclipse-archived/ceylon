@@ -345,6 +345,7 @@
             <include name="ceylon"/>
             <include name="ceylonc"/>
             <include name="ceylond"/>
+            <include name="ceylon-import-jar"/>
         </fileset>
     </chmod>
     <copy todir="${build.lib}">
