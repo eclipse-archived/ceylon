@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_COMPANION;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_RAW;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_TYPE_ARGUMENT;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
@@ -32,7 +33,7 @@ import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
-import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -50,7 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
@@ -138,12 +139,12 @@ abstract class InvocationBuilder {
         return this.typeArguments;
     }
     
-    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
+    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector, List<JCExpression> argExprs) {
         JCExpression actualPrimExpr = transformInvocationPrimary(primaryExpr, selector);
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
-            resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW), args.toList(), null);
+            resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW), argExprs, null);
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             // When doing qualified invocation through an interface we need
             // to get the companion.
@@ -162,7 +163,7 @@ abstract class InvocationBuilder {
             // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
             // is qualified relative to it
             ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
-            resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), args.toList(), null);
+            resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), argExprs, null);
         } else {
             if (primaryDeclaration instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
@@ -179,7 +180,7 @@ abstract class InvocationBuilder {
                 }
                 selector = "$call";
             }
-            resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(actualPrimExpr, selector), args.toList());
+            resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(actualPrimExpr, selector), argExprs);
         }
         
         resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, returnType, 
@@ -202,10 +203,19 @@ abstract class InvocationBuilder {
     
     protected JCExpression makeInvocation(List<JCExpression> argExprs) {
         gen.at(node);
+        
+        final List<JCExpression> args;
+        if (needsTypeInfoArgument()) {
+            JCExpression infoArg = makeTypeInfoArgument();
+            args = argExprs.prepend(infoArg);
+        } else {
+            args = argExprs;
+        }
+        
         JCExpression result = gen.expressionGen().transformPrimary(primary, new TermTransformer() {
             @Override
             public JCExpression transform(JCExpression primaryExpr, String selector) {
-                return transformInvocation(primaryExpr, selector);
+                return transformInvocation(primaryExpr, selector, args);
             }
         });
         
@@ -213,6 +223,21 @@ abstract class InvocationBuilder {
         //        !unboxed, boxingStrategy, returnType);
         
         return result;
+    }
+
+    private boolean needsTypeInfoArgument() {
+        if (primaryDeclaration instanceof LazyMethod) {
+            String name = primaryDeclaration.getName();
+            return ("array".equals(name) || "arrayOfSome".equals(name) || "arrayOfNone".equals(name) || "makeArray".equals(name));
+        }
+        return false;
+    }
+
+    private JCExpression makeTypeInfoArgument() {
+        Tree.BaseMemberExpression bme = (BaseMemberExpression) primary;
+        ProducedType type = bme.getTypeArguments().getTypeModels().get(0);
+        JCExpression typeExpr = gen.makeJavaType(type, JT_RAW | JT_TYPE_ARGUMENT);
+        return gen.makeSelect(typeExpr, "class");
     }
 
     public final JCExpression build() {
@@ -1122,8 +1147,8 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
     
     @Override
-    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector) {
-        JCExpression resultExpr = super.transformInvocation(primaryExpr, selector);
+    protected JCExpression transformInvocation(JCExpression primaryExpr, String selector, List<JCExpression> argExprs) {
+        JCExpression resultExpr = super.transformInvocation(primaryExpr, selector, argExprs);
         // apply the default parameters
         if (vars != null && !vars.isEmpty()) {
             if (returnType == null || Decl.isUnboxedVoid(primaryDeclaration)) {
