@@ -121,12 +121,15 @@ public class Runner {
             version = module.substring(module.indexOf('/')+1);
             module = module.substring(0, module.indexOf('/'));
         }
-        final String sep = File.separator;
+        String sepForEval = File.separator;
+        // on windows for eval we need to escape the backslash
+        if(sepForEval == "\\")
+        	sepForEval = "\\\\";
 
         final String eval = String.format("setTimeout(function(){},50);require('%s%s%s%s%s').%s();",
-                module.replace(".", sep),
-                isDefault ? "" : sep + version,
-                sep,
+                module.replace(".", sepForEval),
+                isDefault ? "" : sepForEval + version,
+                sepForEval,
                 module,
                 isDefault ? "" : "-" + version,
                 func);
