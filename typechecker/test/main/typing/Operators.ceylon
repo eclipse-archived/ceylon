@@ -154,8 +154,8 @@ class Operators() {
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;
-    @type["Callable<Nothing|Iterable<String>,Nothing|Iterable<Character>,Boolean>"] value mss = maybeString?.split;
-    @type["Callable<Sequence<Iterable<String>>,Nothing|Iterable<Character>,Boolean>"] value hws = {"hello", "world"}[].split;
+    @type["Callable<Nothing|Iterable<String>,Nothing|Iterable<Character>,Boolean,Boolean>"] value mss = maybeString?.split;
+    @type["Callable<Sequence<Iterable<String>>,Nothing|Iterable<Character>,Boolean,Boolean>"] value hws = {"hello", "world"}[].split;
     
     @type["Empty|Sequence<String>"] value e45 = emp[].uppercased;
     @type["Sequence<Empty|Sequence<Character>>"] value x46 = {"hello", "world"}[].characters;
