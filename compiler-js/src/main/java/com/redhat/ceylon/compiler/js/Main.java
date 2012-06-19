@@ -142,6 +142,7 @@ public class Main {
                     //except any file that exists in directories and subdirectories where we find a module.ceylon file
                     //Typechecker takes care of all that if we add default to module filters
                     modfilters.add("default");
+                    f = null;
                 } else {
                     //Parse, may be a module name
                     String[] modpath = filedir.split("\\.");
