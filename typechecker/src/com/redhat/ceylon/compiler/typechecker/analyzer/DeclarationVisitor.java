@@ -620,13 +620,20 @@ public class DeclarationVisitor extends Visitor {
         ParameterList pl = parameterList;
         parameterList = new ParameterList();
         super.visit(that);
-        Functional f = (Functional) scope;
-        boolean first = f.getParameterLists().isEmpty();
-        if (f instanceof Class && !first) {
-            that.addError("classes may have only one parameter list");
+        boolean first;
+        if (scope instanceof Functional) {
+            Functional f = (Functional) scope;
+            first = f.getParameterLists().isEmpty();
+            if (f instanceof Class && !first) {
+                that.addError("classes may have only one parameter list");
+            }
+            else {
+                f.addParameterList(parameterList);
+            }
         }
         else {
-            f.addParameterList(parameterList);
+            that.addError("may not have a parameter list");
+            first = true;
         }
         parameterList = pl;
         
@@ -714,30 +721,56 @@ public class DeclarationVisitor extends Visitor {
             that.getSpecifierExpression().visit(this);
             scope = s;
         }
+        
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v, !(that.getType() instanceof Tree.SyntheticVariable));
         setVisibleScope(v);
+        
         if (that.getType()!=null) {
             that.getType().visit(this);
         }
         if (that.getIdentifier()!=null) {
             that.getIdentifier().visit(this);
         }
+        
+        //TODO: scope should be the variable, not the 
+        //      containing control structure:
         if (that.getAnnotationList()!=null) {
             that.getAnnotationList().visit(this);
         }
-        //TODO: parameters of callable variables?!
-        /*if (that.getParameterLists().size()==0) {
-            if (that.getType() instanceof Tree.FunctionModifier) {
+        for (Tree.ParameterList pl: that.getParameterLists()) {
+            pl.visit(this);
+        }
+        
+        //TODO: parameters of callable variables are allowed 
+        //      in for loops, according to the language spec
+        /*Declaration od = beginDeclaration(v);
+        Scope os = enterScope(v);
+        if (that.getAnnotationList()!=null) {
+            that.getAnnotationList().visit(this);
+        }
+        for (Tree.ParameterList pl: that.getParameterLists()) {
+            pl.visit(this);
+        }
+        exitScope(os);
+        endDeclaration(od);
+        */
+        
+        if (that.getParameterLists().isEmpty()) {
+            if (that.getType() instanceof Tree.FunctionModifier ||
+                that.getType() instanceof Tree.VoidModifier) {
                 that.getType().addError("variables with no parameters may not be declared using the keyword function");
             }
         }
         else {
+            Tree.ParameterList pl = that.getParameterLists().get(0);
+            pl.addWarning("variables with parameter lists are not yet supported");
             if (that.getType() instanceof Tree.ValueModifier) {
                 that.getType().addError("variables with parameters may not be declared using the keyword value");
             }
-        }*/
+        }
+                
         that.setScope(scope);
         that.setUnit(unit);
     }

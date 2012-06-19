@@ -2703,8 +2703,15 @@ variable returns [Variable variable]
 var returns [Variable variable]
     : { $variable = new Variable(null); }
     (
-      type 
-      { $variable.setType($type.type); }
+      ( type 
+        { $variable.setType($type.type); }
+      | VOID_MODIFIER
+        { $variable.setType(new VoidModifier($VOID_MODIFIER)); }
+      | FUNCTION_MODIFIER
+        { $variable.setType(new VoidModifier($FUNCTION_MODIFIER)); }
+      | VALUE_MODIFIER
+        { $variable.setType(new VoidModifier($VALUE_MODIFIER)); }
+      )
       mn1=memberName 
       { $variable.setIdentifier($mn1.identifier); }
       ( 
