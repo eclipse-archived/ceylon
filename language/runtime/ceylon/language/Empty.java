@@ -23,7 +23,7 @@ public interface Empty
     
     @Annotations(@Annotation("actual"))
     @Override
-    @TypeInfo("ceylon.language.Nothing")
+    @TypeInfo("ceylon.language.Iterator<ceylon.language.Bottom>")
     public Iterator getIterator();
     
     @Annotations(@Annotation("actual"))

@@ -29,6 +29,7 @@ public interface Iterable<Element> extends Container {
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Iterable<Result>")
+    @TypeParameters(@TypeParameter("Result"))
     public <Result> Iterable<? extends Result> map(@Name("collecting")
         @TypeInfo("ceylon.language.Callable<Result,Element>")
         Callable<? extends Result> collecting);
@@ -41,6 +42,7 @@ public interface Iterable<Element> extends Container {
 
     @Annotations(@Annotation("default"))
     @TypeInfo("Result")
+    @TypeParameters(@TypeParameter("Result"))
     public <Result> Result fold(@Name("initial")
 		@TypeInfo("Result") Result initial,
 		@Name("accumulating")
