@@ -298,4 +298,8 @@ class Operators() {
     @type["Set<String>"] value sr4 = ss&so;
     @type["Set<Object>"] value sr5 = ss|so;
     
+    variable Set<String> vss := ss;
+    @type["Set<String>"] vss|=ss;
+    @type["Set<String>"] vss&=ss;
+    
 }
