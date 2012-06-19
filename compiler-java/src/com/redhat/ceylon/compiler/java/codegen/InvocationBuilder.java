@@ -227,8 +227,10 @@ abstract class InvocationBuilder {
 
     private boolean needsTypeInfoArgument() {
         if (primaryDeclaration instanceof LazyMethod) {
-            String name = primaryDeclaration.getName();
-            return ("array".equals(name) || "arrayOfSome".equals(name) || "arrayOfNone".equals(name) || "makeArray".equals(name));
+            if ("ceylon.language".equals(primaryDeclaration.getContainer().getQualifiedNameString())) {
+                String name = primaryDeclaration.getName();
+                return ("array".equals(name) || "arrayOfSome".equals(name) || "arrayOfNone".equals(name) || "makeArray".equals(name));
+            }
         }
         return false;
     }
