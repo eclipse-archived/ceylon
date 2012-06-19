@@ -137,6 +137,11 @@ public class Main {
                         stop=true;
                         f=null;
                     }
+                } else if ("default".equals(filedir)) {
+                    //Default module: load every file in the source directories recursively,
+                    //except any file that exists in directories and subdirectories where we find a module.ceylon file
+                    //Typechecker takes care of all that if we add default to module filters
+                    modfilters.add("default");
                 } else {
                     //Parse, may be a module name
                     String[] modpath = filedir.split("\\.");
@@ -144,7 +149,7 @@ public class Main {
                     for (String pe : modpath) {
                         f = new File(f, pe);
                         if (!(f.exists() && f.isDirectory())) {
-                            System.err.printf("ceylonc: Could not find source files for module: %s%n", filedir);
+                            System.err.printf("ceylonc-js: Could not find source files for module: %s%n", filedir);
                             f=null;
                             break;
                         }
