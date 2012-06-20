@@ -380,6 +380,31 @@ public class Util {
         return ret;
     }
 
+    public static int[] toCodepointArray(ceylon.language.Iterable<? extends ceylon.language.Character> sequence){
+        if(sequence instanceof ceylon.language.FixedSized)
+            return toCodepointArray((ceylon.language.FixedSized<? extends ceylon.language.Character>)sequence);
+        List<ceylon.language.Character> list = collectIterable(sequence);
+        int[] ret = new int[list.size()];
+        int i=0;
+        for(ceylon.language.Character e : list){
+            ret[i++] = e.intValue();
+        }
+        return ret;
+    }
+
+    private static int[] toCodepointArray(ceylon.language.FixedSized<? extends ceylon.language.Character> sequence){
+        int[] ret = new int[(int) sequence.getSize()];
+        int i=0;
+        while(!sequence.getEmpty()){
+            ret[i++] = (char) sequence.getFirst().intValue();
+            if(sequence instanceof ceylon.language.Some<?>)
+                sequence = ((ceylon.language.Some<? extends ceylon.language.Character>)sequence).getRest();
+            else
+                break;
+        }
+        return ret;
+    }
+
     public static java.lang.String[] toJavaStringArray(ceylon.language.Iterable<? extends ceylon.language.String> sequence){
         if(sequence instanceof ceylon.language.FixedSized)
             return toJavaStringArray((ceylon.language.FixedSized<? extends ceylon.language.String>)sequence);
