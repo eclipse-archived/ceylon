@@ -7,4 +7,4 @@ doc "The abstract supertype of all types. A value of type
      intersection of all types, is a subtype of all types."
 by "Gavin"
 shared abstract class Void() 
-        of Object | Nothing /*extends null*/ {}
+        of Object | Nothing {}
