@@ -1,10 +1,13 @@
 function initType(a,b,c,d,e,f,g,h,i,j,k,l){}//IGNORE
+function initTypeProtoI(a,b,c,d,e,f){}//IGNORE
+function initTypeProto(a,b,c,d){}//IGNORE
 function inheritProto(a,b,c){}//IGNORE
 function exists(x){}//IGNORE
 function Boolean$(x){}//IGNORE
 function Exception(){}//IGNORE
 function Integer(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
+function getBottom(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 var exports,Container,$finished,$false,$true,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
@@ -317,7 +320,7 @@ Map$proto.getValues = function() {
         mv.clone=function() { return this; }
         mv.equals=function() { return $false; }
         mv.getHash=function() { return outer.getHash(); }
-        mv.getIterator=function() { return $bottom; }
+        mv.getIterator=function() { return getBottom(); }
         mv.getSize=function() { return outer.getSize(); }
         mv.getString=function() { return String$('',0); }
         return mv;
@@ -334,7 +337,7 @@ Map$proto.getKeys = function() {
         mk.clone=function() { return this; }
         mk.equals=function() { return $false; }
         mk.getHash=function() { return outer.getHash(); }
-        mk.getIterator=function() { return $bottom; }
+        mk.getIterator=function() { return getBottom(); }
         mk.getSize=function() { return outer.getSize(); }
         mk.getString=function() { return String$('',0); }
         return mk;
@@ -351,8 +354,8 @@ Map$proto.getInverse = function() {
         inv.clone=function() { return this; }
         inv.equals=function() { return $false; }
         inv.getHash=function() { return outer.getHash(); }
-        inv.getItem=function() { return $bottom; }
-        inv.getIterator=function() { return $bottom; }
+        inv.getItem=function() { return getBottom(); }
+        inv.getIterator=function() { return getBottom(); }
         inv.getSize=function() { return outer.getSize(); }
         inv.getString=function() { return String$('',0); }
         return inv;

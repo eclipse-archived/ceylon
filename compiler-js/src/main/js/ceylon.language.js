@@ -385,7 +385,7 @@ Range$proto.getRest = function() {
 }
 Range$proto.by = function(step) {
     if (step.compare(Integer(0)) !== larger) {
-        //throw
+        throw Exception(String$("step must be positive"));
     }
     if (this.first.equals(this.last) === getTrue() || step.equals(Integer(1)) === getTrue()) {
         return this;
@@ -497,6 +497,9 @@ Entry$proto.equals = function(other) {
 }
 Entry$proto.getHash = function() { Integer((31 + this.key.getHash().value) * 31 + this.item.getHash().value); }
 
+function getBottom() {
+    throw Exception();
+}
 
 exports.Exception=Exception;
 exports.Identifiable=Identifiable;
@@ -511,7 +514,7 @@ exports.getFalse=getFalse;
 exports.getExhausted=getExhausted;
 exports.Range=Range;
 exports.Entry=Entry;
-
+exports.getBottom=getBottom;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {
