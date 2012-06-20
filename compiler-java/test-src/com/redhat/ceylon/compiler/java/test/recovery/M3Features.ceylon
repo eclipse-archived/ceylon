@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-void m3Features(Set<Integer> s) {
-    @error Set<Integer> s2 = s | s;
+void m3Features<T>() 
+        @error given T abstracts Integer {
 }
