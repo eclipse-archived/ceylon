@@ -36,7 +36,7 @@ shared class NullHandlingOperators() {
         };
         
         String[]? s1 = null;
-        String[] s2 = s1?{};
+        String[] s2 = s1 ? {};
     }
     
     void testEmpty() {
@@ -66,5 +66,7 @@ shared class NullHandlingOperators() {
         String? baz = (n > 0) then "yes" else "no";
         Float x = 5.0;
         Float y = (x>0.0 then x else 1.0);
+        // test empty raw casts
+        Integer[] seq = false then {} else 0..2;
     }
 }
