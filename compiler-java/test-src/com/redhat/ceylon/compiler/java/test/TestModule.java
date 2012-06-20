@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.runtime;
+package com.redhat.ceylon.compiler.java.test;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -33,5 +33,6 @@ import java.lang.annotation.Target;
 public @interface TestModule {
 
     String srcDirectory();
+    boolean errorIfNoTests() default true;
     
 }

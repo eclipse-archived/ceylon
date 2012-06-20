@@ -21,6 +21,9 @@ package com.redhat.ceylon.compiler.java.test.runtime;
 
 import org.junit.runner.RunWith;
 
+import com.redhat.ceylon.compiler.java.test.CeylonModuleRunner;
+import com.redhat.ceylon.compiler.java.test.TestModule;
+
 
 /**
  * A placeholder used for executing the runtime tests in /test-runtime
