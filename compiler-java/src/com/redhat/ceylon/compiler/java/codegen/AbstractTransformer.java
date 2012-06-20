@@ -740,10 +740,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     static final int JT_SATISFIES = 1 << 0;
     /** For use in {@code extends} clauses. */
     static final int JT_EXTENDS = 1 << 1;
-    /** For use when generating a type argument */
-    static final int JT_TYPE_ARGUMENT = 1 << 2;
+    
     /** For use when a primitive type won't do. */
-    static final int JT_NO_PRIMITIVES = 1 << 2; // Yes, same as TYPE_ARGUMENT
+    static final int JT_NO_PRIMITIVES = 1 << 2;
+    
     /** For generating a type without type arguments. */
     static final int JT_RAW = 1 << 3;
     /** For use in {@code catch} statements. */
@@ -758,11 +758,17 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     /** Generates the Java type of the companion class of the given type */
     static final int JT_COMPANION = 1 << 7;
     static final int JT_NON_QUALIFIED = 1 << 8;
+    
+    private static final int __JT_RAW_TP_BOUND = 1 << 9;
     /** 
      * If the type is a type parameter, return the Java type for its upper bound. 
      * Implies {@link #JT_RAW}   
      */
-    static final int JT_RAW_TP_BOUND = JT_RAW | 1 << 9;
+    static final int JT_RAW_TP_BOUND = JT_RAW | __JT_RAW_TP_BOUND;
+    
+    private static final int __JT_TYPE_ARGUMENT = 1 << 10;
+    /** For use when generating a type argument. Implies {@code JT_NO_PRIMITIVES} */
+    static final int JT_TYPE_ARGUMENT = JT_NO_PRIMITIVES | __JT_TYPE_ARGUMENT;
 
     /**
      * This function is used solely for method return types and parameters 
@@ -789,7 +795,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         if(type == null)
             return make().Erroneous();
         
-        if ((flags & 1<<9) != 0
+        if ((flags & __JT_RAW_TP_BOUND) != 0
                 && type.getDeclaration() instanceof TypeParameter) {
             type = ((TypeParameter)type.getDeclaration()).getExtendedType();    
         }
@@ -821,7 +827,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             } else {
                 return make().Type(syms().throwableType);
             }
-        } else if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_TYPE_ARGUMENT | JT_CLASS_NEW)) == 0 
+        } else if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_NO_PRIMITIVES | JT_CLASS_NEW)) == 0 
                 && (!isOptional(type) || isJavaString(type))) {
             if (isCeylonString(type) || isJavaString(type)) {
                 return make().Type(syms().stringType);
@@ -1018,7 +1024,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     // use raw types if:
                     // - we're calling a constructor
                     // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
-                    if((flags & JT_CLASS_NEW) != 0 || (flags & JT_TYPE_ARGUMENT) == 0){
+                    if((flags & JT_CLASS_NEW) != 0 || (flags & __JT_TYPE_ARGUMENT) == 0){
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
                         break;
@@ -1055,7 +1061,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             } else if (ta.getDeclaration() instanceof BottomType
                     // if we're in a type argument already, union and intersection types should use the same erasure rules
                     // as bottom: prefer wildcards
-                    || ((flags & JT_TYPE_ARGUMENT) != 0
+                    || ((flags & __JT_TYPE_ARGUMENT) != 0
                         && (typeFact().isUnion(ta) || typeFact().isIntersection(ta)))) {
                 // For the bottom type Bottom:
                 if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_CLASS_NEW)) != 0) {
