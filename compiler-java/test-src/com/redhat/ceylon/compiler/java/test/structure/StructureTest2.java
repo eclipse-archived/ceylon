@@ -276,7 +276,7 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
-    public void testCncEmptyImplementor_fail(){
+    public void testCncEmptyImplementor(){
         compareWithJavaSource("concrete/EmptyImplementor");
     }
     
