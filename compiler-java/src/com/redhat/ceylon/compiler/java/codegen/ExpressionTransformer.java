@@ -740,8 +740,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Tree.DefaultOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm());
-        JCExpression right = transformExpression(op.getRightTerm());
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, op.getTypeModel());
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, op.getTypeModel());
         String varName = tempName();
         JCExpression varIdent = makeUnquotedIdent(varName);
         JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
