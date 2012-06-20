@@ -599,6 +599,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 if(refinedDeclType.getDeclaration() == null)
                     return true;
                 // find the instantiation of the refined decl type in the decl type
+                // special case for optional types: let's find the definite type since
+                // in java they are equivalent
+                ProducedType definiteType = typeFact().getDefiniteType(refinedDeclType);
+                if(definiteType != null)
+                    refinedDeclType = definiteType;
                 declType = declType.getSupertype(refinedDeclType.getDeclaration());
                 // could not find common type, we must be widening somehow
                 if(declType == null)
