@@ -76,6 +76,7 @@ public class Main {
         final TypeChecker typeChecker;
         final RepositoryManager repoman = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(
                 opts.getRepos(), opts.getOutDir(), new JULLogger());
+        final List<String> onlyFiles = new ArrayList<String>();
         if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {
                 @Override
@@ -126,13 +127,17 @@ public class Main {
             tcb.setRepositoryManager(repoman);
             final File root = new File(opts.getSrcDir());
             final String path = root.getAbsolutePath();
-            tcb.addSrcDirectory(root);
             final List<String> modfilters = new ArrayList<String>();
             boolean stop = false;
             for (String filedir : args) {
                 File f = new File(filedir);
                 if (f.exists() && f.isFile()) {
-                    if (!f.getAbsolutePath().startsWith(path)) {
+                    if (f.getAbsolutePath().startsWith(path)) {
+                        if (opts.isVerbose()) {
+                            System.out.printf("Adding %s to compilation set%n", filedir);
+                        }
+                        onlyFiles.add(filedir);
+                    } else {
                         System.err.printf("%s is not in the current source path: [%s]%n", f.getAbsolutePath(), root);
                         stop=true;
                         f=null;
@@ -141,6 +146,9 @@ public class Main {
                     //Default module: load every file in the source directories recursively,
                     //except any file that exists in directories and subdirectories where we find a module.ceylon file
                     //Typechecker takes care of all that if we add default to module filters
+                    if (opts.isVerbose()) {
+                        System.out.println("Adding default module filter");
+                    }
                     modfilters.add("default");
                     f = null;
                 } else {
@@ -159,18 +167,38 @@ public class Main {
                         System.err.printf("ceylonc-js: file not found: %s%n", filedir);
                         stop=true;
                     } else {
+                        if (opts.isVerbose()) {
+                            System.out.println("Adding to module filters: " + filedir);
+                        }
+                        for (File e : f.listFiles()) {
+                            String n = e.getName().toLowerCase();
+                            if (e.isFile() && n.endsWith(".ceylon") && !n.equals("module.ceylon")) {
+                                if (opts.isVerbose()) {
+                                    System.out.println("Adding to compilation set: " + e.getPath());
+                                }
+                                onlyFiles.add(e.getPath());
+                            }
+                        }
                         modfilters.add(filedir);
                         f = null;
                     }
                 }
                 if (f != null) {
                     if ("module.ceylon".equals(f.getName().toLowerCase())) {
-                        modfilters.add(f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
+                        String _f = f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
+                        modfilters.add(_f);
+                        if (opts.isVerbose()) {
+                            System.out.println("Adding to module filters: " + _f);
+                        }
                     } else {
                         File middir = f.getParentFile();
                         while (!middir.getAbsolutePath().equals(root.getAbsolutePath())) {
                             if (new File(middir, "module.ceylon").exists()) {
-                                modfilters.add(middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, "."));
+                                String _f = middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
+                                modfilters.add(_f);
+                                if (opts.isVerbose()) {
+                                    System.out.println("Adding to module filters: " + _f);
+                                }
                             }
                             middir = middir.getParentFile();
                         }
@@ -181,6 +209,7 @@ public class Main {
                 help(false);
                 return;
             }
+            tcb.addSrcDirectory(root);
             if (!modfilters.isEmpty()) {
                 tcb.setModuleFilters(modfilters);
             }
@@ -192,6 +221,7 @@ public class Main {
         typeChecker.process();
         t2=System.nanoTime();
         JsCompiler jsc = new JsCompiler(typeChecker, opts);
+        if (!onlyFiles.isEmpty()) { jsc.setFiles(onlyFiles); }
         t3=System.nanoTime();
         if (!jsc.generate()) {
             jsc.printErrors(System.out);
