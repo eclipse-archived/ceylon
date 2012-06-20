@@ -25,7 +25,7 @@ shared interface Empty
     }
 
     doc "Returns an `Empty` for any given span."
-    shared actual Empty span(Integer from, Integer? to) {
+    shared actual Empty span(Integer from, Integer to) {
         return this;
     }
 
