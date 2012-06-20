@@ -1395,6 +1395,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if (typeFact().isEmptyType(expr.getPrimary().getTypeModel())) {
             ProducedType emptyOrSequence = typeFact().getEmptyType(typeFact().getSequenceType(expr.getTarget().getType()));
+            // no need to call makeEmptyAsIterable() here as we always cast the result anyways
             resultExpr = make().TypeCast(makeJavaType(emptyOrSequence), 
                     make().Conditional(makeNonEmptyTest(makeUnquotedIdent(testVarName)), 
                         spread, makeEmpty()));
