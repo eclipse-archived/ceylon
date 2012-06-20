@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -212,10 +213,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (expectedType != null
                 // don't add cast to an erased type 
-                && !willEraseToObject(expectedType)
+                && (!willEraseToObject(expectedType) || willEraseToIterable(expectedType))
                 // don't add cast for null
                 && !isNothing(exprType)) {
-            if(willEraseToObject(exprType)){
+            // full type erasure
+            if(!willEraseToObject(expectedType) && willEraseToObject(exprType)){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
                 expectedType = getTypeOrSelfType(expectedType);
@@ -223,7 +225,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // Erased types need a type cast
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                 result = make().TypeCast(targetType, result);
-            }else 
+            }else if(needsRawCast(exprType, expectedType)){
+                // type param erasure
+                JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
+                result = make().TypeCast(targetType, result);
+            }else
                 canCast = true;
         }
 
@@ -236,6 +242,40 @@ public class ExpressionTransformer extends AbstractTransformer {
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy);
         return ret;
+    }
+
+    private boolean needsRawCast(ProducedType exprType, ProducedType expectedType) {
+        if(exprType.isExactly(expectedType))
+            return false;
+        // we can't find a common type with a sequence since it's a union
+        if(willEraseToIterable(expectedType)){
+            ProducedType commonType = exprType.getSupertype(typeFact().getIterableDeclaration());
+            // something fishy
+            if(commonType == null)
+                return false;
+            ProducedType expectedTypeErasure = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(expectedType));
+            if(hasErasedTypeParameters(expectedTypeErasure))
+                return false;
+            return hasErasedTypeParameters(commonType);
+        }else{
+            ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
+            if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface))
+                return false;
+            if(hasErasedTypeParameters(expectedType))
+                return false;
+            return hasErasedTypeParameters(commonType);
+        }
+    }
+
+    private boolean hasErasedTypeParameters(ProducedType type) {
+        for(ProducedType arg : type.getTypeArgumentList()){
+            if(willEraseToObject(arg))
+                return true;
+            if(arg.getDeclaration() instanceof ClassOrInterface
+                    && hasErasedTypeParameters(arg))
+                return true;
+        }
+        return false;
     }
 
     private JCExpression applyVarianceCasts(JCExpression result, ProducedType exprType,
