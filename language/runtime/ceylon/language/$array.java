@@ -22,11 +22,7 @@ public final class $array {
     @Sequenced
     @TypeInfo("ceylon.language.Iterable<Element>")
     final ceylon.language.Iterable<? extends Element> elements) {
-		if (elements.getEmpty()) {
-            return $arrayOfNone.<Element>arrayOfNone();
-		} else {
-            return $arrayOfSome.arrayOfSome(elements);
-		}
+        return array(null, elements);
     }
     
     @Ignore
@@ -41,13 +37,13 @@ public final class $array {
     }
     
     @Ignore
-    public static <Element> Array<Element> array(Class<Element> typeClass) {
-        return $arrayOfNone.<Element>arrayOfNone();
+    public static <Element> Array<Element> array() {
+        return $arrayOfNone.<Element>arrayOfNone(null);
     }
     
     @Ignore
-    public static <Element> Array<Element> array() {
-        return $arrayOfNone.<Element>arrayOfNone();
+    public static <Element> Array<Element> array(Class<Element> typeClass) {
+        return $arrayOfNone.<Element>arrayOfNone(typeClass);
     }
             
 }

@@ -23,7 +23,7 @@ public final class makeArray {
     @Name("index")
     @TypeInfo("ceylon.language.Callable<Element,ceylon.language.Integer>")
     final Callable<Element> init) {
-        throw new RuntimeException("Wrong version of makeArray() being called, this should never happen!");
+        return makeArray(null, init);
     }
     
     @Ignore

@@ -16,7 +16,7 @@ public final class $arrayOfNone {
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>&None<Element>")
     public static <Element> Array<Element> arrayOfNone() {
-        throw new RuntimeException("Wrong version of arrayOfNone() being called, this should never happen!");
+        return new ArrayOfNone<Element>(null);
     }
     
     @Ignore

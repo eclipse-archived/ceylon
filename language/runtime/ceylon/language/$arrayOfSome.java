@@ -20,7 +20,7 @@ public final class $arrayOfSome {
     @Name("elements")
     @TypeInfo("ceylon.language.Sequence<Element>")
     final Iterable<? extends Element> elements) {
-        throw new RuntimeException("Wrong version of arrayOfSome() being called, this should never happen!");
+        return new ArrayOfSome<Element>(null, elements);
     }
     
     @Ignore

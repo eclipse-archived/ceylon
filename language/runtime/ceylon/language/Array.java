@@ -94,6 +94,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         } else if (typeClass == String.class) {
             this.array = Util.toJavaStringArray((Iterable<? extends String>) elements);
             this.typeClass = java.lang.String.class;
+        } else if (typeClass == null) {
+            this.array = Util.toArray(elements, java.lang.Object.class);
+            this.typeClass = java.lang.Object.class;
         } else {
             this.array = Util.toArray(elements, typeClass);
             this.typeClass = typeClass;
@@ -102,6 +105,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     Array(java.lang.Class<Element> typeClass, int size) {
+        if (typeClass == null) {
+            typeClass = (java.lang.Class<Element>) java.lang.Object.class;
+        }
         this.array = java.lang.reflect.Array.newInstance(typeClass, size);
         this.typeClass = typeClass;
     }
