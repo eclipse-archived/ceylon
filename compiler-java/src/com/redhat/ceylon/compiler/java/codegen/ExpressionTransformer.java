@@ -753,8 +753,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Tree.ThenOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm(), CodegenUtil.getBoxingStrategy(op.getLeftTerm()), typeFact().getBooleanDeclaration().getType());
-        JCExpression right = transformExpression(op.getRightTerm());
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType());
+        JCExpression right = transformExpression(op.getRightTerm(), CodegenUtil.getBoxingStrategy(op), op.getTypeModel());
         return make().Conditional(left , right, makeNull());
     }
     
