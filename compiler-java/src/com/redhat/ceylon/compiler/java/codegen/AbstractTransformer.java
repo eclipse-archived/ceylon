@@ -1034,7 +1034,8 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     // use raw types if:
                     // - we're calling a constructor
                     // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
-                    if((flags & JT_CLASS_NEW) != 0 || (flags & __JT_TYPE_ARGUMENT) == 0){
+                    //   or not in an extends or satisfies
+                    if((flags & JT_CLASS_NEW) != 0 || (flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) == 0){
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                         typeArgs = null;
                         break;
@@ -1069,28 +1070,26 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     }
                 }
             } else if (ta.getDeclaration() instanceof BottomType
-                    // if we're in a type argument already, union and intersection types should use the same erasure rules
-                    // as bottom: prefer wildcards
-                    || ((flags & __JT_TYPE_ARGUMENT) != 0
+                    // if we're in a type argument, extends or satisfies already, union and intersection types should 
+                    // use the same erasure rules as bottom: prefer wildcards
+                    || ((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0
                         && (typeFact().isUnion(ta) || typeFact().isIntersection(ta)))) {
                 // For the bottom type Bottom:
-                if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_CLASS_NEW)) != 0) {
-                    // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies or instantiation
+                if ((flags & (JT_CLASS_NEW)) != 0) {
+                    // - The Ceylon type Foo<Bottom> or Foo<erased_type> appearing in an instantiation
                     //   clause results in the Java raw type Foo
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                     typeArgs = null;
                     break;
                 } else {
-                    // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
-                    // - raw Foo if Foo<T> is invariant in T,
-                    // - Foo<?> if Foo<T> is covariant in T, or
-                    // - Foo<?> if Foo<T> is contravariant in T
-                    if (tp.isContravariant() || tp.isCovariant()) {
+                    // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies location results in the Java type
+                    //   Foo<Object> (see https://github.com/ceylon/ceylon-compiler/issues/633 for why)
+                    if((flags & (JT_SATISFIES | JT_EXTENDS)) != 0){
+                        jta = make().Type(syms().objectType);
+                    }else{
+                        // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
+                        // - Foo<?> always
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), null);
-                    } else {
-                        // A bit ugly, but we need to escape from the loop and create a raw type, no generics
-                        typeArgs = null;
-                        break;
                     }
                 }
             } else {
