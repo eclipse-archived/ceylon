@@ -238,8 +238,13 @@ abstract class InvocationBuilder {
     private JCExpression makeTypeInfoArgument() {
         Tree.BaseMemberExpression bme = (BaseMemberExpression) primary;
         ProducedType type = bme.getTypeArguments().getTypeModels().get(0);
-        JCExpression typeExpr = gen.makeJavaType(type, JT_RAW | JT_TYPE_ARGUMENT);
-        return gen.makeSelect(typeExpr, "class");
+        JCExpression typeExpr;
+        if (type.getDeclaration() instanceof TypeParameter) {
+            return gen.makeNull();
+        } else {
+            typeExpr = gen.makeJavaType(type, JT_RAW | JT_TYPE_ARGUMENT);
+            return gen.makeSelect(typeExpr, "class");
+        }
     }
 
     public final JCExpression build() {
