@@ -43,15 +43,6 @@ public interface List<Element>
     @Override
     public Iterator<? extends Element> getIterator();
     
-    /*@Override
-    public List<? extends Element> span(@Name("from") Integer from, 
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
-            @Name("to") Integer to);
-    
-    @Override
-    public List<? extends Element> segment(@Name("from") Integer from, 
-            @Name("length") Integer length);*/
-    
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object")
