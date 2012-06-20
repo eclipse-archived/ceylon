@@ -5,7 +5,7 @@ function Boolean$(x){}//IGNORE
 function Exception(){}//IGNORE
 function Integer(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
-function String$(x){}//IGNORE
+function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 var exports,Container,$finished,$false,$true,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
 
@@ -308,7 +308,58 @@ Map$proto.getHash = function() {
     }
     return Integer(hc);
 }
-//TODO implement methods: getKeys, getValues, getInverse
+Map$proto.getValues = function() {
+    function $map$values(outer) {
+        var mv = new $map$values.$$;
+        mv.outer=outer;
+        IdentifiableObject(mv);
+        Collection(mv);
+        mv.clone=function() { return this; }
+        mv.equals=function() { return $false; }
+        mv.getHash=function() { return outer.getHash(); }
+        mv.getIterator=function() { return $bottom; }
+        mv.getSize=function() { return outer.getSize(); }
+        mv.getString=function() { return String$('',0); }
+        return mv;
+    }
+    initTypeProto($map$values, 'ceylon.language.MapValues', IdentifiableObject, Collection);
+    return $map$values(this);
+}
+Map$proto.getKeys = function() {
+    function $map$keys(outer) {
+        var mk = new $map$keys.$$;
+        mk.outer=outer;
+        IdentifiableObject(mk);
+        Set(mk);
+        mk.clone=function() { return this; }
+        mk.equals=function() { return $false; }
+        mk.getHash=function() { return outer.getHash(); }
+        mk.getIterator=function() { return $bottom; }
+        mk.getSize=function() { return outer.getSize(); }
+        mk.getString=function() { return String$('',0); }
+        return mk;
+    }
+    initTypeProto($map$keys, 'ceylon.language.MapKeys', IdentifiableObject, Set);
+    return $map$keys(this);
+}
+Map$proto.getInverse = function() {
+    function $map$inv(outer) {
+        var inv = new $map$inv.$$;
+        inv.outer=outer;
+        IdentifiableObject(inv);
+        Map(inv);
+        inv.clone=function() { return this; }
+        inv.equals=function() { return $false; }
+        inv.getHash=function() { return outer.getHash(); }
+        inv.getItem=function() { return $bottom; }
+        inv.getIterator=function() { return $bottom; }
+        inv.getSize=function() { return outer.getSize(); }
+        inv.getString=function() { return String$('',0); }
+        return inv;
+    }
+    initTypeProto($map$inv, 'ceylon.language.InverseMap', IdentifiableObject, Map);
+    return $map$inv(this);
+}
 exports.Map=Map;
 
 function Set(wat) {
