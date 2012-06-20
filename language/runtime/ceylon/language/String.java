@@ -168,12 +168,12 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
     @Override
     @Ignore
     public Iterable<? extends Integer> definesEvery$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
@@ -187,12 +187,12 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, $empty.getEmpty());
+        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
     @Override
     @Ignore
     public Iterable<? extends Integer> definesAny$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
@@ -205,12 +205,12 @@ public abstract class String
     @Override
     @Ignore
     public List<? extends Character> items() {
-        return Correspondence$impl._items(this, $empty.getEmpty());
+        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
     @Override
     @Ignore
     public Iterable<? extends Integer> items$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
@@ -240,7 +240,7 @@ public abstract class String
     public Iterable<? extends Character> getCharacters() {
         int length = value.length();
         if (length == 0) {
-            return $empty.getEmpty();
+            return (Iterable)$empty.getEmpty();
         }
         Character[] chars = new Character[(int)getSize()];
         for (int offset = 0, i = 0; offset < length; i++) {
@@ -411,7 +411,7 @@ public abstract class String
     }
     @Ignore
     public java.lang.String join() {
-        return join($empty.getEmpty());
+        return join((Iterable)$empty.getEmpty());
     }
     
     @Override

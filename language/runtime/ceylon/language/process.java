@@ -188,7 +188,7 @@ public final class process {
     }*/
 
     @SuppressWarnings("unchecked")
-    private Iterable<? extends String> args = $empty.getEmpty();
+    private Iterable<? extends String> args = (Iterable)$empty.getEmpty();
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
     public Iterable<? extends String> getArguments() {

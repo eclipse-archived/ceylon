@@ -47,7 +47,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public FixedSized<? extends Element> getRest() {
         if (first+1==array.length) {
-            return $empty.getEmpty();
+            return (FixedSized)$empty.getEmpty();
         }
         else {
             return new ArraySequence<Element>(array, first + 1);
@@ -71,7 +71,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         long toIndex = to==null ? array.length-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return $empty.getEmpty();
+            return (List)$empty.getEmpty();
         }
         else if (toIndex>lastIndex) {
             return new ArraySequence<Element>(array, fromIndex);
@@ -89,7 +89,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         long resultLength = length;
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return $empty.getEmpty();
+            return (List)$empty.getEmpty();
         }
         else if (fromIndex+resultLength>lastIndex) {
             return new ArraySequence<Element>(array, fromIndex);
@@ -163,11 +163,11 @@ public class ArraySequence<Element> implements Sequence<Element> {
     
     @Override
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
     @Override
     public Iterable<? extends Integer> definesEvery$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
@@ -177,12 +177,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
     
     @Override
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, $empty.getEmpty());
+        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
     
     @Override
     public Iterable<? extends Integer> definesAny$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
@@ -192,11 +192,11 @@ public class ArraySequence<Element> implements Sequence<Element> {
     
     @Override
     public ceylon.language.List<? extends Element> items() {
-        return Correspondence$impl._items(this, $empty.getEmpty());
+        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
     @Override
     public Iterable<? extends Integer> items$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override

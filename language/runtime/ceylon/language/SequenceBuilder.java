@@ -24,7 +24,7 @@ public class SequenceBuilder<Element> implements Sized {
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public synchronized Iterable<? extends Element> getSequence() {
         if (list==null || list.isEmpty()) {
-            return $empty.getEmpty();
+            return (Iterable)$empty.getEmpty();
         }
         else {
             return new ArraySequence<Element>(list);
@@ -57,7 +57,7 @@ public class SequenceBuilder<Element> implements Sized {
     
     @Ignore
     public final void appendAll() {
-        appendAll($empty.getEmpty());
+        appendAll((Iterable)$empty.getEmpty());
     }
     
     @Override
