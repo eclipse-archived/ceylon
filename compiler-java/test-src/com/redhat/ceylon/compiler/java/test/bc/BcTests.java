@@ -25,6 +25,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class BcTests extends CompilerTest {

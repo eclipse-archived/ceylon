@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.test.expression;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class ExpressionTest extends CompilerTest {

@@ -35,7 +35,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.TreeSet;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
@@ -130,98 +129,7 @@ public abstract class CompilerTest {
         });
     }
 
-    public static class CompilerError implements Comparable<CompilerError>{
-        private final long lineNumber;
-        private final String message;
-        private Diagnostic.Kind kind;
-
-        public CompilerError(long lineNumber, String message) {
-            this(Diagnostic.Kind.ERROR, lineNumber, message);
-        }
-        
-        public CompilerError(Diagnostic.Kind kind, long lineNumber, String message) {
-            this.kind = kind;
-            this.lineNumber = lineNumber;
-            this.message = message;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((kind == null) ? 0 : kind.hashCode());
-            result = prime * result + (int) (lineNumber ^ (lineNumber >>> 32));
-            result = prime * result
-                    + ((message == null) ? 0 : message.hashCode());
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            CompilerError other = (CompilerError) obj;
-            if (kind != other.kind)
-                return false;
-            if (lineNumber != other.lineNumber)
-                return false;
-            if (message == null) {
-                if (other.message != null)
-                    return false;
-            } else if (!message.equals(other.message))
-                return false;
-            return true;
-        }
-
-        public String toString() {
-            return lineNumber + ": " + message;
-        }
-
-        @Override
-        public int compareTo(CompilerError o) {
-            long cmp = this.kind.compareTo(o.kind);
-            if (cmp == 0) {
-                cmp = this.lineNumber - o.lineNumber;
-            }
-            if (cmp == 0) {
-                cmp = this.message.compareTo(o.message);
-            }
-            return Long.signum(cmp);
-        }
-    }
     
-    public static class ErrorCollector implements DiagnosticListener<FileObject> {
-        private final TreeSet<CompilerError> actualErrors = new TreeSet<CompilerError>();
-
-        @Override
-        public void report(Diagnostic<? extends FileObject> diagnostic) {
-            if(diagnostic.getSource() != null)
-                System.err.print(diagnostic.getSource().getName() + ":");
-            if(diagnostic.getLineNumber() != -1)
-                System.err.print(diagnostic.getLineNumber() + ":");
-            System.err.println(diagnostic.getKind().toString() + ":" 
-                    + diagnostic.getMessage(null));
-            actualErrors.add(new CompilerError(diagnostic.getKind(), 
-                    diagnostic.getLineNumber(),
-                    diagnostic.getMessage(Locale.getDefault())));
-        }
-        
-        public TreeSet<CompilerError> get(Diagnostic.Kind kind) {
-            TreeSet<CompilerError> result = new TreeSet<CompilerError>();
-            for (CompilerError diagnostic : actualErrors) {
-                if (diagnostic.kind == kind) {
-                    result.add(diagnostic);
-                }
-            }
-            return result;
-        }
-        
-        
-    }
     
     protected void assertErrors(String ceylon, CompilerError... expectedErrors) {
         // make a compiler task
