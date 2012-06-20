@@ -20,7 +20,7 @@ public class ErrorCollector implements DiagnosticListener<FileObject> {
         System.err.println(diagnostic.getKind().toString() + ":" 
                 + diagnostic.getMessage(null));
         actualErrors.add(new CompilerError(diagnostic.getKind(),
-                diagnostic.getSource().getName(),
+                diagnostic.getSource() != null ? diagnostic.getSource().getName() : null,
                 diagnostic.getLineNumber(),
                 diagnostic.getMessage(Locale.getDefault())));
     }

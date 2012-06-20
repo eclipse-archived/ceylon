@@ -110,7 +110,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
             
             int sc = compiler.compile(new String[]{
-                    "-verbose",
+                    //"-verbose",
                     "-src", srcDir.getAbsolutePath(),
                     "-out", outRepo.getAbsolutePath(),
                     moduleName}, 

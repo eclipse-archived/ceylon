@@ -433,6 +433,7 @@
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
           <include name="com/redhat/ceylon/compiler/java/test/runtime/RuntimeSuite.java"/>
+          <include name="com/redhat/ceylon/compiler/java/test/languagesatisfaction/LanguageSatisfactionSuite.java"/>
         </fileset>
       </batchtest>
     </junit>
