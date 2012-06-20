@@ -243,7 +243,7 @@ abstract class InvocationBuilder {
         if (type.getDeclaration() instanceof TypeParameter) {
             return gen.makeNull();
         } else {
-            typeExpr = gen.makeJavaType(type, JT_RAW | JT_TYPE_ARGUMENT);
+            typeExpr = gen.makeJavaType(type, JT_RAW);
             return gen.makeSelect(typeExpr, "class");
         }
     }
