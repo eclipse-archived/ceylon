@@ -29,7 +29,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -54,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -1335,7 +1335,8 @@ public class ExpressionVisitor extends Visitor {
             for (TypeParameter tp: dec.getTypeParameters()) {
                 if (!tp.isSequenced()) {
                     typeArgs.add(constrainInferredType(dec, tp, 
-                            inferTypeArgument(that, tp, parameters)));
+                            inferTypeArgument(that, that.getPrimary().getTypeModel(), 
+                                    tp, parameters)));
                 }
             }
         }
@@ -1373,13 +1374,13 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType inferTypeArgument(Tree.InvocationExpression that,
-            TypeParameter tp, ParameterList parameters) {
+            ProducedReference pr, TypeParameter tp, ParameterList parameters) {
         List<ProducedType> inferredTypes = new ArrayList<ProducedType>();
         if (that.getPositionalArgumentList()!=null) {
-            inferTypeArgument(tp, parameters, that.getPositionalArgumentList(), inferredTypes);
+            inferTypeArgument(tp, parameters, pr, that.getPositionalArgumentList(), inferredTypes);
         }
         else if (that.getNamedArgumentList()!=null) {
-            inferTypeArgument(tp, parameters, that.getNamedArgumentList(), inferredTypes);
+            inferTypeArgument(tp, parameters, pr, that.getNamedArgumentList(), inferredTypes);
         }
         UnionType ut = new UnionType(unit);
         ut.setCaseTypes(inferredTypes);
@@ -1387,9 +1388,10 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferTypeArgument(TypeParameter tp, ParameterList parameters,
-            Tree.NamedArgumentList args, List<ProducedType> inferredTypes) {
+            ProducedReference pr, Tree.NamedArgumentList args, 
+            List<ProducedType> inferredTypes) {
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
-            inferTypeArg(arg, tp, parameters, inferredTypes);
+            inferTypeArg(arg, tp, pr, parameters, inferredTypes);
         }
         Tree.SequencedArgument sa = args.getSequencedArgument();
         if (sa!=null) {
@@ -1432,7 +1434,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferTypeArg(Tree.NamedArgument arg, TypeParameter tp,
-            ParameterList parameters, List<ProducedType> inferredTypes) {
+            ProducedReference pr, ParameterList parameters, 
+            List<ProducedType> inferredTypes) {
         ProducedType type = null;
         if (arg instanceof Tree.SpecifiedArgument) {
             Tree.Expression e = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
@@ -1442,20 +1445,24 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (arg instanceof Tree.TypedArgument) {
-            //TODO: broken for method args
-            type = ((Tree.TypedArgument) arg).getType().getTypeModel();
+            //copy/pasted from checkNamedArgument()
+            TypedArgument ta = (Tree.TypedArgument) arg;
+            type = ta.getDeclarationModel().getProducedTypedReference(null,
+                    //assuming an argument can't have type params 
+                    Collections.<ProducedType>emptyList()).getFullType();
         }
         if (type!=null) {
             Parameter parameter = getMatchingParameter(parameters, arg);
             if (parameter!=null) {
-                addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
-                        type, new ArrayList<TypeParameter>()));
+                ProducedType pt = pr.getTypedParameter(parameter.getAliasedParameter()).getFullType();
+                addToUnion(inferredTypes, inferTypeArg(tp, pt, type, new ArrayList<TypeParameter>()));
             }
         }
     }
 
     private void inferTypeArgument(TypeParameter tp, ParameterList parameters,
-            Tree.PositionalArgumentList args, List<ProducedType> inferredTypes) {
+            ProducedReference pr, Tree.PositionalArgumentList args, 
+            List<ProducedType> inferredTypes) {
         for (int i=0; i<parameters.getParameters().size(); i++) {
             Parameter parameter = parameters.getParameters().get(i);
             if (args.getPositionalArguments().size()>i) {
@@ -1474,21 +1481,8 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     Tree.PositionalArgument a = args.getPositionalArguments().get(i);
                     if (a.getExpression()!=null) {
-                        ProducedType pt;
-                        if (parameter instanceof FunctionalParameter) {
-                            //TODO: this is very incomplete!
-                            List<ProducedType> list = new ArrayList<ProducedType>();
-                            list.add(parameter.getType());
-                            for (Parameter p: ((FunctionalParameter) parameter).getParameterLists()
-                                    .get(0).getParameters()) {
-                                list.add(p.getType());
-                            }
-                            pt = unit.getCallableDeclaration().getProducedType(null, list);
-                        }
-                        else {
-                            pt = parameter.getType();
-                        }
-
+                        ProducedType pt = pr.getTypedParameter(parameter.getAliasedParameter())
+                                .getFullType();
                         addToUnion(inferredTypes, inferTypeArg(tp, pt, 
                                 getPositionalArgumentType(a), 
                                 new ArrayList<TypeParameter>()));

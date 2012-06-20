@@ -131,5 +131,15 @@ class TypeArgInference() {
     @type["Nothing|TypeArgInference.A&TypeArgInference.B"] @error acceptOneOrTwo(test0);
     @type["Nothing"] @error acceptOneOrTwo(test1);
     @type["Nothing"] acceptOneOrTwo(test2);
+    
+    void higherVoid<X>(void f(X x)) {}
+    higherVoid((String x) print(x));
+    higherVoid { void f(String x) { print(x); } };
+
+    X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object { return f(null); }
+    @type["Integer|String"] higher((String? y) 1);
+    @type["Float|String"] higher { function f(String? y) { return 1.0; } };
+    function argfun(Integer? x) { return x?.float; }
+    @type["Nothing|Float|Integer"] higher(argfun);
 
 }
