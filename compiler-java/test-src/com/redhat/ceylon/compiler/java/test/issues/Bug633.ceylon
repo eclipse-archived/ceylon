@@ -17,21 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@nomodel
+interface Bug633Ranged<in Index, out Span>{
+    shared formal void span(Index from);
+}
 
 @nomodel
-//interface Cov<out T> {
-//    shared formal T m();
-//}
-//interface Contrav<in T> {
-//    shared formal void m2(T t);
-//}
-//class A() satisfies Cov<Number> & Contrav<Number> {
-//    shared actual default Number m(){ return 1; }
-//    shared actual default void m2(Number t){ }
-//}
-//class B() extends A() satisfies Cov<Integer> & Contrav<Integer> {
-//    shared actual Integer m(){ return 1; }
-//    shared actual default void m2(Integer t){ }
-//}
+interface Bug633Empty satisfies Bug633Ranged<Integer, Bottom> {
+    //shared actual formal void span(Integer from);
+}
 
-class Bug633() extends Object() satisfies Empty {}
+@nomodel
+class Bug633EmptyImpl() satisfies Bug633Empty {
+    shared actual void span(Integer from){}
+}
+
+@nomodel
+void bug633(){
+    Bug633EmptyImpl a = Bug633EmptyImpl();
+    Bug633Empty b = Bug633EmptyImpl();
+    Bug633Ranged<Integer, Integer> c = Bug633EmptyImpl();
+    Integer[] seq = {};
+}
