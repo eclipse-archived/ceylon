@@ -2696,7 +2696,7 @@ createItemMethod.intercept()
             <para>all arithmetic operators,</para>
         </listitem>
         <listitem>
-            <para>all Set operators,</para>
+            <para>all <literal>Set</literal> operators,</para>
         </listitem>
         <listitem>
             <para>the comparison and equality operators <literal>&equals;</literal>,
