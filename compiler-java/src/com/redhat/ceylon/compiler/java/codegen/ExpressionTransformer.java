@@ -247,6 +247,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean needsRawCast(ProducedType exprType, ProducedType expectedType) {
         if(exprType.isExactly(expectedType))
             return false;
+        // make sure we work on definite types
+        exprType = typeFact().getDefiniteType(exprType);
         // we can't find a common type with a sequence since it's a union
         if(willEraseToIterable(expectedType)){
             ProducedType commonType = exprType.getSupertype(typeFact().getIterableDeclaration());
