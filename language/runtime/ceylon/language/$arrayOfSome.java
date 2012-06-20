@@ -1,8 +1,5 @@
 package ceylon.language;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
@@ -23,27 +20,13 @@ public final class $arrayOfSome {
     @Name("elements")
     @TypeInfo("ceylon.language.Sequence<Element>")
     final Iterable<? extends Element> elements) {
-		List<Element> list = new ArrayList<Element>();
-		java.lang.Object $tmp;
-		for (Iterator<? extends Element> iter=elements.getIterator(); 
-		        !(($tmp = iter.next()) instanceof Finished);) {
-			Element elem = (Element)$tmp;
-			if (elem!=null) list.add(elem);
-		}
-        return new ArrayOfSome<Element>(null, list);
+        throw new RuntimeException("Wrong version of arrayOfSome() being called, this should never happen!");
     }
     
     @Ignore
     public static <Element> Array<Element> arrayOfSome(
-            Class<Element> typeClass,
+            final Class<Element> typeClass,
             final Iterable<? extends Element> elements) {
-        List<Element> list = new ArrayList<Element>();
-        java.lang.Object $tmp;
-        for (Iterator<? extends Element> iter=elements.getIterator(); 
-                !(($tmp = iter.next()) instanceof Finished);) {
-            Element elem = (Element)$tmp;
-            if (elem!=null) list.add(elem);
-        }
-        return new ArrayOfSome<Element>(typeClass, list);
+        return new ArrayOfSome<Element>(typeClass, elements);
     }
 }

@@ -1,7 +1,9 @@
 package ceylon.language;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -77,8 +79,8 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     
     @Ignore
-    Array(java.lang.Class<Element> typeClass, java.util.List<Element> list) {
-        this.array = list.toArray((Element[])java.lang.reflect.Array.newInstance(typeClass, list.size()));
+    Array(java.lang.Class<Element> typeClass, Iterable<? extends Element> elements) {
+        this.array = Util.toArray(elements, typeClass);
         this.typeClass = typeClass;
     }
 
@@ -589,8 +591,8 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     }
     
     @Ignore
-    public ArrayOfSome(java.lang.Class<Element> typeClass, java.util.List<Element> list) {
-        super(typeClass, list);
+    public ArrayOfSome(java.lang.Class<Element> typeClass, Iterable<? extends Element> elements) {
+        super(typeClass, elements);
     }
 
     @Override
