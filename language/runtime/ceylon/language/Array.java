@@ -1,6 +1,5 @@
 package ceylon.language;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -80,8 +79,25 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     
     @Ignore
     Array(java.lang.Class<Element> typeClass, Iterable<? extends Element> elements) {
-        this.array = Util.toArray(elements, typeClass);
-        this.typeClass = typeClass;
+        if (typeClass == Integer.class) {
+            this.array = Util.toLongArray((Iterable<? extends Integer>) elements);
+            this.typeClass = long.class;
+        } else if (typeClass == Float.class) {
+            this.array = Util.toDoubleArray((Iterable<? extends Float>) elements);
+            this.typeClass = double.class;
+        } else if (typeClass == Boolean.class) {
+            this.array = Util.toBooleanArray((Iterable<? extends Boolean>) elements);
+            this.typeClass = boolean.class;
+        } else if (typeClass == Character.class) {
+            this.array = Util.toCodepointArray((Iterable<? extends Character>) elements);
+            this.typeClass = int.class;
+        } else if (typeClass == String.class) {
+            this.array = Util.toJavaStringArray((Iterable<? extends String>) elements);
+            this.typeClass = java.lang.String.class;
+        } else {
+            this.array = Util.toArray(elements, typeClass);
+            this.typeClass = typeClass;
+        }
     }
 
     @Ignore
