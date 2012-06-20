@@ -9,7 +9,7 @@ shared abstract class Array<Element>()
     doc "Replaces the existing item at the specified index with
          the specified element. Does nothing if the index is
          negative or beyond the array size."
-    shared formal void setItem(Integer index, Element? element);
+    shared formal void setItem(Integer index, Element element);
 
     shared actual Boolean equals(Object that) {
         //TODO: copy/pasted from List

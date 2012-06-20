@@ -347,9 +347,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     public void setItem(@Name("index") @TypeInfo("ceylon.language.Integer") long index, 
-            @Name("element") @TypeInfo("ceylon.language.Nothing|Element") Element element) {
+            @Name("element") @TypeInfo("Element") Element element) {
         int idx = (int) index;
-        if (idx>=0 && idx < getSize()) {
+        if (idx >= 0 && idx < getSize()) {
             if (array instanceof char[]) {
                 // FIXME This is really unsafe! Should we try to do something more intelligent here??
                 ((char[])array)[idx] = (char) ((Character)element).codePoint;
