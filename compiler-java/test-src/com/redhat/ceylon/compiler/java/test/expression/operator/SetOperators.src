@@ -108,7 +108,7 @@ public class SetOperators {
     
     private final void testSetOperatorsWithErasedTypes(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .ceylon.language.Empty> setOfIntersectionType, final .ceylon.language.Set<?> setOfBottom) {
         .ceylon.language.Set x1 = setOfUnionType.union(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = setOfUnionType.intersection(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set)setOfUnionType.intersection(setOfString);
         .ceylon.language.Set x3 = setOfUnionType.exclusiveUnion(setOfString);
         .ceylon.language.Set x4 = setOfUnionType.complement(setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character>> y1 = setOfIntersectionType.union(setOfString);
@@ -128,7 +128,7 @@ public class SetOperators {
         final .ceylon.language.Set<? extends .ceylon.language.Integer> s4 = a.complement(b);
         .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
         sync = a.union(b);
-        sync = a.intersection(b);
+        sync = (.ceylon.language.Set)a.intersection(b);
         sync = a.exclusiveUnion(b);
         sync = a.complement(b);
         (
