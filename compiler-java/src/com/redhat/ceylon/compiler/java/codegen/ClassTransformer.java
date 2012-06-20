@@ -395,9 +395,8 @@ public class ClassTransformer extends AbstractTransformer {
                 concreteWrapper.typeParameter(tp);
             }
         }
-        
         if (!isVoid(methodType)) {
-            concreteWrapper.resultType(typedMember.getDeclaration(), typedMember.getType(),
+            concreteWrapper.resultTypeNonWidening(typedMember, typedMember.getType(),
                     rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
         }
         
@@ -605,9 +604,10 @@ public class ClassTransformer extends AbstractTransformer {
             }
 
             int flags = 0;
-            TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(model);
-            ProducedType nonWideningType = nonWideningType(model, nonWideningTypeDeclaration);
-            if (!CodegenUtil.isUnBoxed(nonWideningTypeDeclaration)) {
+            ProducedTypedReference typedRef = getTypedReference(model);
+            ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+            ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+            if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
                 flags |= JT_NO_PRIMITIVES;
             }
             JCExpression type = makeJavaType(nonWideningType, flags);

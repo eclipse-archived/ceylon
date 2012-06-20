@@ -25,6 +25,7 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -449,10 +450,11 @@ public class StatementTransformer extends AbstractTransformer {
                 // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
                 TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
                 // make sure we use the best declaration for boxing and type
-                TypedDeclaration nonWideningTypeDeclaration = nonWideningTypeDecl(declaration);
-                ProducedType nonWideningType = nonWideningType(declaration, nonWideningTypeDeclaration);
+                ProducedTypedReference typedRef = getTypedReference(declaration);
+                ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+                ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
                 returnExpr = expressionGen().transformExpression(expr.getTerm(), 
-                        CodegenUtil.getBoxingStrategy(nonWideningTypeDeclaration),
+                        CodegenUtil.getBoxingStrategy(nonWideningTypedRef.getDeclaration()),
                         nonWideningType);
             } finally {
                 noExpressionlessReturn = prevNoExpressionlessReturn;

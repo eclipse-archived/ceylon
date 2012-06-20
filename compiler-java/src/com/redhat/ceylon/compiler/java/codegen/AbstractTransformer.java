@@ -48,7 +48,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -549,32 +548,51 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         
         return type;
     }
+
+    ProducedTypedReference getTypedReference(TypedDeclaration decl){
+        if(decl.getContainer() instanceof TypeDeclaration){
+            TypeDeclaration containerDecl = (TypeDeclaration) decl.getContainer();
+            return containerDecl.getType().getTypedMember(decl, Collections.<ProducedType>emptyList());
+        }
+        return decl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
+    }
     
-    TypedDeclaration nonWideningTypeDecl(TypedDeclaration decl) {
+    ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference) {
+        TypedDeclaration decl = typedReference.getDeclaration();
         TypedDeclaration refinedDeclaration = (TypedDeclaration) decl.getRefinedDeclaration();
         if(decl != refinedDeclaration){
+            ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDeclaration);
             /*
              * We are widening if the type:
              * - is not object
              * - is erased to object
              * - refines a declaration that is not erased to object
              */
-            ProducedType declType = decl.getType();
-            ProducedType refinedDeclType = refinedDeclaration.getType();
+            ProducedType declType = typedReference.getType();
+            ProducedType refinedDeclType = refinedTypedReference.getType();
             boolean isWidening = isWidening(declType, refinedDeclType);
             
             if(!isWidening){
                 // make sure we get the instantiated refined decl
                 if(refinedDeclType.getDeclaration() instanceof TypeParameter
                         && !(declType.getDeclaration() instanceof TypeParameter))
-                    refinedDeclType = nonWideningType(decl, refinedDeclaration);
+                    refinedDeclType = nonWideningType(typedReference, refinedTypedReference);
                 isWidening = isWideningTypeArguments(declType, refinedDeclType, true);
             }
             
             if(isWidening)
-                return refinedDeclaration;
+                return refinedTypedReference;
         }
-        return decl;
+        return typedReference;
+    }
+
+    private ProducedTypedReference getRefinedTypedReference(ProducedTypedReference typedReference, 
+                                                            TypedDeclaration refinedDeclaration) {
+        TypeDeclaration refinedContainer = (TypeDeclaration)refinedDeclaration.getContainer();
+
+        ProducedType containingType = typedReference.getQualifyingType();
+        ProducedType refinedContainerType = containingType.getSupertype(refinedContainer);
+        return refinedDeclaration.getProducedTypedReference(refinedContainerType, Collections.<ProducedType>emptyList());
     }
 
     public boolean isWidening(ProducedType declType, ProducedType refinedDeclType) {
@@ -651,22 +669,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return true;
     }
 
-    ProducedType nonWideningType(TypedDeclaration declaration, TypedDeclaration refinedDeclaration){
+    ProducedType nonWideningType(ProducedTypedReference declaration, ProducedTypedReference refinedDeclaration){
         if(declaration == refinedDeclaration)
             return declaration.getType();
-        // we must get the return type of the refined decl with any type param instantiated
-        // Note(Stef): this magic taken from the IDE code
-        ArrayList<ProducedType> params = new ArrayList<ProducedType>();
-        if (refinedDeclaration instanceof Generic) {
-            for (TypeParameter tp: ((Generic)refinedDeclaration).getTypeParameters()) {
-                params.add(tp.getType());
-            }
-        }
-        ProducedType outerType = declaration.getContainer().getDeclaringType(refinedDeclaration);
-        ProducedReference producedReference = refinedDeclaration.getProducedReference(outerType, params);
         ProducedType refinedType = refinedDeclaration.getType();
-        if(producedReference != null)
-            refinedType = refinedType.substitute(producedReference.getTypeArguments());
         // if the refined type is a method TypeParam, use the original decl that will be more correct
         if(refinedType.getDeclaration() instanceof TypeParameter
                 && refinedType.getDeclaration().getContainer() instanceof Method){

@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -1014,8 +1015,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 final String name = model.getName();
                 final String alias = gen.aliasName(name);
                 final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias, alias, attrArg.getBlock(), null, null);
-                TypedDeclaration nonWideningTypeDeclaration = gen.nonWideningTypeDecl(model);
-                ProducedType nonWideningType = gen.nonWideningType(model, nonWideningTypeDeclaration);
+                ProducedTypedReference typedRef = gen.getTypedReference(model);
+                ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+                ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
                 ProducedType type = parameterType(declaredParam, model.getType(), 0);
                 final BoxingStrategy boxType = declaredParam != null ? CodegenUtil.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
                 JCExpression initValue = gen.make().Apply(null, 
@@ -1024,7 +1026,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 initValue = gen.expressionGen().applyErasureAndBoxing(
                         initValue, 
                         nonWideningType, 
-                        !CodegenUtil.isUnBoxed(nonWideningTypeDeclaration),
+                        !CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration()),
                         boxType,
                         type);
                 JCTree.JCVariableDecl var = gen.make().VarDef(

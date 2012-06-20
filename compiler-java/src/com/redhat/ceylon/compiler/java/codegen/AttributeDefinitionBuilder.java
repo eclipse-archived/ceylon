@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -62,9 +63,10 @@ public class AttributeDefinitionBuilder {
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName, boolean toplevel) {
         int typeFlags = 0;
-        TypedDeclaration nonWideningTypeDeclaration = owner.nonWideningTypeDecl(attrType);
-        ProducedType nonWideningType = owner.nonWideningType(attrType, nonWideningTypeDeclaration);
-        if (!CodegenUtil.isUnBoxed(nonWideningTypeDeclaration)) {
+        ProducedTypedReference typedRef = owner.getTypedReference(attrType);
+        ProducedTypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
+        ProducedType nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
+        if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
             typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
         
@@ -90,7 +92,7 @@ public class AttributeDefinitionBuilder {
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
             .isActual(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
-            .parameter(0, attrName, attrType, nonWideningTypeDeclaration, nonWideningType, 0);
+            .parameter(0, attrName, attrType, nonWideningTypedRef.getDeclaration(), nonWideningType, 0);
     }
 
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, String name, TypedDeclaration attrType, boolean toplevel) {

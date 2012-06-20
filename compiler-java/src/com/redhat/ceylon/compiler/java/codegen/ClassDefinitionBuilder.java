@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -374,9 +375,10 @@ public class ClassDefinitionBuilder {
         JCExpression type;
         MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
         if (attr instanceof Value) {
-            TypedDeclaration nonWideningTypeDeclaration = gen.nonWideningTypeDecl(attr);
-            ProducedType paramType = gen.nonWideningType(attr, nonWideningTypeDeclaration);
-            type = gen.makeJavaType(nonWideningTypeDeclaration, paramType, 0);
+            ProducedTypedReference typedRef = gen.getTypedReference(attr);
+            ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+            ProducedType paramType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+            type = gen.makeJavaType(nonWideningTypedRef.getDeclaration(), paramType, 0);
         } else {
             ProducedType paramType = decl.getType();
             type = gen.makeJavaType(decl, paramType, 0);

@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -296,10 +297,18 @@ public class MethodDefinitionBuilder {
         if (Decl.isMpl(method)) {
             return resultType(null, gen.makeJavaType(gen.functionalReturnType(method), flags));
         } else {
-            TypedDeclaration nonWideningTypeDecl = gen.nonWideningTypeDecl(method);
-            ProducedType nonWideningType = gen.nonWideningType(method, nonWideningTypeDecl);
-            return resultType(makeResultType(nonWideningTypeDecl, nonWideningType, flags), method);
+            ProducedTypedReference typedRef = gen.getTypedReference(method);
+            ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+            ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+            return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
         }
+    }
+    
+    public MethodDefinitionBuilder resultTypeNonWidening(ProducedTypedReference typedRef, ProducedType returnType, int flags){
+        ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+        returnType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+        return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), returnType, flags), typedRef.getDeclaration());
+
     }
     
     public MethodDefinitionBuilder resultType(TypedDeclaration resultType, ProducedType type, int flags) {
