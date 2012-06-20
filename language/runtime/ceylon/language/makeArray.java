@@ -32,9 +32,9 @@ public final class makeArray {
             final Integer size,
             final Callable<Element> init) {
         if (size.value > 0) {
-            return new ArrayOfSome<Element>(typeClass, getIterable(size, init));
+            return ArrayOfSome.instance(typeClass, getIterable(size, init));
         } else {
-            return new ArrayOfNone<Element>(typeClass);
+            return ArrayOfNone.instance(typeClass);
         }
     }
     

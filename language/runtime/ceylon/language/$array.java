@@ -27,7 +27,7 @@ public final class $array {
     
     @Ignore
     public static <Element> Array<Element> array(
-            Class<Element> typeClass,
+            Class typeClass,
             final ceylon.language.Iterable<? extends Element> elements) {
         if (elements.getEmpty()) {
             return $arrayOfNone.<Element>arrayOfNone(typeClass);
@@ -42,7 +42,7 @@ public final class $array {
     }
     
     @Ignore
-    public static <Element> Array<Element> array(Class<Element> typeClass) {
+    public static <Element> Array<Element> array(Class typeClass) {
         return $arrayOfNone.<Element>arrayOfNone(typeClass);
     }
             

@@ -168,12 +168,15 @@ public class Util {
     //
     // Java variadic conversions
     
+    @SuppressWarnings("unchecked")
     private static <T> List<T> collectIterable(Iterable<? extends T> sequence) {
         List<T> list = new LinkedList<T>();
-        Iterator<? extends T> iterator = sequence.getIterator();
-        Object o; 
-        while((o = iterator.next()) != exhausted.getExhausted()){
-            list.add((T)o);
+        if (sequence != null) {
+            Iterator<? extends T> iterator = sequence.getIterator();
+            Object o; 
+            while((o = iterator.next()) != exhausted.getExhausted()){
+                list.add((T)o);
+            }
         }
         return list;
     }

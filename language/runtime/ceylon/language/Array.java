@@ -25,97 +25,51 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public abstract class Array<Element> implements List<Element>, FixedSized<Element> {
     
     protected final java.lang.Object array;
-    protected final java.lang.Class typeClass;
     
     public Array(char... array) {
         this.array = array;
-        this.typeClass = char.class;
     }
     
     public Array(byte... array) {
         this.array = array;
-        this.typeClass = byte.class;
     }
     
     public Array(short... array) {
         this.array = array;
-        this.typeClass = short.class;
     }
     
     public Array(int... array) {
         this.array = array;
-        this.typeClass = int.class;
     }
     
     public Array(long... array) {
         this.array = array;
-        this.typeClass = long.class;
     }
     
     public Array(float... array) {
         this.array = array;
-        this.typeClass = float.class;
     }
     
     public Array(double... array) {
         this.array = array;
-        this.typeClass = double.class;
     }
     
     public Array(boolean... array) {
         this.array = array;
-        this.typeClass = boolean.class;
     }
 
     public Array(java.lang.String... array) {
         this.array = array;
-        this.typeClass = java.lang.String.class;
     }
 
     public Array(Element... array) {
         this.array = array;
-        this.typeClass = array.getClass().getComponentType();
-    }
-    
-    @Ignore
-    Array(java.lang.Class<Element> typeClass, Iterable<? extends Element> elements) {
-        if (typeClass == Integer.class) {
-            this.array = Util.toLongArray((Iterable<? extends Integer>) elements);
-            this.typeClass = long.class;
-        } else if (typeClass == Float.class) {
-            this.array = Util.toDoubleArray((Iterable<? extends Float>) elements);
-            this.typeClass = double.class;
-        } else if (typeClass == Boolean.class) {
-            this.array = Util.toBooleanArray((Iterable<? extends Boolean>) elements);
-            this.typeClass = boolean.class;
-        } else if (typeClass == Character.class) {
-            this.array = Util.toCodepointArray((Iterable<? extends Character>) elements);
-            this.typeClass = int.class;
-        } else if (typeClass == String.class) {
-            this.array = Util.toJavaStringArray((Iterable<? extends String>) elements);
-            this.typeClass = java.lang.String.class;
-        } else if (typeClass == null) {
-            this.array = Util.toArray(elements, java.lang.Object.class);
-            this.typeClass = java.lang.Object.class;
-        } else {
-            this.array = Util.toArray(elements, typeClass);
-            this.typeClass = typeClass;
-        }
     }
 
     @Ignore
-    Array(java.lang.Class<Element> typeClass, int size) {
-        if (typeClass == null) {
-            typeClass = (java.lang.Class<Element>) java.lang.Object.class;
-        }
-        this.array = java.lang.reflect.Array.newInstance(typeClass, size);
-        this.typeClass = typeClass;
-    }
-    
-    @Ignore
     public static Array<Character> instance(char[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Character>(Character.class);
+            return new ArrayOfNone<Character>(array);
         } else {
             return new ArrayOfSome<Character>(array);
         }
@@ -124,7 +78,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Integer> instance(byte[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>(Integer.class);
+            return new ArrayOfNone<Integer>(array);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
@@ -133,7 +87,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Integer> instance(short[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>(Integer.class);
+            return new ArrayOfNone<Integer>(array);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
@@ -142,7 +96,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Integer> instance(int[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>(Integer.class);
+            return new ArrayOfNone<Integer>(array);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
@@ -151,7 +105,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Integer> instance(long[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>(Integer.class);
+            return new ArrayOfNone<Integer>(array);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
@@ -160,7 +114,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Float> instance(float[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Float>(Float.class);
+            return new ArrayOfNone<Float>(array);
         } else {
             return new ArrayOfSome<Float>(array);
         }
@@ -169,7 +123,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Float> instance(double[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Float>(Float.class);
+            return new ArrayOfNone<Float>(array);
         } else {
             return new ArrayOfSome<Float>(array);
         }
@@ -178,7 +132,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<Boolean> instance(boolean[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Boolean>(Boolean.class);
+            return new ArrayOfNone<Boolean>(array);
         } else {
             return new ArrayOfSome<Boolean>(array);
         }
@@ -187,7 +141,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static Array<String> instance(java.lang.String[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<String>(String.class);
+            return new ArrayOfNone<String>(array);
         } else {
             return new ArrayOfSome<String>(array);
         }
@@ -196,9 +150,38 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static <T> Array<T> instance(T[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<T>((java.lang.Class<T>)array.getClass().getComponentType());
+            return new ArrayOfNone<T>(array);
         } else {
             return new ArrayOfSome<T>(array);
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Ignore
+    public static <T> Array<T> instance(java.lang.Class typeClass, Iterable<? extends T> elements) {
+        if (typeClass == null) {
+            typeClass = java.lang.Object.class;
+        }
+        if (typeClass == int.class) {
+            return (Array<T>) instance(Util.toIntArray((Iterable<? extends Integer>) elements));
+        } else if (typeClass == long.class) {
+            return (Array<T>) instance(Util.toLongArray((Iterable<? extends Integer>) elements));
+        } else if (typeClass == byte.class) {
+            return (Array<T>) instance(Util.toByteArray((Iterable<? extends Integer>) elements));
+        } else if (typeClass == short.class) {
+            return (Array<T>) instance(Util.toShortArray((Iterable<? extends Integer>) elements));
+        } else if (typeClass == float.class) {
+            return (Array<T>) instance(Util.toFloatArray((Iterable<? extends Float>) elements));
+        } else if (typeClass == double.class) {
+            return (Array<T>) instance(Util.toDoubleArray((Iterable<? extends Float>) elements));
+        } else if (typeClass == boolean.class) {
+            return (Array<T>) instance(Util.toBooleanArray((Iterable<? extends Boolean>) elements));
+        } else if (typeClass == char.class) {
+            return (Array<T>) instance(Util.toCharArray((Iterable<? extends Character>) elements));
+        } else if (typeClass == java.lang.String.class) {
+            return (Array<T>) instance(Util.toJavaStringArray((Iterable<? extends String>) elements));
+        } else {
+            return (Array<T>) instance((T[]) Util.toArray(elements, typeClass));
         }
     }
 
@@ -220,7 +203,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long toIndex = to==null ? getSize()-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return new ArrayOfNone<Element>(typeClass);
+            return ArrayOfNone.instance(array.getClass().getComponentType(), null);
         } else {
             if (array instanceof char[]) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
@@ -254,7 +237,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long resultLength = length;
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return new ArrayOfNone<Element>(typeClass);
+            return ArrayOfNone.instance(array.getClass().getComponentType(), null);
         } else {
             if (array instanceof char[]) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
@@ -338,6 +321,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
                 null : unsafeItem(index);
     }
 
+    @SuppressWarnings("unchecked")
     protected Element unsafeItem(int index) {
         if (array instanceof char[]) {
             return (Element) Character.instance(((char[])array)[index]);
@@ -542,8 +526,59 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 @Ceylon(major = 1)
 class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
-    public ArrayOfNone(java.lang.Class<Element> typeClass) {
-        super(typeClass, 0);
+    @Ignore
+    protected ArrayOfNone(char... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(byte... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(short... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(int... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(long... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(float... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(double... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(boolean... array) {
+        super(array);
+    }
+
+    @Ignore
+    protected ArrayOfNone(java.lang.String... array) {
+        super(array);
+    }
+
+    @Ignore
+    protected ArrayOfNone(Element... array) {
+        super(array);
+    }
+    
+    @Ignore
+    public static <T> Array<T> instance(java.lang.Class typeClass) {
+        return instance(typeClass, null);
     }
     
     @Override
@@ -612,11 +647,6 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
         super(array);
     }
     
-    @Ignore
-    public ArrayOfSome(java.lang.Class<Element> typeClass, Iterable<? extends Element> elements) {
-        super(typeClass, elements);
-    }
-
     @Override
     public FixedSized<? extends Element> getRest() {
         if (getSize() == 1) {
