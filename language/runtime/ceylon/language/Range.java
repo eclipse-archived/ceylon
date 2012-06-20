@@ -80,7 +80,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public FixedSized<? extends Element> getRest() {
     	if (first.equals(last)) {
-    	    return $empty.getEmpty();
+    	    return (FixedSized)$empty.getEmpty();
     	}
     	else {
             return new Range<Element>(next(getFirst()), getLast());
@@ -204,12 +204,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     @Ignore
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
     @Override
     @Ignore
     public Iterable<? extends Integer> definesEvery$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
@@ -221,12 +221,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     @Ignore
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, $empty.getEmpty());
+        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
     @Override
     @Ignore
     public Iterable<? extends Integer> definesAny$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
@@ -240,13 +240,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     @Ignore
     public ceylon.language.List<? extends Element> items() {
-        return Correspondence$impl._items(this, $empty.getEmpty());
+        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
     
     @Override
     @Ignore
     public Iterable<? extends Integer> items$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     //TODO: @TypeInfo
@@ -301,8 +301,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		@Name("from") final Integer from, 
     		@Name("length") final long length) {
         //only positive length for now
-        if (length<=0) return $empty.getEmpty();
-        if (!defines(from)) return $empty.getEmpty();
+        if (length<=0) return (ceylon.language.List)$empty.getEmpty();
+        if (!defines(from)) return (ceylon.language.List)$empty.getEmpty();
         Element x = this.first;
         for (int i=0; i < from.longValue(); i++) { x = this.next(x); }
         Element y = x;
@@ -327,7 +327,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
                     fromIndex = fromIndex.getPredecessor();
                 }
             } else {
-                return $empty.getEmpty();
+                return (ceylon.language.List)$empty.getEmpty();
             }
         } else while (!defines(toIndex)) {
             //decrease the upper bound

@@ -51,12 +51,12 @@ public class Singleton<Element>
 	@Override
 	@Ignore
     public boolean definesEvery() {
-	    return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+	    return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
 	}
 	@Override
     @Ignore
     public Iterable<? extends Integer> definesEvery$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 	
 	@Override
@@ -68,12 +68,12 @@ public class Singleton<Element>
 	@Override
 	@Ignore
     public boolean definesAny() {
-	    return Correspondence$impl._definesAny(this, $empty.getEmpty());
+	    return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
 	}
 	@Override
     @Ignore
     public Iterable<? extends Integer> definesAny$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 	
 	@Override
@@ -86,12 +86,12 @@ public class Singleton<Element>
 	@Override
 	@Ignore
 	public List<? extends Element> items() {
-	    return Correspondence$impl._items(this, $empty.getEmpty());
+	    return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
 	}
 	@Override
     @Ignore
     public Iterable<? extends Integer> items$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 	
 	@Override
@@ -106,8 +106,9 @@ public class Singleton<Element>
 	}
 	
 	@Override
-	public Empty getRest() {
-		return $empty.getEmpty();
+	@TypeInfo("ceylon.language.Empty")
+	public FixedSized<? extends Element> getRest() {
+		return (FixedSized)$empty.getEmpty();
 	}
 	
 	@Override
@@ -155,7 +156,7 @@ public class Singleton<Element>
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public List<? extends Element> segment(@Name("from") Integer from, 
     		@Name("length") long length) {
-    	return from.longValue()==0 && length>0 ? this : $empty.getEmpty();
+    	return from.longValue()==0 && length>0 ? this : (List)$empty.getEmpty();
     }
     
     @Override
@@ -165,7 +166,7 @@ public class Singleton<Element>
     		@Name("to") Integer to) {
     	//if (to==null) to = Integer.instance(0);
     	if (from.longValue()>0) 
-    		return $empty.getEmpty();
+    		return (List)$empty.getEmpty();
     	return this;
     }
 

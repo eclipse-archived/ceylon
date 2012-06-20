@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
     "ceylon.language.Cloneable<ceylon.language.Empty>"
 })
 public interface Empty 
-        extends List, None {
+        extends List<java.lang.Object>, None<java.lang.Object> {
 	
     @Annotations(@Annotation("actual"))
     @Override
@@ -36,7 +36,7 @@ public interface Empty
     @Override
     @TypeInfo("ceylon.language.Empty")
     public Empty segment(@Name("from") @TypeInfo("ceylon.language.Integer")
-    Comparable from,
+    Integer from,
     @Name("length") @TypeInfo("ceylon.language.Integer")
     long length);
 
@@ -44,9 +44,9 @@ public interface Empty
     @Override
     @TypeInfo("ceylon.language.Empty")
     public Empty span(@Name("from") @TypeInfo("ceylon.language.Integer")
-    Comparable from,
+    Integer from,
     @Name("to") @TypeInfo("ceylon.language.Integer|ceylon.language.Nothing")
-    Comparable length);
+    Integer length);
 
     @Annotations(@Annotation("actual"))
     @Override

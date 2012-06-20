@@ -66,10 +66,10 @@ public final class Correspondence$impl<Key,Item> {
         return Correspondence$impl.<Key,Item>_definesEvery(this.$this, keys);
     }
     public boolean definesEvery(){
-        return Correspondence$impl.<Key,Item>_definesEvery(this.$this, $empty.getEmpty());
+        return Correspondence$impl.<Key,Item>_definesEvery(this.$this, (Iterable)$empty.getEmpty());
     }
     public ceylon.language.Iterable<? extends Key> definesEvery$keys(){
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
     static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys){
         java.lang.Object elem;
@@ -86,10 +86,10 @@ public final class Correspondence$impl<Key,Item> {
         return Correspondence$impl.<Key,Item>_definesAny(this.$this, keys);
     }
     public boolean definesAny() {
-        return Correspondence$impl.<Key,Item>_definesAny(this.$this, $empty.getEmpty());
+        return Correspondence$impl.<Key,Item>_definesAny(this.$this, (Iterable)$empty.getEmpty());
     }
     public ceylon.language.Iterable<? extends Key> definesAny$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
     static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
         java.lang.Object elem;
@@ -106,10 +106,10 @@ public final class Correspondence$impl<Key,Item> {
         return Correspondence$impl.<Key,Item>_items(this.$this, keys);
     }
     public ceylon.language.List<? extends Item> items() {
-        return Correspondence$impl.<Key,Item>_items(this.$this, $empty.getEmpty());
+        return Correspondence$impl.<Key,Item>_items(this.$this, (Iterable)$empty.getEmpty());
     }
     public ceylon.language.Iterable<? extends Key> items$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
     static <Key,Item> ceylon.language.List<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
         if (keys instanceof Sequence) {
@@ -117,7 +117,7 @@ public final class Correspondence$impl<Key,Item> {
             return new Correspondence.Items($this, (Sequence<? extends Key>)$keys$1.getClone());
         }
         else {
-            return $empty.getEmpty();
+            return (List)$empty.getEmpty();
         }
     }
 }

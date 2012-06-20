@@ -17,7 +17,7 @@ final class module {
         		"The Ceylon language module containing the core types referred to in the language specification.", 
         		new ceylon.language.ArraySequence<ceylon.language.String>(ceylon.language.String.instance("Gavin King")), 
         		ceylon.language.Quoted.instance("http://www.apache.org/licenses/LICENSE-2.0.html"), 
-        		$empty.getEmpty());
+        		(Iterable)$empty.getEmpty());
     }
     
     private module() {

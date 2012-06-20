@@ -8,11 +8,6 @@ public class $empty {
     private final static Empty value = new Empty() {
 
         @Override
-        public boolean defines(java.lang.Object key) {
-            return Correspondence$impl._defines(this, (Integer)key);
-        }
-
-        @Override
         public Category getKeys() {
             return Correspondence$impl._getKeys(this);
         }
@@ -148,17 +143,12 @@ public class $empty {
         }
 
         @Override
-        public java.lang.Object item(java.lang.Object key) {
-            return Empty$impl._item(this, key);
-        }
-
-        @Override
-        public Empty span(Comparable from, Comparable to) {
+        public Empty span(Integer from, Integer to) {
             return Empty$impl._span(this, (Integer)from, (Integer)to);
         }
 
         @Override
-        public Empty segment(Comparable from, long length) {
+        public Empty segment(Integer from, long length) {
             return Empty$impl._segment(this, (Integer)from, length);
         }
 

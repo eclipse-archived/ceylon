@@ -392,7 +392,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Ignore
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
     @Ignore
     public Iterable definesEvery$keys() {
@@ -407,7 +407,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Ignore
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, $empty.getEmpty());
+        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
     @Ignore
     public Iterable definesAny$keys() {
@@ -424,12 +424,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public Iterable<? extends Element> items() {
-        return Correspondence$impl._items(this, $empty.getEmpty());
+        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
     @Override
     @Ignore
     public Iterable<? extends Integer> items$keys() {
-        return $empty.getEmpty();
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
@@ -596,9 +596,9 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
         return null;
     }
 
-    public Iterable<? extends Element> getSequence() { return $empty.getEmpty(); }
+    public Iterable<? extends Element> getSequence() { return (Iterable)$empty.getEmpty(); }
     public Element find(Callable<? extends Boolean> f) { return null; }
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { return $empty.getEmpty(); }
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { return (Iterable)$empty.getEmpty(); }
     public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
     public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
 }

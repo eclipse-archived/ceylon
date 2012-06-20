@@ -23,7 +23,7 @@ public final class entries {
     @Sequenced @TypeInfo("ceylon.language.Iterable<Element>")
     final ceylon.language.Iterable<? extends Element> elements) {
         if (elements.getEmpty()) {
-            return $empty.getEmpty();
+            return (Iterable)$empty.getEmpty();
         }
         else {
         	long i=0;

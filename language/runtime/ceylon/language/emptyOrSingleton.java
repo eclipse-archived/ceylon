@@ -20,7 +20,7 @@ public class emptyOrSingleton {
             @TypeInfo("Nothing|Element")
             Element element) {
         return element==null ? 
-                $empty.getEmpty() : 
+                (Iterable)$empty.getEmpty() : 
                 new Singleton<Element>(element);
     }
 }
