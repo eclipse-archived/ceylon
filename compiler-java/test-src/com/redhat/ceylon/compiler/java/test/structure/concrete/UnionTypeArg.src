@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-class UnionTypeArg implements .ceylon.language.Iterable {
-    private final .ceylon.language.Iterable$impl $ceylon$language$Iterable$this;
+class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
+    private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -41,7 +41,7 @@ class UnionTypeArg implements .ceylon.language.Iterable {
     }
     
     UnionTypeArg() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.iterator = (.ceylon.language.Iterator<?>).ceylon.language.bottom.getBottom();
     }
@@ -51,8 +51,8 @@ class UnionTypeArg implements .ceylon.language.Iterable {
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg();
     }
 }
-class UnionTypeArgOverride implements .ceylon.language.Iterable {
-    private final .ceylon.language.Iterable$impl $ceylon$language$Iterable$this;
+class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Object> {
+    private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public boolean getEmpty() {
@@ -92,7 +92,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable {
     }
     
     UnionTypeArgOverride() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.iterator = (.ceylon.language.Iterator<?>).ceylon.language.bottom.getBottom();
     }
