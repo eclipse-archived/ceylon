@@ -26,3 +26,7 @@ shared void bug640() {
     value z = array(1, 2, 3);
     Accept().longs(z);
 }
+@nomodel
+shared void bug640gen<T>(SequenceBuilder<T> sb) {
+    value x = array(sb.sequence...);
+}

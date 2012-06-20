@@ -19,3 +19,12 @@ public final class bug640 {
         .com.redhat.ceylon.compiler.java.test.issues.bug640.bug640.bug640();
     }
 }
+public final class bug640gen {
+    
+    private bug640gen() {
+    }
+    
+    public static <T>void bug640gen(final .ceylon.language.SequenceBuilder<T> sb) {
+        final .ceylon.language.Array<T> x = .ceylon.language.$array.<T>array(null, (.ceylon.language.Iterable<? extends T>)sb.getSequence());
+    }
+}
