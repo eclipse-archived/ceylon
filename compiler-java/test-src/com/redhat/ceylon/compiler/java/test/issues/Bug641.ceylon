@@ -19,5 +19,25 @@
  */
 @nomodel
 void bug641(Set<Integer> a, Set<Bottom> b) {
-    Set<Integer> foo = a.intersection(b);
+    Set<Integer> foo1 = a.union(b);
+    Set<Integer> foo2 = a.intersection(b);
+    Set<Integer> foo3 = a.exclusiveUnion(b);
+    Set<Integer> foo4 = a.complement(b);
+}
+@nomodel
+interface Bug641Set<out Element>
+        given Element satisfies Object {
+
+    shared formal Set<Element|Other> union<Other>(Set<Other> set)
+            given Other satisfies Object;
+
+    shared formal Set<Element&Other> intersection<Other>(Set<Other> set)
+            given Other satisfies Object;
+
+    shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
+            given Other satisfies Object;
+
+    shared formal Set<Element> complement<Other>(Set<Other> set)
+            given Other satisfies Object;
+
 }
