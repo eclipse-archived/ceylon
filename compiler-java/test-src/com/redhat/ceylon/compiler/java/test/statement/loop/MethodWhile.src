@@ -41,7 +41,7 @@ class MethodWhile {
             returning $ceylontmp6;
         )) {
             final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$5 = (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)$s$4;
-            seq = .ceylon.language.$empty.getEmpty();
+            seq = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         }
     }
     

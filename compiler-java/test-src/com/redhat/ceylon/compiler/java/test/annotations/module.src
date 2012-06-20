@@ -14,7 +14,7 @@ final class module {
                 .java.lang.String $arg$0$2 = "Bla bla.";
                 .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$3 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("Stef FroMage"), .ceylon.language.String.instance("Tomas Hradec"));
                 .ceylon.language.Quoted $arg$0$4 = .ceylon.language.Quoted.instance("http://www.gnu.org/licenses/gpl.html");
-                .ceylon.language.Iterable<? extends .ceylon.language.descriptor.Import> $arg$0$5 = .ceylon.language.$empty.getEmpty();
+                .ceylon.language.Iterable<? extends .ceylon.language.descriptor.Import> $arg$0$5 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
             }
             returning new .ceylon.language.descriptor.Module($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3, $arg$0$4, $arg$0$5);
         )};

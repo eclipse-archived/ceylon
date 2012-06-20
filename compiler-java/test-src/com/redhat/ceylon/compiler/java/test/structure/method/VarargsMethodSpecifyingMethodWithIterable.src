@@ -21,7 +21,7 @@ class VarargsMethodSpecifyingMethodWithIterable {
     }
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> bar$ints() {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     VarargsMethodSpecifyingMethodWithIterable() {

@@ -401,7 +401,7 @@ class Test {
         .ceylon.language.Iterable subrange;
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Iterable<?>>)naturals).span((.ceylon.language.Integer)p1, (.ceylon.language.Integer)p1);
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Iterable<?>>)naturals).span((.ceylon.language.Integer)p1, null);
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> plainIntegers = new .ceylon.language.ArraySequence(p1);
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> plainIntegers = (.ceylon.language.Iterable)new .ceylon.language.ArraySequence(p1);
         .java.lang.Object $elem$17;
         for (.ceylon.language.Iterator<?> $it$iter$18 = (.ceylon.language.Iterator<?>)naturals.getIterator(); !(($elem$17 = $it$iter$18.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object it = (.java.lang.Object)$elem$17;

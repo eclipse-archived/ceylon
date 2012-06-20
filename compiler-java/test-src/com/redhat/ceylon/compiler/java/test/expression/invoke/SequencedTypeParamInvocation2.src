@@ -20,7 +20,7 @@ final class sequencedTypeParamInvocation2 {
     }
     
     static final <T>.ceylon.language.Iterable<? extends T> sequencedTypeParamInvocation2$ts() {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
 }
 final class sequencedTypeParamInvocation2_test {

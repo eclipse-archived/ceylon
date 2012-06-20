@@ -6,7 +6,7 @@ final class bug586 {
     }
     
     static void bug586() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = .ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         final .ceylon.language.String s = ((.ceylon.language.FixedSized<? extends .ceylon.language.String>)(
             let
             {

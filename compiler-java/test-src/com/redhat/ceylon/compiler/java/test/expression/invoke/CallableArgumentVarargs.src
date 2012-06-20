@@ -28,7 +28,7 @@ final class callableArgumentVarargs_g {
     }
     
     static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentVarargs_g$s() {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
 }
 final class callableArgumentVarargs_m {

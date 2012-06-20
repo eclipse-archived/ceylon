@@ -160,6 +160,6 @@ public final class f5 {
     }
     
     public static final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f5$seq(final long n) {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
 }

@@ -160,7 +160,7 @@ class MethodWithDefaultParams {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n) {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     MethodWithDefaultParams() {
@@ -366,7 +366,7 @@ final class MethodWithDefaultParams2$impl {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n) {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     MethodWithDefaultParams2$impl(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {

@@ -11,7 +11,7 @@ class Bug404 {
             }
             returning new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")).contains($ceylontmp0);
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = .ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         sync = !(
             let
             {

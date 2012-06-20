@@ -57,7 +57,7 @@ public class NullHandlingOperators {
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp6 = s1;
             }
-            returning $ceylontmp6 != null ? $ceylontmp6 : .ceylon.language.$empty.getEmpty();
+            returning $ceylontmp6 != null ? $ceylontmp6 : (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         );
     }
     
@@ -70,7 +70,7 @@ public class NullHandlingOperators {
             }
             returning $ceylontmp7 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp7).getEmpty();
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> iter = .ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> iter = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         sync = (
             let
             {
@@ -78,7 +78,7 @@ public class NullHandlingOperators {
             }
             returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty();
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = .ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         sync = (
             let
             {

@@ -38,7 +38,7 @@ public class LocalKlass {
             }
             
             public final .ceylon.language.Iterable<? extends T> m2$t(final long arg1) {
-                return .ceylon.language.$empty.getEmpty();
+                return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
             }
             
             @.java.lang.Override

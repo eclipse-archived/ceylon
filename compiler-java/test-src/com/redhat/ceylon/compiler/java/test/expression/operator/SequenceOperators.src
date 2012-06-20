@@ -128,7 +128,7 @@ public class SequenceOperators {
                 returning new .ceylon.language.ArraySequence<.ceylon.language.Character>($spread$14$4);
             ) : .ceylon.language.$empty.getEmpty());
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = .ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         final .ceylon.language.Iterable<? extends .ceylon.language.String> upperCasedEmpty = (
             let
             {
@@ -158,7 +158,7 @@ public class SequenceOperators {
     public SequenceOperators() {
         this.c1 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""));
         this.c2 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""));
-        this.sequence = .ceylon.language.$empty.getEmpty();
+        this.sequence = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -21,7 +21,7 @@ class MethodWithVarargs {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f1$ns() {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     public final void f2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
@@ -43,7 +43,7 @@ class MethodWithVarargs {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f2$ns(final long i) {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     public final void f3(final .ceylon.language.Iterable<? extends .java.lang.Object> os) {
@@ -65,7 +65,7 @@ class MethodWithVarargs {
     }
     
     public final .ceylon.language.Iterable<? extends .java.lang.Object> f3$os() {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     private final void m() {

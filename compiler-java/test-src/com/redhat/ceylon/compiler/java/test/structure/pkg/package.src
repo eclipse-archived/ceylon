@@ -13,7 +13,7 @@ final class $package {
                 .ceylon.language.Quoted $arg$0$0 = .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.java.test.structure.pkg");
                 boolean $arg$0$1 = true;
                 .java.lang.String $arg$0$2 = "Great documentation";
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$3 = .ceylon.language.$empty.getEmpty();
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$3 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
             }
             returning new .ceylon.language.descriptor.Package($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3);
         )};

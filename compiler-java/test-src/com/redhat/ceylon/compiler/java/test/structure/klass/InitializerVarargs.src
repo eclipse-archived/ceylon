@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 class InitializerVarargs {
     
     static .ceylon.language.Iterable<? extends .ceylon.language.String> $init$fs(final .java.lang.String f) {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     InitializerVarargs(final .java.lang.String f) {

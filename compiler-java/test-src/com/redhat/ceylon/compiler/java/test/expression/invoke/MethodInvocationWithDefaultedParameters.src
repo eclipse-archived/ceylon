@@ -242,7 +242,7 @@ class Fookls {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     Fookls(long init) {
@@ -533,7 +533,7 @@ final class Barface$impl {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     Barface$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this) {

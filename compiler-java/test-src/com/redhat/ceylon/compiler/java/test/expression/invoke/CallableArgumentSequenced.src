@@ -28,7 +28,7 @@ final class callableArgumentSequenced_g {
     }
     
     static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentSequenced_g$s() {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
 }
 final class callableArgumentSequenced_m {

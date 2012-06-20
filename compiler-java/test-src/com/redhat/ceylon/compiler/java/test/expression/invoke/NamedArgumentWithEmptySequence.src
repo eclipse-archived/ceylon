@@ -17,7 +17,7 @@ class NamedArgumentWithEmptySequence {
     }
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$b() {
-        return .ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     NamedArgumentWithEmptySequence() {
