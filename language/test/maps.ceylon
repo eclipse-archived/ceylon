@@ -115,7 +115,7 @@ class MapTest<Key, Item>(Key->Item... entry)
         return null;
     }
     //REMOVE as soon as interfaces can have concrete members
-    shared actual Set<Key> keys {
+    /*shared actual Set<Key> keys {
         value sb = SequenceBuilder<Key>();
         for (e in entries) { sb.append(e.key); }
         return SetTest(sb.sequence...);
@@ -123,7 +123,8 @@ class MapTest<Key, Item>(Key->Item... entry)
     shared actual Collection<Item> values {
         value sb = SequenceBuilder<Item>();
         for (e in entries) { sb.append(e.item); }
-        return array(sb.sequence...);
+value s=sb.sequence;
+        return array(s...);
     }
     shared actual Map<Item, Set<Key>> inverse {
         value sb = SequenceBuilder<Item->Set<Key>>();
@@ -148,7 +149,7 @@ class MapTest<Key, Item>(Key->Item... entry)
             ++count;
         }
         return MapTest(sb.sequence...);
-    }
+    }*/
 }
 
 void testMaps() {
@@ -168,14 +169,18 @@ void testMaps() {
     assert(!exists m1["hi"], "Map.item 3");
     assert(!(is Finished m1.iterator.next()), "Map.iterator");
     assert(m1.values.size==m1.size, "Map.values 1");
+    /* M4
     for (e in m1) {
         assert(e.item in m1.values, "Map.values 2");
-    }
+    }*/
     assert(m1.keys.size==m1.size, "Map.keys 1");
+    /* M4
     for (e in m1) {
         assert(e.key in m1.keys, "Map.keys.contains(" e.key ") should be true");
     }
     assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
+    */
+    assert(m1.size == m1.inverse.size, "Map.inverse 1");
 }
 
 void testSets() {
