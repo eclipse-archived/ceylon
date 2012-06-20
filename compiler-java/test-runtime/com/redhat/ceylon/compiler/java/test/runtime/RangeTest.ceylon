@@ -50,10 +50,21 @@ shared class RangeTest() {
     }
     
     @test
-    shared void testRest_fail() {    
+    shared void testRest() {    
         Range<Integer> range = Range(1, 10);
-        // TODO!
-        fail();                
+        Integer[] rest = range.rest;
+        assertEquals(9, rest.size);
+        assertEquals(2, rest[0]);
+        assertEquals(3, rest[1]);
+        assertEquals(4, rest[2]);
+        assertEquals(5, rest[3]);
+        assertEquals(6, rest[4]);
+        assertEquals(7, rest[5]);
+        assertEquals(8, rest[6]);
+        assertEquals(9, rest[7]);
+        assertEquals(10, rest[8]);
+        assertEquals(null, rest[9]);
+        
     }
     
     @test
