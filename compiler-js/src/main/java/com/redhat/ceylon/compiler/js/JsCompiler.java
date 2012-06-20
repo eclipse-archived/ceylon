@@ -39,6 +39,7 @@ public class JsCompiler {
 
     protected List<Message> errors = new ArrayList<Message>();
     protected List<Message> unitErrors = new ArrayList<Message>();
+    protected List<String> files;
     private final Map<Module, Writer> output = new HashMap<Module, Writer>();
 
     private final Visitor unitVisitor = new Visitor() {
@@ -72,6 +73,12 @@ public class JsCompiler {
     public JsCompiler stopOnErrors(boolean flag) {
         stopOnErrors = flag;
         return this;
+    }
+
+    /** Sets the names of the files to compile. By default this is null, which means all units from the typechecker
+     * will be compiled. */
+    public void setFiles(List<String> files) {
+        this.files = files;
     }
 
     public List<Message> listErrors() {
@@ -116,12 +123,14 @@ public class JsCompiler {
         try {
             JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-                String name = pu.getUnitFile().getName();
-                if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
-                    compileUnit(pu, names);
-                    if (stopOnError()) {
-                        System.err.println("Errors found. Compilation stopped.");
-                        break;
+                if (files == null || files.contains(pu.getUnitFile().getPath())) {
+                    String name = pu.getUnitFile().getName();
+                    if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
+                        compileUnit(pu, names);
+                        if (stopOnError()) {
+                            System.err.println("Errors found. Compilation stopped.");
+                            break;
+                        }
                     }
                 }
             }
