@@ -23,4 +23,6 @@ shared void bug640() {
     Accept().accepts(x);
     value y = array("aap", "noot", "mies");
     Accept().strings(y);
+    value z = array(1, 2, 3);
+    Accept().longs(z);
 }
