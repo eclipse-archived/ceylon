@@ -42,19 +42,19 @@ public interface Set<Element>
     @Annotations(@Annotation("formal"))
     @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
     @TypeInfo("ceylon.language.Set<Element|Other>")
-    public <Other> Set<? extends java.lang.Object> union(@TypeInfo("ceylon.language.Set<Other>") 
+    public <Other> Set union(@TypeInfo("ceylon.language.Set<Other>") 
                              @Name("set") Set<? extends Other> set);
     
     @Annotations(@Annotation("formal"))
     @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
     @TypeInfo("ceylon.language.Set<Element&Other>")
-    public <Other> Set<? extends java.lang.Object> intersection(@TypeInfo("ceylon.language.Set<Other>") 
+    public <Other> Set intersection(@TypeInfo("ceylon.language.Set<Other>") 
                                     @Name("set") Set<? extends Other> set);
 
     @Annotations(@Annotation("formal"))
     @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
     @TypeInfo("ceylon.language.Set<Element|Other>")
-    public <Other> Set<? extends java.lang.Object> exclusiveUnion(@TypeInfo("ceylon.language.Set<Other>") 
+    public <Other> Set exclusiveUnion(@TypeInfo("ceylon.language.Set<Other>") 
                                       @Name("set") Set<? extends Other> set);
     
     @Annotations(@Annotation("formal"))
