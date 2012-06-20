@@ -1849,6 +1849,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.JT_RAW);
     }
     
+    JCExpression makeEmptyAsIterable(){
+        return make().TypeCast(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), makeEmpty());
+    }
+    
     JCExpression makeEmpty() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
