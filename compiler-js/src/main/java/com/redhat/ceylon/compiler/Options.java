@@ -30,22 +30,10 @@ public class Options {
     public static Options parse(List<String> args) {
         Options opts = new Options();
         //Review all non-arg options
-        if (args.contains("-version")) {
-            opts.version=true;
-            args.remove("-version");
-        }
-        if (args.contains("-help")) {
-            opts.help=true;
-            return opts;
-        }
-        if (args.contains("-optimize")) {
-            opts.optimize=true;
-            args.remove("-optimize");
-        }
-        if (args.contains("-nomodule")) {
-            opts.modulify=false;
-            args.remove("-nomodule");
-        }
+        opts.version = findOption("-version", args, true);
+        opts.help = findOption("-help", args, true);
+        opts.optimize = findOption("-optimize", args, true);
+        opts.modulify = !findOption("-nomodule", args, true);
         if (args.contains("-noindent") || args.contains("-compact")) {
             opts.indent=false;
             args.remove("-noindent");
@@ -55,18 +43,9 @@ public class Options {
             args.remove("-nocomments");
             args.remove("-compact");
         }
-        if (args.contains("-verbose")) {
-            opts.verbose=true;
-            args.remove("-verbose");
-        }
-        if (args.contains("-profile")) {
-            opts.profile=true;
-            args.remove("-profile");
-        }
-        if (args.contains("--")) {
-            opts.stdin=true;
-            args.remove("--");
-        }
+        opts.verbose = findOption("-verbose", args, true);
+        opts.profile = findOption("-profile", args, true);
+        opts.stdin = findOption("--", args, true);
         //Review arg options
         for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
             String s = iter.next();
@@ -117,6 +96,40 @@ public class Options {
             }
         }
         return repos;
+    }
+
+    /** Finds the value for an option that requires value. Can remove it from the original list if needed.
+     * @param optionName The name for the option (usually starts with "-")
+     * @param args The list of arguments where to look for the option and its value
+     * @param remove If true, removes the option and its value from the list.
+     * @return The value for the specified option, or null if not found. */
+    public static String findOptionValue(String optionName, List<String> args, boolean remove) {
+        int idx = args.indexOf(optionName);
+        if (idx >=0 && idx < args.size() - 2 && !args.get(idx+1).startsWith("-")) {
+            if (remove) {
+                args.remove(idx);
+                return args.remove(idx);
+            } else {
+                return args.get(idx+1);
+            }
+        }
+        return null;
+    }
+
+    /** Finds the specified option among the arguments, and removes it if needed.
+     * @param name The option name (usually starts with "-")
+     * @param args The list of arguments where to look for the option
+     * @param remove If true, removes the option from the arguments.
+     * @return true if the option was found, false otherwise. */
+    public static boolean findOption(String name, List<String> args, boolean remove) {
+        int idx = args.indexOf(name);
+        if (idx >= 0) {
+            if (remove) {
+                args.remove(idx);
+            }
+            return true;
+        }
+        return false;
     }
 
     /** Returns the list of repositories that were parsed from the command line. */
