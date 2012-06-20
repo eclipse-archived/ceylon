@@ -4,14 +4,14 @@ public class SetOperators {
     
     private final void testSetOperatorsWithSameTypes(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
         .ceylon.language.Set<? extends .ceylon.language.Integer> x;
-        x = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.union(b);
-        x = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.intersection(b);
-        x = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.exclusiveUnion(b);
-        x = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.complement(b);
+        x = a.union(b);
+        x = a.intersection(b);
+        x = a.exclusiveUnion(b);
+        x = a.complement(b);
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop0 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)x.union(a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop0 = x.union(a);
                 x = $ceylontmpop0;
             }
             returning $ceylontmpop0;
@@ -19,7 +19,7 @@ public class SetOperators {
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop1 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)x.intersection(a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop1 = x.intersection(a);
                 x = $ceylontmpop1;
             }
             returning $ceylontmpop1;
@@ -27,7 +27,7 @@ public class SetOperators {
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)x.exclusiveUnion(a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop2 = x.exclusiveUnion(a);
                 x = $ceylontmpop2;
             }
             returning $ceylontmpop2;
@@ -35,7 +35,7 @@ public class SetOperators {
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop3 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)x.complement(a);
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop3 = x.complement(a);
                 x = $ceylontmpop3;
             }
             returning $ceylontmpop3;
@@ -43,57 +43,172 @@ public class SetOperators {
     }
     
     private final void testSetOperatorsWithDifferentTypes(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Float> b) {
-        .ceylon.language.Set x1 = (.ceylon.language.Set)a.union(b);
-        .ceylon.language.Set x2 = (.ceylon.language.Set)a.intersection(b);
-        .ceylon.language.Set x3 = (.ceylon.language.Set)a.exclusiveUnion(b);
-        .ceylon.language.Set<? extends .ceylon.language.Integer> x4 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.complement(b);
+        .ceylon.language.Set x1 = a.union(b);
+        x1.contains(.ceylon.language.Integer.instance(1L));
+        x1.contains(.ceylon.language.Float.instance(1.1));
+        .java.lang.Object $elem$4;
+        for (.ceylon.language.Iterator<?> $i$iter$5 = x1.getIterator(); !(($elem$4 = $i$iter$5.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object i = (.java.lang.Object)$elem$4;
+            .java.lang.Object $i$6;
+            if (($i$6 = i) instanceof .ceylon.language.Integer) {
+                final long $i$7 = ((.ceylon.language.Integer)$i$6).longValue();
+                final long s = $i$7 + 0L;
+            } else {
+                .java.lang.Object $i$8;
+                if (($i$8 = i) instanceof .ceylon.language.Float) {
+                    final double $i$9 = ((.ceylon.language.Float)$i$8).doubleValue();
+                    final double s = $i$9 + 0L;
+                }
+            }
+        }
+        .ceylon.language.Set<?> x2 = a.intersection(b);
+        .ceylon.language.Set x3 = a.exclusiveUnion(b);
+        x1.contains(.ceylon.language.Integer.instance(1L));
+        x1.contains(.ceylon.language.Float.instance(1.1));
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x4 = a.complement(b);
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop4 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)x4.intersection(b);
-                x4 = $ceylontmpop4;
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop10 = x4.intersection(b);
+                x4 = $ceylontmpop10;
             }
-            returning $ceylontmpop4;
+            returning $ceylontmpop10;
         );
         (
             let
             {
-                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop5 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)x4.complement(b);
-                x4 = $ceylontmpop5;
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop11 = x4.complement(b);
+                x4 = $ceylontmpop11;
             }
-            returning $ceylontmpop5;
+            returning $ceylontmpop11;
         );
+        x4.contains(.ceylon.language.Integer.instance(1L));
+        .java.lang.Object $elem$12;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$13 = x4.getIterator(); !(($elem$12 = $i$iter$13.next()) instanceof .ceylon.language.Finished); ) {
+            final long i = ((.ceylon.language.Integer)$elem$12).longValue();
+            final long s = i + 0L;
+        }
     }
     
     private final void testSetOperatorsAndInvocationOnResult(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Float> b) {
-        ((.ceylon.language.Set<? extends .ceylon.language.Integer>)a.union(a)).contains(.ceylon.language.Integer.instance(1L));
-        ((.ceylon.language.Set<? extends .ceylon.language.Integer>)a.intersection(a)).contains(.ceylon.language.Integer.instance(1L));
-        ((.ceylon.language.Set<? extends .ceylon.language.Integer>)a.exclusiveUnion(a)).contains(.ceylon.language.Integer.instance(1L));
-        ((.ceylon.language.Set<? extends .ceylon.language.Integer>)a.complement(a)).contains(.ceylon.language.Integer.instance(1L));
-        ((.ceylon.language.Set)a.union(b)).contains(.ceylon.language.Float.instance(3.14));
-        ((.ceylon.language.Set)a.intersection(b)).contains(.ceylon.language.Float.instance(3.14));
-        ((.ceylon.language.Set)a.exclusiveUnion(b)).contains(.ceylon.language.Float.instance(3.14));
-        ((.ceylon.language.Set<? extends .ceylon.language.Integer>)a.complement(b)).contains(.ceylon.language.Float.instance(3.14));
+        a.union(a).contains(.ceylon.language.Integer.instance(1L));
+        a.intersection(a).contains(.ceylon.language.Integer.instance(1L));
+        a.exclusiveUnion(a).contains(.ceylon.language.Integer.instance(1L));
+        a.complement(a).contains(.ceylon.language.Integer.instance(1L));
+        a.union(b).contains(.ceylon.language.Float.instance(3.14));
+        a.intersection(b).contains(.ceylon.language.Float.instance(3.14));
+        a.exclusiveUnion(b).contains(.ceylon.language.Float.instance(3.14));
+        a.complement(b).contains(.ceylon.language.Float.instance(3.14));
     }
     
     private final void testSetOperatorsPrecedence(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Integer> b, final .ceylon.language.Set<? extends .ceylon.language.Integer> c) {
-        .ceylon.language.Set<? extends .ceylon.language.Integer> x1 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)a.union((.ceylon.language.Set<? extends .ceylon.language.Integer>)b.intersection(c));
-        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)((.ceylon.language.Set<? extends .ceylon.language.Integer>)b.intersection(c)).union(a);
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x1 = a.union(b.intersection(c));
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = b.intersection(c).union(a);
     }
     
-    private final void testSetOperatorsWithErasedTypes(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .ceylon.language.Empty> setOfIntersectionType, final .ceylon.language.Set setOfBottom) {
-        .ceylon.language.Set x1 = (.ceylon.language.Set)setOfUnionType.union(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set)setOfUnionType.intersection(setOfString);
-        .ceylon.language.Set x3 = (.ceylon.language.Set)setOfUnionType.exclusiveUnion(setOfString);
-        .ceylon.language.Set x4 = (.ceylon.language.Set)setOfUnionType.complement(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character>> y1 = (.ceylon.language.Set<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character>>)setOfIntersectionType.union(setOfString);
-        .ceylon.language.Set y2 = (.ceylon.language.Set)setOfIntersectionType.intersection(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character>> y3 = (.ceylon.language.Set<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character>>)setOfIntersectionType.exclusiveUnion(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Empty> y4 = (.ceylon.language.Set<? extends .ceylon.language.Empty>)setOfIntersectionType.complement(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.String> z1 = (.ceylon.language.Set<? extends .ceylon.language.String>)setOfBottom.union(setOfString);
-        .ceylon.language.Set z2 = (.ceylon.language.Set)setOfBottom.intersection(setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.String> z3 = (.ceylon.language.Set<? extends .ceylon.language.String>)setOfBottom.exclusiveUnion(setOfString);
-        .ceylon.language.Set z4 = (.ceylon.language.Set)setOfBottom.complement(setOfString);
+    private final void testSetOperatorsWithErasedTypes(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .ceylon.language.Empty> setOfIntersectionType, final .ceylon.language.Set<?> setOfBottom) {
+        .ceylon.language.Set x1 = setOfUnionType.union(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = setOfUnionType.intersection(setOfString);
+        .ceylon.language.Set x3 = setOfUnionType.exclusiveUnion(setOfString);
+        .ceylon.language.Set x4 = setOfUnionType.complement(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character>> y1 = setOfIntersectionType.union(setOfString);
+        .ceylon.language.Set y2 = setOfIntersectionType.intersection(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character>> y3 = setOfIntersectionType.exclusiveUnion(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.Empty> y4 = setOfIntersectionType.complement(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.String> z1 = setOfBottom.union(setOfString);
+        .ceylon.language.Set<?> z2 = setOfBottom.intersection(setOfString);
+        .ceylon.language.Set<? extends .ceylon.language.String> z3 = setOfBottom.exclusiveUnion(setOfString);
+        .ceylon.language.Set<?> z4 = setOfBottom.complement(setOfString);
+    }
+    
+    private final void m3(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<?> b) {
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> s1 = a.union(b);
+        final .ceylon.language.Set<?> s2 = a.intersection(b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> s3 = a.exclusiveUnion(b);
+        final .ceylon.language.Set<? extends .ceylon.language.Integer> s4 = a.complement(b);
+        .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
+        sync = a.union(b);
+        sync = a.intersection(b);
+        sync = a.exclusiveUnion(b);
+        sync = a.complement(b);
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop14 = sync.union(a);
+                sync = $ceylontmpop14;
+            }
+            returning $ceylontmpop14;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop15 = sync.intersection(a);
+                sync = $ceylontmpop15;
+            }
+            returning $ceylontmpop15;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop16 = sync.exclusiveUnion(a);
+                sync = $ceylontmpop16;
+            }
+            returning $ceylontmpop16;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop17 = sync.complement(a);
+                sync = $ceylontmpop17;
+            }
+            returning $ceylontmpop17;
+        );
+    }
+    
+    private final <T>void m4(final .ceylon.language.Set<? extends .java.lang.Object> a, final .ceylon.language.Set<? extends T> b, final T t) {
+        final .ceylon.language.Set<? extends .java.lang.Object> s1 = a.union(b);
+        final .ceylon.language.Set<? extends T> s2 = a.intersection(b);
+        s2.contains(t);
+        final .ceylon.language.Set<? extends .java.lang.Object> s3 = a.exclusiveUnion(b);
+        s3.contains(t);
+        final .ceylon.language.Set<? extends .java.lang.Object> s4 = a.complement(b);
+        .ceylon.language.Set<? extends .java.lang.Object> sync;
+        sync = a.union(b);
+        sync = a.intersection(b);
+        sync = a.exclusiveUnion(b);
+        sync = a.complement(b);
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmpop18 = sync.union(a);
+                sync = $ceylontmpop18;
+            }
+            returning $ceylontmpop18;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmpop19 = sync.intersection(a);
+                sync = $ceylontmpop19;
+            }
+            returning $ceylontmpop19;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmpop20 = sync.exclusiveUnion(a);
+                sync = $ceylontmpop20;
+            }
+            returning $ceylontmpop20;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .java.lang.Object> $ceylontmpop21 = sync.complement(a);
+                sync = $ceylontmpop21;
+            }
+            returning $ceylontmpop21;
+        );
     }
     
     public SetOperators() {
