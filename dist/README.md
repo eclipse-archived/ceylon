@@ -76,6 +76,17 @@ For JavaScript:
     ../../bin/ceylonc-js default
     ../../bin/ceylon-js default
 
+### Sample module with Java interoperability
+
+To run the "Java interop" program, type:
+
+    cd samples/interop-java
+    ../../bin/ceylonc com.acme.interop
+    ../../bin/ceylond -non-shared -source-code com.acme.interop
+    ../../bin/ceylon com.acme.interop/1.0.0 John
+
+Note: this is only available for the Java backend.
+
 ## Tool usage
 
 To see a list of command line options, type one of:

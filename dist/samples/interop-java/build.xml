@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Sample Ceylon build script using Ant.
+-->
+<project name="project" default="default">
+	
+	<property name="ceylon.home" value="../.."/>
+	<property name="ceylon.ant.lib" value="${ceylon.home}/repo/com/redhat/ceylon/ant/0.3/com.redhat.ceylon.ant-0.3.jar"/>
+	
+	<target name="ceylon-ant-taskdefs">
+	  <path id="ant-tasks">
+	    <pathelement location="${ceylon.ant.lib}"/>
+	  </path>
+	  <taskdef name="ceylonc"
+	    classname="com.redhat.ceylon.ant.Ceylonc"
+	    classpathref="ant-tasks"/>
+	  <taskdef name="ceylond"
+	    classname="com.redhat.ceylon.ant.Ceylond"
+	    classpathref="ant-tasks"/>
+	  <taskdef name="ceylon"
+	    classname="com.redhat.ceylon.ant.Ceylon"
+	    classpathref="ant-tasks"/>
+	</target>
+	
+    <target name="default" depends="doc, run">
+    </target>
+
+    <target name="compile" depends="ceylon-ant-taskdefs">
+    	<ceylonc>
+    		<module name="com.acme.interop"/>
+    	</ceylonc>
+    </target>
+
+    <target name="doc" depends="ceylon-ant-taskdefs">
+        <ceylond>
+            <module name="com.acme.interop"/>
+        </ceylond>
+    </target>
+
+    <target name="run" depends="compile">
+        <ceylon module="com.acme.interop/1.0.0"/>
+    </target>
+
+	<target name="clean">
+    	<delete dir="modules"/>
+    </target>
+
+</project>

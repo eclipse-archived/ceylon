@@ -87,6 +87,7 @@
             <fileset dir="samples">
                 <include name="helloworld/**"/>
                 <include name="no-module/**"/>
+                <include name="interop-java/**"/>
             </fileset>
         </copy>
     </target>
