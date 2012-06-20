@@ -704,6 +704,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         type = simplifyType(type);
         return (sameType(syms().ceylonExceptionType, type));
     }
+    
+    boolean willEraseToIterable(ProducedType type) {
+        return typeFact().getNonemptyIterableType(typeFact().getDefiniteType(type)) != null;
+    }
 
     boolean isCeylonString(ProducedType type) {
         return (sameType(syms().ceylonStringType, type));
