@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -115,38 +116,39 @@ public class Runner {
         return f.exists() && f.canExecute();
     }
 
-    public static String findOptionValue(String optionName, List<String> options) {
-        int idx = options.indexOf(optionName);
-        if (idx >=0 && idx < options.size() - 2 && !options.get(idx+1).startsWith("-")) {
-            return options.get(idx+1);
-        }
-        return null;
-    }
-
     public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length == 0) {
             usage();
             System.exit(1);
             return;
         }
-        List<String> opts = Arrays.asList(args);
-        if (opts.contains("-version")) {
+        List<String> opts = new ArrayList<String>();
+        opts.addAll(Arrays.asList(args));
+        if (Options.findOption("-version", opts, true)) {
             System.out.println("Ceylon Javascript Runner version 0.3");
         }
-        if (opts.contains("-help")) {
+        if (Options.findOption("-help", opts, true)) {
             usage();
             return;
         }
         final String node = findNode();
-        List<String> repos = Options.findRepos(opts, false);
-        String func = findOptionValue("-run", opts);
+        List<String> repos = Options.findRepos(opts, true);
+        String func = Options.findOptionValue("-run", opts, true);
         if (repos.isEmpty()) {
             repos.add("modules");
         }
         if (func == null) {
             func = "run";
         }
-        String module = opts.get(opts.size()-1);
+        if (opts.isEmpty()) {
+            System.err.println("ceylon-js: You must specify a module name and version.");
+            usage();
+            return;
+        }
+        String module = opts.remove(0);
+        if (!opts.isEmpty()) {
+            System.err.println("ceylon-js: Command-line arguments not supported yet.");
+        }
         final boolean isDefault = "default".equals(module);
         String version = "";
         if (!isDefault && !module.contains("/")) {
@@ -182,7 +184,6 @@ public class Runner {
                 nodePath = nodePath + File.pathSeparator + repo;
             }
         }
-        System.out.println("node_path " + nodePath);
         proc.environment().put("NODE_PATH", nodePath);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
