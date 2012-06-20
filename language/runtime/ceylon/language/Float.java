@@ -89,7 +89,7 @@ public final class Float
     
     @Override
     public Float getFractionalPart() {		
-        return instance(value - (long)value);
+        return instance(value > 0.0D ? value - (long)value : (long)value - value);
     }
     
     @Override
