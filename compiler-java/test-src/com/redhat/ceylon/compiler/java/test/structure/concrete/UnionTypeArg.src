@@ -33,10 +33,10 @@ class UnionTypeArg implements .ceylon.language.Iterable {
         return $ceylon$language$Iterable$this.find(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
-    private final .ceylon.language.Iterator<?> iterator;
+    private final .ceylon.language.Iterator iterator;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<?> getIterator() {
+    public final .ceylon.language.Iterator getIterator() {
         return iterator;
     }
     
@@ -74,10 +74,10 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
-    private final .ceylon.language.Iterator<?> iterator;
+    private final .ceylon.language.Iterator iterator;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<?> getIterator() {
+    public final .ceylon.language.Iterator getIterator() {
         return iterator;
     }
     
