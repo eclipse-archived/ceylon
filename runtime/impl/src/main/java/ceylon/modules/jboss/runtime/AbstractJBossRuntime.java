@@ -43,7 +43,14 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
     @Override
     public ClassLoader createClassLoader(String name, String version, Configuration conf) throws Exception {
         ModuleLoader moduleLoader = createModuleLoader(conf);
-        ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
+        ModuleIdentifier moduleIdentifier;
+        try{
+            moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
+        }catch(IllegalArgumentException x){
+            CeylonRuntimeException cre = new CeylonRuntimeException("Invalid module name or version: contains invalid characters");
+            cre.initCause(x);
+            throw cre;
+        }
         try {
             Module module = moduleLoader.loadModule(moduleIdentifier);
             return SecurityActions.getClassLoader(module);
