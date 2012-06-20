@@ -775,8 +775,8 @@ TypeConstraints?
               or</para>
            </listitem>
            <listitem>
-              <para>is inherited from an interface or superclass, and is not refined by 
-              a declaration occurring earlier in the body of the class.</para>
+              <para>is inherited from an interface or superclass, and is not refined 
+              by a declaration occurring earlier in the body of the class.</para>
            </listitem>
         </itemizedlist>
         
@@ -784,15 +784,15 @@ TypeConstraints?
         <literal>extend</literal> a member or nested class of an interface or 
         superclass of the class.</para>
         
-        <para>Furthermore, a statement or declaration that contained in the initializer 
+        <para>Furthermore, a statement or declaration contained in the initializer 
         of a class may not:</para>
         
         <itemizedlist>
            <listitem>
               <para>pass a self reference to the instance being initialized as an 
               argument of an instantiation, method invocation, or <literal>extends</literal> 
-              clause expression or as the value of an attribute assignment or specification, 
-              or</para>
+              clause expression or as the value of an attribute assignment or 
+              specification, or</para>
            </listitem>
            <listitem>
               <para><literal>return</literal> a self reference to the instance being 
