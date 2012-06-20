@@ -43,7 +43,9 @@ void test_booleans() {
     Array<Boolean> items = java.return_booleans();
     Boolean? b = items.item(0);
     Boolean? b3 = items[0];
-    items.setItem(1, b);
+    if (exists b) {
+        items.setItem(1, b);
+    }
     for (Boolean b2 in items) { print(b2); }
     java.take_booleans(items);
 }
@@ -54,7 +56,9 @@ void test_JBooleans() {
     Array<JBoolean> items = java.return_Booleans();
     JBoolean? b = items.item(0);
     JBoolean? b3 = items[0];
-    items.setItem(1, b);
+    if (exists b) {
+        items.setItem(1, b);
+    }
     for (JBoolean b2 in items) { print(b2); }
     java.take_Booleans(items);
 }
@@ -65,7 +69,9 @@ void test_bytes() {
     Array<Integer> items = java.return_bytes();
     Integer? n = items.item(0);
     Integer? n3 = items[0];
-    items.setItem(1, n);
+    if (exists n) {
+        items.setItem(1, n);
+    }
     for (Integer n2 in items) { print(n2); }
     java.take_bytes(items);
 }
@@ -76,7 +82,9 @@ void test_JBytes() {
     Array<JByte> items = java.return_Bytes();
     JByte? n = items.item(0);
     JByte? n3 = items[0];
-    items.setItem(1, n);
+    if (exists n) {
+        items.setItem(1, n);
+    }
     for (JByte n2 in items) { print(n2); }
     java.take_Bytes(items);
 }
@@ -87,7 +95,9 @@ void test_shorts() {
     Array<Integer> items = java.return_shorts();
     Integer? n = items.item(0);
     Integer? n3 = items[0];
-    items.setItem(1, n);
+    if (exists n) {
+        items.setItem(1, n);
+    }
     for (Integer n2 in items) { print(n2); }
     java.take_shorts(items);
 }
@@ -98,7 +108,9 @@ void test_JShorts() {
     Array<JShort> items = java.return_Shorts();
     JShort? n = items.item(0);
     JShort? n3 = items[0];
-    items.setItem(1, n);
+    if (exists n) {
+        items.setItem(1, n);
+    }
     for (JShort n2 in items) { print(n2); }
     java.take_Shorts(items);
 }
@@ -109,7 +121,9 @@ void test_ints() {
     Array<Integer> items = java.return_ints();
     Integer? n = items.item(0);
     Integer? n3 = items[0];
-    items.setItem(1, n);
+    if (exists n) {
+        items.setItem(1, n);
+    }
     for (Integer n2 in items) { print(n2); }
     java.take_ints(items);
 }
@@ -120,7 +134,9 @@ void test_JIntegers() {
     Array<JInteger> items = java.return_Integers();
     JInteger? n = items.item(0);
     JInteger? n3 = items[0];
-    items.setItem(1, n);
+    if (exists n) {
+        items.setItem(1, n);
+    }
     for (JInteger n2 in items) { print(n2); }
     java.take_Integers(items);
 }
@@ -131,7 +147,9 @@ void test_longs() {
     Array<Integer> items = java.return_longs();
     Integer? n = items.item(0);
     Integer? n3 = items[0];
-    items.setItem(1, n);
+    if (exists n) {
+        items.setItem(1, n);
+    }
     for (Integer n2 in items) { print(n2); }
     java.take_longs(items);
 }
@@ -142,7 +160,9 @@ void test_JLongs() {
     Array<JLong> items = java.return_Longs();
     JLong? n = items.item(0);
     JLong? n3 = items[0];
-    items.setItem(1, n);
+    if (exists n) {
+        items.setItem(1, n);
+    }
     for (JLong n2 in items) { print(n2); }
     java.take_Longs(items);
 }
@@ -153,7 +173,9 @@ void test_floats() {
     Array<Float> items = java.return_floats();
     Float? f = items.item(0);
     Float? f3 = items[0];
-    items.setItem(1, f);
+    if (exists f) {
+        items.setItem(1, f);
+    }
     for (Float f2 in items) { print(f2); }
     java.take_floats(items);
 }
@@ -164,7 +186,9 @@ void test_JFloats() {
     Array<JFloat> items = java.return_Floats();
     JFloat? f = items.item(0);
     JFloat? f3 = items[0];
-    items.setItem(1, f);
+    if (exists f) {
+        items.setItem(1, f);
+    }
     for (JFloat f2 in items) { print(f2); }
     java.take_Floats(items);
 }
@@ -175,7 +199,9 @@ void test_doubles() {
     Array<Float> items = java.return_doubles();
     Float? f = items.item(0);
     Float? f3 = items[0];
-    items.setItem(1, f);
+    if (exists f) {
+        items.setItem(1, f);
+    }
     for (Float f2 in items) { print(f2); }
     java.take_doubles(items);
 }
@@ -186,7 +212,9 @@ void test_JDoubles() {
     Array<JDouble> items = java.return_Doubles();
     JDouble? f = items.item(0);
     JDouble? f3 = items[0];
-    items.setItem(1, f);
+    if (exists f) {
+        items.setItem(1, f);
+    }
     for (JDouble f2 in items) { print(f2); }
     java.take_Doubles(items);
 }
@@ -197,7 +225,9 @@ void test_chars() {
     Array<Character> items = java.return_chars();
     Character? c = items.item(0);
     Character? c3 = items[0];
-    items.setItem(1, c);
+    if (exists c) {
+        items.setItem(1, c);
+    }
     for (Character c2 in items) { print(c2); }
     java.take_chars(items);
 }
@@ -208,7 +238,9 @@ void test_JCharacters() {
     Array<JCharacter> items = java.return_Characters();
     JCharacter? c = items.item(0);
     JCharacter? c3 = items[0];
-    items.setItem(1, c);
+    if (exists c) {
+        items.setItem(1, c);
+    }
     for (JCharacter c2 in items) { print(c2); }
     java.take_Characters(items);
 }
@@ -219,7 +251,9 @@ void test_Strings() {
     Array<String> items = java.return_Strings();
     String? s = items.item(0);
     String? s3 = items[0];
-    items.setItem(1, s);
+    if (exists s) {
+        items.setItem(1, s);
+    }
     for (String s2 in items) { print(s2); }
     java.take_Strings(items);
 }
@@ -229,7 +263,9 @@ void test_Objects() {
     TypesJava java = TypesJava();
     Array<Object> items = java.return_Objects();
     Object? o = items.item(0);
-    items.setItem(1, o);
+    if (exists o) {
+        items.setItem(1, o);
+    }
     for (Object o2 in items) { print(o2); }
     java.take_Objects(items);
 }
