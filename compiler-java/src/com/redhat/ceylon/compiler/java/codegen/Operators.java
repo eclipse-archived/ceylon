@@ -94,9 +94,10 @@ public class Operators {
         BINARY_AND(Tree.AndOp.class, "<not-used>", JCTree.AND, PrimitiveType.BOOLEAN),
         BINARY_OR(Tree.OrOp.class, "<not-used>", JCTree.OR, PrimitiveType.BOOLEAN),
 
-        BINARY_INTERSECTION(Tree.IntersectionOp.class, "and", JCTree.BITAND, PrimitiveType.BOOLEAN),
-        BINARY_UNION(Tree.UnionOp.class, "or", JCTree.BITOR, PrimitiveType.BOOLEAN),
-        BINARY_XOR(Tree.XorOp.class, "xor", JCTree.BITXOR, PrimitiveType.BOOLEAN),
+        BINARY_UNION(Tree.UnionOp.class, "union"),
+        BINARY_INTERSECTION(Tree.IntersectionOp.class, "intersection"),
+        BINARY_XOR(Tree.XorOp.class, "exclusiveUnion"),
+        BINARY_COMPLEMENT(Tree.ComplementOp.class, "complement"), 
         
         BINARY_EQUAL(Tree.EqualOp.class, "equals", JCTree.EQ, All){
             @Override
@@ -219,12 +220,23 @@ public class Operators {
         DIVIDE(Tree.DivideAssignOp.class, OperatorTranslation.BINARY_QUOTIENT, JCTree.DIV_ASG),
         REMAINDER(Tree.RemainderAssignOp.class, OperatorTranslation.BINARY_REMAINDER, JCTree.MOD_ASG),
         AND(Tree.AndAssignOp.class, OperatorTranslation.BINARY_AND, JCTree.BITAND_ASG),
-        OR(Tree.OrAssignOp.class, OperatorTranslation.BINARY_OR, JCTree.BITOR_ASG)
+        OR(Tree.OrAssignOp.class, OperatorTranslation.BINARY_OR, JCTree.BITOR_ASG),
+        
+        // Set assignment
+        BINARY_UNION(Tree.UnionAssignOp.class, OperatorTranslation.BINARY_UNION),
+        BINARY_INTERSECTION(Tree.IntersectAssignOp.class, OperatorTranslation.BINARY_INTERSECTION),
+        BINARY_XOR(Tree.XorAssignOp.class, OperatorTranslation.BINARY_XOR),
+        BINARY_COMPLEMENT(Tree.ComplementAssignOp.class, OperatorTranslation.BINARY_COMPLEMENT),
         ;
         
         int javacOperator;
         OperatorTranslation binaryOperator;
         Class<? extends AssignmentOp> operatorClass;
+        
+        AssignmentOperatorTranslation(Class<? extends Tree.AssignmentOp> operatorClass, OperatorTranslation binaryOperator) {
+            this.operatorClass = operatorClass;
+            this.binaryOperator = binaryOperator;
+        }
 
         AssignmentOperatorTranslation(Class<? extends Tree.AssignmentOp> operatorClass,
                 OperatorTranslation binaryOperator,

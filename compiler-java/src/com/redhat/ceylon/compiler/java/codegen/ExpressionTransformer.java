@@ -778,6 +778,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.RemainderOp op) {
         return transformOverridableBinaryOperator(op, op.getUnit().getIntegralDeclaration());
     }
+    
+    public JCExpression transform(Tree.BitwiseOp op) {
+    	JCExpression result = transformOverridableBinaryOperator(op, null, null);
+    	JCExpression expectedType = makeJavaType(op.getTypeModel());
+    	return make().TypeCast(expectedType, result);
+    }    
 
     // Overridable binary operators
     
@@ -882,8 +888,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         });
     }
 
-    public JCExpression transform(Tree.BitwiseAssignmentOp op){
-        return makeErroneous(op, "Not supported yet: "+op.getNodeType());
+    public JCExpression transform(final Tree.BitwiseAssignmentOp op){
+        final AssignmentOperatorTranslation operator = Operators.getAssignmentOperator(op.getClass());
+        if(operator == null){
+            return makeErroneous(op, "Not supported yet: "+op.getNodeType());
+        }
+    	
+        ProducedType valueType = op.getLeftTerm().getTypeModel();
+        
+        return transformAssignAndReturnOperation(op, op.getLeftTerm(), false, valueType, valueType, new AssignAndReturnOperationFactory() {
+            @Override
+            public JCExpression getNewValue(JCExpression previousValue) {
+            	JCExpression result = transformOverridableBinaryOperator(op, operator.binaryOperator, OptimisationStrategy.NONE, previousValue, null);
+            	JCExpression expectedType = makeJavaType(op.getTypeModel());
+            	return make().TypeCast(expectedType, result);
+            }
+        });
     }
 
     public JCExpression transform(final Tree.LogicalAssignmentOp op){
