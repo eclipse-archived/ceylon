@@ -525,7 +525,7 @@ public class ClassTransformer extends AbstractTransformer {
                 attrDecl.setScope(op.getScope());
     
                 // Make sure the boxing information is set correctly
-                BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
+                BoxingDeclarationVisitor v = new CompilerBoxingDeclarationVisitor(this);
                 v.visit(attrDecl);
                 
                 // Generate the attribute
@@ -562,7 +562,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 
                 // Make sure the boxing information is set correctly
-                BoxingDeclarationVisitor v = new BoxingDeclarationVisitor(this);
+                BoxingDeclarationVisitor v = new CompilerBoxingDeclarationVisitor(this);
                 v.visit(methDecl);
                 
                 // Generate the attribute

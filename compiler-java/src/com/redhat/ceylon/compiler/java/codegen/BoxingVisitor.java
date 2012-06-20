@@ -23,14 +23,13 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComparisonOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualityOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsOrNonemptyCondition;
@@ -61,18 +60,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
-public class BoxingVisitor extends Visitor {
+public abstract class BoxingVisitor extends Visitor {
 
-    private AbstractTransformer transformer;
-    
-    public BoxingVisitor(AbstractTransformer transformer){
-        this.transformer = transformer;
-    }
+    protected abstract boolean isBooleanTrue(Declaration decl);
+    protected abstract boolean isBooleanFalse(Declaration decl);
 
     @Override
     public void visit(BaseMemberExpression that) {
@@ -83,8 +78,8 @@ public class BoxingVisitor extends Visitor {
         Declaration decl = that.getDeclaration();
         if(CodegenUtil.isUnBoxed((TypedDeclaration)decl)
                 // special cases for true/false
-                || transformer.isBooleanTrue(decl)
-                || transformer.isBooleanFalse(decl))
+                || isBooleanTrue(decl)
+                || isBooleanFalse(decl))
             CodegenUtil.markUnBoxed(that);
     }
 

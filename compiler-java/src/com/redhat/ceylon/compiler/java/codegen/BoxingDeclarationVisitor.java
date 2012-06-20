@@ -33,7 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
@@ -43,14 +42,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
-public class BoxingDeclarationVisitor extends Visitor {
-    
-    private AbstractTransformer transformer;
-    
-    public BoxingDeclarationVisitor(AbstractTransformer transformer){
-        this.transformer = transformer;
-    }
-    
+public abstract class BoxingDeclarationVisitor extends Visitor {
+
+    protected abstract boolean isCeylonBasicType(ProducedType type);
+
     @Override
     public void visit(FunctionArgument that) {
         super.visit(that);
@@ -143,7 +138,7 @@ public class BoxingDeclarationVisitor extends Visitor {
                 setBoxingState(refinedDeclaration, refinedDeclaration);
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
-        }else if((transformer.isCeylonBasicType(type) || Decl.isUnboxedVoid(declaration))
+        }else if((isCeylonBasicType(type) || Decl.isUnboxedVoid(declaration))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
            && !(refinedDeclaration.getContainer() instanceof FunctionalParameter)
            && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
