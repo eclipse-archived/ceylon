@@ -141,5 +141,15 @@ class TypeArgInference() {
     @type["Float|String"] higher { function f(String? y) { return 1.0; } };
     function argfun(Integer? x) { return x?.float; }
     @type["Nothing|Float|Integer"] higher(argfun);
+    
+    @type["Iterable<Integer>"] { "hello", "world" }.map((String s) s.size);
+    @type["Iterable<String>"] { "hello", "world" }.filter((String s) !s.empty);
+    @type["String"] { "hello", "world" }.fold("", (String result, String s) result+" "+s);
+    @type["Nothing|String"] { null, "hello", "world" }.find((String? s) exists s);
+
+    @type["Iterable<Integer>"] { "hello", "world" }.map { function collecting(String s) { return s.size; } };
+    @type["Iterable<String>"] { "hello", "world" }.filter { function selecting(String s) { return !s.empty; } };
+    @type["String"] { "hello", "world" }.fold { initial=""; function accumulating(String result, String s) { return result+" "+s; } };
+    @type["Nothing|String"] { null, "hello", "world" }.find { function selecting(String? s) { return exists s; } };
 
 }
