@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+final class bug646 {
+    
+    private bug646() {
+    }
+    
+    static void bug646() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String>> strs = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String>> arrays = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> observers = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> observers2 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers3 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers4 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers5 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers6 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers7 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> foo = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable union = .ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .java.lang.Object> ident = .ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .java.lang.Object> v = .ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<?> bot = .ceylon.language.$empty.getEmpty();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug646.bug646();
+    }
+}
