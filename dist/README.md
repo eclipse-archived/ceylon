@@ -126,6 +126,7 @@ platforms to make sure it works:
 ### Linux
 
 - Ubuntu "oneiric" 11.10 (64 bit) JDK 1.7.0_147 (IcedTea), 1.6.0_26
+- Ubuntu "oneiric" 11.10 (32 bit) JDK 1.7.0-b147 (Oracle)
 - Fedora 16 (64 bit), JDK 1.6.0_24 (IcedTea 6 1.11.1, server VM 20.0-b12)
 
 ### Windows
