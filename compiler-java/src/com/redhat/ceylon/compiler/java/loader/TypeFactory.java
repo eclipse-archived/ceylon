@@ -61,22 +61,6 @@ public class TypeFactory extends Unit {
     }
 
     /**
-     * Gets the declaration of {@code Iterator}
-     * @return The declaration
-     */
-    public Interface getIteratorDeclaration() {
-        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Iterator"));
-    }
-
-    /**
-     * Gets the declaration of {@code Array}
-     * @return The declaration
-     */
-    public TypeDeclaration getArrayDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Array");
-    }
-
-    /**
      * Determines whether the given ProducedType is a union
      * @param pt 
      * @return whether the type is a union type
@@ -106,34 +90,12 @@ public class TypeFactory extends Unit {
     }
 
     /**
-     * Returns a ProducedType corresponding to {@code Iterator<T>}
-     * @param et The ProducedType corresponding to {@code T}
-     * @return The ProducedType corresponding to {@code Iterator<T>}
-     */
-    public ProducedType getIteratorType(ProducedType et) {
-        return Util.producedType(getIteratorDeclaration(), et);
-    }
-
-    /**
      * Returns a ProducedType corresponding to {@code Array<T>}
      * @param et The ProducedType corresponding to {@code T}
      * @return The ProducedType corresponding to {@code Array<T>}
      */
     public ProducedType getArrayType(ProducedType et) {
         return Util.producedType(getArrayDeclaration(), et);
-    }
-
-    /**
-     * Returns a ProducedType corresponding to {@code Range<T>}
-     * @param rt The ProducedType corresponding to {@code T}
-     * @return The ProducedType corresponding to {@code Range<T>}
-     */
-    public ProducedType getRangeType(ProducedType rt) {
-        return Util.producedType(getRangeDeclaration(), rt);
-    }
-
-    public ProducedType getNonemptyIterableType(ProducedType pt) {
-        return pt.minus(getEmptyDeclaration()).getSupertype(getIterableDeclaration());
     }
 
     public ProducedType getFixedSizedType(ProducedType pt) {
