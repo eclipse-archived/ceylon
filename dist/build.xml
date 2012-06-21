@@ -1,15 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="ceylon-dist" default="package" basedir=".">
+<project name="ceylon-dist" default="help" basedir=".">
 
     <property file="build.properties"/>
-    <property name="ceylon-compiler.dir" value="${basedir}/../ceylon-compiler"/>
-    <property name="ceylon-spec.dir" value="${basedir}/../ceylon-spec"/>
-    <property name="ceylon.language.dir" value="${basedir}/../ceylon.language"/>
-    <property name="ceylon-module-resolver.dir" value="${basedir}/../ceylon-module-resolver"/>
-    <property name="ceylon-runtime.dir" value="${basedir}/../ceylon-runtime"/>
-    <property name="ceylon-js.dir" value="${basedir}/../ceylon-js"/>
+    <property name="projects.dir" value="${basedir}/projects"/>
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
     <property name="dist.dir" value="${basedir}/dist"/>
+
+    <target name="help">
+        <echo>Options for building a Ceylon distribution package:
+    ant get-code           - Downloads latest code for all projects
+    ant checkout -Dtag=0.3 - Makes sure we're using the specified tag, or
+    ant checkout-master    - To make sure we're using master
+    ant local package      - Builds the distribution package
+
+    ant siblings package   - Builds the distribution package using
+                             existing sibling project folders
+                             (leaves sources untouched!)
+
+    ant clean              - Cleans the distribution package
+    ant clean-all          - Cleans the distribution package
+                             and deletes all local projects
+
+A typical release build command would normally look like this:
+    ant clean get-code checkout -Dtag=0.3 local package</echo>
+    </target>
+
+    <target name="local">
+        <property name="projects.base.dir" value="${projects.dir}"/>
+        <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
+        <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
+        <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
+        <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
+        <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
+        <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+    </target>
+
+    <target name="siblings">
+        <property name="projects.base.dir" value="${basedir}/.." />
+        <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
+        <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
+        <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
+        <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
+        <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
+        <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+    </target>
 
     <target name="package" depends="install-compiler, install-js, copy-compiler-binaries, copy-samples, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
         <zip destfile="${basedir}/${dist.name}.zip">
@@ -178,7 +212,7 @@
     </target>
 
     <target name="generate-apidoc">
-        <exec command="${dist.dir}/bin/ceylond" failonerror="yes">
+        <exec executable="${dist.dir}/bin/ceylond" failonerror="yes">
             <arg value="-out"/>
             <arg value="${dist.dir}/repo"/>
             <arg value="-src"/>
@@ -188,7 +222,141 @@
         </exec>
     </target>
 
+    <target name="get-code" depends="use-git-pull,use-git-clone">
+        <echo>
+If you are building a distribution package for a specific tagged release
+then execute the following command:
+
+    ant checkout -Dtag=0.3 - Makes sure we're using the specified tag
+
+or you can go straight to the package building:
+
+    ant local package      - Builds the distribution package
+</echo>
+    </target>
+
+    <target name="check-exists-projects-dir">
+        <available property="projects.dir.exists" file="${projects.dir}" type="dir" />
+    </target>
+
+    <target name="use-git-clone" depends="check-exists-projects-dir" unless="${projects.dir.exists}">
+        <antcall target="git-clone" />
+    </target>
+    <target name="git-clone">
+        <mkdir dir="${projects.dir}"/>
+        <exec executable="git" dir="${projects.dir}" failonerror="yes">
+            <arg value="clone"/>
+            <arg value="https://github.com/ceylon/ceylon-compiler.git"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}" failonerror="yes">
+            <arg value="clone"/>
+            <arg value="https://github.com/ceylon/ceylon-spec.git"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}" failonerror="yes">
+            <arg value="clone"/>
+            <arg value="https://github.com/ceylon/ceylon.language.git"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}" failonerror="yes">
+            <arg value="clone"/>
+            <arg value="https://github.com/ceylon/ceylon-module-resolver.git"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}" failonerror="yes">
+            <arg value="clone"/>
+            <arg value="https://github.com/ceylon/ceylon-runtime.git"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}" failonerror="yes">
+            <arg value="clone"/>
+            <arg value="https://github.com/ceylon/ceylon-js.git"/>
+        </exec>
+    </target>
+
+    <target name="use-git-pull" depends="check-exists-projects-dir" if="${projects.dir.exists}">
+        <antcall target="git-pull" />
+    </target>
+    <target name="git-pull" depends="checkout-master">
+        <exec executable="git" dir="${projects.dir}/ceylon-compiler" failonerror="yes">
+            <arg value="pull"/>
+            <arg value="--ff-only"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon-spec" failonerror="yes">
+            <arg value="pull"/>
+            <arg value="--ff-only"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon.language" failonerror="yes">
+            <arg value="pull"/>
+            <arg value="--ff-only"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon-module-resolver" failonerror="yes">
+            <arg value="pull"/>
+            <arg value="--ff-only"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon-runtime" failonerror="yes">
+            <arg value="pull"/>
+            <arg value="--ff-only"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon-js" failonerror="yes">
+            <arg value="pull"/>
+            <arg value="--ff-only"/>
+        </exec>
+    </target>
+
+    <target name="checkout">
+        <fail unless="tag" />
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="${tag}" />
+        </antcall>
+        <echo>
+You can now build the package by executing:
+
+    ant local package      - Builds the distribution package
+</echo>
+    </target>
+
+    <target name="checkout-internal">
+        <fail unless="tag-internal" />
+        <exec executable="git" dir="${projects.dir}/ceylon-compiler" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon-spec" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon.language" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon-module-resolver" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon-runtime" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}/ceylon-js" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
+    </target>
+
+    <target name="checkout-master">
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="master" />
+        </antcall>
+    </target>
+
     <target name="clean">
         <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="clean-all" depends="clean">
+        <delete dir="${projects.dir}"/>
     </target>
 </project>
