@@ -256,25 +256,28 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(commonType == null)
                 return false;
             ProducedType expectedTypeErasure = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(expectedType));
-            if(hasErasedTypeParameters(expectedTypeErasure))
+            if(hasErasedTypeParameters(expectedTypeErasure, false))
                 return false;
-            return hasErasedTypeParameters(commonType);
+            return hasErasedTypeParameters(commonType, true);
         }else{
             ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
             if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface))
                 return false;
-            if(hasErasedTypeParameters(expectedType))
+            if(hasErasedTypeParameters(expectedType, false))
                 return false;
-            return hasErasedTypeParameters(commonType);
+            return hasErasedTypeParameters(commonType, true);
         }
     }
 
-    private boolean hasErasedTypeParameters(ProducedType type) {
+    private boolean hasErasedTypeParameters(ProducedType type, boolean keepRecursing) {
         for(ProducedType arg : type.getTypeArgumentList()){
-            if(willEraseToObject(arg))
+            if(willEraseToObject(arg)
+                    // Iterable is not raw
+                    && !willEraseToIterable(arg))
                 return true;
-            if(arg.getDeclaration() instanceof ClassOrInterface
-                    && hasErasedTypeParameters(arg))
+            if(keepRecursing
+                    && arg.getDeclaration() instanceof ClassOrInterface
+                    && hasErasedTypeParameters(arg, true))
                 return true;
         }
         return false;
