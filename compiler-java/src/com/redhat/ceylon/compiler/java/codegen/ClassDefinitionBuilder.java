@@ -86,7 +86,7 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCTree> also = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
 
-    private boolean ancestorLocal;
+    private final boolean ancestorLocal = false;
     
     private boolean built = false;
     
@@ -114,7 +114,7 @@ public class ClassDefinitionBuilder {
     private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
         this.gen = gen;
         this.name = name;
-        this.ancestorLocal = ancestorLocal;
+        //this.ancestorLocal = ancestorLocal;
         
         extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
@@ -149,7 +149,7 @@ public class ClassDefinitionBuilder {
         }
         
         JCTree.JCClassDecl klass = gen.make().ClassDef(
-                gen.make().Modifiers(modifiers, gen.filterAnnotations(annotations)),
+                gen.make().Modifiers(modifiers, annotations.toList()),
                 gen.names().fromString(Util.quoteIfJavaKeyword(name)),
                 typeParams.toList(),
                 extending,
