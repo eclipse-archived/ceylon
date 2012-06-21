@@ -57,7 +57,7 @@ For Java:
 For JavaScript:
 
     ../../bin/ceylonc-js com.acme.helloworld
-    ../../bin/ceylon-js com.acme.helloworld/1.0.0 John
+    ../../bin/ceylon-js com.acme.helloworld/1.0.0
 
 ### Sample with no module
 
