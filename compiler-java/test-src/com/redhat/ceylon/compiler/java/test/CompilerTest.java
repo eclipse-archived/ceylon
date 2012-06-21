@@ -381,7 +381,7 @@ public abstract class CompilerTest {
             java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
             if (Character.isLowerCase(klass.getSimpleName().charAt(0))) {
                 // A main method
-                Method m = klass.getMethod(klass.getSimpleName());
+                Method m = klass.getDeclaredMethod(klass.getSimpleName());
                 m.setAccessible(true);
                 m.invoke(null);
             } else {
