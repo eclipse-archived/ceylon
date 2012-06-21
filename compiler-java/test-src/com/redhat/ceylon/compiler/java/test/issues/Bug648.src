@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+class Bug648<T> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing|T")
+    public final T foo() {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    public final .ceylon.language.Integer bar() {
+        return null;
+    }
+    
+    Bug648() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug648();
+    }
+}

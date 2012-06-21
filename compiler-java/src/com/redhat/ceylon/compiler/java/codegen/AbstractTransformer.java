@@ -1622,8 +1622,6 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     private String serialiseTypeSignature(ProducedType type){
-        if(isTypeParameter(type))
-            return type.getProducedTypeName();
         return type.getProducedTypeQualifiedName();
 
     }
