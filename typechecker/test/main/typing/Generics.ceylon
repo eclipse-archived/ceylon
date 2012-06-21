@@ -504,4 +504,8 @@ class Generics() {
         @error ParamOuter<String>.Inner<Integer>();
         ParamOuter<T>.Inner<Integer>();
     }
+    
+    String->Object okEntry;
+    @error String->Void brokenEntry1;
+    @error Nothing->String brokenEntry2;
 }

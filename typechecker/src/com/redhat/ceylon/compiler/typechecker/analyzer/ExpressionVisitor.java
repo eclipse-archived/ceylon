@@ -2961,7 +2961,14 @@ public class ExpressionVisitor extends Visitor {
             //the type has already been set by TypeVisitor
         }
     }
-        
+    
+    @Override public void visit(Tree.EntryType that) {
+        super.visit(that);
+        checkAssignable(that.getKeyType().getTypeModel(), unit.getObjectDeclaration().getType(), 
+                that.getKeyType(), "entry key type must not be an optional type");
+        checkAssignable(that.getValueType().getTypeModel(), unit.getObjectDeclaration().getType(), 
+                that.getValueType(), "entry item type must not be an optional type");
+    }
 
     private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
             ProducedType receivingType, TypeDeclaration type, 
