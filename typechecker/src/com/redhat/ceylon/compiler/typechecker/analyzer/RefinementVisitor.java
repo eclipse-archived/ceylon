@@ -122,7 +122,24 @@ public class RefinementVisitor extends Visitor {
                 for (int j=i+1; j<supertypes.size(); j++) {
                     ProducedType st2 = supertypes.get(j);
                     if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
+                        boolean ok = true;
                         if (!st1.isSubtypeOf(st2) && !st2.isSubtypeOf(st1)) {
+                            ok = false;
+                        }
+                        else {
+                            //TODO: type arguments of the qualifying type?
+                            //can't inherit two instantiations of a contravariant type, since
+                            //we don't support contravariant refinement of parameter types
+                            for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
+                                ProducedType ta1 = st1.getTypeArguments().get(tp);
+                                ProducedType ta2 = st2.getTypeArguments().get(tp);
+                                if (!tp.isCovariant() && !ta1.isExactly(ta2)) {
+                                    ok = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!ok) {
                             that.addError("type " + td.getName() +
                                     " has the same supertype twice with incompatible type arguments: " +
                                     st1.getProducedTypeName() + " and " + st2.getProducedTypeName());

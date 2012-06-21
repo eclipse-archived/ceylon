@@ -414,7 +414,7 @@ class Generics() {
 
     interface Super1 satisfies Inter1<Bottom> & Inter2<String> {}
     interface Super2 satisfies Inter1<Integer> & Inter2<Object> {}
-    class Impl() satisfies Super1 & Super2 {}
+    @error class Impl() satisfies Super1 & Super2 {}
     value impl = Impl();
     String implget1 = impl.get();
     @error Integer implget2 = impl.get();
@@ -427,7 +427,7 @@ class Generics() {
 
     interface Super3 satisfies Inter1<Object> & Inter2<String> {}
     interface Super4 satisfies Inter1<Integer> & Inter2<Bottom> {}
-    class Conc() satisfies Super3 & Super4 {}
+    @error class Conc() satisfies Super3 & Super4 {}
     value conc = Conc();
     String concget1 = conc.get();
     Integer concget2 = conc.get();
