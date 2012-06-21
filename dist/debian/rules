@@ -22,7 +22,6 @@ override_dh_auto_build:
 	true
 
 override_dh_auto_clean: 
-	cd framework; \
 	true
 
 override_dh_auto_install: 
