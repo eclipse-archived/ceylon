@@ -172,4 +172,6 @@ people have contributed to this release:
 Gavin King, Stéphane Épardaud, Tako Schotanus, Emmanuel Bernard, Tom Bentley, Aleš Justin, 
 David Festal, Flavio Oliveri, Max Rydahl Andersen, Mladen Turk, James Cobb, Tomáš Hradec, 
 Michael Brackx, Ross Tate, Ivo Kasiuk, Enrique Zamudio, Julien Ponge, Julien Viet,
-Pete Muir, Nicolas Leroux.
+Pete Muir, Nicolas Leroux, Brett Cannon, Geoffrey De Smet, Guillaume Lours, Gunnar Morling,
+Jeff Parsons, Jesse Sightler, Oleg Kulikov, Raimund Klein, Sergej Koščejev, Chris Marshall,
+Simon Thum, Maia Kozheva, Shelby.
