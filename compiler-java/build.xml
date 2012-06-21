@@ -268,6 +268,7 @@
        classpathref="compiler.classpath"
        includeantruntime="true">
       <exclude name="**/*Main5.java"/>
+      <exclude name="com/redhat/ceylon/ant/**"/>
       <exclude name="com/redhat/ceylon/tools/Java7Checker.java"/>
       <include name="com/redhat/**"/>
       <include name="com/sun/tools/javac/**"/>
@@ -275,11 +276,14 @@
     </javac>
   	<!-- 
   	 We need a second compilation step to compile entry points compatible with Java 5
-  	 to be able to produce nice error messages for older Java versions 
+  	 to be able to produce nice error messages for older Java versions. Same for ant
+  	 tasks, so that they can run on Java 5 and the error messages are left to the
+  	 programs they spawn. 
   	-->
   	<delete dir="${build.classes}">
   	  <include name="**/*Main5.class"/>
   	  <include name="com/redhat/ceylon/tools/Java7Checker.class"/>
+      <include name="com/redhat/ceylon/ant/**"/>
   	</delete>
     <javac
        srcdir="${javac.src}:${ceylonc.src}"
@@ -292,6 +296,7 @@
        includeantruntime="true">
       <include name="**/*Main5.java"/>
       <include name="com/redhat/ceylon/tools/Java7Checker.java"/>
+      <include name="com/redhat/ceylon/ant/**"/>
     </javac>
   	<copy todir="${build.classes}">
       <fileset dir="${ceylonc.src}">
