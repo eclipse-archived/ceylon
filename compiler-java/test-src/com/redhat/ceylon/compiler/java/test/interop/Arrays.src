@@ -37,6 +37,9 @@ final class test_booleans {
             .ceylon.language.print.print(.ceylon.language.Boolean.instance(b2));
         }
         java.take_booleans((boolean[])items.toArray());
+        java.take_booleans((boolean[]).ceylon.language.$array.<.ceylon.language.Boolean>array(boolean.class, new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false))).toArray());
+        java.take_booleans((boolean[])((.ceylon.language.Array<.ceylon.language.Boolean>).ceylon.language.$arrayOfSome.<.ceylon.language.Boolean>arrayOfSome(boolean.class, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false)))).toArray());
+        java.take_booleans((boolean[])((.ceylon.language.Array<.ceylon.language.Boolean>).ceylon.language.$arrayOfNone.<.ceylon.language.Boolean>arrayOfNone(boolean.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
@@ -261,6 +264,9 @@ final class test_longs {
             .ceylon.language.print.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_longs((long[])items.toArray());
+        java.take_longs((long[]).ceylon.language.$array.<.ceylon.language.Integer>array(long.class, new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L))).toArray());
+        java.take_longs((long[])((.ceylon.language.Array<.ceylon.language.Integer>).ceylon.language.$arrayOfSome.<.ceylon.language.Integer>arrayOfSome(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)))).toArray());
+        java.take_longs((long[])((.ceylon.language.Array<.ceylon.language.Integer>).ceylon.language.$arrayOfNone.<.ceylon.language.Integer>arrayOfNone(long.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
@@ -373,6 +379,9 @@ final class test_doubles {
             .ceylon.language.print.print(.ceylon.language.Float.instance(f2));
         }
         java.take_doubles((double[])items.toArray());
+        java.take_doubles((double[]).ceylon.language.$array.<.ceylon.language.Float>array(double.class, new .ceylon.language.ArraySequence(.ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0))).toArray());
+        java.take_doubles((double[])((.ceylon.language.Array<.ceylon.language.Float>).ceylon.language.$arrayOfSome.<.ceylon.language.Float>arrayOfSome(double.class, new .ceylon.language.ArraySequence<.ceylon.language.Float>(.ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0)))).toArray());
+        java.take_doubles((double[])((.ceylon.language.Array<.ceylon.language.Float>).ceylon.language.$arrayOfNone.<.ceylon.language.Float>arrayOfNone(double.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
@@ -429,6 +438,9 @@ final class test_chars {
             .ceylon.language.print.print(.ceylon.language.Character.instance(c2));
         }
         java.take_chars((char[])items.toArray());
+        java.take_chars((char[]).ceylon.language.$array.<.ceylon.language.Character>array(int.class, new .ceylon.language.ArraySequence(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'), .ceylon.language.Character.instance('c'))).toArray());
+        java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.$arrayOfSome.<.ceylon.language.Character>arrayOfSome(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'), .ceylon.language.Character.instance('c')))).toArray());
+        java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.$arrayOfNone.<.ceylon.language.Character>arrayOfNone(int.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
@@ -485,6 +497,9 @@ final class test_Strings {
             .ceylon.language.print.print(.ceylon.language.String.instance(s2));
         }
         java.take_Strings((.java.lang.String[])items.toArray());
+        java.take_Strings((.java.lang.String[]).ceylon.language.$array.<.ceylon.language.String>array(.java.lang.String.class, new .ceylon.language.ArraySequence(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies"))).toArray());
+        java.take_Strings((.java.lang.String[])((.ceylon.language.Array<.ceylon.language.String>).ceylon.language.$arrayOfSome.<.ceylon.language.String>arrayOfSome(.java.lang.String.class, new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")))).toArray());
+        java.take_Strings((.java.lang.String[])((.ceylon.language.Array<.ceylon.language.String>).ceylon.language.$arrayOfNone.<.ceylon.language.String>arrayOfNone(.java.lang.String.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {

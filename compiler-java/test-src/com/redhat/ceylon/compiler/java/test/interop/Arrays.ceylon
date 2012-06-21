@@ -48,6 +48,9 @@ void test_booleans() {
     }
     for (Boolean b2 in items) { print(b2); }
     java.take_booleans(items);
+    java.take_booleans(array(true, true, false));
+    java.take_booleans(arrayOfSome({true, true, false}));
+    java.take_booleans(arrayOfNone<Boolean>());
 }
 
 @nomodel
@@ -152,6 +155,9 @@ void test_longs() {
     }
     for (Integer n2 in items) { print(n2); }
     java.take_longs(items);
+    java.take_longs(array(1, 2, 3));
+    java.take_longs(arrayOfSome({1, 2, 3}));
+    java.take_longs(arrayOfNone<Integer>());
 }
 
 @nomodel
@@ -204,6 +210,9 @@ void test_doubles() {
     }
     for (Float f2 in items) { print(f2); }
     java.take_doubles(items);
+    java.take_doubles(array(1.0, 2.0, 3.0));
+    java.take_doubles(arrayOfSome({1.0, 2.0, 3.0}));
+    java.take_doubles(arrayOfNone<Float>());
 }
 
 @nomodel
@@ -230,6 +239,9 @@ void test_chars() {
     }
     for (Character c2 in items) { print(c2); }
     java.take_chars(items);
+    java.take_chars(array(`a`, `b`, `c`));
+    java.take_chars(arrayOfSome({`a`, `b`, `c`}));
+    java.take_chars(arrayOfNone<Character>());
 }
 
 @nomodel
@@ -256,6 +268,9 @@ void test_Strings() {
     }
     for (String s2 in items) { print(s2); }
     java.take_Strings(items);
+    java.take_Strings(array("aap", "noot", "mies"));
+    java.take_Strings(arrayOfSome({"aap", "noot", "mies"}));
+    java.take_Strings(arrayOfNone<String>());
 }
 
 @nomodel
@@ -268,5 +283,9 @@ void test_Objects() {
     }
     for (Object o2 in items) { print(o2); }
     java.take_Objects(items);
+    // FIXME Shouldn't this work?
+    //java.take_Objects(array<Object>("aap", "noot", "mies"));
+    //java.take_Objects(arrayOfSome<Object>({"aap", "noot", "mies"}));
+    //java.take_Objects(arrayOfNone<Object>());
 }
 
