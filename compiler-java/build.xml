@@ -282,6 +282,7 @@
   	-->
   	<delete dir="${build.classes}">
   	  <include name="**/*Main5.class"/>
+      <include name="com/redhat/ceylon/ant/**"/>
   	  <include name="com/redhat/ceylon/tools/Java7Checker.class"/>
       <include name="com/redhat/ceylon/ant/**"/>
   	</delete>
@@ -295,6 +296,7 @@
        source="1.5"
        includeantruntime="true">
       <include name="**/*Main5.java"/>
+      <include name="com/redhat/ceylon/ant/**"/>
       <include name="com/redhat/ceylon/tools/Java7Checker.java"/>
       <include name="com/redhat/ceylon/ant/**"/>
     </javac>
