@@ -23,7 +23,7 @@ package com.redhat.ceylon.tools;
 import java.io.IOException;
 
 public class ImportJarMain {
-    private static final String CEYLOND_VERSION = "0.3 alpha 'Supercalifragilisticexpialidocious'";
+    private static final String CEYLOND_VERSION = "0.3 alpha 'V2000'";
     private static final int SC_OK = 0;
     private static final int SC_ARGS = 1;
     private static final int SC_ERROR = 2;
