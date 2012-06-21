@@ -631,11 +631,33 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         pkg.setShared(shared);
     }
 
+    public Module lookupModuleInternal(String packageName) {
+        for(Module module : modules.getListOfModules()){
+            if(module instanceof LazyModule){
+                if(((LazyModule)module).containsPackage(packageName))
+                    return module;
+            }else if(isSubPackage(module.getNameAsString(), packageName))
+                return module;
+        }
+        return null;
+    }
+
+    private boolean isSubPackage(String moduleName, String pkgName) {
+        return pkgName.equals(moduleName)
+                || pkgName.startsWith(moduleName+".");
+    }
+
     //
     // Modules
     public Module findOrCreateModule(String pkgName) {
         boolean isJava = false;
         boolean defaultModule = false;
+
+        Module module = lookupModuleInternal(pkgName);
+        if (module != null) {
+            return module;
+        }
+        
         // FIXME: this is a rather simplistic view of the world
         if(pkgName == null){
             pkgName = Module.DEFAULT_MODULE_NAME;
@@ -651,7 +673,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         java.util.List<String> moduleName = Arrays.asList(pkgName.split("\\."));
-        Module module = moduleManager.getOrCreateModule(moduleName, null);
+        module = moduleManager.getOrCreateModule(moduleName, null);
         // make sure that when we load the ceylon language module we set it to where
         // the typechecker will look for it
         if(pkgName != null
