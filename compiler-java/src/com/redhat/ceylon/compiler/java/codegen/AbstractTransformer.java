@@ -731,7 +731,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
 
     boolean isCeylonArray(ProducedType type) {
-        return (sameType(syms().ceylonArrayType, type.getDeclaration().getType()));
+        return type.getSupertype(typeFact.getArrayDeclaration()) != null;
     }
     
     boolean isCeylonBasicType(ProducedType type) {
