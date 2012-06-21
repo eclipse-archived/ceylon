@@ -72,7 +72,7 @@ public class Util {
             }
             try {
                 return classExtendsClass(
-                        java.lang.Class.forName(superclassName), 
+                        java.lang.Class.forName(superclassName, true, klass.getClassLoader()), 
                         className);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -111,20 +111,25 @@ public class Util {
             return true;
         // try its superclass
         Class classAnnotation = klass.getAnnotation(Class.class);
+        String superclassName;
         if (classAnnotation!=null) {
-            String superclassName = classAnnotation.extendsType();
+            superclassName = classAnnotation.extendsType();
             int i = superclassName.indexOf('<');
             if (i>0) {
                 superclassName = superclassName.substring(0, i);
             }
-            if (!superclassName.isEmpty()) {
-                try {
-                    return classSatisfiesInterface(
-                            java.lang.Class.forName(superclassName), 
-                            className, alreadyVisited);
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+            
+        } else {
+            // Maybe the class didn't have an extends, so implictly IdentifiableObject
+            superclassName = "ceylon.language.IdentifiableObject";
+        }
+        if (!superclassName.isEmpty()) {
+            try {
+                return classSatisfiesInterface(
+                        java.lang.Class.forName(superclassName, true, klass.getClassLoader()), 
+                        className, alreadyVisited);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
         return classSatisfiesInterface(klass.getSuperclass(), className, alreadyVisited);
@@ -147,7 +152,7 @@ public class Util {
                 }
                 try {
                     if (lookForInterface(
-                            java.lang.Class.forName(satisfiedType), 
+                            java.lang.Class.forName(satisfiedType, true, klass.getClassLoader()), 
                             className, alreadyVisited)) {
                         return true;
                     }
