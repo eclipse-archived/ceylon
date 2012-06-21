@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
-    private static final String CEYLOND_VERSION = "0.3 alpha 'V2000'";
+    private static final String CEYLOND_VERSION = "0.3 'V2000'";
     private static final int SC_OK = 0;
     private static final int SC_ARGS = 1;
     private static final int SC_ERROR = 2;
