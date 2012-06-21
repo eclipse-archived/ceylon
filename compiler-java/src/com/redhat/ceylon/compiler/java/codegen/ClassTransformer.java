@@ -389,6 +389,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean rawifyParametersAndResults) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), ancestorLocal, methodName);
         concreteWrapper.modifiers(mods);
+        concreteWrapper.annotations(makeAtIgnore());
         concreteWrapper.annotations(makeAtOverride());
         if (!rawifyParametersAndResults) {
             for (TypeParameter tp : typeParameters) {
