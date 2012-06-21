@@ -596,11 +596,11 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
         return null;
     }
 
-    public Iterable<? extends Element> getSequence() { return (Iterable)$empty.getEmpty(); }
-    public Element find(Callable<? extends Boolean> f) { return null; }
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { return (Iterable)$empty.getEmpty(); }
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
+    @Override @Ignore public Iterable<? extends Element> getSequence() { return (Iterable)$empty.getEmpty(); }
+    @Override @Ignore public Element find(Callable<? extends Boolean> f) { return null; }
+    @Override @Ignore public <Result> Iterable<Result> map(Callable<? extends Result> f) { return (Iterable)$empty.getEmpty(); }
+    @Override @Ignore public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
+    @Override @Ignore public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
 }
 
 @Ignore
@@ -691,9 +691,9 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
         return unsafeItem(0); //FixedSized$impl._getFirst(this);
     }
     
-    public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
-    public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override @Ignore public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
+    @Override @Ignore public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
+    @Override @Ignore public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
+    @Override @Ignore public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
+    @Override @Ignore public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
 }
