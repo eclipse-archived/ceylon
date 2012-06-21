@@ -123,7 +123,11 @@ public class JsCompiler {
         try {
             JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-                if (files == null || files.contains(pu.getUnitFile().getPath())) {
+            	String pathFromVFS = pu.getUnitFile().getPath();
+            	// VFS talks in terms of URLs while files are platform-dependent, so make it 
+            	// platform-dependent too
+            	String path = pathFromVFS.replace('/', File.separatorChar);
+                if (files == null || files.contains(path)) {
                     String name = pu.getUnitFile().getName();
                     if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
                         compileUnit(pu, names);
@@ -131,6 +135,12 @@ public class JsCompiler {
                             System.err.println("Errors found. Compilation stopped.");
                             break;
                         }
+                    }
+                }else{
+                    if (opts.isVerbose()) {
+                    	System.err.println("Files does not contain "+path);
+                    	for(String p : files)
+                    		System.err.println(" Files: "+p);
                     }
                 }
             }
@@ -164,6 +174,9 @@ public class JsCompiler {
             ArtifactContext artifact = new ArtifactContext(entry.getKey().getNameAsString(), entry.getKey().getVersion());
             artifact.setFetchSingleArtifact(true);
             artifact.setSuffix(".js");
+            if(opts.isVerbose()){
+            	System.err.println("Outputting for "+entry.getKey().getNameAsString());
+            }
             outRepo.putArtifact(artifact, new ByteArrayInputStream(out.getBytes()));
         }
     }
