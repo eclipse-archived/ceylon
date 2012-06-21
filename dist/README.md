@@ -125,7 +125,7 @@ platforms to make sure it works:
 
 ### Linux
 
-- Ubuntu "precise" 11.10 (64 bit) JDK 1.7.0_03 (IcedTea), 
+- Ubuntu "precise" 12.04 (64 bit) JDK 1.7.0_03 (IcedTea), 
 - Ubuntu "oneiric" 11.10 (32 bit) JDK 1.7.0-b147 (Oracle)
 - Fedora 16 (64 bit), JDK 1.7.0_b147 (IcedTea)
 
