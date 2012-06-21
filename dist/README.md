@@ -125,19 +125,17 @@ platforms to make sure it works:
 
 ### Linux
 
-- Ubuntu "oneiric" 11.10 (64 bit) JDK 1.7.0_147 (IcedTea), 1.6.0_26
+- Ubuntu "precise" 11.10 (64 bit) JDK 1.7.0_03 (IcedTea), 
 - Ubuntu "oneiric" 11.10 (32 bit) JDK 1.7.0-b147 (Oracle)
-- Fedora 16 (64 bit), JDK 1.6.0_24 (IcedTea 6 1.11.1, server VM 20.0-b12)
+- Fedora 16 (64 bit), JDK 1.7.0_b147 (IcedTea)
 
 ### Windows
 
-- Windows 7 (64 bit) 1.6.0_31
-- Windows 7 (32 bit) JDK 1.6.0_29
+- Windows 7 (64 bit) 1.7.0_05 (Oracle)
 
 ### OSX
 
-- OSX 10 Snow Leopard (10.6.8) JDK 1.6.0_26
-- OSX 10 Lion (10.7.3) JDK 1.6.0_29, 1.7.0-internal (OpenJDK)
+- OSX 10 Lion (10.7.3) JDK 1.7.0_05 (Oracle)
 
 ## License
 
