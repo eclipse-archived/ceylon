@@ -38,11 +38,13 @@ public class Singleton<Element>
 	}
 	
 	@Override
+	@Ignore
 	public Category getKeys() {
 		return Correspondence$impl._getKeys(this);
 	}
 	
 	@Override
+	@Ignore
 	public boolean definesEvery(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
@@ -60,6 +62,7 @@ public class Singleton<Element>
     }
 	
 	@Override
+	@Ignore
 	public boolean definesAny(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
@@ -77,7 +80,7 @@ public class Singleton<Element>
     }
 	
 	@Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
+	@Ignore
 	public List<? extends Element> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
 	Iterable<? extends Integer> keys) {
@@ -187,30 +190,36 @@ public class Singleton<Element>
     }
 
     @Override
+    @Ignore
     public boolean containsEvery(Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
     
     @Override
+    @Ignore
     public boolean containsEvery() {
         return Category$impl._containsEvery(this, $empty.getEmpty());
     }
     @Override
+    @Ignore
     public Iterable<?> containsEvery$elements() {
         return $empty.getEmpty();
     }
 
     @Override
+    @Ignore
     public boolean containsAny(Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
     
     @Override
+    @Ignore
     public boolean containsAny() {
         return Category$impl._containsAny(this, $empty.getEmpty());
     }
     
     @Override
+    @Ignore
     public Iterable<?> containsAny$elements() {
         return $empty.getEmpty();
     }
@@ -234,9 +243,30 @@ public class Singleton<Element>
         return 1;
     }
     
-    @Override @Ignore public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override @Ignore public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override @Ignore public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
-    @Override @Ignore public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
-    @Override @Ignore public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override 
+    @Ignore 
+    public 
+    Iterable<? extends Element> getSequence() { 
+        return Iterable$impl._getSequence(this); 
+    }
+    @Override 
+    @Ignore 
+    public Element find(Callable<? extends Boolean> f) { 
+        return Iterable$impl._find(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+        return new MapIterable<Element, Result>(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
+        return new FilterIterable<Element>(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+        return Iterable$impl._fold(this, ini, f); 
+    }
 }

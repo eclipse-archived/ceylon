@@ -82,11 +82,31 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public Iterator<Result> getIterator() { return new MapIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
 
-    @Override public Iterable<? extends Result> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Result find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <R2> Iterable<R2> map(Callable<? extends R2> f) { return new MapIterable<Result, R2>(this, f); }
-    @Override public Iterable<Result> filter(Callable<? extends Boolean> f) { return new FilterIterable<Result>(this, f); }
-    @Override public <R2> R2 fold(R2 ini, Callable<? extends R2> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override 
+    @Ignore
+    public Iterable<? extends Result> getSequence() { 
+        return Iterable$impl._getSequence(this); 
+    }
+    @Override 
+    @Ignore
+    public Result find(Callable<? extends Boolean> f) { 
+        return Iterable$impl._find(this, f); 
+    }
+    @Override 
+    @Ignore
+    public <R2> Iterable<R2> map(Callable<? extends R2> f) { 
+        return new MapIterable<Result, R2>(this, f); 
+    }
+    @Override 
+    @Ignore
+    public Iterable<Result> filter(Callable<? extends Boolean> f) { 
+        return new FilterIterable<Result>(this, f); 
+    }
+    @Override 
+    @Ignore
+    public <R2> R2 fold(R2 ini, Callable<? extends R2> f) { 
+        return Iterable$impl._fold(this, ini, f); 
+    }
 }
 
 class FilterIterable<Element> implements Iterable<Element> {
@@ -111,9 +131,29 @@ class FilterIterable<Element> implements Iterable<Element> {
     }
     public Iterator<Element> getIterator() { return new FilterIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
-    @Override public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
-    @Override public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override 
+    @Ignore
+    public Iterable<? extends Element> getSequence() { 
+        return Iterable$impl._getSequence(this); 
+    }
+    @Override 
+    @Ignore
+    public Element find(Callable<? extends Boolean> f) { 
+        return Iterable$impl._find(this, f); 
+    }
+    @Override 
+    @Ignore
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+        return new MapIterable<Element, Result>(this, f); 
+    }
+    @Override 
+    @Ignore
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
+        return new FilterIterable<Element>(this, f); 
+    }
+    @Override 
+    @Ignore
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+        return Iterable$impl._fold(this, ini, f); 
+    }
 }

@@ -21,6 +21,7 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     }
 
     @Override
+    @Ignore
     public Iterable<? extends Element> getSequence() {
         return Iterable$impl._getSequence(this);
     }
@@ -38,12 +39,14 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     }
 
     @Override
+    @Ignore
     public <Result> Result fold(Result initial,
             Callable<? extends Result> accumulating) {
         return Iterable$impl._fold(this, initial, accumulating);
     }
 
     @Override
+    @Ignore
     public Element find(Callable<? extends Boolean> selecting) {
         return Iterable$impl._find(this, selecting);
     }

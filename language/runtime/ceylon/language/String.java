@@ -153,11 +153,13 @@ public abstract class String
     }
 
     @Override
+    @Ignore
     public Category getKeys() {
         return Correspondence$impl._getKeys(this);
     }
 
     @Override
+    @Ignore
     public boolean definesEvery(@Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
@@ -177,6 +179,7 @@ public abstract class String
     }
 
     @Override
+    @Ignore
     public boolean definesAny(@Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
@@ -196,7 +199,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
+    @Ignore
     public List<? extends Character> items(@Name("keys") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
@@ -304,6 +307,7 @@ public abstract class String
     }
     
     @Override
+    @Ignore
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
@@ -321,6 +325,7 @@ public abstract class String
     }
 
     @Override
+    @Ignore
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
@@ -677,11 +682,31 @@ public abstract class String
             java.lang.Object result = getIterator().next();
             return (String) ((result != exhausted.getExhausted()) ? result : null);
         }*/
-    @Override public Iterable<? extends String> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public String find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<String, Result>(this, f); }
-    @Override public Iterable<? extends String> filter(Callable<? extends Boolean> f) { return new FilterIterable<String>(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+        @Override 
+        @Ignore
+        public Iterable<? extends String> getSequence() { 
+            return Iterable$impl._getSequence(this); 
+        }
+        @Override 
+        @Ignore
+        public String find(Callable<? extends Boolean> f) { 
+            return Iterable$impl._find(this, f); 
+        }
+        @Override 
+        @Ignore
+        public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+            return new MapIterable<String, Result>(this, f); 
+        }
+        @Override 
+        @Ignore
+        public Iterable<? extends String> filter(Callable<? extends Boolean> f) { 
+            return new FilterIterable<String>(this, f); 
+        }
+        @Override
+        @Ignore
+        public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+            return Iterable$impl._fold(this, ini, f); 
+        }
     }
 
     private static final class Occurs implements Iterable<Integer> {
@@ -722,11 +747,31 @@ public abstract class String
             java.lang.Object result = getIterator().next();
             return (String) ((result != exhausted.getExhausted()) ? result : null);
         }*/
-    @Override public Iterable<? extends Integer> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Integer find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Integer, Result>(this, f); }
-    @Override public Iterable<? extends Integer> filter(Callable<? extends Boolean> f) { return new FilterIterable<Integer>(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+        @Override 
+        @Ignore
+        public Iterable<? extends Integer> getSequence() { 
+            return Iterable$impl._getSequence(this); 
+        }
+        @Override 
+        @Ignore
+        public Integer find(Callable<? extends Boolean> f) { 
+            return Iterable$impl._find(this, f); 
+        }
+        @Override 
+        @Ignore
+        public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+            return new MapIterable<Integer, Result>(this, f); 
+        }
+        @Override 
+        @Ignore
+        public Iterable<? extends Integer> filter(Callable<? extends Boolean> f) { 
+            return new FilterIterable<Integer>(this, f); 
+        }
+        @Override 
+        @Ignore
+        public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+            return Iterable$impl._fold(this, ini, f); 
+        }
     }
 
     @Override

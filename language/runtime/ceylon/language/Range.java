@@ -165,6 +165,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     
     @Override
+    @Ignore
     public final boolean equals(@Name("that") java.lang.Object that){
         if (that instanceof Range) {
             Range<Element> $that = (Range<Element>) that;
@@ -176,6 +177,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     
     @Override
+    @Ignore
     public int hashCode(){
         return List$impl._hashCode(this);
     }
@@ -191,11 +193,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }*/
 
     @Override
+    @Ignore
     public Category getKeys() {
         return Correspondence$impl._getKeys(this);
     }
 
     @Override
+    @Ignore
     public boolean definesEvery(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
@@ -213,6 +217,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
+    @Ignore
     public boolean definesAny(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
@@ -230,7 +235,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
+    @Ignore
     public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
@@ -251,6 +256,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     //TODO: @TypeInfo
     @Override
+    @Ignore
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
@@ -269,6 +275,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     //TODO: @TypeInfo
     @Override
+    @Ignore
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
@@ -286,11 +293,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
+    @Ignore
     public boolean getEmpty() {
         return Some$impl._getEmpty(this);
     }
 
     @Override
+    @Ignore
     public boolean defines(@Name("key") Integer key) {
         return List$impl._defines(this, key);
     }
@@ -357,10 +366,30 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     	return new ArraySequence<Element>(list);
     }
 
-    @Override @Ignore public Iterable<? extends Element> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override @Ignore public Element find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override @Ignore public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Element, Result>(this, f); }
-    @Override @Ignore public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return new FilterIterable<Element>(this, f); }
-    @Override @Ignore public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override 
+    @Ignore 
+    public Iterable<? extends Element> getSequence() { 
+        return Iterable$impl._getSequence(this); 
+    }
+    @Override 
+    @Ignore 
+    public Element find(Callable<? extends Boolean> f) { 
+        return Iterable$impl._find(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+        return new MapIterable<Element, Result>(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
+        return new FilterIterable<Element>(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+        return Iterable$impl._fold(this, ini, f); 
+    }
 
 }

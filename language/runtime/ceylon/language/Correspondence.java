@@ -86,6 +86,7 @@ public interface Correspondence<Key,Item> {
             }
         }
         @Override
+        @Ignore
         public java.lang.String toString() {
             return List$impl._toString(this);		
         }
@@ -93,62 +94,77 @@ public interface Correspondence<Key,Item> {
             return this;
         }
         @Override
+        @Ignore
         public Category getKeys() {
             return Correspondence$impl._getKeys(this);
         }
         @Override
+        @Ignore
         public boolean definesEvery(Iterable<? extends Integer> keys) {
             return Correspondence$impl._definesEvery(this, keys);
         }
         @Override
+        @Ignore
         public boolean definesEvery() {
             return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
         }
         @Override
+        @Ignore
         public Iterable<? extends Integer> definesEvery$keys() {
             return (Iterable)$empty.getEmpty();
         }
         @Override
+        @Ignore
         public boolean definesAny(Iterable<? extends Integer> keys) {
             return Correspondence$impl._definesAny(this, keys);
         }
         @Override
+        @Ignore
         public boolean definesAny() {
             return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
         }
         @Override
+        @Ignore
         public Iterable<? extends Integer> definesAny$keys() {
             return (Iterable)$empty.getEmpty();
         }
         @Override
+        @Ignore
         public List<? extends Item> items(Iterable<? extends Integer> keys) {
             return Correspondence$impl._items(this, keys);
         }
         @Override
+        @Ignore
         public List<? extends Item> items() {
             return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
         }
         @Override
+        @Ignore
         public Iterable<? extends Integer> items$keys() {
             return (Iterable)$empty.getEmpty();
         }
         @Override
+        @Ignore
         public boolean getEmpty() {
             return Some$impl._getEmpty(this);
         }
         @Override
+        @Ignore
         public long getSize() {
             return List$impl.getSize(this);
         }
         @Override
+        @Ignore
         public Item getLast() {
             return Sequence$impl._getLast(this);
         }
         @Override
+        @Ignore
         public boolean defines(Integer key) {
             return List$impl._defines(this, key);
         }
         @Override
+        @Ignore
         public Iterator<? extends Item> getIterator() {
             return List$impl._getIterator(this);
         }
@@ -173,38 +189,47 @@ public interface Correspondence<Key,Item> {
         	}
         }
         @Override
+        @Ignore
         public boolean contains(java.lang.Object element) {
             return Collection$impl._contains(this, element);
         }
         @Override
+        @Ignore
         public long count(java.lang.Object element) {
             return Collection$impl._count(this, element);
         }
         @Override
+        @Ignore
         public boolean containsEvery(Iterable<?> elements) {
             return Category$impl._containsEvery(this, elements);
         }
         @Override
+        @Ignore
         public boolean containsEvery() {
             return Category$impl._containsEvery(this, $empty.getEmpty());
         }
         @Override
+        @Ignore
         public Iterable<?> containsEvery$elements() {
             return $empty.getEmpty();
         }
         @Override
+        @Ignore
         public boolean containsAny(Iterable<?> elements) {
             return Category$impl._containsAny(this, elements);
         }
         @Override
+        @Ignore
         public boolean containsAny() {
             return Category$impl._containsAny(this, $empty.getEmpty());
         }
         @Override
+        @Ignore
         public Iterable<?> containsAny$elements() {
             return $empty.getEmpty();
         }
         @Override
+        @Ignore
         public boolean equals(java.lang.Object obj) {
             return List$impl._equals(this, obj);
         }
@@ -213,10 +238,30 @@ public interface Correspondence<Key,Item> {
             return keys.hashCode();
         }
 
-    @Override public Iterable<? extends Item> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Item find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Item, Result>(this, f); }
-    @Override public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { return new FilterIterable<Item>(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+    @Override 
+    @Ignore
+    public Iterable<? extends Item> getSequence() { 
+        return Iterable$impl._getSequence(this);
+    }
+    @Override
+    @Ignore
+    public Item find(Callable<? extends Boolean> f) { 
+        return Iterable$impl._find(this, f);
+    }
+    @Override
+    @Ignore
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+        return new MapIterable<Item, Result>(this, f);
+    }
+    @Override 
+    @Ignore
+    public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { 
+        return new FilterIterable<Item>(this, f);
+    }
+    @Override
+    @Ignore
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+        return Iterable$impl._fold(this, ini, f);
+    }
     }
 }

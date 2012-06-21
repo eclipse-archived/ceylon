@@ -127,64 +127,95 @@ public final class Map$impl<Key,Item> {
             // concrete interface methods:
             
             @Override
+            @Ignore
             public boolean getEmpty() {
                 return Collection$impl._getEmpty(this);
             }
 
             @Override
+            @Ignore
             public boolean contains(java.lang.Object element) {
                 return Collection$impl._contains(this, element);
             }
 
             @Override
+            @Ignore
             public long count(java.lang.Object element) {
                 return Set$impl._count(this, element);
             }
 
             @Override
+            @Ignore
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
             
             @Override
+            @Ignore
             public boolean containsEvery() {
                 return Category$impl._containsEvery(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<?> containsEvery$elements() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
             
             @Override
+            @Ignore
             public boolean containsAny() {
                 return Category$impl._containsAny(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<?> containsAny$elements() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public boolean superset(Set<? extends java.lang.Object> set) {
                 return Set$impl._superset(this, set);
             }
 
             @Override
+            @Ignore
             public boolean subset(Set<? extends java.lang.Object> set) {
                 return Set$impl._subset(this, set);
             }
-    @Override public Iterable<? extends Key> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Key find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Key, Result>(this, f); }
-    @Override public Iterable<? extends Key> filter(Callable<? extends Boolean> f) { return new FilterIterable<Key>(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+            @Override 
+            @Ignore
+            public Iterable<? extends Key> getSequence() { 
+                return Iterable$impl._getSequence(this); 
+            }
+            @Override 
+            @Ignore
+            public Key find(Callable<? extends Boolean> f) { 
+                return Iterable$impl._find(this, f); 
+            }
+            @Override 
+            @Ignore
+            public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+                return new MapIterable<Key, Result>(this, f); 
+            }
+            @Override 
+            @Ignore
+            public Iterable<? extends Key> filter(Callable<? extends Boolean> f) { 
+                return new FilterIterable<Key>(this, f); 
+            }
+            @Override 
+            @Ignore
+            public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+                return Iterable$impl._fold(this, ini, f); 
+            }
         }
         return new keySet();
     }
@@ -228,54 +259,83 @@ public final class Map$impl<Key,Item> {
             // concrete interface methods:
             
             @Override
+            @Ignore
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
             
             @Override
+            @Ignore
             public boolean containsEvery() {
                 return Category$impl._containsEvery(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<?> containsEvery$elements() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
             
             @Override
+            @Ignore
             public boolean containsAny() {
                 return Category$impl._containsAny(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<?> containsAny$elements() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public boolean getEmpty() {
                 return Collection$impl._getEmpty(this);
             }
 
             @Override
+            @Ignore
             public boolean contains(java.lang.Object element) {
                 return Collection$impl._contains(this, element);
             }
 
             @Override
+            @Ignore
             public long count(java.lang.Object element) {
                 return Collection$impl._count(this, element);
             }
-    @Override public Iterable<? extends Item> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Item find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Item, Result>(this, f); }
-    @Override public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { return new FilterIterable<Item>(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+            @Override 
+            @Ignore
+            public Iterable<? extends Item> getSequence() { 
+                return Iterable$impl._getSequence(this); 
+            }
+            @Override 
+            @Ignore
+            public Item find(Callable<? extends Boolean> f) { 
+                return Iterable$impl._find(this, f); 
+            }
+            @Override 
+            @Ignore
+            public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+                return new MapIterable<Item, Result>(this, f); 
+            }
+            @Override 
+            @Ignore
+            public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { 
+                return new FilterIterable<Item>(this, f); 
+            }
+            @Override 
+            @Ignore
+            public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+                return Iterable$impl._fold(this, ini, f); 
+            }
         }
         return new valueCollection();
     }
@@ -324,119 +384,161 @@ public final class Map$impl<Key,Item> {
             // concrete interface methods:
             
             @Override
+            @Ignore
             public boolean defines(java.lang.Object key) {
                 return Correspondence$impl._defines(this, key);
             }
 
             @Override
+            @Ignore
             public boolean definesEvery(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._definesEvery(this, keys);
             }
             
             @Override
+            @Ignore
             public boolean definesEvery() {
                 return Correspondence$impl._definesEvery(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<? extends java.lang.Object> definesEvery$keys() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public boolean definesAny(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._definesAny(this, keys);
             }
             
             @Override
+            @Ignore
             public boolean definesAny() {
                 return Correspondence$impl._definesAny(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<? extends java.lang.Object> definesAny$keys() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public Iterable<? extends Set<Key>> items(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._items(this, keys);
             }
             
             @Override
+            @Ignore
             public Iterable<? extends Set<Key>> items() {
                 return Correspondence$impl._items(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<? extends java.lang.Object> items$keys() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public boolean getEmpty() {
                 return Collection$impl._getEmpty(this);
             }
 
             @Override
+            @Ignore
             public boolean contains(java.lang.Object element) {
                 return Collection$impl._contains(this, element);
             }
 
             @Override
+            @Ignore
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
             
             @Override
+            @Ignore
             public boolean containsEvery() {
                 return Category$impl._containsEvery(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<?> containsEvery$elements() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
             
             @Override
+            @Ignore
             public boolean containsAny() {
                 return Category$impl._containsAny(this, $empty.getEmpty());
             }
             
             @Override
+            @Ignore
             public Iterable<?> containsAny$elements() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public long count(java.lang.Object element) {
                 return Map$impl._count(this, element);
             }
 
             @Override
+            @Ignore
             public Set<? extends Item> getKeys() {
                 return Map$impl._getKeys(this);
             }
 
             @Override
+            @Ignore
             public Collection<? extends Set<Key>> getValues() {
                 return Map$impl._getValues(this);
             }
 
             @Override
+            @Ignore
             public Map<? extends Set<Key>, ? extends Set<? extends Item>> getInverse() {
                 return Map$impl._getInverse(this);
             }
-    @Override public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() { return Iterable$impl._getSequence(this); }
-    @Override public Entry<? extends Item, ? extends Set<Key>> find(Callable<? extends Boolean> f) { return Iterable$impl._find(this, f); }
-    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { return new MapIterable<Entry<? extends Item, ? extends Set<Key>>, Result>(this, f); }
-    @Override public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> filter(Callable<? extends Boolean> f) { return new FilterIterable<Entry<? extends Item, ? extends Set<Key>>>(this, f); }
-    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { return Iterable$impl._fold(this, ini, f); }
+            @Override
+            @Ignore
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() { 
+                    return Iterable$impl._getSequence(this); 
+            }
+            @Override 
+            @Ignore
+            public Entry<? extends Item, ? extends Set<Key>> find(Callable<? extends Boolean> f) { 
+                return Iterable$impl._find(this, f); 
+            }
+            @Override 
+            @Ignore
+            public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+                return new MapIterable<Entry<? extends Item, ? extends Set<Key>>, Result>(this, f); 
+            }
+            @Override 
+            @Ignore
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> filter(Callable<? extends Boolean> f) { 
+                return new FilterIterable<Entry<? extends Item, ? extends Set<Key>>>(this, f); 
+            }
+            @Override 
+            @Ignore
+            public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+                return Iterable$impl._fold(this, ini, f); 
+            }
         }
         return new inverse();
     }

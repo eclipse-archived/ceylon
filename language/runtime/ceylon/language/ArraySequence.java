@@ -152,30 +152,36 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
+    @Ignore
     public Category getKeys() {
         return Correspondence$impl._getKeys(this);
     }
 
     @Override
+    @Ignore
     public boolean definesEvery(Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
     
     @Override
+    @Ignore
     public boolean definesEvery() {
         return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
     @Override
+    @Ignore
     public Iterable<? extends Integer> definesEvery$keys() {
         return (Iterable)$empty.getEmpty();
     }
 
     @Override
+    @Ignore
     public boolean definesAny(Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
     
     @Override
+    @Ignore
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
@@ -186,11 +192,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
+    @Ignore
     public ceylon.language.List<? extends Element> items(Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
     
     @Override
+    @Ignore
     public ceylon.language.List<? extends Element> items() {
         return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
@@ -205,6 +213,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     
     @Override
+    @Ignore
     public java.lang.String toString() {
         return List$impl._toString(this);
     }
@@ -214,11 +223,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     
     @Override
+    @Ignore
     public boolean equals(java.lang.Object that) {
         return List$impl._equals(this, that);
     }
 
     @Override
+    @Ignore
     public int hashCode() {
         return List$impl._hashCode(this);
     }
@@ -241,51 +252,65 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
+    @Ignore
     public boolean containsEvery(Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
     
     @Override
+    @Ignore
     public boolean containsEvery() {
         return Category$impl._containsEvery(this, $empty.getEmpty());
     }
     
     @Override
+    @Ignore
     public Iterable<?>containsEvery$elements() {
         return $empty.getEmpty();
     }
 
     @Override
+    @Ignore
     public boolean containsAny(Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
     
     @Override
+    @Ignore
     public boolean containsAny() {
         return Category$impl._containsAny(this, $empty.getEmpty());
     }
     
-    @Override public Iterable<? extends Element> getSequence() { 
+    @Override 
+    @Ignore
+    public Iterable<? extends Element> getSequence() { 
         return Iterable$impl._getSequence(this);
     }
     
-    @Override public Element find(Callable<? extends Boolean> f) { 
+    @Override 
+    @Ignore
+    public Element find(Callable<? extends Boolean> f) { 
         return Iterable$impl._find(this, f); 
     }
     
-    @Override public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+    @Override 
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
         return new MapIterable<Element, Result>(this, f); 
     }
     
-    @Override public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
+    @Override 
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
         return new FilterIterable<Element>(this, f); 
     }
     
-    @Override public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+    @Override 
+    @Ignore
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
         return Iterable$impl._fold(this, ini, f); 
     }
     
     @Override
+    @Ignore
     public Iterable<?>containsAny$elements() {
         return $empty.getEmpty();
     }

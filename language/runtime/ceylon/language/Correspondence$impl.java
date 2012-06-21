@@ -34,27 +34,33 @@ public final class Correspondence$impl<Key,Item> {
             }
 
             @Override
+            @Ignore
             public boolean containsEvery(ceylon.language.Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
             @Override
+            @Ignore
             public boolean containsEvery() {
                 return Category$impl._containsEvery(this, $empty.getEmpty());
             }
             @Override
+            @Ignore
             public ceylon.language.Iterable<?> containsEvery$elements() {
                 return $empty.getEmpty();
             }
 
             @Override
+            @Ignore
             public boolean containsAny(ceylon.language.Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
             @Override
+            @Ignore
             public boolean containsAny() {
                 return Category$impl._containsAny(this, $empty.getEmpty());
             }
             @Override
+            @Ignore
             public ceylon.language.Iterable<?> containsAny$elements() {
                 return $empty.getEmpty();
             }
