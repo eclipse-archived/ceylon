@@ -125,6 +125,8 @@ public class Ceylond extends LazyTask {
      */
     @Override
     public void execute() throws BuildException {
+        Java7Checker.check();
+        
         checkParameters();
         
         document();

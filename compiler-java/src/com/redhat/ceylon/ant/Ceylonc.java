@@ -152,6 +152,8 @@ public class Ceylonc extends LazyTask {
      */
     @Override
     public void execute() throws BuildException {
+        Java7Checker.check();
+        
         checkParameters();
         resetFileLists();
         

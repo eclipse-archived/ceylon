@@ -107,6 +107,8 @@ public class Ceylon extends Task {
      */
     @Override
     public void execute() throws BuildException {
+        Java7Checker.check();
+        
         checkParameters();
         
         run();
