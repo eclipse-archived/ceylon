@@ -6,7 +6,9 @@ public class LocalMethod {
     
     private final void m() {
         
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.compiler.java.metadata.Method
         final class m2 {
             
             private m2() {
