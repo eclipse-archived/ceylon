@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,7 +37,6 @@ public class JsCompiler {
 
     private boolean stopOnErrors = true;
     private int errCount = 0;
-    protected File root;
 
     protected List<Message> errors = new ArrayList<Message>();
     protected List<Message> unitErrors = new ArrayList<Message>();
@@ -57,19 +58,31 @@ public class JsCompiler {
         opts = options;
         outRepo = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(
                 options.getOutDir(), new JULLogger(), options.getUser(), options.getPass());
-        root = new File(options.getOutDir());
-        if (root.exists()) {
-            if (!(root.isDirectory() && root.canWrite())) {
-                System.err.printf("Cannot write to %s. Stop.%n", root);
-            }
-        } else {
-            if (!root.mkdirs()) {
-                System.err.printf("Cannot create %s. Stop.%n", root);
-            }
+        String outDir = options.getOutDir();
+        if(!isURL(outDir)){
+        	File root = new File(outDir);
+        	if (root.exists()) {
+        		if (!(root.isDirectory() && root.canWrite())) {
+        			System.err.printf("Cannot write to %s. Stop.%n", root);
+        		}
+        	} else {
+        		if (!root.mkdirs()) {
+        			System.err.printf("Cannot create %s. Stop.%n", root);
+        		}
+        	}
         }
     }
 
-    /** Specifies whether the compiler should stop when errors are found in a compilation unit (default true). */
+    private boolean isURL(String path) {
+    	try {
+			new URL(path);
+			return true;
+		} catch (MalformedURLException e) {
+			return false;
+		}
+	}
+
+	/** Specifies whether the compiler should stop when errors are found in a compilation unit (default true). */
     public JsCompiler stopOnErrors(boolean flag) {
         stopOnErrors = flag;
         return this;
