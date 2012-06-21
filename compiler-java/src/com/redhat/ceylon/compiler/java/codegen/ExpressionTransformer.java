@@ -221,7 +221,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
                 expectedType = getTypeOrSelfType(expectedType);
-                exprType = expectedType.withoutUnderlyingType();
+                exprType = simplifyType(expectedType).withoutUnderlyingType();
                 // Erased types need a type cast
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                 result = make().TypeCast(targetType, result);
