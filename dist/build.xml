@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ceylon-dist" default="help" basedir=".">
 
+    <tstamp>
+        <format property="NOW" pattern="yyyyMMddHHmm" />
+    </tstamp>
+
     <property file="build.properties"/>
     <property name="projects.dir" value="${basedir}/projects"/>
-    <property name="dist.name" value="ceylon-${ceylon.version}"/>
     <property name="dist.dir" value="${basedir}/dist"/>
 
     <target name="help">
         <echo>Options for building a Ceylon distribution package:
+    ant release            - Does a clean, get-code, local, package
+                             using the sources tagged with the name as
+                             defined by ceylon.version in build.properties
+                             Use this when doing a release!
+
+    ant nightly            - Does a clean, get-code, local, package
+                             using the sources from master.
+                             Use this when NOT doing a release!
+
+Some more basic ant tasks:
     ant get-code           - Downloads latest code for all projects
-    ant checkout -Dtag=0.3 - Makes sure we're using the specified tag, or
+    ant get-code -Dtag=0.3 - Downloads latest code and checks out the tag
+    ant checkout -Dtag=0.3 - Makes sure we're using the specified tag
     ant checkout-master    - To make sure we're using master
     ant local package      - Builds the distribution package
 
@@ -19,10 +33,20 @@
 
     ant clean              - Cleans the distribution package
     ant clean-all          - Cleans the distribution package
-                             and deletes all local projects
+                             and deletes all local projects</echo>
+    </target>
 
-A typical release build command would normally look like this:
-    ant clean get-code checkout -Dtag=0.3 local package</echo>
+    <target name="release">
+        <property name="tag" value="${ceylon.version}"/>
+        <antcall target="bootstrap" />
+    </target>
+
+    <target name="nightly">
+        <property name="dist.name" value="ceylon-${ceylon.version}-master-${NOW}"/>
+        <antcall target="bootstrap" />
+    </target>
+
+    <target name="bootstrap" depends="clean,get-code,local,package">
     </target>
 
     <target name="local">
@@ -33,6 +57,7 @@ A typical release build command would normally look like this:
         <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+        <property name="dist.name" value="ceylon-${ceylon.version}"/>
     </target>
 
     <target name="siblings">
@@ -43,6 +68,7 @@ A typical release build command would normally look like this:
         <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+        <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
     </target>
 
     <target name="package" depends="install-compiler, install-js, copy-compiler-binaries, copy-samples, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
@@ -222,7 +248,7 @@ A typical release build command would normally look like this:
         </exec>
     </target>
 
-    <target name="get-code" depends="use-git-pull,use-git-clone">
+    <target name="get-code" depends="use-git-pull,use-git-clone,checkout-tagged">
         <echo>
 If you are building a distribution package for a specific tagged release
 then execute the following command:
@@ -349,6 +375,13 @@ You can now build the package by executing:
     <target name="checkout-master">
         <antcall target="checkout-internal">
             <param name="tag-internal" value="master" />
+        </antcall>
+    </target>
+
+    <target name="checkout-tagged" if="tag">
+        <echo message="Checking out tag '${tag}'" />
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="${tag}" />
         </antcall>
     </target>
 
