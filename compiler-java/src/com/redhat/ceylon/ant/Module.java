@@ -25,6 +25,14 @@ public class Module {
     
     public String name;
     
+    public Module() {
+        super();
+    }
+    
+    public Module(String name) {
+        this.name = name;
+    }
+    
     public void setName(String name) {
         this.name = name;
     }

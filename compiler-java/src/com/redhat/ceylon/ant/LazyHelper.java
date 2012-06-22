@@ -39,28 +39,6 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 
 abstract class LazyHelper {
-    
-    private static final class NullLogger implements Logger {
-        @Override
-        public void error(String str) {
-            // Don't care
-        }
-
-        @Override
-        public void warning(String str) {
-            // Don't care
-        }
-
-        @Override
-        public void info(String str) {
-            // Don't care
-        }
-
-        @Override
-        public void debug(String str) {
-            // Don't care
-        }
-    }
 
     private final LazyTask task;
     
@@ -95,28 +73,6 @@ abstract class LazyHelper {
         return mtime;
     }
     
-    
-    /**
-     * Gets the module version
-     * @param module The module to get the version of
-     * @param srcDir The source directory
-     * @return The module version, or null if no version could be found
-     */
-    private String getModuleVersion(Module module, File srcDir) {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger());
-        RepositoryManager repoManager = builder.buildRepository();
-        VFS vfs = new VFS();
-        Context context = new Context(repoManager, vfs);
-        PhasedUnits pus = new PhasedUnits(context);
-        pus.parseUnit(vfs.getFromFile(srcDir));
-        for (PhasedUnit pu : pus.getPhasedUnits()) {
-            pu.visitSrcModulePhase();
-        }
-        ModuleManager moduleManager = pus.getModuleManager();
-        List<String> name = ModuleManager.splitModuleName(module.name);
-        return moduleManager.getOrCreateModule(name, null).getVersion();
-    }
-    
     /**
      * Filters out all the modules which appear to not require 
      * compilation based on comparison of file modification times
@@ -132,7 +88,7 @@ abstract class LazyHelper {
             long newest = Long.MIN_VALUE;
             String version = null;
             for (File src : task.getSrc()) {
-                version = version != null ? version : getModuleVersion(module, src);
+                version = version != null ? version : new ModuleDescriptorReader(module, src).getModuleVersion();
                 File srcModuleDir = new File(src, module.toDir().getPath());
                 newest = newestSourceFile(newest, srcModuleDir);
                 task.log("Newest file in " + srcModuleDir + " " + new Date(newest), Project.MSG_DEBUG);
@@ -186,7 +142,7 @@ abstract class LazyHelper {
                 continue;
             }
             for (File src : task.getSrc()) {
-                version = version != null ? version : getModuleVersion(module, src);
+                version = version != null ? version : new ModuleDescriptorReader(module, src).getModuleVersion();
             }
             if (version == null) {
                 task.log("Unable to determine version (and hence timestamp) of " + module, Project.MSG_VERBOSE);
