@@ -91,17 +91,6 @@ public class Ceylond extends LazyTask {
     public void addModule(ModuleAndVersion module){
         modules.add(module);
     }
-    
-    @Override
-    protected File getArtifactDir(String version, Module module) {
-        File outModuleDir = new File(getOut(), module.toDir().getPath()+"/"+version +"/module-doc");
-        return outModuleDir;
-    }
-    
-    @Override
-    protected FileFilter getArtifactFilter() {
-        return ARTIFACT_FILTER;
-    }
 
     public String getErrorProperty() {
         return exitHandler.getErrorProperty();
@@ -153,8 +142,20 @@ public class Ceylond extends LazyTask {
     /**
      * Perform the compilation.
      */
-    private void document() {    
-        if (filterModules(modules)) {
+    private void document() {
+        LazyHelper lazyTask = new LazyHelper(this) {
+            @Override
+            protected File getArtifactDir(String version, Module module) {
+                File outModuleDir = new File(getOut(), module.toDir().getPath()+"/"+version +"/module-doc");
+                return outModuleDir;
+            }
+            
+            @Override
+            protected FileFilter getArtifactFilter() {
+                return ARTIFACT_FILTER;
+            }
+        };
+        if (lazyTask.filterModules(modules)) {
             log("Everything's up to date");
             return;
         }

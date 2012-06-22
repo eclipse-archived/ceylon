@@ -190,17 +190,6 @@ public class Ceylonc extends LazyTask {
     protected void resetFileLists() {
         compileList.clear();
     }
-
-    @Override
-    protected File getArtifactDir(String version, Module module) {
-        File outModuleDir = new File(getOut(), module.toDir().getPath()+"/"+version);
-        return outModuleDir;
-    }
-    
-    @Override
-    protected FileFilter getArtifactFilter() {
-        return ARTIFACT_FILTER;
-    }
     
     /**
      * Check that all required attributes have been set and nothing silly has
@@ -225,9 +214,22 @@ public class Ceylonc extends LazyTask {
             log("Nothing to compile");
             return;
         }
+     
+        LazyHelper lazyTask = new LazyHelper(this) {
+            @Override
+            protected File getArtifactDir(String version, Module module) {
+                File outModuleDir = new File(getOut(), module.toDir().getPath()+"/"+version);
+                return outModuleDir;
+            }
+            
+            @Override
+            protected FileFilter getArtifactFilter() {
+                return ARTIFACT_FILTER;
+            }
+        };
         
-        if (filterFiles(compileList) 
-                && filterModules(modules)) {
+        if (lazyTask.filterFiles(compileList) 
+                && lazyTask.filterModules(modules)) {
             log("Everything's up to date");
             return;
         }
