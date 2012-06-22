@@ -132,6 +132,7 @@ platforms to make sure it works:
 ### Windows
 
 - Windows 7 (64 bit) 1.7.0_05 (Oracle)
+- Windows Server 2008 R2 SP1 JDK 1.7.0_04
 
 ### OSX
 
