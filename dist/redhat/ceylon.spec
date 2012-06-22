@@ -18,11 +18,10 @@ Summary: Ceylon language
 Group: Development/Languages
 License: ASL 2.0 and GPL v 2 + Classpath exception
 URL: http://www.ceylon-lang.org//
-Source0: https://github.com/ceylon/ceylon-%{major_version}.%{minor_version}.tar.gz
+Source0: https://github.com/downloads/ceylon/ceylon-dist/ceylon-0.3.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 BuildRequires: zip
-BuildRequires: ant
 
 %description
 Ceylon is a programming language for writing large programs in a team
@@ -34,23 +33,11 @@ developers to take best advantage of the powerful static type system.
 Programs written in Ceylon execute on any JVM.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{major_version}.%{minor_version}
 
 
 %build
 export LANG=en_US.UTF-8
-pushd ceylon.language
-ant publish
-popd
-pushd ceylon-module-resolver
-ant publish
-popd
-pushd ceylon-spec
-ant publish
-popd
-pushd ceylon-dist
-ant
-popd
 
 
 %install
@@ -59,21 +46,25 @@ rm -rf $RPM_BUILD_ROOT%{ceylon_home}
 mkdir -p $RPM_BUILD_ROOT/usr/bin
 mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,runtime-repo,doc}
 
-pushd ceylon-dist
-rm -f dist/bin/*.bat
-install -m 755 dist/bin/ceylonc $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 dist/bin/ceylond $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 dist/bin/ceylon  $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 dist/bin/args.sh $RPM_BUILD_ROOT%{ceylon_home}/bin
-cp -pr dist/repo/* $RPM_BUILD_ROOT%{ceylon_home}/repo
-cp -pr dist/runtime-repo/* $RPM_BUILD_ROOT%{ceylon_home}/runtime-repo
-cp -pr dist/lib/* $RPM_BUILD_ROOT%{ceylon_home}/lib
-cp -pr dist/doc/* $RPM_BUILD_ROOT%{ceylon_home}/doc
-popd
+rm -f bin/*.bat
+install -m 755 bin/ceylonc           $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/ceylond           $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/ceylon            $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/ceylonc-js        $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/ceylon-js         $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/ceylon-import-jar $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/args.sh           $RPM_BUILD_ROOT%{ceylon_home}/bin
+cp -pr repo/* $RPM_BUILD_ROOT%{ceylon_home}/repo
+cp -pr runtime-repo/* $RPM_BUILD_ROOT%{ceylon_home}/runtime-repo
+cp -pr lib/* $RPM_BUILD_ROOT%{ceylon_home}/lib
+cp -pr doc/* $RPM_BUILD_ROOT%{ceylon_home}/doc
 pushd $RPM_BUILD_ROOT/usr/bin
-ln -s ../..%{ceylon_home}/bin/ceylon ceylon
 ln -s ../..%{ceylon_home}/bin/ceylonc ceylonc
 ln -s ../..%{ceylon_home}/bin/ceylond ceylond
+ln -s ../..%{ceylon_home}/bin/ceylon ceylon
+ln -s ../..%{ceylon_home}/bin/ceylonc-js ceylonc-js
+ln -s ../..%{ceylon_home}/bin/ceylon-js ceylon-js
+ln -s ../..%{ceylon_home}/bin/ceylon-import-jar ceylon-import-jar
 popd
 
 %files
@@ -89,6 +80,8 @@ popd
 
 
 %changelog
+* Thu Jun 21 2012 Tako Schotanus <tschotan@redhat.com> 0.3.1-0
+- Some changes to simplify the build process a bit
 * Mon May 14 2012 Stephane Epardaud <separdau@redhat.com> 0.3.0-0
 - Update for 0.3
 * Tue Mar 15 2012 Stephane Epardaud <separdau@redhat.com> 0.2.0-0
