@@ -344,12 +344,24 @@ public abstract class String
     
     public boolean longerThan(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
-        return getSize() > length;
+        try {
+            value.offsetByCodePoints(0, (int)length+1);
+            return true;
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return false;
+        }
     }
 
     public boolean shorterThan(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
-        return getSize() < length;
+        try {
+            value.offsetByCodePoints(0, (int)length);
+            return false;
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return true;
+        }
     }
     
     public java.lang.String getTrimmed() {

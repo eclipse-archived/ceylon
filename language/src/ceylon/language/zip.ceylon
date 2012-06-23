@@ -14,17 +14,6 @@ doc "Given two sequences, form a new sequence consisting of
 shared Entry<Key,Item>[] zip<Key,Item>(Iterable<Key> keys, Iterable<Item> items)
         given Key satisfies Object
         given Item satisfies Object {
-    value builder = SequenceBuilder<Key->Item>();
-    variable value ki := keys.iterator;
-    variable value ii := items.iterator;
-    while (is Key eki = ki.next()) {
-        if (is Item eii = ii.next()) {
-            builder.append(eki->eii);
-        }
-        else {
-            break;
-        }
-    }
-    return builder.sequence;
-    
+    value iter = items.iterator;
+    return { for (key in keys) if (is Item item=iter.next()) key->item };
 }
