@@ -3,10 +3,14 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -116,6 +120,9 @@ public class RefinementVisitor extends Visitor {
         broken = false;
         TypeDeclaration td = that.getDeclarationModel();
         if (td!=null) {
+            if ("SubCo".equals(td.getName())) {
+                td.getName();
+            }
             List<ProducedType> supertypes = td.getType().getSupertypes();
             for (int i=0; i<supertypes.size(); i++) {
                 ProducedType st1 = supertypes.get(i);
@@ -123,7 +130,8 @@ public class RefinementVisitor extends Visitor {
                     ProducedType st2 = supertypes.get(j);
                     if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
                         boolean ok = true;
-                        if (!st1.isSubtypeOf(st2) && !st2.isSubtypeOf(st1)) {
+                        if (intersectionType(st1, st2, that.getUnit())
+                                .getDeclaration() instanceof BottomType) {
                             ok = false;
                         }
                         else {
@@ -147,9 +155,45 @@ public class RefinementVisitor extends Visitor {
                         }
                     }
                 }
-                if (!isCompletelyVisible(td, st1)) {
-                    that.addError("supertype of type is not visible everywhere type is visible: "
-                            + st1.getProducedTypeName());
+            }
+            if (!broken) {
+                Set<String> errors = new HashSet<String>();
+                for (ProducedType st: supertypes) {
+                    if (!isCompletelyVisible(td, st)) {
+                        that.addError("supertype of type is not visible everywhere type is visible: "
+                                + st.getProducedTypeName());
+                    }
+                    if (td instanceof ClassOrInterface && 
+                            !((ClassOrInterface) td).isAbstract()) {
+                        for (Declaration d: st.getDeclaration().getMembers()) {
+                            if (d.isShared() && !errors.contains(d.getName())) {
+                                Declaration r = td.getMember(d.getName(), null);
+                                if (r==null) {
+                                    //TODO: This seems to dupe some checks that are already 
+                                    //      done in TypeHierarchyVisitor, resulting in
+                                    //      multiple errors
+                                    that.addError("member " + d.getName() + 
+                                            " is inherited ambiguously and so must be refined by " + td.getName());
+                                    errors.add(d.getName());
+                                }
+                                /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
+                                    //TODO: I think this case never occurs, because getMember() always
+                                    //      returns null in the case of an ambiguity
+                                    List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+                                    if (d instanceof Generic) {
+                                        for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
+                                            typeArgs.add(refinedTypeParam.getType());
+                                        }
+                                    }
+                                    ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
+                                    ProducedType it = st.getTypedReference(d, typeArgs).getType();
+                                    checkAssignable(t, it, that, "type of member " + d.getName() + 
+                                            " must be assignable to all types inherited from instantiations of " +
+                                            st.getDeclaration().getName());
+                                }*/
+                            }
+                        }
+                    }
                 }
             }
         }
