@@ -86,6 +86,16 @@ void testSatCoGood() {
     Co<Object> coo = inst;
     @type["G"] infer(inst);
 }
+class SatCoFine() satisfies InterCo&InterCoH {
+    default shared actual H get() { return bottom; }
+}
+void testSatCoFine() {
+    value inst = SatCoFine();
+    @type["H"] inst.get();
+    Co<H> cog = inst;
+    Co<Object> coo = inst;
+    @type["H"] infer(inst);
+}
 
 interface Contra<in T> {
     formal shared void accept(T t);
