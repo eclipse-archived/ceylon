@@ -1420,13 +1420,14 @@ public class GenerateJsVisitor extends Visitor
                         out("(");
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
                             if (!first) out(",");
-                            if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && that.getNamedArgumentList().getNamedArguments().isEmpty()) {
+                            boolean namedArgumentGiven = argNames.contains(p.getName());
+                            if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && !namedArgumentGiven) {
                                 if (that.getNamedArgumentList().getComprehension() == null) {
                                     out(clAlias, ".empty");
                                 } else {
                                     out("$$$comp$$$");
                                 }
-                            } else if (p.isSequenced() || argNames.contains(p.getName())) {
+                            } else if (p.isSequenced() || namedArgumentGiven) {
                                 out(names.name(p));
                             } else {
                                 out("undefined");
