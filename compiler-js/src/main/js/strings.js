@@ -273,13 +273,14 @@ String$proto.getKeys = function() {
     return this.getSize().value > 0 ? Range(Integer(0), this.getSize().getPredecessor()) : $empty;
 }
 String$proto.join = function(strings) {
-    if (strings===undefined || strings.value.length===0) {return String$("", 0)}
+    if (strings === undefined) {return String$("", 0)}
+    var it = strings.getIterator();
+    var str = it.next();
+    if (str === $finished) {return String$("", 0);}
     if (this.codePoints === undefined) {this.codePoints = countCodepoints(this.value)}
-    var str = strings.value[0];
     var result = str.value;
     var len = str.codePoints;
-    for (var i=1; i<strings.value.length; ++i) {
-        str = strings.value[i];
+    while ((str = it.next()) !== $finished) {
         result += this.value;
         result += str.value;
         len += this.codePoints + str.codePoints;
