@@ -102,9 +102,7 @@ interface Contra<in T> {
 }
 
 class SuperContra() satisfies Contra<String> {
-
     shared actual void accept(String t) {}
-
 }
 
 @error class SubContra() extends SuperContra() satisfies Contra<Object> {} 
