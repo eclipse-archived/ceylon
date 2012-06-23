@@ -4,9 +4,5 @@ doc "Given a list of sequences, return a new sequence
      empty, return the empty sequence."
 see (SequenceBuilder)
 shared Element[] join<Element>(Element[]... sequences) {
-    value builder = SequenceBuilder<Element>();
-    for (sequence in sequences) {
-        builder.appendAll(sequence...);
-    }
-    return builder.sequence;
+    return { for (sequence in sequences) for (element in sequence) element };
 }
