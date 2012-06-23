@@ -106,6 +106,27 @@ shared void testGetterMethodDefinitions() {
   assert(gt.x==3, "getter defined as method 3");
 }
 
+String namedArgFunc(String x="x", String y=x+"y", String... z) {
+    variable String result := x + "," + y;
+    for (s in z) { result += "," + s; }
+    return result;
+}
+
+void testNamedArguments() {
+    assert(namedArgFunc{}=="x,xy", "named arguments 1");
+    assert(namedArgFunc{x="a";}=="a,ay", "named arguments 2");
+    assert(namedArgFunc{y="b";}=="x,b", "named arguments 3");
+    assert(namedArgFunc{"c"}=="x,xy,c", "named arguments 4");
+    assert(namedArgFunc{x="a";y="b";"c"}=="a,b,c", "named arguments 5");
+    assert(namedArgFunc{y="b";x="a";"c","d"}=="a,b,c,d", "named arguments 6");
+    assert(namedArgFunc{x="a";"c"}=="a,ay,c", "named arguments 7");
+    assert(namedArgFunc{y="b";"c"}=="x,b,c", "named arguments 8");
+    assert(namedArgFunc{y="b";x="a";}=="a,b", "named arguments 9");
+    assert(namedArgFunc{z={};}=="x,xy", "named arguments 10");
+    assert(namedArgFunc{z={"c", "d"};}=="x,xy,c,d", "named arguments 11");
+    assert(namedArgFunc{y="b";z={"c"};x="a";}=="a,b,c", "named arguments 12");
+}
+
 shared void test() {
     helloWorld();
     hello("test");
@@ -118,5 +139,6 @@ shared void test() {
     testGetterMethodDefinitions();
     testMultipleParamLists();
     testAnonymous();
+    testNamedArguments();
     results();
 }
