@@ -210,6 +210,9 @@ shared void strings() {
     assert(", ".join()=="", "string join no strings");
     assert(", ".join("foo")=="foo", "string join one string");
     assert(", ".join("foo", "bar", "baz")=="foo, bar, baz", "string join");
+    assert(",".join(for (c in "") c.string)=="", "string join empty comprehension");
+    assert(",".join(for (c in "A") c.string)=="A", "string join comprehension 1");
+    assert(",".join(for (c in "ABC") c.string)=="A,B,C", "string join comprehension 2");
     
     assert("hello world".startsWith(hello), "string starts with 1");
     assert("hello world".endsWith("world"), "string ends with 1");
