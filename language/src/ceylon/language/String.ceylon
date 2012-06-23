@@ -216,8 +216,10 @@ shared abstract class String()
     shared actual String string { 
         return this;
     }
-
-    shared actual Boolean empty {
-        return size==0;
-    }
+    
+    doc "Determines if this string has no characters, that
+         is, if it has zero `size`. This is a more efficient 
+         operation than `string.size==0`."
+    see (size)
+    shared actual formal Boolean empty;
 }
