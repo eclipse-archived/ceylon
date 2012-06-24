@@ -84,8 +84,14 @@ public class ModuleVisitor extends Visitor {
             if (moduleName==null) {
                 that.addError("missing module name");
             }
+            if (moduleName.isEmpty()) {
+                nsa.addError("empty module name");
+            }
             else if (moduleName.startsWith(Module.DEFAULT_MODULE_NAME)) {
-                that.addError("default is a reserved module name");
+                nsa.addError("default is a reserved module name");
+            }
+            else if (pkg.getName().isEmpty()) {
+                that.addError("module descriptor may not be defined in the root source directory");
             }
             else {
                 Tree.SpecifiedArgument vsa = getArgument(that, "version");
@@ -102,7 +108,7 @@ public class ModuleVisitor extends Visitor {
                     //mainModule = pkg.getModule();
                     mainModule = moduleManager.getOrCreateModule(pkg.getName(),version); //in compiler the Package has a null Module
                     if (mainModule == null) {
-                        nsa.addError("module must have a nonempty name");
+                        nsa.addError("module could not be defined");
                     }
                     else {
                         mainModule.setVersion(version);
@@ -130,6 +136,12 @@ public class ModuleVisitor extends Visitor {
             if (moduleName==null) {
                 that.addError("missing imported module name");
             }
+            else if (moduleName.isEmpty()) {
+                nsa.addError("empty imported module name");
+            }
+            else if (moduleName.equals(Module.DEFAULT_MODULE_NAME)) {
+                nsa.addError("cannot import the default module");
+            }
             else {
                 Tree.SpecifiedArgument vsa = getArgument(that, "version");
                 if (vsa!=null) {
@@ -139,7 +151,7 @@ public class ModuleVisitor extends Visitor {
                     }
                     Module importedModule = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(moduleName),version);
                     if (importedModule == null) {
-                        nsa.addError("module must have a nonempty name");
+                        nsa.addError("module not found");
                     }
                     else if (mainModule != null) {
                         if (importedModule.getVersion() == null) {
@@ -165,6 +177,15 @@ public class ModuleVisitor extends Visitor {
             String packageName = argumentToString(nsa);
             if (packageName==null) {
                 that.addError("missing package name");
+            }
+            if (packageName.isEmpty()) {
+                nsa.addError("empty package name");
+            }
+            else if (packageName.startsWith(Module.DEFAULT_MODULE_NAME)) {
+                nsa.addError("default is a reserved package name");
+            }
+            else if (pkg.getName().isEmpty()) {
+                that.addError("package descriptor may not be defined in the root source directory");
             }
             else {
                 if ( !pkg.getNameAsString().equals(packageName) ) {
