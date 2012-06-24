@@ -316,20 +316,36 @@ String() cap2() {
     return () s;
 }
 
-class MethodSpecifyingInitParam(@captured Callable<Void> x) {
+class MethodSpecifyingInitParam(@uncaptured Callable<Void> x) {
     void foo() = x;
 }
 
-class MethodSpecifyingInitParam2(@captured void x()) {
+class MethodSpecifyingInitParam2(@uncaptured void x()) {
     void foo() = x;
 }
 
-void methodSpecifyingInitParam(@captured Callable<Void> x) {
+void methodSpecifyingInitParam(@uncaptured Callable<Void> x) {
     void foo() = x;
 }
 
-void methodSpecifyingInitParam2(@captured void x()) {
+void methodSpecifyingInitParam2(@uncaptured void x()) {
     void foo() = x;
+}
+
+class MethodCapturingInitParam(@captured Callable<Void> x) {
+    void foo() { x(); }
+}
+
+class MethodCapturingInitParam2(@captured void x()) {
+    void foo() { x(); }
+}
+
+void methodCapturingInitParam(@captured Callable<Void> x) {
+    void foo() { x(); }
+}
+
+void methodCapturingInitParam2(@captured void x()) {
+    void foo() { x(); }
 }
 
 class DefaultedParameterClassInstantiation(@uncaptured Integer m = 1, Integer n = m + 1) {}
