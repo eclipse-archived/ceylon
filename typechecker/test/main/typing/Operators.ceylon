@@ -154,8 +154,8 @@ class Operators() {
     @error value x45 = sequence[1.."hello"];
     
     String? maybeString = null;
-    @type["Callable<Nothing|Iterable<String>,Nothing|Iterable<Character>,Boolean,Boolean>"] value mss = maybeString?.split;
-    @type["Callable<Sequence<Iterable<String>>,Nothing|Iterable<Character>,Boolean,Boolean>"] value hws = {"hello", "world"}[].split;
+    @type["Callable<Nothing|Iterable<String>,Callable<Boolean,Character>,Boolean,Boolean>"] value mss = maybeString?.split;
+    @type["Callable<Sequence<Iterable<String>>,Callable<Boolean,Character>,Boolean,Boolean>"] value hws = {"hello", "world"}[].split;
     
     @type["Empty|Sequence<String>"] value e45 = emp[].uppercased;
     @type["Sequence<Empty|Sequence<Character>>"] value x46 = {"hello", "world"}[].characters;
@@ -164,11 +164,11 @@ class Operators() {
     @type["Sequence<Empty|Sequence<Character>>"] value x49 = {"hello", "world"}[].characters;
     @type["Sequence<Iterable<String>>"] value x50 = {"hello", "world"}[].lines;
     @type["Nothing|String"] value x51 = {"hello", "world"}[0]?.normalized;
-    @type["Nothing|Iterable<String>"] value x512 = {"hello", "world"}[0]?.split(" ");
+    @type["Nothing|Iterable<String>"] value x512 = {"hello", "world"}[0]?.split((Character c) c==` `);
     @type["Sequence<String>"] value x52 = {"hello", "world"}[].normalized;
-    @type["Sequence<Iterable<String>>"] value x522 = {"hello", "world"}[].split(" ");
+    @type["Sequence<Iterable<String>>"] value x522 = {"hello", "world"}[].split((Character c) c==` `);
     @type["Nothing|String"] value x53 = noSequence?[0]?.normalized;
-    @type["Nothing|Iterable<String>"] value x532 = noSequence?[0]?.split(" ");
+    @type["Nothing|Iterable<String>"] value x532 = noSequence?[0]?.split((Character c) c==` `);
     @type["Sequence<Operators.X>"] value x54 = {Operators()}[].X();
     
     variable Integer n := 0;
