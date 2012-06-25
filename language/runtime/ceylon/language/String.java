@@ -807,7 +807,7 @@ public abstract class String
     }
     @Ignore
     public boolean split$discardSeparators(Iterable<? extends Character> separators){
-        return false;
+        return true;
     }
     @Ignore
     public boolean split$groupSeparators(Iterable<? extends Character> separators, boolean discardSeparators){
