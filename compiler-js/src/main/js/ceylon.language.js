@@ -274,19 +274,6 @@ Exception$proto.getString = function() {
 //#include strings.js
 
 function getNull() { return null }
-//function Boolean$(value) {
-//    return value ? $true : $false;
-//}
-//initType(Boolean$, 'ceylon.language.Boolean', IdentifiableObject);
-//inheritProto(Boolean$, IdentifiableObject, '$IdentifiableObject$');
-//var $true = new Boolean$.$$;
-//$true.string = String$("true");
-//$true.getString = function() {return this.string}
-//function getTrue() { return $true; }
-//var $false = new Boolean$.$$;
-//$false.string = String$("false");
-//$false.getString = function() {return this.string}
-//function getFalse() { return $false; }
 function Boolean$(value) {return Boolean(value)}
 initExistingTypeProto(Boolean$, Boolean, 'ceylon.language.Boolean');
 function trueClass() {}
@@ -324,6 +311,7 @@ var Comparison$proto = Comparison.$$.prototype;
 Comparison$proto.getString = function() { return this.name; }
 
 //#include functions.js
+//#include functions2.js
 //#include sequences.js
 //#include process.js
 
