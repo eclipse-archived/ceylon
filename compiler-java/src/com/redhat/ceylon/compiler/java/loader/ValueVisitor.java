@@ -186,5 +186,35 @@ public class ValueVisitor extends Visitor {
             }
         }   
         
-    }    
+    }
+
+    @Override public void visit(Tree.Comprehension that) {
+        super.visit(that);
+        boolean cs = enterCapturingScope();
+        that.getForComprehensionClause().visit(this);
+        exitCapturingScope(cs);
+    }
+    @Override public void visit(Tree.ForComprehensionClause that) {
+        super.visit(that);
+        final SpecifierExpression specifier = that.getForIterator().getSpecifierExpression();
+        if (specifier != null) {
+            
+            final Expression expr = specifier.getExpression();
+            final Term term = expr.getTerm();
+            if (term instanceof Tree.Primary) {
+                capture((Tree.Primary)term, true);
+            }
+        }   
+        that.getComprehensionClause().visit(this);
+    }
+    @Override public void visit(Tree.IfComprehensionClause that) {
+        super.visit(that);
+        that.getCondition().visit(this);
+        that.getComprehensionClause().visit(this);
+    }
+    @Override public void visit(Tree.ExpressionComprehensionClause that) {
+        super.visit(that);
+        visitReference(that.getExpression());
+    }
+
 }
