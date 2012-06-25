@@ -287,18 +287,14 @@ String$proto.join = function(strings) {
     }
     return String$(result, isNaN(len)?undefined:len);
 }
-String$proto.split = function(seps, discard, group) {
+function isWhitespace(c) { return c.value in $WS; }
+String$proto.split = function(sep, discard, group) {
     var value = this.value;
     // shortcut for empty input
     if (value.length === 0) {return Singleton(this);}
     
-    var sepChars = $WS;
-    if (seps!==undefined && seps!==null) {
-        sepChars = {}
-        var it = seps.getIterator();
-        var c; while ((c=it.next()) !== $finished) {sepChars[c.value] = true}
-    }
-    if (discard === undefined) {discard = false}
+    if (sep === undefined) {sep = isWhitespace}
+    if (discard === undefined) {discard = true}
     if (group === undefined) {group = true}
     
     //TODO: return an iterable which determines the next token on demand
@@ -316,7 +312,7 @@ String$proto.split = function(seps, discard, group) {
             cp = (cp<<10) + value.charCodeAt(i++) - 0x35fdc00;
         }
         
-        if (cp in sepChars) {
+        if (sep(Character(cp)) === $true) {
             if (!group) {
                 // ungrouped separator: store preceding token
                 pushToken(j);
@@ -383,8 +379,9 @@ String$proto.repeat = function(times) {
     }
     return sb.getString();
 }
+function isNewline(c) { return c.value===10; }
 String$proto.getLines = function() {
-    return this.split(String$("\n", 1), true);
+    return this.split(isNewline, true);
 }
 String$proto.occurrences = function(sub) {
     if (sub.value.length == 0) {return Integer(0)}
