@@ -99,9 +99,13 @@ public final class List$impl<Element> {
         if ($this.getEmpty()) return "{}";
         java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
         java.lang.Object elem;
+        boolean first=true;
         for (Iterator<? extends Element> iter=$this.getIterator(); 
                 !((elem = iter.next()) instanceof Finished);) {
-            if (result.length() > 2) {
+            if (first) {
+                first = false;
+            }
+            else {
                 result.append(", ");
             }
             result.append(elem);
