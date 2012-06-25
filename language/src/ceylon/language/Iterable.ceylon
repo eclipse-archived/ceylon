@@ -21,68 +21,31 @@ shared interface Iterable<out Element>
     doc "A sequence containing the elements returned by the
          iterator."
     shared default Element[] sequence {
-        value builder = SequenceBuilder<Element>();
-        builder.appendAll(this...);
-        return builder.sequence;
+        return { this... };
     }
 
-    doc "Returns an Iterable that will return the transformation of the original elements."
-    shared default Iterable<Result> map<Result>(Result collecting(Element elem)) {
-        object mapped satisfies Iterable<Result> {
-            value outerIterator {
-               return outer.iterator;
-            }
-            shared actual Iterator<Result> iterator {
-                object mappedIterator satisfies Iterator<Result> {
-                    Iterator<Element> iter = outerIterator;
-                    shared actual Result|Finished next() {
-                        value e = iter.next();
-                        if (is Element x=e) {
-                            return collecting(x);
-                        } else {
-                            return exhausted;
-                        }
-                    }
-                }
-                return mappedIterator;
-            }
-        }
-        return mapped;
+    doc "An `Iterable` containing the results of applying
+         the given mapping to the elements of to this 
+         container."
+    shared default Iterable<Result> map<Result>(
+            doc "The mapping to apply to the elements."
+            Result collecting(Element elem)) {
+        return entries(for (elem in this) collecting(elem));
     }
 
-    doc "Returns an Iterable that returns only the elements which satisfy the collecting condition."
-    shared default Iterable<Element> filter(Boolean selecting(Element elem)) {
-        object filtered satisfies Iterable<Element> {
-            shared actual Iterator<Element> iterator {
-                object filteredIterator satisfies Iterator<Element> {
-                    Iterator<Element> iter = outer.iterator;
-                    shared actual Element|Finished next() {
-                        variable Element|Finished e := iter.next();
-                        variable Boolean flag;
-                        if (is Element x=e) {
-                            flag := selecting(x);
-                        } else {
-                            flag := true;
-                        }
-                        while (!flag) {
-                            e := iter.next();
-                            if (is Element x=e) {
-                                flag := selecting(x);
-                            } else {
-                                flag := true;
-                            }
-                        }
-                        return e;
-                    }
-                }
-                return filteredIterator;
-            }
-        }
-        return filtered;
+    doc "An `Iterable` containing the elements of this 
+         container that satisfy the given predicate."
+    shared default Iterable<Element> filter(
+            doc "The predicate the elements must satisfy."
+            Boolean selecting(Element elem)) {
+        return entries(for (elem in this) if (selecting(elem)) elem);
     }
 
-    doc "Returns the result of applying the accumulating function to each element." 
+    doc "The result of applying the accumulating function to 
+         each element of this container in turn." 
     shared default Result fold<Result>(Result initial,
+            doc "The accumulating function that accepts an
+                 intermediate result, and the next element."
             Result accumulating(Result partial, Element elem)) {
         variable value r := initial;
         for (e in this) {
@@ -91,8 +54,11 @@ shared interface Iterable<out Element>
         return r;
     }
 
-    doc "Return the first element which satisfies the selecting function, if any."
-    shared default Element? find(Boolean selecting(Element elem)) {
+    doc "The first element which satisfies the given 
+         predicate, if any."
+    shared default Element? find(
+            doc "The predicate the element must satisfy."
+            Boolean selecting(Element elem)) {
         for (e in this) {
             if (selecting(e)) {
                 return e;
