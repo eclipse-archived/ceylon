@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -395,7 +396,7 @@ public class ClassDefinitionBuilder {
             }
             annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
         }
-        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names().fromString(name), type, null);
+        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(Flags.PARAMETER, annots), gen.names().fromString(name), type, null);
         params.append(var);
 
         if (decl.isCaptured()) {

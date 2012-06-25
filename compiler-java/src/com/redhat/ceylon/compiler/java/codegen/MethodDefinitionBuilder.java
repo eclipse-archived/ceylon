@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -204,6 +205,9 @@ public class MethodDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder parameter(JCVariableDecl decl) {
+        if ((decl.mods.flags & Flags.PARAMETER) == 0) {
+            throw new RuntimeException("Needs PARAMETER flag");
+        }
         params.append(decl);
         return this;
     }
@@ -225,14 +229,14 @@ public class MethodDefinitionBuilder {
             }
             annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
         }
-        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(aliasedName), type, null));
+        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots), gen.names().fromString(aliasedName), type, null));
     }
     
     public MethodDefinitionBuilder parameter(long modifiers, String name, JCExpression paramType, List<JCAnnotation> annots) {
         if (annots == null) {
             annots = List.nil();
         }
-        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), paramType, null));
+        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots), gen.names().fromString(name), paramType, null));
     }
 
     public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int mods, int flags) {

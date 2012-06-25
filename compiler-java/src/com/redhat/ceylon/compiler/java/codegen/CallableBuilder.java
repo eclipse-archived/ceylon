@@ -186,7 +186,7 @@ public class CallableBuilder {
         if ((flags & Flags.VARARGS) != 0) {
             type = gen.make().TypeArray(type);
         }
-        return gen.make().VarDef(gen.make().Modifiers(Flags.FINAL | flags), 
+        return gen.make().VarDef(gen.make().Modifiers(Flags.FINAL | Flags.PARAMETER | flags), 
                 makeParamName(gen, ii), type, null);
     }
     
