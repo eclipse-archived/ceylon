@@ -36,9 +36,9 @@ shared void run() {
     testMaps();
     print("Set tests");
     testSets();
-    print("Iterables test (map/fold/filter/find)");
+    print("Iterables test: map/fold/filter/find/sort etc");
     testIterables();
-    print("Testing comprehensions");
+    print("Testing comprehensions and comprehension-related functions");
     comprehensions();
     print("Testing process");
     testProcess();

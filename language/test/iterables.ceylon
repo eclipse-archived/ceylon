@@ -41,5 +41,10 @@ void testIterables() {
   assert(!exists Singleton(5).find((Integer i) i>5), "find 4");
   assert(Singleton(5).fold(0, (Integer i, Integer j) i+j)==5, "fold 4");
 
-  assert({5,4,3,2,1}.sorted((Integer x, Integer y) x<=>y).sequence == {1,2,3,4,5}, "sorted");
+  assert({5,4,3,2,1}.sorted((Integer x, Integer y) x<=>y).sequence == {1,2,3,4,5}, "sorted [1]");
+  assert({"tt","aaa","z"}.sorted((String a, String b) a<=>b).sequence == {"aaa", "tt", "z"}, "sorted [2]");
+
+  //Iterable-related functions
+  assert({"aaa", "tt", "z"}.sorted(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sorted(byIncreasing)");
+  assert({"z", "aaa", "tt"}.sorted(byDecreasing((String s) s.size)).sequence=={"aaa","tt","z"}, "sorted(byDecreasing)");
 }
