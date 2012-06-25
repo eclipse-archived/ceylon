@@ -30,7 +30,7 @@ shared interface Iterable<out Element>
     shared default Iterable<Result> map<Result>(
             doc "The mapping to apply to the elements."
             Result collecting(Element elem)) {
-        return entries(for (elem in this) collecting(elem));
+        return elements(for (elem in this) collecting(elem));
     }
 
     doc "An `Iterable` containing the elements of this 
@@ -38,7 +38,7 @@ shared interface Iterable<out Element>
     shared default Iterable<Element> filter(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) {
-        return entries(for (elem in this) if (selecting(elem)) elem);
+        return elements(for (elem in this) if (selecting(elem)) elem);
     }
 
     doc "The result of applying the accumulating function to 
