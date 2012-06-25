@@ -21,7 +21,7 @@ public final class count {
         java.lang.Object $tmp;
         for (Iterator<? extends Boolean> $val$iter$0 = values.getIterator(); 
                 !(($tmp = $val$iter$0.next()) instanceof Finished);) {
-           if (!((Boolean)$tmp).booleanValue()) count++;
+           if (((Boolean)$tmp).booleanValue()) count++;
         }
         return count;
     }
