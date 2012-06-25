@@ -5,9 +5,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotation applied to a Java class 
+ * also annotated with {@link Attribute @Attribute} which holds the runtime 
+ * package descriptor instance.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Package {
+    /** Whether the package is shared */
     public boolean shared();
+    /** The name of the package */
     public String name();
 }

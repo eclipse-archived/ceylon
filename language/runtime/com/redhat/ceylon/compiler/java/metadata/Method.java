@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks top-level methods.
+ * Annotation applied to a Java class that is a container for a top level 
+ * Ceylon method.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})

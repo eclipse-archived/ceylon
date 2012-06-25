@@ -6,7 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks defaulted parameters.
+ * Annotation applied to a Java method or constructor parameter to indicate 
+ * that it is a defaulted parameter, which need not have a formal argument
+ * at a call site.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})

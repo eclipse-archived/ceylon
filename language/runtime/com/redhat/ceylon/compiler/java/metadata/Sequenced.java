@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks sequenced parameters.
+ * Annotation applied to a Java method or constructor parameter to indicate 
+ * that it is a Ceylon sequenced parameter.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})
