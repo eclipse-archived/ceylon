@@ -10,6 +10,7 @@ function isOfType(a,b){}//IGNORE
 function getBottom(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
+function ArraySequence(x){}//IGNORE
 var exports,Container,$finished,$false,$true,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
 
 function Sized(wat) {
@@ -92,6 +93,20 @@ Iterable.$$.prototype.find = function(select) {
         }
     }
     return null;
+}
+Iterable.$$.prototype.sorted = function(/*Callable<Comparison?,Element,Element>*/comparing) {
+    var a = [];
+    var iter = this.getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        a.push(e);
+    }
+    a.sort(function(x,y) {
+        var r = comparing(x,y);
+        if (r === larger) return 1;
+        if (r === smaller) return -1;
+        return 0;
+    });
+    return ArraySequence(a);
 }
 exports.Iterable=Iterable;
 
