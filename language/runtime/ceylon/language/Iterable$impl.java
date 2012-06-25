@@ -1,5 +1,9 @@
 package ceylon.language;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
@@ -58,6 +62,25 @@ public final class Iterable$impl<Element> {
         return null;
     }
 
+    public Iterable<? extends Element> sorted(Callable<? extends Comparison> comparing) {
+        return Iterable$impl._sorted($this, comparing);
+    }
+    static <Element> Iterable<? extends Element> _sorted(Iterable<? extends Element> $this, final Callable<? extends Comparison> comp) {
+        if ($this.getEmpty()) {
+            return (Iterable<? extends Element>) $empty.getEmpty();
+        }
+        Element[] array = Util.toArray($this, (Class<Element>) java.lang.Object.class);
+        Arrays.sort(array, new Comparator<Element>() {
+            public int compare(Element x, Element y) {
+                Comparison result = comp.$call(x, y);
+                if (result.largerThan()) return 1;
+                if (result.smallerThan()) return -1;
+                return 0;
+            }
+        });
+        return new ArraySequence<Element>(array,0);
+    }
+
 }
 
 class MapIterable<Element, Result> implements Iterable<Result> {
@@ -91,6 +114,11 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     @Ignore
     public Result find(Callable<? extends Boolean> f) { 
         return Iterable$impl._find(this, f); 
+    }
+    @Override 
+    @Ignore
+    public Iterable<? extends Result> sorted(Callable<? extends Comparison> f) { 
+        return Iterable$impl._sorted(this, f); 
     }
     @Override 
     @Ignore
@@ -140,6 +168,11 @@ class FilterIterable<Element> implements Iterable<Element> {
     @Ignore
     public Element find(Callable<? extends Boolean> f) { 
         return Iterable$impl._find(this, f); 
+    }
+    @Override 
+    @Ignore
+    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
+        return Iterable$impl._sorted(this, f); 
     }
     @Override 
     @Ignore

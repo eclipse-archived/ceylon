@@ -706,6 +706,11 @@ public abstract class String
         }
         @Override 
         @Ignore
+        public Iterable<? extends String> sorted(Callable<? extends Comparison> f) { 
+            return Iterable$impl._sorted(this, f); 
+        }
+        @Override 
+        @Ignore
         public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
             return new MapIterable<String, Result>(this, f); 
         }
@@ -768,6 +773,11 @@ public abstract class String
         @Ignore
         public Integer find(Callable<? extends Boolean> f) { 
             return Iterable$impl._find(this, f); 
+        }
+        @Override 
+        @Ignore
+        public Iterable<? extends Integer> sorted(Callable<? extends Comparison> f) { 
+            return Iterable$impl._sorted(this, f); 
         }
         @Override 
         @Ignore

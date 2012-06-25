@@ -51,4 +51,9 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
         return Iterable$impl._find(this, selecting);
     }
 
+    @Override 
+    @Ignore
+    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
+        return Iterable$impl._sorted(this, f); 
+    }
 }

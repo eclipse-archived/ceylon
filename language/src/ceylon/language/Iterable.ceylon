@@ -67,4 +67,11 @@ shared interface Iterable<out Element>
         return null;
     }
  
+    doc "A sequence containing the elements of this
+         container, sorted according to a function 
+         imposing a partial order upon the elements."
+    shared default Element[] sorted(
+            doc "The function comparing pairs of elements."
+            Comparison? comparing(Element x, Element y)) { throw; }
+ 
 }

@@ -203,6 +203,11 @@ public final class Map$impl<Key,Item> {
             }
             @Override 
             @Ignore
+            public Iterable<? extends Key> sorted(Callable<? extends Comparison> f) { 
+                return Iterable$impl._sorted(this, f); 
+            }
+            @Override 
+            @Ignore
             public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
                 return new MapIterable<Key, Result>(this, f); 
             }
@@ -320,6 +325,11 @@ public final class Map$impl<Key,Item> {
             @Ignore
             public Item find(Callable<? extends Boolean> f) { 
                 return Iterable$impl._find(this, f); 
+            }
+            @Override 
+            @Ignore
+            public Iterable<? extends Item> sorted(Callable<? extends Comparison> f) { 
+                return Iterable$impl._sorted(this, f); 
             }
             @Override 
             @Ignore
@@ -523,6 +533,11 @@ public final class Map$impl<Key,Item> {
             @Ignore
             public Entry<? extends Item, ? extends Set<Key>> find(Callable<? extends Boolean> f) { 
                 return Iterable$impl._find(this, f); 
+            }
+            @Override 
+            @Ignore
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> sorted(Callable<? extends Comparison> f) { 
+                return Iterable$impl._sorted(this, f); 
             }
             @Override 
             @Ignore

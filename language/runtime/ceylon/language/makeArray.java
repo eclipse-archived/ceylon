@@ -72,6 +72,11 @@ public final class makeArray {
             }
             @Override 
             @Ignore
+            public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
+                return Iterable$impl._sorted(this, f); 
+            }
+            @Override 
+            @Ignore
             public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
                 return new MapIterable<Element, Result>(this, f); 
             }

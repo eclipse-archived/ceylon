@@ -248,6 +248,11 @@ public interface Correspondence<Key,Item> {
     public Item find(Callable<? extends Boolean> f) { 
         return Iterable$impl._find(this, f);
     }
+    @Override 
+    @Ignore
+    public Iterable<? extends Item> sorted(Callable<? extends Comparison> f) { 
+        return Iterable$impl._sorted(this, f); 
+    }
     @Override
     @Ignore
     public <Result> Iterable<Result> map(Callable<? extends Result> f) { 

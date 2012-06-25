@@ -39,6 +39,11 @@ class StringOfSome extends String implements Some<Character> {
     }
     @Override 
     @Ignore
+    public Iterable<? extends Character> sorted(Callable<? extends Comparison> f) { 
+        return Iterable$impl._sorted(this, f); 
+    }
+    @Override 
+    @Ignore
     public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
         return new MapIterable<Character, Result>(this, f); 
     }
