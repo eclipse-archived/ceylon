@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -507,9 +508,9 @@ public abstract class String
     
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     public Iterable<? extends String> split(
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterable<ceylon.language.Character>")
+            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,ceylon.language.Character>")
             @Defaulted
-            @Name("separators") Iterable<? extends Character> separators,
+            @Name("separator") Callable<? extends Boolean> separator,
             @Defaulted
             @Name("discardSeparators") boolean discardSeparators,
             @Defaulted
@@ -517,58 +518,40 @@ public abstract class String
         if (value.isEmpty()) {
             return new Singleton<String>(this);
         }
-        java.lang.String delims;
-        if (separators==null) {
-            //scan the string looking for unicode
-            //whitespace characters
-            //TODO: this is *really* inefficient!
-            java.lang.StringBuilder buf = new java.lang.StringBuilder();
-            for (int i=0; i<value.length(); i++){
-                char ch = value.charAt(i);
-                if (java.lang.Character.isWhitespace(ch) &&
-                        buf.indexOf(java.lang.String.valueOf(ch))<0) {
-                    buf.append(ch);
-                }
-            }
-            delims = buf.toString();
-        }
-        else if (separators instanceof String) {
-            delims = separators.toString();
-        }
-        else {
-            java.lang.StringBuilder builder = new java.lang.StringBuilder();
-            java.lang.Object elem;
-            for (Iterator<? extends Character> iter=separators.getIterator(); 
-                    !((elem = iter.next()) instanceof Finished);) {
-                builder.append(elem);
-            }
-            delims = builder.toString();
-        }
-        return new Tokens(value, delims, !discardSeparators, groupSeparators);
+        return new Tokens(value, separator, !discardSeparators, groupSeparators);
     }
     
     @Ignore
     public Iterable<? extends String> split(
-            Iterable<? extends Character> separators,
+            Callable<? extends Boolean> separator,
             boolean discardSeparators) {
-        return split(separators, discardSeparators, split$groupSeparators(separators, discardSeparators));
+        return split(separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
     public Iterable<? extends String> split(
-            Iterable<? extends Character> separators) {
-        return split(separators, split$discardSeparators(separators));
+            Callable<? extends Boolean> separator) {
+        return split(separator, split$discardSeparators(separator));
     }
     
     @Ignore
     public Iterable<? extends String> split() {
-        return split(split$separators());
-
+        return split(new AbstractCallable<Boolean>("whitespace") {
+            @Override
+            public Boolean $call(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).getWhitespace());
+            }
+        });
     }
     
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     public Iterable<? extends String> getLines() {
-        return split(instance("\n"), true);
+        return split(new AbstractCallable<Boolean>("whitespace") {
+            @Override
+            public Boolean $call(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).toString().equals("\n"));
+            }
+        }, true);
     }
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     public Iterable<? extends Integer> occurrences(
@@ -578,13 +561,14 @@ public abstract class String
 
     private static final class Tokens implements Iterable<String> {
         private final java.lang.String str;
-        private final java.lang.String delims;
+        private final ceylon.language.Callable<? extends Boolean> separator;
         private final boolean keepSeparators;
         private final boolean groupSeparators;
         
-        public Tokens(java.lang.String str, java.lang.String delims, boolean keepSeparators, boolean groupSeparators) {
+        public Tokens(java.lang.String str, ceylon.language.Callable<? extends Boolean> separator, 
+                boolean keepSeparators, boolean groupSeparators) {
             this.str = str;
-            this.delims = delims;
+            this.separator = separator;
             this.keepSeparators = keepSeparators;
             this.groupSeparators = groupSeparators;
         }
@@ -593,7 +577,6 @@ public abstract class String
         public Iterator<? extends String> getIterator() {
             class TokenIterator implements Iterator<String> {
                 private final char[] chars = str.toCharArray();
-                private final char[] delimitors = delims.toCharArray();
                 private int index = 0;
                 private boolean first = true;
                 private boolean lastTokenWasSeparator = false;
@@ -663,21 +646,7 @@ public abstract class String
                     if(eof())
                         return false;
                     int charCodePoint = java.lang.Character.codePointAt(chars, index);
-                    for(int i=0;i<delimitors.length;i++){
-                        char delimitorChar = delimitors[i];
-                        int delimitorCodePoint;
-                        if(java.lang.Character.isHighSurrogate(delimitorChar)){
-                            delimitorCodePoint = java.lang.Character.codePointAt(delimitors, i);
-                            // eat one more char
-                            i++;
-                        }else{
-                            delimitorCodePoint = delimitorChar;
-                        }
-                        if(charCodePoint == delimitorCodePoint){
-                            return true;
-                        }
-                    }
-                    return false;
+                    return separator.$call(Character.instance(charCodePoint)).booleanValue();
                 }
             }
             
@@ -806,11 +775,11 @@ public abstract class String
         return null;
     }
     @Ignore
-    public boolean split$discardSeparators(Iterable<? extends Character> separators){
+    public boolean split$discardSeparators(Callable<? extends Boolean> separator){
         return true;
     }
     @Ignore
-    public boolean split$groupSeparators(Iterable<? extends Character> separators, boolean discardSeparators){
+    public boolean split$groupSeparators(Callable<? extends Boolean> separator, boolean discardSeparators){
         return true;
     }
 }

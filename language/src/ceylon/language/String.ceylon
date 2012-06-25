@@ -20,14 +20,14 @@ shared abstract class String()
     shared formal String uppercased;
     
     doc "Split the string into tokens, using the given
-         separator characters. If no separator characters
-         are given, split the string at any Unicode 
-         whitespace character."
+         predicate to determine which characters are 
+         separator characters."
     shared formal Iterable<String> split(
-            doc "The separator characters at which to split.
-                 If `null`, split at any Unicode whitespace
+            doc "A predicate that determines if a character
+                 is a separator characters at which to split.
+                 Default to split at any Unicode whitespace
                  character."
-            Iterable<Character>? separators=null,
+            Boolean separator(Character ch) = (Character ch) ch.whitespace,
             doc "Specifies that the separator characters
                  occurring in the string should be discarded.
                  If `false`, they will be included in the

@@ -47,7 +47,7 @@ void comprehensions() {
   //ceylon-compiler#601
   Iterable<String>? b601 = first({ for (s in "hello world".split()) s}, {""});
   if (exists b601) {
-    assert(b601=={"hello", " ", "world"}, "ceylon-compiler #601 [1]");
+    assert(b601=={"hello", "world"}, "ceylon-compiler #601 [1]");
   } else { fail("ceylon-compiler #601 [2]"); }
   Iterable<String> b85 = elements { for (k->v in entries("a","b","c","d","e")) if (k%2==0) v.uppercased };
   Iterator<String> iter85 = b85.iterator;
