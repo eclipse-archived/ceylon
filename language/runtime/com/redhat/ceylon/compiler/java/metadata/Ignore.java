@@ -4,7 +4,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Marks that the associated item should be ignored by the model loader.
+ * Annotation applied to a Java element that should be ignored by the Ceylon 
+ * model loader.
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Ignore {
