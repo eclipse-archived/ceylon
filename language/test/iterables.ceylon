@@ -41,4 +41,5 @@ void testIterables() {
   assert(!exists Singleton(5).find((Integer i) i>5), "find 4");
   assert(Singleton(5).fold(0, (Integer i, Integer j) i+j)==5, "fold 4");
 
+  assert({5,4,3,2,1}.sorted((Integer x, Integer y) x<=>y).sequence == {1,2,3,4,5}, "sorted");
 }
