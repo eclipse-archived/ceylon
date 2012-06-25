@@ -33,6 +33,8 @@ void comprehensions() {
     assert(ff==4, "first [1]");
   } else { fail("first [1]"); }
   assert(!exists first(for (x in 1..5) if (x%6==0) x), "first [2]");
+  assert(count { for (x in 1..5) x>4 } == 1, "count [1]");
+  assert(count(for (x in 1..5) x>0) == 5, "count [2]");
 
   //*************Newly found bugs here
   //ceylon-compiler#598
