@@ -17,7 +17,7 @@ public final class append {
     private append() {}
     
     @TypeParameters(@TypeParameter(value="Element"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Sequence<Element>")
     public static <Element> Sequence<? extends Element> append(
     @Name("sequence")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
