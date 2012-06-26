@@ -35,11 +35,15 @@ void testIterables() {
     assert({}.filter((Bottom i) true).empty, "filter 3");
     //assert(!exists {}.find((Bottom i) i>5), "find 3");
     assert({}.fold(0, (Integer i, Bottom j) i)==0, "fold 3");
-  
-    assert(Singleton(5).map((Integer i) i.float).sequence=={5.0}, "map 4");
-    assert(Singleton(5).filter((Integer i) i>5).sequence=={}, "filter 4");
-    assert(!exists Singleton(5).find((Integer i) i>5), "find 4");
-    assert(Singleton(5).fold(0, (Integer i, Integer j) i+j)==5, "fold 4");
+ 
+    //Singleton optimized implementations 
+    assert(Singleton(5).map((Integer i) i.float).sequence=={5.0}, "Singleton.map");
+    assert(Singleton(5).filter((Integer i) i>5).sequence=={}, "Singleton.filter");
+    assert(!exists Singleton(5).find((Integer i) i>5), "Singleton.find");
+    assert(Singleton(5).fold(0, (Integer i, Integer j) i+j)==5, "Singleton.fold");
+    assert(Singleton(5).sorted((Integer x, Integer y) x<=>y) == Singleton(5), "Singleton.sorted");
+    assert(Singleton(1).any((Integer x) x == 1), "Singleton.any");
+    assert(Singleton(1).every((Integer x) x>0), "Singleton.every");
 
     //Any
     assert( (1..10).any((Integer x) x==9), "Iterable.any [1]");
