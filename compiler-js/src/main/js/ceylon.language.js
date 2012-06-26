@@ -489,6 +489,8 @@ function getBottom() {
     throw Exception();
 }
 
+//#include annotations.js
+
 exports.Exception=Exception;
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
