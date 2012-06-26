@@ -1,7 +1,7 @@
 doc "Represents an iterable collection of elements of finite 
      size.
      
-     A |Collection| forms a |Category| of its elements."
+     A `Collection` forms a `Category` of its elements."
 shared interface Collection<out Element>
         satisfies Iterable<Element> &
                   Sized & Category &
