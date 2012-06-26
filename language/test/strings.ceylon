@@ -224,12 +224,12 @@ shared void strings() {
     assert(!"".split((Character c) c.whitespace, true).empty, "\"\".split((Character c) c.whitespace,true) is empty");
     assert(!"hello".split((Character c) c.whitespace, true).empty, "hello.split((Character c) c.whitespace,true) is empty");
     assert("hello world".split((Character c) c.whitespace, true).iterator.next()=="hello", "string split first 3");
-    assert({"hello world".split((Character c) c==` `)...}.size==2, "string split discarding");
-    assert({"hello world".split((Character c) c==` `, false)...}.size==3, "string split including");
+    assert({"hello world".split((Character c) c==` `)...}.size==2, "string split discarding [1]");
+    assert({"hello world".split((Character c) c==` `, false)...}.size==3, "string split including [1]");
     assert({"hello world".split()...}.size==2, "string split default");
-    assert({"hello world".split((Character c) c==`l`, true)...}.size==3, "string split discarding");
-    assert({"hello world".split((Character c) c==`l`, false)...}.size==5, "string split including");
-    assert({"hello world".split((Character c) c==`l`, false, false)...}.size==7, "string split including 2");
+    assert({"hello world".split((Character c) c==`l`, true)...}.size==3, "string split discarding [2]");
+    assert({"hello world".split((Character c) c==`l`, false)...}.size==5, "string split including [2]");
+    assert({"hello world".split((Character c) c==`l`, false, false)...}.size==7, "string split including [3]");
     variable value count:=0;
     for (tok in "hello world goodbye".split((Character c) c==` `, true)) {
         count++;
