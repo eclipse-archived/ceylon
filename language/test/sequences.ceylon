@@ -267,7 +267,7 @@ shared void sequences() {
     }
     assert(nonnull==2, "iterate sequence with nulls");
 
-    value coalesced = coalesce(nulls);
+    value coalesced = coalesce(nulls...);
     assert(coalesced.size==2, "coalesce size");
     assert(coalesced.string=="{ hello, world }", "coalesce.string");
     assert(coalesced.keys.contains(0), "coalesced keys");
