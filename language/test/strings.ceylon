@@ -321,4 +321,6 @@ shared void strings() {
     assert("\{0022}"=="\"", "Unicode escape 9");
     assert("\{0027}"=="\'", "Unicode escape 10");
 
+    assert(string() == "", "string()");
+    assert(string(`h`, `i`)=="hi", "string(h,i)");
 }
