@@ -528,11 +528,11 @@ exports.array=function(elems) {
         return e.length==0 ? EmptyArray() : ArrayList(e);
     }
 }
-exports.makeArray=function(size, init) {
+exports.arrayOfSize=function(size, elem) {
     if (size.value > 0) {
         var elems = [];
         for (var i = 0; i < size.value; i++) {
-            elems.push(init(Integer(i)));
+            elems.push(elem);
         }
         return ArrayList(elems);
     } else return EmptyArray();
