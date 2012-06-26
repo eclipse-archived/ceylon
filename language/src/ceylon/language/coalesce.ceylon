@@ -1,6 +1,7 @@
-doc "Return a sequence of all elements of the given sequence
-     which are not null."
-shared Element[] coalesce<Element>(Element?[] sequence) 
+doc "Return a sequence containing the given values which are
+     not null. If there are no values which are not null,
+     return an empty sequence."
+shared Element[] coalesce<Element>(Element?... values) 
         given Element satisfies Object {
-    return { for (element in sequence) if (exists element) element };
+    return { for (val in values) if (exists val) val };
 }
