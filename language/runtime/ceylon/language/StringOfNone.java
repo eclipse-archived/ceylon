@@ -41,7 +41,7 @@ class StringOfNone extends String implements None<Character> {
     @Override 
     @Ignore
     public Iterable<? extends Character> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f); 
+        return this; 
     }
     @Override 
     @Ignore
@@ -51,11 +51,19 @@ class StringOfNone extends String implements None<Character> {
     @Override 
     @Ignore
     public Iterable<? extends Character> filter(Callable<? extends Boolean> f) { 
-        return new FilterIterable<Character>(this, f); 
+        return this; 
     }
     @Override 
     @Ignore
     public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-        return Iterable$impl._fold(this, ini, f);
+        return ini;
+    }
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        return false;
+    }
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        return false;
     }
 }
