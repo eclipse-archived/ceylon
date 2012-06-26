@@ -323,3 +323,29 @@ void testHardCase(J4 i) {
     case (is J3) {}
     case (is Nothing) {}
 }
+
+interface Rsrc of File|Dir|Link {}
+interface File satisfies Rsrc {}
+interface Dir satisfies Rsrc {}
+interface Link satisfies Rsrc {}
+
+void use() {
+    
+    File|Link x = bottom;
+    switch(x) 
+    case (is File) {}
+    case (is Link) {}
+    
+    File|Dir|Link y = bottom;
+    switch(y)
+    case (is File|Dir) {}
+    case (is Link) {}
+    
+    Rsrc z = bottom;
+    if (is File|Dir z) {
+        switch(z) 
+        case (is File) {}
+        case (is Dir) {}
+    }
+    
+}
