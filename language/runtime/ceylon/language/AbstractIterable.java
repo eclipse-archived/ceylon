@@ -56,4 +56,12 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
         return Iterable$impl._sorted(this, f); 
     }
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        return Iterable$impl._any(this, f);
+    }
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        return Iterable$impl._every(this, f);
+    }
 }

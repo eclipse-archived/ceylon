@@ -221,6 +221,14 @@ public final class Map$impl<Key,Item> {
             public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
                 return Iterable$impl._fold(this, ini, f); 
             }
+            @Override @Ignore
+            public boolean any(Callable<? extends Boolean> f) {
+                return Iterable$impl._any(this, f);
+            }
+            @Override @Ignore
+            public boolean every(Callable<? extends Boolean> f) {
+                return Iterable$impl._every(this, f);
+            }
         }
         return new keySet();
     }
@@ -345,6 +353,14 @@ public final class Map$impl<Key,Item> {
             @Ignore
             public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
                 return Iterable$impl._fold(this, ini, f); 
+            }
+            @Override @Ignore
+            public boolean any(Callable<? extends Boolean> f) {
+                return Iterable$impl._any(this, f);
+            }
+            @Override @Ignore
+            public boolean every(Callable<? extends Boolean> f) {
+                return Iterable$impl._every(this, f);
             }
         }
         return new valueCollection();
@@ -553,6 +569,14 @@ public final class Map$impl<Key,Item> {
             @Ignore
             public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
                 return Iterable$impl._fold(this, ini, f); 
+            }
+            @Override @Ignore
+            public boolean any(Callable<? extends Boolean> f) {
+                return Iterable$impl._any(this, f);
+            }
+            @Override @Ignore
+            public boolean every(Callable<? extends Boolean> f) {
+                return Iterable$impl._every(this, f);
             }
         }
         return new inverse();

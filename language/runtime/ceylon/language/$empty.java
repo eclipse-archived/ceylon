@@ -179,6 +179,8 @@ public class $empty {
     @Override public Empty sorted(Callable f) { return this; }
     @Override public Empty filter(Callable f) { return this; }
     @Override public java.lang.Object fold(java.lang.Object ini, Callable f) { return ini; }
+    @Override public boolean any(Callable<? extends Boolean> f) { return false; }
+    @Override public boolean every(Callable<? extends Boolean> f) { return false; }
     };
     
     public static Empty getEmpty(){
