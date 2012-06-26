@@ -30,6 +30,7 @@ function byDecreasing/*<Element,Value>*/(/*Callable<Value?,Element>*/comp) {
 }
 
 function count(/*Iterable<Boolean>*/truths) {
+    if (truths === undefined) return Integer(0);
     var c=0;
     var iter = truths.getIterator();
     var i; while ((i = iter.next()) !== $finished) {

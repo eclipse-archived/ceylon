@@ -48,6 +48,7 @@ function max(seq) {
 }
 //receives ArraySequence of ArraySequences, returns flat ArraySequence
 function join(seqs) {
+    if (seqs === undefined) return $empty;
     var builder = [];
     for (var i = 0; i < seqs.value.length; i++) {
         builder = builder.concat(seqs.value[i].value);
@@ -91,6 +92,7 @@ function prepend(seq, elem) {
 
 //Receives Iterable, returns ArraySequence (with Entries)
 function entries(seq) {
+    if (seq === undefined) return $empty;
     var e = [];
     var iter = seq.getIterator();
     var i = 0;
@@ -101,6 +103,7 @@ function entries(seq) {
 }
 
 function any(/*Boolean...*/ values) {
+    if (values === undefined) return $false;
     var it = values.getIterator();
     var v;
     while ((v = it.next()) !== $finished) {
@@ -109,6 +112,7 @@ function any(/*Boolean...*/ values) {
     return $false;
 }
 function every(/*Boolean...*/ values) {
+    if (values === undefined) return $false;
     var it = values.getIterator();
     var v;
     while ((v = it.next()) !== $finished) {
@@ -118,6 +122,7 @@ function every(/*Boolean...*/ values) {
 }
 
 function first(/*Element...*/ elements) {
+    if (elements === undefined) return null;
     var e = elements.getIterator().next();
     return (e !== $finished) ? e : null;
 }
