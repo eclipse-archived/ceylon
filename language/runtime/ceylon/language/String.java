@@ -536,12 +536,7 @@ public abstract class String
     
     @Ignore
     public Iterable<? extends String> split() {
-        return split(new AbstractCallable<Boolean>("whitespace") {
-            @Override
-            public Boolean $call(java.lang.Object ch) {
-                return Boolean.instance(((Character) ch).getWhitespace());
-            }
-        });
+        return split(split$separator());
     }
     
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
@@ -787,8 +782,13 @@ public abstract class String
     }
 
     @Ignore
-    public Iterable<? extends Character> split$separators(){
-        return null;
+    public Callable<? extends Boolean> split$separator(){
+        return new AbstractCallable<Boolean>("whitespace") {
+            @Override
+            public Boolean $call(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).getWhitespace());
+            }
+        };
     }
     @Ignore
     public boolean split$discardSeparators(Callable<? extends Boolean> separator){
