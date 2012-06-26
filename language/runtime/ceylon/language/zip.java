@@ -21,10 +21,10 @@ public final class zip {
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Entry<Key,Item>>")
     public static <Key,Item> Iterable<? extends Entry<? extends Key, ? extends Item>> zip(
     @Name("keys")
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    @TypeInfo("ceylon.language.Iterable<Key>")
     final ceylon.language.Iterable<? extends Key> keys,
     @Name("items")
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item>")
+    @TypeInfo("ceylon.language.Iterable<Item>")
     final ceylon.language.Iterable<? extends Item> items) {
 		List<Entry<? extends Key,? extends Item>> list = new ArrayList<Entry<? extends Key,? extends Item>>();
 		Iterator<? extends Key> keyIter = keys.getIterator();
@@ -36,6 +36,11 @@ public final class zip {
 	        key = (Key) keyIter.next();
 	        item = (Item) itemIter.next();
 		}
-        return new ArraySequence<Entry<? extends Key,? extends Item>>(list);
+		if (list.isEmpty()) {
+		    return (Iterable) $empty.getEmpty();
+		}
+		else {
+		    return new ArraySequence<Entry<? extends Key,? extends Item>>(list);
+		}
     }
 }
