@@ -223,3 +223,6 @@ shared abstract class String()
     see (size)
     shared actual formal Boolean empty;
 }
+
+doc "Create a new string containing the given characters."
+shared String string(Character... characters) { throw; }
