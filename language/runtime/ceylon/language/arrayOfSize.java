@@ -47,7 +47,7 @@ public final class arrayOfSize {
                     long idx = 0;
                     @TypeInfo("Element|ceylon.language.Finished")
                     public java.lang.Object next() {
-                        return idx<size ? element : exhausted.getExhausted();
+                        return idx++<size ? element : exhausted.getExhausted();
                     }
                 };
             }
