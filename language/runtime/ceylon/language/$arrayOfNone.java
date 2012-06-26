@@ -16,11 +16,11 @@ public final class $arrayOfNone {
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>&None<Element>")
     public static <Element> Array<Element> arrayOfNone() {
-        return ArrayOfNone.instance((Class)null);
+        return ArrayOfNone.<Element>instance((Class)null);
     }
     
     @Ignore
     public static <Element> Array<Element> arrayOfNone(final Class typeClass) {
-        return ArrayOfNone.instance(typeClass);
+        return ArrayOfNone.<Element>instance(typeClass);
     }
 }

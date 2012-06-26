@@ -10,54 +10,51 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 1)
 @Method
-public final class makeArray {
+public final class arrayOfSize {
 
-    private makeArray() {}
+    private arrayOfSize() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>")
-    public static <Element> Array<Element> makeArray(
+    public static <Element> Array<Element> arrayOfSize(
     @Name("size")
     @TypeInfo("ceylon.language.Integer")
-    final Integer size,
-    @Name("index")
-    @TypeInfo("ceylon.language.Callable<Element,ceylon.language.Integer>")
-    final Callable<Element> init) {
-        return makeArray(null, init);
+    final long size,
+    @Name("element")
+    @TypeInfo("Element")
+    final Element element) {
+        return arrayOfSize(null, size, element);
     }
     
     @Ignore
-    public static <Element> Array<Element> makeArray(
+    public static <Element> Array<Element> arrayOfSize(
             final Class typeClass,
-            final Integer size,
-            final Callable<Element> init) {
-        if (size.value > 0) {
-            return ArrayOfSome.instance(typeClass, getIterable(size, init));
-        } else {
-            return ArrayOfNone.instance(typeClass);
-        }
+            final long size,
+            final Element element) {
+        return size>0 ?
+        		//TODO: This is horribly inefficient. We should
+        		//      create an empty array, and then use
+        		//      Arrays.fill() to populate it!
+                ArrayOfSome.<Element>instance(typeClass, getIterable(size, element)) :
+                ArrayOfNone.<Element>instance(typeClass);
     }
     
-    private static <Element> Iterable getIterable(final Integer size, final Callable<Element> init) {
+    private static <Element> Iterable<Element> getIterable(final long size, 
+    		final Element element) {
         return new Iterable<Element>() {
             public Iterator<Element> getIterator() {
                 return new Iterator<Element>() {
                     long idx = 0;
-                    
                     @TypeInfo("Element|ceylon.language.Finished")
                     public java.lang.Object next() {
-                        if(idx >= size.value) {
-                            return exhausted.getExhausted();
-                        } else {
-                            return init.$call(Integer.instance(idx++));
-                        }
+                        return idx<size ? element : exhausted.getExhausted();
                     }
                 };
             }
 
             @Override
             public boolean getEmpty() {
-                return size.value == 0;
+                return size==0;
             }
 
             @Override

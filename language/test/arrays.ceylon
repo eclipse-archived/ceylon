@@ -20,17 +20,15 @@ void testArrays() {
     if (exists i=a2[0]) {
         assert(i==10, "array.setItem 2");
     } else { fail("array.setItem 2"); }
-    function dot(Integer i) { return "."; }
-    function idx(Integer i) { return "Index " (i+1) ""; }
-    value a4 = makeArray(5, dot);
+    value a4 = arrayOfSize(5, ".");
     assert(a4.size == 5, "makeArray 1");
     if (exists i=a4[4]) {
         assert(i==".", "makeArray 2");
     } else { fail("makeArray 2"); }
-    value a5 = makeArray(3, idx);
+    value a5 = arrayOfSize(3, 0);
     assert(a5.size == 3, "makeArray 3");
     if (exists i=a5[2]) {
-        assert(i=="Index 3", "makeArray 4");
+        assert(i==0, "makeArray 4");
     } else { fail("makeArray 4"); }
     value a6 = array<Integer?>(1);
     a6.setItem(0,null);

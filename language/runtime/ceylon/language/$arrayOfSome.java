@@ -20,13 +20,13 @@ public final class $arrayOfSome {
     @Name("elements")
     @TypeInfo("ceylon.language.Sequence<Element>")
     final Iterable<? extends Element> elements) {
-        return ArrayOfSome.instance(null, elements);
+        return ArrayOfSome.<Element>instance(null, elements);
     }
     
     @Ignore
     public static <Element> Array<Element> arrayOfSome(
             final Class typeClass,
             final Iterable<? extends Element> elements) {
-        return ArrayOfSome.instance(typeClass, elements);
+        return ArrayOfSome.<Element>instance(typeClass, elements);
     }
 }
