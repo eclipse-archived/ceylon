@@ -192,7 +192,7 @@ public final class Float
     
     @Override
     public int hashCode() {
-		long bits = Double.doubleToLongBits(value);
+		long bits = Double.doubleToLongBits(Math.abs(value));
 		return (int)(bits ^ (bits >>> 32));
     }
     
