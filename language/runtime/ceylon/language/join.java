@@ -46,6 +46,6 @@ public final class join {
     }
     @Ignore
     public static <Element> Iterable<? extends Element> join() {
-        return join((Iterable<? extends Iterable<? extends Element>>)$empty.getEmpty());
+        return join((Iterable)$empty.getEmpty());
     }
 }
