@@ -81,6 +81,33 @@ public final class Iterable$impl<Element> {
         return new ArraySequence<Element>(array,0);
     }
 
+    public boolean any(Callable<? extends Boolean> selecting) {
+        return Iterable$impl._any($this, selecting);
+    }
+    static <Element> boolean _any(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
+        Iterator<? extends Element> iter = $this.getIterator();
+        java.lang.Object elem;
+        while (!((elem = iter.next()) instanceof Finished)) {
+            if (sel.$call(elem).booleanValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean every(Callable<? extends Boolean> selecting) {
+        return Iterable$impl._every($this, selecting);
+    }
+    static <Element> boolean _every(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
+        Iterator<? extends Element> iter = $this.getIterator();
+        java.lang.Object elem;
+        while (!((elem = iter.next()) instanceof Finished)) {
+            if (!sel.$call(elem).booleanValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 class MapIterable<Element, Result> implements Iterable<Result> {
@@ -135,6 +162,14 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public <R2> R2 fold(R2 ini, Callable<? extends R2> f) { 
         return Iterable$impl._fold(this, ini, f); 
     }
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        return Iterable$impl._any(this, f);
+    }
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        return Iterable$impl._every(this, f);
+    }
 }
 
 class FilterIterable<Element> implements Iterable<Element> {
@@ -188,5 +223,13 @@ class FilterIterable<Element> implements Iterable<Element> {
     @Ignore
     public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
         return Iterable$impl._fold(this, ini, f); 
+    }
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        return Iterable$impl._any(this, f);
+    }
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        return Iterable$impl._every(this, f);
     }
 }
