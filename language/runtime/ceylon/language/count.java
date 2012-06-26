@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -24,5 +25,9 @@ public final class count {
            if (((Boolean)$tmp).booleanValue()) count++;
         }
         return count;
+    }
+    @Ignore
+    public static long count() {
+        return 0;
     }
 }
