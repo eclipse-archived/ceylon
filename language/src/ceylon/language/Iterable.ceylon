@@ -73,5 +73,29 @@ shared interface Iterable<out Element>
     shared default Element[] sorted(
             doc "The function comparing pairs of elements."
             Comparison? comparing(Element x, Element y)) { throw; }
- 
+
+    doc "Returns true if at least one element satisfies the predicate function."
+    shared default Boolean any(
+            doc "The function that evaluates an Element of the container."
+            Boolean selecting(Element e)) {
+        for (e in this) {
+            if (selecting(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    doc "Returns true if all elements satisfy the predicate function."
+    shared default Boolean every(
+            doc "The function that evaluates an Element of the container."
+            Boolean selecting(Element e)) {
+        for (e in this) {
+            if (!predicate(e)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
