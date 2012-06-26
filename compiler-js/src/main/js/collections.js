@@ -108,6 +108,24 @@ Iterable.$$.prototype.sorted = function(/*Callable<Comparison?,Element,Element>*
     });
     return ArraySequence(a);
 }
+Iterable.$$.prototype.any = function(/*Callable<Boolean,Element>*/selecting) {
+    var iter = this.getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        if (selecting(e) === $true) {
+            return $true;
+        }
+    }
+    return $false;
+}
+Iterable.$$.prototype.every = function(/*Callable<Boolean,Element>*/selecting) {
+    var iter = this.getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        if (selecting(e) !== $true) {
+            return $false;
+        }
+    }
+    return $true;
+}
 exports.Iterable=Iterable;
 
 function Category(wat) {
