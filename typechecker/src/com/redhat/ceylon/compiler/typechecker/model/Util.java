@@ -110,9 +110,11 @@ public class Util {
                 if (pls!=null && !pls.isEmpty()) {
                     List<Parameter> params = pls.get(0).getParameters();
                     int size = params.size();
-                    if (size>0 && params.get(size-1).isSequenced()) {
+                    if (pls.get(0).hasSequencedParameter()) {
                         //ignore sequenced args
-                        //TODO: don't ignore them!
+                        //TODO: don't ignore them! check that they 
+                        //      all actually match the sequenced
+                        //      param!
                         size--;
                         if (signature.size()<size) {
                             return false;
@@ -167,8 +169,23 @@ public class Util {
             if (dpls!=null&&!dpls.isEmpty() && rpls!=null&&!rpls.isEmpty()) {
                 List<Parameter> dpl = dpls.get(0).getParameters();
                 List<Parameter> rpl = rpls.get(0).getParameters();
-                if (dpl.size()==rpl.size()) {
-                    for (int i=0; i<dpl.size(); i++) {
+                int dplSize = dpl.size();
+                int rplSize = rpl.size();
+                //ignore sequenced parameters
+                boolean dhsp = dpls.get(0).hasSequencedParameter();
+                boolean rhsp = rpls.get(0).hasSequencedParameter();
+                //always prefer a signature without varargs 
+                //over one with a varargs parameter
+                if (!dhsp && rhsp) {
+                    return true;
+                }
+                //ignore sequenced parameters
+                if (dhsp) { dplSize--; }
+                if (rhsp) { dplSize--; }
+                if (dplSize==rplSize) {
+                    //if all parameters are of more specific
+                    //or equal type, prefer it
+                    for (int i=0; i<dplSize; i++) {
                         ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(i).getType());
                         ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(i).getType());
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
