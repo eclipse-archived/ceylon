@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -22,6 +23,10 @@ public final class any {
                 !(($tmp = $val$iter$0.next()) instanceof Finished);) {
            if (((Boolean)$tmp).booleanValue()) return true;
         }
+        return false;
+    }
+    @Ignore
+    public static boolean any() {
         return false;
     }
 }
