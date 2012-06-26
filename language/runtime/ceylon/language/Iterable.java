@@ -61,4 +61,15 @@ public interface Iterable<Element> extends Container {
         @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|ceylon.language.Comparison,Element,Element>")
         Callable<? extends Comparison> comparing);
 
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language.Boolean")
+    public boolean any(@Name("selecting")
+        @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+        Callable<? extends Boolean> selecting);
+
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language.Boolean")
+    public boolean every(@Name("selecting")
+        @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+        Callable<? extends Boolean> selecting);
 }
