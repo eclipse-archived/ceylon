@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -21,5 +22,9 @@ public final class elements {
     @Sequenced @TypeInfo("ceylon.language.Iterable<Element>")
     final Iterable<? extends Element> elements) {
         return elements;
+    }
+    @Ignore
+    public static <Element> Iterable<? extends Element> elements() {
+        return (Iterable<? extends Element>) $empty.getEmpty();
     }
 }

@@ -25,6 +25,9 @@ public final class join {
     @Sequenced
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Empty|ceylon.language.Sequence<Element>>")
     final Iterable<? extends Iterable<? extends Element>> sequences) {
+        if (sequences.getEmpty()) {
+            return (Iterable<? extends Element>) $empty.getEmpty();
+        }
 		List<Element> list = new ArrayList<Element>();
 		java.lang.Object $tmp1;
 		for (Iterator<? extends Iterable<? extends Element>> iter=sequences.getIterator(); 
@@ -41,6 +44,6 @@ public final class join {
     }
     @Ignore
     public static <Element> Iterable<? extends Element> join() {
-        return join((Iterable)$empty.getEmpty());
+        return join((Iterable<? extends Iterable<? extends Element>>)$empty.getEmpty());
     }
 }
