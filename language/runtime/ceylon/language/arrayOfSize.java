@@ -35,8 +35,8 @@ public final class arrayOfSize {
         		//TODO: This is horribly inefficient. We should
         		//      create an empty array, and then use
         		//      Arrays.fill() to populate it!
-                ArrayOfSome.<Element>instance(typeClass, getIterable(size, element)) :
-                ArrayOfNone.<Element>instance(typeClass);
+                ArrayOfSome.<Element>instance(typeClass, (int)size, element) :
+                ArrayOfNone.<Element>instance(typeClass, 0, null);
     }
     
     private static <Element> Iterable<Element> getIterable(final long size, 

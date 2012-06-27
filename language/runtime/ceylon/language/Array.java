@@ -184,6 +184,76 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
             return (Array<T>) instance((T[]) Util.toArray(elements, typeClass));
         }
     }
+    
+    @SuppressWarnings("unchecked")
+    @Ignore
+    public static <T> Array<T> instance(java.lang.Class typeClass, int size, T element) {
+        if (typeClass == null) {
+            typeClass = java.lang.Object.class;
+        }
+        if (typeClass == int.class) {
+            int[] arr = new int[size];
+            if (element != null) {
+                Arrays.fill(arr, (int)((Integer)element).longValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == long.class) {
+            long[] arr = new long[size];
+            if (element != null) {
+                Arrays.fill(arr, ((Integer)element).longValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == byte.class) {
+            byte[] arr = new byte[size];
+            if (element != null) {
+                Arrays.fill(arr, (byte)((Integer)element).longValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == short.class) {
+            short[] arr = new short[size];
+            if (element != null) {
+                Arrays.fill(arr, (short)((Integer)element).longValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == float.class) {
+            float[] arr = new float[size];
+            if (element != null) {
+                Arrays.fill(arr, (float)((Float)element).doubleValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == double.class) {
+            double[] arr = new double[size];
+            if (element != null) {
+                Arrays.fill(arr, ((Float)element).doubleValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == boolean.class) {
+            boolean[] arr = new boolean[size];
+            if (element != null) {
+                Arrays.fill(arr, ((Boolean)element).booleanValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == char.class) {
+            char[] arr = new char[size];
+            if (element != null) {
+             // FIXME: this is invalid
+                Arrays.fill(arr, (char)((Character)element).intValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == java.lang.String.class) {
+            java.lang.String[] arr = new java.lang.String[size];
+            if (element != null) {
+                Arrays.fill(arr, ((String)element).toString());
+            }
+            return (Array<T>) instance(arr);
+        } else {
+            T[] arr = (T[]) java.lang.reflect.Array.newInstance(typeClass, size);
+            if (element != null) {
+                Arrays.fill(arr, element);
+            }
+            return (Array<T>) instance(arr);
+        }
+    }
 
     /*@Override
     @TypeInfo("ceylon.language.Nothing|Element")
