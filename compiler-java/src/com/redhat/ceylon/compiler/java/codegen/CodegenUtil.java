@@ -311,7 +311,11 @@ class CodegenUtil {
     }
 
     static String getAliasedParameterName(Parameter parameter) {
-        return parameter.getName()+"$";
+        MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(parameter);
+        if (mov instanceof Method
+                || mov instanceof Value && mov.isVariable() && mov.isCaptured()) {
+            return parameter.getName()+"$";
+        }
+        return parameter.getName();
     }
-    
 }

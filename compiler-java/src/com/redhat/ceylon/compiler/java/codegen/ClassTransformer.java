@@ -1294,7 +1294,7 @@ public class ClassTransformer extends AbstractTransformer {
                 args.add(makeUnquotedIdent(varName));
             } else {
                 overloadBuilder.parameter(param2, 0);
-                args.add(makeQuotedIdent(param2.getName()));
+                args.add(makeQuotedIdent(CodegenUtil.getAliasedParameterName(param2)));
             }
         }
         
