@@ -156,17 +156,11 @@ function isOfType(obj, typeName) {
     if (obj === null) {
         return Boolean$(typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void");
     }
-    if (typeof obj === 'function') {
-        return Boolean$(typeName === 'ceylon.language.Callable');
-    }
     return Boolean$(obj.getT$all && typeName in obj.getT$all());
 }
 function isOfTypes(obj, types) {
     if (obj===null) {
         return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
-    }
-    if (typeof obj === 'function') {
-        return Boolean$(types.l.indexOf('ceylon.language.Callable')>=0);
     }
     var unions = false;
     var inters = true;
