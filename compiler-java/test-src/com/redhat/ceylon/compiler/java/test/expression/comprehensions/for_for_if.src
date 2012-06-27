@@ -5,14 +5,14 @@ final class x {
     static {
         value = new .ceylon.language.Iterable[]{new .ceylon.language.AbstractIterable<.ceylon.language.Integer>(){
             
-            public .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
-                    private .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).getIterator();
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).getIterator();
                     private .ceylon.language.Integer y;
                     private boolean y$exhausted;
                     
-                    private boolean y() {
-                        .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                    private final boolean y() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
                         y$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted.getExhausted();
                         if (y$exhausted) {
                             return false;
@@ -23,7 +23,7 @@ final class x {
                     }
                     private .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1;
                     
-                    private .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1() {
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$1() {
                         if (iter$1 == null) this.y();
                         iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).getIterator();
                         return iter$1;
@@ -31,9 +31,9 @@ final class x {
                     private .ceylon.language.Integer x;
                     private boolean x$exhausted;
                     
-                    private boolean x() {
+                    private final boolean x() {
                         if (iter$1 == null) this.iter$1();
-                        .java.lang.Object $ceylontmpitem1 = iter$1.next();
+                        final .java.lang.Object $ceylontmpitem1 = iter$1.next();
                         x$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted.getExhausted();
                         if (x$exhausted) {
                             if (this.y()) {
@@ -47,13 +47,13 @@ final class x {
                         return true;
                     }
                     
-                    private boolean next2() {
+                    private final boolean next2() {
                         while (this.x() && !x.compare(y).largerThan()) {
                         }
                         return !x$exhausted;
                     }
                     
-                    public .java.lang.Object next() {
+                    public final .java.lang.Object next() {
                         return this.next2() ? x.times(y) : .ceylon.language.exhausted.getExhausted();
                     }
                 };

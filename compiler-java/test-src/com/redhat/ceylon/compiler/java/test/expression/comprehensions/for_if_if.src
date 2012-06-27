@@ -5,14 +5,14 @@ final class x {
     static {
         value = new .ceylon.language.Iterable[]{new .ceylon.language.AbstractIterable<.ceylon.language.Integer>(){
             
-            public .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
-                    private .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator();
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator();
                     private .ceylon.language.Integer x;
                     private boolean x$exhausted;
                     
-                    private boolean x() {
-                        .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
                         x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted.getExhausted();
                         if (x$exhausted) {
                             return false;
@@ -22,19 +22,19 @@ final class x {
                         return true;
                     }
                     
-                    private boolean next1() {
+                    private final boolean next1() {
                         while (this.x() && !x.remainder(.ceylon.language.Integer.instance(2L)).equals(.ceylon.language.Integer.instance(0L))) {
                         }
                         return !x$exhausted;
                     }
                     
-                    private boolean next2() {
+                    private final boolean next2() {
                         while (this.next1() && !x.compare(.ceylon.language.Integer.instance(5L)).largerThan()) {
                         }
                         return !x$exhausted;
                     }
                     
-                    public .java.lang.Object next() {
+                    public final .java.lang.Object next() {
                         return this.next2() ? x : .ceylon.language.exhausted.getExhausted();
                     }
                 };

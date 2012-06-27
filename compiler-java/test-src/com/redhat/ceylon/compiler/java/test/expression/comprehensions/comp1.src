@@ -5,14 +5,14 @@ final class x {
     static {
         value = new .ceylon.language.Iterable[]{new .ceylon.language.AbstractIterable<.ceylon.language.String>(){
             
-            public .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
-                    private .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.instance("hello world").split().getIterator();
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.instance("hello world").split().getIterator();
                     private .ceylon.language.String str;
                     private boolean str$exhausted;
                     
-                    private boolean str() {
-                        .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                    private final boolean str() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
                         str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted.getExhausted();
                         if (str$exhausted) {
                             return false;
@@ -22,7 +22,7 @@ final class x {
                         return true;
                     }
                     
-                    public .java.lang.Object next() {
+                    public final .java.lang.Object next() {
                         return this.str() ? str : .ceylon.language.exhausted.getExhausted();
                     }
                 };
