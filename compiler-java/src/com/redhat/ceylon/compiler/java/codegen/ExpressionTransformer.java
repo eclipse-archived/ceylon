@@ -1851,7 +1851,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                     names().fromString("getIterator")), List.<JCExpression>nil()))),
                             make().Return(makeUnquotedIdent(iterVar))
                     ));
-                    fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE),
+                    fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL),
                             names().fromString(iterVar), iterTypeExpr, List.<JCTree.JCTypeParameter>nil(),
                             List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
                 }
