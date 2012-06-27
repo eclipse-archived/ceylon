@@ -26,43 +26,43 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     
     protected final java.lang.Object array;
     
-    public Array(char... array) {
+    protected Array(char... array) {
         this.array = array;
     }
     
-    public Array(byte... array) {
+    protected Array(byte... array) {
         this.array = array;
     }
     
-    public Array(short... array) {
+    protected Array(short... array) {
         this.array = array;
     }
     
-    public Array(int... array) {
+    protected Array(int... array) {
         this.array = array;
     }
     
-    public Array(long... array) {
+    protected Array(long... array) {
         this.array = array;
     }
     
-    public Array(float... array) {
+    protected Array(float... array) {
         this.array = array;
     }
     
-    public Array(double... array) {
+    protected Array(double... array) {
         this.array = array;
     }
     
-    public Array(boolean... array) {
+    protected Array(boolean... array) {
         this.array = array;
     }
 
-    public Array(java.lang.String... array) {
+    protected Array(java.lang.String... array) {
         this.array = array;
     }
 
-    public Array(Element... array) {
+    protected Array(Element... array) {
         this.array = array;
     }
 
@@ -661,7 +661,7 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     @Override
     public FixedSized<? extends Element> getRest() {
         if (getSize() == 1) {
-            return $arrayOfNone.<Element>arrayOfNone();
+            return arrayOfNone.<Element>arrayOfNone();
         } else {
             if (array instanceof char[]) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, 1, (int)getSize()));

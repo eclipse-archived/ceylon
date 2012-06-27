@@ -30,20 +30,20 @@ public final class $array {
             Class typeClass,
             final ceylon.language.Iterable<? extends Element> elements) {
         if (elements.getEmpty()) {
-            return $arrayOfNone.<Element>arrayOfNone(typeClass);
+            return arrayOfNone.<Element>arrayOfNone(typeClass);
         } else {
-            return $arrayOfSome.arrayOfSome(typeClass, elements);
+            return arrayOfSome.arrayOfSome(typeClass, elements);
         }
     }
     
     @Ignore
     public static <Element> Array<Element> array() {
-        return $arrayOfNone.<Element>arrayOfNone(null);
+        return arrayOfNone.<Element>arrayOfNone(null);
     }
     
     @Ignore
     public static <Element> Array<Element> array(Class typeClass) {
-        return $arrayOfNone.<Element>arrayOfNone(typeClass);
+        return arrayOfNone.<Element>arrayOfNone(typeClass);
     }
             
 }
