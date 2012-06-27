@@ -312,17 +312,20 @@ public class GenerateJsVisitor extends Visitor
         out("var ", names.name(d), "=");
     }
 
-    private void share(Declaration d) {
-        share(d, true);
+    private boolean share(Declaration d) {
+        return share(d, true);
     }
 
-    private void share(Declaration d, boolean excludeProtoMembers) {
+    private boolean share(Declaration d, boolean excludeProtoMembers) {
+        boolean shared = false;
         if (!(excludeProtoMembers && prototypeStyle && d.isClassOrInterfaceMember())
                 && isCaptured(d)) {
             outerSelf(d);
             out(".", names.name(d), "=", names.name(d), ";");
             endLine();
+            shared = true;
         }
+        return shared;
     }
 
     @Override
@@ -924,8 +927,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
 
-
-        share(d);
+        if (!share(d)) { out(";"); }
     }
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
@@ -971,7 +973,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         out("var ", names.getter(d), "=function()");
         super.visit(that);
-        shareGetter(d);
+        if (!shareGetter(d)) { out(";"); }
     }
 
     private void addGetterToPrototype(TypeDeclaration outer,
@@ -982,14 +984,18 @@ public class GenerateJsVisitor extends Visitor
         out(names.self(outer), ".", names.getter(d), "=",
                 function, names.getter(d), "()");
         super.visit(that);
+        out(";");
     }
 
-    private void shareGetter(MethodOrValue d) {
+    private boolean shareGetter(MethodOrValue d) {
+        boolean shared = false;
         if (isCaptured(d)) {
             outerSelf(d);
             out(".", names.getter(d), "=", names.getter(d), ";");
             endLine();
+            shared = true;
         }
+        return shared;
     }
 
     @Override
@@ -999,8 +1005,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         out("var ", names.setter(d.getGetter()), "=function(", names.name(d.getParameter()), ")");
         super.visit(that);
-        out(";");
-        shareSetter(d);
+        if (!shareSetter(d)) { out(";"); }
     }
 
     private void addSetterToPrototype(TypeDeclaration outer,
@@ -1012,6 +1017,7 @@ public class GenerateJsVisitor extends Visitor
         out(names.self(outer), ".", setterName, "=",
                 function, setterName, "(", names.name(d.getParameter()), ")");
         super.visit(that);
+        out(";");
     }
 
     private boolean isCaptured(Declaration d) {
@@ -1030,12 +1036,15 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void shareSetter(MethodOrValue d) {
+    private boolean shareSetter(MethodOrValue d) {
+        boolean shared = false;
         if (isCaptured(d)) {
             outerSelf(d);
             out(".", names.setter(d), "=", names.setter(d), ";");
             endLine();
+            shared = true;
         }
+        return shared;
     }
 
     @Override
@@ -1105,14 +1114,14 @@ public class GenerateJsVisitor extends Visitor
                     function, names.getter(d), "()");
             beginBlock();
             out("return this.", names.name(d), ";");
-            endBlock();
+            endBlock(false); out(";"); endLine();
             if (d.isVariable()) {
                 String paramVarName = names.createTempVariable(d.getName());
                 out(names.self(outer), ".", names.setter(d), "=");
                 out(function, names.setter(d), "(", paramVarName, ")");
                 beginBlock();
                 out("return this.", names.name(d), "=", paramVarName, ";");
-                endBlock();
+                endBlock(false); out(";"); endLine();
             }
         }
     }
