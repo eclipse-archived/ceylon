@@ -1,0 +1,88 @@
+package ceylon.language;
+
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+
+@Ignore
+@Ceylon(major = 1)
+class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
+
+    @Ignore
+    protected ArrayOfNone(char... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(byte... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(short... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(int... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(long... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(float... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(double... array) {
+        super(array);
+    }
+    
+    @Ignore
+    protected ArrayOfNone(boolean... array) {
+        super(array);
+    }
+
+    @Ignore
+    protected ArrayOfNone(java.lang.String... array) {
+        super(array);
+    }
+
+    @Ignore
+    protected ArrayOfNone(Element... array) {
+        super(array);
+    }
+    
+    @Ignore
+    public static <T> Array<T> instance(java.lang.Class typeClass) {
+        return instance(typeClass, null);
+    }
+    
+    @Override
+    public long getSize() {
+        return 0;
+    }
+    
+    @Override
+    public boolean getEmpty() {
+        return true;
+    }
+    
+    @Override
+    public Element getFirst() {
+        return null;
+    }
+
+    @Override @Ignore public Iterable<? extends Element> getSequence() { return (Iterable)$empty.getEmpty(); }
+    @Override @Ignore public Element find(Callable<? extends Boolean> f) { return null; }
+    @Override @Ignore public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { return this; }
+    @Override @Ignore public <Result> Iterable<Result> map(Callable<? extends Result> f) { return (Iterable)$empty.getEmpty(); }
+    @Override @Ignore public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
+    @Override @Ignore public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
+    @Override @Ignore public boolean any(Callable<? extends Boolean> f) { return false; }
+    @Override @Ignore public boolean every(Callable<? extends Boolean> f) { return false; }
+}
