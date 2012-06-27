@@ -66,11 +66,12 @@ function zip(keys, items) {
 }
 //receives and returns ArraySequence
 function coalesce(seq) {
+    if (seq === undefined) {return $empty}
     var newseq = [];
-    for (var i = 0; i < seq.value.length; i++) {
-        if (seq.value[i]) {
-            newseq = newseq.concat(seq.value[i]);
-        }
+    var it = seq.getIterator();
+    var elem;
+    while ((elem = it.next()) !== $finished) {
+        if (elem !== null) {newseq.push(elem);}
     }
     return ArraySequence(newseq);
 }
