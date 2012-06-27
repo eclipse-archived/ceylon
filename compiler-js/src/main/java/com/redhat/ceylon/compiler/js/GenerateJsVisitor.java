@@ -43,7 +43,7 @@ public class GenerateJsVisitor extends Visitor
      * because the code referencing them needs to be treated differently; similar to the directAccess but it gets cleared
      * after the comprehension has been generated. */
     private final List<Declaration> comprehensions = new ArrayList<Declaration>();
-    private final List<String> retainedTempVars = new ArrayList<String>();
+    private List<String> retainedTempVars = null;
     private final Set<Module> importedModules = new HashSet<Module>();
 
     private final class SuperVisitor extends Visitor {
@@ -241,21 +241,24 @@ public class GenerateJsVisitor extends Visitor
     private void visitStatements(List<Statement> statements, boolean endLastLine) {
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
+            
+            List<String> retainedVars = new ArrayList<String>();
+            retainedTempVars = retainedVars;
             s.visit(this);
 
             boolean needNewline = s instanceof ExecutableStatement;
-            if (!retainedTempVars.isEmpty()) {
+            if (!retainedVars.isEmpty()) {
                 if (needNewline) { endLine(); }
                 needNewline = true;
                 out("var ");
                 boolean first = true;
-                for (String varName : retainedTempVars) {
+                for (String varName : retainedVars) {
                     if (!first) { out(","); }
                     first = false;
                     out(varName);
                 }
                 out(";");
-                retainedTempVars.clear();
+                retainedVars.clear();
             }
 
             if (needNewline && (endLastLine || (i<statements.size()-1))) {
@@ -996,6 +999,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         out("var ", names.setter(d.getGetter()), "=function(", names.name(d.getParameter()), ")");
         super.visit(that);
+        out(";");
         shareSetter(d);
     }
 
