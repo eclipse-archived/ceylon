@@ -41,5 +41,5 @@ void misc() {
     see(); by(); tagged();
     every(); any(); count(); first();
     join(); entries(); elements();
-    array();
+    array(); coalesce();
 }
