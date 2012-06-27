@@ -1,0 +1,88 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class DefaultedVariableAttribute {
+    
+    static .ceylon.language.String $init$firstName() {
+        return null;
+    }
+    
+    static .ceylon.language.String $init$lastName(final .ceylon.language.String firstName$) {
+        return null;
+    }
+    private .ceylon.language.String firstName;
+    
+    private final .ceylon.language.String getFirstName() {
+        return firstName;
+    }
+    
+    private final void setFirstName(final .ceylon.language.String firstName) {
+        this.firstName = firstName;
+    }
+    private .ceylon.language.String lastName;
+    
+    private final .ceylon.language.String getLastName() {
+        return lastName;
+    }
+    
+    private final void setLastName(final .ceylon.language.String lastName) {
+        this.lastName = lastName;
+    }
+    
+    public final .java.lang.String getFullName() {
+        return .ceylon.language.String.instance(" ").join(new .ceylon.language.ArraySequence((
+            let
+            {
+                .ceylon.language.String $ceylontmp5 = getFirstName();
+            }
+            returning $ceylontmp5 != null ? $ceylontmp5 : .ceylon.language.String.instance("");
+        ), (
+            let
+            {
+                .ceylon.language.String $ceylontmp6 = getLastName();
+            }
+            returning $ceylontmp6 != null ? $ceylontmp6 : .ceylon.language.String.instance("");
+        )));
+    }
+    
+    public final void setFullName(final .java.lang.String fullName) {
+        final .ceylon.language.Iterator<? extends .ceylon.language.String> tokens = .ceylon.language.String.instance(fullName).split().getIterator();
+        .java.lang.Object $first$7;
+        if (($first$7 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String $first$8 = ((.ceylon.language.String)$first$7).toString();
+            setFirstName(.ceylon.language.String.instance($first$8));
+        }
+        .java.lang.Object $last$9;
+        if (($last$9 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String $last$10 = ((.ceylon.language.String)$last$9).toString();
+            setLastName(.ceylon.language.String.instance($last$10));
+        }
+    }
+    
+    DefaultedVariableAttribute() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$firstName$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$firstName();
+                .ceylon.language.String $ceylontmp$lastName$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName($ceylontmp$firstName$1);
+                this($ceylontmp$firstName$1, $ceylontmp$lastName$2);
+            }
+            returning null;
+        );
+    }
+    
+    DefaultedVariableAttribute(final .ceylon.language.String firstName$) {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$lastName$4 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName(firstName$);
+                this(firstName$, $ceylontmp$lastName$4);
+            }
+            returning null;
+        );
+    }
+    
+    DefaultedVariableAttribute(.ceylon.language.String firstName, .ceylon.language.String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}

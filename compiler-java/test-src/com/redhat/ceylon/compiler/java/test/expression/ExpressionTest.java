@@ -199,6 +199,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("instantiation/DefaultedParameterClassInstantiation");
     }
     @Test
+    public void testInsDefaultedVariableAttribute(){
+        compareWithJavaSource("instantiation/DefaultedVariableAttribute");
+    }
+    @Test
     public void testInsSequencedParameterClassInstantiation(){
         compareWithJavaSource("instantiation/SequencedParameterClassInstantiation");
     }
