@@ -50,8 +50,12 @@ function max(seq) {
 function join(seqs) {
     if (seqs === undefined) return $empty;
     var builder = [];
-    for (var i = 0; i < seqs.value.length; i++) {
-        builder = builder.concat(seqs.value[i].value);
+    var it = seqs.getIterator();
+    var seq;
+    while ((seq = it.next()) !== $finished) {
+        var it2 = seq.getIterator();
+        var elem;
+        while ((elem = it2.next()) != $finished) {builder.push(elem);}
     }
     return ArraySequence(builder);
 }
