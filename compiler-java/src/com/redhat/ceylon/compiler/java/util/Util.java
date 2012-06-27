@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.tools.JavaFileObject.Kind;
@@ -106,13 +107,15 @@ public class Util {
         return sb.subSequence(0, sb.length() - sep.length()).toString();
     }
     
-    private static boolean isJavaKeyword(String name) {
-        try{
-            Token token = Token.valueOf(name.toUpperCase());
-            return token != null && token.name != null && token.name.equals(name);
-        }catch(IllegalArgumentException x){
-            return false;
+    private static final HashSet<String> tokens;
+    static {
+        tokens = new HashSet<String>();
+        for (Token t : Token.values()) {
+            tokens.add(t.name);
         }
+    }
+    private static boolean isJavaKeyword(String name) {
+        return tokens.contains(name);
     }
 
     public static String strip(String str){
