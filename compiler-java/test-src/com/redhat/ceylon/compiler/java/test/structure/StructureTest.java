@@ -207,6 +207,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/RefinedVarianceInheritance2");
     }
     @Test
+    public void testKlsRefinementAndIntersection_fail(){
+        compareWithJavaSource("klass/RefinementAndIntersection");
+    }
+    @Test
     public void testKlsRefinementWidening(){
         compareWithJavaSource("klass/RefinementWidening");
     }
