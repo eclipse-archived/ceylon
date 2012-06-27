@@ -169,6 +169,7 @@ shared void numbers() {
     assert(multiplyIntegerByInteger(1, -1)==-1, "multiplyIntegerByInteger(1, -1)==-1");
     
     assert(1.hash==(3-1)/2.hash, "natural hash");
+    assert(1.hash!=(-1).hash, "natural hash inverted not same");
     assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
     assert((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
     
