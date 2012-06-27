@@ -64,6 +64,21 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     public X find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends X> sorted(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return $ceylon$language$Iterable$this.sorted(comparing);
+    }
+    
+    @.java.lang.Override
+    public boolean any(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.any(selecting);
+    }
+    
+    @.java.lang.Override
+    public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.every(selecting);
+    }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
     private final .ceylon.language.Category$impl $ceylon$language$Category$this;

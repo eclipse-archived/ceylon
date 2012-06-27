@@ -6,7 +6,7 @@ abstract class Bug526Top {
     
     public abstract long getFormalVar();
     
-    public abstract void setFormalVar(long formalVar);
+    public abstract void setFormalVar(final long formalVar);
     private final long defaultAttr;
     
     public long getDefaultAttr() {
@@ -18,7 +18,7 @@ abstract class Bug526Top {
         return defaultVar;
     }
     
-    public void setDefaultVar(long defaultVar) {
+    public void setDefaultVar(final long defaultVar) {
         this.defaultVar = defaultVar;
     }
     
@@ -30,7 +30,7 @@ abstract class Bug526Top {
         return 3L;
     }
     
-    public void setDefaultSetter(long defaultSetter) {
+    public void setDefaultSetter(final long defaultSetter) {
     }
     
     Bug526Top() {
@@ -46,7 +46,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
         return formalAttr;
     }
     
-    public final void setFormalAttr(long formalAttr) {
+    public final void setFormalAttr(final long formalAttr) {
         this.formalAttr = formalAttr;
     }
     private long formalVar;
@@ -57,7 +57,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
     }
     
     @.java.lang.Override
-    public final void setFormalVar(long formalVar) {
+    public final void setFormalVar(final long formalVar) {
         this.formalVar = formalVar;
     }
     private long defaultAttr;
@@ -67,7 +67,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
         return defaultAttr;
     }
     
-    public final void setDefaultAttr(long defaultAttr) {
+    public final void setDefaultAttr(final long defaultAttr) {
         this.defaultAttr = defaultAttr;
     }
     private long defaultVar;
@@ -78,7 +78,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
     }
     
     @.java.lang.Override
-    public final void setDefaultVar(long defaultVar) {
+    public final void setDefaultVar(final long defaultVar) {
         this.defaultVar = defaultVar;
     }
     private long defaultGetter;
@@ -88,7 +88,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
         return defaultGetter;
     }
     
-    public final void setDefaultGetter(long defaultGetter) {
+    public final void setDefaultGetter(final long defaultGetter) {
         this.defaultGetter = defaultGetter;
     }
     private long defaultSetter;
@@ -99,7 +99,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
     }
     
     @.java.lang.Override
-    public final void setDefaultSetter(long defaultSetter) {
+    public final void setDefaultSetter(final long defaultSetter) {
         this.defaultSetter = defaultSetter;
     }
     
@@ -125,7 +125,7 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
         return 2L;
     }
     
-    public final void setFormalAttr(long formalAttr) {
+    public final void setFormalAttr(final long formalAttr) {
     }
     
     @.java.lang.Override
@@ -134,7 +134,7 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
     }
     
     @.java.lang.Override
-    public final void setFormalVar(long formalVar) {
+    public final void setFormalVar(final long formalVar) {
     }
     
     @.java.lang.Override
@@ -142,7 +142,7 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
         return 2L;
     }
     
-    public final void setDefaultAttr(long defaultAttr) {
+    public final void setDefaultAttr(final long defaultAttr) {
     }
     
     @.java.lang.Override
@@ -151,7 +151,7 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
     }
     
     @.java.lang.Override
-    public final void setDefaultVar(long defaultVar) {
+    public final void setDefaultVar(final long defaultVar) {
     }
     
     @.java.lang.Override
@@ -159,7 +159,7 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
         return 2L;
     }
     
-    public final void setDefaultGetter(long defaultGetter) {
+    public final void setDefaultGetter(final long defaultGetter) {
     }
     
     @.java.lang.Override
@@ -168,7 +168,7 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.Bug526T
     }
     
     @.java.lang.Override
-    public final void setDefaultSetter(long defaultSetter) {
+    public final void setDefaultSetter(final long defaultSetter) {
     }
     
     Bug526Bottom2() {

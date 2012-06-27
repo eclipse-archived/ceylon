@@ -6,7 +6,7 @@ final class topLevelGetterSetter {
         return 0L;
     }
     
-    static void setTopLevelGetterSetter(long topLevelGetterSetter) {
+    static void setTopLevelGetterSetter(final long topLevelGetterSetter) {
     }
     
     private topLevelGetterSetter() {
@@ -18,7 +18,7 @@ public final class topLevelGetterSetterShared {
         return 0L;
     }
     
-    public static void setTopLevelGetterSetterShared(long topLevelGetterSetterShared) {
+    public static void setTopLevelGetterSetterShared(final long topLevelGetterSetterShared) {
     }
     
     private topLevelGetterSetterShared() {

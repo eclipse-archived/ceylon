@@ -16,7 +16,7 @@ class MethodLocalAssign {
                 return value;
             }
             
-            void setB1(boolean b1) {
+            void setB1(final boolean b1) {
                 value = b1;
             }
             
@@ -40,7 +40,7 @@ class MethodLocalAssign {
         final class b2$setter {
             private boolean value;
             
-            void setB2(boolean b2) {
+            void setB2(final boolean b2) {
                 b1.setB1(b2);
             }
             

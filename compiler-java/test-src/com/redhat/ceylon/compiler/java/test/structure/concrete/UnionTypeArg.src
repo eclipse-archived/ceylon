@@ -32,6 +32,21 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     public .java.lang.Object find(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable sorted(final .ceylon.language.Callable comparing) {
+        return $ceylon$language$Iterable$this.sorted(comparing);
+    }
+    
+    @.java.lang.Override
+    public boolean any(final .ceylon.language.Callable selecting) {
+        return $ceylon$language$Iterable$this.any(selecting);
+    }
+    
+    @.java.lang.Override
+    public boolean every(final .ceylon.language.Callable selecting) {
+        return $ceylon$language$Iterable$this.every(selecting);
+    }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;
     
@@ -72,6 +87,21 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     @.java.lang.Override
     public .ceylon.language.Iterable filter(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable sorted(final .ceylon.language.Callable comparing) {
+        return $ceylon$language$Iterable$this.sorted(comparing);
+    }
+    
+    @.java.lang.Override
+    public boolean any(final .ceylon.language.Callable selecting) {
+        return $ceylon$language$Iterable$this.any(selecting);
+    }
+    
+    @.java.lang.Override
+    public boolean every(final .ceylon.language.Callable selecting) {
+        return $ceylon$language$Iterable$this.every(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;

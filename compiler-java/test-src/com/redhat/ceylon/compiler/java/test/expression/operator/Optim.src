@@ -14,7 +14,7 @@ final class optimToplevelInteger {
         }
     }
     
-    static void setOptimToplevelInteger(long optimToplevelInteger) {
+    static void setOptimToplevelInteger(final long optimToplevelInteger) {
         value[0] = optimToplevelInteger;
     }
     
@@ -261,7 +261,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return fieldInteger;
     }
     
-    private final void setFieldInteger(long fieldInteger) {
+    private final void setFieldInteger(final long fieldInteger) {
         this.fieldInteger = fieldInteger;
     }
     
@@ -269,7 +269,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         return 0L;
     }
     
-    private final void setFieldGetterInteger(long fieldGetterInteger) {
+    private final void setFieldGetterInteger(final long fieldGetterInteger) {
     }
     
     private final void nonOptimisableArithmetic() {
@@ -288,7 +288,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         final class localGetterInteger$setter {
             private long value;
             
-            void setLocalGetterInteger(long localGetterInteger) {
+            void setLocalGetterInteger(final long localGetterInteger) {
             }
             
             private localGetterInteger$setter() {

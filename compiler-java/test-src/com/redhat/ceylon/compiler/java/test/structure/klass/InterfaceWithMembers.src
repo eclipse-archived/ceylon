@@ -6,7 +6,7 @@ interface InterfaceWithMembers {
     
     public abstract boolean getB2();
     
-    public abstract void setB2(boolean b2);
+    public abstract void setB2(final boolean b2);
     
     public abstract void m();
 }
@@ -21,7 +21,7 @@ final class InterfaceWithMembers$impl {
         return $this.getB2();
     }
     
-    public final void setB2(boolean b2) {
+    public final void setB2(final boolean b2) {
         $this.setB2(b2);
     }
     

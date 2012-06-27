@@ -6,7 +6,7 @@ interface SatisfiesWithMembers {
     
     public abstract boolean getB2();
     
-    public abstract void setB2(boolean b2);
+    public abstract void setB2(final boolean b2);
     
     public abstract void m();
 }
@@ -21,7 +21,7 @@ final class SatisfiesWithMembers$impl {
         return $this.getB2();
     }
     
-    public final void setB2(boolean b2) {
+    public final void setB2(final boolean b2) {
         $this.setB2(b2);
     }
     
@@ -45,7 +45,7 @@ class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test
     }
     
     @.java.lang.Override
-    public void setB2(boolean b2) {
+    public void setB2(final boolean b2) {
         this.b2 = b2;
     }
     

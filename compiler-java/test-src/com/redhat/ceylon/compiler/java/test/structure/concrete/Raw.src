@@ -6,7 +6,7 @@ interface RawInv<T, U> {
     
     public T getADefault();
     
-    public void setADefault(T aDefault);
+    public void setADefault(final T aDefault);
     
     public abstract T m(final T t);
     
@@ -31,7 +31,7 @@ final class RawInv$impl<T, U> {
         throw new .ceylon.language.Exception(null, null);
     }
     
-    public void setADefault(T aDefault) {
+    public void setADefault(final T aDefault) {
     }
     
     public T mDefault(final T t) {

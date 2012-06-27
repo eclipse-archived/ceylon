@@ -7,7 +7,7 @@ abstract class ClassVariable {
         return publicvar;
     }
     
-    public final void setPublicvar(.java.lang.String publicvar) {
+    public final void setPublicvar(final .java.lang.String publicvar) {
         this.publicvar = publicvar;
     }
     private .java.lang.String capturedvar;
@@ -16,13 +16,13 @@ abstract class ClassVariable {
         return capturedvar;
     }
     
-    private final void setCapturedvar(.java.lang.String capturedvar) {
+    private final void setCapturedvar(final .java.lang.String capturedvar) {
         this.capturedvar = capturedvar;
     }
     
     public abstract .java.lang.String getFormalvar();
     
-    public abstract void setFormalvar(.java.lang.String formalvar);
+    public abstract void setFormalvar(final .java.lang.String formalvar);
     
     private final void m() {
         setCapturedvar("new value");
@@ -45,7 +45,7 @@ class SubClassVariable extends .com.redhat.ceylon.compiler.java.test.structure.a
     }
     
     @.java.lang.Override
-    public final void setFormalvar(.java.lang.String formalvar) {
+    public final void setFormalvar(final .java.lang.String formalvar) {
         this.formalvar = formalvar;
     }
     

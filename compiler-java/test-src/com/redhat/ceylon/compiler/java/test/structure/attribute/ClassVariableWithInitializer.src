@@ -7,7 +7,7 @@ class ClassVariableWithInitializer {
         return f2;
     }
     
-    public final void setF2(.java.lang.String f2) {
+    public final void setF2(final .java.lang.String f2) {
         this.f2 = f2;
     }
     

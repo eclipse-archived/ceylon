@@ -14,7 +14,7 @@ final class bug247_toplevel {
         }
     }
     
-    static void setBug247_toplevel(long bug247_toplevel) {
+    static void setBug247_toplevel(final long bug247_toplevel) {
         value[0] = bug247_toplevel;
     }
     

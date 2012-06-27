@@ -6,7 +6,7 @@ class KeywordInClassGetter {
         return "";
     }
     
-    private final void setAssert(.java.lang.String assert) {
+    private final void setAssert(final .java.lang.String assert) {
     }
     
     KeywordInClassGetter() {

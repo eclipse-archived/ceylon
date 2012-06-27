@@ -191,7 +191,7 @@ final class topLevelLeftAttribute {
         }
     }
     
-    static void setTopLevelLeftAttribute(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
+    static void setTopLevelLeftAttribute(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
         value[0] = topLevelLeftAttribute;
     }
     
@@ -224,7 +224,7 @@ class Test {
         return leftAttribute;
     }
     
-    public final void setLeftAttribute(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left leftAttribute) {
+    public final void setLeftAttribute(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left leftAttribute) {
         this.leftAttribute = leftAttribute;
     }
     private .java.lang.Object middleAttribute;
@@ -233,7 +233,7 @@ class Test {
         return middleAttribute;
     }
     
-    public final void setMiddleAttribute(.java.lang.Object middleAttribute) {
+    public final void setMiddleAttribute(final .java.lang.Object middleAttribute) {
         this.middleAttribute = middleAttribute;
     }
     

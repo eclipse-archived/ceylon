@@ -32,6 +32,21 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     public .ceylon.language.Iterable<?> find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> sorted(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return $ceylon$language$Iterable$this.sorted(comparing);
+    }
+    
+    @.java.lang.Override
+    public boolean any(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.any(selecting);
+    }
+    
+    @.java.lang.Override
+    public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.every(selecting);
+    }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     
     @.java.lang.Override

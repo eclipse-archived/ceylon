@@ -17,7 +17,7 @@ final class bug607mth {
                 return value;
             }
             
-            void setArg3(.java.lang.String arg3) {
+            void setArg3(final .java.lang.String arg3) {
                 value = arg3;
             }
             
@@ -53,7 +53,7 @@ class Bug607cls {
                 return value;
             }
             
-            void setArg3(.java.lang.String arg3) {
+            void setArg3(final .java.lang.String arg3) {
                 value = arg3;
             }
             

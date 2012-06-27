@@ -7,7 +7,7 @@ class C<T> {
         return t;
     }
     
-    public final void setT(T t) {
+    public final void setT(final T t) {
         this.t = t;
     }
     

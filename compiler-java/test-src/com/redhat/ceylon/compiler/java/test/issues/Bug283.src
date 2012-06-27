@@ -7,7 +7,7 @@ class Bug283 {
         return oi;
     }
     
-    private final void setOi(long oi) {
+    private final void setOi(final long oi) {
         this.oi = oi;
     }
     

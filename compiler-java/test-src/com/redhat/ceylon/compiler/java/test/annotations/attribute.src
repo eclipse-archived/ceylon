@@ -40,7 +40,7 @@ final class attr2 {
     
     static void setAttr2(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
-    long attr2) {
+    final long attr2) {
         value[0] = attr2;
     }
     
@@ -70,7 +70,7 @@ final class attr4 {
     
     static void setAttr4(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
-    long attr4) {
+    final long attr4) {
     }
     
     private attr4() {

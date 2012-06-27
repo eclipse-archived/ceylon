@@ -7,7 +7,7 @@ class ExceptionAttr {
         return e;
     }
     
-    public final void setE(.java.lang.Throwable e) {
+    public final void setE(final .java.lang.Throwable e) {
         this.e = e;
     }
     

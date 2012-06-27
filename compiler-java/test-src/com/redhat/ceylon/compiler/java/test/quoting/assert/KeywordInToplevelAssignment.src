@@ -14,7 +14,7 @@ final class $assert {
         }
     }
     
-    static void setAssert(long assert) {
+    static void setAssert(final long assert) {
         value[0] = assert;
     }
     

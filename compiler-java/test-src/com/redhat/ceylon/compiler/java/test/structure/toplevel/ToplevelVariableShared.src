@@ -14,7 +14,7 @@ public final class topLevelVariableShared {
         }
     }
     
-    public static void setTopLevelVariableShared(long topLevelVariableShared) {
+    public static void setTopLevelVariableShared(final long topLevelVariableShared) {
         value[0] = topLevelVariableShared;
     }
     

@@ -7,7 +7,7 @@ class IntegerBoxing {
         return attrInteger;
     }
     
-    private final void setAttrInteger(long attrInteger) {
+    private final void setAttrInteger(final long attrInteger) {
         this.attrInteger = attrInteger;
     }
     

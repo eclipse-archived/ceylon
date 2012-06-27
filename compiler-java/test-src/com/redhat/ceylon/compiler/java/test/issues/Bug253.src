@@ -4,11 +4,11 @@ interface Boxer<T> {
     
     public abstract T getOne();
     
-    public abstract void setOne(T one);
+    public abstract void setOne(final T one);
     
     public abstract T getTwo();
     
-    public abstract void setTwo(T two);
+    public abstract void setTwo(final T two);
 }
 final class Boxer$impl<T> {
     private final .com.redhat.ceylon.compiler.java.test.issues.Boxer<T> $this;
@@ -17,7 +17,7 @@ final class Boxer$impl<T> {
         return $this.getOne();
     }
     
-    public final void setOne(T one) {
+    public final void setOne(final T one) {
         $this.setOne(one);
     }
     
@@ -25,7 +25,7 @@ final class Boxer$impl<T> {
         return $this.getTwo();
     }
     
-    public final void setTwo(T two) {
+    public final void setTwo(final T two) {
         $this.setTwo(two);
     }
     
@@ -43,7 +43,7 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.test.issues.Boxer<.ce
     }
     
     @.java.lang.Override
-    public final void setOne(.ceylon.language.Integer one) {
+    public final void setOne(final .ceylon.language.Integer one) {
         this.one = one;
     }
     private .ceylon.language.Integer two;
@@ -54,7 +54,7 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.test.issues.Boxer<.ce
     }
     
     @.java.lang.Override
-    public final void setTwo(.ceylon.language.Integer two) {
+    public final void setTwo(final .ceylon.language.Integer two) {
         this.two = two;
     }
     

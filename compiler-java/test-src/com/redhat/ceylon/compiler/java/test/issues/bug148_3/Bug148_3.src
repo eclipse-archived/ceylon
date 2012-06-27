@@ -21,7 +21,7 @@ final class f {
         return 2L;
     }
     
-    static void setF(long f) {
+    static void setF(final long f) {
     }
     
     private f() {

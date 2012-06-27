@@ -40,7 +40,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     }
     
     @.java.lang.Override
-    public final void setBooleanWithGet(boolean booleanWithGet) {
+    public final void setBooleanWithGet(final boolean booleanWithGet) {
         this.booleanWithGet = booleanWithGet;
     }
     private boolean booleanWithIs;
@@ -51,7 +51,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     }
     
     @.java.lang.Override
-    public final void setBooleanWithIs(boolean booleanWithIs) {
+    public final void setBooleanWithIs(final boolean booleanWithIs) {
         this.booleanWithIs = booleanWithIs;
     }
     private .java.lang.String url;
@@ -62,7 +62,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     }
     
     @.java.lang.Override
-    public final void setURL(.java.lang.String url) {
+    public final void setURL(final .java.lang.String url) {
         this.url = url;
     }
     private .java.lang.String urlEncoderForHTML;
@@ -73,7 +73,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     }
     
     @.java.lang.Override
-    public final void setURLEncoderForHTML(.java.lang.String urlEncoderForHTML) {
+    public final void setURLEncoderForHTML(final .java.lang.String urlEncoderForHTML) {
         this.urlEncoderForHTML = urlEncoderForHTML;
     }
     

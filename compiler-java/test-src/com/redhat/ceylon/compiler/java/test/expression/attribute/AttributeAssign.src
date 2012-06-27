@@ -7,7 +7,7 @@ class AttributeAssign {
         return b1;
     }
     
-    private final void setB1(boolean b1) {
+    private final void setB1(final boolean b1) {
         this.b1 = b1;
     }
     private boolean b2;
@@ -16,7 +16,7 @@ class AttributeAssign {
         return b2;
     }
     
-    public final void setB2(boolean b2) {
+    public final void setB2(final boolean b2) {
         this.b2 = b2;
     }
     
@@ -24,7 +24,7 @@ class AttributeAssign {
         return true;
     }
     
-    private final void setB3(boolean b3) {
+    private final void setB3(final boolean b3) {
         final boolean _b3 = b3;
     }
     
@@ -32,7 +32,7 @@ class AttributeAssign {
         return true;
     }
     
-    public final void setB4(boolean b4) {
+    public final void setB4(final boolean b4) {
         final boolean _b4 = b4;
     }
     

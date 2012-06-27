@@ -6,7 +6,7 @@ public final class $strictfp {
         return 0L;
     }
     
-    public static void setStrictfp(long strictfp) {
+    public static void setStrictfp(final long strictfp) {
     }
     
     private $strictfp() {

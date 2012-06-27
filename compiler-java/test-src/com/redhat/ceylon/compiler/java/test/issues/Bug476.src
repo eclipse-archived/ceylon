@@ -58,7 +58,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.Bu
         return attr;
     }
     
-    public final void setAttr(.com.redhat.ceylon.compiler.java.test.issues.Bug476A attr) {
+    public final void setAttr(final .com.redhat.ceylon.compiler.java.test.issues.Bug476A attr) {
         this.attr = attr;
     }
     
@@ -67,7 +67,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.Bu
         return (.com.redhat.ceylon.compiler.java.test.issues.Bug476A).ceylon.language.bottom.getBottom();
     }
     
-    public final void setAttr2(.com.redhat.ceylon.compiler.java.test.issues.Bug476A attr2) {
+    public final void setAttr2(final .com.redhat.ceylon.compiler.java.test.issues.Bug476A attr2) {
     }
     
     Bug476Bottom() {
@@ -138,6 +138,21 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T> sorted(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return $ceylon$language$Iterable$this.sorted(comparing);
+    }
+    
+    @.java.lang.Override
+    public boolean any(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.any(selecting);
+    }
+    
+    @.java.lang.Override
+    public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.every(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;

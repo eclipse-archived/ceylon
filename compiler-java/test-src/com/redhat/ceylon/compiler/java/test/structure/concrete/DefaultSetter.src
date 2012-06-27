@@ -4,11 +4,11 @@ interface DefaultSetter$I {
     
     public abstract long getAFormal();
     
-    public abstract void setAFormal(long aFormal);
+    public abstract void setAFormal(final long aFormal);
     
     public long getADefault();
     
-    public void setADefault(long aDefault);
+    public void setADefault(final long aDefault);
 }
 interface DefaultSetter$ISub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I {
     
@@ -16,7 +16,7 @@ interface DefaultSetter$ISub extends .com.redhat.ceylon.compiler.java.test.struc
     public long getAFormal();
     
     @.java.lang.Override
-    public void setAFormal(long aFormal);
+    public void setAFormal(final long aFormal);
     
     public long inc();
 }
@@ -27,7 +27,7 @@ class DefaultSetter {
         return a;
     }
     
-    private final void setA(long a) {
+    private final void setA(final long a) {
         this.a = a;
     }
     
@@ -38,7 +38,7 @@ class DefaultSetter {
             return $this.getAFormal();
         }
         
-        public final void setAFormal(long aFormal) {
+        public final void setAFormal(final long aFormal) {
             $this.setAFormal(aFormal);
         }
         
@@ -46,7 +46,7 @@ class DefaultSetter {
             return DefaultSetter.this.getA();
         }
         
-        public void setADefault(long aDefault) {
+        public void setADefault(final long aDefault) {
             DefaultSetter.this.setA(aDefault);
         }
         
@@ -74,7 +74,7 @@ class DefaultSetter {
         }
         
         @.java.lang.Override
-        public void setAFormal(long aFormal) {
+        public void setAFormal(final long aFormal) {
             setADefault(aFormal);
         }
         
@@ -102,7 +102,7 @@ class DefaultSetter {
         }
         
         @.java.lang.Override
-        public final void setAFormal(long aFormal) {
+        public final void setAFormal(final long aFormal) {
         }
         
         Concrete() {
@@ -117,7 +117,7 @@ class DefaultSetter {
             return $this.getADefault();
         }
         
-        public void setAFormal(long aFormal) {
+        public void setAFormal(final long aFormal) {
             $this.setADefault(aFormal);
         }
         

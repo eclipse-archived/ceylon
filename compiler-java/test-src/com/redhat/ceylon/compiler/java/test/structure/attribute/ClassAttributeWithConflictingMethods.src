@@ -7,7 +7,7 @@ abstract class ClassAttributeWithConflictingMethods {
         return attr;
     }
     
-    public final void setAttr(.java.lang.String attr) {
+    public final void setAttr(final .java.lang.String attr) {
         this.attr = attr;
     }
     

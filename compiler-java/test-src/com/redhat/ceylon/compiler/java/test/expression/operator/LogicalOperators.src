@@ -4,11 +4,11 @@ public abstract class LogicalOperatorsParent<B> {
     
     public abstract B getBoxedB1();
     
-    public abstract void setBoxedB1(B boxedB1);
+    public abstract void setBoxedB1(final B boxedB1);
     
     public abstract B getBoxedB2();
     
-    public abstract void setBoxedB2(B boxedB2);
+    public abstract void setBoxedB2(final B boxedB2);
     
     public LogicalOperatorsParent() {
     }
@@ -20,7 +20,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         return b1;
     }
     
-    private final void setB1(boolean b1) {
+    private final void setB1(final boolean b1) {
         this.b1 = b1;
     }
     private boolean b2;
@@ -29,7 +29,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         return b2;
     }
     
-    private final void setB2(boolean b2) {
+    private final void setB2(final boolean b2) {
         this.b2 = b2;
     }
     private .ceylon.language.Boolean boxedB1;
@@ -40,7 +40,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
     }
     
     @.java.lang.Override
-    public final void setBoxedB1(.ceylon.language.Boolean boxedB1) {
+    public final void setBoxedB1(final .ceylon.language.Boolean boxedB1) {
         this.boxedB1 = boxedB1;
     }
     private .ceylon.language.Boolean boxedB2;
@@ -51,7 +51,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
     }
     
     @.java.lang.Override
-    public final void setBoxedB2(.ceylon.language.Boolean boxedB2) {
+    public final void setBoxedB2(final .ceylon.language.Boolean boxedB2) {
         this.boxedB2 = boxedB2;
     }
     

@@ -6,7 +6,7 @@ class KeywordInSetterObject {
         return 0L;
     }
     
-    private final void setI(long i) {
+    private final void setI(final long i) {
         
         final class $assert {
             

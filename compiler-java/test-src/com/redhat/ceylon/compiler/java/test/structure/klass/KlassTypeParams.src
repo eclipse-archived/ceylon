@@ -16,7 +16,7 @@ class KlassTypeParams<U, V> {
         return var;
     }
     
-    private final void setVar(V var) {
+    private final void setVar(final V var) {
         this.var = var;
     }
     
@@ -28,7 +28,7 @@ class KlassTypeParams<U, V> {
         return getVar();
     }
     
-    private final void setGetset(V getset) {
+    private final void setGetset(final V getset) {
         setVar(getset);
     }
     

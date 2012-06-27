@@ -18,7 +18,7 @@ class InnerAttributeGetterSetter {
         final class innerGetterSetter$setter {
             private long value;
             
-            void setInnerGetterSetter(long innerGetterSetter) {
+            void setInnerGetterSetter(final long innerGetterSetter) {
             }
             
             private innerGetterSetter$setter() {

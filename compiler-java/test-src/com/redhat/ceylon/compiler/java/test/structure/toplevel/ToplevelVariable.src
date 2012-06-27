@@ -14,7 +14,7 @@ final class topLevelVariable {
         }
     }
     
-    static void setTopLevelVariable(long topLevelVariable) {
+    static void setTopLevelVariable(final long topLevelVariable) {
         value[0] = topLevelVariable;
     }
     

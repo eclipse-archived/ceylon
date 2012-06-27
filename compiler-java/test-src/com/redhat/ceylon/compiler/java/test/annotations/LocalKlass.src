@@ -23,7 +23,7 @@ public class LocalKlass {
                 return 1L;
             }
             
-            public final void setI2(long i2) {
+            public final void setI2(final long i2) {
             }
             
             public final void m2(final long arg1, final .ceylon.language.Iterable<? extends T> t) {

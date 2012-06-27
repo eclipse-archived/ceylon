@@ -12,7 +12,7 @@ class VoidBoxing {
         return variableVoid;
     }
     
-    private final void setVariableVoid(.java.lang.Object variableVoid) {
+    private final void setVariableVoid(final .java.lang.Object variableVoid) {
         this.variableVoid = variableVoid;
     }
     
@@ -20,7 +20,7 @@ class VoidBoxing {
         return getVariableVoid();
     }
     
-    private final void setGetterVoid(.java.lang.Object getterVoid) {
+    private final void setGetterVoid(final .java.lang.Object getterVoid) {
         setVariableVoid(getterVoid);
     }
     

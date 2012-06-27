@@ -14,7 +14,7 @@ final class topLevelAssignB1 {
         }
     }
     
-    static void setTopLevelAssignB1(boolean topLevelAssignB1) {
+    static void setTopLevelAssignB1(final boolean topLevelAssignB1) {
         value[0] = topLevelAssignB1;
     }
     
@@ -35,7 +35,7 @@ public final class topLevelAssignB2 {
         }
     }
     
-    public static void setTopLevelAssignB2(boolean topLevelAssignB2) {
+    public static void setTopLevelAssignB2(final boolean topLevelAssignB2) {
         value[0] = topLevelAssignB2;
     }
     
@@ -65,7 +65,7 @@ final class topLevelAssignB3 {
         return true;
     }
     
-    static void setTopLevelAssignB3(boolean topLevelAssignB3) {
+    static void setTopLevelAssignB3(final boolean topLevelAssignB3) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -78,7 +78,7 @@ public final class topLevelAssignB4 {
         return true;
     }
     
-    public static void setTopLevelAssignB4(boolean topLevelAssignB4) {
+    public static void setTopLevelAssignB4(final boolean topLevelAssignB4) {
         throw new .ceylon.language.Exception(null, null);
     }
     

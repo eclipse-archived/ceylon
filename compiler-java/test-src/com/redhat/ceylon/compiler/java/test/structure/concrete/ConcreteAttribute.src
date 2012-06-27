@@ -8,7 +8,7 @@ interface ConcreteAttribute<A> {
     
     public abstract A getAVariableFormal();
     
-    public abstract void setAVariableFormal(A aVariableFormal);
+    public abstract void setAVariableFormal(final A aVariableFormal);
     
     public A getADefault();
 }
@@ -31,7 +31,7 @@ final class ConcreteAttribute$impl<A> {
         return $this.getAVariableFormal();
     }
     
-    public final void setAVariableFormal(A aVariableFormal) {
+    public final void setAVariableFormal(final A aVariableFormal) {
         $this.setAVariableFormal(aVariableFormal);
     }
     
@@ -78,7 +78,7 @@ class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public final void setAVariableFormal(B aVariableFormal) {
+    public final void setAVariableFormal(final B aVariableFormal) {
     }
     
     @.java.lang.Override
@@ -86,7 +86,7 @@ class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java
         return null;
     }
     
-    public final void setADefault(B aDefault) {
+    public final void setADefault(final B aDefault) {
     }
     
     ConcreteAttributeGetterImpl() {
@@ -138,7 +138,7 @@ class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final void setAVariableFormal(C aVariableFormal) {
+    public final void setAVariableFormal(final C aVariableFormal) {
         this.aVariableFormal = aVariableFormal;
     }
     private C aDefault;
@@ -148,7 +148,7 @@ class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.
         return aDefault;
     }
     
-    public final void setADefault(C aDefault) {
+    public final void setADefault(final C aDefault) {
         this.aDefault = aDefault;
     }
     

@@ -7,7 +7,7 @@ class QualifiedAttributeAssign {
         return b;
     }
     
-    private final void setB(boolean b) {
+    private final void setB(final boolean b) {
         this.b = b;
     }
     private boolean b2;
@@ -16,7 +16,7 @@ class QualifiedAttributeAssign {
         return b2;
     }
     
-    public final void setB2(boolean b2) {
+    public final void setB2(final boolean b2) {
         this.b2 = b2;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign q;
@@ -52,7 +52,7 @@ class QualifiedAttributeAssignFoo {
         return b;
     }
     
-    public final void setB(boolean b) {
+    public final void setB(final boolean b) {
         this.b = b;
     }
     

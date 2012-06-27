@@ -12,7 +12,7 @@ class QualifiedAttributeAccess {
         return b2;
     }
     
-    private final void setB2(boolean b2) {
+    private final void setB2(final boolean b2) {
         this.b2 = b2;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess q;

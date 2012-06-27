@@ -7,7 +7,7 @@ class FloatBoxing {
         return attrFloat;
     }
     
-    private final void setAttrFloat(double attrFloat) {
+    private final void setAttrFloat(final double attrFloat) {
         this.attrFloat = attrFloat;
     }
     

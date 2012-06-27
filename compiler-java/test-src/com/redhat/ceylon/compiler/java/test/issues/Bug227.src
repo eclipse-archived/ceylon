@@ -7,7 +7,7 @@ public class Bug227 {
         return _num;
     }
     
-    private final void set_num(long _num) {
+    private final void set_num(final long _num) {
         this._num = _num;
     }
     
@@ -15,7 +15,7 @@ public class Bug227 {
         return this.get_num();
     }
     
-    public final void setNum(long num) {
+    public final void setNum(final long num) {
         set_num(num);
     }
     

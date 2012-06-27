@@ -17,7 +17,7 @@ final class topLevelObjectWithMembers {
         return varShared;
     }
     
-    public final void setVarShared(boolean varShared) {
+    public final void setVarShared(final boolean varShared) {
         this.varShared = varShared;
     }
     private boolean varCaptured;
@@ -26,7 +26,7 @@ final class topLevelObjectWithMembers {
         return varCaptured;
     }
     
-    private final void setVarCaptured(boolean varCaptured) {
+    private final void setVarCaptured(final boolean varCaptured) {
         this.varCaptured = varCaptured;
     }
     
