@@ -50,12 +50,12 @@ function max(seq) {
 function join(seqs) {
     if (seqs === undefined) return $empty;
     var builder = [];
-    var i1 = seqs.getIterator();
-    var seq; while ((seq = i1.next()) !== $finished) {
-        var i2 = seq.getIterator();
-        var e; while ((e = i2.next()) !== $finished) {
-            builder.push(e);
-        }
+    var it = seqs.getIterator();
+    var seq;
+    while ((seq = it.next()) !== $finished) {
+        var it2 = seq.getIterator();
+        var elem;
+        while ((elem = it2.next()) != $finished) {builder.push(elem);}
     }
     return ArraySequence(builder);
 }
@@ -70,12 +70,12 @@ function zip(keys, items) {
 }
 //receives and returns ArraySequence
 function coalesce(seq) {
-    if (seq === undefined) return $empty;
+    if (seq === undefined) {return $empty}
     var newseq = [];
-    for (var i = 0; i < seq.value.length; i++) {
-        if (seq.value[i]) {
-            newseq.push(seq.value[i]);
-        }
+    var it = seq.getIterator();
+    var elem;
+    while ((elem = it.next()) !== $finished) {
+        if (elem !== null) {newseq.push(elem);}
     }
     return ArraySequence(newseq);
 }
@@ -156,17 +156,11 @@ function isOfType(obj, typeName) {
     if (obj === null) {
         return Boolean$(typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void");
     }
-    if (typeof obj === 'function') {
-        return Boolean$(typeName === 'ceylon.language.Callable');
-    }
     return Boolean$(obj.getT$all && typeName in obj.getT$all());
 }
 function isOfTypes(obj, types) {
     if (obj===null) {
         return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
-    }
-    if (typeof obj === 'function') {
-        return Boolean$(types.l.indexOf('ceylon.language.Callable')>=0);
     }
     var unions = false;
     var inters = true;
