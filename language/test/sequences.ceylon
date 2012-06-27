@@ -66,7 +66,8 @@ void test_join() {
     value l2 = { 4,5,6 };
     value l3 = {7,8,9};
     value joint = join(l1, l2, l3);
-    assert(joint.size==l1.size+l2.size+l3.size, "join");
+    assert(joint.size==l1.size+l2.size+l3.size, "join [1]");
+    assert(join("aa", "bb", "cc").sequence=={`a`, `a`, `b`, `b`, `c`, `c`}, "join [2]");
 }
 
 void test_zip() {
