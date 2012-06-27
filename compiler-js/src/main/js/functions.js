@@ -1,4 +1,4 @@
-var exports,console,$true,$false,$finished;//IGNORE
+var exports,console,$true,$false,$finished,process$,$empty;//IGNORE
 function Comparison(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function Entry(a,b){}//IGNORE
@@ -50,8 +50,12 @@ function max(seq) {
 function join(seqs) {
     if (seqs === undefined) return $empty;
     var builder = [];
-    for (var i = 0; i < seqs.value.length; i++) {
-        builder = builder.concat(seqs.value[i].value);
+    var i1 = seqs.getIterator();
+    var seq; while ((seq = i1.next()) !== $finished) {
+        var i2 = seq.getIterator();
+        var e; while ((e = i2.next()) !== $finished) {
+            builder.push(e);
+        }
     }
     return ArraySequence(builder);
 }
@@ -66,10 +70,11 @@ function zip(keys, items) {
 }
 //receives and returns ArraySequence
 function coalesce(seq) {
+    if (seq === undefined) return $empty;
     var newseq = [];
     for (var i = 0; i < seq.value.length; i++) {
         if (seq.value[i]) {
-            newseq = newseq.concat(seq.value[i]);
+            newseq.push(seq.value[i]);
         }
     }
     return ArraySequence(newseq);
