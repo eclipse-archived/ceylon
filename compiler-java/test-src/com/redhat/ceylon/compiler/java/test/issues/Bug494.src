@@ -6,24 +6,7 @@ final class bug494 {
     }
     
     static void bug494() {
-        
-        final class indice {
-            
-            private indice() {
-            }
-            
-            .java.lang.String indice(final long i) {
-                return .ceylon.language.Integer.instance(i).toString();
-            }
-        }
-        final indice indice = new indice();
-        final .ceylon.language.Array<.ceylon.language.String> a2 = .ceylon.language.makeArray.<.ceylon.language.String>makeArray(.java.lang.String.class, .ceylon.language.Integer.instance(20L), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String,ceylon.language.Integer>"){
-            
-            @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                return .ceylon.language.String.instance(indice.indice(((.ceylon.language.Integer)$param$0).longValue()));
-            }
-        });
+        final .ceylon.language.Array<.ceylon.language.Integer> a2 = .ceylon.language.arrayOfSize.<.ceylon.language.Integer>arrayOfSize(long.class, 20L, .ceylon.language.Integer.instance(0L));
     }
     
     public static void main(.java.lang.String[] args) {

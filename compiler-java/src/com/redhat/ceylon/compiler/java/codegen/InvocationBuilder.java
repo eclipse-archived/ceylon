@@ -230,7 +230,7 @@ abstract class InvocationBuilder {
         if (primaryDeclaration instanceof LazyMethod) {
             if ("ceylon.language".equals(primaryDeclaration.getContainer().getQualifiedNameString())) {
                 String name = primaryDeclaration.getName();
-                return ("array".equals(name) || "arrayOfSome".equals(name) || "arrayOfNone".equals(name) || "makeArray".equals(name));
+                return ("array".equals(name) || "arrayOfSome".equals(name) || "arrayOfNone".equals(name) || "arrayOfSize".equals(name));
             }
         }
         return false;

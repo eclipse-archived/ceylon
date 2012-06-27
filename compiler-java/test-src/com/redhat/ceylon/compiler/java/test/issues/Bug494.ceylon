@@ -19,6 +19,5 @@
  */
 @nomodel
 void bug494() {
-  function indice(Integer i) { return i.string; }
-  value a2 = makeArray(20, indice);
+  value a2 = arrayOfSize(20, 0);
 }
