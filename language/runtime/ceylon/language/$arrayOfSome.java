@@ -10,9 +10,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 1)
 @Method
-public final class arrayOfSome {
+public final class $arrayOfSome {
 
-    private arrayOfSome() {}
+    private $arrayOfSome() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>&Some<Element>")
