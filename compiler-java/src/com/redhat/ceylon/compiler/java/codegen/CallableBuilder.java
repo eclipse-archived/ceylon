@@ -62,7 +62,7 @@ public class CallableBuilder {
         try {
             fnCall = invocationBuilder.build();
         } finally {
-            gen.expressionGen().setWithinInvocation(false);
+            gen.expressionGen().setWithinCallableInvocation(false);
         }
         
         CallableBuilder cb = new CallableBuilder(gen);
