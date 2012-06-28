@@ -1,8 +1,5 @@
 package ceylon.language;
 
-
-
-
 public final class List$impl<Element> {
     private final List<Element> $this;
 
@@ -113,4 +110,22 @@ public final class List$impl<Element> {
         result.append(" }");
         return result.toString();
     }
+
+    public Element findLast(Callable<? extends Boolean> sel) {
+        return List$impl.<Element>_findLast($this, sel);
+    }
+    public static <Element> Element _findLast(List<Element> $this, Callable<? extends Boolean> sel) {
+        Integer last = $this.getLastIndex();
+        if (last != null) {
+            while (!last.getNegative()) {
+                Element e = $this.item(last);
+                if (e != null && sel.$call(e).booleanValue()) {
+                    return e;
+                }
+                last = last.getPredecessor();
+            }
+        }
+        return null;
+    }
+
 }

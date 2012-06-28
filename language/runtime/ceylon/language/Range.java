@@ -369,10 +369,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public Iterable<? extends Element> getSequence() { 
         return Iterable$impl._getSequence(this);
     }
-    @Override 
-    @Ignore 
-    public Element find(Callable<? extends Boolean> f) { 
+    @Override @Ignore
+    public Element find(Callable<? extends Boolean> f) {
         return Iterable$impl._find(this, f);
+    }
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this.getReversed(), f);
     }
     @Override 
     @Ignore

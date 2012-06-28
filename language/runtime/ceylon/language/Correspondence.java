@@ -60,7 +60,7 @@ public interface Correspondence<Key,Item> {
     @Ignore
     @Ceylon(major = 1)
     class Items<Key,Item>
-            implements Sequence<Item> {
+    implements Sequence<Item> {
         private Sequence<? extends Key> keys;
         private Correspondence<Key, Item> $this;
         Items(Correspondence<Key,Item> $this, Sequence<? extends Key> keys){
@@ -88,7 +88,7 @@ public interface Correspondence<Key,Item> {
         @Override
         @Annotations(@Annotation("formal"))
         public Sequence<? extends Item> getReversed() {
-        	return new Items<Key,Item>($this, keys.getReversed());
+            return new Items<Key,Item>($this, keys.getReversed());
         }
         @Override
         @Ignore
@@ -173,39 +173,39 @@ public interface Correspondence<Key,Item> {
         public Iterator<? extends Item> getIterator() {
             return List$impl._getIterator(this);
         }
-		@Override @Ignore
-		public Iterable<? extends Item> skipping(long skip) {
-			return Iterable$impl._skipping(this, skip);
-		}
+        @Override @Ignore
+        public Iterable<? extends Item> skipping(long skip) {
+            return Iterable$impl._skipping(this, skip);
+        }
 
-		@Override @Ignore
-		public Iterable<? extends Item> taking(long take) {
-			return Iterable$impl._taking(this, take);
-		}
+        @Override @Ignore
+        public Iterable<? extends Item> taking(long take) {
+            return Iterable$impl._taking(this, take);
+        }
 
-		@Override @Ignore
-		public Iterable<? extends Item> by(long step) {
-			return Iterable$impl._by(this, step);
-		}
+        @Override @Ignore
+        public Iterable<? extends Item> by(long step) {
+            return Iterable$impl._by(this, step);
+        }
         @Override
         public List<? extends Item> segment(Integer from, long length) {
-        	Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
-        	if (keys.getEmpty()) {
-        		return (List)$empty.getEmpty();
-        	}
-        	else {
-        		return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
-        	}
+            Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
+            if (keys.getEmpty()) {
+                return (List)$empty.getEmpty();
+            }
+            else {
+                return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
+            }
         }
         @Override
         public List<? extends Item> span(Integer from, Integer to) {
-        	Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
-        	if (keys.getEmpty()) {
-        		return (List)$empty.getEmpty();
-        	}
-        	else {
-        		return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
-        	}
+            Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
+            if (keys.getEmpty()) {
+                return (List)$empty.getEmpty();
+            }
+            else {
+                return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
+            }
         }
         @Override
         @Ignore
@@ -257,43 +257,46 @@ public interface Correspondence<Key,Item> {
             return keys.hashCode();
         }
 
-    @Override 
-    @Ignore
-    public Iterable<? extends Item> getSequence() { 
-        return Iterable$impl._getSequence(this);
-    }
-    @Override
-    @Ignore
-    public Item find(Callable<? extends Boolean> f) { 
-        return Iterable$impl._find(this, f);
-    }
-    @Override 
-    @Ignore
-    public Iterable<? extends Item> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f); 
-    }
-    @Override
-    @Ignore
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-        return new MapIterable<Item, Result>(this, f);
-    }
-    @Override 
-    @Ignore
-    public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { 
-        return new FilterIterable<Item>(this, f);
-    }
-    @Override
-    @Ignore
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-        return Iterable$impl._fold(this, ini, f);
-    }
-    @Override @Ignore
-    public boolean any(Callable<? extends Boolean> f) {
-        return Iterable$impl._any(this, f);
-    }
-    @Override @Ignore
-    public boolean every(Callable<? extends Boolean> f) {
-        return Iterable$impl._every(this, f);
-    }
+        @Override 
+        @Ignore
+        public Iterable<? extends Item> getSequence() { 
+            return Iterable$impl._getSequence(this);
+        }
+        @Override @Ignore
+        public Item find(Callable<? extends Boolean> f) {
+            return Iterable$impl._find(this, f);
+        }
+        @Override @Ignore
+        public Item findLast(Callable<? extends Boolean> f) {
+            return List$impl._findLast(this, f);
+        }
+        @Override 
+        @Ignore
+        public Iterable<? extends Item> sorted(Callable<? extends Comparison> f) { 
+            return Iterable$impl._sorted(this, f); 
+        }
+        @Override
+        @Ignore
+        public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+            return new MapIterable<Item, Result>(this, f);
+        }
+        @Override 
+        @Ignore
+        public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { 
+            return new FilterIterable<Item>(this, f);
+        }
+        @Override
+        @Ignore
+        public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+            return Iterable$impl._fold(this, ini, f);
+        }
+        @Override @Ignore
+        public boolean any(Callable<? extends Boolean> f) {
+            return Iterable$impl._any(this, f);
+        }
+        @Override @Ignore
+        public boolean every(Callable<? extends Boolean> f) {
+            return Iterable$impl._every(this, f);
+        }
     }
 }

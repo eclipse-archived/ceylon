@@ -107,10 +107,13 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     public Iterable<? extends Element> getSequence() { 
         return Iterable$impl._getSequence(this); 
     }
-    @Override 
-    @Ignore 
-    public Element find(Callable<? extends Boolean> f) { 
-        return Iterable$impl._find(this, f); 
+    @Override @Ignore
+    public Element find(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this, f);
+    }
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
+        return List$impl._findLast(this, f);
     }
     @Override 
     @Ignore

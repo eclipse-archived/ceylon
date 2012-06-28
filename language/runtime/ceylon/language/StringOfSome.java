@@ -32,10 +32,13 @@ class StringOfSome extends String implements Some<Character> {
     public Iterable<? extends Character> getSequence() { 
         return Iterable$impl._getSequence(this); 
     }
-    @Override 
-    @Ignore
-    public Character find(Callable<? extends Boolean> f) { 
-        return Iterable$impl._find(this, f); 
+    @Override @Ignore
+    public Character find(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this, f);
+    }
+    @Override @Ignore
+    public Character findLast(Callable<? extends Boolean> f) {
+        return List$impl._findLast(this, f);
     }
     @Override 
     @Ignore

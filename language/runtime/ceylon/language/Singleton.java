@@ -257,9 +257,12 @@ public class Singleton<Element>
     Iterable<? extends Element> getSequence() {
         return Iterable$impl._getSequence(this);
     }
-    @Override
-    @Ignore
+    @Override @Ignore
     public Element find(Callable<? extends Boolean> f) {
+        return f.$call(element).booleanValue() ? element : null;
+    }
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
         return f.$call(element).booleanValue() ? element : null;
     }
     @Override
@@ -308,6 +311,6 @@ public class Singleton<Element>
     }
     @Override @Ignore
     public Iterable<? extends Element> by(long step) {
-        return Iterable$impl._by(this, step);
+        return this;
     }
 }
