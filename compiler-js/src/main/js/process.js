@@ -22,7 +22,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
     if (process.argv.length > 2) {
         var args = process.argv.slice(2);
         var argStrings = new Array(args.length);
-        for (i in args) { argStrings[i] = String$(args[i]); }
+        for (var i in args) { argStrings[i] = String$(args[i]); }
         argv = ArraySequence(argStrings);
         
         for (var i=0; i<args.length; ++i) {
