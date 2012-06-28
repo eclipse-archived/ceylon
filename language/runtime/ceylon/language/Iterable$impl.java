@@ -62,6 +62,21 @@ public final class Iterable$impl<Element> {
         return null;
     }
 
+    public Element findLast(Callable<? extends Boolean> selecting) {
+        return Iterable$impl._findLast($this, selecting);
+    }
+    static <Element> Element _findLast(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
+        Iterator<? extends Element> iter = $this.getIterator();
+        java.lang.Object elem;
+        java.lang.Object last = null;
+        while (!((elem = iter.next()) instanceof Finished)) {
+            if (sel.$call(elem).booleanValue()) {
+                last = elem;
+            }
+        }
+        return (Element)last;
+    }
+
     public Iterable<? extends Element> sorted(Callable<? extends Comparison> comparing) {
         return Iterable$impl._sorted($this, comparing);
     }
@@ -205,6 +220,10 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public Result find(Callable<? extends Boolean> f) { 
         return Iterable$impl._find(this, f); 
     }
+    @Override @Ignore
+    public Result findLast(Callable<? extends Boolean> f) {
+        return Iterable$impl._findLast(this, f);
+    }
     @Override 
     @Ignore
     public Iterable<? extends Result> sorted(Callable<? extends Comparison> f) { 
@@ -278,6 +297,10 @@ class FilterIterable<Element> implements Iterable<Element> {
     @Ignore
     public Element find(Callable<? extends Boolean> f) { 
         return Iterable$impl._find(this, f); 
+    }
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
+        return Iterable$impl._findLast(this, f);
     }
     @Override 
     @Ignore

@@ -56,6 +56,12 @@ public interface Iterable<Element> extends Container {
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
+    @TypeInfo("Element|ceylon.language.Nothing")
+    public Element findLast(@Name("selecting")
+        @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+        Callable<? extends Boolean> selecting);
+
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> sorted(@Name("comparing")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|ceylon.language.Comparison,Element,Element>")
