@@ -158,28 +158,24 @@ shared interface Map<out Key,out Item>
         return inverse;
     }
 
-    shared default Map<Key,Result> mapItems<Result>(Result mapping(Key key, Item item)) {
-        object mapped satisfies Map<Key, Result> {
-            shared actual Map<Key, Result> clone { return this; }
-            shared actual Boolean equals(Object that) { return false; }
-            shared actual Integer hash { return outer.hash; }
+    shared default Map<Key,Result> mapItems<Result>(Result mapping(Key key, Item item)) 
+            given Result satisfies Object {
+        object mapped extends Object() 
+                satisfies Map<Key, Result> {
+            shared actual Map<Key, Result> clone { return this; } //TODO: should take a copy
             shared actual Result? item(Object key) {
-                if (exists v=outer.item(key)) {
-                    return mapping(key, v);
+                if (is Key key) {
+                    if (exists item=outer[key]) {
+                        return mapping(key, item);
+                    }
                 }
                 return null;
             }
             shared actual Iterator<Key->Result> iterator {
-                value iter = outer.iterator;
-                object mappedIter satisfies Iterator<Key->Result> {
-                    shared Key->Result|Finished next() {
-                        value e = iter.next();
-                        return is Finished e then exhausted else e.key->mapping(e.key, e.item);
-                    }
-                }
+                return elements { for (key->item in outer) key->mapping(key,item) }.iterator;
             }
             shared actual Integer size { return outer.size; }
-            shared actual String string { return ""; }
+            shared actual String string { return "mapItems"; } //TODO
         }
         return mapped;
     }
