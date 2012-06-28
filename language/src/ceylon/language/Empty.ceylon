@@ -62,26 +62,26 @@ shared interface Empty
         return false;
     }
 
-    shared actual Empty map<Result>(Result selecting(Object element)) {
+    shared actual Empty map<Result>(Result selecting(Bottom element)) {
         return this;
     }
-    shared actual Empty filter(Boolean selecting(Object element)) {
+    shared actual Empty filter(Boolean selecting(Bottom element)) {
         return this;
     }
     shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Object element)) {
+            Result accumulating(Result partial, Bottom element)) {
         return initial;
     }
-    shared actual Object? find(Boolean selecting(Object element)) {
+    shared actual Nothing find(Boolean selecting(Bottom element)) {
         return null;
     }
-    shared actual Empty sorted(Comparison? comparing(Object a, Object b)) {
+    shared actual Empty sorted(Comparison? comparing(Bottom a, Bottom b)) {
         return this;
     }
-    shared actual Boolean any(Boolean selecting(Object element)) {
+    shared actual Boolean any(Boolean selecting(Bottom element)) {
         return false;
     }
-    shared actual Boolean every(Boolean selecting(Object element)) {
+    shared actual Boolean every(Boolean selecting(Bottom element)) {
         return false;
     }
     shared actual Empty skipping(Integer skip) {
