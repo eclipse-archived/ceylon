@@ -137,16 +137,7 @@ shared class Range<Element>(first, last)
         if (first==last || stepSize.unit) {
             return this;
         }
-        value builder = SequenceAppender<Element>({first});
-        variable Element x := next(first);
-        value steps = 1..stepSize;
-        while (decreasing then x>=last else x<=last) {
-            builder.append(x);
-            for (i in steps) {
-                x := next(x);
-            }
-        }
-        return builder.sequence;
+        return super.by(stepSize);
     }
 
     /*shared Integer? index(Element x) {
@@ -200,6 +191,26 @@ shared class Range<Element>(first, last)
     doc "Reverse this range, returning a new range."
     shared actual Range<Element> reversed {
         return Range(last,first);
+    }
+
+    shared actual Range<Element>|Element skipping(Integer skip) {
+        variable value x:=0;
+        variable value e := first;
+        while (x++<skip) {
+            e:=next(e);
+        }
+        return includes(e) then Range(e, last) else {};
+    }
+    shared actual Range<Element>|Element taking(Integer take) {
+        if (take == 0) {
+            return {};
+        }
+        variable value x:=0;
+        variable value e:=first;
+        while (++x<take) {
+            e:=next(e);
+        }
+        return includes(e) then Range(first, e) else this;
     }
 
 }
