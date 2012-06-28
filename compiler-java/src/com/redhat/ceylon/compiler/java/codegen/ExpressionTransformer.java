@@ -1255,7 +1255,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Invocations
     
     public JCExpression transform(Tree.InvocationExpression ce) {
-        return InvocationBuilder.forInvocation(this, ce).build();
+        final boolean prevInv = isWithinInvocation();
+        try {
+            setWithinInvocation(false);
+            return InvocationBuilder.forInvocation(this, ce).build();
+        } finally {
+            setWithinInvocation(prevInv);
+        }
     }
     
     public JCExpression transformFunctional(Tree.Term expr,
