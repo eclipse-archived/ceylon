@@ -242,6 +242,7 @@ public class GenerateJsVisitor extends Visitor
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             
+            List<String> oldRetainedVars = retainedTempVars;
             List<String> retainedVars = new ArrayList<String>();
             retainedTempVars = retainedVars;
             s.visit(this);
@@ -260,6 +261,7 @@ public class GenerateJsVisitor extends Visitor
                 out(";");
                 retainedVars.clear();
             }
+            retainedTempVars = oldRetainedVars;
 
             if (needNewline && (endLastLine || (i<statements.size()-1))) {
                 endLine();
