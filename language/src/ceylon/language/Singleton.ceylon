@@ -111,4 +111,34 @@ shared class Singleton<Element>(Element element)
     shared actual Integer count(Object element) {
         return contains(element) then 1 else 0;
     }
+
+    shared actual Singleton<Result> map<Result>(Result selecting(Element e)) {
+        return Singleton(selecting(element));
+    }
+    shared actual Singleton<Element>|Empty filter(Boolean selecting(Element e)) {
+        return selecting(element) then this else empty;
+    }
+    shared actual Result fold<Result>(Result initial,
+            Result accumulating(Result partial, Element e)) {
+        return accumulating(initial, element);
+    }
+    shared actual Element? find(Boolean selecting(Element e)) {
+        return find(element) then element else null;
+    }
+    shared actual Singleton<Element> sorted(Comparison? comparing(Element a, Element b)) {
+        return this;
+    }
+    shared actual Boolean any(Boolean selecting(Element e)) {
+        return selecting(element);
+    }
+    shared actual Boolean every(Boolean selecting(Element e)) {
+        return selecting(element);
+    }
+    shared actual Singleton<Element>|Empty skipping(Integer skip) {
+        return skip==0 then this else empty;
+    }
+    shared actual Singleton<Element>|Empty taking(Integer take) {
+        return taking>0 then this else empty;
+    }
+
 }
