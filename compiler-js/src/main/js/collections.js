@@ -26,10 +26,11 @@ function Iterable(wat) {
     return wat;
 }
 initTypeProtoI(Iterable, 'ceylon.language.Iterable', Container);
-Iterable.$$.prototype.getEmpty = function() {
+var Iterable$proto=Iterable.$$.prototype;
+Iterable$proto.getEmpty = function() {
     return Boolean$(this.getIterator().next() === $finished);
 }
-Iterable.$$.prototype.getSequence = function() {
+Iterable$proto.getSequence = function() {
     var a = [];
     var iter = this.getIterator();
     var next;
@@ -38,7 +39,7 @@ Iterable.$$.prototype.getSequence = function() {
     }
     return ArraySequence(a);
 }
-Iterable.$$.prototype.map = function(mapper) {
+Iterable$proto.map = function(mapper) {
     var iter = this.getIterator();
     function mapped$iter(){
         var $cmp$=new mapped$iter.$$;
@@ -56,7 +57,7 @@ Iterable.$$.prototype.map = function(mapper) {
     initTypeProto(mapped$iter, 'ceylon.language.MappedIterator', IdentifiableObject, Iterator);
     return Comprehension(mapped$iter);
 }
-Iterable.$$.prototype.filter = function(select) {
+Iterable$proto.filter = function(select) {
     var iter = this.getIterator();
     function filtered$iter(){
         var $cmp$=new filtered$iter.$$;
@@ -77,7 +78,7 @@ Iterable.$$.prototype.filter = function(select) {
     initTypeProto(filtered$iter, 'ceylon.language.FilteredIterator', IdentifiableObject, Iterator);
     return Comprehension(filtered$iter);
 }
-Iterable.$$.prototype.fold = function(ini, accum) {
+Iterable$proto.fold = function(ini, accum) {
     var r = ini;
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
@@ -85,7 +86,7 @@ Iterable.$$.prototype.fold = function(ini, accum) {
     }
     return r;
 }
-Iterable.$$.prototype.find = function(select) {
+Iterable$proto.find = function(select) {
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
         if (select(e) === $true) {
@@ -94,7 +95,7 @@ Iterable.$$.prototype.find = function(select) {
     }
     return null;
 }
-Iterable.$$.prototype.sorted = function(/*Callable<Comparison?,Element,Element>*/comparing) {
+Iterable$proto.sorted = function(/*Callable<Comparison?,Element,Element>*/comparing) {
     var a = [];
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
@@ -108,7 +109,7 @@ Iterable.$$.prototype.sorted = function(/*Callable<Comparison?,Element,Element>*
     });
     return ArraySequence(a);
 }
-Iterable.$$.prototype.any = function(/*Callable<Boolean,Element>*/selecting) {
+Iterable$proto.any = function(/*Callable<Boolean,Element>*/selecting) {
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
         if (selecting(e) === $true) {
@@ -117,7 +118,7 @@ Iterable.$$.prototype.any = function(/*Callable<Boolean,Element>*/selecting) {
     }
     return $false;
 }
-Iterable.$$.prototype.every = function(/*Callable<Boolean,Element>*/selecting) {
+Iterable$proto.every = function(/*Callable<Boolean,Element>*/selecting) {
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
         if (selecting(e) !== $true) {
@@ -125,6 +126,18 @@ Iterable.$$.prototype.every = function(/*Callable<Boolean,Element>*/selecting) {
         }
     }
     return $true;
+}
+Iterable$proto.skipping = function(skip) {
+    //TODO implement this
+    return this;
+}
+Iterable$proto.taking = function(take) {
+    //TODO implement this
+    return this;
+}
+Iterable$proto.by = function(step) {
+    //TODO implement this
+    return this;
 }
 exports.Iterable=Iterable;
 
