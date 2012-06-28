@@ -135,7 +135,7 @@ shared class Singleton<Element>(Element element)
         return selecting(element);
     }
     shared actual Singleton<Element>|Empty skipping(Integer skip) {
-        return skip==0 then this else {};
+        return skip<1 then this else {};
     }
     shared actual Singleton<Element>|Empty taking(Integer take) {
         return take>0 then this else {};
