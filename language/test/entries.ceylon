@@ -111,12 +111,12 @@ Range<Integer> range {
     assert(!nonempty (0..9).span(11,12), "(0..9).span(11,12) is NOT empty");
     assert(nonempty (0..9).span(5,3), "(0..9).span(5,3) is empty");
     
-    assert((1..1).by(5).string=="1..1", "range by");
-    assert((0..9).by(1).string=="0..9", "range by 1");
-    assert((0..9).by(3).string=="{ 0, 3, 6, 9 }", "range by");
-    assert((2..11).by(3).string=="{ 2, 5, 8, 11 }", "range by");
-    assert((0..9).by(4).string=="{ 0, 4, 8 }", "range by");
-    assert((2..11).by(4).string=="{ 2, 6, 10 }", "range by");
+    assert((1..1).by(5).sequence.string=="{ 1 }", "range by 5");
+    assert((0..9).by(1).sequence.string=="{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }", "range by 1");
+    assert((0..9).by(3).sequence.string=="{ 0, 3, 6, 9 }", "range by 3");
+    assert((2..11).by(3).sequence.string=="{ 2, 5, 8, 11 }", "range by 3");
+    assert((0..9).by(4).sequence.string=="{ 0, 4, 8 }", "range by 4");
+    assert((2..11).by(4).sequence.string=="{ 2, 6, 10 }", "range by 4");
 
     //More range tests, from ceylon-js
     assert((1..10).string=="1..10", "range.string");
@@ -144,11 +144,11 @@ Range<Integer> range {
     assert(!nonempty r4.rest, "nonempty range.rest");
     assert(r1.lastIndex==4, "range.lastIndex 1");
     assert(r2.lastIndex==3, "range.lastIndex 2");
-    assert(r1.by(2).string=="{ 1, 3, 5 }", "range.by 1");
-    assert(r1.by(3).string=="{ 1, 4 }", "range.by 2");
-    assert(r2.by(2).string=="{ 7, 5 }", "range.by 3");
-    assert(r2.by(3).string=="{ 7, 4 }", "range.by 4");
-    assert(r4.by(10).string=="123..123", "range.by 5");
+    assert(r1.by(2).sequence.string=="{ 1, 3, 5 }", "range.by 1");
+    assert(r1.by(3).sequence.string=="{ 1, 4 }", "range.by 2");
+    assert(r2.by(2).sequence.string=="{ 7, 5 }", "range.by 3");
+    assert(r2.by(3).sequence.string=="{ 7, 4 }", "range.by 4");
+    assert(r4.by(10).sequence.string=="{ 123 }", "range.by 5");
     assert(r1.segment(2,2).string=="3..4", "range.segment 1");
     assert(!nonempty r1.segment(1,0), "range.segment 2");
     assert(r1.segment(1,-1).empty, "range.segment 3");
