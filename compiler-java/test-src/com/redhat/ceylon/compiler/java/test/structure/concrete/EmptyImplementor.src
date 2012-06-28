@@ -39,6 +39,11 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Empty getReversed() {
+        return $ceylon$language$Empty$this.getReversed();
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Empty getClone() {
         return $ceylon$language$Empty$this.getClone();
     }
@@ -109,6 +114,21 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     @.java.lang.Override
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.every(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<?> skipping(final long skip) {
+        return $ceylon$language$Iterable$this.skipping(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<?> taking(final long take) {
+        return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<?> by(final long step) {
+        return $ceylon$language$Iterable$this.by(step);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;

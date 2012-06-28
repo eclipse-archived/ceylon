@@ -79,6 +79,21 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.every(selecting);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends X> skipping(final long skip) {
+        return $ceylon$language$Iterable$this.skipping(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends X> taking(final long take) {
+        return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends X> by(final long step) {
+        return $ceylon$language$Iterable$this.by(step);
+    }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
     private final .ceylon.language.Category$impl $ceylon$language$Category$this;
@@ -198,6 +213,11 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     
     @.java.lang.Override
     public final X item(final .ceylon.language.Integer index) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> getReversed() {
         throw new .ceylon.language.Exception(null, null);
     }
     

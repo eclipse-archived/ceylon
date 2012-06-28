@@ -47,6 +47,21 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.every(selecting);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> skipping(final long skip) {
+        return $ceylon$language$Iterable$this.skipping(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> taking(final long take) {
+        return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> by(final long step) {
+        return $ceylon$language$Iterable$this.by(step);
+    }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     
     @.java.lang.Override

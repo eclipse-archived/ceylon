@@ -47,6 +47,21 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     public boolean every(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.every(selecting);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable skipping(final long skip) {
+        return $ceylon$language$Iterable$this.skipping(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable taking(final long take) {
+        return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable by(final long step) {
+        return $ceylon$language$Iterable$this.by(step);
+    }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;
     
@@ -102,6 +117,21 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     @.java.lang.Override
     public boolean every(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.every(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable skipping(final long skip) {
+        return $ceylon$language$Iterable$this.skipping(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable taking(final long take) {
+        return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable by(final long step) {
+        return $ceylon$language$Iterable$this.by(step);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;

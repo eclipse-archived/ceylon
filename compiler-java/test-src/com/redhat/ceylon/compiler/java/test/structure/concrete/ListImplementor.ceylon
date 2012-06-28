@@ -47,5 +47,9 @@ class ListImplementor<X>() satisfies List<X> {
     shared actual X item(Integer index) {
         throw;
     }
+    
+    shared actual ListImplementor<X> reversed {
+        throw;
+    }
 
 }
