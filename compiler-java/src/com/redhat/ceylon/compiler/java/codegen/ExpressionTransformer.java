@@ -1288,8 +1288,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             String tmpVarName = aliasName("safe");
             JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
             JCExpression transExpr = transformMemberExpression(expr, makeUnquotedIdent(tmpVarName), transformer);
-            if (!isWithinInvocation()
-                    && isCeylonCallable(expr.getTypeModel())) {
+            if (isFunctionalResult(expr.getTypeModel())) {
                 return transExpr;
             }
             transExpr = boxUnboxIfNecessary(transExpr, expr, expr.getTarget().getType(), BoxingStrategy.BOXED);
@@ -1379,7 +1378,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // This short-circuit is here for spread invocations
         // The code has been called recursively and the part after this if-statement will
         // be handled by the previous recursion
-        if (!isWithinInvocation() && isCeylonCallable(expr.getTypeModel())) {
+        if (isFunctionalResult(expr.getTypeModel())) {
             return appliedExpr;
         }
         
@@ -1494,8 +1493,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         String selector = null;
         if (decl instanceof Functional
                 && !(decl instanceof FunctionalParameter) // A functional parameter will already be Callable-wrapped
-                && isCeylonCallable(expr.getTypeModel())
-                && !isWithinInvocation()) {
+                && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl);
         } else if (decl instanceof Getter) {
             // invoke the getter
@@ -2126,6 +2124,11 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     boolean isWithinInvocation() {
         return withinInvocation;
+    }
+    
+    boolean isFunctionalResult(ProducedType type) {
+        return !isWithinInvocation()
+            && isCeylonCallable(type);   
     }
 
     boolean withinInvocation(boolean withinInvocation) {
