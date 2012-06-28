@@ -395,7 +395,14 @@ String$proto.occurrences = function(sub) {
     }
     return ocs.length > 0 ? ArrayList(ocs) : $empty;
 }
-
+String$proto.skipping = function(skip) {
+    if (skip.value==0) return this;
+    return this.segment(skip, this.getSize());
+}
+String$proto.taking = function(take) {
+    if (take.value==0) return $empty;
+    return this.segment(Integer(0), take);
+}
 function StringIterator(string) {
     var that = new StringIterator.$$;
     that.string = string;
