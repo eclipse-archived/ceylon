@@ -88,6 +88,11 @@ ArraySequence$proto.contains = function(elem) {
     }
     return $false;
 }
+ArraySequence$proto.getReversed = function() {
+    var arr = this.value.slice(0);
+    arr.reverse();
+    return ArraySequence(arr);
+}
 
 function TypeCategory(seq, type) {
     var that = new TypeCategory.$$;
@@ -158,6 +163,7 @@ Singleton$proto.segment = function(idx, len) {
     return $empty;
 }
 Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
+Singleton$proto.getReversed = function() { return this; }
 
 function SingletonIterator(elem) {
     var that = new SingletonIterator.$$;

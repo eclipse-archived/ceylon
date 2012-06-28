@@ -409,6 +409,23 @@ Map$proto.getInverse = function() {
     initTypeProto($map$inv, 'ceylon.language.InverseMap', IdentifiableObject, Map);
     return $map$inv(this);
 }
+Map$proto.mapItems = function(mapping) {
+    //TODO: implement
+    function EmptyMap() {
+        var em = new EmptyMap.$$;
+        IdentifiableObject(em);
+        em.clone=function() { return this; }
+        em.equals=function() { return $false; }
+        em.getHash=function() { return 0; }
+        em.getItem=function() { return null; }
+        em.getIterator=function() { return EmptyIterator(); }
+        em.getSize=function() { return 0; }
+        em.getString=function() { return String$('',0); }
+        return em;
+    }
+    initTypeProto(EmptyMap, 'ceylon.language.EmptyMap', IdentifiableObject, Map);
+    return EmptyMap();
+}
 exports.Map=Map;
 
 function Set(wat) {
@@ -493,6 +510,7 @@ Empty$proto.contains = function(x) { return $false; }
 Empty$proto.getLastIndex = function() { return null; }
 Empty$proto.getClone = function() { return this; }
 Empty$proto.count = function(x) { return Integer(0); }
+Empty$proto.getReversed = function() { return this; }
 
 var $empty = Empty();
 
@@ -515,6 +533,7 @@ function EmptyArray() {
 initTypeProto(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
 EmptyArray.$$.prototype.setItem = function(i,e) {}
 EmptyArray.$$.prototype.item = function(x) { return null; }
+EmptyArray.$$.prototype.getReversed = function() { return this; }
 exports.EmptyArray=EmptyArray;
 
 function ArrayList(items) {
@@ -540,6 +559,11 @@ ArrayList$proto.item = function(idx) {
 }
 ArrayList$proto.getLastIndex = function() {
     return this.lastIndex;
+}
+ArrayList$proto.getReversed = function() {
+    var arr = this.value.slice(0);
+    arr.reverse();
+    return ArrayList(arr);
 }
 
 exports.ArrayList=ArrayList;

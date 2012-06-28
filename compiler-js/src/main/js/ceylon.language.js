@@ -443,6 +443,7 @@ Range$proto.equals = function(other) {
     return Boolean$(eqf === getTrue() && eql === getTrue());
 }
 Range$proto.getIterator = function() { return RangeIterator(this); }
+Range$proto.getReversed = function() { return Range(this.last, this.first); }
 
 function RangeIterator(range) {
     var that = new RangeIterator.$$;
