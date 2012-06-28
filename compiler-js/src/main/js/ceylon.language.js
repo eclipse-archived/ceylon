@@ -444,6 +444,25 @@ Range$proto.equals = function(other) {
 }
 Range$proto.getIterator = function() { return RangeIterator(this); }
 Range$proto.getReversed = function() { return Range(this.last, this.first); }
+Range$proto.skipping = function(skip) {
+    var x=0;
+    var e=this.first;
+    while (x++<skip.value) {
+        e=this.next(e);
+    }
+    return this.includes(e) === $true ? new Range(e, this.last) : $empty;
+}
+Range$proto.taking = function(take) {
+    if (take.value == 0) {
+        return $empty;
+    }
+    var x=0;
+    var e=this.first;
+    while (++x<take) {
+        e=this.next(e);
+    }
+    return this.includes(e) ? new Range(this.first, e) : this;
+}
 
 function RangeIterator(range) {
     var that = new RangeIterator.$$;
@@ -455,7 +474,7 @@ initTypeProto(RangeIterator, 'ceylon.language.RangeIterator', IdentifiableObject
 var RangeIterator$proto = RangeIterator.$$.prototype;
 RangeIterator$proto.next = function() {
     var rval = this.current;
-    if (rval.equals($finished) === getTrue()) {
+    if (rval === $finished) {
         return rval;
     } else if (rval.equals(this.range.getLast()) === getTrue()) {
         this.current = $finished;
