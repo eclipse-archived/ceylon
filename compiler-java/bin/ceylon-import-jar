@@ -14,12 +14,6 @@ done
 
 DIR=$(dirname "$PRG")
 
-# Only set CEYLON_HOME if not already set
-if test -z "$CEYLON_HOME"
-then
-    CEYLON_HOME="$DIR/.."
-fi
-
 . $DIR/args.sh
 
 # JAVA_CP are classes required by the tool to run
