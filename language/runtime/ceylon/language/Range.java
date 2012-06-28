@@ -3,6 +3,8 @@ package ceylon.language;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -304,6 +306,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return List$impl._defines(this, key);
     }
 
+    @Annotations({@Annotation("actual")})
+    @Override
+    public Sequence<? extends Element> getReversed() {
+    	return new Range<Element>(last, first);
+    }
+    
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public ceylon.language.List<? extends Element> segment(

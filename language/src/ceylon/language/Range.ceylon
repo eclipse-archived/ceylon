@@ -197,4 +197,9 @@ shared class Range<Element>(first, last)
         throw; //todo
     }
     
+    doc "Reverse this range, returning a new range."
+    shared actual Range<Element> reversed {
+        return Range(last,first);
+    }
+
 }

@@ -113,6 +113,16 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
+    public ArraySequence<? extends Element> getReversed() {
+    	Element[] reversed = (Element[]) java.lang.reflect.Array.newInstance(array.getClass()
+    			.getComponentType(), array.length);
+    	for (int i=0; i<array.length; i++) {
+    		reversed[array.length-1-i] = array[i];
+    	}
+		return new ArraySequence<Element>(reversed, 0);
+    }
+
+    @Override
     public boolean defines(Integer key) {
         long ind = key.longValue();
         return ind>=0 && ind+first<array.length;

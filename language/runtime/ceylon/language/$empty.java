@@ -141,6 +141,12 @@ public class $empty {
 
         @Override
         @Ignore
+        public Empty getReversed() {
+            return Empty$impl._getReversed(this);
+        }
+
+        @Override
+        @Ignore
         public Integer getLastIndex() {
             return Empty$impl._getLastIndex(this);
         }

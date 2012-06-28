@@ -57,6 +57,10 @@ public interface Empty
     @TypeInfo("ceylon.language.Nothing")
     public Integer getLastIndex();
 
+    @Annotations({@Annotation("actual")})
+    @Override
+    public Empty getReversed();
+    
     @Annotations(@Annotation("actual"))
     @Override
     public Empty getClone();

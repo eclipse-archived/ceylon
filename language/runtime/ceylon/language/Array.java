@@ -3,6 +3,8 @@ package ceylon.language;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -598,4 +600,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public Iterable<?> containsAny$elements() {
         return $empty.getEmpty();
     }
+
+    @Override
+    @Annotations({@Annotation("actual"), @Annotation("formal")})
+    public abstract Array<? extends Element> getReversed();
+
 }

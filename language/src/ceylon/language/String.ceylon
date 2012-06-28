@@ -56,7 +56,7 @@ shared abstract class String()
     shared formal String normalized;
     
     doc "This string, with the characters in reverse order."
-    shared formal String reversed;
+    shared formal actual String reversed;
     
     doc "Select the characters between the given indexes.
          If the start index is the same as the end index,

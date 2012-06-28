@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -224,6 +226,12 @@ public class Singleton<Element>
         return $empty.getEmpty();
     }
 
+    @Annotations({@Annotation("actual")})
+    @Override
+    public Sequence<? extends Element> getReversed() {
+    	return this;
+    }
+    
     @Override
     public boolean equals(java.lang.Object that) {
         if (that instanceof List) {

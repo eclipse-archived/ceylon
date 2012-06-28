@@ -2,6 +2,8 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
@@ -81,6 +83,13 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     @Override
     public boolean getEmpty() {
         return false;
+    }
+    
+    @Override
+    @Annotations({ @Annotation("actual") })
+    public Array<? extends Element> getReversed() {
+    	// TODO!!!!!!!!!!
+    	return null;
     }
 
     /*@Override

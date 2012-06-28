@@ -21,6 +21,9 @@ shared abstract class Array<Element>()
             Integer index, 
             doc "The new element."
             Element element);
+    
+    doc "Reverse this array, returning a new array."
+    shared actual formal Array<Element> reversed;
 
 }
 

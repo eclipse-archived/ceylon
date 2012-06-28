@@ -120,11 +120,12 @@ shared interface Correspondence<in Key, out Item>
         shared actual Sequence<Item?> clone {
             return this;
         }
-                
+        shared actual Sequence<Item?> reversed {
+            return outer.Items(keys.reversed);
+        }
         shared actual Integer hash {
             return keys.hash;
         }
-        
     }
     
 }

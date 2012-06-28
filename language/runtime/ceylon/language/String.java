@@ -472,10 +472,12 @@ public abstract class String
         return instance(value.substring(start, end));
     }
     
-    public java.lang.String getReversed() {
+    @Override
+    @TypeInfo("ceylon.language.String")
+    public String getReversed() {
         long len = getSize();
         if (len < 2) {
-            return value;
+            return this;
         }
         java.lang.StringBuilder builder = new java.lang.StringBuilder();
         int offset = value.length();
@@ -484,7 +486,7 @@ public abstract class String
             builder.appendCodePoint(c);
             offset -= java.lang.Character.charCount(c);
         }
-        return builder.toString();
+        return String.instance(builder.toString());
     }
     
     public java.lang.String repeat(

@@ -71,6 +71,11 @@ shared class Singleton<Element>(Element element)
         return from>0 then {} else this;
     }
 
+    doc "Return this singleton."
+    shared actual Singleton<Element> reversed {
+        return this;
+    }
+
     doc "A `Singleton` can be equal to another `List` if 
          that `List` has only one element which is equal to 
          this `Singleton`'s element."

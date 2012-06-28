@@ -29,6 +29,11 @@ shared interface Empty
         return this;
     }
 
+    doc "Returns an `Empty`."
+    shared actual Empty reversed {
+	    return this;
+    }
+
     doc "Returns a string description of the empty List: `{}`."
     shared actual String string {
         return "{}";

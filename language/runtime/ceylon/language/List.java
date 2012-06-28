@@ -48,6 +48,9 @@ public interface List<Element>
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object")
     java.lang.Object that);
     
+    @Annotations({@Annotation("formal")})
+    public List<? extends Element> getReversed();
+    
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     public int hashCode();

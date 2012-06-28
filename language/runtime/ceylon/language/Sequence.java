@@ -37,6 +37,10 @@ public interface Sequence<Element>
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public FixedSized<? extends Element> getRest();
     
+    @Annotations({@Annotation("actual"), @Annotation("formal")})
+    @Override
+    public Sequence<? extends Element> getReversed();
+    
     /*@Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public List<? extends Element> span(@Name("from") Integer from, 

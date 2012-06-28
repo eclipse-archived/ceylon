@@ -15,6 +15,13 @@ public final class Empty$impl {
     static long _getSize(Empty $this){
         return 0;
     }
+
+    public Empty getReversed() {
+        return _getReversed($this);
+    }
+    static Empty _getReversed(Empty $this){
+        return $this;
+    }
     
     public Iterator getIterator() {
         return _getIterator($this);

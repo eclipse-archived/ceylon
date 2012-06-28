@@ -86,6 +86,11 @@ public interface Correspondence<Key,Item> {
             }
         }
         @Override
+        @Annotations(@Annotation("formal"))
+        public Sequence<? extends Item> getReversed() {
+        	return new Items<Key,Item>($this, keys.getReversed());
+        }
+        @Override
         @Ignore
         public java.lang.String toString() {
             return List$impl._toString(this);		

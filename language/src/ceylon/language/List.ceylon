@@ -59,9 +59,8 @@ shared interface List<out Element>
         return listIterator;
     }
 
-    /*doc "Reverse this sequence, returning a new nonempty
-         sequence."
-    shared formal Sequence<Element> reversed;*/
+    doc "Reverse this list, returning a new list."
+    shared formal List<Element> reversed;
 
     /*doc "Select the elements between the given indices. If 
          the start index is the same as the end index,

@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
@@ -75,6 +77,12 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     @Override
     public Element getFirst() {
         return null;
+    }
+    
+    @Override
+    @Annotations({ @Annotation("actual") })
+    public Array<? extends Element> getReversed() {
+    	return this;
     }
 
     @Override @Ignore public Iterable<? extends Element> getSequence() { return (Iterable)$empty.getEmpty(); }

@@ -28,6 +28,10 @@ shared interface Sequence<out Element>
          element."
     shared actual formal Element[] rest;
         
+    doc "Reverse this sequence, returning a new nonempty
+         sequence."
+    shared actual formal Sequence<Element> reversed;
+
     /*shared actual formal Element[] span(Integer from,
                                         Integer? to);
                                         
