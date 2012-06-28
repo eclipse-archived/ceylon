@@ -287,30 +287,30 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return Iterable$impl._getSequence(this);
     }
     
-    @Override 
+    @Override
     @Ignore
-    public Element find(Callable<? extends Boolean> f) { 
-        return Iterable$impl._find(this, f); 
+    public Element find(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this, f);
     }
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f); 
+    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) {
+        return Iterable$impl._sorted(this, f);
     }
     
-    @Override 
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-        return new MapIterable<Element, Result>(this, f); 
+    @Override
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) {
+        return new MapIterable<Element, Result>(this, f);
     }
     
-    @Override 
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
-        return new FilterIterable<Element>(this, f); 
+    @Override
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f);
     }
-    
-    @Override 
+
+    @Override
     @Ignore
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
         return Iterable$impl._fold(this, ini, f); 
     }
     @Override @Ignore
@@ -321,7 +321,19 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public boolean every(Callable<? extends Boolean> f) {
         return Iterable$impl._every(this, f);
     }
-    
+    @Override @Ignore
+    public Iterable<? extends Element> skipping(long skip) {
+        return Iterable$impl._skipping(this, skip);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> taking(long take) {
+        return Iterable$impl._taking(this, take);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> by(long step) {
+        return Iterable$impl._by(this, step);
+    }
+ 
     @Override
     @Ignore
     public Iterable<?>containsAny$elements() {
