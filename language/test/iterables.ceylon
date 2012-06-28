@@ -93,16 +93,18 @@ void testIterables() {
     assert(!nonempty (1..5).skipping(9).sequence, "skipping [4]");
     assert((5..1).skipping(2)==3..1, "skipping [5]");
     assert("hola".skipping(2)=="la", "String.skipping");
+    assert(elements(for(i in 1..10) i).skipping(8).sequence=={9,10}, "comprehension.skipping");
 
     //Taking
     assert({1,2,3,4,5}.taking(3).sequence=={1,2,3}, "taking [1]");
     assert(!nonempty {1,2,3,4,5}.taking(0).sequence, "taking [2]");
-    assert((1..10).taking(5)==1..5, "taking [3]");
-    assert(!nonempty (1..5).taking(0).sequence, "taking [4]");
-    assert((1..10).taking(100)==1..10, "taking [5]");
+    assert((1..10).taking(5)==1..5, "Range.taking [3]");
+    assert(!nonempty (1..5).taking(0).sequence, "Range.taking [4]");
+    assert((1..10).taking(100)==1..10, "Range.taking [5]");
     assert({1,2,3,4,5}.taking(100).sequence=={1,2,3,4,5}, "taking [6]");
-    assert((5..1).taking(3)==5..3, "taking [7]");
+    assert((5..1).taking(3)==5..3, "Range.taking [7]");
     assert("hola".taking(2)=="ho", "String.taking");
+    assert(elements(for (i in 1..10) i).taking(2).sequence=={1,2}, "comprehension.taking");
 
     //By
     assert({1,2,3,4,5}.by(1).sequence=={1,2,3,4,5}, "by [1]");
@@ -120,6 +122,7 @@ void testIterables() {
     assert((10..1).by(2).sequence=={10,8,6,4,2}, "Range.by [2]");
     assert((1..10).by(6).sequence=={1,7}, "Range.by [3]");
     assert((1..10).by(100).sequence=={1}, "Range.by [4]");
+    assert(elements(for(i in 1..10) i).by(4).sequence=={1,5,9}, "comprehension.by");
 
     //Iterable-related functions
     assert({"aaa", "tt", "z"}.sorted(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sorted(byIncreasing)");
