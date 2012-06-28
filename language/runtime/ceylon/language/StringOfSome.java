@@ -65,4 +65,16 @@ class StringOfSome extends String implements Some<Character> {
     public boolean every(Callable<? extends Boolean> f) {
         return Iterable$impl._every(this, f);
     }
+    @Override @Ignore
+    public Iterable<? extends Character> skipping(long skip) {
+        return this.segment(Integer.instance(skip), this.getSize());
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> taking(long take) {
+        return this.segment(Integer.instance(0), take);
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> by(long step) {
+        return Iterable$impl._by(this, step);
+    }
 }
