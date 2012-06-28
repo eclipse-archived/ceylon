@@ -5,6 +5,7 @@ void test_singleton() {
     assert(singleton.defines(0), "singleton defines");
     assert(!singleton.defines(1), "singleton defines");
     assert(singleton.string=="{ hello }", "singleton string");
+    assert(singleton.reversed==singleton, "singleton reversed");
     assert(nonempty singleton, "singleton nonempty");
     if (nonempty singleton) {
         assert(singleton.first=="hello", "singleton first");
@@ -107,6 +108,7 @@ shared void sequences() {
     assert(!nonempty empty.span(1, null), "empty.span(1,null)");
     assert(!nonempty empty.segment(1, 2), "empty sequence segment");
     assert(empty.string=="{}", "empty.string");
+    assert(empty.reversed==empty, "empty reversed");
 
     builder.append("hello");
     builder.append("world");
@@ -147,6 +149,8 @@ shared void sequences() {
     assert(nonempty result.segment(1,1), "nonempty sequence.segment(1,1)");
     assert(!nonempty result.segment(0,0), "!nonempty sequence.segment(0,0)");
     //assert(!nonempty result.segment(1,-1), "!nonempty sequence.segment(1,-1)");
+    
+    assert (result.reversed=={"world", "hello"}, "sequence.reversed");
 
     if (exists str = result[0]) {
         assert(str=="hello", "sequence item");
@@ -223,6 +227,7 @@ shared void sequences() {
     value seq = { 1, 2, 3, 4 };
     assert(seq.size==4, "sequence size");
     assert(seq.string=="{ 1, 2, 3, 4 }", "sequence.string 4");
+    assert(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
     assert(seq.first==1, "sequence first");
     assert(seq.rest.string=="{ 2, 3, 4 }", "sequence.rest.string");
     variable value i:=0;
