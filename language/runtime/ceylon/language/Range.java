@@ -414,25 +414,25 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public boolean every(Callable<? extends Boolean> f) {
         return Iterable$impl._every(this, f);
     }
-    @Override @Ignore
+    @Override
+    @TypeInfo("Range<Element>|Empty")
     public Iterable<? extends Element> skipping(long skip) {
         long x=0;
         Element e=first;
-        while (x<skip) {
-            x++;
+        while (x++<skip) {
             e=next(e);
         }
         return this.includes(e) ? new Range(e, last) : (Iterable)$empty.getEmpty();
     }
-    @Override @Ignore
+    @Override
+    @TypeInfo("Range<Element>|Empty")
     public Iterable<? extends Element> taking(long take) {
         if (take == 0) {
             return (Iterable)$empty.getEmpty();
         }
-        long x=1;
+        long x=0;
         Element e=first;
-        while (x<take) {
-            x++;
+        while (++x<take) {
             e=next(e);
         }
         return this.includes(e) ? new Range(first, e) : this;
