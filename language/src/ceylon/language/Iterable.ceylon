@@ -107,7 +107,7 @@ shared interface Iterable<out Element>
     shared default Iterable<Element> skipping(Integer skip) {
         if (skip == 0) { return this; }
         variable value i:=0;
-        return iterable { for (e in this) if (i++>skip) e };
+        return elements { for (e in this) if (i++>skip) e };
     }
 
     doc "Returns an Iterable that will only return the
@@ -116,7 +116,7 @@ shared interface Iterable<out Element>
     shared default Iterable<Element> taking(Integer take) {
         if (take == 0) { return {}; }
         variable value i:=0;
-        return iterable { for (e in this) if (i++<take) e };
+        return elements { for (e in this) if (i++<take) e };
     }
 
     doc "Returns an Iterable that returns elements from the
