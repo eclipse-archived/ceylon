@@ -24,18 +24,7 @@ fi
 
 # JAVA_CP are classes required by the compiler to run. They have to go to the boot class path on Mac OS X
 # so just put it there for all (Linux) OSes for consistency.
-JAVA_CP="$CEYLON_REPO/com/redhat/ceylon/compiler/java/$CEYLON_VERSION/com.redhat.ceylon.compiler.java-$CEYLON_VERSION.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com.redhat.ceylon.typechecker-$CEYLON_VERSION.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/module-resolver/$CEYLON_VERSION/com.redhat.ceylon.module-resolver-$CEYLON_VERSION.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/antlr-3.4-complete.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/sardine-314.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/slf4j-api-1.6.1.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/slf4j-simple-1.6.1.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/httpclient-4.1.1.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/httpcore-4.1.1.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/commons-logging-1.1.1.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/commons-codec-1.4.jar"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/jandex-1.0.3.Final.jar"
+JAVA_CP="$MINIMAL_CP"
 
 # COMPILE_CP are classes required by the code being compiled
 # Do not add the hand-made runtime if we're bootstrapping it

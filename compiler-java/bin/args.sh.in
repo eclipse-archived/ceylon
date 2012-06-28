@@ -63,3 +63,17 @@ do
 
     shift
 done
+
+# MINIMAL_CP are classes required by the tools to run
+MINIMAL_CP="$CEYLON_REPO/com/redhat/ceylon/compiler/java/$CEYLON_VERSION/com.redhat.ceylon.compiler.java-$CEYLON_VERSION.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com.redhat.ceylon.typechecker-$CEYLON_VERSION.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_REPO/com/redhat/ceylon/module-resolver/$CEYLON_VERSION/com.redhat.ceylon.module-resolver-$CEYLON_VERSION.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/antlr-3.4-complete.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/sardine-314.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/slf4j-api-1.6.1.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/slf4j-simple-1.6.1.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/httpclient-4.1.1.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/httpcore-4.1.1.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/commons-logging-1.1.1.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/commons-codec-1.4.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_HOME/lib/jandex-1.0.3.Final.jar"
