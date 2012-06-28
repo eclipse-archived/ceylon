@@ -44,7 +44,7 @@ shared class Singleton<Element>(Element element)
                 satisfies Iterator<Element> {
             variable Element|Finished current := first;
             shared actual Element|Finished next() {
-                Element|Finished result = current;
+                value result = current;
                 current := exhausted;
                 return result;
             }
@@ -112,8 +112,8 @@ shared class Singleton<Element>(Element element)
         return contains(element) then 1 else 0;
     }
 
-    shared actual Singleton<Result> map<Result>(Result selecting(Element e)) {
-        return Singleton(selecting(element));
+    shared actual Sequence<Result> map<Result>(Result selecting(Element e)) {
+        return { selecting(element) };
     }
     shared actual Singleton<Element>|Empty filter(Boolean selecting(Element e)) {
         return selecting(element) then this else {};
@@ -123,7 +123,7 @@ shared class Singleton<Element>(Element element)
         return accumulating(initial, element);
     }
     shared actual Element? find(Boolean selecting(Element e)) {
-        return find(element) then element else null;
+        return selecting(element) then element else null;
     }
     shared actual Singleton<Element> sorted(Comparison? comparing(Element a, Element b)) {
         return this;
@@ -135,10 +135,10 @@ shared class Singleton<Element>(Element element)
         return selecting(element);
     }
     shared actual Singleton<Element>|Empty skipping(Integer skip) {
-        return skip==0 then this else {};
+        return skip<1 then this else {};
     }
     shared actual Singleton<Element>|Empty taking(Integer take) {
-        return taking>0 then this else {};
+        return take>0 then this else {};
     }
 
 }

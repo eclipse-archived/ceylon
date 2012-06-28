@@ -315,40 +315,47 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		@Name("from") final Integer from, 
     		@Name("length") final long length) {
         //only positive length for now
-        if (length<=0 || !defines(from)) {
+        if (length<=0 || from.value>getLastIndex().value) {
         	return (ceylon.language.List)$empty.getEmpty();
         }
-        Element x = this.first;
-        for (int i=0; i < from.longValue(); i++) { x = this.next(x); }
+        Element x = first;
+        for (int i=0; i < from.value; i++) { x = next(x); }
         Element y = x;
-        for (int i=1; i < length; i++) { y = this.next(y); }
-        if (!includes(y)) { y = this.last; }
+        for (int i=1; i < length && y.compare(last).smallerThan(); i++) { y = next(y); }
         return new Range<Element>(x, y);
     }
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> span(
-    		@Name("from") final Integer from,
+    		@Name("from") Integer from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
-    		@Name("to") final Integer to) {
-    	Integer fromIndex = largest.largest(Integer.instance(0), from);
-        Integer toIndex = to==null ? getLastIndex() : to;
-    	if (!defines(fromIndex)) {
-            //If it's an inverse range, adjust the "from" (upper bound)
-            if (fromIndex.compare(toIndex) == larger.getLarger() && defines(toIndex)) {
-                //Decrease the upper bound
-                while (!defines(fromIndex)) {
-                    fromIndex = fromIndex.getPredecessor();
-                }
-            } else {
-                return (ceylon.language.List)$empty.getEmpty();
-            }
-        } else while (!defines(toIndex)) {
-            //decrease the upper bound
-            toIndex = toIndex.getPredecessor();
+    		@Name("to") Integer to) {
+        Integer lastIndex = getLastIndex();
+		to = to==null ? lastIndex : to;
+        if (to.value<0) {
+        	if (from.value<0) {
+        		return (ceylon.language.List)$empty.getEmpty();
+        	}
+        	to = Integer.instance(0);
         }
-        return new Range<Element>(this.item(fromIndex), this.item(toIndex));
+        else if (to.value>lastIndex.value) {
+        	if (from.value>lastIndex.value) {
+        		return (ceylon.language.List)$empty.getEmpty();
+        	}
+        	to = lastIndex;
+        }
+        if (from.value<0) {
+        	from = Integer.instance(0);
+        }
+        else if (from.value>lastIndex.value) {
+        	from = lastIndex;
+        }
+        Element x = first;
+        for (int i=0; i < from.value; i++) { x = next(x); }
+        Element y = first;
+        for (int i=0; i < to.value; i++) { y = next(y); }
+        return new Range<Element>(x, y);
     }
 
     @Override

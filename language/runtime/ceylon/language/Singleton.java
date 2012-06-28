@@ -270,11 +270,11 @@ public class Singleton<Element>
         return this;
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Result>")
-    public <Result> Singleton<Result> map(@Name("selecting")
+    @TypeInfo("ceylon.language.Sequence<Result>")
+    public <Result> Sequence<Result> map(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<Result,Element>")
             Callable<? extends Result> selecting) {
-        return new Singleton<Result>(selecting.$call(element));
+        return new ArraySequence<Result>(selecting.$call(element));
     }
     @Override
     @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
@@ -308,6 +308,6 @@ public class Singleton<Element>
     }
     @Override @Ignore
     public Iterable<? extends Element> by(long step) {
-        return step==0 ? Iterable$impl._by(this, step) : this;
+        return Iterable$impl._by(this, step);
     }
 }
