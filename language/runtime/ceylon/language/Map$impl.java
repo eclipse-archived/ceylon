@@ -1,6 +1,9 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 public final class Map$impl<Key,Item> {
@@ -229,6 +232,20 @@ public final class Map$impl<Key,Item> {
             public boolean every(Callable<? extends Boolean> f) {
                 return Iterable$impl._every(this, f);
             }
+			@Override @Ignore
+			public Iterable<? extends Key> skipping(long skip) {
+				return Iterable$impl._skipping(this, skip);
+			}
+
+			@Override @Ignore
+			public Iterable<? extends Key> taking(long take) {
+				return Iterable$impl._taking(this, take);
+			}
+
+			@Override @Ignore
+			public Iterable<? extends Key> by(long step) {
+				return Iterable$impl._by(this, step);
+			}
         }
         return new keySet();
     }
@@ -362,6 +379,20 @@ public final class Map$impl<Key,Item> {
             public boolean every(Callable<? extends Boolean> f) {
                 return Iterable$impl._every(this, f);
             }
+			@Override @Ignore
+			public Iterable<? extends Item> skipping(long skip) {
+				return Iterable$impl._skipping(this, skip);
+			}
+
+			@Override @Ignore
+			public Iterable<? extends Item> taking(long take) {
+				return Iterable$impl._taking(this, take);
+			}
+
+			@Override @Ignore
+			public Iterable<? extends Item> by(long step) {
+				return Iterable$impl._by(this, step);
+			}
         }
         return new valueCollection();
     }
@@ -578,6 +609,20 @@ public final class Map$impl<Key,Item> {
             public boolean every(Callable<? extends Boolean> f) {
                 return Iterable$impl._every(this, f);
             }
+			@Override @Ignore
+			public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> skipping(long skip) {
+				return Iterable$impl._skipping(this, skip);
+			}
+
+			@Override @Ignore
+			public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> taking(long take) {
+				return Iterable$impl._taking(this, take);
+			}
+
+			@Override @Ignore
+			public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> by(long step) {
+				return Iterable$impl._by(this, step);
+			}
         }
         return new inverse();
     }

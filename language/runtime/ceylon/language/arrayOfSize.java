@@ -95,6 +95,20 @@ public final class arrayOfSize {
             public boolean every(Callable<? extends Boolean> f) {
                 return Iterable$impl._every(this, f);
             }
+			@Override @Ignore
+			public Iterable<? extends Element> skipping(long skip) {
+				return Iterable$impl._skipping(this, skip);
+			}
+
+			@Override @Ignore
+			public Iterable<? extends Element> taking(long take) {
+				return Iterable$impl._taking(this, take);
+			}
+
+			@Override @Ignore
+			public Iterable<? extends Element> by(long step) {
+				return Iterable$impl._by(this, step);
+			}
         };
     }
 }

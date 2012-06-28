@@ -173,6 +173,20 @@ public interface Correspondence<Key,Item> {
         public Iterator<? extends Item> getIterator() {
             return List$impl._getIterator(this);
         }
+		@Override @Ignore
+		public Iterable<? extends Item> skipping(long skip) {
+			return Iterable$impl._skipping(this, skip);
+		}
+
+		@Override @Ignore
+		public Iterable<? extends Item> taking(long take) {
+			return Iterable$impl._taking(this, take);
+		}
+
+		@Override @Ignore
+		public Iterable<? extends Item> by(long step) {
+			return Iterable$impl._by(this, step);
+		}
         @Override
         public List<? extends Item> segment(Integer from, long length) {
         	Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);

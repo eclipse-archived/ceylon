@@ -605,4 +605,18 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     public abstract Array<? extends Element> getReversed();
 
+	@Override @Ignore
+	public Iterable<? extends Element> skipping(long skip) {
+		return Iterable$impl._skipping(this, skip);
+	}
+
+	@Override @Ignore
+	public Iterable<? extends Element> taking(long take) {
+		return Iterable$impl._taking(this, take);
+	}
+
+	@Override @Ignore
+	public Iterable<? extends Element> by(long step) {
+		return Iterable$impl._by(this, step);
+	}
 }
