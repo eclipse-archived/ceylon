@@ -111,20 +111,80 @@ public final class Iterable$impl<Element> {
     public Iterable<? extends Element> skipping(long skip) {
         return Iterable$impl._skipping($this, skip);
     }
-    static <Element> Iterable<? extends Element> _skipping(Iterable<? extends Element> $this, long skip) {
-        return $this;
+    static <Element> Iterable<? extends Element> _skipping(final Iterable<? extends Element> $this, final long skip) {
+        return skip==0 ? $this : new AbstractIterable<Element>() {
+            public final Iterator<? extends Element> getIterator() {
+                final Iterator<? extends Element> iter = $this.getIterator();
+                for (int i = 0; i < skip; i++) { iter.next(); }
+                return iter;
+			}
+        };
     }
     public Iterable<? extends Element> taking(long take) {
-        return $this;
+        return Iterable$impl._taking($this, take);
     }
-    static <Element> Iterable<? extends Element> _taking(Iterable<? extends Element> $this, long take) {
-        return $this;
+    static <Element> Iterable<? extends Element> _taking(final Iterable<? extends Element> $this, final long take) {
+        if (take == 0) {
+            return (Iterable)$empty.getEmpty();
+        }
+        else return new AbstractIterable<Element>() {
+            @Override
+            public final Iterator<? extends Element> getIterator() {
+                return new Iterator<Element>() {
+                    private final Iterator<? extends Element> iter = $this.getIterator();
+                    private int i=0;
+                    @Override
+                    public java.lang.Object next() {
+                        while (i++ < take) {
+                            return iter.next();
+                        }
+                        return exhausted.getExhausted();
+                    }
+                };
+            }
+        };
     }
     public Iterable<? extends Element> by(long step) {
         return $this;
     }
-    static <Element> Iterable<? extends Element> _by(Iterable<? extends Element> $this, long take) {
-        return $this;
+    static <Element> Iterable<? extends Element> _by(final Iterable<? extends Element> $this, final long step) {
+        if (step == 1) {
+            return $this;
+        } else if (step == 0) {
+            //Either empty, or an infinite iterator
+            final java.lang.Object e = $this.getIterator().next();
+            if (e == exhausted.getExhausted()) {
+                return (Iterable)$empty.getEmpty();
+            }
+            else return new AbstractIterable<Element>() {
+                public final Iterator<? extends Element> getIterator() {
+                    return new Iterator<Element>() {
+                        public java.lang.Object next() {
+                            return e;
+                        }
+                    };
+                }
+            };
+        } else if (step < 0) {
+            throw new Exception(String.instance("step must be greater than or equal to zero"));
+        } else {
+            return new AbstractIterable<Element>() {
+                @Override
+                public Iterator<? extends Element> getIterator() {
+                    return new Iterator<Element>() {
+                        private final Iterator<? extends Element> orig = $this.getIterator();
+                        @Override
+                        public java.lang.Object next() {
+                            java.lang.Object e = orig.next();
+                            for (int i = 1; i < step; i++) {
+                                orig.next();
+                            }
+                            return e;
+                        }
+                    };
+                }
+            };
+        }
     }
 }
 
