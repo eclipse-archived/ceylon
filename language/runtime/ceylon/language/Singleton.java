@@ -158,14 +158,14 @@ public class Singleton<Element>
 	}
 
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Singleton<Element>")
     public List<? extends Element> segment(@Name("from") Integer from,
     		@Name("length") long length) {
     	return from.longValue()==0 && length>0 ? this : (List)$empty.getEmpty();
     }
 
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Singleton<Element>")
     public List<? extends Element> span(@Name("from") Integer from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     		@Name("to") Integer to) {

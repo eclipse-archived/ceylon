@@ -61,13 +61,13 @@ shared class Singleton<Element>(Element element)
 
     doc "Returns a `Singleton` if the given starting index 
          is  `0` and the given `length` is greater than `0`."
-    shared actual Element[] segment(Integer from, Integer length) {
+    shared actual Empty|Singleton<Element> segment(Integer from, Integer length) {
         return from>0 || length==0 then {} else this;
     }
 
     doc "Returns a `Singleton` if the given starting index 
          is `0`."
-    shared actual Element[] span(Integer from, Integer? to) {
+    shared actual Empty|Singleton<Element> span(Integer from, Integer? to) {
         return from>0 then {} else this;
     }
 
