@@ -181,6 +181,7 @@ public class $empty {
 
     @Override @Ignore public Empty getSequence() { return this; }
     @Override @Ignore public Empty find(Callable f) { return null; }
+    @Override @Ignore public Empty findLast(Callable f) { return null; }
     @Override @Ignore public Empty map(Callable f) { return this; }
     @Override @Ignore public Empty sorted(Callable f) { return this; }
     @Override @Ignore public Empty filter(Callable f) { return this; }
