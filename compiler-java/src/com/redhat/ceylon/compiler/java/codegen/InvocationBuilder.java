@@ -249,18 +249,19 @@ abstract class InvocationBuilder {
     }
 
     public final JCExpression build() {
-        boolean prevFnCall = gen.expressionGen().isWithinInvocation();
-        gen.expressionGen().setWithinInvocation(true);
+        boolean prevFnCall = gen.expressionGen().withinInvocation(true);
         try {
             return makeInvocation(args.toList());
         } finally {
-            gen.expressionGen().setWithinInvocation(prevFnCall);
+            gen.expressionGen().withinInvocation(prevFnCall);
         }
     }
     
     public static InvocationBuilder forSuperInvocation(AbstractTransformer gen,
             Tree.InvocationExpression invocation) {
-        gen.expressionGen().setWithinSuperInvocation(true);
+        // Because super() invocations cannot be nested there's no need to 
+        // keep and restore the old withinSuperInvocation state.
+        gen.expressionGen().withinSuperInvocation(true);
         try {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
             java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
@@ -270,7 +271,7 @@ abstract class InvocationBuilder {
             builder.compute();
             return builder;
         } finally {
-            gen.expressionGen().setWithinSuperInvocation(false);
+            gen.expressionGen().withinSuperInvocation(false);
         }
     }
     

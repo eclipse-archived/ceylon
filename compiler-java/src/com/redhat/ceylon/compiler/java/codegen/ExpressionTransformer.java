@@ -1255,12 +1255,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Invocations
     
     public JCExpression transform(Tree.InvocationExpression ce) {
-        final boolean prevInv = isWithinInvocation();
+        final boolean prevInv = withinInvocation(false);
         try {
-            setWithinInvocation(false);
             return InvocationBuilder.forInvocation(this, ce).build();
         } finally {
-            setWithinInvocation(prevInv);
+            withinInvocation(prevInv);
         }
     }
     
@@ -2129,24 +2128,30 @@ public class ExpressionTransformer extends AbstractTransformer {
         return withinInvocation;
     }
 
-    void setWithinInvocation(boolean withinInvocation) {
+    boolean withinInvocation(boolean withinInvocation) {
+        boolean result = this.withinInvocation;
         this.withinInvocation = withinInvocation;
+        return result;
     }
 
-    public boolean isWithinCallableInvocation() {
+    boolean isWithinCallableInvocation() {
         return withinCallableInvocation;
     }
 
-    public void setWithinCallableInvocation(boolean withinCallableInvocation) {
+    boolean withinCallableInvocation(boolean withinCallableInvocation) {
+        boolean result = this.withinCallableInvocation;
         this.withinCallableInvocation = withinCallableInvocation;
+        return result;
     }
 
-    public boolean isWithinSuperInvocation() {
+    boolean isWithinSuperInvocation() {
         return withinSuperInvocation;
     }
 
-    public void setWithinSuperInvocation(boolean withinSuperInvocation) {
+    boolean withinSuperInvocation(boolean withinSuperInvocation) {
+        boolean result = this.withinSuperInvocation;
         this.withinSuperInvocation = withinSuperInvocation;
+        return result;
     }
 
 }

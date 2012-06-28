@@ -58,11 +58,11 @@ public class CallableBuilder {
     public static CallableBuilder methodReference(CeylonTransformer gen, Tree.Term expr, ParameterList parameterList) {
         JCExpression fnCall;
         InvocationBuilder invocationBuilder = InvocationBuilder.forCallableInvocation(gen, expr, parameterList);
-        gen.expressionGen().setWithinCallableInvocation(true);
+        boolean prevCallableInv = gen.expressionGen().withinCallableInvocation(true);
         try {
             fnCall = invocationBuilder.build();
         } finally {
-            gen.expressionGen().setWithinCallableInvocation(false);
+            gen.expressionGen().withinCallableInvocation(prevCallableInv);
         }
         
         CallableBuilder cb = new CallableBuilder(gen);
