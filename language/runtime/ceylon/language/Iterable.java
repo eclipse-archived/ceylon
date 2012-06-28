@@ -72,4 +72,23 @@ public interface Iterable<Element> extends Container {
     public boolean every(@Name("selecting")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
         Callable<? extends Boolean> selecting);
+
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language.Iterable<Element>")
+    public Iterable<? extends Element> skipping(@Name("skip")
+        @TypeInfo("ceylon.language.Integer")
+        long skip);
+
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language.Iterable<Element>")
+    public Iterable<? extends Element> taking(@Name("take")
+        @TypeInfo("ceylon.language.Integer")
+        long take);
+
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language.Iterable<Element>")
+    public Iterable<? extends Element> by(@Name("step")
+        @TypeInfo("ceylon.language.Integer")
+        long step);
+
 }

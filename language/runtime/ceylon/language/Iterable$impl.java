@@ -108,6 +108,24 @@ public final class Iterable$impl<Element> {
         }
         return true;
     }
+    public Iterable<? extends Element> skipping(long skip) {
+        return Iterable$impl._skipping($this, skip);
+    }
+    static <Element> Iterable<? extends Element> _skipping(Iterable<? extends Element> $this, long skip) {
+        return $this;
+    }
+    public Iterable<? extends Element> taking(long take) {
+        return $this;
+    }
+    static <Element> Iterable<? extends Element> _taking(Iterable<? extends Element> $this, long take) {
+        return $this;
+    }
+    public Iterable<? extends Element> by(long step) {
+        return $this;
+    }
+    static <Element> Iterable<? extends Element> _by(Iterable<? extends Element> $this, long take) {
+        return $this;
+    }
 }
 
 class MapIterable<Element, Result> implements Iterable<Result> {
@@ -154,7 +172,7 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     }
     @Override 
     @Ignore
-    public Iterable<Result> filter(Callable<? extends Boolean> f) { 
+    public Iterable<? extends Result> filter(Callable<? extends Boolean> f) { 
         return new FilterIterable<Result>(this, f); 
     }
     @Override 
@@ -169,6 +187,18 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
         return Iterable$impl._every(this, f);
+    }
+    @Override @Ignore
+    public Iterable<? extends Result> skipping(long skip) {
+        return Iterable$impl._skipping(this, skip);
+    }
+    @Override @Ignore
+    public Iterable<? extends Result> taking(long take) {
+        return Iterable$impl._taking(this, take);
+    }
+    @Override @Ignore
+    public Iterable<? extends Result> by(long step) {
+        return Iterable$impl._by(this, step);
     }
 }
 
@@ -231,5 +261,17 @@ class FilterIterable<Element> implements Iterable<Element> {
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
         return Iterable$impl._every(this, f);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> skipping(long skip) {
+        return Iterable$impl._skipping(this, skip);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> taking(long take) {
+        return Iterable$impl._taking(this, take);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> by(long step) {
+        return Iterable$impl._by(this, step);
     }
 }
