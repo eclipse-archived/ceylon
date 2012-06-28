@@ -1,8 +1,5 @@
 package ceylon.language;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -313,13 +310,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> segment(
     		@Name("from") final Integer from, 
     		@Name("length") final long length) {
         //only positive length for now
-        if (length<=0) return (ceylon.language.List)$empty.getEmpty();
-        if (!defines(from)) return (ceylon.language.List)$empty.getEmpty();
+        if (length<=0 || !defines(from)) {
+        	return (ceylon.language.List)$empty.getEmpty();
+        }
         Element x = this.first;
         for (int i=0; i < from.longValue(); i++) { x = this.next(x); }
         Element y = x;
@@ -329,7 +327,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> span(
     		@Name("from") final Integer from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
@@ -354,52 +352,35 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    @TypeInfo("ceylon.language.Iterable<Element>")
-    public Iterable<? extends Element> by(
-    		@TypeInfo("ceylon.language.Integer")
-    		@Name("stepSize") long stepSize) {
-    	if (stepSize==0) {
-    		throw new Exception(String.instance("step size must be nonzero"), null);
-    	}
-    	if (first.equals(last) || stepSize==1) {
-    		return this;
-    	}
-    	boolean decreasing = getDecreasing();
-    	List<Element> list = new ArrayList<Element>();
-    	for (Element elem = first; decreasing ? 
-    			elem.compare(last).asLargeAs() : elem.compare(last).asSmallAs();) {
-    		list.add(elem);
-    		for (int i=0; i<stepSize; i++) {
-    			elem = next(elem);
-    		}
-    	}
-    	return new ArraySequence<Element>(list);
+    @Ignore
+    public Iterable<? extends Element> by(long step) {
+    	return Iterable$impl._by(this, step);
     }
 
     @Override 
     @Ignore 
     public Iterable<? extends Element> getSequence() { 
-        return Iterable$impl._getSequence(this); 
+        return Iterable$impl._getSequence(this);
     }
     @Override 
     @Ignore 
     public Element find(Callable<? extends Boolean> f) { 
-        return Iterable$impl._find(this, f); 
+        return Iterable$impl._find(this, f);
     }
     @Override 
     @Ignore
     public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f); 
+        return Iterable$impl._sorted(this, f);
     }
     @Override 
     @Ignore 
     public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-        return new MapIterable<Element, Result>(this, f); 
+        return new MapIterable<Element, Result>(this, f);
     }
     @Override 
     @Ignore 
     public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
-        return new FilterIterable<Element>(this, f); 
+        return new FilterIterable<Element>(this, f);
     }
     @Override 
     @Ignore 

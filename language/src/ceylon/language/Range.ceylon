@@ -122,24 +122,6 @@ shared class Range<Element>(first, last)
         throw; //todo!
     }*/
 
-    doc "Return a sequence of values in the range, beginning 
-         at the first value, and incrementing by a constant 
-         step size, until a value outside the range is 
-         reached. In the case of a decreasing range, the
-         sequence is generated using decrements of the step
-         size. The step size must be nonzero."
-    shared actual Iterable<Element> by(Integer stepSize) {
-        //todo: should we just give Range a step size? Or
-        //      add a subclass, perhaps?
-        if (stepSize.zero) {
-            throw Exception("step size must be nonzero");
-        }
-        if (first==last || stepSize.unit) {
-            return this;
-        }
-        return super.by(stepSize);
-    }
-
     /*shared Integer? index(Element x) {
     if (!includes(x)) {
         return null;
@@ -175,17 +157,30 @@ shared class Range<Element>(first, last)
         return this;
     }
     
-    /*shared actual Set<Element> elements {
-        throw; //todo!
-    }*/
-    
-    shared actual Element[] segment(Integer from, 
-                                    Integer length) {
-        throw; //todo!
+    shared actual Range<Element>|Empty segment(
+            Integer from, 
+            Integer length) {
+        if (length==0||from>lastIndex) {
+            return {};
+        }
+        else {
+            return skipping(from).taking(length);
+        }
     }
     
-    shared actual Element[] span(Integer from, Integer? to) {
-        throw; //todo
+    shared actual Range<Element>|Empty span(
+            Integer from, 
+            Integer? to) {
+        Integer last = to else lastIndex;
+        if (last<0 && from<0 || 
+                last>lastIndex && from>lastIndex) {
+            return {};
+        }
+        function adjust(Integer index) {
+            return i<0 then 0 else index>lastIndex then lastIndex
+                    else index;
+        }
+        return Range(adjust(from), adjust(last));
     }
     
     doc "Reverse this range, returning a new range."
@@ -193,7 +188,7 @@ shared class Range<Element>(first, last)
         return Range(last,first);
     }
 
-    shared actual Range<Element>|Element skipping(Integer skip) {
+    shared actual Range<Element>|Empty skipping(Integer skip) {
         variable value x:=0;
         variable value e := first;
         while (x++<skip) {
@@ -201,7 +196,7 @@ shared class Range<Element>(first, last)
         }
         return includes(e) then Range(e, last) else {};
     }
-    shared actual Range<Element>|Element taking(Integer take) {
+    shared actual Range<Element>|Empty taking(Integer take) {
         if (take == 0) {
             return {};
         }
