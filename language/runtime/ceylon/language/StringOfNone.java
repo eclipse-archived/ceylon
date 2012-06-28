@@ -31,17 +31,20 @@ class StringOfNone extends String implements None<Character> {
     @Override 
     @Ignore
     public Iterable<? extends Character> getSequence() { 
-        return Iterable$impl._getSequence(this); 
+        return (Iterable)$empty.getEmpty(); 
+    }
+    @Override @Ignore
+    public Character find(Callable<? extends Boolean> f) {
+        return null;
+    }
+    @Override @Ignore
+    public Character findLast(Callable<? extends Boolean> f) {
+        return null;
     }
     @Override 
     @Ignore
-    public Character find(Callable<? extends Boolean> f) { 
-        return Iterable$impl._find(this, f); 
-    }
-    @Override 
-    @Ignore
-    public Iterable<? extends Character> sorted(Callable<? extends Comparison> f) { 
-        return this; 
+    public Iterable<? extends Character> sorted(Callable<? extends Comparison> f) {
+        return this;
     }
     @Override 
     @Ignore

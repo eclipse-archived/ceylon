@@ -45,10 +45,14 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
         return Iterable$impl._fold(this, initial, accumulating);
     }
 
-    @Override
-    @Ignore
+    @Override @Ignore
     public Element find(Callable<? extends Boolean> selecting) {
         return Iterable$impl._find(this, selecting);
+    }
+
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> selecting) {
+        return Iterable$impl._findLast(this, selecting);
     }
 
     @Override 

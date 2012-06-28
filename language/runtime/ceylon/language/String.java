@@ -665,10 +665,13 @@ public abstract class String
         public Iterable<? extends String> getSequence() { 
             return Iterable$impl._getSequence(this); 
         }
-        @Override 
-        @Ignore
-        public String find(Callable<? extends Boolean> f) { 
-            return Iterable$impl._find(this, f); 
+        @Override @Ignore
+        public String find(Callable<? extends Boolean> f) {
+            return Iterable$impl._find(this, f);
+        }
+        @Override @Ignore
+        public String findLast(Callable<? extends Boolean> f) {
+            return Iterable$impl._findLast(this, f);
         }
         @Override 
         @Ignore
@@ -755,10 +758,13 @@ public abstract class String
         public Iterable<? extends Integer> getSequence() { 
             return Iterable$impl._getSequence(this); 
         }
-        @Override 
-        @Ignore
-        public Integer find(Callable<? extends Boolean> f) { 
-            return Iterable$impl._find(this, f); 
+        @Override @Ignore
+        public Integer find(Callable<? extends Boolean> f) {
+            return Iterable$impl._find(this, f);
+        }
+        @Override @Ignore
+        public Integer findLast(Callable<? extends Boolean> f) {
+            return Iterable$impl._findLast(this, f);
         }
         @Override 
         @Ignore

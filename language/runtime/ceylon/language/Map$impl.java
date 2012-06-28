@@ -196,10 +196,13 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Key> getSequence() { 
                 return Iterable$impl._getSequence(this); 
             }
-            @Override 
-            @Ignore
-            public Key find(Callable<? extends Boolean> f) { 
-                return Iterable$impl._find(this, f); 
+            @Override @Ignore
+            public Key find(Callable<? extends Boolean> f) {
+                return Iterable$impl._find(this, f);
+            }
+            @Override @Ignore
+            public Key findLast(Callable<? extends Boolean> f) {
+                return Iterable$impl._findLast(this, f);
             }
             @Override 
             @Ignore
@@ -343,10 +346,13 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Item> getSequence() { 
                 return Iterable$impl._getSequence(this); 
             }
-            @Override 
-            @Ignore
-            public Item find(Callable<? extends Boolean> f) { 
-                return Iterable$impl._find(this, f); 
+            @Override @Ignore
+            public Item find(Callable<? extends Boolean> f) {
+                return Iterable$impl._find(this, f);
+            }
+            @Override @Ignore
+            public Item findLast(Callable<? extends Boolean> f) {
+                return Iterable$impl._findLast(this, f);
             }
             @Override 
             @Ignore
@@ -573,10 +579,13 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() { 
                     return Iterable$impl._getSequence(this); 
             }
-            @Override 
-            @Ignore
-            public Entry<? extends Item, ? extends Set<Key>> find(Callable<? extends Boolean> f) { 
-                return Iterable$impl._find(this, f); 
+            @Override @Ignore
+            public Entry<? extends Item, ? extends Set<Key>> find(Callable<? extends Boolean> f) {
+                return Iterable$impl._find(this, f);
+            }
+            @Override @Ignore
+            public Entry<? extends Item, ? extends Set<Key>> findLast(Callable<? extends Boolean> f) {
+                return Iterable$impl._findLast(this, f);
             }
             @Override 
             @Ignore
@@ -741,10 +750,16 @@ public final class Map$impl<Key,Item> {
                 return Iterable$impl._fold(this, initial, accumulating);
             }
 
-            @Override
+            @Override @Ignore
             public Entry<? extends Key, ? extends Result> find(
                     Callable<? extends Boolean> selecting) {
                 return Iterable$impl._find(this, selecting);
+            }
+
+            @Override @Ignore
+            public Entry<? extends Key, ? extends Result> findLast(
+                    Callable<? extends Boolean> selecting) {
+                return Iterable$impl._findLast(this, selecting);
             }
 
             @Override

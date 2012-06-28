@@ -87,6 +87,7 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
     @Override @Ignore public Iterable<? extends Element> getSequence() { return (Iterable)$empty.getEmpty(); }
     @Override @Ignore public Element find(Callable<? extends Boolean> f) { return null; }
+    @Override @Ignore public Element findLast(Callable<? extends Boolean> f) { return null; }
     @Override @Ignore public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { return this; }
     @Override @Ignore public <Result> Iterable<Result> map(Callable<? extends Result> f) { return (Iterable)$empty.getEmpty(); }
     @Override @Ignore public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
