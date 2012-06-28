@@ -131,4 +131,18 @@ shared interface List<out Element>
                else "{ " elementsString " }";
     }
 
+    shared default actual Element? findLast(Boolean selecting(Element elem)) {
+        if (exists l=lastIndex) {
+            variable value index := l;
+            while (index >= 0) {
+                if (is Element elem = item(index--)) {
+                    if (selecting(elem)) {
+                        return elem;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 }
