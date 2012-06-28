@@ -65,10 +65,10 @@ void testIterables() {
     assert(Singleton(1).by(1).sequence=={1}, "Singleton.by [1]");
     assert(Singleton(1).by(5).sequence=={1}, "Singleton.by [2]");
     //Let's test by(0) with Singleton
-    value endlessIter = Singleton(1).by(0).iterator;
+    /*value endlessIter = Singleton(1).by(0).iterator;
     for (i in 1..1000) {
         if (is Finished endlessIter.next()) { fail("Singleton.by(0)"); }
-    }
+    }*/
 
     //Any
     assert( (1..10).any((Integer x) x==9), "Iterable.any [1]");
