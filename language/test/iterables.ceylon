@@ -27,15 +27,30 @@ void testIterables() {
     if (exists c = "hola!".find((Character c) !c.letter)) {
         assert(c == `!`, "String.find");
     } else { fail("String.find"); }
+    //FindLast
+    if (exists four = s1.findLast((Integer i) i>3)) {
+        assert(four == 5, "Iterable.findLast 1");
+    } else { fail("Iterable.find 1"); }
+    if (exists s = s2.findLast((String s) s.size>5)) {
+        fail("Iterable.findLast 2");
+    }
+    if (exists s = s2.findLast((String s) "o" in s)) {
+        assert(s == "World", "Iterable.findLast 3");
+    } else { fail("Iterable.findLast 3"); }
+    if (exists c = "hola!".findLast((Character c) c.letter)) {
+        assert(c == `a`, "String.findLast");
+    } else { fail("String.findLast"); }
 
     assert({ (1..10).map((Integer i) i.float)... }=={1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, "map 1");
     assert({ (1..10).filter((Integer i) i>5)... }=={6, 7, 8, 9, 10}, "filter 1");
     assert(((1..10).find((Integer i) i>5) else -1)==6, "find 1");
+    assert(((1..10).findLast((Integer i) i>5) else -1)==10, "findLast 1");
     assert((1..10).fold(0, (Integer i, Integer j) i+j)==55, "fold 1");
 
     assert({ 1, 3, 7, 10 }.map((Integer i) i.float).sequence=={1.0, 3.0, 7.0, 10.0}, "map 2");
     assert({ 1, 3, 7, 10 }.filter((Integer i) i>5).sequence=={7.0, 10.0}, "filter 2");
     assert(({ 1, 3, 7, 10 }.find((Integer i) i>5) else -1)==7, "find 2");
+    assert(({ 1, 3, 7, 10 }.findLast((Integer i) i>5) else -1)==10, "findLast 2");
     assert({ 1, 3, 7, 10 }.fold(1, (Integer i, Integer j) i*j)==210, "fold 3");
  
     //Empty optimized implementations
@@ -43,6 +58,7 @@ void testIterables() {
     assert(vacio.map((Integer i) i).empty, "empty.map");
     assert(vacio.filter((Integer i) true).empty, "empty.filter");
     assert(!exists vacio.find((Integer i) i>5), "find 3");
+    assert(!exists vacio.findLast((Integer i) i>5), "findLast 3");
     assert(vacio.fold(0, (Integer i, Integer j) i)==0, "empty.fold");
     assert(vacio.sorted((Integer a, Integer b) larger).sequence=={}, "empty.sorted");
     assert(!vacio.every((Integer x) true), "empty.every");
@@ -54,6 +70,7 @@ void testIterables() {
     assert(Singleton(5).map((Integer i) i.float).sequence=={5.0}, "Singleton.map");
     assert(Singleton(5).filter((Integer i) i>5).sequence=={}, "Singleton.filter");
     assert(!exists Singleton(5).find((Integer i) i>5), "Singleton.find");
+    assert(!exists Singleton(5).findLast((Integer i) i>5), "Singleton.findLast");
     assert(Singleton(5).fold(0, (Integer i, Integer j) i+j)==5, "Singleton.fold");
     assert(Singleton(5).sorted((Integer x, Integer y) x<=>y) == Singleton(5), "Singleton.sorted");
     assert(Singleton(1).any((Integer x) x == 1), "Singleton.any");
