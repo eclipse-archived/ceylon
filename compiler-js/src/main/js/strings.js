@@ -15,8 +15,8 @@ function String$(value,size) {
     that.codePoints = size;
     return that;
 }
-initTypeProto(String$, 'ceylon.language.String', Object$, List, Comparable, Ranged, FixedSized,
-    Summable, Castable, Cloneable);
+initTypeProto(String$, 'ceylon.language.String', Object$, Comparable, Ranged, FixedSized,
+    Summable, Castable, Cloneable, List);
 function StringOfSome() {}
 initType(StringOfSome, "ceylon.language.StringOfSome", String$, Some);
 function StringOfNone() {}

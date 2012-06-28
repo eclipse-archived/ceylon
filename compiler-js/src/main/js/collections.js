@@ -310,10 +310,9 @@ List$proto.getString = function() {
     return String$(s);
 }
 List$proto.findLast = function(select) {
-    //TODO for some reason this never gets called, it's always Iterable's findLast
     var li = this.getLastIndex();
     if (li !== null) {
-        while (li.getNegative() === $false) {
+        while (li.value>=0) {
             var e = this.item(li);
             if (e !== null && select(e) === $true) {
                 return e;
@@ -507,7 +506,7 @@ function Array$() {
     var that = new Array$.$$;
     return that;
 }
-initTypeProto(Array$, 'ceylon.language.Array', Object$, List, FixedSized, Cloneable, Ranged);
+initTypeProto(Array$, 'ceylon.language.Array', Object$, FixedSized, Cloneable, Ranged, List);
 exports.Array=Array$;
 
 function Empty() {
@@ -515,7 +514,7 @@ function Empty() {
     that.value = [];
     return that;
 }
-initTypeProtoI(Empty, 'ceylon.language.Empty', List, None, Ranged, Cloneable);
+initTypeProtoI(Empty, 'ceylon.language.Empty', None, Ranged, Cloneable, List);
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return $true; }
 Empty$proto.defines = function(x) { return $false; }
