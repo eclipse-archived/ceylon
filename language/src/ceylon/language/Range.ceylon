@@ -128,7 +128,7 @@ shared class Range<Element>(first, last)
          reached. In the case of a decreasing range, the
          sequence is generated using decrements of the step
          size. The step size must be nonzero."
-    shared Sequence<Element> by(Integer stepSize) {
+    shared actual Iterable<Element> by(Integer stepSize) {
         //todo: should we just give Range a step size? Or
         //      add a subclass, perhaps?
         if (stepSize.zero) {

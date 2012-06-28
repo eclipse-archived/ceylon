@@ -352,8 +352,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         }
         return new Range<Element>(this.item(fromIndex), this.item(toIndex));
     }
-    
-    public Sequence<? extends Element> by(
+
+    @Override
+    @TypeInfo("ceylon.language.Iterable<Element>")
+    public Iterable<? extends Element> by(
     		@TypeInfo("ceylon.language.Integer")
     		@Name("stepSize") long stepSize) {
     	if (stepSize==0) {
@@ -411,6 +413,29 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
         return Iterable$impl._every(this, f);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> skipping(long skip) {
+        long x=0;
+        Element e=first;
+        while (x<skip) {
+            x++;
+            e=next(e);
+        }
+        return this.includes(e) ? new Range(e, last) : (Iterable)$empty.getEmpty();
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> taking(long take) {
+        if (take == 0) {
+            return (Iterable)$empty.getEmpty();
+        }
+        long x=1;
+        Element e=first;
+        while (x<take) {
+            x++;
+            e=next(e);
+        }
+        return this.includes(e) ? new Range(first, e) : this;
     }
 
 }

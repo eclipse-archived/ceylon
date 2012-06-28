@@ -66,4 +66,16 @@ class StringOfNone extends String implements None<Character> {
     public boolean every(Callable<? extends Boolean> f) {
         return false;
     }
+    @Override @Ignore
+    public Iterable<? extends Character> skipping(long skip) {
+        return this;
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> taking(long take) {
+        return this;
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> by(long step) {
+        return this;
+    }
 }

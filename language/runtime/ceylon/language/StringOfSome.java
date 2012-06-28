@@ -40,7 +40,7 @@ class StringOfSome extends String implements Some<Character> {
     @Override 
     @Ignore
     public Iterable<? extends Character> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f); 
+        return String.instance($string.string(Iterable$impl._sorted(this, f))); 
     }
     @Override 
     @Ignore
@@ -50,7 +50,7 @@ class StringOfSome extends String implements Some<Character> {
     @Override 
     @Ignore
     public Iterable<? extends Character> filter(Callable<? extends Boolean> f) { 
-        return new FilterIterable<Character>(this, f); 
+        return String.instance($string.string(new FilterIterable<Character>(this, f)));
     }
     @Override 
     @Ignore
@@ -64,5 +64,17 @@ class StringOfSome extends String implements Some<Character> {
     @Override @Ignore
     public boolean every(Callable<? extends Boolean> f) {
         return Iterable$impl._every(this, f);
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> skipping(long skip) {
+        return this.segment(Integer.instance(skip), this.getSize());
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> taking(long take) {
+        return this.segment(Integer.instance(0), take);
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> by(long step) {
+        return String.instance($string.string(Iterable$impl._by(this, step)));
     }
 }

@@ -102,4 +102,36 @@ shared interface Iterable<out Element>
         return true;
     }
 
+    doc "Returns an Iterable that will skip the specified
+         number of elements from the recipient."
+    shared default Iterable<Element> skipping(Integer skip) {
+        if (skip == 0) { return this; }
+        variable value i:=0;
+        return elements { for (e in this) if (i++>skip) e };
+    }
+
+    doc "Returns an Iterable that will only return the
+         specified number of elements from the beginning
+         of the recipient."
+    shared default Iterable<Element> taking(Integer take) {
+        if (take == 0) { return {}; }
+        variable value i:=0;
+        return elements { for (e in this) if (i++<take) e };
+    }
+
+    doc "Returns an Iterable that returns elements from the
+         recipient moving forward by the specified step size.
+         A step size of 1 results in an Iterable identical to the
+         original; a step size of 0 results in an Iterable that
+         will always return the recipient's first element.
+         The step size must be greater than or equal to zero."
+    shared default Iterable<Element> by(Integer step) {
+        if (step == 0) {
+        } else if (step == 1) {
+            return this;
+        } else {
+        }
+        return this;
+    }
+
 }

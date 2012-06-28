@@ -698,6 +698,18 @@ public abstract class String
         public boolean every(Callable<? extends Boolean> f) {
             return Iterable$impl._every(this, f);
         }
+        @Override @Ignore
+        public Iterable<? extends String> skipping(long n) {
+            return Iterable$impl._skipping(this, n);
+        }
+        @Override @Ignore
+        public Iterable<? extends String> taking(long n) {
+            return Iterable$impl._taking(this, n);
+        }
+        @Override @Ignore
+        public Iterable<? extends String> by(long n) {
+            return Iterable$impl._by(this, n);
+        }
     }
 
     private static final class Occurs implements Iterable<Integer> {
@@ -775,6 +787,18 @@ public abstract class String
         @Override @Ignore
         public boolean every(Callable<? extends Boolean> f) {
             return Iterable$impl._every(this, f);
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> skipping(long n) {
+            return Iterable$impl._skipping(this, n);
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> taking(long n) {
+            return Iterable$impl._taking(this, n);
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> by(long n) {
+            return Iterable$impl._by(this, n);
         }
     }
 
