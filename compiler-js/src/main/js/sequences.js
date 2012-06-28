@@ -164,7 +164,15 @@ Singleton$proto.segment = function(idx, len) {
 }
 Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
 Singleton$proto.getReversed = function() { return this; }
-
+Singleton$proto.skipping = function(skip) {
+    return skip.value==0 ? this : $empty;
+}
+Singleton$proto.taking = function(take) {
+    return take.value>0 ? this : $empty;
+}
+Singleton$proto.by = function(step) {
+    return this;
+}
 function SingletonIterator(elem) {
     var that = new SingletonIterator.$$;
     that.elem = elem;
