@@ -511,6 +511,17 @@ Empty$proto.getLastIndex = function() { return null; }
 Empty$proto.getClone = function() { return this; }
 Empty$proto.count = function(x) { return Integer(0); }
 Empty$proto.getReversed = function() { return this; }
+Empty$proto.skipping = function(skip) { return this; }
+Empty$proto.taking = function(take) { return this; }
+Empty$proto.by = function(step) { return this; }
+Empty$proto.every = function(f) { return $false; }
+Empty$proto.any = function(f) { return $false; }
+Empty$proto.sorted = function(f) { return this; }
+Empty$proto.map = function(f) { return this; }
+Empty$proto.fold = function(i,r) { return i; }
+Empty$proto.find = function(f) { return null; }
+Empty$proto.filter = function(f) { return this; }
+
 
 var $empty = Empty();
 
