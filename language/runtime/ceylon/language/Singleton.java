@@ -263,19 +263,25 @@ public class Singleton<Element>
         return f.$call(element).booleanValue() ? element : null;
     }
     @Override
-    @Ignore
-    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) {
+    @TypeInfo("ceylon.language.Singleton<Element>")
+    public Singleton<? extends Element> sorted(@Name("comparing")
+            @TypeInfo("ceylon.language.Callable<Comparison,Element,Element>")
+            Callable<? extends Comparison> comparing) {
         return this;
     }
     @Override
-    @Ignore
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) {
-        return new Singleton<Result>(f.$call(element));
+    @TypeInfo("ceylon.language.Singleton<Result>")
+    public <Result> Singleton<Result> map(@Name("selecting")
+            @TypeInfo("ceylon.language.Callable<Result,Element>")
+            Callable<? extends Result> selecting) {
+        return new Singleton<Result>(selecting.$call(element));
     }
     @Override
-    @Ignore
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
-        return f.$call(element).booleanValue() ? this : (Iterable)$empty.getEmpty();
+    @TypeInfo("ceylon.language.Singleton<Element>|Empty")
+    public Iterable<? extends Element> filter(@Name("selecting")
+            @TypeInfo("ceylon.language.Callable<Boolean,Element>")
+            Callable<? extends Boolean> selecting) {
+        return selecting.$call(element).booleanValue() ? this : (Iterable)$empty.getEmpty();
     }
     @Override
     @Ignore
@@ -290,11 +296,13 @@ public class Singleton<Element>
     public boolean every(Callable<? extends Boolean> f) {
         return f.$call(element).booleanValue();
     }
-    @Override @Ignore
+    @Override
+    @TypeInfo("ceylon.language.Singleton<Element>|Empty")
     public Iterable<? extends Element> skipping(long skip) {
         return skip>0 ? (Iterable)$empty.getEmpty() : this;
     }
-    @Override @Ignore
+    @Override
+    @TypeInfo("ceylon.language.Singleton<Element>|Empty")
     public Iterable<? extends Element> taking(long take) {
         return take<1 ? (Iterable)$empty.getEmpty() : this;
     }
