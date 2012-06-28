@@ -14,7 +14,7 @@ var IdentifiableObject,Category,Sized;//IGNORE
 function Sequence($$sequence) {
     return $$sequence;
 }
-initTypeProtoI(Sequence, 'ceylon.language.Sequence', List, Some, Cloneable, Ranged);
+initTypeProtoI(Sequence, 'ceylon.language.Sequence', Some, Cloneable, Ranged, List);
 var Sequence$proto = Sequence.$$.prototype;
 Sequence$proto.getLast = function() {
     var last = this.item(this.getLastIndex());
@@ -23,7 +23,7 @@ Sequence$proto.getLast = function() {
 }
 
 
-function ArraySequence(value) {
+function ArraySequence(/* js array */value) {
     var that = new ArraySequence.$$;
     that.value = value;
     return that;
@@ -164,6 +164,25 @@ Singleton$proto.segment = function(idx, len) {
 }
 Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
 Singleton$proto.getReversed = function() { return this; }
+Singleton$proto.map = function(f) { return ArraySequence([ f(this.elem) ]); }
+Singleton$proto.filter = function(f) {
+    return f(this.elem) === $true ? this : $empty;
+}
+Singleton$proto.fold = function(v,f) {
+    return f(v, this.elem);
+}
+Singleton$proto.find = function(f) {
+    return f(this.elem) === $true ? this.elem : null;
+}
+Singleton$proto.findLast = function(f) {
+    return f(this.elem) === $true ? this.elem : null;
+}
+Singleton$proto.any = function(f) {
+    return f(this.elem);
+}
+Singleton$proto.every = function(f) {
+    return f(this.elem);
+}
 Singleton$proto.skipping = function(skip) {
     return skip.value==0 ? this : $empty;
 }
@@ -173,6 +192,7 @@ Singleton$proto.taking = function(take) {
 Singleton$proto.by = function(step) {
     return this;
 }
+
 function SingletonIterator(elem) {
     var that = new SingletonIterator.$$;
     that.elem = elem;
