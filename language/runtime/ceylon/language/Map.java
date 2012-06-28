@@ -49,4 +49,10 @@ public interface Map<Key,Item>
     @TypeInfo("ceylon.language.Map<Item,ceylon.language.Set<Key>>")
     public Map<? extends Item, ? extends Set<? extends Key>> getInverse();
 
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language.Map<Key,Result>")
+    public <Result> Map<? extends Key, ? extends Result> mapItems(
+            @Name("mapping") @TypeInfo("ceylon.language.Callable<Result,Key,Item>")
+            Callable<? extends Result> mapping);
+
 }

@@ -1,9 +1,6 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 public final class Map$impl<Key,Item> {
@@ -623,7 +620,233 @@ public final class Map$impl<Key,Item> {
 			public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> by(long step) {
 				return Iterable$impl._by(this, step);
 			}
+
+			@Override @Ignore
+			public <Result> Map<? extends Item, ? extends Result> mapItems(Callable<? extends Result> mapping) {
+			    return Map$impl._mapItems(this, mapping);
+			}
         }
         return new inverse();
+    }
+
+    public <Result> Map<? extends Key, ? extends Result> mapItems(Callable<Result> mapping) {
+        return Map$impl._mapItems($this, mapping);
+    }
+
+    static <Key,Item, Result> Map<? extends Key, ? extends Result> _mapItems(
+            final Map<? extends Key, ? extends Item> $this, final Callable<Result> mapping) {
+        return new Map<Key, Result>() {
+
+            @Override @Ignore
+            public Result item(java.lang.Object key) {
+                Item e = $this.item(key);
+                return e == null ? null : mapping.$call(key, e);
+            }
+
+            @Override @Ignore
+            public boolean defines(java.lang.Object key) {
+                return $this.defines(key);
+            }
+
+            @Override @Ignore
+            public boolean definesEvery(
+                    Iterable<? extends java.lang.Object> keys) {
+                return $this.definesEvery(keys);
+            }
+
+            @Override @Ignore
+            public boolean definesEvery() {
+                return $this.definesEvery();
+            }
+
+            @Override @Ignore
+            public Iterable<? extends java.lang.Object> definesEvery$keys() {
+                return $this.definesEvery$keys();
+            }
+
+            @Override @Ignore
+            public boolean definesAny(Iterable<? extends java.lang.Object> keys) {
+                return $this.definesAny(keys);
+            }
+
+            @Override @Ignore
+            public boolean definesAny() {
+                return $this.definesAny();
+            }
+
+            @Override @Ignore
+            public Iterable<? extends java.lang.Object> definesAny$keys() {
+                return $this.definesAny$keys();
+            }
+
+            @Override
+            public Iterable<? extends Result> items(
+                    Iterable<? extends java.lang.Object> keys) {
+                return Correspondence$impl._items(this, keys);
+            }
+
+            @Override
+            public Iterable<? extends Result> items() {
+                return Correspondence$impl._items(this, $empty.getEmpty());
+            }
+
+            @Override
+            public Iterable<? extends java.lang.Object> items$keys() {
+                return $empty.getEmpty();
+            }
+
+            @Override
+            public boolean getEmpty() {
+                return $this.getEmpty();
+            }
+
+            @Override
+            public boolean contains(java.lang.Object element) {
+                return Collection$impl._contains(this, element);
+            }
+
+            @Override
+            public Iterator<? extends Entry<? extends Key, ? extends Result>> getIterator() {
+                final Iterator<? extends Entry<? extends Key, ? extends Item>> iter = $this.getIterator();
+                return new Iterator<Entry<Key, Result>>(){
+                    @Override @Ignore
+                    public java.lang.Object next() {
+                        java.lang.Object e = iter.next();
+                        return e == exhausted.getExhausted() ? e : new Entry(((Entry)e).getKey(),
+                                mapping.$call(((Entry)e).getKey(), ((Entry)e).getItem()));
+                    }
+                };
+            }
+
+            @Override
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> getSequence() {
+                return Iterable$impl._getSequence(this);
+            }
+
+            @Override
+            public <R2> Iterable<? extends R2> map(
+                    Callable<? extends R2> collecting) {
+                return new MapIterable<Entry<? extends Key, ? extends Result>, R2>(this, collecting);
+            }
+
+            @Override
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> filter(
+                    Callable<? extends Boolean> selecting) {
+                return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting);
+            }
+
+            @Override
+            public <R2> R2 fold(R2 initial,
+                    Callable<? extends R2> accumulating) {
+                return Iterable$impl._fold(this, initial, accumulating);
+            }
+
+            @Override
+            public Entry<? extends Key, ? extends Result> find(
+                    Callable<? extends Boolean> selecting) {
+                return Iterable$impl._find(this, selecting);
+            }
+
+            @Override
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> sorted(
+                    Callable<? extends Comparison> comparing) {
+                return Iterable$impl._sorted(this, comparing);
+            }
+
+            @Override
+            public boolean any(Callable<? extends Boolean> selecting) {
+                return Iterable$impl._any(this, selecting);
+            }
+
+            @Override
+            public boolean every(Callable<? extends Boolean> selecting) {
+                return Iterable$impl._every(this, selecting);
+            }
+
+            @Override
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> skipping(
+                    long skip) {
+                return Iterable$impl._skipping(this, skip);
+            }
+
+            @Override
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> taking(
+                    long take) {
+                return Iterable$impl._taking(this, take);
+            }
+
+            @Override
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> by(
+                    long step) {
+                return Iterable$impl._by(this, step);
+            }
+
+            @Override
+            public long getSize() {
+                return $this.getSize();
+            }
+
+            @Override
+            public boolean containsEvery(Iterable<?> elements) {
+                return Category$impl._containsEvery(this, elements);
+            }
+
+            @Override
+            public boolean containsEvery() {
+                return Category$impl._containsEvery(this, $empty.getEmpty());
+            }
+
+            @Override
+            public Iterable<?> containsEvery$elements() {
+                return $empty.getEmpty();
+            }
+
+            @Override
+            public boolean containsAny(Iterable<?> elements) {
+                return Category$impl._containsAny(this, elements);
+            }
+
+            @Override
+            public boolean containsAny() {
+                return Category$impl._containsAny(this, $empty.getEmpty());
+            }
+
+            @Override
+            public Iterable<?> containsAny$elements() {
+                return $empty.getEmpty();
+            }
+
+            @Override
+            public Collection<? extends Entry<? extends Key, ? extends Result>> getClone() {
+                return this;
+            }
+
+            @Override
+            public long count(java.lang.Object element) {
+                return _count(this, element);
+            }
+
+            @Override
+            public Set<? extends Key> getKeys() {
+                return $this.getKeys();
+            }
+
+            @Override
+            public Collection<? extends Result> getValues() {
+                return _getValues(this);
+            }
+
+            @Override
+            public Map<? extends Result, ? extends Set<? extends Key>> getInverse() {
+                return _getInverse(this);
+            }
+
+            @Override
+            public <R2> Map<? extends Key, ? extends R2> mapItems(
+                    Callable<? extends R2> mapping) {
+                return _mapItems(this, mapping);
+            }
+            
+        };
     }
 }
