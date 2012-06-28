@@ -309,6 +309,20 @@ List$proto.getString = function() {
     s += '}';
     return String$(s);
 }
+List$proto.findLast = function(select) {
+    //TODO for some reason this never gets called, it's always Iterable's findLast
+    var li = this.getLastIndex();
+    if (li !== null) {
+        while (li.getNegative() === $false) {
+            var e = this.item(li);
+            if (e !== null && select(e) === $true) {
+                return e;
+            }
+            li = li.getPredecessor();
+        }
+    }
+    return null;
+}
 exports.List=List;
 
 function ListIterator(list) {
@@ -530,6 +544,7 @@ Empty$proto.sorted = function(f) { return this; }
 Empty$proto.map = function(f) { return this; }
 Empty$proto.fold = function(i,r) { return i; }
 Empty$proto.find = function(f) { return null; }
+Empty$proto.findLast = function(f) { return null; }
 Empty$proto.filter = function(f) { return this; }
 
 
