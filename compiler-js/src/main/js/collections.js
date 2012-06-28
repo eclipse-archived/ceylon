@@ -146,8 +146,25 @@ Iterable$proto.taking = function(take) {
     return this;
 }
 Iterable$proto.by = function(step) {
-    //TODO implement this
-    return this;
+    if (step.value == 1) return this;
+    if (step.value < 1) throw Exception(String$("Step must be positive"));
+    var iter = this.getIterator();
+    function by$iter(){
+        var $cmp$=new by$iter.$$;
+        IdentifiableObject(by$iter);
+        $cmp$.iter=iter;
+        $cmp$.step=step.value;
+        $cmp$.next=function(){
+            var e = this.iter.next();
+            for (var i=1; i < this.step; i++) {
+                this.iter.next();
+            }
+            return e;
+        };
+        return $cmp$;
+    }
+    initTypeProto(by$iter, 'ceylon.language.SteppedIterator', IdentifiableObject, Iterator);
+    return Comprehension(by$iter);
 }
 exports.Iterable=Iterable;
 
