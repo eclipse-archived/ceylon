@@ -116,7 +116,7 @@ shared class Singleton<Element>(Element element)
         return Singleton(selecting(element));
     }
     shared actual Singleton<Element>|Empty filter(Boolean selecting(Element e)) {
-        return selecting(element) then this else empty;
+        return selecting(element) then this else {};
     }
     shared actual Result fold<Result>(Result initial,
             Result accumulating(Result partial, Element e)) {
@@ -135,10 +135,10 @@ shared class Singleton<Element>(Element element)
         return selecting(element);
     }
     shared actual Singleton<Element>|Empty skipping(Integer skip) {
-        return skip==0 then this else empty;
+        return skip==0 then this else {};
     }
     shared actual Singleton<Element>|Empty taking(Integer take) {
-        return taking>0 then this else empty;
+        return taking>0 then this else {};
     }
 
 }
