@@ -418,13 +418,16 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     @Override @Ignore
     public Iterable<? extends Element> taking(long take) {
-        long x=0;
+        if (take == 0) {
+            return (Iterable)$empty.getEmpty();
+        }
+        long x=1;
         Element e=first;
         while (x<take) {
             x++;
             e=next(e);
         }
-        return this.includes(e) ? new Range(first, e) : (Iterable)$empty.getEmpty();
+        return this.includes(e) ? new Range(first, e) : this;
     }
 
 }
