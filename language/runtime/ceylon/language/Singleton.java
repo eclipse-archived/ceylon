@@ -282,4 +282,16 @@ public class Singleton<Element>
     public boolean every(Callable<? extends Boolean> f) {
         return f.$call(element).booleanValue();
     }
+    @Override @Ignore
+    public Iterable<? extends Element> skipping(long skip) {
+        return skip>0 ? (Iterable)$empty.getEmpty() : this;
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> taking(long take) {
+        return take<1 ? (Iterable)$empty.getEmpty() : this;
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> by(long step) {
+        return step==0 ? Iterable$impl._by(this, step) : this;
+    }
 }
