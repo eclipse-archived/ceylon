@@ -6,12 +6,15 @@ class List<T>()
         return 0;
     }
     shared actual List<T> clone {
-        throw;
+        return this;
     }
     shared actual T? item(Integer n) {
         return null;
     }
     shared actual T[] rest {
+        return this;
+    }
+    shared actual List<T> reversed {
         return this;
     }
     shared actual T[] segment(Integer from, Integer length) {

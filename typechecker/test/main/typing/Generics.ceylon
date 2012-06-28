@@ -100,9 +100,8 @@ class Generics() {
             shared actual GoodClassInheritance clone = GoodClassInheritance();
             shared actual X? item(Integer key) { return null; }
             shared actual X[] segment(Integer from, Integer length) { return this; }
-            shared actual X first {
-                throw;
-            }
+            shared actual X first { throw; }
+            shared actual Sequence<X> reversed { return this; }
             shared actual X[] span(Integer from, Integer? to) { return this; }
         }
         @error class BadClassInheritance() satisfies Sequence<Y> {}
