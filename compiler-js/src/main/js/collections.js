@@ -95,6 +95,16 @@ Iterable$proto.find = function(select) {
     }
     return null;
 }
+Iterable$proto.findLast = function(select) {
+    var iter = this.getIterator();
+    var last = null;
+    var e; while ((e = iter.next()) !== $finished) {
+        if (select(e) === $true) {
+            last = e;
+        }
+    }
+    return last;
+}
 Iterable$proto.sorted = function(/*Callable<Comparison?,Element,Element>*/comparing) {
     var a = [];
     var iter = this.getIterator();
