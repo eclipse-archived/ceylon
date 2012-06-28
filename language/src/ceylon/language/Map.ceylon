@@ -158,7 +158,7 @@ shared interface Map<out Key,out Item>
         return inverse;
     }
 
-    shared default Map<Key,Result> mapItem<Result>(Result mapping(Key key, Item item)) {
+    shared default Map<Key,Result> mapItems<Result>(Result mapping(Key key, Item item)) {
         object mapped satisfies Map<Key, Result> {
             shared actual Map<Key, Result> clone { return this; }
             shared actual Boolean equals(Object that) { return false; }
