@@ -160,27 +160,48 @@ shared class Range<Element>(first, last)
     shared actual Range<Element>|Empty segment(
             Integer from, 
             Integer length) {
-        if (length==0||from>lastIndex) {
+        if (length<=0 || from>lastIndex) {
             return {};
         }
-        else {
-            return skipping(from).taking(length);
-        }
+        variable value x:=first;
+        variable value i:=0;
+        while (i++<from) { x:=next(x); }
+        variable value y:=x;
+        variable value j:=1;
+        while (j++<length && y<last) { y:=next(y); }
+        return Range<Element>(x, y);
     }
     
     shared actual Range<Element>|Empty span(
             Integer from, 
             Integer? to) {
-        Integer last = to else lastIndex;
-        if (last<0 && from<0 || 
-                last>lastIndex && from>lastIndex) {
-            return {};
+        variable value toIndex:=to else lastIndex;
+        variable value fromIndex:=from;
+        if (toIndex<0) {
+            if (fromIndex<0) {
+                return {};
+            }
+            toIndex:=0;
         }
-        function adjust(Integer index) {
-            return i<0 then 0 else index>lastIndex then lastIndex
-                    else index;
+        else if (toIndex>lastIndex) {
+            if (fromIndex>lastIndex) {
+                return {};
+            }
+            toIndex:=lastIndex;
         }
-        return Range(adjust(from), adjust(last));
+        if (fromIndex<0) {
+            fromIndex:=0;
+        }
+        else if (fromIndex>lastIndex) {
+            fromIndex:=lastIndex;
+        }
+        variable value x:=first;
+        variable value i:=0;
+        while (i++<fromIndex) { x:=next(x); }
+        variable value y:=first;
+        variable value j:=0;
+        while (j++<toIndex) { y:=next(y); }
+        return Range<Element>(x, y);
     }
     
     doc "Reverse this range, returning a new range."

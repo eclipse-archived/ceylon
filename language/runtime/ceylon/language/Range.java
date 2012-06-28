@@ -315,8 +315,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		@Name("from") final Integer from, 
     		@Name("length") final long length) {
         //only positive length for now
-    	Integer lastIndex = getLastIndex();
-        if (length<=0 || from.value>lastIndex.value) {
+        if (length<=0 || from.value>getLastIndex().value) {
         	return (ceylon.language.List)$empty.getEmpty();
         }
         Element x = first;
