@@ -132,7 +132,7 @@ shared interface Iterable<out Element>
     throws (Exception, "if `step<1`") //TODO: better exception type
     shared default Iterable<Element> by(Integer step) {
         if (step <= 0) {
-            throw Exception("step size less than 1");
+            throw Exception("step size must be greater than zero");
         }
         else if (step == 1) {
             return this;

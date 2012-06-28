@@ -150,23 +150,8 @@ public final class Iterable$impl<Element> {
     static <Element> Iterable<? extends Element> _by(final Iterable<? extends Element> $this, final long step) {
         if (step == 1) {
             return $this;
-        } else if (step == 0) {
-            //Either empty, or an infinite iterator
-            final java.lang.Object e = $this.getIterator().next();
-            if (e == exhausted.getExhausted()) {
-                return (Iterable)$empty.getEmpty();
-            }
-            else return new AbstractIterable<Element>() {
-                public final Iterator<? extends Element> getIterator() {
-                    return new Iterator<Element>() {
-                        public java.lang.Object next() {
-                            return e;
-                        }
-                    };
-                }
-            };
-        } else if (step < 0) {
-            throw new Exception(String.instance("step must be greater than or equal to zero"));
+        } else if (step <= 0) {
+            throw new Exception(String.instance("step size must be greater than zero"));
         } else {
             return new AbstractIterable<Element>() {
                 @Override
