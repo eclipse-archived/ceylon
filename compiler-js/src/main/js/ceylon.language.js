@@ -371,21 +371,6 @@ Range$proto.getRest = function() {
     var n = this.next(this.first);
     return Range(n, this.last);
 }
-Range$proto.by = function(step) {
-    if (step.compare(Integer(0)) !== larger) {
-        throw Exception(String$("step must be positive"));
-    }
-    if (this.first.equals(this.last) === getTrue() || step.equals(Integer(1)) === getTrue()) {
-        return this;
-    }
-    var seq = [];
-    var x = this.first;
-    while (this.includes(x) === getTrue()) {
-        seq.push(x);
-        for (var i = 0; i < step.value; i++) { x = this.next(x); }
-    }
-    return ArraySequence(seq);
-}
 Range$proto.segment = function(from, len) {
     //only positive length for now
     if (len.compare(Integer(0)) !== larger) return $empty;
