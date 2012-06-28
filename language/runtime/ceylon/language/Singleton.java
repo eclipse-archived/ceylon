@@ -277,7 +277,7 @@ public class Singleton<Element>
         return new Singleton<Result>(selecting.$call(element));
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>|Empty")
+    @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
     public Iterable<? extends Element> filter(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<Boolean,Element>")
             Callable<? extends Boolean> selecting) {
@@ -297,12 +297,12 @@ public class Singleton<Element>
         return f.$call(element).booleanValue();
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>|Empty")
+    @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
     public Iterable<? extends Element> skipping(long skip) {
         return skip>0 ? (Iterable)$empty.getEmpty() : this;
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>|Empty")
+    @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
     public Iterable<? extends Element> taking(long take) {
         return take<1 ? (Iterable)$empty.getEmpty() : this;
     }

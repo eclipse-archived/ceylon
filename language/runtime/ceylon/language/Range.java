@@ -415,8 +415,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return Iterable$impl._every(this, f);
     }
     @Override
-    @TypeInfo("Range<Element>|Empty")
-    public Iterable<? extends Element> skipping(long skip) {
+    @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
+    public Iterable<? extends Element> skipping(@Name("take") long skip) {
         long x=0;
         Element e=first;
         while (x++<skip) {
@@ -425,8 +425,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return this.includes(e) ? new Range(e, last) : (Iterable)$empty.getEmpty();
     }
     @Override
-    @TypeInfo("Range<Element>|Empty")
-    public Iterable<? extends Element> taking(long take) {
+    @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
+    public Iterable<? extends Element> taking(@Name("take") long take) {
         if (take == 0) {
             return (Iterable)$empty.getEmpty();
         }
