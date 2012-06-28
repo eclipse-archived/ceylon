@@ -130,13 +130,13 @@ shared interface Iterable<out Element>
         if (step <= 0) {
             //TODO: implement specified behavior for step==0
             throw Exception("step size less than 1");
-        } 
+        }
         else if (step == 1) {
             return this;
         } 
         else {
            variable value i:=0;
-           return elements { for (e in this) if (i%step==0) e };
+           return elements { for (e in this) if (i++%step==0) e };
         }
     }
 
