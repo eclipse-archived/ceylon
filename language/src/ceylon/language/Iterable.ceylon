@@ -66,7 +66,21 @@ shared interface Iterable<out Element>
         }
         return null;
     }
- 
+
+    doc "The last element which satisfies the given
+         predicate, if any."
+    shared default Element? findLast(
+            doc "The predicate the element must satisfy."
+            Boolean selecting(Element elem)) {
+        variable Element? last := null;
+        for (e in this) {
+            if (selecting(e)) {
+                last := e;
+            }
+        }
+        return last;
+    }
+
     doc "A sequence containing the elements of this
          container, sorted according to a function 
          imposing a partial order upon the elements."
