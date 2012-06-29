@@ -413,21 +413,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ret = make().TypeCast(make().TypeArray(makeQuotedQualIdentFromString(ct)), ret);
             }
         } else if (arrayUnbox) {
-            ProducedType ct = getArrayComponentType(definiteExpectedType);
+            ProducedType ct = typeFact().getArrayElementType(definiteExpectedType);
             ret = make().TypeCast(make().TypeArray(makeJavaType(ct)), ret);
         }
         return ret;
-    }
-    
-    /**
-     * Gets the first type parameter from the type model representing a 
-     * ceylon.language.Array<Element>.
-     * @param typeModel
-     * @return The component type of the Array.
-     */
-    protected ProducedType getArrayComponentType(ProducedType typeModel) {
-        assert isCeylonArray(typeModel);
-        return typeModel.getTypeArgumentList().get(0);
     }
     
     private static class VarianceCastResult {
