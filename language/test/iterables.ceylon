@@ -144,10 +144,11 @@ void testIterables() {
     //Count
     assert((1..10).count((Integer x) x%2==0)==5, "Range.count");
     assert({1,2,3,4,5}.count((Integer x) x%2==0)==2, "Sequence.count");
-    assert(elements(for (i in 1..10) i).count((Integer x) x>5)==5, "Iterable.count");
+    assert(elements(for (i in 1..10) i).count(greaterThan(7))==3, "Iterable.count (greaterThan)");
+    assert(elements(for (i in 1..10) i).count(lessThan(7))==6, "Iterable.count (lessThan)");
     assert(array(1,2,3,4,5).count((Integer x) x%2==1)==3, "Array.count");
     assert("AbcdEfghIjklmnOp".count((Character c) c.uppercase)==4, "String.count");
-    assert(Singleton(1).count((Integer x) x==1)==1, "Singleton.count");
+    assert(Singleton(1).count(equalTo(1))==1, "Singleton.count (equalTo)");
 
     //Iterable-related functions
     assert({"aaa", "tt", "z"}.sorted(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sorted(byIncreasing)");
