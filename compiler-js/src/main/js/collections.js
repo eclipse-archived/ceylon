@@ -299,21 +299,31 @@ Map$proto.getInverse = function() {
     return $map$inv(this);
 }
 Map$proto.mapItems = function(mapping) {
-    //TODO: implement
-    function EmptyMap() {
+    function EmptyMap(orig) {
         var em = new EmptyMap.$$;
         IdentifiableObject(em);
+        em.orig=orig;
         em.clone=function() { return this; }
-        em.equals=function() { return $false; }
-        em.getHash=function() { return 0; }
         em.getItem=function() { return null; }
-        em.getIterator=function() { return EmptyIterator(); }
-        em.getSize=function() { return 0; }
+        em.getIterator=function() {
+            function miter(iter) {
+                var $i = new miter.$$;
+                $i.iter = iter;
+                $i.next = function() {
+                    var e = this.iter.next();
+                    return e===$finished ? e : Entry(e.getKey(), mapping(e.getKey(), e.getItem()));
+                };
+                return $i;
+            }
+            initTypeProto(miter, 'ceylon.language.MappedIterator', IdentifiableObject, Iterator);
+            return miter(orig.getIterator());
+        }
+        em.getSize=function() { return this.orig.getSize(); }
         em.getString=function() { return String$('',0); }
         return em;
     }
     initTypeProto(EmptyMap, 'ceylon.language.EmptyMap', IdentifiableObject, Map);
-    return EmptyMap();
+    return EmptyMap(this);
 }
 exports.Map=Map;
 
