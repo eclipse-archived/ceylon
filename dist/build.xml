@@ -41,12 +41,18 @@ Some more basic ant tasks:
                              and deletes all local projects</echo>
     </target>
 
-    <target name="release">
+    <target name="release"
+            description="Does a clean, get-code, local, package using the 
+sources tagged with the name as defined by ceylon.version in 
+build.properties
+Use this when doing a release!">
         <property name="tag" value="${ceylon.version}"/>
         <antcall target="bootstrap" />
     </target>
 
-    <target name="nightly">
+    <target name="nightly"
+            description="Does a clean, get-code, local, package using the sources from master. 
+Use this when NOT doing a release!">
         <property name="dist.name" value="ceylon-${ceylon.version}-master-${NOW}"/>
         <antcall target="bootstrap" />
     </target>
@@ -54,7 +60,9 @@ Some more basic ant tasks:
     <target name="bootstrap" depends="clean,get-code,local,package">
     </target>
 
-    <target name="local">
+    <target name="local"
+            description="Builds using dependent projects in the ${projects.dir} directory.
+Used with another target such as 'package'.">
         <property name="projects.base.dir" value="${projects.dir}"/>
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
         <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
@@ -65,7 +73,9 @@ Some more basic ant tasks:
         <property name="dist.name" value="ceylon-${ceylon.version}"/>
     </target>
 
-    <target name="siblings"> 
+    <target name="siblings"
+            description="Builds using dependent projects in existing sibling project folders.
+Used with another target such as 'package'">
         <property name="projects.base.dir" value="${basedir}/.." />
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
         <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
@@ -76,7 +86,11 @@ Some more basic ant tasks:
         <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
     </target>
 
-    <target name="package" depends="install-compiler, install-js, copy-compiler-binaries, copy-samples, copy-compiler-libraries, install-typechecker, install-language, install-runtime, generate-spec, generate-apidoc">
+    <target name="package" 
+            depends="install-compiler, install-js, copy-compiler-binaries, 
+                     copy-samples, copy-compiler-libraries, install-typechecker,
+                     install-language, install-runtime, generate-spec, generate-apidoc"
+            description="Generates a distributable zip file">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
@@ -246,7 +260,8 @@ Some more basic ant tasks:
         </exec>
     </target>
 
-    <target name="get-code" depends="use-git-pull,use-git-clone,checkout-tagged">
+    <target name="get-code" depends="use-git-pull,use-git-clone,checkout-tagged"
+            description="Downloads latest code for all projects">
         <echo>
 If you are building a distribution package for a specific tagged release
 then execute the following command:
@@ -383,11 +398,13 @@ You can now build the package by executing:
         </antcall>
     </target>
 
-    <target name="clean">
+    <target name="clean"
+            description="Cleans the distribution package">
         <delete dir="${dist.dir}"/>
     </target>
 
-    <target name="clean-all" depends="clean">
+    <target name="clean-all" depends="clean"
+            description="Cleans the distribution package and deletes all local projects">
         <delete dir="${projects.dir}"/>
     </target>
 </project>
