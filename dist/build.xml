@@ -7,17 +7,7 @@
 
     <property file="build.properties"/>
     <property name="projects.dir" value="${basedir}/projects"/>
-    <!-- Set the dist.dir to the local repo if called with 'publish' -->
-    <condition property="dist.dir" value="${user.home}/.ceylon/repo">
-        <contains string="${ant.project.invoked-targets}" substring="publish"/>
-    </condition>
-    <!-- Otherwise set it to our dist dir -->
     <property name="dist.dir" value="${basedir}/dist"/>
-    <echoproperties>
-      <propertyset>
-        <propertyref prefix="dist."/>
-      </propertyset>
-    </echoproperties>
 
     <target name="help">
         <echo>Options for building a Ceylon distribution package:
@@ -96,12 +86,6 @@ Used with another target such as 'package'">
         <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
     </target>
 
-  <target name="publish" 
-        depends="install-compiler, install-js, install-typechecker,
-                 install-language, install-runtime"
-        description="Publishes dependent projects to the ${dist.dir}">
-  </target>
-  
     <target name="package" 
             depends="install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-compiler-libraries, install-typechecker,
