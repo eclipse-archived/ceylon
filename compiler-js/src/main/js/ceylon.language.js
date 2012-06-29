@@ -455,6 +455,7 @@ Range$proto.taking = function(take) {
     }
     return this.includes(e) ? new Range(this.first, e) : this;
 }
+Range$proto.getSequence = function() { return this; }
 
 function RangeIterator(range) {
     var that = new RangeIterator.$$;
