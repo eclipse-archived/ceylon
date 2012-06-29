@@ -28,9 +28,9 @@ shared interface Number {
     doc "The magnitude of the number."
     shared formal Number magnitude;
     
-    doc "The sign of this number. Returns 1 if the number is 
-         positive, -1 if it is negative, or 0 if it is 
-         zero."
+    doc "The sign of this number. Returns `1` if the number 
+         is positive, `-1` if it is negative, or `0` if it 
+         is zero."
     shared formal Integer sign;
     
     doc "The fractional part of the number, after truncation 
