@@ -114,48 +114,12 @@ class MapTest<Key, Item>(Key->Item... entry)
         }
         return null;
     }
-    //REMOVE as soon as interfaces can have concrete members
-    /*shared actual Set<Key> keys {
-        value sb = SequenceBuilder<Key>();
-        for (e in entries) { sb.append(e.key); }
-        return SetTest(sb.sequence...);
-    }
-    shared actual Collection<Item> values {
-        value sb = SequenceBuilder<Item>();
-        for (e in entries) { sb.append(e.item); }
-value s=sb.sequence;
-        return array(s...);
-    }
-    shared actual Map<Item, Set<Key>> inverse {
-        value sb = SequenceBuilder<Item->Set<Key>>();
-        variable Integer count := 0;
-        for (e in entries) {
-            value keySB = SequenceBuilder<Key>();
-            variable Integer cnt2 := 0; 
-            variable Boolean duplicate := false;
-            for (e2 in entries) {
-                if (e2.item == e.item) {
-                    if (cnt2 < count) {
-                        duplicate := true;
-                        break;
-                    }
-                    keySB.append(e2.key);
-                }
-                ++cnt2;
-            }
-            if (!duplicate) {
-                sb.append(e.item->SetTest(keySB.sequence...));
-            }
-            ++count;
-        }
-        return MapTest(sb.sequence...);
-    }*/
 }
 
 void testMaps() {
     value m1 = MapTest<Integer, String>(1->"A", 2->"B", 3->"C", 4->"B");
-    assert(m1.count(2->"B")==1, "Map.count(2->B) is " m1.count(2->"B") " instead of 1");
-    assert(m1.count(4.2)==0, "Map.count 2");
+    assert(m1.count((Entry<Integer,String> x) x.key==2)==1, "Map.count(2->B) is " m1.count((Entry<Integer,String> x) x.key==2) " instead of 1");
+    assert(m1.count((Entry<Integer,String> x) x.key==100)==0, "Map.count 2");
     assert(2->"B" in m1, "Map.contains(2->B) should be true");
     assert(!(4.2 in m1), "Map.contains 2");
     assert(!(1->"C" in m1), "Map.contains 3");
@@ -191,8 +155,8 @@ void testMaps() {
 void testSets() {
     value s1 = SetTest<Integer>(1, 2, 3);
     value emptySet = SetTest<Bottom>();
-    assert(s1.count(2)==1, "Set.count 1");
-    assert(s1.count(4.2)==0, "Set.count 2");
+    assert(s1.count((Integer x) x==2)==1, "Set.count 1");
+    assert(s1.count((Integer x) x==100)==0, "Set.count 2");
     assert(2 in s1, "Set.contains 1");
     assert(!(4.2 in s1), "Set.contains 2");
     assert(!(4 in s1), "Set.contains 3");
