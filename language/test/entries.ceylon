@@ -178,10 +178,10 @@ Range<Integer> range {
     assert(!6 in 1..5, "range in 5");
     assert(!2..3 in 1..5, "range in 6");
     
-    assert(!nonempty (1..5).span(-1,-2), "empty range");
-    assert(!nonempty (1..5).span(-2,-1), "empty range");
-    assert(!nonempty (1..5).span(6,8), "empty range");
-    assert(!nonempty (1..5).span(8,6), "empty range");
+    assert(!nonempty (1..5).span(-1,-2), "empty range [1]");
+    assert(!nonempty (1..5).span(-2,-1), "empty range [2]");
+    assert(!nonempty (1..5).span(6,8), "empty range [3]");
+    assert(!nonempty (1..5).span(8,6), "empty range [4]");
 
     //Test the entries function
     test_entries_function();
