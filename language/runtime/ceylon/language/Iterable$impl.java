@@ -160,7 +160,7 @@ public final class Iterable$impl<Element> {
         };
     }
     public Iterable<? extends Element> by(long step) {
-        return $this;
+        return Iterable$impl._by($this, step);
     }
     static <Element> Iterable<? extends Element> _by(final Iterable<? extends Element> $this, final long step) {
         if (step == 1) {
@@ -185,6 +185,21 @@ public final class Iterable$impl<Element> {
                 }
             };
         }
+    }
+
+    public long count(Callable<? extends Boolean> f) {
+        return Iterable$impl._count($this, f);
+    }
+    public static <Element> long _count(final Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
+        Iterator<? extends Element> iter = $this.getIterator();
+        java.lang.Object elem;
+        long c = 0;
+        while (!((elem = iter.next()) instanceof Finished)) {
+            if (f.$call(elem).booleanValue()) {
+                c++;
+            }
+        }
+        return c;
     }
 }
 
@@ -264,6 +279,10 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public Iterable<? extends Result> by(long step) {
         return Iterable$impl._by(this, step);
     }
+    @Override @Ignore
+    public long count(Callable<? extends Boolean> f) {
+        return Iterable$impl._count(this, f);
+    }
 }
 
 class FilterIterable<Element> implements Iterable<Element> {
@@ -341,5 +360,9 @@ class FilterIterable<Element> implements Iterable<Element> {
     @Override @Ignore
     public Iterable<? extends Element> by(long step) {
         return Iterable$impl._by(this, step);
+    }
+    @Override @Ignore
+    public long count(Callable<? extends Boolean> f) {
+        return Iterable$impl._count(this, f);
     }
 }

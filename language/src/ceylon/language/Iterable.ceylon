@@ -157,4 +157,18 @@ shared interface Iterable<out Element>
         }
     }
 
+    doc "Returns the number of elements in this Iterable 
+         that satisfy the predicate function."
+    shared default Integer count(Boolean selecting(Element element)) {
+        variable value count:=0;
+        for (elem in this) {
+            if (is Object elem) {
+                if (selecting(elem)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
 }

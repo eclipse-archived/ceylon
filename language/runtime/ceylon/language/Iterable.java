@@ -97,4 +97,9 @@ public interface Iterable<Element> extends Container {
         @TypeInfo("ceylon.language.Integer")
         long step);
 
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language.Integer")
+    public long count(@Name("selecting")
+        @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+        Callable<? extends Boolean> selecting);
 }
