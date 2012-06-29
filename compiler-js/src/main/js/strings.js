@@ -411,6 +411,10 @@ String$proto.by = function(step) {
     var r = Iterable.$$.prototype.by.apply(this, [step]);
     return string(r);
 }
+String$proto.sorted = function(f) {
+    var r = Iterable.$$.prototype.sorted.apply(this, [f]);
+    return string(r);
+}
 
 function StringIterator(string) {
     var that = new StringIterator.$$;
