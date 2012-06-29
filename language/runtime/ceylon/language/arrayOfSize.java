@@ -112,6 +112,10 @@ public final class arrayOfSize {
 			public Iterable<? extends Element> by(long step) {
 				return Iterable$impl._by(this, step);
 			}
+			@Override @Ignore
+			public long count(Callable<? extends Boolean> f) {
+			    return Iterable$impl._count(this, f);
+			}
         };
     }
 }
