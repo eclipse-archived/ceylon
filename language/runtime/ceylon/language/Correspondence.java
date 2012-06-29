@@ -93,7 +93,7 @@ public interface Correspondence<Key,Item> {
         @Override
         @Ignore
         public java.lang.String toString() {
-            return List$impl._toString(this);		
+            return Collection$impl._toString(this);		
         }
         public final Sequence<Item> getClone() {
             return this;

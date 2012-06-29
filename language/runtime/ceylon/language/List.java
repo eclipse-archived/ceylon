@@ -55,8 +55,4 @@ public interface List<Element>
     @Override
     public int hashCode();
     
-    @Annotations({@Annotation("actual"), @Annotation("default")})
-    @Override
-    public java.lang.String toString();
-    
 }

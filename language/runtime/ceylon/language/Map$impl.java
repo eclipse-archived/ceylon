@@ -101,7 +101,7 @@ public final class Map$impl<Key,Item> {
             
             @Override
             public java.lang.String toString() {
-                return "";
+                return Collection$impl._toString(this);
             }
 
             @Override
@@ -283,7 +283,7 @@ public final class Map$impl<Key,Item> {
             
             @Override
             public java.lang.String toString() {
-                return "";
+                return Collection$impl._toString(this);
             }
 
             // concrete interface methods:
@@ -438,7 +438,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public java.lang.String toString() {
-                return "";
+                return Collection$impl._toString(this);
             }
             
             // concrete interface methods:
@@ -860,6 +860,11 @@ public final class Map$impl<Key,Item> {
             public <R2> Map<? extends Key, ? extends R2> mapItems(
                     Callable<? extends R2> mapping) {
                 return _mapItems(this, mapping);
+            }
+            
+            @Override
+            public java.lang.String toString() {
+            	return Collection$impl._toString(this);
             }
             
         };

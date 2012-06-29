@@ -89,28 +89,6 @@ public final class List$impl<Element> {
         return hashCode;
     }
     
-    public java.lang.String toString(List<Element> $this) {
-        return List$impl.<Element>_toString($this);
-    }
-    static <Element> java.lang.String _toString(List<Element> $this) {
-        if ($this.getEmpty()) return "{}";
-        java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
-        java.lang.Object elem;
-        boolean first=true;
-        for (Iterator<? extends Element> iter=$this.getIterator(); 
-                !((elem = iter.next()) instanceof Finished);) {
-            if (first) {
-                first = false;
-            }
-            else {
-                result.append(", ");
-            }
-            result.append(elem);
-        }
-        result.append(" }");
-        return result.toString();
-    }
-
     public Element findLast(Callable<? extends Boolean> sel) {
         return List$impl.<Element>_findLast($this, sel);
     }

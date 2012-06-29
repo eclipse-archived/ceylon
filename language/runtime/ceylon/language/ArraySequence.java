@@ -225,7 +225,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     @Ignore
     public java.lang.String toString() {
-        return List$impl._toString(this);
+        return Collection$impl._toString(this);
     }
 
     public Element[] toArray() {

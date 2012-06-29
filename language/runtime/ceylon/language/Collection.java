@@ -33,5 +33,8 @@ public interface Collection<Element>
     public long count(@Name("element") @TypeInfo("ceylon.language.Object")
             java.lang.Object element);
 
-
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @Override
+    public java.lang.String toString();
+    
 }
