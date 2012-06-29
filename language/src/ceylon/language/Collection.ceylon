@@ -28,18 +28,4 @@ shared interface Collection<out Element>
         }
     }
 
-    doc "Returns the number of elements in this collection 
-         that are equal to the specified element."
-    shared default Integer count(Object element) {
-        variable value count:=0;
-        for (elem in this) {
-            if (is Object elem) {
-                if (elem==element) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
 }
