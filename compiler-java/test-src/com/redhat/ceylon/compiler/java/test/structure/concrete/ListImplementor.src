@@ -17,11 +17,6 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     public .ceylon.language.Iterator<? extends X> getIterator() {
         return $ceylon$language$List$this.getIterator();
     }
-    
-    @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$List$this.toString();
-    }
     private final .ceylon.language.Collection$impl<X> $ceylon$language$Collection$this;
     
     @.java.lang.Override
@@ -35,8 +30,8 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public long count(final .java.lang.Object element) {
-        return $ceylon$language$Collection$this.count(element);
+    public .java.lang.String toString() {
+        return $ceylon$language$Collection$this.toString();
     }
     private final .ceylon.language.Iterable$impl<X> $ceylon$language$Iterable$this;
     
@@ -63,6 +58,11 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     @.java.lang.Override
     public X find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
+    }
+    
+    @.java.lang.Override
+    public X findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -93,6 +93,11 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends X> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
+    }
+    
+    @.java.lang.Override
+    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.count(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;

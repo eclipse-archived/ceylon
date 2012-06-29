@@ -28,11 +28,6 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Collection$this.contains(element);
     }
-    
-    @.java.lang.Override
-    public long count(final .java.lang.Object element) {
-        return $ceylon$language$Collection$this.count(element);
-    }
     private final .ceylon.language.Iterable$impl<T> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
@@ -58,6 +53,11 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
+    }
+    
+    @.java.lang.Override
+    public T findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -88,6 +88,11 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
+    }
+    
+    @.java.lang.Override
+    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.count(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
@@ -242,11 +247,6 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     public boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Collection$this.contains(element);
     }
-    
-    @.java.lang.Override
-    public long count(final .java.lang.Object element) {
-        return $ceylon$language$Collection$this.count(element);
-    }
     private final .ceylon.language.Iterable$impl<T> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
@@ -272,6 +272,11 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
+    }
+    
+    @.java.lang.Override
+    public T findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -302,6 +307,11 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
+    }
+    
+    @.java.lang.Override
+    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.count(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;

@@ -34,6 +34,11 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<?> findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.findLast(selecting);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> sorted(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sorted(comparing);
     }
@@ -61,6 +66,11 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
+    }
+    
+    @.java.lang.Override
+    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.count(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     

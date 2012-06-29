@@ -49,13 +49,13 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Empty$this.contains(element);
+    public final .ceylon.language.Iterable<?> getSequence() {
+        return $ceylon$language$Empty$this.getSequence();
     }
     
     @.java.lang.Override
-    public long count(final .java.lang.Object element) {
-        return $ceylon$language$Empty$this.count(element);
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Empty$this.contains(element);
     }
     
     @.java.lang.Override
@@ -77,11 +77,6 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<?> getSequence() {
-        return $ceylon$language$Iterable$this.getSequence();
-    }
-    
-    @.java.lang.Override
     public <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.map(collecting);
     }
@@ -99,6 +94,11 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     @.java.lang.Override
     public .java.lang.Object find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -129,6 +129,11 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     @.java.lang.Override
     public .ceylon.language.Iterable<?> by(final long step) {
         return $ceylon$language$Iterable$this.by(step);
+    }
+    
+    @.java.lang.Override
+    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.count(selecting);
     }
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
