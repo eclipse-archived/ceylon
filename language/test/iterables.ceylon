@@ -106,9 +106,9 @@ void testIterables() {
     //Skipping
     assert({1,2,3,4,5}.skipping(3).sequence=={4,5}, "skipping [1]");
     assert(!nonempty {1,2,3,4,5}.skipping(9).sequence, "skipping [2]");
-    assert((1..10).skipping(5)==6..10, "skipping [3]");
+    assert((1..10).skipping(5)==6..10, "Range.skipping [3]");
     assert(!nonempty (1..5).skipping(9).sequence, "skipping [4]");
-    assert((5..1).skipping(2)==3..1, "skipping [5]");
+    assert((5..1).skipping(2)==3..1, "Range.skipping [5]");
     assert("hola".skipping(2)=="la", "String.skipping");
     assert(elements(for(i in 1..10) i).skipping(8).sequence=={9,10}, "comprehension.skipping");
 
@@ -140,6 +140,14 @@ void testIterables() {
     assert((1..10).by(6).sequence=={1,7}, "Range.by [3]");
     assert((1..10).by(100).sequence=={1}, "Range.by [4]");
     assert(elements(for(i in 1..10) i).by(4).sequence=={1,5,9}, "comprehension.by");
+
+    //Count
+    assert((1..10).count((Integer x) x%2==0)==5, "Range.count");
+    assert({1,2,3,4,5}.count((Integer x) x%2==0)==2, "Sequence.count");
+    assert(elements(for (i in 1..10) i).count((Integer x) x>5)==5, "Iterable.count");
+    assert(array(1,2,3,4,5).count((Integer x) x%2==1)==3, "Array.count");
+    assert("AbcdEfghIjklmnOp".count((Character c) c.uppercase)==4, "String.count");
+    assert(Singleton(1).count((Integer x) x==1)==1, "Singleton.count");
 
     //Iterable-related functions
     assert({"aaa", "tt", "z"}.sorted(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sorted(byIncreasing)");
