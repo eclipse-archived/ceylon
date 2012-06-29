@@ -15,8 +15,10 @@ shared abstract class Float()
         satisfies Scalar<Float> & Exponentiable<Float,Float> & 
                   Castable<Float> {
 
-    doc "Determines whether this value is undefined (that is,
-         Not a Number)."
+    doc "Determines whether this value is undefined (that is, Not a Number or NaN).
+         The undefined value has the property that it is not equal (`==`) 
+         to itself, as a consequence the undefined value cannot sensibly be 
+         used in most collections."
     shared Boolean undefined {
         return this!=this;
     }
