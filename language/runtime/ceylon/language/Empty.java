@@ -65,6 +65,10 @@ public interface Empty
     @Override
     public Empty getClone();
     
+    @Annotations({@Annotation("actual")})
+    @Override
+    public Empty getSequence();
+    
     @Annotations(@Annotation("actual"))
     @Override
     public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object")

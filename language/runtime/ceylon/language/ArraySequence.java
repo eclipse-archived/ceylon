@@ -293,8 +293,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
     
     @Override 
     @Ignore
-    public Iterable<? extends Element> getSequence() { 
-        return Iterable$impl._getSequence(this);
+    public Sequence<? extends Element> getSequence() { 
+        return Sequence$impl._getSequence(this);
     }
     
     @Override @Ignore

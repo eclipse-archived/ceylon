@@ -116,6 +116,7 @@ shared void sequences() {
     assert(!nonempty empty.segment(1, 2), "empty sequence segment");
     assert(empty.string=="{}", "empty.string");
     assert(empty.reversed==empty, "empty reversed");
+    assert(empty.sequence==empty, "empty.sequence");
 
     builder.append("hello");
     builder.append("world");
@@ -134,6 +135,7 @@ shared void sequences() {
     else {
         fail("sequence first");
     }
+    assert(result.sequence==result, "sequence.sequence");
     /*if (exists last = result.last) {
         assert(last=="world", "sequence last");
     }

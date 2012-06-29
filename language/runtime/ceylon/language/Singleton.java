@@ -254,8 +254,8 @@ public class Singleton<Element>
     @Override
     @Ignore
     public
-    Iterable<? extends Element> getSequence() {
-        return Iterable$impl._getSequence(this);
+    Sequence<? extends Element> getSequence() {
+        return Sequence$impl._getSequence(this);
     }
     @Override @Ignore
     public Element find(Callable<? extends Boolean> f) {

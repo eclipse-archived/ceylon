@@ -259,8 +259,8 @@ public interface Correspondence<Key,Item> {
 
         @Override 
         @Ignore
-        public Iterable<? extends Item> getSequence() { 
-            return Iterable$impl._getSequence(this);
+        public Sequence<? extends Item> getSequence() { 
+            return Sequence$impl._getSequence(this);
         }
         @Override @Ignore
         public Item find(Callable<? extends Boolean> f) {

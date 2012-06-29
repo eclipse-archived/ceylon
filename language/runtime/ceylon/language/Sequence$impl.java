@@ -22,4 +22,12 @@ public final class Sequence$impl<Element> {
             return $this.getFirst(); //actually never occurs
         } 
     }
+    
+    public Sequence<? extends Element> getSequence() {
+        return _getSequence($this);
+    }
+    static <Element> Sequence<? extends Element> _getSequence(Sequence<Element> $this) {
+        return $this;
+    }
+    
 }    
