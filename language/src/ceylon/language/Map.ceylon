@@ -11,22 +11,6 @@ shared interface Map<out Key,out Item>
         given Key satisfies Object
         given Item satisfies Object {
 
-    doc "Returns 1 if the argument is an entry and its
-         key and item match an entry in this `Map`."
-    shared actual default Integer count(Object element) {
-        if (is Key->Item element) {
-            if (exists item = item(element.key)) {
-                return item==element.item then 1 else 0;
-            }
-            else {
-                return 0;
-            }
-        }
-        else {
-            return 0;
-        }
-    }
-
     doc "Two `Map`s are considered equal if they have the 
          same size, the same set of keys, and equal elements 
          stored under each key."
