@@ -52,6 +52,25 @@ function string(/*Iterable<Character>*/chars) {
     return s.getString();
 }
 
+function equalTo(v) {
+    return function(e) {
+        return v.equals(e);
+    };
+}
+function greaterThan(v) {
+    return function(e) {
+        return e.compare(v) === larger;
+    };
+}
+function lessThan(v) {
+    return function(e) {
+        return e.compare(v) === smaller;
+    };
+}
+
+exports.equalTo=equalTo;
+exports.greaterThan=greaterThan;
+exports.lessThan=lessThan;
 exports.byIncreasing=byIncreasing;
 exports.byDecreasing=byDecreasing;
 exports.count=count;
