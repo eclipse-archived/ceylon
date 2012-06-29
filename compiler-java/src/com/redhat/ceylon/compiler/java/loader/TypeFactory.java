@@ -24,7 +24,6 @@ import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -98,6 +97,16 @@ public class TypeFactory extends Unit {
         return Util.producedType(getArrayDeclaration(), et);
     }
 
+    public ProducedType getArrayElementType(ProducedType type) {
+        ProducedType st = type.getSupertype(getArrayDeclaration());
+        if (st!=null && st.getTypeArguments().size()==1) {
+            return st.getTypeArgumentList().get(0);
+        }
+        else {
+            return null;
+        }
+    }
+    
     public ProducedType getFixedSizedType(ProducedType pt) {
         return pt.getSupertype(getFixedSizedDeclaration());
     }
