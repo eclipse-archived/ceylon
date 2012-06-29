@@ -383,25 +383,31 @@ Range$proto.segment = function(from, len) {
     return Range(x, y);
 }
 Range$proto.span = function(from, to) {
-    from = largest(Integer(0),from);
-    if (to === getNull() || to === undefined) {
-        to = this.getLastIndex();
+    var li = this.getLastIndex();
+	to = (to==null || to==undefined) ? li : to;
+    if (to.value<0) {
+    	if (from.value<0) {
+    		return $empty;
+    	}
+    	to = Integer(0);
     }
-    if (this.defines(from) === $false) {
-        //If it's an inverse range, adjust the "from" (upper bound)
-        if (from.compare(to) === larger && this.defines(to) === $true) {
-            //Decrease the upper bound
-            while (this.defines(from) === $false) {
-                from = from.getPredecessor();
-            }
-        } else {
-            return $empty;
-        }
-    } else while (this.defines(to) === $false) {
-        //decrease the upper bound
-        to = to.getPredecessor();
+    else if (to.value > li.value) {
+    	if (from.value > li.value) {
+    		return $empty;
+    	}
+    	to = li;
     }
-    return Range(this.item(from), this.item(to));
+    if (from.value < 0) {
+    	from = Integer(0);
+    }
+    else if (from.value > li.value) {
+    	from = li;
+    }
+    var x = this.first;
+    for (var i=0; i < from.value; i++) { x = this.next(x); }
+    var y = this.first;
+    for (var i=0; i < to.value; i++) { y = this.next(y); }
+    return Range(x, y);
 }
 Range$proto.definesEvery = function(keys) {
     for (var i = 0; i < keys.getSize().value; i++) {
