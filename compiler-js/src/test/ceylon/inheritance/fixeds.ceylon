@@ -41,7 +41,7 @@ void testFixedSized() {
   assert(3 in some, "Some.contains");
   assert(some.containsAny(5,3,0), "Some.containsAny");
   assert(some.containsEvery(2,3,1), "Some.containsEvery");
-  assert(some.count(1) == 1, "Some.count");
+  assert(some.count(equalTo(1)) == 1, "Some.count");
   variable FixedSized<Integer> s2 := some.rest;
   assert(!s2.empty, "Some.empty 2");
   assert(s2.size == 2, "Some.size 2");
