@@ -40,11 +40,11 @@ Iterable$proto.getSequence = function() {
     return ArraySequence(a);
 }
 Iterable$proto.map = function(mapper) {
-    var iter = this.getIterator();
+    var iter = this;
     function mapped$iter(){
         var $cmp$=new mapped$iter.$$;
         IdentifiableObject(mapped$iter);
-        $cmp$.iter=iter;
+        $cmp$.iter=iter.getIterator();
         $cmp$.mapper=mapper;
         $cmp$.next=function(){
             var e = this.iter.next();
@@ -58,11 +58,11 @@ Iterable$proto.map = function(mapper) {
     return Comprehension(mapped$iter);
 }
 Iterable$proto.filter = function(select) {
-    var iter = this.getIterator();
+    var iter = this;
     function filtered$iter(){
         var $cmp$=new filtered$iter.$$;
         IdentifiableObject(filtered$iter);
-        $cmp$.iter=iter;
+        $cmp$.iter=iter.getIterator();
         $cmp$.select=select;
         $cmp$.next=function(){
             var e = this.iter.next();
@@ -138,21 +138,51 @@ Iterable$proto.every = function(/*Callable<Boolean,Element>*/selecting) {
     return $true;
 }
 Iterable$proto.skipping = function(skip) {
-    //TODO implement this
-    return this;
+    function skip$iter(iter,skip){
+        var $cmp$=new skip$iter.$$;
+        IdentifiableObject(skip$iter);
+        $cmp$.iter=iter;
+        $cmp$.skip=skip;
+        $cmp$.getIterator=function(){
+            var iter = this.iter.getIterator();
+            for (var i=0; i < this.skip; i++) {
+                iter.next();
+            }
+            return iter;
+        };
+        return $cmp$;
+    }
+    initTypeProto(skip$iter, 'ceylon.language.SkipIterable', IdentifiableObject, Iterable);
+    return skip$iter(this,skip.value);
 }
 Iterable$proto.taking = function(take) {
-    //TODO implement this
-    return this;
+    if (take.value <= 0) return $empty;
+    var iter = this;
+    function take$iter(){
+        var $cmp$=new take$iter.$$;
+        IdentifiableObject(take$iter);
+        $cmp$.iter=iter.getIterator();
+        $cmp$.take=take.value;
+        $cmp$.i=0;
+        $cmp$.next=function(){
+            if (this.i++>=this.take) {
+                return $finished;
+            }
+            return this.iter.next();
+        };
+        return $cmp$;
+    }
+    initTypeProto(take$iter, 'ceylon.language.TakeIterator', IdentifiableObject, Iterator);
+    return Comprehension(take$iter);
 }
 Iterable$proto.by = function(step) {
     if (step.value == 1) return this;
     if (step.value < 1) throw Exception(String$("Step must be positive"));
-    var iter = this.getIterator();
+    var iter = this;
     function by$iter(){
         var $cmp$=new by$iter.$$;
         IdentifiableObject(by$iter);
-        $cmp$.iter=iter;
+        $cmp$.iter=iter.getIterator();
         $cmp$.step=step.value;
         $cmp$.next=function(){
             var e = this.iter.next();
