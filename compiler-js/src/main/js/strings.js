@@ -407,6 +407,10 @@ String$proto.taking = function(take) {
     if (take.value==0) return $empty;
     return this.segment(Integer(0), take);
 }
+String$proto.by = function(step) {
+    var r = Iterable.$$.prototype.by.apply(this, [step]);
+    return string(r);
+}
 
 function StringIterator(string) {
     var that = new StringIterator.$$;
