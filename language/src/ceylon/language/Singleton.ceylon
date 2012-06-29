@@ -106,10 +106,10 @@ shared class Singleton<Element>(Element element)
         return this.element==element;
     }
 
-    doc "Returns `1` if the specified element is this 
-         `Singleton`'s element, or `0` otherwise."
-    shared actual Integer count(Object element) {
-        return contains(element) then 1 else 0;
+    doc "Returns `1` if this Singleton's element
+         satisfies the predicate, or `0` otherwise."
+    shared actual Integer count(Boolean selecting(Element element)) {
+        return selecting(element) then 1 else 0;
     }
 
     shared actual Sequence<Result> map<Result>(Result selecting(Element e)) {

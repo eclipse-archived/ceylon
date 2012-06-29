@@ -53,8 +53,8 @@ shared interface Empty
         return false;
     }
 
-    doc "Returns 0 for any given element."
-    shared actual Integer count(Object element) {
+    doc "Returns 0 for any given predicate."
+    shared actual Integer count(Boolean selecting(Bottom element)) {
         return 0;
     }
 
