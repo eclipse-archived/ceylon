@@ -26,12 +26,15 @@ Some more basic ant tasks:
     ant checkout -Dtag=0.3 - Makes sure we're using the specified tag
     ant checkout-master    - To make sure we're using master
     ant local package      - Builds the distribution package, cloning/pulling 
-                             dependant Ceylon git repositories into the 
-                             ${projects.dir}
+                             dependent Ceylon git repositories into the 
+                             ${projects.dir} directory.
+                             Doesn't touch any sibling project folders.
+                             Doesn't touch your local repo (~/.ceylon/repo).
 
     ant siblings package   - Builds the distribution package using
-                             existing sibling project folders
-                             (does not clone or pull)
+                             existing sibling project folders.
+                             Doesn't clone or pull. Doesn't touch your local 
+                             repo (~/.ceylon/repo).
 
     ant clean              - Cleans the distribution package
     ant clean-all          - Cleans the distribution package
