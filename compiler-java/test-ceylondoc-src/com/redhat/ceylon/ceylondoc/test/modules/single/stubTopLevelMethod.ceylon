@@ -19,6 +19,7 @@
  */
 doc "The stub top level method"
 see (StubClass, stubTopLevelAttribute)
-shared StubClass? stubTopLevelMethod() {
+shared StubClass? stubTopLevelMethod(
+	doc "Sequenced parameters `numbers`" Integer... numbers) {
     return null;
 }

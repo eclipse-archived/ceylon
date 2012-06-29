@@ -125,6 +125,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeDeprecated(d);
         around("div class='doc'", getDoc(d));
         if( d instanceof MethodOrValue ) {
+        	writeParameters(d);
             writeThrows(d);        
             writeSee(d);
             writeBy(d);
@@ -192,7 +193,35 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("div");
     }
     
-    protected void writeThrows(Declaration decl) throws IOException {
+    protected void writeParameters(Declaration decl) throws IOException {
+    	if( decl instanceof Functional ) {
+    		boolean first = true;
+    		List<ParameterList> parameterLists = ((Functional)decl).getParameterLists();
+    		for (ParameterList parameterList : parameterLists) {
+    			for (Parameter parameter : parameterList.getParameters()) {
+    				String doc = getDoc(parameter);
+    				if( !doc.isEmpty() ) {
+    					if( first ) {
+    						first = false;
+    						open("div class='parameters'");
+    						write("Parameters: ");
+    						open("ul");
+    					}
+    					open("li");
+    					write(parameter.getName());
+    					write(doc);
+    					close("li");
+    				}
+    			}
+    		}    			
+    		if (!first) {
+    			close("ul");
+    			close("div");
+    		}
+    	}
+    }
+
+	protected void writeThrows(Declaration decl) throws IOException {
         boolean first = true;
         for (Annotation annotation : decl.getAnnotations()) {
             if (annotation.getName().equals("throws")) {
