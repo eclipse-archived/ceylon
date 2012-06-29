@@ -293,12 +293,7 @@ public abstract class String
             return false;
         }
     }
-    
-    @Override
-    public long count(@Name("element") java.lang.Object element) {
-        throw new Exception(null, null); //TODO!!!!!
-    }
-    
+
     public boolean startsWith(@Name("substring") java.lang.String substring) {
         return value.startsWith(substring);
     }
@@ -713,6 +708,10 @@ public abstract class String
         public Iterable<? extends String> by(long n) {
             return Iterable$impl._by(this, n);
         }
+        @Override @Ignore
+        public long count(Callable<? extends Boolean> f) {
+            return Iterable$impl._count(this, f);
+        }
     }
 
     private static final class Occurs implements Iterable<Integer> {
@@ -805,6 +804,10 @@ public abstract class String
         @Override @Ignore
         public Iterable<? extends Integer> by(long n) {
             return Iterable$impl._by(this, n);
+        }
+        @Override @Ignore
+        public long count(Callable<? extends Boolean> f) {
+            return Iterable$impl._count(this, f);
         }
     }
 

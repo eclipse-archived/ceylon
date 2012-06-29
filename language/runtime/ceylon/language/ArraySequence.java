@@ -253,10 +253,10 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public long count(java.lang.Object element) {
+    public long count(Callable<? extends Boolean> f) {
         int count=0;
         for (Element x: array) {
-            if (x!=null && element.equals(x)) count++;
+            if (x!=null && f.$call(x).booleanValue()) count++;
         }
         return count;
     }
@@ -346,7 +346,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public Iterable<? extends Element> by(long step) {
         return Iterable$impl._by(this, step);
     }
- 
+
     @Override
     @Ignore
     public Iterable<?>containsAny$elements() {

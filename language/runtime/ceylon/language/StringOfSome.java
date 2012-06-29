@@ -80,4 +80,8 @@ class StringOfSome extends String implements Some<Character> {
     public Iterable<? extends Character> by(long step) {
         return String.instance($string.string(Iterable$impl._by(this, step)));
     }
+    @Override @Ignore
+    public long count(Callable<? extends Boolean> f) {
+        return Iterable$impl._count(this, f);
+    }
 }

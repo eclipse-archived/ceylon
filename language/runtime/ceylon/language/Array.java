@@ -551,14 +551,14 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public long count(@Name("element") @TypeInfo("ceylon.language.Object") 
-    java.lang.Object element) {
+    public long count(@Name("selecting") @TypeInfo("ceylon.language.Callable<Boolean,Element>") 
+            Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
         Iterator<Element> iter = getIterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
-            if (elem != null && element.equals(element)) {
+            if (elem != null && selecting.$call(elem).booleanValue()) {
                 count++;
             }
         }
@@ -605,6 +605,42 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     public abstract Array<? extends Element> getReversed();
 
+    @Override @Ignore
+    public Element find(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this, f);
+    }
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
+        return List$impl._findLast(this, f);
+    }
+    @Override 
+    @Ignore
+    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
+        return Iterable$impl._sorted(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+        return new MapIterable<Element, Result>(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
+        return new FilterIterable<Element>(this, f); 
+    }
+    @Override 
+    @Ignore 
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+        return Iterable$impl._fold(this, ini, f); 
+    }
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        return Iterable$impl._any(this, f);
+    }
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        return Iterable$impl._every(this, f);
+    }
 	@Override @Ignore
 	public Iterable<? extends Element> skipping(long skip) {
 		return Iterable$impl._skipping(this, skip);

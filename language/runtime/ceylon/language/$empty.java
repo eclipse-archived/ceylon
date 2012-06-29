@@ -129,12 +129,6 @@ public class $empty {
 
         @Override
         @Ignore
-        public long count(java.lang.Object element) {
-            return Empty$impl._count(this, element);
-        }
-
-        @Override
-        @Ignore
         public Empty getClone() {
             return Empty$impl._getClone(this);
         }
@@ -191,6 +185,7 @@ public class $empty {
     @Override @Ignore public Empty skipping(long s) { return this; }
     @Override @Ignore public Empty taking(long s) { return this; }
     @Override @Ignore public Empty by(long s) { return this; }
+    @Override @Ignore public long count(Callable<? extends Boolean> f) { return 0; }
     };
     
     public static Empty getEmpty(){

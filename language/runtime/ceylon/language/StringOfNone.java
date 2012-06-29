@@ -81,4 +81,8 @@ class StringOfNone extends String implements None<Character> {
     public Iterable<? extends Character> by(long step) {
         return this;
     }
+    @Override @Ignore
+    public long count(Callable<? extends Boolean> f) {
+        return 0;
+    }
 }

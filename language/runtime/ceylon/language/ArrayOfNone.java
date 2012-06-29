@@ -94,4 +94,8 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     @Override @Ignore public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
     @Override @Ignore public boolean any(Callable<? extends Boolean> f) { return false; }
     @Override @Ignore public boolean every(Callable<? extends Boolean> f) { return false; }
+    @Override @Ignore public Iterable<? extends Element> skipping(long step) { return this; }
+    @Override @Ignore public Iterable<? extends Element> taking(long t) { return this; }
+    @Override @Ignore public Iterable<? extends Element> by(long s) { return this; }
+    @Override @Ignore public long count(Callable<? extends Boolean> f) { return 0; }
 }

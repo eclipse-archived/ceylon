@@ -187,11 +187,6 @@ public class Singleton<Element>
     }
 
     @Override
-    public long count(java.lang.Object element) {
-        return contains(element) ? 1 : 0;
-    }
-
-    @Override
     @Ignore
     public boolean containsEvery(Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
@@ -312,5 +307,9 @@ public class Singleton<Element>
     @Override @Ignore
     public Iterable<? extends Element> by(long step) {
         return this;
+    }
+    @Override @Ignore
+    public long count(Callable<? extends Boolean> f) {
+        return f.$call(element).booleanValue() ? 1 : 0;
     }
 }
