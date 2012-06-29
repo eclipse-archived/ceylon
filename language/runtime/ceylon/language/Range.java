@@ -407,7 +407,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
-        return Iterable$impl._find(this.getReversed(), f);
+        return this.getReversed().find(f);
     }
     @Override 
     @Ignore
