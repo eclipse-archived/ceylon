@@ -25,11 +25,13 @@ Some more basic ant tasks:
     ant get-code -Dtag=0.3 - Downloads latest code and checks out the tag
     ant checkout -Dtag=0.3 - Makes sure we're using the specified tag
     ant checkout-master    - To make sure we're using master
-    ant local package      - Builds the distribution package
+    ant local package      - Builds the distribution package, cloning/pulling 
+                             dependant Ceylon git repositories into the 
+                             ${projects.dir}
 
     ant siblings package   - Builds the distribution package using
                              existing sibling project folders
-                             (leaves sources untouched!)
+                             (does not clone or pull)
 
     ant clean              - Cleans the distribution package
     ant clean-all          - Cleans the distribution package
@@ -60,7 +62,7 @@ Some more basic ant tasks:
         <property name="dist.name" value="ceylon-${ceylon.version}"/>
     </target>
 
-    <target name="siblings">
+    <target name="siblings"> 
         <property name="projects.base.dir" value="${basedir}/.." />
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
         <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
@@ -155,54 +157,43 @@ Some more basic ant tasks:
     <target name="install-compiler" 
           depends="compile-module-resolver, install-typechecker, install-language">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="clean" dir="${ceylon-compiler.dir}" inheritall="false"/>
-        <ant antfile="${ceylon-compiler.dir}/build.xml" target="dist" dir="${ceylon-compiler.dir}" inheritall="false"/>
-        <copy todir="${dist.dir}/repo">
-            <fileset dir="${ceylon-compiler.dir}/build/dist">
-            </fileset>
-        </copy>
+        <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+        </ant>
     </target>
 
     <target name="install-js" depends="install-compiler">
         <ant antfile="${ceylon-js.dir}/build.xml" target="clean" dir="${ceylon-js.dir}" inheritall="false"/>
-        <ant antfile="${ceylon-js.dir}/build.xml" target="dist" dir="${ceylon-js.dir}" inheritall="false"/>
-        <copy todir="${dist.dir}/repo">
-            <fileset dir="${ceylon-js.dir}/build/dist">
-            </fileset>
-            <fileset dir="${ceylon-js.dir}/build/runtime">
-            </fileset>
-        </copy>
+        <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+        </ant>
     </target>
 
     <target name="install-typechecker" 
             depends="compile-module-resolver, install-language">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="clean" dir="${ceylon-spec.dir}" inheritall="false"/>
-        <ant antfile="${ceylon-spec.dir}/build.xml" target="dist" dir="${ceylon-spec.dir}" inheritall="false"/>
-        <copy todir="${dist.dir}/repo">
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+        </ant>
+        <!--<copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon-spec.dir}/build/dist">
             </fileset>
-        </copy>
+        </copy>-->
     </target>
 
     <target name="install-language">
         <ant antfile="${ceylon.language.dir}/build.xml" target="clean" dir="${ceylon.language.dir}" inheritall="false"/>
-        <ant antfile="${ceylon.language.dir}/build.xml" target="dist" dir="${ceylon.language.dir}" inheritall="false"/>
-    	<!-- runtime requires it to be installed -->
-        <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false"/>
-        <copy todir="${dist.dir}/repo">
-            <fileset dir="${ceylon.language.dir}/build/dist">
-            </fileset>
-        </copy>
+        <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+        </ant>
     </target>
 
     <target name="compile-module-resolver">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="clean" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
-        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="dist" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
-        <!-- runtime requires it to be installed -->
-        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
-        <copy todir="${dist.dir}/repo">
-            <fileset dir="${ceylon-module-resolver.dir}/build/dist">
-            </fileset>
-        </copy>
+        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+        </ant>
+
         <copy todir="${dist.dir}/lib">
             <fileset dir="${ceylon-module-resolver.dir}/lib">
                 <include name="sardine-*.jar"/>
@@ -218,7 +209,9 @@ Some more basic ant tasks:
 
     <target name="install-runtime" depends="compile-module-resolver">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="clean" dir="${ceylon-runtime.dir}" inheritall="false"/>
-        <ant antfile="${ceylon-runtime.dir}/build.xml" target="dist" dir="${ceylon-runtime.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-runtime.dir}/build.xml" target="dist" dir="${ceylon-runtime.dir}" inheritall="false">
+          <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+        </ant>
         <copy todir="${dist.dir}">
             <fileset dir="${ceylon-runtime.dir}/build/dist">
             </fileset>
