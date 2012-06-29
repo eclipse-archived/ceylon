@@ -147,11 +147,6 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     	}
     }
 
-    @Override
-    public final long count(@Name("element") java.lang.Object element) {
-        return contains(element) ? 1 : 0;
-    }
-    
     public final boolean includes(@Name("x") Element x){
         if (getDecreasing()){
             return x.compare(first).asSmallAs() && 
@@ -429,4 +424,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return this.includes(e) ? new Range(first, e) : this;
     }
 
+    @Override @Ignore
+    public long count(Callable<? extends Boolean> f) {
+        Element e = first;
+        long c = 0;
+        while (includes(e)) {
+            if (f.$call(e).booleanValue()) c++;
+            e = next(e);
+        }
+        return c;
+    }
 }
