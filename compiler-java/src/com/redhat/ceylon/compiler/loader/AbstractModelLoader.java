@@ -1740,7 +1740,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         ProducedType ret = getType(type, scope, variance);
-        ret.setUnderlyingType(getUnderlyingType(originalType, location));
+        if (ret.getUnderlyingType() == null) {
+            ret.setUnderlyingType(getUnderlyingType(originalType, location));
+        }
         return ret;
     }
     
