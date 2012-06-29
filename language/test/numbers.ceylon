@@ -403,4 +403,9 @@ shared void numbers() {
     assert(is Integer obj(2**2), "2**2 Integer");
     //assert(is Float   obj(2**2.0), "2**2.0 Float");
     assert(is Float   obj(2.0**2), "2.0**2 Float");
+    
+    assert(0.0.strictlyPositive, "positive zero strictly positive");
+    assert(!(-0.0).strictlyPositive, "negative zero not strictly positive");
+    assert(1.0.strictlyPositive, "positive one strictly positive");
+    assert(!(-1.0).strictlyPositive, "negative one not strictly positive");
 }

@@ -8,7 +8,8 @@ shared abstract class Float()
         satisfies Scalar<Float> & Exponentiable<Float,Float> & 
                   Castable<Float> {
 
-    doc "Determines whether this value is undefined (Not a Number)."
+    doc "Determines whether this value is undefined (that is,
+         Not a Number)."
     shared Boolean undefined {
         return this != this;
     }
@@ -20,20 +21,26 @@ shared abstract class Float()
         return this == infinity || this == -infinity;
     }
     
-    doc "Determines whether this value is finite (that is, neither `infinity`,
-         `-infinity` nor `undefined`)."
+    doc "Determines whether this value is finite (that is, 
+         neither `infinity`, `-infinity` nor `undefined`)."
     see(infinite, infinity)
     shared Boolean finite {
         return this != infinity && this != -infinity && !this.undefined;
     }
+    
+    doc "Determines if this value is a positive number or 
+         `+0`."
+    shared formal Boolean strictlyPositive;
 
 }
 
-doc "The `Float` value of the given string representation of a decimal number
-     or `null` if the string does not represent a decimal number.
+doc "The `Float` value of the given string representation of 
+     a decimal number or `null` if the string does not represent 
+     a decimal number.
      
-     The syntax accepted by this method is the same as the syntax for a 
-     `Float` literal in the Ceylon language except that it may optionally 
-     begin with a sign character (`+` or `-`)."
+     The syntax accepted by this method is the same as the 
+     syntax for a `Float` literal in the Ceylon language except 
+     that it may optionally begin with a sign character (`+` or 
+     `-`)."
 shared Float? parseFloat(String string) { throw; }
 

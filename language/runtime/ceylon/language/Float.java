@@ -102,6 +102,10 @@ public final class Float
         return value > 0;
     }
     
+    public boolean getStrictlyPositive() {
+        return (Double.doubleToRawLongBits(value) >> 63) == 0;
+    }
+    
     @Override
     public boolean getNegative() {
         return value < 0;
