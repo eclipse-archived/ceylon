@@ -60,17 +60,6 @@ Collection$proto.contains = function(obj) {
     }
     return $false;
 }
-Collection$proto.count = function(obj) {
-    var iter = this.getIterator();
-    var item;
-    var count = 0;
-    while ((item = iter.next()) !== $finished) {
-        if (exists(item) === $true && item.equals(obj) === $true) {
-            count++;
-        }
-    }
-    return Integer(count);
-}
 exports.Collection=Collection;
 
 function FixedSized(wat) {
@@ -215,15 +204,6 @@ function Map(wat) {
 }
 initTypeProtoI(Map, 'ceylon.language.Map', Collection, Correspondence, Cloneable);
 var Map$proto = Map.$$.prototype;
-Map$proto.count = function(elem) {
-    if (isOfType(elem,'ceylon.language.Entry') === $true) {
-        var item = this.item(elem.getKey());
-        if (item !== null && item.equals(elem.getItem()) === $true) {
-            return Integer(1);
-        }
-    }
-    return Integer(0);
-}
 Map$proto.equals = function(other) {
     if (isOfType(other, 'ceylon.language.Map') === $true && other.getSize().equals(this.getSize())) {
         var iter = this.getIterator();
@@ -332,9 +312,6 @@ function Set(wat) {
 }
 initTypeProtoI(Set, 'ceylon.language.Set', Collection, Cloneable);
 var Set$proto = Set.$$.prototype;
-Set$proto.count = function(elem) {
-    return this.contains(elem) === $true ? Integer(1) : Integer(0);
-}
 Set$proto.superset = function(set) {
     var iter = set.getIterator();
     var elem; while ((elem = iter.next()) !== $finished) {
