@@ -112,12 +112,12 @@ Range<Integer> range {
     assert(nonempty (0..9).span(5,3), "(0..9).span(5,3) is empty");
     
     assert((1..1).by(5).sequence.string=="{ 1 }", "range by 5");
-    assert((0..9).by(1).sequence.string=="{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }", "range by 1");
+    assert((0..9).by(1).sequence.string=="0..9", "range by 1");
     assert((0..9).by(3).sequence.string=="{ 0, 3, 6, 9 }", "range by 3");
     assert((2..11).by(3).sequence.string=="{ 2, 5, 8, 11 }", "range by 3");
     assert((0..9).by(4).sequence.string=="{ 0, 4, 8 }", "range by 4");
     assert((2..11).by(4).sequence.string=="{ 2, 6, 10 }", "range by 4");
-
+    
     //More range tests, from ceylon-js
     assert((1..10).string=="1..10", "range.string");
     value r1= 1..5;
