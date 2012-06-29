@@ -11,13 +11,10 @@ public final class Set$impl<Element> {
         this.$this = $this;
     }
     
-    public long count(java.lang.Object element) {
-        return _count($this, element);
+    public long count(Callable<? extends Boolean> f) {
+        return Iterable$impl._count($this, f);
     }
-    static <Element> long _count(final Set<Element> $this, java.lang.Object element) {
-        return $this.contains(element) ? 1 : 0;
-    }
-    
+
     public boolean superset(Set<? extends java.lang.Object> set) {
         return _superset($this, set);
     }

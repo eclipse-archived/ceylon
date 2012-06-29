@@ -17,10 +17,6 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
                  "ceylon.language.Cloneable<ceylon.language.Set<Element>>"})
 public interface Set<Element> 
         extends Collection<Element> {
-    
-    @Annotations({@Annotation("actual"), @Annotation("default")})
-    @Override
-    public long count(java.lang.Object element);
 
     @Annotations(@Annotation("default"))
     public boolean superset(@TypeInfo("ceylon.language.Set<ceylon.language.Object>") 
