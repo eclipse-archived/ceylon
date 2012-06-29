@@ -220,6 +220,7 @@ Correspondence$proto.keys = function() {
 }
 exports.Correspondence=Correspondence;
 
+//#include iterable.js
 //#include collections.js
 
 function Summable(wat) {
