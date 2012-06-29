@@ -189,4 +189,12 @@ Iterable$proto.by = function(step) {
     initTypeProto(by$iter, 'ceylon.language.SteppedIterator', IdentifiableObject, Iterator);
     return Comprehension(by$iter);
 }
+Iterable$proto.count = function(sel) {
+	var c = 0;
+	var iter = this.getIterator();
+	var e; while ((e = iter.next()) !== $finished) {
+		if (sel(e) === true) c++;
+	}
+	return Integer(c);
+}
 exports.Iterable=Iterable;
