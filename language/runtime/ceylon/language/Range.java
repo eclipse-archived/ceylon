@@ -32,11 +32,15 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         this.last = last;
         long index = 0;
         Element x = first;
-        while (!x.equals(last)) {
-            ++index;
-            x = next(x);
+        if (first instanceof Integer && last instanceof Integer) {
+            this.size = Math.abs(((Integer)last).value - ((Integer)first).value)+1;
+        } else {
+            while (!x.equals(last)) {
+                ++index;
+                x = next(x);
+            }
+            this.size = index+1;
         }
-        this.size = index+1;
     }
     
     @Override
@@ -106,22 +110,18 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     @TypeInfo("ceylon.language.Iterator<Element>")
 	public Iterator<Element> getIterator() {
-        class RangeIterator implements Iterator<Element> {
-        	java.lang.Object current;
+        return new Iterator<Element>() {
+            private java.lang.Object current = first;
+            private boolean go = true;
 
-        	public RangeIterator() {
-            	this.current = first;
-            }
-            
             @TypeInfo("Element|ceylon.language.Finished")
-        	public java.lang.Object next() {
+            public java.lang.Object next() {
+                if (!go) return exhausted.getExhausted();
                 java.lang.Object result = current;
-                if (!(current instanceof Finished)){
-                    if(current.equals(getLast())) {
-                        current = exhausted.getExhausted();
-                    } else {
-                        current = Range.this.next((Element) current);
-                    }
+                if (current.equals(getLast())) {
+                    go = false;
+                } else {
+                    current = Range.this.next((Element) current);
                 }
                 return result;
             }
@@ -130,9 +130,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             public java.lang.String toString() {
                 return "RangeIterator";
             }
-        }
-        
-        return new RangeIterator();
+        };
     }
 
     @Override
@@ -355,7 +353,41 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @Ignore
-    public Iterable<? extends Element> by(long step) {
+    public Iterable<? extends Element> by(final long step) {
+        if (step > 1 && first instanceof Integer && last instanceof Integer) {
+            //Optimize for Integer ranges
+            return new AbstractIterable<Element>() {
+                @Override
+                @Annotations(@Annotation("formal"))
+                @TypeInfo("ceylon.language.Iterator<Element>")
+                public Iterator<? extends Element> getIterator() {
+
+                    return new Iterator<Element>() {
+                        long current = ((Integer)first).value;
+                        final long lim = ((Integer)last).value;
+                        boolean inverse = lim < current;
+
+                        @TypeInfo("Element|ceylon.language.Finished")
+                        public java.lang.Object next() {
+                            long result = current;
+                            if (inverse) {
+                                if (current < lim) return exhausted.getExhausted();
+                                current-=step;
+                            } else {
+                                if (current > lim) return exhausted.getExhausted();
+                                current+=step;
+                            }
+                            return Integer.instance(result);
+                        }
+                        
+                        @Override
+                        public java.lang.String toString() {
+                            return "RangeIterator";
+                        }
+                    };
+                }
+            };
+        }
     	return Iterable$impl._by(this, step);
     }
 
@@ -366,7 +398,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     @Override @Ignore
     public Element find(Callable<? extends Boolean> f) {
-        return Iterable$impl._find(this, f);
+        Element e = first;
+        while (includes(e)) {
+            if (f.$call(e).booleanValue()) return e;
+            e = next(e);
+        }
+        return null;
     }
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
