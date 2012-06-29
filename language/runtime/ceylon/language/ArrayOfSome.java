@@ -107,40 +107,4 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     public Iterable<? extends Element> getSequence() { 
         return Iterable$impl._getSequence(this); 
     }
-    @Override @Ignore
-    public Element find(Callable<? extends Boolean> f) {
-        return Iterable$impl._find(this, f);
-    }
-    @Override @Ignore
-    public Element findLast(Callable<? extends Boolean> f) {
-        return List$impl._findLast(this, f);
-    }
-    @Override 
-    @Ignore
-    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f); 
-    }
-    @Override 
-    @Ignore 
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-        return new MapIterable<Element, Result>(this, f); 
-    }
-    @Override 
-    @Ignore 
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
-        return new FilterIterable<Element>(this, f); 
-    }
-    @Override 
-    @Ignore 
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-        return Iterable$impl._fold(this, ini, f); 
-    }
-    @Override @Ignore
-    public boolean any(Callable<? extends Boolean> f) {
-        return Iterable$impl._any(this, f);
-    }
-    @Override @Ignore
-    public boolean every(Callable<? extends Boolean> f) {
-        return Iterable$impl._every(this, f);
-    }
 }

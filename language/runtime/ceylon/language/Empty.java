@@ -72,11 +72,6 @@ public interface Empty
 
     @Annotations(@Annotation("actual"))
     @Override
-    public long count(@Name("element") @TypeInfo("ceylon.language.Object")
-    java.lang.Object element);
-
-    @Annotations(@Annotation("actual"))
-    @Override
     public boolean defines(@Name("key") @TypeInfo("ceylon.language.Integer")
     Integer key);
 

@@ -214,11 +214,6 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         @Ignore
-        public long count(java.lang.Object element) {
-            return Collection$impl._count(this, element);
-        }
-        @Override
-        @Ignore
         public boolean containsEvery(Iterable<?> elements) {
             return Category$impl._containsEvery(this, elements);
         }
@@ -297,6 +292,10 @@ public interface Correspondence<Key,Item> {
         @Override @Ignore
         public boolean every(Callable<? extends Boolean> f) {
             return Iterable$impl._every(this, f);
+        }
+        @Override @Ignore
+        public long count(Callable<? extends Boolean> f) {
+            return Iterable$impl._count(this, f);
         }
     }
 }
