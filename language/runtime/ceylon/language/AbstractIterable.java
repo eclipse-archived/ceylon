@@ -80,4 +80,8 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     public Iterable<? extends Element> by(long step) {
         return Iterable$impl._by(this, step);
     }
+    @Override @Ignore
+    public long count(Callable<? extends Boolean> selecting) {
+        return Iterable$impl._count(this, selecting);
+    }
 }
