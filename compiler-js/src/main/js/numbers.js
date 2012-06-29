@@ -141,6 +141,8 @@ Float$proto.getHash = function() { return String$(this.value.toPrecision()).getH
 Float$proto.getUndefined = function() { return isNaN(this.value) ? $true : $false; }
 Float$proto.getFinite = function() { return this.value!==Infinity && this.value!==-Infinity && !isNaN(this.value) ? $true : $false; }
 Float$proto.getInfinite = function() { return this.value===Infinity || this.value===-Infinity ? $true : $false; }
+Float$proto.getStrictlyPositive = function() { return this.value>0 || (this.value===0 && (1/this.value===Infinity)) ? $true : $false; }
+Float$proto.getStrictlyNegative = function() { return this.value<0 || (this.value===0 && (1/this.value===-Infinity)) ? $true : $false; }
 
 function getInfinity() { return Float(Infinity); }
 //function getNegativeInfinity() { return Float(-Infinity); }
