@@ -24,11 +24,6 @@ public interface Map<Key,Item>
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
-    public long count(@Name("element") @TypeInfo("ceylon.language.Object") 
-    java.lang.Object element);
-    
-    @Annotations({@Annotation("actual"), @Annotation("default")})
-    @Override
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object")
     java.lang.Object that);
     

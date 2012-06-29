@@ -10,25 +10,6 @@ public final class Map$impl<Key,Item> {
         this.$this = $this;
     }
     
-    public long count(java.lang.Object element) {
-        return _count($this, element);
-    }
-    static <Key,Item> long _count(final Map<Key,Item> $this, java.lang.Object element) {
-        if (element instanceof Entry) {
-            Entry e = (Entry) element;
-            java.lang.Object item = $this.item(e.getKey());
-            if (item!=null) {
-                return item.equals(e.getItem()) ? 1 : 0;
-            }
-            else {
-                return 0;
-            }
-        }
-        else {
-            return 0;
-        }
-    }
-    
     public boolean equals(java.lang.Object that) {
         return _equals($this, that);
     }
@@ -140,12 +121,6 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public long count(java.lang.Object element) {
-                return Set$impl._count(this, element);
-            }
-
-            @Override
-            @Ignore
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
@@ -246,6 +221,10 @@ public final class Map$impl<Key,Item> {
 			public Iterable<? extends Key> by(long step) {
 				return Iterable$impl._by(this, step);
 			}
+            @Override @Ignore
+            public long count(Callable<? extends Boolean> f) {
+                return Iterable$impl._count(this, f);
+            }
         }
         return new keySet();
     }
@@ -336,11 +315,6 @@ public final class Map$impl<Key,Item> {
                 return Collection$impl._contains(this, element);
             }
 
-            @Override
-            @Ignore
-            public long count(java.lang.Object element) {
-                return Collection$impl._count(this, element);
-            }
             @Override 
             @Ignore
             public Iterable<? extends Item> getSequence() { 
@@ -396,6 +370,10 @@ public final class Map$impl<Key,Item> {
 			public Iterable<? extends Item> by(long step) {
 				return Iterable$impl._by(this, step);
 			}
+            @Override @Ignore
+            public long count(Callable<? extends Boolean> f) {
+                return Iterable$impl._count(this, f);
+            }
         }
         return new valueCollection();
     }
@@ -553,12 +531,6 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public long count(java.lang.Object element) {
-                return Map$impl._count(this, element);
-            }
-
-            @Override
-            @Ignore
             public Set<? extends Item> getKeys() {
                 return Map$impl._getKeys(this);
             }
@@ -629,6 +601,10 @@ public final class Map$impl<Key,Item> {
 			public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> by(long step) {
 				return Iterable$impl._by(this, step);
 			}
+            @Override @Ignore
+            public long count(Callable<? extends Boolean> f) {
+                return Iterable$impl._count(this, f);
+            }
 
 			@Override @Ignore
 			public <Result> Map<? extends Item, ? extends Result> mapItems(Callable<? extends Result> mapping) {
@@ -795,6 +771,10 @@ public final class Map$impl<Key,Item> {
                     long step) {
                 return Iterable$impl._by(this, step);
             }
+            @Override @Ignore
+            public long count(Callable<? extends Boolean> f) {
+                return Iterable$impl._count(this, f);
+            }
 
             @Override
             public long getSize() {
@@ -834,11 +814,6 @@ public final class Map$impl<Key,Item> {
             @Override
             public Collection<? extends Entry<? extends Key, ? extends Result>> getClone() {
                 return this;
-            }
-
-            @Override
-            public long count(java.lang.Object element) {
-                return _count(this, element);
             }
 
             @Override
