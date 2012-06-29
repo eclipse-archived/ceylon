@@ -40,9 +40,8 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._fold($this, initial, accumulating);
     }
     static <Result> Result _fold(Iterable<?> $this, Result initial, Callable<? extends Result> accum) {
-        Iterator<?> iter = $this.getIterator();
         java.lang.Object elem;
-        while (!((elem = iter.next()) instanceof Finished)) {
+        for (Iterator<?> iter = $this.getIterator(); !((elem = iter.next()) instanceof Finished); ) {
             initial = accum.$call(initial, elem);
         }
         return initial;
@@ -52,9 +51,8 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._find($this, selecting);
     }
     static <Element> Element _find(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
-        Iterator<? extends Element> iter = $this.getIterator();
         java.lang.Object elem;
-        while (!((elem = iter.next()) instanceof Finished)) {
+        for (Iterator<? extends Element> iter = $this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
             if (sel.$call(elem).booleanValue()) {
                 return (Element)elem;
             }
@@ -66,10 +64,9 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._findLast($this, selecting);
     }
     static <Element> Element _findLast(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
-        Iterator<? extends Element> iter = $this.getIterator();
         java.lang.Object elem;
         java.lang.Object last = null;
-        while (!((elem = iter.next()) instanceof Finished)) {
+        for (Iterator<? extends Element> iter = $this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
             if (sel.$call(elem).booleanValue()) {
                 last = elem;
             }
