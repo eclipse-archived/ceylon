@@ -108,8 +108,16 @@ shared class Range<Element>(first, last)
         }
     }
     
-    shared actual Integer count(Object element) {
-        return contains(element) then 1 else 0;
+    shared actual Integer count(Boolean selecting(Element element)) {
+        variable value e := first;
+        variable value c := 0;
+        while (includes(e)) {
+            if (selecting(e)) {
+                c++;
+            }
+            e := next(e);
+        }
+        return c;
     }
     
     doc "Determines if the range includes the given value."
