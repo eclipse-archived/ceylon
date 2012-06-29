@@ -27,18 +27,5 @@ public final class Collection$impl<Element> {
         }
         return false;
     }
-    
-    public long count(java.lang.Object element){
-        return Collection$impl.<Element>_count(this.$this, element);
-    }
-    static <Element> long _count(Collection<Element> $this, java.lang.Object element){
-        long count=0;
-        java.lang.Object elem;
-        for (ceylon.language.Iterator<?> $element$iter$1 = $this.getIterator(); !((elem = $element$iter$1.next()) instanceof Finished);) {
-            if (elem!=null && element.equals(elem)) {
-                count++;
-            }
-        }
-        return count;
-    }
+
 }

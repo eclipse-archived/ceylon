@@ -28,10 +28,5 @@ public interface Collection<Element>
     @Override
     public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object")
             java.lang.Object element);
-    
-    @Annotations(@Annotation("default"))
-    public long count(@Name("element") @TypeInfo("ceylon.language.Object")
-            java.lang.Object element);
-
 
 }
