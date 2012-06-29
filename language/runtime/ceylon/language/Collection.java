@@ -29,4 +29,8 @@ public interface Collection<Element>
     public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object")
             java.lang.Object element);
 
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @Override
+    public java.lang.String toString();
+
 }

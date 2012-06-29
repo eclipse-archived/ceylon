@@ -122,15 +122,6 @@ shared interface List<out Element>
         return hash;
     }
     
-    value elementsString {
-        return ", ".join { for (elem in this) elem?.string else "null" };
-    }
-    
-    shared default actual String string {
-        return empty then "{}" 
-               else "{ " elementsString " }";
-    }
-
     shared default actual Element? findLast(Boolean selecting(Element elem)) {
         if (exists l=lastIndex) {
             variable value index := l;

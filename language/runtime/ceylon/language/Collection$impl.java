@@ -28,4 +28,26 @@ public final class Collection$impl<Element> {
         return false;
     }
 
+    public java.lang.String toString(Collection<Element> $this) {
+        return Collection$impl.<Element>_toString($this);
+    }
+    static <Element> java.lang.String _toString(Collection<Element> $this) {
+        if ($this.getEmpty()) return "{}";
+        java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
+        java.lang.Object elem;
+        boolean first=true;
+        for (Iterator<? extends Element> iter=$this.getIterator(); 
+                !((elem = iter.next()) instanceof Finished);) {
+            if (first) {
+                first = false;
+            }
+            else {
+                result.append(", ");
+            }
+            result.append(elem);
+        }
+        result.append(" }");
+        return result.toString();
+    }
+
 }

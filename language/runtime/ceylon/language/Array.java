@@ -515,7 +515,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public java.lang.String toString() {
-        return List$impl._toString(this);
+        return Collection$impl._toString(this);
     }
 
     @Ignore

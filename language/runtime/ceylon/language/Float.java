@@ -102,6 +102,16 @@ public final class Float
         return value > 0;
     }
     
+    public boolean getStrictlyPositive() {
+        return (Double.doubleToRawLongBits(value) >> 63)==0
+        		& !Double.isNaN(value);
+    }
+    
+    public boolean getStrictlyNegative() {
+        return (Double.doubleToRawLongBits(value) >> 63)!=0
+        		&& !Double.isNaN(value);
+    }
+    
     @Override
     public boolean getNegative() {
         return value < 0;

@@ -41,6 +41,10 @@ public interface Sequence<Element>
     @Override
     public Sequence<? extends Element> getReversed();
     
+    @Annotations({@Annotation("actual")})
+    @Override
+    public Sequence<? extends Element> getSequence();
+    
     /*@Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public List<? extends Element> span(@Name("from") Integer from, 

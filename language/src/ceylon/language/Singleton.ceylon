@@ -123,7 +123,7 @@ shared class Singleton<Element>(Element element)
         return accumulating(initial, element);
     }
     shared actual Element? find(Boolean selecting(Element e)) {
-        return selecting(element) then element else null;
+        return selecting(element) then element;
     }
     shared actual Singleton<Element> sorted(Comparison? comparing(Element a, Element b)) {
         return this;

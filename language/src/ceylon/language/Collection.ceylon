@@ -28,4 +28,13 @@ shared interface Collection<out Element>
         }
     }
 
+    value elementsString {
+        return ", ".join { for (elem in this) elem?.string else "null" };
+    }
+    
+    shared default actual String string {
+        return empty then "{}" 
+               else "{ " elementsString " }";
+    }
+
 }

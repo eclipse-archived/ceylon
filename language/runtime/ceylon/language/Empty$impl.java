@@ -79,6 +79,13 @@ public final class Empty$impl {
         return $this;
     }
     
+    public Empty getSequence() {
+        return _getSequence($this);
+    }
+    static Empty _getSequence(Empty $this) {
+        return $this;
+    }
+    
     public java.lang.String toString() {
         return _toString($this);
     }

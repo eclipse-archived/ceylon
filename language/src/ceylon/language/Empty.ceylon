@@ -14,8 +14,8 @@ shared interface Empty
         return emptyIterator;
     }
 
-    doc "Returns `null` for any given key."
-    shared actual Nothing item(Integer key) {
+    doc "Returns `null` for any given index."
+    shared actual Nothing item(Integer index) {
         return null;
     }
 
@@ -32,6 +32,11 @@ shared interface Empty
     doc "Returns an `Empty`."
     shared actual Empty reversed {
 	    return this;
+    }
+
+    doc "Returns an `Empty`."
+    shared actual Empty sequence {
+        return this;
     }
 
     doc "Returns a string description of the empty List: `{}`."
