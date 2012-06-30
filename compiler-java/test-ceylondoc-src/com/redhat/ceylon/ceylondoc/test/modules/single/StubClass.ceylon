@@ -46,6 +46,9 @@ shared class StubClass() satisfies StubInterface {
     tagged("stubTag2")
     shared void methodWithTagged() {}
     
+    doc "The stub method with sequenced parameter."
+    shared void methodWithSequencedParameter(Integer... numbers) {}
+    
     shared actual void formalMethodFromStubInterface() {}
     
     shared actual void defaultDeprecatedMethodFromStubInterface() {}

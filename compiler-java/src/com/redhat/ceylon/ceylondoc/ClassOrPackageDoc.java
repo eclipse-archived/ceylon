@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -177,7 +178,15 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 } else {
                     first = false;
                 }
-                link(param.getType());
+                
+                if (param.isSequenced() && param.getType().getTypeArgumentList().size() == 1) {
+                    ProducedType sequencedParamType = param.getType().getTypeArgumentList().get(0);
+                    link(sequencedParamType);
+                    write("...");
+                } else {
+                    link(param.getType());
+                }
+                
                 write(" ", param.getName());
             }
             write(")");

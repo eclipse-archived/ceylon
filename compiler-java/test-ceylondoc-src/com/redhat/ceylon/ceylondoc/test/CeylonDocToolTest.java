@@ -169,6 +169,7 @@ public class CeylonDocToolTest {
         assertDeprecated(destDir);
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
+        assertSequencedParameter(destDir);
     }
 
     @Test
@@ -197,6 +198,7 @@ public class CeylonDocToolTest {
         assertDeprecated(destDir);
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
+        assertSequencedParameter(destDir);
     }
 
     @Test
@@ -491,6 +493,11 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"));
     }
+    
+    private void assertSequencedParameter(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<code>methodWithSequencedParameter\\(Integer... numbers\\)</code>"));
+	}
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
         String outputRepo = tool.getOutputRepository();
