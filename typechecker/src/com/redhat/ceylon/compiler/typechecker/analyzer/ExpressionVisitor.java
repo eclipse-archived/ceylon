@@ -1956,9 +1956,15 @@ public class ExpressionVisitor extends Visitor {
             }
         }
 
-        if ((ell!=null || ch!=null) && !pl.hasSequencedParameter()) {
-            ell.addError("no matching sequenced parameter declared by " +
-                     pr.getDeclaration().getName());
+        if (!pl.hasSequencedParameter()) {
+        	if (ell!=null) {
+        		ell.addError("no matching sequenced parameter declared by " +
+        				pr.getDeclaration().getName());
+        	}
+        	if (ch!=null) {
+        		ch.addError("no matching sequenced parameter declared by " +
+        				pr.getDeclaration().getName());
+        	}
         }
         
     }
