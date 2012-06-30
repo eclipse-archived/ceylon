@@ -109,6 +109,18 @@ public final class Map$impl<Key,Item> {
             
             @Override
             @Ignore
+            public Iterable<? extends Key> getRest() { 
+                return Iterable$impl._getRest(this); 
+            }
+            
+            @Override
+            @Ignore
+            public Key getFirst() { 
+                return Iterable$impl._getFirst(this); 
+            }
+            
+            @Override
+            @Ignore
             public boolean getEmpty() {
                 return Collection$impl._getEmpty(this);
             }
@@ -266,6 +278,18 @@ public final class Map$impl<Key,Item> {
             }
 
             // concrete interface methods:
+            
+            @Override
+            @Ignore
+            public Iterable<? extends Item> getRest() { 
+                return Iterable$impl._getRest(this); 
+            }
+            
+            @Override
+            @Ignore
+            public Item getFirst() { 
+                return Iterable$impl._getFirst(this); 
+            }
             
             @Override
             @Ignore
@@ -551,6 +575,16 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() { 
                     return Iterable$impl._getSequence(this); 
             }
+            @Override
+            @Ignore
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getRest() { 
+                return Iterable$impl._getRest(this); 
+            }
+            @Override
+            @Ignore
+            public Entry<? extends Item, ? extends Set<Key>> getFirst() { 
+                return Iterable$impl._getFirst(this); 
+            }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<Key>> find(Callable<? extends Boolean> f) {
                 return Iterable$impl._find(this, f);
@@ -706,6 +740,18 @@ public final class Map$impl<Key,Item> {
             @Override
             public Iterable<? extends Entry<? extends Key, ? extends Result>> getSequence() {
                 return Iterable$impl._getSequence(this);
+            }
+
+            @Override
+            @Ignore
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> getRest() { 
+                return Iterable$impl._getRest(this); 
+            }
+            
+            @Override
+            @Ignore
+            public Entry<? extends Key, ? extends Result> getFirst() { 
+                return Iterable$impl._getFirst(this); 
             }
 
             @Override

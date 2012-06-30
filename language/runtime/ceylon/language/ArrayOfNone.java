@@ -80,6 +80,11 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     }
     
     @Override
+    public Iterable<? extends Element> getRest() {
+        return this;
+    }
+
+    @Override
     @Annotations({ @Annotation("actual") })
     public Array<? extends Element> getReversed() {
     	return this;

@@ -25,6 +25,18 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     public Iterable<? extends Element> getSequence() {
         return Iterable$impl._getSequence(this);
     }
+    
+    @Override
+    @Ignore
+    public Element getFirst() {
+    	return Iterable$impl._getFirst(this);
+    }
+
+    @Override
+    @Ignore
+    public Iterable<? extends Element> getRest() {
+    	return Iterable$impl._getRest(this);
+    }
 
     @Override
     public <Result> Iterable<? extends Result> map(

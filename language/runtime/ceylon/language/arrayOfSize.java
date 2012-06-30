@@ -62,6 +62,16 @@ public final class arrayOfSize {
             public Iterable<? extends Element> getSequence() { 
                 return Iterable$impl._getSequence(this); 
             }
+            @Override
+            @Ignore
+            public Iterable<? extends Element> getRest() { 
+                return Iterable$impl._getRest(this); 
+            }
+            @Override
+            @Ignore
+            public Element getFirst() { 
+                return Iterable$impl._getFirst(this); 
+            }
             @Override @Ignore
             public Element find(Callable<? extends Boolean> f) {
                 return Iterable$impl._find(this, f);

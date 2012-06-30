@@ -103,6 +103,24 @@ void test_exists_nonempty() {
     assert(t4 == "works", "nonempty 2");
 }
 
+void test_max_min() {
+    Integer mx1 = max({1, 2, 3});
+    assert(mx1==3, "max nonempty seq");
+    Nothing mx2 = max({});
+    Integer? mx3 = max(join({},{1, 2, 3}));
+    assert((mx3 else 10)==3, "max joined seq");
+    Integer? mx4 = max({1, 2, 3}.filter((Integer i) i>0));
+    assert((mx4 else 10)==3, "max filtered seq");
+    
+    Integer mn1 = min({1, 2, 3});
+    assert(mn1==1, "min nonempty seq");
+    Nothing mn2 = min({});
+    Integer? mn3 = min(join({},{1, 2, 3}));
+    assert((mn3 else 10)==1, "min joined seq");
+    Integer? mn4 = min({1, 2, 3}.filter((Integer i) i>0));
+    assert((mn4 else 10)==1, "min filtered seq");
+}
+
 shared void sequences() {
     value builder = SequenceBuilder<String>();
     value empty = builder.sequence;
@@ -337,4 +355,5 @@ shared void sequences() {
     test_join();
     test_zip();
     test_exists_nonempty();
+    test_max_min();
 }

@@ -650,11 +650,18 @@ public abstract class String
             return getIterator().next() == exhausted.getExhausted();
         }
 
-        /*@Override
+        @Override
+        @Ignore
         public String getFirst() {
-            java.lang.Object result = getIterator().next();
-            return (String) ((result != exhausted.getExhausted()) ? result : null);
-        }*/
+        	return Iterable$impl._getFirst(this);
+        }
+
+        @Override
+        @Ignore
+        public Iterable<? extends String> getRest() {
+        	return Iterable$impl._getRest(this);
+        }
+        
         @Override 
         @Ignore
         public Iterable<? extends String> getSequence() { 
@@ -747,11 +754,18 @@ public abstract class String
             return getIterator().next() == exhausted.getExhausted();
         }
 
-        /*@Override
-        public String getFirst() {
-            java.lang.Object result = getIterator().next();
-            return (String) ((result != exhausted.getExhausted()) ? result : null);
-        }*/
+        @Override
+        @Ignore
+        public Integer getFirst() {
+        	return Iterable$impl._getFirst(this);
+        }
+
+        @Override
+        @Ignore
+        public Iterable<? extends Integer> getRest() {
+        	return Iterable$impl._getRest(this);
+        }
+
         @Override 
         @Ignore
         public Iterable<? extends Integer> getSequence() { 

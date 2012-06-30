@@ -98,6 +98,11 @@ public class $empty {
         }
 
         @Override
+        public Iterable getRest() {
+            return this;
+        }
+
+        @Override
         @Ignore
         public Iterator getIterator() {
             return None$impl._getIterator(this);

@@ -19,6 +19,25 @@ public final class Iterable$impl<Element> {
         return $this.getIterator().next() instanceof Finished;
     }
 
+    public Element getFirst(){
+        return Iterable$impl.<Element>_getFirst($this);
+    }
+    static <Element> Element _getFirst(Iterable<Element> $this){
+        java.lang.Object first = $this.getIterator().next();
+        if (first instanceof Finished) {
+            return null;
+        }
+        else {
+            return (Element) first;
+        }
+    }
+    
+    public Iterable<? extends Element> getRest() {
+        return Iterable$impl._getRest($this);
+    }
+    static <Element> Iterable<? extends Element> _getRest(final Iterable<Element> $this) {
+        return $this.skipping(1);
+    }
     public Iterable<? extends Element> getSequence() {
         return Iterable$impl._getSequence($this);
     }
@@ -222,6 +241,18 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public Iterator<Result> getIterator() { return new MapIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
 
+    @Override
+    @Ignore
+    public Result getFirst() {
+    	return Iterable$impl._getFirst(this);
+    }
+
+    @Override
+    @Ignore
+    public Iterable<? extends Result> getRest() {
+    	return Iterable$impl._getRest(this);
+    }
+
     @Override 
     @Ignore
     public Iterable<? extends Result> getSequence() { 
@@ -304,6 +335,16 @@ class FilterIterable<Element> implements Iterable<Element> {
     }
     public Iterator<Element> getIterator() { return new FilterIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
+    @Override
+    @Ignore
+    public Element getFirst() {
+    	return Iterable$impl._getFirst(this);
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Element> getRest() {
+    	return Iterable$impl._getRest(this);
+    }
     @Override 
     @Ignore
     public Iterable<? extends Element> getSequence() { 

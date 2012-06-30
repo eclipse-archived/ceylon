@@ -24,7 +24,7 @@ class StringOfSome extends String implements Some<Character> {
     @Override
     @Ignore
     public Character getFirst() {
-        return FixedSized$impl._getFirst(this);
+        return Iterable$impl._getFirst(this);
     }
     
     @Override 

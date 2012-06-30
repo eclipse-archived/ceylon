@@ -1,5 +1,8 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+
+@Ignore
 public final class List$impl<Element> {
     private final List<Element> $this;
 

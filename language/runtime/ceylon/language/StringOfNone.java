@@ -28,10 +28,15 @@ class StringOfNone extends String implements None<Character> {
         return null;
     }
 
+    @Override
+    public Iterable<? extends Character> getRest() {
+        return this;
+    }
+
     @Override 
     @Ignore
     public Iterable<? extends Character> getSequence() { 
-        return (Iterable)$empty.getEmpty(); 
+        return this; 
     }
     @Override @Ignore
     public Character find(Callable<? extends Boolean> f) {
