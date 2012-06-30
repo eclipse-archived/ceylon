@@ -273,10 +273,10 @@ public class ClassDoc extends ClassOrPackageDoc {
         htmlHead("Class for " + klass.getName());
     }
 
-    public List<Declaration> getConcreteMembers(TypeDeclaration decl, MemberSpecification specification) {
+    private List<Declaration> getInheritedMembers(TypeDeclaration decl, MemberSpecification specification) {
         List<Declaration> members = new ArrayList<Declaration>();
         for (Declaration m : decl.getMembers())
-            if (shouldInclude(m) && !m.isFormal() && specification.isSatisfiedBy(m)) {
+            if (shouldInclude(m) && specification.isSatisfiedBy(m)) {
                 members.add((MethodOrValue) m);
             }
         return members;
@@ -377,7 +377,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         LinkedHashMap<TypeDeclaration, List<Declaration>> inheritedMembers = new LinkedHashMap<TypeDeclaration, List<Declaration>>();
         TypeDeclaration subclass = klass;
         for (TypeDeclaration superClass : superClasses) {
-            List<Declaration> methods = getConcreteMembers(superClass, specification);
+            List<Declaration> methods = getInheritedMembers(superClass, specification);
             if (methods.isEmpty())
                 continue;
             List<Declaration> notRefined = new ArrayList<Declaration>();
@@ -450,7 +450,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         LinkedHashMap<TypeDeclaration, List<Declaration>> result = new LinkedHashMap<TypeDeclaration, List<Declaration>>();
         for (ProducedType superInterface : superInterfaces) {
             TypeDeclaration decl = superInterface.getDeclaration();
-            List<Declaration> members = getConcreteMembers(decl, memberSpecification);
+            List<Declaration> members = getInheritedMembers(decl, memberSpecification);
             for (Declaration member : members) {
                 
                 Declaration refined = member.getRefinedDeclaration();
