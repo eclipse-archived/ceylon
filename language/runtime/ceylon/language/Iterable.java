@@ -12,8 +12,8 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 1)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
-@SatisfiedTypes("ceylon.language.ContainerWithFirstElement<ceylon.language.Nothing|Element>")
-public interface Iterable<Element> extends ContainerWithFirstElement<Element> {
+@SatisfiedTypes("ceylon.language.ContainerWithFirstElement<Element,ceylon.language.Nothing>")
+public interface Iterable<Element> extends ContainerWithFirstElement<Element,Nothing> {
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override

@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 1)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({"ceylon.language.FixedSized<Element>", 
-                 "ceylon.language.ContainerWithFirstElement<ceylon.language.Nothing>"})
+                 "ceylon.language.ContainerWithFirstElement<ceylon.language.Bottom,ceylon.language.Nothing>"})
 public interface None<Element> extends FixedSized<Element> {
     
     @Annotations(@Annotation("actual"))

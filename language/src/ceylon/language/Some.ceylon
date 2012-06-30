@@ -1,7 +1,7 @@
 doc "A fixed-sized, non-empty collection."
 shared interface Some<out Element>
         satisfies FixedSized<Element> &
-                  ContainerWithFirstElement<Element> {
+                  ContainerWithFirstElement<Element,Bottom> {
 
     doc "Returns the first element, which always exists."
     shared actual default Element first {

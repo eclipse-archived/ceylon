@@ -10,10 +10,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 1)
-@TypeParameters(@TypeParameter(value = "FirstElement", variance = Variance.OUT))
+@TypeParameters({@TypeParameter(value = "Element", variance = Variance.OUT),
+	             @TypeParameter(value = "Null", variance = Variance.OUT, 
+	                            satisfies="ceylon.language.Nothing")})
 @SatisfiedTypes("ceylon.language.Container")
-public interface ContainerWithFirstElement<FirstElement> extends Container {
+public interface ContainerWithFirstElement<Element,Null> extends Container {
 	@Annotations(@Annotation("formal"))
-	@TypeInfo("FirstElement")
-    public FirstElement getFirst();
+	@TypeInfo("Null|Element")
+    public Element getFirst();
 }

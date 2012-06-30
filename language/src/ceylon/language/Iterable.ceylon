@@ -1,15 +1,3 @@
-doc "Abstract supertype of containers which provide an 
-     operation for accessing the first element, if any."
-shared interface ContainerWithFirstElement<out FirstElement>
-        satisfies Container {
-    
-    doc "The first element. Should produce `null` if the 
-         container is empty, that is, for any instance for
-         which `empty` evaluates to `true`."
-    shared formal FirstElement first;
-    
-}
-
 doc "Abstract supertype of containers whose elements may be 
      iterated. An iterable container need not be finite, but
      its elements must at least be countable. There may not
@@ -18,7 +6,7 @@ doc "Abstract supertype of containers whose elements may be
 see (Collection)
 by "Gavin"
 shared interface Iterable<out Element> 
-        satisfies ContainerWithFirstElement<Element?> {
+        satisfies ContainerWithFirstElement<Element,Nothing> {
 
     doc "An iterator for the elements belonging to this 
          container."

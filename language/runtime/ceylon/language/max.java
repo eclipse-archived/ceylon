@@ -15,20 +15,21 @@ public final class max {
     }
     
     @TypeParameters({@TypeParameter(value="Value", 
-            satisfies={"ceylon.language.Comparable<Value>", "Result"}),
-                     @TypeParameter(value="Result")})
-    @TypeInfo("Result")
-    public static <Value extends Comparable<? super Value>, Result> 
+            satisfies="ceylon.language.Comparable<Value>"),
+                     @TypeParameter(value="Null", 
+            satisfies="ceylon.language.Nothing")})
+    @TypeInfo("Null|Value")
+    public static <Value, Null> 
     Value max(@Name("values")
-    @TypeInfo("ceylon.language.Iterable<Value>&ceylon.language.ContainerWithFirstElement<Result>")
-    final Iterable<?> values) {
+    @TypeInfo("ceylon.language.Iterable<Value>&ceylon.language.ContainerWithFirstElement<Value,Null>")
+    final Iterable<? extends Value> values) {
         Value max = (Value) values.getFirst();
         if (max!=null) {
         	java.lang.Object $tmp;
         	for (Iterator<? extends Value> $val$iter$0 = (Iterator<? extends Value>)values.getRest().getIterator(); 
         			!(($tmp = $val$iter$0.next()) instanceof Finished);) {
         		final Value val = (Value) $tmp;
-        		if (val.compare(max).largerThan()) {
+        		if (((Comparable<? super Value>)val).compare(max).largerThan()) {
         			max = val;
         		}
         	}
