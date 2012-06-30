@@ -7,7 +7,8 @@ object emptyIterator satisfies Iterator<Bottom> {
 
 doc "A fixed-size collection with no elements."
 shared interface None<out Element>
-        satisfies FixedSized<Element> {
+        satisfies FixedSized<Element> &
+                  ContainerWithFirstElement<Nothing> {
 
     doc "Returns `null`."
     shared actual Nothing first {
