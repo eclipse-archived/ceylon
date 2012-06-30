@@ -43,7 +43,7 @@ public class GenerateJsVisitor extends Visitor
      * because the code referencing them needs to be treated differently; similar to the directAccess but it gets cleared
      * after the comprehension has been generated. */
     private final List<Declaration> comprehensions = new ArrayList<Declaration>();
-    private List<String> retainedTempVars = null;
+    private List<String> retainedVars = new ArrayList<String>();
     private final Set<Module> importedModules = new HashSet<Module>();
 
     private final class SuperVisitor extends Visitor {
@@ -239,36 +239,47 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void visitStatements(List<Statement> statements, boolean endLastLine) {
+        List<String> oldRetainedVars = retainedVars;
+        retainedVars = new ArrayList<String>();
+        
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             
-            List<String> oldRetainedVars = retainedTempVars;
-            List<String> retainedVars = new ArrayList<String>();
-            retainedTempVars = retainedVars;
             s.visit(this);
 
-            boolean needNewline = s instanceof ExecutableStatement;
-            if (!retainedVars.isEmpty()) {
-                if (needNewline) { endLine(); }
-                needNewline = true;
-                out("var ");
-                boolean first = true;
-                for (String varName : retainedVars) {
-                    if (!first) { out(","); }
-                    first = false;
-                    out(varName);
-                }
-                out(";");
-                retainedVars.clear();
-            }
-            retainedTempVars = oldRetainedVars;
+            boolean isExecStmt = s instanceof ExecutableStatement;
+            boolean emitVars = !retainedVars.isEmpty();
+            emitRetainedVars(isExecStmt, true);
 
-            if (needNewline && (endLastLine || (i<statements.size()-1))) {
+            if ((isExecStmt || emitVars) && (endLastLine || (i<statements.size()-1))) {
                 endLine();
             }
         }
+        retainedVars = oldRetainedVars;
+    }
+    
+    private void emitRetainedVars(boolean needNewline, boolean needSemicolon) {
+        if (!retainedVars.isEmpty()) {
+            if (needNewline) { endLine(); }
+            out("var ");
+            boolean first = true;
+            for (String varName : retainedVars) {
+                if (!first) { out(","); }
+                first = false;
+                out(varName);
+            }
+            if (needSemicolon) {out(";");}
+            retainedVars.clear();
+        }
     }
 
+    @Override
+    public void visit(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration that) {
+        super.visit(that);
+        if (!retainedVars.isEmpty()) {out(";");}
+        emitRetainedVars(true, false);
+    }
+    
     @Override
     public void visit(Body that) {
         visitStatements(that.getStatements(), true);
@@ -1421,9 +1432,8 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(InvocationExpression that) {
         if (that.getNamedArgumentList()!=null) {
-            out("(function (){");
+            out("(");
             that.getNamedArgumentList().visit(this);
-            out("return ");
             that.getPrimary().visit(this);
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
@@ -1453,7 +1463,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                 }
             }
-            out("}())");
+            out(")");
         }
         else {
             super.visit(that);
@@ -1578,7 +1588,7 @@ public class GenerateJsVisitor extends Visitor
         });
         out("return ", names.name(c), "(new ", names.name(c), ".$$);");
         endBlock();
-        out("());");
+        out("())");
     }
 
     @Override
@@ -1590,26 +1600,31 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         visitStatements(that.getBlock().getStatements(), false);
         endBlock();
-        out("());");
+        out("())");
     }
 
     @Override
     public void visit(NamedArgumentList that) {
         for (NamedArgument arg: that.getNamedArguments()) {
-            out("var ", names.name(arg.getParameter()), "=");
+            String varName = names.name(arg.getParameter());
+            retainedVars.add(varName);
+            out(varName, "=");
             arg.visit(this);
-            out(";");
+            out(",");
         }
         SequencedArgument sarg = that.getSequencedArgument();
         if (sarg!=null) {
-            out("var ", names.name(sarg.getParameter()), "=");
+            String varName = names.name(sarg.getParameter());
+            retainedVars.add(varName);
+            out(varName, "=");
             sarg.visit(this);
-            out(";");
+            out(",");
         }
         if (that.getComprehension() != null) {
-            out("var $$$comp$$$=");
+            retainedVars.add("$$$comp$$$");
+            out("$$$comp$$$=");
             that.getComprehension().visit(this);
-            out(";");
+            out(",");
         }
     }
 
@@ -1967,6 +1982,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(ExecutableStatement that) {
         super.visit(that);
         out(";");
+        emitRetainedVars(true, true);
     }
     
     /** Creates a new temporary variable which can be used immediately, even
@@ -1976,7 +1992,7 @@ public class GenerateJsVisitor extends Visitor
      * they are declared. */
     private String createRetainedTempVar(String baseName) {
         String varName = names.createTempVariable(baseName);
-        retainedTempVars.add(varName);
+        retainedVars.add(varName);
         return varName;
     }
     private String createRetainedTempVar() {
