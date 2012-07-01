@@ -134,6 +134,6 @@ class Intersection() {
     @type["Integer"] max({1, 2, 3});
     @type["Nothing"] max({});
     @type["Nothing|Integer"] max(join({},{1, 2, 3}));
-    @type["Integer|Nothing"] max({1, 2, 3}.filter((Integer i) i>0));
+    @type["Nothing|Integer"] max({1, 2, 3}.filter((Integer i) i>0));
     
 }
