@@ -3292,6 +3292,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType st = switchExpression.getTypeModel();
             if (t!=null && st!=null) {
                 ProducedType pt = t.getTypeModel();
+                checkReified(that, pt);
                 ProducedType it = intersectionType(pt, st, unit);
                 if (!hasUncheckedNulls(switchExpression.getTerm()) || !isNullCase(pt)) {
                     if (it.isExactly(unit.getBottomDeclaration().getType())) {
