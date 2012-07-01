@@ -130,8 +130,8 @@ public class GenerateJsVisitor extends Visitor
                 for (int i=0;i<indentLevel;i++) {
                     out.write("    ");
                 }
-                needIndent = false;
             }
+            needIndent = false;
             out.write(code);
             for (String s : codez) {
                 out.write(s);
