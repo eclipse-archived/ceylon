@@ -617,15 +617,6 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
     }
     
-    @Override
-    public void visit(Tree.SequencedTypeParameterDeclaration that) {
-        Class vd = unit.getVoidDeclaration();
-        if (vd!=null) {
-            that.getDeclarationModel().setExtendedType(vd.getType());
-        }
-        super.visit(that);
-    }
-    
     @Override 
     public void visit(Tree.ClassDeclaration that) {
         super.visit(that);

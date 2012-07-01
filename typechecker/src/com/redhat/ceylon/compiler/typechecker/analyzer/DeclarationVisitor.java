@@ -294,22 +294,13 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
         TypeParameter p = new TypeParameter();
+        p.setSequenced(that.getSequenced());
         p.setDeclaration(declaration);
         if (that.getTypeVariance()!=null) {
             String v = that.getTypeVariance().getText();
             p.setCovariant("out".equals(v));
             p.setContravariant("in".equals(v));
         }
-        that.setDeclarationModel(p);
-        visitDeclaration(that, p);
-        super.visit(that);
-    }
-    
-    @Override
-    public void visit(Tree.SequencedTypeParameterDeclaration that) {
-        TypeParameter p = new TypeParameter();
-        p.setSequenced(true);
-        p.setDeclaration(declaration);
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         super.visit(that);
@@ -780,10 +771,6 @@ public class DeclarationVisitor extends Visitor {
         if (tpl!=null) {
             for (Tree.TypeParameterDeclaration tp: tpl.getTypeParameterDeclarations()) {
                 typeParameters.add(tp.getDeclarationModel());
-            }
-            Tree.SequencedTypeParameterDeclaration stp = tpl.getSequencedTypeParameterDeclaration();
-            if (stp!=null) {
-                typeParameters.add(stp.getDeclarationModel());
             }
         }
         return typeParameters;

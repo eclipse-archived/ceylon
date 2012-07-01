@@ -844,18 +844,14 @@ typeParameters returns [TypeParameterList typeParameterList]
       { $typeParameterList = new TypeParameterList($SMALLER_OP); }
       tp1=typeParameter
       { if ($tp1.typeParameter instanceof TypeParameterDeclaration)
-            $typeParameterList.addTypeParameterDeclaration((TypeParameterDeclaration)$tp1.typeParameter);
-        if ($tp1.typeParameter instanceof SequencedTypeParameterDeclaration)
-            $typeParameterList.setSequencedTypeParameterDeclaration((SequencedTypeParameterDeclaration)$tp1.typeParameter); }
+            $typeParameterList.addTypeParameterDeclaration($tp1.typeParameter); }
       (
         c=COMMA
         { $typeParameterList.setEndToken($c); }
         (
           tp2=typeParameter
           { if ($tp2.typeParameter instanceof TypeParameterDeclaration)
-                $typeParameterList.addTypeParameterDeclaration((TypeParameterDeclaration)$tp2.typeParameter);
-            if ($tp2.typeParameter instanceof SequencedTypeParameterDeclaration)
-                $typeParameterList.setSequencedTypeParameterDeclaration((SequencedTypeParameterDeclaration)$tp2.typeParameter); 
+                $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter);
             $typeParameterList.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(UIDENTIFIER, input)); }
@@ -866,23 +862,20 @@ typeParameters returns [TypeParameterList typeParameterList]
     //-> ^(TYPE_PARAMETER_LIST[$SMALLER_OP] typeParameter+)
     ;
 
-typeParameter returns [Declaration typeParameter]
-    @init { TypeParameterDeclaration tpd = new TypeParameterDeclaration(null);
-            SequencedTypeParameterDeclaration spd = new SequencedTypeParameterDeclaration(null); }
-    : { $typeParameter = tpd; }
+typeParameter returns [TypeParameterDeclaration typeParameter]
+    : { $typeParameter = new TypeParameterDeclaration(null); }
       ( 
         variance 
-        { tpd.setTypeVariance($variance.typeVariance); } 
+        { $typeParameter.setTypeVariance($variance.typeVariance); } 
       )? 
       typeNameDeclaration
-      { tpd.setIdentifier($typeNameDeclaration.identifier); } 
+      { $typeParameter.setIdentifier($typeNameDeclaration.identifier); } 
+      (
+        ELLIPSIS
+        { $typeParameter.setSequenced(true);
+          $typeParameter.setEndToken($ELLIPSIS); }
+      )?
     //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
-    | { $typeParameter = spd; }
-      typeNameDeclaration
-      { spd.setIdentifier($typeNameDeclaration.identifier); } 
-      ELLIPSIS
-      { $typeParameter.setEndToken($ELLIPSIS); }
-    //-> ^(SEQUENCED_TYPE_PARAMETER typeName)
     ;
 
 variance returns [TypeVariance typeVariance]

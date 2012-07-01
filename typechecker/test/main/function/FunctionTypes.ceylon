@@ -50,8 +50,10 @@ T do<T>(T f()) { return f(); }
 
 void method() {
     Callable<String,String> upperRef = upper;
-    Callable<Void,String> printRef = print;    
+    Callable<Void,String> printRef = print;
+    Callable<Void,Bottom> printRefContra = print;
     Callable<X,String> xRef = X;
+    Callable<Void,Bottom> xRefContra = X;
     X x = X("hello");
     Callable<X.Y> yRef = x.Y;
     Callable<Void> helloRef = x.hello;

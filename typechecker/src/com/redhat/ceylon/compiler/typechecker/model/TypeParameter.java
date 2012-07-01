@@ -33,8 +33,12 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     }
     
     public boolean isSequenced() {
-    	//TODO get rid of hack!!!
-    	if (getName().equals("CallableArgument")) {
+    	//TODO: the model loader does not yet support
+    	//      sequenced type parameters, so hack it
+    	//      in here
+    	if (getName().equals("CallableArgument") /*&&
+    			getDeclaration().getQualifiedNameString()
+    			    .equals("ceylon.language.Callable")*/) {
     		return true;
     	}
 		return sequenced;

@@ -155,14 +155,12 @@
     FunctionalParameter declarationModel;)
 
 ^(TYPE_PARAMETER_LIST 
-    TYPE_PARAMETER_DECLARATION*
-    SEQUENCED_TYPE_PARAMETER_DECLARATION?)
+    TYPE_PARAMETER_DECLARATION*)
 ^(TYPE_PARAMETER_DECLARATION:DECLARATION
     TYPE_VARIANCE?
-    TypeParameter declarationModel;)
+    TypeParameter declarationModel;
+    boolean sequenced;)
 ^(TYPE_VARIANCE)
-^(SEQUENCED_TYPE_PARAMETER_DECLARATION:DECLARATION
-    TypeParameter declarationModel;)
 
 ^(abstract BODY
     STATEMENT*)
