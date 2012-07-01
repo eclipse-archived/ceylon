@@ -27,6 +27,15 @@ void callables() {
   value tc = TestCallable("Less").something;
   assert("callable" in className(tc).lowercased, "Callable classname");
   assert(testCallable(tc) == "L", "higher-class 7");
+  
+  TestCallable(String) clazz = TestCallable;
+  TestCallable inst = clazz("hello");
+  String(Integer) meth = inst.something;
+  Object(Bottom) clazzSuper = TestCallable;
+  Void(Bottom) methSuper = inst.something;
+  function noop(Object x, Object y) { return x; }
+  Object(String,Integer) noopRef = noop;
+  assert("hello"==noopRef("hello",2), "Callable contravariance");
 
   //From #56
   void resolve(Integer g()) {
