@@ -93,6 +93,8 @@ public class GenerateJsVisitor extends Visitor
     private static final String function="function ";
     private static String clTrue="";
     private static String clFalse="";
+    private boolean needIndent = true;
+    private int indentLevel = 0;
 
     private static void setCLAlias(String alias) {
         clAlias = alias;
@@ -119,10 +121,17 @@ public class GenerateJsVisitor extends Visitor
     public void setVerbose(boolean flag) { verbose = flag; }
 
     /** Print generated code to the Writer specified at creation time.
+     * Automatically prints indentation first if necessary.
      * @param code The main code
      * @param codez Optional additional strings to print after the main code. */
     private void out(String code, String... codez) {
         try {
+            if (indent && needIndent) {
+                for (int i=0;i<indentLevel;i++) {
+                    out.write("    ");
+                }
+                needIndent = false;
+            }
             out.write(code);
             for (String s : codez) {
                 out.write(s);
@@ -139,40 +148,59 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    int indentLevel = 0;
-
-    /** Print out 4 spaces per indentation level. */
-    private void indent() {
-        if (!indent) return;
-        for (int i=0;i<indentLevel;i++) {
-            out("    ");
-        }
-    }
-
-    /** Prints a newline and the necessary spaces to reach current indentation level. */
+    /** Prints a newline. Indentation will automatically be printed by <code>out</code>
+     * when the next line is started. */
     private void endLine() {
+        endLine(false);
+    }
+    /** Prints a newline. Indentation will automatically be printed by <code>out</code>
+     * when the next line is started.
+     * @param semicolon  if <code>true</code> then a semicolon is printed at the end
+     *                  of the previous line*/
+    private void endLine(boolean semicolon) {
+        if (semicolon) { out(";"); }
         out("\n");
-        indent();
+        needIndent = true;
+    }
+    /** Calls <code>endLine</code> if the current position is not already the beginning
+     * of a line. */
+    private void beginNewLine() {
+        if (!needIndent) { endLine(); }
     }
 
-    /** Increases indentation level, prints opening brace, newline and necessary spaces to reach new indentation level. */
+    /** Increases indentation level, prints opening brace and newline. Indentation will
+     * automatically be printed by <code>out</code>* when the next line is started. */
     private void beginBlock() {
         indentLevel++;
         out("{");
         endLine();
     }
 
-    /** Decreases indentation level, prints closing brace in new line and necessary spaces to reach new indentation level. */
-    private void endBlock() {
-        endBlock(true);
+    /** Decreases indentation level, prints a closing brace in new line (using
+     * <code>beginNewLine</code>) and calls <code>endLine</code>. */
+    private void endBlockNewLine() {
+        endBlock(false, true);
     }
-    private void endBlock(boolean newline) {
+    /** Decreases indentation level, prints a closing brace in new line (using
+     * <code>beginNewLine</code>) and calls <code>endLine</code>.
+     * @param semicolon  if <code>true</code> then prints a semicolon after the brace*/
+    private void endBlockNewLine(boolean semicolon) {
+        endBlock(semicolon, true);
+    }
+    /** Decreases indentation level and prints a closing brace in new line (using
+     * <code>beginNewLine</code>). */
+    private void endBlock() {
+        endBlock(false, false);
+    }
+    /** Decreases indentation level and prints a closing brace in new line (using
+     * <code>beginNewLine</code>).
+     * @param semicolon  if <code>true</code> then prints a semicolon after the brace
+     * @param newline  if <code>true</code> then additionally calls <code>endLine</code> */
+    private void endBlock(boolean semicolon, boolean newline) {
         indentLevel--;
-        endLine();
-        out("}");
-        if (newline) {
-            endLine();
-        }
+        beginNewLine();
+        out(semicolon ? "};" : "}");
+        if (newline) { endLine(); }
     }
 
     /** Prints source code location in the form "at [filename] ([location])" */
@@ -188,7 +216,14 @@ public class GenerateJsVisitor extends Visitor
         if (require(clm)) {
             setCLAlias(names.moduleAlias(clm));
         }
-        super.visit(that);
+        
+        for (CompilerAnnotation ca: that.getCompilerAnnotations()) {
+            ca.visit(this);
+        }
+        if (that.getImportList() != null) {
+            that.getImportList().visit(this);
+        }
+        visitStatements(that.getDeclarations());
     }
 
     public void visit(Import that) {
@@ -238,29 +273,21 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    private void visitStatements(List<Statement> statements, boolean endLastLine) {
+    private void visitStatements(List<? extends Statement> statements) {
         List<String> oldRetainedVars = retainedVars;
         retainedVars = new ArrayList<String>();
         
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
-            
             s.visit(this);
-
-            boolean isExecStmt = s instanceof ExecutableStatement;
-            boolean emitVars = !retainedVars.isEmpty();
-            emitRetainedVars(isExecStmt, true);
-
-            if ((isExecStmt || emitVars) && (endLastLine || (i<statements.size()-1))) {
-                endLine();
-            }
+            beginNewLine();
+            emitRetainedVars();
         }
         retainedVars = oldRetainedVars;
     }
     
-    private void emitRetainedVars(boolean needNewline, boolean needSemicolon) {
+    private void emitRetainedVars() {
         if (!retainedVars.isEmpty()) {
-            if (needNewline) { endLine(); }
             out("var ");
             boolean first = true;
             for (String varName : retainedVars) {
@@ -268,21 +295,14 @@ public class GenerateJsVisitor extends Visitor
                 first = false;
                 out(varName);
             }
-            if (needSemicolon) {out(";");}
+            endLine(true);
             retainedVars.clear();
         }
-    }
-
-    @Override
-    public void visit(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration that) {
-        super.visit(that);
-        if (!retainedVars.isEmpty()) {out(";");}
-        emitRetainedVars(true, false);
     }
     
     @Override
     public void visit(Body that) {
-        visitStatements(that.getStatements(), true);
+        visitStatements(that.getStatements());
     }
 
     @Override
@@ -290,12 +310,11 @@ public class GenerateJsVisitor extends Visitor
         List<Statement> stmnts = that.getStatements();
         if (stmnts.isEmpty()) {
             out("{}");
-            endLine();
         }
         else {
             beginBlock();
             initSelf(that);
-            visitStatements(stmnts, false);
+            visitStatements(stmnts);
             endBlock();
         }
     }
@@ -333,6 +352,7 @@ public class GenerateJsVisitor extends Visitor
         boolean shared = false;
         if (!(excludeProtoMembers && prototypeStyle && d.isClassOrInterfaceMember())
                 && isCaptured(d)) {
+            beginNewLine();
             outerSelf(d);
             out(".", names.name(d), "=", names.name(d), ";");
             endLine();
@@ -419,7 +439,7 @@ public class GenerateJsVisitor extends Visitor
         referenceOuter(d);
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
-        endBlock();
+        endBlockNewLine();
         share(d);
 
         typeInitialization(that);
@@ -500,7 +520,7 @@ public class GenerateJsVisitor extends Visitor
         callInterfaces(that.getSatisfiedTypes(), d, that);
         that.getClassBody().visit(this);
         returnSelf(d);
-        endBlock();
+        endBlockNewLine();
         share(d);
 
         typeInitialization(that);
@@ -666,9 +686,9 @@ public class GenerateJsVisitor extends Visitor
             endLine();
             callback.addToPrototypeCallback();
         }
-        endBlock();
+        endBlockNewLine();
         out("return ", names.name(d), ";");
-        endBlock();
+        endBlockNewLine();
         //If it's nested, share the init function
         if (outerSelf(d)) {
             out(".$init$", names.name(d), "=$init$", names.name(d), ";");
@@ -700,7 +720,7 @@ public class GenerateJsVisitor extends Visitor
             for (Statement s: statements) {
                 addToPrototype(d, s);
             }
-            endBlock(false);
+            endBlock();
             out(")(", names.name(d), ".$$.prototype);");
             endLine();
         }
@@ -830,7 +850,7 @@ public class GenerateJsVisitor extends Visitor
             out("this.");
         }
         out(names.name(d), ";");
-        endBlock();
+        endBlockNewLine();
         if (addToPrototype || d.isShared()) {
             outerSelf(d);
             out(".", names.getter(d), "=", names.getter(d), ";");
@@ -918,7 +938,7 @@ public class GenerateJsVisitor extends Visitor
             beginBlock();
             initSelf(that.getBlock());
             initParameters(paramList, null);
-            visitStatements(that.getBlock().getStatements(), false);
+            visitStatements(that.getBlock().getStatements());
             endBlock();
         } else {
             int count=0;
@@ -934,9 +954,9 @@ public class GenerateJsVisitor extends Visitor
                 initParameters(paramList, null);
                 count++;
             }
-            visitStatements(that.getBlock().getStatements(), false);
+            visitStatements(that.getBlock().getStatements());
             for (int i=0; i < count; i++) {
-                endBlock(i==count-1);
+                endBlock();
             }
         }
 
@@ -1003,6 +1023,7 @@ public class GenerateJsVisitor extends Visitor
     private boolean shareGetter(MethodOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
+            beginNewLine();
             outerSelf(d);
             out(".", names.getter(d), "=", names.getter(d), ";");
             endLine();
@@ -1052,6 +1073,7 @@ public class GenerateJsVisitor extends Visitor
     private boolean shareSetter(MethodOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
+            beginNewLine();
             outerSelf(d);
             out(".", names.setter(d), "=", names.setter(d), ";");
             endLine();
@@ -1127,14 +1149,14 @@ public class GenerateJsVisitor extends Visitor
                     function, names.getter(d), "()");
             beginBlock();
             out("return this.", names.name(d), ";");
-            endBlock(false); out(";"); endLine();
+            endBlockNewLine(true);
             if (d.isVariable()) {
                 String paramVarName = names.createTempVariable(d.getName());
                 out(names.self(outer), ".", names.setter(d), "=");
                 out(function, names.setter(d), "(", paramVarName, ")");
                 beginBlock();
                 out("return this.", names.name(d), "=", paramVarName, ";");
-                endBlock(false); out(";"); endLine();
+                endBlockNewLine(true);
             }
         }
     }
@@ -1353,7 +1375,7 @@ public class GenerateJsVisitor extends Visitor
             qualifiedMemberRHS(that);
         }
         out(");");
-        endBlock();
+        endBlockNewLine();
         //Gather arguments to pass to the callable
         //Return the array of values or a Callable with the arguments
         out("return ", clAlias);
@@ -1362,7 +1384,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
             out(".ArraySequence(", tmplist, ");");
         }
-        endBlock(false);
+        endBlock();
         out("())");
     }
 
@@ -1598,7 +1620,7 @@ public class GenerateJsVisitor extends Visitor
         out("//AttributeArgument ", that.getParameter().getName());
         location(that);
         endLine();
-        visitStatements(that.getBlock().getStatements(), false);
+        visitStatements(that.getBlock().getStatements());
         endBlock();
         out("())");
     }
@@ -1702,8 +1724,7 @@ public class GenerateJsVisitor extends Visitor
                     out("return ");
                     specexpr.visit(this);
                     out(".getIterator();");
-                    endBlock(false); out(";");
-                    endLine();
+                    endBlockNewLine(true);
                 }
                 if (fcl.getForIterator() instanceof ValueIterator) {
                     Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
@@ -1739,10 +1760,10 @@ public class GenerateJsVisitor extends Visitor
                     out("this.iter", Integer.toString(idx), "=this.getIter", Integer.toString(idx), "();"); endLine();
                     out("this.", names.name(comprehensions.get(comprehensions.size()-1)), "=this.iter", Integer.toString(idx), ".next();"); endLine();
                     out("return this.", names.name(comprehensions.get(comprehensions.size()-1)), "!==", clAlias, ".getExhausted();");
-                    endBlock();
+                    endBlockNewLine();
                 }
                 out("return false;");
-                endBlock();
+                endBlockNewLine();
                 if (fcl.getForIterator() instanceof KeyValueIterator) {
                     KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
                     out("this.", names.name(kviter.getKeyVariable().getDeclarationModel()), "=this.", itemVar, ".getKey();");
@@ -1751,7 +1772,7 @@ public class GenerateJsVisitor extends Visitor
                     endLine();
                 }
                 out("return true;");
-                endBlock(false); out(";"); endLine();
+                endBlockNewLine(true);
                 clause = fcl.getComprehensionClause();
             } else if (clause instanceof IfComprehensionClause) {
                 Condition cond = ((IfComprehensionClause)clause).getCondition();
@@ -1787,7 +1808,7 @@ public class GenerateJsVisitor extends Visitor
                 if (var!=null) {
                     comprehensions.add(var.getDeclarationModel());
                 }
-                endBlock(false); out(";"); endLine();
+                endBlockNewLine(true);
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
                 itemVar = prevItemVar;
             } else if (clause instanceof ExpressionComprehensionClause) {
@@ -1807,18 +1828,18 @@ public class GenerateJsVisitor extends Visitor
         out("return ");
         excc.getExpression().visit(this);
         out(";");
-        endBlock(false);
+        endBlock();
         out("else return ", clAlias, ".getExhausted();");
-        endBlock(false); out(";"); endLine();
+        endBlockNewLine(true);
         //Return the new object
         out("return $cmp$;");
-        endBlock();
+        endBlockNewLine();
         //Initialize this iterable
         out(clAlias, ".initTypeProto(", compName, ", 'ceylon.language.ComprehensionIterator', ", clAlias, ".IdentifiableObject, ", clAlias, ".Iterator);");
         endLine();
         //Create the Iterable and return it
         out("return ", clAlias, ".Comprehension(", compName, ");");
-        endBlock(false);
+        endBlock();
         out("())");
     }
     
@@ -1831,6 +1852,7 @@ public class GenerateJsVisitor extends Visitor
         String svar = names.name(bme.getDeclaration());
         out(svar, "=");
         that.getSpecifierExpression().visit(this);
+        out(";");
     }
 
     @Override
@@ -1981,8 +2003,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(ExecutableStatement that) {
         super.visit(that);
-        out(";");
-        emitRetainedVars(true, true);
+        endLine(true);
     }
     
     /** Creates a new temporary variable which can be used immediately, even
@@ -2801,9 +2822,9 @@ public class GenerateJsVisitor extends Visitor
         final String itemVar = generateForLoop(foriter);
 
         boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
-        visitStatements(that.getForClause().getBlock().getStatements(), false);
+        visitStatements(that.getForClause().getBlock().getStatements());
         //If there's an else block, check for normal termination
-        endBlock(false);
+        endBlock();
         if (hasElse) {
             endLine();
             out("if (", clAlias, ".getExhausted() === ", itemVar, ")");
@@ -2880,12 +2901,12 @@ public class GenerateJsVisitor extends Visitor
                     directAccess.add(variable.getDeclarationModel());
                     names.forceName(variable.getDeclarationModel(), catchVarName);
 
-                    visitStatements(catchClause.getBlock().getStatements(), false);
-                    endBlock();
+                    visitStatements(catchClause.getBlock().getStatements());
+                    endBlockNewLine();
                 }
             }
             out("else{throw ", catchVarName, "}");
-            endBlock();
+            endBlockNewLine();
         }
 
         if (that.getFinallyClause() != null) {
@@ -2990,7 +3011,10 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
-        if (comment) out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+        if (comment) {
+            out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+            endLine();
+        }
     }
 
     /** Generates the code for an anonymous function defined inside an argument list. */
@@ -3038,7 +3062,7 @@ public class GenerateJsVisitor extends Visitor
             }
             callback.completeFunction();
             for (int i=0; i < count; i++) {
-                endBlock(i==count-1);
+                endBlock(false, i==count-1);
             }
         }
     }
@@ -3064,7 +3088,7 @@ public class GenerateJsVisitor extends Visitor
             if (c.isBreaked()) {
                 out("else if (", c.getBreakName(),"===true){break;}");
             }
-            endBlock();
+            endBlockNewLine();
         }
     }
 
