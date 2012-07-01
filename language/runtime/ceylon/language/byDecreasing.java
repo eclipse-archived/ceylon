@@ -20,7 +20,7 @@ public class byDecreasing {
     public static <Element,Value extends Comparable<? super Value>> Callable<? extends Comparison> byDecreasing(
             @Name("comparable")
             @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|Value,Element>")
-            final Callable<Value> comparable) {
+            final Callable<? extends Value> comparable) {
         return new AbstractCallable<Comparison>("byDecreasing") {
             public Comparison $call(java.lang.Object x, java.lang.Object y) {
                 Value cx = comparable.$call(x);
