@@ -15,7 +15,7 @@
     <property name="runtime.jar" location="${build.lib}/runtime.jar"/>
 
     <property name="test.src" location="test"/>
-	<property name="test.reports" location="${build.dir}/test-reports"/>
+    <property name="test.reports" location="${build.dir}/test-reports"/>
 
     <tstamp/>
 
@@ -34,7 +34,7 @@
     <property name="ceylon.language.car" value="${ceylon.language.dir}/${module.language.name}-${module.ceylon.language.version}.car"/>
     <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
     <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
-    <property name="ceylon.compiler.loc" value="${basedir}/../ceylon-compiler"/>
+    <property name="ceylon.compiler.loc" value="${basedir}/../ceylon-dist"/>
     <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
     <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
@@ -162,7 +162,7 @@
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
         <ceylonc
-            executable="${ceylon.compiler.loc}/build/bin/ceylonc"
+            executable="${ceylon.compiler.loc}/dist/bin/ceylonc"
             src="${test.src}"
             out="${build.test}">
             <files>
