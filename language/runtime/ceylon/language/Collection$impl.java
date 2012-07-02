@@ -28,7 +28,7 @@ public final class Collection$impl<Element> {
         return false;
     }
 
-    public java.lang.String toString(Collection<Element> $this) {
+    public java.lang.String toString() {
         return Collection$impl.<Element>_toString($this);
     }
     static <Element> java.lang.String _toString(Collection<Element> $this) {
