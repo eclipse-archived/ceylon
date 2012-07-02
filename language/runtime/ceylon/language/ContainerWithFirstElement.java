@@ -17,5 +17,5 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface ContainerWithFirstElement<Element,Null> extends Container {
 	@Annotations(@Annotation("formal"))
 	@TypeInfo("Null|Element")
-    public Element getFirst();
+    public java.lang.Object getFirst();
 }
