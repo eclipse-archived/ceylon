@@ -179,8 +179,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     first = false;
                 }
                 
-                if (param.isSequenced() && param.getType().getTypeArgumentList().size() == 1) {
-                    ProducedType sequencedParamType = param.getType().getTypeArgumentList().get(0);
+                if (param.isSequenced()) {
+                    ProducedType sequencedParamType = param.getUnit().getIteratedType(param.getType());
                     link(sequencedParamType);
                     write("...");
                 } else {
