@@ -61,7 +61,7 @@ public class Main {
         List<String> args = new ArrayList<String>(Arrays.asList(_args));
         final Options opts = Options.parse(args);
         if (opts.isVersion()) {
-            System.err.println("Version: ceylonc-js 0.3 'V2000'");
+            System.err.println("Version: ceylonc-js 0.3.1 'V2000'");
             return;
         }
         if (opts.isHelp()) {

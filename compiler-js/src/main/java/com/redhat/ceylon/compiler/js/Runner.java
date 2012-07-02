@@ -125,7 +125,7 @@ public class Runner {
         List<String> opts = new ArrayList<String>();
         opts.addAll(Arrays.asList(args));
         if (Options.findOption("-version", opts, true)) {
-            System.err.println("Version: ceylon-js 0.3 'V2000'");
+            System.err.println("Version: ceylon-js 0.3.1 'V2000'");
         }
         if (Options.findOption("-help", opts, true)) {
             usage();

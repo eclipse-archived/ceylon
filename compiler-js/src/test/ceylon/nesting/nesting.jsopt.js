@@ -1,5 +1,5 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl1=require('ceylon/language/0.3/ceylon.language');
+var $$$cl1=require('ceylon/language/0.3.1/ceylon.language');
 var $$$a12=require('default/assert');
 
 //ClassDefinition Outer at nesting.ceylon (3:0-28:0)
