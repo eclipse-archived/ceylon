@@ -96,7 +96,7 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
      *
      * @return this
      */
-    public RepositoryManagerBuilderImpl addModules() {
+    public RepositoryManagerBuilderImpl prependModules() {
         final File modules = new File("modules");
         if (modules.exists() && modules.isDirectory())
             prependExternalRoot(new FileContentStore(modules).createRoot());

@@ -101,8 +101,8 @@ public class RepositoryManagerBuilder {
      *
      * @return this
      */
-    public RepositoryManagerBuilder addModules() {
-        getDelegate().addModules();
+    public RepositoryManagerBuilder prependModules() {
+        getDelegate().prependModules();
         return this;
     }
 
