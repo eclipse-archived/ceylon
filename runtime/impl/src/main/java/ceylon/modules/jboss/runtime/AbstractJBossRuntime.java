@@ -84,15 +84,16 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
 
         // prepend ./modules if no -rep
         if (conf.repositories.isEmpty())
-            builder.addModules();
+            builder.prependModules();
         else {
             final RepositoryBuilder rb = builder.repositoryBuilder();
-            // any user defined repos
-            for (String token : conf.repositories) {
+            // any user defined repos, backwards because we prepend to be before the home repo
+            for (int i=conf.repositories.size()-1;i>=0;i--) {
+                String repo = conf.repositories.get(i);
                 try {
-                    builder.appendRepository(rb.buildRepository(token));
+                    builder.prependRepository(rb.buildRepository(repo));
                 } catch (Exception e) {
-                    log.warning("Failed to add repository: " + token + ": " + e.getMessage());
+                    log.warning("Failed to add repository: " + repo + ": " + e.getMessage());
                 }
             }
         }
