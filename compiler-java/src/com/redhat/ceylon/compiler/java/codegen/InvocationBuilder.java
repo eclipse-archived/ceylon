@@ -239,8 +239,11 @@ abstract class InvocationBuilder {
     private JCExpression makeTypeInfoArgument() {
         Tree.BaseMemberExpression bme = (BaseMemberExpression) primary;
         ProducedType type = bme.getTypeArguments().getTypeModels().get(0);
+        type = gen.simplifyType(type);
         JCExpression typeExpr;
-        if (type.getDeclaration() instanceof TypeParameter) {
+        if (type.getDeclaration() instanceof TypeParameter
+                || gen.typeFact().isUnion(type)
+                || gen.typeFact().isIntersection(type)) {
             return gen.makeNull();
         } else {
             typeExpr = gen.makeJavaType(type, JT_RAW);
