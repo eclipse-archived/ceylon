@@ -28,21 +28,21 @@ exports.smallest=smallest;
 
 //receives ArraySequence, returns element
 function min(seq) {
-    var v = seq.value[0];
-    if (seq.value.length > 1) {
-        for (var i = 1; i < seq.value.length; i++) {
-            v = smallest(v, seq.value[i]);
-        }
+    var v = seq.getFirst();
+    if (v === null) return null;
+    var iter = seq.getRest().getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        v = smallest(v, e);
     }
     return v;
 }
 //receives ArraySequence, returns element 
-function max(seq) {
-    var v = seq.value[0];
-    if (seq.value.length > 1) {
-        for (var i = 1; i < seq.value.length; i++) {
-            v = largest(v, seq.value[i]);
-        }
+function max(/*ContainerWithFirstElement*/seq) {
+    var v = seq.getFirst();
+    if (v === null) return null;
+    var iter = seq.getRest().getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        v = largest(v, e);
     }
     return v;
 }
