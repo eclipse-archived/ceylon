@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.antlr.runtime.Token;
 
@@ -559,7 +560,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     
     ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference) {
         TypedDeclaration decl = typedReference.getDeclaration();
-        TypedDeclaration refinedDeclaration = (TypedDeclaration) decl.getRefinedDeclaration();
+        TypedDeclaration refinedDeclaration = (TypedDeclaration) getRefinedDeclaration(typedReference);
         if(decl != refinedDeclaration){
             ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDeclaration);
             /*
@@ -584,6 +585,64 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 return refinedTypedReference;
         }
         return typedReference;
+    }
+
+    /*
+     * So before I forget, this method looks for some cases such as None.first, which inherits from ContainerWithFirstElement
+     * twice: once with Nothing (erased to j.l.Object) and once with Element (a type param). Now, in order to not widen the
+     * return type it can't be Nothing (j.l.Object), it must be Element (a type param that is not instantiated), because in Java
+     * a type param refines j.l.Object but not the other way around.
+     */
+    private TypedDeclaration getRefinedDeclaration(ProducedTypedReference typedReference) {
+        Declaration decl = typedReference.getDeclaration();
+        if(decl.getContainer() instanceof ClassOrInterface){
+            // only try to find better if we're erasing to Object and we're not returning a type param
+            if(willEraseToObject(typedReference.getType())
+                    && !isTypeParameter(typedReference.getType())){
+                ClassOrInterface declaringType = (ClassOrInterface) decl.getContainer();
+                Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), null);
+                // now we must select a different refined declaration if we refine it more than once
+                if(refinedMembers.size() > 1){
+                    for(TypedDeclaration refinedDecl : refinedMembers){
+                        // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method
+                        ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
+                        // if it is not instantiated, that's the one we're looking for
+                        if(isTypeParameter(refinedTypedReference.getType()))
+                            return refinedDecl;
+                    }
+                }
+            }
+        }
+        return (TypedDeclaration) decl.getRefinedDeclaration();
+    }
+
+    public Set<TypedDeclaration> getRefinedMembers(TypeDeclaration decl,
+            String name, 
+            java.util.List<ProducedType> signature) {
+        Set<TypedDeclaration> ret = new HashSet<TypedDeclaration>();
+        collectRefinedMembers(decl, name, signature, 
+                new HashSet<TypeDeclaration>(), ret);
+        return ret;
+    }
+
+    private void collectRefinedMembers(TypeDeclaration decl, String name, 
+            java.util.List<ProducedType> signature, java.util.Set<TypeDeclaration> visited, Set<TypedDeclaration> ret) {
+        if (visited.contains(decl)) {
+            return;
+        }
+        else {
+            visited.add(decl);
+            TypeDeclaration et = decl.getExtendedTypeDeclaration();
+            if (et!=null) {
+                collectRefinedMembers(et, name, signature, visited, ret);
+            }
+            for (TypeDeclaration st: decl.getSatisfiedTypeDeclarations()) {
+                collectRefinedMembers(st, name, signature, visited, ret);
+            }
+            Declaration found = decl.getDirectMember(name, signature);
+            if(found != null)
+                ret.add((TypedDeclaration) found);
+        }
     }
 
     private ProducedTypedReference getRefinedTypedReference(ProducedTypedReference typedReference, 
