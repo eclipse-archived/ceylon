@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ceylon.modules.spi.ArgumentType;
@@ -41,16 +42,6 @@ public class Main {
      * @throws Throwable
      */
     public static void main(String[] args) throws Throwable {
-        try {
-            for (Handler handler : Logger.getLogger("").getHandlers()) {
-                // This is a hack, but at least it works. With a property file our log
-                // formatter has to be in the boot class path. This way it doesn't.
-                if (handler instanceof ConsoleHandler)
-                    handler.setFormatter(CeylonLogFormatter.INSTANCE);
-            }
-        } catch (Throwable ex) {
-            System.err.println("Warning: log configuration failed: " + ex.getMessage());
-        }
         try {
             execute(args);
         } catch (CeylonRuntimeException cre) {
@@ -74,9 +65,28 @@ public class Main {
     public static void execute(String[] args) throws Exception {
         Configuration conf = parseArgs(args);
         String exe = conf.executable;
-        if (exe == null)
+        if (exe == null) {
             throw new CeylonRuntimeException("Missing -executable argument");
+        }
 
+        try {
+            for (Handler handler : Logger.getLogger("").getHandlers()) {
+                // This is a hack, but at least it works. With a property file our log
+                // formatter has to be in the boot class path. This way it doesn't.
+                if (handler instanceof ConsoleHandler) {
+                    handler.setFormatter(CeylonLogFormatter.INSTANCE);
+                    if (conf.verbose) {
+                        handler.setLevel(Level.ALL);
+                    }
+                }
+            }
+            if (conf.verbose) {
+                Logger.getLogger("com.redhat.ceylon.cmr").setLevel(Level.ALL);
+            }
+        } catch (Throwable ex) {
+            System.err.println("Warning: log configuration failed: " + ex.getMessage());
+        }
+        
         Executable executable = createInstance(Executable.class, exe);
         executable.execute(conf);
     }

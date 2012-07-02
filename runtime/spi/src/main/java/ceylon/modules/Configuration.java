@@ -57,6 +57,11 @@ public class Configuration {
      */
     public String src;
 
+    /**
+     * Verbose debug output
+     */
+    public boolean verbose;
+
     // Non-Ceylon
     public String executable;
     public boolean cacheContent;
@@ -102,6 +107,9 @@ public class Configuration {
             case REPOSITORY:
                 repositories.add(values[arg]);
                 break;
+            case VERBOSE:
+                verbose = true;
+                break;
             case HELP:
                 printUsage(0);
                 break;
@@ -137,6 +145,7 @@ public class Configuration {
                     "                      " + homeRepo + "\n");
         System.err.print(
                 " -src path:           Source path (default: source)\n"
+                        + " -verbose:            Output messages about what the runtime is doing\n"
                         + " -help:               Prints help usage\n"
                         + " -version:            Prints version number\n"
                         + " moduleName/version:  Module name and version to run (required)\n"
