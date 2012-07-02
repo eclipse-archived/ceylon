@@ -18,10 +18,17 @@ exports.Iterator=Iterator;
 function Iterable(wat) {
     return wat;
 }
-initTypeProtoI(Iterable, 'ceylon.language.Iterable', Container);
+initTypeProtoI(Iterable, 'ceylon.language.Iterable', ContainerWithFirstElement);
 var Iterable$proto=Iterable.$$.prototype;
 Iterable$proto.getEmpty = function() {
     return Boolean$(this.getIterator().next() === $finished);
+}
+Iterable$proto.getFirst = function() {
+    var e = this.getIterator().next();
+    return e === $finished ? null : e;
+}
+Iterable$proto.getRest = function() {
+    return this.skipping(Integer(1));
 }
 Iterable$proto.getSequence = function() {
     var a = [];

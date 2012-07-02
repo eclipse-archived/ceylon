@@ -76,7 +76,7 @@ exports.FixedSized=FixedSized;
 function Some(wat) {
     return wat;
 }
-initTypeProtoI(Some, 'ceylon.language.Some', FixedSized);
+initTypeProtoI(Some, 'ceylon.language.Some', FixedSized, ContainerWithFirstElement);
 var $Some = Some.$$;
 $Some.prototype.getFirst = function() {
     var e = this.getIterator().next();
@@ -84,17 +84,23 @@ $Some.prototype.getFirst = function() {
     return e;
 }
 $Some.prototype.getEmpty = function() { return $false; }
+$Some.prototype.getFirst = function() {
+    var _e = this.getIterator().next();
+    if (_e === $finished) throw Exception(String$("Some.first should never get Finished!"));
+    return _e;
+}
 exports.Some=Some;
 
 function None(wat) {
     return wat;
 }
-initTypeProtoI(None, 'ceylon.language.None', FixedSized);
+initTypeProtoI(None, 'ceylon.language.None', FixedSized, ContainerWithFirstElement);
 var None$proto = None.$$.prototype;
 None$proto.getFirst = function() { return null; }
 None$proto.getIterator = function() { return emptyIterator; }
 None$proto.getSize = function() { return Integer(0); }
 None$proto.getEmpty = function() { return $true; }
+None$proto.getFirst = function() { return null; }
 exports.None=None;
 
 function Ranged(wat) {
