@@ -22,9 +22,9 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.module-resolver" slot="0.3">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.module-resolver" slot="0.3.1">
     <resources>
-        <resource-root path="com.redhat.ceylon.module-resolver-0.3.jar"/>
+        <resource-root path="com.redhat.ceylon.module-resolver-0.3.1.jar"/>
     </resources>
 
     <dependencies>
