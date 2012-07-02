@@ -1,8 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.io.impl;
 
-import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +8,12 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
