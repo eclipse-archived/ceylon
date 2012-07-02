@@ -1,6 +1,6 @@
-class ComparableImpl<Element>() satisfies Comparable<Element> 
-    given Element satisfies Comparable<Element> {
-    shared actual Comparison compare(Element element) {
+class ComparableImpl<Element>()
+    satisfies Comparable<ComparableImpl<Element>> {
+    shared actual Comparison compare(ComparableImpl<Element> element) {
         return equal;
     }
 }
