@@ -23,7 +23,7 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
     @TypeInfo("ceylon.language.Iterator<Element>")
     public Iterator<? extends Element> getIterator();
 
-    @Annotations(@Annotation("default"))
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language.Nothing|Element")
     public Element getFirst();
 
