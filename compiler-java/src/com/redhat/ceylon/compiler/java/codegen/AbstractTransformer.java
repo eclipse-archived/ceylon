@@ -670,6 +670,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             return !haveSameBounds(tp, refinedTP);
         }
         if(allowSubtypes){
+            // if we don't erase to object and we refine something that does, we can't possibly be widening
+            if(willEraseToObject(refinedDeclType)
+                    && !willEraseToObject(declType))
+                return false;
+
             // if we have exactly the same type don't bother finding a common ancestor
             if(!declType.isExactly(refinedDeclType)){
                 // check if we can form an informed decision
