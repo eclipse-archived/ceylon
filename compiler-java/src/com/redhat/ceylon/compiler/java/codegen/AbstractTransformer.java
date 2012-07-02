@@ -1884,11 +1884,16 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      */
     JCExpression makeSequence(java.util.List<Expression> list, ProducedType seqElemType) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
-        for (Expression expr : list) {
-            // no need for erasure casts here
-            elems.append(expressionGen().transformExpression(expr));
+        if (list.size() != 1 || !isNothing(list.get(0).getTypeModel())) {
+            for (Expression expr : list) {
+                // no need for erasure casts here
+                elems.append(expressionGen().transformExpression(expr));
+            }
+        } else {
+            // Resolve the ambiguous situation of being passed a single "null" argument
+            elems.append(make().TypeCast(syms().objectType, expressionGen().transformExpression(list.get(0))));
         }
-        return makeSequence(elems.toList(), seqElemType,CeylonTransformer.JT_CLASS_NEW);
+        return makeSequence(elems.toList(), seqElemType, CeylonTransformer.JT_CLASS_NEW);
     }
     
     /**
