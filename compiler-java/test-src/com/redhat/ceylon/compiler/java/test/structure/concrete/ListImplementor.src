@@ -36,6 +36,16 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     private final .ceylon.language.Iterable$impl<X> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
+    public X getFirst() {
+        return $ceylon$language$Iterable$this.getFirst();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends X> getRest() {
+        return $ceylon$language$Iterable$this.getRest();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable<? extends X> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
@@ -99,6 +109,7 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
     }
+    private final .ceylon.language.ContainerWithFirstElement$impl<X, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
     private final .ceylon.language.Category$impl $ceylon$language$Category$this;
@@ -230,6 +241,7 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
         this.$ceylon$language$List$this = new .ceylon.language.List$impl<X>(this);
         this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<X>(this);
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<X>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<X, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
         this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);

@@ -9,6 +9,16 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     }
     
     @.java.lang.Override
+    public .ceylon.language.Iterable<?> getFirst() {
+        return $ceylon$language$Iterable$this.getFirst();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> getRest() {
+        return $ceylon$language$Iterable$this.getRest();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
@@ -72,6 +82,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
     }
+    private final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Iterable<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     
     @.java.lang.Override
@@ -93,6 +104,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     
     Bug626() {
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Iterable<?>>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Iterable<?>, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
         this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>>).ceylon.language.bottom.getBottom();

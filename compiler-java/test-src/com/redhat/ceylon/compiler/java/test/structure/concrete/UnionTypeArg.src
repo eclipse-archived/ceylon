@@ -9,6 +9,16 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     }
     
     @.java.lang.Override
+    public .java.lang.Object getFirst() {
+        return $ceylon$language$Iterable$this.getFirst();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getRest() {
+        return $ceylon$language$Iterable$this.getRest();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
@@ -72,6 +82,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     public long count(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
     }
+    private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;
     
@@ -82,6 +93,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     
     UnionTypeArg() {
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.iterator = (.ceylon.language.Iterator<?>).ceylon.language.bottom.getBottom();
     }
@@ -97,6 +109,16 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Iterable$this.getEmpty();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getFirst() {
+        return $ceylon$language$Iterable$this.getFirst();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getRest() {
+        return $ceylon$language$Iterable$this.getRest();
     }
     
     @.java.lang.Override
@@ -153,6 +175,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     public long count(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
     }
+    private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;
     
@@ -173,6 +196,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     
     UnionTypeArgOverride() {
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
         this.iterator = (.ceylon.language.Iterator<?>).ceylon.language.bottom.getBottom();
     }
