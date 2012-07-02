@@ -33,7 +33,7 @@ final class run {
         }
         final holaMundo holaMundo = new holaMundo();
         .ceylon.language.String $arg$2;
-        if (($arg$2 = ((.ceylon.language.FixedSized<? extends .ceylon.language.String>).ceylon.language.process.getProcess().getArguments()).getFirst()) != null) {
+        if (($arg$2 = ((.ceylon.language.Iterable<? extends .ceylon.language.String>).ceylon.language.process.getProcess().getArguments()).getFirst()) != null) {
             final .java.lang.String $arg$3 = $arg$2.toString();
             holaMundo.holaMundo($arg$3);
         } else {
