@@ -49,7 +49,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             token = temp;
 
         StructureBuilder structureBuilder;
-        if (token.startsWith("http")) {
+        if (token.startsWith("http:") || token.startsWith("https:")) {
             structureBuilder = new RemoteContentStore(token, log);
         } else if (token.startsWith("mvn:")) {
             return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log);
@@ -60,7 +60,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
             return (Repository) createRepository.invoke(null, log);
         } else {
-            final File file = (token.startsWith("file") ? new File(new URI(token)) : new File(token));
+            final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)
                 throw new IllegalArgumentException("Directory does not exist: " + token);
             if (file.isDirectory() == false)
