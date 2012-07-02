@@ -246,7 +246,7 @@ public class Util {
 
         // any user defined repos first
         if(userRepos.isEmpty()){
-            builder.addModules();
+            builder.prependModules();
         }else{
             // go in reverse order because we prepend
             for (int i=userRepos.size()-1;i>=0;i--) {
