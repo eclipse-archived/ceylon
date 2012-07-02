@@ -181,6 +181,10 @@ function Container(wat) {
 }
 initType(Container, 'ceylon.language.Container');
 exports.Container=Container;
+function ContainerWithFirstElement(wat) {
+    return wat;
+}
+initType(ContainerWithFirstElement, 'ceylon.language.ContainerWithFirstElement');
 function Correspondence(wat) {
     return wat;
 }
