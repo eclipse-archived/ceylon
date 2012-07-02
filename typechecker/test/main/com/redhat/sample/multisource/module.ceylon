@@ -5,7 +5,7 @@ Module module {
     license = 'http://www.apache.org/licenses/LICENSE-2.0.html';
     Import {
         name = 'ceylon.language';
-        version = '0.3';
+        version = '0.3.1';
         export = true;
     },
     //should have a @error on missing dependency here instead of on name
