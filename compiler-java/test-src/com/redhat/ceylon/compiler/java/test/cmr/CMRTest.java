@@ -146,6 +146,49 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlModuleNotLoadedFromHomeRepo(){
+        File carFile = getModuleArchive("a", "1.0");
+        assertFalse(carFile.exists());
+
+        // clean up the home repo if required
+        String homeRepo = Util.getHomeRepository();
+        File carFileInHomeRepo = getModuleArchive("a", "1.0", homeRepo);
+        if(carFileInHomeRepo.exists())
+            carFileInHomeRepo.delete();
+
+        // put a broken one in the home repo
+        compileModuleFromSourceFolder("a", "home_repo/a_broken", homeRepo);
+        assertTrue(carFileInHomeRepo.exists());
+
+        // the good one in the default output repo
+        compileModuleFromSourceFolder("a", "home_repo/a_working", null);
+        assertTrue(carFile.exists());
+
+        // now compile the dependent module
+        compileModuleFromSourceFolder("b", "home_repo/b", null);
+
+        // make sure it was created in the output repo
+        assertTrue(carFile.exists());
+    }
+
+    private void compileModuleFromSourceFolder(String module, String srcFolder, String outFolder) {
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(path+"/module/"+srcFolder);
+        if(outFolder != null){
+            options.add("-out");
+            options.add(outFolder);
+        }else{
+            options.addAll(defaultOptions);
+        }
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                null,
+                Arrays.asList(module));
+        Boolean ret = task.call();
+        assertTrue(ret);
+    }
+
+    @Test
     public void testMdlWithCeylonImport() throws IOException{
         compile("module/ceylon_import/module.ceylon", "module/ceylon_import/ImportCeylonLanguage.ceylon");
     }
