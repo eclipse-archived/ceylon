@@ -518,6 +518,12 @@ public class IssuesTest extends CompilerTest {
     public void testBug657(){
         compareWithJavaSource("Bug657");
     }
+    
+    @Test
+    public void testBug660(){
+        compareWithJavaSource("Bug660");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug660", "Bug660.ceylon");
+    }
 
     @Test
     public void testBug667_fail(){
@@ -525,9 +531,9 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug660(){
-        compareWithJavaSource("Bug660");
-        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug660", "Bug660.ceylon");
+    public void testBug671(){
+        compareWithJavaSource("Bug671");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug671", "Bug671.ceylon");
     }
 }
 
