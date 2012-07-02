@@ -30,9 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Validator;
-import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
-import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
-import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.*;
 
 /**
  * Represent a unit and each of the type checking phases
@@ -241,6 +239,11 @@ public class PhasedUnit {
             }
             flowAnalyzed = true;
         }
+    }
+
+    public synchronized void analyseUsage() {
+        compilationUnit.visit(new ReferenceCountor());
+        compilationUnit.visit(new UsageVisitor());
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {
