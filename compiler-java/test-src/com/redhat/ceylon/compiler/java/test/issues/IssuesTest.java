@@ -518,5 +518,10 @@ public class IssuesTest extends CompilerTest {
     public void testBug657(){
         compareWithJavaSource("Bug657");
     }
+
+    @Test
+    public void testBug667_fail(){
+        compareWithJavaSource("Bug667");
+    }
 }
 
