@@ -22,8 +22,8 @@
 
 Some more basic ant tasks:
     ant get-code           - Downloads latest code for all projects
-    ant get-code -Dtag=0.3 - Downloads latest code and checks out the tag
-    ant checkout -Dtag=0.3 - Makes sure we're using the specified tag
+    ant get-code -Dtag=0.3.1 - Downloads latest code and checks out the tag
+    ant checkout -Dtag=0.3.1 - Makes sure we're using the specified tag
     ant checkout-master    - To make sure we're using master
     ant local package      - Builds the distribution package, cloning/pulling 
                              dependent Ceylon git repositories into the 
@@ -266,7 +266,7 @@ Used with another target such as 'package'">
 If you are building a distribution package for a specific tagged release
 then execute the following command:
 
-    ant checkout -Dtag=0.3 - Makes sure we're using the specified tag
+    ant checkout -Dtag=0.3.1 - Makes sure we're using the specified tag
 
 or you can go straight to the package building:
 

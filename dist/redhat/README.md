@@ -26,7 +26,7 @@ The next thing we need to create an RPM are the *sources*, which in our case is 
 
 The result we'll again copy to the build environment (you'll have to adjust the release number to coincide with the package you actually built of course):
 
- - `cp ceylon-0.3.zip ~/rpmbuild/SPECS/`
+ - `cp ceylon-0.3.1.zip ~/rpmbuild/SPECS/`
 
 **At this point make sure that the version as defined in the `ceylon.spec` you copied to the build environment is the same 
 as the package that was just built!**
