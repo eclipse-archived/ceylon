@@ -242,7 +242,7 @@ public class PhasedUnit {
     }
 
     public synchronized void analyseUsage() {
-        compilationUnit.visit(new ReferenceCountor());
+        compilationUnit.visit(new ReferenceCounter());
         compilationUnit.visit(new UsageVisitor());
     }
 

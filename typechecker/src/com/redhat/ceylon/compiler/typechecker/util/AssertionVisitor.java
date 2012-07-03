@@ -23,7 +23,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     private List<Message> foundErrors = new ArrayList<Message>();
     private int errors = 0;
     private int warnings = 0;
-    private boolean usageWarnings = true;
+    private boolean usageWarnings = false;
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
@@ -202,7 +202,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                     if (includeWarnings()) {
                         out( (AnalysisWarning) err );
                     }
-                } else if (err instanceof UsageWarning) {
+                } 
+                else if (err instanceof UsageWarning) {
                     if (usageWarnings) {
                         out((UsageWarning) err);
                     }

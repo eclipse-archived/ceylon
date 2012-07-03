@@ -4,7 +4,8 @@
  */
 package com.redhat.ceylon.compiler.typechecker.util;
 
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -15,21 +16,16 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class UsageVisitor extends Visitor {
 
     @Override
-    public void visit(Tree.AnyAttribute that) {
+    public void visit(Tree.Declaration that) {
         super.visit(that);
-        TypedDeclaration declaration = that.getDeclarationModel();
-        if (!declaration.isShared() && declaration.getRefCount() == 0) {
-            that.addUsageWarning(String.format("Attribute %s declared but never used", declaration.getName()));
-            System.out.println("Add warning");
+        Declaration declaration = that.getDeclarationModel();
+        if (!declaration.isShared() && !declaration.isToplevel() 
+        		&& declaration.getRefCount() == 0 &&
+        		!(declaration instanceof Parameter) &&
+        		!(that instanceof Tree.Variable)) {
+            that.addUsageWarning("declaration is never used: " + 
+        		    declaration.getName());
         }
     }
 
-    @Override
-    public void visit(Tree.AnyMethod that) {
-        super.visit(that);
-        TypedDeclaration declaration = that.getDeclarationModel();
-        if (!declaration.isShared() && declaration.getRefCount() == 0) {
-            that.addUsageWarning(String.format("Method %s declared but never used", declaration.getName()));
-        }
-    }
 }

@@ -11,10 +11,15 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  *
  * @author kulikov
  */
-public class ReferenceCountor extends Visitor {
+public class ReferenceCounter extends Visitor {
     @Override
     public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
         that.getDeclaration().incRefCount();
+    }
+    @Override
+    public void visit(Tree.Type that) {
+        super.visit(that);
+        that.getTypeModel().getDeclaration().incRefCount();
     }
 }
