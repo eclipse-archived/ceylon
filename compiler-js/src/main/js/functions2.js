@@ -68,6 +68,16 @@ function lessThan(v) {
     };
 }
 
+function byKey(/*Callable<Comparison,Key,Key>*/f) {
+    return function(a,b) {
+        return f(a.getKey(), b.getKey());
+    }
+}
+function byItem(/*Callable<Comparison,Key,Key*/f) {
+    return function(a,b) {
+        return f(a.getItem(), b.getItem());
+    }
+}
 exports.equalTo=equalTo;
 exports.greaterThan=greaterThan;
 exports.lessThan=lessThan;
@@ -75,3 +85,5 @@ exports.byIncreasing=byIncreasing;
 exports.byDecreasing=byDecreasing;
 exports.count=count;
 exports.string=string;
+exports.byKey=byKey;
+exports.byItem=byItem;
