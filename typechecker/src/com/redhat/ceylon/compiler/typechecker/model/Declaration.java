@@ -26,6 +26,8 @@ public abstract class Declaration extends Element {
     private boolean staticallyImportable;
     private boolean protectedVisibility;
 
+    private int refCount;
+
     public Scope getVisibleScope() {
         return visibleScope;
     }
@@ -253,5 +255,20 @@ public abstract class Declaration extends Element {
     }
     
     public abstract DeclarationKind getDeclarationKind();
-    
+
+    /**
+     * Gets the number of expressions referencing this declaration.
+     *
+     * @return number of references
+     */
+    public int getRefCount() {
+        return refCount;
+    }
+
+    /**
+     * Increment number of references.
+     */
+    public void incRefCount() {
+        refCount++;
+    }
 }

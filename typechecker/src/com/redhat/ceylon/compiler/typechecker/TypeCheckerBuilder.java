@@ -100,7 +100,18 @@ public class TypeCheckerBuilder {
         this.statistics = statistics;
         return this;
     }
-    
+
+    /**
+     * Enables or disables output of the warning messages about unused declarations.
+     *
+     * @param usageWarnings error message.
+     * @return type checker instance.
+     */
+    public TypeCheckerBuilder usageWarnings(boolean usageWarnings) {
+        this.assertionVisitor.includeUsageWarnings(usageWarnings);
+        return this;
+    }
+
     public TypeCheckerBuilder moduleManagerFactory(ModuleManagerFactory moduleManagerFactory){
     	this.moduleManagerFactory = moduleManagerFactory;
     	return this;
