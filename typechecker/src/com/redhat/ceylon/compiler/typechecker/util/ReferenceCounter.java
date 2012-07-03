@@ -4,6 +4,8 @@
  */
 package com.redhat.ceylon.compiler.typechecker.util;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -15,11 +17,15 @@ public class ReferenceCounter extends Visitor {
     @Override
     public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
-        that.getDeclaration().incRefCount();
+        Declaration d = that.getDeclaration();
+		if (d!=null) d.incRefCount();
     }
     @Override
     public void visit(Tree.Type that) {
         super.visit(that);
-        that.getTypeModel().getDeclaration().incRefCount();
+        ProducedType t = that.getTypeModel();
+        if (t!=null) {
+        	t.getDeclaration().incRefCount();
+        }
     }
 }

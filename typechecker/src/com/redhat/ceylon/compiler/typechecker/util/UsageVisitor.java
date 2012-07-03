@@ -19,8 +19,10 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.Declaration that) {
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
-        if (!declaration.isShared() && !declaration.isToplevel() 
-        		&& declaration.getRefCount() == 0 &&
+        if (declaration!=null && 
+        		!declaration.isShared() && 
+        		!declaration.isToplevel() && 
+        		declaration.getRefCount() == 0 &&
         		!(declaration instanceof Parameter) &&
         		!(that instanceof Tree.Variable)) {
             that.addUsageWarning("declaration is never used: " + 
