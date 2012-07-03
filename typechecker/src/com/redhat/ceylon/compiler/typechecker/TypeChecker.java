@@ -51,7 +51,7 @@ public class TypeChecker {
         phasedUnits.setModuleFilters(moduleFilters);
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
-        if(verbose)
+        if(statistics)
         	System.out.println("Parsed in " + time/1000000 + " ms");
     }
 
@@ -122,7 +122,7 @@ public class TypeChecker {
         long start = System.nanoTime();
         executePhases(phasedUnits, false);
         long time = System.nanoTime()-start;
-        if(verbose)
+        if(statistics)
         	System.out.println("Type checked in " + time/1000000 + " ms");
     }
 
