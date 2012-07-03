@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.java.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.java.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
+import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
@@ -211,6 +212,7 @@ public class LanguageCompiler extends JavaCompiler {
         modelLoader = CeylonModelLoader.instance(context);
         ceylonEnter = CeylonEnter.instance(context);
         options = Options.instance(context);
+        Timer.setup(options);
     }
 
     /**
@@ -328,12 +330,15 @@ public class LanguageCompiler extends JavaCompiler {
 
     @Override
     public List<JCCompilationUnit> parseFiles(Iterable<JavaFileObject> fileObjects) {
+        Timer.startTask("parse");
         List<JCCompilationUnit> trees = super.parseFiles(fileObjects);
+        Timer.startTask("loadCompiledModules");
         LinkedList<JCCompilationUnit> moduleTrees = new LinkedList<JCCompilationUnit>();
         loadCompiledModules(trees, moduleTrees);
         for (JCCompilationUnit moduleTree : moduleTrees) {
             trees = trees.append(moduleTree);
         }
+        Timer.endTask();
         return trees;
     }
 
@@ -607,5 +612,12 @@ public class LanguageCompiler extends JavaCompiler {
         } finally {
             Context.SourceLanguage.pop();
         }
+    }
+    
+    @Override
+    public void generate(Queue<Pair<Env<AttrContext>, JCClassDecl>> queue, Queue<JavaFileObject> results) {
+        Timer.startTask("Generate");
+        super.generate(queue, results);
+        Timer.endTask();
     }
 }

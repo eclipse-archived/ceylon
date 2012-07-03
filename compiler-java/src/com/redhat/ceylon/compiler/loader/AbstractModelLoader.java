@@ -37,6 +37,7 @@ import javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
@@ -92,6 +93,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
  */
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
 
+    private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     public static final String ORACLE_JDK_MODULE = "oracle";
     public static final String JDK_MODULE = "java";
     
@@ -184,13 +186,18 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * @return a ClassMirror for the specified class, or null if not found.
      */
     public final ClassMirror lookupClassMirror(String name){
-        // we use containsKey to be able to cache null results
-        if(classMirrorCache.containsKey(name))
-            return classMirrorCache.get(name);
-        ClassMirror mirror = lookupNewClassMirror(name);
-        // we even cache null results
-        classMirrorCache.put(name, mirror);
-        return mirror;
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        try{
+            // we use containsKey to be able to cache null results
+            if(classMirrorCache.containsKey(name))
+                return classMirrorCache.get(name);
+            ClassMirror mirror = lookupNewClassMirror(name);
+            // we even cache null results
+            classMirrorCache.put(name, mirror);
+            return mirror;
+        }finally{
+            Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        }
     }
 
     /**
@@ -494,24 +501,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
-        if ("ceylon.language.Bottom".equals(typeName)) {
-            return new BottomType(typeFactory);
-        } else if ("java.lang.Exception".equals(typeName)) {
-            return convertToDeclaration("ceylon.language.Exception", declarationType);
-        }
-        ClassMirror classMirror = lookupClassMirror(typeName);
-        if (classMirror == null) {
-            Declaration languageModuleDeclaration = typeFactory.getLanguageModuleDeclaration(typeName);
-            if (languageModuleDeclaration != null) {
-                return languageModuleDeclaration;
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        try{
+            if ("ceylon.language.Bottom".equals(typeName)) {
+                return new BottomType(typeFactory);
+            } else if ("java.lang.Exception".equals(typeName)) {
+                return convertToDeclaration("ceylon.language.Exception", declarationType);
             }
-            throw new ModelResolutionException("Failed to resolve "+typeName);
+            ClassMirror classMirror = lookupClassMirror(typeName);
+            if (classMirror == null) {
+                Declaration languageModuleDeclaration = typeFactory.getLanguageModuleDeclaration(typeName);
+                if (languageModuleDeclaration != null) {
+                    return languageModuleDeclaration;
+                }
+                throw new ModelResolutionException("Failed to resolve "+typeName);
+            }
+            // we only allow source loading when it's java code we're compiling in the same go
+            // (well, technically before the ceylon code)
+            if(classMirror.isLoadedFromSource() && !classMirror.isJavaSource())
+                return null;
+            return convertToDeclaration(classMirror, declarationType);
+        }finally{
+            Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
-        // we only allow source loading when it's java code we're compiling in the same go
-        // (well, technically before the ceylon code)
-        if(classMirror.isLoadedFromSource() && !classMirror.isJavaSource())
-            return null;
-        return convertToDeclaration(classMirror, declarationType);
     }
 
     protected TypeParameter safeLookupTypeParameter(Scope scope, String name) {
@@ -811,22 +823,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     @Override
     public void complete(LazyInterface iface) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         complete(iface, iface.classMirror);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public void completeTypeParameters(LazyInterface iface) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeTypeParameters(iface, iface.classMirror);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public void complete(LazyClass klass) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         complete(klass, klass.classMirror);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public void completeTypeParameters(LazyClass klass) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeTypeParameters(klass, klass.classMirror);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     private void completeTypeParameters(ClassOrInterface klass, ClassMirror classMirror) {
@@ -1406,68 +1426,78 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     @Override
     public void complete(LazyValue value) {
-        MethodMirror meth = null;
-        for (MethodMirror m : value.classMirror.getDirectMethods()) {
-            // We skip members marked with @Ignore
-            if(m.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                continue;
-            
-            if (m.getName().equals(
-                    Util.getGetterName(value.getName()))
-                    && m.isStatic() && m.getParameters().size() == 0) {
-                meth = m;
-            }
-            if (m.getName().equals(
-                    Util.getSetterName(value.getName()))
-                    && m.isStatic() && m.getParameters().size() == 1) {
-                value.setVariable(true);
-            }
-        }
-        if(meth == null || meth.getReturnType() == null)
-            throw new ModelResolutionException("Failed to find toplevel attribute "+value.getName());
-        
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
-            value.setType(obtainType(meth.getReturnType(), meth, null, VarianceLocation.INVARIANT));
-        }catch(TypeParserException x){
-            logError("Invalid type signature for toplevel attribute of "+value.getQualifiedNameString()+": "+x.getMessage());
-            throw x;
+            MethodMirror meth = null;
+            for (MethodMirror m : value.classMirror.getDirectMethods()) {
+                // We skip members marked with @Ignore
+                if(m.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+                    continue;
+
+                if (m.getName().equals(
+                        Util.getGetterName(value.getName()))
+                        && m.isStatic() && m.getParameters().size() == 0) {
+                    meth = m;
+                }
+                if (m.getName().equals(
+                        Util.getSetterName(value.getName()))
+                        && m.isStatic() && m.getParameters().size() == 1) {
+                    value.setVariable(true);
+                }
+            }
+            if(meth == null || meth.getReturnType() == null)
+                throw new ModelResolutionException("Failed to find toplevel attribute "+value.getName());
+
+            try{
+                value.setType(obtainType(meth.getReturnType(), meth, null, VarianceLocation.INVARIANT));
+            }catch(TypeParserException x){
+                logError("Invalid type signature for toplevel attribute of "+value.getQualifiedNameString()+": "+x.getMessage());
+                throw x;
+            }
+            setAnnotations(value, meth);
+            markUnboxed(value, meth.getReturnType());
+        }finally{
+            Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
-        setAnnotations(value, meth);
-        markUnboxed(value, meth.getReturnType());
     }
 
     @Override
     public void complete(LazyMethod method) {
-        MethodMirror meth = null;
-        String lookupName = method.getName();
-        for(MethodMirror m : method.classMirror.getDirectMethods()){
-            // We skip members marked with @Ignore
-            if(m.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                continue;
-            
-            if(Util.strip(m.getName()).equals(lookupName)){
-                meth = m;
-                break;
-            }
-        }
-        if(meth == null || meth.getReturnType() == null)
-            throw new ModelResolutionException("Failed to find toplevel method "+method.getName());
-        
-        // type params first
-        setTypeParameters(method, meth);
-
-        // now its parameters
-        setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
-            method.setType(obtainType(meth.getReturnType(), meth, method, VarianceLocation.COVARIANT));
-            method.setDeclaredVoid(meth.isDeclaredVoid());
-        }catch(TypeParserException x){
-            logError("Invalid type signature for toplevel method of "+method.getQualifiedNameString()+": "+x.getMessage());
-            throw x;
+            MethodMirror meth = null;
+            String lookupName = method.getName();
+            for(MethodMirror m : method.classMirror.getDirectMethods()){
+                // We skip members marked with @Ignore
+                if(m.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+                    continue;
+
+                if(Util.strip(m.getName()).equals(lookupName)){
+                    meth = m;
+                    break;
+                }
+            }
+            if(meth == null || meth.getReturnType() == null)
+                throw new ModelResolutionException("Failed to find toplevel method "+method.getName());
+
+            // type params first
+            setTypeParameters(method, meth);
+
+            // now its parameters
+            setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
+            try{
+                method.setType(obtainType(meth.getReturnType(), meth, method, VarianceLocation.COVARIANT));
+                method.setDeclaredVoid(meth.isDeclaredVoid());
+            }catch(TypeParserException x){
+                logError("Invalid type signature for toplevel method of "+method.getQualifiedNameString()+": "+x.getMessage());
+                throw x;
+            }
+            markUnboxed(method, meth.getReturnType());
+
+            setAnnotations(method, meth);
+        }finally{
+            Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
-        markUnboxed(method, meth.getReturnType());
-        
-        setAnnotations(method, meth);
      }
     
     //
