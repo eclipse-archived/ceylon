@@ -23,8 +23,8 @@ shared Range<Integer> range {
 void test_entries_function() {
     value e = entries("a", "b", "c", "X", "Y", "Z", "1", "2", "3", "d", "e", "f");
     value _e = Entry(-1, "null");
-    assert((e.item(2)?_e).key==2, "entries");
-    assert((e.item(2)?_e).item=="c", "entries");
+    assert((e[2] else _e).key==2, "entries");
+    assert((e[2] else _e).item=="c", "entries");
     assert(1->"a" == 1->"a", "entry.equals");
     assert(1->"a" != 1->"b", "entry.equals");
 }
@@ -185,4 +185,20 @@ Range<Integer> range {
 
     //Test the entries function
     test_entries_function();
+    //Test comparisons by Key and Item
+    value e1 = entries("a", "B", "c", "D");
+    value k1 = e1.sorted(byKey((Integer a, Integer b) b<=>a)).sequence;
+    value k2 = e1.sorted(byItem((String a, String b) a<=>b)).sequence;
+    if (exists x=k1[0]) {
+        assert(x==3->"D", "byKey[1]");
+    } else { fail("byKey[1]"); }
+    if (exists x=k1[3]) {
+        assert(x==0->"a", "byKey[2]");
+    } else { fail("byKey[2]"); }
+    if (exists x=k2[0]) {
+        assert(x==1->"B", "byItem[1]");
+    } else { fail("byItem[1]"); }
+    if (exists x=k2[3]) {
+        assert(x==2->"c", "byItem[2]");
+    } else { fail("byItem[2]"); }
 }
