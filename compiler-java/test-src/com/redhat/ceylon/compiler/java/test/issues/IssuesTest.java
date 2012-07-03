@@ -529,6 +529,11 @@ public class IssuesTest extends CompilerTest {
     public void testBug667_fail(){
         compareWithJavaSource("Bug667");
     }
+
+    @Test
+    public void testBug669() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug669_testAssertEquals", "Bug669.ceylon");
+    }
     
     @Test
     public void testBug671(){
