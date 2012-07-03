@@ -24,18 +24,34 @@ public final class coalesce {
     @Name("values") @Sequenced
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Nothing|Element>")
     final ceylon.language.Iterable<? extends Element> values) {
-		List<Element> list = new ArrayList<Element>();
-		java.lang.Object $tmp;
-		for (Iterator<? extends Element> iter=values.getIterator(); !(($tmp = iter.next()) instanceof Finished);) {
-			Element elem = (Element)$tmp;
-			if (elem!=null) list.add(elem);
-		}
-        if (list.isEmpty()) {
-            return (Iterable<? extends Element>) $empty.getEmpty();
+        if (values instanceof ArraySequence) {
+            Element[] arr = ((ArraySequence<Element>)values).toArray();
+            int lnn = arr.length;
+            for (int i=arr.length-1; i>=0; i--) {
+                if (arr[i] == null) {
+                    int j=i-1;
+                    while (j>=0 && arr[j]==null) j--;
+                    if (j<0) j=0;
+                    if (arr[j] != null) {
+                        lnn = i;
+                        arr[i]=arr[j];
+                        arr[j]=null;
+                    }   
+                } else lnn=i;
+            }
+            return lnn==arr.length ? (Iterable)$empty.getEmpty() : new ArraySequence(arr, lnn);
         }
-        else {
-            return new ArraySequence<Element>(list);
+        final class NotNullIterator implements Iterator<Element> {
+            private final Iterator<? extends Element> orig = values.getIterator();
+            @Override public java.lang.Object next() {
+                java.lang.Object tmp = null;
+                while ((tmp = orig.next()) == null);
+                return tmp;
+            }
         }
+        return new AbstractIterable<Element>() {
+            @Override public Iterator<? extends Element> getIterator() { return new NotNullIterator(); }
+        }.getSequence();
     }
     @Ignore
     public static <Element> Iterable<? extends Element> coalesce() {
