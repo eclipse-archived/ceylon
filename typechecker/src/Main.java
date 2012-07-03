@@ -17,22 +17,22 @@ public class Main {
      * placed under a <nomodule> module.
      */
     public static void main(String[] args) throws Exception {
-        String path;
         if ( args.length==0 ) {
-            System.err.println("Usage Main <directoryName>");
+            System.err.println("Usage Main <directoryNames>");
             System.exit(-1);
             return;
         }
-        else {
-            path = args[0];
-        }
         
         boolean noisy = "true".equals(System.getProperties().getProperty("verbose"));
-
-        new TypeCheckerBuilder()
+        //ClosableVirtualFile latestZippedLanguageSourceFile = MainHelper.getLatestZippedLanguageSourceFile();
+        TypeCheckerBuilder tcb = new TypeCheckerBuilder()
                 .verbose(noisy)
-                .addSrcDirectory(new File(path))
-                .getTypeChecker()
-                .process();
+                .statistics(true);
+                //.addSrcDirectory(latestZippedLanguageSourceFile);
+        for (String path: args) {
+            tcb.addSrcDirectory(new File(path));
+        }
+        tcb.getTypeChecker().process();
+        //latestZippedLanguageSourceFile.close();
     }
 }
