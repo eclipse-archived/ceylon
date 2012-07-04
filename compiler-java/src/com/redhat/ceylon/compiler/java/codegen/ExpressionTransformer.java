@@ -1501,8 +1501,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 // method local attr
                 if (!isRecursiveReference(expr)) {
-                    // FIXME Naming
-                    primaryExpr = makeQualIdent(primaryExpr, decl.getName() + "$getter");
+                    primaryExpr = naming.makeQualifiedName(primaryExpr, (Getter)decl, Naming.NA_Q_LOCAL_INSTANCE);
                 }
                 selector = Naming.getGetterName(decl);
             }
@@ -1537,8 +1536,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else if (decl.isCaptured() && !((Value) decl).isVariable()) {
                     // accessing a local that is not getter wrapped
                 } else {
-                    // FIXME Naming
-                    primaryExpr = makeQualIdent(primaryExpr, decl.getName());
+                    primaryExpr = naming.makeQualifiedName(primaryExpr, (Value)decl, Naming.NA_Q_LOCAL_INSTANCE);
                     selector = Naming.getGetterName(decl);
                 }
             }
