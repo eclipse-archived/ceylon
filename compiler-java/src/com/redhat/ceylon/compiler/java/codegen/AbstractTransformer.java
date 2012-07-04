@@ -2270,12 +2270,6 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return getCompanionClassName(def).replace('.', '$');
     }
     
-    final JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
-        Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
-        return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
-                Naming.getDefaultedParamMethodName(method, param));
-    }
-    
     private int getPosition(Node node) {
         int pos = getMap().getStartPosition(node.getToken().getLine())
                 + node.getToken().getCharPositionInLine();
