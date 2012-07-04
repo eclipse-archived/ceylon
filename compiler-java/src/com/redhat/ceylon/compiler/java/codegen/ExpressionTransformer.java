@@ -1493,7 +1493,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // invoke the getter
             if (decl.isToplevel()) {
                 primaryExpr = null;
-                qualExpr = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Naming.quoteIfJavaKeyword(decl.getName()), Naming.getGetterName(decl));
+                qualExpr = naming.makeName((Getter)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
                 selector = null;
             } else if (decl.isClassMember()
                         || decl.isInterfaceMember()) {
@@ -1501,6 +1501,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 // method local attr
                 if (!isRecursiveReference(expr)) {
+                    // FIXME Naming
                     primaryExpr = makeQualIdent(primaryExpr, decl.getName() + "$getter");
                 }
                 selector = Naming.getGetterName(decl);
@@ -1517,8 +1518,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = makeBoolean(false);
                 } else {
                     // it's a toplevel attribute
-                    String topClsName = (decl instanceof LazyValue) ? ((LazyValue)decl).getRealName() : decl.getName();
-                    primaryExpr = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Naming.quoteIfJavaKeyword(topClsName));
+                    primaryExpr = naming.makeName((Value)decl, Naming.NA_FQ | Naming.NA_WRAPPER);
                     selector = Naming.getGetterName(decl);
                 }
             } else if (Decl.isClassAttribute(decl)) {
