@@ -41,42 +41,26 @@ Iterable$proto.getSequence = function() {
 }
 Iterable$proto.map = function(mapper) {
     var iter = this;
-    function mapped$iter(){
-        var $cmp$=new mapped$iter.$$;
-        IdentifiableObject($cmp$);
-        $cmp$.iter=iter.getIterator();
-        $cmp$.mapper=mapper;
-        $cmp$.next=function(){
-            var e = this.iter.next();
-            if(e !== $finished){
-                return this.mapper(e);
-            }else return $finished;
-        };
-        return $cmp$;
-    }
-    initTypeProto(mapped$iter, 'ceylon.language.MappedIterator', IdentifiableObject, Iterator);
-    return Comprehension(mapped$iter);
+    return Comprehension(function() {
+        var it = iter.getIterator();
+        return function() {
+            var e = it.next();
+            if(e !== $finished) {return mapper(e);}
+            return $finished;
+        }
+    });
 }
 Iterable$proto.filter = function(select) {
     var iter = this;
-    function filtered$iter(){
-        var $cmp$=new filtered$iter.$$;
-        IdentifiableObject($cmp$);
-        $cmp$.iter=iter.getIterator();
-        $cmp$.select=select;
-        $cmp$.next=function(){
-            var e = this.iter.next();
-            var flag = e === $finished ? true : this.select(e) === $true;
-            while (!flag) {
-                e = this.iter.next();
-                flag = e === $finished ? true : this.select(e) === $true;
-            }
+    return Comprehension(function() {
+        var it = iter.getIterator();
+        return function() {
+            do {
+                var e = it.next();
+            } while ((e !== $finished) && (select(e) === $false));
             return e;
-        };
-        return $cmp$;
-    }
-    initTypeProto(filtered$iter, 'ceylon.language.FilteredIterator', IdentifiableObject, Iterator);
-    return Comprehension(filtered$iter);
+        }
+    });
 }
 Iterable$proto.fold = function(ini, accum) {
     var r = ini;
@@ -158,43 +142,28 @@ Iterable$proto.skipping = function(skip) {
 Iterable$proto.taking = function(take) {
     if (take.value <= 0) return $empty;
     var iter = this;
-    function take$iter(){
-        var $cmp$=new take$iter.$$;
-        IdentifiableObject($cmp$);
-        $cmp$.iter=iter.getIterator();
-        $cmp$.take=take.value;
-        $cmp$.i=0;
-        $cmp$.next=function(){
-            if (this.i++>=this.take) {
-                return $finished;
-            }
-            return this.iter.next();
-        };
-        return $cmp$;
-    }
-    initTypeProto(take$iter, 'ceylon.language.TakeIterator', IdentifiableObject, Iterator);
-    return Comprehension(take$iter);
+    return Comprehension(function() {
+        var it = iter.getIterator();
+        var i = 0;
+        return function() {
+            if (i >= take.value) {return $finished;}
+            ++i;
+            return it.next();
+        }
+    });
 }
 Iterable$proto.by = function(step) {
     if (step.value == 1) return this;
     if (step.value < 1) throw Exception(String$("Step must be positive"));
     var iter = this;
-    function by$iter(){
-        var $cmp$=new by$iter.$$;
-        IdentifiableObject($cmp$);
-        $cmp$.iter=iter.getIterator();
-        $cmp$.step=step.value;
-        $cmp$.next=function(){
-            var e = this.iter.next();
-            for (var i=1; i < this.step; i++) {
-                this.iter.next();
-            }
+    return Comprehension(function() {
+        var it = iter.getIterator();
+        return function() {
+            var e = it.next();
+            for (var i=1; i<step.value && (it.next()!==$finished); i++);
             return e;
-        };
-        return $cmp$;
-    }
-    initTypeProto(by$iter, 'ceylon.language.SteppedIterator', IdentifiableObject, Iterator);
-    return Comprehension(by$iter);
+        }
+    });
 }
 Iterable$proto.count = function(sel) {
 	var c = 0;
@@ -206,35 +175,25 @@ Iterable$proto.count = function(sel) {
 }
 Iterable$proto.getCoalesced = function() {
     var iter = this;
-    function coal$iter(){
-        var $cmp$=new coal$iter.$$;
-        IdentifiableObject($cmp$);
-        $cmp$.iter=iter.getIterator();
-        $cmp$.next=function(){
+    return Comprehension(function() {
+        var it = iter.getIterator();
+        return function() {
             var e;
-            while ((e = this.iter.next()) === null);
-            return e;
-        };
-        return $cmp$;
-    }
-    initTypeProto(coal$iter, 'ceylon.language.CoalescedIterator', IdentifiableObject, Iterator);
-    return Comprehension(coal$iter);
+            while ((e = it.next()) === null);
+            return e;            
+        }
+    });
 }
 Iterable$proto.getIndexed = function() {
     var iter = this;
-    function ind$iter(){
-        var $cmp$=new ind$iter.$$;
-        IdentifiableObject($cmp$);
-        $cmp$.iter=iter.getIterator();
-        $cmp$.idx = 0;
-        $cmp$.next=function(){
+    return Comprehension(function() {
+        var it = iter.getIterator();
+        var idx = 0;
+        return function() {
             var e;
-            while ((e = this.iter.next()) === null);
-            return e === $finished ? e : Entry(Integer(this.idx++), e);
-        };
-        return $cmp$;
-    }
-    initTypeProto(ind$iter, 'ceylon.language.IndexedIterator', IdentifiableObject, Iterator);
-    return Comprehension(ind$iter);
+            while ((e = it.next()) === null);
+            return e === $finished ? e : Entry(Integer(idx++), e);
+        }
+    });
 }
 exports.Iterable=Iterable;

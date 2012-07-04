@@ -488,14 +488,24 @@ exports.arrayOfSize=function(size, elem) {
     } else return EmptyArray();
 }
 
-function Comprehension(iterator) {
-    var that = new Comprehension.$$;
-    IdentifiableObject(that);
-    that.iterator=iterator;
-    return that;
+function Comprehension(makeNextFunc, compr) {
+    if (compr===undefined) {compr = new Comprehension.$$;}
+    IdentifiableObject(compr);
+    compr.makeNextFunc = makeNextFunc;
+    return compr;
 }
 initTypeProto(Comprehension, 'ceylon.language.Comprehension', IdentifiableObject, Iterable);
-Comprehension.$$.prototype.getIterator=function() {
-    return this.iterator();
-};
+var Comprehension$proto = Comprehension.$$.prototype;
+Comprehension$proto.getIterator = function() {
+    return ComprehensionIterator(this.makeNextFunc());
+}
 exports.Comprehension=Comprehension;
+
+function ComprehensionIterator(nextFunc, it) {
+    if (it===undefined) {it = new ComprehensionIterator.$$;}
+    IdentifiableObject(it);
+    it.next = nextFunc;
+    return it;
+}
+initTypeProto(ComprehensionIterator, 'ceylon.language.ComprehensionIterator',
+        IdentifiableObject, Iterator);

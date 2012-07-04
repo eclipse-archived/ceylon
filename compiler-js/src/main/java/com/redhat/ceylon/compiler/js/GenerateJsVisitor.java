@@ -39,10 +39,6 @@ public class GenerateJsVisitor extends Visitor
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
-    /** This set is meant to store declarations in a comprehension,
-     * because the code referencing them needs to be treated differently; similar to the directAccess but it gets cleared
-     * after the comprehension has been generated. */
-    private final List<Declaration> comprehensions = new ArrayList<Declaration>();
     private List<String> retainedVars = new ArrayList<String>();
     private final Set<Module> importedModules = new HashSet<Module>();
 
@@ -1250,8 +1246,6 @@ public class GenerateJsVisitor extends Visitor
             out(decl.getName());
         } else if (accessDirectly(decl)) {
             out(names.name(decl));
-        } else if (comprehensions.contains(decl)) {
-            out("this.", names.name(decl));
         } else {
             out(names.getter(decl));
             out("()");
@@ -1687,160 +1681,216 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    @Override
-    public void visit(Comprehension that) {
-        out("(function()"); beginBlock();
-        out("//Comprehension");
-        location(that);
-        endLine();
-        final String compName = names.createTempVariable("compr");
-        out("function ", compName, "()"); beginBlock();
-        out("var $cmp$=new ", compName, ".$$;"); endLine();
-        out(clAlias, ".IdentifiableObject($cmp$);"); endLine();
-        comprehensions.clear();
-        //Get the first clause to start getting into the other ones
-        ComprehensionClause clause = that.getForComprehensionClause();
-        int idx = 0;
-        ExpressionComprehensionClause excc = null;
-        String prevItemVar = null;
-        while (clause != null) {
-            idx++;
-            String itemVar = null;
-            if (clause instanceof ForComprehensionClause) {
-                ForComprehensionClause fcl = (ForComprehensionClause)clause;
-                SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
-                if (clause == that.getForComprehensionClause()) {
-                    //The first iterator can be initialized without problems
-                    out("$cmp$.iter", Integer.toString(idx), "=");
-                    specexpr.visit(this);
-                    out(".getIterator();");
-                    endLine();
-                } else {
-                    //The subsequent iterators need to be inside a function, in case they depend on the outer current element
-                    out("$cmp$.getIter", Integer.toString(idx), "=function()"); beginBlock();
-                    if (true) {
-                        out("if(this.", names.name(comprehensions.get(comprehensions.size()-1)), "===undefined)this.next$", Integer.toString(idx-1), "();"); endLine();
-                    }
-                    out("return ");
-                    specexpr.visit(this);
-                    out(".getIterator();");
-                    endBlockNewLine(true);
-                }
-                if (fcl.getForIterator() instanceof ValueIterator) {
-                    Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
-                    comprehensions.add(item);
-                    itemVar = names.name(item);
-                } else if (fcl.getForIterator() instanceof KeyValueIterator) {
-                    itemVar = String.format("item$%d", idx);
-                    KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
-                    comprehensions.add(kviter.getKeyVariable().getDeclarationModel());
-                    comprehensions.add(kviter.getValueVariable().getDeclarationModel());
-                } else {
-                    that.addError("No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
-                    return;
-                }
-                endLine();
-                //Now the context for this iterator
-                out("$cmp$.next$", Integer.toString(idx), "=function()"); beginBlock();
-                if (idx>1) {
-                    out("if(this.iter", Integer.toString(idx), "===undefined)this.iter", Integer.toString(idx),
-                            "=this.getIter", Integer.toString(idx), "();");
-                    endLine();
-                }
-                if (fcl.getForIterator() instanceof ValueIterator) {
-                    out("this.", names.name(comprehensions.get(comprehensions.size()-1)), "=this.iter", Integer.toString(idx), ".next();");
-                } else {
-                    out("this.item$", Integer.toString(idx), "=this.iter", Integer.toString(idx), ".next();");
-                }
-                endLine();
-                out("if(this.", itemVar, "===", clAlias, ".getExhausted())"); beginBlock();
-                if (idx>1) {
-                    //Add an inner check after the first context
-                    out("if(this.next$", Integer.toString(idx-1), "())"); beginBlock();
-                    out("this.iter", Integer.toString(idx), "=this.getIter", Integer.toString(idx), "();"); endLine();
-                    out("this.", names.name(comprehensions.get(comprehensions.size()-1)), "=this.iter", Integer.toString(idx), ".next();"); endLine();
-                    out("return this.", names.name(comprehensions.get(comprehensions.size()-1)), "!==", clAlias, ".getExhausted();");
-                    endBlockNewLine();
-                }
-                out("return false;");
-                endBlockNewLine();
-                if (fcl.getForIterator() instanceof KeyValueIterator) {
-                    KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
-                    out("this.", names.name(kviter.getKeyVariable().getDeclarationModel()), "=this.", itemVar, ".getKey();");
-                    endLine();
-                    out("this.", names.name(kviter.getValueVariable().getDeclarationModel()), "=this.", itemVar, ".getItem();");
-                    endLine();
-                }
-                out("return true;");
-                endBlockNewLine(true);
-                clause = fcl.getComprehensionClause();
-            } else if (clause instanceof IfComprehensionClause) {
-                Condition cond = ((IfComprehensionClause)clause).getCondition();
-                //The context of an if is an iteration through the parent, checking each element against the condition
-                out("$cmp$.next$", Integer.toString(idx), "=function()");beginBlock();
-                Variable var = null;
-                if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
-                    var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable()
-                            : ((ExistsOrNonemptyCondition)cond).getVariable();
-                    comprehensions.add(var.getDeclarationModel());
-                    //Initialize the condition's attribute to finished so that this is returned
-                    //in case the condition is not met and the iterator is exhausted
-                    out("this.", names.name(var.getDeclarationModel()), "=", clAlias, ".getExhausted();");
-                    endLine();
-                }
-                out("while(this.next$", Integer.toString(idx-1), "() && !(");
-                if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
-                    specialConditionCheck(cond, var.getSpecifierExpression().getExpression().getTerm(),
-                            "this."+names.name(var.getDeclarationModel()));
-                } else {
-                    cond.visit(this);
-                    out("===", clTrue);
-                }
-                out("));"); endLine();
-                //Remove the condition's attribute to generate the return statement with the original attribute
-                //If we generate the return statement checking if the condition's attribute is exhausted, it returns
-                //the wrong result if the condition was not met with the last element.
-                if (var!=null) {
-                    comprehensions.remove(comprehensions.size()-1);
-                }
-                out("return this.", prevItemVar, "!==", clAlias, ".getExhausted();");
-                //Add back the condition's attribute if present
-                if (var!=null) {
-                    comprehensions.add(var.getDeclarationModel());
-                }
-                endBlockNewLine(true);
-                clause = ((IfComprehensionClause)clause).getComprehensionClause();
-                itemVar = prevItemVar;
-            } else if (clause instanceof ExpressionComprehensionClause) {
-                //Just keep a ref to the expression
-                excc = (ExpressionComprehensionClause)clause;
-                clause = null;
+    /** Represents one of the for loops of a comprehension including the associated conditions */
+    private class ComprehensionLoopInfo {
+        public final ForIterator forIterator;
+        public final List<Condition> conditions = new ArrayList<>();
+        public final List<Variable> conditionVars = new ArrayList<>();
+        public final String itVarName;
+        public String valueVarName;
+        public String keyVarName = null;
+        
+        public ComprehensionLoopInfo(Comprehension that, ForIterator forIterator) {
+            this.forIterator = forIterator;
+            itVarName = names.createTempVariable("it");
+            Variable valueVar = null;
+            if (forIterator instanceof ValueIterator) {
+                valueVar = ((ValueIterator) forIterator).getVariable();
+            } else if (forIterator instanceof KeyValueIterator) {
+                KeyValueIterator kvit = (KeyValueIterator) forIterator;
+                valueVar = kvit.getValueVariable();
+                Variable keyVar = kvit.getKeyVariable();
+                keyVarName = names.name(keyVar.getDeclarationModel());
+                directAccess.add(keyVar.getDeclarationModel());
             } else {
-                that.addError("No support for comprehension clause of type " + clause.getClass().getName());
+                that.addError("No support yet for iterators of type "
+                              + forIterator.getClass().getName());
                 return;
             }
-            if (itemVar != null) prevItemVar = itemVar;
+            this.valueVarName = names.name(valueVar.getDeclarationModel());
+            directAccess.add(valueVar.getDeclarationModel());
         }
-        //Implement Iterator.next()
-        out("$cmp$.next=function()"); beginBlock();
-        out("if(this.next$", Integer.toString(idx-1), "())"); beginBlock();
-        //The expression
-        out("return ");
-        excc.getExpression().visit(this);
-        out(";");
-        endBlock();
-        out("else return ", clAlias, ".getExhausted();");
-        endBlockNewLine(true);
-        //Return the new object
-        out("return $cmp$;");
+    }
+    
+    @Override
+    public void visit(Comprehension that) {
+        out(clAlias, ".Comprehension(function()");
+        beginBlock();
+        out("//Comprehension"); location(that); endLine();
+        
+        // gather information about all loops and conditions in the comprehension
+        List<ComprehensionLoopInfo> loops = new ArrayList<>();
+        Expression expression = null;
+        ForComprehensionClause forClause = that.getForComprehensionClause();
+        while (forClause != null) {
+            ComprehensionLoopInfo loop = new ComprehensionLoopInfo(that, forClause.getForIterator());
+            ComprehensionClause clause = forClause.getComprehensionClause();
+            while ((clause != null) && !(clause instanceof ForComprehensionClause)) {
+                if (clause instanceof IfComprehensionClause) {
+                    IfComprehensionClause ifClause = ((IfComprehensionClause) clause);
+                    Condition cond = ifClause.getCondition();
+                    loop.conditions.add(cond);
+                    clause = ifClause.getComprehensionClause();
+                    
+                    Variable condVar = null;
+                    if (cond instanceof IsCondition) {
+                        condVar = ((IsCondition) cond).getVariable();
+                    } else if (cond instanceof ExistsOrNonemptyCondition) {
+                        condVar = ((ExistsOrNonemptyCondition) cond).getVariable();
+                    }
+                    loop.conditionVars.add(condVar);
+                    
+                } else if (clause instanceof ExpressionComprehensionClause) {
+                    expression = ((ExpressionComprehensionClause) clause).getExpression();
+                    clause = null;
+                } else {
+                    that.addError("No support for comprehension clause of type "
+                                  + clause.getClass().getName());
+                    return;
+                }
+            }
+            loops.add(loop);
+            forClause = (ForComprehensionClause) clause;
+        }
+        
+        // generate variables and "next" function for each for loop
+        for (int loopIndex=0; loopIndex<loops.size(); loopIndex++) {
+            ComprehensionLoopInfo loop = loops.get(loopIndex);
+            
+            // iterator variable
+            out("var ", loop.itVarName);
+            if (loopIndex == 0) {
+                out("=");
+                loop.forIterator.getSpecifierExpression().visit(this);
+                out(".getIterator()");
+            }
+            out(";"); endLine();
+            
+            // value or key/value variables
+            if (loop.keyVarName == null) {
+                out("var ", loop.valueVarName, "=", clAlias, ".getExhausted();"); endLine();
+            } else {
+                out("var ", loop.keyVarName, ";"); endLine();
+                out("var ", loop.valueVarName, ";"); endLine();
+            }
+            
+            // variables for is/exists/nonempty conditions
+            for (Variable condVar : loop.conditionVars) {
+                if (condVar != null) {
+                    String condVarName = names.name(condVar.getDeclarationModel());
+                    out("var ", condVarName, ";"); endLine();
+                    directAccess.add(condVar.getDeclarationModel());
+                }
+            }
+            
+            // generate the "next" function for this loop
+            boolean isLastLoop = (loopIndex == (loops.size()-1));
+            if (isLastLoop && loop.conditions.isEmpty() && (loop.keyVarName == null)) {
+                // simple case: innermost loop without conditions, no key/value iterator
+                out("var next$", loop.valueVarName, "=function(){return ",
+                        loop.valueVarName, "=", loop.itVarName, ".next();}");
+                endLine();
+            }
+            else {
+                out("var next$", loop.valueVarName, "=function()");
+                beginBlock();
+                
+                // extra entry variable for key/value iterators
+                String elemVarName = loop.valueVarName;
+                if (loop.keyVarName != null) {
+                    elemVarName = names.createTempVariable("entry");
+                    out("var ", elemVarName, ";"); endLine();
+                }
+                
+                // if/while ((elemVar=it.next()!==$finished)
+                out(loop.conditions.isEmpty()?"if":"while", "((", elemVarName, "=",
+                        loop.itVarName, ".next())!==", clAlias, ".getExhausted())");
+                beginBlock();
+                
+                // get key/value if necessary
+                if (loop.keyVarName != null) {
+                    out(loop.keyVarName, "=", elemVarName, ".getKey();"); endLine();
+                    out(loop.valueVarName, "=", elemVarName, ".getItem();"); endLine();
+                }
+                
+                // generate conditions as nested ifs
+                for (int i=0; i<loop.conditions.size(); i++) {
+                    Condition cond = loop.conditions.get(i);
+                    Variable condVar = loop.conditionVars.get(i);
+                    out("if(");
+                    if (condVar != null) {
+                        specialConditionCheck(cond,
+                                condVar.getSpecifierExpression().getExpression().getTerm(),
+                                names.name(condVar.getDeclarationModel()));
+                    } else {
+                        cond.visit(this);
+                        out("===", clTrue);
+                    }
+                    out(")");
+                    beginBlock();
+                }
+                
+                // initialize iterator of next loop and get its first element
+                if (!isLastLoop) {
+                    ComprehensionLoopInfo nextLoop = loops.get(loopIndex+1);
+                    out(nextLoop.itVarName, "=");
+                    nextLoop.forIterator.getSpecifierExpression().visit(this);
+                    out(".getIterator();"); endLine();
+                    out("next$", nextLoop.valueVarName, "();"); endLine();
+                }
+                
+                out("return ", elemVarName, ";"); endLine();
+                for (int i=0; i<=loop.conditions.size(); i++) { endBlockNewLine(); }
+                emitRetainedVars();
+                
+                // for key/value iterators, value==undefined indicates that the iterator is finished
+                if (loop.keyVarName != null) {
+                    out(loop.valueVarName, "=undefined;"); endLine();
+                }
+                
+                out("return ", clAlias, ".getExhausted();");                
+                endBlockNewLine();
+            }
+        }
+        
+        // get the first element
+        out("next$", loops.get(0).valueVarName, "();"); endLine();
+        
+        // generate the "next" function for the comprehension
+        out("return function()");
+        beginBlock();
+        
+        // start a do-while block for all except the innermost loop
+        for (int i=1; i<loops.size(); i++) {
+            out("do"); beginBlock();
+        }
+        
+        // Check if another element is available on the innermost loop.
+        // If yes, evaluate the expression, advance the iterator and return the result.
+        ComprehensionLoopInfo lastLoop = loops.get(loops.size()-1);
+        out("if(", lastLoop.valueVarName, "!==", (lastLoop.keyVarName==null)
+                ? (clAlias+".getExhausted()") : "undefined", ")");
+        beginBlock();
+        String tempVarName = names.createTempVariable();
+        out("var ", tempVarName, "=");
+        expression.visit(this);
+        out(";"); endLine();
+        emitRetainedVars();
+        out("next$", lastLoop.valueVarName, "();"); endLine();
+        out("return ", tempVarName, ";");
         endBlockNewLine();
-        //Initialize this iterable
-        out(clAlias, ".initTypeProto(", compName, ", 'ceylon.language.ComprehensionIterator', ", clAlias, ".IdentifiableObject, ", clAlias, ".Iterator);");
-        endLine();
-        //Create the Iterable and return it
-        out("return ", clAlias, ".Comprehension(", compName, ");");
-        endBlock();
-        out("())");
+        
+        // "while" part of the do-while loops
+        for (int i=loops.size()-2; i>=0; i--) {
+            endBlock();
+            out("while(next$", loops.get(i).valueVarName, "()!==",
+                    clAlias, ".getExhausted());");
+            endLine();
+        }
+        
+        out("return ", clAlias, ".getExhausted();");
+        endBlockNewLine();
+        endBlock(); out(")");
     }
     
     @Override
