@@ -1537,20 +1537,21 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else if (decl.isCaptured() && !((Value) decl).isVariable()) {
                     // accessing a local that is not getter wrapped
                 } else {
+                    // FIXME Naming
                     primaryExpr = makeQualIdent(primaryExpr, decl.getName());
                     selector = Naming.getGetterName(decl);
                 }
             }
         } else if (decl instanceof Method) {
             if (Decl.isLocal(decl)) {
-                java.util.List<String> path = new LinkedList<String>();
-                if (!isRecursiveReference(expr)) {
-                    path.add(decl.getName());
-                } 
                 primaryExpr = null;
-                // Only want to quote the method name 
-                // e.g. enum.$enum()
-                qualExpr = makeQuotedQualIdent(makeQualIdent(path), Naming.quoteMethodName(decl));
+                int flags = Naming.NA_MEMBER;
+                if (!isRecursiveReference(expr)) {
+                    // Only want to quote the method name 
+                    // e.g. enum.$enum()
+                    flags |= Naming.NA_WRAPPER_UNQUOTED;
+                }
+                qualExpr = naming.makeName((Method)decl, flags);
                 selector = null;
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
