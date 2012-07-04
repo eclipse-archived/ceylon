@@ -314,7 +314,7 @@ public class Singleton<Element>
     }
     @Override @Ignore
     public Iterable<? extends Element> getCoalesced() {
-        return element == null ? (Iterable)$empty.getEmpty() : this;
+        return this;
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
