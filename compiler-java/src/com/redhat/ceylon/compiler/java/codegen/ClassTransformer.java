@@ -28,7 +28,7 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
-import static com.redhat.ceylon.compiler.java.codegen.Naming.NameFlag.*;
+import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.*;
 
 import java.util.Collections;
 import java.util.HashSet;

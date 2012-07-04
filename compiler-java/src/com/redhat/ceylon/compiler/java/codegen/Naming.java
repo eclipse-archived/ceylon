@@ -23,7 +23,7 @@ import com.sun.tools.javac.parser.Token;
 public class Naming {
 
 
-    static enum NameFlag {
+    static enum DeclNameFlag {
         /** 
          * A qualified name. 
          * <li>For a top level this includes the package name.
@@ -134,8 +134,8 @@ public class Naming {
      * @param decl The declaration
      * @param options Option flags
      */
-    static String declName(LocalId gen, final Declaration decl, NameFlag... options) {
-        EnumSet<NameFlag> flags = EnumSet.noneOf(NameFlag.class);
+    static String declName(LocalId gen, final Declaration decl, DeclNameFlag... options) {
+        EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
         StringBuilder sb = new StringBuilder();
 
@@ -147,7 +147,7 @@ public class Naming {
         } while (!(s instanceof Package));
         Collections.reverse(l);
         
-        if (flags.contains(NameFlag.QUALIFIED)) {
+        if (flags.contains(DeclNameFlag.QUALIFIED)) {
             Package pkg = (Package)s;
             final String pname = pkg.getQualifiedNameString();
             sb.append('.').append(pname);
@@ -160,7 +160,7 @@ public class Naming {
             final boolean last = ii == l.size() - 1;
             appendDeclName(gen, decl, flags, sb, scope, last);
         }
-        if (!flags.contains(NameFlag.QUALIFIED)) {
+        if (!flags.contains(DeclNameFlag.QUALIFIED)) {
             // this is a lot saner than trying to modify appendDeclName :(
             int lastDot = sb.lastIndexOf(".");
             if(lastDot != -1)
@@ -169,11 +169,11 @@ public class Naming {
         return sb.toString();
     }
 
-    static void appendDeclName(LocalId gen, final Declaration decl, EnumSet<NameFlag> flags, StringBuilder sb, Scope scope, final boolean last) {
+    static void appendDeclName(LocalId gen, final Declaration decl, EnumSet<DeclNameFlag> flags, StringBuilder sb, Scope scope, final boolean last) {
         if (scope instanceof Class) {
             Class klass = (Class)scope;
             sb.append(klass.getName());
-            if (flags.contains(NameFlag.COMPANION)
+            if (flags.contains(DeclNameFlag.COMPANION)
                     && last) {
                 sb.append("$impl");
             }
@@ -183,15 +183,15 @@ public class Naming {
             if (Decl.isCeylon(iface)
                 &&
                  (decl instanceof Class) 
-                 || flags.contains(NameFlag.COMPANION)) {
+                 || flags.contains(DeclNameFlag.COMPANION)) {
                 sb.append("$impl");
             }
         } else if (Decl.isLocalScope(scope)) {
-            if (flags.contains(NameFlag.COMPANION)
+            if (flags.contains(DeclNameFlag.COMPANION)
                 || !(decl instanceof Interface)) {
                 sb.setLength(0);
             } else
-            if (flags.contains(NameFlag.QUALIFIED)
+            if (flags.contains(DeclNameFlag.QUALIFIED)
                     || (decl instanceof Interface)) {
                 Scope nonLocal = scope;
                 while (!(nonLocal instanceof Declaration)) {
@@ -207,7 +207,7 @@ public class Naming {
         }
         if (!last) {
             if (decl instanceof Interface && Decl.isCeylon((Interface)decl)) {
-                sb.append(flags.contains(NameFlag.COMPANION) ? '.' : '$');
+                sb.append(flags.contains(DeclNameFlag.COMPANION) ? '.' : '$');
             } else {
                 sb.append('.');
             }

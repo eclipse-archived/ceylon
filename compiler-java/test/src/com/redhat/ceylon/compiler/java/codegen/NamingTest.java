@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.java.codegen.Naming.declName;
-import static com.redhat.ceylon.compiler.java.codegen.Naming.NameFlag.COMPANION;
-import static com.redhat.ceylon.compiler.java.codegen.Naming.NameFlag.QUALIFIED;
+import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.COMPANION;
+import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.QUALIFIED;
 
 import java.io.File;
 import java.util.List;

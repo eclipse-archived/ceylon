@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.compiler.java.codegen.Naming.NameFlag.QUALIFIED;
+import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.QUALIFIED;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.Set;
 
 import org.antlr.runtime.Token;
 
-import com.redhat.ceylon.compiler.java.codegen.Naming.NameFlag;
+import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -1279,17 +1279,17 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
 
     private String declName(TypeDeclaration tdecl, int flags) {
-        java.util.List<NameFlag> args = new LinkedList<NameFlag>();
+        java.util.List<DeclNameFlag> args = new LinkedList<DeclNameFlag>();
         if ((flags & JT_COMPANION) != 0) {
-            args.add(NameFlag.COMPANION);
+            args.add(DeclNameFlag.COMPANION);
         }
         if ((flags & JT_NON_QUALIFIED) == 0) {
-            args.add(NameFlag.QUALIFIED);
+            args.add(DeclNameFlag.QUALIFIED);
         }
-        return declName(tdecl, args.toArray(new NameFlag[args.size()]));
+        return declName(tdecl, args.toArray(new DeclNameFlag[args.size()]));
     }
 
-    String declName(final Declaration decl, Naming.NameFlag... flags) {
+    String declName(final Declaration decl, Naming.DeclNameFlag... flags) {
         return Naming.declName(this, decl, flags);
     }
     
@@ -1301,7 +1301,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * Returns the name of the companion class of the given class or interface
      */
     String getCompanionClassName(Declaration decl){
-        return declName(decl, QUALIFIED, NameFlag.COMPANION);
+        return declName(decl, QUALIFIED, DeclNameFlag.COMPANION);
     }
     
     /**
