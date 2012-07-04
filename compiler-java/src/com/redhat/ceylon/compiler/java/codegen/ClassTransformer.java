@@ -852,12 +852,11 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (Decl.isLocal(def)) {
             // Inner method
-            JCExpression nameId = makeQuotedIdent(name);
             JCVariableDecl call = at(def).VarDef(
                     make().Modifiers(FINAL),
-                    names().fromString(name),
-                    nameId,
-                    makeNewClass(name, false));
+                    naming.getSyntheticInstanceName(model),
+                    naming.makeSyntheticClassname(model),
+                    makeSyntheticInstance(model));
             result = result.append(call);
         } 
         return result;
