@@ -34,6 +34,7 @@ import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 
 public class Naming {
@@ -634,6 +635,12 @@ public class Naming {
             Assert.fail();
         }*/
         return null;
+    }
+    JCExpression makeSyntheticClassname(Declaration decl) {
+        return makeUnquotedIdent(getQuotedClassName(decl));
+    }
+    Name getSyntheticInstanceName(Declaration decl) {
+        return names.fromString(decl.getName());
     }
     
 }
