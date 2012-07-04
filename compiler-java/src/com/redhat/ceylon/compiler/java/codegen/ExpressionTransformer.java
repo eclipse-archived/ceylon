@@ -1554,21 +1554,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = naming.makeName((Method)decl, flags);
                 selector = null;
             } else if (decl.isToplevel()) {
-                java.util.List<String> path = new LinkedList<String>();
-                // FQN must start with empty ident (see https://github.com/ceylon/ceylon-compiler/issues/148)
-                if (!decl.getContainer().getQualifiedNameString().isEmpty()) {
-                    path.add("");
-                	path.addAll(Arrays.asList(decl.getContainer().getQualifiedNameString().split("\\.")));
-                } else {
-                    path.add("");
-                }
-                String topClsName = (decl instanceof LazyMethod) ? ((LazyMethod)decl).getRealName() : decl.getName();
-                // class
-                path.add(topClsName);
-                // method
-                path.add(Naming.quoteMethodName(decl));
                 primaryExpr = null;
-                qualExpr = makeQuotedQualIdent(path);
+                qualExpr = naming.makeName((Method)decl, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
