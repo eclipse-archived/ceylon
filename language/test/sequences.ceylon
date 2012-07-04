@@ -310,7 +310,7 @@ shared void sequences() {
     assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
     assert(nonempty coalesced, "nonempty coalesced");
-    value coal2 = coalesce(for (c in "hElLo") c.uppercase then c else null).sequence;
+    value coal2 = coalesce(for (c in "hElLo") null).sequence;
     assert(!nonempty coal2, "nonempty coalesced2");
     assert(coal2.size == 0, "coalesced2.size");
     assert(!`h` in coal2, "coalesced2.contains");
