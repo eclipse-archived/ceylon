@@ -404,7 +404,8 @@ Empty$proto.fold = function(i,r) { return i; }
 Empty$proto.find = function(f) { return null; }
 Empty$proto.findLast = function(f) { return null; }
 Empty$proto.filter = function(f) { return this; }
-
+Empty$proto.getCoalesced = function() { return this; }
+Empty$proto.getIndexed = function() { return this; }
 
 var $empty = Empty();
 

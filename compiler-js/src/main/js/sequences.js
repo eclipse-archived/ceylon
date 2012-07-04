@@ -192,6 +192,7 @@ Singleton$proto.taking = function(take) {
 Singleton$proto.by = function(step) {
     return this;
 }
+Singleton$proto.getCoalesced = function() { return this; }
 
 function SingletonIterator(elem) {
     var that = new SingletonIterator.$$;

@@ -415,6 +415,7 @@ String$proto.sorted = function(f) {
     var r = Iterable.$$.prototype.sorted.apply(this, [f]);
     return string(r);
 }
+String$proto.getCoalesced = function() { return this; }
 
 function StringIterator(string) {
     var that = new StringIterator.$$;
