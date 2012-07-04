@@ -312,4 +312,12 @@ public class Singleton<Element>
     public long count(Callable<? extends Boolean> f) {
         return f.$call(element).booleanValue() ? 1 : 0;
     }
+    @Override @Ignore
+    public Iterable<? extends Element> getCoalesced() {
+        return element == null ? (Iterable)$empty.getEmpty() : this;
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
 }

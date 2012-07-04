@@ -297,5 +297,13 @@ public interface Correspondence<Key,Item> {
         public long count(Callable<? extends Boolean> f) {
             return Iterable$impl._count(this, f);
         }
+        @Override @Ignore
+        public Iterable<? extends Item> getCoalesced() {
+            return Iterable$impl._getCoalesced(this);
+        }
+        @Override @Ignore
+        public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
+            return Iterable$impl._getIndexed(this);
+        }
     }
 }

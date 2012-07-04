@@ -719,6 +719,14 @@ public abstract class String
         public long count(Callable<? extends Boolean> f) {
             return Iterable$impl._count(this, f);
         }
+        @Override @Ignore
+        public Iterable<? extends String> getCoalesced() {
+            return Iterable$impl._getCoalesced(this);
+        }
+        @Override @Ignore
+        public Iterable<? extends Entry<? extends Integer, ? extends String>> getIndexed() {
+            return Iterable$impl._getIndexed(this);
+        }
     }
 
     private static final class Occurs implements Iterable<Integer> {
@@ -822,6 +830,14 @@ public abstract class String
         @Override @Ignore
         public long count(Callable<? extends Boolean> f) {
             return Iterable$impl._count(this, f);
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> getCoalesced() {
+            return Iterable$impl._getCoalesced(this);
+        }
+        @Override @Ignore
+        public Iterable<? extends Entry<? extends Integer, ? extends Integer>> getIndexed() {
+            return Iterable$impl._getIndexed(this);
         }
     }
 

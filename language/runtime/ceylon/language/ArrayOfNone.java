@@ -103,4 +103,6 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     @Override @Ignore public Iterable<? extends Element> taking(long t) { return this; }
     @Override @Ignore public Iterable<? extends Element> by(long s) { return this; }
     @Override @Ignore public long count(Callable<? extends Boolean> f) { return 0; }
+    @Override @Ignore public Iterable<? extends Element> getCoalesced() { return this; }
+    @Override @Ignore public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() { return (Iterable)this; }
 }

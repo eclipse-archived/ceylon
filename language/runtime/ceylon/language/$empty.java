@@ -191,6 +191,8 @@ public class $empty {
     @Override @Ignore public Empty taking(long s) { return this; }
     @Override @Ignore public Empty by(long s) { return this; }
     @Override @Ignore public long count(Callable<? extends Boolean> f) { return 0; }
+    @Override @Ignore public Iterable getCoalesced() { return this; }
+    @Override @Ignore public Iterable getIndexed() { return this; }
     };
     
     public static Empty getEmpty(){

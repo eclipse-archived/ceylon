@@ -41,7 +41,7 @@ public final class arrayOfSize {
     
     private static <Element> Iterable<Element> getIterable(final long size, 
     		final Element element) {
-        return new Iterable<Element>() {
+        return new AbstractIterable<Element>() {
             public Iterator<Element> getIterator() {
                 return new Iterator<Element>() {
                     long idx = 0;
@@ -57,75 +57,6 @@ public final class arrayOfSize {
                 return size==0;
             }
 
-            @Override
-            @Ignore
-            public Iterable<? extends Element> getSequence() { 
-                return Iterable$impl._getSequence(this); 
-            }
-            @Override
-            @Ignore
-            public Iterable<? extends Element> getRest() { 
-                return Iterable$impl._getRest(this); 
-            }
-            @Override
-            @Ignore
-            public Element getFirst() { 
-                return Iterable$impl._getFirst(this); 
-            }
-            @Override @Ignore
-            public Element find(Callable<? extends Boolean> f) {
-                return Iterable$impl._find(this, f);
-            }
-            @Override @Ignore
-            public Element findLast(Callable<? extends Boolean> f) {
-                return Iterable$impl._findLast(this, f);
-            }
-            @Override 
-            @Ignore
-            public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
-                return Iterable$impl._sorted(this, f); 
-            }
-            @Override 
-            @Ignore
-            public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-                return new MapIterable<Element, Result>(this, f); 
-            }
-            @Override 
-            @Ignore
-            public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
-                return new FilterIterable<Element>(this, f); 
-            }
-            @Override 
-            @Ignore
-            public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-                return Iterable$impl._fold(this, ini, f); 
-            }
-            @Override @Ignore
-            public boolean any(Callable<? extends Boolean> f) {
-                return Iterable$impl._any(this, f);
-            }
-            @Override @Ignore
-            public boolean every(Callable<? extends Boolean> f) {
-                return Iterable$impl._every(this, f);
-            }
-			@Override @Ignore
-			public Iterable<? extends Element> skipping(long skip) {
-				return Iterable$impl._skipping(this, skip);
-			}
-
-			@Override @Ignore
-			public Iterable<? extends Element> taking(long take) {
-				return Iterable$impl._taking(this, take);
-			}
-
-			@Override @Ignore
-			public Iterable<? extends Element> by(long step) {
-				return Iterable$impl._by(this, step);
-			}
-			@Override @Ignore
-			public long count(Callable<? extends Boolean> f) {
-			    return Iterable$impl._count(this, f);
-			}
         };
     }
 }

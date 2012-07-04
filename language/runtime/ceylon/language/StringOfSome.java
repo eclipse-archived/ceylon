@@ -84,4 +84,12 @@ class StringOfSome extends String implements Some<Character> {
     public long count(Callable<? extends Boolean> f) {
         return Iterable$impl._count(this, f);
     }
+    @Override @Ignore
+    public Iterable<? extends Character> getCoalesced() {
+        return this; //Can't have null characters
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
 }

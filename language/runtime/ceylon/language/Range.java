@@ -471,4 +471,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         }
         return c;
     }
+    @Override @Ignore
+    public Iterable<? extends Element> getCoalesced() {
+        return this; //There can be no nulls in a Range
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
+
 }

@@ -96,4 +96,13 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     public long count(Callable<? extends Boolean> selecting) {
         return Iterable$impl._count(this, selecting);
     }
+    @Override @Ignore
+    public Iterable<? extends Element> getCoalesced() {
+        return Iterable$impl._getCoalesced(this);
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
+
 }

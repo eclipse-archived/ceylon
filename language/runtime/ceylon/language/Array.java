@@ -655,4 +655,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 	public Iterable<? extends Element> by(long step) {
 		return Iterable$impl._by(this, step);
 	}
+    @Override @Ignore
+    public Iterable<? extends Element> getCoalesced() {
+        return Iterable$impl._getCoalesced(this);
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
 }

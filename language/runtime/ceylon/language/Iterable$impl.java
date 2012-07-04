@@ -217,6 +217,46 @@ public final class Iterable$impl<Element> {
         }
         return c;
     }
+
+    public Iterable<? extends Element> getCoalesced() {
+        return Iterable$impl._getCoalesced($this);
+    }
+    public static <Element> Iterable<? extends Element> _getCoalesced(final Iterable<? extends Element> $this) {
+        final class NotNullIterator implements Iterator<Element> {
+            private final Iterator<? extends Element> orig = $this.getIterator();
+            @Override public java.lang.Object next() {
+                java.lang.Object tmp = null;
+                while ((tmp = orig.next()) == null);
+                return tmp;
+            }
+        }
+        return new AbstractIterable<Element>() {
+            @Override public Iterator<? extends Element> getIterator() { return new NotNullIterator(); }
+        };
+    }
+
+    public Iterable<? extends Entry<? extends Integer,? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed($this);
+    }
+    public static <Element> Iterable<? extends Entry<? extends Integer,? extends Element>> _getIndexed(final Iterable<? extends Element> $this) {
+        final class EntryIterator implements Iterator<Entry<? extends Integer, ? extends Element>> {
+            private long i=0;
+            private final Iterator<? extends Element> orig = $this.getIterator();
+            @Override public java.lang.Object next() {
+                java.lang.Object tmp = null;
+                while ((tmp = orig.next()) == null);
+                return tmp == exhausted.getExhausted() ? tmp : new Entry<Integer, Element>(Integer.instance(i++), (Element)tmp);
+            }
+            
+        }
+        return new AbstractIterable<Entry<? extends Integer,? extends Element>>() {
+            @Override
+            public Iterator<? extends Entry<? extends Integer, ? extends Element>> getIterator() {
+                return new EntryIterator();
+            }
+        };
+    }
+
 }
 
 class MapIterable<Element, Result> implements Iterable<Result> {
@@ -311,6 +351,14 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public long count(Callable<? extends Boolean> f) {
         return Iterable$impl._count(this, f);
     }
+    @Override @Ignore
+    public Iterable<? extends Result> getCoalesced() {
+        return Iterable$impl._getCoalesced(this);
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Result>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
 }
 
 class FilterIterable<Element> implements Iterable<Element> {
@@ -402,5 +450,13 @@ class FilterIterable<Element> implements Iterable<Element> {
     @Override @Ignore
     public long count(Callable<? extends Boolean> f) {
         return Iterable$impl._count(this, f);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> getCoalesced() {
+        return Iterable$impl._getCoalesced(this);
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
     }
 }

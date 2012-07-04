@@ -90,4 +90,8 @@ class StringOfNone extends String implements None<Character> {
     public long count(Callable<? extends Boolean> f) {
         return 0;
     }
+    @Override @Ignore
+    public Iterable<? extends Character> getCoalesced() { return this; }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() { return (Iterable)this; }
 }
