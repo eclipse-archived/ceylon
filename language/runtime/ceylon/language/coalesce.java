@@ -21,17 +21,7 @@ public final class coalesce {
     @Name("values") @Sequenced
     @TypeInfo("ceylon.language.Iterable<Element>")
     final ceylon.language.Iterable<? extends Element> values) {
-        final class NotNullIterator implements Iterator<Element> {
-            private final Iterator<? extends Element> orig = values.getIterator();
-            @Override public java.lang.Object next() {
-                java.lang.Object tmp = null;
-                while ((tmp = orig.next()) == null);
-                return tmp;
-            }
-        }
-        return new AbstractIterable<Element>() {
-            @Override public Iterator<? extends Element> getIterator() { return new NotNullIterator(); }
-        }.getSequence();
+        return values.getCoalesced();
     }
     @Ignore
     public static <Element> Iterable<? extends Element> coalesce() {
