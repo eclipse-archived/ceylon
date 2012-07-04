@@ -150,6 +150,25 @@ void testIterables() {
     assert("AbcdEfghIjklmnOp".count((Character c) c.uppercase)==4, "String.count");
     assert(Singleton(1).count(equalTo(1))==1, "Singleton.count (equalTo)");
 
+    //coalesced
+    assert((1..10).coalesced == 1..10, "Range.coalesced");
+    assert({1,2,3,null,4,5}.coalesced.sequence=={1,2,3,4,5}, "Sequence.coalesced");
+    assert(string(elements(for (c in "HoLa") c.uppercase then c else null).coalesced...)=="HL", "Iterable.coalesced");
+    assert(array(1,2,3,null,5).coalesced.sequence=={1,2,3,5}, "Array.coalesced");
+    assert(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
+    assert("ABC".coalesced=="ABC", "String.coalesced");
+    assert({}.coalesced=={}, "Empty.coalesced");
+
+    //indexed
+    for (k->v in (1..5).indexed) {
+        assert(k+1==v, "Range.indexed");
+    }
+    assert({"a", "b", "c"}.indexed.sequence=={0->"a", 1->"b", 2->"c"}, "Sequence.indexed");
+    assert(array(0, 1, 2).indexed.sequence=={0->0, 1->1, 2->2}, "Array.indexed");
+    assert(Singleton("A").indexed.sequence=={0->"A"}, "Singleton.indexed");
+    assert({}.indexed=={}, "Empty.indexed");
+    assert(elements(for (c in "abc") c).indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "Iterable.indexed");
+
     //Iterable-related functions
     assert({"aaa", "tt", "z"}.sorted(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sorted(byIncreasing)");
     assert({"z", "aaa", "tt"}.sorted(byDecreasing((String s) s.size)).sequence=={"aaa","tt","z"}, "sorted(byDecreasing)");
