@@ -10,5 +10,10 @@ void comprehensions() {
     @type["Array<String>"] array(for (x in {null, "hello", "goodbye"}) if (exists x) if (x.size>1) x.uppercased);
     
     value xxx = { array { seq... }... };
+    
+    value nulls = coalesce(for (c in "hElLo") null).sequence;
+    value nullsAndChars = coalesce(for (c in "hElLo") c.uppercase then c else null).sequence;
+    value nulls2 = {for (c in "hElLo") null}.coalesced;
+    value nullsAndChars2 = {for (c in "hElLo") c.uppercase then c else null}.coalesced;
         
 }
