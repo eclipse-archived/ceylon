@@ -43,7 +43,7 @@ Iterable$proto.map = function(mapper) {
     var iter = this;
     function mapped$iter(){
         var $cmp$=new mapped$iter.$$;
-        IdentifiableObject(mapped$iter);
+        IdentifiableObject($cmp$);
         $cmp$.iter=iter.getIterator();
         $cmp$.mapper=mapper;
         $cmp$.next=function(){
@@ -61,7 +61,7 @@ Iterable$proto.filter = function(select) {
     var iter = this;
     function filtered$iter(){
         var $cmp$=new filtered$iter.$$;
-        IdentifiableObject(filtered$iter);
+        IdentifiableObject($cmp$);
         $cmp$.iter=iter.getIterator();
         $cmp$.select=select;
         $cmp$.next=function(){
@@ -140,7 +140,7 @@ Iterable$proto.every = function(/*Callable<Boolean,Element>*/selecting) {
 Iterable$proto.skipping = function(skip) {
     function skip$iter(iter,skip){
         var $cmp$=new skip$iter.$$;
-        IdentifiableObject(skip$iter);
+        IdentifiableObject($cmp$);
         $cmp$.iter=iter;
         $cmp$.skip=skip;
         $cmp$.getIterator=function(){
@@ -160,7 +160,7 @@ Iterable$proto.taking = function(take) {
     var iter = this;
     function take$iter(){
         var $cmp$=new take$iter.$$;
-        IdentifiableObject(take$iter);
+        IdentifiableObject($cmp$);
         $cmp$.iter=iter.getIterator();
         $cmp$.take=take.value;
         $cmp$.i=0;
@@ -181,7 +181,7 @@ Iterable$proto.by = function(step) {
     var iter = this;
     function by$iter(){
         var $cmp$=new by$iter.$$;
-        IdentifiableObject(by$iter);
+        IdentifiableObject($cmp$);
         $cmp$.iter=iter.getIterator();
         $cmp$.step=step.value;
         $cmp$.next=function(){
@@ -203,5 +203,38 @@ Iterable$proto.count = function(sel) {
 		if (sel(e) === true) c++;
 	}
 	return Integer(c);
+}
+Iterable$proto.getCoalesced = function() {
+    var iter = this;
+    function coal$iter(){
+        var $cmp$=new coal$iter.$$;
+        IdentifiableObject($cmp$);
+        $cmp$.iter=iter.getIterator();
+        $cmp$.next=function(){
+            var e;
+            while ((e = this.iter.next()) === null);
+            return e;
+        };
+        return $cmp$;
+    }
+    initTypeProto(coal$iter, 'ceylon.language.CoalescedIterator', IdentifiableObject, Iterator);
+    return Comprehension(coal$iter);
+}
+Iterable$proto.getIndexed = function() {
+    var iter = this;
+    function ind$iter(){
+        var $cmp$=new ind$iter.$$;
+        IdentifiableObject($cmp$);
+        $cmp$.iter=iter.getIterator();
+        $cmp$.idx = 0;
+        $cmp$.next=function(){
+            var e;
+            while ((e = this.iter.next()) === null);
+            return e === $finished ? e : Entry(Integer(this.idx++), e);
+        };
+        return $cmp$;
+    }
+    initTypeProto(ind$iter, 'ceylon.language.IndexedIterator', IdentifiableObject, Iterator);
+    return Comprehension(ind$iter);
 }
 exports.Iterable=Iterable;
