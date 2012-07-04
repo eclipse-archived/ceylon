@@ -122,7 +122,7 @@ public class ClassDefinitionBuilder {
         if (aliasedName == null) {
             aliasedName = name;
         }
-        if (!aliasedName.equals(Util.quoteIfJavaKeyword(name))) {
+        if (!aliasedName.equals(Naming.quoteIfJavaKeyword(name))) {
             annotations(gen.makeAtName(aliasedName));
         }
         if (ancestorLocal) {
@@ -151,7 +151,7 @@ public class ClassDefinitionBuilder {
         
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
-                gen.names().fromString(Util.quoteIfJavaKeyword(name)),
+                gen.names().fromString(Naming.quoteIfJavaKeyword(name)),
                 typeParams.toList(),
                 extending,
                 satisfies.toList(),

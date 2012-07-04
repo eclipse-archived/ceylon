@@ -700,7 +700,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.BOXED, expectedType), 
-                Util.getGetterName(operator.ceylonMethod)), List.<JCExpression> nil());
+                Naming.getGetterName(operator.ceylonMethod)), List.<JCExpression> nil());
     }
 
     //
@@ -1518,7 +1518,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     // it's a toplevel attribute
                     String topClsName = (decl instanceof LazyValue) ? ((LazyValue)decl).getRealName() : decl.getName();
-                    primaryExpr = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(topClsName));
+                    primaryExpr = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Naming.quoteIfJavaKeyword(topClsName));
                     selector = Naming.getGetterName(decl);
                 }
             } else if (Decl.isClassAttribute(decl)) {
@@ -1572,7 +1572,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                selector = Util.getErasedMethodName(Naming.quoteMethodNameIfProperty((Method) decl, gen()));
+                selector = Naming.getErasedMethodName(Naming.quoteMethodNameIfProperty((Method) decl, gen()));
             }
         }
         if (result == null) {
@@ -1780,7 +1780,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         String selector = Naming.getSetterName(decl);
         if (decl.isToplevel()) {
             // must use top level setter
-            lhs = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(decl.getName()));
+            lhs = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Naming.quoteIfJavaKeyword(decl.getName()));
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (Decl.isLocal(decl)) {

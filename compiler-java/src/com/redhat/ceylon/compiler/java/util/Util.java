@@ -103,11 +103,6 @@ public class Util {
         }
         return sb.subSequence(0, sb.length() - sep.length()).toString();
     }
-    
-    
-    private static boolean isJavaKeyword(String name) {
-        return Naming.isJavaKeyword(name);
-    }
 
     public static String strip(String str){
         return Naming.strip(str);

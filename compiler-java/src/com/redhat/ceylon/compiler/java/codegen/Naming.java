@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
@@ -234,12 +233,12 @@ public class Naming {
              || name.length() >= 3 && name.startsWith("is"))
             && method.getParameterLists().get(0).getParameters().isEmpty()
             && !gen.isVoid(method.getType()))
-            return Util.quote(name);
+            return quote(name);
         // set with one parameter and void type
         if((name.length() >= 4 && name.startsWith("set"))
            && method.getParameterLists().get(0).getParameters().size() == 1
            && gen.isVoid(method.getType()))
-            return Util.quote(name);
+            return quote(name);
         return name;
     }
 
@@ -248,9 +247,9 @@ public class Naming {
         decl = decl.getRefinedDeclaration();
         String name = decl.getName();
         if (Decl.withinClassOrInterface(decl)) {
-            return Util.getErasedMethodName(name);
+            return getErasedMethodName(name);
         } else {
-            return Util.getMethodName(name);
+            return getMethodName(name);
         }
     }
 
@@ -261,9 +260,9 @@ public class Naming {
             return ((JavaBeanValue)decl).getGetterName();
         }
         if (Decl.withinClassOrInterface(decl)) {
-            return Util.getErasedGetterName(decl.getName());
+            return getErasedGetterName(decl.getName());
         } else {
-            return Util.getGetterName(decl.getName());
+            return getGetterName(decl.getName());
         }
     }
 
@@ -273,7 +272,7 @@ public class Naming {
         if(decl instanceof JavaBeanValue){
             return ((JavaBeanValue)decl).getSetterName();
         }
-        return Util.getSetterName(decl.getName());
+        return getSetterName(decl.getName());
     }
 
     static String getDefaultedParamMethodName(Declaration decl, Parameter param) {

@@ -84,7 +84,7 @@ public class MethodDefinitionBuilder {
     private boolean built = false;
 
     public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ancestorLocal, boolean isMember, String name) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? Util.getErasedMethodName(name) : Util.getMethodName(name));
+        return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
     }
     
     public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ancestorLocal, String name) {

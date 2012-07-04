@@ -218,7 +218,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return The ident
      */
     JCIdent makeQuotedIdent(String ident) {
-        return make().Ident(names().fromString(Util.quoteIfJavaKeyword(ident)));
+        return make().Ident(names().fromString(Naming.quoteIfJavaKeyword(ident)));
     }
     
     /** 
@@ -254,7 +254,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             if (type == null)
                 type = makeQuotedIdent(component);
             else
-                type = makeSelect(type, Util.quoteIfJavaKeyword(component));
+                type = makeSelect(type, Naming.quoteIfJavaKeyword(component));
         }
         return type;
     }
@@ -288,7 +288,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     if (expr == null) {
                         expr = makeQuotedIdent(component);
                     } else {
-                        expr = makeSelect(expr, Util.quoteIfJavaKeyword(component));
+                        expr = makeSelect(expr, Naming.quoteIfJavaKeyword(component));
                     }
                 }
             }
@@ -1948,14 +1948,14 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     JCExpression makeEmpty() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                makeFQIdent("ceylon", "language", "$empty", Util.getGetterName("$empty")),
+                makeFQIdent("ceylon", "language", "$empty", Naming.getGetterName("$empty")),
                 List.<JCTree.JCExpression>nil());
     }
     
     JCExpression makeFinished() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                makeFQIdent("ceylon", "language", "exhausted", Util.getGetterName("exhausted")),
+                makeFQIdent("ceylon", "language", "exhausted", Naming.getGetterName("exhausted")),
                 List.<JCTree.JCExpression>nil());
     }
 

@@ -341,7 +341,7 @@ public class StatementTransformer extends AbstractTransformer {
             loop_var_init = cast_elem;
         } else {
             loop_var_type = actualType(variable);
-            loop_var_init = at(stmt).Apply(null, makeSelect(cast_elem, Util.getGetterName("key")), List.<JCExpression> nil());
+            loop_var_init = at(stmt).Apply(null, makeSelect(cast_elem, Naming.getGetterName("key")), List.<JCExpression> nil());
         }
         JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), makeJavaType(loop_var_type), 
                 boxUnboxIfNecessary(loop_var_init, true, loop_var_type, CodegenUtil.getBoxingStrategy(variable.getDeclarationModel())));
@@ -351,7 +351,7 @@ public class StatementTransformer extends AbstractTransformer {
             // final V n = $elem$X.getElement();
             ProducedType item_type2 = actualType(variable2);
             JCExpression item_type_expr2 = makeJavaType(item_type2);
-            JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(cast_elem, Util.getGetterName("item")), List.<JCExpression> nil());
+            JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(cast_elem, Naming.getGetterName("item")), List.<JCExpression> nil());
             String loop_var_name2 = variable2.getIdentifier().getText();
             JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type_expr2, 
                     boxUnboxIfNecessary(loop_var_init2, true, item_type2, CodegenUtil.getBoxingStrategy(variable2.getDeclarationModel())));

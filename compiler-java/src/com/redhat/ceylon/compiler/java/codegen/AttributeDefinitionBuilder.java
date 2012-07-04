@@ -167,7 +167,7 @@ public class AttributeDefinitionBuilder {
 
         return owner.make().VarDef(
                 owner.make().Modifiers(flags),
-                owner.names().fromString(Util.quoteIfJavaKeyword(fieldName)),
+                owner.names().fromString(Naming.quoteIfJavaKeyword(fieldName)),
                 (toplevel) ? owner.make().TypeArray(attrType) : attrType,
                 null
         );
