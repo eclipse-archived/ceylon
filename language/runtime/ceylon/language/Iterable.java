@@ -112,11 +112,13 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Element&ceylon.language.Object>")
+    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Object"))
     public Iterable<? extends Element> getCoalesced();
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<ceylon.language.Integer,Element&ceylon.language.Object>>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<ceylon.language.Integer,Element>>")
+    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Object"))
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed();
 
 }
