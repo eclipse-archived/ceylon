@@ -140,5 +140,10 @@ shared class Singleton<Element>(Element element)
     shared actual Singleton<Element>|Empty taking(Integer take) {
         return take>0 then this else {};
     }
+    doc "Returns the Singleton itself, since a Singleton
+         cannot contain a null."
+    shared actual Singleton<Element> coalesced {
+        return this;
+    }
 
 }

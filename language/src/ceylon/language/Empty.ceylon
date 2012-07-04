@@ -98,4 +98,8 @@ shared interface Empty
     shared actual Empty by(Integer step) {
         return this;
     }
+    shared actual Empty coalesced {
+        return this;
+    }
+
 }

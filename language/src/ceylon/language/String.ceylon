@@ -222,6 +222,12 @@ shared abstract class String()
          operation than `string.size==0`."
     see (size)
     shared actual formal Boolean empty;
+
+    doc "Returns the string itself, since a String cannot
+         contain nulls."
+    shared actual String coalesced {
+        return this;
+    }
 }
 
 doc "Create a new string containing the given characters."

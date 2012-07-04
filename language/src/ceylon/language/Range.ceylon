@@ -237,4 +237,10 @@ shared class Range<Element>(first, last)
         return includes(e) then Range(first, e) else this;
     }
 
+    doc "Returns the range itself, since a Range cannot
+         contain nulls."
+    shared actual Range<Element> coalesced {
+        return this;
+    }
+
 }
