@@ -1714,6 +1714,13 @@ public class GenerateJsVisitor extends Visitor
     
     @Override
     public void visit(Comprehension that) {
+        List<String> oldRetainedVars = retainedVars;
+        retainedVars = new ArrayList<String>();
+        generateComprehension(that);
+        retainedVars = oldRetainedVars;
+    }
+    
+    private void generateComprehension(Comprehension that) {
         out(clAlias, ".Comprehension(function()");
         beginBlock();
         out("//Comprehension"); location(that); endLine();
