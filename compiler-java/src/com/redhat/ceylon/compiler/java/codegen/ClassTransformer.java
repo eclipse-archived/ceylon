@@ -28,7 +28,7 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
-import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
+import static com.redhat.ceylon.compiler.java.codegen.Naming.NameFlag.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -263,7 +263,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     PUBLIC | FINAL, 
                                     typeParameters, 
                                     typedParameter.getType(), 
-                                    CodegenUtil.getDefaultedParamMethodName(method, param), 
+                                    Naming.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model),
                                     rawifyParametersAndResults);
@@ -274,7 +274,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     PUBLIC | FINAL, 
                                     typeParameters,  
                                     typedMember.getType(), 
-                                    CodegenUtil.quoteMethodName(method), 
+                                    Naming.quoteMethodName(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model),
                                     rawifyParametersAndResults);
@@ -292,7 +292,7 @@ public class ClassTransformer extends AbstractTransformer {
                             PUBLIC, 
                             method.getTypeParameters(), 
                             method.getType(), 
-                            CodegenUtil.quoteMethodName(method), 
+                            Naming.quoteMethodName(method), 
                             method.getParameterLists().get(0).getParameters(),
                             Decl.isAncestorLocal(model),
                             rawifyParametersAndResults);
@@ -312,7 +312,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 PUBLIC | (attr.isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
                                 typedMember.getType(), 
-                                CodegenUtil.getGetterName(attr), 
+                                Naming.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
                                 Decl.isAncestorLocal(model),
                                 rawifyParametersAndResults);
@@ -324,7 +324,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 PUBLIC | (attr.isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
                                 typeFact().getVoidDeclaration().getType(), 
-                                CodegenUtil.getSetterName(attr), 
+                                Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                                 Decl.isAncestorLocal(model),
                                 rawifyParametersAndResults);
@@ -791,8 +791,8 @@ public class ClassTransformer extends AbstractTransformer {
                 builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(makeErroneous()))));
             } else {
                 String accessorName = isGetter ? 
-                        CodegenUtil.getGetterName(decl.getDeclarationModel()) :
-                        CodegenUtil.getSetterName(decl.getDeclarationModel());
+                        Naming.getGetterName(decl.getDeclarationModel()) :
+                            Naming.getSetterName(decl.getDeclarationModel());
                 
                 if (isGetter) {
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(
@@ -872,7 +872,7 @@ public class ClassTransformer extends AbstractTransformer {
     List<JCTree> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
-        final String methodName = CodegenUtil.quoteMethodNameIfProperty(model, gen());
+        final String methodName = Naming.quoteMethodNameIfProperty(model, gen());
         if (Decl.withinInterface(model)) {
             // Transform it for the companion
             final Block block;
@@ -1040,7 +1040,7 @@ public class ClassTransformer extends AbstractTransformer {
                     // We're initializing a local method, which will have a 
                     // class wrapper of the same name as the param, so 
                     // the param gets renamed
-                    initialValue = makeUnquotedIdent(CodegenUtil.getAliasedParameterName(initializingParameter));
+                    initialValue = makeUnquotedIdent(Naming.getAliasedParameterName(initializingParameter));
                 } else {
                     initialValue = makeUnquotedIdent(initializingParameter.getName());
                 }
@@ -1222,9 +1222,9 @@ public class ClassTransformer extends AbstractTransformer {
             }
             overloadBuilder.modifiers(mods);
             if ((flags & OL_DELEGATOR) != 0) {
-                methName = makeSelect(makeUnquotedIdent("$this"), CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
+                methName = makeSelect(makeUnquotedIdent("$this"), Naming.quoteMethodNameIfProperty((Method)model, gen()));
             } else {
-                methName = makeQuotedIdent(CodegenUtil.quoteMethodNameIfProperty((Method)model, gen()));
+                methName = makeQuotedIdent(Naming.quoteMethodNameIfProperty((Method)model, gen()));
             }
             overloadBuilder.resultType((Method)model, 0);
         } else if (model instanceof Class) {
@@ -1266,7 +1266,7 @@ public class ClassTransformer extends AbstractTransformer {
                 useDefault = true;
             }
             if (useDefault) {
-                String methodName = CodegenUtil.getDefaultedParamMethodName(model, param2);
+                String methodName = Naming.getDefaultedParamMethodName(model, param2);
                 JCExpression defaultValueMethodName;
                 List<JCExpression> typeArguments = List.<JCExpression>nil();
                 if (Strategy.defaultParameterMethodOnSelf(model)
@@ -1298,7 +1298,7 @@ public class ClassTransformer extends AbstractTransformer {
                 args.add(makeUnquotedIdent(varName));
             } else {
                 overloadBuilder.parameter(param2, 0);
-                args.add(makeQuotedIdent(CodegenUtil.getAliasedParameterName(param2)));
+                args.add(makeQuotedIdent(Naming.getAliasedParameterName(param2)));
             }
         }
         
@@ -1332,7 +1332,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.ParameterList params, Tree.Parameter currentParam) {
         at(currentParam);
         Parameter parameter = currentParam.getDeclarationModel();
-        String name = CodegenUtil.getDefaultedParamMethodName(container, parameter );
+        String name = Naming.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(container), true, name);
         methodBuilder.annotations(makeAtIgnore());
         int modifiers = 0;
@@ -1492,7 +1492,7 @@ public class ClassTransformer extends AbstractTransformer {
     private JCMethodDecl makeMainForFunction(Method method) {
         at(null);
         String path = method.getQualifiedNameString();
-        JCExpression qualifiedName = makeSelect(makeQuotedFQIdent(path), CodegenUtil.quoteMethodName(method));
+        JCExpression qualifiedName = makeSelect(makeQuotedFQIdent(path), Naming.quoteMethodName(method));
         JCMethodDecl mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil()));
         return mainMethod;
     }

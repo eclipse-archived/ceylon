@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.QUALIFIED;
+import static com.redhat.ceylon.compiler.java.codegen.Naming.NameFlag.QUALIFIED;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.Set;
 
 import org.antlr.runtime.Token;
 
-import com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag;
+import com.redhat.ceylon.compiler.java.codegen.Naming.NameFlag;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -1289,8 +1289,8 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return declName(tdecl, args.toArray(new NameFlag[args.size()]));
     }
 
-    String declName(final Declaration decl, CodegenUtil.NameFlag... flags) {
-        return CodegenUtil.declName(this, decl, flags);
+    String declName(final Declaration decl, Naming.NameFlag... flags) {
+        return Naming.declName(this, decl, flags);
     }
     
     private JCExpression makeDeclarationName(Declaration decl) {
@@ -2311,7 +2311,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     final JCExpression makeDefaultedParamMethodIdent(Method method, Parameter param) {
         Interface iface = (Interface)method.getRefinedDeclaration().getContainer();
         return makeQuotedQualIdent(makeQuotedIdent(getCompanionFieldName(iface)), 
-                CodegenUtil.getDefaultedParamMethodName(method, param));
+                Naming.getDefaultedParamMethodName(method, param));
     }
     
     private int getPosition(Node node) {

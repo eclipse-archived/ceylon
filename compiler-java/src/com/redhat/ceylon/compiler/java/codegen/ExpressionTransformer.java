@@ -1493,17 +1493,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             // invoke the getter
             if (decl.isToplevel()) {
                 primaryExpr = null;
-                qualExpr = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), CodegenUtil.getGetterName(decl));
+                qualExpr = makeQualIdent(makeFQIdent(decl.getContainer().getQualifiedNameString()), Naming.quoteIfJavaKeyword(decl.getName()), Naming.getGetterName(decl));
                 selector = null;
             } else if (decl.isClassMember()
                         || decl.isInterfaceMember()) {
-                selector = CodegenUtil.getGetterName(decl);
+                selector = Naming.getGetterName(decl);
             } else {
                 // method local attr
                 if (!isRecursiveReference(expr)) {
                     primaryExpr = makeQualIdent(primaryExpr, decl.getName() + "$getter");
                 }
-                selector = CodegenUtil.getGetterName(decl);
+                selector = Naming.getGetterName(decl);
             }
         } else if (decl instanceof Value) {
             if (decl.isToplevel()) {
@@ -1519,7 +1519,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // it's a toplevel attribute
                     String topClsName = (decl instanceof LazyValue) ? ((LazyValue)decl).getRealName() : decl.getName();
                     primaryExpr = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(topClsName));
-                    selector = CodegenUtil.getGetterName(decl);
+                    selector = Naming.getGetterName(decl);
                 }
             } else if (Decl.isClassAttribute(decl)) {
                 if (Decl.isJavaField(decl) || isWithinSuperInvocation()){
@@ -1527,7 +1527,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties
-                    selector = CodegenUtil.getGetterName(decl);
+                    selector = Naming.getGetterName(decl);
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
                 TypeDeclaration typeDecl = ((Value)decl).getType().getDeclaration();
@@ -1539,7 +1539,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // accessing a local that is not getter wrapped
                 } else {
                     primaryExpr = makeQualIdent(primaryExpr, decl.getName());
-                    selector = CodegenUtil.getGetterName(decl);
+                    selector = Naming.getGetterName(decl);
                 }
             }
         } else if (decl instanceof Method) {
@@ -1551,7 +1551,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primaryExpr = null;
                 // Only want to quote the method name 
                 // e.g. enum.$enum()
-                qualExpr = makeQuotedQualIdent(makeQualIdent(path), CodegenUtil.quoteMethodName(decl));
+                qualExpr = makeQuotedQualIdent(makeQualIdent(path), Naming.quoteMethodName(decl));
                 selector = null;
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
@@ -1566,13 +1566,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // class
                 path.add(topClsName);
                 // method
-                path.add(CodegenUtil.quoteMethodName(decl));
+                path.add(Naming.quoteMethodName(decl));
                 primaryExpr = null;
                 qualExpr = makeQuotedQualIdent(path);
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                selector = Util.getErasedMethodName(CodegenUtil.quoteMethodNameIfProperty((Method) decl, gen()));
+                selector = Util.getErasedMethodName(Naming.quoteMethodNameIfProperty((Method) decl, gen()));
             }
         }
         if (result == null) {
@@ -1580,7 +1580,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (qualExpr == null && selector == null) {
                 useGetter = decl.isClassOrInterfaceMember() && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
-                    selector = CodegenUtil.quoteMethodName(decl);
+                    selector = Naming.quoteMethodName(decl);
                 } else {
                     selector = substitute(decl.getName());
                 }
@@ -1777,7 +1777,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean variable = decl.isVariable();
         
         at(op);
-        String selector = CodegenUtil.getSetterName(decl);
+        String selector = Naming.getSetterName(decl);
         if (decl.isToplevel()) {
             // must use top level setter
             lhs = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Util.quoteIfJavaKeyword(decl.getName()));

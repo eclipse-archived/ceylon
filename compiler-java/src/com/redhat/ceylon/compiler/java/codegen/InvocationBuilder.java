@@ -909,7 +909,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
     
     private JCExpression makeDefaultedArgumentMethodCall(Parameter param) {
-        final String methodName = CodegenUtil.getDefaultedParamMethodName(primaryDeclaration, param);
+        final String methodName = Naming.getDefaultedParamMethodName(primaryDeclaration, param);
         JCExpression defaultValueMethodName;
         if (Strategy.defaultParameterMethodOnSelf(param)) {
             Declaration container = param.getDeclaration().getRefinedDeclaration();
@@ -1047,7 +1047,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 ProducedType type = parameterType(declaredParam, model.getType(), 0);
                 final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
                 JCExpression initValue = gen.make().Apply(null, 
-                        gen.makeSelect(alias, CodegenUtil.getGetterName(model)),
+                        gen.makeSelect(alias, Naming.getGetterName(model)),
                         List.<JCExpression>nil());
                 initValue = gen.expressionGen().applyErasureAndBoxing(
                         initValue, 

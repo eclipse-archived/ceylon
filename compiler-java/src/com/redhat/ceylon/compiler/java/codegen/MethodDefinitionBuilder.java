@@ -263,7 +263,7 @@ public class MethodDefinitionBuilder {
         }
         if (mov instanceof Method
                 || mov instanceof Value && mov.isVariable() && mov.isCaptured()) {
-            aliasedName = CodegenUtil.getAliasedParameterName(param);
+            aliasedName = Naming.getAliasedParameterName(param);
         }
         return parameter(mods, paramName, aliasedName, param, param, param.getType(), flags);
     }

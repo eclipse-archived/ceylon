@@ -33,105 +33,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
  */
 class CodegenUtil {
 
-    static enum NameFlag {
-        /** 
-         * A qualified name. 
-         * <li>For a top level this includes the package name.
-         * <li>For an inner this includes the package name and the qualifying type names
-         * <li>For a (possibly indirect) local this includes the qualifying type names 
-         */
-        QUALIFIED,
-        /** The name of the companion type of this thing */
-        COMPANION
-    }
     
     private CodegenUtil(){}
     
-    /**
-     * Generates a Java type name for the given declaration
-     * @param gen Something which knows about local declarations
-     * @param decl The declaration
-     * @param options Option flags
-     */
-    static String declName(LocalId gen, final Declaration decl, NameFlag... options) {
-        EnumSet<NameFlag> flags = EnumSet.noneOf(NameFlag.class);
-        flags.addAll(Arrays.asList(options));
-        StringBuilder sb = new StringBuilder();
-
-        java.util.List<Scope> l = new java.util.ArrayList<Scope>();
-        Scope s = (Scope)decl;
-        do {
-            l.add(s);
-            s = s.getContainer();
-        } while (!(s instanceof Package));
-        Collections.reverse(l);
-        
-        if (flags.contains(NameFlag.QUALIFIED)) {
-            Package pkg = (Package)s;
-            final String pname = pkg.getQualifiedNameString();
-            sb.append('.').append(pname);
-            if (!pname.isEmpty()) {
-                sb.append('.');
-            }
-        }    
-        for (int ii = 0; ii < l.size(); ii++) {
-            Scope scope = l.get(ii);
-            final boolean last = ii == l.size() - 1;
-            appendDeclName(gen, decl, flags, sb, scope, last);
-        }
-        if (!flags.contains(NameFlag.QUALIFIED)) {
-            // this is a lot saner than trying to modify appendDeclName :(
-            int lastDot = sb.lastIndexOf(".");
-            if(lastDot != -1)
-                sb.delete(0, lastDot+1);
-        }
-        return sb.toString();
-    }
-
-    static void appendDeclName(LocalId gen, final Declaration decl, EnumSet<NameFlag> flags, StringBuilder sb, Scope scope, final boolean last) {
-        if (scope instanceof Class) {
-            Class klass = (Class)scope;
-            sb.append(klass.getName());
-            if (flags.contains(NameFlag.COMPANION)
-                    && last) {
-                sb.append("$impl");
-            }
-        } else if (scope instanceof Interface) {
-            Interface iface = (Interface)scope;
-            sb.append(iface.getName());
-            if (Decl.isCeylon(iface)
-                &&
-                 (decl instanceof Class) 
-                 || flags.contains(NameFlag.COMPANION)) {
-                sb.append("$impl");
-            }
-        } else if (Decl.isLocalScope(scope)) {
-            if (flags.contains(NameFlag.COMPANION)
-                || !(decl instanceof Interface)) {
-                sb.setLength(0);
-            } else
-            if (flags.contains(NameFlag.QUALIFIED)
-                    || (decl instanceof Interface)) {
-                Scope nonLocal = scope;
-                while (!(nonLocal instanceof Declaration)) {
-                    nonLocal = nonLocal.getContainer();
-                }
-                if (decl instanceof Interface) {
-                    sb.append(((Declaration)nonLocal).getName()).append('$').append(gen.getLocalId(scope)).append('$');
-                } else {
-                    sb.append(((Declaration)nonLocal).getName()).append("$").append(gen.getLocalId(scope)).append('.');
-                }
-            }
-            return;
-        }
-        if (!last) {
-            if (decl instanceof Interface && Decl.isCeylon((Interface)decl)) {
-                sb.append(flags.contains(NameFlag.COMPANION) ? '.' : '$');
-            } else {
-                sb.append('.');
-            }
-        }
-    }
 
     static boolean isErasedAttribute(String name){
         // ERASURE
@@ -142,67 +46,7 @@ class CodegenUtil {
         return "hash".equals(declaration.getName());
     }
 
-    static String quoteMethodNameIfProperty(Method method, AbstractTransformer gen) {
-        String name = method.getName();
-        // Toplevel methods keep their original name because their names might be mangled
-        if (method instanceof LazyMethod) {
-            return ((LazyMethod)method).getRealName();
-        }
-        // only quote if method is a member, we cannot get a conflict for local
-        // since local methods have a $getter suffix
-        if(!method.isClassOrInterfaceMember())
-            return name;
-        // do not quote method names if we have a refined constraint
-        Method refinedMethod = (Method) method.getRefinedDeclaration();
-        if(refinedMethod instanceof JavaMethod){
-            return ((JavaMethod)refinedMethod).getRealName();
-        }
-        // get/is with at least one more letter, no parameter and non-void type
-        if(((name.length() >= 4 && name.startsWith("get"))
-             || name.length() >= 3 && name.startsWith("is"))
-            && method.getParameterLists().get(0).getParameters().isEmpty()
-            && !gen.isVoid(method.getType()))
-            return Util.quote(name);
-        // set with one parameter and void type
-        if((name.length() >= 4 && name.startsWith("set"))
-           && method.getParameterLists().get(0).getParameters().size() == 1
-           && gen.isVoid(method.getType()))
-            return Util.quote(name);
-        return name;
-    }
 
-    static String quoteMethodName(Declaration decl){
-        // always use the refined decl
-        decl = decl.getRefinedDeclaration();
-        String name = decl.getName();
-        if (Decl.withinClassOrInterface(decl)) {
-            return Util.getErasedMethodName(name);
-        } else {
-            return Util.getMethodName(name);
-        }
-    }
-
-    static String getGetterName(Declaration decl) {
-        // always use the refined decl
-        decl = decl.getRefinedDeclaration();
-        if (decl instanceof JavaBeanValue) {
-            return ((JavaBeanValue)decl).getGetterName();
-        }
-        if (Decl.withinClassOrInterface(decl)) {
-            return Util.getErasedGetterName(decl.getName());
-        } else {
-            return Util.getGetterName(decl.getName());
-        }
-    }
-
-    static String getSetterName(Declaration decl){
-        // always use the refined decl
-        decl = decl.getRefinedDeclaration();
-        if(decl instanceof JavaBeanValue){
-            return ((JavaBeanValue)decl).getSetterName();
-        }
-        return Util.getSetterName(decl.getName());
-    }
 
     static boolean isUnBoxed(Term node){
         return node.getUnboxed();
@@ -233,16 +77,6 @@ class CodegenUtil {
         return false;
     }
 
-    static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
-        if (decl instanceof Method) {
-            return ((Method) decl).getName() + "$" + getTopmostRefinedDeclaration(param).getName();
-        } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
-            return "$init$" + param.getName();
-        } else {
-            // Should never happen (for now at least)
-            return null;
-        }
-    }
 
     static boolean isDirectAccessVariable(Term term) {
         if(!(term instanceof BaseMemberExpression))
@@ -308,14 +142,5 @@ class CodegenUtil {
             result = (MethodOrValue)member;
         }
         return result;
-    }
-
-    static String getAliasedParameterName(Parameter parameter) {
-        MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(parameter);
-        if (mov instanceof Method
-                || mov instanceof Value && mov.isVariable() && mov.isCaptured()) {
-            return parameter.getName()+"$";
-        }
-        return parameter.getName();
     }
 }

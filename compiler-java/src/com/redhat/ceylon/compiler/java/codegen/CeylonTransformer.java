@@ -255,7 +255,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 } else {
                     Parameter p = CodegenUtil.findParamForDecl(attrName, declarationModel);
                     if (p != null) {
-                        builder.initialValue(makeUnquotedIdent(CodegenUtil.getAliasedParameterName(p)));
+                        builder.initialValue(makeUnquotedIdent(Naming.getAliasedParameterName(p)));
                     }
                 }
             } else {
