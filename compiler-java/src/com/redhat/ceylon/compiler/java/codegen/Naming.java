@@ -490,27 +490,43 @@ public class Naming {
         }
         return acc;
     }
+
+    JCExpression makeQualifiedName(JCExpression expr, MethodOrValue decl, int namingOptions) {
+        LinkedList<String> parts = new LinkedList<String>();
+        Assert.that((namingOptions & NA_FQ) == 0 
+                && (namingOptions & NA_WRAPPER) == 0
+                && (namingOptions & NA_WRAPPER_UNQUOTED) == 0); 
+        if ((namingOptions & NA_MEMBER) != 0) {
+            pushMemberName(decl, namingOptions, parts);
+        }
+        addNamesForWrapperClass(decl, parts, namingOptions);
+        return mkSelect(expr, parts);
+    }
     
     JCExpression makeName(MethodOrValue decl, int namingOptions) {
         LinkedList<String> parts = new LinkedList<String>();
         if ((namingOptions & NA_MEMBER) != 0) {
-            if ((namingOptions & NA_SETTER) != 0) {
-                Assert.not(decl instanceof Method, "A method has no setter");
-                parts.push(getSetterName(decl.getName()));
-            } else if ((namingOptions & NA_GETTER) != 0) {
-                Assert.not(decl instanceof Method, "A method has no getter");
-                parts.push(getGetterName(decl));
-            } else if (decl instanceof Getter
-                    || decl instanceof Value) {
-                parts.push(getGetterName(decl));
-            } else if (decl instanceof Setter) {
-                parts.push(getSetterName(decl.getName()));
-            } else if (decl instanceof Method) {
-                parts.push(getMethodName(decl.getName()));
-            }
+            pushMemberName(decl, namingOptions, parts);
         }
         addNamesForWrapperClass(decl, parts, namingOptions);
         return mkSelect(parts);
+    }
+    private static void pushMemberName(MethodOrValue decl, int namingOptions,
+            LinkedList<String> parts) {
+        if ((namingOptions & NA_SETTER) != 0) {
+            Assert.not(decl instanceof Method, "A method has no setter");
+            parts.push(getSetterName(decl.getName()));
+        } else if ((namingOptions & NA_GETTER) != 0) {
+            Assert.not(decl instanceof Method, "A method has no getter");
+            parts.push(getGetterName(decl));
+        } else if (decl instanceof Getter
+                || decl instanceof Value) {
+            parts.push(getGetterName(decl));
+        } else if (decl instanceof Setter) {
+            parts.push(getSetterName(decl.getName()));
+        } else if (decl instanceof Method) {
+            parts.push(getMethodName(decl.getName()));
+        }
     }
 
     private static void addNamesForWrapperClass(TypedDeclaration decl,
@@ -519,6 +535,8 @@ public class Naming {
             parts.push(getQuotedClassName(decl));
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
             parts.push(getRealName(decl));
+        } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
+            parts.push(decl.getName() + (decl instanceof Getter && Decl.isLocal(decl) ? "$getter" : ""));
         }
         if ((namingOptions & NA_FQ) != 0) {
             Assert.that(((namingOptions & NA_WRAPPER) != 0)
@@ -539,9 +557,7 @@ public class Naming {
                     parts.push(getQuotedClassName((ClassOrInterface) s));
                 } else if (s instanceof TypedDeclaration) {
                     parts.push(quoteIfJavaKeyword(((TypedDeclaration) s).getName()));
-                }/* else {
-                    break;
-                }*/
+                }
                 s = s.getContainer();
             }
         } 
@@ -578,8 +594,16 @@ public class Naming {
     private JCExpression mkSelect(LinkedList<String> parts) {
         Assert.not(parts.isEmpty());
         JCExpression result = makeUnquotedIdent(parts.getFirst());
-        for (String part : parts.subList(1, parts.size())) {
-            result = makeSelect(result, part);
+        return mkSelect(result, parts.subList(1, parts.size()));
+    }
+    
+    private JCExpression mkSelect(JCExpression result, List<String> rest) {
+        for (String part : rest) {
+            if (result == null) {
+                result = makeUnquotedIdent(part);
+            } else {
+                result = makeSelect(result, part);
+            }
         }
         return result;
     }
@@ -590,6 +614,7 @@ public class Naming {
     static final int NA_WRAPPER = 1<<1;
     /** Include the wrapper class of the typed declaration, but don't quote it */
     static final int NA_WRAPPER_UNQUOTED = 1<<2;
+    static final int NA_Q_LOCAL_INSTANCE = 1<<6;
     /** Generate a fully qualified name. Requires NO_WRAPPER */
     static final int NA_FQ = 1<<3;
     /** Generate the name of the getter (otherwise the type of the declaration 
