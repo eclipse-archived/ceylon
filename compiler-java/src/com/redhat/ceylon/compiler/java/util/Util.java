@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.tools.JavaFileObject.Kind;
@@ -41,6 +40,7 @@ import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
@@ -48,7 +48,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.parser.Token;
 
 /**
  * Utility functions that are used in various packages and/or components of the 
@@ -58,13 +57,11 @@ import com.sun.tools.javac.parser.Token;
 public class Util {
 
     public static String quote(String name) {
-        return "$"+name;
+        return Naming.quote(name);
     }
 
     public static String quoteIfJavaKeyword(String name){
-        if(isJavaKeyword(name))
-            return quote(name);
-        return name;
+        return Naming.quoteIfJavaKeyword(name);
     }
     
     /**
@@ -107,85 +104,37 @@ public class Util {
         return sb.subSequence(0, sb.length() - sep.length()).toString();
     }
     
-    private static final HashSet<String> tokens;
-    static {
-        tokens = new HashSet<String>();
-        for (Token t : Token.values()) {
-            tokens.add(t.name);
-        }
-    }
+    
     private static boolean isJavaKeyword(String name) {
-        return tokens.contains(name);
+        return Naming.isJavaKeyword(name);
     }
 
     public static String strip(String str){
-        return (str.charAt(0) == '$') ? str.substring(1) : str;
+        return Naming.strip(str);
     }
 
     public static String capitalize(String str){
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
+        return Naming.capitalize(str);
     }
 
     public static String getErasedMethodName(String name) {
-        // ERASURE
-        if ("hash".equals(name)) {
-            return "hashCode";
-        } else if ("string".equals(name)) {
-            return "toString";
-        } else if ("equals".equals(name)) {
-            // This is a special case where we override the mangling of getMethodName()
-            return "equals";
-        } else if ("clone".equals(name)) {
-            // This is a special case where we override the mangling of getMethodName()
-            // FIXME we should only do this when implementing Cloneable!
-            return "clone";
-        } else {
-            return getMethodName(name);
-        }
+        return Naming.getErasedMethodName(name);
     }
 
     public static String getMethodName(String name) {
-        // ERASURE
-        if ("hashCode".equals(name)) {
-            return "$hashCode";
-        } else if ("toString".equals(name)) {
-            return "$toString";
-        } else if ("equals".equals(name)) {
-            return "$equals";
-        } else if ("wait".equals(name)) {
-            return "$wait";
-        } else if ("notify".equals(name)) {
-            return "$notify";
-        } else if ("notifyAll".equals(name)) {
-            return "$notifyAll";
-        } else if ("getClass".equals(name)) {
-            return "$getClass";
-        } else if ("finalize".equals(name)) {
-            return "$finalize";
-        } else if ("clone".equals(name)) {
-            return "$clone";
-        } else {
-            return quoteIfJavaKeyword(name);
-        }
+        return Naming.getMethodName(name);
     }
 
     public static String getErasedGetterName(String property) {
-        // ERASURE
-        if ("hash".equals(property)) {
-            return "hashCode";
-        } else if ("string".equals(property)) {
-            return "toString";
-        }
-        
-        return getGetterName(property);
+        return Naming.getErasedGetterName(property);
     }
 
     public static String getGetterName(String property) {
-        return "get"+capitalize(strip(property));
+        return Naming.getGetterName(property);
     }
 
     public static String getSetterName(String property){
-        return "set"+capitalize(strip(property));
+        return Naming.getSetterName(property);
     }
 
     // Used by the IDE
