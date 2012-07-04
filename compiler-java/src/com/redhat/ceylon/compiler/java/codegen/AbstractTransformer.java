@@ -367,6 +367,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return makeNewClass(clazz, List.<JCTree.JCExpression>nil());
     }
     
+    JCTree.JCNewClass makeNewClass(JCExpression clazz) {
+        return makeNewClass(clazz, null);
+    }
+    
     // Creates a "new foo(arg1, arg2, ...);"
     JCTree.JCNewClass makeNewClass(JCExpression clazz, List<JCTree.JCExpression> args) {
         if (args == null) {

@@ -1430,9 +1430,10 @@ public class ClassTransformer extends AbstractTransformer {
                 && def instanceof Tree.ObjectDefinition) {
             // generate a field and getter
             AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-                    .wrapped(this, null, model.getQualifiedNameString(), ((Tree.ObjectDefinition)def).getDeclarationModel(), true)
+                    // TODO attr build take a JCExpression className
+                    .wrapped(this, null, model.getName(), model, true)
                     .immutable()
-                    .initialValue(makeNewClass(model.getQualifiedNameString(), true))
+                    .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)))
                     .is(PUBLIC, Decl.isShared(decl))
                     .is(STATIC, true);
             objectClassBuilder.body(builder.build());
