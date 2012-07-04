@@ -51,16 +51,23 @@ public class IntersectionType extends TypeDeclaration {
      * a union of intersections, instead of an intersection of unions.
      */
 	public TypeDeclaration canonicalize() {
-	    if (getSatisfiedTypes().isEmpty()) {
+	    List<ProducedType> sts = getSatisfiedTypes();
+		if (sts.isEmpty()) {
 	        return unit.getBottomDeclaration();
 	    }
-		for (ProducedType st: getSatisfiedTypes()) {
+	    else if (sts.size()==1) {
+	    	TypeDeclaration d = sts.get(0).getDeclaration();
+	    	if (d instanceof BottomType) {
+	    		return d;
+	    	}
+	    }
+		for (ProducedType st: sts) {
 			if (st.getDeclaration() instanceof UnionType) {
 				TypeDeclaration result = new UnionType(unit);
 				List<ProducedType> ulist = new ArrayList<ProducedType>();
 				for (ProducedType ct: st.getDeclaration().getCaseTypes()) {
 					List<ProducedType> ilist = new ArrayList<ProducedType>();
-					for (ProducedType pt: getSatisfiedTypes()) {
+					for (ProducedType pt: sts) {
 						if (pt==st) {
 							addToIntersection(ilist, ct, unit);
 						}
