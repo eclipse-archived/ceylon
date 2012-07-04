@@ -111,6 +111,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     private AbstractModelLoader loader;
     private TypeFactory typeFact;
     protected Log log;
+    final Naming naming;
 
     public AbstractTransformer(Context context) {
         this.context = context;
@@ -120,6 +121,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         loader = CeylonModelLoader.instance(context);
         typeFact = TypeFactory.instance(context);
         log = CeylonLog.instance(context);
+        naming = Naming.instance(context);
     }
 
     Context getContext() {
@@ -209,7 +211,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return The ident
      */
     JCExpression makeUnquotedIdent(String ident) {
-        return make().Ident(names().fromString(ident));
+        return naming.makeUnquotedIdent(ident);
     }
 
     /** 
@@ -218,7 +220,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return The ident
      */
     JCIdent makeQuotedIdent(String ident) {
-        return make().Ident(names().fromString(Naming.quoteIfJavaKeyword(ident)));
+        return naming.makeQuotedIdent(ident);
     }
     
     /** 
@@ -228,7 +230,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @param qualifiedName The qualified name 
      */
     JCExpression makeQuotedQualIdentFromString(String qualifiedName) {
-        return makeQualIdent(null, Util.quoteJavaKeywords(qualifiedName.split("\\.")));
+        return naming.makeQuotedQualIdentFromString(qualifiedName);
     }
 
     /** 
@@ -238,25 +240,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @see #makeQuotedQualIdentFromString(String)
      */
     JCExpression makeQualIdent(Iterable<String> components) {
-        JCExpression type = null;
-        for (String component : components) {
-            if (type == null)
-                type = makeUnquotedIdent(component);
-            else
-                type = makeSelect(type, component);
-        }
-        return type;
+        return naming.makeQualIdent(components);
     }
     
     JCExpression makeQuotedQualIdent(Iterable<String> components) {
-        JCExpression type = null;
-        for (String component : components) {
-            if (type == null)
-                type = makeQuotedIdent(component);
-            else
-                type = makeSelect(type, Naming.quoteIfJavaKeyword(component));
-        }
-        return type;
+        return naming.makeQuotedQualIdent(components);
     }
 
     /** 
@@ -267,49 +255,27 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @see #makeQuotedQualIdentFromString(String)
      */
     JCExpression makeQualIdent(JCExpression expr, String... names) {
-        if (names != null) {
-            for (String component : names) {
-                if (component != null) {
-                    if (expr == null) {
-                        expr = makeUnquotedIdent(component);
-                    } else {
-                        expr = makeSelect(expr, component);
-                    }
-                }
-            }
-        }
-        return expr;
+        return naming.makeQualIdent(expr, names);
     }
     
     JCExpression makeQuotedQualIdent(JCExpression expr, String... names) {
-        if (names != null) {
-            for (String component : names) {
-                if (component != null) {
-                    if (expr == null) {
-                        expr = makeQuotedIdent(component);
-                    } else {
-                        expr = makeSelect(expr, Naming.quoteIfJavaKeyword(component));
-                    }
-                }
-            }
-        }
-        return expr;
+        return naming.makeQuotedQualIdent(expr, names);
     }
 
     JCExpression makeFQIdent(String... components) {
-        return makeQualIdent(makeUnquotedIdent(""), components);
+        return naming.makeFQIdent(components);
     }
 
     JCExpression makeQuotedFQIdent(String... components) {
-        return makeQuotedQualIdent(makeUnquotedIdent(""), components);
+        return naming.makeQuotedFQIdent(components);
     }
 
     JCExpression makeQuotedFQIdent(String qualifiedName) {
-        return makeQuotedFQIdent(Util.quoteJavaKeywords(qualifiedName.split("\\.")));
+        return naming.makeQuotedFQIdent(qualifiedName);
     }
 
     JCExpression makeIdent(Type type) {
-        return make().QualIdent(type.tsym);
+        return naming.makeIdent(type);
     }
 
     /**
@@ -319,7 +285,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return The field access
      */
     JCFieldAccess makeSelect(JCExpression s1, String s2) {
-        return make().Select(s1, names().fromString(s2));
+        return naming.makeSelect(s1, s2);
     }
 
     /**
@@ -329,7 +295,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return The field access
      */
     JCFieldAccess makeSelect(String s1, String s2) {
-        return makeSelect(makeUnquotedIdent(s1), s2);
+        return naming.makeSelect(s1, s2);
     }
 
     /**
@@ -340,15 +306,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return The field access
      */
     JCFieldAccess makeSelect(String s1, String s2, String... rest) {
-        return makeSelect(makeSelect(s1, s2), rest);
+        return naming.makeSelect(s1, s2, rest);
     }
 
     JCFieldAccess makeSelect(JCFieldAccess s1, String[] rest) {
-        JCFieldAccess acc = s1;
-        for (String s : rest) {
-            acc = makeSelect(acc, s);
-        }
-        return acc;
+        return naming.makeSelect(s1, rest);
     }
 
     JCLiteral makeNull() {

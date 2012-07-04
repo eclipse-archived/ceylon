@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
@@ -17,7 +18,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Token;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
+import com.sun.tools.javac.tree.TreeMaker;
+import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Names;
 
 public class Naming {
 
@@ -294,6 +302,184 @@ public class Naming {
             return parameter.getName()+"$";
         }
         return parameter.getName();
+    }
+
+    private TreeMaker maker;
+    private Names names;
+    
+    Naming(TreeMaker maker, Names names) {
+        this.maker = maker;
+        this.names = names;
+    }
+    
+    Naming(Context context) {
+        maker = TreeMaker.instance(context);
+        names = Names.instance(context);
+    }
+    
+    public static Naming instance(Context context) {
+        Naming instance = context.get(Naming.class);
+        if (instance == null) {
+            instance = new Naming(context);
+            context.put(Naming.class, instance);
+        }
+        return instance;
+    }
+    
+    private TreeMaker make() {
+        return maker;
+    }
+    
+    private Names names() {
+        return names;
+    }
+    
+    /** 
+     * Makes an <strong>unquoted</strong> simple identifier
+     * @param ident The identifier
+     * @return The ident
+     */
+    JCExpression makeUnquotedIdent(String ident) {
+        return make().Ident(names().fromString(ident));
+    }
+
+    /** 
+     * Makes an <strong>quoted</strong> simple identifier
+     * @param ident The identifier
+     * @return The ident
+     */
+    JCIdent makeQuotedIdent(String ident) {
+        return make().Ident(names().fromString(Naming.quoteIfJavaKeyword(ident)));
+    }
+    
+    /** 
+     * Makes a <strong>quoted</strong> qualified (compound) identifier from 
+     * the given qualified name. Each part of the name will be 
+     * quoted if it is a Java keyword.
+     * @param qualifiedName The qualified name 
+     */
+    JCExpression makeQuotedQualIdentFromString(String qualifiedName) {
+        return makeQualIdent(null, Util.quoteJavaKeywords(qualifiedName.split("\\.")));
+    }
+
+    /** 
+     * Makes an <strong>unquoted</strong> qualified (compound) identifier 
+     * from the given qualified name components
+     * @param components The components of the name.
+     * @see #makeQuotedQualIdentFromString(String)
+     */
+    JCExpression makeQualIdent(Iterable<String> components) {
+        JCExpression type = null;
+        for (String component : components) {
+            if (type == null)
+                type = makeUnquotedIdent(component);
+            else
+                type = makeSelect(type, component);
+        }
+        return type;
+    }
+    
+    JCExpression makeQuotedQualIdent(Iterable<String> components) {
+        JCExpression type = null;
+        for (String component : components) {
+            if (type == null)
+                type = makeQuotedIdent(component);
+            else
+                type = makeSelect(type, Naming.quoteIfJavaKeyword(component));
+        }
+        return type;
+    }
+
+    /** 
+     * Makes an <strong>unquoted</strong> qualified (compound) identifier 
+     * from the given qualified name components
+     * @param expr A starting expression (may be null)
+     * @param names The components of the name (may be null)
+     * @see #makeQuotedQualIdentFromString(String)
+     */
+    JCExpression makeQualIdent(JCExpression expr, String... names) {
+        if (names != null) {
+            for (String component : names) {
+                if (component != null) {
+                    if (expr == null) {
+                        expr = makeUnquotedIdent(component);
+                    } else {
+                        expr = makeSelect(expr, component);
+                    }
+                }
+            }
+        }
+        return expr;
+    }
+    
+    JCExpression makeQuotedQualIdent(JCExpression expr, String... names) {
+        if (names != null) {
+            for (String component : names) {
+                if (component != null) {
+                    if (expr == null) {
+                        expr = makeQuotedIdent(component);
+                    } else {
+                        expr = makeSelect(expr, Naming.quoteIfJavaKeyword(component));
+                    }
+                }
+            }
+        }
+        return expr;
+    }
+
+    JCExpression makeFQIdent(String... components) {
+        return makeQualIdent(makeUnquotedIdent(""), components);
+    }
+
+    JCExpression makeQuotedFQIdent(String... components) {
+        return makeQuotedQualIdent(makeUnquotedIdent(""), components);
+    }
+
+    JCExpression makeQuotedFQIdent(String qualifiedName) {
+        return makeQuotedFQIdent(Util.quoteJavaKeywords(qualifiedName.split("\\.")));
+    }
+
+    JCExpression makeIdent(Type type) {
+        return make().QualIdent(type.tsym);
+    }
+
+    /**
+     * Makes a <strong>unquoted</strong> field access
+     * @param s1 The base expression
+     * @param s2 The field to access
+     * @return The field access
+     */
+    JCFieldAccess makeSelect(JCExpression s1, String s2) {
+        return make().Select(s1, names().fromString(s2));
+    }
+
+    /**
+     * Makes a <strong>unquoted</strong> field access
+     * @param s1 The base expression
+     * @param s2 The field to access
+     * @return The field access
+     */
+    JCFieldAccess makeSelect(String s1, String s2) {
+        return makeSelect(makeUnquotedIdent(s1), s2);
+    }
+
+    /**
+     * Makes a sequence of <strong>unquoted</strong> field accesses
+     * @param s1 The base expression
+     * @param s2 The first field to access
+     * @param rest The remaining fields to access
+     * @return The field access
+     */
+    JCFieldAccess makeSelect(String s1, String s2, String... rest) {
+        return makeSelect(makeSelect(s1, s2), rest);
+    }
+
+    JCFieldAccess makeSelect(JCFieldAccess s1, String[] rest) {
+        JCFieldAccess acc = s1;
+        for (String s : rest) {
+            acc = makeSelect(acc, s);
+        }
+        return acc;
     }
     
 }
