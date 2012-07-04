@@ -25,6 +25,8 @@ void comprehensions() {
   assert({for (x in {1,2,"3.1",4}) if (is String x) x}=={"3.1"}, "comprehensions w/is 1");
   assert({for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i}=={3}, "comprehensions w/is 2");
   assert(array {for (k->v in entries("a","b","c","d","e")) if (k%2==0) v.uppercased}==array("A","C","E"), "key-value comprehensions");
+  // comprehension nested inside comprehension
+  assert({for(i in 1..2){for(j in 1..2)""i","j""}}=={{"1,1","1,2"},{"2,1","2,2"}}, "nested comprehension");
 
   //new comprehension-related functions
   assert(any(for (x in 1..5) x>4), "any");
