@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 @Ceylon(major = 1)
@@ -84,8 +85,9 @@ class StringOfSome extends String implements Some<Character> {
     public long count(Callable<? extends Boolean> f) {
         return Iterable$impl._count(this, f);
     }
-    @Override @Ignore
-    public Iterable<? extends Character> getCoalesced() {
+    @TypeInfo("ceylon.language.String")
+    @Override
+    public String getCoalesced() {
         return this; //Can't have null characters
     }
     @Override @Ignore

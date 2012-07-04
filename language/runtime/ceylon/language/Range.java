@@ -471,8 +471,9 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         }
         return c;
     }
-    @Override @Ignore
-    public Iterable<? extends Element> getCoalesced() {
+    @TypeInfo("ceylon.language.Range<Element>")
+    @Override
+    public Range<? extends Element> getCoalesced() {
         return this; //There can be no nulls in a Range
     }
     @Override @Ignore

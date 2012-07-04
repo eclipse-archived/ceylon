@@ -312,8 +312,9 @@ public class Singleton<Element>
     public long count(Callable<? extends Boolean> f) {
         return f.$call(element).booleanValue() ? 1 : 0;
     }
-    @Override @Ignore
-    public Iterable<? extends Element> getCoalesced() {
+    @Override
+    @TypeInfo("ceylon.language.Singleton<Element>")
+    public Singleton<? extends Element> getCoalesced() {
         return this;
     }
     @Override @Ignore
