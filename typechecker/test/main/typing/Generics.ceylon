@@ -491,7 +491,7 @@ class Generics() {
     @type["String"] genericMethod2("hello");
     @type["String"] genericMethod2(true then "hello");
     
-    @type["Empty|Sequence<String>"] coalesce(null, "hello");
+    @type["Iterable<String>"] coalesce(null, "hello");
     @type["Empty|Sequence<String>"] join({}, {"hello", "world"}, {"goodbye"});
     
     class ParamOuter<T>() {
