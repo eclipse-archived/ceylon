@@ -357,13 +357,8 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     
     // Creates a "new foo();"
     JCTree.JCNewClass makeNewClass(String className, boolean fullyQualified) {
-        return makeNewClass(className, List.<JCTree.JCExpression>nil(), fullyQualified);
-    }
-    
-    // Creates a "new foo(arg1, arg2, ...);"
-    JCTree.JCNewClass makeNewClass(String className, List<JCTree.JCExpression> args, boolean fullyQualified) {
         JCExpression name = fullyQualified ? makeQuotedFQIdent(className) : makeQuotedQualIdentFromString(className);
-        return makeNewClass(name, args);
+        return makeNewClass(name, List.<JCTree.JCExpression>nil());
     }
     
     // Creates a "new foo(arg1, arg2, ...);"
