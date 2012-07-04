@@ -4,19 +4,28 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
+import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
+import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Token;
@@ -480,6 +489,126 @@ public class Naming {
             acc = makeSelect(acc, s);
         }
         return acc;
+    }
+    
+    JCExpression makeName(MethodOrValue decl, int namingOptions) {
+        LinkedList<String> parts = new LinkedList<String>();
+        if ((namingOptions & NA_MEMBER) != 0) {
+            if ((namingOptions & NA_SETTER) != 0) {
+                Assert.not(decl instanceof Method, "A method has no setter");
+                parts.push(getSetterName(decl.getName()));
+            } else if ((namingOptions & NA_GETTER) != 0) {
+                Assert.not(decl instanceof Method, "A method has no getter");
+                parts.push(getGetterName(decl));
+            } else if (decl instanceof Getter
+                    || decl instanceof Value) {
+                parts.push(getGetterName(decl));
+            } else if (decl instanceof Setter) {
+                parts.push(getSetterName(decl.getName()));
+            } else if (decl instanceof Method) {
+                parts.push(getMethodName(decl.getName()));
+            }
+        }
+        addNamesForWrapperClass(decl, parts, namingOptions);
+        return mkSelect(parts);
+    }
+
+    private static void addNamesForWrapperClass(TypedDeclaration decl,
+            LinkedList<String> parts, int namingOptions) {
+        if ((namingOptions & NA_WRAPPER) != 0) {
+            parts.push(getQuotedClassName(decl));
+        } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
+            parts.push(getRealName(decl));
+        }
+        if ((namingOptions & NA_FQ) != 0) {
+            Assert.that(((namingOptions & NA_WRAPPER) != 0)
+                    || ((namingOptions & NA_WRAPPER_UNQUOTED) != 0), 
+                    "If you pass FQ you must pass WRAPPER or WRAPPER_UNQUOTED too, or there's no class name to qualify!");
+            Scope s = decl.getContainer();
+            while (s != null) {
+                if (s instanceof Package) {
+                    final List<String> packageName = ((Package) s).getName();
+                    for (int ii = packageName.size() - 1; ii >= 0; ii--) {
+                        parts.push(quoteIfJavaKeyword(packageName.get(ii)));
+                    }
+                    if (!packageName.get(0).isEmpty()) {
+                        parts.push("");// so generated name begins with a .
+                    }
+                    break;
+                } else if (s instanceof ClassOrInterface) {
+                    parts.push(getQuotedClassName((ClassOrInterface) s));
+                } else if (s instanceof TypedDeclaration) {
+                    parts.push(quoteIfJavaKeyword(((TypedDeclaration) s).getName()));
+                }/* else {
+                    break;
+                }*/
+                s = s.getContainer();
+            }
+        } 
+    }
+
+    private static String quoteClassName(String name) {
+        return quoteIfJavaKeyword(name);
+    }
+    
+    private static String getRealName(Declaration decl) {
+        String name;
+        if (decl instanceof LazyValue) {
+            name = ((LazyValue)decl).getRealName();
+        } else if (decl instanceof LazyMethod) {
+            name = ((LazyMethod)decl).getRealName();
+        } else if (decl instanceof LazyClass) {
+            name = ((LazyClass)decl).getRealName();
+        } else if (decl instanceof LazyInterface) {
+            name = ((LazyInterface)decl).getRealName();
+        } else {
+            name = decl.getName();
+        }
+        return name;
+    }
+    
+    private static String getQuotedClassName(Declaration decl) {
+        String name = getRealName(decl);
+        return quoteClassName(name);
+    }
+    
+    /**
+     * Returns a fully qualified JCExpression for referring to the given name
+     */
+    private JCExpression mkSelect(LinkedList<String> parts) {
+        Assert.not(parts.isEmpty());
+        JCExpression result = makeUnquotedIdent(parts.getFirst());
+        for (String part : parts.subList(1, parts.size())) {
+            result = makeSelect(result, part);
+        }
+        return result;
+    }
+    
+    /** Include the member part of the typed declaration (e.g. the method name) */
+    static final int NA_MEMBER = 1<<0;
+    /** Include the wrapper class of the typed declaration */
+    static final int NA_WRAPPER = 1<<1;
+    /** Include the wrapper class of the typed declaration, but don't quote it */
+    static final int NA_WRAPPER_UNQUOTED = 1<<2;
+    /** Generate a fully qualified name. Requires NO_WRAPPER */
+    static final int NA_FQ = 1<<3;
+    /** Generate the name of the getter (otherwise the type of the declaration 
+     * will be used to determine the name to be generated) */
+    static final int NA_GETTER = 1<<4;
+    /** Generate the name of the setter (otherwise the type of the declaration 
+     * will be used to determine the name to be generated) */
+    static final int NA_SETTER = 1<<5;
+
+    static JCExpression makeDefaultedParamMethodName(Declaration decl, Parameter param, int namingOptions) {
+        // TODO Implement this
+        /*if (decl instanceof Method) {
+            return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param).getName();
+        } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
+            return "$init$" + param.getName();
+        } else {
+            Assert.fail();
+        }*/
+        return null;
     }
     
 }
