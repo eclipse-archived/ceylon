@@ -71,13 +71,7 @@ function zip(keys, items) {
 //receives and returns ArraySequence
 function coalesce(seq) {
     if (seq === undefined) {return $empty}
-    var newseq = [];
-    var it = seq.getIterator();
-    var elem;
-    while ((elem = it.next()) !== $finished) {
-        if (elem !== null) {newseq.push(elem);}
-    }
-    return ArraySequence(newseq);
+    return seq.getCoalesced();
 }
 
 //receives ArraySequence and CeylonObject, returns new ArraySequence
@@ -98,13 +92,7 @@ function prepend(seq, elem) {
 //Receives Iterable, returns ArraySequence (with Entries)
 function entries(seq) {
     if (seq === undefined) return $empty;
-    var e = [];
-    var iter = seq.getIterator();
-    var i = 0;
-    var elem; while ((elem = iter.next()) !== $finished) {
-        e.push(Entry(Integer(i++), elem));
-    }
-    return ArraySequence(e);
+    return seq.getIndexed();
 }
 
 function any(/*Boolean...*/ values) {
