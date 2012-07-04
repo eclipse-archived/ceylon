@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @SatisfiedTypes({"ceylon.language.Iterable<Element>",
         "ceylon.language.Sized",
         "ceylon.language.Category",
-        "ceylon.language.Cloneable<Collection<Element>>"})
+        "ceylon.language.Cloneable<ceylon.language.Collection<Element>>"})
 public interface Collection<Element> 
         extends Iterable<Element>, Sized, Category,
                 Cloneable<Collection<? extends Element>> {
