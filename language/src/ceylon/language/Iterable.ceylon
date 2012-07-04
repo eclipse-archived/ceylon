@@ -189,11 +189,11 @@ shared interface Iterable<out Element>
         return count;
     }
 
-    shared Iterable<Element&Object> coalesced {
+    shared default Iterable<Element&Object> coalesced {
         return elements(for (e in this) if (exists e) e);
     }
 
-    shared Iterable<Entry<Integer,Element&Object>> indexed {
+    shared default Iterable<Entry<Integer,Element&Object>> indexed {
         variable value i:=0;
         return elements(for (e in this) if (exists e) i++->e);
     }
