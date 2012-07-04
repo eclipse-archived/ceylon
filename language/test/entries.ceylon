@@ -21,12 +21,12 @@ shared Range<Integer> range {
 }*/
 
 void test_entries_function() {
-    value e = entries("a", "b", "c", "X", "Y", "Z", "1", "2", "3", "d", "e", "f");
+    value e = entries("a", "b", "c", "X", "Y", "Z", "1", "2", "3", "d", "e", "f").sequence;
     value _e = Entry(-1, "null");
-    assert((e[2] else _e).key==2, "entries");
-    assert((e[2] else _e).item=="c", "entries");
-    assert(1->"a" == 1->"a", "entry.equals");
-    assert(1->"a" != 1->"b", "entry.equals");
+    assert((e[2] else _e).key==2, "entries [1]");
+    assert((e[2] else _e).item=="c", "entries [2]");
+    assert(1->"a" == 1->"a", "entry.equals [1]");
+    assert(1->"a" != 1->"b", "entry.equals [2]");
 }
 
 void entriesAndRanges() {

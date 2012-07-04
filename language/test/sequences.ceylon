@@ -301,7 +301,7 @@ shared void sequences() {
     }
     assert(nonnull==2, "iterate sequence with nulls");
 
-    value coalesced = coalesce(nulls...);
+    value coalesced = coalesce(nulls...).sequence;
     assert(coalesced.size==2, "coalesce size");
     assert(coalesced.string=="{ hello, world }", "coalesce.string");
     assert(coalesced.keys.contains(0), "coalesced keys");
@@ -310,11 +310,10 @@ shared void sequences() {
     assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
     assert(nonempty coalesced, "nonempty coalesced");
-    value coal2 = coalesce(for (c in "hElLo") null);
+    value coal2 = coalesce(for (c in "hElLo") c.uppercase then c else null).sequence;
     assert(!nonempty coal2, "nonempty coalesced2");
     assert(coal2.size == 0, "coalesced2.size");
     assert(!`h` in coal2, "coalesced2.contains");
-
     value entriesBuilder = SequenceBuilder<Integer->String>();
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
@@ -333,13 +332,13 @@ shared void sequences() {
     }
 
     value sequenceEntries = entries("X1", "X2", "X3");
-    assert(sequenceEntries.size==3, "entries size");
-    assert(nonempty sequenceEntries, "nonempty entries");
-    if (nonempty sequenceEntries) {
-        assert(sequenceEntries.first==Entry(0, "X1"), "entries first");
+    assert(sequenceEntries.sequence.size==3, "entries size");
+    assert(nonempty sequenceEntries.sequence, "nonempty entries");
+    if (exists primero=sequenceEntries.first) {
+        assert(primero==Entry(0, "X1"), "entries first");
     }
     else {
-        fail("entries empty");
+        fail("entries first");
     }
     for (nat->str in sequenceEntries) {
         assert("X"+(nat+1).string==str, "entries iteration");
