@@ -38,5 +38,10 @@ public class BottomType extends TypeDeclaration {
     public DeclarationKind getDeclarationKind() {
         return DeclarationKind.TYPE;
     }
+    
+    @Override
+    public boolean equals(Object object) {
+    	return object instanceof BottomType;
+    }
 
 }
