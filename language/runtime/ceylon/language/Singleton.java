@@ -277,7 +277,7 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
     public Iterable<? extends Element> filter(@Name("selecting")
-            @TypeInfo("ceylon.language.Callable<Boolean,Element>")
+            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
             Callable<? extends Boolean> selecting) {
         return selecting.$call(element).booleanValue() ? this : (Iterable)$empty.getEmpty();
     }
