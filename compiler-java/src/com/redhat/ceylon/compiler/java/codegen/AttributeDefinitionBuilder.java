@@ -94,9 +94,10 @@ public class AttributeDefinitionBuilder {
             .isActual(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
             .parameter(Flags.FINAL, attrName, attrType, nonWideningTypedRef.getDeclaration(), nonWideningType, 0);
     }
-
-    public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, String name, TypedDeclaration attrType, boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, attrType, name, name, "value", toplevel);
+    
+    public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
+            String className, String attrName, TypedDeclaration attrType, boolean toplevel) {
+        return new AttributeDefinitionBuilder(owner, attrType, className, attrName, "value", toplevel);
     }
     
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, String name, TypedDeclaration attrType) {
@@ -221,17 +222,6 @@ public class AttributeDefinitionBuilder {
                         owner.make().Assign(
                                 fld,
                                 owner.makeUnquotedIdent(attrName)))));
-    }
-
-    /**
-     * Sets the name for generated class.
-     * If not used will use the same name as for the variable.
-     * @param className the new class name
-     * @return this instance for method chaining
-     */
-    public AttributeDefinitionBuilder className(String className) {
-        this.className = className;
-        return this;
     }
     
     public AttributeDefinitionBuilder modifiers(long... modifiers) {

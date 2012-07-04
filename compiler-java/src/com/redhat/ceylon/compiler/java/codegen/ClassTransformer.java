@@ -1386,7 +1386,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transformObjectDefinition(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
         return transformObject(def, def.getDeclarationModel(), 
-                def.getAnonymousClass(), containingClassBuilder, true);
+                def.getAnonymousClass(), containingClassBuilder, Decl.isLocal(def));
     }
     
     public List<JCTree> transformObjectArgument(Tree.ObjectArgument def) {
@@ -1394,14 +1394,15 @@ public class ClassTransformer extends AbstractTransformer {
                 def.getAnonymousClass(), null, false);
     }
     
-    private List<JCTree> transformObject(Node def, Value model, 
+    private List<JCTree> transformObject(Tree.StatementOrArgument def, Value model, 
             Class klass,
             ClassDefinitionBuilder containingClassBuilder,
-            boolean makeInstanceIfLocal) {
+            boolean makeLocalInstance) {
         noteDecl(model);
         
         String name = model.getName();
-        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, Decl.isAncestorLocal(model), name, null);
+        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
+                this, Decl.isAncestorLocal(model), name, null);
         
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;
@@ -1427,7 +1428,14 @@ public class ClassTransformer extends AbstractTransformer {
 
         if (Decl.isToplevel(model)
                 && def instanceof Tree.ObjectDefinition) {
-            objectClassBuilder.body(makeObjectGlobal((Tree.ObjectDefinition)def, model.getQualifiedNameString()).toList());
+            // generate a field and getter
+            AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
+                    .wrapped(this, null, model.getQualifiedNameString(), ((Tree.ObjectDefinition)def).getDeclarationModel(), true)
+                    .immutable()
+                    .initialValue(makeNewClass(model.getQualifiedNameString(), true))
+                    .is(PUBLIC, Decl.isShared(decl))
+                    .is(STATIC, true);
+            objectClassBuilder.body(builder.build());
         }
 
         List<JCTree> result = objectClassBuilder
@@ -1439,8 +1447,7 @@ public class ClassTransformer extends AbstractTransformer {
             .init(childDefs)
             .build();
         
-        if (Decl.isLocal(model)
-                && makeInstanceIfLocal) {
+        if (makeLocalInstance) {
             result = result.append(makeLocalIdentityInstance(name, false));
         } else if (Decl.withinClassOrInterface(model)) {
             boolean visible = Decl.isCaptured(model);
@@ -1458,19 +1465,6 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         return result;
-    }
-
-    private ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, String generatedClassName) {
-        ListBuffer<JCTree> defs = ListBuffer.lb();
-        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-                .wrapped(this, decl.getIdentifier().getText(), decl.getDeclarationModel(), true)
-                .immutable()
-                .initialValue(makeNewClass(generatedClassName, true))
-                .is(PUBLIC, Decl.isShared(decl))
-                .is(STATIC, true);
-
-        builder.appendDefinitionsTo(defs);
-        return defs;
     }
     
     /**

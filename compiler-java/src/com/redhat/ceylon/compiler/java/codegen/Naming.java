@@ -564,7 +564,7 @@ public class Naming {
         } 
     }
 
-    private static String quoteClassName(String name) {
+    static String quoteClassName(String name) {
         return quoteIfJavaKeyword(name);
     }
     

@@ -102,6 +102,10 @@ public class ClassDefinitionBuilder {
         return builder;
     }
     
+    public static ClassDefinitionBuilder object(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
+        return klass(gen, ancestorLocal, name, aliasedName);
+    }
+    
     public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String name, boolean shared) {
         final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name, null);
         builder.containingClassBuilder = gen.current();
@@ -151,7 +155,7 @@ public class ClassDefinitionBuilder {
         
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
-                gen.names().fromString(Naming.quoteIfJavaKeyword(name)),
+                gen.names().fromString(getClassName()),
                 typeParams.toList(),
                 extending,
                 satisfies.toList(),
@@ -187,6 +191,10 @@ public class ClassDefinitionBuilder {
         gen.replace(containingClassBuilder);
         
         return klasses.toList();
+    }
+
+    private String getClassName() {
+        return Naming.quoteClassName(name);
     }
 
     private boolean hasCompanion() {

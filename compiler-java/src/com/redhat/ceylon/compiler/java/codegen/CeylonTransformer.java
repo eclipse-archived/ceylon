@@ -215,8 +215,7 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.SpecifierOrInitializerExpression expression, 
             final Tree.AttributeSetterDefinition setterDecl) {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .wrapped(this, attrName, declarationModel, declarationModel.isToplevel())
-            .className(attrClassName)
+            .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
 
         // if it's a module or package add a special annotation
