@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon(major = 1)
+@Ceylon(major = 2)
 @TypeParameters({
     @TypeParameter(value = "Index", variance = Variance.IN,
     		satisfies="ceylon.language.Comparable<Index>"),

@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
-@Ceylon(major = 1)
+@Ceylon(major = 2)
 class StringOfNone extends String implements None<Character> {
     
     static StringOfNone instance = new StringOfNone();

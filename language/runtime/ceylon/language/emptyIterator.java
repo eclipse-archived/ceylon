@@ -3,7 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon(major = 1) @Object
+@Ceylon(major = 2) @Object
 //TODO: extends Iterator<Bottom>
 public class emptyIterator implements Iterator {
     

@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
-@Ceylon(major = 1)
+@Ceylon(major = 2)
 @Class(extendsType="ceylon.language.Object")
 public class Quoted {
 	

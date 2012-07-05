@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon(major = 1)
+@Ceylon(major = 2)
 @TypeParameters({@TypeParameter(value = "This",
     		satisfies="ceylon.language.Exponentiable<This,Other>"),
     		    @TypeParameter(value = "Other",

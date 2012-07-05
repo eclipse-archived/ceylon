@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon(major = 1)
+@Ceylon(major = 2)
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({"ceylon.language.List<ceylon.language.Character>",
                  "ceylon.language.Comparable<ceylon.language.String>",

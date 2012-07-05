@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
-@Ceylon(major = 1)
+@Ceylon(major = 2)
 class StringOfSome extends String implements Some<Character> {
     
     StringOfSome(java.lang.String s) { 

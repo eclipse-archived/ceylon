@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon(major = 1)
+@Ceylon(major = 2)
 public interface Number {
     
     @Annotations(@Annotation("formal"))
