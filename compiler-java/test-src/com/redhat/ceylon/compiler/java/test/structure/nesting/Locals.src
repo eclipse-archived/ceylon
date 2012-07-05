@@ -4,11 +4,11 @@ interface Local$local$0$LC$LCI {
     
     public long m();
 }
-interface Local$local$1$LI$LII {
+interface Local$local$0$LI$LII {
     
     public long m();
 }
-interface Local$local$1$LI {
+interface Local$local$0$LI {
     
     public .java.lang.Object LI$impl();
 }
@@ -104,16 +104,16 @@ class Local {
         }
         
         final class LI$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI $this;
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI $this;
             
             final class LII$impl {
-                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI$LII $this;
+                private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI$LII $this;
                 
                 public long m() {
                     return mLocal() + i;
                 }
                 
-                LII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI$LII $this) {
+                LII$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI$LII $this) {
                     this.$this = $this;
                 }
             }
@@ -125,7 +125,7 @@ class Local {
                 }
             }
             
-            class LIC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI$LII {
+            class LIC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI$LII {
                 private final long j;
                 private final LI$impl.LII$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this;
                 
@@ -152,7 +152,7 @@ class Local {
                 }
             }
             
-            LI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$1$LI $this) {
+            LI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI $this) {
                 this.$this = $this;
             }
         }

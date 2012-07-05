@@ -16,7 +16,7 @@ class OuterReferenceSuper {
 }
 interface OuterReference$InnerIface {
 }
-interface OuterReference$m$1$LocalIface {
+interface OuterReference$m$0$LocalIface {
 }
 class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper {
     
@@ -125,7 +125,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         }
         
         final class LocalIface$impl {
-            private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$1$LocalIface $this;
+            private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$0$LocalIface $this;
             
             private void m(final boolean b) {
                 OuterReference.this.superTest();
@@ -147,7 +147,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 return OuterReference.this.superTest();
             }
             
-            LocalIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$1$LocalIface $this) {
+            LocalIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$0$LocalIface $this) {
                 this.$this = $this;
             }
         }
