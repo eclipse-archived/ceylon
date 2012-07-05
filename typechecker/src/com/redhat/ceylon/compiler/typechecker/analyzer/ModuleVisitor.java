@@ -166,7 +166,7 @@ public class ModuleVisitor extends Visitor {
                             moduleImport = new ModuleImport(importedModule, optional, export);
                             mainModule.getImports().add(moduleImport);
                         }
-                        moduleManager.addModuleDependencyDefinition(moduleImport, nsa);
+                        moduleManager.addModuleDependencyDefinition(moduleImport, that);
                     }
                     //else we leave it behind unprocessed
                 }
