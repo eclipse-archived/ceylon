@@ -31,6 +31,17 @@ public final class Iterable$impl<Element> {
             return (Element) first;
         }
     }
+    public Element getLast() {
+        return Iterable$impl.<Element>_getLast($this);
+    }
+    static <Element> Element _getLast(Iterable<Element> $this) {
+        java.lang.Object last = null;
+        java.lang.Object next = null;
+        for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted.getExhausted();) {
+            last = next;
+        }
+        return (Element)last;
+    }
     
     public Iterable<? extends Element> getRest() {
         return Iterable$impl._getRest($this);
@@ -286,6 +297,9 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public Result getFirst() {
     	return Iterable$impl._getFirst(this);
     }
+    @Override @Ignore public Result getLast(){
+        return Iterable$impl._getLast(this);
+    }
 
     @Override
     @Ignore
@@ -387,6 +401,9 @@ class FilterIterable<Element> implements Iterable<Element> {
     @Ignore
     public Element getFirst() {
     	return Iterable$impl._getFirst(this);
+    }
+    @Override @Ignore public Element getLast(){
+        return Iterable$impl._getLast(this);
     }
     @Override
     @Ignore
