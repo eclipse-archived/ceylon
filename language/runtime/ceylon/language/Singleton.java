@@ -318,7 +318,7 @@ public class Singleton<Element>
         return this;
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
-        return Iterable$impl._getIndexed(this);
+    public Singleton<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return new Singleton<Entry<? extends Integer, ? extends Element>>(new Entry<Integer, Element>(Integer.instance(0), element));
     }
 }
