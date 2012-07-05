@@ -1160,10 +1160,22 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                                 jta = make().Type(syms().objectType);
                             }
                         }
-                    }else{
+                    }else if (ta.getDeclaration() instanceof BottomType){
                         // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
                         // - Foo<?> always
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), null);
+                    }else{
+                        // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
+                        // - Foo<T> if Foo is invariant in T,
+                        // - Foo<? extends T> if Foo is covariant in T, or
+                        // - Foo<? super T> if Foo is contravariant in T
+                        if (((flags & JT_CLASS_NEW) == 0) && tp.isContravariant()) {
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
+                        } else if (((flags & JT_CLASS_NEW) == 0) && tp.isCovariant()) {
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
+                        } else {
+                            jta = makeJavaType(ta, JT_TYPE_ARGUMENT);
+                        }
                     }
                 }
             } else {
