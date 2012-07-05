@@ -692,20 +692,19 @@ public class RecognizedOptions {
                 ) {
                     File f = new File(s);
                     if (!f.exists()) {
-                        if (s.endsWith(".ceylon")) {
-                            // -sourcepath not -src because the COption for 
-                            // CEYLONSOURCEPATH puts it in the options map as -sourcepath
-                            String path = options.get("-sourcepath");
-                            if (path != null) {
-                                File ff = new File(path + File.separator + s);
-                                if (ff.isFile()) {
-                                    helper.addFile(ff);
-                                    return false;
-                                } else if (new File(path + File.separator + s.replace(".", "/")).isDirectory()) {
-                                    // A Ceylon module name that ends with .ceylon
-                                    helper.addClassName(s);
-                                    return false;
-                                }
+                        // -sourcepath not -src because the COption for 
+                        // CEYLONSOURCEPATH puts it in the options map as -sourcepath
+                        String path = options.get("-sourcepath");
+                        if(path == null)
+                            path = "source";// default value
+                        // split the path
+                        for(String part : path.split("\\"+File.pathSeparator)){
+                            // try to see if it's a module folder
+                            File moduleFolder = new File(part, s.replace(".", File.separator));
+                            if (moduleFolder.isDirectory()) {
+                                // A Ceylon module name that ends with .ceylon or .java
+                                helper.addClassName(s);
+                                return false;
                             }
                         }
 
