@@ -155,12 +155,12 @@ shared void sequences() {
         fail("sequence first");
     }
     assert(result.sequence==result, "sequence.sequence");
-    /*if (exists last = result.last) {
+    if (exists last = result.last) {
         assert(last=="world", "sequence last");
     }
     else {
         fail("sequence last");
-    }*/
+    }
     assert(result.string=="{ hello, world }", "sequence.string 1");
 
     //span

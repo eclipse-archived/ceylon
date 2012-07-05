@@ -168,12 +168,12 @@ void testIterables() {
     assert(Singleton("A").indexed.sequence=={0->"A"}, "Singleton.indexed");
     assert({}.indexed=={}, "Empty.indexed");
     assert(elements(for (c in "abc") c).indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "Iterable.indexed");
+    assert("abc".indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "String.indexed");
 
     //last (defined in ContainerWithFirst but tested here)
     assert((1..5000000000).last == 5000000000, "Range.last");
     assert(Singleton(1).last == 1, "Singleton.last");
-    value oneToTen=array(1,2,3,4,5,6,7,8,9,10);
-    if (exists l=oneToTen.last) {
+    if (exists l=array(1,2,3,4,5,6,7,8,9,10).last) {
         assert(l==10, "Array.last");
     } else { fail("Array.last"); }
     assert({1,2,3,4,5,6,7,8,9,10}.last==10, "Sequence.last");
