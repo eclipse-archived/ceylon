@@ -30,6 +30,19 @@ shared interface Iterable<out Element>
         }
     }
 
+    doc "The last element returned by the iterator, if any.
+         Iterables are potentially infinite, so calling this
+         might never return; also, this implementation will
+         iterate through all the elements, which might be
+         very time-consuming."
+    shared actual default Element? last {
+        variable Element? e := null;
+        for (x in this) {
+            e := x;
+        }
+        return e;
+    }
+
     doc "Returns an iterable object containing all but the 
          first element of this container."
     shared default Iterable<Element> rest {
