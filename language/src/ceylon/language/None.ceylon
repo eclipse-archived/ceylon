@@ -11,7 +11,7 @@ shared interface None<out Element>
                   ContainerWithFirstElement<Bottom,Nothing> {
 
     doc "Returns `null`."
-    shared actual Nothing first {
+    shared actual default Nothing first {
         return null;
     }
 

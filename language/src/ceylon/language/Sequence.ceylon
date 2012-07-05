@@ -12,10 +12,10 @@ shared interface Sequence<out Element>
     doc "The first element of the sequence, that is, the
          element with index `0`."
     shared actual formal Element first;
-    
+
     doc "The last element of the sequence, that is, the
          element with index `sequence.lastIndex`."
-    shared default Element last {
+    shared actual default Element last {
         if (is Element last = this[lastIndex]) {
             return last;
         }

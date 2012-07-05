@@ -46,6 +46,8 @@ shared interface Empty
     doc "Returns `null`."
     shared actual Nothing lastIndex { return null; }
 
+    shared actual Nothing first { return null; }
+
     //shared actual Empty rest { return this; }
 
     doc "Returns an `Empty`."
