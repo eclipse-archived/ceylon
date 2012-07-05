@@ -117,10 +117,10 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Iterable<Element&ceylon.language.Object>")
-    public Iterable getCoalesced();
+    public Iterable<? extends Element> getCoalesced();
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<ceylon.language.Integer,Element&ceylon.language.Object>>")
-    public Iterable getIndexed();
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed();
 
 }

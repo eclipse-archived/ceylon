@@ -246,10 +246,10 @@ public final class Iterable$impl<Element> {
         };
     }
 
-    public Iterable<? extends Entry<? extends Integer,? extends Element>> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed($this);
     }
-    public static <Element> Iterable<? extends Entry<? extends Integer,? extends Element>> _getIndexed(final Iterable<? extends Element> $this) {
+    public static <Element> Iterable<? extends Entry<? extends Integer, ? extends Element>> _getIndexed(final Iterable<? extends Element> $this) {
         final class EntryIterator implements Iterator<Entry<? extends Integer, ? extends Element>> {
             private long i=0;
             private final Iterator<? extends Element> orig = $this.getIterator();
@@ -260,7 +260,7 @@ public final class Iterable$impl<Element> {
             }
             
         }
-        return new AbstractIterable<Entry<? extends Integer,? extends Element>>() {
+        return new AbstractIterable<Entry<? extends Integer, ? extends Element>>() {
             @Override
             public Iterator<? extends Entry<? extends Integer, ? extends Element>> getIterator() {
                 return new EntryIterator();
