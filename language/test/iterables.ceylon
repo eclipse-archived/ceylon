@@ -169,6 +169,24 @@ void testIterables() {
     assert({}.indexed=={}, "Empty.indexed");
     assert(elements(for (c in "abc") c).indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "Iterable.indexed");
 
+    //last (defined in ContainerWithFirst but tested here)
+    assert((1..5000000000).last == 5000000000, "Range.last");
+    assert(Singleton(1).last == 1, "Singleton.last");
+    value oneToTen=array(1,2,3,4,5,6,7,8,9,10);
+    if (exists l=oneToTen.last) {
+        assert(l==10, "Array.last");
+    } else { fail("Array.last"); }
+    assert({1,2,3,4,5,6,7,8,9,10}.last==10, "Sequence.last");
+    if (exists l="The very last character".last) {
+        assert(l==`r`, "String.last [1]");
+    } else { fail("String.last [1]"); }
+    if (exists "".last) {
+        fail("String.last [2]");
+    }
+    if (exists l=elements(for(i in 1..1000) i).last) {
+        assert(l==1000, "Iterable.last");
+    } else { fail("Iterable.last"); }
+
     //Iterable-related functions
     assert({"aaa", "tt", "z"}.sorted(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sorted(byIncreasing)");
     assert({"z", "aaa", "tt"}.sorted(byDecreasing((String s) s.size)).sequence=={"aaa","tt","z"}, "sorted(byDecreasing)");
