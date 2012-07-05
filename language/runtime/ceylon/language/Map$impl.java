@@ -118,6 +118,9 @@ public final class Map$impl<Key,Item> {
             public Key getFirst() { 
                 return Iterable$impl._getFirst(this); 
             }
+            @Override @Ignore public Key getLast() { 
+                return Iterable$impl._getLast(this); 
+            }
             
             @Override
             @Ignore
@@ -297,6 +300,9 @@ public final class Map$impl<Key,Item> {
             @Ignore
             public Item getFirst() { 
                 return Iterable$impl._getFirst(this); 
+            }
+            @Override @Ignore public Item getLast() {
+                return Iterable$impl._getLast(this);
             }
             
             @Override
@@ -598,8 +604,12 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public Entry<? extends Item, ? extends Set<Key>> getFirst() { 
-                return Iterable$impl._getFirst(this); 
+            public Entry<? extends Item, ? extends Set<Key>> getFirst() {
+                return Iterable$impl._getFirst(this);
+            }
+            @Override @Ignore
+            public Entry<? extends Item, ? extends Set<Key>> getLast() {
+                return Iterable$impl._getLast(this);
             }
             @Override @Ignore
             public Entry<? extends Item, ? extends Set<Key>> find(Callable<? extends Boolean> f) {
@@ -776,6 +786,10 @@ public final class Map$impl<Key,Item> {
             @Ignore
             public Entry<? extends Key, ? extends Result> getFirst() { 
                 return Iterable$impl._getFirst(this); 
+            }
+            @Override @Ignore
+            public Entry<? extends Key, ? extends Result> getLast() { 
+                return Iterable$impl._getLast(this); 
             }
 
             @Override

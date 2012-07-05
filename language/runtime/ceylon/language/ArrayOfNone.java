@@ -78,6 +78,7 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     public Element getFirst() {
         return null;
     }
+    @Override public Element getLast() { return null; }
     
     @Override
     public Iterable<? extends Element> getRest() {

@@ -27,6 +27,9 @@ class StringOfNone extends String implements None<Character> {
     public Character getFirst() {
         return null;
     }
+    @Override public Character getLast() {
+        return null;
+    }
 
     @Override
     public Iterable<? extends Character> getRest() {

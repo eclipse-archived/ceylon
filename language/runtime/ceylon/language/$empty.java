@@ -119,6 +119,9 @@ public class $empty {
         public java.lang.Object getFirst() {
             return None$impl._getFirst(this);
         }
+        @Override @Ignore public java.lang.Object getLast() {
+            return None$impl._getLast(this);
+        }
 
         @Override
         @Ignore

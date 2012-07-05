@@ -655,6 +655,10 @@ public abstract class String
         public String getFirst() {
         	return Iterable$impl._getFirst(this);
         }
+        @Override @Ignore
+        public String getLast() {
+            return Iterable$impl._getLast(this);
+        }
 
         @Override
         @Ignore
@@ -766,6 +770,10 @@ public abstract class String
         @Ignore
         public Integer getFirst() {
         	return Iterable$impl._getFirst(this);
+        }
+        @Override @Ignore
+        public Integer getLast() {
+            return Iterable$impl._getLast(this);
         }
 
         @Override

@@ -31,6 +31,9 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     public Element getFirst() {
     	return Iterable$impl._getFirst(this);
     }
+    @Override @Ignore public Element getLast() {
+        return Iterable$impl._getLast(this);
+    }
 
     @Override
     @Ignore

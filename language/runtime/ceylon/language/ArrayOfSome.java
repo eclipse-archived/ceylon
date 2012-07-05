@@ -98,8 +98,15 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     }*/
     
     @Override
+    @Annotations({ @Annotation("actual") })
     public Element getFirst() {
-        return unsafeItem(0); //FixedSized$impl._getFirst(this);
+        return unsafeItem(0);
+    }
+    @Override
+    @Annotations({ @Annotation("actual") })
+    public Element getLast() {
+        final long s = getSize();
+        return s > 0 ? unsafeItem((int)s-1) : null;
     }
     
     @Override 

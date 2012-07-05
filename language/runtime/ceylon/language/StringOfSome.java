@@ -25,9 +25,13 @@ class StringOfSome extends String implements Some<Character> {
     @Override
     @Ignore
     public Character getFirst() {
-        return Iterable$impl._getFirst(this);
+        return item(Integer.instance(0));
     }
-    
+    @Override @Ignore
+    public Character getLast() {
+        return item(getLastIndex());
+    }
+
     @Override 
     @Ignore
     public Iterable<? extends Character> getSequence() { 
