@@ -1229,7 +1229,9 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     
     private void local(Scope decl) {
         Map<Scope, Integer> locals = ((AbstractTransformer)gen()).locals;
-        locals.put(decl, locals.size());
+        if (!locals.containsKey(decl)) {
+            locals.put(decl, locals.size());
+        }
     }
     
     boolean hasInterface(Interface iface) {
