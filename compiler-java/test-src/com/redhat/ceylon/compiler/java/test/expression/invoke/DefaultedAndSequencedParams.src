@@ -43,7 +43,7 @@ class DefaultedAndSequenced {
     private final void positional() {
         m("");
         m("", 2L);
-        m("", 2L, new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(false)));
+        m("", 2L, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false)));
         final .ceylon.language.Iterable<? extends .ceylon.language.Boolean> x = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false), .ceylon.language.Boolean.instance(false));
         m("", 2L, (.ceylon.language.Iterable<? extends .ceylon.language.Boolean>)x);
     }
@@ -51,7 +51,7 @@ class DefaultedAndSequenced {
     private final void qmePositional() {
         self().m("");
         self().m("", 2L);
-        self().m("", 2L, new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(false)));
+        self().m("", 2L, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false)));
         final .ceylon.language.Iterable<? extends .ceylon.language.Boolean> x = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false), .ceylon.language.Boolean.instance(false));
         self().m("", 2L, (.ceylon.language.Iterable<? extends .ceylon.language.Boolean>)x);
     }
@@ -59,7 +59,7 @@ class DefaultedAndSequenced {
     private final void qtePositional() {
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m("");
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m("", 2L);
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m("", 2L, new .ceylon.language.ArraySequence(.ceylon.language.Boolean.instance(false)));
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m("", 2L, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false)));
         final .ceylon.language.Iterable<? extends .ceylon.language.Boolean> x = new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(false), .ceylon.language.Boolean.instance(false));
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced().m("", 2L, (.ceylon.language.Iterable<? extends .ceylon.language.Boolean>)x);
     }

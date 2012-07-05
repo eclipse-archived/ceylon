@@ -181,7 +181,7 @@ final class test {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4(6L, 9L);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5();
         .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5(6L);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5(6L, new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
     }
     
     public static void main(.java.lang.String[] args) {
