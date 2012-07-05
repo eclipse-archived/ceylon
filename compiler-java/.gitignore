@@ -11,4 +11,4 @@
 *.iws
 samples/helloworld/modules
 /allSources/
-
+/JDTClasses/
