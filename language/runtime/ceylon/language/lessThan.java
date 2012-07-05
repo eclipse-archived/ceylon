@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon(major=1)
+@Ceylon(major = 2)
 @Method
 public class lessThan {
     private lessThan(){}
