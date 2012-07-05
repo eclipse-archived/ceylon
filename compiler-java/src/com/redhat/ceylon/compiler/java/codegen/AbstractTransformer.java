@@ -1878,7 +1878,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return a JCExpression
      * @see #makeSequenceRaw(java.util.List)
      */
-    private JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
+    JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
         ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
         JCExpression typeExpr = makeJavaType(seqType, makeJavaTypeOpts);
         return makeNewClass(typeExpr, elems);

@@ -425,10 +425,11 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
             } else {
                 // box with an ArraySequence<T>
                 List<JCExpression> x = List.<JCExpression>nil();
+                final ProducedType iteratedType = gen.typeFact().getIteratedType(getParameterType(argIndex));
                 for ( ; argIndex < numArguments; argIndex++) {
                     x = x.append(this.getTransformedArgumentExpression(argIndex));
                 }
-                expr = gen.makeSequenceRaw(x);
+                expr = gen.makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
             }
             appendArgument(expr);
         }
