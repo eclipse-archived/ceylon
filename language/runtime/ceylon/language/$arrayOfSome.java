@@ -15,7 +15,7 @@ public final class $arrayOfSome {
     private $arrayOfSome() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
-    @TypeInfo("ceylon.language.Array<Element>&Some<Element>")
+    @TypeInfo("ceylon.language.Array<Element>&ceylon.language.Some<Element>")
     public static <Element> Array<Element> arrayOfSome(
     @Name("elements")
     @TypeInfo("ceylon.language.Sequence<Element>")

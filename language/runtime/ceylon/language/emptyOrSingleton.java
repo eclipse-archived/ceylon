@@ -17,7 +17,7 @@ public class emptyOrSingleton {
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public static <Element> Iterable<Element> emptyOrSingleton(
             @Name("element")
-            @TypeInfo("Nothing|Element")
+            @TypeInfo("ceylon.language.Nothing|Element")
             Element element) {
         return element==null ? 
                 (Iterable)$empty.getEmpty() : 
