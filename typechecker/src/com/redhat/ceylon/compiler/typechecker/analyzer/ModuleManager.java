@@ -329,7 +329,7 @@ public class ModuleManager {
                 //populate module.getDependencies()
                 modulePhasedUnit.visitModules();
             } catch (Exception e) {
-                StringBuilder error = new StringBuilder("Unable to read source artifact for ");
+                StringBuilder error = new StringBuilder("unable to read source artifact for ");
                 error.append(artifactContext.toString());
                 error.append( "\ndue to connection error: ").append(e.getMessage());
                 attachErrorToDependencyDeclaration(moduleImport, error.toString());
