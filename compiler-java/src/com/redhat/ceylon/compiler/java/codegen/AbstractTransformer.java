@@ -1150,7 +1150,16 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies location results in the Java type
                     //   Foo<Object> (see https://github.com/ceylon/ceylon-compiler/issues/633 for why)
                     if((flags & (JT_SATISFIES | JT_EXTENDS)) != 0){
-                        jta = make().Type(syms().objectType);
+                        if (ta.getDeclaration() instanceof BottomType) {
+                            jta = make().Type(syms().objectType);
+                        } else {
+                            if (!tp.getSatisfiedTypes().isEmpty()) {
+                                // union or intersection: Use the common upper bound of the types
+                                jta = makeJavaType(tp.getSatisfiedTypes().get(0), JT_TYPE_ARGUMENT);
+                            } else {
+                                jta = make().Type(syms().objectType);
+                            }
+                        }
                     }else{
                         // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
                         // - Foo<?> always
