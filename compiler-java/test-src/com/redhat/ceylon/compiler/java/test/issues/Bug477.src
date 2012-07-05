@@ -36,6 +36,11 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
+    public T getLast() {
+        return $ceylon$language$Iterable$this.getLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
@@ -103,6 +108,16 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getCoalesced() {
+        return $ceylon$language$Iterable$this.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ?>> getIndexed() {
+        return $ceylon$language$Iterable$this.getIndexed();
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<T, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
@@ -267,6 +282,11 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
+    public T getLast() {
+        return $ceylon$language$Iterable$this.getLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable<? extends T> getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
@@ -334,6 +354,16 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getCoalesced() {
+        return $ceylon$language$Iterable$this.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ?>> getIndexed() {
+        return $ceylon$language$Iterable$this.getIndexed();
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<T, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;

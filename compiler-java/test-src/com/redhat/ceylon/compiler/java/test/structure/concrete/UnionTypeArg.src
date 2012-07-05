@@ -14,6 +14,11 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     }
     
     @.java.lang.Override
+    public .java.lang.Object getLast() {
+        return $ceylon$language$Iterable$this.getLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Iterable getRest() {
         return $ceylon$language$Iterable$this.getRest();
     }
@@ -82,6 +87,16 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     public long count(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getCoalesced() {
+        return $ceylon$language$Iterable$this.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getIndexed() {
+        return $ceylon$language$Iterable$this.getIndexed();
+    }
     private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;
@@ -114,6 +129,11 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     @.java.lang.Override
     public .java.lang.Object getFirst() {
         return $ceylon$language$Iterable$this.getFirst();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getLast() {
+        return $ceylon$language$Iterable$this.getLast();
     }
     
     @.java.lang.Override
@@ -174,6 +194,16 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     @.java.lang.Override
     public long count(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getCoalesced() {
+        return $ceylon$language$Iterable$this.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getIndexed() {
+        return $ceylon$language$Iterable$this.getIndexed();
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;

@@ -5,4 +5,5 @@ class FixedSizedImpl<out Element>() satisfies FixedSized<Element>&None<Element> 
         return bottom;
     }
     //shared actual Element first = bottom;
+    shared actual Nothing last = bottom;
 }
