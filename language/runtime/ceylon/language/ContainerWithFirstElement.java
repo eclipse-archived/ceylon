@@ -18,4 +18,8 @@ public interface ContainerWithFirstElement<Element,Null> extends Container {
 	@Annotations(@Annotation("formal"))
 	@TypeInfo("Null|Element")
     public java.lang.Object getFirst();
+
+    @Annotations(@Annotation("formal"))
+    @TypeInfo("Null|Element")
+    public java.lang.Object getLast();
 }
