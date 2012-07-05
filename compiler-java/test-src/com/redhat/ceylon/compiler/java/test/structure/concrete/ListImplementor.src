@@ -121,7 +121,7 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ?>> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends X>> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<X, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;

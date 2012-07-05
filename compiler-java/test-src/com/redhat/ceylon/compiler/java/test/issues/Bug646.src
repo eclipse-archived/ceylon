@@ -15,7 +15,7 @@ final class bug646 {
         final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers5 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers6 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> observers7 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> foo = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> foo = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
         final .ceylon.language.Iterable union = .ceylon.language.$empty.getEmpty();
         final .ceylon.language.Iterable<? extends .java.lang.Object> ident = .ceylon.language.$empty.getEmpty();
         final .ceylon.language.Iterable<? extends .java.lang.Object> v = .ceylon.language.$empty.getEmpty();

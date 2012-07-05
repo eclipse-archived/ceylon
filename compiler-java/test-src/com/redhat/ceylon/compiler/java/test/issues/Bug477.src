@@ -116,7 +116,7 @@ abstract class Bug477_1<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ?>> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<T, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
@@ -362,7 +362,7 @@ abstract class Bug477_2<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ?>> getIndexed() {
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<T, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
