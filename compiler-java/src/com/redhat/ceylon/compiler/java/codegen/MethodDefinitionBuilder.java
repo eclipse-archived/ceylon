@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -217,6 +218,14 @@ public class MethodDefinitionBuilder {
     }
     
     private MethodDefinitionBuilder parameter(long modifiers, String name, String aliasedName, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags) {
+        if (gen.typeFact().isUnion(nonWideningType) 
+                || gen.typeFact().isIntersection(nonWideningType)) {
+            final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType().getDeclaration();
+            if (refinedTypeDecl instanceof TypeParameter
+                    && !refinedTypeDecl.getSatisfiedTypes().isEmpty()) {
+                nonWideningType = refinedTypeDecl.getSatisfiedTypes().get(0);
+            }
+        }
         JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
         List<JCAnnotation> annots = List.nil();
         if (gen.needsAnnotations(decl)) {
