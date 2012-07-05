@@ -100,6 +100,19 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlEndsWithJava() throws IOException{
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(dir);
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                null,
+                Arrays.asList("com.redhat.ceylon.compiler.java.test.cmr.module.java"));
+        Boolean ret = task.call();
+        assertTrue(ret);
+    }
+
+    @Test
     public void testMdlModuleDefault() throws IOException{
         compile("module/def/CeylonClass.ceylon");
         
