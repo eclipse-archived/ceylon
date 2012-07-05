@@ -228,10 +228,6 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return Collection$impl._toString(this);
     }
 
-    public Element[] toArray() {
-        return array;
-    }
-    
     @Override
     @Ignore
     public boolean equals(java.lang.Object that) {
