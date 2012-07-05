@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Foo {
     
@@ -13,7 +13,7 @@ public class Foo {
         new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Bar {
     
@@ -26,7 +26,7 @@ public class Bar {
         new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 class UnionTypeInfo {
     private final .java.lang.Object sharedAttr;
     
@@ -75,7 +75,7 @@ class UnionTypeInfo {
         this.sharedAttr = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class SharedUnionTypeInfo {
     
@@ -84,7 +84,7 @@ public class SharedUnionTypeInfo {
     .java.lang.Object param) {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class toplevelAttribute {
     private static final .java.lang.Object[] value;
@@ -104,7 +104,7 @@ final class toplevelAttribute {
     private toplevelAttribute() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 public final class sharedToplevelAttribute {
     private static final .java.lang.Object[] value;
@@ -125,7 +125,7 @@ public final class sharedToplevelAttribute {
     private sharedToplevelAttribute() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class toplevelMethod {
     
@@ -139,7 +139,7 @@ final class toplevelMethod {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class sharedToplevelMethod {
     
@@ -154,7 +154,7 @@ public final class sharedToplevelMethod {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class toplevelGetter {
     
@@ -171,7 +171,7 @@ final class toplevelGetter {
     private toplevelGetter() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 public final class toplevelSharedGetter {
     

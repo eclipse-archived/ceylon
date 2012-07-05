@@ -1,18 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug510;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
 interface Bug510$Bug510inner {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 interface Bug510 {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug510$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510 $this;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final class Bug510inner$impl {
         private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this;
@@ -26,7 +26,7 @@ final class Bug510$impl {
         this.$this = $this;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Name("assert")
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class $assert {
@@ -44,7 +44,7 @@ final class $assert {
         .com.redhat.ceylon.compiler.java.test.issues.bug510.$assert.$assert();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Name("volatile")
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class $volatile {
@@ -65,7 +65,7 @@ final class $volatile {
     private $volatile() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Name("synchronized")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class $synchronized {

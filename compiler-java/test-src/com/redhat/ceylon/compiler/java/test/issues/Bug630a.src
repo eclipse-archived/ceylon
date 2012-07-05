@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 interface Bug630 {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("default"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -15,7 +15,7 @@ interface Bug630 {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Object")
     final .java.lang.Object other);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug630$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug630 $this;
