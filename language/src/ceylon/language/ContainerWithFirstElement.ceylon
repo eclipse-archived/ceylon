@@ -14,5 +14,10 @@ shared interface ContainerWithFirstElement<out Element, out Null>
          container is empty, that is, for any instance for
          which `empty` evaluates to `true`."
     shared formal Null|Element first;
-    
+
+    doc "The last element. Should produce `null` if the
+         container is empty, that is, for any instance for
+         which `empty` evaluates to `true`."
+    shared formal Null|Element last;    
+
 }
