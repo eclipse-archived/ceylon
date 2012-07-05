@@ -32,6 +32,7 @@ import static com.redhat.ceylon.compiler.java.codegen.CodegenUtil.NameFlag.*;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
@@ -354,9 +355,12 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private boolean needsRawification(ProducedType type) {
+        final Iterator<TypeParameter> refinedTypeParameters = type.getDeclaration().getTypeParameters().iterator();
         boolean rawifyParametersAndResults = false;
         for (ProducedType typeArg : type.getTypeArgumentList()) {
-            if (typeFact().isIntersection(typeArg) || typeFact().isUnion(typeArg)) {
+            final TypeParameter typeParam = refinedTypeParameters.next();
+            if (typeParam.getSatisfiedTypes().isEmpty()
+                    && (typeFact().isIntersection(typeArg) || typeFact().isUnion(typeArg))) {
                 // Use the same hack that makeJavaType() does when handling iterables
                 if (typeFact().getNonemptyIterableType(typeFact().getDefiniteType(typeArg)) == null) {
                     rawifyParametersAndResults = true;
