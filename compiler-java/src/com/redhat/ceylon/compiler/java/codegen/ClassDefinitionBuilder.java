@@ -118,7 +118,7 @@ public class ClassDefinitionBuilder {
 
     private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
         this.gen = gen;
-        this.name = name;
+        this.name = Naming.quoteClassName(name);
         //this.ancestorLocal = ancestorLocal;
         
         extending = getSuperclass(null);
@@ -155,7 +155,7 @@ public class ClassDefinitionBuilder {
         
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
-                gen.names().fromString(getClassName()),
+                gen.names().fromString(name),
                 typeParams.toList(),
                 extending,
                 satisfies.toList(),
@@ -194,7 +194,7 @@ public class ClassDefinitionBuilder {
     }
 
     private String getClassName() {
-        return Naming.quoteClassName(name);
+        return name;
     }
 
     private boolean hasCompanion() {
