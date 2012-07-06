@@ -360,4 +360,6 @@ shared void sequences() {
     test_zip();
     test_exists_nonempty();
     test_max_min();
+    assert(nonempty emptyOrSingleton(1), "emptyOrSingleton [1]");
+    assert(!nonempty emptyOrSingleton(null), "emptyOrSingleton [2]");
 }
