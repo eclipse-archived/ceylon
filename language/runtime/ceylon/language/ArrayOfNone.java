@@ -60,7 +60,7 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     }
     
     @Ignore
-    public static <T> Array<T> instance(java.lang.Class typeClass) {
+    public static <T> Array<T> instance(java.lang.Class<T> typeClass) {
         return instance(typeClass, null);
     }
     
@@ -91,10 +91,12 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     	return this;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore public Iterable<? extends Element> getSequence() { return (Iterable)$empty.getEmpty(); }
     @Override @Ignore public Element find(Callable<? extends Boolean> f) { return null; }
     @Override @Ignore public Element findLast(Callable<? extends Boolean> f) { return null; }
     @Override @Ignore public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { return this; }
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore public <Result> Iterable<Result> map(Callable<? extends Result> f) { return (Iterable)$empty.getEmpty(); }
     @Override @Ignore public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
     @Override @Ignore public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
@@ -105,5 +107,19 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     @Override @Ignore public Iterable<? extends Element> by(long s) { return this; }
     @Override @Ignore public long count(Callable<? extends Boolean> f) { return 0; }
     @Override @Ignore public Iterable<? extends Element> getCoalesced() { return this; }
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() { return (Iterable)this; }
+
+    @Override @Ignore public Array<? extends Element> withLeading() { return this; }
+    @Override @Ignore public Array<? extends Element> withTrailing() { return this; }
+
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore public <Other>Array withLeading(Iterable<? extends Other> elements) {
+        return $array.array(elements);
+    }
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore public <Other>Array withTrailing(Iterable<? extends Other> elements) {
+        return $array.array(elements);
+    }
+
 }
