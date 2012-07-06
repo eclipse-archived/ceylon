@@ -2,6 +2,7 @@ import assert {...}
 
 class TestNone() satisfies None<Integer> {
   shared actual TestNone clone { return this; }
+  shared actual Nothing last { return null; }
 }
 
 class TestSome(Integer i, Integer... items) satisfies Some<Integer> {
@@ -29,6 +30,7 @@ class TestSome(Integer i, Integer... items) satisfies Some<Integer> {
     return TestNone();
   }
   shared actual TestSome clone { return this; }
+  shared actual Integer last { return elems.last else -1; }
 }
 
 
