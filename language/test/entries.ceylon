@@ -201,4 +201,12 @@ Range<Integer> range {
     if (exists x=k2[3]) {
         assert(x==2->"c", "byItem[2]");
     } else { fail("byItem[2]"); }
+    if (exists x=e1.find(forKey((Integer k) k==2))) {
+        assert(x == 2->"c", "forKey [1]");
+    } else { fail("forKey [2]"); }
+    if (exists x=e1.find(forItem((String s) s=="B"))) {
+        assert(x == 1->"B", "forItem [1]");
+    } else { fail("forItem [2]"); }
+    assert(e1.count(forItem((String s) s<"a"))==2, "forItem [3]");
+    assert(e1.map(forKey((Integer k) k.string.repeat(3))).sequence == {"000","111","222","333"}, "forKey [3]");
 }

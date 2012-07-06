@@ -158,7 +158,6 @@ void testIterables() {
     assert(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     assert("ABC".coalesced=="ABC", "String.coalesced");
     assert({}.coalesced=={}, "Empty.coalesced");
-
     //indexed
     for (k->v in (1..5).indexed) {
         assert(k+1==v, "Range.indexed");
