@@ -109,4 +109,26 @@ public final class List$impl<Element> {
         return null;
     }
 
+    public List<? extends Element> withLeading() { return $this; }
+    public List<? extends Element> withTrailing() { return $this; }
+
+    public <Other> List withLeading(Iterable<? extends Other> elements) {
+        return List$impl.withLeading($this, elements);
+    }
+    public static <Element,Other> List<? extends Other> withLeading(List<? extends Element> orig, Iterable<? extends Other> elems) {
+        SequenceBuilder sb = new SequenceBuilder();
+        sb.appendAll(elems);
+        sb.appendAll(orig);
+        return (List)sb.getSequence();
+    }
+    public <Other> List withTrailing(Iterable<? extends Other> elements) {
+        return List$impl.withTrailing($this, elements);
+    }
+    public static <Element,Other> List<? extends Other> withTrailing(List<? extends Element> orig, Iterable<? extends Other> elems) {
+        SequenceBuilder sb = new SequenceBuilder();
+        sb.appendAll(orig);
+        sb.appendAll(elems);
+        return (List)sb.getSequence();
+    }
+
 }
