@@ -71,7 +71,7 @@ WARNING: try those on for size before you run them, especially the `sudo` ones, 
 never copy and paste `sudo` commands!!! So read them carefully and type them by hand.
 
 1. Get the release
-    $ wget https://github.com/downloads/ceylon/ceylon-dist/ceylon-0.3.1.zip
+       $ wget https://github.com/downloads/ceylon/ceylon-dist/ceylon-0.3.1.zip
     $ unzip ceylon-0.3.1.zip
 1. Remove the old API
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/api/ceylon/language
