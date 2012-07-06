@@ -89,8 +89,11 @@ Used with another target such as 'package'">
     <target name="package" 
             depends="install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-compiler-libraries, install-typechecker,
-                     install-language, install-runtime, generate-spec, generate-apidoc"
+                     install-language, install-runtime, generate-spec, generate-apidoc, zip"
             description="Generates a distributable zip file">
+    </target>
+
+	<target name="zip">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
@@ -114,8 +117,8 @@ Used with another target such as 'package'">
                 <include name="README-ANT.md" />
             </zipfileset>
         </zip>        
-    </target>
-
+	</target>
+	
     <target name="copy-compiler-binaries">
         <mkdir dir="${dist.dir}/bin"/>
         <copy todir="${dist.dir}/bin">
