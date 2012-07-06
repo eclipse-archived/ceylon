@@ -35,6 +35,18 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual Integer hash { return seq.hash; }
     shared actual Boolean equals(Object other) { return seq.equals(other); }
     shared actual Sequence<Element> reversed { return seq.reversed; }
+    shared actual Empty|Sequence<Element|Other> withLeading<Other>(Other... others) {
+        value sb = SequenceBuilder<Element|Other>();
+        sb.appendAll(others...);
+        sb.appendAll(this...);
+        return sb.sequence;
+    }
+    shared actual Empty|Sequence<Element|Other> withTrailing<Other>(Other... others) {
+        value sb = SequenceBuilder<Element|Other>();
+        sb.appendAll(this...);
+        sb.appendAll(others...);
+        return sb.sequence;
+    }
 }
 
 class RefHelper() {
