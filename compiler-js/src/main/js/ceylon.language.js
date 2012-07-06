@@ -324,14 +324,18 @@ function Range(first, last) {
     var that = new Range.$$;
     that.first = first;
     that.last = last;
-    var index = 0;
-    var x = first;
     var dec = first.compare(last) === larger;
-    while (x.equals(last) === getFalse()) { //some replicated code because we don't yet have the functions here
-        index++;
-        x = dec ? x.getPredecessor() : x.getSuccessor();
+    if (isOfType(first, 'ceylon.language.Integer') && isOfType(last, 'ceylon.language.Integer')) {
+        that.size=Integer((dec?first.value-last.value:last.value-first.value)+1);
+    } else {
+        var index = 0;
+        var x = first;
+        while (x.equals(last) === getFalse()) { //some replicated code because we don't yet have the functions here
+            index++;
+            x = dec ? x.getPredecessor() : x.getSuccessor();
+        }
+        that.size = Integer(index+1);
     }
-    that.size = Integer(index+1);
     return that;
 }
 initTypeProto(Range, 'ceylon.language.Range', Object$, Sequence, Category);
