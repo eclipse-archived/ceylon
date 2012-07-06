@@ -183,6 +183,18 @@ List$proto.findLast = function(select) {
     }
     return null;
 }
+List$proto.withLeading = function(others) {
+    var sb = SequenceBuilder();
+    sb.appendAll(others);
+    sb.appendAll(this);
+    return sb.getSequence();
+}
+List$proto.withTrailing = function(others) {
+    var sb = SequenceBuilder();
+    sb.appendAll(this);
+    sb.appendAll(others);
+    return sb.getSequence();
+}
 exports.List=List;
 
 function ListIterator(list) {
