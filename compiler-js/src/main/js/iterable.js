@@ -196,4 +196,12 @@ Iterable$proto.getIndexed = function() {
         }
     });
 }
+Iterable$proto.getLast = function() {
+    var iter = this.getIterator();
+    var l=null;
+    var e; while ((e = iter.next()) !== $finished) {
+        l=e;
+    }
+    return l;
+}
 exports.Iterable=Iterable;
