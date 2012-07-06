@@ -28,7 +28,7 @@ public class CMRTestHTTP extends CompilerTest {
 
     class RequestCounter{
         int count;
-        void add(){
+        synchronized void add(){
             count++;
         }
         void check(int count){
