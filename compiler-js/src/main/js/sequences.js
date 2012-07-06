@@ -115,11 +115,11 @@ initTypeProto(SequenceBuilder, 'ceylon.language.SequenceBuilder', IdentifiableOb
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 SequenceBuilder$proto.getSequence = function() { return ArraySequence(this.seq); }
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
-SequenceBuilder$proto.appendAll = function(arr) {
-	if (arr && arr.value && arr.value.length) {
-        for (var i = 0; i < arr.value.length; i++) {
-            this.seq.push(arr.value[i]);
-        }
+SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
+    if (arr === undefined) return;
+    var iter = arr.getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        this.seq.push(e);
     }
 }
 SequenceBuilder$proto.getSize = function() { return Integer(this.seq.length); }
