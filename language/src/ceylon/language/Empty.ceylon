@@ -103,5 +103,10 @@ shared interface Empty
     shared actual Empty coalesced {
         return this;
     }
-
+    shared actual List<Other> withLeading<Other>(Other... others) {
+        return others.sequence;
+    }
+    shared actual List<Other> withTrailing<Other>(Other... others) {
+        return others.sequence;
+    }
 }

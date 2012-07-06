@@ -146,4 +146,11 @@ shared class Singleton<Element>(Element element)
         return this;
     }
 
+    shared actual Sequence<Element|Other> withLeading<Other>(Other... others) {
+        return append(others.sequence, element);
+    }
+    shared actual Sequence<Element|Other> withTrailing<Other>(Other... others) {
+        return prepend(others.sequence, element);
+    }
+
 }

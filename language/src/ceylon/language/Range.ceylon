@@ -243,4 +243,6 @@ shared class Range<Element>(first, last)
         return this;
     }
 
+    shared actual List<Element|Other> withLeading<Other>(Other... others) {throw;}
+    shared actual List<Element|Other> withTrailing<Other>(Other... others) {throw;}
 }

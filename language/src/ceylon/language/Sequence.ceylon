@@ -48,5 +48,5 @@ shared interface Sequence<out Element>
     
     shared formal Sequence<Value> prepend<Value>(Value... elements)
             given Value abstracts Element;*/
-    
+
 }
