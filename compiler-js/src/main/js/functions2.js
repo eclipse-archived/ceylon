@@ -78,6 +78,12 @@ function byItem(/*Callable<Comparison,Key,Key*/f) {
         return f(a.getItem(), b.getItem());
     }
 }
+
+function emptyOrSingleton(/*Element?*/elem) {
+    return elem===null ? $empty : Singleton(elem);
+}
+
+exports.emptyOrSingleton=emptyOrSingleton;
 exports.equalTo=equalTo;
 exports.greaterThan=greaterThan;
 exports.lessThan=lessThan;
