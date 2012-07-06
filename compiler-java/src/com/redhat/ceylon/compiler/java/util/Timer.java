@@ -97,7 +97,9 @@ public class Timer {
         if(!verbose)
             return;
         IgnoredCategory ignoredCategory = ignoredCategories.get(category);
-        ignoredCategory.stop();
+        if (ignoredCategory != null) {
+            ignoredCategory.stop();
+        }
     }
     
     private static void printIgnoredCategories(){
