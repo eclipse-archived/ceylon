@@ -6,8 +6,9 @@
 
 %define major_version 0
 %define minor_version 3
-%define micro_version 0
+%define micro_version 1
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}
+%define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
 
 Name: ceylon
 Epoch: 0
@@ -18,7 +19,7 @@ Summary: Ceylon language
 Group: Development/Languages
 License: ASL 2.0 and GPL v 2 + Classpath exception
 URL: http://www.ceylon-lang.org//
-Source0: https://github.com/downloads/ceylon/ceylon-dist/ceylon-0.3.zip
+Source0: https://github.com/downloads/ceylon/ceylon-dist/%{name_source}.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 BuildRequires: zip
@@ -33,7 +34,7 @@ developers to take best advantage of the powerful static type system.
 Programs written in Ceylon execute on any JVM.
 
 %prep
-%setup -q -n %{name}-%{major_version}.%{minor_version}
+%setup -q -n %{name_source}
 
 
 %build
@@ -80,7 +81,9 @@ popd
 
 
 %changelog
-* Thu Jun 21 2012 Tako Schotanus <tschotan@redhat.com> 0.3.1-0
+* Fri Jul 06 2012 Tako Schotanus <tschotan@redhat.com> 0.3.1-0
+- Update for 0.3.1 and some small changes to simplify updating the version
+* Thu Jun 21 2012 Tako Schotanus <tschotan@redhat.com> 0.3.0-1
 - Some changes to simplify the build process a bit
 * Mon May 14 2012 Stephane Epardaud <separdau@redhat.com> 0.3.0-0
 - Update for 0.3
