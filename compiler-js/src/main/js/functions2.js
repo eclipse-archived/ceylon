@@ -83,6 +83,19 @@ function emptyOrSingleton(/*Element?*/elem) {
     return elem===null ? $empty : Singleton(elem);
 }
 
+function forKey(/*Callable<Result,Key>*/f) {
+    return function(/*Key->Object*/ e) {
+        return f(e.getKey());
+    }
+}
+function forItem(/*Callable<Result,Item>*/f) {
+    return function(/*Key->Item*/e) {
+        return f(e.getItem());
+    }
+}
+
+exports.forKey=forKey;
+exports.forItem=forItem;
 exports.emptyOrSingleton=emptyOrSingleton;
 exports.equalTo=equalTo;
 exports.greaterThan=greaterThan;
