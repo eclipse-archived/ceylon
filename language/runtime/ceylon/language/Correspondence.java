@@ -108,13 +108,13 @@ public interface Correspondence<Key,Item> {
         public boolean definesEvery(Iterable<? extends Integer> keys) {
             return Correspondence$impl._definesEvery(this, keys);
         }
-        @Override
-        @Ignore
+        @Override @Ignore
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesEvery() {
             return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
         }
-        @Override
-        @Ignore
+        @Override @Ignore
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> definesEvery$keys() {
             return (Iterable)$empty.getEmpty();
         }
@@ -123,13 +123,13 @@ public interface Correspondence<Key,Item> {
         public boolean definesAny(Iterable<? extends Integer> keys) {
             return Correspondence$impl._definesAny(this, keys);
         }
-        @Override
-        @Ignore
+        @Override @Ignore
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesAny() {
             return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
         }
-        @Override
-        @Ignore
+        @Override @Ignore
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> definesAny$keys() {
             return (Iterable)$empty.getEmpty();
         }
@@ -138,13 +138,13 @@ public interface Correspondence<Key,Item> {
         public List<? extends Item> items(Iterable<? extends Integer> keys) {
             return Correspondence$impl._items(this, keys);
         }
-        @Override
-        @Ignore
+        @Override @Ignore
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public List<? extends Item> items() {
             return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
         }
-        @Override
-        @Ignore
+        @Override @Ignore
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> items$keys() {
             return (Iterable)$empty.getEmpty();
         }
@@ -188,6 +188,7 @@ public interface Correspondence<Key,Item> {
             return Iterable$impl._by(this, step);
         }
         @Override
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public List<? extends Item> segment(Integer from, long length) {
             Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
             if (keys.getEmpty()) {
@@ -198,6 +199,7 @@ public interface Correspondence<Key,Item> {
             }
         }
         @Override
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public List<? extends Item> span(Integer from, Integer to) {
             Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
             if (keys.getEmpty()) {
@@ -304,6 +306,14 @@ public interface Correspondence<Key,Item> {
         @Override @Ignore
         public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
             return Iterable$impl._getIndexed(this);
+        }
+        @Override @Ignore public List<? extends Item> withLeading() { return this; }
+        @Override @Ignore public List<? extends Item> withTrailing() { return this; }
+        @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elems) {
+            return this; //TODO
+        }
+        @Override @Ignore public <Other>List withTrailing(Iterable<? extends Other> elems) {
+            return this; //TODO
         }
     }
 }

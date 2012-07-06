@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 
 @Ignore
 @Ceylon(major = 2)
@@ -113,5 +114,19 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     @Ignore 
     public Iterable<? extends Element> getSequence() { 
         return Iterable$impl._getSequence(this); 
+    }
+
+    @Override @Ignore public Array<? extends Element> withLeading() { return this; }
+    @Override @Ignore public Array<? extends Element> withTrailing() { return this; }
+
+    @Override
+    @Annotations({ @Annotation("actual") })
+    public <Other> List withLeading(@Sequenced Iterable<? extends Other> elems) {
+        return List$impl.withLeading(this, elems);
+    }
+    @Override
+    @Annotations({ @Annotation("actual") })
+    public <Other> List withTrailing(@Sequenced Iterable<? extends Other> elems) {
+        return List$impl.withTrailing(this, elems);
     }
 }
