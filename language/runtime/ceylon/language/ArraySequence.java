@@ -2,6 +2,8 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -355,5 +357,27 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Ignore
     public Iterable<?>containsAny$elements() {
         return $empty.getEmpty();
+    }
+
+    @Override @Ignore public ArraySequence<? extends Element> withLeading() { return this; }
+    @Override @Ignore public ArraySequence<? extends Element> withTrailing() { return this; }
+
+    @Override
+    @Annotations({ @Annotation("actual") })
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <Other>Sequence withLeading(Iterable<? extends Other> elems) {
+        SequenceBuilder sb = new SequenceBuilder();
+        sb.appendAll(elems);
+        sb.appendAll(this);
+        return (Sequence)sb.getSequence();
+    }
+    @Override
+    @Annotations({ @Annotation("actual") })
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <Other>Sequence withTrailing(Iterable<? extends Other> elems) {
+        SequenceBuilder sb = new SequenceBuilder();
+        sb.appendAll(this);
+        sb.appendAll(elems);
+        return (Sequence)sb.getSequence();
     }
 }
