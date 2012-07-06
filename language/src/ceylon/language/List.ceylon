@@ -148,4 +148,13 @@ shared interface List<out Element>
         return null;
     }
 
+    doc "Returns a new `List` that starts with the specified
+         elements, followed by the elements of this `List`."
+    shared formal List<Element|Other> withLeading<Other>(Other... others);
+
+    doc "Returns a new `List` that contains the specified
+         elements appended to the end of this `List`s'
+         elements."
+    shared formal List<Element|Other> withTrailing<Other>(Other... others);
+
 }
