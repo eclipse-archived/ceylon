@@ -10,11 +10,14 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import junit.framework.Assert;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -22,9 +25,6 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.sun.net.httpserver.HttpServer;
 
 public class CMRTestHTTP extends CompilerTest {
-
-    int port = 18000;
-    String repoAURL = "http://localhost:"+port+"/repo";
 
     class RequestCounter{
         int count;
@@ -34,6 +34,26 @@ public class CMRTestHTTP extends CompilerTest {
         void check(int count){
             Assert.assertEquals(count, this.count);
         }
+    }
+
+    private static AtomicInteger PORT_NUM_ALLOCATOR;
+    
+    @BeforeClass
+    public static void initPortAllocator() {
+        PORT_NUM_ALLOCATOR = new AtomicInteger(18000);
+    }
+    
+    @AfterClass
+    public static void cleanupPortAllocator() {
+        PORT_NUM_ALLOCATOR = null;
+    }
+    
+    private int allocPortForTest() {
+        return PORT_NUM_ALLOCATOR.getAndIncrement();
+    }
+    
+    private String getRepoUrl(int allocatedPort) {
+        return "http://localhost:"+allocatedPort+"/repo";
     }
     
     private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq) throws IOException{
@@ -73,6 +93,9 @@ public class CMRTestHTTP extends CompilerTest {
         File carFile = getModuleArchive(moduleA, "6.6.6", repo.getPath());
         assertTrue(carFile.exists());
 
+        final int port = allocPortForTest();
+        final String repoAURL = getRepoUrl(port);
+        
         // now serve the first repo over HTTP
         HttpServer server = startServer(port, repo, false, rq); 
         
@@ -111,6 +134,9 @@ public class CMRTestHTTP extends CompilerTest {
         // Compile the module in its own repo
         File repo = makeRepo();
 
+        final int port = allocPortForTest();
+        final String repoAURL = getRepoUrl(port);
+        
         // now serve the first repo over HTTP
         HttpServer server = startServer(port, repo, herd, rq); 
         
@@ -151,6 +177,9 @@ public class CMRTestHTTP extends CompilerTest {
         // Compile the first module in its own repo 
         File repo = makeRepo();
 
+        final int port = allocPortForTest();
+        final String repoAURL = getRepoUrl(port);
+        
         // now serve the first repo over HTTP
         HttpServer server = startServer(port, repo, herd, rq); 
         
