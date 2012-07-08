@@ -25,7 +25,8 @@ public class Unit {
 	private Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
 	private Set<Declaration> duplicateDeclarations = new HashSet<Declaration>();
     private final Set<String> dependentsOf = new HashSet<String>();
-
+    private String fullPath;
+    private String relativePath;
     
     public List<Import> getImports() {
         return imports;
@@ -78,7 +79,23 @@ public class Unit {
         this.filename = filename;
     }
 
-    @Override
+    public String getFullPath() {
+		return fullPath;
+	}
+
+	public void setFullPath(String fullPath) {
+		this.fullPath = fullPath;
+	}
+
+	public String getRelativePath() {
+		return relativePath;
+	}
+
+	public void setRelativePath(String relativePath) {
+		this.relativePath = relativePath;
+	}
+
+	@Override
     public String toString() {
         return "Unit[" + filename + "]";
     }

@@ -31,11 +31,6 @@ public class DependedUponVisitor extends Visitor {
         alreadyDone = new HashSet<Declaration>();
     }
     
-    private String getSrcFolderRelativePath(Unit u) {
-        return u.getPackage().getQualifiedNameString().replace('.', '/') + 
-                "/" + u.getFilename();
-    }
-
     private void storeDependency(Declaration d) {
         if (d!=null && (d instanceof UnionType || 
                         d instanceof IntersectionType || 
@@ -69,8 +64,8 @@ public class DependedUponVisitor extends Visitor {
             Unit currentUnit = phasedUnit.getUnit();
             String currentUnitPath = phasedUnit.getUnitFile().getPath();
             if (declarationUnit != null) {
-                String currentUnitName = getSrcFolderRelativePath(currentUnit);
-                String dependedOnUnitName = getSrcFolderRelativePath(declarationUnit);
+                String currentUnitName = currentUnit.getRelativePath();
+                String dependedOnUnitName = declarationUnit.getRelativePath();
                 if (! dependedOnUnitName.equals(currentUnitName)) {
                     if (declarationUnit instanceof ExternalUnit) {
                         declarationUnit.getDependentsOf().add(currentUnitPath);

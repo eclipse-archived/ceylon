@@ -59,11 +59,16 @@ public class DeclarationVisitor extends Visitor {
     private Unit unit;
     private ParameterList parameterList;
     private Declaration declaration;
+    private String fullPath; 
+    private String relativePath;
 
-    public DeclarationVisitor(Package pkg, String filename) {
+    public DeclarationVisitor(Package pkg, String filename,
+    		String fullPath, String relativePath) {
         scope = pkg;
         this.pkg = pkg;
         this.filename = filename;
+        this.fullPath = fullPath;
+        this.relativePath = relativePath;
     }
 
     public Unit getCompilationUnit() {
@@ -209,6 +214,8 @@ public class DeclarationVisitor extends Visitor {
         //that.setModelNode(unit);
         unit.setPackage(pkg);
         unit.setFilename(filename);
+        unit.setFullPath(fullPath);
+        unit.setRelativePath(relativePath);
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
         super.visit(that);

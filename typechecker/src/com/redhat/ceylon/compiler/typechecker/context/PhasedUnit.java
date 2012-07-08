@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.antlr.runtime.CommonToken;
 
@@ -30,7 +28,11 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Validator;
-import com.redhat.ceylon.compiler.typechecker.util.*;
+import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
+import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
 
 /**
  * Represent a unit and each of the type checking phases
@@ -73,6 +75,8 @@ public class PhasedUnit {
         this.tokens = tokenStream;
         unit = new Unit();
         unit.setFilename(fileName);
+        unit.setFullPath(unitFile.getPath());
+        unit.setRelativePath(pathRelativeToSrcDir);
         unit.setPackage(pkg);
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
@@ -183,7 +187,8 @@ public class PhasedUnit {
         if (!declarationsScanned) {
             scanningDeclarations = true;
             //System.out.println("Scan declarations for " + fileName);
-            DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
+            DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName,
+            		unitFile.getPath(), pathRelativeToSrcDir);
             compilationUnit.visit(dv);
             unit = dv.getCompilationUnit();
             declarationsScanned = true;
