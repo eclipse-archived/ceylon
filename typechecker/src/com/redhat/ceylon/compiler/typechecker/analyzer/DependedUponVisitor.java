@@ -66,24 +66,26 @@ public class DependedUponVisitor extends Visitor {
             if (declarationUnit != null) {
                 String currentUnitName = currentUnit.getRelativePath();
                 String dependedOnUnitName = declarationUnit.getRelativePath();
-                if (! dependedOnUnitName.equals(currentUnitName)) {
-                    if (declarationUnit instanceof ExternalUnit) {
-                        declarationUnit.getDependentsOf().add(currentUnitPath);
-                    } else {
-                        // TODO : this else block might probably be treatd now just as the if one.
-                        PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
-                        if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
-                            dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
-                        } else {
-                            for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
-                                dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitName);
-                                if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
-                                    dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                if (dependedOnUnitName!=null) {
+	                if (!dependedOnUnitName.equals(currentUnitName)) {
+	                    if (declarationUnit instanceof ExternalUnit) {
+	                        declarationUnit.getDependentsOf().add(currentUnitPath);
+	                    } else {
+	                        // TODO : this else block might probably be treatd now just as the if one.
+	                        PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
+	                        if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
+	                            dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
+	                        } else {
+	                            for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
+	                                dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitName);
+	                                if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
+	                                    dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
+	                                    break;
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
                 }
             }
         }
