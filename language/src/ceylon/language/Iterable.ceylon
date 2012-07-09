@@ -211,4 +211,14 @@ shared interface Iterable<out Element>
         return elements(for (e in this) if (exists e) i++->e);
     }
 
+    shared default Iterable<Element|Other> chain<Other>(
+            Iterable<Other> other) {
+        object chained satisfies Iterable<Element|Other> {
+            shared actual Iterator<Element|Other> iterator {
+                return ChainedIterator(outer, other);
+            }
+        }
+        return chained;
+    }
+
 }
