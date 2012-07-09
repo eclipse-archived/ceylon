@@ -204,4 +204,35 @@ Iterable$proto.getLast = function() {
     }
     return l;
 }
+Iterable$proto.chain = function(i2) {
+	var i1=this;
+	return Comprehension(function(){
+		var it = ChainedIterator(i1, i2);
+		return function() {
+			return it.next();
+		}
+	});
+}
 exports.Iterable=Iterable;
+
+function ChainedIterator(i1, i2) {
+	var that = new ChainedIterator.$$;
+	that.i1=i1;
+	that.i2=i2;
+	that.more=true;
+	return that;
+}
+initTypeProto(ChainedIterator, 'ceylon.language.ChainedIterator', IdentifiableObject, Iterator);
+ChainedIterator.$$.prototype.next = function() {
+	if (this.iter === undefined) {
+		this.iter = this.i1.getIterator();
+	}
+	var e = this.iter.next();
+	if (e === $finished && this.more) {
+		this.more=false;
+		this.iter=this.i2.getIterator();
+		e=this.iter.next();
+	}
+	return e;
+}
+exports.ChainedIterator=ChainedIterator;
