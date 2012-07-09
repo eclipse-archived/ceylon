@@ -6,6 +6,8 @@ shared void run() {
     booleans();
     print("Testing numbers");
     numbers();
+    print("Testing lists");
+    lists();
     print("Testing sequences");
     sequences();
     print("Testing characters");
