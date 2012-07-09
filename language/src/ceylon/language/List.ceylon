@@ -150,11 +150,21 @@ shared interface List<out Element>
 
     doc "Returns a new `List` that starts with the specified
          elements, followed by the elements of this `List`."
-    shared formal List<Element|Other> withLeading<Other>(Other... others);
+    shared default List<Element|Other> withLeading<Other>(Other... others) {
+        value sb = SequenceBuilder<Element|Other>();
+        sb.appendAll(others...);
+        sb.appendAll(this...);
+        return sb.sequence;
+    }
 
     doc "Returns a new `List` that contains the specified
          elements appended to the end of this `List`s'
          elements."
-    shared formal List<Element|Other> withTrailing<Other>(Other... others);
+    shared default List<Element|Other> withTrailing<Other>(Other... others) {
+        value sb = SequenceBuilder<Element|Other>();
+        sb.appendAll(this...);
+        sb.appendAll(others...);
+        return sb.sequence;
+    }
 
 }
