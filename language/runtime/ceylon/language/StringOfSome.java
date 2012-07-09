@@ -104,10 +104,10 @@ class StringOfSome extends String implements Some<Character> {
 
     @Override @Ignore
     public <Other> List withLeading(Iterable<? extends Other> elems) {
-        return List$impl.withLeading(this, elems);
+        return List$impl._withLeading(this, elems);
     }
     @Override @Ignore
     public <Other> List withTrailing(Iterable<? extends Other> elems) {
-        return List$impl.withTrailing(this, elems);
+        return List$impl._withTrailing(this, elems);
     }
 }

@@ -489,14 +489,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @TypeInfo("ceylon.language.List<Element|Other>")
     @Override
     public <Other>List withLeading(@Sequenced Iterable<? extends Other> elems) {
-        return List$impl.withLeading(this, elems);
+        return List$impl._withLeading(this, elems);
     }
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language.List<Element|Other>")
     @Override
     public <Other>List withTrailing(@Sequenced Iterable<? extends Other> elems) {
-        return List$impl.withTrailing(this, elems);
+        return List$impl._withTrailing(this, elems);
     }
 
 }

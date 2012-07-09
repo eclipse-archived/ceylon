@@ -122,11 +122,11 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     @Override
     @Annotations({ @Annotation("actual") })
     public <Other> List withLeading(@Sequenced Iterable<? extends Other> elems) {
-        return List$impl.withLeading(this, elems);
+        return List$impl._withLeading(this, elems);
     }
     @Override
     @Annotations({ @Annotation("actual") })
     public <Other> List withTrailing(@Sequenced Iterable<? extends Other> elems) {
-        return List$impl.withTrailing(this, elems);
+        return List$impl._withTrailing(this, elems);
     }
 }
