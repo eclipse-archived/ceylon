@@ -97,7 +97,8 @@ public class TypeVisitor extends Visitor {
             ImportList il) {
         for (Declaration dec: importedPackage.getMembers()) {
             if (dec.isShared() && !dec.isAnonymous() && 
-                    !ignoredMembers.contains(dec.getName())) {
+                    !ignoredMembers.contains(dec.getName()) &&
+                    !isNonimportable(importedPackage, dec.getName())) {
                 Import i = new Import();
                 i.setAlias(dec.getName());
                 i.setDeclaration(dec);
@@ -197,6 +198,10 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
+        if (isNonimportable(importedPackage, name)) {
+            member.getIdentifier().addError("root type may not be imported");
+            return name;
+        }
         for (Declaration d: unit.getDeclarations()) {
             String n = d.getName();
             if (d.isToplevel() && n!=null && 
@@ -215,9 +220,6 @@ public class TypeVisitor extends Visitor {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
             unit.getUnresolvedReferences().add(member.getIdentifier());
-        }
-        else if (isNonimportable(d)) {
-            member.getIdentifier().addError("root type may not be imported");
         }
         else {
             if (!d.isShared() && !d.getUnit().getPackage().equals(unit.getPackage())) {
@@ -340,10 +342,11 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private boolean isNonimportable(Declaration d) {
-        String name = d.getQualifiedNameString();
-        return "java.lang.Object".equals(name) ||
-                "java.lang.Exception".equals(name);
+    private boolean isNonimportable(Package pkg, String name) {
+        return pkg.getQualifiedNameString().equals("java.lang") &&
+        		("Object".equals(name) ||
+                 "Exception".equals(name) ||
+                 "Throwable".equals(name));
     }
 
     private void addImport(Tree.ImportMemberOrType member, ImportList il,
