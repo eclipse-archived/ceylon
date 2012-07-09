@@ -47,12 +47,12 @@ function max(/*ContainerWithFirstElement*/seq) {
     return v;
 }
 function sum(seq) {
-	var v = seq.getFirst();
-	var iter = seq.getRest().getIterator();
-	var e; while ((e = iter.next()) !== $finished) {
-		v = v.plus(e);
-	}
-	return v;
+    var v = seq.getFirst();
+    var iter = seq.getRest().getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        v = v.plus(e);
+    }
+    return v;
 }
 
 //receives ArraySequence of ArraySequences, returns flat ArraySequence
