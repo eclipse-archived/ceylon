@@ -72,7 +72,10 @@ public interface List<Element>
             @TypeInfo("ceylon.language.Iterable<Other>")
             @Sequenced Iterable<? extends Other> elements);
 
-    @Ignore public List<? extends Element> withLeading();
-    @Ignore public List<? extends Element> withTrailing();
+    @Ignore public <Other>List withLeading();
+    @Ignore public <Other>List withTrailing();
+
+    @Ignore public <Other>Iterable<? extends Other> withLeading$elements();
+    @Ignore public <Other>Iterable<? extends Other> withTrailing$elements();
 
 }

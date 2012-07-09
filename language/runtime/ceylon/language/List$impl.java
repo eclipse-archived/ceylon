@@ -111,6 +111,8 @@ public final class List$impl<Element> {
 
     public List<? extends Element> withLeading() { return $this; }
     public List<? extends Element> withTrailing() { return $this; }
+    public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$this; }
+    public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$this; }
 
     @SuppressWarnings("rawtypes")
     public <Other> List withLeading(Iterable<? extends Other> elements) {
