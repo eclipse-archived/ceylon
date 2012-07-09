@@ -97,6 +97,11 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Iterable<?>>> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Iterable chain(final .ceylon.language.Iterable<? extends Other> other) {
+        return $ceylon$language$Iterable$this.chain(other);
+    }
     private final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Iterable<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     

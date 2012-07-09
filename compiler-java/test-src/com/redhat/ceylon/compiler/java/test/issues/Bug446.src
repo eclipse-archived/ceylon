@@ -17,6 +17,36 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     public .ceylon.language.Iterator<? extends T> getIterator() {
         return $ceylon$language$List$this.getIterator();
     }
+    
+    @.java.lang.Override
+    public final <Other>.ceylon.language.Iterable<? extends Other> withLeading$elements() {
+        return $ceylon$language$List$this.withLeading$elements();
+    }
+    
+    @.java.lang.Override
+    public final <Other>.ceylon.language.List withLeading() {
+        return $ceylon$language$List$this.withLeading();
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.List withLeading(final .ceylon.language.Iterable<? extends Other> elements) {
+        return $ceylon$language$List$this.withLeading(elements);
+    }
+    
+    @.java.lang.Override
+    public final <Other>.ceylon.language.Iterable<? extends Other> withTrailing$elements() {
+        return $ceylon$language$List$this.withTrailing$elements();
+    }
+    
+    @.java.lang.Override
+    public final <Other>.ceylon.language.List withTrailing() {
+        return $ceylon$language$List$this.withTrailing();
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.List withTrailing(final .ceylon.language.Iterable<? extends Other> elements) {
+        return $ceylon$language$List$this.withTrailing(elements);
+    }
     private final .ceylon.language.Collection$impl<T> $ceylon$language$Collection$this;
     
     @.java.lang.Override
@@ -118,6 +148,11 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Iterable chain(final .ceylon.language.Iterable<? extends Other> other) {
+        return $ceylon$language$Iterable$this.chain(other);
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<T, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
