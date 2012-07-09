@@ -191,7 +191,7 @@ void testIterables() {
     assert(Singleton(1).chain({2,3}).sequence=={1,2,3}, "Singleton.chain");
     assert((1..3).chain(Singleton(4)).sequence=={1,2,3,4}, "Range.chain");
     assert("abc".chain({1,2}).sequence=={`a`, `b`, `c`, 1, 2}, "String.chain");
-    assert("".chain(Singleton(1))=={1}, "\"\".chain");
+    assert("".chain(Singleton(1)).sequence=={1}, "\"\".chain");
     assert({}.chain({1,2})=={1,2}, "Empty.chain");
     assert(array().chain({1,2})=={1,2}, "ArrayOfNone.chain");
     assert(array(1,2).chain({3,4}).sequence=={1,2,3,4}, "ArrayOfSome.chain");
