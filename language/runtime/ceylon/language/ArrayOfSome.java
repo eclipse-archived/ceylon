@@ -116,8 +116,10 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
         return Iterable$impl._getSequence(this); 
     }
 
-    @Override @Ignore public Array<? extends Element> withLeading() { return this; }
-    @Override @Ignore public Array<? extends Element> withTrailing() { return this; }
+    @Override @Ignore public <Other>Array withLeading() { return this; }
+    @Override @Ignore public <Other>Array withTrailing() { return this; }
+    @Override @Ignore public <Other>Array withLeading$elements() { return this; }
+    @Override @Ignore public <Other>Array withTrailing$elements() { return this; }
 
     @Override
     @Annotations({ @Annotation("actual") })

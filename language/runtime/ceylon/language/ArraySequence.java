@@ -352,6 +352,9 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
 
     @Override
     @Ignore
@@ -359,8 +362,10 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return $empty.getEmpty();
     }
 
-    @Override @Ignore public ArraySequence<? extends Element> withLeading() { return this; }
-    @Override @Ignore public ArraySequence<? extends Element> withTrailing() { return this; }
+    @Override @Ignore public <Other>ArraySequence withLeading() { return this; }
+    @Override @Ignore public <Other>ArraySequence withTrailing() { return this; }
+    @Override @Ignore public <Other>ArraySequence withLeading$elements() { return this; }
+    @Override @Ignore public <Other>ArraySequence withTrailing$elements() { return this; }
 
     @Override
     @Annotations({ @Annotation("actual") })

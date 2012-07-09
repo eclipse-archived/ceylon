@@ -326,9 +326,14 @@ public class Singleton<Element>
     public Singleton<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return new Singleton<Entry<? extends Integer, ? extends Element>>(new Entry<Integer, Element>(Integer.instance(0), element));
     }
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
 
-    @Override @Ignore public Singleton<? extends Element> withLeading() { return this; }
-    @Override @Ignore public Singleton<? extends Element> withTrailing() { return this; }
+    @Override @Ignore public <Other>Singleton withLeading() { return this; }
+    @Override @Ignore public <Other>Singleton withTrailing() { return this; }
+    @Override @Ignore public <Other>Singleton withLeading$elements() { return this; }
+    @Override @Ignore public <Other>Singleton withTrailing$elements() { return this; }
 
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))

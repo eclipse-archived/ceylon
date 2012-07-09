@@ -97,9 +97,12 @@ class StringOfNone extends String implements None<Character> {
     public Iterable<? extends Character> getCoalesced() { return this; }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() { return (Iterable)this; }
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
 
-    @Override @Ignore public String withLeading() { return this; }
-    @Override @Ignore public String withTrailing() { return this; }
+    @Override @Ignore public <Other>String withLeading() { return this; }
+    @Override @Ignore public <Other>String withTrailing() { return this; }
+    @Ignore @Override public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)this; }
+    @Ignore @Override public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)this; }
 
     @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elements) {
         return $array.array(elements);

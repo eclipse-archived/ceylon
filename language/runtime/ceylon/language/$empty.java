@@ -213,8 +213,11 @@ public class $empty {
         @Override @Ignore public Empty getCoalesced() { return this; }
         @SuppressWarnings({"rawtypes", "unchecked"})
         @Override @Ignore public Iterable getIndexed() { return this; }
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
         @Override @Ignore public Empty withLeading() { return this; }
         @Override @Ignore public Empty withTrailing() { return this; }
+        @Override @Ignore public Empty withLeading$elements() { return this; }
+        @Override @Ignore public Empty withTrailing$elements() { return this; }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elems) {
             return (List)elems.getSequence();

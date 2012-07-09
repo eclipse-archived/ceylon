@@ -731,6 +731,9 @@ public abstract class String
         public Iterable<? extends Entry<? extends Integer, ? extends String>> getIndexed() {
             return Iterable$impl._getIndexed(this);
         }
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+            return Iterable$impl._chain(this, other);
+        }
     }
 
     private static final class Occurs implements Iterable<Integer> {
@@ -847,6 +850,9 @@ public abstract class String
         public Iterable<? extends Entry<? extends Integer, ? extends Integer>> getIndexed() {
             return Iterable$impl._getIndexed(this);
         }
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+            return Iterable$impl._chain(this, other);
+        }
     }
 
     @Override
@@ -871,4 +877,5 @@ public abstract class String
     public boolean split$groupSeparators(Callable<? extends Boolean> separator, boolean discardSeparators){
         return true;
     }
+
 }

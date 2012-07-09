@@ -307,8 +307,13 @@ public interface Correspondence<Key,Item> {
         public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
             return Iterable$impl._getIndexed(this);
         }
-        @Override @Ignore public List<? extends Item> withLeading() { return this; }
-        @Override @Ignore public List<? extends Item> withTrailing() { return this; }
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+            return Iterable$impl._chain(this, other);
+        }
+        @Override @Ignore public <Other>List withLeading() { return this; }
+        @Override @Ignore public <Other>List withTrailing() { return this; }
+        @Override @Ignore public <Other>List withLeading$elements() { return this; }
+        @Override @Ignore public <Other>List withTrailing$elements() { return this; }
         @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elems) {
             return List$impl._withLeading(this, elems);
         }

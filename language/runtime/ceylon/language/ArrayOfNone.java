@@ -109,9 +109,12 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     @Override @Ignore public Iterable<? extends Element> getCoalesced() { return this; }
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() { return (Iterable)this; }
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
 
-    @Override @Ignore public Array<? extends Element> withLeading() { return this; }
-    @Override @Ignore public Array<? extends Element> withTrailing() { return this; }
+    @Override @Ignore public <Other>Array withLeading() { return this; }
+    @Override @Ignore public <Other>Array withTrailing() { return this; }
+    @Override @Ignore public <Other>Array withLeading$elements() { return this; }
+    @Override @Ignore public <Other>Array withTrailing$elements() { return this; }
 
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Array withLeading(Iterable<? extends Other> elements) {

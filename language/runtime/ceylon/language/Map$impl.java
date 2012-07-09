@@ -248,6 +248,9 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Entry<? extends Integer, ? extends Key>> getIndexed() {
                 return Iterable$impl._getIndexed(this);
             }
+			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+				return Iterable$impl._chain(this, other);
+			}
         }
         return new keySet();
     }
@@ -420,6 +423,9 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
                 return Iterable$impl._getIndexed(this);
             }
+			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+				return Iterable$impl._chain(this, other);
+			}
         }
         return new valueCollection();
     }
@@ -673,6 +679,9 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Item, ? extends Set<Key>>>> getIndexed() {
                 return Iterable$impl._getIndexed(this);
             }
+            @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+                return Iterable$impl._chain(this, other);
+            }
 
 			@Override @Ignore
 			public <Result> Map<? extends Item, ? extends Result> mapItems(Callable<? extends Result> mapping) {
@@ -866,6 +875,9 @@ public final class Map$impl<Key,Item> {
             @Override @Ignore
             public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Key, ? extends Result>>> getIndexed() {
                 return Iterable$impl._getIndexed(this);
+            }
+            @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+                return Iterable$impl._chain(this, other);
             }
 
             @Override

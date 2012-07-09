@@ -480,9 +480,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
 
-    @Override @Ignore public Range<? extends Element> withLeading() { return this; }
-    @Override @Ignore public Range<? extends Element> withTrailing() { return this; }
+    @Override @Ignore public <Other>Range withLeading() { return this; }
+    @Override @Ignore public <Other>Range withTrailing() { return this; }
+    @Override @Ignore public <Other>Range withLeading$elements() { return this; }
+    @Override @Ignore public <Other>Range withTrailing$elements() { return this; }
 
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))

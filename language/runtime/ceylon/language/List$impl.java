@@ -110,9 +110,9 @@ public final class List$impl<Element> {
     }
 
     @SuppressWarnings("rawtypes")
-    public List<? extends Element> withLeading() { return $this; }
+    public <Other>List withLeading() { return $this; }
     @SuppressWarnings("rawtypes")
-    public List<? extends Element> withTrailing() { return $this; }
+    public <Other>List withTrailing() { return $this; }
     public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$this; }
     public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$this; }
 
@@ -138,14 +138,5 @@ public final class List$impl<Element> {
         sb.appendAll(elems);
         return (List)sb.getSequence();
     }
-    @SuppressWarnings({"unchecked"})
-    @Ignore public <Other> Iterable<? extends Other> withLeading$elements() {
-    	return (Iterable<? extends Other>) $empty.getEmpty();
-    }
-    @SuppressWarnings({"unchecked"})
-    @Ignore public <Other> Iterable<? extends Other> withTrailing$elements() {
-    	return (Iterable<? extends Other>) $empty.getEmpty();
-    }
-
 
 }

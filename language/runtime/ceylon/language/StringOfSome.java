@@ -98,9 +98,14 @@ class StringOfSome extends String implements Some<Character> {
     public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
 
-    @Override @Ignore public String withLeading() { return this; }
-    @Override @Ignore public String withTrailing() { return this; }
+    @Override @Ignore public <Other>String withLeading() { return this; }
+    @Override @Ignore public <Other>String withTrailing() { return this; }
+    @Ignore @Override public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)this; }
+    @Ignore @Override public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)this; }
 
     @Override @Ignore
     public <Other> List withLeading(Iterable<? extends Other> elems) {
