@@ -109,8 +109,10 @@ public final class List$impl<Element> {
         return null;
     }
 
-    public List<? extends Element> withLeading() { return $this; }
-    public List<? extends Element> withTrailing() { return $this; }
+    @SuppressWarnings("rawtypes")
+    public <Other> List withLeading() { return $this; }
+    @SuppressWarnings("rawtypes")
+    public <Other> List withTrailing() { return $this; }
 
     @SuppressWarnings("rawtypes")
     public <Other> List withLeading(Iterable<? extends Other> elements) {
@@ -134,5 +136,14 @@ public final class List$impl<Element> {
         sb.appendAll(elems);
         return (List)sb.getSequence();
     }
+    @SuppressWarnings({"unchecked"})
+    @Ignore public <Other> Iterable<? extends Other> withLeading$elements() {
+    	return (Iterable<? extends Other>) $empty.getEmpty();
+    }
+    @SuppressWarnings({"unchecked"})
+    @Ignore public <Other> Iterable<? extends Other> withTrailing$elements() {
+    	return (Iterable<? extends Other>) $empty.getEmpty();
+    }
+
 
 }
