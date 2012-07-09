@@ -310,10 +310,10 @@ public interface Correspondence<Key,Item> {
         @Override @Ignore public List<? extends Item> withLeading() { return this; }
         @Override @Ignore public List<? extends Item> withTrailing() { return this; }
         @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elems) {
-            return this; //TODO
+            return List$impl._withLeading(this, elems);
         }
         @Override @Ignore public <Other>List withTrailing(Iterable<? extends Other> elems) {
-            return this; //TODO
+            return List$impl._withTrailing(this, elems);
         }
     }
 }
