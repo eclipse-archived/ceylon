@@ -418,6 +418,13 @@ Empty$proto.findLast = function(f) { return null; }
 Empty$proto.filter = function(f) { return this; }
 Empty$proto.getCoalesced = function() { return this; }
 Empty$proto.getIndexed = function() { return this; }
+Empty$proto.withLeading = function(other) {
+    return other === undefined ? this : other;
+}
+Empty$proto.withTrailing = function(other) {
+    return other === undefined ? this : other;
+}
+Empty$proto.chain = function(other) { return other; }
 
 var $empty = Empty();
 
@@ -431,6 +438,7 @@ EmptyIterator$proto.next = function() { return $finished; }
 var emptyIterator=EmptyIterator();
 
 exports.empty=$empty;
+exports.Empty=Empty;
 exports.emptyIterator=emptyIterator;
 
 function EmptyArray() {
@@ -441,6 +449,8 @@ initTypeProto(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
 EmptyArray.$$.prototype.setItem = function(i,e) {}
 EmptyArray.$$.prototype.item = function(x) { return null; }
 EmptyArray.$$.prototype.getReversed = function() { return this; }
+EmptyArray.$$.prototype.chain = function(other) { return other; }
+
 exports.EmptyArray=EmptyArray;
 
 function ArrayList(items) {
