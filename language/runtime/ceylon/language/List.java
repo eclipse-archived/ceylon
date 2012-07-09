@@ -58,6 +58,7 @@ public interface List<Element>
     @Override
     public int hashCode();
 
+    @SuppressWarnings("rawtypes")
     @Annotations(@Annotation("default"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language.List<Element|Other>")
@@ -65,6 +66,7 @@ public interface List<Element>
             @TypeInfo("ceylon.language.Iterable<Other>")
             @Sequenced Iterable<? extends Other> elements);
 
+    @SuppressWarnings("rawtypes")
     @Annotations(@Annotation("default"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language.List<Element|Other>")
@@ -72,7 +74,9 @@ public interface List<Element>
             @TypeInfo("ceylon.language.Iterable<Other>")
             @Sequenced Iterable<? extends Other> elements);
 
+    @SuppressWarnings("rawtypes")
     @Ignore public <Other>List withLeading();
+    @SuppressWarnings("rawtypes")
     @Ignore public <Other>List withTrailing();
 
     @Ignore public <Other>Iterable<? extends Other> withLeading$elements();
