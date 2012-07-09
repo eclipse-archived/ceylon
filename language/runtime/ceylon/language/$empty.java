@@ -217,11 +217,11 @@ public class $empty {
         @Override @Ignore public Empty withTrailing() { return this; }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elems) {
-            return $array.array(elems);
+            return (List)elems.getSequence();
         }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>List withTrailing(Iterable<? extends Other> elems) {
-            return $array.array(elems);
+            return (List)elems.getSequence();
         }
     };
     
