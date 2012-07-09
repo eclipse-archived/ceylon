@@ -125,10 +125,10 @@ SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
 SequenceBuilder$proto.getSize = function() { return Integer(this.seq.length); }
 
 function SequenceAppender(other) {
-	var that = new SequenceAppender.$$;
-	that.seq = [];
-	that.appendAll(other);
-	return that;
+    var that = new SequenceAppender.$$;
+    that.seq = [];
+    that.appendAll(other);
+    return that;
 }
 initTypeProto(SequenceAppender, 'ceylon.language.SequenceAppender', SequenceBuilder);
 
@@ -153,7 +153,7 @@ Singleton$proto.getRest = function() { return $empty; }
 Singleton$proto.defines = function(idx) { return idx.equals(Integer(0)); }
 Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
 Singleton$proto.span = function(from, to) {
-	if (to === undefined || to === null) to = from;
+    if (to === undefined || to === null) to = from;
     return (from.equals(Integer(0)) === $true || to.equals(Integer(0)) === $true) ? this : $empty;
 }
 Singleton$proto.segment = function(idx, len) {
@@ -164,6 +164,16 @@ Singleton$proto.segment = function(idx, len) {
 }
 Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
 Singleton$proto.getReversed = function() { return this; }
+Singleton$proto.equals = function(other) {
+    if (isOfType(other, 'ceylon.language.List')) {
+        if (other.getSize().value !== 1) {
+            return $false;
+        }
+        var o = other.item(Integer(0));
+        return Boolean$(o !== null && o.equals(this.elem));
+    }
+    return $false;
+}
 Singleton$proto.map = function(f) { return ArraySequence([ f(this.elem) ]); }
 Singleton$proto.filter = function(f) {
     return f(this.elem) === $true ? this : $empty;
@@ -191,6 +201,13 @@ Singleton$proto.taking = function(take) {
 }
 Singleton$proto.by = function(step) {
     return this;
+}
+Singleton$proto.sorted = function(f) { return this; }
+Singleton$proto.count = function(f) {
+	return f(this.elem) === $true ? Integer(1) : Integer(0);
+}
+Singleton$proto.contains = function(o) {
+	return this.elem.equals(o);
 }
 Singleton$proto.getCoalesced = function() { return this; }
 
