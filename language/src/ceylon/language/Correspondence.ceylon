@@ -126,12 +126,6 @@ shared interface Correspondence<in Key, out Item>
         shared actual Integer hash {
             return keys.hash;
         }
-        shared actual Sequence<Item?|Other> withLeading<Other>(Other... others) {
-            throw;
-        }
-        shared actual Sequence<Item?|Other> withTrailing<Other>(Other... others) {
-            throw;
-        }
     }
     
 }
