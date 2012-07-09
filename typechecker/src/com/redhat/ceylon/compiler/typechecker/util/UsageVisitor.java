@@ -14,6 +14,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author kulikov
  */
 public class UsageVisitor extends Visitor {
+    @Override
+    public void visit(Tree.ImportMemberOrType that) {
+        super.visit(that);
+        Declaration d = that.getDeclarationModel();
+        if (d != null && d.getRefCount() == 0) {
+            that.addUsageWarning(String.format("Import is never used: %s", d.getName()));
+        }
+    }
 
     @Override
     public void visit(Tree.Declaration that) {
