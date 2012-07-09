@@ -44,6 +44,8 @@ shared void run() {
     comprehensions();
     print("Testing process");
     testProcess();
+    print("Interfaces");
+    testSatisfaction();
     results();
 }
 
