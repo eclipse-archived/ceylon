@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 public final class Iterable$impl<Element> {
@@ -268,6 +271,18 @@ public final class Iterable$impl<Element> {
         };
     }
 
+    public <Other> Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain($this, other);
+    }
+    public static <Element,Other> Iterable _chain(final Iterable<? extends Element> one, final Iterable<? extends Other> two) {
+        return new AbstractIterable() {
+            @Override
+            @TypeInfo("ceylon.language.Iterator<Element|Other>")
+            public Iterator getIterator() {
+                return new ChainedIterator(one, two);
+            }
+        };
+    }
 }
 
 class MapIterable<Element, Result> implements Iterable<Result> {
@@ -373,6 +388,9 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public Iterable<? extends Entry<? extends Integer, ? extends Result>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    public <Other> Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
 }
 
 class FilterIterable<Element> implements Iterable<Element> {
@@ -475,5 +493,8 @@ class FilterIterable<Element> implements Iterable<Element> {
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
+    }
+    public <Other> Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
     }
 }

@@ -123,4 +123,11 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<ceylon.language.Integer,Element&ceylon.language.Object>>")
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed();
 
+    @Annotations(@Annotation("default"))
+    @TypeInfo("ceylon.language.Iterable<Element|Other>")
+    @TypeParameters(@TypeParameter("Other"))
+    public <Other> Iterable chain(@Name("other")
+            @TypeInfo("ceylon.language.Iterable<Other>")
+            Iterable<? extends Other> other);
+
 }
