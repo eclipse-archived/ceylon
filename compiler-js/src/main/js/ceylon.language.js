@@ -527,6 +527,7 @@ exports.getExhausted=getExhausted;
 exports.Range=Range;
 exports.Entry=Entry;
 exports.getBottom=getBottom;
+exports.ContainerWithFirstElement=ContainerWithFirstElement;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {
