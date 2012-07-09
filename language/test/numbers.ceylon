@@ -409,4 +409,9 @@ shared void numbers() {
     assert(!(-0.0).strictlyPositive, "negative zero not strictly positive");
     assert(1.0.strictlyPositive, "positive one strictly positive");
     assert(!(-1.0).strictlyPositive, "negative one not strictly positive");
+
+    //number-related functions
+    assert(sum({1,2,3})==6, "sum()");
+    assert(max({1,3,2})==3, "max()");
+    assert(min({3,1,2})==1, "min()");
 }
