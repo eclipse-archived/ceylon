@@ -531,3 +531,24 @@ function ComprehensionIterator(nextFunc, it) {
 }
 initTypeProto(ComprehensionIterator, 'ceylon.language.ComprehensionIterator',
         IdentifiableObject, Iterator);
+
+function ChainedIterator(first, second, chained) {
+    if (chained===undefined) {chained = new ChainedIterator.$$;}
+    IdentifiableObject(chained);
+    chained.it = first.getIterator();
+    chained.second = second;
+    return chained;
+}
+initTypeProto(ChainedIterator, 'ceylon.language.ChainedIterator',
+        IdentifiableObject, Iterator);
+var ChainedIterator$proto = ChainedIterator.$$.prototype;
+ChainedIterator$proto.next = function() {
+    var elem = this.it.next();
+    if ((elem===$finished) && (this.second!==undefined)) {
+        this.it = this.second.getIterator();
+        this.second = undefined;
+        elem = this.it.next();
+    }
+    return elem;
+}
+exports.ChainedIterator=ChainedIterator;
