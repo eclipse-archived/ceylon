@@ -345,8 +345,8 @@ public class TypeVisitor extends Visitor {
     private boolean isNonimportable(Package pkg, String name) {
         return pkg.getQualifiedNameString().equals("java.lang") &&
         		("Object".equals(name) ||
-                 "Exception".equals(name) ||
-                 "Throwable".equals(name));
+                 "Exception".equals(name) /*||
+                 "Throwable".equals(name)*/);
     }
 
     private void addImport(Tree.ImportMemberOrType member, ImportList il,
