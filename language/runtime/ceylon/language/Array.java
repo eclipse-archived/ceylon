@@ -28,43 +28,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     
     protected final java.lang.Object array;
     
-    protected Array(char... array) {
-        this.array = array;
-    }
-    
-    protected Array(byte... array) {
-        this.array = array;
-    }
-    
-    protected Array(short... array) {
-        this.array = array;
-    }
-    
-    protected Array(int... array) {
-        this.array = array;
-    }
-    
-    protected Array(long... array) {
-        this.array = array;
-    }
-    
-    protected Array(float... array) {
-        this.array = array;
-    }
-    
-    protected Array(double... array) {
-        this.array = array;
-    }
-    
-    protected Array(boolean... array) {
-        this.array = array;
-    }
-
-    protected Array(java.lang.String... array) {
-        this.array = array;
-    }
-
-    protected Array(Element... array) {
+    protected Array(java.lang.Object array) {
         this.array = array;
     }
 
@@ -152,6 +116,16 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Ignore
     public static <T> Array<T> instance(T[] array) {
         if (array.length == 0) {
+            return new ArrayOfNone<T>(array);
+        } else {
+            return new ArrayOfSome<T>(array);
+        }
+    }
+    
+    @Ignore
+    public static <T> Array<T> instance(java.lang.Object array) {
+        int length = java.lang.reflect.Array.getLength(array);
+        if (length == 0) {
             return new ArrayOfNone<T>(array);
         } else {
             return new ArrayOfSome<T>(array);
