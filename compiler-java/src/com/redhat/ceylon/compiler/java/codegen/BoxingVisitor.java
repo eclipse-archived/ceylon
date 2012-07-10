@@ -89,7 +89,11 @@ public abstract class BoxingVisitor extends Visitor {
         // handle errors gracefully
         if(that.getDeclaration() == null)
             return;
-        propagateFromDeclaration(that, (TypedDeclaration)that.getDeclaration());
+        if (Decl.isValueTypeDecl(that.getPrimary())) {
+            CodegenUtil.markUnBoxed(that);
+        } else {
+            propagateFromDeclaration(that, (TypedDeclaration)that.getDeclaration());
+        }
     }
 
     @Override
