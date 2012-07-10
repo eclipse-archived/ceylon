@@ -248,26 +248,27 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (fromIndex<0) fromIndex=0;
         long toIndex = to==null ? getSize()-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
+        java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return ArrayOfNone.instance(array.getClass().getComponentType(), null);
+            return ArrayOfNone.instance(typeClass, null);
         } else {
-            if (array instanceof char[]) {
+            if (typeClass == char.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof byte[]) {
+            } else if (typeClass == byte.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof short[]) {
+            } else if (typeClass == short.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof int[]) {
+            } else if (typeClass == int.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof long[]) {
+            } else if (typeClass == long.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof float[]) {
+            } else if (typeClass == float.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof double[]) {
+            } else if (typeClass == double.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof boolean[]) {
+            } else if (typeClass == boolean.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof java.lang.String[]) {
+            } else if (typeClass == java.lang.String.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
             } else {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
@@ -282,26 +283,27 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         if (fromIndex<0) fromIndex=0;
         long resultLength = length;
         long lastIndex = getLastIndex().longValue();
+        java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return ArrayOfNone.instance(array.getClass().getComponentType(), null);
+            return ArrayOfNone.instance(typeClass, null);
         } else {
-            if (array instanceof char[]) {
+            if (typeClass == char.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof byte[]) {
+            } else if (typeClass == byte.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof short[]) {
+            } else if (typeClass == short.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof int[]) {
+            } else if (typeClass == int.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof long[]) {
+            } else if (typeClass == long.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof float[]) {
+            } else if (typeClass == float.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof double[]) {
+            } else if (typeClass == double.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof boolean[]) {
+            } else if (typeClass == boolean.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof java.lang.String[]) {
+            } else if (typeClass == java.lang.String.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
@@ -369,23 +371,24 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @SuppressWarnings("unchecked")
     protected Element unsafeItem(int index) {
-        if (array instanceof char[]) {
+        java.lang.Class<?> typeClass = array.getClass().getComponentType();
+        if (typeClass == char.class) {
             return (Element) Character.instance(((char[])array)[index]);
-        } else if (array instanceof byte[]) {
+        } else if (typeClass == byte.class) {
             return (Element) Integer.instance(((byte[])array)[index]);
-        } else if (array instanceof short[]) {
+        } else if (typeClass == short.class) {
             return (Element) Integer.instance(((short[])array)[index]);
-        } else if (array instanceof int[]) {
+        } else if (typeClass == int.class) {
             return (Element) Integer.instance(((int[])array)[index]);
-        } else if (array instanceof long[]) {
+        } else if (typeClass == long.class) {
             return (Element) Integer.instance(((long[])array)[index]);
-        } else if (array instanceof float[]) {
+        } else if (typeClass == float.class) {
             return (Element) Float.instance(((float[])array)[index]);
-        } else if (array instanceof double[]) {
+        } else if (typeClass == double.class) {
             return (Element) Float.instance(((float[])array)[index]);
-        } else if (array instanceof boolean[]) {
+        } else if (typeClass == boolean.class) {
             return (Element) Boolean.instance(((boolean[])array)[index]);
-        } else if (array instanceof java.lang.String[]) {
+        } else if (typeClass == java.lang.String.class) {
             return (Element) String.instance(((java.lang.String[])array)[index]);
         } else {
             return ((Element[])array)[index];
@@ -396,28 +399,29 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
             @Name("element") @TypeInfo("Element") Element element) {
         int idx = (int) index;
         if (idx >= 0 && idx < getSize()) {
-            if (array instanceof char[]) {
+            java.lang.Class<?> typeClass = array.getClass().getComponentType();
+            if (typeClass == char.class) {
                 // FIXME This is really unsafe! Should we try to do something more intelligent here??
                 ((char[])array)[idx] = (char) ((Character)element).codePoint;
-            } else if (array instanceof byte[]) {
+            } else if (typeClass == byte.class) {
                 // FIXME Another unsafe conversion
                 ((byte[])array)[idx] = (byte) ((Integer)element).longValue();
-            } else if (array instanceof short[]) {
+            } else if (typeClass == short.class) {
                 // FIXME Another unsafe conversion
                 ((short[])array)[idx] = (short) ((Integer)element).longValue();
-            } else if (array instanceof int[]) {
+            } else if (typeClass == int.class) {
                 // FIXME Another unsafe conversion
                 ((int[])array)[idx] = (int) ((Integer)element).longValue();
-            } else if (array instanceof long[]) {
+            } else if (typeClass == long.class) {
                 ((long[])array)[idx] = ((Integer)element).longValue();
-            } else if (array instanceof float[]) {
+            } else if (typeClass == float.class) {
                 // FIXME Another unsafe conversion
                 ((float[])array)[idx] = (float) ((Float)element).doubleValue();
-            } else if (array instanceof double[]) {
+            } else if (typeClass == double.class) {
                 ((double[])array)[idx] = ((Float)element).doubleValue();
-            } else if (array instanceof boolean[]) {
+            } else if (typeClass == boolean.class) {
                 ((boolean[])array)[idx] = ((Boolean)element).booleanValue();
-            } else if (array instanceof java.lang.String[]) {
+            } else if (typeClass == java.lang.String.class) {
                 ((java.lang.String[])array)[idx] = ((String)element).toString();
             } else {
                 ((Element[])array)[idx] = element;
