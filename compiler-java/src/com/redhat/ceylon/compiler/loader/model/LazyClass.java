@@ -54,6 +54,7 @@ public class LazyClass extends Class implements LazyContainer {
     private String realName;
     private boolean isStatic;
     private boolean isCeylon;
+    private boolean isValueType;
     
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
@@ -69,10 +70,15 @@ public class LazyClass extends Class implements LazyContainer {
         setAbstract(classMirror.isAbstract());
         this.isStatic = classMirror.isStatic();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
+        this.isValueType = classMirror.getAnnotation(AbstractModelLoader.CEYLON_VALUETYPE_ANNOTATION) != null;
     }
 
     public boolean isCeylon() {
         return isCeylon;
+    }
+
+    public boolean isValueType() {
+        return isValueType;
     }
 
     public boolean isStatic() {

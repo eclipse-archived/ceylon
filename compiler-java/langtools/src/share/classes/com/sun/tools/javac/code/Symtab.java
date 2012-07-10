@@ -217,6 +217,7 @@ public class Symtab {
     public final Type ceylonAtAnnotationsType;
     public final Type ceylonAtAnnotationType;
     public final Type ceylonAtNamedArgumentType;
+    public final Type ceylonAtValueTypeType;
 
     public final Type ceylonUtilType;
 
@@ -574,6 +575,7 @@ public class Symtab {
         ceylonAtAnnotationsType = enterClass("com.redhat.ceylon.compiler.java.metadata.Annotations");
         ceylonAtAnnotationType = enterClass("com.redhat.ceylon.compiler.java.metadata.Annotation");
         ceylonAtNamedArgumentType = enterClass("com.redhat.ceylon.compiler.java.metadata.NamedArgument");
+        ceylonAtValueTypeType = enterClass("com.redhat.ceylon.compiler.java.metadata.ValueType");
         
         ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
 

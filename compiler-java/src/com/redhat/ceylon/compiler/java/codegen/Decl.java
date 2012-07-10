@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
@@ -33,11 +34,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 
 /**
  * Utility functions telling you about Ceylon declarations
@@ -344,4 +347,19 @@ public class Decl {
         }
         return (Package) scope;
     }
+
+    public static boolean isValueTypeDecl(Tree.Term decl) {
+        if ((decl != null) && decl.getTypeModel().getDeclaration() instanceof LazyClass) {
+            return ((LazyClass)decl.getTypeModel().getDeclaration()).isValueType();
+        }
+        return false;
+    }
+    
+    public static boolean isValueTypeDecl(TypedDeclaration decl) {
+        if ((decl != null) && decl.getType().getDeclaration() instanceof LazyClass) {
+            return ((LazyClass)decl.getType().getDeclaration()).isValueType();
+        }
+        return false;
+    }
+    
 }
