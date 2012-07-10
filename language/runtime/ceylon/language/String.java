@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 2)
 @Class(extendsType="ceylon.language.Object")
@@ -19,6 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
                  "ceylon.language.Summable<ceylon.language.String>",
                  "ceylon.language.Castable<ceylon.language.String>",
                  "ceylon.language.Cloneable<ceylon.language.String>"})
+@ValueType
 public abstract class String
     implements Comparable<String>, List<Character>,
                Summable<String>, Castable<String>,
@@ -26,11 +28,17 @@ public abstract class String
 
     public final java.lang.String value;
 
-    String(java.lang.String s) {
+    protected String(java.lang.String s) {
         value = s;
     }
 
+    @Override
     public java.lang.String toString() {
+        return value;
+    }
+
+    @Ignore
+    public static java.lang.String toString(java.lang.String value) {
         return value;
     }
 
@@ -60,7 +68,17 @@ public abstract class String
         return value.toUpperCase();
     }
 
+    @Ignore
+    public static java.lang.String getUppercased(java.lang.String value) {
+        return value.toUpperCase();
+    }
+
     public java.lang.String getLowercased() {
+        return value.toLowerCase();
+    }
+
+    @Ignore
+    public static java.lang.String getLowercased(java.lang.String value) {
         return value.toLowerCase();
     }
 
@@ -75,14 +93,37 @@ public abstract class String
         }
     }
 
+    @Ignore
+    public static boolean equals(java.lang.String value, java.lang.Object that) {
+        if (that instanceof String) {
+            String s = (String)that;
+            return value.equals(s.value);
+        } 
+        else {
+            return false;
+        }
+    }
+
     @Override
     public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Ignore
+    public static int hashCode(java.lang.String value) {
         return value.hashCode();
     }
 
     @Override
     public Comparison compare(@Name("other") String other) {
         int c = value.compareTo(other.value);
+        return (c < 0) ? smaller.getSmaller() :
+            ((c == 0) ? equal.getEqual() : larger.getLarger());
+    }
+
+    @Ignore
+    public static Comparison compare(java.lang.String value, java.lang.String otherValue) {
+        int c = value.compareTo(otherValue);
         return (c < 0) ? smaller.getSmaller() :
             ((c == 0) ? equal.getEqual() : larger.getLarger());
     }
@@ -112,21 +153,46 @@ public abstract class String
         return (CastValue) this;
     }
 
+    @Ignore
+    public static <CastValue extends String> CastValue castTo(java.lang.String value) {
+        // FIXME Is this correct?
+        return (CastValue) instance(value);
+    }
+
     @Override
-    public String plus(@Name("other") String string) {
-        return instance(value + string.value);
+    public String plus(@Name("other") String other) {
+        return instance(value + other.value);
+    }
+
+    @Ignore
+    public static java.lang.String plus(java.lang.String value, java.lang.String otherValue) {
+        return value + otherValue;
     }
 
     @Override
     @TypeInfo("ceylon.language.Integer")
     public long getSize() {
         //TODO: should we cache this value in an instvar?
+        // But remember that we'll mostly be using the static verion
+        // of this method! So an instvar won't help much.
         return value.codePointCount(0, value.length());
     }
 
+    @Ignore
+    public static long getSize(java.lang.String value) {
+        return value.codePointCount(0, value.length());
+    }
+
+    @Override
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer getLastIndex() {
         long length = getSize();
+        return (length == 0) ? null : Integer.instance(length - 1);
+    }
+
+    @Ignore
+    public static Integer getLastIndex(java.lang.String value) {
+        long length = getSize(value);
         return (length == 0) ? null : Integer.instance(length - 1);
     }
 
@@ -135,9 +201,19 @@ public abstract class String
         return value.isEmpty();
     }
 
+    @Ignore
+    public static boolean getEmpty(java.lang.String value) {
+        return value.isEmpty();
+    }
+
     @Override
     public Character item(@Name("index") Integer key) {
-        int index = (int)key.longValue();
+        return item(value, key.longValue());
+    }
+
+    @Ignore
+    public static Character item(java.lang.String value, long key) {
+        int index = (int)key;
         int length = value.length();
         if (index < 0 || index >= length) {
             return null;
@@ -153,10 +229,22 @@ public abstract class String
         return index >= 0 && index < getSize();
     }
 
+    @Ignore
+    public static boolean defines(java.lang.String value, long key) {
+        long index = key;
+        return index >= 0 && index < getSize(value);
+    }
+
     @Override
     @Ignore
     public Category getKeys() {
         return Correspondence$impl._getKeys(this);
+    }
+
+    @Ignore
+    public static Category getKeys(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._getKeys(instance(value));
     }
 
     @Override
@@ -168,11 +256,27 @@ public abstract class String
         //      of getSize()
         return Correspondence$impl._definesEvery(this, keys);
     }
+    
+    @Ignore
+    public static boolean definesEvery(java.lang.String value, Iterable<? extends Integer> keys) {
+        //TODO: inefficient ... better to cache the result
+        //      of getSize()
+        // TODO We're still boxing here!
+        return Correspondence$impl._definesEvery(instance(value), keys);
+    }
+    
     @Override
     @Ignore
     public boolean definesEvery() {
         return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
+    
+    @Ignore
+    public static boolean definesEvery(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._definesEvery(instance(value), (Iterable)$empty.getEmpty());
+    }
+    
     @Override
     @Ignore
     public Iterable<? extends Integer> definesEvery$keys() {
@@ -188,11 +292,27 @@ public abstract class String
         //      of getSize()
         return Correspondence$impl._definesAny(this, keys);
     }
+
+    @Ignore
+    public static boolean definesAny(java.lang.String value, Iterable<? extends Integer> keys) {
+        //TODO: inefficient ... better to cache the result
+        //      of getSize()
+        // TODO We're still boxing here!
+        return Correspondence$impl._definesAny(instance(value), keys);
+    }
+    
     @Override
     @Ignore
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
+    
+    @Ignore
+    public static boolean definesAny(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._definesAny(instance(value), (Iterable)$empty.getEmpty());
+    }
+    
     @Override
     @Ignore
     public Iterable<? extends Integer> definesAny$keys() {
@@ -206,11 +326,25 @@ public abstract class String
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
+
+    @Ignore
+    public static List<? extends Character> items(java.lang.String value, Iterable<? extends Integer> keys) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._items(instance(value), keys);
+    }
+    
     @Override
     @Ignore
     public List<? extends Character> items() {
         return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
+    
+    @Ignore
+    public static List<? extends Character> items(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._items(instance(value), (Iterable)$empty.getEmpty());
+    }
+    
     @Override
     @Ignore
     public Iterable<? extends Integer> items$keys() {
@@ -220,6 +354,11 @@ public abstract class String
     @Override
     @TypeInfo("ceylon.language.Iterator<ceylon.language.Character>")
     public Iterator<Character> getIterator() {
+        return getIterator(value);
+    }
+
+    @Ignore
+    public static Iterator<Character> getIterator(final java.lang.String value) {
         class StringIterator implements Iterator<Character> {
             private int offset = 0;
 
@@ -239,14 +378,19 @@ public abstract class String
         
         return new StringIterator();
     }
-
+    
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
     public Iterable<? extends Character> getCharacters() {
+        return getCharacters(value);
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> getCharacters(java.lang.String value) {
         int length = value.length();
         if (length == 0) {
             return (Iterable)$empty.getEmpty();
         }
-        Character[] chars = new Character[(int)getSize()];
+        Character[] chars = new Character[(int)getSize(value)];
         for (int offset = 0, i = 0; offset < length; i++) {
             int codePoint = value.codePointAt(offset);
             chars[i] = new Character(codePoint);
@@ -261,8 +405,20 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
     
+    @Ignore
+    public static Integer firstOccurrence(java.lang.String value, java.lang.String substring) {
+        int index = value.indexOf(substring);
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
+    }
+    
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer lastOccurrence(@Name("substring") java.lang.String substring) {
+        int index = value.lastIndexOf(substring);
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
+    }
+    
+    @Ignore
+    public static Integer lastOccurrence(java.lang.String value, java.lang.String substring) {
         int index = value.lastIndexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
@@ -274,9 +430,21 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
     
+    @Ignore
+    public static Integer firstCharacterOccurrence(java.lang.String value, int character) {
+        int index = value.indexOf(character);
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
+    }
+    
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer lastCharacterOccurrence(@Name("character") 
     @TypeInfo("ceylon.language.Character") int character) {
+        int index = value.lastIndexOf(character);
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
+    }
+    
+    @Ignore
+    public static Integer lastCharacterOccurrence(java.lang.String value, int character) {
         int index = value.lastIndexOf(character);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
@@ -294,11 +462,34 @@ public abstract class String
         }
     }
 
+    @Ignore
+    public static boolean contains(java.lang.String value, java.lang.Object element) {
+        if (element instanceof String) {
+            return value.indexOf(((String)element).value) >= 0;
+        }
+        else if (element instanceof Character) {
+            return value.indexOf(((Character)element).intValue()) >= 0;
+        }
+        else {
+            return false;
+        }
+    }
+
     public boolean startsWith(@Name("substring") java.lang.String substring) {
         return value.startsWith(substring);
     }
     
+    @Ignore
+    public static boolean startsWith(java.lang.String value, java.lang.String substring) {
+        return value.startsWith(substring);
+    }
+    
     public boolean endsWith(@Name("substring") java.lang.String substring) {
+        return value.endsWith(substring);
+    }
+    
+    @Ignore
+    public static boolean endsWith(java.lang.String value, java.lang.String substring) {
         return value.endsWith(substring);
     }
     
@@ -309,11 +500,25 @@ public abstract class String
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
+    
+    @Ignore
+    public static boolean containsAny(java.lang.String value, Iterable<?> elements) {
+        // TODO We're still boxing here!
+        return Category$impl._containsAny(instance(value), elements);
+    }
+    
     @Override
     @Ignore
     public boolean containsAny() {
         return Category$impl._containsAny(this, $empty.getEmpty());
     }
+    
+    @Ignore
+    public static boolean containsAny(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Category$impl._containsAny(instance(value), $empty.getEmpty());
+    }
+    
     @Override
     @Ignore
     public Iterable<?> containsAny$elements() {
@@ -327,11 +532,25 @@ public abstract class String
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
+
+    @Ignore
+    public static boolean containsEvery(java.lang.String value, Iterable<?> elements) {
+        // TODO We're still boxing here!
+        return Category$impl._containsEvery(instance(value), elements);
+    }
+    
     @Override
     @Ignore
     public boolean containsEvery() {
         return Category$impl._containsEvery(this, $empty.getEmpty());
     }
+    
+    @Ignore
+    public static boolean containsEvery(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Category$impl._containsEvery(instance(value), $empty.getEmpty());
+    }
+    
     @Override
     @Ignore
     public Iterable<?> containsEvery$elements() {
@@ -340,6 +559,17 @@ public abstract class String
     
     public boolean longerThan(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
+        try {
+            value.offsetByCodePoints(0, (int)length+1);
+            return true;
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return false;
+        }
+    }
+    
+    @Ignore
+    public static boolean longerThan(java.lang.String value, long length) {
         try {
             value.offsetByCodePoints(0, (int)length+1);
             return true;
@@ -359,12 +589,35 @@ public abstract class String
             return true;
         }
     }
+
+    @Ignore
+    public static boolean shorterThan(java.lang.String value, long length) {
+        try {
+            value.offsetByCodePoints(0, (int)length);
+            return false;
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return true;
+        }
+    }
     
+    @TypeInfo("ceylon.language.String")
     public java.lang.String getTrimmed() {
         return value.trim();
     }
     
+    @Ignore
+    public static java.lang.String getTrimmed(java.lang.String value) {
+        return value.trim();
+    }
+    
+    @TypeInfo("ceylon.language.String")
     public java.lang.String getNormalized() {
+        return getNormalized(value);
+    }
+    
+    @Ignore
+    public static java.lang.String getNormalized(java.lang.String value) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         boolean previousWasWhitespace=false;
         for (int i=0;i<value.length();) {
@@ -385,9 +638,14 @@ public abstract class String
     @TypeInfo("ceylon.language.String")
     public java.lang.String initial(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
-    	if (length <= 0) {
-    	    return "";
-    	} else if (length >= getSize()) {
+    	return initial(value, length);
+    }
+
+    @Ignore
+    public static java.lang.String initial(java.lang.String value, long length) {
+        if (length <= 0) {
+            return "";
+        } else if (length >= getSize(value)) {
             return value; 
         } else {
             int offset = value.offsetByCodePoints(0, (int)length);
@@ -398,19 +656,30 @@ public abstract class String
     @TypeInfo("ceylon.language.String")
     public java.lang.String terminal(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
-    	if (length <= 0) {
-    	    return "";
-    	} else if (length >= getSize()) {
-    	    return value; 
-    	} else {
-            int offset = value.offsetByCodePoints(0, value.length()-(int)length);
-    	    return value.substring(offset, value.length());
-    	}
+    	return terminal(value, length);
     }
     
+    @Ignore
+    public static java.lang.String terminal(java.lang.String value, long length) {
+        if (length <= 0) {
+            return "";
+        } else if (length >= getSize(value)) {
+            return value; 
+        } else {
+            int offset = value.offsetByCodePoints(0, value.length()-(int)length);
+            return value.substring(offset, value.length());
+        }
+    }
+    
+    @TypeInfo("ceylon.language.String")
     public java.lang.String join(@Name("strings") @Sequenced
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     Iterable<? extends String> strings) {
+        return join(value, strings);
+    }
+    
+    @Ignore
+    public static java.lang.String join(java.lang.String value, Iterable<? extends String> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
         java.lang.Object elem = it.next();
@@ -422,27 +691,38 @@ public abstract class String
         }
         return result.toString();
     }
+    
     @Ignore
     public java.lang.String join() {
         return join((Iterable)$empty.getEmpty());
+    }
+    
+    @Ignore
+    public static java.lang.String join(java.lang.String value) {
+        return join(value, (Iterable)$empty.getEmpty());
     }
     
     @Override
     @TypeInfo("ceylon.language.String")
     public String segment(@Name("from") final Integer from, 
             @Name("length") final long length) {
-        long fromIndex = from.longValue();
+        return instance(segment(value, from.longValue(), length));
+    }
+    
+    @Ignore
+    public static java.lang.String segment(java.lang.String value, final long from, final long length) {
+        long fromIndex = from;
         long resultLength = length;
-        long len = getSize();
+        long len = getSize(value);
         if (fromIndex >= len || resultLength <= 0) {
-            return instance("");
+            return "";
         }
         if ((fromIndex + resultLength) > len) {
             resultLength = len - fromIndex;
         }
         int start = value.offsetByCodePoints(0, (int)fromIndex);
         int end = value.offsetByCodePoints(start, (int)resultLength);
-        return instance(value.substring(start, end));
+        return value.substring(start, end);
     }
     
     @Override
@@ -450,29 +730,39 @@ public abstract class String
     public String span(@Name("from") final Integer from, 
             @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer") 
             final Integer to) {
-        long len = getSize();
+        return instance(span(value, from.longValue(), to));
+    }
+    
+    @Ignore
+    public static java.lang.String span(java.lang.String value, final long from, final Integer to) {
+        long len = getSize(value);
         if (len == 0) {
-            return instance("");
+            return "";
         }
-        long fromIndex = from.longValue();
+        long fromIndex = from;
         long toIndex = (to == null) ? len - 1 : to.longValue();
         if (fromIndex >= len || toIndex < fromIndex) {
-            return instance("");
+            return "";
         }
         if (toIndex >= len) {
             toIndex = len - 1;
         }
         int start = value.offsetByCodePoints(0, (int)fromIndex);
         int end = value.offsetByCodePoints(start, (int)(toIndex - fromIndex + 1));
-        return instance(value.substring(start, end));
+        return value.substring(start, end);
     }
     
     @Override
     @TypeInfo("ceylon.language.String")
     public String getReversed() {
-        long len = getSize();
+        return instance(getReversed(value));
+    }
+    
+    @Ignore
+    public static java.lang.String getReversed(java.lang.String value) {
+        long len = getSize(value);
         if (len < 2) {
-            return this;
+            return value;
         }
         java.lang.StringBuilder builder = new java.lang.StringBuilder();
         int offset = value.length();
@@ -481,12 +771,18 @@ public abstract class String
             builder.appendCodePoint(c);
             offset -= java.lang.Character.charCount(c);
         }
-        return String.instance(builder.toString());
+        return builder.toString();
     }
     
+    @TypeInfo("ceylon.language.String")
     public java.lang.String repeat(
             @TypeInfo("ceylon.language.Integer") 
             @Name("times") long times) {
+        return repeat(value, times);
+    }
+    
+    @Ignore
+    public static java.lang.String repeat(java.lang.String value, long times) {
         int len = value.length();
         if (times<=0 || len==0) return "";
         if (times==1) return value;
@@ -497,9 +793,15 @@ public abstract class String
         return builder.toString();
     }
     
+    @TypeInfo("ceylon.language.String")
     public java.lang.String replace( 
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {
+        return value.replace(substring, replacement);
+    }
+    
+    @Ignore
+    public static java.lang.String replace(java.lang.String value, java.lang.String substring, java.lang.String replacement) {
         return value.replace(substring, replacement);
     }
     
@@ -519,10 +821,28 @@ public abstract class String
     }
     
     @Ignore
+    public static Iterable<? extends String> split(java.lang.String value,
+            Callable<? extends Boolean> separator,
+            boolean discardSeparators,
+            boolean groupSeparators) {
+        if (value.isEmpty()) {
+            return new Singleton<String>(instance(value));
+        }
+        return new Tokens(value, separator, !discardSeparators, groupSeparators);
+    }
+    
+    @Ignore
     public Iterable<? extends String> split(
             Callable<? extends Boolean> separator,
             boolean discardSeparators) {
         return split(separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
+    }
+    
+    @Ignore
+    public static Iterable<? extends String> split(java.lang.String value,
+            Callable<? extends Boolean> separator,
+            boolean discardSeparators) {
+        return split(value, separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
@@ -530,10 +850,41 @@ public abstract class String
             Callable<? extends Boolean> separator) {
         return split(separator, split$discardSeparators(separator));
     }
+
+    @Ignore
+    public static Iterable<? extends String> split(java.lang.String value,
+            Callable<? extends Boolean> separator) {
+        return split(value, separator, split$discardSeparators(separator));
+    }
     
     @Ignore
     public Iterable<? extends String> split() {
         return split(split$separator());
+    }
+    
+    @Ignore
+    public static Iterable<? extends String> split(java.lang.String value) {
+        return split(value, split$separator());
+    }
+
+    @Ignore
+    public static Callable<? extends Boolean> split$separator(){
+        return new AbstractCallable<Boolean>("whitespace") {
+            @Override
+            public Boolean $call(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).getWhitespace());
+            }
+        };
+    }
+    
+    @Ignore
+    public static boolean split$discardSeparators(Callable<? extends Boolean> separator){
+        return true;
+    }
+    
+    @Ignore
+    public static boolean split$groupSeparators(Callable<? extends Boolean> separator, boolean discardSeparators){
+        return true;
     }
     
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
@@ -545,10 +896,238 @@ public abstract class String
             }
         }, true);
     }
+    
+    @Ignore
+    public static Iterable<? extends String> getLines(java.lang.String value) {
+        return split(value, new AbstractCallable<Boolean>("whitespace") {
+            @Override
+            public Boolean $call(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).toString().equals("\n"));
+            }
+        }, true);
+    }
+    
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     public Iterable<? extends Integer> occurrences(
             @Name("substring") java.lang.String substring) {
         return new Occurs(value, substring);
+    }
+    
+    @Ignore
+    public static Iterable<? extends Integer> occurrences(java.lang.String value, java.lang.String substring) {
+        return new Occurs(value, substring);
+    }
+
+    @Override
+    public String getClone() {
+        return this;
+    }
+
+    @Ignore
+    public static java.lang.String getClone(java.lang.String value) {
+        return value;
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> getRest(java.lang.String value) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return Iterable$impl._getSequence(instance(value)); 
+        }
+    }
+    
+    @Ignore
+    public static Character getFirst(java.lang.String value) {
+        if (value.isEmpty()) {
+            return null;
+        } else {
+            return item(value, 0);
+        }
+    }
+    
+    @Ignore
+    public static Character getLast(java.lang.String value) {
+        if (value.isEmpty()) {
+            return null;
+        } else {
+            return item(value, getLastIndex(value).longValue());
+        }
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> getSequence(java.lang.String value) { 
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return Iterable$impl._getSequence(instance(value));
+        }
+    }
+    
+    @Ignore
+    public static Character find(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return null;
+        } else {
+            return Iterable$impl._find(instance(value), f);
+        }
+    }
+    
+    @Ignore
+    public static Character findLast(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return null;
+        } else {
+            return List$impl._findLast(instance(value), f);
+        }
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character> sorted(java.lang.String value, Callable<? extends Comparison> f) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return instance($string.string(Iterable$impl._sorted(instance(value), f))); 
+        }
+    }
+    
+    @Override @Ignore
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+        return new MapIterable<Character, Result>(this, f); 
+    }
+    
+    @Ignore
+    public static <Result> Iterable<Result> map(java.lang.String value, Callable<? extends Result> f) { 
+        return new MapIterable<Character, Result>(instance(value), f); 
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character> filter(java.lang.String value, Callable<? extends Boolean> f) { 
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return String.instance($string.string(new FilterIterable<Character>(instance(value), f)));
+        }
+    }
+    
+    @Ignore
+    public static <Result> Result fold(java.lang.String value, Result ini, Callable<? extends Result> f) { 
+        if (value.isEmpty()) {
+            return ini;
+        } else {
+            return Iterable$impl._fold(instance(value), ini, f);
+        }
+    }
+    
+    @Ignore
+    public static boolean any(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return false;
+        } else {
+            return Iterable$impl._any(instance(value), f);
+        }
+    }
+    
+    @Ignore
+    public static boolean every(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return false;
+        } else {
+            return Iterable$impl._every(instance(value), f);
+        }
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character> skipping(java.lang.String value, long skip) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return instance(segment(value, skip, getSize(value)));
+        }
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character> taking(java.lang.String value, long take) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return instance(segment(value, 0, take));
+        }
+    }
+    
+    @Ignore
+    public static Iterable<? extends Character> by(java.lang.String value, long step) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return instance($string.string(Iterable$impl._by(instance(value), step)));
+        }
+    }
+    
+    @Ignore
+    public static long count(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return 0;
+        } else {
+            return Iterable$impl._count(instance(value), f);
+        }
+    }
+    
+    @TypeInfo("ceylon.language.String")
+    @Override
+    public String getCoalesced() {
+        return this; //Can't have null characters
+    }
+    
+    @Ignore
+    public static java.lang.String getCoalesced(java.lang.String value) {
+        return value;
+    }
+    
+    @Ignore
+    public static Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed(java.lang.String value) {
+        if (value.isEmpty()) {
+            return (Iterable)instance(value);
+        } else {
+            return Iterable$impl._getIndexed(instance(value));
+        }
+    }
+    
+    @Ignore
+    public static <Other>Iterable chain(java.lang.String value, Iterable<? extends Other> other) {
+        if (value.isEmpty()) {
+            return other;
+        } else {
+            return Iterable$impl._chain(instance(value), other);
+        }
+    }
+
+    @Ignore
+    public static <Other>String withLeading(java.lang.String value) {
+        return instance(value);
+    }
+    
+    @Ignore
+    public static <Other>String withTrailing(java.lang.String value) {
+        return instance(value);
+    }
+
+    @Ignore
+    public static <Other>List withLeading(java.lang.String value, Iterable<? extends Other> elements) {
+        if (value.isEmpty()) {
+            return $array.array(elements);
+        } else {
+            return List$impl._withLeading(instance(value), elements);
+        }
+    }
+    
+    @Ignore
+    public static <Other>List withTrailing(java.lang.String value, Iterable<? extends Other> elements) {
+        if (value.isEmpty()) {
+            return $array.array(elements);
+        } else {
+            return List$impl._withTrailing(instance(value), elements);
+        }
     }
 
     private static final class Tokens implements Iterable<String> {
@@ -854,28 +1433,4 @@ public abstract class String
             return Iterable$impl._chain(this, other);
         }
     }
-
-    @Override
-    public String getClone() {
-        return this;
-    }
-
-    @Ignore
-    public Callable<? extends Boolean> split$separator(){
-        return new AbstractCallable<Boolean>("whitespace") {
-            @Override
-            public Boolean $call(java.lang.Object ch) {
-                return Boolean.instance(((Character) ch).getWhitespace());
-            }
-        };
-    }
-    @Ignore
-    public boolean split$discardSeparators(Callable<? extends Boolean> separator){
-        return true;
-    }
-    @Ignore
-    public boolean split$groupSeparators(Callable<? extends Boolean> separator, boolean discardSeparators){
-        return true;
-    }
-
 }

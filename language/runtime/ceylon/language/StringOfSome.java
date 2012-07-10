@@ -35,7 +35,7 @@ class StringOfSome extends String implements Some<Character> {
     @Override 
     @Ignore
     public Iterable<? extends Character> getSequence() { 
-        return Iterable$impl._getSequence(this); 
+        return Iterable$impl._getSequence(this);
     }
     @Override @Ignore
     public Character find(Callable<? extends Boolean> f) {
@@ -52,18 +52,13 @@ class StringOfSome extends String implements Some<Character> {
     }
     @Override 
     @Ignore
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-        return new MapIterable<Character, Result>(this, f); 
-    }
-    @Override 
-    @Ignore
     public Iterable<? extends Character> filter(Callable<? extends Boolean> f) { 
         return String.instance($string.string(new FilterIterable<Character>(this, f)));
     }
     @Override 
     @Ignore
     public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-        return Iterable$impl._fold(this, ini, f); 
+        return Iterable$impl._fold(this, ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
@@ -89,11 +84,6 @@ class StringOfSome extends String implements Some<Character> {
     public long count(Callable<? extends Boolean> f) {
         return Iterable$impl._count(this, f);
     }
-    @TypeInfo("ceylon.language.String")
-    @Override
-    public String getCoalesced() {
-        return this; //Can't have null characters
-    }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() {
         return Iterable$impl._getIndexed(this);
@@ -108,11 +98,11 @@ class StringOfSome extends String implements Some<Character> {
     @Ignore @Override public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)this; }
 
     @Override @Ignore
-    public <Other> List withLeading(Iterable<? extends Other> elems) {
-        return List$impl._withLeading(this, elems);
+    public <Other> List withLeading(Iterable<? extends Other> elements) {
+        return List$impl._withLeading(this, elements);
     }
     @Override @Ignore
-    public <Other> List withTrailing(Iterable<? extends Other> elems) {
-        return List$impl._withTrailing(this, elems);
+    public <Other> List withTrailing(Iterable<? extends Other> elements) {
+        return List$impl._withTrailing(this, elements);
     }
 }

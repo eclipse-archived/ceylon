@@ -22,6 +22,11 @@ class StringOfNone extends String implements None<Character> {
     public boolean getEmpty() {
         return true;
     }
+
+    @Override
+    public Iterable<? extends Character> getRest() {
+        return this;
+    }
     
     @Override
     public Character getFirst() {
@@ -29,11 +34,6 @@ class StringOfNone extends String implements None<Character> {
     }
     @Override public Character getLast() {
         return null;
-    }
-
-    @Override
-    public Iterable<? extends Character> getRest() {
-        return this;
     }
 
     @Override 
@@ -53,11 +53,6 @@ class StringOfNone extends String implements None<Character> {
     @Ignore
     public Iterable<? extends Character> sorted(Callable<? extends Comparison> f) {
         return this;
-    }
-    @Override 
-    @Ignore
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-        return new MapIterable<Character, Result>(this, f); 
     }
     @Override 
     @Ignore
@@ -93,8 +88,6 @@ class StringOfNone extends String implements None<Character> {
     public long count(Callable<? extends Boolean> f) {
         return 0;
     }
-    @Override @Ignore
-    public Iterable<? extends Character> getCoalesced() { return this; }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() { return (Iterable)this; }
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
