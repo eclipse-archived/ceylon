@@ -76,10 +76,10 @@ public class DependedUponVisitor extends Visitor {
                 if (!dependedOnUnitName.equals(currentUnitName) ||
                 		!dependedOnPackage.equals(currentUnitPackage)) {
                 	if (declarationUnit instanceof ExternalUnit) {
+                		//TODO: this does not seem to work for cross-project deps
                 		declarationUnit.getDependentsOf().add(currentUnitPath);
                 	} else {
                 		String dependedOnUnitRelPath = getSrcFolderRelativePath(declarationUnit);
-                		// TODO : this else block might probably be treatd now just as the if one.
                 		PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitRelPath);
                 		if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
                 			dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
