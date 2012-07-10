@@ -185,6 +185,7 @@ function ContainerWithFirstElement(wat) {
     return wat;
 }
 initType(ContainerWithFirstElement, 'ceylon.language.ContainerWithFirstElement');
+exports.ContainerWithFirstElement=ContainerWithFirstElement;
 function Correspondence(wat) {
     return wat;
 }

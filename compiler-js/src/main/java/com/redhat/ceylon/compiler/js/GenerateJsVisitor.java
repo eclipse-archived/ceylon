@@ -1777,8 +1777,7 @@ public class GenerateJsVisitor extends Visitor
             if (loop.keyVarName == null) {
                 out("var ", loop.valueVarName, "=", clAlias, ".getExhausted();"); endLine();
             } else {
-                out("var ", loop.keyVarName, ";"); endLine();
-                out("var ", loop.valueVarName, ";"); endLine();
+                out("var ", loop.keyVarName, ",", loop.valueVarName, ";"); endLine();
             }
             
             // variables for is/exists/nonempty conditions
