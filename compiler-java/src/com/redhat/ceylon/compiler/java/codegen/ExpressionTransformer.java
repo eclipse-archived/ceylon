@@ -1411,7 +1411,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
             return makeErroneous();
-        return transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, 
+        BoxingStrategy boxing = (Decl.isValueTypeDecl(expr.getPrimary())) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+        return transformExpression(expr.getPrimary(), boxing, 
                 expr.getTarget().getQualifyingType());
     }
     
