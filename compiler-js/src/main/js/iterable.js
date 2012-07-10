@@ -204,4 +204,21 @@ Iterable$proto.getLast = function() {
     }
     return l;
 }
+Iterable$proto.chain = function(other) {
+    return ChainedIterable(this, other);
+}
 exports.Iterable=Iterable;
+
+function ChainedIterable(first, second, chained) {
+    if (chained===undefined) {chained = new ChainedIterable.$$;}
+    IdentifiableObject(chained);
+    chained.first = first;
+    chained.second = second;
+    return chained;
+}
+initTypeProto(ChainedIterable, "ceylon.language.ChainedIterable",
+        IdentifiableObject, Iterable);
+var ChainedIterable$proto = ChainedIterable.$$.prototype;
+ChainedIterable$proto.getIterator = function() {
+    return ChainedIterator(this.first, this.second);
+}
