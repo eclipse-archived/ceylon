@@ -1794,7 +1794,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         } else if (isCeylonBoolean(exprType)) {
             expr = boxBoolean(expr);
         } else if (isCeylonArray(exprType)) {
-            expr = boxArray(expr);
+            expr = boxArray(expr, typeFact.getArrayElementType(exprType));
         } else if (isVoid(exprType)) {
             expr = make().LetExpr(List.<JCStatement>of(make().Exec(expr)), makeNull());
         }
@@ -1821,8 +1821,9 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return makeBoxType(value, syms().ceylonBooleanType);
     }
     
-    private JCTree.JCMethodInvocation boxArray(JCExpression value) {
-        return makeBoxType(value, syms().ceylonArrayType);
+    private JCTree.JCMethodInvocation boxArray(JCExpression value, ProducedType type) {
+        JCExpression typeExpr = makeJavaType(type, JT_TYPE_ARGUMENT);
+        return make().Apply(List.<JCExpression>of(typeExpr), makeSelect(makeIdent(syms().ceylonArrayType), "instance"), List.<JCExpression>of(value));
     }
     
     private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
