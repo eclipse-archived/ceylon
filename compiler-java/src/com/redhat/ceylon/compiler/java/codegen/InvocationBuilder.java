@@ -49,7 +49,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -69,7 +68,7 @@ import com.sun.tools.javac.util.ListBuffer;
 abstract class InvocationBuilder {
 
     protected final AbstractTransformer gen;
-    protected final Node node;    
+    protected final Node node;
     protected final Tree.Primary primary;
     protected final Declaration primaryDeclaration;
     protected final ProducedType returnType;
@@ -78,6 +77,8 @@ abstract class InvocationBuilder {
     protected BoxingStrategy boxingStrategy;
     private final ListBuffer<JCExpression> args = ListBuffer.lb();
     protected final Map<TypeParameter, ProducedType> typeArguments;
+    protected final Tree.Primary qmePrimary;
+    protected final boolean onValueType;
     
     protected InvocationBuilder(AbstractTransformer gen, 
             Tree.Primary primary, Declaration primaryDeclaration,
@@ -96,6 +97,13 @@ abstract class InvocationBuilder {
             this.primaryTypeArguments = transformTypeArguments(gen, ((Tree.StaticMemberOrTypeExpression)primary).getTypeArguments().getTypeModels());
         } else {
             this.primaryTypeArguments = transformTypeArguments(gen, null);
+        }
+        if (primary instanceof Tree.QualifiedMemberOrTypeExpression){
+            this.qmePrimary = ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary();
+            this.onValueType = Decl.isValueTypeDecl(qmePrimary);
+        } else {
+            this.qmePrimary = null;
+            this.onValueType = false;
         }
     }
     
@@ -181,7 +189,12 @@ abstract class InvocationBuilder {
                 }
                 selector = "$call";
             }
-            resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(actualPrimExpr, selector), argExprs);
+            if (onValueType) {
+                JCExpression primTypeExpr = gen.makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
+                resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(primTypeExpr, selector), argExprs.prepend(actualPrimExpr));
+            } else {
+                resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(actualPrimExpr, selector), argExprs);
+            }
         }
         
         resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, returnType, 
@@ -612,7 +625,11 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     
     @Override
     protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
-        return CodegenUtil.getBoxingStrategy(getParameter(argIndex));
+        Parameter param = getParameter(argIndex);
+        if (onValueType && Decl.isValueTypeDecl(param)) {
+            return BoxingStrategy.UNBOXED;
+        }
+        return CodegenUtil.getBoxingStrategy(param);
     }
     
     @Override
@@ -908,7 +925,11 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             }            
             defaultValueMethodName = gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), methodName);
         } else {
-            defaultValueMethodName = gen.makeQuotedQualIdent(gen.makeQuotedIdent(varBaseName + "$this$"), methodName);
+            JCExpression thisExpr = gen.makeQuotedIdent(varBaseName + "$this$");
+            if (onValueType) {
+                thisExpr = gen.boxType(thisExpr, qmePrimary.getTypeModel());
+            }
+            defaultValueMethodName = gen.makeQuotedQualIdent(thisExpr , methodName);
         }
         JCExpression argExpr = gen.at(node).Apply(null, 
                 defaultValueMethodName, 
@@ -974,7 +995,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
                 Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
                 ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
-                final BoxingStrategy boxType = declaredParam != null ? CodegenUtil.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
+                final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
                 JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? JT_TYPE_ARGUMENT : 0);
                 JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
@@ -1024,7 +1045,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
                 ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
                 ProducedType type = parameterType(declaredParam, model.getType(), 0);
-                final BoxingStrategy boxType = declaredParam != null ? CodegenUtil.getBoxingStrategy(declaredParam) : BoxingStrategy.UNBOXED;
+                final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
                 JCExpression initValue = gen.make().Apply(null, 
                         gen.makeSelect(alias, CodegenUtil.getGetterName(model)),
                         List.<JCExpression>nil());
@@ -1067,7 +1088,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
     private final void appendDefaulted(Parameter param, JCExpression argExpr) {
         int flags = 0;
-        if (CodegenUtil.getBoxingStrategy(param) == BoxingStrategy.BOXED) {
+        if (getNamedParameterBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= JT_TYPE_ARGUMENT;
         }
         ProducedType type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
@@ -1075,6 +1096,17 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         JCExpression typeExpr = gen.makeJavaType(type, flags);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
         bind(param, argName, List.<JCStatement>of(varDecl));
+    }
+    
+    private BoxingStrategy getNamedParameterBoxingStrategy(Parameter param) {
+        if (param != null) {
+            if (onValueType && Decl.isValueTypeDecl(param)) {
+                return BoxingStrategy.UNBOXED;
+            }
+            return CodegenUtil.getBoxingStrategy(param);
+        } else {
+            return BoxingStrategy.UNBOXED;
+        }
     }
     
     private boolean appendVarsForDefaulted(java.util.List<Parameter> declaredParams) {
@@ -1151,7 +1183,11 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                     gen.makeJavaType(declaration.getType(), JT_COMPANION), 
                     List.<JCExpression>nil(), null);
         } else {
-            thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
+            if (onValueType) {
+                thisType = gen.makeJavaType(target.getQualifyingType());
+            } else {
+                thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
+            }
             defaultedParameterInstance = gen.makeUnquotedIdent(callVarName);
         }
         JCVariableDecl thisDecl = gen.makeVar(varBaseName + "$this$", 
@@ -1192,11 +1228,15 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             // Prepare the first argument holding the primary for the call
             ProducedType type = ((Tree.MemberOrTypeExpression)primary).getTarget().getQualifyingType();
             JCExpression varType;
-            if (primary instanceof QualifiedTypeExpression
-                    && (((QualifiedTypeExpression)primary).getPrimary() instanceof Tree.Outer)) {
-                varType = gen.makeJavaType(type, JT_NO_PRIMITIVES | JT_COMPANION);
+            if (onValueType) {
+                varType = gen.makeJavaType(type);
             } else {
-                varType = gen.makeJavaType(type, JT_NO_PRIMITIVES);
+                if (primary instanceof QualifiedTypeExpression
+                        && (((QualifiedTypeExpression)primary).getPrimary() instanceof Tree.Outer)) {
+                    varType = gen.makeJavaType(type, JT_NO_PRIMITIVES | JT_COMPANION);
+                } else {
+                    varType = gen.makeJavaType(type, JT_NO_PRIMITIVES);
+                }
             }
             vars.prepend(gen.makeVar(callVarName, varType, actualPrimExpr));
             actualPrimExpr = gen.makeUnquotedIdent(callVarName);
