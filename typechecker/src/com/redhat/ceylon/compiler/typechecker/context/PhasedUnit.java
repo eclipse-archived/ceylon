@@ -6,7 +6,6 @@ import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
-import com.redhat.ceylon.compiler.typechecker.analyzer.DependedUponVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
@@ -220,11 +219,6 @@ public class PhasedUnit {
             compilationUnit.visit(new TypeHierarchyVisitor());
             fullyTyped = true;
         }
-    }
-
-    public void collectUnitDependencies(PhasedUnits phasedUnits, List<PhasedUnits> phasedUnitsOfDependencies) {
-        //System.out.println("Run collecting unit dependencies phase for " + fileName);
-        compilationUnit.visit(new DependedUponVisitor(this, phasedUnits, phasedUnitsOfDependencies));
     }
     
     public synchronized void analyseFlow() {
