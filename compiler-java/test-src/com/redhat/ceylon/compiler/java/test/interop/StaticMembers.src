@@ -9,10 +9,10 @@ final class staticMethods {
         .java.io.File sync;
         sync = .java.io.File.createTempFile("", "");
         sync = .java.io.File.createTempFile("", "", sync);
-        final .java.lang.Object roots1 = .ceylon.language.Array.instance(.java.io.File.listRoots());
+        final .java.lang.Object roots1 = .ceylon.language.Array.<.java.io.File>instance(.java.io.File.listRoots());
         sync = sync.createTempFile("", "");
         sync = sync.createTempFile("", "", sync);
-        final .java.lang.Object roots2 = .ceylon.language.Array.instance(sync.listRoots());
+        final .java.lang.Object roots2 = .ceylon.language.Array.<.java.io.File>instance(sync.listRoots());
     }
     
     public static void main(.java.lang.String[] args) {
