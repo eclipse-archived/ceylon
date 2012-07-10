@@ -220,7 +220,7 @@ public abstract class String
         }
         int offset = value.offsetByCodePoints(0, index);
         int codePoint = value.codePointAt(offset);
-        return new Character(codePoint);
+        return Character.instance(codePoint);
     }
 
     @Override
@@ -393,7 +393,7 @@ public abstract class String
         Character[] chars = new Character[(int)getSize(value)];
         for (int offset = 0, i = 0; offset < length; i++) {
             int codePoint = value.codePointAt(offset);
-            chars[i] = new Character(codePoint);
+            chars[i] = Character.instance(codePoint);
             offset += java.lang.Character.charCount(codePoint);
         }
         return new ArraySequence<Character>(chars);
