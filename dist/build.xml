@@ -22,19 +22,26 @@
 
 Some more basic ant tasks:
     ant get-code           - Downloads latest code for all projects
-    ant get-code -Dtag=0.3.1 - Downloads latest code and checks out the tag
-    ant checkout -Dtag=0.3.1 - Makes sure we're using the specified tag
+    ant get-code -Dtag=0.3 - Downloads latest code and checks out the tag
+    ant checkout -Dtag=0.3 - Makes sure we're using the specified tag
     ant checkout-master    - To make sure we're using master
-    ant local package      - Builds the distribution package, cloning/pulling 
+
+    ant local install-all  - Quick builds the distribution projects, cloning/pulling 
                              dependent Ceylon git repositories into the 
                              ${projects.dir} directory.
                              Doesn't touch any sibling project folders.
                              Doesn't touch your local repo (~/.ceylon/repo).
+    ant local package      - Same as install-all but will clean projects first and
+                             will generate documentation and the final distribution
+                             package
 
-    ant siblings package   - Builds the distribution package using
+    ant siblings install-all - Quick builds the distribution projects using
                              existing sibling project folders.
                              Doesn't clone or pull. Doesn't touch your local 
                              repo (~/.ceylon/repo).
+    ant siblings package   - Same as install-all but will clean projects first and
+                             will generate documentation and the final distribution
+                             package
 
     ant clean              - Cleans the distribution package
     ant clean-all          - Cleans the distribution package
@@ -87,13 +94,28 @@ Used with another target such as 'package'">
     </target>
 
     <target name="package" 
-            depends="install-compiler, install-js, copy-compiler-binaries, 
-                     copy-samples, copy-compiler-libraries, install-typechecker,
-                     install-language, install-runtime, generate-spec, generate-apidoc, zip"
+            depends="clean-projects, install-all, generate-spec, generate-apidoc, zip"
             description="Generates a distributable zip file">
     </target>
 
-	<target name="zip">
+    <target name="clean-projects" 
+            description="Cleans all sub projects">
+        <ant antfile="${ceylon-compiler.dir}/build.xml" target="clean" dir="${ceylon-compiler.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-js.dir}/build.xml" target="clean" dir="${ceylon-js.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="clean" dir="${ceylon-spec.dir}" inheritall="false"/>
+        <ant antfile="${ceylon.language.dir}/build.xml" target="clean" dir="${ceylon.language.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="clean" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
+        <ant antfile="${ceylon-runtime.dir}/build.xml" target="clean" dir="${ceylon-runtime.dir}" inheritall="false"/>
+    </target>
+
+    <target name="install-all" 
+            depends="install-compiler, install-js, copy-compiler-binaries, 
+                     copy-samples, copy-compiler-libraries, install-typechecker,
+                     install-language, install-runtime"
+            description="Generates all binaries and copies them to the distribution folder">
+    </target>
+
+    <target name="zip">
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
                 <include name="bin/**" />
@@ -176,14 +198,12 @@ Used with another target such as 'package'">
 
     <target name="install-compiler" 
           depends="compile-module-resolver, install-typechecker, install-language">
-        <ant antfile="${ceylon-compiler.dir}/build.xml" target="clean" dir="${ceylon-compiler.dir}" inheritall="false"/>
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
     </target>
 
     <target name="install-js" depends="install-compiler">
-        <ant antfile="${ceylon-js.dir}/build.xml" target="clean" dir="${ceylon-js.dir}" inheritall="false"/>
         <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
@@ -191,7 +211,6 @@ Used with another target such as 'package'">
 
     <target name="install-typechecker" 
             depends="compile-module-resolver, install-language">
-        <ant antfile="${ceylon-spec.dir}/build.xml" target="clean" dir="${ceylon-spec.dir}" inheritall="false"/>
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
@@ -202,14 +221,12 @@ Used with another target such as 'package'">
     </target>
 
     <target name="install-language">
-        <ant antfile="${ceylon.language.dir}/build.xml" target="clean" dir="${ceylon.language.dir}" inheritall="false"/>
         <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
     </target>
 
     <target name="compile-module-resolver">
-        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="clean" dir="${ceylon-module-resolver.dir}" inheritall="false"/>
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
@@ -228,7 +245,6 @@ Used with another target such as 'package'">
     </target>
 
     <target name="install-runtime" depends="compile-module-resolver">
-        <ant antfile="${ceylon-runtime.dir}/build.xml" target="clean" dir="${ceylon-runtime.dir}" inheritall="false"/>
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="dist" dir="${ceylon-runtime.dir}" inheritall="false">
           <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
