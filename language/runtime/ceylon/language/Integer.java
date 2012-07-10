@@ -23,6 +23,7 @@ public final class Integer
                Castable<Numeric> {
     
     final long value;
+    
     private Integer(long l) {
         value = l;
     }
@@ -32,9 +33,14 @@ public final class Integer
         return new Integer(l);
     }
     
+    @Ignore
+    public long longValue() {
+        return value;
+    }
+    
     @Override
-    public Integer plus(@Name("other") Integer op) {
-        return instance(value + op.value);
+    public Integer plus(@Name("other") Integer other) {
+        return instance(value + other.value);
     }
     
     @Ignore
@@ -43,8 +49,8 @@ public final class Integer
     }
     
     @Override
-    public Integer minus(@Name("other") Integer op) {
-        return instance(value - op.value);
+    public Integer minus(@Name("other") Integer other) {
+        return instance(value - other.value);
     }
     
     @Ignore
@@ -53,8 +59,8 @@ public final class Integer
     }
     
     @Override
-    public Integer times(@Name("other") Integer op) {
-        return instance(value * op.value);
+    public Integer times(@Name("other") Integer other) {
+        return instance(value * other.value);
     }
     
     @Ignore
@@ -63,8 +69,8 @@ public final class Integer
     }
     
     @Override
-    public Integer divided(@Name("other") Integer op) {
-        return instance(value / op.value);
+    public Integer divided(@Name("other") Integer other) {
+        return instance(value / other.value);
     }
     
     @Ignore
@@ -98,8 +104,8 @@ public final class Integer
     }
     
     @Override
-    public Integer power(@Name("other") Integer op) {
-        return instance(power(value, op.value));
+    public Integer power(@Name("other") Integer other) {
+        return instance(power(value, other.value));
     }
     
     @Ignore
@@ -123,8 +129,8 @@ public final class Integer
     }
     
     @Ignore
-    public Float plus(Float op) {
-        return Float.instance(value + op.value);
+    public Float plus(Float other) {
+        return Float.instance(value + other.value);
     }
     
     @Ignore
@@ -133,8 +139,8 @@ public final class Integer
     }
     
     @Ignore
-    public Float minus(Float op) {
-        return Float.instance(value - op.value);
+    public Float minus(Float other) {
+        return Float.instance(value - other.value);
     }
     
     @Ignore
@@ -143,8 +149,8 @@ public final class Integer
     }
     
     @Ignore
-    public Float times(Float op) {
-        return Float.instance(value * op.value);
+    public Float times(Float other) {
+        return Float.instance(value * other.value);
     }
     
     @Ignore
@@ -153,8 +159,8 @@ public final class Integer
     }
     
     @Ignore
-    public Float divided(Float op) {
-        return Float.instance(value / op.value);
+    public Float divided(Float other) {
+        return Float.instance(value / other.value);
     }
     
     @Ignore
@@ -163,8 +169,8 @@ public final class Integer
     }
     
     @Ignore
-    public Float power(Float op) {
-        return Float.instance(Math.pow(value, op.value)); // FIXME: ugly
+    public Float power(Float other) {
+        return Float.instance(Math.pow(value, other.value)); // FIXME: ugly
     }
     
     @Ignore
@@ -241,8 +247,8 @@ public final class Integer
     }
     
     @Override
-    public Integer remainder(@Name("other") Integer op) {
-        return instance(value % op.value);
+    public Integer remainder(@Name("other") Integer other) {
+        return instance(value % other.value);
     }
     
     @Ignore
@@ -280,9 +286,9 @@ public final class Integer
     }
     
     @Override
-    public Comparison compare(@Name("other") Integer op) {
+    public Comparison compare(@Name("other") Integer other) {
         long x = value;
-        long y = op.value;
+        long y = other.value;
         return (x < y) ? smaller.getSmaller() :
             ((x == y) ? equal.getEqual() : larger.getLarger());
     }
@@ -366,12 +372,6 @@ public final class Integer
     @Ignore
     public static boolean getZero(long value) {
         return value==0;
-    }
-    
-    // Just a kludge til we have full autoboxing
-    @Ignore
-    public long longValue() {
-        return value;
     }
     
     @Override
