@@ -14,7 +14,7 @@ class ObjectInMethod {
             }
             
             private foo() {
-                this.string = .ceylon.language.Integer.instance(i).toString();
+                this.string = .ceylon.language.Integer.toString(i);
             }
         }
         final foo foo = new foo();

@@ -7,12 +7,12 @@ final class bug601 {
     
     static void bug601() {
         .ceylon.language.first.<.ceylon.language.Sequence<? extends .ceylon.language.String>>first(new .ceylon.language.ArraySequence<.ceylon.language.Sequence<? extends .ceylon.language.String>>(new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
-        .ceylon.language.first.first(new .ceylon.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String>>(.ceylon.language.String.instance("hello world").split().getSequence(), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+        .ceylon.language.first.first(new .ceylon.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String>>(.ceylon.language.String.split("hello world").getSequence(), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
         .ceylon.language.first.first(new .ceylon.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String>>(new .ceylon.language.AbstractIterable<.ceylon.language.String>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.instance("hello world").split().getIterator();
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.split("hello world").getIterator();
                     private .ceylon.language.String str;
                     private boolean str$exhausted;
                     

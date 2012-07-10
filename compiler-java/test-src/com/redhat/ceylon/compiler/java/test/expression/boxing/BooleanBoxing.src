@@ -8,6 +8,7 @@ class BooleanBoxing {
         final boolean b3 = negate(b2);
         final .ceylon.language.Boolean b4 = negate2(.ceylon.language.Boolean.instance(b3));
         final boolean b5 = negate3(b4);
+        .ceylon.language.print.print(.ceylon.language.String.instance(.ceylon.language.Boolean.toString(b5)));
     }
     
     private final boolean negate(final boolean b) {

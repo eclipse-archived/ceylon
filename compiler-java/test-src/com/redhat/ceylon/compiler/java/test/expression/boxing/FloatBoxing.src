@@ -48,12 +48,12 @@ class FloatBoxing {
         test(getAttrFloat() + 4L);
         test(this.getAttrFloat() + 2.0);
         test(this.getAttrFloat() + 4L);
-        localAttrFloat = .ceylon.language.Float.instance(localAttrFloat).plus(.ceylon.language.Float.instance(3.0)).doubleValue();
-        setAttrFloat(.ceylon.language.Float.instance(getAttrFloat()).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
-        this.setAttrFloat(.ceylon.language.Float.instance(this.getAttrFloat()).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
-        test(.ceylon.language.Float.instance(localAttrFloat).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
-        test(.ceylon.language.Float.instance(getAttrFloat()).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
-        test(.ceylon.language.Float.instance(this.getAttrFloat()).plus(.ceylon.language.Float.instance(3.0)).doubleValue());
+        localAttrFloat = .ceylon.language.Float.plus(localAttrFloat, 3.0);
+        setAttrFloat(.ceylon.language.Float.plus(getAttrFloat(), 3.0));
+        this.setAttrFloat(.ceylon.language.Float.plus(this.getAttrFloat(), 3.0));
+        test(.ceylon.language.Float.plus(localAttrFloat, 3.0));
+        test(.ceylon.language.Float.plus(getAttrFloat(), 3.0));
+        test(.ceylon.language.Float.plus(this.getAttrFloat(), 3.0));
     }
     
     private final void test(final double f) {

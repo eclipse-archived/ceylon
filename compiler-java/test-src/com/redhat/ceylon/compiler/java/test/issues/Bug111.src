@@ -4,12 +4,12 @@ class Bug111 {
     
     private final void m1() {
         final long nat = 0L;
-        final long neg = .ceylon.language.Integer.instance(nat).getNegativeValue().longValue();
+        final long neg = .ceylon.language.Integer.getNegativeValue(nat);
     }
     
     private final void m2() {
         final long num = 0L;
-        final long mag = .ceylon.language.Integer.instance(num).getNegativeValue().longValue();
+        final long mag = .ceylon.language.Integer.getNegativeValue(num);
     }
     
     private final void m3() {

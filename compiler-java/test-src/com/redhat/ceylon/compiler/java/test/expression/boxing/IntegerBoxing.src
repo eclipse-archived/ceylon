@@ -38,12 +38,12 @@ class IntegerBoxing {
         test(localAttrInteger + 2L);
         test(getAttrInteger() + 2L);
         test(this.getAttrInteger() + 2L);
-        localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(2L)).longValue();
-        setAttrInteger(.ceylon.language.Integer.instance(getAttrInteger()).plus(.ceylon.language.Integer.instance(2L)).longValue());
-        this.setAttrInteger(.ceylon.language.Integer.instance(this.getAttrInteger()).plus(.ceylon.language.Integer.instance(2L)).longValue());
-        test(.ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(2L)).longValue());
-        test(.ceylon.language.Integer.instance(getAttrInteger()).plus(.ceylon.language.Integer.instance(2L)).longValue());
-        test(.ceylon.language.Integer.instance(this.getAttrInteger()).plus(.ceylon.language.Integer.instance(2L)).longValue());
+        localAttrInteger = .ceylon.language.Integer.plus(localAttrInteger, 2L);
+        setAttrInteger(.ceylon.language.Integer.plus(getAttrInteger(), 2L));
+        this.setAttrInteger(.ceylon.language.Integer.plus(this.getAttrInteger(), 2L));
+        test(.ceylon.language.Integer.plus(localAttrInteger, 2L));
+        test(.ceylon.language.Integer.plus(getAttrInteger(), 2L));
+        test(.ceylon.language.Integer.plus(this.getAttrInteger(), 2L));
         localAttrInteger = localAttrInteger++;
         setAttrInteger((
             let
@@ -80,12 +80,24 @@ class IntegerBoxing {
             }
             returning $ceylontmpopV7;
         ));
-        localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).getSuccessor().longValue();
-        setAttrInteger(.ceylon.language.Integer.instance(getAttrInteger()).getSuccessor().longValue());
-        this.setAttrInteger(.ceylon.language.Integer.instance(this.getAttrInteger()).getSuccessor().longValue());
-        test(.ceylon.language.Integer.instance(localAttrInteger).getSuccessor().longValue());
-        test(.ceylon.language.Integer.instance(getAttrInteger()).getSuccessor().longValue());
-        test(.ceylon.language.Integer.instance(this.getAttrInteger()).getSuccessor().longValue());
+        localAttrInteger = .ceylon.language.Integer.getSuccessor(localAttrInteger);
+        setAttrInteger(.ceylon.language.Integer.getSuccessor(getAttrInteger()));
+        this.setAttrInteger(.ceylon.language.Integer.getSuccessor(this.getAttrInteger()));
+        test(.ceylon.language.Integer.getSuccessor(localAttrInteger));
+        test(.ceylon.language.Integer.getSuccessor(getAttrInteger()));
+        test(.ceylon.language.Integer.getSuccessor(this.getAttrInteger()));
+        localAttrInteger = .ceylon.language.Integer.getPositiveValue(localAttrInteger);
+        setAttrInteger(.ceylon.language.Integer.getPositiveValue(getAttrInteger()));
+        this.setAttrInteger(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger()));
+        test(.ceylon.language.Integer.getPositiveValue(localAttrInteger));
+        test(.ceylon.language.Integer.getPositiveValue(getAttrInteger()));
+        test(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger()));
+        localAttrInteger = -.ceylon.language.Integer.getPositiveValue(localAttrInteger);
+        setAttrInteger(-.ceylon.language.Integer.getPositiveValue(getAttrInteger()));
+        this.setAttrInteger(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger()));
+        test(-.ceylon.language.Integer.getPositiveValue(localAttrInteger));
+        test(-.ceylon.language.Integer.getPositiveValue(getAttrInteger()));
+        test(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger()));
     }
     
     private final void test(final long i) {

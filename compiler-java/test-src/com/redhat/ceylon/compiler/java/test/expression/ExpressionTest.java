@@ -105,6 +105,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("boxing/BooleanBoxing");
     }
     @Test
+    public void testBoxCharacterBoxing(){
+        compareWithJavaSource("boxing/CharacterBoxing");
+    }
+    @Test
     public void testBoxIntegerBoxing(){
         compareWithJavaSource("boxing/IntegerBoxing");
     }

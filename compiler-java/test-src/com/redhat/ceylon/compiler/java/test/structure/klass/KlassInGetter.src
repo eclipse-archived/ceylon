@@ -9,7 +9,7 @@ class KlassInGetter {
             class Bar {
                 
                 public final .java.lang.String bar() {
-                    return .ceylon.language.Integer.instance(i).toString();
+                    return .ceylon.language.Integer.toString(i);
                 }
                 
                 Bar() {

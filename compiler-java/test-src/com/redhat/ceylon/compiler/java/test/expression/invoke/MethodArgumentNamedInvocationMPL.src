@@ -43,7 +43,7 @@ class MethodArgumentNamedInvocationMPL {
                             @.java.lang.Override
                             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                                 final .ceylon.language.Integer x = (.ceylon.language.Integer)$param$0;
-                                return .ceylon.language.String.instance(x.toString());
+                                return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x.longValue()));
                             }
                         };
                     }
@@ -85,7 +85,7 @@ class MethodArgumentNamedInvocationMPL {
                             @.java.lang.Override
                             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                                 final .ceylon.language.Integer x = (.ceylon.language.Integer)$param$0;
-                                return .ceylon.language.String.instance(x.toString());
+                                return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x.longValue()));
                             }
                         };
                     }
@@ -106,7 +106,7 @@ class MethodArgumentNamedInvocationMPL {
                             @.java.lang.Override
                             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                                 final .ceylon.language.Integer x = (.ceylon.language.Integer)$param$0;
-                                return .ceylon.language.String.instance(x.toString());
+                                return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x.longValue()));
                             }
                         };
                     }
@@ -148,7 +148,7 @@ class MethodArgumentNamedInvocationMPL {
                             @.java.lang.Override
                             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                                 final .ceylon.language.Integer x = (.ceylon.language.Integer)$param$0;
-                                return .ceylon.language.String.instance(x.toString());
+                                return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x.longValue()));
                             }
                         };
                     }
@@ -190,7 +190,7 @@ class MethodArgumentNamedInvocationMPL {
                             @.java.lang.Override
                             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                                 final .ceylon.language.Integer x = (.ceylon.language.Integer)$param$0;
-                                return .ceylon.language.String.instance(x.toString());
+                                return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x.longValue()));
                             }
                         };
                     }
@@ -232,7 +232,7 @@ class MethodArgumentNamedInvocationMPL {
                             @.java.lang.Override
                             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                                 final .ceylon.language.Integer x = (.ceylon.language.Integer)$param$0;
-                                return .ceylon.language.String.instance(x.toString());
+                                return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x.longValue()));
                             }
                         };
                     }
@@ -253,7 +253,7 @@ class MethodArgumentNamedInvocationMPL {
                             @.java.lang.Override
                             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
                                 final .ceylon.language.Integer x = (.ceylon.language.Integer)$param$0;
-                                return .ceylon.language.String.instance(x.toString());
+                                return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x.longValue()));
                             }
                         };
                     }

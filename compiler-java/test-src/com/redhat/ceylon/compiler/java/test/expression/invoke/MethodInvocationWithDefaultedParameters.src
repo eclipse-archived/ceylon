@@ -208,7 +208,7 @@ class Fookls {
     }
     
     public final long f9$n() {
-        return .ceylon.language.Integer.instance(getProp()).getSuccessor().longValue();
+        return .ceylon.language.Integer.getSuccessor(getProp());
     }
     
     public void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
@@ -502,7 +502,7 @@ final class Barface$impl {
     }
     
     public final long f9$n() {
-        return .ceylon.language.Integer.instance($this.getProp()).getSuccessor().longValue();
+        return .ceylon.language.Integer.getSuccessor($this.getProp());
     }
     
     public final void fa(final long n) {

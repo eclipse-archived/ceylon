@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.expression.boxing;
+
+class CharacterBoxing {
+    
+    private final void m() {
+        final int b1 = 'A';
+        final int b2 = .ceylon.language.Character.getLowercased(b1);
+        final int b3 = .ceylon.language.Character.getUppercased('a');
+        final .ceylon.language.Character b4 = .ceylon.language.Character.instance(.ceylon.language.Character.getSuccessor('a'));
+        final int b5 = successor(b3);
+        final .ceylon.language.Character b6 = successor2(b4);
+        final int b7 = successor3(b4);
+        .ceylon.language.print.print(.ceylon.language.String.instance(.ceylon.language.Character.toString(b7)));
+    }
+    
+    private final int successor(final int c) {
+        return .ceylon.language.Character.getSuccessor(c);
+    }
+    
+    private final .ceylon.language.Character successor2(final .ceylon.language.Character c) {
+        .ceylon.language.Character $c$0;
+        if (($c$0 = c) != null) {
+            final int $c$1 = $c$0.intValue();
+            return .ceylon.language.Character.instance(.ceylon.language.Character.getSuccessor($c$1));
+        }
+        return null;
+    }
+    
+    private final int successor3(final .ceylon.language.Character c) {
+        .ceylon.language.Character $c$2;
+        if (($c$2 = c) != null) {
+            final int $c$3 = $c$2.intValue();
+            return .ceylon.language.Character.getSuccessor($c$3);
+        } else {
+            return ' ';
+        }
+    }
+    
+    CharacterBoxing() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.boxing.CharacterBoxing();
+    }
+}

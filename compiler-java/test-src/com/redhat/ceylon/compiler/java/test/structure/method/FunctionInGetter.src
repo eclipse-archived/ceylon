@@ -12,7 +12,7 @@ class FunctionInGetter {
                 }
                 
                 .java.lang.String bar() {
-                    return .ceylon.language.Integer.instance(i).toString();
+                    return .ceylon.language.Integer.toString(i);
                 }
             }
             final bar bar = new bar();

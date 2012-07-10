@@ -12,7 +12,7 @@ class FunctionInStatement {
                 }
                 
                 .java.lang.String foo() {
-                    return .ceylon.language.Integer.instance(i).toString();
+                    return .ceylon.language.Integer.toString(i);
                 }
             }
             final foo foo = new foo();

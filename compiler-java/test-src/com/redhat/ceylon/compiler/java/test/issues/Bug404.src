@@ -7,7 +7,7 @@ class Bug404 {
         sync = (
             let
             {
-                .ceylon.language.String $ceylontmp0 = .ceylon.language.String.instance(.ceylon.language.Float.instance(1.0).toString());
+                .ceylon.language.String $ceylontmp0 = .ceylon.language.String.instance(.ceylon.language.Float.toString(1.0));
             }
             returning new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")).contains($ceylontmp0);
         );

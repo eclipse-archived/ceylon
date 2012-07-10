@@ -25,7 +25,7 @@ class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.test.issues
     }
     
     public final long getLength() {
-        return getImplementation().getSize();
+        return .ceylon.language.String.getSize(getImplementation().toString());
     }
     
     Bug639WideningImpl(.java.lang.String impl) {
@@ -46,8 +46,8 @@ class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.test.issue
         .java.lang.Object $w$0;
         if (($w$0 = w) instanceof .com.redhat.ceylon.compiler.java.test.issues.Bug639WideningImpl2) {
             final .com.redhat.ceylon.compiler.java.test.issues.Bug639WideningImpl2 $w$1 = (.com.redhat.ceylon.compiler.java.test.issues.Bug639WideningImpl2)$w$0;
-            final .ceylon.language.Number a = getImplementation().getNegativeValue();
-            final .ceylon.language.Number b = $w$1.getImplementation().getNegativeValue();
+            final .ceylon.language.Number a = .ceylon.language.Integer.instance(.ceylon.language.Integer.getNegativeValue(getImplementation().longValue()));
+            final .ceylon.language.Number b = .ceylon.language.Integer.instance(.ceylon.language.Integer.getNegativeValue($w$1.getImplementation().longValue()));
         }
     }
     

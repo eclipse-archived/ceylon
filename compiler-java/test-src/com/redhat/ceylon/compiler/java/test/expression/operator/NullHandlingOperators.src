@@ -66,7 +66,7 @@ public class NullHandlingOperators {
         sync = (
             let
             {
-                .java.lang.Object $ceylontmp7 = .ceylon.language.String.instance("").getCharacters();
+                .java.lang.Object $ceylontmp7 = .ceylon.language.String.getCharacters("");
             }
             returning $ceylontmp7 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp7).getEmpty();
         );

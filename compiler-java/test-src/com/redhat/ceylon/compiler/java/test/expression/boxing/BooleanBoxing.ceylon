@@ -25,6 +25,7 @@ class BooleanBoxing(){
         Boolean b3 = negate(b2);
         Boolean? b4 = negate2(b3);
         Boolean b5 = negate3(b4);
+        print(b5.string);
     }
     Boolean negate(Boolean b) {
         return !b;

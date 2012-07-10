@@ -24,7 +24,7 @@ final class bug508 {
             }
             
             .java.lang.String f(final long i) {
-                return .ceylon.language.Integer.instance(i + 12L).toString();
+                return .ceylon.language.Integer.toString(i + 12L);
             }
         }
         final f f = new f();
