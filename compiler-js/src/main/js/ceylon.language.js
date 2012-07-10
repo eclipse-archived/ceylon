@@ -466,6 +466,17 @@ Range$proto.taking = function(take) {
 }
 Range$proto.getSequence = function() { return this; }
 Range$proto.getCoalesced = function() { return this; }
+Range$proto.count = function(f) {
+    var e = this.getFirst();
+    var c = 0;
+    while (this.includes(e)) {
+        if (f(e) === $true) {
+            c++;
+        }
+        e = this.next(e);
+    }
+    return Integer(c);
+}
 
 function RangeIterator(range) {
     var that = new RangeIterator.$$;
@@ -524,6 +535,7 @@ exports.Comparison=Comparison;
 exports.getNull=getNull;
 exports.getTrue=getTrue;
 exports.getFalse=getFalse;
+exports.Finished=Finished;
 exports.getExhausted=getExhausted;
 exports.Range=Range;
 exports.Entry=Entry;
