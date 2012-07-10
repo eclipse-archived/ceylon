@@ -66,34 +66,38 @@ public class DependedUponVisitor extends Visitor {
                 storeDependency(rd); //this one is needed for default arguments, I think
             }
             Unit declarationUnit = d.getUnit();
-            Unit currentUnit = phasedUnit.getUnit();
-            String currentUnitPath = phasedUnit.getUnitFile().getPath();
-            if (declarationUnit != null) {
-                String currentUnitName = currentUnit.getFilename();
-                String dependedOnUnitName = declarationUnit.getFilename();
-                String currentUnitPackage = currentUnit.getPackage().getNameAsString();
-                String dependedOnPackage = currentUnit.getPackage().getNameAsString();
-                if (!dependedOnUnitName.equals(currentUnitName) ||
-                		!dependedOnPackage.equals(currentUnitPackage)) {
-                	if (declarationUnit instanceof ExternalUnit) {
-                		//TODO: this does not seem to work for cross-project deps
-                		declarationUnit.getDependentsOf().add(currentUnitPath);
-                	} else {
-                		String dependedOnUnitRelPath = getSrcFolderRelativePath(declarationUnit);
-                		PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitRelPath);
-                		if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
-                			dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
-                		} else {
-                			for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
-                				dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitRelPath);
-                				if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
-                					dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
-                					break;
-                				}
-                			}
-                		}
-                	}
-                }
+			if (declarationUnit != null) {
+				String moduleName = declarationUnit.getPackage().getModule().getNameAsString();
+				if (!moduleName.equals("ceylon.language") && 
+						!moduleName.equals("java")) { //TODO: also filter out src archives from external repos
+				Unit currentUnit = phasedUnit.getUnit();
+				String currentUnitPath = phasedUnit.getUnitFile().getPath();
+				String currentUnitName = currentUnit.getFilename();
+				String dependedOnUnitName = declarationUnit.getFilename();
+				String currentUnitPackage = currentUnit.getPackage().getNameAsString();
+				String dependedOnPackage = currentUnit.getPackage().getNameAsString();
+				if (!dependedOnUnitName.equals(currentUnitName) ||
+						!dependedOnPackage.equals(currentUnitPackage)) {
+					if (declarationUnit instanceof ExternalUnit) {
+						//TODO: this does not seem to work for cross-project deps
+						declarationUnit.getDependentsOf().add(currentUnitPath);
+					} else {
+						String dependedOnUnitRelPath = getSrcFolderRelativePath(declarationUnit);
+						PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitRelPath);
+						if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
+							dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
+						} else {
+							for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
+								dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitRelPath);
+								if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
+									dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
+									break;
+								}
+							}
+						}
+					}
+				}
+				}
             }
         }
     }
