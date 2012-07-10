@@ -31,6 +31,11 @@ public class DependedUponVisitor extends Visitor {
         alreadyDone = new HashSet<Declaration>();
     }
     
+    private String getSrcFolderRelativePath(Unit u) {
+        return u.getPackage().getQualifiedNameString().replace('.', '/') + 
+                "/" + u.getFilename();
+    }
+
     private void storeDependency(Declaration d) {
         if (d!=null && (d instanceof UnionType || 
                         d instanceof IntersectionType || 
@@ -64,28 +69,30 @@ public class DependedUponVisitor extends Visitor {
             Unit currentUnit = phasedUnit.getUnit();
             String currentUnitPath = phasedUnit.getUnitFile().getPath();
             if (declarationUnit != null) {
-                String currentUnitName = currentUnit.getRelativePath();
-                String dependedOnUnitName = declarationUnit.getRelativePath();
-                if (dependedOnUnitName!=null) {
-	                if (!dependedOnUnitName.equals(currentUnitName)) {
-	                    if (declarationUnit instanceof ExternalUnit) {
-	                        declarationUnit.getDependentsOf().add(currentUnitPath);
-	                    } else {
-	                        // TODO : this else block might probably be treatd now just as the if one.
-	                        PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
-	                        if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
-	                            dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
-	                        } else {
-	                            for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
-	                                dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitName);
-	                                if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
-	                                    dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
-	                                    break;
-	                                }
-	                            }
-	                        }
-	                    }
-	                }
+                String currentUnitName = currentUnit.getFilename();
+                String dependedOnUnitName = declarationUnit.getFilename();
+                String currentUnitPackage = currentUnit.getPackage().getNameAsString();
+                String dependedOnPackage = currentUnit.getPackage().getNameAsString();
+                if (!dependedOnUnitName.equals(currentUnitName) ||
+                		!dependedOnPackage.equals(currentUnitPackage)) {
+                	if (declarationUnit instanceof ExternalUnit) {
+                		declarationUnit.getDependentsOf().add(currentUnitPath);
+                	} else {
+                		String dependedOnUnitRelPath = getSrcFolderRelativePath(declarationUnit);
+                		// TODO : this else block might probably be treatd now just as the if one.
+                		PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitRelPath);
+                		if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
+                			dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
+                		} else {
+                			for (PhasedUnits phasedUnitsOfDependency : phasedUnitsOfDependencies) {
+                				dependedOnPhasedUnit = phasedUnitsOfDependency.getPhasedUnitFromRelativePath(dependedOnUnitRelPath);
+                				if (dependedOnPhasedUnit != null && dependedOnPhasedUnit.getUnit() != null) {
+                					dependedOnPhasedUnit.getUnit().getDependentsOf().add(currentUnitPath);
+                					break;
+                				}
+                			}
+                		}
+                	}
                 }
             }
         }
