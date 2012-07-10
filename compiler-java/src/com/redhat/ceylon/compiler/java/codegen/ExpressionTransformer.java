@@ -1596,11 +1596,23 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (transformer != null) {
                 result = transformer.transform(qualExpr, selector);
             } else {
-                result = makeQualIdent(qualExpr, selector);
-                if (useGetter) {
+                Tree.Primary qmePrimary = null;
+                if (expr instanceof Tree.QualifiedMemberOrTypeExpression) {
+                    qmePrimary = ((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary();
+                }
+                if (Decl.isValueTypeDecl(qmePrimary)) {
+                    JCExpression primTypeExpr = makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
+                    result = makeQualIdent(primTypeExpr, selector);
                     result = make().Apply(List.<JCTree.JCExpression>nil(),
                             result,
-                            List.<JCTree.JCExpression>nil());
+                            List.<JCTree.JCExpression>of(qualExpr));
+                } else {
+                    result = makeQualIdent(qualExpr, selector);
+                    if (useGetter) {
+                        result = make().Apply(List.<JCTree.JCExpression>nil(),
+                                result,
+                                List.<JCTree.JCExpression>nil());
+                    }
                 }
             }
         }
