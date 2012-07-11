@@ -21,6 +21,8 @@ package com.redhat.ceylon.tools.importjar;
 
 import java.io.File;
 
+import javax.annotation.PostConstruct;
+
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -98,7 +100,8 @@ public class ImportJarTool implements Plugin {
         this.jarFile = jarFile;
     }
     
-    private void checkJarFile() {
+    @PostConstruct
+    public void checkJarFile() {
         if(jarFile == null || jarFile.isEmpty())
             throw new ImportJarException("error.jarFile.empty");
         File f = new File(jarFile);
@@ -132,11 +135,6 @@ public class ImportJarTool implements Plugin {
     }
     
     public void publish() {
-        run();
-    }
-    
-    @Override
-    public int run(){
         RepositoryManager outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(this.out, log, user, pass);
 
         ArtifactContext context = new ArtifactContext(module, version, ArtifactContext.JAR);
@@ -161,6 +159,11 @@ public class ImportJarTool implements Plugin {
             // FIXME: remove when the whole CMR is using CMRException
             throw new ImportJarException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
         }
+    }
+    
+    @Override
+    public int run(){
+        publish();
         return 0;
     }
 
