@@ -40,6 +40,10 @@
     <property name="ceylon.typechecker.repo" value="${ceylon.repo.dir}/${ceylon.typechecker.dir}"/>
     <property name="ceylon.typechecker.dist" value="${build.dist}/${ceylon.typechecker.dir}"/>
 
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+
     <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
     <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
     <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
@@ -56,6 +60,7 @@
         <fileset dir="${basedir}/lib">
             <include name="**/*.jar"/>
         </fileset>
+        <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
     </path>
 
