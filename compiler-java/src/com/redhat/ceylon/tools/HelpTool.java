@@ -129,7 +129,7 @@ public class HelpTool implements Plugin {
                     }
                     out.print(", ");
                 }
-                out.print("--").print(opt.getName());
+                out.print("--").print(opt.getLongName());
                 if (!opt.getArgument().getMultiplicity().isNone()) {
                     out.print("=<" + opt.getArgument().getName() + ">");
                 }
@@ -173,8 +173,8 @@ public class HelpTool implements Plugin {
             for (OptionModel option : options) {
                 final ArgumentModel argument = option.getArgument();
                 StringBuilder sb1 = new StringBuilder();
-                if (option.getName() != null) {
-                    sb1.append("--").append(option.getName());
+                if (option.getLongName() != null) {
+                    sb1.append("--").append(option.getLongName());
                     if (!argument.getMultiplicity().isNone()) {
                         sb1.append("=").append(multiplicity(argument, argument.getName()));
                     }
@@ -207,7 +207,7 @@ public class HelpTool implements Plugin {
         Collections.sort(options, new Comparator<OptionModel>() {
             @Override
             public int compare(OptionModel o1, OptionModel o2) {
-                return o1.getName().compareTo(o2.getName());
+                return o1.getLongName().compareTo(o2.getLongName());
             }
         });
         return options;

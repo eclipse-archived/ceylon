@@ -199,8 +199,8 @@ public class PluginLoader {
 
     private <T extends Plugin> void checkDuplicateOption(Class<T> cls,
             PluginModel<T> model, OptionModel optionModel) {
-        if (model.getOption(optionModel.getName()) != null) {
-            throw new ModelException(cls + " has more than one binding for option " + optionModel.getName());
+        if (model.getOption(optionModel.getLongName()) != null) {
+            throw new ModelException(cls + " has more than one binding for option " + optionModel.getLongName());
         }
         if (optionModel.getShortName() != null
                 && model.getOptionByShort(optionModel.getShortName()) != null) {
@@ -289,7 +289,7 @@ public class PluginLoader {
             throw new ModelException("Method" + setter + " is annotated with @Option but is not a setter");
         }
         OptionModel optionModel = new OptionModel();
-        optionModel.setName(getOptionName(option.longName(), setter));
+        optionModel.setLongName(getOptionName(option.longName(), setter));
         char shortName = option.shortName();
         if (shortName != Option.NO_SHORT) {
             optionModel.setShortName(shortName);
@@ -307,7 +307,7 @@ public class PluginLoader {
             throw new ModelException("Method " + setter + " is annotated with @OptionArgument but is not a setter");
         }
         OptionModel optionModel = new OptionModel();
-        optionModel.setName(getOptionName(option.longName(), setter));
+        optionModel.setLongName(getOptionName(option.longName(), setter));
         char shortName = option.shortName();
         if (shortName != OptionArgument.NO_SHORT) {
             optionModel.setShortName(shortName);

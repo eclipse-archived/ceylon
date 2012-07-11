@@ -3,15 +3,15 @@ package com.redhat.ceylon.tools;
 /**
  * A command line option or option argument accepted by a plugin
  */
-class OptionModel {
-    private String name;
+class OptionModel<A> {
+    private String longName;
     private Character shortName;
-    private ArgumentModel argument;
-    public String getName() {
-        return name;
+    private ArgumentModel<A> argument;
+    public String getLongName() {
+        return longName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setLongName(String name) {
+        this.longName = name;
     }
     public Character getShortName() {
         return shortName;
@@ -19,10 +19,10 @@ class OptionModel {
     public void setShortName(Character shortName) {
         this.shortName = shortName;
     }
-    public ArgumentModel getArgument() {
+    public ArgumentModel<A> getArgument() {
         return argument;
     }
-    public void setArgument(ArgumentModel argument) {
+    public void setArgument(ArgumentModel<A> argument) {
         this.argument = argument;
     }
 }

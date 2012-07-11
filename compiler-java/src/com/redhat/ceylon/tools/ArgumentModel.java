@@ -5,12 +5,12 @@ import java.lang.reflect.Method;
 /**
  * A command line argument accepted by a plugin
  * @author tom
- * @param <T>
+ * @param <A>
  */
-class ArgumentModel<T> {
+class ArgumentModel<A> {
     private Method setter;
-    private Class<T> type;
-    private String name;
+    private Class<A> type;
+    private String argumentName;
     private Multiplicity multiplicity;
     
     public Multiplicity getMultiplicity() {
@@ -26,18 +26,18 @@ class ArgumentModel<T> {
         this.setter = setter;
     }
     
-    public Class<T> getType() {
+    public Class<A> getType() {
         return type;
     }
 
-    public void setType(Class<T> type) {
+    public void setType(Class<A> type) {
         this.type = type;
     }
     public String getName() {
-        return name;
+        return argumentName;
     }
     public void setName(String name) {
-        this.name = name;
+        this.argumentName = name;
     }
 
     

@@ -42,6 +42,65 @@ public class PluginFactory {
         return tool;
     }
     
+    private static class Binding<A> {
+        final String givenOption;
+        final OptionModel<A> optionModel;
+        final ArgumentModel<A> argumentModel;
+        final String unparsedArgumentValue;
+        A value;
+        public Binding(String givenOption, OptionModel<A> optionModel,
+                String unparsedArgumentValue) {
+            super();
+            this.givenOption = givenOption;
+            this.optionModel = optionModel;
+            this.argumentModel = optionModel.getArgument();
+            this.unparsedArgumentValue = unparsedArgumentValue;
+        }
+        public Binding(ArgumentModel<A> argumentModel,
+                String unparsedArgumentValue) {
+            super();
+            this.givenOption = null;
+            this.optionModel = null;
+            this.argumentModel = argumentModel;
+            this.unparsedArgumentValue = unparsedArgumentValue;
+        }
+        private Binding(String givenOption, OptionModel<A> optionModel, ArgumentModel<A> argumentModel, A value) {
+            this.givenOption = givenOption;
+            this.optionModel = optionModel;
+            this.argumentModel = argumentModel;
+            this.unparsedArgumentValue = null;
+            this.value = value;
+        }
+        static <A> Binding<List<A>> mv(List<Binding<A>> bindings) {
+            List<A> listValue = new ArrayList<A>(bindings.size());
+            String givenOption = null;
+            OptionModel<A> om = null;
+            ArgumentModel<A> am = null;
+            for (Binding<A> binding : bindings) {
+                listValue.add(binding.value);
+                if (om == null) {
+                    om = binding.optionModel;
+                    am = binding.argumentModel;
+                    givenOption = binding.givenOption;
+                } else if (om != binding.optionModel
+                        || am != binding.argumentModel) {
+                    throw new PluginException();
+                }
+            }
+            return new Binding<List<A>>(givenOption, 
+                    (OptionModel)om, (ArgumentModel)am, listValue);
+        }
+        
+        public OptionArgumentException invalid(Throwable throwable) {
+            final String badValue = unparsedArgumentValue != null ? unparsedArgumentValue : String.valueOf(value);
+            if (optionModel != null) {
+                return new OptionArgumentException("Invalid value " + badValue + " given for option " + givenOption);
+            } else {
+                return new OptionArgumentException("Invalid value " + badValue + " given for argument " + argumentModel.getName());
+            }
+        }
+    }
+    
     /**
      * Parses the given arguments binding them to the tool.
      */
@@ -55,14 +114,14 @@ public class PluginFactory {
             }
             List<String> rest = new ArrayList<String>();
             T tool = newInstance(toolModel);
-            Map<ArgumentModel<?>, List<?>> multiValued = new HashMap<ArgumentModel<?>, List<?>>(1);
+            Map<ArgumentModel<?>, List<Binding<?>>> multiValuedArguments = new HashMap<ArgumentModel<?>, List<Binding<?>>>(1);
             boolean eoo = false;
-            int argumentIndex = 0;
+            int argumentModelIndex = 0;
             int argumentsBoundThisIndex = 0;
             Iterator<String> iter = args.iterator();
             while (iter.hasNext()) {
                 final String arg = iter.next();
-                OptionModel option;
+                OptionModel<?> option;
                 String argument;
                 if (!eoo && style.isEoo(arg)) {
                     eoo = true;
@@ -77,8 +136,8 @@ public class PluginFactory {
                             argument = "true";
                         } else {
                             argument = style.getLongFormArgument(arg, iter);
-                        }   
-                        processArgument(tool, multiValued, option.getArgument(), argument);
+                        }
+                        processArgument(tool, multiValuedArguments, new Binding(longName, option, argument));    
                     }
                 } else if (!eoo && style.isShortForm(arg)) {
                     for (int idx = 1; idx < arg.length(); idx++) {
@@ -101,18 +160,18 @@ public class PluginFactory {
                                 idx = arg.length()-1;
                             }
                         }
-                        processArgument(tool, multiValued, option.getArgument(), argument);
+                        processArgument(tool, multiValuedArguments, new Binding(String.valueOf(shortName), option, argument));
                     }
                 } else {// an argument
                     option = null;
                     argument = arg;
                     if (style.isArgument(arg)) {
-                        final List<ArgumentModel<?>> arguments = toolModel.getArguments();
-                        final ArgumentModel<?> argumentModel = arguments.get(argumentIndex);
-                        processArgument(tool, multiValued, argumentModel, argument);
+                        final List<ArgumentModel<?>> argumentModels = toolModel.getArguments();
+                        final ArgumentModel<?> argumentModel = argumentModels.get(argumentModelIndex);
+                        processArgument(tool, multiValuedArguments, new Binding(argumentModel, argument));
                         argumentsBoundThisIndex++;
                         if (argumentsBoundThisIndex >= argumentModel.getMultiplicity().getMax()) {
-                            argumentIndex++;
+                            argumentModelIndex++;
                             argumentsBoundThisIndex = 0;
                         }
                     } else {
@@ -121,17 +180,17 @@ public class PluginFactory {
                 }
             }
             
-            for (Map.Entry<ArgumentModel<?>, List<?>> entry : multiValued.entrySet()) {
-                setValue(tool, entry.getKey().getSetter(), entry.getValue());
+            for (Map.Entry<ArgumentModel<?>, List<Binding<?>>> entry : multiValuedArguments.entrySet()) {
+                final ArgumentModel<?> argument = entry.getKey();
+                Binding<List<?>> mv = Binding.mv((List)entry.getValue());
+                setValue(tool, mv);    
             }
             
             if (toolModel.getRest() != null) {
                 toolModel.getRest().invoke(tool, rest);
             } else {
-                if (rest.size() == 1) {
-                    throw new OptionArgumentException("Unrecognised option " + rest.get(0));
-                } else if (rest.size() > 1){
-                    throw new OptionArgumentException("Unrecognised options " + rest);
+                if (rest.size() >= 1) {
+                    throw new OptionArgumentException("Unrecognised option(s): " + rest);
                 }
             }
             
@@ -145,44 +204,48 @@ public class PluginFactory {
         }
     }
 
-    private <T extends Plugin, A> boolean processArgument(T tool,
-            Map<ArgumentModel<?>, List<?>> multiValued,
-            ArgumentModel<A> argumentModel, 
-            String argument) throws IllegalAccessException,
-            InvocationTargetException {
+    private <T extends Plugin, A> void processArgument(T tool,
+            Map<ArgumentModel<?>, List<Binding<?>>> multiValued,
+            Binding<A> binding) {
+        final ArgumentModel<A> argumentModel = binding.argumentModel;
         if (!argumentModel.getMultiplicity().isMultivalued()) {
-            parseAndSetValue(tool, argumentModel, argument);
-            return true;
+            parseAndSetValue(tool, binding);
         } else {
-            List<A> values = (List)multiValued.get(argumentModel);
+            List<Binding<?>> values = multiValued.get(binding.argumentModel);
             if (values == null) {
-                values = new ArrayList<A>(1);
-                multiValued.put(argumentModel, values);
+                values = new ArrayList<Binding<?>>(1);
+                multiValued.put(binding.argumentModel, values);
             }
-            final A value = parseArgument(argumentModel, argument);
-            values.add(value);
-            return false;
+            binding.value = parseArgument(binding);
+            values.add(binding);
         }
     }
 
     private <T extends Plugin, A> void parseAndSetValue(T tool,
-            final ArgumentModel<A> argumentModel, String argument)
-            throws IllegalAccessException, InvocationTargetException {
-        final A value = parseArgument(argumentModel, argument);
-        setValue(tool, argumentModel.getSetter(), value);
+            Binding<A> binding) {
+        binding.value = parseArgument(binding);
+        setValue(tool, binding);
     }
 
-    private <A> A parseArgument(final ArgumentModel<A> argumentModel, String argument) {
+    private <A> A parseArgument(Binding<A> binding) {
         // Note parser won't be null, because the ModelBuilder checked
-        final ArgumentParser<A> parser = argParserFactory.getParser(argumentModel.getType());
-        final A value = parser.parse(argument);
-        return value;
+        final ArgumentParser<A> parser = argParserFactory.getParser(binding.argumentModel.getType());
+        try {
+            final A value = parser.parse(binding.unparsedArgumentValue);
+            return value;
+        } catch (Exception e) {
+            throw binding.invalid(e);
+        }
     }
     
-    private <A> void setValue(Plugin tool, final Method setter,
-            final A value) throws IllegalAccessException,
-            InvocationTargetException {
-        setter.invoke(tool, value);
+    private <A> void setValue(Plugin tool, Binding<A> binding) {
+        try {
+            binding.argumentModel.getSetter().invoke(tool, binding.value);
+        } catch (IllegalAccessException e) {
+            throw new PluginException(e);
+        } catch (InvocationTargetException e) {
+            throw binding.invalid(e.getCause());
+        }
     }
 
 }

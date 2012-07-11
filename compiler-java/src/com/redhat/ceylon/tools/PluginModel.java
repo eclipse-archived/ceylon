@@ -51,7 +51,7 @@ public class PluginModel<T extends Plugin> {
     }
     
     public void addOption(OptionModel option) {
-        optionsByName.put(option.getName(), option);
+        optionsByName.put(option.getLongName(), option);
         if (option.getShortName() != null) {
             optionsByShort.put(option.getShortName(), option);
         }
