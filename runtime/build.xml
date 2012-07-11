@@ -19,6 +19,11 @@
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.common.dir"
+              value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
+    <property name="ceylon.common.jar"
+              value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
     <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}"/>
     <property name="ceylon.language.car"
               value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
@@ -67,6 +72,7 @@
     <property name="ceylon.runtime.dist" value="${build.dist}/${ceylon.runtime.dir}"/>
 
     <path id="compiler.classpath">
+        <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.language.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
         <pathelement path="${jboss-modules.lib}"/>
@@ -124,6 +130,7 @@
         <!-- Copy the Ceylon runtime dependencies -->
         <copy file="${jboss-modules.lib}" tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.jar}"/>
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.jar}"/>
+        <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <copy file="${runtime.lib}" tofile="${build.dist}/${ceylon.runtime.jar}"/>
