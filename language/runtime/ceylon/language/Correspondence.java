@@ -310,15 +310,15 @@ public interface Correspondence<Key,Item> {
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
             return Iterable$impl._chain(this, other);
         }
-        @Override @Ignore public <Other>List withLeading() { return this; }
-        @Override @Ignore public <Other>List withTrailing() { return this; }
+        @Override @Ignore public <Other>Sequence withLeading() { return this; }
+        @Override @Ignore public <Other>Sequence withTrailing() { return this; }
         @Override @Ignore public <Other>List withLeading$elements() { return this; }
         @Override @Ignore public <Other>List withTrailing$elements() { return this; }
-        @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elems) {
-            return List$impl._withLeading(this, elems);
+        @Override @Ignore public <Other>Sequence withLeading(Iterable<? extends Other> elems) {
+            return Sequence$impl._withLeading(this, elems);
         }
-        @Override @Ignore public <Other>List withTrailing(Iterable<? extends Other> elems) {
-            return List$impl._withTrailing(this, elems);
+        @Override @Ignore public <Other>Sequence withTrailing(Iterable<? extends Other> elems) {
+            return Sequence$impl._withTrailing(this, elems);
         }
     }
 }

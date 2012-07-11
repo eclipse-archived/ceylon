@@ -27,6 +27,7 @@ void lists() {
     assert(Singleton(1).withLeading("a","b")=={"a","b",1}, "Singleton.withLeading(a,b)");
     assert((1..3).withLeading()==1..3, "Range.withLeading()");
     assert((1..3).withLeading("a","b")=={"a","b",1,2,3}, "Range.withLeading(a,b)");
+    assert((1..3).withLeading(0).first==0, "Range.withLeading(a).first");
     assert("abc".withLeading()=="abc", "String.withLeading()");
     assert("abc".withLeading(1,2)=={1,2,`a`,`b`,`c`}, "String.withLeading(1,2)");
     assert("".withLeading()=="", "\"\".withLeading()");
@@ -45,7 +46,8 @@ void lists() {
     assert(Singleton(1).withTrailing()=={1}, "Singleton.withTrailing()");
     assert(Singleton(1).withTrailing("a","b")=={1,"a","b"}, "Singleton.withTrailing(a,b)");
     assert((1..3).withTrailing()==1..3, "Range.withTrailing()");
-    assert((1..3).withTrailing("a","b")=={1,2,3,"a","b"}, "Range.withTrailing(a,b)");
+    assert((1..3).withTrailing()==1..3, "Range.withTrailing()");
+    assert((1..3).withTrailing(4).first==1, "Range.withTrailing(a).first");
     assert("abc".withTrailing()=="abc", "String.withTrailing()");
     assert("abc".withTrailing(1,2)=={`a`,`b`,`c`,1,2}, "String.withTrailing(1,2)");
     assert("".withTrailing()=="", "\"\".withTrailing()");

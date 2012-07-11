@@ -30,4 +30,34 @@ public final class Sequence$impl<Element> {
         return $this;
     }
     
+    @SuppressWarnings("rawtypes")
+    public <Other>Sequence withLeading() { return $this; }
+    @SuppressWarnings("rawtypes")
+    public <Other>Sequence withTrailing() { return $this; }
+    public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$this; }
+    public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$this; }
+
+    @SuppressWarnings("rawtypes")
+    public <Other> List withLeading(Iterable<? extends Other> elements) {
+        return List$impl._withLeading($this, elements);
+    }
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static <Element,Other> Sequence _withLeading(Sequence<? extends Element> orig, Iterable<? extends Other> elems) {
+        SequenceBuilder sb = new SequenceBuilder();
+        sb.appendAll(elems);
+        sb.appendAll(orig);
+        return (Sequence)sb.getSequence();
+    }
+    @SuppressWarnings("rawtypes")
+    public <Other> List withTrailing(Iterable<? extends Other> elements) {
+        return List$impl._withTrailing($this, elements);
+    }
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static <Element,Other> Sequence _withTrailing(Sequence<? extends Element> orig, Iterable<? extends Other> elems) {
+        SequenceBuilder sb = new SequenceBuilder();
+        sb.appendAll(orig);
+        sb.appendAll(elems);
+        return (Sequence)sb.getSequence();
+    }
+
 }    

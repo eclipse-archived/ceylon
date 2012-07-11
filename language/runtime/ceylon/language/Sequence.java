@@ -3,7 +3,10 @@
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -56,4 +59,28 @@ public interface Sequence<Element>
     public List<? extends Element> segment(@Name("from") Integer from, 
             @Name("length") Integer length);*/
     
+    @SuppressWarnings("rawtypes")
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @TypeParameters(@TypeParameter("Other"))
+    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    public <Other> Sequence withLeading(@Name("elements")
+            @TypeInfo("ceylon.language.Iterable<Other>")
+            @Sequenced Iterable<? extends Other> elements);
+
+    @SuppressWarnings("rawtypes")
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @TypeParameters(@TypeParameter("Other"))
+    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    public <Other> Sequence withTrailing(@Name("elements")
+            @TypeInfo("ceylon.language.Iterable<Other>")
+            @Sequenced Iterable<? extends Other> elements);
+
+    @SuppressWarnings("rawtypes")
+    @Ignore public <Other>Sequence withLeading();
+    @SuppressWarnings("rawtypes")
+    @Ignore public <Other>Sequence withTrailing();
+
+    @Ignore public <Other>Iterable<? extends Other> withLeading$elements();
+    @Ignore public <Other>Iterable<? extends Other> withTrailing$elements();
+
 }

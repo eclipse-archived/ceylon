@@ -362,4 +362,7 @@ shared void sequences() {
     test_max_min();
     assert(nonempty emptyOrSingleton(1), "emptyOrSingleton [1]");
     assert(!nonempty emptyOrSingleton(null), "emptyOrSingleton [2]");
+    
+    assert({"hello"}.withTrailing("world").first=="hello", "sequence with trailing");
+    assert({"world"}.withLeading("hello").first=="hello", "sequence with trailing");
 }
