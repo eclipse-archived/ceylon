@@ -1,30 +1,59 @@
+/*
+ * Copyright Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the authors tag. All rights reserved.
+ *
+ * This copyrighted material is made available to anyone wishing to use,
+ * modify, copy, or redistribute it subject to the terms and conditions
+ * of the GNU General Public License version 2.
+ * 
+ * This particular file is subject to the "Classpath" exception as provided in the 
+ * LICENSE file that accompanied this code.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT A
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License,
+ * along with this distribution; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
+ */
 package com.redhat.ceylon.tools.importjar;
 
 import java.io.File;
-import java.util.List;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.tools.Plugin;
-import com.redhat.ceylon.tools.annotation.OptionArgument;
 import com.redhat.ceylon.tools.annotation.Argument;
 import com.redhat.ceylon.tools.annotation.Option;
+import com.redhat.ceylon.tools.annotation.OptionArgument;
 import com.redhat.ceylon.tools.annotation.Summary;
 
 @Summary("Imports a jar file into a Ceylon module repository")
 public class ImportJarTool implements Plugin {
 
+    private String module;
+    private String version;
+    private String out;
+    private String user;
+    private String pass;
+    private String jarFile;
+    private boolean verbose;
+    private Logger log = new CMRLogger();
+
     public ImportJarTool() {
     }
     
-    private String user;
-    private String pass;
-    private boolean d;
-    private String out;
-    private String module;
-    private File jar;
-    private boolean verbose;
-
-    public String getUser() {
-        return user;
+    ImportJarTool(String moduleSpec, String out, String user, String pass, String jarFile, boolean verbose){
+        parseModuleSpec(moduleSpec);
+        this.out = out;
+        this.user = user;
+        this.pass = pass;
+        this.jarFile = jarFile;
+        this.verbose = verbose;
+        checkJarFile();
     }
 
     @OptionArgument(argumentName="name")
@@ -50,15 +79,6 @@ public class ImportJarTool implements Plugin {
         this.verbose = verbose;
     }
 
-    public boolean isD() {
-        return d;
-    }
-    
-    @Option
-    public void setD(boolean d) {
-        this.d = d;
-    }
-
     public String getOut() {
         return out;
     }
@@ -70,22 +90,101 @@ public class ImportJarTool implements Plugin {
     
     @Argument(argumentName="module", multiplicity="{1}", order=0)
     public void setModuleSpec(String module) {
-        this.module = module;
+        parseModuleSpec(module);
     }
     
     @Argument(argumentName="jar-file", multiplicity="{1}", order=1)
-    public void setFile(File jar) {
-        this.jar = jar;
+    public void setFile(String jarFile) {
+        this.jarFile = jarFile;
+    }
+    
+    private void checkJarFile() {
+        if(jarFile == null || jarFile.isEmpty())
+            throw new ImportJarException("error.jarFile.empty");
+        File f = new File(jarFile);
+        if(!f.exists())
+            throw new ImportJarException("error.jarFile.doesNotExist");
+        if(f.isDirectory())
+            throw new ImportJarException("error.jarFile.isDirectory");
+        if(!f.canRead())
+            throw new ImportJarException("error.jarFile.notReadable");
+        if(!f.getName().toLowerCase().endsWith(".jar"))
+            throw new ImportJarException("error.jarFile.notJar");
     }
 
-
+    private void parseModuleSpec(String moduleSpec) {
+        if(moduleSpec == null || moduleSpec.isEmpty())
+            throw new ImportJarException("error.moduleSpec.empty");
+        int sep = moduleSpec.indexOf("/");
+        if(sep != -1){
+            this.module = moduleSpec.substring(0, sep);
+            if(this.module.isEmpty())
+                throw new ImportJarException("error.moduleSpec.noName");
+            this.version = moduleSpec.substring(sep+1);
+            if(this.version.isEmpty())
+                throw new ImportJarException("error.moduleSpec.noVersion");
+        }else{
+            if(!"default".equals(moduleSpec))
+                throw new ImportJarException("error.moduleSpec.missingVersion");
+            this.module = moduleSpec;
+            this.version = null;
+        }
+    }
+    
+    public void publish() {
+        run();
+    }
+    
     @Override
-    public int run() {
-        ImportJar importJar = new ImportJar(module, out, user, pass, jar.getPath(), verbose);
-        importJar.publish();
+    public int run(){
+        RepositoryManager outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(this.out, log, user, pass);
+
+        ArtifactContext context = new ArtifactContext(module, version, ArtifactContext.JAR);
+        context.setForceOperation(true);
+        try{
+            outputRepository.putArtifact(context, new File(jarFile));
+            String sha1 = ShaSigner.sha1(jarFile, log);
+            if(sha1 != null){
+                File shaFile = ShaSigner.writeSha1(sha1, log);
+                if(shaFile != null){
+                    try{
+                        ArtifactContext sha1Context = context.getSha1Context();
+                        outputRepository.putArtifact(sha1Context, shaFile);
+                    }finally{
+                        shaFile.delete();
+                    }
+                }
+            }
+        }catch(CMRException x){
+            throw new ImportJarException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
+        }catch(Exception x){
+            // FIXME: remove when the whole CMR is using CMRException
+            throw new ImportJarException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
+        }
         return 0;
     }
-    
-    
 
+    public class CMRLogger implements Logger {
+
+        @Override
+        public void error(String str) {
+            throw new ImportJarException("error.cmrError", new Object[]{str}, null);
+        }
+
+        @Override
+        public void warning(String str) {
+            System.err.println(ImportJarMessages.msg("log.warning", str));
+        }
+
+        @Override
+        public void info(String str) {
+            System.err.println(ImportJarMessages.msg("log.info", str));
+        }
+
+        @Override
+        public void debug(String str) {
+            if(verbose)
+                System.err.println(ImportJarMessages.msg("log.debug", str));
+        }
+    }
 }

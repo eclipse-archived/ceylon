@@ -93,7 +93,7 @@ public class ImportJarMain {
         }
 
         try{
-            ImportJar importJar = new ImportJar(moduleSpec, destDir, user, pass, jarFile, verbose);
+            ImportJarTool importJar = new ImportJarTool(moduleSpec, destDir, user, pass, jarFile, verbose);
             importJar.publish();
         }catch(ImportJarException x){
             System.err.println(ImportJarMessages.msg("error", x.getLocalizedMessage()));
