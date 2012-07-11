@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTest;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
+import com.redhat.ceylon.tools.ToolsSuite;
 
 /**
  * DO NOT USE in Eclipse for development as it doesn't run the runtime tests
@@ -70,6 +71,7 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
     CMRTest.class,
     BcTests.class,
     ExpressionTest3.class,
+    ToolsSuite.class
 })
 public class ConcurrentTestsNoRuntime {
 }

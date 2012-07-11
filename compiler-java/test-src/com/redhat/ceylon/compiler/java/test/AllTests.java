@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.java.test.runtime.RuntimeSuite;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
+import com.redhat.ceylon.tools.ToolsSuite;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
@@ -67,7 +68,8 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
     CMRTestHTTP.class,
 	RuntimeSuite.class,
 	LanguageSatisfactionSuite.class,
-	BcTests.class
+	BcTests.class,
+	ToolsSuite.class
 })
 public class AllTests {
 }
