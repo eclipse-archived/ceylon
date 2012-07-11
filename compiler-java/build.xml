@@ -4,6 +4,9 @@
 
   <property name="name" value="Ceylon compiler"/>
   <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+  <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
+  <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+  <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
   <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
   <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
   <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
@@ -54,9 +57,10 @@
   <property name="parser.test.dst" location="${build}/test/parser"/>
 
   <path id="compiler.classpath">
+    <pathelement path="${ceylon.common.lib}"/>
+    <pathelement path="${ceylon.module-resolver.lib}"/>
     <pathelement path="${ceylon.typechecker.lib}"/>
     <pathelement path="${ceylon.language.lib}"/>
-    <pathelement path="${ceylon.module-resolver.lib}"/>
     <pathelement path="${antlr.lib}"/>
     <pathelement path="${markdown.lib}"/>
   </path>
@@ -142,8 +146,9 @@
       <fileset dir="${build.classes}">
         <include name="com/redhat/ceylon/ant/**"/>
       </fileset>
-      <zipfileset src="${ceylon.typechecker.lib}"/>
+      <zipfileset src="${ceylon.common.lib}"/>
       <zipfileset src="${ceylon.module-resolver.lib}"/>
+      <zipfileset src="${ceylon.typechecker.lib}"/>
       <zipfileset src="${antlr.lib}"/>
     </zip>
     <antcall target="sha1sum">
@@ -186,6 +191,16 @@
     <artifact:pom id="antlr.pom" file="${build.poms}/antlr.xml"/>
     <artifact:install pomrefid="antlr.pom"
                 file="${antlr.lib}" />
+
+    <artifact:pom id="common.pom.tmp"
+                groupId="org.ceylon-lang" 
+                artifactId="ceylon-common" 
+                version="${module.com.redhat.ceylon.common.version}">
+    </artifact:pom>
+    <artifact:writepom pomrefid="common.pom.tmp" file="${build.poms}/common.xml"/>
+    <artifact:pom id="common.pom" file="${build.poms}/common.xml"/>
+    <artifact:install pomrefid="common.pom"
+                file="${ceylon.common.lib}" />
 
     <artifact:pom id="typechecker.pom.tmp"
                 groupId="org.ceylon-lang" 
@@ -234,6 +249,9 @@
                 groupId="org.ceylon-lang" 
                 artifactId="ceylon-compiler" 
                 version="${module.com.redhat.ceylon.compiler.version}">
+      <dependency groupId="org.ceylon-lang" 
+          artifactId="ceylon-common" 
+          version="${module.com.redhat.ceylon.common.version}"/>
       <dependency groupId="org.ceylon-lang" 
           artifactId="ceylon-spec" 
           version="${module.com.redhat.ceylon.typechecker.version}"/>
