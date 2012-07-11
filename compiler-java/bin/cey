@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# resolve links - $0 may be a softlink
+PRG="$0"
+while [ -h "$PRG" ]; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`/"$link"
+    fi
+done
+
+DIR=$(dirname "$PRG")
+
+. $DIR/args.sh
+
+# JAVA_CP are classes required by the compiler to run. They have to go to the boot class path on Mac OS X
+# so just put it there for all (Linux) OSes for consistency.
+JAVA_CP="$MINIMAL_CP"
+
+# COMPILE_CP are classes required by the code being compiled
+# Do not add the hand-made runtime if we're bootstrapping it
+if test "$BOOTSTRAP" != "true"
+then
+    #COMPILE_CP="$MINIMAL_CP:$CEYLON_REPO/ceylon/language/$CEYLON_VERSION/ceylon.language-$CEYLON_VERSION.car"
+    COMPILE_CP="$CEYLON_REPO/ceylon/language/$CEYLON_VERSION/ceylon.language-$CEYLON_VERSION.car:$USER_CP"
+else
+    COMPILE_CP="$USER_CP"
+fi
+
+java \
+    -enableassertions \
+    -classpath "$JAVA_CP" \
+    "-Dceylon.home=$CEYLON_HOME" \
+    "-Dcom.redhat.ceylon.tools.terminal.width=$(tput cols)" \
+    "-Dcom.redhat.ceylon.tools.progname=$(basename $PRG)" \
+    com.redhat.ceylon.tools.Tool \
+    $ARGS
+
