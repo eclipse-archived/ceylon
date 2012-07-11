@@ -104,7 +104,7 @@ public class PluginFactory {
     /**
      * Parses the given arguments binding them to the tool.
      */
-    public <T extends Plugin> T bindArguments(PluginModel<T> toolModel, Iterable<String> args) throws InvocationTargetException {
+    public <T extends Plugin> T bindArguments(PluginModel<T> toolModel, Iterable<String> args) {
         try {
             Style style;
             try {
@@ -187,7 +187,11 @@ public class PluginFactory {
             }
             
             if (toolModel.getRest() != null) {
-                toolModel.getRest().invoke(tool, rest);
+                try {
+                    toolModel.getRest().invoke(tool, rest);
+                } catch (InvocationTargetException e) {
+                    throw new OptionArgumentException(e);
+                }
             } else {
                 if (rest.size() >= 1) {
                     throw new OptionArgumentException("Unrecognised option(s): " + rest);
@@ -195,12 +199,17 @@ public class PluginFactory {
             }
             
             for (Method m : toolModel.getPostConstruct()) {
-                m.invoke(tool);
+                try {
+                    m.invoke(tool);
+                } catch (InvocationTargetException e) {
+                    throw new OptionArgumentException(e);
+                }
             }
             
             return tool;
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            // Programming error 
+            throw new PluginException(e);
         }
     }
 
