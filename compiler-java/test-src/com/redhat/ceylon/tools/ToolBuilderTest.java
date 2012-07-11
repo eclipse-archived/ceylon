@@ -10,13 +10,8 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.CompileTool;
 import com.redhat.ceylon.tools.example.ExampleTool;
-import com.redhat.ceylon.tools.importjar.ImportJarTool;
 
-public class ToolBuilderTest {
-
-    private final ArgumentParserFactory apf = new ArgumentParserFactory();
-    private PluginFactory tb = new PluginFactory(apf);
-    private PluginLoader tl = new PluginLoader(apf);
+public class ToolBuilderTest extends ToolTest {
     
     @Test
     public void testLongOptionArgument() throws InvocationTargetException {
@@ -61,7 +56,7 @@ public class ToolBuilderTest {
             tb.bindArguments(model, Arrays.asList("-b"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            
+            // checking this exception is thrown
         }
     }
     
@@ -105,54 +100,7 @@ public class ToolBuilderTest {
         tool.run();
     }
     
-    @Test
-    public void testHelp()  throws Exception {
-        PluginModel<HelpTool> model = tl.loadToolModel("help");
-        Assert.assertNotNull(model);
-        HelpTool tool = tb.bindArguments(model, Collections.<String>emptyList());
-        tool.run();
-    }
-    
-    @Test
-    public void testHelpExample()  throws Exception {
-        PluginModel<HelpTool> model = tl.loadToolModel("help");
-        Assert.assertNotNull(model);
-        HelpTool tool = tb.bindArguments(model, Arrays.asList("example"));
-        tool.run();
-    }
-    
-    @Test
-    public void testHelpHelp()  throws Exception {
-        PluginModel<HelpTool> model = tl.loadToolModel("help");
-        Assert.assertNotNull(model);
-        HelpTool tool = tb.bindArguments(model, Arrays.asList("help"));
-        tool.run();
-    }
-    
-    @Test
-    public void testHelpCompiler()  throws Exception {
-        PluginModel<HelpTool> model = tl.loadToolModel("help");
-        Assert.assertNotNull(model);
-        HelpTool tool = tb.bindArguments(model, Arrays.asList("compile"));
-        tool.setToolLoader(tl);
-        tool.run();
-    }
-    
-    @Test
-    public void testHelpDoc()  throws Exception {
-        PluginModel<HelpTool> model = tl.loadToolModel("help");
-        Assert.assertNotNull(model);
-        HelpTool tool = tb.bindArguments(model, Arrays.asList("doc"));
-        tool.run();
-    }
-    
-    @Test
-    public void testHelpImportJar()  throws Exception {
-        PluginModel<HelpTool> model = tl.loadToolModel("help");
-        Assert.assertNotNull(model);
-        HelpTool tool = tb.bindArguments(model, Arrays.asList("import-jar"));
-        tool.run();
-    }
+
     
     @Test
     public void testCompileJhelp()  throws Exception {

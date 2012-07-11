@@ -8,7 +8,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class) 
 @SuiteClasses({
     ModelBuilderTest.class,
-    ToolBuilderTest.class
+    ToolBuilderTest.class,
+    HelpToolTest.class
 })
 public class ToolsSuite {
 
