@@ -71,6 +71,7 @@ Use this when NOT doing a release!">
             description="Builds using dependent projects in the ${projects.dir} directory.
 Used with another target such as 'package'.">
         <property name="projects.base.dir" value="${projects.dir}"/>
+        <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
         <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
         <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
@@ -84,6 +85,7 @@ Used with another target such as 'package'.">
             description="Builds using dependent projects in existing sibling project folders.
 Used with another target such as 'package'">
         <property name="projects.base.dir" value="${basedir}/.." />
+        <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
         <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
         <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
@@ -100,6 +102,7 @@ Used with another target such as 'package'">
 
     <target name="clean-projects" 
             description="Cleans all sub projects">
+        <ant antfile="${ceylon-common.dir}/build.xml" target="clean" dir="${ceylon-common.dir}" inheritall="false"/>
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="clean" dir="${ceylon-compiler.dir}" inheritall="false"/>
         <ant antfile="${ceylon-js.dir}/build.xml" target="clean" dir="${ceylon-js.dir}" inheritall="false"/>
         <ant antfile="${ceylon-spec.dir}/build.xml" target="clean" dir="${ceylon-spec.dir}" inheritall="false"/>
@@ -226,7 +229,13 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="compile-module-resolver">
+    <target name="install-common">
+        <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+        </ant>
+    </target>
+
+    <target name="compile-module-resolver" depends="install-common">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
@@ -304,27 +313,31 @@ or you can go straight to the package building:
         <mkdir dir="${projects.dir}"/>
         <exec executable="git" dir="${projects.dir}" failonerror="yes">
             <arg value="clone"/>
-            <arg value="https://github.com/ceylon/ceylon-compiler.git"/>
+            <arg value="git@github.com:ceylon/ceylon-common.git"/>
         </exec>
         <exec executable="git" dir="${projects.dir}" failonerror="yes">
             <arg value="clone"/>
-            <arg value="https://github.com/ceylon/ceylon-spec.git"/>
+            <arg value="git@github.com:ceylon/ceylon-compiler.git"/>
         </exec>
         <exec executable="git" dir="${projects.dir}" failonerror="yes">
             <arg value="clone"/>
-            <arg value="https://github.com/ceylon/ceylon.language.git"/>
+            <arg value="git@github.com:ceylon/ceylon-spec.git"/>
         </exec>
         <exec executable="git" dir="${projects.dir}" failonerror="yes">
             <arg value="clone"/>
-            <arg value="https://github.com/ceylon/ceylon-module-resolver.git"/>
+            <arg value="git@github.com:ceylon/ceylon.language.git"/>
         </exec>
         <exec executable="git" dir="${projects.dir}" failonerror="yes">
             <arg value="clone"/>
-            <arg value="https://github.com/ceylon/ceylon-runtime.git"/>
+            <arg value="git@github.com:ceylon/ceylon-module-resolver.git"/>
         </exec>
         <exec executable="git" dir="${projects.dir}" failonerror="yes">
             <arg value="clone"/>
-            <arg value="https://github.com/ceylon/ceylon-js.git"/>
+            <arg value="git@github.com:ceylon/ceylon-runtime.git"/>
+        </exec>
+        <exec executable="git" dir="${projects.dir}" failonerror="yes">
+            <arg value="clone"/>
+            <arg value="git@github.com:ceylon/ceylon-js.git"/>
         </exec>
     </target>
 
@@ -332,6 +345,10 @@ or you can go straight to the package building:
         <antcall target="git-pull" />
     </target>
     <target name="git-pull" depends="checkout-master">
+        <exec executable="git" dir="${projects.dir}/ceylon-common" failonerror="yes">
+            <arg value="pull"/>
+            <arg value="--ff-only"/>
+        </exec>
         <exec executable="git" dir="${projects.dir}/ceylon-compiler" failonerror="yes">
             <arg value="pull"/>
             <arg value="--ff-only"/>
@@ -372,6 +389,11 @@ You can now build the package by executing:
 
     <target name="checkout-internal">
         <fail unless="tag-internal" />
+        <exec executable="git" dir="${projects.dir}/ceylon-common" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
         <exec executable="git" dir="${projects.dir}/ceylon-compiler" failonerror="yes">
             <arg value="checkout"/>
             <arg value="-q"/>
