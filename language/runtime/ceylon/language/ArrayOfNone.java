@@ -10,52 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
     @Ignore
-    protected ArrayOfNone(char... array) {
-        super(array);
-    }
-    
-    @Ignore
-    protected ArrayOfNone(byte... array) {
-        super(array);
-    }
-    
-    @Ignore
-    protected ArrayOfNone(short... array) {
-        super(array);
-    }
-    
-    @Ignore
-    protected ArrayOfNone(int... array) {
-        super(array);
-    }
-    
-    @Ignore
-    protected ArrayOfNone(long... array) {
-        super(array);
-    }
-    
-    @Ignore
-    protected ArrayOfNone(float... array) {
-        super(array);
-    }
-    
-    @Ignore
-    protected ArrayOfNone(double... array) {
-        super(array);
-    }
-    
-    @Ignore
-    protected ArrayOfNone(boolean... array) {
-        super(array);
-    }
-
-    @Ignore
-    protected ArrayOfNone(java.lang.String... array) {
-        super(array);
-    }
-
-    @Ignore
-    protected ArrayOfNone(Element... array) {
+    protected ArrayOfNone(java.lang.Object array) {
         super(array);
     }
     

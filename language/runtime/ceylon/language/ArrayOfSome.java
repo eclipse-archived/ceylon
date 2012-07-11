@@ -12,43 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 @Ceylon(major = 2)
 class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
 
-    public ArrayOfSome(char... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(byte... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(short... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(int... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(long... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(float... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(double... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(boolean... array) {
-        super(array);
-    }
-
-    public ArrayOfSome(java.lang.String... array) {
-        super(array);
-    }
-
-    public ArrayOfSome(Element... array) {
+    public ArrayOfSome(java.lang.Object array) {
         super(array);
     }
     
