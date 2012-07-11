@@ -5,33 +5,42 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class CeylonConfig {
-    private static HashMap<String, String[]> options;
-    private static HashMap<String, HashSet<String>> sectionNames;
-    private static HashMap<String, HashSet<String>> optionNames;
+    private HashMap<String, String[]> options;
+    private HashMap<String, HashSet<String>> sectionNames;
+    private HashMap<String, HashSet<String>> optionNames;
     
-    private CeylonConfig() {}
+    private static CeylonConfig instance;
     
-    private static synchronized void load() {
-        if (options == null) {
+    public static CeylonConfig get() {
+        if (instance == null) {
             try {
-                options = (new ConfigParser()).parse();
-                sectionNames = new HashMap<String, HashSet<String>>();
-                optionNames = new HashMap<String, HashSet<String>>();
-                initLookups();
+                instance = ConfigParser.loadDefaultConfig();
             } catch (IOException e) {
-                System.err.println(e.getMessage());
-                options = new HashMap<String, String[]>();
+                instance = new CeylonConfig();
             }
         }
+        return instance;
     }
     
-    private static void initLookups() {
-        for (String key : options.keySet()) {
-            initLookupKey(key);
-        }
+    public static void set(CeylonConfig config) {
+        instance = config;
     }
-
-    private static void initLookupKey(String key) {
+    
+    public static String get(String key) {
+        return get().getOption(key);
+    }
+    
+    public static String get(String key, String defaultValue) {
+        return get().getOption(key, defaultValue);
+    }
+    
+    public CeylonConfig() {
+        options = new HashMap<String, String[]>();
+        sectionNames = new HashMap<String, HashSet<String>>();
+        optionNames = new HashMap<String, HashSet<String>>();
+    }
+    
+    private void initLookupKey(String key) {
         String[] parts = key.split("\\.");
         
         String subsectionName = parts[parts.length - 2]; 
@@ -70,36 +79,34 @@ public class CeylonConfig {
         }
     }
     
-    public static boolean isOptionDefined(String key) {
-        if (options == null) load();
+    public boolean isOptionDefined(String key) {
         return options.containsKey(key);
     }
     
-    public static String[] getOptionValues(String key) {
-        if (options == null) load();
+    public String[] getOptionValues(String key) {
         return options.get(key);
     }
     
-    public static void setOptionValues(String key, String[] values) {
-        if (options == null) load();
+    public void setOptionValues(String key, String[] values) {
         options.put(key, values);
+        initLookupKey(key);
     }
     
-    public static String getOption(String key) {
+    public String getOption(String key) {
         String[] result = getOptionValues(key);
         return (result != null) ? result[0] : null;
     }
     
-    public static String getOption(String key, String def) {
+    public String getOption(String key, String defaultValue) {
         String result = getOption(key);
-        return (result != null) ? result : def;
+        return (result != null) ? result : defaultValue;
     }
     
-    public static void setOption(String key, String value) {
+    public void setOption(String key, String value) {
         setOptionValues(key, new String[] { value });
     }
     
-    public static Long getNumberOption(String key) {
+    public Long getNumberOption(String key) {
         String result = getOption(key);
         if (result != null) {
             try {
@@ -111,7 +118,7 @@ public class CeylonConfig {
         return null;
     }
     
-    public static long getNumberOption(String key, long def) {
+    public long getNumberOption(String key, long defaultValue) {
         String result = getOption(key);
         if (result != null) {
             try {
@@ -120,14 +127,14 @@ public class CeylonConfig {
                 // Do nothing (logging would spam in case of a user configuration error)
             }
         }
-        return def;
+        return defaultValue;
     }
     
-    public static void setNumberOption(String key, long value) {
+    public void setNumberOption(String key, long value) {
         setOption(key, Long.toString(value));
     }
     
-    public static Boolean getBoolOption(String key) {
+    public Boolean getBoolOption(String key) {
         String result = getOption(key);
         if (result != null) {
             return "true".equals(result) || "on".equals(result) || "yes".equals(result) || "1".equals(result);
@@ -135,20 +142,19 @@ public class CeylonConfig {
         return null;
     }
     
-    public static boolean getBoolOption(String key, boolean def) {
+    public boolean getBoolOption(String key, boolean defaultValue) {
         Boolean result = getBoolOption(key);
         if (result != null) {
             return result.booleanValue();
         }
-        return def;
+        return defaultValue;
     }
     
-    public static void setBoolOption(String key, boolean value) {
+    public void setBoolOption(String key, boolean value) {
         setOption(key, Boolean.toString(value));
     }
     
-    public static String[] getSectionNames(String section) {
-        if (options == null) load();
+    public String[] getSectionNames(String section) {
         if (section == null) {
             section = "";
         }
@@ -157,8 +163,7 @@ public class CeylonConfig {
         return sn.toArray(res);
     }
     
-    public static String[] getOptionNames(String section) {
-        if (options == null) load();
+    public String[] getOptionNames(String section) {
         HashSet<String> on = sectionNames.get(section);
         String[] res = new String[on.size()];
         return on.toArray(res);

@@ -11,12 +11,12 @@ import java.io.LineNumberReader;
 import java.io.PushbackReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 
 public class ConfigParser {
     private File configFile;
-    private HashMap<String, String[]> options;
+    private CeylonConfig config;
+    private InputStream in;
     private LineNumberReader counterdr;
     private PushbackReader reader;
     private String section;
@@ -25,31 +25,43 @@ public class ConfigParser {
     
     private enum Token { section, option, assign, comment, eol, error, eof };
     
-    public ConfigParser() {
+    public static CeylonConfig loadDefaultConfig() throws IOException {
+        return (new ConfigParser()).parse();
+    }
+    
+    public static CeylonConfig loadConfigFromFile(File configFile) throws IOException {
+        return (new ConfigParser(configFile)).parse();
+    }
+    
+    public static CeylonConfig loadConfigFromStream(InputStream stream) throws IOException {
+        return (new ConfigParser(stream)).parse();
+    }
+    
+    private ConfigParser() {
         String configFilename = System.getProperty(PROP_CEYLON_CONFIG_FILE);
         if (configFilename != null) {
             configFile = new File(configFilename);
         } else {
             configFile = new File(new File(System.getProperty("user.home"), ".ceylon"), "config");
         }
-        options = new HashMap<String, String[]>();
-        section = null;
     }
     
-    public ConfigParser(File configFile) {
+    private ConfigParser(File configFile) {
         this.configFile = configFile;
-        options = new HashMap<String, String[]>();
+    }
+    
+    private ConfigParser(InputStream in) {
+        this.in = in;
+    }
+    
+    public CeylonConfig parse() throws IOException {
+        config = new CeylonConfig();
         section = null;
-    }
-    
-    public HashMap<String, String[]> getOptions() {
-        return options;
-    }
-    
-    public HashMap<String, String[]> parse() throws IOException {
-        if (configFile.isFile()) {
+        if (configFile == null || configFile.isFile()) {
             try {
-                InputStream in = new FileInputStream(configFile);
+                if (configFile != null) {
+                    in = new FileInputStream(configFile);
+                }
                 counterdr = new LineNumberReader(new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8"))));
                 reader = new PushbackReader(counterdr);
                 Token tok;
@@ -81,7 +93,8 @@ public class ConfigParser {
         } else {
             throw new FileNotFoundException("Couldn't open configuration file");
         }
-        return options;
+
+        return config;
     }
 
     private void handleSection() throws IOException {
@@ -114,13 +127,13 @@ public class ConfigParser {
             value = "true";
         }
         String optName = section + "." + option;
-        String[] oldval = options.get(optName);
+        String[] oldval = config.getOptionValues(optName);
         if (oldval == null) {
-            options.put(optName, new String[] { value });
+            config.setOption(optName, value);
         } else {
             String[] newVal = Arrays.copyOf(oldval, oldval.length + 1);
             newVal[oldval.length] = value;
-            options.put(optName, newVal);
+            config.setOptionValues(optName, newVal);
         }
     }
 
