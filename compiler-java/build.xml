@@ -286,6 +286,8 @@
        classpathref="compiler.classpath"
        includeantruntime="true">
       <exclude name="**/*Main5.java"/>
+      <exclude name="com/redhat/ceylon/tools/Tool.java"/>
+      <exclude name="com/redhat/ceylon/tools/Plugin.java"/>
       <exclude name="com/redhat/ceylon/tools/Java7Checker.java"/>
       <exclude name="com/redhat/ceylon/ant/**"/>
       <include name="com/redhat/**"/>
@@ -313,12 +315,15 @@
        source="1.5"
        includeantruntime="true">
       <include name="**/*Main5.java"/>
+      <include name="com/redhat/ceylon/tools/Tool.java"/>
+      <include name="com/redhat/ceylon/tools/Plugin.java"/>
       <include name="com/redhat/ceylon/tools/Java7Checker.java"/>
       <include name="com/redhat/ceylon/ant/**"/>
     </javac>
   	<copy todir="${build.classes}">
       <fileset dir="${ceylonc.src}">
         <include name="com/redhat/**/resources/**"/>
+        <include name="META-INF/**"/>
       </fileset>
   	</copy>
   </target>
@@ -387,6 +392,7 @@
     </copy>
     <chmod perm="0755">
         <fileset dir="${build.bin}">
+            <include name="cey"/>
             <include name="ceylon"/>
             <include name="ceylonc"/>
             <include name="ceylond"/>
