@@ -17,15 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+package com.redhat.ceylon.tools.importjar;
 
-package com.redhat.ceylon.tools;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
-import java.io.IOException;
+public class ImportJarMessages {
 
-public class ImportJarMain5 {
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("com.redhat.ceylon.tools.resources.import-jar-messages");
 
-    public static void main(String[] args) throws IOException {
-        Java7Checker.check();
-        ImportJarMain.main(args);
+    public static String msg(String msgKey, Object... msgArgs) {
+        String msg = RESOURCE_BUNDLE.getString(msgKey);
+        if (msgArgs != null) {
+            msg = MessageFormat.format(msg, msgArgs);
+        }
+        return msg;
     }
+
 }

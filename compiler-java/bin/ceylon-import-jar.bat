@@ -19,7 +19,7 @@ if "%USER_CP%" NEQ "" (
     -enableassertions ^
     -classpath "%JAVA_CP%" ^
     "-Dceylon.home=%CEYLON_HOME%" ^
-    com.redhat.ceylon.tools.ImportJarMain5 ^
+    com.redhat.ceylon.tools.importjar.ImportJarMain5 ^
     %ARGS%
 
 endlocal
