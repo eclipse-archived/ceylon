@@ -30,6 +30,9 @@
     <property name="ceylon.js.lib" location="${ceylon.js.dist}/${ceylon.js.jar}" />
 
     <!-- module archives -->
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
     <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
     <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
     <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
@@ -42,6 +45,7 @@
 
     <path id="test.run.classpath">
         <pathelement path="${antlr.lib}"/>
+        <pathelement path="${ceylon.common.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.typechecker.lib}" />
@@ -62,6 +66,7 @@
         <javac srcdir="${src}" destdir="${build.classes}" debug="true">
             <classpath>
                 <pathelement path="${antlr.lib}"/>
+                <pathelement path="${ceylon.common.lib}" />
                 <pathelement path="${ceylon.typechecker.lib}" />
                 <pathelement path="${ceylon.module-resolver.lib}" />
                 <pathelement path="${ceylon.compiler.lib}" />
@@ -79,6 +84,7 @@
         <javac srcdir="${src}" destdir="${build.classes}" debug="true" source="1.5" target="1.5">
             <classpath>
                 <pathelement path="${antlr.lib}"/>
+                <pathelement path="${ceylon.common.lib}" />
                 <pathelement path="${ceylon.typechecker.lib}" />
                 <pathelement path="${ceylon.module-resolver.lib}" />
                 <pathelement path="${ceylon.compiler.lib}" />
@@ -129,6 +135,7 @@
         <mkdir dir="${build.test-classes}" />
         <javac srcdir="${test-src}" destdir="${build.test-classes}" debug="true">
             <classpath>
+                <pathelement location="${ceylon.common.lib}" />
                 <pathelement location="${ceylon.typechecker.lib}" />
                 <pathelement location="${ceylon.module-resolver.lib}" />
                 <pathelement location="${ceylon.compiler.lib}" />
