@@ -20,8 +20,8 @@
   <!-- The Java source files for the compiler -->
   <property name="javac.src" location="langtools/src/share/classes"/>
   <property name="ceylonc.src" location="src"/>
-  <property name="test.src" location="test-src"/>
-  <property name="test.ceylond.src" location="test-ceylondoc-src"/>
+  <property name="test.src" location="test/src"/>
+  <property name="test.ceylond.src" location="test/ceylondoc"/>
 
   <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
