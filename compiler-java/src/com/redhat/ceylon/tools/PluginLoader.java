@@ -16,6 +16,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -47,7 +48,7 @@ public class PluginLoader {
     
     public PluginLoader(ArgumentParserFactory argParserFactory, ClassLoader loader) {
         this.argParserFactory = argParserFactory;
-        this.loader = loader;
+        this.loader = loader == null ? ClassLoader.getSystemClassLoader() : loader;
     }
     
     public PluginLoader(ArgumentParserFactory argParserFactory, File[] path) {
@@ -75,7 +76,7 @@ public class PluginLoader {
                 }
             });
                
-            if (classNames.size() > 1) {
+            if (new HashSet<String>(classNames).size() > 1) {
                 // TODO Allow fully qualified tool names to avoid ambiguities?
                 throw new PluginException("Ambiguous tool name " + toolName + ", classes: " + classNames);
             }

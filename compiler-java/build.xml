@@ -340,6 +340,7 @@
        includeantruntime="false">
       <include name="com/redhat/ceylon/compiler/java/test/**"/>
       <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**"/>
+        <include name="com/redhat/ceylon/tools/**"/>
       <include name="com/redhat/ceylon/itest/**"/>
     </javac>
     <javac
@@ -351,6 +352,11 @@
        includeantruntime="false">
       <include name="com/redhat/ceylon/ceylondoc/test/**"/>
     </javac>
+    <copy todir="${build.classes}">
+      <fileset dir="${test.src}">
+        <include name="META-INF/**"/>
+      </fileset>
+    </copy>
   </target>
 
   <!-- Rule to build compiler jar -->
