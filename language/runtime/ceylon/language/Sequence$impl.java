@@ -34,8 +34,9 @@ public final class Sequence$impl<Element> {
     public <Other>Sequence withLeading() { return $this; }
     @SuppressWarnings("rawtypes")
     public <Other>Sequence withTrailing() { return $this; }
-    public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$this; }
-    public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$this; }
+    
+    public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$empty.getEmpty(); }
+    public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$empty.getEmpty(); }
 
     @SuppressWarnings("rawtypes")
     public <Other> List withLeading(Iterable<? extends Other> elements) {

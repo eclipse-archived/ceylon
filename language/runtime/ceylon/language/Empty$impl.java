@@ -99,4 +99,30 @@ public final class Empty$impl {
     static Integer _getLastIndex(Empty $this){
         return null;
     }
+
+    @SuppressWarnings("rawtypes")
+    public <Other>Empty withLeading() { return $this; }
+    @SuppressWarnings("rawtypes")
+    public <Other>Empty withTrailing() { return $this; }
+    
+    public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$this; }
+    public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$this; }
+
+    @SuppressWarnings("rawtypes")
+    public <Other> List withLeading(Iterable<? extends Other> elements) {
+        return List$impl._withLeading($this, elements);
+    }
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static <Element,Other> List _withLeading(Empty orig, Iterable<? extends Other> elems) {
+        return (List) elems.getSequence();
+    }
+    @SuppressWarnings("rawtypes")
+    public <Other> List withTrailing(Iterable<? extends Other> elements) {
+        return List$impl._withTrailing($this, elements);
+    }
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static <Element,Other> List _withTrailing(Empty orig, Iterable<? extends Other> elems) {
+        return (List) elems.getSequence();
+    }
+
 }

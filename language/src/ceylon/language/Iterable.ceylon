@@ -171,7 +171,7 @@ shared interface Iterable<out Element>
     
     doc "Produce an `Iterable` containing every `step`th 
          element of this iterable object. If the step size 
-         is `1`, the  `Iterable` contains the same elements 
+         is `1`, the `Iterable` contains the same elements 
          as this iterable object. The step size must be 
          greater than zero."
     throws (Exception, "if `step<1`") //TODO: better exception type
@@ -188,7 +188,7 @@ shared interface Iterable<out Element>
         }
     }
 
-    doc "Returns the number of elements in this Iterable 
+    doc "Returns the number of elements in this `Iterable` 
          that satisfy the predicate function."
     shared default Integer count(Boolean selecting(Element element)) {
         variable value count:=0;
@@ -202,15 +202,25 @@ shared interface Iterable<out Element>
         return count;
     }
 
+    doc "The non-null elements of this `Iterable`, in their
+         original order."
     shared default Iterable<Element&Object> coalesced {
         return elements(for (e in this) if (exists e) e);
     }
 
+    doc "All entries of form `index->element` where `index` 
+         is the position at which `element` occurs, for every
+         non-null element of this `Iterable`, ordered by
+         increasing `index`."
     shared default Iterable<Entry<Integer,Element&Object>> indexed {
         variable value i:=0;
         return elements(for (e in this) if (exists e) i++->e);
     }
 
+    doc "The elements of this iterable object, in their
+         original order, followed by the elements of the 
+         given iterable object also in their original
+         order."
     shared default Iterable<Element|Other> chain<Other>(
             Iterable<Other> other) {
         object chained satisfies Iterable<Element|Other> {
