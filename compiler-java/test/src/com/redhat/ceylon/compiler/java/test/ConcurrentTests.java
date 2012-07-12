@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest3;
 import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
+import com.redhat.ceylon.compiler.java.test.language.LanguageSuite;
 import com.redhat.ceylon.compiler.java.test.languagesatisfaction.LanguageSatisfactionSuite;
 import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTest;
@@ -69,6 +70,7 @@ import com.redhat.ceylon.tools.ToolsSuite;
     CMRTest.class,
     RuntimeSuite.class,
     LanguageSatisfactionSuite.class,
+    LanguageSuite.class,
     BcTests.class,
     ExpressionTest3.class,
     ToolsSuite.class
