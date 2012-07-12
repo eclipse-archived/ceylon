@@ -32,7 +32,13 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface TestModule {
 
+    /** The directory where the source code is to be found */
     String srcDirectory();
+    /** Whether the test should fail if there are no tests to run */
     boolean errorIfNoTests() default true;
+    /** The name of the module to compile */
+    String module() default "";
+    
+    Class<? extends CeylonModuleRunner.TestLoader> testLoader() default CeylonModuleRunner.StandardLoader.class;
     
 }
