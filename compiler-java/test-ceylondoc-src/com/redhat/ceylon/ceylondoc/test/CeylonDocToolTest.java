@@ -169,6 +169,7 @@ public class CeylonDocToolTest {
         assertDeprecated(destDir);
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
+        assertBug659ShowInheritedMembers(destDir);
     }
 
     @Test
@@ -197,6 +198,7 @@ public class CeylonDocToolTest {
         assertDeprecated(destDir);
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
+        assertBug659ShowInheritedMembers(destDir);
     }
 
     @Test
@@ -491,6 +493,15 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"));
     }
+    
+	private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
+		assertMatchInFile(destDir, "class_StubClass.html",
+				Pattern.compile("Show inherited methods"));
+		assertMatchInFile(destDir, "class_StubClass.html",
+				Pattern.compile("<a href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>"));
+		assertMatchInFile(destDir, "class_StubClass.html",
+				Pattern.compile("<a href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a>"));
+	}
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
         String outputRepo = tool.getOutputRepository();
