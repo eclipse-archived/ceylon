@@ -627,11 +627,19 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private void constructor(Class klass) throws IOException {
         openTable("section-constructor", "Constructor");
-        open("tr", "td", "code");
+        open("tr", "td");
+        
+        open("code");
         writeIcon(klass);
         write(klass.getName());
         writeParameterList(klass);
-        close("code", "td", "tr", "table");
+        close("code");
+        
+        open("div class='description'", "p");
+        writeParameters(klass);
+        close("p", "div");
+        
+        close("td", "tr", "table");
     }
 
     private void methods() throws IOException {

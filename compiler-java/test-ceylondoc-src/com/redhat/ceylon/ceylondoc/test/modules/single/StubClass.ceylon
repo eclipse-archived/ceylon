@@ -20,7 +20,10 @@
 doc "This is `StubClass`"
 see(StubInterface, stubTopLevelAttribute, stubTopLevelMethod)
 tagged("stubTag1", "stubTag2")
-shared class StubClass() satisfies StubInterface {
+shared class StubClass(
+  doc "Constructor parameter `a`" Integer a,
+  doc "Constructor parameter `b`" Integer b) 
+    satisfies StubInterface {
 
     doc "The stub attribute with `throws`."
     throws (OverflowException, "if the number is too large to be represented as an integer")
@@ -33,6 +36,11 @@ shared class StubClass() satisfies StubInterface {
     doc "The stub attribute with `tagged`."
     tagged("stubTag1")
     shared Integer attributeWithTagged = 0;
+    
+    doc "The stub method with parameters documentation."
+    shared void methodWithParametersDocumentation(
+        doc "Method parameter `a`" Integer a, 
+        doc "Method parameter `b`" Integer b) {}
     
     doc "The stub method with `throws`."
     throws (StubException, "`when` with __WIKI__ syntax")

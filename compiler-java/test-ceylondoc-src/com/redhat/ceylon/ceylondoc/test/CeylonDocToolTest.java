@@ -162,6 +162,7 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, false);
         assertBasicContent(destDir, false);
         assertBy(destDir);
+        assertParametersDocumentation(destDir);
         assertThrows(destDir);
         assertSee(destDir);
         assertIcons(destDir);
@@ -191,6 +192,7 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, true);
         assertBasicContent(destDir, true);
         assertBy(destDir);
+        assertParametersDocumentation(destDir);
         assertThrows(destDir);
         assertSee(destDir);
         assertIcons(destDir);
@@ -395,7 +397,22 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='by'>By: Tom Bentley</div>"));
     }
 
-    private void assertThrows(File destDir) throws IOException {
+    private void assertParametersDocumentation(File destDir) throws IOException {
+    	assertMatchInFile(destDir, "index.html", 
+    			Pattern.compile("<div class='parameters'>Parameters: <ul><li>numbers<p>Sequenced parameters <code>numbers</code></p>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<div class='parameters'>Parameters:"));        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<li>a<p>Constructor parameter <code>a</code></p>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<li>b<p>Constructor parameter <code>b</code></p>"));        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<li>a<p>Method parameter <code>a</code></p>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<li>b<p>Method parameter <code>b</code></p>"));
+	}
+
+	private void assertThrows(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("<div class='throws'>Throws:"));        
         assertMatchInFile(destDir, "class_StubClass.html", 
