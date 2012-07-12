@@ -49,4 +49,11 @@ shared void run() {
     results();
 }
 
+shared void runAndAssert() {
+    run();
+    if (failureCount!=0) {
+        throw Exception("There were " failureCount " failures (out of " assertionCount " assertions)");
+    }
+}
+
 shared void test() { run(); }
