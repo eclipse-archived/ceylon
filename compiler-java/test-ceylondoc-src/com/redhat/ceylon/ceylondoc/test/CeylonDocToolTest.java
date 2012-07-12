@@ -171,6 +171,7 @@ public class CeylonDocToolTest {
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
         assertBug659ShowInheritedMembers(destDir);
+        assertSequencedParameter(destDir);
     }
 
     @Test
@@ -201,6 +202,7 @@ public class CeylonDocToolTest {
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
         assertBug659ShowInheritedMembers(destDir);
+        assertSequencedParameter(destDir);
     }
 
     @Test
@@ -518,6 +520,11 @@ public class CeylonDocToolTest {
 				Pattern.compile("<a href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>"));
 		assertMatchInFile(destDir, "class_StubClass.html",
 				Pattern.compile("<a href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a>"));
+	}
+	
+    private void assertSequencedParameter(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<code>methodWithSequencedParameter\\(Integer... numbers\\)</code>"));
 	}
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
