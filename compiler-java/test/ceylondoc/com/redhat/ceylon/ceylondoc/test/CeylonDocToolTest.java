@@ -145,7 +145,7 @@ public class CeylonDocToolTest {
     
     @Test
     public void moduleA() throws IOException {
-        String pathname = "test-ceylondoc-src";
+        String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
 
         CeylonDocTool tool = tool(pathname, moduleName, true);
@@ -176,7 +176,7 @@ public class CeylonDocToolTest {
 
     @Test
     public void moduleAWithPrivate() throws IOException {
-        String pathname = "test-ceylondoc-src";
+        String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
         
         CeylonDocTool tool = tool(pathname, moduleName, true);
@@ -207,7 +207,7 @@ public class CeylonDocToolTest {
 
     @Test
     public void dependentOnBinaryModule() throws IOException {
-        String pathname = "test-ceylondoc-src";
+        String pathname = "test/ceylondoc";
         
         // compile the b module
         compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
@@ -218,7 +218,7 @@ public class CeylonDocToolTest {
 
     @Test
     public void classLoading() throws IOException {
-        String pathname = "test-ceylondoc-src";
+        String pathname = "test/ceylondoc";
         
         // compile the a and b modules
         compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.a");
@@ -231,7 +231,7 @@ public class CeylonDocToolTest {
 
     @Test
     public void containsJavaCode() throws IOException {
-        String pathname = "test-ceylondoc-src";
+        String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.mixed";
         
         // compile the java code first
@@ -243,7 +243,7 @@ public class CeylonDocToolTest {
 
     @Test
     public void documentSingleModule() throws IOException {
-        String pathname = "test-ceylondoc-src";
+        String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a";
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
@@ -263,7 +263,7 @@ public class CeylonDocToolTest {
 
     @Test
     public void documentPackage() throws IOException {
-        String pathname = "test-ceylondoc-src";
+        String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub";
         
         try{
@@ -278,7 +278,7 @@ public class CeylonDocToolTest {
 
     @Test
     public void documentDefaultModule() throws IOException {
-        String pathname = "test-ceylondoc-src";
+        String pathname = "test/ceylondoc";
         String moduleName = "default";
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");

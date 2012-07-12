@@ -62,7 +62,7 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 
 public abstract class CompilerTest {
 
-    protected final static String dir = "test-src";
+    protected final static String dir = "test/src";
     protected final static String destDirGeneral = "build/test-cars";
     protected final String destDir;
     protected final String moduleName;

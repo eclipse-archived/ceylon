@@ -50,7 +50,7 @@ public class NamingTest {
     
     protected List<Declaration> getDecls(String resource) throws Exception {
         final String name = PKGNAME.replace('.','/') + "/" + resource;
-        File file = new File("test-src", name);
+        File file = new File("test/src", name);
         if (!file.exists()) {
             throw new RuntimeException("Unable to find resource " + name);
         }
