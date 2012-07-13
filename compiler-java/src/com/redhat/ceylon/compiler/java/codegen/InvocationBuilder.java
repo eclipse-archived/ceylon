@@ -849,7 +849,7 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
             ProducedType exprType = gen.expressionGen().getTypeForParameter(parameter, null, gen.TP_TO_BOUND);
             Parameter declaredParameter = method.getParameterLists().get(0).getParameters().get(argIndex);
             
-            JCExpression result = gen.makeQuotedIdent(parameter.getName());
+            JCExpression result = gen.naming.makeName(parameter, Naming.NA_MEMBER);
             
             result = gen.expressionGen().applyErasureAndBoxing(
                     result, 
@@ -864,7 +864,7 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     @Override
     protected JCExpression makeInvocation(List<JCExpression> args) {
         gen.at(node);
-        JCExpression result = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(callable, "$call"), args);
+        JCExpression result = gen.make().Apply(primaryTypeArguments, gen.naming.makeQuotedQualIdent(callable, "$call"), args);
         result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
                 !unboxed, boxingStrategy, returnType);
         return result;
@@ -909,7 +909,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         appendVarsForNamedArguments(namedArguments, declaredParams);
         boolean hasDefaulted = appendVarsForDefaulted(declaredParams);
         for (String argName : this.argsNamesByIndex.values()) {
-            appendArgument(gen.makeUnquotedIdent(argName));
+            appendArgument(gen.naming.makeUnquotedIdent(argName));
         }
         if (hasDefaulted 
                 && !Strategy.defaultParameterMethodStatic(primaryDeclaration)) {
