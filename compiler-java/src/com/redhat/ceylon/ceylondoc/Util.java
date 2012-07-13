@@ -91,7 +91,11 @@ public class Util {
     }
 
     public static String wikiToHTML(String text) {
-        return new MarkdownProcessor().markdown(text);
+        if( text == null || text.isEmpty() ) {
+            return text;
+        } else {
+            return new MarkdownProcessor().markdown(text);
+        }
     }
 
     private static String getFirstLine(String text) {
