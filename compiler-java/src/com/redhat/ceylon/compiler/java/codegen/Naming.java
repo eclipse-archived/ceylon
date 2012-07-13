@@ -531,9 +531,9 @@ public class Naming {
     
     JCExpression makeQualifiedName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         LinkedList<String> parts = new LinkedList<String>();
-        Assert.that((namingOptions & NA_FQ) == 0 
+        Assert.that(expr == null || ((namingOptions & NA_FQ) == 0 
                 && (namingOptions & NA_WRAPPER) == 0
-                && (namingOptions & NA_WRAPPER_UNQUOTED) == 0); 
+                && (namingOptions & NA_WRAPPER_UNQUOTED) == 0)); 
         if ((namingOptions & NA_MEMBER) != 0) {
             pushMemberName(decl, namingOptions, parts);
         }
@@ -542,12 +542,7 @@ public class Naming {
     }
     
     JCExpression makeName(TypedDeclaration decl, int namingOptions) {
-        LinkedList<String> parts = new LinkedList<String>();
-        if ((namingOptions & NA_MEMBER) != 0) {
-            pushMemberName(decl, namingOptions, parts);
-        }
-        addNamesForWrapperClass(decl, parts, namingOptions);
-        return mkSelect(parts);
+        return makeQualifiedName(null, decl, namingOptions);
     }
     private static void pushMemberName(TypedDeclaration decl, int namingOptions,
             LinkedList<String> parts) {
