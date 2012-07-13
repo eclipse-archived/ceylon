@@ -31,6 +31,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -180,18 +181,31 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     first = false;
                 }
                 
-                if (param.isSequenced()) {
-                    ProducedType sequencedParamType = param.getUnit().getIteratedType(param.getType());
-                    link(sequencedParamType);
-                    write("...");
+                if (param instanceof FunctionalParameter) {
+                    writeFunctionalParameter((FunctionalParameter) param);
+                } else if (param.isSequenced()) {
+                    writeSequencedParameter(param);
                 } else {
                     link(param.getType());
+                    write(" ", param.getName());
                 }
-                
-                write(" ", param.getName());
             }
             write(")");
         }
+    }
+
+    private void writeFunctionalParameter(FunctionalParameter functionParam) throws IOException {
+        link(functionParam.getType());
+        write(" ");
+        write(functionParam.getName());
+        writeParameterList(functionParam);
+    }
+
+    private void writeSequencedParameter(Parameter param) throws IOException {
+        ProducedType sequencedParamType = param.getUnit().getIteratedType(param.getType());
+        link(sequencedParamType);
+        write("...");
+        write(" ", param.getName());
     }
 
     protected abstract void subMenu() throws IOException;
