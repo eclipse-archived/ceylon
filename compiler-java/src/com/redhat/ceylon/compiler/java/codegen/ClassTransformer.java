@@ -1507,7 +1507,7 @@ public class ClassTransformer extends AbstractTransformer {
                 .annotations(makeAtIgnore());
         // Add call to process.setupArguments
         JCExpression argsId = makeUnquotedIdent("args");
-        JCMethodInvocation processExpr = make().Apply(null, makeFQIdent("ceylon", "language", "process", "getProcess"), List.<JCTree.JCExpression>nil());
+        JCMethodInvocation processExpr = make().Apply(null, naming.makeLanguageValue("process"), List.<JCTree.JCExpression>nil());
         methbuilder.body(make().Exec(make().Apply(null, makeSelect(processExpr, "setupArguments"), List.<JCTree.JCExpression>of(argsId))));
         // Add call to toplevel method
         methbuilder.body(make().Exec(callee));
