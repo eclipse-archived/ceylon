@@ -106,7 +106,7 @@ public class CMRTestHTTP extends CompilerTest {
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
-            server.stop(0);
+            server.stop(1);
         }
         carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.depend.b", "6.6.6");
         assertTrue(carFile.exists());
@@ -146,7 +146,7 @@ public class CMRTestHTTP extends CompilerTest {
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
-            server.stop(0);
+            server.stop(1);
         }
         
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.single", "6.6.6", repo.getPath());
@@ -191,7 +191,7 @@ public class CMRTestHTTP extends CompilerTest {
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
-            server.stop(0);
+            server.stop(1);
         }
 
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.mixed", "6.6.6", repo.getPath());
