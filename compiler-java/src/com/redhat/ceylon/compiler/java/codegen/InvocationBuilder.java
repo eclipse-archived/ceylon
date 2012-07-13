@@ -157,21 +157,22 @@ abstract class InvocationBuilder {
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             // When doing qualified invocation through an interface we need
             // to get the companion.
-            if (((Tree.QualifiedTypeExpression)primary).getDeclaration().getContainer() instanceof Interface
-                    && !(((Tree.QualifiedTypeExpression)primary).getPrimary() instanceof Tree.Outer)) {
-                Interface qualifyingInterface = (Interface)((Tree.QualifiedTypeExpression)primary).getDeclaration().getContainer();
+            Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)primary;
+            if (qte.getDeclaration().getContainer() instanceof Interface
+                    && !(qte.getPrimary() instanceof Tree.Outer)) {
+                Interface qualifyingInterface = (Interface)qte.getDeclaration().getContainer();
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.makeSelect(actualPrimExpr, gen.getCompanionAccessorName(qualifyingInterface)), 
                         List.<JCExpression>nil());
                 // But when the interface is local the accessor returns Object
                 // so we need to cast it to the type of the companion
-                if (Decl.isAncestorLocal(((Tree.QualifiedTypeExpression)primary).getDeclaration())) {
+                if (Decl.isAncestorLocal(qte.getDeclaration())) {
                     actualPrimExpr = gen.make().TypeCast(gen.makeJavaType(qualifyingInterface.getType(), JT_COMPANION), actualPrimExpr);
                 }
             }
             // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
             // is qualified relative to it
-            ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
+            ProducedType classType = (ProducedType)qte.getTarget();
             resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), argExprs, null);
         } else {
             if (primaryDeclaration instanceof FunctionalParameter
