@@ -492,7 +492,7 @@ public class Naming {
         return acc;
     }
 
-    JCExpression makeQualifiedName(JCExpression expr, MethodOrValue decl, int namingOptions) {
+    JCExpression makeQualifiedName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         LinkedList<String> parts = new LinkedList<String>();
         Assert.that((namingOptions & NA_FQ) == 0 
                 && (namingOptions & NA_WRAPPER) == 0
@@ -504,7 +504,7 @@ public class Naming {
         return mkSelect(expr, parts);
     }
     
-    JCExpression makeName(MethodOrValue decl, int namingOptions) {
+    JCExpression makeName(TypedDeclaration decl, int namingOptions) {
         LinkedList<String> parts = new LinkedList<String>();
         if ((namingOptions & NA_MEMBER) != 0) {
             pushMemberName(decl, namingOptions, parts);
@@ -512,7 +512,7 @@ public class Naming {
         addNamesForWrapperClass(decl, parts, namingOptions);
         return mkSelect(parts);
     }
-    private static void pushMemberName(MethodOrValue decl, int namingOptions,
+    private static void pushMemberName(TypedDeclaration decl, int namingOptions,
             LinkedList<String> parts) {
         if ((namingOptions & NA_SETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no setter");
@@ -522,11 +522,17 @@ public class Naming {
             parts.push(getGetterName(decl));
         } else if (decl instanceof Getter
                 || decl instanceof Value) {
-            parts.push(getGetterName(decl));
+            if (decl.getType().isCallable()) {
+                parts.push(decl.getName());
+            } else {
+                parts.push(getGetterName(decl));
+            }
         } else if (decl instanceof Setter) {
             parts.push(getSetterName(decl.getName()));
         } else if (decl instanceof Method) {
             parts.push(getMethodName(decl.getName()));
+        } else if (decl instanceof Parameter) {
+            parts.push(decl.getName());
         }
     }
 

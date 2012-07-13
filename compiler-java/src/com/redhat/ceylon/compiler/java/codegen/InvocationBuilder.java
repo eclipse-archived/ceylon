@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -49,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -179,11 +181,12 @@ abstract class InvocationBuilder {
                     || (this instanceof IndirectInvocationBuilder)) {
                 if (primaryDeclaration != null) {
                     if (primaryExpr != null) {
-                        actualPrimExpr = gen.makeQualIdent(primaryExpr, primaryDeclaration.getName());
+                        // e.g. qualified access to a captured FunctionalParameter
+                        actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
                     } else if (primaryDeclaration instanceof Getter){
                         actualPrimExpr = gen.make().Apply(null,  gen.makeUnquotedIdent(selector), List.<JCExpression>nil());
                     } else {
-                        actualPrimExpr = gen.makeUnquotedIdent(primaryDeclaration.getName());
+                        actualPrimExpr = gen.naming.makeName((TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
                     }
                 } else {
                     // indirect with invocation as primary
