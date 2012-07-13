@@ -1299,7 +1299,7 @@ public class ClassTransformer extends AbstractTransformer {
                 args.add(makeUnquotedIdent(varName));
             } else {
                 overloadBuilder.parameter(param2, 0);
-                args.add(makeQuotedIdent(Naming.getAliasedParameterName(param2)));
+                args.add(naming.makeName(param2, Naming.NA_MEMBER | Naming.NA_ALIASED));
             }
         }
         
