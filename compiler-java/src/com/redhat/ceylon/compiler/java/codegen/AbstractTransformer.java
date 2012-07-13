@@ -2265,14 +2265,14 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * instance.
      */
     final String getCompanionFieldName(Interface def) {
-        return "$" + def.getQualifiedNameString().replace('.', '$') + "$this";
+        return naming.getCompanionFieldName(def);
     }
     /** 
      * Returns the name of the method in interfaces and classes used to get 
      * the companion instance.
      */
     final String getCompanionAccessorName(Interface def) {
-        return getCompanionClassName(def).replace('.', '$');
+        return naming.getCompanionAccessorName(def);
     }
     
     private int getPosition(Node node) {

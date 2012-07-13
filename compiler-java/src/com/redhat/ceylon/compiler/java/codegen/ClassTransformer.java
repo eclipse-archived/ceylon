@@ -410,7 +410,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (Parameter param : parameters) {
             final ProducedTypedReference typedParameter = typedMember.getTypedParameter(param);
             concreteWrapper.parameter(param, typedParameter.getType(), FINAL, rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
-            arguments.add(makeQuotedIdent(param.getName()));
+            arguments.add(naming.makeName(param, Naming.NA_MEMBER));
         }
         JCExpression expr = make().Apply(
                 null,  // TODO Type args
@@ -440,7 +440,7 @@ public class ClassTransformer extends AbstractTransformer {
             Class model, Interface iface, ProducedType satisfiedType) {
         at(null);
         final List<JCExpression> state = List.<JCExpression>of(
-                expressionGen().applyErasureAndBoxing(makeUnquotedIdent("this"), 
+                expressionGen().applyErasureAndBoxing(naming.makeThis(), 
                         model.getType(), true, BoxingStrategy.BOXED, 
                         satisfiedType, true));
         final String fieldName = getCompanionFieldName(iface);
@@ -485,7 +485,7 @@ public class ClassTransformer extends AbstractTransformer {
             thisMethod.annotations(forImplementor ? makeAtOverride() : makeAtIgnore());
             thisMethod.modifiers(PUBLIC);
             if (forImplementor) {
-                thisMethod.body(make().Return(makeUnquotedIdent(getCompanionFieldName(iface))));
+                thisMethod.body(make().Return(naming.makeCompanionFieldName(iface)));
             } else {
                 thisMethod.noBody();
             }
@@ -791,22 +791,23 @@ public class ClassTransformer extends AbstractTransformer {
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(makeErroneous()))));
             } else {
-                String accessorName = isGetter ? 
-                        Naming.getGetterName(decl.getDeclarationModel()) :
-                            Naming.getSetterName(decl.getDeclarationModel());
+                JCExpression accessor = naming.makeQualifiedName(
+                        naming.makeUnquotedIdent("$this"), 
+                        decl.getDeclarationModel(), 
+                        Naming.NA_MEMBER | (isGetter ? Naming.NA_GETTER : Naming.NA_SETTER));
                 
                 if (isGetter) {
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(
                             make().Apply(
                                     null, 
-                                    makeSelect("$this", accessorName), 
+                                    accessor, 
                                     List.<JCExpression>nil())))));
                 } else {
-                    List<JCExpression> args = List.<JCExpression>of(makeQuotedIdent(decl.getIdentifier().getText()));
+                    List<JCExpression> args = List.<JCExpression>of(naming.makeName(decl.getDeclarationModel(), Naming.NA_MEMBER | Naming.NA_IDENT));
                     builder.setterBlock(make().Block(0, List.<JCStatement>of(make().Exec(
                             make().Apply(
                                     null, 
-                                    makeSelect("$this", accessorName), 
+                                    accessor, 
                                     args)))));
                 }
                 

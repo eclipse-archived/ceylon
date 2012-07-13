@@ -153,6 +153,9 @@ public class Naming {
      * @param options Option flags
      */
     static String declName(LocalId gen, final TypeDeclaration decl, DeclNameFlag... options) {
+        // TODO This should probably be generating a JCExpression, not
+        // a String (which will inevitable end up being split up to produce a
+        // JCExpression by the caller
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
         StringBuilder sb = new StringBuilder();
@@ -505,6 +508,7 @@ public class Naming {
 
     
     JCExpression makeDefaultedParamMethod(JCExpression qualifier, Parameter param) {
+        // TODO Can we merge this into makeName(..., NA_DPM) ?
         Declaration decl = (Declaration)param.getContainer();
         String methodName = getDefaultedParamMethodName(decl, param);
         if (Strategy.defaultParameterMethodOnSelf(param)) {
@@ -530,12 +534,13 @@ public class Naming {
     }
     
     JCExpression makeQualifiedName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
+        // TODO Don't build a list but rather construct a JCExpression directly
         LinkedList<String> parts = new LinkedList<String>();
         Assert.that(namingOptions != 0);
         Assert.that(expr == null || ((namingOptions & NA_FQ) == 0 
                 && (namingOptions & NA_WRAPPER) == 0
                 && (namingOptions & NA_WRAPPER_UNQUOTED) == 0)); 
-        if ((namingOptions & NA_MEMBER) != 0) {
+        if ((namingOptions & (NA_MEMBER | NA_IDENT)) != 0) {
             pushMemberName(decl, namingOptions, parts);
         }
         addNamesForWrapperClass(decl, parts, namingOptions);
@@ -551,7 +556,10 @@ public class Naming {
     }
     private static void pushMemberName(TypedDeclaration decl, int namingOptions,
             LinkedList<String> parts) {
-        if ((namingOptions & NA_SETTER) != 0) {
+        if ((namingOptions & NA_IDENT) != 0) {
+            Assert.not((namingOptions & NA_GETTER | NA_SETTER) == 0);
+            parts.push(decl.getName());
+        } else if ((namingOptions & NA_SETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no setter");
             parts.push(getSetterName(decl.getName()));
         } else if ((namingOptions & NA_GETTER) != 0) {
@@ -667,6 +675,7 @@ public class Naming {
     /** Generate the name of the setter (otherwise the type of the declaration 
      * will be used to determine the name to be generated) */
     static final int NA_SETTER = 1<<5;
+    static final int NA_IDENT = 1<<7;
 
     
     JCExpression makeSyntheticClassname(Declaration decl) {
@@ -674,6 +683,30 @@ public class Naming {
     }
     Name getSyntheticInstanceName(Declaration decl) {
         return names.fromString(decl.getName());
+    }
+    
+    /**
+     * Returns the name of the field in classes which holds the companion 
+     * instance.
+     */
+    final String getCompanionFieldName(Interface def) {
+        return "$" + def.getQualifiedNameString().replace('.', '$') + "$this";
+    }
+    
+    /**
+     * Returns the name of the field in classes which holds the companion 
+     * instance.
+     */
+    JCExpression makeCompanionFieldName(Interface def) {
+        return makeUnquotedIdent(getCompanionFieldName(def));
+    }
+    
+    /** 
+     * Returns the name of the method in interfaces and classes used to get 
+     * the companion instance.
+     */
+    final String getCompanionAccessorName(Interface def) {
+        return getCompanionClassName(def).replace('.', '$');
     }
     
 }
