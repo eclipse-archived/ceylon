@@ -531,6 +531,7 @@ public class Naming {
     
     JCExpression makeQualifiedName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         LinkedList<String> parts = new LinkedList<String>();
+        Assert.that(namingOptions != 0);
         Assert.that(expr == null || ((namingOptions & NA_FQ) == 0 
                 && (namingOptions & NA_WRAPPER) == 0
                 && (namingOptions & NA_WRAPPER_UNQUOTED) == 0)); 
@@ -539,6 +540,10 @@ public class Naming {
         }
         addNamesForWrapperClass(decl, parts, namingOptions);
         return mkSelect(expr, parts);
+    }
+    
+    JCExpression makeThis() {
+        return makeUnquotedIdent("this");
     }
     
     JCExpression makeName(TypedDeclaration decl, int namingOptions) {

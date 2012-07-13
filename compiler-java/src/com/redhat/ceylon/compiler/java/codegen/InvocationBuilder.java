@@ -1157,11 +1157,11 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             if (Decl.withinClassOrInterface(primaryDeclaration)) {
                 // a member method
                 thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
-                defaultedParameterInstance = gen.makeUnquotedIdent("this");
+                defaultedParameterInstance = gen.naming.makeThis();
             } else {
                 // a local or toplevel function
-                defaultedParameterInstance = gen.makeUnquotedIdent(primaryDeclaration.getName());
-                thisType = gen.makeQuotedIdent(primaryDeclaration.getName());
+                thisType = gen.naming.makeName((TypedDeclaration)primaryDeclaration, Naming.NA_WRAPPER);
+                defaultedParameterInstance = gen.naming.makeName((TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
             }
         } else if (primary instanceof Tree.BaseTypeExpression
                 || primary instanceof Tree.QualifiedTypeExpression) {
@@ -1184,7 +1184,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             } else {
                 thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
             }
-            defaultedParameterInstance = gen.makeUnquotedIdent(callVarName);
+            defaultedParameterInstance = gen.naming.makeUnquotedIdent(callVarName);
         }
         JCVariableDecl thisDecl = gen.makeVar(varBaseName + "$this$", 
                 thisType, 
@@ -1235,7 +1235,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 }
             }
             vars.prepend(gen.makeVar(callVarName, varType, actualPrimExpr));
-            actualPrimExpr = gen.makeUnquotedIdent(callVarName);
+            actualPrimExpr = gen.naming.makeUnquotedIdent(callVarName);
         }
         return actualPrimExpr;
     }
