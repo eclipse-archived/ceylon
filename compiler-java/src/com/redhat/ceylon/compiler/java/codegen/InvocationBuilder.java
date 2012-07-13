@@ -415,7 +415,8 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
 
     protected abstract ProducedType getParameterType(int argIndex);
 
-    protected abstract String getParameterName(int argIndex);
+    //protected abstract String getParameterName(int argIndex);
+    protected abstract JCExpression getParameterExpression(int argIndex);
 
     protected abstract boolean getParameterUnboxed(int argIndex);
 
@@ -543,8 +544,8 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
     }
 
     @Override
-    protected String getParameterName(int argIndex) {
-        return "arg" + argIndex;
+    protected JCExpression getParameterExpression(int argIndex) {
+        return gen.naming.makeQuotedIdent("arg" + argIndex);
     }
 
     @Override
@@ -622,8 +623,8 @@ abstract class DirectInvocationBuilder extends SimpleInvocationBuilder {
     }
     
     @Override
-    protected String getParameterName(int argIndex) {
-        return getParameter(argIndex).getName();
+    protected JCExpression getParameterExpression(int argIndex) {
+        return gen.naming.makeName(getParameter(argIndex), Naming.NA_MEMBER);
     }
     
     @Override
@@ -798,7 +799,7 @@ class MethodReferenceSpecifierInvocationBuilder extends DirectInvocationBuilder 
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         ProducedType exprType = getParameterType(argIndex);
         Parameter declaredParameter = ((Functional)primaryDeclaration).getParameterLists().get(0).getParameters().get(argIndex);
-        JCExpression result = gen.makeQuotedIdent(getParameterName(argIndex));
+        JCExpression result = getParameterExpression(argIndex);
         result = gen.expressionGen().applyErasureAndBoxing(
                 result, 
                 exprType, 
