@@ -31,7 +31,7 @@ public class CMRTestHTTP extends CompilerTest {
         synchronized void add(){
             count++;
         }
-        void check(int count){
+        synchronized void check(int count){
             Assert.assertEquals(count, this.count);
         }
     }
