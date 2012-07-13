@@ -20,7 +20,7 @@ final class callableArgumentVarargs_g {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = callableArgumentVarargs_g$s();
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_g.callableArgumentVarargs_g$s();
                 callableArgumentVarargs_g($ceylontmp$s$1);
             }
             returning null;

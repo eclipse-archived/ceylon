@@ -20,7 +20,7 @@ public final class twoParamListsDefaulted {
         return (
             let
             {
-                .java.lang.String $ceylontmp$firstName$1 = twoParamListsDefaulted$firstName();
+                .java.lang.String $ceylontmp$firstName$1 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted.twoParamListsDefaulted$firstName();
             }
             returning twoParamListsDefaulted($ceylontmp$firstName$1);
         );

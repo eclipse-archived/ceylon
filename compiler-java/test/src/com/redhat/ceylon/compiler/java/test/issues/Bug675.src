@@ -18,7 +18,7 @@ public final class bug675 {
         return (
             let
             {
-                .ceylon.language.Iterable<? extends Element> $ceylontmp$elements$3 = bug675$elements();
+                .ceylon.language.Iterable<? extends Element> $ceylontmp$elements$3 = .com.redhat.ceylon.compiler.java.test.issues.bug675.bug675$elements();
             }
             returning bug675($ceylontmp$elements$3);
         );

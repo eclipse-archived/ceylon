@@ -12,7 +12,7 @@ public final class $assert {
         (
             let
             {
-                .java.lang.String $ceylontmp$message$1 = assert$message(assertion);
+                .java.lang.String $ceylontmp$message$1 = .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.assert$message(assertion);
                 $assert(assertion, $ceylontmp$message$1);
             }
             returning null;

@@ -12,7 +12,7 @@ final class f1 {
         (
             let
             {
-                long $ceylontmp$i$1 = f1$i();
+                long $ceylontmp$i$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f1.f1$i();
                 f1($ceylontmp$i$1);
             }
             returning null;
@@ -36,7 +36,7 @@ final class f2 {
         return (
             let
             {
-                long $ceylontmp$i$3 = f2$i();
+                long $ceylontmp$i$3 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f2.f2$i();
             }
             returning f2($ceylontmp$i$3);
         );
@@ -59,7 +59,7 @@ final class f3 {
         return (
             let
             {
-                long $ceylontmp$n$8 = f3$n(i);
+                long $ceylontmp$n$8 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$n(i);
             }
             returning f3(i, $ceylontmp$n$8);
         );
@@ -69,8 +69,8 @@ final class f3 {
         return (
             let
             {
-                long $ceylontmp$i$5 = f3$i();
-                long $ceylontmp$n$6 = f3$n($ceylontmp$i$5);
+                long $ceylontmp$i$5 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$i();
+                long $ceylontmp$n$6 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$n($ceylontmp$i$5);
             }
             returning f3($ceylontmp$i$5, $ceylontmp$n$6);
         );
@@ -97,7 +97,7 @@ final class f4 {
         return (
             let
             {
-                long $ceylontmp$n$10 = f4$n(i);
+                long $ceylontmp$n$10 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f4.f4$n(i);
             }
             returning f4(i, $ceylontmp$n$10);
         );
@@ -120,7 +120,7 @@ final class f5 {
         return (
             let
             {
-                U $ceylontmp$u$12 = f5$u(i);
+                U $ceylontmp$u$12 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5.f5$u(i);
             }
             returning f5(i, $ceylontmp$u$12);
         );

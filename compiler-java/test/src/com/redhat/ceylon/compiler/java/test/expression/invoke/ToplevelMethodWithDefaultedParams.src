@@ -12,7 +12,7 @@ public final class f1 {
         (
             let
             {
-                long $ceylontmp$n$1 = f1$n();
+                long $ceylontmp$n$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f1.f1$n();
                 f1($ceylontmp$n$1);
             }
             returning null;
@@ -35,7 +35,7 @@ public final class f2 {
         (
             let
             {
-                .java.lang.String $ceylontmp$s$3 = f2$s(n);
+                .java.lang.String $ceylontmp$s$3 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f2.f2$s(n);
                 f2(n, $ceylontmp$s$3);
             }
             returning null;
@@ -58,7 +58,7 @@ public final class f3 {
         (
             let
             {
-                long $ceylontmp$m$8 = f3$m(n);
+                long $ceylontmp$m$8 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3$m(n);
                 f3(n, $ceylontmp$m$8);
             }
             returning null;
@@ -69,8 +69,8 @@ public final class f3 {
         (
             let
             {
-                long $ceylontmp$n$5 = f3$n();
-                long $ceylontmp$m$6 = f3$m($ceylontmp$n$5);
+                long $ceylontmp$n$5 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3$n();
+                long $ceylontmp$m$6 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f3.f3$m($ceylontmp$n$5);
                 f3($ceylontmp$n$5, $ceylontmp$m$6);
             }
             returning null;
@@ -97,7 +97,7 @@ public final class f4 {
         (
             let
             {
-                long $ceylontmp$m$13 = f4$m(n);
+                long $ceylontmp$m$13 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4$m(n);
                 f4(n, $ceylontmp$m$13);
             }
             returning null;
@@ -108,8 +108,8 @@ public final class f4 {
         (
             let
             {
-                long $ceylontmp$n$10 = f4$n();
-                long $ceylontmp$m$11 = f4$m($ceylontmp$n$10);
+                long $ceylontmp$n$10 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4$n();
+                long $ceylontmp$m$11 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f4.f4$m($ceylontmp$n$10);
                 f4($ceylontmp$n$10, $ceylontmp$m$11);
             }
             returning null;
@@ -136,7 +136,7 @@ public final class f5 {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = f5$seq(n);
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$18 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5$seq(n);
                 f5(n, $ceylontmp$seq$18);
             }
             returning null;
@@ -147,8 +147,8 @@ public final class f5 {
         (
             let
             {
-                long $ceylontmp$n$15 = f5$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$16 = f5$seq($ceylontmp$n$15);
+                long $ceylontmp$n$15 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5$n();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$16 = .com.redhat.ceylon.compiler.java.test.expression.invoke.f5.f5$seq($ceylontmp$n$15);
                 f5($ceylontmp$n$15, $ceylontmp$seq$16);
             }
             returning null;

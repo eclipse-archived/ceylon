@@ -12,7 +12,7 @@ final class sequencedTypeParamInvocation2 {
         (
             let
             {
-                .ceylon.language.Iterable<? extends T> $ceylontmp$ts$1 = sequencedTypeParamInvocation2$ts();
+                .ceylon.language.Iterable<? extends T> $ceylontmp$ts$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2.sequencedTypeParamInvocation2$ts();
                 sequencedTypeParamInvocation2($ceylontmp$ts$1);
             }
             returning null;

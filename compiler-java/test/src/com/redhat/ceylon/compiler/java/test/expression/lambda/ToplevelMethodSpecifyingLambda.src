@@ -13,7 +13,7 @@ final class toplevel {
         return (
             let
             {
-                .java.lang.String $ceylontmp$name$1 = toplevel$name();
+                .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel.toplevel$name();
             }
             returning toplevel($ceylontmp$name$1);
         );

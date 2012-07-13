@@ -13,7 +13,7 @@ final class defaultedParameter {
         return (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$1 = defaultedParameter$f();
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.expression.lambda.defaultedParameter.defaultedParameter$f();
             }
             returning defaultedParameter($ceylontmp$f$1);
         );

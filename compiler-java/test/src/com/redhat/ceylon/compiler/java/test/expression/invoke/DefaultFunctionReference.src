@@ -13,7 +13,7 @@ final class defaultFunctionReference {
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$1 = defaultFunctionReference$f();
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference.defaultFunctionReference$f();
                 defaultFunctionReference($ceylontmp$f$1);
             }
             returning null;
