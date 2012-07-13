@@ -638,7 +638,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // we don't need any erasure type cast for an "is" test
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
-        String varName = tempName();
+        Naming.SyntheticName varName = naming.temp();
         JCExpression test = makeTypeTest(null, varName, op.getType().getTypeModel());
         return makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
     }
@@ -647,7 +647,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // we don't need any erasure type cast for a "nonempty" test
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
-        String varName = tempName();
+        Naming.SyntheticName varName = naming.temp();
         JCExpression test = makeNonEmptyTest(null, varName);
         return makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
     }
@@ -741,8 +741,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.DefaultOp op) {
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, op.getTypeModel());
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, op.getTypeModel());
-        String varName = tempName();
-        JCExpression varIdent = makeUnquotedIdent(varName);
+        Naming.SyntheticName varName = naming.temp();
+        JCExpression varIdent = varName.makeIdent();
         JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
         JCExpression cond = make().Conditional(test , varIdent, right);
         JCExpression typeExpr = makeJavaType(op.getTypeModel(), JT_NO_PRIMITIVES);
@@ -758,8 +758,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.InOp op) {
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getObjectDeclaration().getType());
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, typeFact().getCategoryDeclaration().getType());
-        String varName = tempName();
-        JCExpression varIdent = makeUnquotedIdent(varName);
+        Naming.SyntheticName varName = naming.temp();
+        JCExpression varIdent = varName.makeIdent();
         JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
         JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), JT_NO_PRIMITIVES);
         return makeLetExpr(varName, null, typeExpr, left, contains);
@@ -1010,7 +1010,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(expr);
             // Type $tmp = attr
             JCExpression exprType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
-            Name varName = names().fromString(tempName("op"));
+            Name varName = naming.tempName("op");
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, returnType);
             JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, exprType, getter);
@@ -1047,12 +1047,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             // Type $tmpE = e
             JCExpression exprType = makeJavaType(qualified.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
-            Name varEName = names().fromString(tempName("opE"));
+            Name varEName = naming.tempName("opE");
             JCVariableDecl tmpEVar = make().VarDef(make().Modifiers(0), varEName, exprType, e);
 
             // Type $tmpV = $tmpE.attr
             JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
-            Name varVName = names().fromString(tempName("opV"));
+            Name varVName = naming.tempName("opV");
             JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, returnType);
@@ -1155,7 +1155,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(operator);
             // Type $tmp = OP(attr);
             JCExpression exprType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
-            Name varName = names().fromString(tempName("op"));
+            Name varName = naming.tempName("op");
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
             JCExpression newValue = factory.getNewValue(getter);
@@ -1185,12 +1185,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             // Type $tmpE = e
             JCExpression exprType = makeJavaType(qualified.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
-            Name varEName = names().fromString(tempName("opE"));
+            Name varEName = naming.tempName("opE");
             JCVariableDecl tmpEVar = make().VarDef(make().Modifiers(0), varEName, exprType, e);
 
             // Type $tmpV = OP($tmpE.attr)
             JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
-            Name varVName = names().fromString(tempName("opV"));
+            Name varVName = naming.tempName("opV");
             JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
@@ -1278,14 +1278,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression result;
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
             JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
-            String tmpVarName = aliasName("safe");
+            Naming.SyntheticName tmpVarName = naming.alias("safe");
             JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), JT_NO_PRIMITIVES);
-            JCExpression transExpr = transformMemberExpression(expr, makeUnquotedIdent(tmpVarName), transformer);
+            JCExpression transExpr = transformMemberExpression(expr, tmpVarName.makeIdent(), transformer);
             if (isFunctionalResult(expr.getTypeModel())) {
                 return transExpr;
             }
             transExpr = boxUnboxIfNecessary(transExpr, expr, expr.getTarget().getType(), BoxingStrategy.BOXED);
-            JCExpression testExpr = make().Binary(JCTree.NE, makeUnquotedIdent(tmpVarName), makeNull());
+            JCExpression testExpr = make().Binary(JCTree.NE, tmpVarName.makeIdent(), makeNull());
             JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
             result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
         } else if (expr.getMemberOperator() instanceof Tree.SpreadOp) {
@@ -1301,7 +1301,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
 
         // this holds the ternary test for empty
-        String testVarName = aliasName("spreadTest");
+        Naming.SyntheticName testVarName = naming.alias("spreadTest");
         ProducedType testSequenceType = typeFact().getFixedSizedType(expr.getPrimary().getTypeModel());
         JCExpression testSequenceTypeExpr = makeJavaType(testSequenceType, JT_NO_PRIMITIVES);
         JCExpression testSequenceExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, testSequenceType);
@@ -1310,13 +1310,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
 
         // this holds the whole spread operation
-        String varBaseName = aliasName("spread");
+        Naming.SyntheticName varBaseName = naming.alias("spread");
         // sequence
         String srcSequenceName = varBaseName+"$0";
         ProducedType srcSequenceType = typeFact().getNonemptySequenceType(expr.getPrimary().getTypeModel());
         ProducedType srcElementType = typeFact().getElementType(srcSequenceType);
         JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, JT_NO_PRIMITIVES);
-        JCExpression srcSequenceExpr = make().TypeCast(srcSequenceTypeExpr, makeUnquotedIdent(testVarName));
+        JCExpression srcSequenceExpr = make().TypeCast(srcSequenceTypeExpr, testVarName.makeIdent());
 
         // size, getSize() always unboxed, but we need to cast to int for Java array access
         String sizeName = varBaseName+"$2";
@@ -1345,7 +1345,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 List.of(makeUnquotedIdent(newArrayName)), null);
 
         // for loop
-        Name indexVarName = names().fromString(aliasName("index"));
+        Name indexVarName = naming.aliasName("index");
         // int index = 0
         JCStatement initVarDef = make().VarDef(make().Modifiers(0), indexVarName, make().TypeIdent(TypeTags.INT), makeInteger(0));
         List<JCStatement> init = List.of(initVarDef);
@@ -1400,7 +1400,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType emptyOrSequence = typeFact().getEmptyType(typeFact().getSequenceType(expr.getTarget().getType()));
             // no need to call makeEmptyAsIterable() here as we always cast the result anyways
             resultExpr = make().TypeCast(makeJavaType(emptyOrSequence), 
-                    make().Conditional(makeNonEmptyTest(makeUnquotedIdent(testVarName)), 
+                    make().Conditional(makeNonEmptyTest(testVarName.makeIdent()), 
                         spread, makeEmpty()));
         } else {
             resultExpr = spread;
@@ -1666,7 +1666,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         make().Select(lhs, names().fromString("item")), List.of(index));
             // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
             JCExpression arrayType = makeJavaType(leftCorrespondenceType);
-            Name varName = names().fromString(tempName("safeaccess"));
+            Name varName = naming.tempName("safeaccess");
             // tmpVar.item(index)
             JCExpression safeAccess = make().Apply(List.<JCTree.JCExpression>nil(), 
                     make().Select(make().Ident(varName), names().fromString("item")), List.of(index));
@@ -1884,19 +1884,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
 
                 //Assign the next item to an Object variable
-                String tmpItem = tempName("item");
-                contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), names().fromString(tmpItem),
+                Naming.SyntheticName tmpItem = naming.temp("item");
+                contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
                         makeJavaType(typeFact().getObjectDeclaration().getType()),
                         make().Apply(null, make().Select(makeUnquotedIdent(iterVar), names().fromString("next")), List.<JCExpression>nil())));
                 //Then we check if it's exhausted
                 contextBody.add(make().Exec(make().Assign(makeUnquotedIdent(itemVar+"$exhausted"),
-                        make().Binary(JCTree.EQ, makeUnquotedIdent(tmpItem), makeFinished()))));
+                        make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
                 //Variables get assigned in the else block
                 ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
                 if (fcl.getForIterator() instanceof ValueIterator) {
                     ProducedType itemType = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel().getType();
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(itemVar),
-                            make().TypeCast(makeJavaType(itemType,JT_NO_PRIMITIVES), makeUnquotedIdent(tmpItem)))));
+                            make().TypeCast(makeJavaType(itemType,JT_NO_PRIMITIVES), tmpItem.makeIdent()))));
                 } else {
                     KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
                     Value key = kviter.getKeyVariable().getDeclarationModel();
@@ -1905,7 +1905,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     //equivalent to k=(KeyType)((Entry<KeyType,ItemType>)tmpItem).getKey()
                     JCExpression castEntryExpr = make().TypeCast(
                         makeJavaType(typeFact().getIteratedType(iterType)),
-                        makeUnquotedIdent(tmpItem));
+                        tmpItem.makeIdent());
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(key.getName()),
                         make().TypeCast(makeJavaType(key.getType(), JT_NO_PRIMITIVES),
                             make().Apply(null, make().Select(castEntryExpr, names().fromString("getKey")),
@@ -1970,7 +1970,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 final JCExpression otherCondition;
                 if (cond instanceof IsCondition) {
                     JCExpression _expr = transformExpression(var.getSpecifierExpression().getExpression());
-                    String _varName = tempName("compr");
+                    Naming.SyntheticName _varName = naming.temp("compr");
                     JCExpression test = makeTypeTest(null, _varName, ((IsCondition) cond).getType().getTypeModel());
                     test = makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test);
                     if (reassign) {
@@ -1991,7 +1991,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
                 } else if (cond instanceof NonemptyCondition) {
                     JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
-                    String varName = tempName("compr");
+                    Naming.SyntheticName varName = naming.temp("compr");
                     JCExpression test = makeNonEmptyTest(null, varName);
                     test = makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
                     if (reassign) {

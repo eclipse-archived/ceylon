@@ -177,9 +177,9 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 JCExpression toTypeExpr = makeJavaType(toType);
     
-                String tmpVarName = aliasName(name);
+                Naming.SyntheticName tmpVarName = naming.alias(name);
                 Name origVarName = names().fromString(name);
-                Name substVarName = names().fromString(aliasName(name));
+                Name substVarName = names().fromString(naming.newAlias(name));
     
                 ProducedType tmpVarType = specifierExpr.getTypeModel();
                 JCExpression tmpVarTypeExpr;
@@ -187,7 +187,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
     
                 // Substitute variable with the correct type to use in the rest of the code block
-                JCExpression tmpVarExpr = makeUnquotedIdent(tmpVarName);
+                JCExpression tmpVarExpr = tmpVarName.makeIdent();
                 if (cond instanceof Tree.ExistsCondition) {
                     tmpVarExpr = unboxType(tmpVarExpr, toType);
                     tmpVarTypeExpr = makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
@@ -222,7 +222,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 at(cond);
                 // Assign the expression to test to the temporary variable
-                JCExpression firstTimeTestExpr = make().Assign(makeUnquotedIdent(tmpVarName), expr);
+                JCExpression firstTimeTestExpr = make().Assign(tmpVarName.makeIdent(), expr);
                 
                 // Test on the tmpVar in the following condition
                 if (cond instanceof Tree.ExistsCondition) {
@@ -282,7 +282,7 @@ public class StatementTransformer extends AbstractTransformer {
         List<JCStatement> outer = List.<JCStatement> nil();
         if (stmt.getExits() && stmt.getElseClause() != null) {
             // boolean $doforelse$X = true;
-            JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), names().fromString(aliasName("doforelse")), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
+            JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), naming.aliasName("doforelse"), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
             outer = outer.append(failtest_decl);
             
             currentForFailVariable = failtest_decl.getName();
@@ -291,8 +291,8 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         // java.lang.Object $elem$X;
-        String elem_name = aliasName("elem");
-        JCVariableDecl elem_decl = make().VarDef(make().Modifiers(0), names().fromString(elem_name), make().Type(syms().objectType), null);
+        Naming.SyntheticName elem_name = naming.alias("elem");
+        JCVariableDecl elem_decl = make().VarDef(make().Modifiers(0), elem_name.asName(), make().Type(syms().objectType), null);
         outer = outer.append(elem_decl);
         
         ForIterator iterDecl = stmt.getForClause().getForIterator();
@@ -320,7 +320,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
         JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.JT_TYPE_ARGUMENT);
-        JCExpression cast_elem = at(stmt).TypeCast(makeJavaType(sequence_element_type, CeylonTransformer.JT_NO_PRIMITIVES), makeUnquotedIdent(elem_name));
+        JCExpression cast_elem = at(stmt).TypeCast(makeJavaType(sequence_element_type, CeylonTransformer.JT_NO_PRIMITIVES), elem_name.makeIdent());
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
@@ -328,7 +328,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
         JCExpression getIter = at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil());
         getIter = gen().expressionGen().applyErasureAndBoxing(getIter, specifierExpression.getTypeModel(), true, BoxingStrategy.BOXED, iter_type);
-        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), iter_type_expr, getIter);
+        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), naming.aliasName(loop_var_name + "$iter"), iter_type_expr, getIter);
         String iter_id = iter_decl.getName().toString();
         
         // final U n = $elem$X;
@@ -363,7 +363,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         // $elem$X = $V$iter$X.next()
         JCExpression iter_elem = make().Apply(null, makeSelect(iter_id, "next"), List.<JCExpression> nil());
-        JCExpression elem_assign = make().Assign(makeUnquotedIdent(elem_name), iter_elem);
+        JCExpression elem_assign = make().Assign(elem_name.makeIdent(), iter_elem);
         // !(($elem$X = $V$iter$X.next()) instanceof Finished)
         JCExpression instof = make().TypeTest(elem_assign, make().Type(syms().ceylonFinishedType));
         JCExpression cond = make().Unary(JCTree.NOT, instof);
@@ -536,7 +536,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         SwitchClause switchClause = stmt.getSwitchClause();
         JCExpression selectorExpr = expressionGen().transformExpression(switchClause.getExpression(), BoxingStrategy.BOXED, switchClause.getExpression().getTypeModel());
-        String selectorAlias = aliasName("sel");
+        Naming.SyntheticName selectorAlias = naming.alias("sel");
         JCVariableDecl selector = makeVar(selectorAlias, make().Type(syms().objectType), selectorExpr);
         SwitchCaseList caseList = stmt.getSwitchCaseList();
 
@@ -576,14 +576,14 @@ public class StatementTransformer extends AbstractTransformer {
         return at(stmt).Block(0, List.of(selector, last));
     }
 
-    private JCStatement transformCaseMatch(String selectorAlias, CaseClause caseClause, MatchCase matchCase, JCStatement last) {
+    private JCStatement transformCaseMatch(Naming.SyntheticName selectorAlias, CaseClause caseClause, MatchCase matchCase, JCStatement last) {
         at(matchCase);
         
         JCExpression tests = null;
         java.util.List<Tree.Expression> expressions = matchCase.getExpressionList().getExpressions();
         for(Tree.Expression expr : expressions){
             JCExpression transformedExpression = expressionGen().transformExpression(expr);
-            JCBinary test = make().Binary(JCTree.EQ, makeUnquotedIdent(selectorAlias), transformedExpression);
+            JCBinary test = make().Binary(JCTree.EQ, selectorAlias.makeIdent(), transformedExpression);
             if(tests == null)
                 tests = test;
             else
@@ -600,7 +600,7 @@ public class StatementTransformer extends AbstractTransformer {
      * @param last
      * @return
      */
-    private JCStatement transformCaseIs(String selectorAlias,
+    private JCStatement transformCaseIs(Naming.SyntheticName selectorAlias,
             CaseClause caseClause, IsCase isCase, JCStatement last) {
         at(isCase);
         ProducedType type = isCase.getType().getTypeModel();
@@ -609,15 +609,15 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression toTypeExpr = makeJavaType(type);
         String name = isCase.getVariable().getIdentifier().getText();
 
-        String tmpVarName = selectorAlias;
+        Naming.SyntheticName tmpVarName = selectorAlias;
         Name origVarName = names().fromString(name);
-        Name substVarName = names().fromString(aliasName(name));
+        Name substVarName = naming.aliasName(name);
 
         // Want raw type for instanceof since it can't be used with generic types
         JCExpression rawToTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW);
 
         // Substitute variable with the correct type to use in the rest of the code block
-        JCExpression tmpVarExpr = makeUnquotedIdent(tmpVarName);
+        JCExpression tmpVarExpr = tmpVarName.makeIdent();
 
         tmpVarExpr = unboxType(at(isCase).TypeCast(rawToTypeExpr, tmpVarExpr), type);
         

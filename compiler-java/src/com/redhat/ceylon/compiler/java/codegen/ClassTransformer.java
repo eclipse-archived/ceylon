@@ -1250,7 +1250,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
         ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
         
-        final String companionInstanceName = tempName("$impl$");
+        final Naming.SyntheticName companionInstanceName = naming.temp("$impl$");
         if (model instanceof Class
                 && !Strategy.defaultParameterMethodStatic(model)) {
             Class classModel = (Class)model;
@@ -1282,11 +1282,11 @@ public class ClassTransformer extends AbstractTransformer {
                         typeArguments = typeArguments((Method)model);
                     }
                 } else {
-                    dpmQualifier = makeQuotedIdent(companionInstanceName);
+                    dpmQualifier = companionInstanceName.makeIdent();
                 }
                 JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(dpmQualifier, param2);
                 
-                String varName = tempName("$"+param2.getName()+"$");
+                String varName = naming.newTemp("$"+param2.getName()+"$");
                 final ProducedType paramType;
                 if (param2 instanceof FunctionalParameter) {
                     paramType = typeFact().getCallableType(param2.getType());

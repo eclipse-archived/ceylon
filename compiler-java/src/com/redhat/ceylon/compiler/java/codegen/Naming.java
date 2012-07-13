@@ -363,7 +363,7 @@ public class Naming {
      * @param ident The identifier
      * @return The ident
      */
-    JCExpression makeUnquotedIdent(String ident) {
+    JCIdent makeUnquotedIdent(String ident) {
         return make().Ident(names().fromString(ident));
     }
 
@@ -722,6 +722,102 @@ public class Naming {
             string = "$empty"; // a little hack for now
         }
         return makeFQIdent("ceylon", "language", string, getGetterName(string));
+    }
+    
+    /*
+     * Methods for making unique temporary and alias names
+     */
+    
+    static class UniqueId {
+        private long id = 0;
+        private long nextId() {
+            return id++;
+        }
+    }
+    
+    private long nextUniqueId() {
+        UniqueId id = context.get(UniqueId.class);
+        if (id == null) {
+            id = new UniqueId();
+            context.put(UniqueId.class, id);
+        }
+        return id.nextId();
+    }
+    
+    String newTemp() {
+        String result = "$ceylontmp" + nextUniqueId();
+        return result;
+    }
+
+    String newTemp(String prefix) {
+        String result = "$ceylontmp" + prefix + nextUniqueId();
+        return result;
+    }
+
+    String newAlias(String name) {
+        String result = "$" + name + "$" + nextUniqueId();
+        return result;
+    }
+    
+    Name tempName() {
+        return names.fromString(newTemp());
+    }
+    
+    Name tempName(String prefix) { 
+        return names.fromString(newTemp(prefix));
+    }
+    
+    Name aliasName(String name) {
+        return names.fromString(newAlias(name));
+    }
+    
+    SyntheticName temp() {
+        return new SyntheticName(tempName());
+    }
+    
+    SyntheticName temp(String prefix) { 
+        return new SyntheticName(tempName(prefix));
+    }
+    
+    SyntheticName alias(String name) {
+        return new SyntheticName(aliasName(name));
+    }
+    
+    JCIdent makeTemp() {
+        return new SyntheticName(tempName()).makeIdent();
+    }
+    
+    JCIdent makeTemp(String prefix) { 
+        return new SyntheticName(tempName(prefix)).makeIdent();
+    }
+    
+    JCIdent makeAlias(String name) {
+        return new SyntheticName(aliasName(name)).makeIdent();
+    }
+    
+    class SyntheticName {
+        
+        private final Name name;
+        
+        private SyntheticName(Name name) {
+            this.name = name;
+        }
+        
+        public String toString() {
+            return name.toString();
+        }
+        
+        String getName() {
+            return name.toString();
+        }
+        
+        Name asName() {
+            return name;
+        }
+        
+        JCIdent makeIdent() {
+            return make().Ident(name);
+        }
     }
     
 }

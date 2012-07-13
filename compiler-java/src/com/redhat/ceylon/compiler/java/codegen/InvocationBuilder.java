@@ -894,7 +894,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
         this.producedReference = producedReference;
         namedArgumentList = invocation.getNamedArgumentList();
-        varBaseName = gen.aliasName("arg");
+        varBaseName = gen.naming.newAlias("arg");
         callVarName = varBaseName + "$callable$";
     }
     
@@ -1035,7 +1035,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
                 final Getter model = attrArg.getDeclarationModel();
                 final String name = model.getName();
-                final String alias = gen.aliasName(name);
+                final String alias = gen.naming.newAlias(name);
                 final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias, alias, attrArg.getBlock(), null, null);
                 ProducedTypedReference typedRef = gen.getTypedReference(model);
                 ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);

@@ -87,6 +87,7 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
+import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
@@ -382,16 +383,22 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     JCVariableDecl makeVar(String varName, JCExpression typeExpr, JCExpression valueExpr) {
         return make().VarDef(make().Modifiers(0), names().fromString(varName), typeExpr, valueExpr);
     }
+    JCVariableDecl makeVar(Naming.SyntheticName varName, JCExpression typeExpr, JCExpression valueExpr) {
+        return make().VarDef(make().Modifiers(0), varName.asName(), typeExpr, valueExpr);
+    }
     
     // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in varN; )"
     // or a "( let var1=expr1,var2=expr2,...,varN=exprN,exprO in exprO; )"
     JCExpression makeLetExpr(JCExpression... args) {
-        return makeLetExpr(tempName(), null, args);
+        return makeLetExpr(naming.temp(), null, args);
     }
 
     // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; varN; )"
     // or a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; exprO; )"
-    JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
+    JCExpression makeLetExpr(Naming.SyntheticName varBaseName, List<JCStatement> statements, JCExpression... args) {
+        return makeLetExpr(varBaseName.getName(), statements, args);
+    }
+    private JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
         String varName = null;
         ListBuffer<JCStatement> decls = ListBuffer.lb();
         int i;
@@ -412,43 +419,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         if (statements != null) {
             decls.appendList(statements);
         } 
-        return make().LetExpr(decls.toList(), result);
-        
-    }
-
-    /*
-     * Methods for making unique temporary and alias names
-     */
-    
-    static class UniqueId {
-        private long id = 0;
-        private long nextId() {
-            return id++;
-        }
-    }
-    
-    private long nextUniqueId() {
-        UniqueId id = context.get(UniqueId.class);
-        if (id == null) {
-            id = new UniqueId();
-            context.put(UniqueId.class, id);
-        }
-        return id.nextId();
-    }
-    
-    String tempName() {
-        String result = "$ceylontmp" + nextUniqueId();
-        return result;
-    }
-
-    String tempName(String prefix) {
-        String result = "$ceylontmp" + prefix + nextUniqueId();
-        return result;
-    }
-
-    String aliasName(String name) {
-        String result = "$" + name + "$" + nextUniqueId();
-        return result;
+        return make().LetExpr(decls.toList(), result);   
     }
     
     /*
@@ -1823,10 +1794,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             // If it's already a String literal, why call .toString on it?
             return value;
         }
-        String name = tempName();
+        Naming.SyntheticName name = naming.temp();
         JCExpression type = makeJavaType(typeFact().getStringDeclaration().getType(), JT_NO_PRIMITIVES);
-        JCExpression expr = make().Conditional(make().Binary(JCTree.NE, makeUnquotedIdent(name), makeNull()), 
-                unboxString(makeUnquotedIdent(name)),
+        JCExpression expr = make().Conditional(make().Binary(JCTree.NE, name.makeIdent(), makeNull()), 
+                unboxString(name.makeIdent()),
                 makeNull());
         return makeLetExpr(name, null, type, value, expr);
     }
@@ -1991,7 +1962,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     private JCExpression objectFixedSizedToJavaArray(ProducedType type, JCExpression expr) {
         JCExpression klass1 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
         JCExpression klass2 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
-        String baseName = tempName();
+        String baseName = naming.newTemp();
 
         String seqName = baseName +"$0";
         ProducedType fixedSizedType = typeFact().getFixedSizedDeclaration().getProducedType(null, Arrays.asList(type));
@@ -2057,7 +2028,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
 
     // Creates comparisons of expressions against types
-    JCExpression makeTypeTest(JCExpression firstTimeExpr, String varName, ProducedType type) {
+    JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.SyntheticName varName, ProducedType type) {
         JCExpression result = null;
         if (typeFact().isUnion(type)) {
             UnionType union = (UnionType)type.getDeclaration();
@@ -2082,7 +2053,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 }
             }
         } else {
-            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : naming.makeUnquotedIdent(varName);
+            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
             if (isVoid(type)){
                 // everything is Void, it's the root of the hierarchy
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
@@ -2109,11 +2080,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return result;
     }
 
-    JCExpression makeNonEmptyTest(JCExpression firstTimeExpr, String varName) {
+    JCExpression makeNonEmptyTest(JCExpression firstTimeExpr, Naming.SyntheticName varName) {
         Interface fixedSize = typeFact().getFixedSizedDeclaration();
         JCExpression test = makeTypeTest(firstTimeExpr, varName, fixedSize.getType());
         JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), JT_NO_PRIMITIVES | JT_RAW);
-        JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, naming.makeUnquotedIdent(varName)));
+        JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, varName.makeIdent()));
         return make().Binary(JCTree.AND, test, nonEmpty);
     }
 
@@ -2138,7 +2109,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
 
     private LetExpr makeIgnoredEvalAndReturn(JCExpression toEval, JCExpression toReturn){
         // define a variable of type j.l.Object to hold the result of the evaluation
-        JCVariableDecl def = makeVar(tempName(), make().Type(syms().objectType), toEval);
+        JCVariableDecl def = makeVar(naming.temp(), make().Type(syms().objectType), toEval);
         // then ignore this result and return something else
         return make().LetExpr(def, toReturn);
 
