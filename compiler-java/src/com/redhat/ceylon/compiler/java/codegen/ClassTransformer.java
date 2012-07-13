@@ -512,8 +512,8 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
                 make().Exec(
                         make().Assign(
-                                makeSelect("this", "$this"), 
-                                makeUnquotedIdent("$this"))));
+                                makeSelect(naming.makeThis(), "$this"), 
+                                naming.makeQuotedThis())));
         ctor.body(bodyStatements.toList());
     }
 
@@ -792,7 +792,7 @@ public class ClassTransformer extends AbstractTransformer {
                 builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(makeErroneous()))));
             } else {
                 JCExpression accessor = naming.makeQualifiedName(
-                        naming.makeUnquotedIdent("$this"), 
+                        naming.makeQuotedThis(), 
                         decl.getDeclarationModel(), 
                         Naming.NA_MEMBER | (isGetter ? Naming.NA_GETTER : Naming.NA_SETTER));
                 
@@ -1222,15 +1222,17 @@ public class ClassTransformer extends AbstractTransformer {
                 mods |= FINAL;
             }
             overloadBuilder.modifiers(mods);
+            JCExpression qualifier;
             if ((flags & OL_DELEGATOR) != 0) {
-                methName = makeSelect(makeUnquotedIdent("$this"), Naming.quoteMethodNameIfProperty((Method)model, gen()));
+                qualifier = naming.makeQuotedThis();
             } else {
-                methName = makeQuotedIdent(Naming.quoteMethodNameIfProperty((Method)model, gen()));
+                qualifier = null;
             }
+            methName = naming.makeQualifiedName(qualifier, (Method)model, Naming.NA_MEMBER);
             overloadBuilder.resultType((Method)model, 0);
         } else if (model instanceof Class) {
             overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
-            methName = makeUnquotedIdent("this");
+            methName = naming.makeThis();
         } else {
             throw new RuntimeException();
         }
@@ -1476,7 +1478,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private JCMethodDecl makeMainForClass(final ClassOrInterface model) {
         at(null);
-        JCExpression nameId = makeQuotedFQIdent(model.getQualifiedNameString());
+        JCExpression nameId = makeJavaType(model.getType(), JT_RAW);
         JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
         return makeMainMethod(model, expr);
     }
@@ -1487,8 +1489,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private JCMethodDecl makeMainForFunction(Method method) {
         at(null);
-        String path = method.getQualifiedNameString();
-        JCExpression qualifiedName = makeSelect(makeQuotedFQIdent(path), Naming.quoteMethodName(method));
+        JCExpression qualifiedName = naming.makeName(method, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
         JCMethodDecl mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil()));
         return mainMethod;
     }

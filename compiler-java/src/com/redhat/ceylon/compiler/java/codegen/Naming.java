@@ -551,6 +551,10 @@ public class Naming {
         return makeUnquotedIdent("this");
     }
     
+    JCExpression makeQuotedThis() {
+        return makeUnquotedIdent("$this");
+    }
+    
     JCExpression makeName(TypedDeclaration decl, int namingOptions) {
         return makeQualifiedName(null, decl, namingOptions);
     }
