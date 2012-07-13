@@ -1427,10 +1427,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
 
     List<JCAnnotation> makeAtCeylon() {
-        JCExpression majorAttribute = make().Assign(makeUnquotedIdent("major"), make().Literal(BINARY_MAJOR_VERSION));
+        JCExpression majorAttribute = make().Assign(naming.makeUnquotedIdent("major"), make().Literal(BINARY_MAJOR_VERSION));
         List<JCExpression> annotationArgs;
         if(BINARY_MINOR_VERSION != 0){
-            JCExpression minorAttribute = make().Assign(makeUnquotedIdent("minor"), make().Literal(BINARY_MINOR_VERSION));
+            JCExpression minorAttribute = make().Assign(naming.makeUnquotedIdent("minor"), make().Literal(BINARY_MINOR_VERSION));
             annotationArgs = List.<JCExpression>of(majorAttribute, minorAttribute);
         }else{
             // keep the minor implicit value of 0 to reduce bytecode size
@@ -1458,10 +1458,10 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                     // nor ceylon.language
                     || dependencyModule.getNameAsString().equals("ceylon.language"))
                 continue;
-            JCExpression dependencyName = make().Assign(makeUnquotedIdent("name"), make().Literal(dependencyModule.getNameAsString()));
+            JCExpression dependencyName = make().Assign(naming.makeUnquotedIdent("name"), make().Literal(dependencyModule.getNameAsString()));
             JCExpression dependencyVersion = null;
             if(dependencyModule.getVersion() != null)
-                dependencyVersion = make().Assign(makeUnquotedIdent("version"), make().Literal(dependencyModule.getVersion()));
+                dependencyVersion = make().Assign(naming.makeUnquotedIdent("version"), make().Literal(dependencyModule.getVersion()));
             List<JCExpression> spec;
             if(dependencyVersion != null)
                 spec = List.<JCExpression>of(dependencyName, dependencyVersion);
@@ -1472,18 +1472,18 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             imports.add(atImport);
         }
         
-        JCExpression nameAttribute = make().Assign(makeUnquotedIdent("name"), make().Literal(name));
-        JCExpression versionAttribute = make().Assign(makeUnquotedIdent("version"), make().Literal(version));
-        JCExpression byAttribute = make().Assign(makeUnquotedIdent("by"), make().NewArray(null, null, authors.toList()));
-        JCExpression importAttribute = make().Assign(makeUnquotedIdent("dependencies"), make().NewArray(null, null, imports.toList()));
+        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("name"), make().Literal(name));
+        JCExpression versionAttribute = make().Assign(naming.makeUnquotedIdent("version"), make().Literal(version));
+        JCExpression byAttribute = make().Assign(naming.makeUnquotedIdent("by"), make().NewArray(null, null, authors.toList()));
+        JCExpression importAttribute = make().Assign(naming.makeUnquotedIdent("dependencies"), make().NewArray(null, null, imports.toList()));
         
         List<JCExpression> annotationArgs = List.<JCExpression>of(nameAttribute, versionAttribute, byAttribute, importAttribute);
         if( doc != null ) {
-        	JCExpression docAttribute = make().Assign(makeUnquotedIdent("doc"), make().Literal(doc));
+        	JCExpression docAttribute = make().Assign(naming.makeUnquotedIdent("doc"), make().Literal(doc));
         	annotationArgs = annotationArgs.append(docAttribute);
         }
         if( license != null ) {
-        	JCExpression licenseAttribute = make().Assign(makeUnquotedIdent("license"), make().Literal(license));
+        	JCExpression licenseAttribute = make().Assign(naming.makeUnquotedIdent("license"), make().Literal(license));
         	annotationArgs = annotationArgs.append(licenseAttribute);
         }
         
@@ -1493,8 +1493,8 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     List<JCAnnotation> makeAtPackage(Package pkg) {
         String name = pkg.getNameAsString();
         boolean shared = pkg.isShared();
-        JCExpression nameAttribute = make().Assign(makeUnquotedIdent("name"), make().Literal(name));
-        JCExpression sharedAttribute = make().Assign(makeUnquotedIdent("shared"), makeBoolean(shared));
+        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("name"), make().Literal(name));
+        JCExpression sharedAttribute = make().Assign(naming.makeUnquotedIdent("shared"), makeBoolean(shared));
         return makeModelAnnotation(syms().ceylonAtPackageType, 
                 List.<JCExpression>of(nameAttribute, sharedAttribute));
     }
@@ -1508,14 +1508,14 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
 
     final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
-        JCExpression nameAttribute = make().Assign(makeUnquotedIdent("value"), make().Literal(name));
+        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name));
         // variance
         String variance = "NONE";
         if(covariant)
             variance = "OUT";
         else if(contravariant)
             variance = "IN";
-        JCExpression varianceAttribute = make().Assign(makeUnquotedIdent("variance"), 
+        JCExpression varianceAttribute = make().Assign(naming.makeUnquotedIdent("variance"), 
                 make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(variance)));
         // upper bounds
         ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
@@ -1523,7 +1523,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             String type = serialiseTypeSignature(satisfiedType);
             upperBounds.append(make().Literal(type));
         }
-        JCExpression satisfiesAttribute = make().Assign(makeUnquotedIdent("satisfies"), 
+        JCExpression satisfiesAttribute = make().Assign(naming.makeUnquotedIdent("satisfies"), 
                 make().NewArray(null, null, upperBounds.toList()));
         // all done
         return make().Annotation(makeIdent(syms().ceylonAtTypeParameter), 
@@ -1558,7 +1558,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     List<JCAnnotation> makeAtClass(ProducedType extendedType) {
         List<JCExpression> attributes = List.nil();
         if(!extendedType.isExactly(typeFact.getIdentifiableObjectDeclaration().getType())){
-            JCExpression extendsAttribute = make().Assign(makeUnquotedIdent("extendsType"), 
+            JCExpression extendsAttribute = make().Assign(naming.makeUnquotedIdent("extendsType"), 
                     make().Literal(serialiseTypeSignature(extendedType)));
             attributes = attributes.prepend(extendsAttribute);
         }
@@ -1581,7 +1581,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             String typeSig = serialiseTypeSignature(type);
             upperBounds.append(make().Literal(typeSig));
         }
-        JCExpression caseAttribute = make().Assign(makeUnquotedIdent("value"), 
+        JCExpression caseAttribute = make().Assign(naming.makeUnquotedIdent("value"), 
                 make().NewArray(null, null, upperBounds.toList()));
         
         return makeModelAnnotation(annotationType, List.of(caseAttribute));
@@ -1591,7 +1591,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         if(ofType == null)
             return List.nil();
         String typeSig = serialiseTypeSignature(ofType);
-        JCExpression caseAttribute = make().Assign(makeUnquotedIdent("of"), 
+        JCExpression caseAttribute = make().Assign(naming.makeUnquotedIdent("of"), 
                 make().Literal(typeSig));
         
         return makeModelAnnotation(syms().ceylonAtCaseTypes, List.of(caseAttribute));
@@ -1608,14 +1608,14 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         for(Annotation annotation : annotations){
             array.append(makeAtAnnotation(annotation));
         }
-        JCExpression annotationsAttribute = make().Assign(makeUnquotedIdent("value"), 
+        JCExpression annotationsAttribute = make().Assign(naming.makeUnquotedIdent("value"), 
                 make().NewArray(null, null, array.toList()));
         
         return makeModelAnnotation(syms().ceylonAtAnnotationsType, List.of(annotationsAttribute));
     }
 
     private JCExpression makeAtAnnotation(Annotation annotation) {
-        JCExpression valueAttribute = make().Assign(makeUnquotedIdent("value"), 
+        JCExpression valueAttribute = make().Assign(naming.makeUnquotedIdent("value"), 
                                                     make().Literal(annotation.getName()));
         List<JCExpression> attributes;
         if(!annotation.getPositionalArguments().isEmpty()){
@@ -1623,23 +1623,23 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
             ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
             for(String val : positionalArguments)
                 array.add(make().Literal(val));
-            JCExpression argumentsAttribute = make().Assign(makeUnquotedIdent("arguments"), 
+            JCExpression argumentsAttribute = make().Assign(naming.makeUnquotedIdent("arguments"), 
                                                             make().NewArray(null, null, array.toList()));
             attributes = List.of(valueAttribute, argumentsAttribute);
         }else if(!annotation.getNamedArguments().isEmpty()){
             Map<String, String> namedArguments = annotation.getNamedArguments();
             ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
             for(Entry<String, String> entry : namedArguments.entrySet()){
-                JCExpression argNameAttribute = make().Assign(makeUnquotedIdent("name"), 
+                JCExpression argNameAttribute = make().Assign(naming.makeUnquotedIdent("name"), 
                         make().Literal(entry.getKey()));
-                JCExpression argValueAttribute = make().Assign(makeUnquotedIdent("value"), 
+                JCExpression argValueAttribute = make().Assign(naming.makeUnquotedIdent("value"), 
                         make().Literal(entry.getValue()));
 
                 JCAnnotation namedArg = make().Annotation(makeIdent(syms().ceylonAtNamedArgumentType), 
                                                           List.of(argNameAttribute, argValueAttribute));
                 array.add(namedArg);
             }
-            JCExpression argumentsAttribute = make().Assign(makeUnquotedIdent("namedArguments"), 
+            JCExpression argumentsAttribute = make().Assign(naming.makeUnquotedIdent("namedArguments"), 
                     make().NewArray(null, null, array.toList()));
             attributes = List.of(valueAttribute, argumentsAttribute);
         }else
@@ -1915,14 +1915,14 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     JCExpression makeEmpty() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                makeFQIdent("ceylon", "language", "$empty", Naming.getGetterName("$empty")),
+                naming.makeLanguageValue("empty"),
                 List.<JCTree.JCExpression>nil());
     }
     
     JCExpression makeFinished() {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                makeFQIdent("ceylon", "language", "exhausted", Naming.getGetterName("exhausted")),
+                naming.makeLanguageValue("exhausted"),
                 List.<JCTree.JCExpression>nil());
     }
 
@@ -1999,13 +1999,13 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         JCExpression seqTypeExpr2 = makeJavaType(fixedSizedType);
 
         JCExpression sizeExpr = make().Apply(List.<JCExpression>nil(), 
-                make().Select(makeUnquotedIdent(seqName), names().fromString("getSize")),
+                make().Select(naming.makeUnquotedIdent(seqName), names().fromString("getSize")),
                 List.<JCExpression>nil());
         sizeExpr = make().TypeCast(syms().intType, sizeExpr);
 
         JCExpression newArrayExpr = make().NewArray(klass1, List.of(sizeExpr), null);
         JCExpression sequenceToArrayExpr = makeUtilInvocation("toArray", 
-                List.of(makeUnquotedIdent(seqName), 
+                List.of(naming.makeUnquotedIdent(seqName), 
                         newArrayExpr),
                 List.of(klass2));
         
@@ -2082,7 +2082,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
                 }
             }
         } else {
-            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : makeUnquotedIdent(varName);
+            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : naming.makeUnquotedIdent(varName);
             if (isVoid(type)){
                 // everything is Void, it's the root of the hierarchy
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
@@ -2113,7 +2113,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         Interface fixedSize = typeFact().getFixedSizedDeclaration();
         JCExpression test = makeTypeTest(firstTimeExpr, varName, fixedSize.getType());
         JCExpression fixedSizeType = makeJavaType(fixedSize.getType(), JT_NO_PRIMITIVES | JT_RAW);
-        JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, makeUnquotedIdent(varName)));
+        JCExpression nonEmpty = makeNonEmptyTest(make().TypeCast(fixedSizeType, naming.makeUnquotedIdent(varName)));
         return make().Binary(JCTree.AND, test, nonEmpty);
     }
 
