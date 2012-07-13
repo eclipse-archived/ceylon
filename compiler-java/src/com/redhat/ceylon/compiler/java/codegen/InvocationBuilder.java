@@ -184,7 +184,7 @@ abstract class InvocationBuilder {
                         // e.g. qualified access to a captured FunctionalParameter
                         actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
                     } else if (primaryDeclaration instanceof Getter){
-                        actualPrimExpr = gen.make().Apply(null,  gen.makeUnquotedIdent(selector), List.<JCExpression>nil());
+                        actualPrimExpr = gen.make().Apply(null,  gen.naming.makeUnquotedIdent(selector), List.<JCExpression>nil());
                     } else {
                         actualPrimExpr = gen.naming.makeName((TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
                     }
@@ -195,9 +195,13 @@ abstract class InvocationBuilder {
             }
             if (onValueType) {
                 JCExpression primTypeExpr = gen.makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES);
-                resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(primTypeExpr, selector), argExprs.prepend(actualPrimExpr));
+                resultExpr = gen.make().Apply(primaryTypeArguments, 
+                        gen.naming.makeQuotedQualIdent(primTypeExpr, selector), 
+                        argExprs.prepend(actualPrimExpr));
             } else {
-                resultExpr = gen.make().Apply(primaryTypeArguments, gen.makeQuotedQualIdent(actualPrimExpr, selector), argExprs);
+                resultExpr = gen.make().Apply(primaryTypeArguments, 
+                        gen.naming.makeQuotedQualIdent(actualPrimExpr, selector), 
+                        argExprs);
             }
         }
         
