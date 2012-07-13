@@ -21,6 +21,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -65,7 +67,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (Decl.withinClassOrInterface(decl)) {
             if (Decl.withinInterface(decl)
                     && !Decl.isToplevel(decl)) {
-                classBuilder.getCompanionBuilder((Declaration)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl));
+                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl));
             } else {
                 classBuilder.defs(gen.classGen().transform(decl));
             }
@@ -122,7 +124,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.defs(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)){
             classBuilder.defs(gen.classGen().transform(decl, false));
-            classBuilder.getCompanionBuilder((Declaration)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl, true));
+            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl, true));
         } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
         } else {
@@ -139,7 +141,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.defs(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)){
             classBuilder.defs(gen.classGen().transform(decl, false));
-            classBuilder.getCompanionBuilder((Declaration)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl, true));
+            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl, true));
         } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
         } else {
@@ -185,7 +187,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     // FIXME: also support Tree.SequencedTypeParameter
     public void visit(Tree.TypeParameterDeclaration param) {
         classBuilder.typeParameter(param);
-        classBuilder.getCompanionBuilder((Declaration)param.getDeclarationModel().getContainer()).typeParameter(param);
+        classBuilder.getCompanionBuilder((TypeDeclaration)param.getDeclarationModel().getContainer()).typeParameter(param);
     }
 
     public void visit(Tree.ExtendedType extendedType) {

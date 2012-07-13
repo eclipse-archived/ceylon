@@ -476,7 +476,7 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder getCompanionBuilder(Declaration decl) {
+    public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl) {
         if (concreteInterfaceMemberDefs == null) {
             concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, gen.getCompanionClassName(decl).replaceFirst(".*\\.", ""), null)
                 .annotations(gen.makeAtIgnore());

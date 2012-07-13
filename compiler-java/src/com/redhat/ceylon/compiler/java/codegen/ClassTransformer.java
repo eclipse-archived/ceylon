@@ -625,7 +625,7 @@ public class ClassTransformer extends AbstractTransformer {
                     || ((parameter instanceof ValueParameter) 
                             && ((ValueParameter)parameter).isHidden())) {
                 if (concrete) {
-                    classBuilder.getCompanionBuilder((Declaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
+                    classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
                 } else {
                     classBuilder.field(modifiers, attrName, type, initialValue, !useField);
                 }        
@@ -904,7 +904,7 @@ public class ClassTransformer extends AbstractTransformer {
                         overloadsDelegator,
                         transformDefaultValues,
                         false);
-            classBuilder.getCompanionBuilder((Declaration)model.getContainer()).defs(companionDefs);
+            classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).defs(companionDefs);
         }
         
         List<JCTree> result;
@@ -1272,7 +1272,7 @@ public class ClassTransformer extends AbstractTransformer {
                         || (flags & OL_IMPLEMENTOR) != 0) {
                     defaultValueMethodName = gen().makeQuotedIdent(methodName);
                 } else if (Strategy.defaultParameterMethodStatic(model)){
-                    defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedQualIdentFromString(getFQDeclarationName(model)), methodName);
+                    defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedQualIdentFromString(getFQDeclarationName((TypeDeclaration)model)), methodName);
                     if (model instanceof Class) {
                         typeArguments = typeArguments((Class)model);
                     } else if (model instanceof Method) {

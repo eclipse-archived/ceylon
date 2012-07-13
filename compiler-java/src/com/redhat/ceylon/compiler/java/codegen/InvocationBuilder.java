@@ -925,7 +925,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
             }
-            String className = gen.getCompanionClassName(container);
+            String className = gen.getCompanionClassName((TypeDeclaration)container);
             defaultValueMethodName = gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName);
         } else if (Strategy.defaultParameterMethodStatic(param)) {
             Declaration container = param.getDeclaration().getRefinedDeclaration();

@@ -1241,7 +1241,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return result;
     }
     
-    String getFQDeclarationName(final Declaration decl) {
+    String getFQDeclarationName(final TypeDeclaration decl) {
         return declName(decl, QUALIFIED);
     }
 
@@ -1256,18 +1256,18 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         return declName(tdecl, args.toArray(new DeclNameFlag[args.size()]));
     }
 
-    String declName(final Declaration decl, Naming.DeclNameFlag... flags) {
+    String declName(final TypeDeclaration decl, Naming.DeclNameFlag... flags) {
         return Naming.declName(this, decl, flags);
     }
     
-    private JCExpression makeDeclarationName(Declaration decl) {
+    private JCExpression makeDeclarationName(TypeDeclaration decl) {
         return makeQuotedQualIdentFromString(getFQDeclarationName(decl));
     }
     
     /**
      * Returns the name of the companion class of the given class or interface
      */
-    String getCompanionClassName(Declaration decl){
+    String getCompanionClassName(TypeDeclaration decl){
         return declName(decl, QUALIFIED, DeclNameFlag.COMPANION);
     }
     

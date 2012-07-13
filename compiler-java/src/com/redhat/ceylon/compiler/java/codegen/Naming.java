@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.code.Type;
@@ -151,7 +152,7 @@ public class Naming {
      * @param decl The declaration
      * @param options Option flags
      */
-    static String declName(LocalId gen, final Declaration decl, DeclNameFlag... options) {
+    static String declName(LocalId gen, final TypeDeclaration decl, DeclNameFlag... options) {
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
         StringBuilder sb = new StringBuilder();
@@ -186,7 +187,7 @@ public class Naming {
         return sb.toString();
     }
 
-    static void appendDeclName(LocalId gen, final Declaration decl, EnumSet<DeclNameFlag> flags, StringBuilder sb, Scope scope, final boolean last) {
+    static void appendDeclName(LocalId gen, final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, StringBuilder sb, Scope scope, final boolean last) {
         if (scope instanceof Class) {
             Class klass = (Class)scope;
             sb.append(klass.getName());
