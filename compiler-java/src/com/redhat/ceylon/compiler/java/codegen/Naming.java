@@ -231,6 +231,10 @@ public class Naming {
             }
         }
     }
+
+    String getCompanionClassName(TypeDeclaration decl) {
+        return declName(gen(), decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
+    }
     
     static String quoteMethodNameIfProperty(Method method, AbstractTransformer gen) {
         String name = method.getName();
@@ -317,6 +321,7 @@ public class Naming {
 
     private TreeMaker maker;
     private Names names;
+    private Context context;
     
     Naming(TreeMaker maker, Names names) {
         this.maker = maker;
@@ -324,6 +329,7 @@ public class Naming {
     }
     
     Naming(Context context) {
+        this.context = context;
         maker = TreeMaker.instance(context);
         names = Names.instance(context);
     }
@@ -343,6 +349,10 @@ public class Naming {
     
     private Names names() {
         return names;
+    }
+    
+    private  CeylonTransformer gen() {
+        return CeylonTransformer.getInstance(context);
     }
     
     /** 
@@ -493,6 +503,32 @@ public class Naming {
         return acc;
     }
 
+    
+    JCExpression makeDefaultedParamMethod(JCExpression qualifier, Parameter param) {
+        Declaration decl = (Declaration)param.getContainer();
+        String methodName = getDefaultedParamMethodName(decl, param);
+        if (Strategy.defaultParameterMethodOnSelf(param)) {
+            // method not within interface
+            Declaration container = param.getDeclaration().getRefinedDeclaration();
+            if (!container.isToplevel()) {
+                container = (Declaration)container.getContainer();
+            }
+            String className = declName(gen(), (TypeDeclaration)container, DeclNameFlag.COMPANION); 
+            return  makeQuotedQualIdent(qualifier, className, methodName);
+        } else if (Strategy.defaultParameterMethodStatic(param)) {
+            // top level method or class
+            Assert.that(qualifier == null);
+            Declaration container = param.getDeclaration().getRefinedDeclaration();
+            if (!container.isToplevel()) {
+                container = (Declaration)container.getContainer();
+            }            
+            return makeQuotedQualIdent(makeQuotedFQIdent(container.getQualifiedNameString()), methodName);
+        } else {
+            // inner or local class or method, or method in an interface
+            return makeQuotedQualIdent(qualifier, methodName);
+        }
+    }
+    
     JCExpression makeQualifiedName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         LinkedList<String> parts = new LinkedList<String>();
         Assert.that((namingOptions & NA_FQ) == 0 
@@ -632,17 +668,7 @@ public class Naming {
      * will be used to determine the name to be generated) */
     static final int NA_SETTER = 1<<5;
 
-    static JCExpression makeDefaultedParamMethodName(Declaration decl, Parameter param, int namingOptions) {
-        // TODO Implement this
-        /*if (decl instanceof Method) {
-            return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param).getName();
-        } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
-            return "$init$" + param.getName();
-        } else {
-            Assert.fail();
-        }*/
-        return null;
-    }
+    
     JCExpression makeSyntheticClassname(Declaration decl) {
         return makeUnquotedIdent(getQuotedClassName(decl));
     }

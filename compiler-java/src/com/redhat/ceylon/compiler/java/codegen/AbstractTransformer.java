@@ -1268,7 +1268,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * Returns the name of the companion class of the given class or interface
      */
     String getCompanionClassName(TypeDeclaration decl){
-        return declName(decl, QUALIFIED, DeclNameFlag.COMPANION);
+        return naming.getCompanionClassName(decl);
     }
     
     /**

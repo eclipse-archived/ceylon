@@ -70,6 +70,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
@@ -1265,22 +1266,22 @@ public class ClassTransformer extends AbstractTransformer {
                 useDefault = true;
             }
             if (useDefault) {
-                String methodName = Naming.getDefaultedParamMethodName(model, param2);
-                JCExpression defaultValueMethodName;
                 List<JCExpression> typeArguments = List.<JCExpression>nil();
-                if (Strategy.defaultParameterMethodOnSelf(model)
+                JCIdent dpmQualifier;
+                if (Strategy.defaultParameterMethodOnSelf(model) 
                         || (flags & OL_IMPLEMENTOR) != 0) {
-                    defaultValueMethodName = gen().makeQuotedIdent(methodName);
+                    dpmQualifier = null;
                 } else if (Strategy.defaultParameterMethodStatic(model)){
-                    defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedQualIdentFromString(getFQDeclarationName((TypeDeclaration)model)), methodName);
+                    dpmQualifier = null;
                     if (model instanceof Class) {
                         typeArguments = typeArguments((Class)model);
                     } else if (model instanceof Method) {
                         typeArguments = typeArguments((Method)model);
                     }
                 } else {
-                    defaultValueMethodName = gen().makeQuotedQualIdent(makeQuotedIdent(companionInstanceName), methodName);
+                    dpmQualifier = makeQuotedIdent(companionInstanceName);
                 }
+                JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(dpmQualifier, param2);
                 
                 String varName = tempName("$"+param2.getName()+"$");
                 final ProducedType paramType;

@@ -918,28 +918,15 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     }
     
     private JCExpression makeDefaultedArgumentMethodCall(Parameter param) {
-        final String methodName = Naming.getDefaultedParamMethodName(primaryDeclaration, param);
-        JCExpression defaultValueMethodName;
-        if (Strategy.defaultParameterMethodOnSelf(param)) {
-            Declaration container = param.getDeclaration().getRefinedDeclaration();
-            if (!container.isToplevel()) {
-                container = (Declaration)container.getContainer();
-            }
-            String className = gen.getCompanionClassName((TypeDeclaration)container);
-            defaultValueMethodName = gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), className, methodName);
-        } else if (Strategy.defaultParameterMethodStatic(param)) {
-            Declaration container = param.getDeclaration().getRefinedDeclaration();
-            if (!container.isToplevel()) {
-                container = (Declaration)container.getContainer();
-            }            
-            defaultValueMethodName = gen.makeQuotedQualIdent(gen.makeQuotedFQIdent(container.getQualifiedNameString()), methodName);
-        } else {
-            JCExpression thisExpr = gen.makeQuotedIdent(varBaseName + "$this$");
+        JCExpression thisExpr = null;
+        if (!Strategy.defaultParameterMethodOnSelf(param) 
+                && !Strategy.defaultParameterMethodStatic(param)) {
+            thisExpr = gen.makeQuotedIdent(varBaseName + "$this$");
             if (onValueType) {
                 thisExpr = gen.boxType(thisExpr, qmePrimary.getTypeModel());
             }
-            defaultValueMethodName = gen.makeQuotedQualIdent(thisExpr , methodName);
         }
+        JCExpression defaultValueMethodName = gen.naming.makeDefaultedParamMethod(thisExpr, param);
         JCExpression argExpr = gen.at(node).Apply(null, 
                 defaultValueMethodName, 
                 makeVarRefArgumentList(param));
