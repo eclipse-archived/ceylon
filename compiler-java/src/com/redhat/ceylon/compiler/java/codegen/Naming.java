@@ -577,7 +577,11 @@ public class Naming {
         } else if (decl instanceof Method) {
             parts.push(getMethodName(decl.getName()));
         } else if (decl instanceof Parameter) {
-            parts.push(decl.getName());
+            if ((namingOptions & NA_ALIASED) != 0) {
+                parts.push(getAliasedParameterName((Parameter)decl));
+            } else {
+                parts.push(decl.getName());
+            }
         }
     }
 
@@ -676,6 +680,7 @@ public class Naming {
      * will be used to determine the name to be generated) */
     static final int NA_SETTER = 1<<5;
     static final int NA_IDENT = 1<<7;
+    static final int NA_ALIASED = 1<<8;
 
     
     JCExpression makeSyntheticClassname(Declaration decl) {

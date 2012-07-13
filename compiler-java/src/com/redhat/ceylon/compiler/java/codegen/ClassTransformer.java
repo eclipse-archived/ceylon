@@ -1037,14 +1037,14 @@ public class ClassTransformer extends AbstractTransformer {
             JCExpression initialValue;
             if (initializingParameter != null) {
                 mods |= FINAL;
+                int namingOptions = Naming.NA_MEMBER;
                 if (initializingParameter.getContainer() instanceof Method) {
                     // We're initializing a local method, which will have a 
                     // class wrapper of the same name as the param, so 
                     // the param gets renamed
-                    initialValue = makeUnquotedIdent(Naming.getAliasedParameterName(initializingParameter));
-                } else {
-                    initialValue = makeUnquotedIdent(initializingParameter.getName());
+                    namingOptions |= Naming.NA_ALIASED;
                 }
+                initialValue = naming.makeName(initializingParameter, namingOptions);
             } else {
                 // The field isn't initialized by a parameter, but later in the block
                 initialValue = makeNull();
