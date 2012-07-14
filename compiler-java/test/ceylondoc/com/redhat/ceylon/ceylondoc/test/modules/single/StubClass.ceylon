@@ -83,6 +83,10 @@ shared class StubClass(
     
     shared actual void defaultDeprecatedMethodFromStubInterface() {}
     
+    shared String? bug691AbbreviatedOptionalType1() { throw; }
+    
+    shared Element? bug691AbbreviatedOptionalType2<Element>() { throw; }
+    
     doc "This is `StubInnerInterface`"
     tagged("stubInnerTag1")
     shared interface StubInnerInterface {

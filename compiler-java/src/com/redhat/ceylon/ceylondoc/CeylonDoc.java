@@ -69,8 +69,19 @@ public abstract class CeylonDoc extends Markup {
             // try to simplify if possible
             if (ut.getCaseTypes().size()==2) {
                 Unit unit = decl.getUnit();
-                if (com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, unit.getNothingDeclaration())) {
-                    link(unit.getDefiniteType(type));
+                Class nothingDeclaration = unit.getNothingDeclaration();
+                if (com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, nothingDeclaration)) {
+                    ProducedType nonOptionalType = null;
+                    for (ProducedType ct : ut.getCaseTypes()) {
+                        TypeDeclaration ctd = ct.getDeclaration();
+                        if (ctd instanceof Class && ctd.equals(nothingDeclaration)) {
+                            continue;
+                        } else {
+                            nonOptionalType = ct;
+                            break;
+                        }
+                    }
+                    link(nonOptionalType);
                     write("?");
                     return;
                 }
