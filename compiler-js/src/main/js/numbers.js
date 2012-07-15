@@ -14,26 +14,26 @@ initTypeProto(Integer, 'ceylon.language.Integer', Object$, Castable, Integral, N
 var Integer$proto = Integer.$$.prototype;
 Integer$proto.getString = function() { return String$(this.value.toString()) }
 Integer$proto.plus = function(other) {
-    if (isOfType(other, 'ceylon.language.Integer')) {
+    if (other.constructor===Integer.$$) {
         return Integer(this.value+other.value);
     }
     return Float(this.value+other.value);
 }
 Integer$proto.minus = function(other) {
-    if (isOfType(other, 'ceylon.language.Integer')) {
+    if (other.constructor===Integer.$$) {
         return Integer(this.value-other.value);
     }
     return Float(this.value-other.value);
 }
 Integer$proto.times = function(other) {
-    if (isOfType(other, 'ceylon.language.Integer')) {
+    if (other.constructor===Integer.$$) {
         return Integer(this.value*other.value);
     }
     return Float(this.value*other.value);
 }
 Integer$proto.divided = function(other) {
     var exact = this.value/other.value;
-    if (isOfType(other, 'ceylon.language.Integer')) {
+    if (other.constructor===Integer.$$) {
         if (other.value === 0) {
             throw Exception(String$("Division by Zero"));
         }
@@ -43,7 +43,7 @@ Integer$proto.divided = function(other) {
 }
 Integer$proto.remainder = function(other) { return Integer(this.value%other.value) }
 Integer$proto.power = function(exp) {
-    var isint = isOfType(exp, 'ceylon.language.Integer');
+    var isint = exp.constructor===Integer.$$;
     if (isint) {
         if (exp.getSign().value < 0) {
             if (!(this.value===1 || this.value===-1)) {
