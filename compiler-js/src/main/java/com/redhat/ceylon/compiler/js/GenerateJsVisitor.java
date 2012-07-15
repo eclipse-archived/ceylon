@@ -1188,9 +1188,11 @@ public class GenerateJsVisitor extends Visitor
         List<Expression> exprs = that.getExpressions();
         out(clAlias, ".StringBuilder().appendAll(", clAlias, ".ArraySequence([");
         for (int i = 0; i < literals.size(); i++) {
-            literals.get(i).visit(this);
+            StringLiteral literal = literals.get(i);
+            boolean nonemptyLiteral = (literal.getText().length() > 2);
+            if (nonemptyLiteral) { literal.visit(this); }
             if (i < exprs.size()) {
-                out(",");
+                if (nonemptyLiteral) { out(","); }
                 exprs.get(i).visit(this);
                 out(".getString()");
                 out(",");
