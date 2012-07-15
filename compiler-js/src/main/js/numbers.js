@@ -1,10 +1,9 @@
 function initType(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
 function String$(x){};//IGNORE
-function Boolean$(x){};//IGNORE
 function Character(x){};//IGNORE
 function inheritProto(a,b,c,d,e,f,g);//IGNORE
 function Exception$(x){};//IGNORE
-var Object$,Castable,Integral,Numeric,equal,smaller,larger,exports,$true,$false;//IGNORE
+var Object$,Castable,Integral,Numeric,equal,smaller,larger,exports;//IGNORE
 
 function Integer(value) {
     var that = new Integer.$$;
@@ -15,26 +14,26 @@ initTypeProto(Integer, 'ceylon.language.Integer', Object$, Castable, Integral, N
 var Integer$proto = Integer.$$.prototype;
 Integer$proto.getString = function() { return String$(this.value.toString()) }
 Integer$proto.plus = function(other) {
-    if (isOfType(other, 'ceylon.language.Integer') === $true) {
+    if (isOfType(other, 'ceylon.language.Integer')) {
         return Integer(this.value+other.value);
     }
     return Float(this.value+other.value);
 }
 Integer$proto.minus = function(other) {
-    if (isOfType(other, 'ceylon.language.Integer') === $true) {
+    if (isOfType(other, 'ceylon.language.Integer')) {
         return Integer(this.value-other.value);
     }
     return Float(this.value-other.value);
 }
 Integer$proto.times = function(other) {
-    if (isOfType(other, 'ceylon.language.Integer') === $true) {
+    if (isOfType(other, 'ceylon.language.Integer')) {
         return Integer(this.value*other.value);
     }
     return Float(this.value*other.value);
 }
 Integer$proto.divided = function(other) {
     var exact = this.value/other.value;
-    if (isOfType(other, 'ceylon.language.Integer') === $true) {
+    if (isOfType(other, 'ceylon.language.Integer')) {
         if (other.value === 0) {
             throw Exception(String$("Division by Zero"));
         }
@@ -44,7 +43,7 @@ Integer$proto.divided = function(other) {
 }
 Integer$proto.remainder = function(other) { return Integer(this.value%other.value) }
 Integer$proto.power = function(exp) {
-    var isint = isOfType(exp, 'ceylon.language.Integer') === $true;
+    var isint = isOfType(exp, 'ceylon.language.Integer');
     if (isint) {
         if (exp.getSign().value < 0) {
             if (!(this.value===1 || this.value===-1)) {
@@ -61,7 +60,7 @@ Integer$proto.power = function(exp) {
 }
 Integer$proto.getNegativeValue = function() { return Integer(-this.value) }
 Integer$proto.getPositiveValue = function() { return this }
-Integer$proto.equals = function(other) { return Boolean$(other && other.value===this.value) }
+Integer$proto.equals = function(other) { return other && other.value===this.value }
 Integer$proto.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
@@ -71,8 +70,8 @@ Integer$proto.getInteger = function() { return this }
 Integer$proto.getCharacter = function() { return Character(this.value); }
 Integer$proto.getSuccessor = function() { return Integer(this.value+1) }
 Integer$proto.getPredecessor = function() { return Integer(this.value-1) }
-Integer$proto.getUnit = function() { return Boolean$(this.value === 1) }
-Integer$proto.getZero = function() { return Boolean$(this.value === 0) }
+Integer$proto.getUnit = function() { return this.value === 1 }
+Integer$proto.getZero = function() { return this.value === 0 }
 Integer$proto.getFractionalPart = function() { return Integer(0); }
 Integer$proto.getWholePart = function() { return this; }
 Integer$proto.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
@@ -118,7 +117,7 @@ Float$proto.divided = function(other) { return Float(this.value/other.value) }
 Float$proto.power = function(other) { return Float(Math.pow(this.value, other.value)) }
 Float$proto.getNegativeValue = function() { return Float(-this.value) }
 Float$proto.getPositiveValue = function() { return this }
-Float$proto.equals = function(other) { return Boolean$(other && other.value===this.value) }
+Float$proto.equals = function(other) { return other && other.value===this.value }
 Float$proto.compare = function(other) {
     if (other === null || other === undefined) { return larger; }
     return this.value===other.value ? equal
@@ -138,11 +137,11 @@ Float$proto.getFractionalPart = function() {
 }
 Float$proto.getSign = function() { return this.value > 0 ? Integer(1) : this.value < 0 ? Integer(-1) : Integer(0); }
 Float$proto.getHash = function() { return String$(this.value.toPrecision()).getHash(); }
-Float$proto.getUndefined = function() { return isNaN(this.value) ? $true : $false; }
-Float$proto.getFinite = function() { return this.value!==Infinity && this.value!==-Infinity && !isNaN(this.value) ? $true : $false; }
-Float$proto.getInfinite = function() { return this.value===Infinity || this.value===-Infinity ? $true : $false; }
-Float$proto.getStrictlyPositive = function() { return this.value>0 || (this.value===0 && (1/this.value===Infinity)) ? $true : $false; }
-Float$proto.getStrictlyNegative = function() { return this.value<0 || (this.value===0 && (1/this.value===-Infinity)) ? $true : $false; }
+Float$proto.getUndefined = function() { return isNaN(this.value); }
+Float$proto.getFinite = function() { return this.value!==Infinity && this.value!==-Infinity && !isNaN(this.value); }
+Float$proto.getInfinite = function() { return this.value===Infinity || this.value===-Infinity; }
+Float$proto.getStrictlyPositive = function() { return this.value>0 || (this.value===0 && (1/this.value===Infinity)); }
+Float$proto.getStrictlyNegative = function() { return this.value<0 || (this.value===0 && (1/this.value===-Infinity)); }
 
 function getInfinity() { return Float(Infinity); }
 //function getNegativeInfinity() { return Float(-Infinity); }

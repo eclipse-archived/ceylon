@@ -126,10 +126,7 @@ function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language.Identifiable");
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
-    if (isOfType(that, 'ceylon.language.Identifiable')) {
-        return Boolean$(that===this);
-    }
-    return false;
+    return isOfType(that, 'ceylon.language.Identifiable') && (that===this);
 }
 Identifiable$proto.getHash = function() { return $identityHash(this); }
 
@@ -196,19 +193,19 @@ Correspondence$proto.defines = function(key) {
 }
 Correspondence$proto.definesEvery = function(keys) {
     for (var i=0; i<keys.value.length; i++) {
-        if (this.defines(keys.value[i]) === $false) {
-            return $false;
+        if (!this.defines(keys.value[i])) {
+            return false;
         }
     }
-    return $true;
+    return true;
 }
 Correspondence$proto.definesAny = function(keys) {
     for (var i=0; i<keys.value.length; i++) {
-        if (this.defines(keys.value[i]) === $true) {
-            return $true;
+        if (this.defines(keys.value[i])) {
+            return true;
         }
     }
-    return $false;
+    return false;
 }
 Correspondence$proto.items = function(keys) {
     if (nonempty(keys)) {
@@ -331,7 +328,7 @@ function Range(first, last) {
     } else {
         var index = 0;
         var x = first;
-        while (x.equals(last) === getFalse()) { //some replicated code because we don't yet have the functions here
+        while (!x.equals(last)) { //some replicated code because we don't yet have the functions here
             index++;
             x = dec ? x.getPredecessor() : x.getSuccessor();
         }
@@ -343,12 +340,12 @@ initTypeProto(Range, 'ceylon.language.Range', Object$, Sequence, Category);
 var Range$proto = Range.$$.prototype;
 Range$proto.getFirst = function() { return this.first; }
 Range$proto.getLast = function() { return this.last; }
-Range$proto.getEmpty = function() { return getFalse(); }
+Range$proto.getEmpty = function() { return false; }
 Range$proto.getDecreasing = function() {
-    return Boolean$(this.first.compare(this.last) === larger);
+    return this.first.compare(this.last) === larger;
 }
 Range$proto.next = function(x) {
-    return this.getDecreasing() === getTrue() ? x.getPredecessor() : x.getSuccessor();
+    return this.getDecreasing() ? x.getPredecessor() : x.getSuccessor();
 }
 Range$proto.getSize = function() { return this.size; }
 Range$proto.getLastIndex = function() { return Integer(this.size-1); }
@@ -356,7 +353,7 @@ Range$proto.item = function(index) {
     var idx = 0;
     var x = this.first;
     while (idx < index.value) {
-        if (x.equals(this.last) === getTrue()) { return getNull(); }
+        if (x.equals(this.last)) { return null; }
         else {
             idx++;
             x = this.next(x);
@@ -367,29 +364,28 @@ Range$proto.item = function(index) {
 Range$proto.includes = function(x) {
     var compf = x.compare(this.first);
     var compl = x.compare(this.last);
-    var rval = this.getDecreasing() === getTrue() ? ((compf === equal || compf === smaller) && (compl === equal || compl === larger)) : ((compf === equal || compf === larger) && (compl === equal || compl === smaller));
-    return Boolean$(rval);
+    return this.getDecreasing() ? ((compf === equal || compf === smaller) && (compl === equal || compl === larger)) : ((compf === equal || compf === larger) && (compl === equal || compl === smaller));
 }
 Range$proto.contains = function(x) {
     if (typeof x.compare==='function' || (x.prototype && typeof x.prototype.compare==='function')) {
         return this.includes(x);
     }
-    return $false;
+    return false;
 }
 Range$proto.getRest = function() {
-    if (this.first.equals(this.last) === $true) return $empty;
+    if (this.first.equals(this.last)) return $empty;
     var n = this.next(this.first);
     return Range(n, this.last);
 }
 Range$proto.segment = function(from, len) {
     //only positive length for now
     if (len.compare(Integer(0)) !== larger) return $empty;
-    if (this.defines(from) === $false) return $empty;
+    if (!this.defines(from)) return $empty;
     var x = this.first;
     for (var i=0; i < from.value; i++) { x = this.next(x); }
     var y = x;
     for (var i=1; i < len.value; i++) { y = this.next(y); }
-    if (this.includes(y) === $false) { y = this.last; }
+    if (!this.includes(y)) { y = this.last; }
     return Range(x, y);
 }
 Range$proto.span = function(from, to) {
@@ -421,27 +417,25 @@ Range$proto.span = function(from, to) {
 }
 Range$proto.definesEvery = function(keys) {
     for (var i = 0; i < keys.getSize().value; i++) {
-        if (this.defines(keys.item(Integer(i))) === getFalse()) {
-            return getFalse();
+        if (!this.defines(keys.item(Integer(i)))) {
+            return false;
         }
     }
-    return getTrue();
+    return true;
 }
 Range$proto.definesAny = function(keys) {
     for (var i = 0; i < keys.getSize().value; i++) {
-        if (this.defines(keys.item(Integer(i))) === getTrue()) {
-            return getTrue();
+        if (this.defines(keys.item(Integer(i)))) {
+            return true;
         }
     }
-    return getFalse();
+    return false;
 }
-Range$proto.defines = function(idx) { return Boolean$(idx.compare(this.getSize()) === smaller); }
+Range$proto.defines = function(idx) { return idx.compare(this.getSize()) === smaller; }
 Range$proto.getString = function() { return String$(this.first.getString().value + ".." + this.last.getString().value); }
 Range$proto.equals = function(other) {
-    if (!other) { return getFalse(); }
-    var eqf = this.first.equals(other.getFirst());
-    var eql = this.last.equals(other.getLast());
-    return Boolean$(eqf === getTrue() && eql === getTrue());
+    if (!other) { return false; }
+    return this.first.equals(other.getFirst()) && this.last.equals(other.getLast());
 }
 Range$proto.getIterator = function() { return RangeIterator(this); }
 Range$proto.getReversed = function() { return Range(this.last, this.first); }
@@ -451,7 +445,7 @@ Range$proto.skipping = function(skip) {
     while (x++<skip.value) {
         e=this.next(e);
     }
-    return this.includes(e) === $true ? new Range(e, this.last) : $empty;
+    return this.includes(e) ? new Range(e, this.last) : $empty;
 }
 Range$proto.taking = function(take) {
     if (take.value == 0) {
@@ -470,7 +464,7 @@ Range$proto.count = function(f) {
     var e = this.getFirst();
     var c = 0;
     while (this.includes(e)) {
-        if (f(e) === $true) {
+        if (f(e)) {
             c++;
         }
         e = this.next(e);
@@ -490,7 +484,7 @@ RangeIterator$proto.next = function() {
     var rval = this.current;
     if (rval === $finished) {
         return rval;
-    } else if (rval.equals(this.range.getLast()) === getTrue()) {
+    } else if (rval.equals(this.range.getLast())) {
         this.current = $finished;
     } else {
         this.current = this.range.next(this.current);
@@ -515,7 +509,7 @@ Entry$proto.getString = function() {
 Entry$proto.getKey = function() { return this.key; }
 Entry$proto.getItem = function() { return this.item; }
 Entry$proto.equals = function(other) {
-    return Boolean$(other && isOfType(other, 'ceylon.language.Entry') && this.getKey().equals(other.getKey()) === $true && this.getItem().equals(other.getItem()) === $true);
+    return other && isOfType(other, 'ceylon.language.Entry') && this.getKey().equals(other.getKey()) && this.getItem().equals(other.getItem());
 }
 Entry$proto.getHash = function() { Integer((31 + this.key.getHash().value) * 31 + this.item.getHash().value); }
 

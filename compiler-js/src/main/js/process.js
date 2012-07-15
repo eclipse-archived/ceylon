@@ -5,7 +5,7 @@ function inheritProto(x,y){}//IGNORE
 function String$(x){}//IGNORE
 function Integer$(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,$empty,$true,$false;//IGNORE
+var exports,$empty;//IGNORE
 
 function processClass() {
     var proc = new processClass.$$;
@@ -68,7 +68,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
 }
 process$proto.getArguments = function() { return argv; }
 process$proto.namedArgumentPresent = function(name) {
-    return (name.value in namedArgs) ? $true : $false;
+    return (name.value in namedArgs);
 }
 process$proto.namedArgumentValue = function(name) {
     var value = namedArgs[name.value];

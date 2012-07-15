@@ -1,11 +1,10 @@
-var exports,console,$true,$false,$finished,process$,$empty;//IGNORE
+var exports,console,$finished,process$,$empty;//IGNORE
 function Comparison(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function Entry(a,b){}//IGNORE
 function Singleton(x){}//IGNORE
 function SequenceBuilder(){}//IGNORE
 function Integer(x){}//IGNORE
-function Boolean$(f){}//IGNORE
 function String$(f,x){}//IGNORE
 
 function print(line) { process$.writeLine(line.getString()); }
@@ -88,7 +87,7 @@ function append(seq, elem) {
     return ArraySequence(seq.value.concat(elem));
 }
 function prepend(seq, elem) {
-    if (seq.getEmpty() === $true) {
+    if (seq.getEmpty()) {
         return Singleton(elem);
     } else {
         var sb = SequenceBuilder();
@@ -105,22 +104,22 @@ function entries(seq) {
 }
 
 function any(/*Boolean...*/ values) {
-    if (values === undefined) return $false;
+    if (values === undefined) return false;
     var it = values.getIterator();
     var v;
     while ((v = it.next()) !== $finished) {
-        if (v === $true) {return $true;}
+        if (v) {return true;}
     }
-    return $false;
+    return false;
 }
 function every(/*Boolean...*/ values) {
-    if (values === undefined) return $false;
+    if (values === undefined) return false;
     var it = values.getIterator();
     var v;
     while ((v = it.next()) !== $finished) {
-        if (v === $false) {return $false;}
+        if (!v) {return false;}
     }
-    return $true;
+    return true;
 }
 
 function first(/*Element...*/ elements) {
@@ -144,17 +143,17 @@ exports.first=first;
 
 //These are operators for handling nulls
 function exists(value) {
-    return value === null || value === undefined ? $false : $true;
+    return value !== null && value !== undefined;
 }
 function nonempty(value) {
-    return value === null || value === undefined ? $false : Boolean$(value.getEmpty() === $false);
+    return value !== null && value !== undefined && !value.getEmpty();
 }
 
 function isOfType(obj, typeName) {
     if (obj === null) {
-        return Boolean$(typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void");
+        return typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void";
     }
-    return Boolean$(obj.getT$all && typeName in obj.getT$all());
+    return obj.getT$all && typeName in obj.getT$all();
 }
 function isOfTypes(obj, types) {
     if (obj===null) {

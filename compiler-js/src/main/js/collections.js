@@ -3,7 +3,6 @@ function initTypeProtoI(a,b,c,d,e,f){}//IGNORE
 function initTypeProto(a,b,c,d,e,f,g){}//IGNORE
 function inheritProto(a,b,c){}//IGNORE
 function exists(x){}//IGNORE
-function Boolean$(x){}//IGNORE
 function Exception(){}//IGNORE
 function Integer(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
@@ -11,7 +10,7 @@ function getBottom(){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
 function ArraySequence(x){}//IGNORE
-var exports,Container,$finished,$false,$true,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
+var exports,Container,$finished,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function Sized(wat) {
@@ -19,7 +18,7 @@ function Sized(wat) {
 }
 initTypeProtoI(Sized, 'ceylon.language.Sized', Container);
 Sized.$$.prototype.getEmpty = function() {
-    return Boolean$(this.getSize().value === 0);
+    return this.getSize().value === 0;
 }
 exports.Sized=Sized;
 
@@ -29,19 +28,19 @@ function Category(wat) {
 initType(Category, 'ceylon.language.Category');
 Category.$$.prototype.containsEvery = function(keys) {
     for (var i = 0; i < keys.value.length; i++) {
-        if (this.contains(keys.value[i]) === $false) {
-            return $false;
+        if (!this.contains(keys.value[i])) {
+            return false;
         }
     }
-    return $true;
+    return true;
 }
 Category.$$.prototype.containsAny = function(keys) {
     for (var i = 0; i < keys.value.length; i++) {
-        if (this.contains(keys.value[i]) === $true) {
-            return $true;
+        if (this.contains(keys.value[i])) {
+            return true;
         }
     }
-    return $false;
+    return false;
 }
 exports.Category=Category;
 
@@ -54,11 +53,11 @@ Collection$proto.contains = function(obj) {
     var iter = this.getIterator();
     var item;
     while ((item = iter.next()) !== $finished) {
-        if (exists(item) === $true && item.equals(obj) === $true) {
-            return $true;
+        if (exists(item) && item.equals(obj)) {
+            return true;
         }
     }
-    return $false;
+    return false;
 }
 exports.Collection=Collection;
 
@@ -83,7 +82,7 @@ $Some.prototype.getFirst = function() {
     if (e === $finished) throw Exception();
     return e;
 }
-$Some.prototype.getEmpty = function() { return $false; }
+$Some.prototype.getEmpty = function() { return false; }
 $Some.prototype.getFirst = function() {
     var _e = this.getIterator().next();
     if (_e === $finished) throw Exception(String$("Some.first should never get Finished!"));
@@ -99,7 +98,7 @@ var None$proto = None.$$.prototype;
 None$proto.getFirst = function() { return null; }
 None$proto.getIterator = function() { return emptyIterator; }
 None$proto.getSize = function() { return Integer(0); }
-None$proto.getEmpty = function() { return $true; }
+None$proto.getEmpty = function() { return true; }
 None$proto.getFirst = function() { return null; }
 exports.None=None;
 
@@ -121,23 +120,23 @@ List$proto.getSize = function() {
 List$proto.defines = function(idx) {
     var li = this.getLastIndex();
     if (li === null) li = Integer(-1);
-    return Boolean$(li.compare(idx) !== smaller);
+    return li.compare(idx) !== smaller;
 }
 List$proto.getIterator = function() {
     return ListIterator(this);
 }
 List$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language.List') === $true && other.getSize().equals(this.getSize()) === $true) {
+    if (isOfType(other, 'ceylon.language.List') && other.getSize().equals(this.getSize())) {
         for (var i = 0; i < this.getSize().value; i++) {
             var mine = this.item(Integer(i));
             var theirs = other.item(Integer(i));
-            if (((mine === null) && theirs) || !(mine && mine.equals(theirs) === $true)) {
-                return $false;
+            if (((mine === null) && theirs) || !(mine && mine.equals(theirs))) {
+                return false;
             }
         }
-        return $true;
+        return true;
     }
-    return $false;
+    return false;
 }
 List$proto.getHash = function() {
     var hc=1;
@@ -157,7 +156,7 @@ List$proto.getString = function() {
     var item;
     while ((item = iter.next()) !== $finished) {
         s += first ? ' ' : ', ';
-        if (exists(item) === $true) {
+        if (exists(item)) {
             s += item.getString().value;
         } else {
             s += 'null';
@@ -175,7 +174,7 @@ List$proto.findLast = function(select) {
     if (li !== null) {
         while (li.value>=0) {
             var e = this.item(li);
-            if (e !== null && select(e) === $true) {
+            if (e !== null && select(e)) {
                 return e;
             }
             li = li.getPredecessor();
@@ -223,17 +222,17 @@ function Map(wat) {
 initTypeProtoI(Map, 'ceylon.language.Map', Collection, Correspondence, Cloneable);
 var Map$proto = Map.$$.prototype;
 Map$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language.Map') === $true && other.getSize().equals(this.getSize())) {
+    if (isOfType(other, 'ceylon.language.Map') && other.getSize().equals(this.getSize())) {
         var iter = this.getIterator();
         var entry; while ((entry = iter.next()) !== $finished) {
             var oi = other.item(entry.getKey());
-            if (oi === null || entry.getItem().equals(oi.getItem()) === $false) {
-                return $false;
+            if (oi === null || !entry.getItem().equals(oi.getItem())) {
+                return false;
             }
         }
-        return $true;
+        return true;
     }
-    return $false;
+    return false;
 }
 Map$proto.getHash = function() {
     var hc=1;
@@ -251,7 +250,7 @@ Map$proto.getValues = function() {
         IdentifiableObject(mv);
         Collection(mv);
         mv.clone=function() { return this; }
-        mv.equals=function() { return $false; }
+        mv.equals=function() { return false; }
         mv.getHash=function() { return outer.getHash(); }
         mv.getIterator=function() { return getBottom(); }
         mv.getSize=function() { return outer.getSize(); }
@@ -268,7 +267,7 @@ Map$proto.getKeys = function() {
         IdentifiableObject(mk);
         Set(mk);
         mk.clone=function() { return this; }
-        mk.equals=function() { return $false; }
+        mk.equals=function() { return false; }
         mk.getHash=function() { return outer.getHash(); }
         mk.getIterator=function() { return getBottom(); }
         mk.getSize=function() { return outer.getSize(); }
@@ -285,7 +284,7 @@ Map$proto.getInverse = function() {
         IdentifiableObject(inv);
         Map(inv);
         inv.clone=function() { return this; }
-        inv.equals=function() { return $false; }
+        inv.equals=function() { return false; }
         inv.getHash=function() { return outer.getHash(); }
         inv.getItem=function() { return getBottom(); }
         inv.getIterator=function() { return getBottom(); }
@@ -333,34 +332,34 @@ var Set$proto = Set.$$.prototype;
 Set$proto.superset = function(set) {
     var iter = set.getIterator();
     var elem; while ((elem = iter.next()) !== $finished) {
-        if (this.contains(elem) === $false) {
-            return $false;
+        if (!this.contains(elem)) {
+            return false;
         }
     }
-    return $true;
+    return true;
 }
 Set$proto.subset = function(set) {
     var iter = this.getIterator();
     var elem; while ((elem = iter.next()) !== $finished) {
-        if (set.contains(elem) === $false) {
-            return $false;
+        if (!set.contains(elem)) {
+            return false;
         }
     }
-    return $true;
+    return true;
 }
 Set$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language.Set') === $true) {
+    if (isOfType(other, 'ceylon.language.Set')) {
         if (other.getSize().equals(this.getSize())) {
             var iter = this.getIterator();
             var elem; while ((elem = iter.next()) !== $finished) {
-                if (other.contains(elem) === $false) {
-                    return $false;
+                if (!other.contains(elem)) {
+                    return false;
                 }
             }
-            return $true;
+            return true;
         }
     }
-    return $false;
+    return false;
 }
 Set$proto.getHash = function() {
     var hc = 1;
@@ -387,11 +386,11 @@ function Empty() {
 }
 initTypeProtoI(Empty, 'ceylon.language.Empty', None, Ranged, Cloneable, List);
 var Empty$proto = Empty.$$.prototype;
-Empty$proto.getEmpty = function() { return $true; }
-Empty$proto.defines = function(x) { return $false; }
+Empty$proto.getEmpty = function() { return true; }
+Empty$proto.defines = function(x) { return false; }
 Empty$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
-Empty$proto.definesEvery = function(x) { return $false; }
-Empty$proto.definesAny = function(x) { return $false; }
+Empty$proto.definesEvery = function(x) { return false; }
+Empty$proto.definesAny = function(x) { return false; }
 Empty$proto.items = function(x) { return this; }
 Empty$proto.getSize = function() { return Integer(0); }
 Empty$proto.item = function(x) { return null; }
@@ -400,7 +399,7 @@ Empty$proto.segment = function(a,b) { return this; }
 Empty$proto.span = function(a,b) { return this; }
 Empty$proto.getIterator = function() { return emptyIterator; }
 Empty$proto.getString = function() { return String$("{}"); }
-Empty$proto.contains = function(x) { return $false; }
+Empty$proto.contains = function(x) { return false; }
 Empty$proto.getLastIndex = function() { return null; }
 Empty$proto.getClone = function() { return this; }
 Empty$proto.count = function(x) { return Integer(0); }
@@ -408,8 +407,8 @@ Empty$proto.getReversed = function() { return this; }
 Empty$proto.skipping = function(skip) { return this; }
 Empty$proto.taking = function(take) { return this; }
 Empty$proto.by = function(step) { return this; }
-Empty$proto.every = function(f) { return $false; }
-Empty$proto.any = function(f) { return $false; }
+Empty$proto.every = function(f) { return false; }
+Empty$proto.any = function(f) { return false; }
 Empty$proto.sorted = function(f) { return this; }
 Empty$proto.map = function(f) { return this; }
 Empty$proto.fold = function(i,r) { return i; }

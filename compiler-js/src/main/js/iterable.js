@@ -1,13 +1,12 @@
 function initTypeProtoI(a, b, c){} //IGNORE
 function initTypeProto(a,b,c,d){}//IGNORE
 function initType(a,b){}//IGNORE
-function Boolean$(x){}//IGNORE
 function IdentifiableObject(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function Comprehension(x){}//IGNORE
 function Exception(x){}//IGNORE
 function String$(x){}//IGNORE
-var Container,$finished,$true,$false,$empty,larger,smaller,exports;//IGNORE
+var Container,$finished,$empty,larger,smaller,exports;//IGNORE
 
 function Iterator(wat) {
     return wat;
@@ -21,7 +20,7 @@ function Iterable(wat) {
 initTypeProtoI(Iterable, 'ceylon.language.Iterable', ContainerWithFirstElement);
 var Iterable$proto=Iterable.$$.prototype;
 Iterable$proto.getEmpty = function() {
-    return Boolean$(this.getIterator().next() === $finished);
+    return this.getIterator().next() === $finished;
 }
 Iterable$proto.getFirst = function() {
     var e = this.getIterator().next();
@@ -57,7 +56,7 @@ Iterable$proto.filter = function(select) {
         return function() {
             do {
                 var e = it.next();
-            } while ((e !== $finished) && (select(e) === $false));
+            } while ((e !== $finished) && !select(e));
             return e;
         }
     });
@@ -73,7 +72,7 @@ Iterable$proto.fold = function(ini, accum) {
 Iterable$proto.find = function(select) {
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
-        if (select(e) === $true) {
+        if (select(e)) {
             return e;
         }
     }
@@ -83,7 +82,7 @@ Iterable$proto.findLast = function(select) {
     var iter = this.getIterator();
     var last = null;
     var e; while ((e = iter.next()) !== $finished) {
-        if (select(e) === $true) {
+        if (select(e)) {
             last = e;
         }
     }
@@ -106,20 +105,20 @@ Iterable$proto.sorted = function(/*Callable<Comparison?,Element,Element>*/compar
 Iterable$proto.any = function(/*Callable<Boolean,Element>*/selecting) {
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
-        if (selecting(e) === $true) {
-            return $true;
+        if (selecting(e)) {
+            return true;
         }
     }
-    return $false;
+    return false;
 }
 Iterable$proto.every = function(/*Callable<Boolean,Element>*/selecting) {
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
-        if (selecting(e) !== $true) {
-            return $false;
+        if (!selecting(e)) {
+            return false;
         }
     }
-    return $true;
+    return true;
 }
 Iterable$proto.skipping = function(skip) {
     function skip$iter(iter,skip){
@@ -166,12 +165,12 @@ Iterable$proto.by = function(step) {
     });
 }
 Iterable$proto.count = function(sel) {
-	var c = 0;
-	var iter = this.getIterator();
-	var e; while ((e = iter.next()) !== $finished) {
-		if (sel(e) === true) c++;
-	}
-	return Integer(c);
+    var c = 0;
+    var iter = this.getIterator();
+    var e; while ((e = iter.next()) !== $finished) {
+        if (sel(e)) c++;
+    }
+    return Integer(c);
 }
 Iterable$proto.getCoalesced = function() {
     var iter = this;

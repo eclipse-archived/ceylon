@@ -1,14 +1,13 @@
 function initTypeProto(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
 function initTypeProtoI(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
 function String$(x){}//IGNORE
-function Boolean$(x){}//IGNORE
 function Character(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
 function Integer(x){}//IGNORE
 function smallest(x,y){}//IGNORE
 function largest(x,y){}//IGNORE
 function Exception(){}//IGNORE
-var List,Some,Cloneable,Ranged,exports,$true,$false,larger,smaller,equal,Object$,$empty,$finished,Iterator;//IGNORE
+var List,Some,Cloneable,Ranged,exports,larger,smaller,equal,Object$,$empty,$finished,Iterator;//IGNORE
 var IdentifiableObject,Category,Sized;//IGNORE
 
 function Sequence($$sequence) {
@@ -35,7 +34,7 @@ ArraySequence$proto.item = function(index) {
     return result!==undefined ? result:null;
 }
 ArraySequence$proto.getSize = function() { return Integer(this.value.length) }
-ArraySequence$proto.getEmpty = function() { return this.value.length > 0 ? $false : $true; }
+ArraySequence$proto.getEmpty = function() { return this.value.length === 0; }
 ArraySequence$proto.getLastIndex = function() { return this.getSize().getPredecessor(); }
 ArraySequence$proto.getFirst = function() { return this.item(Integer(0)); }
 ArraySequence$proto.getLast = function() { return this.item(this.getLastIndex()); }
@@ -57,19 +56,19 @@ ArraySequence$proto.span = function(from, to) {
     if (fromIndex === toIndex) {
         return Singleton(this.item(from));
     } else if (toIndex > fromIndex) {
-        for (var i = fromIndex; i <= toIndex && this.defines(Integer(i)) === $true; i++) {
+        for (var i = fromIndex; i <= toIndex && this.defines(Integer(i)); i++) {
             seq.push(this.item(Integer(i)));
         }
     } else {
         //Negative span, reverse seq returned
-        for (var i = fromIndex; i >= toIndex && this.defines(Integer(i)) === $true; i--) {
+        for (var i = fromIndex; i >= toIndex && this.defines(Integer(i)); i--) {
             seq.push(this.item(Integer(i)));
         }
     }
     return ArraySequence(seq);
 }
 ArraySequence$proto.getRest = function() {
-    return this.getSize().equals(Integer(1)) === $true ? $empty : ArraySequence(this.value.slice(1));
+    return this.getSize().equals(Integer(1)) ? $empty : ArraySequence(this.value.slice(1));
 }
 ArraySequence$proto.items = function(keys) {
     var seq = [];
@@ -83,10 +82,10 @@ ArraySequence$proto.getKeys = function() { return TypeCategory(this, 'ceylon.lan
 ArraySequence$proto.contains = function(elem) {
     for (var i=0; i<this.value.length; i++) {
         if (elem.equals(this.value[i])) {
-            return $true;
+            return true;
         }
     }
-    return $false;
+    return false;
 }
 ArraySequence$proto.getReversed = function() {
     var arr = this.value.slice(0);
@@ -103,7 +102,7 @@ function TypeCategory(seq, type) {
 initTypeProto(TypeCategory, 'ceylon.language.TypeCategory', IdentifiableObject, Category);
 var TypeCategory$proto = TypeCategory.$$.prototype;
 TypeCategory$proto.contains = function(k) {
-    return Boolean$(isOfType(k, this.type) === $true && this.seq.defines(k) === $true);
+    return isOfType(k, this.type) && this.seq.defines(k);
 }
 
 function SequenceBuilder() {
@@ -148,16 +147,16 @@ Singleton$proto.getSize = function() { return Integer(1); }
 Singleton$proto.getLastIndex = function() { return Integer(0); }
 Singleton$proto.getFirst = function() { return this.elem; }
 Singleton$proto.getLast = function() { return this.elem; }
-Singleton$proto.getEmpty = function() { return $false; }
+Singleton$proto.getEmpty = function() { return false; }
 Singleton$proto.getRest = function() { return $empty; }
 Singleton$proto.defines = function(idx) { return idx.equals(Integer(0)); }
 Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
 Singleton$proto.span = function(from, to) {
     if (to === undefined || to === null) to = from;
-    return (from.equals(Integer(0)) === $true || to.equals(Integer(0)) === $true) ? this : $empty;
+    return (from.equals(Integer(0)) || to.equals(Integer(0))) ? this : $empty;
 }
 Singleton$proto.segment = function(idx, len) {
-    if (idx.equals(Integer(0)) === $true && len.compare(Integer(0)) === larger) {
+    if (idx.equals(Integer(0)) && len.compare(Integer(0)) === larger) {
         return this;
     }
     return $empty;
@@ -167,25 +166,25 @@ Singleton$proto.getReversed = function() { return this; }
 Singleton$proto.equals = function(other) {
     if (isOfType(other, 'ceylon.language.List')) {
         if (other.getSize().value !== 1) {
-            return $false;
+            return false;
         }
         var o = other.item(Integer(0));
-        return Boolean$(o !== null && o.equals(this.elem));
+        return o !== null && o.equals(this.elem);
     }
-    return $false;
+    return false;
 }
 Singleton$proto.map = function(f) { return ArraySequence([ f(this.elem) ]); }
 Singleton$proto.filter = function(f) {
-    return f(this.elem) === $true ? this : $empty;
+    return f(this.elem) ? this : $empty;
 }
 Singleton$proto.fold = function(v,f) {
     return f(v, this.elem);
 }
 Singleton$proto.find = function(f) {
-    return f(this.elem) === $true ? this.elem : null;
+    return f(this.elem) ? this.elem : null;
 }
 Singleton$proto.findLast = function(f) {
-    return f(this.elem) === $true ? this.elem : null;
+    return f(this.elem) ? this.elem : null;
 }
 Singleton$proto.any = function(f) {
     return f(this.elem);
@@ -204,7 +203,7 @@ Singleton$proto.by = function(step) {
 }
 Singleton$proto.sorted = function(f) { return this; }
 Singleton$proto.count = function(f) {
-	return f(this.elem) === $true ? Integer(1) : Integer(0);
+	return f(this.elem) ? Integer(1) : Integer(0);
 }
 Singleton$proto.contains = function(o) {
 	return this.elem.equals(o);
