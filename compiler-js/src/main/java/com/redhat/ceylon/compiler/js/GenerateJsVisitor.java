@@ -87,15 +87,11 @@ public class GenerateJsVisitor extends Visitor
     private CompilationUnit root;
     private static String clAlias="";
     private static final String function="function ";
-    private static String clTrue="";
-    private static String clFalse="";
     private boolean needIndent = true;
     private int indentLevel = 0;
 
     private static void setCLAlias(String alias) {
         clAlias = alias;
-        clTrue = String.format("%s.getTrue()", clAlias);
-        clFalse = String.format("%s.getFalse()", clAlias);
     }
 
     @Override
@@ -1240,7 +1236,19 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(BaseMemberExpression that) {
+        
         Declaration decl = that.getDeclaration();
+        String name = decl.getName();
+        String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
+        
+        // map Ceylon true/false/null directly to JS true/false/null
+        if ("ceylon.language".equals(pkgName)) {
+            if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
+                out(name);
+                return;
+            }
+        }
+        
         qualify(that, decl);
         if (isNative(decl)) {
             out(decl.getName());
@@ -1830,7 +1838,6 @@ public class GenerateJsVisitor extends Visitor
                                 names.name(condVar.getDeclarationModel()));
                     } else {
                         cond.visit(this);
-                        out("===", clTrue);
                     }
                     out(")");
                     beginBlock();
@@ -2317,16 +2324,18 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(NotEqualOp that) {
+        out("(!");
         leftEqualsRight(that);
-        equalsFalse();
+        out(")");
     }
 
     @Override public void visit(NotOp that) {
         unaryOp(that, new UnaryOpGenerator() {
             @Override
             public void generate(UnaryOpTermGenerator termgen) {
+                out("(!");
                 termgen.term();
-                equalsFalse();
+                out(")");
             }
         });
     }
@@ -2339,7 +2348,6 @@ public class GenerateJsVisitor extends Visitor
                 termgen.left();
                 out("===");
                 termgen.right();
-                thenTrueElseFalse();
                 out(")");
             }
         });
@@ -2363,7 +2371,6 @@ public class GenerateJsVisitor extends Visitor
         out("(");
         leftCompareRight(that);
         out("!==", clAlias, ".getLarger()");
-        thenTrueElseFalse();
         out(")");
     }
 
@@ -2371,7 +2378,6 @@ public class GenerateJsVisitor extends Visitor
         out("(");
         leftCompareRight(that);
         out("!==", clAlias, ".getSmaller()");
-        thenTrueElseFalse();
         out(")");
     }
     /** Outputs the CL equivalent of 'a==b' in JS. */
@@ -2385,14 +2391,6 @@ public class GenerateJsVisitor extends Visitor
                 out(")");
             }
         });
-    }
-    /** Outputs the CL equivalent of '==false' in JS. */
-    private void equalsFalse() {
-        out(".equals(", clFalse, ")");
-    }
-    /** Outputs the CL equivalent of '?true:false' in JS */
-    private void thenTrueElseFalse() {
-        out("?", clTrue, ":", clFalse);
     }
 
     interface UnaryOpTermGenerator {
@@ -2457,9 +2455,9 @@ public class GenerateJsVisitor extends Visitor
            public void generate(BinaryOpTermGenerator termgen) {
                out("(");
                termgen.left();
-               out("===", clTrue, "?");
+               out("&&");
                termgen.right();
-               out(":", clFalse, ")");
+               out(")");
            }
        });
    }
@@ -2470,7 +2468,7 @@ public class GenerateJsVisitor extends Visitor
            public void generate(BinaryOpTermGenerator termgen) {
                out("(");
                termgen.left();
-               out("===", clTrue, "?", clTrue, ":");
+               out("||");
                termgen.right();
                out(")");
            }
@@ -2516,7 +2514,7 @@ public class GenerateJsVisitor extends Visitor
            public void generate(BinaryOpTermGenerator termgen) {
                out("(");
                termgen.left();
-               out("===", clTrue, "?");
+               out("?");
                termgen.right();
                out(":null)");
            }
@@ -2646,9 +2644,9 @@ public class GenerateJsVisitor extends Visitor
            // if (is/exists/nonempty ...)
            specialConditionAndBlock(condition, ifBlock, "if");
        } else {
-           out("if ((");
+           out("if (");
            condition.visit(this);
-           out(")===", clTrue, ")");
+           out(")");
            if (ifBlock != null) {
                encloseBlockInFunction(ifBlock);
            }
@@ -2668,9 +2666,9 @@ public class GenerateJsVisitor extends Visitor
            // while (is/exists/nonempty...)
            specialConditionAndBlock(condition, whileClause.getBlock(), "while");
        } else {
-           out("while ((");
+           out("while (");
            condition.visit(this);
-           out(")===", clTrue, ")");
+           out(")");
            encloseBlockInFunction(whileClause.getBlock());
        }
    }
@@ -2708,7 +2706,7 @@ public class GenerateJsVisitor extends Visitor
             if (condition instanceof NonemptyCondition) {
                 out(clAlias, ".nonempty(");
                 specialConditionRHS(variableRHS, varName);
-                out(")===", clTrue);
+                out(")");
             } else {
                 specialConditionRHS(variableRHS, varName);
                 out("!==null");
@@ -2717,7 +2715,6 @@ public class GenerateJsVisitor extends Visitor
         } else {
             Type type = ((IsCondition) condition).getType();
             generateIsOfType(variableRHS, null, type, varName);
-            out("===", clTrue);
         }
     }
 
@@ -2948,7 +2945,7 @@ public class GenerateJsVisitor extends Visitor
                 firstCatch = false;
                 out("if(");
                 generateIsOfType(null, catchVarName, variable.getType(), null);
-                out("===", clTrue, ")");
+                out(")");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {
                     out("{}");
@@ -3004,11 +3001,11 @@ public class GenerateJsVisitor extends Visitor
         if (op instanceof SafeIndexOp) {
             out(clAlias, ".exists(");
             that.getPrimary().visit(this);
-            out(")===", clTrue, "?");
+            out(")?");
         }
         visitIndex(that);
         if (op instanceof SafeIndexOp) {
-            out(":", clAlias, ".getNull()");
+            out(":null");
         }
     }
 
@@ -3020,7 +3017,6 @@ public class GenerateJsVisitor extends Visitor
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
             generateIsOfType(null, expvar, isCaseItem.getType(), null);
-            out("===", clTrue);
             Variable caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 directAccess.add(caseVar.getDeclarationModel());
