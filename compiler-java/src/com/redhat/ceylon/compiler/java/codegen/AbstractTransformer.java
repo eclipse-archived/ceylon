@@ -221,6 +221,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return The ident
      */
     JCIdent makeQuotedIdent(String ident) {
+        // TODO Only 3 callers
         return naming.makeQuotedIdent(ident);
     }
     
@@ -237,20 +238,6 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     /** 
      * Makes an <strong>unquoted</strong> qualified (compound) identifier 
      * from the given qualified name components
-     * @param components The components of the name.
-     * @see #makeQuotedQualIdentFromString(String)
-     */
-    JCExpression makeQualIdent(Iterable<String> components) {
-        return naming.makeQualIdent(components);
-    }
-    
-    JCExpression makeQuotedQualIdent(Iterable<String> components) {
-        return naming.makeQuotedQualIdent(components);
-    }
-
-    /** 
-     * Makes an <strong>unquoted</strong> qualified (compound) identifier 
-     * from the given qualified name components
      * @param expr A starting expression (may be null)
      * @param names The components of the name (may be null)
      * @see #makeQuotedQualIdentFromString(String)
@@ -260,18 +247,17 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
     
     JCExpression makeQuotedQualIdent(JCExpression expr, String... names) {
+        // TODO Remove this method: Only 1 caller 
         return naming.makeQuotedQualIdent(expr, names);
     }
 
     JCExpression makeFQIdent(String... components) {
+        // TODO Remove this method: Only 1 caller
         return naming.makeFQIdent(components);
     }
 
-    JCExpression makeQuotedFQIdent(String... components) {
-        return naming.makeQuotedFQIdent(components);
-    }
-
     JCExpression makeQuotedFQIdent(String qualifiedName) {
+        // TODO Remove this method??: Only 2 callers
         return naming.makeQuotedFQIdent(qualifiedName);
     }
 
@@ -307,11 +293,8 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
      * @return The field access
      */
     JCFieldAccess makeSelect(String s1, String s2, String... rest) {
+        // TODO Remove this method: Only 1 caller
         return naming.makeSelect(s1, s2, rest);
-    }
-
-    JCFieldAccess makeSelect(JCFieldAccess s1, String[] rest) {
-        return naming.makeSelect(s1, rest);
     }
 
     JCLiteral makeNull() {
