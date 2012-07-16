@@ -176,3 +176,6 @@ void moreTests() {
         }
     };
 }
+
+Sequence<String()> singletonStringFunc = Singleton<String()>(()"hello");
+Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>((String s)()s=="hello");
