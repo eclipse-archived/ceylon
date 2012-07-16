@@ -603,11 +603,11 @@ public class Naming {
     private static void addNamesForWrapperClass(TypedDeclaration decl,
             LinkedList<String> parts, int namingOptions) {
         if ((namingOptions & NA_WRAPPER) != 0) {
-            parts.push(getQuotedClassName(decl));
+            parts.push(getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
-            parts.push(getRealName(decl));
+            parts.push(getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
-            parts.push(decl.getName() + (decl instanceof Getter && Decl.isLocal(decl) ? "$getter" : ""));
+            parts.push(getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         }
         if ((namingOptions & NA_FQ) != 0) {
             Assert.that(((namingOptions & NA_WRAPPER) != 0)
@@ -625,7 +625,7 @@ public class Naming {
                     }
                     break;
                 } else if (s instanceof ClassOrInterface) {
-                    parts.push(getQuotedClassName((ClassOrInterface) s));
+                    parts.push(getQuotedClassName((ClassOrInterface) s, 0));
                 } else if (s instanceof TypedDeclaration) {
                     parts.push(quoteIfJavaKeyword(((TypedDeclaration) s).getName()));
                 }
@@ -638,7 +638,12 @@ public class Naming {
         return quoteIfJavaKeyword(name);
     }
     
-    private static String getRealName(Declaration decl) {
+    /** 
+     * Gets the class name of the given declaration, with the given options
+     * @param decl The declaration
+     * @param namingOptions Only NA_SETTER and NA_GETTER are supported.
+     */
+    private static String getRealName(Declaration decl, int namingOptions) {
         String name;
         if (decl instanceof LazyValue) {
             name = ((LazyValue)decl).getRealName();
@@ -648,14 +653,18 @@ public class Naming {
             name = ((LazyClass)decl).getRealName();
         } else if (decl instanceof LazyInterface) {
             name = ((LazyInterface)decl).getRealName();
+        } else if (decl instanceof Getter) {
+            name = getAttrClassName((Getter)decl, namingOptions);
+        } else if (decl instanceof Setter) {
+            name = getAttrClassName((Setter)decl, namingOptions);
         } else {
             name = decl.getName();
         }
         return name;
     }
     
-    private static String getQuotedClassName(Declaration decl) {
-        String name = getRealName(decl);
+    private static String getQuotedClassName(Declaration decl, int namingOptions) {
+        String name = getRealName(decl, namingOptions);
         return quoteClassName(name);
     }
     
@@ -697,13 +706,21 @@ public class Naming {
      * @return The name of the corresponding Java declaration.
      */
     String selector(TypedDeclaration decl) {
+        return selector(decl, 0);
+    }
+    String selector(TypedDeclaration decl, int namingOptions) {
         if (decl instanceof Getter) {
-            if (decl.isToplevel()) {
-                return null;
-            } 
-            return getGetterName(decl);
+            if ((namingOptions & NA_SETTER) != 0) {
+                return getSetterName(decl);
+            } else {
+                return getGetterName(decl);
+            }
         } else if (decl instanceof Value) {
-            return getGetterName(decl);
+            if ((namingOptions & NA_SETTER) != 0) {
+                return getSetterName(decl);
+            } else {
+                return getGetterName(decl);
+            }
         } else if (decl instanceof Method) {
             if (decl.isClassMember()) {
                 return getErasedMethodName(quoteMethodNameIfProperty((Method) decl));
@@ -714,8 +731,23 @@ public class Naming {
         return null;
     }
     
+    static String getAttrClassName(TypedDeclaration decl, int namingOptions) {
+        Assert.that((namingOptions & ~(NA_SETTER | NA_GETTER)) == 0);
+        String name = decl.getName();
+        if (Decl.isLocal(decl)) {
+            if ((decl instanceof Getter && (namingOptions & NA_SETTER) == 0)
+            		|| (namingOptions & NA_GETTER) != 0){
+                name = name + "$getter";
+            } else if ((decl instanceof Setter && (namingOptions & NA_GETTER) == 0)
+                    || (namingOptions & NA_SETTER) != 0) {
+                name = name + "$setter";
+            }
+        }
+        return name;
+    }
+    
     JCExpression makeSyntheticClassname(Declaration decl) {
-        return makeUnquotedIdent(getQuotedClassName(decl));
+        return makeUnquotedIdent(getQuotedClassName(decl, 0));
     }
     Name getSyntheticInstanceName(Declaration decl) {
         return names.fromString(decl.getName());
@@ -987,7 +1019,5 @@ public class Naming {
             return varName;
         }
     }
-
-    
     
 }

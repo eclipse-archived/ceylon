@@ -178,8 +178,8 @@ public class CeylonTransformer extends AbstractTransformer {
     public List<JCTree> transformAttribute(Tree.TypedDeclaration decl, Tree.AttributeSetterDefinition setterDecl) {
         at(decl);
         TypedDeclaration declarationModel = decl.getDeclarationModel(); 
-        String attrName = decl.getIdentifier().getText();
-        String attrClassName = attrName;
+        final String attrName = decl.getIdentifier().getText();
+        final String attrClassName = naming.getAttrClassName(declarationModel, 0);
         final Tree.SpecifierOrInitializerExpression expression;
         final Tree.Block block;
         if (decl instanceof Tree.AttributeDeclaration) {
@@ -190,15 +190,11 @@ public class CeylonTransformer extends AbstractTransformer {
             expression = null;
             Tree.AttributeGetterDefinition gdef = (Tree.AttributeGetterDefinition)decl;
             block = gdef.getBlock();
-            if (Decl.isLocal(decl)) {
-                attrClassName += "$getter";
-            }
         } else if (decl instanceof Tree.AttributeSetterDefinition) {
             expression = null;
             Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
             block = sdef.getBlock();
             if (Decl.isLocal(decl)) {
-                attrClassName += "$setter";
                 declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
             }
         } else {

@@ -1760,35 +1760,36 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean variable = decl.isVariable();
         
         at(op);
-        String selector = Naming.getSetterName(decl);
+        String selector = naming.selector(decl, Naming.NA_SETTER);
         if (decl.isToplevel()) {
             // must use top level setter
-            lhs = makeQualIdent(makeFQIdent(Util.quoteJavaKeywords(decl.getContainer().getQualifiedNameString())), Naming.quoteIfJavaKeyword(decl.getName()));
+            lhs = naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER);
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (Decl.isLocal(decl)) {
-                lhs = makeQualIdent(lhs, decl.getName() + "$setter");
+                lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
             }
         } else if (decl instanceof Method
                 && !Decl.withinClassOrInterface(decl)) {
             // Deferred method initialization of a local function
-            result = at(op).Assign(makeQualIdent(lhs, decl.getName(), decl.getName()), rhs);
+            // The Callable field has the same name as the method, so use NA_MEMBER
+            result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_MEMBER), rhs);
         } else if (variable && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field
             if(Decl.isJavaField(decl)){
                 if (decl.isStaticallyImportable()) {
                     // static field
-                    result = at(op).Assign(makeQualIdent(makeQuotedFQIdent(decl.getContainer().getQualifiedNameString()), decl.getName()), rhs);
+                    result = at(op).Assign(naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER), rhs);
                 }else{
                     // normal field
-                    result = at(op).Assign(makeQualIdent(lhs, decl.getName()), rhs);
+                    result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
                 }
             }
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
-            lhs = makeQualIdent(lhs, decl.getName());
+            lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
         } else {
-            result = at(op).Assign(makeQualIdent(lhs, decl.getName()), rhs);
+            result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
         }
         
         if (result == null) {
