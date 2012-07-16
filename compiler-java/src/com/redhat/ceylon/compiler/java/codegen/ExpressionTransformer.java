@@ -1809,14 +1809,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType targetIterType = typeFact().getIterableType(clause.getTypeModel());
         int idx = 0;
         ExpressionComprehensionClause excc = null;
-        String prevItemVar = null;
-        String ctxtName = null;
+        Naming.SyntheticName prevItemVar = null;
+        Naming.SyntheticName ctxtName = null;
         //Iterator fields
         ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
         HashSet<String> fieldNames = new HashSet<String>();
         while (clause != null) {
-            final Naming.SyntheticName iterVar = naming.temp("iter$"+idx);
-            String itemVar = null;
+            final Naming.SyntheticName iterVar = naming.synthetic("iter$"+idx);
+            Naming.SyntheticName itemVar = null;
             if (clause instanceof ForComprehensionClause) {
 
                 ForComprehensionClause fcl = (ForComprehensionClause)clause;
@@ -1837,7 +1837,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     fieldNames.add(iterVar.getName());
                     JCBlock body = make().Block(0l, List.<JCStatement>of(
                             make().If(make().Binary(JCTree.EQ, iterVar.makeIdent(), makeNull()),
-                                    make().Exec(make().Apply(null, makeSelect("this", ctxtName), List.<JCExpression>nil())),
+                                    make().Exec(make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
                                     null),
                             make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null,
                                     make().Select(transformExpression(specexpr.getExpression()),
@@ -1852,10 +1852,10 @@ public class ExpressionTransformer extends AbstractTransformer {
 
                     //Add the item variable as a field in the iterator
                     Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
-                    itemVar = item.getName();
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(itemVar),
+                    itemVar = naming.synthetic(item.getName());
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.asName(),
                             makeJavaType(item.getType(),JT_NO_PRIMITIVES), null));
-                    fieldNames.add(itemVar);
+                    fieldNames.add(itemVar.getName());
 
                 } else if (fcl.getForIterator() instanceof KeyValueIterator) {
                     //Add the key and value variables as fields in the iterator
@@ -1863,7 +1863,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Value kdec = kviter.getKeyVariable().getDeclarationModel();
                     Value vdec = kviter.getValueVariable().getDeclarationModel();
                     //But we'll use this as the name for the context function and base for the exhausted field
-                    itemVar = "kv$" + kdec.getName() + "$" + vdec.getName();
+                    itemVar = naming.synthetic("kv$" + kdec.getName() + "$" + vdec.getName());
                     fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(kdec.getName()),
                             makeJavaType(kdec.getType(), JT_NO_PRIMITIVES), null));
                     fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(vdec.getName()),
@@ -1873,7 +1873,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     return makeErroneous(fcl, "No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
                 }
-                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(itemVar+"$exhausted"),
+                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy("$exhausted").asName(),
                         makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
 
                 //Now the context for this iterator
@@ -1890,13 +1890,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                         makeJavaType(typeFact().getObjectDeclaration().getType()),
                         make().Apply(null, make().Select(iterVar.makeIdent(), names().fromString("next")), List.<JCExpression>nil())));
                 //Then we check if it's exhausted
-                contextBody.add(make().Exec(make().Assign(makeUnquotedIdent(itemVar+"$exhausted"),
+                contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy("$exhausted").makeIdent(),
                         make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
                 //Variables get assigned in the else block
                 ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
                 if (fcl.getForIterator() instanceof ValueIterator) {
                     ProducedType itemType = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel().getType();
-                    elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(itemVar),
+                    elseBody.add(make().Exec(make().Assign(itemVar.makeIdent(),
                             make().TypeCast(makeJavaType(itemType,JT_NO_PRIMITIVES), tmpItem.makeIdent()))));
                 } else {
                     KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
@@ -1923,24 +1923,23 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (idx>0) {
                     //Subsequent contexts run once for every iteration of the previous loop
                     //This will reset our previous context by getting a new iterator if the previous loop isn't done
-                    innerBody.add(make().If(make().Apply(null, makeSelect("this", ctxtName), List.<JCExpression>nil()),
+                    innerBody.add(make().If(make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
                             make().Block(0, List.<JCStatement>of(
                                 make().Exec(make().Assign(iterVar.makeIdent(),
-                                        make().Apply(null, makeSelect("this", iterVar.getName()), List.<JCExpression>nil()))),
+                                        make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil()))),
                                 make().Return(make().Apply(null,
-                                        make().Select(makeUnquotedIdent("this"),
-                                        names().fromString(itemVar)), List.<JCExpression>nil()))
+                                        itemVar.makeIdentWithThis(), List.<JCExpression>nil()))
                     )), null));
                 }
                 innerBody.add(make().Return(makeBoolean(false)));
                 //Assign the next item to the corresponding variables if not exhausted yet
-                contextBody.add(make().If( makeUnquotedIdent(itemVar+"$exhausted"),
+                contextBody.add(make().If(itemVar.suffixedBy("$exhausted").makeIdent(),
                     make().Block(0, innerBody.toList()),
                     make().Block(0, elseBody.toList())));
                 contextBody.add(make().Return(makeBoolean(true)));
                 //Create the context method that returns the next item for this iterator
                 ctxtName = itemVar;
-                fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), names().fromString(itemVar),
+                fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), itemVar.asName(),
                     makeJavaType(typeFact().getBooleanDeclaration().getType()),
                     List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
                     make().Block(0, contextBody.toList()), null));
@@ -1966,7 +1965,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 //Filter contexts need to check if the previous context applies and then check the condition
                 JCExpression condExpr = make().Apply(null,
-                    make().Select(makeUnquotedIdent("this"), names().fromString(ctxtName)), List.<JCExpression>nil());
+                    make().Select(makeUnquotedIdent("this"), ctxtName.asName()), List.<JCExpression>nil());
                 //_AND_ the previous iterator condition with the comprehension's
                 final JCExpression otherCondition;
                 if (cond instanceof IsCondition) {
@@ -2012,13 +2011,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 condExpr = make().Binary(JCTree.AND, condExpr, otherCondition);
                 //Create the context method that filters from the last iterator
-                ctxtName = "next"+idx;
-                fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), names().fromString(ctxtName),
+                ctxtName = naming.synthetic("next"+idx);
+                fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), ctxtName.asName(),
                     makeJavaType(typeFact().getBooleanDeclaration().getType()),
                     List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(),
                     List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
                         make().WhileLoop(condExpr, make().Block(0, List.<JCStatement>nil())),
-                        make().Return(make().Unary(JCTree.NOT, makeUnquotedIdent(prevItemVar+"$exhausted")))
+                        make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy("$exhausted").makeIdent()))
                 )), null));
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
                 itemVar = prevItemVar;
@@ -2043,8 +2042,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
                 make().Return(
                     make().Conditional(
-                        make().Apply(null, make().Select(makeUnquotedIdent("this"),
-                            names().fromString(ctxtName)), List.<JCExpression>nil()),
+                        make().Apply(null, make().Select(naming.makeThis(),
+                            ctxtName.asName()), List.<JCExpression>nil()),
                         transformExpression(excc.getExpression(), BoxingStrategy.BOXED, typeFact().getIteratedType(targetIterType)),
                         makeFinished()))
         )), null));

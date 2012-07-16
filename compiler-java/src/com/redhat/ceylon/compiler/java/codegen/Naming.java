@@ -970,6 +970,10 @@ public class Naming {
             return make().Ident(name);
         }
         
+        JCExpression makeIdentWithThis() {
+            return makeSelect("this", name.toString());
+        }
+        
         /**
          * Returns a new SyntheticName which appends the given suffix onto 
          * this SyntheticName's name.
@@ -1018,6 +1022,10 @@ public class Naming {
         } else {
             return varName;
         }
+    }
+    
+    SyntheticName synthetic(String name) {
+        return new SyntheticName(names.fromString(name));
     }
     
 }
