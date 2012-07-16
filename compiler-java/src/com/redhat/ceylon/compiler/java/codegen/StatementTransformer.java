@@ -210,7 +210,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
                 
                 // Prepare for variable substitution in the following code block
-                String prevSubst = addVariableSubst(origVarName, substVarName.toString());
+                String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
                 
                 thenBlock = transform(thenPart);
                 List<JCStatement> stats = List.<JCStatement> of(decl2);
@@ -218,7 +218,7 @@ public class StatementTransformer extends AbstractTransformer {
                 thenBlock = at(cond).Block(0, stats);
                 
                 // Deactivate the above variable substitution
-                removeVariableSubst(origVarName, prevSubst);
+                naming.removeVariableSubst(origVarName, prevSubst);
                 
                 at(cond);
                 // Assign the expression to test to the temporary variable
@@ -625,7 +625,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCVariableDecl decl2 = at(isCase).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
 
         // Prepare for variable substitution in the following code block
-        String prevSubst = addVariableSubst(origVarName.toString(), substVarName.toString());
+        String prevSubst = naming.addVariableSubst(origVarName.toString(), substVarName.toString());
 
         JCBlock block = transform(caseClause.getBlock());
         List<JCStatement> stats = List.<JCStatement> of(decl2);
@@ -633,7 +633,7 @@ public class StatementTransformer extends AbstractTransformer {
         block = at(isCase).Block(0, stats);
 
         // Deactivate the above variable substitution
-        removeVariableSubst(origVarName.toString(), prevSubst);
+        naming.removeVariableSubst(origVarName.toString(), prevSubst);
 
         last = make().If(cond, block, last);
         return last;

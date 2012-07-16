@@ -1984,47 +1984,6 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         
         return makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, castedExpr, sequenceToArrayExpr);
     }
-    
-    /*
-     * Variable name substitution
-     */
-    
-    @SuppressWarnings("serial")
-    protected static class VarMapper extends HashMap<String, String> {
-    }
-    
-    private Map<String, String> getVarMapper() {
-        VarMapper map = context.get(VarMapper.class);
-        if (map == null) {
-            map = new VarMapper();
-            context.put(VarMapper.class, map);
-        }
-        return map;
-    }
-    
-    String addVariableSubst(String origVarName, String substVarName) {
-        return getVarMapper().put(origVarName, substVarName);
-    }
-
-    void removeVariableSubst(String origVarName, String prevSubst) {
-        if (prevSubst != null) {
-            getVarMapper().put(origVarName, prevSubst);
-        } else {
-            getVarMapper().remove(origVarName);
-        }
-    }
-    
-    /*
-     * Checks a global map of variable name substitutions and returns
-     * either the original name if none was found or the substitute.
-     */
-    String substitute(String varName) {
-        if (getVarMapper().containsKey(varName)) {
-            return getVarMapper().get(varName);            
-        } else {
-            return varName;
-        }
-    }
 
     // Creates comparisons of expressions against types
     JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.SyntheticName varName, ProducedType type) {

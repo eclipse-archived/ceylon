@@ -1128,7 +1128,7 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
             for (int ii = 0; ii < lambdaParams.size(); ii++) {
-                gen().addVariableSubst(lambdaParams.get(ii).getIdentifier().getText(), 
+                naming.addVariableSubst(lambdaParams.get(ii).getIdentifier().getText(), 
                         defParams.get(ii).getIdentifier().getText());
             }
             bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), BoxingStrategy.UNBOXED, null);
@@ -1137,7 +1137,7 @@ public class ClassTransformer extends AbstractTransformer {
                     model.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, 
                             resultType);
             for (int ii = 0; ii < lambdaParams.size(); ii++) {
-                gen().removeVariableSubst(lambdaParams.get(ii).getIdentifier().getText(), 
+                naming.removeVariableSubst(lambdaParams.get(ii).getIdentifier().getText(), 
                         null);
             }
         } else {

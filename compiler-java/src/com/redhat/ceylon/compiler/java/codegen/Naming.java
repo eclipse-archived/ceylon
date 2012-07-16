@@ -3,9 +3,11 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
@@ -926,6 +928,47 @@ public class Naming {
          */
         SyntheticName suffixedBy(String suffix) {
             return new SyntheticName(names.fromString(name.toString() + suffix));
+        }
+    }
+    
+    /*
+     * Variable name substitution
+     */
+    
+    @SuppressWarnings("serial")
+    protected static class VarMapper extends HashMap<String, String> {
+    }
+    
+    private Map<String, String> getVarMapper() {
+        VarMapper map = context.get(VarMapper.class);
+        if (map == null) {
+            map = new VarMapper();
+            context.put(VarMapper.class, map);
+        }
+        return map;
+    }
+    
+    String addVariableSubst(String origVarName, String substVarName) {
+        return getVarMapper().put(origVarName, substVarName);
+    }
+
+    void removeVariableSubst(String origVarName, String prevSubst) {
+        if (prevSubst != null) {
+            getVarMapper().put(origVarName, prevSubst);
+        } else {
+            getVarMapper().remove(origVarName);
+        }
+    }
+    
+    /**
+     * Checks a global map of variable name substitutions and returns
+     * either the original name if none was found or the substitute.
+     */
+    String substitute(String varName) {
+        if (getVarMapper().containsKey(varName)) {
+            return getVarMapper().get(varName);            
+        } else {
+            return varName;
         }
     }
 

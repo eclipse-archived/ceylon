@@ -1565,7 +1565,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (useGetter) {
                     selector = Naming.quoteMethodName(decl);
                 } else {
-                    selector = substitute(decl.getName());
+                    selector = naming.substitute(decl.getName());
                 }
             }
             
