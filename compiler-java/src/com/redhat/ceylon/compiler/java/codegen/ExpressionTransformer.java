@@ -581,14 +581,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.SequenceEnumeration value) {
         at(value);
         if (value.getComprehension() != null) {
-            return make().Apply(null, make().Select(transformComprehension(value.getComprehension()), names().fromString("getSequence")), List.<JCExpression>nil());
+            return make().Apply(null, makeSelect(transformComprehension(value.getComprehension()), "getSequence"), 
+                    List.<JCExpression>nil());
         } else if (value.getSequencedArgument() != null) {
             java.util.List<Tree.Expression> list = value.getSequencedArgument().getExpressionList().getExpressions();
             if (value.getSequencedArgument().getEllipsis() == null) {
                 ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
                 return makeSequence(list, seqElemType);
             } else {
-                return make().Apply(null, make().Select(transformExpression(list.get(0)), names().fromString("getSequence")), List.<JCExpression>nil());
+                return make().Apply(null, makeSelect(transformExpression(list.get(0)), "getSequence"), 
+                        List.<JCExpression>nil());
             }
         } else {
             return makeEmpty();
@@ -1322,7 +1324,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Naming.SyntheticName sizeName = varBaseName.suffixedBy("$2");
         JCExpression sizeType = make().TypeIdent(TypeTags.INT);
         JCExpression sizeExpr = make().TypeCast(syms().intType, make().Apply(null, 
-                make().Select(srcSequenceName.makeIdent(), names().fromString("getSize")), 
+                makeSelect(srcSequenceName.makeIdent(), "getSize"), 
                 List.<JCTree.JCExpression>nil()));
 
         // new array
@@ -1361,7 +1363,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // index is always boxed
         JCExpression boxedIndex = boxType(make().Ident(indexVarName), typeFact().getIntegerDeclaration().getType());
         JCExpression sequenceItemExpr = make().Apply(null, 
-                make().Select(srcSequenceName.makeIdent(), names().fromString("item")),
+                makeSelect(srcSequenceName.makeIdent(), "item"),
                 List.<JCExpression>of(boxedIndex));
         // item.member
         sequenceItemExpr = applyErasureAndBoxing(sequenceItemExpr, srcElementType, true, BoxingStrategy.BOXED, 
@@ -1663,13 +1665,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(!safe)
                 // make a "lhs.item(index)" call
                 return at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                        make().Select(lhs, names().fromString("item")), List.of(index));
+                        makeSelect(lhs, "item"), List.of(index));
             // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
             JCExpression arrayType = makeJavaType(leftCorrespondenceType);
             Name varName = naming.tempName("safeaccess");
             // tmpVar.item(index)
             JCExpression safeAccess = make().Apply(List.<JCTree.JCExpression>nil(), 
-                    make().Select(make().Ident(varName), names().fromString("item")), List.of(index));
+                    makeSelect(make().Ident(varName), "item"), List.of(index));
 
             at(access.getPrimary());
             // (tmpVar != null ? safeAccess : null)
@@ -1696,7 +1698,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 end = makeNull();
             // make a "lhs.span(start, end)" call
             return at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                    make().Select(lhs, names().fromString("span")), List.of(start, end));
+                    makeSelect(lhs, "span"), List.of(start, end));
         }
     }
 
@@ -1827,8 +1829,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (clause == comp.getForComprehensionClause()) {
                     //The first iterator can be initialized as a field
                     fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
-                        make().Apply(null, make().Select(transformExpression(specexpr.getExpression()),
-                            names().fromString("getIterator")), List.<JCExpression>nil())));
+                        make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
+                                List.<JCExpression>nil())));
                     fieldNames.add(iterVar.getName());
                 } else {
                     //The subsequent iterators need to be inside a method,
@@ -1840,8 +1842,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                                     make().Exec(make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
                                     null),
                             make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null,
-                                    make().Select(transformExpression(specexpr.getExpression()),
-                                    names().fromString("getIterator")), List.<JCExpression>nil()))),
+                                    makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
+                                    List.<JCExpression>nil()))),
                             make().Return(iterVar.makeIdent())
                     ));
                     fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL),
@@ -1881,14 +1883,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (idx>0) {
                     //Subsequent iterators may depend on the item from the previous loop so we make sure we have one
                     contextBody.add(make().If(make().Binary(JCTree.EQ, iterVar.makeIdent(), makeNull()),
-                            make().Exec(make().Apply(null, makeSelect("this", iterVar.getName()), List.<JCExpression>nil())), null));
+                            make().Exec(make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil())), null));
                 }
 
                 //Assign the next item to an Object variable
                 Naming.SyntheticName tmpItem = naming.temp("item");
                 contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
                         makeJavaType(typeFact().getObjectDeclaration().getType()),
-                        make().Apply(null, make().Select(iterVar.makeIdent(), names().fromString("next")), List.<JCExpression>nil())));
+                        make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
+                                List.<JCExpression>nil())));
                 //Then we check if it's exhausted
                 contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy("$exhausted").makeIdent(),
                         make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
@@ -1909,13 +1912,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                         tmpItem.makeIdent());
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(key.getName()),
                         make().TypeCast(makeJavaType(key.getType(), JT_NO_PRIMITIVES),
-                            make().Apply(null, make().Select(castEntryExpr, names().fromString("getKey")),
+                            make().Apply(null, makeSelect(castEntryExpr, "getKey"),
                                 List.<JCExpression>nil())
                     ))));
                     //equivalent to v=(ItemType)((Entry<KeyType,ItemType>)tmpItem).getItem()
                     elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(item.getName()),
                         make().TypeCast(makeJavaType(item.getType(), JT_NO_PRIMITIVES),
-                            make().Apply(null, make().Select(castEntryExpr, names().fromString("getItem")),
+                            make().Apply(null, makeSelect(castEntryExpr, "getItem"),
                                 List.<JCExpression>nil())
                     ))));
                 }
@@ -1965,7 +1968,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 //Filter contexts need to check if the previous context applies and then check the condition
                 JCExpression condExpr = make().Apply(null,
-                    make().Select(makeUnquotedIdent("this"), ctxtName.asName()), List.<JCExpression>nil());
+                    ctxtName.makeIdentWithThis(), List.<JCExpression>nil());
                 //_AND_ the previous iterator condition with the comprehension's
                 final JCExpression otherCondition;
                 if (cond instanceof IsCondition) {
@@ -2042,8 +2045,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
                 make().Return(
                     make().Conditional(
-                        make().Apply(null, make().Select(naming.makeThis(),
-                            ctxtName.asName()), List.<JCExpression>nil()),
+                        make().Apply(null, 
+                            ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
                         transformExpression(excc.getExpression(), BoxingStrategy.BOXED, typeFact().getIteratedType(targetIterType)),
                         makeFinished()))
         )), null));
