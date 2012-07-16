@@ -1814,7 +1814,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
         HashSet<String> fieldNames = new HashSet<String>();
         while (clause != null) {
-            final String iterVar = "iter$"+idx;
+            final Naming.SyntheticName iterVar = naming.temp("iter$"+idx);
             String itemVar = null;
             if (clause instanceof ForComprehensionClause) {
 
@@ -1825,26 +1825,26 @@ public class ExpressionTransformer extends AbstractTransformer {
                         typeFact().getIteratedType(iterType)));
                 if (clause == comp.getForComprehensionClause()) {
                     //The first iterator can be initialized as a field
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), names().fromString(iterVar), iterTypeExpr,
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
                         make().Apply(null, make().Select(transformExpression(specexpr.getExpression()),
                             names().fromString("getIterator")), List.<JCExpression>nil())));
-                    fieldNames.add(iterVar);
+                    fieldNames.add(iterVar.getName());
                 } else {
                     //The subsequent iterators need to be inside a method,
                     //in case they depend on the current element of the previous iterator
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(iterVar), iterTypeExpr, null));
-                    fieldNames.add(iterVar);
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), iterTypeExpr, null));
+                    fieldNames.add(iterVar.getName());
                     JCBlock body = make().Block(0l, List.<JCStatement>of(
-                            make().If(make().Binary(JCTree.EQ, makeUnquotedIdent(iterVar), makeNull()),
+                            make().If(make().Binary(JCTree.EQ, iterVar.makeIdent(), makeNull()),
                                     make().Exec(make().Apply(null, makeSelect("this", ctxtName), List.<JCExpression>nil())),
                                     null),
-                            make().Exec(make().Assign(makeUnquotedIdent(iterVar), make().Apply(null,
+                            make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null,
                                     make().Select(transformExpression(specexpr.getExpression()),
                                     names().fromString("getIterator")), List.<JCExpression>nil()))),
-                            make().Return(makeUnquotedIdent(iterVar))
+                            make().Return(iterVar.makeIdent())
                     ));
                     fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL),
-                            names().fromString(iterVar), iterTypeExpr, List.<JCTree.JCTypeParameter>nil(),
+                            iterVar.asName(), iterTypeExpr, List.<JCTree.JCTypeParameter>nil(),
                             List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
                 }
                 if (fcl.getForIterator() instanceof ValueIterator) {
@@ -1879,15 +1879,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
                 if (idx>0) {
                     //Subsequent iterators may depend on the item from the previous loop so we make sure we have one
-                    contextBody.add(make().If(make().Binary(JCTree.EQ, makeUnquotedIdent(iterVar), makeNull()),
-                            make().Exec(make().Apply(null, makeSelect("this", iterVar), List.<JCExpression>nil())), null));
+                    contextBody.add(make().If(make().Binary(JCTree.EQ, iterVar.makeIdent(), makeNull()),
+                            make().Exec(make().Apply(null, makeSelect("this", iterVar.getName()), List.<JCExpression>nil())), null));
                 }
 
                 //Assign the next item to an Object variable
                 Naming.SyntheticName tmpItem = naming.temp("item");
                 contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
                         makeJavaType(typeFact().getObjectDeclaration().getType()),
-                        make().Apply(null, make().Select(makeUnquotedIdent(iterVar), names().fromString("next")), List.<JCExpression>nil())));
+                        make().Apply(null, make().Select(iterVar.makeIdent(), names().fromString("next")), List.<JCExpression>nil())));
                 //Then we check if it's exhausted
                 contextBody.add(make().Exec(make().Assign(makeUnquotedIdent(itemVar+"$exhausted"),
                         make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
@@ -1924,8 +1924,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     //This will reset our previous context by getting a new iterator if the previous loop isn't done
                     innerBody.add(make().If(make().Apply(null, makeSelect("this", ctxtName), List.<JCExpression>nil()),
                             make().Block(0, List.<JCStatement>of(
-                                make().Exec(make().Assign(makeUnquotedIdent(iterVar),
-                                        make().Apply(null, makeSelect("this", iterVar), List.<JCExpression>nil()))),
+                                make().Exec(make().Assign(iterVar.makeIdent(),
+                                        make().Apply(null, makeSelect("this", iterVar.getName()), List.<JCExpression>nil()))),
                                 make().Return(make().Apply(null,
                                         make().Select(makeUnquotedIdent("this"),
                                         names().fromString(itemVar)), List.<JCExpression>nil()))
