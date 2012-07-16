@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Token;
+import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -547,12 +548,20 @@ public class Naming {
         return mkSelect(expr, parts);
     }
     
+    JCExpression makeQualifiedThis(JCExpression qualifier) {
+        return qualifier != null ? makeSelect(qualifier, "this") : makeUnquotedIdent("this");
+    }
+    
     JCExpression makeThis() {
-        return makeUnquotedIdent("this");
+        return makeQualifiedThis(null);
     }
     
     JCExpression makeQuotedThis() {
         return makeUnquotedIdent("$this");
+    }
+    
+    JCTree makeSuper() {
+        return makeUnquotedIdent("super");
     }
     
     JCExpression makeName(TypedDeclaration decl, int namingOptions) {
@@ -919,5 +928,7 @@ public class Naming {
             return new SyntheticName(names.fromString(name.toString() + suffix));
         }
     }
+
+    
     
 }

@@ -598,17 +598,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.This expr) {
         at(expr);
         if (needDollarThis(expr.getScope())) {
-            return makeUnquotedIdent("$this");
+            return naming.makeQuotedThis();
         }
         if (isWithinCallableInvocation()) {
-            return makeSelect(makeJavaType(expr.getTypeModel()), "this");
+            return naming.makeQualifiedThis(makeJavaType(expr.getTypeModel()));
         } 
-        return makeUnquotedIdent("this");    
+        return naming.makeThis();
     }
 
     public JCTree transform(Tree.Super expr) {
         at(expr);
-        return makeUnquotedIdent("super");
+        return naming.makeSuper();
     }
 
     public JCTree transform(Tree.Outer expr) {
@@ -616,9 +616,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
         final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
         if (outerDeclaration instanceof Interface) {
-            return makeSelect(makeJavaType(outerClass, JT_COMPANION | JT_RAW), "this");
+            return naming.makeQualifiedThis(makeJavaType(outerClass, JT_COMPANION | JT_RAW));
         }
-        return makeSelect(makeQuotedIdent(outerDeclaration.getName()), "this");
+        return naming.makeQualifiedThis(makeJavaType(outerClass));
     }
 
     //
@@ -1312,24 +1312,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         // this holds the whole spread operation
         Naming.SyntheticName varBaseName = naming.alias("spread");
         // sequence
-        String srcSequenceName = varBaseName+"$0";
+        Naming.SyntheticName srcSequenceName = varBaseName.suffixedBy("$0");
         ProducedType srcSequenceType = typeFact().getNonemptySequenceType(expr.getPrimary().getTypeModel());
         ProducedType srcElementType = typeFact().getElementType(srcSequenceType);
         JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, JT_NO_PRIMITIVES);
         JCExpression srcSequenceExpr = make().TypeCast(srcSequenceTypeExpr, testVarName.makeIdent());
 
         // size, getSize() always unboxed, but we need to cast to int for Java array access
-        String sizeName = varBaseName+"$2";
+        Naming.SyntheticName sizeName = varBaseName.suffixedBy("$2");
         JCExpression sizeType = make().TypeIdent(TypeTags.INT);
         JCExpression sizeExpr = make().TypeCast(syms().intType, make().Apply(null, 
-                make().Select(makeUnquotedIdent(srcSequenceName), names().fromString("getSize")), 
+                make().Select(srcSequenceName.makeIdent(), names().fromString("getSize")), 
                 List.<JCTree.JCExpression>nil()));
 
         // new array
-        String newArrayName = varBaseName+"$4";
+        Naming.SyntheticName newArrayName = varBaseName.suffixedBy("$4");
         JCExpression arrayElementType = makeJavaType(expr.getTarget().getType(), JT_NO_PRIMITIVES);
         JCExpression newArrayType = make().TypeArray(arrayElementType);
-        JCNewArray newArrayExpr = make().NewArray(arrayElementType, List.of(makeUnquotedIdent(sizeName)), null);
+        JCNewArray newArrayExpr = make().NewArray(arrayElementType, List.<JCExpression>of(sizeName.makeIdent()), null);
 
         // return the new array
         JCExpression returnArrayType = makeJavaType(expr.getTarget().getType(), JT_SATISFIES);
@@ -1342,7 +1342,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             returnArrayTypeExpr = returnArrayIdent;
         JCNewClass returnArray = make().NewClass(null, null, 
                 returnArrayTypeExpr, 
-                List.of(makeUnquotedIdent(newArrayName)), null);
+                List.<JCExpression>of(newArrayName.makeIdent()), null);
 
         // for loop
         Name indexVarName = naming.aliasName("index");
@@ -1350,18 +1350,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCStatement initVarDef = make().VarDef(make().Modifiers(0), indexVarName, make().TypeIdent(TypeTags.INT), makeInteger(0));
         List<JCStatement> init = List.of(initVarDef);
         // index < size
-        JCExpression cond = make().Binary(JCTree.LT, make().Ident(indexVarName), makeUnquotedIdent(sizeName));
+        JCExpression cond = make().Binary(JCTree.LT, make().Ident(indexVarName), sizeName.makeIdent());
         // index++
         JCExpression stepExpr = make().Unary(JCTree.POSTINC, make().Ident(indexVarName));
         List<JCExpressionStatement> step = List.of(make().Exec(stepExpr));
 
         // newArray[index]
-        JCExpression dstArrayExpr = make().Indexed(makeUnquotedIdent(newArrayName), make().Ident(indexVarName));
+        JCExpression dstArrayExpr = make().Indexed(newArrayName.makeIdent(), make().Ident(indexVarName));
         // srcSequence.item(box(index))
         // index is always boxed
         JCExpression boxedIndex = boxType(make().Ident(indexVarName), typeFact().getIntegerDeclaration().getType());
         JCExpression sequenceItemExpr = make().Apply(null, 
-                make().Select(makeUnquotedIdent(srcSequenceName), names().fromString("item")),
+                make().Select(srcSequenceName.makeIdent(), names().fromString("item")),
                 List.<JCExpression>of(boxedIndex));
         // item.member
         sequenceItemExpr = applyErasureAndBoxing(sequenceItemExpr, srcElementType, true, BoxingStrategy.BOXED, 
@@ -1574,10 +1574,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             if (qualExpr == null && needDollarThis(expr)) {
-                qualExpr = makeUnquotedIdent("$this");
+                qualExpr = naming.makeQuotedThis();
             }
             if (qualExpr == null && decl.isStaticallyImportable()) {
-                qualExpr = makeQuotedFQIdent(decl.getContainer().getQualifiedNameString());
+                qualExpr = naming.makeQuotedFQIdent(decl.getContainer().getQualifiedNameString());
             }
             
             if (transformer != null) {
@@ -1738,7 +1738,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression expr = null;
         if(leftTerm instanceof Tree.BaseMemberExpression)
             if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
-                expr = makeUnquotedIdent("$this");
+                expr = naming.makeQuotedThis();
             } else {
                 expr = null;
             }
