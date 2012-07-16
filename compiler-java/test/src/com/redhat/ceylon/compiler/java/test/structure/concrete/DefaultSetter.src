@@ -43,11 +43,11 @@ class DefaultSetter {
         }
         
         public final long getADefault() {
-            return DefaultSetter.this.getA();
+            return .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.this.getA();
         }
         
         public void setADefault(final long aDefault) {
-            DefaultSetter.this.setA(aDefault);
+            .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.this.setA(aDefault);
         }
         
         I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I $this) {
