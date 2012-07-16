@@ -242,7 +242,7 @@ public class Naming {
         return declName(gen(), decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
-    static String quoteMethodNameIfProperty(Method method, AbstractTransformer gen) {
+    String quoteMethodNameIfProperty(Method method) {
         String name = method.getName();
         // Toplevel methods keep their original name because their names might be mangled
         if (method instanceof LazyMethod) {
@@ -261,17 +261,17 @@ public class Naming {
         if(((name.length() >= 4 && name.startsWith("get"))
              || name.length() >= 3 && name.startsWith("is"))
             && method.getParameterLists().get(0).getParameters().isEmpty()
-            && !gen.isVoid(method.getType()))
+            && !gen().isVoid(method.getType()))
             return quote(name);
         // set with one parameter and void type
         if((name.length() >= 4 && name.startsWith("set"))
            && method.getParameterLists().get(0).getParameters().size() == 1
-           && gen.isVoid(method.getType()))
+           && gen().isVoid(method.getType()))
             return quote(name);
         return name;
     }
 
-    static String quoteMethodName(Declaration decl){
+    private String quoteMethodName(Declaration decl){
         // always use the refined decl
         decl = decl.getRefinedDeclaration();
         String name = decl.getName();
@@ -662,12 +662,6 @@ public class Naming {
     /**
      * Returns a fully qualified JCExpression for referring to the given name
      */
-    private JCExpression mkSelect(LinkedList<String> parts) {
-        Assert.not(parts.isEmpty());
-        JCExpression result = makeUnquotedIdent(parts.getFirst());
-        return mkSelect(result, parts.subList(1, parts.size()));
-    }
-    
     private JCExpression mkSelect(JCExpression result, List<String> rest) {
         for (String part : rest) {
             if (result == null) {
@@ -697,6 +691,28 @@ public class Naming {
     static final int NA_IDENT = 1<<7;
     static final int NA_ALIASED = 1<<8;
 
+    /**
+     * Returns the name of the Java method/field for the given declaration 
+     * @param decl The declaration
+     * @return The name of the corresponding Java declaration.
+     */
+    String selector(TypedDeclaration decl) {
+        if (decl instanceof Getter) {
+            if (decl.isToplevel()) {
+                return null;
+            } 
+            return getGetterName(decl);
+        } else if (decl instanceof Value) {
+            return getGetterName(decl);
+        } else if (decl instanceof Method) {
+            if (decl.isClassMember()) {
+                return getErasedMethodName(quoteMethodNameIfProperty((Method) decl));
+            }
+            return quoteMethodName(decl);
+        }
+        Assert.fail();
+        return null;
+    }
     
     JCExpression makeSyntheticClassname(Declaration decl) {
         return makeUnquotedIdent(getQuotedClassName(decl));

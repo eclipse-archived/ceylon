@@ -275,7 +275,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     PUBLIC | FINAL, 
                                     typeParameters,  
                                     typedMember.getType(), 
-                                    Naming.quoteMethodName(method), 
+                                    naming.selector(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     Decl.isAncestorLocal(model),
                                     rawifyParametersAndResults);
@@ -293,7 +293,7 @@ public class ClassTransformer extends AbstractTransformer {
                             PUBLIC, 
                             method.getTypeParameters(), 
                             method.getType(), 
-                            Naming.quoteMethodName(method), 
+                            naming.selector(method), 
                             method.getParameterLists().get(0).getParameters(),
                             Decl.isAncestorLocal(model),
                             rawifyParametersAndResults);
@@ -873,7 +873,7 @@ public class ClassTransformer extends AbstractTransformer {
     List<JCTree> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
-        final String methodName = Naming.quoteMethodNameIfProperty(model, gen());
+        final String methodName = naming.quoteMethodNameIfProperty(model);
         if (Decl.withinInterface(model)) {
             // Transform it for the companion
             final Block block;

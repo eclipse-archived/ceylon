@@ -1495,13 +1495,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else if (decl.isClassMember()
                         || decl.isInterfaceMember()) {
-                selector = Naming.getGetterName(decl);
+                selector = naming.selector((Getter)decl);
             } else {
                 // method local attr
                 if (!isRecursiveReference(expr)) {
                     primaryExpr = naming.makeQualifiedName(primaryExpr, (Getter)decl, Naming.NA_Q_LOCAL_INSTANCE);
                 }
-                selector = Naming.getGetterName(decl);
+                selector = naming.selector((Getter)decl);
             }
         } else if (decl instanceof Value) {
             if (decl.isToplevel()) {
@@ -1516,7 +1516,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     // it's a toplevel attribute
                     primaryExpr = naming.makeName((Value)decl, Naming.NA_FQ | Naming.NA_WRAPPER);
-                    selector = Naming.getGetterName(decl);
+                    selector = naming.selector((Value)decl);
                 }
             } else if (Decl.isClassAttribute(decl)) {
                 if (Decl.isJavaField(decl) || isWithinSuperInvocation()){
@@ -1524,7 +1524,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
                     // (Value inside a Class) where we might refer to JavaBean properties
-                    selector = Naming.getGetterName(decl);
+                    selector = naming.selector((Value)decl);
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
                 TypeDeclaration typeDecl = ((Value)decl).getType().getDeclaration();
@@ -1535,7 +1535,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // accessing a local that is not getter wrapped
                 } else {
                     primaryExpr = naming.makeQualifiedName(primaryExpr, (Value)decl, Naming.NA_Q_LOCAL_INSTANCE);
-                    selector = Naming.getGetterName(decl);
+                    selector = naming.selector((Value)decl);
                 }
             }
         } else if (decl instanceof Method) {
@@ -1555,15 +1555,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                selector = Naming.getErasedMethodName(Naming.quoteMethodNameIfProperty((Method) decl, gen()));
+                selector = naming.selector((Method)decl);
             }
         }
         if (result == null) {
-            boolean useGetter = !(decl instanceof Method) && !(Decl.isJavaField(decl)) && !isWithinSuperInvocation();
+            boolean useGetter = !(decl instanceof Method) && !Decl.isJavaField(decl) && !isWithinSuperInvocation();
             if (qualExpr == null && selector == null) {
                 useGetter = decl.isClassOrInterfaceMember() && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
-                    selector = Naming.quoteMethodName(decl);
+                    selector = naming.selector((TypedDeclaration)decl);
                 } else {
                     selector = naming.substitute(decl.getName());
                 }
