@@ -873,7 +873,7 @@ public class ClassTransformer extends AbstractTransformer {
     List<JCTree> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
-        final String methodName = naming.quoteMethodNameIfProperty(model);
+        final String methodName = naming.selector(model);
         if (Decl.withinInterface(model)) {
             // Transform it for the companion
             final Block block;
@@ -1052,7 +1052,7 @@ public class ClassTransformer extends AbstractTransformer {
             current().field(mods, model.getName(), makeJavaType(typeFact().getCallableType(model.getType())), initialValue, false);
             ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
             for (Parameter param : model.getParameterLists().get(0).getParameters()) {
-                args.append(makeQuotedIdent(param.getName()));
+                args.append(naming.makeName(param, Naming.NA_MEMBER));
             }
             JCExpression call = make().Apply(null, makeSelect(
                     model.getName(), "$call"), args.toList());
@@ -1069,7 +1069,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (initializingParameter == null) {
                 // If the field isn't initialized by a parameter we have to 
                 // cope with the possibility that it's never initialized
-                final JCBinary cond = make().Binary(JCTree.EQ, makeQuotedIdent(model.getName()), makeNull());
+                final JCBinary cond = make().Binary(JCTree.EQ, naming.makeName(model, Naming.NA_MEMBER), makeNull());
                 final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
                         make().Type(syms().ceylonUninitializedMethodErrorType), 
                         List.<JCExpression>nil(), 
