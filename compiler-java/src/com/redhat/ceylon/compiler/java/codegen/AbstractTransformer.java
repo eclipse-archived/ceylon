@@ -1938,7 +1938,7 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     private JCExpression objectIterableToJavaArray(ProducedType type,
             ProducedType iterableType, JCExpression expr) {
         JCExpression klass = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
-        JCExpression klassLiteral = make().Select(klass, names.fromString("class"));
+        JCExpression klassLiteral = make().Select(klass, names().fromString("class"));
         return makeUtilInvocation("toArray", List.of(expr, klassLiteral), null);
     }
     

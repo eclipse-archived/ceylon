@@ -610,7 +610,6 @@ public class StatementTransformer extends AbstractTransformer {
         String name = isCase.getVariable().getIdentifier().getText();
 
         Naming.SyntheticName tmpVarName = selectorAlias;
-        Name origVarName = names().fromString(name);
         Name substVarName = naming.aliasName(name);
 
         // Want raw type for instanceof since it can't be used with generic types
@@ -625,7 +624,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCVariableDecl decl2 = at(isCase).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
 
         // Prepare for variable substitution in the following code block
-        String prevSubst = naming.addVariableSubst(origVarName.toString(), substVarName.toString());
+        String prevSubst = naming.addVariableSubst(name, substVarName.toString());
 
         JCBlock block = transform(caseClause.getBlock());
         List<JCStatement> stats = List.<JCStatement> of(decl2);
@@ -633,7 +632,7 @@ public class StatementTransformer extends AbstractTransformer {
         block = at(isCase).Block(0, stats);
 
         // Deactivate the above variable substitution
-        naming.removeVariableSubst(origVarName.toString(), prevSubst);
+        naming.removeVariableSubst(name, prevSubst);
 
         last = make().If(cond, block, last);
         return last;

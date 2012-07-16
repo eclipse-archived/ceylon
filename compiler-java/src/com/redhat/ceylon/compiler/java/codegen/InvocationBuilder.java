@@ -723,7 +723,7 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
     @Override
     protected JCExpression makeInvocation(List<JCExpression> args) {
         gen.at(node);
-        JCExpression result = gen.make().Apply(List.<JCExpression> nil(), gen.make().Ident(gen.names()._super), args);
+        JCExpression result = gen.make().Apply(List.<JCExpression> nil(), gen.naming.makeSuper(), args);
         return result;
     }
 }

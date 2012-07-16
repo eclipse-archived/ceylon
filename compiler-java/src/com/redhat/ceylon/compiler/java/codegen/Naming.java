@@ -550,20 +550,37 @@ public class Naming {
         return mkSelect(expr, parts);
     }
     
+    /**
+     * Makes an ident for @{code ${qualifier}.this}, 
+     * or plain {@code this} if the qualifier is null
+     */
     JCExpression makeQualifiedThis(JCExpression qualifier) {
-        return qualifier != null ? makeSelect(qualifier, "this") : makeUnquotedIdent("this");
+        if (qualifier == null) {
+            return maker.Ident(names._this);
+        } else {
+            return maker.Select(qualifier, names._this);
+        }
     }
     
+    /**
+     * Makes an ident for @{code this}.
+     */
     JCExpression makeThis() {
         return makeQualifiedThis(null);
     }
     
+    /**
+     * Makes an ident for @{code $this}.
+     */
     JCExpression makeQuotedThis() {
         return makeUnquotedIdent("$this");
     }
     
-    JCTree makeSuper() {
-        return makeUnquotedIdent("super");
+    /**
+     * Makes an ident for @{code super}.
+     */
+    JCIdent makeSuper() {
+        return maker.Ident(names._super);
     }
     
     JCExpression makeName(TypedDeclaration decl, int namingOptions) {
