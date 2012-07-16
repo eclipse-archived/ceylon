@@ -410,7 +410,9 @@ public class ClassDefinitionBuilder {
         if (decl.isCaptured()) {
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
-            init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", name), gen.makeUnquotedIdent(name))));
+            init.append(gen.make().Exec(gen.make().Assign(
+                    gen.naming.makeQualifiedName(gen.naming.makeThis(), decl, Naming.NA_IDENT), 
+                    gen.naming.makeName(decl, Naming.NA_IDENT))));
         } else if ((decl instanceof ValueParameter) 
                         && ((ValueParameter)decl).isHidden()
                         && (decl.getContainer() instanceof TypeDeclaration)) {
@@ -418,7 +420,9 @@ public class ClassDefinitionBuilder {
             if (member instanceof Value 
                     && Strategy.createField((ValueParameter)decl, (Value)member)) {
                 // The field itself is created by the ClassTransformer
-                init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", name), gen.makeUnquotedIdent(name))));
+                init.append(gen.make().Exec(
+                        gen.make().Assign(gen.naming.makeQualifiedName(gen.naming.makeThis(), decl, Naming.NA_IDENT), 
+                                gen.naming.makeName(decl, Naming.NA_IDENT))));
             }
         }
         return this;
