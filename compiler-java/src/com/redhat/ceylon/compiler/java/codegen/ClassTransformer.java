@@ -1286,7 +1286,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(dpmQualifier, param2);
                 
-                String varName = naming.newTemp("$"+param2.getName()+"$");
+                Naming.SyntheticName varName = naming.temp("$"+param2.getName()+"$");
                 final ProducedType paramType;
                 if (param2 instanceof FunctionalParameter) {
                     paramType = typeFact().getCallableType(param2.getType());
@@ -1298,7 +1298,7 @@ public class ClassTransformer extends AbstractTransformer {
                         make().Apply(typeArguments, 
                                 defaultValueMethodName, 
                                 ListBuffer.<JCExpression>lb().appendList(args).toList())));
-                args.add(makeUnquotedIdent(varName));
+                args.add(varName.makeIdent());
             } else {
                 overloadBuilder.parameter(param2, 0);
                 args.add(naming.makeName(param2, Naming.NA_MEMBER | Naming.NA_ALIASED));

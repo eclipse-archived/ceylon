@@ -744,57 +744,112 @@ public class Naming {
         return id.nextId();
     }
     
-    String newTemp() {
+    private String newTemp() {
         String result = "$ceylontmp" + nextUniqueId();
         return result;
     }
 
-    String newTemp(String prefix) {
+    private String newTemp(String prefix) {
         String result = "$ceylontmp" + prefix + nextUniqueId();
         return result;
     }
 
-    String newAlias(String name) {
+    private String newAlias(String name) {
         String result = "$" + name + "$" + nextUniqueId();
         return result;
     }
     
+    /** 
+     * Allocates a new temporary name and returns the Name for it.
+     * @see #temp()
+     */
     Name tempName() {
         return names.fromString(newTemp());
     }
     
+    /** 
+     * Allocates a new temporary name with the given prefix
+     * and returns the Name for it.
+     * @see #tempName(String)
+     */
     Name tempName(String prefix) { 
         return names.fromString(newTemp(prefix));
     }
     
+    /** 
+     * Allocates a new alias based on the given name 
+     * and returns the Name for it.
+     * @see #alias(String)
+     */
     Name aliasName(String name) {
         return names.fromString(newAlias(name));
     }
     
+    /** 
+     * Allocates a new temporary name 
+     * and returns a {@link SyntheticName} for it.
+     * 
+     * This is preferred over {@link #tempName()}
+     * and {@link #makeTemp()} 
+     * in situations where a Name and JCIdents are required.
+     */
     SyntheticName temp() {
         return new SyntheticName(tempName());
     }
     
+    /** 
+     * Allocates a new temporary name with the given prefix
+     * and returns a {@link SyntheticName} for it.
+     * 
+     * This is preferred over {@link #tempName(String)} 
+     * and {@link #makeTemp(String)} 
+     * in situations where a Name and JCIdents are required.
+     */
     SyntheticName temp(String prefix) { 
         return new SyntheticName(tempName(prefix));
     }
     
+    /** 
+     * Allocates a new alias based on the given name 
+     * and returns a {@link SyntheticName} for it.
+     * 
+     * This is preferred over {@link #aliasName(String)} 
+     * and {@link #makeAlias(String)} 
+     * in situations where a Name and JCIdents are required.
+     */
     SyntheticName alias(String name) {
         return new SyntheticName(aliasName(name));
     }
     
+    /**
+     * Allocates a new temporary name and returns a JCIdent for it.
+     * @see #temp() 
+     */
     JCIdent makeTemp() {
         return new SyntheticName(tempName()).makeIdent();
     }
     
+    /**
+     * Allocates a new temporary name based on the given prefix 
+     * and returns a JCIdent for it.
+     * @see #temp(String)
+     */
     JCIdent makeTemp(String prefix) { 
         return new SyntheticName(tempName(prefix)).makeIdent();
     }
     
+    /** 
+     * Allocates a new alias based on the given name 
+     * and returns a JCIdent for it.
+     * @see #alias(String)
+     */
     JCIdent makeAlias(String name) {
         return new SyntheticName(aliasName(name)).makeIdent();
     }
     
+    /**
+     * Encapsulates a temporary name or alias 
+     */
     class SyntheticName {
         
         private final Name name;
@@ -803,20 +858,65 @@ public class Naming {
             this.name = name;
         }
         
+        /**
+         * Returns the name
+         */
         public String toString() {
             return name.toString();
         }
         
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((name.toString() == null) ? 0 : name.toString().hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            SyntheticName other = (SyntheticName) obj;
+            if (name.toString() == null) {
+                if (other.name.toString() != null)
+                    return false;
+            } else if (!name.toString().equals(other.name.toString()))
+                return false;
+            return true;
+        }
+
+        /**
+         * Returns the name
+         */
         String getName() {
             return name.toString();
         }
         
+        /**
+         * This name as a Name
+         */
         Name asName() {
             return name;
         }
         
+        /**
+         * A new JCIdent for this name.
+         */
         JCIdent makeIdent() {
             return make().Ident(name);
+        }
+        
+        /**
+         * Returns a new SyntheticName which appends the given suffix onto 
+         * this SyntheticName's name.
+         */
+        SyntheticName suffixedBy(String suffix) {
+            return new SyntheticName(names.fromString(name.toString() + suffix));
         }
     }
     

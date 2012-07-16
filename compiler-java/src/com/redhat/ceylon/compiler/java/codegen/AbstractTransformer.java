@@ -1962,21 +1962,20 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     private JCExpression objectFixedSizedToJavaArray(ProducedType type, JCExpression expr) {
         JCExpression klass1 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
         JCExpression klass2 = makeJavaType(type, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NO_PRIMITIVES);
-        String baseName = naming.newTemp();
+        Naming.SyntheticName seqName = naming.temp().suffixedBy("$0");
 
-        String seqName = baseName +"$0";
         ProducedType fixedSizedType = typeFact().getFixedSizedDeclaration().getProducedType(null, Arrays.asList(type));
         JCExpression seqTypeExpr1 = makeJavaType(fixedSizedType);
         JCExpression seqTypeExpr2 = makeJavaType(fixedSizedType);
 
         JCExpression sizeExpr = make().Apply(List.<JCExpression>nil(), 
-                make().Select(naming.makeUnquotedIdent(seqName), names().fromString("getSize")),
+                make().Select(seqName.makeIdent(), names().fromString("getSize")),
                 List.<JCExpression>nil());
         sizeExpr = make().TypeCast(syms().intType, sizeExpr);
 
         JCExpression newArrayExpr = make().NewArray(klass1, List.of(sizeExpr), null);
         JCExpression sequenceToArrayExpr = makeUtilInvocation("toArray", 
-                List.of(naming.makeUnquotedIdent(seqName), 
+                List.of(seqName.makeIdent(), 
                         newArrayExpr),
                 List.of(klass2));
         

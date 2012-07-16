@@ -879,10 +879,10 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
     
     private final Tree.NamedArgumentList namedArgumentList;
     private final ListBuffer<JCStatement> vars = ListBuffer.lb();
-    private final String callVarName;
-    private final String varBaseName;
+    private final Naming.SyntheticName callVarName;
+    private final Naming.SyntheticName varBaseName;
     private final Set<String> argNames = new HashSet<String>();
-    private final TreeMap<Integer, String> argsNamesByIndex = new TreeMap<Integer, String>();
+    private final TreeMap<Integer, Naming.SyntheticName> argsNamesByIndex = new TreeMap<Integer, Naming.SyntheticName>();
     private final Set<Parameter> bound = new HashSet<Parameter>();
     private ProducedReference producedReference;
     
@@ -894,8 +894,8 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
         this.producedReference = producedReference;
         namedArgumentList = invocation.getNamedArgumentList();
-        varBaseName = gen.naming.newAlias("arg");
-        callVarName = varBaseName + "$callable$";
+        varBaseName = gen.naming.alias("arg");
+        callVarName = varBaseName.suffixedBy("$callable$");
     }
     
     @Override
@@ -908,8 +908,8 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
         appendVarsForNamedArguments(namedArguments, declaredParams);
         boolean hasDefaulted = appendVarsForDefaulted(declaredParams);
-        for (String argName : this.argsNamesByIndex.values()) {
-            appendArgument(gen.naming.makeUnquotedIdent(argName));
+        for (Naming.SyntheticName argName : this.argsNamesByIndex.values()) {
+            appendArgument(argName.makeIdent());
         }
         if (hasDefaulted 
                 && !Strategy.defaultParameterMethodStatic(primaryDeclaration)) {
@@ -921,7 +921,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         JCExpression thisExpr = null;
         if (!Strategy.defaultParameterMethodOnSelf(param) 
                 && !Strategy.defaultParameterMethodStatic(param)) {
-            thisExpr = gen.makeQuotedIdent(varBaseName + "$this$");
+            thisExpr = varBaseName.suffixedBy("$this$").makeIdent();
             if (onValueType) {
                 thisExpr = gen.boxType(thisExpr, qmePrimary.getTypeModel());
             }
@@ -939,23 +939,23 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         ListBuffer<JCExpression> names = ListBuffer.<JCExpression> lb();
         if (!Strategy.defaultParameterMethodStatic(primaryDeclaration)
                 && Strategy.defaultParameterMethodTakesThis(param)) {
-            names.append(gen.makeUnquotedIdent(varBaseName + "$this$"));
+            names.append(varBaseName.suffixedBy("$this$").makeIdent());
         }
         final int parameterIndex = parameterIndex(param);
         for (int ii = 0; ii < parameterIndex; ii++) {
-            names.append(gen.makeUnquotedIdent(this.argsNamesByIndex.get(ii)));
+            names.append(this.argsNamesByIndex.get(ii).makeIdent());
         }
         return names.toList();
     }
     
     /** Generates the argument name; namedArg may be null if no  
      * argument was given explicitly */
-    private String argName(Parameter param) {
+    private Naming.SyntheticName argName(Parameter param) {
         final int paramIndex = parameterIndex(param);
         //if (this.argNames.isEmpty()) {
             //this.argNames.addAll(Collections.<String>nCopies(parameterList(param).size(), null));
         //}
-        final String argName = varBaseName + "$" + paramIndex;
+        final Naming.SyntheticName argName = varBaseName.suffixedBy("$" + paramIndex);
         if (this.argsNamesByIndex.containsValue(argName)) {
             throw new RuntimeException();
         }
@@ -985,7 +985,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         for (Tree.NamedArgument namedArg : namedArguments) {
             gen.at(namedArg);
             Parameter declaredParam = namedArg.getParameter();
-            String argName = argName(declaredParam);
+            Naming.SyntheticName argName = argName(declaredParam);
             ListBuffer<JCStatement> statements;
             if (namedArg instanceof Tree.SpecifiedArgument) {             
                 Tree.SpecifiedArgument specifiedArg = (Tree.SpecifiedArgument)namedArg;
@@ -1029,21 +1029,21 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 Tree.ObjectArgument objectArg = (Tree.ObjectArgument)namedArg;
                 List<JCTree> object = gen.classGen().transformObjectArgument(objectArg);
                 // No need to worry about boxing (it cannot be a boxed type) 
-                JCVariableDecl varDecl = gen.makeLocalIdentityInstance(argName, objectArg.getIdentifier().getText(), false);
+                JCVariableDecl varDecl = gen.makeLocalIdentityInstance(argName.getName(), objectArg.getIdentifier().getText(), false);
                 statements = toStmts(objectArg, object).append(varDecl);
             } else if (namedArg instanceof Tree.AttributeArgument) {
                 Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
                 final Getter model = attrArg.getDeclarationModel();
                 final String name = model.getName();
-                final String alias = gen.naming.newAlias(name);
-                final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias, alias, attrArg.getBlock(), null, null);
+                final Naming.SyntheticName alias = gen.naming.alias(name);
+                final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), attrArg.getBlock(), null, null);
                 ProducedTypedReference typedRef = gen.getTypedReference(model);
                 ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
                 ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
                 ProducedType type = parameterType(declaredParam, model.getType(), 0);
                 final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
                 JCExpression initValue = gen.make().Apply(null, 
-                        gen.makeSelect(alias, Naming.getGetterName(model)),
+                        gen.makeSelect(alias.makeIdent(), Naming.getGetterName(model)),
                         List.<JCExpression>nil());
                 initValue = gen.expressionGen().applyErasureAndBoxing(
                         initValue, 
@@ -1053,7 +1053,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         type);
                 JCTree.JCVariableDecl var = gen.make().VarDef(
                         gen.make().Modifiers(FINAL, List.<JCAnnotation>nil()), 
-                        gen.names().fromString(argName), 
+                        argName.asName(), 
                         gen.makeJavaType(type, boxType==BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), 
                         initValue);
                 statements = toStmts(attrArg, attrClass).append(var);
@@ -1064,7 +1064,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
         }
     }
     
-    private void bind(Parameter param, String argName, List<JCStatement> statements) {
+    private void bind(Parameter param, Naming.SyntheticName argName, List<JCStatement> statements) {
         this.vars.appendList(statements);
         this.argsNamesByIndex.put(parameterIndex(param), argName);
         this.bound.add(param);
@@ -1088,7 +1088,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             flags |= JT_TYPE_ARGUMENT;
         }
         ProducedType type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
-        String argName = argName(param);
+        Naming.SyntheticName argName = argName(param);
         JCExpression typeExpr = gen.makeJavaType(type, flags);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
         bind(param, argName, List.<JCStatement>of(varDecl));
@@ -1184,9 +1184,9 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             } else {
                 thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
             }
-            defaultedParameterInstance = gen.naming.makeUnquotedIdent(callVarName);
+            defaultedParameterInstance = callVarName.makeIdent();
         }
-        JCVariableDecl thisDecl = gen.makeVar(varBaseName + "$this$", 
+        JCVariableDecl thisDecl = gen.makeVar(varBaseName.suffixedBy("$this$"), 
                 thisType, 
                 defaultedParameterInstance);
         return thisDecl;
@@ -1235,7 +1235,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 }
             }
             vars.prepend(gen.makeVar(callVarName, varType, actualPrimExpr));
-            actualPrimExpr = gen.naming.makeUnquotedIdent(callVarName);
+            actualPrimExpr = callVarName.makeIdent();
         }
         return actualPrimExpr;
     }

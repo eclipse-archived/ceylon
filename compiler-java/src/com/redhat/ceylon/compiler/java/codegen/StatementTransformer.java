@@ -178,8 +178,8 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression toTypeExpr = makeJavaType(toType);
     
                 Naming.SyntheticName tmpVarName = naming.alias(name);
-                Name origVarName = names().fromString(name);
-                Name substVarName = names().fromString(naming.newAlias(name));
+                final String origVarName = name;
+                Name substVarName = naming.aliasName(name);
     
                 ProducedType tmpVarType = specifierExpr.getTypeModel();
                 JCExpression tmpVarTypeExpr;
@@ -210,7 +210,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
                 
                 // Prepare for variable substitution in the following code block
-                String prevSubst = addVariableSubst(origVarName.toString(), substVarName.toString());
+                String prevSubst = addVariableSubst(origVarName, substVarName.toString());
                 
                 thenBlock = transform(thenPart);
                 List<JCStatement> stats = List.<JCStatement> of(decl2);
@@ -218,7 +218,7 @@ public class StatementTransformer extends AbstractTransformer {
                 thenBlock = at(cond).Block(0, stats);
                 
                 // Deactivate the above variable substitution
-                removeVariableSubst(origVarName.toString(), prevSubst);
+                removeVariableSubst(origVarName, prevSubst);
                 
                 at(cond);
                 // Assign the expression to test to the temporary variable
