@@ -41,7 +41,7 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 
-public class Naming {
+public class Naming implements LocalId {
 
 
     static enum DeclNameFlag {
@@ -239,7 +239,7 @@ public class Naming {
     }
 
     String getCompanionClassName(TypeDeclaration decl) {
-        return declName(gen(), decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
+        return declName(this, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
     String quoteMethodNameIfProperty(Method method) {
@@ -520,7 +520,7 @@ public class Naming {
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
             }
-            String className = declName(gen(), (TypeDeclaration)container, DeclNameFlag.COMPANION); 
+            String className = declName(this, (TypeDeclaration)container, DeclNameFlag.COMPANION); 
             return  makeQuotedQualIdent(qualifier, className, methodName);
         } else if (Strategy.defaultParameterMethodStatic(param)) {
             // top level method or class
@@ -1043,6 +1043,35 @@ public class Naming {
     
     SyntheticName synthetic(String name) {
         return new SyntheticName(names.fromString(name));
+    }
+    
+    private java.util.Map<Scope, Integer> locals;
+    
+    private void resetLocals() {
+        locals = new java.util.HashMap<Scope, Integer>();
+    }
+    
+    private void local(Scope decl) {
+        if (!locals.containsKey(decl)) {
+            locals.put(decl, locals.size());
+        }
+    }
+    
+    void noteDecl(Declaration decl) {
+        if (decl.isToplevel()) {
+            resetLocals();
+        } else if (Decl.isLocal(decl)){
+            local(decl.getContainer());
+        }
+    }
+    
+    @Override
+    public String getLocalId(Scope decl) {
+        Integer id = locals.get(decl);
+        if (id == null) {
+            throw new RuntimeException(decl + " has no local id");
+        }
+        return String.valueOf(id);
     }
     
 }

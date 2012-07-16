@@ -104,7 +104,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         final ClassOrInterface model = def.getDeclarationModel();
-        noteDecl(model);
+        naming.noteDecl(model);
         final String className;
         String aliasedClassName = def.getIdentifier().getText();
         if (def instanceof Tree.AnyInterface) {
@@ -838,7 +838,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def) {
         final Method model = def.getDeclarationModel();
-        noteDecl(model);
+        naming.noteDecl(model);
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, Decl.isAncestorLocal(def), name, Decl.isShared(def));
@@ -1402,7 +1402,7 @@ public class ClassTransformer extends AbstractTransformer {
             Class klass,
             ClassDefinitionBuilder containingClassBuilder,
             boolean makeLocalInstance) {
-        noteDecl(model);
+        naming.noteDecl(model);
         
         String name = model.getName();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(

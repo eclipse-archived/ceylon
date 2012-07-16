@@ -95,7 +95,7 @@ import com.sun.tools.javac.util.Position.LineMap;
 /**
  * Base class for all delegating transformers
  */
-public abstract class AbstractTransformer implements Transformation, LocalId {
+public abstract class AbstractTransformer implements Transformation {
     
     /**
      * M1 and M2 are 0.0 since they were not tagged at the time
@@ -1140,48 +1140,6 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     private boolean isJavaString(ProducedType type) {
         return "java.lang.String".equals(type.getUnderlyingType());
     }
-
-    private java.util.Map<Scope, Integer> locals;
-    private java.util.Set<Interface> interfaces;
-    
-    private void resetLocals() {
-        ((AbstractTransformer)gen()).locals = new java.util.HashMap<Scope, Integer>();
-    }
-    
-    private void local(Scope decl) {
-        Map<Scope, Integer> locals = ((AbstractTransformer)gen()).locals;
-        if (!locals.containsKey(decl)) {
-            locals.put(decl, locals.size());
-        }
-    }
-    
-    boolean hasInterface(Interface iface) {
-        return ((AbstractTransformer)gen()).interfaces != null 
-                && ((AbstractTransformer)gen()).interfaces.contains(iface);
-    }
-    
-    void noteDecl(Declaration decl) {
-        if (decl.isToplevel()) {
-            resetLocals();
-        } else if (Decl.isLocal(decl)){
-            local(decl.getContainer());
-        }
-        if (decl instanceof Interface) {
-            if (((AbstractTransformer)gen()).interfaces == null) {
-                ((AbstractTransformer)gen()).interfaces = new HashSet<Interface>();
-            }
-            ((AbstractTransformer)gen()).interfaces.add((Interface)decl);
-        }
-    }
-    
-    @Override
-    public String getLocalId(Scope decl) {
-        Integer id = ((AbstractTransformer)gen()).locals.get(decl);
-        if (id == null) {
-            throw new RuntimeException(decl + " has no local id");
-        }
-        return String.valueOf(id);
-    }
     
     private ClassDefinitionBuilder ccdb;
     
@@ -1193,10 +1151,6 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
         ClassDefinitionBuilder result = ((AbstractTransformer)gen()).ccdb;
         ((AbstractTransformer)gen()).ccdb = ccdb;
         return result;
-    }
-    
-    String getFQDeclarationName(final TypeDeclaration decl) {
-        return declName(decl, QUALIFIED);
     }
 
     private String declName(TypeDeclaration tdecl, int flags) {
@@ -1211,11 +1165,11 @@ public abstract class AbstractTransformer implements Transformation, LocalId {
     }
 
     String declName(final TypeDeclaration decl, Naming.DeclNameFlag... flags) {
-        return Naming.declName(this, decl, flags);
+        return Naming.declName(naming, decl, flags);
     }
     
     private JCExpression makeDeclarationName(TypeDeclaration decl) {
-        return makeQuotedQualIdentFromString(getFQDeclarationName(decl));
+        return makeQuotedQualIdentFromString(declName(decl, QUALIFIED));
     }
     
     /**
