@@ -496,8 +496,12 @@ public class Naming implements LocalId {
             Declaration container = param.getDeclaration().getRefinedDeclaration();
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
-            }            
-            return makeQuotedQualIdent(makeQuotedFQIdent(container.getQualifiedNameString()), methodName);
+            }
+            if (container instanceof TypedDeclaration) {
+                return makeSelect(makeName((TypedDeclaration)container, NA_FQ | NA_WRAPPER), methodName);
+            } else {
+                return makeSelect(gen().makeJavaType(((TypeDeclaration)container).getType(), AbstractTransformer.JT_RAW), methodName);
+            }
         } else {
             // inner or local class or method, or method in an interface
             return makeQuotedQualIdent(qualifier, methodName);
