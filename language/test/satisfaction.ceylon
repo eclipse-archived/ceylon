@@ -45,16 +45,24 @@ class MyContainer() satisfies Container {
 class MySized(Integer s) satisfies Sized {
     shared actual Integer size { return s; }
 }
-class MyNone() satisfies None<Integer> {
+/*class MyNone() satisfies None<Integer> {
     shared actual Nothing last { return null; }
     shared actual MyNone clone { return this; }
-}
+}*/
 class MySome() satisfies Some<Integer> {
     shared actual Integer last = 1;
     shared actual Integer size = 2;
     shared actual FixedSized<Integer> rest { return {1}; }
     shared actual MySome clone { return this; }
     shared actual Iterator<Integer> iterator { return {2,1}.iterator; }
+}
+class MyIterator() satisfies Iterator<Integer> {
+    variable value done := false;
+    shared actual Integer|Finished next() {
+        value r = done then exhausted else 1;
+        done := true;
+        return r;
+    }
 }
 
 void testSatisfaction() {
@@ -88,8 +96,15 @@ void testSatisfaction() {
     assert(MyContainer().empty, "Container");
     assert(MySized(0).empty, "Sized [1]");
     assert(!MySized(1).empty, "Sized [2]");
-    variable FixedSized<Integer> myfixed := MyNone();
+    variable FixedSized<Integer> myfixed := empty;//MyNone();
     assert(!nonempty myfixed, "None");
     myfixed := MySome();
     assert(nonempty myfixed, "Some");
+    value myiter = MyIterator();
+    if (is Integer ii=myiter.next()) {
+        assert(ii==1, "Iterator [1]");
+    } else { fail("Iterator [1]"); }
+    if (!is Finished myiter.next()) {
+        fail("Iterator [2]");
+    }
 }
