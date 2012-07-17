@@ -97,13 +97,14 @@ class MyOrdinal(prev, next) satisfies Ordinal<MyOrdinal> {
     shared actual MyOrdinal successor { return next else this; }
     shared actual MyOrdinal predecessor { return prev else this; }
 }
-class MyNumeric(Integer x) satisfies Numeric<MyNumeric> {
+class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeric,Integer> {
     shared actual MyNumeric minus(MyNumeric other) { return MyNumeric(x-other.x); }
     shared actual MyNumeric plus(MyNumeric other) { return MyNumeric(x+other.x); }
     shared actual MyNumeric times(MyNumeric other) { return MyNumeric(x*other.x); }
     shared actual MyNumeric divided(MyNumeric other) { return MyNumeric(x/other.x); }
     shared actual MyNumeric positiveValue { return MyNumeric(+x); }
     shared actual MyNumeric negativeValue { return MyNumeric(-x); }
+    shared actual MyNumeric power(Integer exp) { return MyNumeric(x**exp); }
     shared actual Boolean equals(Object o) {
         if (is MyNumeric o) {
             return o.x == x;
@@ -176,4 +177,5 @@ void testSatisfaction() {
     assert(MyNumeric(2)*MyNumeric(2)==MyNumeric(4), "Numeric[3]");
     assert(MyNumeric(6)/MyNumeric(3)==MyNumeric(2), "Numeric[4]");
     assert(MyNumeric(1)*MyNumeric(-1)==-MyNumeric(1), "Numeric[5]");
+    assert(MyNumeric(2)**3==MyNumeric(8), "Numeric[6]");
 }
