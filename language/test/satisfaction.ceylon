@@ -91,6 +91,26 @@ class MyRanged() satisfies Ranged<Integer, Iterable<Integer>> {
         return elements(for (i in from..from+length-1) i);
     }
 }
+class MyOrdinal(prev, next) satisfies Ordinal<MyOrdinal> {
+    shared variable MyOrdinal? prev;
+    shared variable MyOrdinal? next;
+    shared actual MyOrdinal successor { return next else this; }
+    shared actual MyOrdinal predecessor { return prev else this; }
+}
+class MyNumeric(Integer x) satisfies Numeric<MyNumeric> {
+    shared actual MyNumeric minus(MyNumeric other) { return MyNumeric(x-other.x); }
+    shared actual MyNumeric plus(MyNumeric other) { return MyNumeric(x+other.x); }
+    shared actual MyNumeric times(MyNumeric other) { return MyNumeric(x*other.x); }
+    shared actual MyNumeric divided(MyNumeric other) { return MyNumeric(x/other.x); }
+    shared actual MyNumeric positiveValue { return MyNumeric(+x); }
+    shared actual MyNumeric negativeValue { return MyNumeric(-x); }
+    shared actual Boolean equals(Object o) {
+        if (is MyNumeric o) {
+            return o.x == x;
+        }
+        return false;
+    }
+}
 
 void testSatisfaction() {
     value category = MyCategory();
@@ -140,4 +160,20 @@ void testSatisfaction() {
     assert(MyRanged().span(1,null).sequence=={1}, "Ranged[1]");
     assert(MyRanged().span(1,3).sequence=={1,2,3}, "Ranged[2]");
     assert(MyRanged().segment(10,1).sequence=={10}, "Ranged[3]");
+
+    variable value ord1 := MyOrdinal(null,null);
+    variable value ord2 := MyOrdinal(ord1, null);
+    variable value ord3 := MyOrdinal(ord2, ord1);
+    ord1.next := ord2;
+    ord2.next := ord3;
+    assert(++ord1==ord2, "Ordinal [1]");
+    assert(--ord3==ord2, "Ordinal [2]");
+    ord3++;
+    assert(++ord3==--ord1, "Ordinal [3]");
+
+    assert(MyNumeric(1)+MyNumeric(1)==MyNumeric(2), "Numeric[1]");
+    assert(MyNumeric(2)-MyNumeric(1)==MyNumeric(1), "Numeric[2]");
+    assert(MyNumeric(2)*MyNumeric(2)==MyNumeric(4), "Numeric[3]");
+    assert(MyNumeric(6)/MyNumeric(3)==MyNumeric(2), "Numeric[4]");
+    assert(MyNumeric(1)*MyNumeric(-1)==-MyNumeric(1), "Numeric[5]");
 }
