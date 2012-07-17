@@ -40,4 +40,5 @@ void testArrays() {
     if (exists i=a7[0]) {
         fail("array.setItem (null) 2");
     }
+    assert(array(1,2,3).reversed==array(3,2,1), "Array.reversed");
 }
