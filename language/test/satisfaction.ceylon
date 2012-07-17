@@ -64,6 +64,33 @@ class MyIterator() satisfies Iterator<Integer> {
         return r;
     }
 }
+/*class MySequence() satisfies Sequence<Integer> {
+    shared actual Integer lastIndex = 0;
+    shared actual Integer first = 1;
+    shared actual Integer[] rest = {};
+    shared actual Integer hash = 1;
+    shared actual Boolean equals(Object other) { return false; }
+    shared actual MySequence clone { return MySequence(); }
+    shared actual Sequence<Integer> reversed { return this; }
+    shared actual Integer? item(Integer index) {
+        return index==0 then 1 else null;
+    }
+    shared actual Integer[] segment(Integer from, Integer length) {
+        return from==0 && length>0 then this else {};
+    }
+    shared actual Integer[] span(Integer from, Integer? to) {
+        return from==0 then this else {};
+    }
+}*/
+class MyRanged() satisfies Ranged<Integer, Iterable<Integer>> {
+    shared actual Iterable<Integer> span(Integer from, Integer? to) {
+        value end = to else from;
+        return elements(for (i in from..end) i);
+    }
+    shared actual Iterable<Integer> segment(Integer from, Integer length) {
+        return elements(for (i in from..from+length-1) i);
+    }
+}
 
 void testSatisfaction() {
     value category = MyCategory();
@@ -96,7 +123,7 @@ void testSatisfaction() {
     assert(MyContainer().empty, "Container");
     assert(MySized(0).empty, "Sized [1]");
     assert(!MySized(1).empty, "Sized [2]");
-    variable FixedSized<Integer> myfixed := empty;//MyNone();
+    variable FixedSized<Integer> myfixed := {};//MyNone();
     assert(!nonempty myfixed, "None");
     myfixed := MySome();
     assert(nonempty myfixed, "Some");
@@ -107,4 +134,10 @@ void testSatisfaction() {
     if (!is Finished myiter.next()) {
         fail("Iterator [2]");
     }
+    /*assert(MySequence().last==MySequence().first, "Sequence[1]");
+    assert(!nonempty MySequence().rest, "Sequence[2]");
+    assert(MySequence().reversed==MySequence(), "Sequence[3]");*/
+    assert(MyRanged().span(1,null).sequence=={1}, "Ranged[1]");
+    assert(MyRanged().span(1,3).sequence=={1,2,3}, "Ranged[2]");
+    assert(MyRanged().segment(10,1).sequence=={10}, "Ranged[3]");
 }
