@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +32,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Token;
-import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -536,20 +535,6 @@ public class Naming implements LocalId {
         }
     }
     
-    JCExpression makeQualifiedName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
-        // TODO Don't build a list but rather construct a JCExpression directly
-        LinkedList<String> parts = new LinkedList<String>();
-        Assert.that(namingOptions != 0);
-        Assert.that(expr == null || ((namingOptions & NA_FQ) == 0 
-                && (namingOptions & NA_WRAPPER) == 0
-                && (namingOptions & NA_WRAPPER_UNQUOTED) == 0)); 
-        if ((namingOptions & (NA_MEMBER | NA_IDENT)) != 0) {
-            pushMemberName(decl, namingOptions, parts);
-        }
-        addNamesForWrapperClass(decl, parts, namingOptions);
-        return mkSelect(expr, parts);
-    }
-    
     /**
      * Makes an ident for @{code ${qualifier}.this}, 
      * or plain {@code this} if the qualifier is null
@@ -586,69 +571,106 @@ public class Naming implements LocalId {
     JCExpression makeName(TypedDeclaration decl, int namingOptions) {
         return makeQualifiedName(null, decl, namingOptions);
     }
-    private static void pushMemberName(TypedDeclaration decl, int namingOptions,
-            LinkedList<String> parts) {
+    
+    JCExpression makeQualifiedName(JCExpression qualifyingExpr, TypedDeclaration decl, int namingOptions) {
+        // TODO Don't build a list but rather construct a JCExpression directly
+        Assert.that(namingOptions != 0);
+        Assert.that(qualifyingExpr == null || ((namingOptions & NA_FQ) == 0 
+                && (namingOptions & NA_WRAPPER) == 0
+                && (namingOptions & NA_WRAPPER_UNQUOTED) == 0));
+        
+        JCExpression expr = qualifyingExpr;
+        expr = addNamesForWrapperClass(expr, decl, namingOptions);
+        if ((namingOptions & (NA_MEMBER | NA_IDENT)) != 0) {
+            expr = addMemberName(expr, decl, namingOptions);
+        }
+        
+        return expr;
+    }
+
+    private JCExpression iors(JCExpression expr, String name) {
+        if (expr == null) {
+            return makeUnquotedIdent(name);
+        }
+        return makeSelect(expr, name);
+    }
+    
+    private JCExpression addMemberName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_IDENT) != 0) {
             Assert.not((namingOptions & NA_GETTER | NA_SETTER) == 0);
-            parts.push(decl.getName());
+            expr = iors(expr, decl.getName());
         } else if ((namingOptions & NA_SETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no setter");
-            parts.push(getSetterName(decl.getName()));
+            expr = iors(expr, getSetterName(decl.getName()));
         } else if ((namingOptions & NA_GETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no getter");
-            parts.push(getGetterName(decl));
+            expr = iors(expr, getGetterName(decl));
         } else if (decl instanceof Getter
                 || decl instanceof Value) {
             if (decl.getType().isCallable()) {
-                parts.push(decl.getName());
+                expr = iors(expr, decl.getName());
             } else {
-                parts.push(getGetterName(decl));
+                expr = iors(expr, getGetterName(decl));
             }
         } else if (decl instanceof Setter) {
-            parts.push(getSetterName(decl.getName()));
+            expr = iors(expr, getSetterName(decl.getName()));
         } else if (decl instanceof Method) {
-            parts.push(getMethodName(decl.getName()));
+            expr = iors(expr, getMethodName(decl.getName()));
         } else if (decl instanceof Parameter) {
             if ((namingOptions & NA_ALIASED) != 0) {
-                parts.push(getAliasedParameterName((Parameter)decl));
+                expr = iors(expr, getAliasedParameterName((Parameter)decl));
             } else {
-                parts.push(decl.getName());
+                expr = iors(expr, decl.getName());
             }
         }
+        return expr;
     }
-
-    private static void addNamesForWrapperClass(TypedDeclaration decl,
-            LinkedList<String> parts, int namingOptions) {
-        if ((namingOptions & NA_WRAPPER) != 0) {
-            parts.push(getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
-        } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
-            parts.push(getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
-        } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
-            parts.push(getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
-        }
+    
+    private JCExpression addNamesForWrapperClass(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_FQ) != 0) {
             Assert.that(((namingOptions & NA_WRAPPER) != 0)
                     || ((namingOptions & NA_WRAPPER_UNQUOTED) != 0), 
                     "If you pass FQ you must pass WRAPPER or WRAPPER_UNQUOTED too, or there's no class name to qualify!");
+            List<String> outerNames = null;
             Scope s = decl.getContainer();
             while (s != null) {
                 if (s instanceof Package) {
                     final List<String> packageName = ((Package) s).getName();
-                    for (int ii = packageName.size() - 1; ii >= 0; ii--) {
-                        parts.push(quoteIfJavaKeyword(packageName.get(ii)));
-                    }
                     if (!packageName.get(0).isEmpty()) {
-                        parts.push("");// so generated name begins with a .
+                        expr = maker.Ident(names.empty);
+                    }
+                    for (int ii = 0; ii < packageName.size(); ii++) {
+                        expr = iors(expr, quoteIfJavaKeyword(packageName.get(ii)));
                     }
                     break;
                 } else if (s instanceof ClassOrInterface) {
-                    parts.push(getQuotedClassName((ClassOrInterface) s, 0));
+                    if (outerNames == null) {
+                        outerNames = new ArrayList<String>(2);
+                    }
+                    outerNames.add(getQuotedClassName((ClassOrInterface) s, 0));
                 } else if (s instanceof TypedDeclaration) {
-                    parts.push(quoteIfJavaKeyword(((TypedDeclaration) s).getName()));
+                    if (outerNames == null) {
+                        outerNames = new ArrayList<String>(2);
+                    }
+                    outerNames.add(quoteIfJavaKeyword(((TypedDeclaration) s).getName()));
                 }
                 s = s.getContainer();
             }
-        } 
+            if (outerNames != null) {
+                for (int ii = outerNames.size()-1; ii >= 0; ii--) {
+                    String outerName = outerNames.get(ii);
+                    expr = iors(expr, outerName);
+                }
+            }
+        }
+        if ((namingOptions & NA_WRAPPER) != 0) {
+            expr = iors(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+        } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
+            expr = iors(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+        } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
+            expr = iors(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+        }
+        return expr;
     }
 
     static String quoteClassName(String name) {
@@ -683,20 +705,6 @@ public class Naming implements LocalId {
     private static String getQuotedClassName(Declaration decl, int namingOptions) {
         String name = getRealName(decl, namingOptions);
         return quoteClassName(name);
-    }
-    
-    /**
-     * Returns a fully qualified JCExpression for referring to the given name
-     */
-    private JCExpression mkSelect(JCExpression result, List<String> rest) {
-        for (String part : rest) {
-            if (result == null) {
-                result = makeUnquotedIdent(part);
-            } else {
-                result = makeSelect(result, part);
-            }
-        }
-        return result;
     }
     
     /** Include the member part of the typed declaration (e.g. the method name) */
