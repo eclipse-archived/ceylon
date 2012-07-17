@@ -14,6 +14,10 @@ shared interface None<out Element>
     shared actual default Nothing first {
         return null;
     }
+    doc "Returns `null`."
+    shared actual default Nothing last {
+        return null;
+    }
 
     doc "Returns `emptyIterator`."
     shared actual default Iterator<Element> iterator {

@@ -47,6 +47,7 @@ shared interface Empty
     shared actual Nothing lastIndex { return null; }
 
     shared actual Nothing first { return null; }
+    shared actual Nothing last { return null; }
 
     //shared actual Empty rest { return this; }
 
