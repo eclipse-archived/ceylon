@@ -102,4 +102,14 @@ void iterators() {
 
     print("Testing for/else loops");
     test_foreach();
+
+    //Test ChainedIterator
+    value chained = ChainedIterator({1},{2});
+    if (is Integer ii=chained.next()) {
+        assert(ii==1, "ChainedIterator [1]");
+    } else { fail("ChainedIterator [1]");}
+    if (is Integer ii=chained.next()) {
+        assert(ii==2, "ChainedIterator [2]");
+    } else { fail("ChainedIterator [2]");}
+    assert(is Finished chained.next(), "ChainedIterator [3]");
 }
