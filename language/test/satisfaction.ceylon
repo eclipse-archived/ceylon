@@ -112,6 +112,16 @@ class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeri
         return false;
     }
 }
+class MyInvertable(Integer x) satisfies Invertable<MyInvertable> {
+    shared actual MyInvertable negativeValue { return MyInvertable(-x); }
+    shared actual MyInvertable positiveValue { return MyInvertable(+x); }
+    shared actual Boolean equals(Object o) {
+        if (is MyInvertable o) {
+            return o.x == x;
+        }
+        return false;
+    }
+}
 
 void testSatisfaction() {
     value category = MyCategory();
@@ -178,4 +188,6 @@ void testSatisfaction() {
     assert(MyNumeric(6)/MyNumeric(3)==MyNumeric(2), "Numeric[4]");
     assert(MyNumeric(1)*MyNumeric(-1)==-MyNumeric(1), "Numeric[5]");
     assert(MyNumeric(2)**3==MyNumeric(8), "Numeric[6]");
+
+    assert(MyInvertable(-1)==-MyInvertable(1), "Invertable");
 }
