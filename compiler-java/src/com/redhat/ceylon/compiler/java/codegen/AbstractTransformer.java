@@ -893,7 +893,7 @@ public abstract class AbstractTransformer implements Transformation {
                         (flags & JT_CLASS_NEW) != 0) {
                     baseType = makeIdent(syms().ceylonAbstractCallableType);
                 } else {
-                    baseType = makeDeclarationName(tdecl);
+                    baseType = naming.makeDeclarationName(tdecl, DeclNameFlag.QUALIFIED);
                 }
 
                 if (typeArgs != null && typeArgs.size() > 0) {
@@ -1145,23 +1145,6 @@ public abstract class AbstractTransformer implements Transformation {
         }
         DeclNameFlag[] opts = args.toArray(new DeclNameFlag[args.size()]);
         return opts;
-    }
-
-    String declName(final TypeDeclaration decl, Naming.DeclNameFlag... flags) {
-        return Naming.declName(naming, decl, flags);
-    }
-    
-    private JCExpression makeDeclarationName(TypeDeclaration decl) {
-        return makeQuotedQualIdentFromString(declName(decl, QUALIFIED));
-    }
-    
-    
-    
-    /**
-     * Returns the name of the companion class of the given class or interface
-     */
-    String getCompanionClassName(TypeDeclaration decl){
-        return naming.getCompanionClassName(decl);
     }
     
     /**
