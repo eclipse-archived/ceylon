@@ -122,6 +122,10 @@ class MyInvertable(Integer x) satisfies Invertable<MyInvertable> {
         return false;
     }
 }
+class MyCorrespondence() satisfies Correspondence<Integer, Character> {
+    value a = "abcdef";
+    shared actual Character? item(Integer k) { return a[k]; }
+}
 
 void testSatisfaction() {
     value category = MyCategory();
@@ -190,4 +194,10 @@ void testSatisfaction() {
     assert(MyNumeric(2)**3==MyNumeric(8), "Numeric[6]");
 
     assert(MyInvertable(-1)==-MyInvertable(1), "Invertable");
+
+    value corr = MyCorrespondence();
+    assert(exists corr[0], "Correspondence[1]");
+    assert(!exists corr[100], "Correspondence[2]");
+    assert(corr.defines(3), "Correspondence[3]");
+    assert(is Character corr[4], "Correspondence[4]");
 }
