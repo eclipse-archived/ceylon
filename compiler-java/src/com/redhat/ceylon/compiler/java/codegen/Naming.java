@@ -183,12 +183,6 @@ public class Naming implements LocalId {
             final boolean last = ii == l.size() - 1;
             appendDeclName(gen, decl, flags, sb, scope, last);
         }
-        if (!flags.contains(DeclNameFlag.QUALIFIED)) {
-            // this is a lot saner than trying to modify appendDeclName :(
-            int lastDot = sb.lastIndexOf(".");
-            if(lastDot != -1)
-                sb.delete(0, lastDot+1);
-        }
         return sb.toString();
     }
 
@@ -213,26 +207,36 @@ public class Naming implements LocalId {
             if (flags.contains(DeclNameFlag.COMPANION)
                 || !(decl instanceof Interface)) {
                 sb.setLength(0);
-            } else
-            if (flags.contains(DeclNameFlag.QUALIFIED)
+            } else if (flags.contains(DeclNameFlag.QUALIFIED)
                     || (decl instanceof Interface)) {
                 Scope nonLocal = scope;
                 while (!(nonLocal instanceof Declaration)) {
                     nonLocal = nonLocal.getContainer();
                 }
+                sb.append(((Declaration)nonLocal).getName()).append('$').append(gen.getLocalId(scope));
                 if (decl instanceof Interface) {
-                    sb.append(((Declaration)nonLocal).getName()).append('$').append(gen.getLocalId(scope)).append('$');
+                    sb.append('$');
                 } else {
-                    sb.append(((Declaration)nonLocal).getName()).append("$").append(gen.getLocalId(scope)).append('.');
+                    if (flags.contains(DeclNameFlag.QUALIFIED)) {
+                        sb.append('.');
+                    } else {
+                        sb.setLength(0);
+                    }
                 }
             }
             return;
         }
         if (!last) {
-            if (decl instanceof Interface && Decl.isCeylon((Interface)decl)) {
-                sb.append(flags.contains(DeclNameFlag.COMPANION) ? '.' : '$');
+            if (decl instanceof Interface 
+                    && Decl.isCeylon((Interface)decl)
+                    && !flags.contains(DeclNameFlag.COMPANION)) {
+                sb.append('$');
             } else {
-                sb.append('.');
+                if (flags.contains(DeclNameFlag.QUALIFIED)) {
+                    sb.append('.');
+                } else {
+                    sb.setLength(0);
+                }
             }
         }
     }
