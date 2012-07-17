@@ -342,7 +342,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
                     return unsafeItem(idx++);
                 }
                 else {
-                    return exhausted.getExhausted();
+                    return exhausted_.getExhausted();
                 }
             }
 
@@ -442,11 +442,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
+        return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty());
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable definesEvery$keys() {
-        return $empty.getEmpty();
+        return empty_.getEmpty();
     }
 
     @Override
@@ -458,11 +458,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
+        return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty());
     }
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable definesAny$keys() {
-        return $empty.getEmpty();
+        return empty_.getEmpty();
     }
 
     @Override
@@ -475,12 +475,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> items() {
-        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
+        return Correspondence$impl._items(this, (Iterable)empty_.getEmpty());
     }
     @Override
     @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Integer> items$keys() {
-        return (Iterable)$empty.getEmpty();
+        return (Iterable)empty_.getEmpty();
     }
 
     @Override
@@ -551,12 +551,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, $empty.getEmpty());
+        return Category$impl._containsEvery(this, empty_.getEmpty());
     }
     @Override
     @Ignore
     public Iterable<?> containsEvery$elements() {
-        return $empty.getEmpty();
+        return empty_.getEmpty();
     }
 
     @Override
@@ -569,12 +569,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, $empty.getEmpty());
+        return Category$impl._containsAny(this, empty_.getEmpty());
     }
     @Override
     @Ignore
     public Iterable<?> containsAny$elements() {
-        return $empty.getEmpty();
+        return empty_.getEmpty();
     }
 
     @Override

@@ -117,15 +117,15 @@ public abstract class String
     @Override
     public Comparison compare(@Name("other") String other) {
         int c = value.compareTo(other.value);
-        return (c < 0) ? smaller.getSmaller() :
-            ((c == 0) ? equal.getEqual() : larger.getLarger());
+        return (c < 0) ? smaller_.getSmaller() :
+            ((c == 0) ? equal_.getEqual() : larger_.getLarger());
     }
 
     @Ignore
     public static Comparison compare(java.lang.String value, java.lang.String otherValue) {
         int c = value.compareTo(otherValue);
-        return (c < 0) ? smaller.getSmaller() :
-            ((c == 0) ? equal.getEqual() : larger.getLarger());
+        return (c < 0) ? smaller_.getSmaller() :
+            ((c == 0) ? equal_.getEqual() : larger_.getLarger());
     }
 
     /*@Override
@@ -268,19 +268,19 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesEvery() {
-        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
+        return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty());
     }
 
     @Ignore
     public static boolean definesEvery(java.lang.String value) {
         // TODO We're still boxing here!
-        return Correspondence$impl._definesEvery(instance(value), (Iterable)$empty.getEmpty());
+        return Correspondence$impl._definesEvery(instance(value), (Iterable)empty_.getEmpty());
     }
 
     @Override
     @Ignore
     public Iterable<? extends Integer> definesEvery$keys() {
-        return (Iterable)$empty.getEmpty();
+        return (Iterable)empty_.getEmpty();
     }
 
     @Override
@@ -304,19 +304,19 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesAny() {
-        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
+        return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty());
     }
 
     @Ignore
     public static boolean definesAny(java.lang.String value) {
         // TODO We're still boxing here!
-        return Correspondence$impl._definesAny(instance(value), (Iterable)$empty.getEmpty());
+        return Correspondence$impl._definesAny(instance(value), (Iterable)empty_.getEmpty());
     }
 
     @Override
     @Ignore
     public Iterable<? extends Integer> definesAny$keys() {
-        return (Iterable)$empty.getEmpty();
+        return (Iterable)empty_.getEmpty();
     }
 
     @Override
@@ -336,19 +336,19 @@ public abstract class String
     @Override
     @Ignore
     public List<? extends Character> items() {
-        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
+        return Correspondence$impl._items(this, (Iterable)empty_.getEmpty());
     }
 
     @Ignore
     public static List<? extends Character> items(java.lang.String value) {
         // TODO We're still boxing here!
-        return Correspondence$impl._items(instance(value), (Iterable)$empty.getEmpty());
+        return Correspondence$impl._items(instance(value), (Iterable)empty_.getEmpty());
     }
 
     @Override
     @Ignore
     public Iterable<? extends Integer> items$keys() {
-        return (Iterable)$empty.getEmpty();
+        return (Iterable)empty_.getEmpty();
     }
 
     @Override
@@ -370,7 +370,7 @@ public abstract class String
                     result = Character.instance(codePoint);
                     offset += java.lang.Character.charCount(codePoint);
                 } else {
-                    result = exhausted.getExhausted();
+                    result = exhausted_.getExhausted();
                 }
                 return result;
             }
@@ -388,7 +388,7 @@ public abstract class String
     public static Iterable<? extends Character> getCharacters(java.lang.String value) {
         int length = value.length();
         if (length == 0) {
-            return (Iterable)$empty.getEmpty();
+            return (Iterable)empty_.getEmpty();
         }
         Character[] chars = new Character[(int)getSize(value)];
         for (int offset = 0, i = 0; offset < length; i++) {
@@ -510,19 +510,19 @@ public abstract class String
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, $empty.getEmpty());
+        return Category$impl._containsAny(this, empty_.getEmpty());
     }
 
     @Ignore
     public static boolean containsAny(java.lang.String value) {
         // TODO We're still boxing here!
-        return Category$impl._containsAny(instance(value), $empty.getEmpty());
+        return Category$impl._containsAny(instance(value), empty_.getEmpty());
     }
 
     @Override
     @Ignore
     public Iterable<?> containsAny$elements() {
-        return $empty.getEmpty();
+        return empty_.getEmpty();
     }
 
     @Override
@@ -542,19 +542,19 @@ public abstract class String
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, $empty.getEmpty());
+        return Category$impl._containsEvery(this, empty_.getEmpty());
     }
 
     @Ignore
     public static boolean containsEvery(java.lang.String value) {
         // TODO We're still boxing here!
-        return Category$impl._containsEvery(instance(value), $empty.getEmpty());
+        return Category$impl._containsEvery(instance(value), empty_.getEmpty());
     }
 
     @Override
     @Ignore
     public Iterable<?> containsEvery$elements() {
-        return $empty.getEmpty();
+        return empty_.getEmpty();
     }
 
     public boolean longerThan(@TypeInfo("ceylon.language.Integer")
@@ -683,7 +683,7 @@ public abstract class String
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
         java.lang.Object elem = it.next();
-        if (elem != exhausted.getExhausted()) {
+        if (elem != exhausted_.getExhausted()) {
             result.append(elem);
             for (;!((elem = it.next()) instanceof Finished);) {
                 result.append(value).append(elem);
@@ -694,12 +694,12 @@ public abstract class String
 
     @Ignore
     public java.lang.String join() {
-        return join((Iterable)$empty.getEmpty());
+        return join((Iterable)empty_.getEmpty());
     }
 
     @Ignore
     public static java.lang.String join(java.lang.String value) {
-        return join(value, (Iterable)$empty.getEmpty());
+        return join(value, (Iterable)empty_.getEmpty());
     }
 
     @Override
@@ -987,7 +987,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return instance($string.string(Iterable$impl._sort(instance(value), f)));
+            return instance(string_.string(Iterable$impl._sort(instance(value), f)));
         }
     }
 
@@ -1015,7 +1015,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return String.instance($string.string(new FilterIterable<Character>(instance(value), f)));
+            return String.instance(string_.string(new FilterIterable<Character>(instance(value), f)));
         }
     }
 
@@ -1078,7 +1078,7 @@ public abstract class String
         if (value.isEmpty()) {
             return instance(value);
         } else {
-            return instance($string.string(Iterable$impl._by(instance(value), step)));
+            return instance(string_.string(Iterable$impl._by(instance(value), step)));
         }
     }
 
@@ -1209,7 +1209,7 @@ public abstract class String
                         lastTokenWasSeparator = false;
                         return String.instance("");
                     } else {
-                        return exhausted.getExhausted();
+                        return exhausted_.getExhausted();
                     }
                 }
 
@@ -1244,7 +1244,7 @@ public abstract class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() == exhausted.getExhausted();
+            return getIterator().next() == exhausted_.getExhausted();
         }
 
         @Override
@@ -1364,7 +1364,7 @@ public abstract class String
                         pos = idx+oc.length();
                         return Integer.instance(idx);
                     }
-                    return exhausted.getExhausted();
+                    return exhausted_.getExhausted();
                 }
             }
 
@@ -1373,7 +1373,7 @@ public abstract class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() == exhausted.getExhausted();
+            return getIterator().next() == exhausted_.getExhausted();
         }
 
         @Override

@@ -47,12 +47,12 @@ class StringOfSome extends String implements Some<Character> {
     @Override
     @Ignore
     public Iterable<? extends Character> sort(Callable<? extends Comparison> f) {
-        return String.instance($string.string(Iterable$impl._sort(this, f)));
+        return String.instance(string_.string(Iterable$impl._sort(this, f)));
     }
     @Override
     @Ignore
     public Iterable<? extends Character> filter(Callable<? extends Boolean> f) {
-        return String.instance($string.string(new FilterIterable<Character>(this, f)));
+        return String.instance(string_.string(new FilterIterable<Character>(this, f)));
     }
     @Override @Ignore
     public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
@@ -60,7 +60,7 @@ class StringOfSome extends String implements Some<Character> {
     }
     @Override @Ignore
     public Iterable<? extends Character> select(Callable<? extends Boolean> f) {
-        return String.instance($string.string(new FilterIterable<Character>(this, f)));
+        return String.instance(string_.string(new FilterIterable<Character>(this, f)));
     }
     @Override
     @Ignore
@@ -85,7 +85,7 @@ class StringOfSome extends String implements Some<Character> {
     }
     @Override @Ignore
     public Iterable<? extends Character> by(long step) {
-        return String.instance($string.string(Iterable$impl._by(this, step)));
+        return String.instance(string_.string(Iterable$impl._by(this, step)));
     }
     @Override @Ignore
     public long count(Callable<? extends Boolean> f) {

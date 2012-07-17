@@ -14,14 +14,14 @@ public abstract class Boolean {
 
     @Ignore
     public static Boolean instance(boolean b) {
-        return b ? $true.getTrue() : $false.getFalse();
+        return b ? true_.getTrue() : false_.getFalse();
     }
 
     abstract public boolean booleanValue();
     
     @Ignore
     public static java.lang.String toString(boolean value) {
-        return (value) ? $true.getTrue().toString() : $false.getFalse().toString();
+        return (value) ? true_.getTrue().toString() : false_.getFalse().toString();
     }
 
 }

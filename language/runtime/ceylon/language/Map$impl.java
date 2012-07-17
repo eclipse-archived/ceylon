@@ -72,7 +72,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public Iterator<? extends Key> getIterator() {
-                return bottom.getBottom();
+                return bottom_.getBottom();
             }
 
             @Override
@@ -87,22 +87,22 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public <Other> Set<? extends Object> union(Set<? extends Other> set) {
-                return bottom.getBottom();
+                return bottom_.getBottom();
             }
 
             @Override
             public <Other> Set<? extends Object> intersection(Set<? extends Other> set) {
-                return bottom.getBottom();
+                return bottom_.getBottom();
             }
 
             @Override
             public <Other> Set<? extends Object> exclusiveUnion(Set<? extends Other> set) {
-                return bottom.getBottom();
+                return bottom_.getBottom();
             }
 
             @Override
             public <Other> Set<? extends Key> complement(Set<? extends Other> set) {
-                return bottom.getBottom();
+                return bottom_.getBottom();
             }
 
             // concrete interface methods:
@@ -143,13 +143,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, $empty.getEmpty());
+                return Category$impl._containsEvery(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<?> containsEvery$elements() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -161,13 +161,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsAny() {
-                return Category$impl._containsAny(this, $empty.getEmpty());
+                return Category$impl._containsAny(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<?> containsAny$elements() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -286,7 +286,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public Iterator<? extends Item> getIterator() {
-                return bottom.getBottom();
+                return bottom_.getBottom();
             }
 
             @Override
@@ -325,13 +325,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, $empty.getEmpty());
+                return Category$impl._containsEvery(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<?> containsEvery$elements() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -343,13 +343,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsAny() {
-                return Category$impl._containsAny(this, $empty.getEmpty());
+                return Category$impl._containsAny(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<?> containsAny$elements() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -469,12 +469,12 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public Set<Key> item(java.lang.Object key) {
-                return bottom.getBottom();
+                return bottom_.getBottom();
             }
 
             @Override
             public Iterator<? extends Entry<? extends Item, ? extends Set<Key>>> getIterator() {
-                return bottom.getBottom();
+                return bottom_.getBottom();
             }
 
             @Override
@@ -504,13 +504,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean definesEvery() {
-                return Correspondence$impl._definesEvery(this, $empty.getEmpty());
+                return Correspondence$impl._definesEvery(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<? extends java.lang.Object> definesEvery$keys() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -522,13 +522,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean definesAny() {
-                return Correspondence$impl._definesAny(this, $empty.getEmpty());
+                return Correspondence$impl._definesAny(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<? extends java.lang.Object> definesAny$keys() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -540,13 +540,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public Iterable<? extends Set<Key>> items() {
-                return Correspondence$impl._items(this, $empty.getEmpty());
+                return Correspondence$impl._items(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<? extends java.lang.Object> items$keys() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -570,13 +570,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, $empty.getEmpty());
+                return Category$impl._containsEvery(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<?> containsEvery$elements() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -588,13 +588,13 @@ public final class Map$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsAny() {
-                return Category$impl._containsAny(this, $empty.getEmpty());
+                return Category$impl._containsAny(this, empty_.getEmpty());
             }
 
             @Override
             @Ignore
             public Iterable<?> containsAny$elements() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -774,12 +774,12 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public Iterable<? extends Result> items() {
-                return Correspondence$impl._items(this, $empty.getEmpty());
+                return Correspondence$impl._items(this, empty_.getEmpty());
             }
 
             @Override
             public Iterable<? extends java.lang.Object> items$keys() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -799,7 +799,7 @@ public final class Map$impl<Key,Item> {
                     @Override @Ignore
                     public java.lang.Object next() {
                         java.lang.Object e = iter.next();
-                        return e == exhausted.getExhausted() ? e : new Entry(((Entry)e).getKey(),
+                        return e == exhausted_.getExhausted() ? e : new Entry(((Entry)e).getKey(),
                                 mapping.$call(((Entry)e).getKey(), ((Entry)e).getItem()));
                     }
                 };
@@ -927,12 +927,12 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, $empty.getEmpty());
+                return Category$impl._containsEvery(this, empty_.getEmpty());
             }
 
             @Override
             public Iterable<?> containsEvery$elements() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override
@@ -942,12 +942,12 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public boolean containsAny() {
-                return Category$impl._containsAny(this, $empty.getEmpty());
+                return Category$impl._containsAny(this, empty_.getEmpty());
             }
 
             @Override
             public Iterable<?> containsAny$elements() {
-                return $empty.getEmpty();
+                return empty_.getEmpty();
             }
 
             @Override

@@ -111,12 +111,12 @@ public interface Correspondence<Key,Item> {
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesEvery() {
-            return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
+            return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> definesEvery$keys() {
-            return (Iterable)$empty.getEmpty();
+            return (Iterable)empty_.getEmpty();
         }
         @Override
         @Ignore
@@ -126,12 +126,12 @@ public interface Correspondence<Key,Item> {
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesAny() {
-            return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
+            return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> definesAny$keys() {
-            return (Iterable)$empty.getEmpty();
+            return (Iterable)empty_.getEmpty();
         }
         @Override
         @Ignore
@@ -141,12 +141,12 @@ public interface Correspondence<Key,Item> {
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public List<? extends Item> items() {
-            return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
+            return Correspondence$impl._items(this, (Iterable)empty_.getEmpty());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> items$keys() {
-            return (Iterable)$empty.getEmpty();
+            return (Iterable)empty_.getEmpty();
         }
         @Override
         @Ignore
@@ -192,7 +192,7 @@ public interface Correspondence<Key,Item> {
         public List<? extends Item> segment(Integer from, long length) {
             Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
             if (keys.getEmpty()) {
-                return (List)$empty.getEmpty();
+                return (List)empty_.getEmpty();
             }
             else {
                 return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
@@ -203,7 +203,7 @@ public interface Correspondence<Key,Item> {
         public List<? extends Item> span(Integer from, Integer to) {
             Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
             if (keys.getEmpty()) {
-                return (List)$empty.getEmpty();
+                return (List)empty_.getEmpty();
             }
             else {
                 return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
@@ -222,12 +222,12 @@ public interface Correspondence<Key,Item> {
         @Override
         @Ignore
         public boolean containsEvery() {
-            return Category$impl._containsEvery(this, $empty.getEmpty());
+            return Category$impl._containsEvery(this, empty_.getEmpty());
         }
         @Override
         @Ignore
         public Iterable<?> containsEvery$elements() {
-            return $empty.getEmpty();
+            return empty_.getEmpty();
         }
         @Override
         @Ignore
@@ -237,12 +237,12 @@ public interface Correspondence<Key,Item> {
         @Override
         @Ignore
         public boolean containsAny() {
-            return Category$impl._containsAny(this, $empty.getEmpty());
+            return Category$impl._containsAny(this, empty_.getEmpty());
         }
         @Override
         @Ignore
         public Iterable<?> containsAny$elements() {
-            return $empty.getEmpty();
+            return empty_.getEmpty();
         }
         @Override
         @Ignore

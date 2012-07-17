@@ -34,7 +34,7 @@ public class StringBuilder {
     }
     @Ignore
     public final synchronized StringBuilder appendAll() {
-        return appendAll((Iterable)$empty.getEmpty());
+        return appendAll((Iterable)empty_.getEmpty());
     }
     
     public final synchronized StringBuilder appendCharacter(@Name("character") 

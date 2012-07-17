@@ -17,7 +17,7 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
 
     @Override
     public boolean getEmpty() {
-        return getIterator().next() == exhausted.getExhausted();
+        return getIterator().next() == exhausted_.getExhausted();
     }
 
     @Override

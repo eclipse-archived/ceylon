@@ -29,7 +29,7 @@ public final class Empty$impl {
     }
     @SuppressWarnings("rawtypes")
     static Iterator _getIterator(Empty $this){
-        return emptyIterator.getEmptyIterator();
+        return emptyIterator_.getEmptyIterator();
     }
 
     public java.lang.Object item(java.lang.Object key){

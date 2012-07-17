@@ -26,7 +26,7 @@ public final class None$impl<Element> {
         return _getIterator($this);
     }
     static <Element> Iterator<Element> _getIterator(None<Element> $this){
-        return emptyIterator.getEmptyIterator();
+        return emptyIterator_.getEmptyIterator();
     }
     
     public long getSize(){

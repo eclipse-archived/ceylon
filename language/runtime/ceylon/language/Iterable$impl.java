@@ -40,7 +40,7 @@ public final class Iterable$impl<Element> {
     static <Element> Element _getLast(Iterable<Element> $this) {
         java.lang.Object last = null;
         java.lang.Object next = null;
-        for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted.getExhausted();) {
+        for (Iterator<? extends Element> iter = $this.getIterator(); (next = iter.next()) != exhausted_.getExhausted();) {
             last = next;
         }
         return (Element)last;
@@ -115,7 +115,7 @@ public final class Iterable$impl<Element> {
     @SuppressWarnings("unchecked")
     static <Element> Iterable<? extends Element> _sort(Iterable<? extends Element> $this, final Callable<? extends Comparison> comp) {
         if ($this.getEmpty()) {
-            return (Iterable<? extends Element>) $empty.getEmpty();
+            return (Iterable<? extends Element>) empty_.getEmpty();
         }
         Element[] array = Util.toArray($this, (Class<Element>) java.lang.Object.class);
         Arrays.sort(array, new Comparator<Element>() {
@@ -187,7 +187,7 @@ public final class Iterable$impl<Element> {
     }
     static <Element> Iterable<? extends Element> _taking(final Iterable<? extends Element> $this, final long take) {
         if (take == 0) {
-            return (Iterable)$empty.getEmpty();
+            return (Iterable)empty_.getEmpty();
         }
         else return new AbstractIterable<Element>() {
             @Override
@@ -200,7 +200,7 @@ public final class Iterable$impl<Element> {
                         while (i++ < take) {
                             return iter.next();
                         }
-                        return exhausted.getExhausted();
+                        return exhausted_.getExhausted();
                     }
                 };
             }
@@ -276,7 +276,7 @@ public final class Iterable$impl<Element> {
             @Override public java.lang.Object next() {
                 java.lang.Object tmp = null;
                 while ((tmp = orig.next()) == null);
-                return tmp == exhausted.getExhausted() ? tmp : new Entry<Integer, Element>(Integer.instance(i++), (Element)tmp);
+                return tmp == exhausted_.getExhausted() ? tmp : new Entry<Integer, Element>(Integer.instance(i++), (Element)tmp);
             }
 
         }

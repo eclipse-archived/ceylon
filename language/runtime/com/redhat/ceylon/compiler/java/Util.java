@@ -7,7 +7,7 @@ import java.util.Set;
 
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
-import ceylon.language.exhausted;
+import ceylon.language.exhausted_;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -180,7 +180,7 @@ public class Util {
         if (sequence != null) {
             Iterator<? extends T> iterator = sequence.getIterator();
             Object o; 
-            while((o = iterator.next()) != exhausted.getExhausted()){
+            while((o = iterator.next()) != exhausted_.getExhausted()){
                 list.add((T)o);
             }
         }

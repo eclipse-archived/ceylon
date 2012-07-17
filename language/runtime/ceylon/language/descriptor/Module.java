@@ -1,6 +1,6 @@
 package ceylon.language.descriptor;
 
-import ceylon.language.$empty;
+import ceylon.language.empty_;
 import ceylon.language.Iterable;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -86,7 +86,7 @@ public class Module {
     java.lang.String doc, 
     ceylon.language.Iterable<? extends ceylon.language.String> by, 
     ceylon.language.Quoted license) {
-        this(name, version, doc, by, license, (Iterable)$empty.getEmpty());
+        this(name, version, doc, by, license, (Iterable)empty_.getEmpty());
     }
     
     @Ignore
@@ -95,7 +95,7 @@ public class Module {
     ceylon.language.Quoted version, 
     java.lang.String doc, 
     ceylon.language.Iterable<? extends ceylon.language.String> by) {
-        this(name, version, doc, by, null, (Iterable)$empty.getEmpty());
+        this(name, version, doc, by, null, (Iterable)empty_.getEmpty());
     }
     
     @Ignore
@@ -103,14 +103,14 @@ public class Module {
     ceylon.language.Quoted name, 
     ceylon.language.Quoted version, 
     java.lang.String doc) {
-        this(name, version, doc, (Iterable)$empty.getEmpty(), null, (Iterable)$empty.getEmpty());
+        this(name, version, doc, (Iterable)empty_.getEmpty(), null, (Iterable)empty_.getEmpty());
     }
     
     @Ignore
     public Module(
     ceylon.language.Quoted name, 
     ceylon.language.Quoted version) {
-        this(name, version, "", (Iterable)$empty.getEmpty(), null, (Iterable)$empty.getEmpty());
+        this(name, version, "", (Iterable)empty_.getEmpty(), null, (Iterable)empty_.getEmpty());
     }
     
     @Ignore
@@ -125,7 +125,7 @@ public class Module {
     final ceylon.language.Quoted name, 
     final ceylon.language.Quoted version, 
     final java.lang.String doc) {
-        return (Iterable)ceylon.language.$empty.getEmpty();
+        return (Iterable)ceylon.language.empty_.getEmpty();
     }
     
     @Ignore
@@ -144,7 +144,7 @@ public class Module {
             final java.lang.String doc, 
             final ceylon.language.Iterable<? extends ceylon.language.String> by,
             ceylon.language.Quoted license) {
-        return (Iterable)$empty.getEmpty();
+        return (Iterable)empty_.getEmpty();
     }
 
 }

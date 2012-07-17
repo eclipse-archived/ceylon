@@ -26,7 +26,7 @@ public class ChainedIterator<Element,Other> implements Iterator {
     @TypeInfo("Element|Other|ceylon.language.Finished")
     public java.lang.Object next() {
         java.lang.Object e = iter.next();
-        if (e == exhausted.getExhausted() && more) {
+        if (e == exhausted_.getExhausted() && more) {
             more = false;
             iter = two.getIterator();
             e = iter.next();

@@ -18,7 +18,7 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     @Override
     public FixedSized<? extends Element> getRest() {
         if (getSize() == 1) {
-            return $arrayOfNone.<Element>arrayOfNone();
+            return arrayOfNone_.<Element>arrayOfNone();
         } else {
             if (array instanceof char[]) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, 1, (int)getSize()));
