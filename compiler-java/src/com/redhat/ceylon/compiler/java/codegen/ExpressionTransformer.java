@@ -547,7 +547,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
         at(expr);
         JCExpression builder;
-        builder = make().NewClass(null, null, makeFQIdent("java","lang","StringBuilder"), List.<JCExpression>nil(), null);
+        builder = make().NewClass(null, null, naming.makeFQIdent("java","lang","StringBuilder"), List.<JCExpression>nil(), null);
 
         java.util.List<Tree.StringLiteral> literals = expr.getStringLiterals();
         java.util.List<Tree.Expression> expressions = expr.getExpressions();

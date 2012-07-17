@@ -237,8 +237,16 @@ public class Naming implements LocalId {
         }
     }
 
+    JCExpression makeDeclarationName(TypeDeclaration decl, DeclNameFlag... flags) {
+        return makeQuotedQualIdentFromString(declName(this, decl, flags));
+    }
+    
     String getCompanionClassName(TypeDeclaration decl) {
         return declName(this, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
+    }
+    
+    JCExpression makeCompanionClassName(TypeDeclaration decl) {
+        return makeQuotedQualIdentFromString(getCompanionClassName(decl));
     }
     
     String quoteMethodNameIfProperty(Method method) {
@@ -425,6 +433,11 @@ public class Naming implements LocalId {
         return expr;
     }
 
+    /**
+     * Constructs a fully qualified, unquoted identifier from the given 
+     * components (which should usually be literals).
+     * @see #makeName()
+     */
     JCExpression makeFQIdent(String... components) {
         return makeQualIdent(makeUnquotedIdent(""), components);
     }

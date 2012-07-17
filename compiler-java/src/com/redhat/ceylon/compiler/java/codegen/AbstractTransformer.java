@@ -251,11 +251,6 @@ public abstract class AbstractTransformer implements Transformation {
         return naming.makeQuotedQualIdent(expr, names);
     }
 
-    JCExpression makeFQIdent(String... components) {
-        // TODO Remove this method: Only 1 caller
-        return naming.makeFQIdent(components);
-    }
-
     JCExpression makeQuotedFQIdent(String qualifiedName) {
         // TODO Remove this method??: Only 2 callers
         return naming.makeQuotedFQIdent(qualifiedName);
@@ -923,7 +918,7 @@ public abstract class AbstractTransformer implements Transformation {
                 jt = makeQuotedIdent(tdecl.getName());
             // don't use underlying type if we want no primitives
             else if((flags & (JT_SATISFIES | JT_NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null){
-                jt = makeQuotedQualIdentFromString(declName(tdecl, flags));
+                jt = naming.makeDeclarationName(tdecl, jtFlagsToDeclNameOpts(flags));
             }else
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
         }
@@ -946,18 +941,17 @@ public abstract class AbstractTransformer implements Transformation {
                 (flags & JT_CLASS_NEW) != 0) {
             baseType = makeIdent(syms().ceylonAbstractCallableType);
         } else if (index == 0) {
-            String name;
             // in Ceylon we'd move the nested decl to a companion class
             // but in Java we just don't have type params to the qualifying type if the
             // qualified type is static
             if (tdecl instanceof Interface
                     && qualifyingTypes.size() > 1
                     && firstQualifyingTypeWithTypeParameters == 0) {
-                name = getCompanionClassName(tdecl);
+                baseType = naming.makeCompanionClassName(tdecl);
             } else {
-                name = declName(tdecl, flags);
+                baseType = naming.makeDeclarationName(tdecl, jtFlagsToDeclNameOpts(flags));
             }
-            baseType = makeQuotedQualIdentFromString(name);
+            
         } else {
             baseType = makeSelect(qualifyingExpression, tdecl.getName());
         }
@@ -1141,7 +1135,7 @@ public abstract class AbstractTransformer implements Transformation {
         return result;
     }
 
-    private String declName(TypeDeclaration tdecl, int flags) {
+    private DeclNameFlag[] jtFlagsToDeclNameOpts(int flags) {
         java.util.List<DeclNameFlag> args = new LinkedList<DeclNameFlag>();
         if ((flags & JT_COMPANION) != 0) {
             args.add(DeclNameFlag.COMPANION);
@@ -1149,7 +1143,8 @@ public abstract class AbstractTransformer implements Transformation {
         if ((flags & JT_NON_QUALIFIED) == 0) {
             args.add(DeclNameFlag.QUALIFIED);
         }
-        return declName(tdecl, args.toArray(new DeclNameFlag[args.size()]));
+        DeclNameFlag[] opts = args.toArray(new DeclNameFlag[args.size()]);
+        return opts;
     }
 
     String declName(final TypeDeclaration decl, Naming.DeclNameFlag... flags) {
@@ -1159,6 +1154,8 @@ public abstract class AbstractTransformer implements Transformation {
     private JCExpression makeDeclarationName(TypeDeclaration decl) {
         return makeQuotedQualIdentFromString(declName(decl, QUALIFIED));
     }
+    
+    
     
     /**
      * Returns the name of the companion class of the given class or interface
