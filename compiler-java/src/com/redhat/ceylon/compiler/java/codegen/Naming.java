@@ -189,14 +189,14 @@ public class Naming implements LocalId {
     static void appendDeclName(LocalId gen, final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, StringBuilder sb, Scope scope, final boolean last) {
         if (scope instanceof Class) {
             Class klass = (Class)scope;
-            sb.append(klass.getName());
+            sb.append(Decl.isCeylon(klass) ? quoteClassName(klass.getName()) : klass.getName());
             if (flags.contains(DeclNameFlag.COMPANION)
                     && last) {
                 sb.append("$impl");
             }
         } else if (scope instanceof Interface) {
             Interface iface = (Interface)scope;
-            sb.append(iface.getName());
+            sb.append(Decl.isCeylon(iface) ? quoteClassName(iface.getName()) : iface.getName());
             if (Decl.isCeylon(iface)
                 &&
                  (decl instanceof Class) 
