@@ -1002,7 +1002,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .modelAnnotations(model.getAnnotations());
             }
             if (CodegenUtil.hasCompilerAnnotation(def, "test")){
-                methodBuilder.annotations(List.of(make().Annotation(makeSelect("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
+                methodBuilder.annotations(List.of(make().Annotation(makeSelect(makeSelect("org", "junit"), "Test"), List.<JCTree.JCExpression>nil())));
             }
             lb.prepend(methodBuilder.build());
         }

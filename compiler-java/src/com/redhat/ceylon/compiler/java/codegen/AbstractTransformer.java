@@ -285,18 +285,6 @@ public abstract class AbstractTransformer implements Transformation {
         return naming.makeSelect(s1, s2);
     }
 
-    /**
-     * Makes a sequence of <strong>unquoted</strong> field accesses
-     * @param s1 The base expression
-     * @param s2 The first field to access
-     * @param rest The remaining fields to access
-     * @return The field access
-     */
-    JCFieldAccess makeSelect(String s1, String s2, String... rest) {
-        // TODO Remove this method: Only 1 caller
-        return naming.makeSelect(s1, s2, rest);
-    }
-
     JCLiteral makeNull() {
         return make().Literal(TypeTags.BOT, null);
     }

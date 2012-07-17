@@ -391,34 +391,6 @@ public class Naming implements LocalId {
     /** 
      * Makes an <strong>unquoted</strong> qualified (compound) identifier 
      * from the given qualified name components
-     * @param components The components of the name.
-     * @see #makeQuotedQualIdentFromString(String)
-     */
-    JCExpression makeQualIdent(Iterable<String> components) {
-        JCExpression type = null;
-        for (String component : components) {
-            if (type == null)
-                type = makeUnquotedIdent(component);
-            else
-                type = makeSelect(type, component);
-        }
-        return type;
-    }
-    
-    JCExpression makeQuotedQualIdent(Iterable<String> components) {
-        JCExpression type = null;
-        for (String component : components) {
-            if (type == null)
-                type = makeQuotedIdent(component);
-            else
-                type = makeSelect(type, Naming.quoteIfJavaKeyword(component));
-        }
-        return type;
-    }
-
-    /** 
-     * Makes an <strong>unquoted</strong> qualified (compound) identifier 
-     * from the given qualified name components
      * @param expr A starting expression (may be null)
      * @param names The components of the name (may be null)
      * @see #makeQuotedQualIdentFromString(String)
@@ -488,26 +460,6 @@ public class Naming implements LocalId {
     JCFieldAccess makeSelect(String s1, String s2) {
         return makeSelect(makeUnquotedIdent(s1), s2);
     }
-
-    /**
-     * Makes a sequence of <strong>unquoted</strong> field accesses
-     * @param s1 The base expression
-     * @param s2 The first field to access
-     * @param rest The remaining fields to access
-     * @return The field access
-     */
-    JCFieldAccess makeSelect(String s1, String s2, String... rest) {
-        return makeSelect(makeSelect(s1, s2), rest);
-    }
-
-    JCFieldAccess makeSelect(JCFieldAccess s1, String[] rest) {
-        JCFieldAccess acc = s1;
-        for (String s : rest) {
-            acc = makeSelect(acc, s);
-        }
-        return acc;
-    }
-
     
     JCExpression makeDefaultedParamMethod(JCExpression qualifier, Parameter param) {
         // TODO Can we merge this into makeName(..., NA_DPM) ?
