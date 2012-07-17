@@ -193,7 +193,7 @@ public class ClassDefinitionBuilder {
         return klasses.toList();
     }
 
-    private String getClassName() {
+    String getClassName() {
         return name;
     }
 

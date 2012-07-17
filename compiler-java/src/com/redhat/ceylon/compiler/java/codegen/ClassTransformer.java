@@ -1453,7 +1453,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
         
         if (makeLocalInstance) {
-            result = result.append(makeLocalIdentityInstance(name, false));
+            result = result.append(makeLocalIdentityInstance(name, objectClassBuilder.getClassName(), false));
         } else if (Decl.withinClassOrInterface(model)) {
             boolean visible = Decl.isCaptured(model);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
