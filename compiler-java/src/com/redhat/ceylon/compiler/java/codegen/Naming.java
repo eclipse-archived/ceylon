@@ -635,7 +635,7 @@ public class Naming implements LocalId {
         if ((namingOptions & NA_WRAPPER) != 0) {
             expr = iors(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
-            expr = iors(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+            expr = iors(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
             expr = iors(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         }
@@ -643,13 +643,14 @@ public class Naming implements LocalId {
     }
 
     static String quoteClassName(String name) {
-        return quoteIfJavaKeyword(name);
+        return Util.isInitialLowerCase(name) ? name + "_" : name;
     }
     
     /** 
      * Gets the class name of the given declaration, with the given options
      * @param decl The declaration
-     * @param namingOptions Only NA_SETTER and NA_GETTER are supported.
+     * @param namingOptions Only {@link #NA_SETTER}, {@link #NA_GETTER} and 
+     * {@link #NA_WRAPPER_UNQUOTED} are supported.
      */
     private static String getRealName(Declaration decl, int namingOptions) {
         String name;
@@ -667,13 +668,15 @@ public class Naming implements LocalId {
             name = getAttrClassName((Setter)decl, namingOptions);
         } else {
             name = decl.getName();
+            if ((namingOptions & NA_WRAPPER_UNQUOTED) == 0) {
+                name = quoteClassName(name);
+            }
         }
         return name;
     }
     
     private static String getQuotedClassName(Declaration decl, int namingOptions) {
-        String name = getRealName(decl, namingOptions);
-        return quoteClassName(name);
+        return getRealName(decl, namingOptions);
     }
     
     /** Include the member part of the typed declaration (e.g. the method name) */
@@ -725,8 +728,13 @@ public class Naming implements LocalId {
         return null;
     }
     
+    /**
+     * Gets the class name for the attribute wrapper class. The class name 
+     * will be quoted unless namingOptions includes NA_WRAPPER_UNQUOTED
+     */
     static String getAttrClassName(TypedDeclaration decl, int namingOptions) {
-        Assert.that((namingOptions & ~(NA_SETTER | NA_GETTER)) == 0);
+        Assert.that((namingOptions & ~(NA_SETTER | NA_GETTER | NA_WRAPPER_UNQUOTED)) == 0, 
+                "Unsupported namingOption");
         String name = decl.getName();
         if (Decl.isLocal(decl)) {
             if ((decl instanceof Getter && (namingOptions & NA_SETTER) == 0)
@@ -736,6 +744,9 @@ public class Naming implements LocalId {
                     || (namingOptions & NA_SETTER) != 0) {
                 name = name + "$setter";
             }
+        }
+        if ((namingOptions & NA_WRAPPER_UNQUOTED) == 0) {
+            name = quoteClassName(name);
         }
         return name;
     }
@@ -774,7 +785,7 @@ public class Naming implements LocalId {
         if ("empty".equals(string)) {
             string = "$empty"; // a little hack for now
         }
-        return makeFQIdent("ceylon", "language", string, getGetterName(string));
+        return makeFQIdent("ceylon", "language", quoteClassName(string), getGetterName(string));
     }
     
     /*

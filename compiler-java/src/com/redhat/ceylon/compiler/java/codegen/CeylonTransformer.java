@@ -179,7 +179,7 @@ public class CeylonTransformer extends AbstractTransformer {
         at(decl);
         TypedDeclaration declarationModel = decl.getDeclarationModel(); 
         final String attrName = decl.getIdentifier().getText();
-        final String attrClassName = naming.getAttrClassName(declarationModel, 0);
+        final String attrClassName = naming.getAttrClassName(declarationModel, Naming.NA_WRAPPER_UNQUOTED);
         final Tree.SpecifierOrInitializerExpression expression;
         final Tree.Block block;
         if (decl instanceof Tree.AttributeDeclaration) {
@@ -274,7 +274,8 @@ public class CeylonTransformer extends AbstractTransformer {
         }
         
         if (Decl.isLocal(declarationModel)) {
-            return builder.build().append(makeLocalIdentityInstance(attrClassName, attrClassName, declarationModel.isShared()));
+            return builder.build().append(makeLocalIdentityInstance(naming.quoteClassName(attrClassName), 
+                    naming.quoteClassName(attrClassName), declarationModel.isShared()));
         } else {
             builder.is(Flags.STATIC, true);
             return builder.build();

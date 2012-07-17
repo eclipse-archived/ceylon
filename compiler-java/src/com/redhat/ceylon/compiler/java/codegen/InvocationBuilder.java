@@ -1029,7 +1029,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 Tree.ObjectArgument objectArg = (Tree.ObjectArgument)namedArg;
                 List<JCTree> object = gen.classGen().transformObjectArgument(objectArg);
                 // No need to worry about boxing (it cannot be a boxed type) 
-                JCVariableDecl varDecl = gen.makeLocalIdentityInstance(argName.getName(), objectArg.getIdentifier().getText(), false);
+                JCVariableDecl varDecl = gen.makeLocalIdentityInstance(argName.getName(), Naming.quoteClassName(objectArg.getIdentifier().getText()), false);
                 statements = toStmts(objectArg, object).append(varDecl);
             } else if (namedArg instanceof Tree.AttributeArgument) {
                 Tree.AttributeArgument attrArg = (Tree.AttributeArgument)namedArg;
