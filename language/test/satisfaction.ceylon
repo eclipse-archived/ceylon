@@ -34,6 +34,28 @@ class MyContainerWithoutLastElement() satisfies ContainerWithFirstElement<Intege
     shared actual Integer? last { return null; }
     shared actual Boolean empty { return false; }
 }
+class MyCloseable() satisfies Closeable {
+    shared variable Boolean opened := false;
+    shared actual void open() { opened:=true;}
+    shared actual void close(Exception? e) {opened:=false;}
+}
+class MyContainer() satisfies Container {
+    shared actual Boolean empty = true;
+}
+class MySized(Integer s) satisfies Sized {
+    shared actual Integer size { return s; }
+}
+class MyNone() satisfies None<Integer> {
+    shared actual Nothing last { return null; }
+    shared actual MyNone clone { return this; }
+}
+class MySome() satisfies Some<Integer> {
+    shared actual Integer last = 1;
+    shared actual Integer size = 2;
+    shared actual FixedSized<Integer> rest { return {1}; }
+    shared actual MySome clone { return this; }
+    shared actual Iterator<Integer> iterator { return {2,1}.iterator; }
+}
 
 void testSatisfaction() {
     value category = MyCategory();
@@ -57,4 +79,17 @@ void testSatisfaction() {
     cwfe := MyContainerWithoutLastElement();
     assert(exists cwfe.first, "ContainerWithFirstElement.first [1]");
     assert(!exists cwfe.last, "ContainerWithFirstElement.first [2]");
+    value clsbl = MyCloseable();
+    assert(!clsbl.opened, "Closeable [1]");
+    clsbl.open();
+    assert(clsbl.opened, "Closeable [2]");
+    clsbl.close(null);
+    assert(!clsbl.opened, "Closeable [3]");
+    assert(MyContainer().empty, "Container");
+    assert(MySized(0).empty, "Sized [1]");
+    assert(!MySized(1).empty, "Sized [2]");
+    variable FixedSized<Integer> myfixed := MyNone();
+    assert(!nonempty myfixed, "None");
+    myfixed := MySome();
+    assert(nonempty myfixed, "Some");
 }
