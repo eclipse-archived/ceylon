@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
     @TypeParameter(value = "Item", variance = Variance.OUT)
 })
 public interface Correspondence<Key,Item> {
-    
+
     @Annotations(@Annotation("formal"))
     @TypeInfo("Item|ceylon.language.Nothing")
     public Item item(@Name("key") Key key);
@@ -30,7 +30,7 @@ public interface Correspondence<Key,Item> {
     public Category getKeys();
 
     @Annotations(@Annotation("default"))
-    public boolean definesEvery(@Sequenced @Name("keys") 
+    public boolean definesEvery(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
@@ -39,7 +39,7 @@ public interface Correspondence<Key,Item> {
     public Iterable<? extends Key> definesEvery$keys();
 
     @Annotations(@Annotation("default"))
-    public boolean definesAny(@Sequenced @Name("keys") 
+    public boolean definesAny(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
@@ -49,7 +49,7 @@ public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public Iterable<? extends Item> items(@Sequenced @Name("keys") 
+    public Iterable<? extends Item> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
@@ -93,7 +93,7 @@ public interface Correspondence<Key,Item> {
         @Override
         @Ignore
         public java.lang.String toString() {
-            return Collection$impl._toString(this);		
+            return Collection$impl._toString(this);
         }
         public final Sequence<Item> getClone() {
             return this;
@@ -254,9 +254,9 @@ public interface Correspondence<Key,Item> {
             return keys.hashCode();
         }
 
-        @Override 
+        @Override
         @Ignore
-        public Sequence<? extends Item> getSequence() { 
+        public Sequence<? extends Item> getSequence() {
             return Sequence$impl._getSequence(this);
         }
         @Override @Ignore
@@ -267,24 +267,32 @@ public interface Correspondence<Key,Item> {
         public Item findLast(Callable<? extends Boolean> f) {
             return List$impl._findLast(this, f);
         }
-        @Override 
+        @Override
         @Ignore
-        public Iterable<? extends Item> sorted(Callable<? extends Comparison> f) { 
-            return Iterable$impl._sorted(this, f); 
+        public Sequence<? extends Item> sort(Callable<? extends Comparison> f) {
+            return Sequence$impl._sort(this, f);
         }
         @Override
         @Ignore
-        public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+        public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
             return new MapIterable<Item, Result>(this, f);
         }
-        @Override 
+        @Override
         @Ignore
-        public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { 
+        public Iterable<? extends Item> filter(Callable<? extends Boolean> f) {
             return new FilterIterable<Item>(this, f);
+        }
+        @Override @Ignore
+        public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
+            return Sequence$impl._collect(this, f);
+        }
+        @Override @Ignore
+        public Iterable<? extends Item> select(Callable<? extends Boolean> f) {
+            return new FilterIterable<Item>(this, f).getSequence();
         }
         @Override
         @Ignore
-        public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+        public <Result> Result fold(Result ini, Callable<? extends Result> f) {
             return Iterable$impl._fold(this, ini, f);
         }
         @Override @Ignore

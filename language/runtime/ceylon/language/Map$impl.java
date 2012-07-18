@@ -9,7 +9,7 @@ public final class Map$impl<Key,Item> {
     public Map$impl(Map<Key,Item> $this) {
         this.$this = $this;
     }
-    
+
     public boolean equals(java.lang.Object that) {
         return _equals($this, that);
     }
@@ -18,7 +18,7 @@ public final class Map$impl<Key,Item> {
             Map other = (Map) that;
             if (other.getSize()==$this.getSize()) {
                 java.lang.Object elem;
-                for (ceylon.language.Iterator<? extends Entry<? extends Key,? extends Item>> iter = $this.getIterator(); 
+                for (ceylon.language.Iterator<? extends Entry<? extends Key,? extends Item>> iter = $this.getIterator();
                         !((elem = iter.next()) instanceof Finished);) {
                     Entry<Key,Item> entry = (Entry<Key,Item>) elem;
                     java.lang.Object y = other.item(entry.getKey());
@@ -33,7 +33,7 @@ public final class Map$impl<Key,Item> {
         }
         return false;
     }
-    
+
     public int hashCode() {
         return _hashCode($this);
     }
@@ -59,17 +59,17 @@ public final class Map$impl<Key,Item> {
             public Collection<? extends Key> getClone() {
                 return this;
             }
-            
+
             @Override
             public boolean equals(java.lang.Object obj) {
                 return false;
             }
-            
+
             @Override
             public int hashCode() {
                 return (int) $this.getSize();
             }
-            
+
             @Override
             public Iterator<? extends Key> getIterator() {
                 return bottom.getBottom();
@@ -79,7 +79,7 @@ public final class Map$impl<Key,Item> {
             public long getSize() {
                 return $this.getSize();
             }
-            
+
             @Override
             public java.lang.String toString() {
                 return Collection$impl._toString(this);
@@ -106,22 +106,22 @@ public final class Map$impl<Key,Item> {
             }
 
             // concrete interface methods:
-            
+
             @Override
             @Ignore
-            public Iterable<? extends Key> getRest() { 
-                return Iterable$impl._getRest(this); 
+            public Iterable<? extends Key> getRest() {
+                return Iterable$impl._getRest(this);
             }
-            
+
             @Override
             @Ignore
-            public Key getFirst() { 
-                return Iterable$impl._getFirst(this); 
+            public Key getFirst() {
+                return Iterable$impl._getFirst(this);
             }
-            @Override @Ignore public Key getLast() { 
-                return Iterable$impl._getLast(this); 
+            @Override @Ignore public Key getLast() {
+                return Iterable$impl._getLast(this);
             }
-            
+
             @Override
             @Ignore
             public boolean getEmpty() {
@@ -139,13 +139,13 @@ public final class Map$impl<Key,Item> {
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
-            
+
             @Override
             @Ignore
             public boolean containsEvery() {
                 return Category$impl._containsEvery(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<?> containsEvery$elements() {
@@ -157,13 +157,13 @@ public final class Map$impl<Key,Item> {
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
-            
+
             @Override
             @Ignore
             public boolean containsAny() {
                 return Category$impl._containsAny(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<?> containsAny$elements() {
@@ -181,10 +181,10 @@ public final class Map$impl<Key,Item> {
             public boolean subset(Set<? extends java.lang.Object> set) {
                 return Set$impl._subset(this, set);
             }
-            @Override 
+            @Override
             @Ignore
-            public Iterable<? extends Key> getSequence() { 
-                return Iterable$impl._getSequence(this); 
+            public Iterable<? extends Key> getSequence() {
+                return Iterable$impl._getSequence(this);
             }
             @Override @Ignore
             public Key find(Callable<? extends Boolean> f) {
@@ -194,25 +194,33 @@ public final class Map$impl<Key,Item> {
             public Key findLast(Callable<? extends Boolean> f) {
                 return Iterable$impl._findLast(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public Iterable<? extends Key> sorted(Callable<? extends Comparison> f) { 
-                return Iterable$impl._sorted(this, f); 
+            public Iterable<? extends Key> sort(Callable<? extends Comparison> f) {
+                return Iterable$impl._sort(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-                return new MapIterable<Key, Result>(this, f); 
+            public <Result> Iterable<Result> map(Callable<? extends Result> f) {
+                return new MapIterable<Key, Result>(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public Iterable<? extends Key> filter(Callable<? extends Boolean> f) { 
-                return new FilterIterable<Key>(this, f); 
+            public Iterable<? extends Key> filter(Callable<? extends Boolean> f) {
+                return new FilterIterable<Key>(this, f);
             }
-            @Override 
+            @Override @Ignore
+            public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+                return new MapIterable<Key, Result>(this, f).getSequence();
+            }
+            @Override @Ignore
+            public Iterable<? extends Key> select(Callable<? extends Boolean> f) {
+                return new FilterIterable<Key>(this, f).getSequence();
+            }
+            @Override
             @Ignore
-            public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-                return Iterable$impl._fold(this, ini, f); 
+            public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+                return Iterable$impl._fold(this, ini, f);
             }
             @Override @Ignore
             public boolean any(Callable<? extends Boolean> f) {
@@ -254,7 +262,7 @@ public final class Map$impl<Key,Item> {
         }
         return new keySet();
     }
-    
+
     public Collection<? extends Item> getValues(){
         return _getValues($this);
     }
@@ -265,7 +273,7 @@ public final class Map$impl<Key,Item> {
             public Collection<? extends Item> getClone() {
                 return this;
             }
-            
+
             @Override
             public boolean equals(java.lang.Object obj) {
                 return false;
@@ -275,7 +283,7 @@ public final class Map$impl<Key,Item> {
             public int hashCode() {
                 return $this.hashCode();
             }
-            
+
             @Override
             public Iterator<? extends Item> getIterator() {
                 return bottom.getBottom();
@@ -285,41 +293,41 @@ public final class Map$impl<Key,Item> {
             public long getSize() {
                 return $this.getSize();
             }
-            
+
             @Override
             public java.lang.String toString() {
                 return Collection$impl._toString(this);
             }
 
             // concrete interface methods:
-            
+
             @Override
             @Ignore
-            public Iterable<? extends Item> getRest() { 
-                return Iterable$impl._getRest(this); 
+            public Iterable<? extends Item> getRest() {
+                return Iterable$impl._getRest(this);
             }
-            
+
             @Override
             @Ignore
-            public Item getFirst() { 
-                return Iterable$impl._getFirst(this); 
+            public Item getFirst() {
+                return Iterable$impl._getFirst(this);
             }
             @Override @Ignore public Item getLast() {
                 return Iterable$impl._getLast(this);
             }
-            
+
             @Override
             @Ignore
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
-            
+
             @Override
             @Ignore
             public boolean containsEvery() {
                 return Category$impl._containsEvery(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<?> containsEvery$elements() {
@@ -331,13 +339,13 @@ public final class Map$impl<Key,Item> {
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
-            
+
             @Override
             @Ignore
             public boolean containsAny() {
                 return Category$impl._containsAny(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<?> containsAny$elements() {
@@ -356,10 +364,10 @@ public final class Map$impl<Key,Item> {
                 return Collection$impl._contains(this, element);
             }
 
-            @Override 
+            @Override
             @Ignore
-            public Iterable<? extends Item> getSequence() { 
-                return Iterable$impl._getSequence(this); 
+            public Iterable<? extends Item> getSequence() {
+                return Iterable$impl._getSequence(this);
             }
             @Override @Ignore
             public Item find(Callable<? extends Boolean> f) {
@@ -369,25 +377,33 @@ public final class Map$impl<Key,Item> {
             public Item findLast(Callable<? extends Boolean> f) {
                 return Iterable$impl._findLast(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public Iterable<? extends Item> sorted(Callable<? extends Comparison> f) { 
-                return Iterable$impl._sorted(this, f); 
+            public Iterable<? extends Item> sort(Callable<? extends Comparison> f) {
+                return Iterable$impl._sort(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-                return new MapIterable<Item, Result>(this, f); 
+            public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+                return new MapIterable<Item, Result>(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public Iterable<? extends Item> filter(Callable<? extends Boolean> f) { 
-                return new FilterIterable<Item>(this, f); 
+            public Iterable<? extends Item> filter(Callable<? extends Boolean> f) {
+                return new FilterIterable<Item>(this, f);
             }
-            @Override 
+            @Override @Ignore
+            public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+                return new MapIterable<Item, Result>(this, f).getSequence();
+            }
+            @Override @Ignore
+            public Iterable<? extends Item> select(Callable<? extends Boolean> f) {
+                return new FilterIterable<Item>(this, f).getSequence();
+            }
+            @Override
             @Ignore
-            public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-                return Iterable$impl._fold(this, ini, f); 
+            public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+                return Iterable$impl._fold(this, ini, f);
             }
             @Override @Ignore
             public boolean any(Callable<? extends Boolean> f) {
@@ -429,7 +445,7 @@ public final class Map$impl<Key,Item> {
         }
         return new valueCollection();
     }
-    
+
     public Map<? extends Item, ? extends Set<? extends Key>> getInverse(){
         return _getInverse($this);
     }
@@ -445,12 +461,12 @@ public final class Map$impl<Key,Item> {
             public boolean equals(java.lang.Object obj) {
                 return false;
             }
-            
+
             @Override
             public int hashCode() {
                 return (int) $this.getSize();
             }
-            
+
             @Override
             public Set<Key> item(java.lang.Object key) {
                 return bottom.getBottom();
@@ -470,9 +486,9 @@ public final class Map$impl<Key,Item> {
             public java.lang.String toString() {
                 return Collection$impl._toString(this);
             }
-            
+
             // concrete interface methods:
-            
+
             @Override
             @Ignore
             public boolean defines(java.lang.Object key) {
@@ -484,13 +500,13 @@ public final class Map$impl<Key,Item> {
             public boolean definesEvery(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._definesEvery(this, keys);
             }
-            
+
             @Override
             @Ignore
             public boolean definesEvery() {
                 return Correspondence$impl._definesEvery(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<? extends java.lang.Object> definesEvery$keys() {
@@ -502,13 +518,13 @@ public final class Map$impl<Key,Item> {
             public boolean definesAny(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._definesAny(this, keys);
             }
-            
+
             @Override
             @Ignore
             public boolean definesAny() {
                 return Correspondence$impl._definesAny(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<? extends java.lang.Object> definesAny$keys() {
@@ -520,13 +536,13 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Set<Key>> items(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._items(this, keys);
             }
-            
+
             @Override
             @Ignore
             public Iterable<? extends Set<Key>> items() {
                 return Correspondence$impl._items(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<? extends java.lang.Object> items$keys() {
@@ -550,13 +566,13 @@ public final class Map$impl<Key,Item> {
             public boolean containsEvery(Iterable<?> elements) {
                 return Category$impl._containsEvery(this, elements);
             }
-            
+
             @Override
             @Ignore
             public boolean containsEvery() {
                 return Category$impl._containsEvery(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<?> containsEvery$elements() {
@@ -568,13 +584,13 @@ public final class Map$impl<Key,Item> {
             public boolean containsAny(Iterable<?> elements) {
                 return Category$impl._containsAny(this, elements);
             }
-            
+
             @Override
             @Ignore
             public boolean containsAny() {
                 return Category$impl._containsAny(this, $empty.getEmpty());
             }
-            
+
             @Override
             @Ignore
             public Iterable<?> containsAny$elements() {
@@ -600,13 +616,13 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() { 
-                    return Iterable$impl._getSequence(this); 
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() {
+                    return Iterable$impl._getSequence(this);
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getRest() { 
-                return Iterable$impl._getRest(this); 
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getRest() {
+                return Iterable$impl._getRest(this);
             }
             @Override
             @Ignore
@@ -625,25 +641,34 @@ public final class Map$impl<Key,Item> {
             public Entry<? extends Item, ? extends Set<Key>> findLast(Callable<? extends Boolean> f) {
                 return Iterable$impl._findLast(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> sorted(Callable<? extends Comparison> f) { 
-                return Iterable$impl._sorted(this, f); 
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> sort(Callable<? extends Comparison> f) {
+                return Iterable$impl._sort(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-                return new MapIterable<Entry<? extends Item, ? extends Set<Key>>, Result>(this, f); 
+            public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+                return new MapIterable<Entry<? extends Item, ? extends Set<Key>>, Result>(this, f);
             }
-            @Override 
+            @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> filter(Callable<? extends Boolean> f) { 
-                return new FilterIterable<Entry<? extends Item, ? extends Set<Key>>>(this, f); 
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> filter(Callable<? extends Boolean> f) {
+                return new FilterIterable<Entry<? extends Item, ? extends Set<Key>>>(this, f);
             }
-            @Override 
+            @Override @Ignore
+            public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+                return new MapIterable<Entry<? extends Item, ? extends Set<Key>>, Result>(this, f).getSequence();
+            }
+            @Override
             @Ignore
-            public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-                return Iterable$impl._fold(this, ini, f); 
+            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> select(Callable<? extends Boolean> f) {
+                return new FilterIterable<Entry<? extends Item, ? extends Set<Key>>>(this, f).getSequence();
+            }
+            @Override
+            @Ignore
+            public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+                return Iterable$impl._fold(this, ini, f);
             }
             @Override @Ignore
             public boolean any(Callable<? extends Boolean> f) {
@@ -787,18 +812,18 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> getRest() { 
-                return Iterable$impl._getRest(this); 
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> getRest() {
+                return Iterable$impl._getRest(this);
             }
-            
+
             @Override
             @Ignore
-            public Entry<? extends Key, ? extends Result> getFirst() { 
-                return Iterable$impl._getFirst(this); 
+            public Entry<? extends Key, ? extends Result> getFirst() {
+                return Iterable$impl._getFirst(this);
             }
             @Override @Ignore
-            public Entry<? extends Key, ? extends Result> getLast() { 
-                return Iterable$impl._getLast(this); 
+            public Entry<? extends Key, ? extends Result> getLast() {
+                return Iterable$impl._getLast(this);
             }
 
             @Override
@@ -811,6 +836,16 @@ public final class Map$impl<Key,Item> {
             public Iterable<? extends Entry<? extends Key, ? extends Result>> filter(
                     Callable<? extends Boolean> selecting) {
                 return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting);
+            }
+            @Override
+            public <R2> Iterable<? extends R2> collect(
+                    Callable<? extends R2> collecting) {
+                return new MapIterable<Entry<? extends Key, ? extends Result>, R2>(this, collecting).getSequence();
+            }
+            @Override
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> select(
+                    Callable<? extends Boolean> selecting) {
+                return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting).getSequence();
             }
 
             @Override
@@ -832,9 +867,9 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> sorted(
+            public Iterable<? extends Entry<? extends Key, ? extends Result>> sort(
                     Callable<? extends Comparison> comparing) {
-                return Iterable$impl._sorted(this, comparing);
+                return Iterable$impl._sort(this, comparing);
             }
 
             @Override
@@ -940,12 +975,12 @@ public final class Map$impl<Key,Item> {
                     Callable<? extends R2> mapping) {
                 return _mapItems(this, mapping);
             }
-            
+
             @Override
             public java.lang.String toString() {
             	return Collection$impl._toString(this);
             }
-            
+
         };
     }
 }

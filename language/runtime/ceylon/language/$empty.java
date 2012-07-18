@@ -199,9 +199,13 @@ public class $empty {
         @SuppressWarnings("rawtypes")
         @Override @Ignore public Empty map(Callable f) { return this; }
         @SuppressWarnings("rawtypes")
-        @Override @Ignore public Empty sorted(Callable f) { return this; }
+        @Override @Ignore public Empty sort(Callable f) { return this; }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public Empty filter(Callable f) { return this; }
+        @SuppressWarnings("rawtypes")
+        @Override @Ignore public Empty collect(Callable f) { return this; }
+        @SuppressWarnings("rawtypes")
+        @Override @Ignore public Empty select(Callable f) { return this; }
         @SuppressWarnings({"rawtypes", "unchecked"})
         @Override @Ignore public java.lang.Object fold(java.lang.Object ini, Callable f) { return ini; }
         @Override @Ignore public boolean any(Callable<? extends Boolean> f) { return false; }

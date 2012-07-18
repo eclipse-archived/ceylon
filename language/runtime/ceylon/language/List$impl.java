@@ -114,7 +114,9 @@ public final class List$impl<Element> {
     @SuppressWarnings("rawtypes")
     public <Other>List withTrailing() { return $this; }
     
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$empty.getEmpty(); }
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$empty.getEmpty(); }
 
     @SuppressWarnings("rawtypes")

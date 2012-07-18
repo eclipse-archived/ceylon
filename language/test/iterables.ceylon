@@ -11,6 +11,16 @@ void testIterables() {
     assert(s2.filter((String s) "e" in s).sequence == { "Hello" }, "Iterable.filter 2");
     assert("h o l a".filter((Character c) c.letter) == "hola", "String.filter");
 
+    //Collect (like map, but it's already T[])
+    assert(s1.collect((Integer i) i*2) == { 2, 4, 6, 8, 10 }, "Iterable.map 1");
+    assert(s2.collect((String s) s.reversed) == { "olleH", "dlroW" }, "Iterable.map 2");
+    assert("hola".collect((Character c) c.uppercased) == {`H`, `O`, `L`, `A`}, "String.map");
+
+    //Select
+    assert(s1.select((Integer i) i%2==0) == { 2, 4 }, "Iterable.filter 1");
+    assert(s2.select((String s) "e" in s) == { "Hello" }, "Iterable.filter 2");
+    assert("h o l a".select((Character c) c.letter) == "hola", "String.filter");
+
     //Fold
     assert(s1.fold(0, (Integer a, Integer b) a+b) == 15, "Iterable.fold 1");
     assert(s2.fold(1, (Integer a, String b) a+b.size) == 11, "Iterable.fold 2");
@@ -60,7 +70,7 @@ void testIterables() {
     assert(!exists vacio.find((Integer i) i>5), "find 3");
     assert(!exists vacio.findLast((Integer i) i>5), "findLast 3");
     assert(vacio.fold(0, (Integer i, Integer j) i)==0, "empty.fold");
-    assert(vacio.sorted((Integer a, Integer b) larger).sequence=={}, "empty.sorted");
+    assert(vacio.sort((Integer a, Integer b) larger).sequence=={}, "empty.sort");
     assert(!vacio.every((Integer x) true), "empty.every");
     assert(!vacio.any((Integer x) true), "empty.any");
     assert(vacio.skipping(1).sequence=={}, "empty.skipping");
@@ -72,7 +82,7 @@ void testIterables() {
     assert(!exists Singleton(5).find((Integer i) i>5), "Singleton.find");
     assert(!exists Singleton(5).findLast((Integer i) i>5), "Singleton.findLast");
     assert(Singleton(5).fold(0, (Integer i, Integer j) i+j)==5, "Singleton.fold");
-    assert(Singleton(5).sorted((Integer x, Integer y) x<=>y) == Singleton(5), "Singleton.sorted");
+    assert(Singleton(5).sort((Integer x, Integer y) x<=>y) == Singleton(5), "Singleton.sort");
     assert(Singleton(1).any((Integer x) x == 1), "Singleton.any");
     assert(Singleton(1).every((Integer x) x>0), "Singleton.every");
     assert(Singleton(1).skipping(0).sequence=={1}, "Singleton.skipping [1]");
@@ -99,9 +109,9 @@ void testIterables() {
     assert( !"Hello".every((Character c) c.lowercase), "Iterable.every [3]");
 
     //Sorted
-    assert({5,4,3,2,1}.sorted((Integer x, Integer y) x<=>y).sequence == {1,2,3,4,5}, "sorted [1]");
-    assert({"tt","aaa","z"}.sorted((String a, String b) a<=>b).sequence == {"aaa", "tt", "z"}, "sorted [2]");
-    assert("hola".sorted((Character a, Character b) a<=>b) == "ahlo", "String.sorted");
+    assert({5,4,3,2,1}.sort((Integer x, Integer y) x<=>y).sequence == {1,2,3,4,5}, "sort [1]");
+    assert({"tt","aaa","z"}.sort((String a, String b) a<=>b).sequence == {"aaa", "tt", "z"}, "sort [2]");
+    assert("hola".sort((Character a, Character b) a<=>b) == "ahlo", "String.sort");
 
     //Skipping
     assert({1,2,3,4,5}.skipping(3).sequence=={4,5}, "skipping [1]");
@@ -198,6 +208,6 @@ void testIterables() {
     assert(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}, "Singletons.chain");
 
     //Iterable-related functions
-    assert({"aaa", "tt", "z"}.sorted(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sorted(byIncreasing)");
-    assert({"z", "aaa", "tt"}.sorted(byDecreasing((String s) s.size)).sequence=={"aaa","tt","z"}, "sorted(byDecreasing)");
+    assert({"aaa", "tt", "z"}.sort(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sort(byIncreasing)");
+    assert({"z", "aaa", "tt"}.sort(byDecreasing((String s) s.size)).sequence=={"aaa","tt","z"}, "sort(byDecreasing)");
 }

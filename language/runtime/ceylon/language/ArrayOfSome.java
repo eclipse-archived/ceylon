@@ -53,8 +53,79 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
     @Override
     @Annotations({ @Annotation("actual") })
     public Array<? extends Element> getReversed() {
-    	// TODO!!!!!!!!!!
-    	return null;
+        if (getSize() == 1) {
+            return this;
+        } else if (array instanceof char[]) {
+            char[] __a = (char[])array;
+            char[] rev = new char[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        } else if (array instanceof byte[]) {
+            byte[] __a = (byte[])array;
+            byte[] rev = new byte[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        } else if (array instanceof short[]) {
+            short[] __a = (short[])array;
+            short[] rev = new short[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        } else if (array instanceof int[]) {
+            int[] __a = (int[])array;
+            int[] rev = new int[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        } else if (array instanceof long[]) {
+            long[] __a = (long[])array;
+            long[] rev = new long[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        } else if (array instanceof float[]) {
+            float[] __a = (float[])array;
+            float[] rev = new float[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        } else if (array instanceof double[]) {
+            double[] __a = (double[])array;
+            double[] rev = new double[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        } else if (array instanceof boolean[]) {
+            boolean[] __a = (boolean[])array;
+            boolean[] rev = new boolean[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        } else if (array instanceof java.lang.String[]) {
+            java.lang.String[] __a = (java.lang.String[])array;
+            java.lang.String[] rev = new java.lang.String[__a.length];
+            for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+                rev[i] = __a[j];
+            }
+            return new ArrayOfSome<Element>(rev);
+        }
+
+        Element[] __a = (Element[])array;
+        java.lang.Object[] rev = new java.lang.Object[__a.length];
+        for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
+            rev[i] = __a[j];
+        }
+        return new ArrayOfSome<Element>((Element[])rev);
     }
 
     /*@Override

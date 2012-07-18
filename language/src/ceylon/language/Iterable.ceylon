@@ -112,12 +112,26 @@ shared interface Iterable<out Element>
         return last;
     }
 
-    doc "A sequence containing the elements of this
+    doc "Returns a sequence containing the elements of this
          container, sorted according to a function 
          imposing a partial order upon the elements."
-    shared default Element[] sorted(
+    shared default Element[] sort(
             doc "The function comparing pairs of elements."
             Comparison? comparing(Element x, Element y)) { throw; }
+
+    doc "An eager version of `map`."
+    shared default Result[] collect<Result>(
+            doc "The transformation applied to the elements."
+            Result collecting(Element element)) {
+        return map(collecting).sequence;
+    }
+
+    doc "An eager version of `filter`."
+    shared default Element[] select(
+            doc "The predicate the elements must satisfy."
+            Boolean selecting(Element element)) {
+        return filter(selecting).sequence;
+    }
 
     doc "Returns true if at least one element satisfies the
          predicate function."

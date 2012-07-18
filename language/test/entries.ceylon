@@ -187,8 +187,8 @@ Range<Integer> range {
     test_entries_function();
     //Test comparisons by Key and Item
     value e1 = entries("a", "B", "c", "D");
-    value k1 = e1.sorted(byKey((Integer a, Integer b) b<=>a)).sequence;
-    value k2 = e1.sorted(byItem((String a, String b) a<=>b)).sequence;
+    value k1 = e1.sort(byKey((Integer a, Integer b) b<=>a)).sequence;
+    value k2 = e1.sort(byItem((String a, String b) a<=>b)).sequence;
     if (exists x=k1[0]) {
         assert(x==3->"D", "byKey[1]");
     } else { fail("byKey[1]"); }

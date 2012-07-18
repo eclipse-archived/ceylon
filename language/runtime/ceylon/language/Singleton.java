@@ -263,7 +263,7 @@ public class Singleton<Element>
     }
     @Override
     @TypeInfo("ceylon.language.Singleton<Element>")
-    public Singleton<? extends Element> sorted(@Name("comparing")
+    public Singleton<? extends Element> sort(@Name("comparing")
             @TypeInfo("ceylon.language.Callable<Comparison,Element,Element>")
             Callable<? extends Comparison> comparing) {
         return this;
@@ -274,12 +274,28 @@ public class Singleton<Element>
     public <Result> Sequence<Result> map(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<Result,Element>")
             Callable<? extends Result> selecting) {
-        return new ArraySequence<Result>(selecting.$call(element));
+        return new Singleton<Result>(selecting.$call(element));
     }
     @Override
     @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> filter(@Name("selecting")
+            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+            Callable<? extends Boolean> selecting) {
+        return selecting.$call(element).booleanValue() ? this : (Iterable)$empty.getEmpty();
+    }
+    @Override
+    @TypeInfo("ceylon.language.Sequence<Result>")
+    @SuppressWarnings("unchecked")
+    public <Result> Sequence<Result> collect(@Name("selecting")
+            @TypeInfo("ceylon.language.Callable<Result,Element>")
+            Callable<? extends Result> selecting) {
+        return new Singleton<Result>(selecting.$call(element));
+    }
+    @Override
+    @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Element> select(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
             Callable<? extends Boolean> selecting) {
         return selecting.$call(element).booleanValue() ? this : (Iterable)$empty.getEmpty();

@@ -74,4 +74,22 @@ shared interface Sequence<out Element>
         throw; //should never happen in a well-behaved implementation
     }
 
+    doc "Returns a sequence containing the elements of this
+         container, sorted according to a function 
+         imposing a partial order upon the elements."
+    shared default actual Sequence<Element> sort(
+            doc "The function comparing pairs of elements."
+            Comparison? comparing(Element x, Element y)) { throw; }
+
+    doc "An eager version of `map`."
+    shared actual Sequence<Result> collect<Result>(
+            doc "The transformation applied to the elements."
+            Result collecting(Element element)) {
+        value s = map(collecting).sequence;
+        if (nonempty s) {
+            return s;
+        }
+        throw; //Should never happen in a well-behaved implementation
+    }
+
 }
