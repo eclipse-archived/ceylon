@@ -155,7 +155,7 @@ public class CMRTestHTTP extends CompilerTest {
         JarFile car = new JarFile(carFile);
 
         // make sure it's not empty
-        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/single/module.class");
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/single/module_.class");
         assertNotNull(moduleClass);
         car.close();
 
@@ -200,7 +200,7 @@ public class CMRTestHTTP extends CompilerTest {
         JarFile car = new JarFile(carFile);
 
         // make sure it's not empty
-        ZipEntry entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/module.class");
+        ZipEntry entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/module_.class");
         assertNotNull(entry);
         entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/CeylonClass.class");
         assertNotNull(entry);
