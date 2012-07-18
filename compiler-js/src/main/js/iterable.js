@@ -203,6 +203,12 @@ Iterable$proto.getLast = function() {
     }
     return l;
 }
+Iterable$proto.collect = function(collecting) {
+    return this.map(collecting).getSequence();
+}
+Iterable$proto.select = function(selecting) {
+    return this.filter(selecting).getSequence();
+}
 
 exports.Iterable=Iterable;
 
