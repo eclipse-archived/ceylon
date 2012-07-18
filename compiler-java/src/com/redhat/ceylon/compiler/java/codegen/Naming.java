@@ -157,13 +157,52 @@ public class Naming implements LocalId {
     JCExpression makeDeclName(final TypeDeclaration decl, DeclNameFlag... options) {
         return makeDeclName(null, decl, options);
     }
+    
+    /** 
+     * Helper class for {@link #makeDeclName(JCExpression, TypeDeclaration, DeclNameFlag...)}
+     */
+    class DeclName {
+        private final StringBuilder sb = new StringBuilder();
+        private final TypeDeclaration decl;
+        private final JCExpression qualifying;
+        private JCExpression expr;
+        DeclName(TypeDeclaration decl, JCExpression expr) {
+            this.decl = decl;
+            this.qualifying = expr;
+            this.expr = expr;
+        }
+        void select(String s) {
+            expr = iors(expr, s);
+        }
+        DeclName append(String s) {
+            sb.append(s);
+            return this;
+        }
+        DeclName append(char ch) {
+            sb.append(ch);
+            return this;
+        }
+        void selectAppended() {
+            String name = sb.toString();
+            select(Decl.isCeylon(decl) ? quoteClassName(name) : name);
+            sb.setLength(0);
+        }
+        JCExpression result() {
+            return expr;
+        }
+        public void clear() {
+            expr = qualifying;
+            sb.setLength(0);
+        }
+    }
+    
     JCExpression makeDeclName(JCExpression qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options) {
         // TODO This should probably be generating a JCExpression, not
         // a String (which will inevitable end up being split up to produce a
         // JCExpression by the caller
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
-        JCExpression expr = qualifyingExpr;
+        DeclName helper = new DeclName(decl, qualifyingExpr);
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
         Scope s = decl;
         do {
@@ -175,82 +214,76 @@ public class Naming implements LocalId {
         if (flags.contains(DeclNameFlag.QUALIFIED)) {
             final List<String> packageName = ((Package) s).getName();
             if (!packageName.get(0).isEmpty()) {
-                expr = maker.Ident(names.empty);
+                helper.select("");
             }
             for (int ii = 0; ii < packageName.size(); ii++) {
-                expr = iors(expr, quoteIfJavaKeyword(packageName.get(ii)));
+                helper.select(quoteIfJavaKeyword(packageName.get(ii)));
             }
         }
-        StringBuilder sb = new StringBuilder();
         for (int ii = 0; ii < l.size(); ii++) {
             Scope scope = l.get(ii);
             final boolean last = ii == l.size() - 1;
-            expr = appendDeclName2(decl, flags, expr, sb, scope, last);
+            appendDeclName2(decl, flags, helper, scope, last);
         }
-        return expr;
+        return helper.result();
     }
 
-    JCExpression appendDeclName2(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, JCExpression expr, StringBuilder sb, Scope scope, final boolean last) {
+    void appendDeclName2(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, DeclName helper, Scope scope, final boolean last) {
         if (scope instanceof Class) {
             Class klass = (Class)scope;
-            sb.append(klass.getName());
+            helper.append(klass.getName());
             if (flags.contains(DeclNameFlag.COMPANION)
                     && last) {
-                sb.append("$impl");
+                helper.append("$impl");
             }
         } else if (scope instanceof Interface) {
             Interface iface = (Interface)scope;
-            sb.append(iface.getName());
+            helper.append(iface.getName());
             if (Decl.isCeylon(iface)
                 &&
                  (decl instanceof Class) 
                  || flags.contains(DeclNameFlag.COMPANION)) {
-                sb.append("$impl");
+                helper.append("$impl");
             }
         } else if (Decl.isLocalScope(scope)) {
             if (flags.contains(DeclNameFlag.COMPANION)
                 || !(decl instanceof Interface)) {
-                expr = null;
-                sb.setLength(0);
+                helper.clear();
             } else if (flags.contains(DeclNameFlag.QUALIFIED)
                     || (decl instanceof Interface)) {
                 Scope nonLocal = scope;
                 while (!(nonLocal instanceof Declaration)) {
                     nonLocal = nonLocal.getContainer();
                 }
-                sb.append(((Declaration)nonLocal).getName()).append('$').append(getLocalId(scope));
+                helper.append(((Declaration)nonLocal).getName()).append('$').append(getLocalId(scope));
                 if (decl instanceof Interface) {
-                    sb.append('$');
+                    helper.append('$');
                 } else {
                     if (flags.contains(DeclNameFlag.QUALIFIED)) {
-                        expr = iors(expr, quoteClassName(sb.toString()));
-                        sb.setLength(0);
+                        helper.selectAppended();
                     } else {
-                        expr = null;
-                        sb.setLength(0);
+                        helper.clear();
                     }
                 }
             }
-            return expr;
+            return;
         }
         if (!last) {
             if (decl instanceof Interface 
                     && Decl.isCeylon((Interface)decl)
                     && !flags.contains(DeclNameFlag.COMPANION)) {
-                sb.append('$');
+                helper.append('$');
             } else {
                 if (flags.contains(DeclNameFlag.QUALIFIED)) {
-                    expr = iors(expr, quoteClassName(sb.toString()));
-                    sb.setLength(0);
+                    helper.selectAppended();
                 } else {
-                    expr = null;
-                    sb.setLength(0);
+                    helper.clear();
                 }
             }
         } else {
-            expr = iors(expr, quoteClassName(sb.toString()));
+            helper.selectAppended();
         }
-        return expr;
+        return;
     }
     
     /**
