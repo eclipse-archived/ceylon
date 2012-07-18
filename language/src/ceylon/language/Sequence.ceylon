@@ -77,7 +77,7 @@ shared interface Sequence<out Element>
     doc "Returns a sequence containing the elements of this
          container, sorted according to a function 
          imposing a partial order upon the elements."
-    shared actual Seqeuence<Element> sort(
+    shared default actual Sequence<Element> sort(
             doc "The function comparing pairs of elements."
             Comparison? comparing(Element x, Element y)) { throw; }
 
