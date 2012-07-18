@@ -1781,7 +1781,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(Decl.isJavaField(decl)){
                 if (decl.isStaticallyImportable()) {
                     // static field
-                    result = at(op).Assign(naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER), rhs);
+                    result = at(op).Assign(naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), rhs);
                 }else{
                     // normal field
                     result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
