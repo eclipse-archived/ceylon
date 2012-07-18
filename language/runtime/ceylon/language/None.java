@@ -29,7 +29,7 @@ public interface None<Element> extends FixedSized<Element> {
     @TypeInfo("ceylon.language.Iterator<Element>")
     @Override
     public Iterator<? extends Element> getIterator();
-    
+
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
     public long getSize();

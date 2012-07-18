@@ -14,19 +14,19 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 2)
 @Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes({"ceylon.language.Sequence<Element>", 
+@SatisfiedTypes({"ceylon.language.Sequence<Element>",
 	             "ceylon.language.Category"})
-@TypeParameters(@TypeParameter(value="Element", 
+@TypeParameters(@TypeParameter(value="Element",
     satisfies={"ceylon.language.Comparable<Element>",
 		       "ceylon.language.Ordinal<Element>"}))
 public class Range<Element extends Comparable<? super Element> & Ordinal<? extends Element>>
     implements Sequence<Element>, Category {
-    
+
     private final Element first;
     private final Element last;
     private final long size;
-    
-    public Range(@Name("first") Element first, 
+
+    public Range(@Name("first") Element first,
     		     @Name("last") Element last) {
         this.first = first;
         this.last = last;
@@ -42,28 +42,28 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             this.size = index+1;
         }
     }
-    
+
     @Override
     public final Element getFirst(){
         return first;
     }
-    
+
     @Override
     public final Element getLast(){
         return last;
     }
-    
+
     @Override
     public final java.lang.String toString(){
         return first.toString() + ".." + last.toString();
     }
-    
+
     public final boolean getDecreasing(){
         return last.compare(first).smallerThan();
     }
-    
+
     private final Element next(Element x){
-        return getDecreasing() ? 
+        return getDecreasing() ?
         		x.getPredecessor() : x.getSuccessor();
     }
 
@@ -125,7 +125,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
                 }
                 return result;
             }
-            
+
             @Override
             public java.lang.String toString() {
                 return "RangeIterator";
@@ -147,15 +147,15 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     public final boolean includes(@Name("x") Element x){
         if (getDecreasing()){
-            return x.compare(first).asSmallAs() && 
+            return x.compare(first).asSmallAs() &&
                     x.compare(last).asLargeAs();
         }
         else {
-            return x.compare(first).asLargeAs() && 
+            return x.compare(first).asLargeAs() &&
                     x.compare(last).asSmallAs();
         }
     }
-    
+
     @Override
     @Ignore
     public final boolean equals(@Name("that") java.lang.Object that){
@@ -167,18 +167,18 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             return List$impl._equals(this, that);
         }
     }
-    
+
     @Override
     @Ignore
     public int hashCode(){
         return List$impl._hashCode(this);
     }
-    
+
     @Override
     public Range<Element> getClone() {
         return this;
     }
-    
+
     /*@Override
     public Ordered<Element> segment(long from, long length) {
         throw new RuntimeException("Not implemented"); //todo!
@@ -192,7 +192,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @Ignore
-    public boolean definesEvery(@Sequenced @Name("keys") 
+    public boolean definesEvery(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
@@ -210,7 +210,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @Ignore
-    public boolean definesAny(@Sequenced @Name("keys") 
+    public boolean definesAny(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
@@ -228,18 +228,18 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @Ignore
-    public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys") 
+    public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
-    
+
     @Override
     @Ignore
     public ceylon.language.List<? extends Element> items() {
         return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
-    
+
     @Override
     @Ignore
     public Iterable<? extends Integer> items$keys() {
@@ -249,7 +249,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     //TODO: @TypeInfo
     @Override
     @Ignore
-    public boolean containsEvery(@Sequenced @Name("elements") 
+    public boolean containsEvery(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
@@ -268,7 +268,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     //TODO: @TypeInfo
     @Override
     @Ignore
-    public boolean containsAny(@Sequenced @Name("elements") 
+    public boolean containsAny(@Sequenced @Name("elements")
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
@@ -301,11 +301,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public Sequence<? extends Element> getReversed() {
     	return new Range<Element>(last, first);
     }
-    
+
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> segment(
-    		@Name("from") final Integer from, 
+    		@Name("from") final Integer from,
     		@Name("length") final long length) {
         //only positive length for now
         if (length<=0 || from.value>getLastIndex().value) {
@@ -317,7 +317,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         for (int i=1; i < length && y.compare(last).smallerThan(); i++) { y = next(y); }
         return new Range<Element>(x, y);
     }
-    
+
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> span(
@@ -379,7 +379,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
                             }
                             return Integer.instance(result);
                         }
-                        
+
                         @Override
                         public java.lang.String toString() {
                             return "RangeIterator";
@@ -391,9 +391,9 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     	return Iterable$impl._by(this, step);
     }
 
-    @Override 
-    @Ignore 
-    public Sequence<? extends Element> getSequence() { 
+    @Override
+    @Ignore
+    public Sequence<? extends Element> getSequence() {
         return Sequence$impl._getSequence(this);
     }
     @Override @Ignore
@@ -409,25 +409,33 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public Element findLast(Callable<? extends Boolean> f) {
         return this.getReversed().find(f);
     }
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f);
+    public Sequence<? extends Element> sort(Callable<? extends Comparison> f) {
+        return Sequence$impl._sort(this, f);
     }
-    @Override 
-    @Ignore 
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
+    @Override
+    @Ignore
+    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
         return new MapIterable<Element, Result>(this, f);
     }
-    @Override 
-    @Ignore 
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
+    @Override
+    @Ignore
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
         return new FilterIterable<Element>(this, f);
     }
-    @Override 
-    @Ignore 
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-        return Iterable$impl._fold(this, ini, f); 
+    @Override @Ignore
+    public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
+        return Sequence$impl._collect(this, f);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f).getSequence();
+    }
+    @Override
+    @Ignore
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+        return Iterable$impl._fold(this, ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {

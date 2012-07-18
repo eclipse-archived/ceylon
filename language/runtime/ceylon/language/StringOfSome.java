@@ -2,16 +2,15 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 @Ceylon(major = 2)
 class StringOfSome extends String implements Some<Character> {
-    
-    StringOfSome(java.lang.String s) { 
-        super(s); 
+
+    StringOfSome(java.lang.String s) {
+        super(s);
     }
-        
+
     @Override
     public boolean getEmpty() {
         return false;
@@ -21,7 +20,7 @@ class StringOfSome extends String implements Some<Character> {
     public FixedSized<? extends Character> getRest() {
         return span(Integer.instance(1), null);
     }
-    
+
     @Override
     @Ignore
     public Character getFirst() {
@@ -32,9 +31,9 @@ class StringOfSome extends String implements Some<Character> {
         return item(getLastIndex());
     }
 
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Character> getSequence() { 
+    public Iterable<? extends Character> getSequence() {
         return Iterable$impl._getSequence(this);
     }
     @Override @Ignore
@@ -45,19 +44,27 @@ class StringOfSome extends String implements Some<Character> {
     public Character findLast(Callable<? extends Boolean> f) {
         return List$impl._findLast(this, f);
     }
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Character> sorted(Callable<? extends Comparison> f) { 
-        return String.instance($string.string(Iterable$impl._sorted(this, f))); 
+    public Iterable<? extends Character> sort(Callable<? extends Comparison> f) {
+        return String.instance($string.string(Iterable$impl._sort(this, f)));
     }
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Character> filter(Callable<? extends Boolean> f) { 
+    public Iterable<? extends Character> filter(Callable<? extends Boolean> f) {
         return String.instance($string.string(new FilterIterable<Character>(this, f)));
     }
-    @Override 
+    @Override @Ignore
+    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+        return new MapIterable<Character,Result>(this, f).getSequence();
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> select(Callable<? extends Boolean> f) {
+        return String.instance($string.string(new FilterIterable<Character>(this, f)));
+    }
+    @Override
     @Ignore
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
         return Iterable$impl._fold(this, ini, f);
     }
     @Override @Ignore

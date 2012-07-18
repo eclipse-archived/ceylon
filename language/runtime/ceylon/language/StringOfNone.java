@@ -6,18 +6,18 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 @Ignore
 @Ceylon(major = 2)
 class StringOfNone extends String implements None<Character> {
-    
+
     static StringOfNone instance = new StringOfNone();
-    
-    private StringOfNone() { 
-        super(""); 
+
+    private StringOfNone() {
+        super("");
     }
-    
+
     @Override
     public long getSize() {
         return 0;
     }
-    
+
     @Override
     public boolean getEmpty() {
         return true;
@@ -27,7 +27,7 @@ class StringOfNone extends String implements None<Character> {
     public Iterable<? extends Character> getRest() {
         return this;
     }
-    
+
     @Override
     public Character getFirst() {
         return null;
@@ -36,10 +36,10 @@ class StringOfNone extends String implements None<Character> {
         return null;
     }
 
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Character> getSequence() { 
-        return this; 
+    public Iterable<? extends Character> getSequence() {
+        return this;
     }
     @Override @Ignore
     public Character find(Callable<? extends Boolean> f) {
@@ -49,19 +49,28 @@ class StringOfNone extends String implements None<Character> {
     public Character findLast(Callable<? extends Boolean> f) {
         return null;
     }
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Character> sorted(Callable<? extends Comparison> f) {
+    public Iterable<? extends Character> sort(Callable<? extends Comparison> f) {
         return this;
     }
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Character> filter(Callable<? extends Boolean> f) { 
-        return this; 
+    public Iterable<? extends Character> filter(Callable<? extends Boolean> f) {
+        return this;
     }
-    @Override 
+    @SuppressWarnings("unchecked")
+    @Override @Ignore
+    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+        return (Iterable)$empty.getEmpty();
+    }
+    @Override @Ignore
+    public Iterable<? extends Character> select(Callable<? extends Boolean> f) {
+        return this;
+    }
+    @Override
     @Ignore
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
         return ini;
     }
     @Override @Ignore

@@ -58,7 +58,20 @@ public interface Sequence<Element>
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public List<? extends Element> segment(@Name("from") Integer from, 
             @Name("length") Integer length);*/
-    
+
+    @Annotations(@Annotation("actual"))
+    @TypeInfo("ceylon.language.Sequence<Element>")
+    public Sequence<? extends Element> sort(@Name("comparing")
+            @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|ceylon.language.Comparison,Element,Element>")
+            Callable<? extends Comparison> comparing);
+
+    @Annotations(@Annotation("actual"))
+    @TypeParameters(@TypeParameter("Result"))
+    @TypeInfo("ceylon.language.Sequence<Result>")
+    public <Result> Sequence<? extends Result> collect(@Name("collecting")
+            @TypeInfo("ceylon.language.Callable<Result,Element>")
+            Callable<? extends Result> collecting);
+
     @SuppressWarnings("rawtypes")
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeParameters(@TypeParameter("Other"))

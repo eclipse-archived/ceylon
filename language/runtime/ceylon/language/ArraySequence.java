@@ -22,7 +22,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public ArraySequence(Element... array) {
         this(array,0);
     }
-    
+
     @Ignore
     ArraySequence(Element[] array, long first) {
     	if (array.length==0 || array.length<=first) {
@@ -79,11 +79,11 @@ public class ArraySequence<Element> implements Sequence<Element> {
             return new ArraySequence<Element>(array, fromIndex);
         }
         else {
-            return new ArraySequence<Element>(Arrays.copyOfRange(array, 
+            return new ArraySequence<Element>(Arrays.copyOfRange(array,
                     (int)fromIndex, (int)toIndex+1), 0);
         }
     }
-    
+
     @Override
     public List<? extends Element> segment(Integer from, long length) {
         long fromIndex = from.longValue();
@@ -97,7 +97,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
             return new ArraySequence<Element>(array, fromIndex);
         }
         else {
-            return new ArraySequence<Element>(Arrays.copyOfRange(array, 
+            return new ArraySequence<Element>(Arrays.copyOfRange(array,
                     (int)fromIndex, (int)(fromIndex + resultLength)), 0);
         }
     }
@@ -135,15 +135,15 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return new ArrayListIterator();
     }
 
-    public class ArrayListIterator 
+    public class ArrayListIterator
             implements Iterator<Element> {
         private long idx = first;
-        
+
         @Override
         public java.lang.Object next() {
             if (idx <= getLastIndex().longValue()+first) {
                 return array[(int) idx++];
-            } 
+            }
             else {
                 return exhausted.getExhausted();
             }
@@ -159,7 +159,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public Element item(Integer key) {
         long index = key.longValue()+first;
-        return index<0 || index >= array.length ? 
+        return index<0 || index >= array.length ?
                 null : array[(int) index];
     }
 
@@ -174,7 +174,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public boolean definesEvery(Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
-    
+
     @Override
     @Ignore
     public boolean definesEvery() {
@@ -191,13 +191,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public boolean definesAny(Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
-    
+
     @Override
     @Ignore
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
-    
+
     @Override
     public Iterable<? extends Integer> definesAny$keys() {
         return (Iterable)$empty.getEmpty();
@@ -208,7 +208,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public ceylon.language.List<? extends Element> items(Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
-    
+
     @Override
     @Ignore
     public ceylon.language.List<? extends Element> items() {
@@ -223,7 +223,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public ArraySequence<Element> getClone() {
         return this;
     }
-    
+
     @Override
     @Ignore
     public java.lang.String toString() {
@@ -241,7 +241,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public int hashCode() {
         return List$impl._hashCode(this);
     }
-    
+
     @Override
     public boolean contains(java.lang.Object element) {
         for (Element x: array) {
@@ -264,13 +264,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public boolean containsEvery(Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
-    
+
     @Override
     @Ignore
     public boolean containsEvery() {
         return Category$impl._containsEvery(this, $empty.getEmpty());
     }
-    
+
     @Override
     @Ignore
     public Iterable<?>containsEvery$elements() {
@@ -282,19 +282,19 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public boolean containsAny(Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
-    
+
     @Override
     @Ignore
     public boolean containsAny() {
         return Category$impl._containsAny(this, $empty.getEmpty());
     }
-    
-    @Override 
+
+    @Override
     @Ignore
-    public Sequence<? extends Element> getSequence() { 
+    public Sequence<? extends Element> getSequence() {
         return Sequence$impl._getSequence(this);
     }
-    
+
     @Override @Ignore
     public Element find(Callable<? extends Boolean> f) {
         return Iterable$impl._find(this, f);
@@ -305,24 +305,32 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     @Override
     @Ignore
-    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) {
-        return Iterable$impl._sorted(this, f);
+    public Sequence<? extends Element> sort(Callable<? extends Comparison> f) {
+        return Sequence$impl._sort(this, f);
     }
-    
+
     @Override
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) {
+    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
         return new MapIterable<Element, Result>(this, f);
     }
-    
     @Override
     public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
         return new FilterIterable<Element>(this, f);
+    }
+    @Override
+    public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
+        return Sequence$impl._collect(this, f);
+    }
+
+    @Override
+    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f).getSequence();
     }
 
     @Override
     @Ignore
     public <Result> Result fold(Result ini, Callable<? extends Result> f) {
-        return Iterable$impl._fold(this, ini, f); 
+        return Iterable$impl._fold(this, ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
