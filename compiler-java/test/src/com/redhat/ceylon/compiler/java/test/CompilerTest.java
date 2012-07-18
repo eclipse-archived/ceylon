@@ -54,6 +54,7 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.java.util.RepositoryLister;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
@@ -378,10 +379,15 @@ public abstract class CompilerTest {
             }
             System.err.println("Running " + main +" with classpath" + urls);
             NonCachingURLClassLoader loader = new NonCachingURLClassLoader(urls.toArray(new URL[urls.size()]));
-            java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
-            if (Character.isLowerCase(klass.getSimpleName().charAt(0))) {
+            String mainClass = main;
+            String mainMethod = main.replaceAll("^.*\\.", "");
+            if (Util.isInitialLowerCase(mainMethod)) {
+                mainClass = main + "_";
+            }
+            java.lang.Class<?> klass = java.lang.Class.forName(mainClass, true, loader);
+            if (Util.isInitialLowerCase(mainMethod)) {
                 // A main method
-                Method m = klass.getDeclaredMethod(klass.getSimpleName());
+                Method m = klass.getDeclaredMethod(mainMethod);
                 m.setAccessible(true);
                 m.invoke(null);
             } else {
