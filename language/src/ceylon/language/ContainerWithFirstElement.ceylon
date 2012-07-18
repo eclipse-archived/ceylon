@@ -1,7 +1,7 @@
 doc "Abstract supertype of containers which provide an 
      operation for accessing the first element, if any. A 
      container which may or may not be empty is a
-     `ContainerWithFirstElement<Element,Nothing>. A 
+     `ContainerWithFirstElement<Element,Nothing>`. A 
      container which is always empty is a 
      `ContainerWithFirstElement<Bottom,Nothing>`. A container
      which is never empty is a 
