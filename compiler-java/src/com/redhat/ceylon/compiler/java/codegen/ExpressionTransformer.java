@@ -1789,7 +1789,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
-            lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
+            if (Decl.isLocal(decl)) {
+                lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
+            } else {
+                lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
+            }
         } else {
             result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
         }
