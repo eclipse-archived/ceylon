@@ -70,7 +70,7 @@ shared interface Empty
         return false;
     }
 
-    shared actual Empty map<Result>(Result selecting(Bottom element)) {
+    shared actual Empty map<Result>(Result collecting(Bottom element)) {
         return this;
     }
     shared actual Empty filter(Boolean selecting(Bottom element)) {
@@ -83,7 +83,13 @@ shared interface Empty
     shared actual Nothing find(Boolean selecting(Bottom element)) {
         return null;
     }
-    shared actual Empty sorted(Comparison? comparing(Bottom a, Bottom b)) {
+    shared actual Empty sort(Comparison? comparing(Bottom a, Bottom b)) {
+        return this;
+    }
+    shared actual Empty collect<Result>(Result collecting(Bottom element)) {
+        return this;
+    }
+    shared actual Empty select(Boolean selecting(Bottom element)) {
         return this;
     }
     shared actual Boolean any(Boolean selecting(Bottom element)) {
