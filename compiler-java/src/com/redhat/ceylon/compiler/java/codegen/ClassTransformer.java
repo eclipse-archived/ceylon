@@ -105,15 +105,15 @@ public class ClassTransformer extends AbstractTransformer {
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         final ClassOrInterface model = def.getDeclarationModel();
         naming.noteDecl(model);
-        final String className;
-        String aliasedClassName = def.getIdentifier().getText();
+        final String javaClassName;
+        String ceylonClassName = def.getIdentifier().getText();
         if (def instanceof Tree.AnyInterface) {
-            className = naming.declName(model, QUALIFIED).replaceFirst(".*\\.", "");
+            javaClassName = naming.declName(model, QUALIFIED).replaceFirst(".*\\.", "");
         } else {
-            className = def.getIdentifier().getText();
+            javaClassName = def.getIdentifier().getText();
         }
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, Decl.isAncestorLocal(def), className, aliasedClassName);
+                .klass(this, Decl.isAncestorLocal(def), javaClassName, ceylonClassName);
 
         if (def instanceof Tree.AnyClass) {
             Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
@@ -1406,7 +1406,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         String name = model.getName();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
-                this, Decl.isAncestorLocal(model), name, null);
+                this, Decl.isAncestorLocal(model), name);
         
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;

@@ -42,7 +42,7 @@ public class AttributeDefinitionBuilder {
     private final JCTree.JCExpression attrType;
     private final JCTree.JCExpression attrTypeRaw;
     private final String attrName;
-    private String className;
+    private String javaClassName;
 
     private long modifiers;
 
@@ -61,7 +61,8 @@ public class AttributeDefinitionBuilder {
 
     private boolean toplevel = false;
 
-    private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName, boolean toplevel) {
+    private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
+            String javaClassName, String attrName, String fieldName, boolean toplevel) {
         int typeFlags = 0;
         ProducedTypedReference typedRef = owner.getTypedReference(attrType);
         ProducedTypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
@@ -74,7 +75,7 @@ public class AttributeDefinitionBuilder {
         this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
         this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
         this.owner = owner;
-        this.className = className;
+        this.javaClassName = javaClassName;
         this.attrName = attrName;
         this.fieldName = fieldName;
         this.toplevel = toplevel;
@@ -96,18 +97,23 @@ public class AttributeDefinitionBuilder {
     }
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
-            String className, String attrName, TypedDeclaration attrType, boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, attrType, className, attrName, "value", toplevel);
+            String javaClassName, String attrName, TypedDeclaration attrType, 
+            boolean toplevel) {
+        return new AttributeDefinitionBuilder(owner, attrType, javaClassName, attrName, "value", toplevel);
     }
     
-    public static AttributeDefinitionBuilder getter(AbstractTransformer owner, String name, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, attrType, null, name, name, false)
+    public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
+            String attrAndFieldName, TypedDeclaration attrType) {
+        return new AttributeDefinitionBuilder(owner, attrType, null, 
+                attrAndFieldName, attrAndFieldName, false)
             .skipField()
             .immutable();
     }
     
-    public static AttributeDefinitionBuilder setter(AbstractTransformer owner, String name, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, attrType, null, name, name, false)
+    public static AttributeDefinitionBuilder setter(AbstractTransformer owner, 
+            String attrAndFieldName, TypedDeclaration attrType) {
+        return new AttributeDefinitionBuilder(owner, attrType, null, 
+                attrAndFieldName, attrAndFieldName, false)
             .skipField()
             .skipGetter();
     }
@@ -119,9 +125,9 @@ public class AttributeDefinitionBuilder {
     public List<JCTree> build() {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
-        if (className != null) {
+        if (javaClassName != null) {
             return ClassDefinitionBuilder
-                .klass(owner, ancestorLocal, className, null)
+                .klass(owner, ancestorLocal, javaClassName, null)
                 .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                 .constructorModifiers(Flags.PRIVATE)
                 .annotations(!ancestorLocal ? owner.makeAtAttribute() : List.<JCTree.JCAnnotation>nil())

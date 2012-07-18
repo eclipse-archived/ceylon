@@ -95,19 +95,19 @@ public class ClassDefinitionBuilder {
 
     private ClassDefinitionBuilder containingClassBuilder;
 
-    public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
-        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name, aliasedName);
+    public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String javaClassName, String ceylonClassName) {
+        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, javaClassName, ceylonClassName);
         builder.containingClassBuilder = gen.current();
         gen.replace(builder);
         return builder;
     }
     
-    public static ClassDefinitionBuilder object(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
-        return klass(gen, ancestorLocal, name, aliasedName);
+    public static ClassDefinitionBuilder object(AbstractTransformer gen, boolean ancestorLocal, String ceylonClassName) {
+        return klass(gen, ancestorLocal, Naming.quoteClassName(ceylonClassName), ceylonClassName);
     }
     
-    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String name, boolean shared) {
-        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name, null);
+    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String ceylonClassName, boolean shared) {
+        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, Naming.quoteClassName(ceylonClassName), null);
         builder.containingClassBuilder = gen.current();
         gen.replace(builder);
         return builder
@@ -116,18 +116,19 @@ public class ClassDefinitionBuilder {
             .constructorModifiers(PRIVATE);
     }
 
-    private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
+    private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, 
+            String javaClassName, 
+            String ceylonClassName) {
         this.gen = gen;
-        this.name = Naming.quoteClassName(name);
+        this.name = javaClassName;
         //this.ancestorLocal = ancestorLocal;
         
         extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
-        if (aliasedName == null) {
-            aliasedName = name;
-        }
-        if (!aliasedName.equals(Naming.quoteIfJavaKeyword(name))) {
-            annotations(gen.makeAtName(aliasedName));
+        
+        if (ceylonClassName != null && !ceylonClassName.equals(javaClassName)) {
+            // Only add @Name if it's different from the Java name
+            annotations(gen.makeAtName(ceylonClassName));
         }
         if (ancestorLocal) {
             this.annotations.appendList(gen.makeAtIgnore());
@@ -482,7 +483,8 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl) {
         if (concreteInterfaceMemberDefs == null) {
-            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, gen.naming.getCompanionClassName(decl).replaceFirst(".*\\.", ""), null)
+            String className = gen.naming.getCompanionClassName(decl).replaceFirst(".*\\.", "");
+            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, className, decl.getName())
                 .annotations(gen.makeAtIgnore());
             concreteInterfaceMemberDefs.isCompanion = true;
         }
