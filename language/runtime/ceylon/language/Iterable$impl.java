@@ -25,6 +25,7 @@ public final class Iterable$impl<Element> {
     public Element getFirst(){
         return Iterable$impl.<Element>_getFirst($this);
     }
+    @SuppressWarnings("unchecked")
     static <Element> Element _getFirst(Iterable<Element> $this){
         java.lang.Object first = $this.getIterator().next();
         if (first instanceof Finished) {
@@ -37,6 +38,7 @@ public final class Iterable$impl<Element> {
     public Element getLast() {
         return Iterable$impl.<Element>_getLast($this);
     }
+    @SuppressWarnings("unchecked")
     static <Element> Element _getLast(Iterable<Element> $this) {
         java.lang.Object last = null;
         java.lang.Object next = null;
@@ -45,7 +47,7 @@ public final class Iterable$impl<Element> {
         }
         return (Element)last;
     }
-    
+
     public Iterable<? extends Element> getRest() {
         return Iterable$impl._getRest($this);
     }
@@ -83,6 +85,7 @@ public final class Iterable$impl<Element> {
     public Element find(Callable<? extends Boolean> selecting) {
         return Iterable$impl._find($this, selecting);
     }
+    @SuppressWarnings("unchecked")
     static <Element> Element _find(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
         java.lang.Object elem;
         for (Iterator<? extends Element> iter = $this.getIterator(); !((elem = iter.next()) instanceof Finished);) {
@@ -96,6 +99,7 @@ public final class Iterable$impl<Element> {
     public Element findLast(Callable<? extends Boolean> selecting) {
         return Iterable$impl._findLast($this, selecting);
     }
+    @SuppressWarnings("unchecked")
     static <Element> Element _findLast(Iterable<? extends Element> $this, Callable<? extends Boolean> sel) {
         java.lang.Object elem;
         java.lang.Object last = null;
@@ -107,10 +111,11 @@ public final class Iterable$impl<Element> {
         return (Element)last;
     }
 
-    public Iterable<? extends Element> sorted(Callable<? extends Comparison> comparing) {
-        return Iterable$impl._sorted($this, comparing);
+    public Iterable<? extends Element> sort(Callable<? extends Comparison> comparing) {
+        return Iterable$impl._sort($this, comparing);
     }
-    static <Element> Iterable<? extends Element> _sorted(Iterable<? extends Element> $this, final Callable<? extends Comparison> comp) {
+    @SuppressWarnings("unchecked")
+    static <Element> Iterable<? extends Element> _sort(Iterable<? extends Element> $this, final Callable<? extends Comparison> comp) {
         if ($this.getEmpty()) {
             return (Iterable<? extends Element>) $empty.getEmpty();
         }
@@ -124,6 +129,20 @@ public final class Iterable$impl<Element> {
             }
         });
         return new ArraySequence<Element>(array,0);
+    }
+
+    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> collecting) {
+        return Iterable$impl._collect($this, collecting);
+    }
+    static <Element,Result> Iterable<? extends Result> _collect(Iterable<? extends Element> $this, Callable<? extends Result> f) {
+        return new MapIterable<>($this, f).getSequence();
+    }
+
+    public Iterable<? extends Element> select(Callable<? extends Boolean> selecting) {
+        return Iterable$impl._select($this, selecting);
+    }
+    static <Element> Iterable<? extends Element> _select(Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
+        return new FilterIterable<>($this, f).getSequence();
     }
 
     public boolean any(Callable<? extends Boolean> selecting) {
@@ -261,7 +280,7 @@ public final class Iterable$impl<Element> {
                 while ((tmp = orig.next()) == null);
                 return tmp == exhausted.getExhausted() ? tmp : new Entry<Integer, Element>(Integer.instance(i++), (Element)tmp);
             }
-            
+
         }
         return new AbstractIterable<Entry<? extends Integer, ? extends Element>>() {
             @Override
@@ -322,39 +341,46 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     	return Iterable$impl._getRest(this);
     }
 
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Result> getSequence() { 
-        return Iterable$impl._getSequence(this); 
+    public Iterable<? extends Result> getSequence() {
+        return Iterable$impl._getSequence(this);
     }
-    @Override 
+    @Override
     @Ignore
-    public Result find(Callable<? extends Boolean> f) { 
-        return Iterable$impl._find(this, f); 
+    public Result find(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this, f);
     }
     @Override @Ignore
     public Result findLast(Callable<? extends Boolean> f) {
         return Iterable$impl._findLast(this, f);
     }
-    @Override 
-    @Ignore
-    public Iterable<? extends Result> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f); 
+    @Override @Ignore
+    public Iterable<? extends Result> sort(Callable<? extends Comparison> f) {
+        return Iterable$impl._sort(this, f);
     }
-    @Override 
-    @Ignore
-    public <R2> Iterable<R2> map(Callable<? extends R2> f) { 
-        return new MapIterable<Result, R2>(this, f); 
+    @Override @Ignore
+    public <R2> Iterable<? extends R2> collect(Callable<? extends R2> f) {
+        return Iterable$impl._collect(this, f);
     }
-    @Override 
-    @Ignore
-    public Iterable<? extends Result> filter(Callable<? extends Boolean> f) { 
-        return new FilterIterable<Result>(this, f); 
+    @Override @Ignore
+    public Iterable<? extends Result> select(Callable<? extends Boolean> f) {
+        return Iterable$impl._select(this, f);
     }
-    @Override 
+    @Override
     @Ignore
-    public <R2> R2 fold(R2 ini, Callable<? extends R2> f) { 
-        return Iterable$impl._fold(this, ini, f); 
+    public <R2> Iterable<R2> map(Callable<? extends R2> f) {
+        return new MapIterable<Result, R2>(this, f);
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Result> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Result>(this, f);
+    }
+    @Override
+    @Ignore
+    public <R2> R2 fold(R2 ini, Callable<? extends R2> f) {
+        return Iterable$impl._fold(this, ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
@@ -428,39 +454,46 @@ class FilterIterable<Element> implements Iterable<Element> {
     public Iterable<? extends Element> getRest() {
     	return Iterable$impl._getRest(this);
     }
-    @Override 
+    @Override
     @Ignore
-    public Iterable<? extends Element> getSequence() { 
-        return Iterable$impl._getSequence(this); 
+    public Iterable<? extends Element> getSequence() {
+        return Iterable$impl._getSequence(this);
     }
-    @Override 
+    @Override
     @Ignore
-    public Element find(Callable<? extends Boolean> f) { 
-        return Iterable$impl._find(this, f); 
+    public Element find(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this, f);
     }
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
         return Iterable$impl._findLast(this, f);
     }
-    @Override 
-    @Ignore
-    public Iterable<? extends Element> sorted(Callable<? extends Comparison> f) { 
-        return Iterable$impl._sorted(this, f); 
+    @Override @Ignore
+    public Iterable<? extends Element> sort(Callable<? extends Comparison> f) {
+        return Iterable$impl._sort(this, f);
     }
-    @Override 
-    @Ignore
-    public <Result> Iterable<Result> map(Callable<? extends Result> f) { 
-        return new MapIterable<Element, Result>(this, f); 
+    @Override @Ignore
+    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+        return Iterable$impl._collect(this,  f);
     }
-    @Override 
-    @Ignore
-    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { 
-        return new FilterIterable<Element>(this, f); 
+    @Override @Ignore
+    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+        return Iterable$impl._select(this,  f);
     }
-    @Override 
+    @Override
     @Ignore
-    public <Result> Result fold(Result ini, Callable<? extends Result> f) { 
-        return Iterable$impl._fold(this, ini, f); 
+    public <Result> Iterable<Result> map(Callable<? extends Result> f) {
+        return new MapIterable<Element, Result>(this, f);
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f);
+    }
+    @Override
+    @Ignore
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+        return Iterable$impl._fold(this, ini, f);
     }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
