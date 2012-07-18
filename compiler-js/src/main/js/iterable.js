@@ -88,7 +88,7 @@ Iterable$proto.findLast = function(select) {
     }
     return last;
 }
-Iterable$proto.sorted = function(/*Callable<Comparison?,Element,Element>*/comparing) {
+Iterable$proto.sort = function(/*Callable<Comparison?,Element,Element>*/comparing) {
     var a = [];
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {

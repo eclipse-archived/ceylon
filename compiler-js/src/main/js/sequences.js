@@ -201,7 +201,7 @@ Singleton$proto.taking = function(take) {
 Singleton$proto.by = function(step) {
     return this;
 }
-Singleton$proto.sorted = function(f) { return this; }
+Singleton$proto.sort = function(f) { return this; }
 Singleton$proto.count = function(f) {
 	return f(this.elem) ? Integer(1) : Integer(0);
 }
