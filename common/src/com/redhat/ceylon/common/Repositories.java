@@ -18,7 +18,7 @@ public class Repositories {
     private static final String ITEM_USER = "user";
     private static final String ITEM_URL = "url";
     
-    private static final String REPO_URL_CEYLON = "http://modules.ceylon-lang.org/test";
+    public static final String REPO_URL_CEYLON = "http://modules.ceylon-lang.org/test";
 
     private static Repositories instance;
     
@@ -159,7 +159,7 @@ public class Repositories {
         if (repo == null) {
             // $HOME/.ceylon/repo
             File dir = getUserRepoDir();
-            repo = new Repository(REPO_TYPE_OUTPUT, dir.getPath(), null, null);
+            repo = new Repository(REPO_TYPE_CACHE, dir.getAbsolutePath(), null, null);
         }
         return repo;
     }
