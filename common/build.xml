@@ -7,6 +7,7 @@
     <property name="build.classes" location="${build.dir}/classes"/>
 
     <property name="src" location="src"/>
+    <property name="test.src" location="test-src"/>
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
@@ -18,6 +19,11 @@
 
     <!-- Classpath for the build tools. -->
     <path id="classpath">
+    </path>
+
+    <path id="test.run.classpath">
+        <pathelement path="${build.classes}"/>
+        <pathelement path="${junit.lib}"/>
     </path>
 
     <!-- ################################################################## -->
@@ -88,12 +94,18 @@
 
     <target name="test"
             depends="publish"
-            description="Run rudimentary tests">
-        <java classname="MainForTest">
-            <classpath>
-                <pathelement location="${build.classes}"/>
-                <path refid="classpath"/>
-            </classpath>
-        </java>
+            description="Run tests">
+        <mkdir dir="${test.reports}"/>
+        <junit printsummary="yes" haltonfailure="no">
+          <classpath refid="test.run.classpath"/>
+
+          <formatter type="xml"/>
+
+          <batchtest fork="yes" todir="${test.reports}">
+            <fileset dir="${test.src}">
+              <include name="**/*Test.java"/>
+            </fileset>
+          </batchtest>
+        </junit>
     </target>
 </project>
