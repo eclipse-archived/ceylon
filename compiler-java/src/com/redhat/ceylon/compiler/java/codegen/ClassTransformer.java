@@ -108,7 +108,7 @@ public class ClassTransformer extends AbstractTransformer {
         final String className;
         String aliasedClassName = def.getIdentifier().getText();
         if (def instanceof Tree.AnyInterface) {
-            className = Naming.declName(naming, model, QUALIFIED).replaceFirst(".*\\.", "");
+            className = naming.declName(model, QUALIFIED).replaceFirst(".*\\.", "");
         } else {
             className = def.getIdentifier().getText();
         }

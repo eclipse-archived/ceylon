@@ -154,16 +154,18 @@ public class Naming implements LocalId {
      * @param decl The declaration
      * @param options Option flags
      */
-    static String declName(LocalId gen, final TypeDeclaration decl, DeclNameFlag... options) {
+    JCExpression makeDeclName(final TypeDeclaration decl, DeclNameFlag... options) {
+        return makeDeclName(null, decl, options);
+    }
+    JCExpression makeDeclName(JCExpression qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options) {
         // TODO This should probably be generating a JCExpression, not
         // a String (which will inevitable end up being split up to produce a
         // JCExpression by the caller
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
-        StringBuilder sb = new StringBuilder();
-
+        JCExpression expr = qualifyingExpr;
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
-        Scope s = (Scope)decl;
+        Scope s = decl;
         do {
             l.add(s);
             s = s.getContainer();
@@ -171,32 +173,34 @@ public class Naming implements LocalId {
         Collections.reverse(l);
         
         if (flags.contains(DeclNameFlag.QUALIFIED)) {
-            Package pkg = (Package)s;
-            final String pname = pkg.getQualifiedNameString();
-            sb.append('.').append(pname);
-            if (!pname.isEmpty()) {
-                sb.append('.');
+            final List<String> packageName = ((Package) s).getName();
+            if (!packageName.get(0).isEmpty()) {
+                expr = maker.Ident(names.empty);
             }
-        }    
+            for (int ii = 0; ii < packageName.size(); ii++) {
+                expr = iors(expr, quoteIfJavaKeyword(packageName.get(ii)));
+            }
+        }
+        StringBuilder sb = new StringBuilder();
         for (int ii = 0; ii < l.size(); ii++) {
             Scope scope = l.get(ii);
             final boolean last = ii == l.size() - 1;
-            appendDeclName(gen, decl, flags, sb, scope, last);
+            expr = appendDeclName2(decl, flags, expr, sb, scope, last);
         }
-        return sb.toString();
+        return expr;
     }
 
-    static void appendDeclName(LocalId gen, final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, StringBuilder sb, Scope scope, final boolean last) {
+    JCExpression appendDeclName2(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, JCExpression expr, StringBuilder sb, Scope scope, final boolean last) {
         if (scope instanceof Class) {
             Class klass = (Class)scope;
-            sb.append(Decl.isCeylon(klass) ? quoteClassName(klass.getName()) : klass.getName());
+            sb.append(klass.getName());
             if (flags.contains(DeclNameFlag.COMPANION)
                     && last) {
                 sb.append("$impl");
             }
         } else if (scope instanceof Interface) {
             Interface iface = (Interface)scope;
-            sb.append(Decl.isCeylon(iface) ? quoteClassName(iface.getName()) : iface.getName());
+            sb.append(iface.getName());
             if (Decl.isCeylon(iface)
                 &&
                  (decl instanceof Class) 
@@ -206,6 +210,7 @@ public class Naming implements LocalId {
         } else if (Decl.isLocalScope(scope)) {
             if (flags.contains(DeclNameFlag.COMPANION)
                 || !(decl instanceof Interface)) {
+                expr = null;
                 sb.setLength(0);
             } else if (flags.contains(DeclNameFlag.QUALIFIED)
                     || (decl instanceof Interface)) {
@@ -213,18 +218,20 @@ public class Naming implements LocalId {
                 while (!(nonLocal instanceof Declaration)) {
                     nonLocal = nonLocal.getContainer();
                 }
-                sb.append(((Declaration)nonLocal).getName()).append('$').append(gen.getLocalId(scope));
+                sb.append(((Declaration)nonLocal).getName()).append('$').append(getLocalId(scope));
                 if (decl instanceof Interface) {
                     sb.append('$');
                 } else {
                     if (flags.contains(DeclNameFlag.QUALIFIED)) {
-                        sb.append('.');
+                        expr = iors(expr, quoteClassName(sb.toString()));
+                        sb.setLength(0);
                     } else {
+                        expr = null;
                         sb.setLength(0);
                     }
                 }
             }
-            return;
+            return expr;
         }
         if (!last) {
             if (decl instanceof Interface 
@@ -233,24 +240,39 @@ public class Naming implements LocalId {
                 sb.append('$');
             } else {
                 if (flags.contains(DeclNameFlag.QUALIFIED)) {
-                    sb.append('.');
+                    expr = iors(expr, quoteClassName(sb.toString()));
+                    sb.setLength(0);
                 } else {
+                    expr = null;
                     sb.setLength(0);
                 }
             }
+        } else {
+            expr = iors(expr, quoteClassName(sb.toString()));
         }
+        return expr;
+    }
+    
+    /**
+     * Generates a Java type name for the given declaration
+     * @param gen Something which knows about local declarations
+     * @param decl The declaration
+     * @param options Option flags
+     */
+    String declName(final TypeDeclaration decl, DeclNameFlag... options) {
+        return makeDeclName(null, decl, options).toString();
     }
 
     JCExpression makeDeclarationName(TypeDeclaration decl, DeclNameFlag... flags) {
-        return makeQuotedQualIdentFromString(declName(this, decl, flags));
+        return makeDeclName(decl, flags);
     }
     
     String getCompanionClassName(TypeDeclaration decl) {
-        return declName(this, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
+        return declName(decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
     JCExpression makeCompanionClassName(TypeDeclaration decl) {
-        return makeQuotedQualIdentFromString(getCompanionClassName(decl));
+        return makeDeclName(decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
     String quoteMethodNameIfProperty(Method method) {
@@ -488,8 +510,8 @@ public class Naming implements LocalId {
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
             }
-            String className = declName(this, (TypeDeclaration)container, DeclNameFlag.COMPANION); 
-            return  makeQuotedQualIdent(qualifier, className, methodName);
+            JCExpression className = makeDeclName(qualifier, (TypeDeclaration)container, DeclNameFlag.COMPANION); 
+            return  makeSelect(className, methodName);
         } else if (Strategy.defaultParameterMethodStatic(param)) {
             // top level method or class
             Assert.that(qualifier == null);
