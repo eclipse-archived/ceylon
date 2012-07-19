@@ -135,14 +135,14 @@ public final class Iterable$impl<Element> {
         return Iterable$impl._collect($this, collecting);
     }
     static <Element,Result> Iterable<? extends Result> _collect(Iterable<? extends Element> $this, Callable<? extends Result> f) {
-        return new MapIterable<>($this, f).getSequence();
+        return new MapIterable<Element, Result>($this, f).getSequence();
     }
 
     public Iterable<? extends Element> select(Callable<? extends Boolean> selecting) {
         return Iterable$impl._select($this, selecting);
     }
     static <Element> Iterable<? extends Element> _select(Iterable<? extends Element> $this, Callable<? extends Boolean> f) {
-        return new FilterIterable<>($this, f).getSequence();
+        return new FilterIterable<Element>($this, f).getSequence();
     }
 
     public boolean any(Callable<? extends Boolean> selecting) {
@@ -305,9 +305,9 @@ public final class Iterable$impl<Element> {
 }
 
 class MapIterable<Element, Result> implements Iterable<Result> {
-    final Iterable<Element> iterable;
+    final Iterable<? extends Element> iterable;
     final Callable<? extends Result> sel;
-    MapIterable(Iterable<Element> iterable, Callable<? extends Result> collecting) {
+    MapIterable(Iterable<? extends Element> iterable, Callable<? extends Result> collecting) {
         this.iterable = iterable;
         sel = collecting;
     }
@@ -323,7 +323,7 @@ class MapIterable<Element, Result> implements Iterable<Result> {
             return elem;
         }
     }
-    public Iterator<Result> getIterator() { return new MapIterator(); }
+    public Iterator<? extends Result> getIterator() { return new MapIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
 
     @Override
@@ -420,9 +420,9 @@ class MapIterable<Element, Result> implements Iterable<Result> {
 }
 
 class FilterIterable<Element> implements Iterable<Element> {
-    final Iterable<Element> iterable;
+    final Iterable<? extends Element> iterable;
     final Callable<? extends Boolean> f;
-    FilterIterable(Iterable<Element> iterable, Callable<? extends Boolean> selecting) {
+    FilterIterable(Iterable<? extends Element> iterable, Callable<? extends Boolean> selecting) {
         this.iterable = iterable;
         f = selecting;
     }
@@ -439,7 +439,7 @@ class FilterIterable<Element> implements Iterable<Element> {
             return elem;
         }
     }
-    public Iterator<Element> getIterator() { return new FilterIterator(); }
+    public Iterator<? extends Element> getIterator() { return new FilterIterator(); }
     public boolean getEmpty() { return getIterator().next() instanceof Finished; }
     @Override
     @Ignore
