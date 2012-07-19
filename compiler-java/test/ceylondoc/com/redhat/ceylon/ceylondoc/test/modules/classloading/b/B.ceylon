@@ -23,4 +23,8 @@ shared class B(){
     A a(){
         return A();
     }
+    shared class BInnerClass() {}
+    shared interface BInnerInterface {
+        shared class BInnerInnerClass() {}
+    }
 }
