@@ -195,14 +195,6 @@ public class CeylonModelLoader extends AbstractModelLoader {
             return (ClassSymbol) encl;
         return c;
     }
-
-    private boolean lastPartHasLowerInitial(String name) {
-        int index = name.lastIndexOf('.');
-        if (index != -1 && index != name.length() - 1) {
-            return Character.isLowerCase(name.charAt(index+1));
-        }
-        return false;
-    }
     
     @Override
     public ClassMirror lookupNewClassMirror(String name) {

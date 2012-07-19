@@ -67,12 +67,22 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     @Override
     public ClassMirror lookupNewClassMirror(String name) {
         Class<?> klass = null;
+        if (lastPartHasLowerInitial(name)) {
+            klass = loadClass(name+"_");
+        } else {
+            klass = loadClass(name);
+        }
+        return klass != null ? new ReflectionClass(klass) : null;
+    }
+
+    private Class<?> loadClass(String name) {
+        Class<?> klass = null;
         try {
             klass = classLoader.loadClass(name);
         } catch (ClassNotFoundException e) {
             // ignore
         }
-        return klass != null ? new ReflectionClass(klass) : null;
+        return klass;
     }
 
     @Override

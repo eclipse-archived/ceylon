@@ -201,6 +201,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    protected boolean lastPartHasLowerInitial(String name) {
+        int index = name.lastIndexOf('.');
+        if (index != -1 && index != name.length() - 1) {
+            return Character.isLowerCase(name.charAt(index+1));
+        }
+        return false;
+    }
+    
     /**
      * Looks up a ClassMirror by name. Called by lookupClassMirror on cache misses.
      * 
