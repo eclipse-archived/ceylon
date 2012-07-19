@@ -215,7 +215,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
          * of C) is not found in symtab.classes but in C's ClassSymbol.enclosedElements.
          */
         do{
-            classSymbol = symtab.classes.get(names.fromString(outerName));
+            classSymbol = symtab.classes.get(names.fromString(Util.quoteJavaKeywords(outerName)));
             if (classSymbol == null && lastPartHasLowerInitial(outerName)) {
                 // We have to try the unmunged name first, so that we find the symbol
                 // from the source in preference to the symbol from any 
