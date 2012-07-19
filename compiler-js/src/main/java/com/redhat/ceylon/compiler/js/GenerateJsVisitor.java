@@ -1694,8 +1694,8 @@ public class GenerateJsVisitor extends Visitor
     /** Represents one of the for loops of a comprehension including the associated conditions */
     private class ComprehensionLoopInfo {
         public final ForIterator forIterator;
-        public final List<Condition> conditions = new ArrayList<>();
-        public final List<Variable> conditionVars = new ArrayList<>();
+        public final List<Condition> conditions = new ArrayList<Condition>();
+        public final List<Variable> conditionVars = new ArrayList<Variable>();
         public final String itVarName;
         public String valueVarName;
         public String keyVarName = null;
@@ -1736,7 +1736,7 @@ public class GenerateJsVisitor extends Visitor
         out("//Comprehension"); location(that); endLine();
         
         // gather information about all loops and conditions in the comprehension
-        List<ComprehensionLoopInfo> loops = new ArrayList<>();
+        List<ComprehensionLoopInfo> loops = new ArrayList<ComprehensionLoopInfo>();
         Expression expression = null;
         ForComprehensionClause forClause = that.getForComprehensionClause();
         while (forClause != null) {
