@@ -49,31 +49,6 @@ shared interface Sequence<out Element>
     shared formal Sequence<Value> prepend<Value>(Value... elements)
             given Value abstracts Element;*/
 
-    doc "Returns a new `List` that starts with the specified
-         elements, followed by the elements of this `List`."
-    shared actual default Sequence<Element|Other> withLeading<Other>(Other... others) {
-        value sb = SequenceBuilder<Element|Other>();
-        sb.appendAll(others...);
-        sb.appendAll(this...);
-        if (nonempty seq=sb.sequence) {
-            return seq;
-        }
-        throw; //should never happen in a well-behaved implementation
-    }
-
-    doc "Returns a new `List` that contains the specified
-         elements appended to the end of this `List`s'
-         elements."
-    shared actual default Sequence<Element|Other> withTrailing<Other>(Other... others) {
-        value sb = SequenceBuilder<Element|Other>();
-        sb.appendAll(this...);
-        sb.appendAll(others...);
-        if (nonempty seq=sb.sequence) {
-            return seq;
-        }
-        throw; //should never happen in a well-behaved implementation
-    }
-
     doc "Returns a sequence containing the elements of this
          container, sorted according to a function 
          imposing a partial order upon the elements."
