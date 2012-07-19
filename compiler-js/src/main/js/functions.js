@@ -82,21 +82,6 @@ function coalesce(seq) {
     return seq.getCoalesced();
 }
 
-//receives ArraySequence and CeylonObject, returns new ArraySequence
-function append(seq, elem) {
-    return ArraySequence(seq.value.concat(elem));
-}
-function prepend(seq, elem) {
-    if (seq.getEmpty()) {
-        return Singleton(elem);
-    } else {
-        var sb = SequenceBuilder();
-        sb.append(elem);
-        sb.appendAll(seq);
-        return sb.getSequence();
-    }
-}
-
 //Receives Iterable, returns ArraySequence (with Entries)
 function entries(seq) {
     if (seq === undefined) return $empty;
@@ -134,8 +119,6 @@ exports.sum=sum;
 exports.join=join;
 exports.zip=zip;
 exports.coalesce=coalesce;
-exports.append=append;
-exports.prepend=prepend;
 exports.entries=entries;
 exports.any=any;
 exports.every=every;
