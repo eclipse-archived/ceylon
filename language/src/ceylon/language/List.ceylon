@@ -149,22 +149,32 @@ shared interface List<out Element>
     }
 
     doc "Returns a new `List` that starts with the specified
-         elements, followed by the elements of this `List`."
-    shared default List<Element|Other> withLeading<Other>(Other... others) {
+         element, followed by the elements of this `List`."
+    shared default Sequence<Element|Other> withLeading<Other>(Other element) {
         value sb = SequenceBuilder<Element|Other>();
-        sb.appendAll(others...);
-        sb.appendAll(this...);
-        return sb.sequence;
+        sb.append(element);
+        if (exists lastIndex) {
+            sb.appendAll(this...);
+        }
+        if (nonempty seq=sb.sequence) {
+            return seq;
+        }
+        throw; //Can't happen
     }
 
     doc "Returns a new `List` that contains the specified
-         elements appended to the end of this `List`s'
+         element appended to the end of this `List`s'
          elements."
-    shared default List<Element|Other> withTrailing<Other>(Other... others) {
+    shared default Sequence<Element|Other> withTrailing<Other>(Other element) {
         value sb = SequenceBuilder<Element|Other>();
-        sb.appendAll(this...);
-        sb.appendAll(others...);
-        return sb.sequence;
+        if (exists lastIndex) {
+            sb.appendAll(this...);
+        }
+        sb.append(element);
+        if (nonempty seq=sb.sequence) {
+            return seq;
+        }
+        throw; //Can't happen
     }
 
 }
