@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.quoting;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -126,5 +127,20 @@ public class QuotingTest extends CompilerTest {
     @Test
     public void testKeywordInInnerClass(){
         compareWithJavaSource("assert/KeywordInInnerClass");
+    }
+    
+    @Test
+    public void testCaseCollision(){
+        try {
+            compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$assert.CaseCollision", "assert/CaseCollision.ceylon");
+            Assert.fail();
+        } catch (RuntimeException e) {
+            Assert.assertTrue(e.getCause().getCause().getMessage().contains("i am the class"));
+        }
+        try {
+            compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$assert.caseCollision", "assert/CaseCollision.ceylon");
+        } catch (Exception e) {
+            Assert.assertTrue(e.getCause().getCause().getMessage().contains("i am the method"));
+        }
     }
 }
