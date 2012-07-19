@@ -133,7 +133,13 @@ public class Naming implements LocalId {
     }
 
     public static String strip(String str){
-        return (str.charAt(0) == '$') ? str.substring(1) : str;
+        String stripped = str;
+        if (!stripped.isEmpty() && stripped.charAt(stripped.length()-1) == '_') 
+            stripped = stripped.substring(0, stripped.length()-1);
+        if (stripped.startsWith("$")) {
+            stripped = stripped.substring(1);
+        }
+        return stripped;
     }
 
     public static String capitalize(String str){
