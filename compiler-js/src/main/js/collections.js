@@ -182,16 +182,16 @@ List$proto.findLast = function(select) {
     }
     return null;
 }
-List$proto.withLeading = function(others) {
+List$proto.withLeading = function(other) {
     var sb = SequenceBuilder();
-    sb.appendAll(others);
+    sb.append(other);
     sb.appendAll(this);
     return sb.getSequence();
 }
-List$proto.withTrailing = function(others) {
+List$proto.withTrailing = function(other) {
     var sb = SequenceBuilder();
     sb.appendAll(this);
-    sb.appendAll(others);
+    sb.append(other);
     return sb.getSequence();
 }
 exports.List=List;
@@ -418,10 +418,10 @@ Empty$proto.filter = function(f) { return this; }
 Empty$proto.getCoalesced = function() { return this; }
 Empty$proto.getIndexed = function() { return this; }
 Empty$proto.withLeading = function(other) {
-    return other === undefined ? this : other;
+    return new ArraySequence([other]);
 }
 Empty$proto.withTrailing = function(other) {
-    return other === undefined ? this : other;
+    return new ArraySequence([other]);
 }
 Empty$proto.chain = function(other) { return other; }
 
