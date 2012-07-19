@@ -611,7 +611,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return;
         }
         String quotedQualifiedName = Util.quoteJavaKeywords(pkg.getQualifiedNameString());
-        String className = quotedQualifiedName + ".$package";
+        String className = quotedQualifiedName + ".package";
         logVerbose("[Trying to look up package from "+className+"]");
         ClassMirror packageClass = loadClass(quotedQualifiedName, className);
         if(packageClass == null){

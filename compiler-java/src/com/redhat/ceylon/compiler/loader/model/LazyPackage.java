@@ -73,8 +73,6 @@ public class LazyPackage extends Package {
         // we need its package ready first
         modelLoader.loadPackage(pkgName, false);
 
-        String className = getQualifiedName(pkgName, name);
-        
         // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
         // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
         Declaration d = lookupMember(copy(compiledDeclarations), name, signature, false);
@@ -82,7 +80,9 @@ public class LazyPackage extends Package {
             return d;
         }
         
+        String className = getQualifiedName(pkgName, name);
         ClassMirror classSymbol = modelLoader.lookupClassMirror(className);
+        
         // only get it from the classpath if we're not compiling it, unless
         // it happens to be a java source
         if(classSymbol != null && (!classSymbol.isLoadedFromSource() || classSymbol.isJavaSource())) {

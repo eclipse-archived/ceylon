@@ -196,9 +196,17 @@ public class CeylonModelLoader extends AbstractModelLoader {
         return c;
     }
 
+    private boolean lastPartHasLowerInitial(String name) {
+        int index = name.lastIndexOf('.');
+        if (index != -1 && index != name.length() - 1) {
+            return Character.isLowerCase(name.charAt(index+1));
+        }
+        return false;
+    }
+    
     @Override
     public ClassMirror lookupNewClassMirror(String name) {
-        ClassSymbol classSymbol;
+        ClassSymbol classSymbol = null;
 
         String outerName = name;
         /*
@@ -208,6 +216,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
          */
         do{
             classSymbol = symtab.classes.get(names.fromString(outerName));
+            if (classSymbol == null && lastPartHasLowerInitial(outerName)) {
+                // We have to try the unmunged name first, so that we find the symbol
+                // from the source in preference to the symbol from any 
+                // pre-existing .class file
+                classSymbol = symtab.classes.get(names.fromString(outerName+"_"));
+            }
             if(classSymbol != null){
                 // if we got a source symbol for something non-Java it's a slipery slope
                 if(Util.isLoadedFromSource(classSymbol) && !Util.isJavaSource(classSymbol))
@@ -237,7 +251,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
             for(String part : parts){
                 for(Symbol s : classSymbol.getEnclosedElements()){
                     if(s instanceof ClassSymbol 
-                            && s.getSimpleName().toString().equals(part)){
+                            && (s.getSimpleName().toString().equals(part)
+                                    || (Util.isInitialLowerCase(part) 
+                                            && s.getSimpleName().toString().equals(part + "_")))){
                         classSymbol = (ClassSymbol) s;
                         continue PART;
                     }
