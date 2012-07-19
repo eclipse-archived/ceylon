@@ -43,6 +43,8 @@ public class IssuesTest extends CompilerTest {
         options.addAll(defaultOptions);
         options.add("-verbose");
         options.add("-cp");
+        // If this test is failing, make sure you have done "ant publish"
+        // of ceylon.language
         options.add(dir+File.pathSeparator+getModuleArchive("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, Util.getHomeRepository()));
         Boolean result = getCompilerTask(options, "Bug41_2.ceylon").call();
         Assert.assertEquals("Compilation worked", Boolean.TRUE, result);
