@@ -54,8 +54,18 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable sorted(final .ceylon.language.Callable comparing) {
-        return $ceylon$language$Iterable$this.sorted(comparing);
+    public .ceylon.language.Iterable sort(final .ceylon.language.Callable comparing) {
+        return $ceylon$language$Iterable$this.sort(comparing);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable collect(final .ceylon.language.Callable collecting) {
+        return $ceylon$language$Iterable$this.collect(collecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable select(final .ceylon.language.Callable selecting) {
+        return $ceylon$language$Iterable$this.select(selecting);
     }
     
     @.java.lang.Override
@@ -167,8 +177,18 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable sorted(final .ceylon.language.Callable comparing) {
-        return $ceylon$language$Iterable$this.sorted(comparing);
+    public .ceylon.language.Iterable sort(final .ceylon.language.Callable comparing) {
+        return $ceylon$language$Iterable$this.sort(comparing);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable collect(final .ceylon.language.Callable collecting) {
+        return $ceylon$language$Iterable$this.collect(collecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable select(final .ceylon.language.Callable selecting) {
+        return $ceylon$language$Iterable$this.select(selecting);
     }
     
     @.java.lang.Override

@@ -73,13 +73,18 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     public int hashCode() {
         return $ceylon$language$List$this.hashCode();
     }
-    private final .ceylon.language.Collection$impl<.java.lang.Object> $ceylon$language$Collection$this;
-    private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
-    public .java.lang.Object getLast() {
-        return $ceylon$language$Iterable$this.getLast();
+    public <Other>.ceylon.language.Sequence<? extends Other> withLeading(final Other element) {
+        return $ceylon$language$List$this.withLeading(element);
     }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Sequence<? extends Other> withTrailing(final Other element) {
+        return $ceylon$language$List$this.withTrailing(element);
+    }
+    private final .ceylon.language.Collection$impl<.java.lang.Object> $ceylon$language$Collection$this;
+    private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
     public .ceylon.language.Iterable<?> getRest() {
@@ -112,8 +117,18 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<?> sorted(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
-        return $ceylon$language$Iterable$this.sorted(comparing);
+    public .ceylon.language.Iterable<?> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return $ceylon$language$Iterable$this.sort(comparing);
+    }
+    
+    @.java.lang.Override
+    public <Result>.ceylon.language.Iterable<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.collect(collecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<?> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.select(selecting);
     }
     
     @.java.lang.Override
@@ -154,6 +169,11 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ?>> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Iterable<? extends Other> chain(final .ceylon.language.Iterable<? extends Other> other) {
+        return $ceylon$language$Iterable$this.chain(other);
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
@@ -245,8 +265,13 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     private final .ceylon.language.None$impl<.java.lang.Object> $ceylon$language$None$this;
     
     @.java.lang.Override
-    public final .java.lang.Object getFirst() {
+    public .java.lang.Object getFirst() {
         return $ceylon$language$None$this.getFirst();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getLast() {
+        return $ceylon$language$None$this.getLast();
     }
     
     @.java.lang.Override
