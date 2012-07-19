@@ -163,7 +163,7 @@ public class TypeParser {
      */
     private Part parseTypeNameWithArguments() {
         Part type = new Part();
-        type.name = Util.quoteIfJavaKeyword(lexer.eatWord());
+        type.name = lexer.eatWord();
         if(lexer.lookingAt(TypeLexer.LT)){
             lexer.eat();
             type.parameters.add(parseType());
