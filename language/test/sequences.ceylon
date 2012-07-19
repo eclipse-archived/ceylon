@@ -344,17 +344,6 @@ shared void sequences() {
         assert("X"+(nat+1).string==str, "entries iteration");
     }
 
-    assert(append({},"foo").string=="{ foo }", "append to empty.string");
-    assert(prepend({},"foo").string=="{ foo }", "prepend to empty.string");
-    assert(append({1, 2},"foo").string=="{ 1, 2, foo }", "append.string");
-    assert(prepend({1, 2},"foo").string=="{ foo, 1, 2 }", "prepend.string");
-
-    assert(append({},"foo").size==1, "append to empty.size");
-    assert(prepend({},"foo").size==1, "prepend to empty.size");
-    assert(append({1, 2},"foo").size==3, "append.size");
-    assert(prepend({1, 2},"foo").size==3, "prepend.size");
-    assert(append({"one", "two" , "three"}, "four").size==4, "append");
-
     //More sequence-related functions
     test_join();
     test_zip();

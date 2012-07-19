@@ -15,9 +15,11 @@ void lists() {
     value b = TestList(1,2,3,4,5,6,7,8);
     //withLeading
     assert({}.withLeading("A")=={"A"}, "Empty.withLeading(A)");
+    assert({}.withLeading("foo").size==1, "{}.withLeading.size");
     assert(array().withLeading(1)=={1}, "empty array.withLeading(1)");
     assert(array(1,2).withLeading("A")=={"A",1,2}, "Array.withLeading(a)");
     assert({1,2}.withLeading("a")=={"a",1,2}, "Sequence.withLeading(a)");
+    assert({1,2}.withLeading("foo").size==3, "Sequence.withLeading.size");
     assert(Singleton(1).withLeading("a")=={"a",1}, "Singleton.withLeading(a)");
     assert((1..3).withLeading("a")=={"a",1,2,3}, "Range.withLeading(a)");
     assert((1..3).withLeading(0).first==0, "Range.withLeading(a).first");
@@ -27,9 +29,11 @@ void lists() {
 
     //withTrailing
     assert({}.withTrailing("A")=={"A"}, "Empty.withTrailing(A)");
+    assert({}.withTrailing("foo").size==1, "{}.withTrailing.size");
     assert(array().withTrailing(1)=={1}, "empty array.withTrailing(1)");
     assert(array(1,2).withTrailing("A")=={1,2,"A"}, "Array.withTrailing(a)");
     assert({1,2}.withTrailing("a")=={1,2,"a"}, "Sequence.withTrailing(a)");
+    assert({1,2}.withTrailing("foo").size==3, "Sequence.withTrailing.size");
     assert(Singleton(1).withTrailing("a")=={1,"a"}, "Singleton.withTrailing(a)");
     assert((1..3).withTrailing(4)=={1,2,3,4}, "Range.withTrailing(a)");
     assert((1..3).withTrailing(4).first==1, "Range.withTrailing(a).first");
