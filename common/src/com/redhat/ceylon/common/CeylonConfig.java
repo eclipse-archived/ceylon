@@ -1,5 +1,6 @@
 package com.redhat.ceylon.common;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -167,5 +168,21 @@ public class CeylonConfig {
         HashSet<String> on = sectionNames.get(section);
         String[] res = new String[on.size()];
         return on.toArray(res);
+    }
+    
+    // Some additional useful configuration options
+    
+    public File getInstallDir() {
+        String ceylonHome = System.getProperty("ceylon.home");
+        if (ceylonHome != null) {
+            return new File(ceylonHome);
+        } else {
+            return null;
+        }
+    }
+    
+    public File getUserDir() {
+        String userHome = System.getProperty("user.home");
+        return new File(userHome, ".ceylon");
     }
 }

@@ -11,6 +11,7 @@ public class Repositories {
 
     private static final String REPO_TYPE_BOOTSTRAP = "bootstrap";
     private static final String REPO_TYPE_OUTPUT = "output";
+    private static final String REPO_TYPE_CACHE = "cache";
     private static final String REPO_TYPE_LOOKUP = "lookup";
     
     private static final String ITEM_PASSWORD = "password";
@@ -102,10 +103,10 @@ public class Repositories {
                 if (repo != null) {
                     repos.add(repo);
                 }
-                if (!repos.isEmpty()) {
-                    Repository[] result = new Repository[repos.size()];
-                    return repos.toArray(result);
-                }
+            }
+            if (!repos.isEmpty()) {
+                Repository[] result = new Repository[repos.size()];
+                return repos.toArray(result);
             }
         }
         return null;
@@ -120,13 +121,18 @@ public class Repositories {
         }
     }
     
+    public File getUserRepoDir() {
+        File userDir = config.getUserDir();
+        return new File(userDir, "repo");
+    }
+    
     public Repository getBootstrapRepository() {
         Repository repo = getRepositoryByType(REPO_TYPE_BOOTSTRAP);
         if (repo == null) {
-            String ceylonHome = System.getProperty("ceylon.home");
-            if (ceylonHome != null) {
+            File installDir = config.getInstallDir();
+            if (installDir != null) {
                 // $INSTALLDIR/repo
-                File dir = new File(ceylonHome, "repo");
+                File dir = new File(installDir, "repo");
                 repo = new Repository(REPO_TYPE_BOOTSTRAP, dir.getAbsolutePath(), null, null);
             }
         }
@@ -143,17 +149,26 @@ public class Repositories {
         return repo;
     }
     
+    public Repository getCacheRepository() {
+        Repository repo = getRepositoryByType(REPO_TYPE_CACHE);
+        if (repo == null) {
+            // $HOME/.ceylon/repo
+            File dir = getUserRepoDir();
+            repo = new Repository(REPO_TYPE_OUTPUT, dir.getPath(), null, null);
+        }
+        return repo;
+    }
+    
     public Repository[] getLookupRepositories() {
         Repository[] repos = getRepositoriesByType(REPO_TYPE_LOOKUP);
         if (repos == null) {
             repos = new Repository[3];
             // ./modules
-            File dir1 = new File(".", "modules");
-            repos[0] = new Repository(REPO_TYPE_LOOKUP + "1", dir1.getPath(), null, null);
+            File modulesDir = new File(".", "modules");
+            repos[0] = new Repository(REPO_TYPE_LOOKUP + "1", modulesDir.getPath(), null, null);
             // $HOME/.ceylon/repo
-            String userHome = System.getProperty("user.home");
-            File dir2 = new File(new File(userHome, ".ceylon"), "repo");
-            repos[1] = new Repository(REPO_TYPE_LOOKUP + "2", dir2.getAbsolutePath(), null, null);
+            File userRepoDir = getUserRepoDir();
+            repos[1] = new Repository(REPO_TYPE_LOOKUP + "2", userRepoDir.getAbsolutePath(), null, null);
             // http://modules.ceylon-lang.org
             repos[2] = new Repository(REPO_TYPE_LOOKUP + "3", REPO_URL_CEYLON, null, null);
         }
