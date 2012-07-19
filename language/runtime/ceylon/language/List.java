@@ -3,10 +3,8 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -59,27 +57,19 @@ public interface List<Element>
     public int hashCode();
 
     @SuppressWarnings("rawtypes")
-    @Annotations(@Annotation("default"))
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.List<Element|Other>")
-    public <Other> List withLeading(@Name("elements")
-            @TypeInfo("ceylon.language.Iterable<Other>")
-            @Sequenced Iterable<? extends Other> elements);
+    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    public <Other> Sequence withLeading(@Name("element")
+            @TypeInfo("Other")
+            Other element);
 
     @SuppressWarnings("rawtypes")
-    @Annotations(@Annotation("default"))
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.List<Element|Other>")
-    public <Other> List withTrailing(@Name("elements")
-            @TypeInfo("ceylon.language.Iterable<Other>")
-            @Sequenced Iterable<? extends Other> elements);
-
-    @SuppressWarnings("rawtypes")
-    @Ignore public <Other>List withLeading();
-    @SuppressWarnings("rawtypes")
-    @Ignore public <Other>List withTrailing();
-
-    @Ignore public <Other>Iterable<? extends Other> withLeading$elements();
-    @Ignore public <Other>Iterable<? extends Other> withTrailing$elements();
+    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    public <Other> Sequence withTrailing(@Name("element")
+            @TypeInfo("Other")
+            Other element);
 
 }

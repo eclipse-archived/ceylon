@@ -110,36 +110,26 @@ public final class List$impl<Element> {
     }
 
     @SuppressWarnings("rawtypes")
-    public <Other>List withLeading() { return $this; }
-    @SuppressWarnings("rawtypes")
-    public <Other>List withTrailing() { return $this; }
-    
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$empty.getEmpty(); }
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$empty.getEmpty(); }
-
-    @SuppressWarnings("rawtypes")
-    public <Other> List withLeading(Iterable<? extends Other> elements) {
+    public <Other> Sequence withLeading(Other elements) {
         return List$impl._withLeading($this, elements);
     }
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static <Element,Other> List _withLeading(List<? extends Element> orig, Iterable<? extends Other> elems) {
+    public static <Element,Other> Sequence _withLeading(List<? extends Element> orig, Other elem) {
         SequenceBuilder sb = new SequenceBuilder();
-        sb.appendAll(elems);
+        sb.append(elem);
         sb.appendAll(orig);
-        return (List)sb.getSequence();
+        return (Sequence)sb.getSequence();
     }
     @SuppressWarnings("rawtypes")
-    public <Other> List withTrailing(Iterable<? extends Other> elements) {
-        return List$impl._withTrailing($this, elements);
+    public <Other> Sequence withTrailing(Other element) {
+        return List$impl._withTrailing($this, element);
     }
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static <Element,Other> List _withTrailing(List<? extends Element> orig, Iterable<? extends Other> elems) {
+    public static <Element,Other> Sequence _withTrailing(List<? extends Element> orig, Other elem) {
         SequenceBuilder sb = new SequenceBuilder();
         sb.appendAll(orig);
-        sb.appendAll(elems);
-        return (List)sb.getSequence();
+        sb.append(elem);
+        return (Sequence)sb.getSequence();
     }
 
 }
