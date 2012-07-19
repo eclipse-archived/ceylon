@@ -110,10 +110,10 @@ shared interface Empty
     shared actual Empty coalesced {
         return this;
     }
-    shared actual Other[] withLeading<Other>(Other... others) {
-        return others.sequence;
+    shared actual Sequence<Other> withLeading<Other>(Other other) {
+        return {other};
     }
-    shared actual Other[] withTrailing<Other>(Other... others) {
-        return others.sequence;
+    shared actual Sequence<Other>withTrailing<Other>(Other other) {
+        return {other};
     }
 }
