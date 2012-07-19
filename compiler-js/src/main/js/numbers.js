@@ -3,14 +3,14 @@ function String$(x){};//IGNORE
 function Character(x){};//IGNORE
 function inheritProto(a,b,c,d,e,f,g);//IGNORE
 function Exception$(x){};//IGNORE
-var Object$,Castable,Integral,Numeric,equal,smaller,larger,exports;//IGNORE
+var Object$,Castable,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,exports;//IGNORE
 
 function Integer(value) {
     var that = new Integer.$$;
     that.value = value;
     return that;
 }
-initTypeProto(Integer, 'ceylon.language.Integer', Object$, Castable, Integral, Numeric);
+initTypeProto(Integer, 'ceylon.language.Integer', Object$, Scalar, Castable, Integral, Exponentiable);
 var Integer$proto = Integer.$$.prototype;
 Integer$proto.getString = function() { return String$(this.value.toString()) }
 Integer$proto.plus = function(other) {
@@ -107,7 +107,7 @@ function Float(value) {
     that.value = value;
     return that;
 }
-initTypeProto(Float, 'ceylon.language.Float', Object$, Castable, Numeric);
+initTypeProto(Float, 'ceylon.language.Float', Object$, Scalar, Castable, Exponentiable);
 var Float$proto = Float.$$.prototype;
 Float$proto.getString = function() { return String$(this.value.toString()) }
 Float$proto.plus = function(other) { return Float(this.value+other.value) }

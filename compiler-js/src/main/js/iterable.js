@@ -88,7 +88,7 @@ Iterable$proto.findLast = function(select) {
     }
     return last;
 }
-Iterable$proto.sorted = function(/*Callable<Comparison?,Element,Element>*/comparing) {
+Iterable$proto.sort = function(/*Callable<Comparison?,Element,Element>*/comparing) {
     var a = [];
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
@@ -202,6 +202,12 @@ Iterable$proto.getLast = function() {
         l=e;
     }
     return l;
+}
+Iterable$proto.collect = function(collecting) {
+    return this.map(collecting).getSequence();
+}
+Iterable$proto.select = function(selecting) {
+    return this.filter(selecting).getSequence();
 }
 
 exports.Iterable=Iterable;

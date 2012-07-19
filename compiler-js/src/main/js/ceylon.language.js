@@ -255,6 +255,12 @@ function Integral(wat) {
 }
 initTypeProtoI(Integral, 'ceylon.language.Integral', Numeric, Ordinal);
 exports.Integral=Integral;
+function Scalar(scalar) { return scalar; }
+initTypeProtoI(Scalar, 'ceylon.language.Scalar', Numeric, Comparable, Number$);
+exports.Scalar=Scalar;
+function Exponentiable(exp) { return exp; }
+initTypeProtoI(Exponentiable, 'ceylon.language.Exponentiable', Numeric);
+exports.Exponentiable=Exponentiable;
 
 function Exception(description, cause, wat) {
     if (wat===undefined) {wat=new Exception.$$;}

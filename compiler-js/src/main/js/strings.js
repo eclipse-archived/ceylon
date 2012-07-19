@@ -412,8 +412,8 @@ String$proto.by = function(step) {
     var r = Iterable.$$.prototype.by.apply(this, [step]);
     return string(r);
 }
-String$proto.sorted = function(f) {
-    var r = Iterable.$$.prototype.sorted.apply(this, [f]);
+String$proto.sort = function(f) {
+    var r = Iterable.$$.prototype.sort.apply(this, [f]);
     return string(r);
 }
 String$proto.getCoalesced = function() { return this; }
