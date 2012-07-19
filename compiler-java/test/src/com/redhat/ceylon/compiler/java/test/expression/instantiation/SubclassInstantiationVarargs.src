@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 class Foo {
     
     static .ceylon.language.Iterable<? extends .ceylon.language.String> $init$name() {
-        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
     Foo() {

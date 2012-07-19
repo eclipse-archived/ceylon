@@ -25,9 +25,9 @@ class DefaultedAndTypeParams<X> {
         this.init = init;
     }
 }
-final class defaultedAndTypeParams_m {
+final class defaultedAndTypeParams_m_ {
     
-    private defaultedAndTypeParams_m() {
+    private defaultedAndTypeParams_m_() {
     }
     
     static void defaultedAndTypeParams_m() {
@@ -58,7 +58,7 @@ final class defaultedAndTypeParams_m {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultedAndTypeParams_m.defaultedAndTypeParams_m();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultedAndTypeParams_m_.defaultedAndTypeParams_m();
     }
 }

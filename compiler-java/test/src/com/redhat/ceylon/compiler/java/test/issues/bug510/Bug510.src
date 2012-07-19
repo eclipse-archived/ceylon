@@ -8,11 +8,13 @@ interface Bug510$Bug510inner {
 interface Bug510 {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Name("Bug510")
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug510$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510 $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+    @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final class Bug510inner$impl {
         private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this;
@@ -27,11 +29,10 @@ final class Bug510$impl {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
-@.com.redhat.ceylon.compiler.java.metadata.Name("assert")
 @.com.redhat.ceylon.compiler.java.metadata.Method
-final class $assert {
+final class assert_ {
     
-    private $assert() {
+    private assert_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
@@ -40,14 +41,13 @@ final class $assert {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug510.$assert.$assert();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug510.assert_.$assert();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
-@.com.redhat.ceylon.compiler.java.metadata.Name("volatile")
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
-final class $volatile {
+final class volatile_ {
     private static final long[] value;
     static {
         value = new long[]{5L};
@@ -62,23 +62,23 @@ final class $volatile {
         }
     }
     
-    private $volatile() {
+    private volatile_() {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Name("synchronized")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-final class $synchronized {
+final class synchronized_ {
     
-    private $synchronized() {
+    private synchronized_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug510.$synchronized[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug510.synchronized_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug510.$synchronized[]{new .com.redhat.ceylon.compiler.java.test.issues.bug510.$synchronized()};
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug510.synchronized_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug510.synchronized_()};
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug510.synchronized")
-    static .com.redhat.ceylon.compiler.java.test.issues.bug510.$synchronized getSynchronized() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug510.synchronized_ getSynchronized() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

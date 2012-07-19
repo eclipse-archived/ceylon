@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class topLevelAttributeGenerics {
+final class topLevelAttributeGenerics_ {
     private static final .ceylon.language.List<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
@@ -14,10 +14,10 @@ final class topLevelAttributeGenerics {
         }
     }
     
-    private topLevelAttributeGenerics() {
+    private topLevelAttributeGenerics_() {
     }
 }
-public final class topLevelAttributeGenericsShared {
+public final class topLevelAttributeGenericsShared_ {
     private static final .ceylon.language.List<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
@@ -31,10 +31,10 @@ public final class topLevelAttributeGenericsShared {
         }
     }
     
-    private topLevelAttributeGenericsShared() {
+    private topLevelAttributeGenericsShared_() {
     }
 }
-final class topLevelVariableGenerics {
+final class topLevelVariableGenerics_ {
     private static .ceylon.language.List<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
@@ -52,10 +52,10 @@ final class topLevelVariableGenerics {
         value[0] = topLevelVariableGenerics;
     }
     
-    private topLevelVariableGenerics() {
+    private topLevelVariableGenerics_() {
     }
 }
-public final class topLevelVariableGenericsShared {
+public final class topLevelVariableGenericsShared_ {
     private static .ceylon.language.List<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
@@ -73,6 +73,6 @@ public final class topLevelVariableGenericsShared {
         value[0] = topLevelVariableGenericsShared;
     }
     
-    private topLevelVariableGenericsShared() {
+    private topLevelVariableGenericsShared_() {
     }
 }

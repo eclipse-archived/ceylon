@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callablePositionalInvocationSequenced_f {
+final class callablePositionalInvocationSequenced_f_ {
     
-    private callablePositionalInvocationSequenced_f() {
+    private callablePositionalInvocationSequenced_f_() {
     }
     
     static void callablePositionalInvocationSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {

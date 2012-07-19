@@ -16,6 +16,7 @@ interface Bug630 {
     final .java.lang.Object other);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Name("Bug630")
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug630$impl {
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug630 $this;

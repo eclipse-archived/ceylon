@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-public final class topLevelVariableShared {
+public final class topLevelVariableShared_ {
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -18,6 +18,6 @@ public final class topLevelVariableShared {
         value[0] = topLevelVariableShared;
     }
     
-    private topLevelVariableShared() {
+    private topLevelVariableShared_() {
     }
 }

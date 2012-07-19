@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-public final class bug660 {
+public final class bug660_ {
     
-    private bug660() {
+    private bug660_() {
     }
     
     public static void bug660() {
-        .ceylon.language.print.print(new .ceylon.language.ArraySequence((.java.lang.Object)null));
+        .ceylon.language.print_.print(new .ceylon.language.ArraySequence((.java.lang.Object)null));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug660.bug660();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug660_.bug660();
     }
 }

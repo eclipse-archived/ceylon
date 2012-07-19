@@ -9,7 +9,7 @@ public class Foo {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
 }
@@ -22,7 +22,7 @@ public class Bar {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
     }
 }
@@ -86,7 +86,7 @@ public class SharedUnionTypeInfo {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
-final class toplevelAttribute {
+final class toplevelAttribute_ {
     private static final .java.lang.Object[] value;
     static {
         value = new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.annotations.Foo()};
@@ -101,12 +101,12 @@ final class toplevelAttribute {
         }
     }
     
-    private toplevelAttribute() {
+    private toplevelAttribute_() {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
-public final class sharedToplevelAttribute {
+public final class sharedToplevelAttribute_ {
     private static final .java.lang.Object[] value;
     static {
         value = new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.annotations.Bar()};
@@ -122,14 +122,14 @@ public final class sharedToplevelAttribute {
         }
     }
     
-    private sharedToplevelAttribute() {
+    private sharedToplevelAttribute_() {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-final class toplevelMethod {
+final class toplevelMethod_ {
     
-    private toplevelMethod() {
+    private toplevelMethod_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
@@ -141,9 +141,9 @@ final class toplevelMethod {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-public final class sharedToplevelMethod {
+public final class sharedToplevelMethod_ {
     
-    private sharedToplevelMethod() {
+    private sharedToplevelMethod_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -156,7 +156,7 @@ public final class sharedToplevelMethod {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
-final class toplevelGetter {
+final class toplevelGetter_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
     static .java.lang.Object getToplevelGetter() {
@@ -168,12 +168,12 @@ final class toplevelGetter {
     final .java.lang.Object toplevelGetter) {
     }
     
-    private toplevelGetter() {
+    private toplevelGetter_() {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
-public final class toplevelSharedGetter {
+public final class toplevelSharedGetter_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
@@ -186,6 +186,6 @@ public final class toplevelSharedGetter {
     final .java.lang.Object toplevelSharedGetter) {
     }
     
-    private toplevelSharedGetter() {
+    private toplevelSharedGetter_() {
     }
 }

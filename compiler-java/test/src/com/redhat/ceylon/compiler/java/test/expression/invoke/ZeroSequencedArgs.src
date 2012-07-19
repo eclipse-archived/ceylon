@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class zeroSequencedArgs {
+final class zeroSequencedArgs_ {
     
-    private zeroSequencedArgs() {
+    private zeroSequencedArgs_() {
     }
     
     static void zeroSequencedArgs() {
@@ -11,7 +11,7 @@ final class zeroSequencedArgs {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.zeroSequencedArgs.zeroSequencedArgs();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.zeroSequencedArgs_.zeroSequencedArgs();
     }
 }

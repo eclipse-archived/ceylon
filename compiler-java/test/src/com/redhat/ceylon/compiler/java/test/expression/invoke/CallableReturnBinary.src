@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableReturnBinary_foo {
+final class callableReturnBinary_foo_ {
     
-    private callableReturnBinary_foo() {
+    private callableReturnBinary_foo_() {
     }
     
     static void callableReturnBinary_foo(final long i, final .java.lang.String s) {
     }
 }
-final class callableReturnBinary_bar {
+final class callableReturnBinary_bar_ {
     
-    private callableReturnBinary_bar() {
+    private callableReturnBinary_bar_() {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnBinary_bar() {
@@ -21,7 +21,7 @@ final class callableReturnBinary_bar {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnBinary_foo.callableReturnBinary_foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString());
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnBinary_foo_.callableReturnBinary_foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString());
                     }
                     returning null;
                 );
@@ -30,7 +30,7 @@ final class callableReturnBinary_bar {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnBinary_bar.callableReturnBinary_bar();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnBinary_bar_.callableReturnBinary_bar();
     }
 }

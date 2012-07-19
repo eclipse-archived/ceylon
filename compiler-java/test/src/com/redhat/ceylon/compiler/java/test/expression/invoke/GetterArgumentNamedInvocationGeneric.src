@@ -1,21 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class getterArgumentNamedInvocationGeneric {
+final class getterArgumentNamedInvocationGeneric_ {
     
-    private getterArgumentNamedInvocationGeneric() {
+    private getterArgumentNamedInvocationGeneric_() {
     }
     
     static <T>void getterArgumentNamedInvocationGeneric(final T t) {
         
-        final class callFunction {
+        final class callFunction_ {
             
-            private callFunction() {
+            private callFunction_() {
             }
             
             void callFunction(final T i) {
             }
         }
-        final callFunction callFunction = new callFunction();
+        final callFunction_ callFunction = new callFunction_();
         long i = 3L;
         (
             let

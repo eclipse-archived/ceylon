@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-final class methodSpecifyingCallable_f {
+final class methodSpecifyingCallable_f_ {
     
-    private methodSpecifyingCallable_f() {
+    private methodSpecifyingCallable_f_() {
     }
     
     static .ceylon.language.Callable<? extends .ceylon.language.String> methodSpecifyingCallable_f() {
@@ -10,21 +10,21 @@ final class methodSpecifyingCallable_f {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f.methodSpecifyingCallable_f();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f();
     }
 }
 class MethodSpecifyingCallable {
     
     private final .java.lang.String foo(final long i) {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f.methodSpecifyingCallable_f().$call(.ceylon.language.Integer.instance(i)).toString();
+        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f().$call(.ceylon.language.Integer.instance(i)).toString();
     }
     
     MethodSpecifyingCallable() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingCallable();
     }
 }

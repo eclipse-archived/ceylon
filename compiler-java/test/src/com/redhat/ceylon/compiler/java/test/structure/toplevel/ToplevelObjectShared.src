@@ -1,18 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-public final class topLevelObjectShared {
+public final class topLevelObjectShared_ {
     
     public final void y() {
     }
     
-    private topLevelObjectShared() {
+    private topLevelObjectShared_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared()};
+        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_()};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared getTopLevelObjectShared() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_ getTopLevelObjectShared() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -20,17 +20,17 @@ public final class topLevelObjectShared {
         }
     }
 }
-final class accessTopLevelObjectShared {
+final class accessTopLevelObjectShared_ {
     
-    private accessTopLevelObjectShared() {
+    private accessTopLevelObjectShared_() {
     }
     
     static void accessTopLevelObjectShared() {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared.getTopLevelObjectShared().y();
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.getTopLevelObjectShared().y();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.accessTopLevelObjectShared.accessTopLevelObjectShared();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.accessTopLevelObjectShared_.accessTopLevelObjectShared();
     }
 }

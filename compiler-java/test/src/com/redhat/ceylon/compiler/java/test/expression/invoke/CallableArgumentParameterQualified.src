@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableArgumentParameterQualified_f {
+final class callableArgumentParameterQualified_f_ {
     
-    private callableArgumentParameterQualified_f() {
+    private callableArgumentParameterQualified_f_() {
     }
     
     static void callableArgumentParameterQualified_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
@@ -12,8 +12,8 @@ class CallableArgumentParameterQualified {
     private final .ceylon.language.Callable<? extends .java.lang.Object> bar;
     
     private final void m(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified c) {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f.callableArgumentParameterQualified_f(c.bar);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f.callableArgumentParameterQualified_f(this.bar);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(c.bar);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(this.bar);
     }
     
     CallableArgumentParameterQualified(.ceylon.language.Callable<? extends .java.lang.Object> bar) {

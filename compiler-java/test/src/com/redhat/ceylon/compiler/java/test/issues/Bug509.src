@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug509 {
+final class bug509_ {
     
-    private bug509() {
+    private bug509_() {
     }
     
     static boolean bug509(final .ceylon.language.Iterable<? extends .java.lang.Object> objs) {

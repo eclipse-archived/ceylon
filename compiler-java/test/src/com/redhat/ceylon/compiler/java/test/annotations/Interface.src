@@ -25,6 +25,7 @@ public interface TopInterface {
     final long p1);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Name("TopInterface")
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class TopInterface$impl {
     private final .com.redhat.ceylon.compiler.java.test.annotations.TopInterface $this;
@@ -98,6 +99,7 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
     final long p1);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Name("Interface")
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Interface$impl {
     private final .com.redhat.ceylon.compiler.java.test.annotations.Interface $this;

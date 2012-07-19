@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.statement.retrn;
 
-final class returnAnonFunction {
+final class returnAnonFunction_ {
     
-    private returnAnonFunction() {
+    private returnAnonFunction_() {
     }
     
     static .ceylon.language.Callable<? extends .ceylon.language.Integer> returnAnonFunction() {
@@ -17,7 +17,7 @@ final class returnAnonFunction {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.retrn.returnAnonFunction.returnAnonFunction();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.retrn.returnAnonFunction_.returnAnonFunction();
     }
 }

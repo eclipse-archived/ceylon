@@ -1,27 +1,27 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class x {
+final class x_ {
     
-    private x() {
+    private x_() {
     }
     
     static <X extends .ceylon.language.Sized>void x(final X x) {
-        .ceylon.language.print.print(.ceylon.language.Integer.instance(x.getSize()));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(x.getSize()));
     }
 }
-final class bug193 {
+final class bug193_ {
     
-    private bug193() {
+    private bug193_() {
     }
     
     static void bug193() {
         final .ceylon.language.Iterable<? extends .ceylon.language.String> arr = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"));
-        .com.redhat.ceylon.compiler.java.test.issues.x.x((.ceylon.language.Sized)arr);
-        .ceylon.language.print.print(.ceylon.language.Integer.instance(((.ceylon.language.List<? extends .ceylon.language.String>)arr).getSize()));
+        .com.redhat.ceylon.compiler.java.test.issues.x_.x((.ceylon.language.Sized)arr);
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(((.ceylon.language.List<? extends .ceylon.language.String>)arr).getSize()));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug193.bug193();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug193_.bug193();
     }
 }

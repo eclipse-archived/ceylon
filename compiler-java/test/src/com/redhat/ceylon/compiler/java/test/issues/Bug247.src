@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug247_toplevel {
+final class bug247_toplevel_ {
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -18,27 +18,27 @@ final class bug247_toplevel {
         value[0] = bug247_toplevel;
     }
     
-    private bug247_toplevel() {
+    private bug247_toplevel_() {
     }
 }
-final class bug247 {
+final class bug247_ {
     
-    private bug247() {
+    private bug247_() {
     }
     
     static void bug247() {
         (
             let
             {
-                long $ceylontmpop0 = .com.redhat.ceylon.compiler.java.test.issues.bug247_toplevel.getBug247_toplevel() + 1L;
-                .com.redhat.ceylon.compiler.java.test.issues.bug247_toplevel.setBug247_toplevel($ceylontmpop0);
+                long $ceylontmpop0 = .com.redhat.ceylon.compiler.java.test.issues.bug247_toplevel_.getBug247_toplevel() + 1L;
+                .com.redhat.ceylon.compiler.java.test.issues.bug247_toplevel_.setBug247_toplevel($ceylontmpop0);
             }
             returning $ceylontmpop0;
         );
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug247.bug247();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug247_.bug247();
     }
 }

@@ -119,7 +119,7 @@ class DefaultedInitializerParameter5 {
     }
     
     static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$seq(final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
     DefaultedInitializerParameter5() {

@@ -1,13 +1,13 @@
-final class ceylon {
+final class ceylon_ {
     
-    private ceylon() {
+    private ceylon_() {
     }
     
     static void ceylon() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .ceylon.ceylon();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon_.ceylon();
     }
 }

@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug641 {
+final class bug641_ {
     
-    private bug641() {
+    private bug641_() {
     }
     
     static void bug641(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<?> b) {

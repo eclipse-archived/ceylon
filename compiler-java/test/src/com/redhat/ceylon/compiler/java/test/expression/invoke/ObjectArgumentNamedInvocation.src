@@ -1,27 +1,27 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public final class objectArgumentNamedInvocation {
+public final class objectArgumentNamedInvocation_ {
     
-    private objectArgumentNamedInvocation() {
+    private objectArgumentNamedInvocation_() {
     }
     
     public static void objectArgumentNamedInvocation() {
         
-        final class callFunction {
+        final class callFunction_ {
             
-            private callFunction() {
+            private callFunction_() {
             }
             
             void callFunction(final .java.lang.Object o) {
             }
         }
-        final callFunction callFunction = new callFunction();
+        final callFunction_ callFunction = new callFunction_();
         final .java.lang.String o = "";
         (
             let
             {
                 
-                final class o extends .java.lang.Object {
+                final class o_ extends .java.lang.Object {
                     
                     @.java.lang.Override
                     public final boolean equals(final .java.lang.Object other) {
@@ -34,12 +34,12 @@ public final class objectArgumentNamedInvocation {
                         return hash;
                     }
                     
-                    private o() {
+                    private o_() {
                         super();
                         this.hash = (int)0L;
                     }
                 }
-                final o $arg$0$0 = new o();
+                final o_ $arg$0$0 = new o_();
                 callFunction.callFunction($arg$0$0);
             }
             returning null;
@@ -47,7 +47,7 @@ public final class objectArgumentNamedInvocation {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocation.objectArgumentNamedInvocation();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocation_.objectArgumentNamedInvocation();
     }
 }

@@ -1,16 +1,16 @@
 package bug187;
 
-final class bar {
+final class bar_ {
     
-    private bar() {
+    private bar_() {
     }
     
     static void bar() {
-        .bug187.main.main();
+        .bug187.main_.main();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .bug187.bar.bar();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .bug187.bar_.bar();
     }
 }

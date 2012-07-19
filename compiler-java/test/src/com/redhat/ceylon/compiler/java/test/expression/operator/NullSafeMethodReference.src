@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-final class nullSafeMethodReference {
+final class nullSafeMethodReference_ {
     
-    private nullSafeMethodReference() {
+    private nullSafeMethodReference_() {
     }
     
     static void nullSafeMethodReference(final .ceylon.language.String s) {

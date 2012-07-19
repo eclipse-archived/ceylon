@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug608 {
+final class bug608_ {
     
-    private bug608() {
+    private bug608_() {
     }
     
     static void bug608() {
@@ -25,7 +25,7 @@ final class bug608 {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug608.bug608();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug608_.bug608();
     }
 }

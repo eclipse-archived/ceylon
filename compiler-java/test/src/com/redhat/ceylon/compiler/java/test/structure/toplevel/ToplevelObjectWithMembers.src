@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class topLevelObjectWithMembers {
+final class topLevelObjectWithMembers_ {
     private final boolean valShared;
     
     public final boolean getValShared() {
@@ -38,7 +38,7 @@ final class topLevelObjectWithMembers {
         return getVarCaptured();
     }
     
-    private topLevelObjectWithMembers() {
+    private topLevelObjectWithMembers_() {
         final boolean val = true;
         this.valShared = true;
         this.valCaptured = true;
@@ -46,12 +46,12 @@ final class topLevelObjectWithMembers {
         this.varShared = false;
         this.varCaptured = false;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers()};
+        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers getTopLevelObjectWithMembers() {
+    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_ getTopLevelObjectWithMembers() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

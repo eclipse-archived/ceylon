@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class namedArgumentInvocationWithDefaultedSequence {
+final class namedArgumentInvocationWithDefaultedSequence_ {
     
-    private namedArgumentInvocationWithDefaultedSequence() {
+    private namedArgumentInvocationWithDefaultedSequence_() {
     }
     
     static void namedArgumentInvocationWithDefaultedSequence(final long num) {
         
-        final class callFunction {
+        final class callFunction_ {
             
-            private callFunction() {
+            private callFunction_() {
             }
             
             void callFunction(final long i, final .java.lang.String s, final .ceylon.language.Iterable<? extends .ceylon.language.Character> c) {
@@ -63,11 +63,11 @@ final class namedArgumentInvocationWithDefaultedSequence {
                 return new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'));
             }
         }
-        final callFunction callFunction = new callFunction();
+        final callFunction_ callFunction = new callFunction_();
         (
             let
             {
-                callFunction $arg$9$this$ = callFunction;
+                callFunction_ $arg$9$this$ = callFunction;
                 .java.lang.String $arg$9$1 = "s";
                 long $arg$9$0 = 0L;
                 .ceylon.language.Iterable<? extends .ceylon.language.Character> $arg$9$2 = $arg$9$this$.callFunction$c($arg$9$0, $arg$9$1);

@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableNamedInvocationSequenced_f {
+final class callableNamedInvocationSequenced_f_ {
     
-    private callableNamedInvocationSequenced_f() {
+    private callableNamedInvocationSequenced_f_() {
     }
     
     static void callableNamedInvocationSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
@@ -10,7 +10,7 @@ final class callableNamedInvocationSequenced_f {
             let
             {
                 .ceylon.language.Integer $arg$0$0 = .ceylon.language.Integer.instance(1L);
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$1 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$1 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
             }
             returning foo.$call($arg$0$0, $arg$0$1);
         );
@@ -33,7 +33,7 @@ final class callableNamedInvocationSequenced_f {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$3$1 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$3$1 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
                 .ceylon.language.Integer $arg$3$0 = .ceylon.language.Integer.instance(1L);
             }
             returning foo.$call($arg$3$0, $arg$3$1);

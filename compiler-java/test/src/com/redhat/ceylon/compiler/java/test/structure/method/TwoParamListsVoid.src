@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-final class twoParamListsVoid {
+final class twoParamListsVoid_ {
     
-    private twoParamListsVoid() {
+    private twoParamListsVoid_() {
     }
     
     static void twoParamListsVoid() {
         
-        final class f {
+        final class f_ {
             
-            private f() {
+            private f_() {
             }
             
             .ceylon.language.Callable<? extends .java.lang.Object> f(final .java.lang.String s) {
@@ -17,17 +17,17 @@ final class twoParamListsVoid {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call() {
-                        .ceylon.language.print.print(.ceylon.language.String.instance(s));
+                        .ceylon.language.print_.print(.ceylon.language.String.instance(s));
                         return null;
                     }
                 };
             }
         }
-        final f f = new f();
+        final f_ f = new f_();
         
-        final class g {
+        final class g_ {
             
-            private g() {
+            private g_() {
             }
             
             .ceylon.language.Callable<? extends .java.lang.Object> g(final .java.lang.String s) {
@@ -38,7 +38,7 @@ final class twoParamListsVoid {
                         return (
                             let
                             {
-                                .ceylon.language.print.print(.ceylon.language.String.instance(s));
+                                .ceylon.language.print_.print(.ceylon.language.String.instance(s));
                             }
                             returning null;
                         );
@@ -46,13 +46,13 @@ final class twoParamListsVoid {
                 };
             }
         }
-        final g g = new g();
+        final g_ g = new g_();
         f.f("hello").$call();
         g.g("hello").$call();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsVoid.twoParamListsVoid();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsVoid_.twoParamListsVoid();
     }
 }

@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-final class caseMismatch {
+final class caseMismatch_ {
     
-    private caseMismatch() {
+    private caseMismatch_() {
     }
     
     static void caseMismatch() {
@@ -13,7 +13,7 @@ final class caseMismatch {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.caseMismatch.caseMismatch();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.caseMismatch_.caseMismatch();
     }
 }

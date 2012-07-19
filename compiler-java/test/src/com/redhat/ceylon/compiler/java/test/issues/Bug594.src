@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug594 {
+final class bug594_ {
     
-    private bug594() {
+    private bug594_() {
     }
     
     static <T>void bug594(final T t) {

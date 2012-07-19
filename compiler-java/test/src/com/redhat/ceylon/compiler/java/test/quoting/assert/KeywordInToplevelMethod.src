@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
-public final class $package {
+public final class package_ {
     
-    private $package() {
+    private package_() {
     }
     
     public static long $package() {
@@ -10,7 +10,7 @@ public final class $package {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.$package.$package();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.package_.$package();
     }
 }

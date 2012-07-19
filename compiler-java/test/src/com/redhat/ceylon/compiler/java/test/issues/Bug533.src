@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug533 {
+final class bug533_ {
     
-    private bug533() {
+    private bug533_() {
     }
     
     static void bug533(final .java.util.Map<.java.lang.Object, .java.lang.Object> jmap) {

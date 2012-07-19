@@ -11,9 +11,9 @@ final class NullSafeVoidMethodReference$impl {
         this.$this = $this;
     }
 }
-final class test {
+final class test_ {
     
-    private test() {
+    private test_() {
     }
     
     static void test(final .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference handler) {

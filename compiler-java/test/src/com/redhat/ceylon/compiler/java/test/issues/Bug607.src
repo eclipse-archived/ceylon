@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug607mth {
+final class bug607mth_ {
     
-    private bug607mth() {
+    private bug607mth_() {
     }
     
     static void bug607mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$) {
         
-        final class arg3 {
+        final class arg3_ {
             private .java.lang.String value;
             {
                 value = arg3$;
@@ -21,29 +21,29 @@ final class bug607mth {
                 value = arg3;
             }
             
-            private arg3() {
+            private arg3_() {
             }
         }
-        final arg3 arg3 = new arg3();
+        final arg3_ arg3_ = new arg3_();
         arg2 = "foo";
         
-        final class cap {
+        final class cap_ {
             
-            private cap() {
+            private cap_() {
             }
             
             void cap() {
-                arg3.setArg3("bar");
+                arg3_.setArg3("bar");
             }
         }
-        final cap cap = new cap();
+        final cap_ cap = new cap_();
     }
 }
 class Bug607cls {
     
     private final void mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$) {
         
-        final class arg3 {
+        final class arg3_ {
             private .java.lang.String value;
             {
                 value = arg3$;
@@ -57,29 +57,29 @@ class Bug607cls {
                 value = arg3;
             }
             
-            private arg3() {
+            private arg3_() {
             }
         }
-        final arg3 arg3 = new arg3();
+        final arg3_ arg3_ = new arg3_();
         arg2 = "bar";
         
-        final class cap {
+        final class cap_ {
             
-            private cap() {
+            private cap_() {
             }
             
             void cap() {
-                arg3.setArg3("bar");
+                arg3_.setArg3("bar");
             }
         }
-        final cap cap = new cap();
+        final cap_ cap = new cap_();
     }
     
     Bug607cls() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.Bug607cls();
     }
 }

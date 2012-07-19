@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-final class attributes {
+final class attributes_ {
     
-    private attributes() {
+    private attributes_() {
     }
     
     static void attributes() {
@@ -27,8 +27,8 @@ final class attributes {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.attributes.attributes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.attributes_.attributes();
     }
 }
 class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.JavaBean {
@@ -101,7 +101,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.CeylonAttributes();
     }
 }

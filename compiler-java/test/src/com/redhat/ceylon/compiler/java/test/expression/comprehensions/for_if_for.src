@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-final class x {
+final class x_ {
     private static final .ceylon.language.Iterable<? extends .ceylon.language.Integer>[] value;
     static {
         value = new .ceylon.language.Iterable[]{new .ceylon.language.AbstractIterable<.ceylon.language.Integer>(){
@@ -13,7 +13,7 @@ final class x {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted.getExhausted();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -40,7 +40,7 @@ final class x {
                     private final boolean y() {
                         if (iter$2 == null) this.iter$2();
                         final .java.lang.Object $ceylontmpitem1 = iter$2.next();
-                        y$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted.getExhausted();
+                        y$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted();
                         if (y$exhausted) {
                             if (this.next1()) {
                                 iter$2 = this.iter$2();
@@ -54,7 +54,7 @@ final class x {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.y() ? x.times(y) : .ceylon.language.exhausted.getExhausted();
+                        return this.y() ? x.times(y) : .ceylon.language.exhausted_.getExhausted();
                     }
                 };
             }
@@ -69,6 +69,6 @@ final class x {
         }
     }
     
-    private x() {
+    private x_() {
     }
 }

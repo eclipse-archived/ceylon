@@ -1,21 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class methodArgumentNamedIncovation {
+final class methodArgumentNamedIncovation_ {
     
-    private methodArgumentNamedIncovation() {
+    private methodArgumentNamedIncovation_() {
     }
     
     static void methodArgumentNamedIncovation() {
         
-        final class callFunction {
+        final class callFunction_ {
             
-            private callFunction() {
+            private callFunction_() {
             }
             
             void callFunction(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
             }
         }
-        final callFunction callFunction = new callFunction();
+        final callFunction_ callFunction = new callFunction_();
         (
             let
             {
@@ -34,7 +34,7 @@ final class methodArgumentNamedIncovation {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.methodArgumentNamedIncovation.methodArgumentNamedIncovation();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.methodArgumentNamedIncovation_.methodArgumentNamedIncovation();
     }
 }

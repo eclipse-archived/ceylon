@@ -1,18 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class topLevelObject {
+final class topLevelObject_ {
     
     public final void y() {
     }
     
-    private topLevelObject() {
+    private topLevelObject_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject()};
+        value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject getTopLevelObject() {
+    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ getTopLevelObject() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -20,17 +20,17 @@ final class topLevelObject {
         }
     }
 }
-final class accessTopLevelObject {
+final class accessTopLevelObject_ {
     
-    private accessTopLevelObject() {
+    private accessTopLevelObject_() {
     }
     
     static void accessTopLevelObject() {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject.getTopLevelObject().y();
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.getTopLevelObject().y();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.accessTopLevelObject.accessTopLevelObject();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.accessTopLevelObject_.accessTopLevelObject();
     }
 }

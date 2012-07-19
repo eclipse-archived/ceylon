@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableNamedInvocationBinary_f {
+final class callableNamedInvocationBinary_f_ {
     
-    private callableNamedInvocationBinary_f() {
+    private callableNamedInvocationBinary_f_() {
     }
     
     static void callableNamedInvocationBinary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {

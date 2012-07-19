@@ -1,30 +1,30 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug640;
 
-public final class bug640 {
+public final class bug640_ {
     
-    private bug640() {
+    private bug640_() {
     }
     
     public static void bug640() {
-        final .ceylon.language.Array<.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept> x = .ceylon.language.$array.<.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept>array(.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept.class, new .ceylon.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept>(new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept()));
+        final .ceylon.language.Array<.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept> x = .ceylon.language.array_.<.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept>array(.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept.class, new .ceylon.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept>(new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept(), new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept()));
         new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept().accepts((.com.redhat.ceylon.compiler.java.test.issues.bug640.Accept[])x.toArray());
-        final .ceylon.language.Array<.ceylon.language.String> y = .ceylon.language.$array.<.ceylon.language.String>array(.java.lang.String.class, new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")));
+        final .ceylon.language.Array<.ceylon.language.String> y = .ceylon.language.array_.<.ceylon.language.String>array(.java.lang.String.class, new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")));
         new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept().strings((.java.lang.String[])y.toArray());
-        final .ceylon.language.Array<.ceylon.language.Integer> z = .ceylon.language.$array.<.ceylon.language.Integer>array(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        final .ceylon.language.Array<.ceylon.language.Integer> z = .ceylon.language.array_.<.ceylon.language.Integer>array(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         new .com.redhat.ceylon.compiler.java.test.issues.bug640.Accept().longs((long[])z.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug640.bug640.bug640();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug640.bug640_.bug640();
     }
 }
-public final class bug640gen {
+public final class bug640gen_ {
     
-    private bug640gen() {
+    private bug640gen_() {
     }
     
     public static <T>void bug640gen(final .ceylon.language.SequenceBuilder<T> sb) {
-        final .ceylon.language.Array<T> x = .ceylon.language.$array.<T>array(null, (.ceylon.language.Iterable<? extends T>)sb.getSequence());
+        final .ceylon.language.Array<T> x = .ceylon.language.array_.<T>array(null, (.ceylon.language.Iterable<? extends T>)sb.getSequence());
     }
 }

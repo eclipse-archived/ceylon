@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
-final class $assert {
+final class assert_ {
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -18,20 +18,20 @@ final class $assert {
         value[0] = assert;
     }
     
-    private $assert() {
+    private assert_() {
     }
 }
-final class keywordInToplevelAssignment {
+final class keywordInToplevelAssignment_ {
     
-    private keywordInToplevelAssignment() {
+    private keywordInToplevelAssignment_() {
     }
     
     static void keywordInToplevelAssignment() {
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.$assert.setAssert(1L);
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.assert_.setAssert(1L);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.keywordInToplevelAssignment.keywordInToplevelAssignment();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.keywordInToplevelAssignment_.keywordInToplevelAssignment();
     }
 }

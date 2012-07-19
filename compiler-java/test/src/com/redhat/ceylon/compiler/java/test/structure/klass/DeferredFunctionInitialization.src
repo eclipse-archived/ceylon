@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-final class deferredFunctionInitialization {
+final class deferredFunctionInitialization_ {
     
-    private deferredFunctionInitialization() {
+    private deferredFunctionInitialization_() {
     }
     
     static void deferredFunctionInitialization() {
         
-        final class s {
+        final class s_ {
             private .ceylon.language.Callable<? extends .ceylon.language.String> s;
             
-            private s() {
+            private s_() {
                 this.s = null;
             }
             
@@ -18,7 +18,7 @@ final class deferredFunctionInitialization {
                 if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call().toString();
             }
         }
-        final s s = new s();
+        final s_ s = new s_();
         s.s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
             
             @.java.lang.Override
@@ -26,11 +26,11 @@ final class deferredFunctionInitialization {
                 return .ceylon.language.String.instance("hello");
             }
         };
-        .ceylon.language.print.print(.ceylon.language.String.instance(s.s()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(s.s()));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.klass.deferredFunctionInitialization.deferredFunctionInitialization();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.klass.deferredFunctionInitialization_.deferredFunctionInitialization();
     }
 }

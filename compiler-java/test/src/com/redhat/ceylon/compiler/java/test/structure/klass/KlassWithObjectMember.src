@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 class KlassWithObjectMember {
     private final .java.lang.String x;
     
-    final class localobj {
+    final class localobj_ {
         private final .java.lang.String f;
         
         public final .java.lang.String getF() {
@@ -14,13 +14,13 @@ class KlassWithObjectMember {
             return x;
         }
         
-        private localobj() {
+        private localobj_() {
             this.f = x;
         }
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj capturedobj;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ capturedobj;
     
-    final class capturedobj {
+    final class capturedobj_ {
         private final .java.lang.String f;
         
         public final .java.lang.String getF() {
@@ -31,17 +31,17 @@ class KlassWithObjectMember {
             return x;
         }
         
-        private capturedobj() {
+        private capturedobj_() {
             this.f = x;
         }
     }
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj getCapturedobj() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ getCapturedobj() {
         return capturedobj;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj sharedobj;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_ sharedobj;
     
-    public final class sharedobj {
+    public final class sharedobj_ {
         private final .java.lang.String f;
         
         public final .java.lang.String getF() {
@@ -52,12 +52,12 @@ class KlassWithObjectMember {
             return x;
         }
         
-        private sharedobj() {
+        private sharedobj_() {
             this.f = x;
         }
     }
     
-    public final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj getSharedobj() {
+    public final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_ getSharedobj() {
         return sharedobj;
     }
     
@@ -67,8 +67,8 @@ class KlassWithObjectMember {
     
     KlassWithObjectMember(.java.lang.String x) {
         this.x = x;
-        final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj localobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj();
-        this.capturedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj();
-        this.sharedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj();
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_ localobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_();
+        this.capturedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_();
+        this.sharedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_();
     }
 }

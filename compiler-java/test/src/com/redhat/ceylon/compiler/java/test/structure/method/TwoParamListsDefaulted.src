@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-public final class twoParamListsDefaulted {
+public final class twoParamListsDefaulted_ {
     
-    private twoParamListsDefaulted() {
+    private twoParamListsDefaulted_() {
     }
     
     public static .ceylon.language.Callable<? extends .ceylon.language.String> twoParamListsDefaulted(final .java.lang.String firstName) {
@@ -20,7 +20,7 @@ public final class twoParamListsDefaulted {
         return (
             let
             {
-                .java.lang.String $ceylontmp$firstName$1 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted.twoParamListsDefaulted$firstName();
+                .java.lang.String $ceylontmp$firstName$1 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted$firstName();
             }
             returning twoParamListsDefaulted($ceylontmp$firstName$1);
         );
@@ -30,24 +30,24 @@ public final class twoParamListsDefaulted {
         return "John";
     }
 }
-final class twoParamListsDefaulted_caller {
+final class twoParamListsDefaulted_caller_ {
     
-    private twoParamListsDefaulted_caller() {
+    private twoParamListsDefaulted_caller_() {
     }
     
     static void twoParamListsDefaulted_caller() {
-        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted.twoParamListsDefaulted().$call(.ceylon.language.String.instance("Doe"));
+        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted().$call(.ceylon.language.String.instance("Doe"));
         (
             let
             {
-                .java.lang.String $arg$2$0 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted.twoParamListsDefaulted$firstName();
+                .java.lang.String $arg$2$0 = .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted$firstName();
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted.twoParamListsDefaulted($arg$2$0);
+            returning .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_.twoParamListsDefaulted($arg$2$0);
         ).$call(.ceylon.language.String.instance("Doe"));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_caller.twoParamListsDefaulted_caller();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.twoParamListsDefaulted_caller_.twoParamListsDefaulted_caller();
     }
 }

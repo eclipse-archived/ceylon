@@ -5,23 +5,23 @@ class KeywordInInnerClass {
     private final void m() {
         
         class Inner {
-            private final Inner.$transient transient;
+            private final Inner.transient_ transient;
             
-            final class $transient {
+            final class transient_ {
                 
                 public final void $enum() {
                 }
                 
-                private $transient() {
+                private transient_() {
                 }
             }
             
-            public final Inner.$transient getTransient() {
+            public final Inner.transient_ getTransient() {
                 return transient;
             }
             
             Inner() {
-                this.transient = new Inner.$transient();
+                this.transient = new Inner.transient_();
             }
         }
         new Inner().getTransient().$enum();
@@ -31,7 +31,7 @@ class KeywordInInnerClass {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.quoting.$assert.KeywordInInnerClass();
     }
 }

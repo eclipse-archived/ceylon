@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableReturnTernary_foo {
+final class callableReturnTernary_foo_ {
     
-    private callableReturnTernary_foo() {
+    private callableReturnTernary_foo_() {
     }
     
     static void callableReturnTernary_foo(final long i, final .java.lang.String s, final boolean b) {
     }
 }
-final class callableReturnTernary_bar {
+final class callableReturnTernary_bar_ {
     
-    private callableReturnTernary_bar() {
+    private callableReturnTernary_bar_() {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnTernary_bar() {
@@ -21,7 +21,7 @@ final class callableReturnTernary_bar {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_foo.callableReturnTernary_foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_foo_.callableReturnTernary_foo(((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.String)$param$1).toString(), ((.ceylon.language.Boolean)$param$2).booleanValue());
                     }
                     returning null;
                 );
@@ -30,7 +30,7 @@ final class callableReturnTernary_bar {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_bar.callableReturnTernary_bar();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnTernary_bar_.callableReturnTernary_bar();
     }
 }

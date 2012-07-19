@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.module.single;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.structure.module.single", version = "6.6.6", by = {"Stef FroMage"}, dependencies = {}, doc = "Bla bla.", license = "http://www.gnu.org/licenses/gpl.html")
-final class module {
+final class module_ {
     private static final .ceylon.language.descriptor.Module[] value;
     static {
         value = new .ceylon.language.descriptor.Module[]{(
@@ -14,7 +14,7 @@ final class module {
                 .java.lang.String $arg$0$2 = "Bla bla.";
                 .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$3 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("Stef FroMage"));
                 .ceylon.language.Quoted $arg$0$4 = .ceylon.language.Quoted.instance("http://www.gnu.org/licenses/gpl.html");
-                .ceylon.language.Iterable<? extends .ceylon.language.descriptor.Import> $arg$0$5 = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+                .ceylon.language.Iterable<? extends .ceylon.language.descriptor.Import> $arg$0$5 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
             }
             returning new .ceylon.language.descriptor.Module($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3, $arg$0$4, $arg$0$5);
         )};
@@ -29,6 +29,6 @@ final class module {
         }
     }
     
-    private module() {
+    private module_() {
     }
 }

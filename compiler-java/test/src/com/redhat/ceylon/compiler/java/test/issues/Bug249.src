@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug249 {
+final class bug249_ {
     
-    private bug249() {
+    private bug249_() {
     }
     
     static void bug249() {
@@ -10,7 +10,7 @@ final class bug249 {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug249.bug249();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug249_.bug249();
     }
 }

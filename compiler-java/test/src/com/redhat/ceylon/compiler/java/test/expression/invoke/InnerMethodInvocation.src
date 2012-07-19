@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public final class innerMethodInvocation {
+public final class innerMethodInvocation_ {
     
-    private innerMethodInvocation() {
+    private innerMethodInvocation_() {
     }
     
     public static void innerMethodInvocation() {
         
-        final class fib {
+        final class fib_ {
             
-            private fib() {
+            private fib_() {
             }
             
             long fib(final long n) {
@@ -20,16 +20,16 @@ public final class innerMethodInvocation {
                 }
             }
         }
-        final fib fib = new fib();
+        final fib_ fib = new fib_();
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(50L)).getIterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final long n = ((.ceylon.language.Integer)$elem$0).longValue();
-            .ceylon.language.print.print(.ceylon.language.String.instance("n! = " + .ceylon.language.Integer.toString(fib.fib(n))));
+            .ceylon.language.print_.print(.ceylon.language.String.instance("n! = " + .ceylon.language.Integer.toString(fib.fib(n))));
         }
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.innerMethodInvocation.innerMethodInvocation();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.innerMethodInvocation_.innerMethodInvocation();
     }
 }

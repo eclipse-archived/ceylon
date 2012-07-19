@@ -41,7 +41,7 @@ class MethodWhile {
             returning $ceylontmp6;
         )) {
             final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$5 = (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)$s$4;
-            seq = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+            seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
         }
     }
     
@@ -64,7 +64,7 @@ class MethodWhile {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhile();
     }
 }

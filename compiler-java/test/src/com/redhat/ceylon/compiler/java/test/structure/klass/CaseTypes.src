@@ -5,17 +5,17 @@ public abstract class CaseTypes {
     public CaseTypes(.java.lang.String name) {
     }
 }
-public final class foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
+public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
     
-    private foo() {
+    private foo_() {
         super("foo");
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.foo[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.foo_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.foo[]{new .com.redhat.ceylon.compiler.java.test.structure.klass.foo()};
+        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.foo_[]{new .com.redhat.ceylon.compiler.java.test.structure.klass.foo_()};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.structure.klass.foo getFoo() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.klass.foo_ getFoo() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -23,17 +23,17 @@ public final class foo extends .com.redhat.ceylon.compiler.java.test.structure.k
         }
     }
 }
-public final class bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
+public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
     
-    private bar() {
+    private bar_() {
         super("bar");
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.bar[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.bar_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.bar[]{new .com.redhat.ceylon.compiler.java.test.structure.klass.bar()};
+        value = new .com.redhat.ceylon.compiler.java.test.structure.klass.bar_[]{new .com.redhat.ceylon.compiler.java.test.structure.klass.bar_()};
     }
     
-    public static .com.redhat.ceylon.compiler.java.test.structure.klass.bar getBar() {
+    public static .com.redhat.ceylon.compiler.java.test.structure.klass.bar_ getBar() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -53,7 +53,7 @@ public class Foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Foo();
     }
 }
@@ -64,7 +64,7 @@ public class Bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Bar();
     }
 }

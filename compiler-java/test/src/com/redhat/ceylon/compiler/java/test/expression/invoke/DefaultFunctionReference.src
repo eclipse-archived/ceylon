@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class defaultFunctionReference {
+final class defaultFunctionReference_ {
     
-    private defaultFunctionReference() {
+    private defaultFunctionReference_() {
     }
     
     static void defaultFunctionReference(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
@@ -13,7 +13,7 @@ final class defaultFunctionReference {
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference.defaultFunctionReference$f();
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_.defaultFunctionReference$f();
                 defaultFunctionReference($ceylontmp$f$1);
             }
             returning null;
@@ -28,7 +28,7 @@ final class defaultFunctionReference {
                 return (
                     let
                     {
-                        .ceylon.language.print.print((.java.lang.Object)$param$0);
+                        .ceylon.language.print_.print((.java.lang.Object)$param$0);
                     }
                     returning null;
                 );
@@ -36,17 +36,17 @@ final class defaultFunctionReference {
         };
     }
 }
-final class defaultFunctionReference_call {
+final class defaultFunctionReference_call_ {
     
-    private defaultFunctionReference_call() {
+    private defaultFunctionReference_call_() {
     }
     
     static void defaultFunctionReference_call() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference.defaultFunctionReference();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_.defaultFunctionReference();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_call.defaultFunctionReference_call();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_call_.defaultFunctionReference_call();
     }
 }

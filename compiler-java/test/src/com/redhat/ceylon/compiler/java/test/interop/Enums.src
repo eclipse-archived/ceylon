@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-final class enums {
+final class enums_ {
     
-    private enums() {
+    private enums_() {
     }
     
     static void enums() {
@@ -13,7 +13,7 @@ final class enums {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.enums.enums();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.enums_.enums();
     }
 }

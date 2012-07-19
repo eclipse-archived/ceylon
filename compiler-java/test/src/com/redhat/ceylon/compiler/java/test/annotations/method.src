@@ -2,9 +2,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-final class method {
+final class method_ {
     
-    private method() {
+    private method_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")

@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-public final class bug242 {
+public final class bug242_ {
     
-    private bug242() {
+    private bug242_() {
     }
     
     public static <T>void bug242(final .ceylon.language.Iterable<? extends T> a, final long i) {

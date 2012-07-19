@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.$assert;
 
-public final class $assert {
+public final class assert_ {
     
-    private $assert() {
+    private assert_() {
     }
     
     public static void $assert(final boolean assertion, final .java.lang.String message) {
@@ -12,7 +12,7 @@ public final class $assert {
         (
             let
             {
-                .java.lang.String $ceylontmp$message$1 = .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.assert$message(assertion);
+                .java.lang.String $ceylontmp$message$1 = .com.redhat.ceylon.compiler.java.test.issues.$assert.assert_.assert$message(assertion);
                 $assert(assertion, $ceylontmp$message$1);
             }
             returning null;
@@ -23,17 +23,17 @@ public final class $assert {
         return "";
     }
 }
-final class m {
+final class m_ {
     
-    private m() {
+    private m_() {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.issues.$assert.$assert.$assert(true);
+        .com.redhat.ceylon.compiler.java.test.issues.$assert.assert_.$assert(true);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.$assert.m.m();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.$assert.m_.m();
     }
 }

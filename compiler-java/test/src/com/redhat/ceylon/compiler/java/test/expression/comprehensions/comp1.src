@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-final class x {
+final class x_ {
     private static final .ceylon.language.Iterable<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.Iterable[]{new .ceylon.language.AbstractIterable<.ceylon.language.String>(){
@@ -13,7 +13,7 @@ final class x {
                     
                     private final boolean str() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted.getExhausted();
+                        str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted();
                         if (str$exhausted) {
                             return false;
                         } else {
@@ -23,7 +23,7 @@ final class x {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.str() ? str : .ceylon.language.exhausted.getExhausted();
+                        return this.str() ? str : .ceylon.language.exhausted_.getExhausted();
                     }
                 };
             }
@@ -38,6 +38,6 @@ final class x {
         }
     }
     
-    private x() {
+    private x_() {
     }
 }

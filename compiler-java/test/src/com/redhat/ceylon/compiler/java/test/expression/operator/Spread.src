@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-final class spread {
+final class spread_ {
     
-    private spread() {
+    private spread_() {
     }
     
     static void spread(final .ceylon.language.Iterable<? extends .ceylon.language.String> seq2) {
@@ -37,7 +37,7 @@ final class spread {
                     for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.Integer.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).getSize());
                 }
                 returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$4$4);
-            ) : .ceylon.language.$empty.getEmpty());
+            ) : .ceylon.language.empty_.getEmpty());
         );
         final .ceylon.language.Sequence<? extends .ceylon.language.String> ini3 = (
             let
@@ -50,14 +50,14 @@ final class spread {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$7$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$6;
                     int $spread$7$2 = (int)$spread$7$0.getSize();
                     .ceylon.language.String[] $spread$7$4 = new .ceylon.language.String[$spread$7$2];
-                    for (int $index$8 = 0; $index$8 < $spread$7$2; $index$8++) $spread$7$4[$index$8] = .ceylon.language.String.instance($spread$7$0.item(.ceylon.language.Integer.instance($index$8)).replace(.com.redhat.ceylon.compiler.java.test.expression.operator.x.getX(), .com.redhat.ceylon.compiler.java.test.expression.operator.x.getX()));
+                    for (int $index$8 = 0; $index$8 < $spread$7$2; $index$8++) $spread$7$4[$index$8] = .ceylon.language.String.instance($spread$7$0.item(.ceylon.language.Integer.instance($index$8)).replace(.com.redhat.ceylon.compiler.java.test.expression.operator.x_.getX(), .com.redhat.ceylon.compiler.java.test.expression.operator.x_.getX()));
                 }
                 returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$7$4);
             );
         );
     }
 }
-final class x {
+final class x_ {
     private static final .java.lang.String[] value;
     static {
         value = new .java.lang.String[]{"x"};
@@ -71,6 +71,6 @@ final class x {
         }
     }
     
-    private x() {
+    private x_() {
     }
 }

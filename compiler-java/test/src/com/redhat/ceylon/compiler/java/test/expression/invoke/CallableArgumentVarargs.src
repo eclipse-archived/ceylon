@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableArgumentVarargs_f {
+final class callableArgumentVarargs_f_ {
     
-    private callableArgumentVarargs_f() {
+    private callableArgumentVarargs_f_() {
     }
     
     static void callableArgumentVarargs_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class callableArgumentVarargs_g {
+final class callableArgumentVarargs_g_ {
     
-    private callableArgumentVarargs_g() {
+    private callableArgumentVarargs_g_() {
     }
     
     static void callableArgumentVarargs_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
@@ -20,7 +20,7 @@ final class callableArgumentVarargs_g {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_g.callableArgumentVarargs_g$s();
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_g_.callableArgumentVarargs_g$s();
                 callableArgumentVarargs_g($ceylontmp$s$1);
             }
             returning null;
@@ -28,23 +28,23 @@ final class callableArgumentVarargs_g {
     }
     
     static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentVarargs_g$s() {
-        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
 }
-final class callableArgumentVarargs_m {
+final class callableArgumentVarargs_m_ {
     
-    private callableArgumentVarargs_m() {
+    private callableArgumentVarargs_m_() {
     }
     
     static void callableArgumentVarargs_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_f.callableArgumentVarargs_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void,ceylon.language.Iterable<ceylon.language.String>>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_f_.callableArgumentVarargs_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void,ceylon.language.Iterable<ceylon.language.String>>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_g.callableArgumentVarargs_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_g_.callableArgumentVarargs_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
                     }
                     returning null;
                 );
@@ -53,7 +53,7 @@ final class callableArgumentVarargs_m {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_m.callableArgumentVarargs_m();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_m_.callableArgumentVarargs_m();
     }
 }

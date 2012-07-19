@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug261 {
+final class bug261_ {
     
-    private bug261() {
+    private bug261_() {
     }
     
     static void bug261() {
@@ -55,7 +55,7 @@ final class bug261 {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug261.bug261();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug261_.bug261();
     }
 }

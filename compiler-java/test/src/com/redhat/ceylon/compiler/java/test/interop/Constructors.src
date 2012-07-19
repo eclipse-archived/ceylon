@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-final class constructors {
+final class constructors_ {
     
-    private constructors() {
+    private constructors_() {
     }
     
     static void constructors() {
@@ -12,7 +12,7 @@ final class constructors {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.constructors.constructors();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.constructors_.constructors();
     }
 }

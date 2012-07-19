@@ -96,9 +96,9 @@ class C5<U> {
     C5(long i, U u) {
     }
 }
-final class positional {
+final class positional_ {
     
-    private positional() {
+    private positional_() {
     }
     
     static void positional() {
@@ -114,13 +114,13 @@ final class positional {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.positional.positional();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.positional_.positional();
     }
 }
-final class named {
+final class named_ {
     
-    private named() {
+    private named_() {
     }
     
     static void named() {
@@ -221,7 +221,7 @@ final class named {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.named.named();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.named_.named();
     }
 }

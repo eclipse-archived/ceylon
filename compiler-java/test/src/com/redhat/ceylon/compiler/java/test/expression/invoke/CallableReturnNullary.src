@@ -1,21 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableReturnNullary_foo {
+final class callableReturnNullary_foo_ {
     
-    private callableReturnNullary_foo() {
+    private callableReturnNullary_foo_() {
     }
     
     static void callableReturnNullary_foo() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo.callableReturnNullary_foo();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo_.callableReturnNullary_foo();
     }
 }
-final class callableReturnNullary_bar {
+final class callableReturnNullary_bar_ {
     
-    private callableReturnNullary_bar() {
+    private callableReturnNullary_bar_() {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnNullary_bar() {
@@ -26,7 +26,7 @@ final class callableReturnNullary_bar {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo.callableReturnNullary_foo();
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo_.callableReturnNullary_foo();
                     }
                     returning null;
                 );
@@ -35,7 +35,7 @@ final class callableReturnNullary_bar {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_bar.callableReturnNullary_bar();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_bar_.callableReturnNullary_bar();
     }
 }

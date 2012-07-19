@@ -1,17 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-public final class bug671 {
+public final class bug671_ {
     
-    private bug671() {
+    private bug671_() {
     }
     
     public static void bug671() {
-        final .ceylon.language.Array<.ceylon.language.Integer> a6 = .ceylon.language.$array.<.ceylon.language.Integer>array(.ceylon.language.Integer.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
+        final .ceylon.language.Array<.ceylon.language.Integer> a6 = .ceylon.language.array_.<.ceylon.language.Integer>array(.ceylon.language.Integer.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
         a6.setItem(0L, null);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug671.bug671();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug671_.bug671();
     }
 }

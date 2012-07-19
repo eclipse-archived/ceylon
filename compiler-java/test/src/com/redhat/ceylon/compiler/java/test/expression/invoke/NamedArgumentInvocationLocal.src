@@ -4,26 +4,26 @@ public class NamedArgumentInvocationLocal {
     
     public final void f() {
         
-        final class m {
+        final class m_ {
             
-            private m() {
+            private m_() {
             }
             
             long m(final long n, final .java.lang.String s) {
                 return n;
             }
         }
-        final m m = new m();
+        final m_ m = new m_();
         
-        final class v {
+        final class v_ {
             
-            private v() {
+            private v_() {
             }
             
             void v(final long n, final .java.lang.String s) {
             }
         }
-        final v v = new v();
+        final v_ v = new v_();
         (
             let
             {
@@ -47,7 +47,7 @@ public class NamedArgumentInvocationLocal {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal();
     }
 }
@@ -58,15 +58,15 @@ class X {
     
     private final void bar() {
         
-        final class foo {
+        final class foo_ {
             
-            private foo() {
+            private foo_() {
             }
             
             void foo(final .java.lang.String s, final boolean b) {
             }
         }
-        final foo foo = new foo();
+        final foo_ foo = new foo_();
         (
             let
             {
@@ -92,7 +92,7 @@ class X {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.X();
     }
 }

@@ -5,17 +5,17 @@ abstract class SwitchMatchTop {
     SwitchMatchTop() {
     }
 }
-final class switchMatch_foo extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
+final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
     
-    private switchMatch_foo() {
+    private switchMatch_foo_() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo()};
+        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo getSwitchMatch_foo() {
+    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_ getSwitchMatch_foo() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -23,17 +23,17 @@ final class switchMatch_foo extends .com.redhat.ceylon.compiler.java.test.statem
         }
     }
 }
-final class switchMatch_bar extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
+final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
     
-    private switchMatch_bar() {
+    private switchMatch_bar_() {
         super();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar()};
+        value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_[]{new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar getSwitchMatch_bar() {
+    static .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_ getSwitchMatch_bar() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -44,13 +44,13 @@ final class switchMatch_bar extends .com.redhat.ceylon.compiler.java.test.statem
 class SwitchMatch {
     
     private final void onObject() {
-        final .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop fb = .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo.getSwitchMatch_foo();
+        final .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop fb = .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.getSwitchMatch_foo();
         {
             .java.lang.Object $sel$0 = fb;
-            if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo.getSwitchMatch_foo()) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("foo"));
-            } else if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar.getSwitchMatch_bar()) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("bar"));
+            if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.getSwitchMatch_foo()) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
+            } else if ($sel$0 == .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_.getSwitchMatch_bar()) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("bar"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
@@ -60,9 +60,9 @@ class SwitchMatch {
         {
             .java.lang.Object $sel$1 = .ceylon.language.Boolean.instance(b);
             if ($sel$1 == .ceylon.language.Boolean.instance(true)) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("true"));
+                .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
             } else if ($sel$1 == .ceylon.language.Boolean.instance(false)) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("false"));
+                .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
@@ -76,9 +76,9 @@ class SwitchMatch {
         {
             .java.lang.Object $sel$2 = <.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(b));
             if ($sel$2 == .ceylon.language.Boolean.instance(true)) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("true"));
+                .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
             } else if ($sel$2 == .ceylon.language.Boolean.instance(false)) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("false"));
+                .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
@@ -88,11 +88,11 @@ class SwitchMatch {
         {
             .java.lang.Object $sel$3 = b;
             if ($sel$3 == .ceylon.language.Boolean.instance(true)) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("true"));
+                .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
             } else if ($sel$3 == .ceylon.language.Boolean.instance(false)) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("false"));
+                .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else if ($sel$3 == null) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("null"));
+                .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
@@ -101,7 +101,7 @@ class SwitchMatch {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatch();
     }
 }

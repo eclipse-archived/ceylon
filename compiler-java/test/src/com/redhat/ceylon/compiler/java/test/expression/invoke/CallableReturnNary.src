@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableReturnNary_foo {
+final class callableReturnNary_foo_ {
     
-    private callableReturnNary_foo() {
+    private callableReturnNary_foo_() {
     }
     
     static void callableReturnNary_foo(final long i, final .java.lang.String s, final boolean b, final int c) {
     }
 }
-final class callableReturnNary_bar {
+final class callableReturnNary_bar_ {
     
-    private callableReturnNary_bar() {
+    private callableReturnNary_bar_() {
     }
     
     static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnNary_bar() {
@@ -21,7 +21,7 @@ final class callableReturnNary_bar {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNary_foo.callableReturnNary_foo(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNary_foo_.callableReturnNary_foo(((.ceylon.language.Integer)$param$0[0]).longValue(), ((.ceylon.language.String)$param$0[1]).toString(), ((.ceylon.language.Boolean)$param$0[2]).booleanValue(), ((.ceylon.language.Character)$param$0[3]).intValue());
                     }
                     returning null;
                 );
@@ -30,7 +30,7 @@ final class callableReturnNary_bar {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNary_bar.callableReturnNary_bar();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNary_bar_.callableReturnNary_bar();
     }
 }

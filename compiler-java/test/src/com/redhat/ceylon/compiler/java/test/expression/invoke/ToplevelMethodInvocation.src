@@ -1,21 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class topLevelMethodInvocationMethod1 {
+final class topLevelMethodInvocationMethod1_ {
     
-    private topLevelMethodInvocationMethod1() {
+    private topLevelMethodInvocationMethod1_() {
     }
     
     static void topLevelMethodInvocationMethod1() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1.topLevelMethodInvocationMethod1();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1_.topLevelMethodInvocationMethod1();
     }
 }
-final class topLevelMethodInvocationMethod2 {
+final class topLevelMethodInvocationMethod2_ {
     
-    private topLevelMethodInvocationMethod2() {
+    private topLevelMethodInvocationMethod2_() {
     }
     
     static long topLevelMethodInvocationMethod2(final long i, final .java.lang.String j) {
@@ -25,15 +25,15 @@ final class topLevelMethodInvocationMethod2 {
 class ToplevelMethodInvocation {
     
     private final long m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1.topLevelMethodInvocationMethod1();
-        return .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod2.topLevelMethodInvocationMethod2(1L, "");
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1_.topLevelMethodInvocationMethod1();
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod2_.topLevelMethodInvocationMethod2(1L, "");
     }
     
     ToplevelMethodInvocation() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.ToplevelMethodInvocation();
     }
 }

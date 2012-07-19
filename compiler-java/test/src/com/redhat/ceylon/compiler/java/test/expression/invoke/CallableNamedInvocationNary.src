@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableNamedInvocationNary_f {
+final class callableNamedInvocationNary_f_ {
     
-    private callableNamedInvocationNary_f() {
+    private callableNamedInvocationNary_f_() {
     }
     
     static void callableNamedInvocationNary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {

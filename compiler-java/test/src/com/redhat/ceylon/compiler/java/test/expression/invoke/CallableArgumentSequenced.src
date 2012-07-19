@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableArgumentSequenced_f {
+final class callableArgumentSequenced_f_ {
     
-    private callableArgumentSequenced_f() {
+    private callableArgumentSequenced_f_() {
     }
     
     static void callableArgumentSequenced_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-final class callableArgumentSequenced_g {
+final class callableArgumentSequenced_g_ {
     
-    private callableArgumentSequenced_g() {
+    private callableArgumentSequenced_g_() {
     }
     
     static void callableArgumentSequenced_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
@@ -20,7 +20,7 @@ final class callableArgumentSequenced_g {
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g.callableArgumentSequenced_g$s();
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g$s();
                 callableArgumentSequenced_g($ceylontmp$s$1);
             }
             returning null;
@@ -28,23 +28,23 @@ final class callableArgumentSequenced_g {
     }
     
     static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentSequenced_g$s() {
-        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
 }
-final class callableArgumentSequenced_m {
+final class callableArgumentSequenced_m_ {
     
-    private callableArgumentSequenced_m() {
+    private callableArgumentSequenced_m_() {
     }
     
     static void callableArgumentSequenced_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_f.callableArgumentSequenced_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void,ceylon.language.Iterable<ceylon.language.String>>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_f_.callableArgumentSequenced_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void,ceylon.language.Iterable<ceylon.language.String>>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g.callableArgumentSequenced_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
                     }
                     returning null;
                 );
@@ -53,7 +53,7 @@ final class callableArgumentSequenced_m {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_m.callableArgumentSequenced_m();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_m_.callableArgumentSequenced_m();
     }
 }

@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class getterArgumentNamedInvocation {
+final class getterArgumentNamedInvocation_ {
     
-    private getterArgumentNamedInvocation() {
+    private getterArgumentNamedInvocation_() {
     }
     
     static void getterArgumentNamedInvocation(final long num) {
         
-        final class callFunction {
+        final class callFunction_ {
             
-            private callFunction() {
+            private callFunction_() {
             }
             
             void callFunction(final long i, final .java.lang.String s) {
@@ -46,7 +46,7 @@ final class getterArgumentNamedInvocation {
                 return "";
             }
         }
-        final callFunction callFunction = new callFunction();
+        final callFunction_ callFunction = new callFunction_();
         long i = 3L;
         (
             let
@@ -119,7 +119,7 @@ final class getterArgumentNamedInvocation {
         (
             let
             {
-                callFunction $arg$11$this$ = callFunction;
+                callFunction_ $arg$11$this$ = callFunction;
                 
                 final class $s$12 {
                     
@@ -140,7 +140,7 @@ final class getterArgumentNamedInvocation {
         (
             let
             {
-                callFunction $arg$13$this$ = callFunction;
+                callFunction_ $arg$13$this$ = callFunction;
                 
                 final class $i$14 {
                     

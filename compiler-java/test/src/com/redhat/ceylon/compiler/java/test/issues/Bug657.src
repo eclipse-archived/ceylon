@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug657 {
+final class bug657_ {
     
-    private bug657() {
+    private bug657_() {
     }
     
     static <T>.ceylon.language.Array<T> bug657(final long size, final T elem) {
-        return .ceylon.language.arrayOfSize.<T>arrayOfSize(null, size, elem);
+        return .ceylon.language.arrayOfSize_.<T>arrayOfSize(null, size, elem);
     }
 }

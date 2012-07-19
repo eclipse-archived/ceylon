@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class sequencedTypeParamInvocation2 {
+final class sequencedTypeParamInvocation2_ {
     
-    private sequencedTypeParamInvocation2() {
+    private sequencedTypeParamInvocation2_() {
     }
     
     static <T>void sequencedTypeParamInvocation2(final .ceylon.language.Iterable<? extends T> ts) {
@@ -12,7 +12,7 @@ final class sequencedTypeParamInvocation2 {
         (
             let
             {
-                .ceylon.language.Iterable<? extends T> $ceylontmp$ts$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2.sequencedTypeParamInvocation2$ts();
+                .ceylon.language.Iterable<? extends T> $ceylontmp$ts$1 = .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.sequencedTypeParamInvocation2$ts();
                 sequencedTypeParamInvocation2($ceylontmp$ts$1);
             }
             returning null;
@@ -20,12 +20,12 @@ final class sequencedTypeParamInvocation2 {
     }
     
     static final <T>.ceylon.language.Iterable<? extends T> sequencedTypeParamInvocation2$ts() {
-        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
 }
-final class sequencedTypeParamInvocation2_test {
+final class sequencedTypeParamInvocation2_test_ {
     
-    private sequencedTypeParamInvocation2_test() {
+    private sequencedTypeParamInvocation2_test_() {
     }
     
     static void sequencedTypeParamInvocation2_test() {
@@ -33,14 +33,14 @@ final class sequencedTypeParamInvocation2_test {
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$2$0 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2.<.ceylon.language.Integer>sequencedTypeParamInvocation2($arg$2$0);
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_.<.ceylon.language.Integer>sequencedTypeParamInvocation2($arg$2$0);
             }
             returning null;
         );
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_test.sequencedTypeParamInvocation2_test();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocation2_test_.sequencedTypeParamInvocation2_test();
     }
 }

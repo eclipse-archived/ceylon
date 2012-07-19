@@ -16,9 +16,9 @@ abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expressi
     SelfType() {
     }
 }
-final class selfType {
+final class selfType_ {
     
-    private selfType() {
+    private selfType_() {
     }
     
     static <X extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>>void selfType(final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> y) {
@@ -37,9 +37,9 @@ abstract class SelfType2<T> {
     SelfType2() {
     }
 }
-final class selfType2 {
+final class selfType2_ {
     
-    private selfType2() {
+    private selfType2_() {
     }
     
     static <X>void selfType2(final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> y) {

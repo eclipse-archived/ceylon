@@ -1,21 +1,21 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class methodArgumentNamedIncovation2 {
+final class methodArgumentNamedIncovation2_ {
     
-    private methodArgumentNamedIncovation2() {
+    private methodArgumentNamedIncovation2_() {
     }
     
     static <A, B>void methodArgumentNamedIncovation2(final A a) {
         
-        final class callFunction {
+        final class callFunction_ {
             
-            private callFunction() {
+            private callFunction_() {
             }
             
             <X, Y>void callFunction(final .ceylon.language.Callable<? extends X> f) {
             }
         }
-        final callFunction callFunction = new callFunction();
+        final callFunction_ callFunction = new callFunction_();
         (
             let
             {

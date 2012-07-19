@@ -1,96 +1,96 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
-public final class globalMethodInteger {
+public final class globalMethodInteger_ {
     
-    private globalMethodInteger() {
+    private globalMethodInteger_() {
     }
     
     public static long globalMethodInteger(final long i) {
         return i;
     }
 }
-public final class globalMethodFloat {
+public final class globalMethodFloat_ {
     
-    private globalMethodFloat() {
+    private globalMethodFloat_() {
     }
     
     public static double globalMethodFloat(final double i) {
         return i;
     }
 }
-public final class globalMethodString {
+public final class globalMethodString_ {
     
-    private globalMethodString() {
+    private globalMethodString_() {
     }
     
     public static .java.lang.String globalMethodString(final .java.lang.String i) {
         return i;
     }
 }
-public final class globalMethodBoolean {
+public final class globalMethodBoolean_ {
     
-    private globalMethodBoolean() {
+    private globalMethodBoolean_() {
     }
     
     public static boolean globalMethodBoolean(final boolean i) {
         return i;
     }
 }
-public final class globalMethodCharacter {
+public final class globalMethodCharacter_ {
     
-    private globalMethodCharacter() {
+    private globalMethodCharacter_() {
     }
     
     public static int globalMethodCharacter(final int i) {
         return i;
     }
 }
-public final class globalMethodOptionalInteger {
+public final class globalMethodOptionalInteger_ {
     
-    private globalMethodOptionalInteger() {
+    private globalMethodOptionalInteger_() {
     }
     
     public static .ceylon.language.Integer globalMethodOptionalInteger(final .ceylon.language.Integer i) {
         return i;
     }
 }
-public final class globalMethodOptionalFloat {
+public final class globalMethodOptionalFloat_ {
     
-    private globalMethodOptionalFloat() {
+    private globalMethodOptionalFloat_() {
     }
     
     public static .ceylon.language.Float globalMethodOptionalFloat(final .ceylon.language.Float i) {
         return i;
     }
 }
-public final class globalMethodOptionalString {
+public final class globalMethodOptionalString_ {
     
-    private globalMethodOptionalString() {
+    private globalMethodOptionalString_() {
     }
     
     public static .ceylon.language.String globalMethodOptionalString(final .ceylon.language.String i) {
         return i;
     }
 }
-public final class globalMethodOptionalBoolean {
+public final class globalMethodOptionalBoolean_ {
     
-    private globalMethodOptionalBoolean() {
+    private globalMethodOptionalBoolean_() {
     }
     
     public static .ceylon.language.Boolean globalMethodOptionalBoolean(final .ceylon.language.Boolean i) {
         return i;
     }
 }
-public final class globalMethodOptionalCharacter {
+public final class globalMethodOptionalCharacter_ {
     
-    private globalMethodOptionalCharacter() {
+    private globalMethodOptionalCharacter_() {
     }
     
     public static .ceylon.language.Character globalMethodOptionalCharacter(final .ceylon.language.Character i) {
         return i;
     }
 }
-public final class globalAttrInteger {
+public final class globalAttrInteger_ {
     private static final long[] value;
     static {
         value = new long[]{1L};
@@ -104,10 +104,10 @@ public final class globalAttrInteger {
         }
     }
     
-    private globalAttrInteger() {
+    private globalAttrInteger_() {
     }
 }
-public final class globalAttrFloat {
+public final class globalAttrFloat_ {
     private static final double[] value;
     static {
         value = new double[]{1.0};
@@ -121,10 +121,10 @@ public final class globalAttrFloat {
         }
     }
     
-    private globalAttrFloat() {
+    private globalAttrFloat_() {
     }
 }
-public final class globalAttrString {
+public final class globalAttrString_ {
     private static final .java.lang.String[] value;
     static {
         value = new .java.lang.String[]{"a"};
@@ -138,10 +138,10 @@ public final class globalAttrString {
         }
     }
     
-    private globalAttrString() {
+    private globalAttrString_() {
     }
 }
-public final class globalAttrBoolean {
+public final class globalAttrBoolean_ {
     private static final boolean[] value;
     static {
         value = new boolean[]{true};
@@ -155,10 +155,10 @@ public final class globalAttrBoolean {
         }
     }
     
-    private globalAttrBoolean() {
+    private globalAttrBoolean_() {
     }
 }
-public final class globalAttrCharacter {
+public final class globalAttrCharacter_ {
     private static final int[] value;
     static {
         value = new int[]{'a'};
@@ -172,10 +172,10 @@ public final class globalAttrCharacter {
         }
     }
     
-    private globalAttrCharacter() {
+    private globalAttrCharacter_() {
     }
 }
-public final class globalAttrOptionalInteger {
+public final class globalAttrOptionalInteger_ {
     private static final .ceylon.language.Integer[] value;
     static {
         value = new .ceylon.language.Integer[]{null};
@@ -189,10 +189,10 @@ public final class globalAttrOptionalInteger {
         }
     }
     
-    private globalAttrOptionalInteger() {
+    private globalAttrOptionalInteger_() {
     }
 }
-public final class globalAttrOptionalFloat {
+public final class globalAttrOptionalFloat_ {
     private static final .ceylon.language.Float[] value;
     static {
         value = new .ceylon.language.Float[]{null};
@@ -206,10 +206,10 @@ public final class globalAttrOptionalFloat {
         }
     }
     
-    private globalAttrOptionalFloat() {
+    private globalAttrOptionalFloat_() {
     }
 }
-public final class globalAttrOptionalString {
+public final class globalAttrOptionalString_ {
     private static final .ceylon.language.String[] value;
     static {
         value = new .ceylon.language.String[]{null};
@@ -223,10 +223,10 @@ public final class globalAttrOptionalString {
         }
     }
     
-    private globalAttrOptionalString() {
+    private globalAttrOptionalString_() {
     }
 }
-public final class globalAttrOptionalBoolean {
+public final class globalAttrOptionalBoolean_ {
     private static final .ceylon.language.Boolean[] value;
     static {
         value = new .ceylon.language.Boolean[]{null};
@@ -240,10 +240,10 @@ public final class globalAttrOptionalBoolean {
         }
     }
     
-    private globalAttrOptionalBoolean() {
+    private globalAttrOptionalBoolean_() {
     }
 }
-public final class globalAttrOptionalCharacter {
+public final class globalAttrOptionalCharacter_ {
     private static final .ceylon.language.Character[] value;
     static {
         value = new .ceylon.language.Character[]{null};
@@ -257,7 +257,7 @@ public final class globalAttrOptionalCharacter {
         }
     }
     
-    private globalAttrOptionalCharacter() {
+    private globalAttrOptionalCharacter_() {
     }
 }
 class BasicTypes {

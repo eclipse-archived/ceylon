@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug494 {
+final class bug494_ {
     
-    private bug494() {
+    private bug494_() {
     }
     
     static void bug494() {
-        final .ceylon.language.Array<.ceylon.language.Integer> a2 = .ceylon.language.arrayOfSize.<.ceylon.language.Integer>arrayOfSize(long.class, 20L, .ceylon.language.Integer.instance(0L));
+        final .ceylon.language.Array<.ceylon.language.Integer> a2 = .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(long.class, 20L, .ceylon.language.Integer.instance(0L));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug494.bug494();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug494_.bug494();
     }
 }

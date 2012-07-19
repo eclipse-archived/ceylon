@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-public final class nestedGenericEntryInstantiation {
+public final class nestedGenericEntryInstantiation_ {
     
-    private nestedGenericEntryInstantiation() {
+    private nestedGenericEntryInstantiation_() {
     }
     
     public static <T extends .ceylon.language.Sized>void nestedGenericEntryInstantiation(final T t) {

@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
-final class f1 {
+final class f1_ {
     
-    private f1() {
+    private f1_() {
     }
     
     static void f1(final long i) {
@@ -12,7 +12,7 @@ final class f1 {
         (
             let
             {
-                long $ceylontmp$i$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f1.f1$i();
+                long $ceylontmp$i$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1$i();
                 f1($ceylontmp$i$1);
             }
             returning null;
@@ -23,9 +23,9 @@ final class f1 {
         return 1L;
     }
 }
-final class f2 {
+final class f2_ {
     
-    private f2() {
+    private f2_() {
     }
     
     static long f2(final long i) {
@@ -36,7 +36,7 @@ final class f2 {
         return (
             let
             {
-                long $ceylontmp$i$3 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f2.f2$i();
+                long $ceylontmp$i$3 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2$i();
             }
             returning f2($ceylontmp$i$3);
         );
@@ -46,9 +46,9 @@ final class f2 {
         return 1L;
     }
 }
-final class f3 {
+final class f3_ {
     
-    private f3() {
+    private f3_() {
     }
     
     static long f3(final long i, final long n) {
@@ -59,7 +59,7 @@ final class f3 {
         return (
             let
             {
-                long $ceylontmp$n$8 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$n(i);
+                long $ceylontmp$n$8 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n(i);
             }
             returning f3(i, $ceylontmp$n$8);
         );
@@ -69,8 +69,8 @@ final class f3 {
         return (
             let
             {
-                long $ceylontmp$i$5 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$i();
-                long $ceylontmp$n$6 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$n($ceylontmp$i$5);
+                long $ceylontmp$i$5 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$i();
+                long $ceylontmp$n$6 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n($ceylontmp$i$5);
             }
             returning f3($ceylontmp$i$5, $ceylontmp$n$6);
         );
@@ -84,9 +84,9 @@ final class f3 {
         return 2L * i;
     }
 }
-final class f4 {
+final class f4_ {
     
-    private f4() {
+    private f4_() {
     }
     
     static long f4(final long i, final long n) {
@@ -97,7 +97,7 @@ final class f4 {
         return (
             let
             {
-                long $ceylontmp$n$10 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f4.f4$n(i);
+                long $ceylontmp$n$10 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4$n(i);
             }
             returning f4(i, $ceylontmp$n$10);
         );
@@ -107,9 +107,9 @@ final class f4 {
         return 2L * i;
     }
 }
-final class f5 {
+final class f5_ {
     
-    private f5() {
+    private f5_() {
     }
     
     static <U>long f5(final long i, final U u) {
@@ -120,7 +120,7 @@ final class f5 {
         return (
             let
             {
-                U $ceylontmp$u$12 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5.f5$u(i);
+                U $ceylontmp$u$12 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.f5$u(i);
             }
             returning f5(i, $ceylontmp$u$12);
         );
@@ -130,41 +130,41 @@ final class f5 {
         return null;
     }
 }
-final class positional {
+final class positional_ {
     
-    private positional() {
+    private positional_() {
     }
     
     static void positional() {
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f1.f1();
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f1.f1(1L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f2.f2();
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f2.f2(2L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3();
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3(1L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3(1L, 2L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f4.f4(1L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f4.f4(1L, 4L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f5.<.ceylon.language.String>f5(1L);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.f5.<.ceylon.language.String>f5(1L, .ceylon.language.String.instance(""));
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1();
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1(1L);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2();
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2(2L);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3();
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3(1L);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3(1L, 2L);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4(1L);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4(1L, 4L);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(1L);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5(1L, .ceylon.language.String.instance(""));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.positional.positional();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.positional_.positional();
     }
 }
-final class named {
+final class named_ {
     
-    private named() {
+    private named_() {
     }
     
     static void named() {
         (
             let
             {
-                long $arg$13$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f1.f1$i();
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.f1.f1($arg$13$0);
+                long $arg$13$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1$i();
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1($arg$13$0);
             }
             returning null;
         );
@@ -172,39 +172,39 @@ final class named {
             let
             {
                 long $arg$14$0 = 1L;
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.f1.f1($arg$14$0);
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.f1_.f1($arg$14$0);
             }
             returning null;
         );
         (
             let
             {
-                long $arg$15$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f2.f2$i();
+                long $arg$15$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2$i();
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f2.f2($arg$15$0);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2($arg$15$0);
         );
         (
             let
             {
                 long $arg$16$0 = 2L;
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f2.f2($arg$16$0);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f2_.f2($arg$16$0);
         );
         (
             let
             {
-                long $arg$17$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$i();
-                long $arg$17$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$n($arg$17$0);
+                long $arg$17$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$i();
+                long $arg$17$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n($arg$17$0);
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3($arg$17$0, $arg$17$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3($arg$17$0, $arg$17$1);
         );
         (
             let
             {
                 long $arg$18$0 = 1L;
-                long $arg$18$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$n($arg$18$0);
+                long $arg$18$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n($arg$18$0);
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3($arg$18$0, $arg$18$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3($arg$18$0, $arg$18$1);
         );
         (
             let
@@ -212,7 +212,7 @@ final class named {
                 long $arg$19$0 = 1L;
                 long $arg$19$1 = 2L;
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3($arg$19$0, $arg$19$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3($arg$19$0, $arg$19$1);
         );
         (
             let
@@ -220,23 +220,23 @@ final class named {
                 long $arg$20$1 = 2L;
                 long $arg$20$0 = 1L;
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3($arg$20$0, $arg$20$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3($arg$20$0, $arg$20$1);
         );
         (
             let
             {
                 long $arg$21$1 = 2L;
-                long $arg$21$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3$i();
+                long $arg$21$0 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$i();
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3.f3($arg$21$0, $arg$21$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3($arg$21$0, $arg$21$1);
         );
         (
             let
             {
                 long $arg$22$0 = 1L;
-                long $arg$22$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f4.f4$n($arg$22$0);
+                long $arg$22$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4$n($arg$22$0);
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f4.f4($arg$22$0, $arg$22$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4($arg$22$0, $arg$22$1);
         );
         (
             let
@@ -244,7 +244,7 @@ final class named {
                 long $arg$23$0 = 1L;
                 long $arg$23$1 = 4L;
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f4.f4($arg$23$0, $arg$23$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4($arg$23$0, $arg$23$1);
         );
         (
             let
@@ -252,15 +252,15 @@ final class named {
                 long $arg$24$1 = 4L;
                 long $arg$24$0 = 1L;
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f4.f4($arg$24$0, $arg$24$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f4_.f4($arg$24$0, $arg$24$1);
         );
         (
             let
             {
                 long $arg$25$0 = 1L;
-                .ceylon.language.String $arg$25$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5.f5$u($arg$25$0);
+                .ceylon.language.String $arg$25$1 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.f5$u($arg$25$0);
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5.<.ceylon.language.String>f5($arg$25$0, $arg$25$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5($arg$25$0, $arg$25$1);
         );
         (
             let
@@ -268,7 +268,7 @@ final class named {
                 long $arg$26$0 = 1L;
                 .ceylon.language.String $arg$26$1 = .ceylon.language.String.instance("");
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5.<.ceylon.language.String>f5($arg$26$0, $arg$26$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5($arg$26$0, $arg$26$1);
         );
         (
             let
@@ -276,12 +276,12 @@ final class named {
                 .ceylon.language.String $arg$27$1 = .ceylon.language.String.instance("");
                 long $arg$27$0 = 1L;
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5.<.ceylon.language.String>f5($arg$27$0, $arg$27$1);
+            returning .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<.ceylon.language.String>f5($arg$27$0, $arg$27$1);
         );
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.named.named();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.named_.named();
     }
 }

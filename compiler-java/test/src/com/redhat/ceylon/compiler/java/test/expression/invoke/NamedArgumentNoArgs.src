@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class namedArgumentNoArgs {
+final class namedArgumentNoArgs_ {
     
-    private namedArgumentNoArgs() {
+    private namedArgumentNoArgs_() {
     }
     
     static void namedArgumentNoArgs() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs.namedArgumentNoArgs();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs_.namedArgumentNoArgs();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs.namedArgumentNoArgs();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs_.namedArgumentNoArgs();
     }
 }

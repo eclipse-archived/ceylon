@@ -1,36 +1,36 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-interface bug674$0$X<T> {
+interface bug674$0$X_<T> {
 }
-interface bug674$0$Y {
+interface bug674$0$Y_ {
 }
-final class bug674 {
+final class bug674_ {
     
-    private bug674() {
+    private bug674_() {
     }
     
     static void bug674() {
         
         final class X$impl<T> {
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<T> $this;
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$X_<T> $this;
             
-            X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<T> $this) {
+            X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug674$0$X_<T> $this) {
                 this.$this = $this;
             }
         }
         
         final class Y$impl {
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y $this;
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y_ $this;
             
-            Y$impl(.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y $this) {
+            Y$impl(.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y_ $this) {
                 this.$this = $this;
             }
         }
-        final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y> y = (.com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y>).ceylon.language.bottom.getBottom();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$X_<.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y_> y = (.com.redhat.ceylon.compiler.java.test.issues.bug674$0$X_<.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y_>).ceylon.language.bottom_.getBottom();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug674.bug674();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug674_.bug674();
     }
 }

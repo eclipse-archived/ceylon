@@ -5,10 +5,10 @@ class MethodInitializerParameter<T> {
     
     private final void unary(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
-        final class m {
+        final class m_ {
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
-            private m() {
+            private m_() {
                 this.m = m$;
             }
             
@@ -16,7 +16,7 @@ class MethodInitializerParameter<T> {
                 m.$call(i);
             }
         }
-        final m m = new m();
+        final m_ m = new m_();
         m.m(1L);
         (
             let
@@ -30,10 +30,10 @@ class MethodInitializerParameter<T> {
     
     private final void nary(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
-        final class m {
+        final class m_ {
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
-            private m() {
+            private m_() {
                 this.m = m$;
             }
             
@@ -41,7 +41,7 @@ class MethodInitializerParameter<T> {
                 m.$call(i1, i2, i3, i4);
             }
         }
-        final m m = new m();
+        final m_ m = new m_();
         m.m(1L, 2L, 3L, 4L);
         (
             let
@@ -58,10 +58,10 @@ class MethodInitializerParameter<T> {
     
     private final void sequenced(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
-        final class m {
+        final class m_ {
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
-            private m() {
+            private m_() {
                 this.m = m$;
             }
             
@@ -81,17 +81,17 @@ class MethodInitializerParameter<T> {
             }
             
             private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$seq(final long i) {
-                return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+                return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
             }
         }
-        final m m = new m();
+        final m_ m = new m_();
         m.m(1L);
         m.m(1L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L)));
         m.m(1L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         (
             let
             {
-                m $arg$4$this$ = m;
+                m_ $arg$4$this$ = m;
                 long $arg$4$0 = 1L;
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$4$1 = $arg$4$this$.m$seq($arg$4$0);
                 m.m($arg$4$0, $arg$4$1);
@@ -111,10 +111,10 @@ class MethodInitializerParameter<T> {
     
     private final void typeParameter(final .ceylon.language.Callable<? extends T> m$) {
         
-        final class m {
+        final class m_ {
             private final .ceylon.language.Callable<? extends T> m;
             
-            private m() {
+            private m_() {
                 this.m = m$;
             }
             
@@ -122,7 +122,7 @@ class MethodInitializerParameter<T> {
                 return m.$call(t);
             }
         }
-        final m m = new m();
+        final m_ m = new m_();
         m.m(t);
         (
             let
@@ -135,10 +135,10 @@ class MethodInitializerParameter<T> {
     
     private final void defaultedParameter(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
-        final class m {
+        final class m_ {
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
-            private m() {
+            private m_() {
                 this.m = m$;
             }
             
@@ -161,13 +161,13 @@ class MethodInitializerParameter<T> {
                 return 1L;
             }
         }
-        final m m = new m();
+        final m_ m = new m_();
         m.m();
         m.m(2L);
         (
             let
             {
-                m $arg$9$this$ = m;
+                m_ $arg$9$this$ = m;
                 long $arg$9$0 = $arg$9$this$.m$i();
                 m.m($arg$9$0);
             }

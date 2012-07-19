@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-public final class fullName {
+public final class fullName_ {
     
-    private fullName() {
+    private fullName_() {
     }
     
     public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> fullName(final .java.lang.String firstName) {

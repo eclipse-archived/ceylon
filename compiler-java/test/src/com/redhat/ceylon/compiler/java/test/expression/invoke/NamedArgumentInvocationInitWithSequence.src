@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 class NamedArgumentInvocationInitWithSequence {
     
     static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$b(final .java.lang.String a) {
-        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
     final class Inner$impl {
@@ -13,7 +13,7 @@ class NamedArgumentInvocationInitWithSequence {
         }
         
         private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$z(final boolean x, final .java.lang.String y) {
-            return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+            return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
         }
     }
     

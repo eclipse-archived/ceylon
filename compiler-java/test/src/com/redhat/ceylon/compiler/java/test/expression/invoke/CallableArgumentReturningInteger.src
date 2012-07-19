@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class callableArgumentReturningInteger_f {
+final class callableArgumentReturningInteger_f_ {
     
-    private callableArgumentReturningInteger_f() {
+    private callableArgumentReturningInteger_f_() {
     }
     
     static void callableArgumentReturningInteger_f(final .ceylon.language.Callable<? extends .ceylon.language.Integer> foo) {
     }
 }
-final class callableArgumentReturningInteger_bar {
+final class callableArgumentReturningInteger_bar_ {
     
-    private callableArgumentReturningInteger_bar() {
+    private callableArgumentReturningInteger_bar_() {
     }
     
     static long callableArgumentReturningInteger_bar() {
@@ -18,27 +18,27 @@ final class callableArgumentReturningInteger_bar {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_bar.callableArgumentReturningInteger_bar();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_bar_.callableArgumentReturningInteger_bar();
     }
 }
-final class callableArgumentReturningInteger_m {
+final class callableArgumentReturningInteger_m_ {
     
-    private callableArgumentReturningInteger_m() {
+    private callableArgumentReturningInteger_m_() {
     }
     
     static void callableArgumentReturningInteger_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_f.callableArgumentReturningInteger_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language.Callable<ceylon.language.Integer>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_f_.callableArgumentReturningInteger_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language.Callable<ceylon.language.Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_bar.callableArgumentReturningInteger_bar());
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_bar_.callableArgumentReturningInteger_bar());
             }
         });
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_m.callableArgumentReturningInteger_m();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningInteger_m_.callableArgumentReturningInteger_m();
     }
 }

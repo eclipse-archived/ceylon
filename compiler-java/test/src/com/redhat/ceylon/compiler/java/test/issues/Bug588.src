@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug588 {
+final class bug588_ {
     
-    private bug588() {
+    private bug588_() {
     }
     
     static void bug588() {
@@ -10,12 +10,12 @@ final class bug588 {
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $c$iter$1 = (.ceylon.language.Iterator<? extends .ceylon.language.String>)comparables.getIterator(); !(($elem$0 = $c$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.String c = ((.ceylon.language.String)$elem$0).toString();
-            .ceylon.language.print.print(.ceylon.language.String.instance(c));
+            .ceylon.language.print_.print(.ceylon.language.String.instance(c));
         }
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug588.bug588();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug588_.bug588();
     }
 }

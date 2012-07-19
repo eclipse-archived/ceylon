@@ -15,7 +15,7 @@ final class Bug329_Something$impl {
         this.$this = $this;
     }
 }
-final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
+final class bug329_se_ implements .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
     private final .ceylon.language.String something;
     
     @.java.lang.Override
@@ -24,16 +24,16 @@ final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bu
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this;
     
-    private bug329_se() {
+    private bug329_se_() {
         this.something = .ceylon.language.String.instance("somethingElse");
         this.$com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se[]{new .com.redhat.ceylon.compiler.java.test.issues.bug329_se()};
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug329_se_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug329_se getBug329_se() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug329_se_ getBug329_se() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -41,7 +41,7 @@ final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bu
         }
     }
 }
-final class bug329_se2 implements .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
+final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
     
     @.java.lang.Override
     public final .ceylon.language.String getSomething() {
@@ -49,15 +49,15 @@ final class bug329_se2 implements .com.redhat.ceylon.compiler.java.test.issues.B
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this;
     
-    private bug329_se2() {
+    private bug329_se2_() {
         this.$com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se2[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se2_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2[]{new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2()};
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug329_se2 getBug329_se2() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug329_se2_ getBug329_se2() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

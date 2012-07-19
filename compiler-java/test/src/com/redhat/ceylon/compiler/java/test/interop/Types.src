@@ -1,17 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-final class box {
+final class box_ {
     
-    private box() {
+    private box_() {
     }
     
     static <T>T box(final T t) {
         return t;
     }
 }
-final class booleanTypes {
+final class booleanTypes_ {
     
-    private booleanTypes() {
+    private booleanTypes_() {
     }
     
     static void booleanTypes() {
@@ -21,19 +21,19 @@ final class booleanTypes {
         final .java.lang.Object b4 = java.return_Boolean();
         final .java.lang.Object b5 = java.return_Boolean();
         java.booleanParams(true, new .java.lang.Boolean(true), .ceylon.language.Boolean.instance(true));
-        java.booleanParams(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)).booleanValue(), new .java.lang.Boolean(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)).booleanValue()), .com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)));
+        java.booleanParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)).booleanValue(), new .java.lang.Boolean(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)).booleanValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)));
         java.booleanParams(java.return_Boolean().booleanValue(), java.return_Boolean(), .ceylon.language.Boolean.instance(java.return_Boolean().booleanValue()));
         java.booleanParams(java.return_boolean(), new .java.lang.Boolean(java.return_boolean()), .ceylon.language.Boolean.instance(java.return_boolean()));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.booleanTypes.booleanTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.booleanTypes_.booleanTypes();
     }
 }
-final class byteTypes {
+final class byteTypes_ {
     
-    private byteTypes() {
+    private byteTypes_() {
     }
     
     static void byteTypes() {
@@ -42,19 +42,19 @@ final class byteTypes {
         final .ceylon.language.Integer n2 = .ceylon.language.Integer.instance(java.return_byte());
         final long n3 = java.return_Byte().longValue();
         java.byteParams((byte)1L, new .java.lang.Byte((byte)1L));
-        java.byteParams((byte).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Byte((byte).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()));
+        java.byteParams((byte).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Byte((byte).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()));
         java.byteParams(java.return_byte(), new .java.lang.Byte(java.return_byte()));
         java.byteParams(java.return_Byte().byteValue(), java.return_Byte());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.byteTypes.byteTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.byteTypes_.byteTypes();
     }
 }
-final class shortTypes {
+final class shortTypes_ {
     
-    private shortTypes() {
+    private shortTypes_() {
     }
     
     static void shortTypes() {
@@ -63,19 +63,19 @@ final class shortTypes {
         final .ceylon.language.Integer n2 = .ceylon.language.Integer.instance(java.return_short());
         final long n3 = java.return_Short().longValue();
         java.shortParams((short)1L, new .java.lang.Short((short)1L));
-        java.shortParams((short).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Short((short).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()));
+        java.shortParams((short).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Short((short).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()));
         java.shortParams(java.return_short(), new .java.lang.Short(java.return_short()));
         java.shortParams(java.return_Short().shortValue(), java.return_Short());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.shortTypes.shortTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.shortTypes_.shortTypes();
     }
 }
-final class integerTypes {
+final class integerTypes_ {
     
-    private integerTypes() {
+    private integerTypes_() {
     }
     
     static void integerTypes() {
@@ -84,19 +84,19 @@ final class integerTypes {
         final .ceylon.language.Integer n2 = .ceylon.language.Integer.instance(java.return_int());
         final long n3 = java.return_Integer().longValue();
         java.intParams((int)1L, new .java.lang.Integer((int)1L));
-        java.intParams((int).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Integer((int).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()));
+        java.intParams((int).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Integer((int).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()));
         java.intParams(java.return_int(), new .java.lang.Integer(java.return_int()));
         java.intParams(java.return_Integer().intValue(), java.return_Integer());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.integerTypes.integerTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.integerTypes_.integerTypes();
     }
 }
-final class longTypes {
+final class longTypes_ {
     
-    private longTypes() {
+    private longTypes_() {
     }
     
     static void longTypes() {
@@ -105,19 +105,19 @@ final class longTypes {
         final .ceylon.language.Integer n2 = .ceylon.language.Integer.instance(java.return_long());
         final long n3 = java.return_Long().longValue();
         java.longParams(1L, new .java.lang.Long(1L), .ceylon.language.Integer.instance(1L));
-        java.longParams(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Long(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()), .com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)));
+        java.longParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Long(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)).longValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)));
         java.longParams(java.return_long(), new .java.lang.Long(java.return_long()), .ceylon.language.Integer.instance(java.return_long()));
         java.longParams(java.return_Long().longValue(), java.return_Long(), .ceylon.language.Integer.instance(java.return_Long().longValue()));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.longTypes.longTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.longTypes_.longTypes();
     }
 }
-final class floatTypes {
+final class floatTypes_ {
     
-    private floatTypes() {
+    private floatTypes_() {
     }
     
     static void floatTypes() {
@@ -126,19 +126,19 @@ final class floatTypes {
         final .ceylon.language.Float f2 = .ceylon.language.Float.instance(java.return_float());
         final double f3 = java.return_Float().doubleValue();
         java.floatParams((float)1.0, new .java.lang.Float(1.0));
-        java.floatParams((float).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue(), new .java.lang.Float(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue()));
+        java.floatParams((float).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue(), new .java.lang.Float(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue()));
         java.floatParams(java.return_float(), new .java.lang.Float(java.return_float()));
         java.floatParams(java.return_Float().floatValue(), java.return_Float());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.floatTypes.floatTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.floatTypes_.floatTypes();
     }
 }
-final class doubleTypes {
+final class doubleTypes_ {
     
-    private doubleTypes() {
+    private doubleTypes_() {
     }
     
     static void doubleTypes() {
@@ -147,19 +147,19 @@ final class doubleTypes {
         final .ceylon.language.Float f2 = .ceylon.language.Float.instance(java.return_double());
         final double f3 = java.return_Double().doubleValue();
         java.doubleParams(1.0, new .java.lang.Double(1.0), .ceylon.language.Float.instance(1.0));
-        java.doubleParams(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue(), new .java.lang.Double(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue()), .com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)));
+        java.doubleParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue(), new .java.lang.Double(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)).doubleValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.instance(1.0)));
         java.doubleParams(java.return_double(), new .java.lang.Double(java.return_double()), .ceylon.language.Float.instance(java.return_double()));
         java.doubleParams(java.return_Double().doubleValue(), java.return_Double(), .ceylon.language.Float.instance(java.return_Double().doubleValue()));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.doubleTypes.doubleTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.doubleTypes_.doubleTypes();
     }
 }
-final class characterTypes {
+final class characterTypes_ {
     
-    private characterTypes() {
+    private characterTypes_() {
     }
     
     static void characterTypes() {
@@ -168,19 +168,19 @@ final class characterTypes {
         final .ceylon.language.Character c2 = .ceylon.language.Character.instance(java.return_char());
         final int c3 = java.return_Character().charValue();
         java.charParams((char)'a', new .java.lang.Character((char)'a'), .ceylon.language.Character.instance('a'));
-        java.charParams((char).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')).intValue(), new .java.lang.Character((char).com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')).intValue()), .com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')));
+        java.charParams((char).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')).intValue(), new .java.lang.Character((char).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')).intValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')));
         java.charParams(java.return_char(), new .java.lang.Character(java.return_char()), .ceylon.language.Character.instance(java.return_char()));
         java.charParams(java.return_Character().charValue(), java.return_Character(), .ceylon.language.Character.instance(java.return_Character().charValue()));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.characterTypes.characterTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.characterTypes_.characterTypes();
     }
 }
-final class stringTypes {
+final class stringTypes_ {
     
-    private stringTypes() {
+    private stringTypes_() {
     }
     
     static void stringTypes() {
@@ -188,18 +188,18 @@ final class stringTypes {
         final .java.lang.String s1 = java.return_String();
         final .ceylon.language.String s2 = .ceylon.language.String.instance(java.return_String());
         java.stringParams("a", .ceylon.language.String.instance("a"));
-        java.stringParams(.com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.String>box(.ceylon.language.String.instance("a")).toString(), .com.redhat.ceylon.compiler.java.test.interop.box.<.ceylon.language.String>box(.ceylon.language.String.instance("a")));
+        java.stringParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.String>box(.ceylon.language.String.instance("a")).toString(), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.String>box(.ceylon.language.String.instance("a")));
         java.stringParams(java.return_String(), .ceylon.language.String.instance(java.return_String()));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.stringTypes.stringTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.stringTypes_.stringTypes();
     }
 }
-final class objectTypes {
+final class objectTypes_ {
     
-    private objectTypes() {
+    private objectTypes_() {
     }
     
     static void objectTypes() {
@@ -211,13 +211,13 @@ final class objectTypes {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.objectTypes.objectTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.objectTypes_.objectTypes();
     }
 }
-final class operationsOnBytes {
+final class operationsOnBytes_ {
     
-    private operationsOnBytes() {
+    private operationsOnBytes_() {
     }
     
     static void operationsOnBytes() {
@@ -288,13 +288,13 @@ final class operationsOnBytes {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.operationsOnBytes.operationsOnBytes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.operationsOnBytes_.operationsOnBytes();
     }
 }
-final class operationsOnBytes2 {
+final class operationsOnBytes2_ {
     
-    private operationsOnBytes2() {
+    private operationsOnBytes2_() {
     }
     
     static void operationsOnBytes2() {
@@ -365,8 +365,8 @@ final class operationsOnBytes2 {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.operationsOnBytes2.operationsOnBytes2();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.operationsOnBytes2_.operationsOnBytes2();
     }
 }
 class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.TypesJava {
@@ -436,13 +436,13 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.OperationsOnBytes();
     }
 }
-final class operationsOnMixedTypes {
+final class operationsOnMixedTypes_ {
     
-    private operationsOnMixedTypes() {
+    private operationsOnMixedTypes_() {
     }
     
     static void operationsOnMixedTypes() {
@@ -496,13 +496,13 @@ final class operationsOnMixedTypes {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.operationsOnMixedTypes.operationsOnMixedTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.operationsOnMixedTypes_.operationsOnMixedTypes();
     }
 }
-final class typeParameters {
+final class typeParameters_ {
     
-    private typeParameters() {
+    private typeParameters_() {
     }
     
     static void typeParameters() {
@@ -516,13 +516,13 @@ final class typeParameters {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.typeParameters.typeParameters();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.typeParameters_.typeParameters();
     }
 }
-final class optionalTypes {
+final class optionalTypes_ {
     
-    private optionalTypes() {
+    private optionalTypes_() {
     }
     
     static void optionalTypes() {
@@ -538,7 +538,7 @@ final class optionalTypes {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.optionalTypes.optionalTypes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.optionalTypes_.optionalTypes();
     }
 }

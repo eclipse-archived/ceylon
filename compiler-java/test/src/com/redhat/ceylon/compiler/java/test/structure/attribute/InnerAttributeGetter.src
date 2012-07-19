@@ -5,24 +5,24 @@ class InnerAttributeGetter {
     private final void m() {
         final long m = 2L;
         
-        final class innerGetter$getter {
+        final class innerGetter$getter_ {
             
             long getInnerGetter() {
                 return m;
             }
             
-            private innerGetter$getter() {
+            private innerGetter$getter_() {
             }
         }
-        final innerGetter$getter innerGetter$getter = new innerGetter$getter();
-        final long n = innerGetter$getter.getInnerGetter();
+        final innerGetter$getter_ innerGetter$getter_ = new innerGetter$getter_();
+        final long n = innerGetter$getter_.getInnerGetter();
     }
     
     InnerAttributeGetter() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetter();
     }
 }

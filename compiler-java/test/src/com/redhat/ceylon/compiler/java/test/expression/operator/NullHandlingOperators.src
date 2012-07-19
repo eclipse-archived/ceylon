@@ -57,7 +57,7 @@ public class NullHandlingOperators {
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String> $ceylontmp6 = s1;
             }
-            returning $ceylontmp6 != null ? $ceylontmp6 : (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+            returning $ceylontmp6 != null ? $ceylontmp6 : (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
         );
     }
     
@@ -70,7 +70,7 @@ public class NullHandlingOperators {
             }
             returning $ceylontmp7 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp7).getEmpty();
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> iter = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> iter = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
         sync = (
             let
             {
@@ -78,7 +78,7 @@ public class NullHandlingOperators {
             }
             returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty();
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
         sync = (
             let
             {
@@ -130,7 +130,7 @@ public class NullHandlingOperators {
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp14 = (.ceylon.language.Iterable)(false ? .ceylon.language.$empty.getEmpty() : null);
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp14 = (.ceylon.language.Iterable)(false ? .ceylon.language.empty_.getEmpty() : null);
             }
             returning $ceylontmp14 != null ? $ceylontmp14 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
         );
@@ -140,7 +140,7 @@ public class NullHandlingOperators {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators();
     }
 }

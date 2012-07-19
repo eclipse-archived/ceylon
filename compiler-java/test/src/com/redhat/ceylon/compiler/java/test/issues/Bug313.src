@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug313 {
+final class bug313_ {
     
-    private bug313() {
+    private bug313_() {
     }
     
     static void bug313() {
@@ -17,8 +17,8 @@ final class bug313 {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug313.bug313();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug313_.bug313();
     }
 }
 interface Bug310 {
@@ -36,9 +36,9 @@ final class Bug310$impl {
         this.$this = $this;
     }
 }
-final class bug310 {
+final class bug310_ {
     
-    private bug310() {
+    private bug310_() {
     }
     
     static void bug310() {
@@ -53,13 +53,13 @@ final class bug310 {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug310.bug310();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug310_.bug310();
     }
 }
-final class bug310_2 {
+final class bug310_2_ {
     
-    private bug310_2() {
+    private bug310_2_() {
     }
     
     static void bug310_2() {
@@ -80,7 +80,7 @@ final class bug310_2 {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug310_2.bug310_2();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug310_2_.bug310_2();
     }
 }

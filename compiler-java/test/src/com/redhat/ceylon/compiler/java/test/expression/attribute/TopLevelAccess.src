@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-final class b1 {
+final class b1_ {
     private static final boolean[] value;
     static {
         value = new boolean[]{true};
@@ -14,10 +14,10 @@ final class b1 {
         }
     }
     
-    private b1() {
+    private b1_() {
     }
 }
-public final class b2 {
+public final class b2_ {
     private static final boolean[] value;
     static {
         value = new boolean[]{true};
@@ -31,41 +31,41 @@ public final class b2 {
         }
     }
     
-    private b2() {
+    private b2_() {
     }
 }
 class TopLevelAccess {
     
     private final void m() {
-        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1.getB1();
-        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2.getB2();
-        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3.getB3();
-        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4.getB4();
+        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.getB1();
+        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.getB2();
+        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.getB3();
+        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.getB4();
     }
     
     TopLevelAccess() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess();
     }
 }
-final class b3 {
+final class b3_ {
     
     static boolean getB3() {
         return true;
     }
     
-    private b3() {
+    private b3_() {
     }
 }
-public final class b4 {
+public final class b4_ {
     
     public static boolean getB4() {
         return true;
     }
     
-    private b4() {
+    private b4_() {
     }
 }

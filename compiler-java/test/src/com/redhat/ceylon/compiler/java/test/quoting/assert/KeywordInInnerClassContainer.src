@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
-final class $transient {
+final class transient_ {
     
     public class InnerClass_0 {
         
@@ -29,14 +29,14 @@ final class $transient {
         final InnerClass_2 x = new InnerClass_2();
     }
     
-    private $transient() {
+    private transient_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient[] value;
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_[] value;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient[]{new .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient()};
+        value = new .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient getTransient() {
+    static .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_ getTransient() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -44,19 +44,19 @@ final class $transient {
         }
     }
 }
-final class m {
+final class m_ {
     
-    private m() {
+    private m_() {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.getTransient().new InnerClass_0();
-        final long int = .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.getTransient().getAssert();
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient.getTransient().$strictfp();
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_.getTransient().new InnerClass_0();
+        final long int = .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_.getTransient().getAssert();
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_.getTransient().$strictfp();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.m.m();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.m_.m();
     }
 }

@@ -1,26 +1,26 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-final class higher {
+final class higher_ {
     
-    private higher() {
+    private higher_() {
     }
     
     static .java.lang.String higher(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
         return "";
     }
 }
-final class callableCapture_foo {
+final class callableCapture_foo_ {
     
-    private callableCapture_foo() {
+    private callableCapture_foo_() {
     }
     
     static .java.lang.String callableCapture_foo(final long i) {
         return "";
     }
 }
-final class callableCapture_m {
+final class callableCapture_m_ {
     
-    private callableCapture_m() {
+    private callableCapture_m_() {
     }
     
     static void callableCapture_m() {
@@ -28,14 +28,14 @@ final class callableCapture_m {
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_foo.callableCapture_foo(((.ceylon.language.Integer)$param$0).longValue()));
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_foo_.callableCapture_foo(((.ceylon.language.Integer)$param$0).longValue()));
             }
         };
-        final boolean b = .com.redhat.ceylon.compiler.java.test.expression.invoke.higher.higher(callableCapture_bar).equals("");
+        final boolean b = .com.redhat.ceylon.compiler.java.test.expression.invoke.higher_.higher(callableCapture_bar).equals("");
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_m.callableCapture_m();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_m_.callableCapture_m();
     }
 }

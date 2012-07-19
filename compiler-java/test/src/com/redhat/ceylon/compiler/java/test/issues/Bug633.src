@@ -34,24 +34,24 @@ class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.test.issues.Bu
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.Bug633EmptyImpl();
     }
 }
-final class bug633 {
+final class bug633_ {
     
-    private bug633() {
+    private bug633_() {
     }
     
     static void bug633() {
         final .com.redhat.ceylon.compiler.java.test.issues.Bug633EmptyImpl a = new .com.redhat.ceylon.compiler.java.test.issues.Bug633EmptyImpl();
         final .com.redhat.ceylon.compiler.java.test.issues.Bug633Empty b = new .com.redhat.ceylon.compiler.java.test.issues.Bug633EmptyImpl();
         final .com.redhat.ceylon.compiler.java.test.issues.Bug633Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer> c = (.com.redhat.ceylon.compiler.java.test.issues.Bug633Ranged)new .com.redhat.ceylon.compiler.java.test.issues.Bug633EmptyImpl();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq = (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug633.bug633();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug633_.bug633();
     }
 }

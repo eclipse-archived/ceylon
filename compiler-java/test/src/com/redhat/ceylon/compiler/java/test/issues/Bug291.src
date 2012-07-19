@@ -1,19 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class run {
+final class run_ {
     
-    private run() {
+    private run_() {
     }
     
     static void run() {
         
-        final class holaMundo {
+        final class holaMundo_ {
             
-            private holaMundo() {
+            private holaMundo_() {
             }
             
             void holaMundo(final .java.lang.String name) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("hola " + name));
+                .ceylon.language.print_.print(.ceylon.language.String.instance("hola " + name));
             }
             
             final void holaMundo() {
@@ -31,9 +31,9 @@ final class run {
                 return "mundo";
             }
         }
-        final holaMundo holaMundo = new holaMundo();
+        final holaMundo_ holaMundo = new holaMundo_();
         .ceylon.language.String $arg$2;
-        if (($arg$2 = ((.ceylon.language.Iterable<? extends .ceylon.language.String>).ceylon.language.process.getProcess().getArguments()).getFirst()) != null) {
+        if (($arg$2 = ((.ceylon.language.Iterable<? extends .ceylon.language.String>).ceylon.language.process_.getProcess().getArguments()).getFirst()) != null) {
             final .java.lang.String $arg$3 = $arg$2.toString();
             holaMundo.holaMundo($arg$3);
         } else {
@@ -42,7 +42,7 @@ final class run {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.run.run();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.run_.run();
     }
 }

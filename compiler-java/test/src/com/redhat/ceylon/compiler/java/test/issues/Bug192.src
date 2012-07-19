@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug192 {
+final class bug192_ {
     
-    private bug192() {
+    private bug192_() {
     }
     
     static void bug192() {
@@ -13,21 +13,21 @@ final class bug192 {
             foo = "goodbye";
         }
         
-        final class printFoo {
+        final class printFoo_ {
             
-            private printFoo() {
+            private printFoo_() {
             }
             
             void printFoo() {
-                .ceylon.language.print.print(.ceylon.language.String.instance(foo));
+                .ceylon.language.print_.print(.ceylon.language.String.instance(foo));
             }
         }
-        final printFoo printFoo = new printFoo();
+        final printFoo_ printFoo = new printFoo_();
         printFoo.printFoo();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug192.bug192();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug192_.bug192();
     }
 }

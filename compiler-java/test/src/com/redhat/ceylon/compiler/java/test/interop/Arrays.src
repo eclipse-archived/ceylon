@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-final class testFiles {
+final class testFiles_ {
     
-    private testFiles() {
+    private testFiles_() {
     }
     
     static void testFiles() {
@@ -12,13 +12,13 @@ final class testFiles {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.testFiles.testFiles();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.testFiles_.testFiles();
     }
 }
-final class test_booleans {
+final class test_booleans_ {
     
-    private test_booleans() {
+    private test_booleans_() {
     }
     
     static void test_booleans() {
@@ -34,22 +34,22 @@ final class test_booleans {
         .java.lang.Object $elem$2;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> $b2$iter$3 = items.getIterator(); !(($elem$2 = $b2$iter$3.next()) instanceof .ceylon.language.Finished); ) {
             final boolean b2 = ((.ceylon.language.Boolean)$elem$2).booleanValue();
-            .ceylon.language.print.print(.ceylon.language.Boolean.instance(b2));
+            .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b2));
         }
         java.take_booleans((boolean[])items.toArray());
-        java.take_booleans((boolean[]).ceylon.language.$array.<.ceylon.language.Boolean>array(boolean.class, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false))).toArray());
-        java.take_booleans((boolean[])((.ceylon.language.Array<.ceylon.language.Boolean>).ceylon.language.$arrayOfSome.<.ceylon.language.Boolean>arrayOfSome(boolean.class, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false)))).toArray());
-        java.take_booleans((boolean[])((.ceylon.language.Array<.ceylon.language.Boolean>).ceylon.language.$arrayOfNone.<.ceylon.language.Boolean>arrayOfNone(boolean.class)).toArray());
+        java.take_booleans((boolean[]).ceylon.language.array_.<.ceylon.language.Boolean>array(boolean.class, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false))).toArray());
+        java.take_booleans((boolean[])((.ceylon.language.Array<.ceylon.language.Boolean>).ceylon.language.arrayOfSome_.<.ceylon.language.Boolean>arrayOfSome(boolean.class, new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false)))).toArray());
+        java.take_booleans((boolean[])((.ceylon.language.Array<.ceylon.language.Boolean>).ceylon.language.arrayOfNone_.<.ceylon.language.Boolean>arrayOfNone(boolean.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_booleans.test_booleans();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_booleans_.test_booleans();
     }
 }
-final class test_JBooleans {
+final class test_JBooleans_ {
     
-    private test_JBooleans() {
+    private test_JBooleans_() {
     }
     
     static void test_JBooleans() {
@@ -65,19 +65,19 @@ final class test_JBooleans {
         .java.lang.Object $elem$6;
         for (.ceylon.language.Iterator<? extends .java.lang.Boolean> $b2$iter$7 = items.getIterator(); !(($elem$6 = $b2$iter$7.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Boolean b2 = (.java.lang.Boolean)$elem$6;
-            .ceylon.language.print.print(b2);
+            .ceylon.language.print_.print(b2);
         }
         java.take_Booleans((.java.lang.Boolean[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JBooleans.test_JBooleans();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_JBooleans_.test_JBooleans();
     }
 }
-final class test_bytes {
+final class test_bytes_ {
     
-    private test_bytes() {
+    private test_bytes_() {
     }
     
     static void test_bytes() {
@@ -93,19 +93,19 @@ final class test_bytes {
         .java.lang.Object $elem$10;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$11 = items.getIterator(); !(($elem$10 = $n2$iter$11.next()) instanceof .ceylon.language.Finished); ) {
             final long n2 = ((.ceylon.language.Integer)$elem$10).longValue();
-            .ceylon.language.print.print(.ceylon.language.Integer.instance(n2));
+            .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_bytes((byte[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_bytes.test_bytes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_bytes_.test_bytes();
     }
 }
-final class test_JBytes {
+final class test_JBytes_ {
     
-    private test_JBytes() {
+    private test_JBytes_() {
     }
     
     static void test_JBytes() {
@@ -121,19 +121,19 @@ final class test_JBytes {
         .java.lang.Object $elem$14;
         for (.ceylon.language.Iterator<? extends .java.lang.Byte> $n2$iter$15 = items.getIterator(); !(($elem$14 = $n2$iter$15.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Byte n2 = (.java.lang.Byte)$elem$14;
-            .ceylon.language.print.print(n2);
+            .ceylon.language.print_.print(n2);
         }
         java.take_Bytes((.java.lang.Byte[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JBytes.test_JBytes();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_JBytes_.test_JBytes();
     }
 }
-final class test_shorts {
+final class test_shorts_ {
     
-    private test_shorts() {
+    private test_shorts_() {
     }
     
     static void test_shorts() {
@@ -149,19 +149,19 @@ final class test_shorts {
         .java.lang.Object $elem$18;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$19 = items.getIterator(); !(($elem$18 = $n2$iter$19.next()) instanceof .ceylon.language.Finished); ) {
             final long n2 = ((.ceylon.language.Integer)$elem$18).longValue();
-            .ceylon.language.print.print(.ceylon.language.Integer.instance(n2));
+            .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_shorts((short[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_shorts.test_shorts();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_shorts_.test_shorts();
     }
 }
-final class test_JShorts {
+final class test_JShorts_ {
     
-    private test_JShorts() {
+    private test_JShorts_() {
     }
     
     static void test_JShorts() {
@@ -177,19 +177,19 @@ final class test_JShorts {
         .java.lang.Object $elem$22;
         for (.ceylon.language.Iterator<? extends .java.lang.Short> $n2$iter$23 = items.getIterator(); !(($elem$22 = $n2$iter$23.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Short n2 = (.java.lang.Short)$elem$22;
-            .ceylon.language.print.print(n2);
+            .ceylon.language.print_.print(n2);
         }
         java.take_Shorts((.java.lang.Short[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JShorts.test_JShorts();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_JShorts_.test_JShorts();
     }
 }
-final class test_ints {
+final class test_ints_ {
     
-    private test_ints() {
+    private test_ints_() {
     }
     
     static void test_ints() {
@@ -205,19 +205,19 @@ final class test_ints {
         .java.lang.Object $elem$26;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$27 = items.getIterator(); !(($elem$26 = $n2$iter$27.next()) instanceof .ceylon.language.Finished); ) {
             final long n2 = ((.ceylon.language.Integer)$elem$26).longValue();
-            .ceylon.language.print.print(.ceylon.language.Integer.instance(n2));
+            .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_ints((int[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_ints.test_ints();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_ints_.test_ints();
     }
 }
-final class test_JIntegers {
+final class test_JIntegers_ {
     
-    private test_JIntegers() {
+    private test_JIntegers_() {
     }
     
     static void test_JIntegers() {
@@ -233,19 +233,19 @@ final class test_JIntegers {
         .java.lang.Object $elem$30;
         for (.ceylon.language.Iterator<? extends .java.lang.Integer> $n2$iter$31 = items.getIterator(); !(($elem$30 = $n2$iter$31.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Integer n2 = (.java.lang.Integer)$elem$30;
-            .ceylon.language.print.print(n2);
+            .ceylon.language.print_.print(n2);
         }
         java.take_Integers((.java.lang.Integer[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JIntegers.test_JIntegers();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_JIntegers_.test_JIntegers();
     }
 }
-final class test_longs {
+final class test_longs_ {
     
-    private test_longs() {
+    private test_longs_() {
     }
     
     static void test_longs() {
@@ -261,22 +261,22 @@ final class test_longs {
         .java.lang.Object $elem$34;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$35 = items.getIterator(); !(($elem$34 = $n2$iter$35.next()) instanceof .ceylon.language.Finished); ) {
             final long n2 = ((.ceylon.language.Integer)$elem$34).longValue();
-            .ceylon.language.print.print(.ceylon.language.Integer.instance(n2));
+            .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_longs((long[])items.toArray());
-        java.take_longs((long[]).ceylon.language.$array.<.ceylon.language.Integer>array(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L))).toArray());
-        java.take_longs((long[])((.ceylon.language.Array<.ceylon.language.Integer>).ceylon.language.$arrayOfSome.<.ceylon.language.Integer>arrayOfSome(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)))).toArray());
-        java.take_longs((long[])((.ceylon.language.Array<.ceylon.language.Integer>).ceylon.language.$arrayOfNone.<.ceylon.language.Integer>arrayOfNone(long.class)).toArray());
+        java.take_longs((long[]).ceylon.language.array_.<.ceylon.language.Integer>array(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L))).toArray());
+        java.take_longs((long[])((.ceylon.language.Array<.ceylon.language.Integer>).ceylon.language.arrayOfSome_.<.ceylon.language.Integer>arrayOfSome(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)))).toArray());
+        java.take_longs((long[])((.ceylon.language.Array<.ceylon.language.Integer>).ceylon.language.arrayOfNone_.<.ceylon.language.Integer>arrayOfNone(long.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_longs.test_longs();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_longs_.test_longs();
     }
 }
-final class test_JLongs {
+final class test_JLongs_ {
     
-    private test_JLongs() {
+    private test_JLongs_() {
     }
     
     static void test_JLongs() {
@@ -292,19 +292,19 @@ final class test_JLongs {
         .java.lang.Object $elem$38;
         for (.ceylon.language.Iterator<? extends .java.lang.Long> $n2$iter$39 = items.getIterator(); !(($elem$38 = $n2$iter$39.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Long n2 = (.java.lang.Long)$elem$38;
-            .ceylon.language.print.print(n2);
+            .ceylon.language.print_.print(n2);
         }
         java.take_Longs((.java.lang.Long[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JLongs.test_JLongs();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_JLongs_.test_JLongs();
     }
 }
-final class test_floats {
+final class test_floats_ {
     
-    private test_floats() {
+    private test_floats_() {
     }
     
     static void test_floats() {
@@ -320,19 +320,19 @@ final class test_floats {
         .java.lang.Object $elem$42;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Float> $f2$iter$43 = items.getIterator(); !(($elem$42 = $f2$iter$43.next()) instanceof .ceylon.language.Finished); ) {
             final double f2 = ((.ceylon.language.Float)$elem$42).doubleValue();
-            .ceylon.language.print.print(.ceylon.language.Float.instance(f2));
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(f2));
         }
         java.take_floats((float[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_floats.test_floats();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_floats_.test_floats();
     }
 }
-final class test_JFloats {
+final class test_JFloats_ {
     
-    private test_JFloats() {
+    private test_JFloats_() {
     }
     
     static void test_JFloats() {
@@ -348,19 +348,19 @@ final class test_JFloats {
         .java.lang.Object $elem$46;
         for (.ceylon.language.Iterator<? extends .java.lang.Float> $f2$iter$47 = items.getIterator(); !(($elem$46 = $f2$iter$47.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Float f2 = (.java.lang.Float)$elem$46;
-            .ceylon.language.print.print(f2);
+            .ceylon.language.print_.print(f2);
         }
         java.take_Floats((.java.lang.Float[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JFloats.test_JFloats();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_JFloats_.test_JFloats();
     }
 }
-final class test_doubles {
+final class test_doubles_ {
     
-    private test_doubles() {
+    private test_doubles_() {
     }
     
     static void test_doubles() {
@@ -376,22 +376,22 @@ final class test_doubles {
         .java.lang.Object $elem$50;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Float> $f2$iter$51 = items.getIterator(); !(($elem$50 = $f2$iter$51.next()) instanceof .ceylon.language.Finished); ) {
             final double f2 = ((.ceylon.language.Float)$elem$50).doubleValue();
-            .ceylon.language.print.print(.ceylon.language.Float.instance(f2));
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(f2));
         }
         java.take_doubles((double[])items.toArray());
-        java.take_doubles((double[]).ceylon.language.$array.<.ceylon.language.Float>array(double.class, new .ceylon.language.ArraySequence<.ceylon.language.Float>(.ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0))).toArray());
-        java.take_doubles((double[])((.ceylon.language.Array<.ceylon.language.Float>).ceylon.language.$arrayOfSome.<.ceylon.language.Float>arrayOfSome(double.class, new .ceylon.language.ArraySequence<.ceylon.language.Float>(.ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0)))).toArray());
-        java.take_doubles((double[])((.ceylon.language.Array<.ceylon.language.Float>).ceylon.language.$arrayOfNone.<.ceylon.language.Float>arrayOfNone(double.class)).toArray());
+        java.take_doubles((double[]).ceylon.language.array_.<.ceylon.language.Float>array(double.class, new .ceylon.language.ArraySequence<.ceylon.language.Float>(.ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0))).toArray());
+        java.take_doubles((double[])((.ceylon.language.Array<.ceylon.language.Float>).ceylon.language.arrayOfSome_.<.ceylon.language.Float>arrayOfSome(double.class, new .ceylon.language.ArraySequence<.ceylon.language.Float>(.ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0)))).toArray());
+        java.take_doubles((double[])((.ceylon.language.Array<.ceylon.language.Float>).ceylon.language.arrayOfNone_.<.ceylon.language.Float>arrayOfNone(double.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_doubles.test_doubles();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_doubles_.test_doubles();
     }
 }
-final class test_JDoubles {
+final class test_JDoubles_ {
     
-    private test_JDoubles() {
+    private test_JDoubles_() {
     }
     
     static void test_JDoubles() {
@@ -407,19 +407,19 @@ final class test_JDoubles {
         .java.lang.Object $elem$54;
         for (.ceylon.language.Iterator<? extends .java.lang.Double> $f2$iter$55 = items.getIterator(); !(($elem$54 = $f2$iter$55.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Double f2 = (.java.lang.Double)$elem$54;
-            .ceylon.language.print.print(f2);
+            .ceylon.language.print_.print(f2);
         }
         java.take_Doubles((.java.lang.Double[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JDoubles.test_JDoubles();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_JDoubles_.test_JDoubles();
     }
 }
-final class test_chars {
+final class test_chars_ {
     
-    private test_chars() {
+    private test_chars_() {
     }
     
     static void test_chars() {
@@ -435,22 +435,22 @@ final class test_chars {
         .java.lang.Object $elem$58;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Character> $c2$iter$59 = items.getIterator(); !(($elem$58 = $c2$iter$59.next()) instanceof .ceylon.language.Finished); ) {
             final int c2 = ((.ceylon.language.Character)$elem$58).intValue();
-            .ceylon.language.print.print(.ceylon.language.Character.instance(c2));
+            .ceylon.language.print_.print(.ceylon.language.Character.instance(c2));
         }
         java.take_chars((char[])items.toArray());
-        java.take_chars((char[]).ceylon.language.$array.<.ceylon.language.Character>array(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'), .ceylon.language.Character.instance('c'))).toArray());
-        java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.$arrayOfSome.<.ceylon.language.Character>arrayOfSome(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'), .ceylon.language.Character.instance('c')))).toArray());
-        java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.$arrayOfNone.<.ceylon.language.Character>arrayOfNone(int.class)).toArray());
+        java.take_chars((char[]).ceylon.language.array_.<.ceylon.language.Character>array(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'), .ceylon.language.Character.instance('c'))).toArray());
+        java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.arrayOfSome_.<.ceylon.language.Character>arrayOfSome(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'), .ceylon.language.Character.instance('c')))).toArray());
+        java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.arrayOfNone_.<.ceylon.language.Character>arrayOfNone(int.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_chars.test_chars();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_chars_.test_chars();
     }
 }
-final class test_JCharacters {
+final class test_JCharacters_ {
     
-    private test_JCharacters() {
+    private test_JCharacters_() {
     }
     
     static void test_JCharacters() {
@@ -466,19 +466,19 @@ final class test_JCharacters {
         .java.lang.Object $elem$62;
         for (.ceylon.language.Iterator<? extends .java.lang.Character> $c2$iter$63 = items.getIterator(); !(($elem$62 = $c2$iter$63.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Character c2 = (.java.lang.Character)$elem$62;
-            .ceylon.language.print.print(c2);
+            .ceylon.language.print_.print(c2);
         }
         java.take_Characters((.java.lang.Character[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_JCharacters.test_JCharacters();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_JCharacters_.test_JCharacters();
     }
 }
-final class test_Strings {
+final class test_Strings_ {
     
-    private test_Strings() {
+    private test_Strings_() {
     }
     
     static void test_Strings() {
@@ -494,22 +494,22 @@ final class test_Strings {
         .java.lang.Object $elem$66;
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s2$iter$67 = items.getIterator(); !(($elem$66 = $s2$iter$67.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.String s2 = ((.ceylon.language.String)$elem$66).toString();
-            .ceylon.language.print.print(.ceylon.language.String.instance(s2));
+            .ceylon.language.print_.print(.ceylon.language.String.instance(s2));
         }
         java.take_Strings((.java.lang.String[])items.toArray());
-        java.take_Strings((.java.lang.String[]).ceylon.language.$array.<.ceylon.language.String>array(.java.lang.String.class, new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies"))).toArray());
-        java.take_Strings((.java.lang.String[])((.ceylon.language.Array<.ceylon.language.String>).ceylon.language.$arrayOfSome.<.ceylon.language.String>arrayOfSome(.java.lang.String.class, new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")))).toArray());
-        java.take_Strings((.java.lang.String[])((.ceylon.language.Array<.ceylon.language.String>).ceylon.language.$arrayOfNone.<.ceylon.language.String>arrayOfNone(.java.lang.String.class)).toArray());
+        java.take_Strings((.java.lang.String[]).ceylon.language.array_.<.ceylon.language.String>array(.java.lang.String.class, new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies"))).toArray());
+        java.take_Strings((.java.lang.String[])((.ceylon.language.Array<.ceylon.language.String>).ceylon.language.arrayOfSome_.<.ceylon.language.String>arrayOfSome(.java.lang.String.class, new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")))).toArray());
+        java.take_Strings((.java.lang.String[])((.ceylon.language.Array<.ceylon.language.String>).ceylon.language.arrayOfNone_.<.ceylon.language.String>arrayOfNone(.java.lang.String.class)).toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_Strings.test_Strings();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_Strings_.test_Strings();
     }
 }
-final class test_Objects {
+final class test_Objects_ {
     
-    private test_Objects() {
+    private test_Objects_() {
     }
     
     static void test_Objects() {
@@ -524,13 +524,13 @@ final class test_Objects {
         .java.lang.Object $elem$70;
         for (.ceylon.language.Iterator<? extends .java.lang.Object> $o2$iter$71 = items.getIterator(); !(($elem$70 = $o2$iter$71.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object o2 = (.java.lang.Object)$elem$70;
-            .ceylon.language.print.print(o2);
+            .ceylon.language.print_.print(o2);
         }
         java.take_Objects((.java.lang.Object[])items.toArray());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.interop.test_Objects.test_Objects();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.test_Objects_.test_Objects();
     }
 }

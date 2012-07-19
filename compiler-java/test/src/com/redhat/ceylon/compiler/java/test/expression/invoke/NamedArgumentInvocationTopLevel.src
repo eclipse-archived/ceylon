@@ -1,23 +1,23 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public final class namedArgumentInvocationTopLevelF {
+public final class namedArgumentInvocationTopLevelF_ {
     
-    private namedArgumentInvocationTopLevelF() {
+    private namedArgumentInvocationTopLevelF_() {
     }
     
     public static long namedArgumentInvocationTopLevelF(final long n, final .java.lang.String s) {
         return n;
     }
 }
-public final class namedArgumentInvocationTopLevelV {
+public final class namedArgumentInvocationTopLevelV_ {
     
-    private namedArgumentInvocationTopLevelV() {
+    private namedArgumentInvocationTopLevelV_() {
     }
     
     public static void namedArgumentInvocationTopLevelV(final long n, final .java.lang.String s) {
     }
 }
-final class namedArgumentInvocationTopLevelX {
+final class namedArgumentInvocationTopLevelX_ {
     private static final long[] value;
     static {
         value = new long[]{(
@@ -26,7 +26,7 @@ final class namedArgumentInvocationTopLevelX {
                 .java.lang.String $arg$0$1 = "abc";
                 long $arg$0$0 = 123L;
             }
-            returning .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelF.namedArgumentInvocationTopLevelF($arg$0$0, $arg$0$1);
+            returning .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelF_.namedArgumentInvocationTopLevelF($arg$0$0, $arg$0$1);
         )};
     }
     
@@ -38,10 +38,10 @@ final class namedArgumentInvocationTopLevelX {
         }
     }
     
-    private namedArgumentInvocationTopLevelX() {
+    private namedArgumentInvocationTopLevelX_() {
     }
 }
-final class namedArgumentInvocationTopLevelY {
+final class namedArgumentInvocationTopLevelY_ {
     private static final .java.lang.Object[] value;
     static {
         value = new .java.lang.Object[]{(
@@ -52,7 +52,7 @@ final class namedArgumentInvocationTopLevelY {
                     {
                         .java.lang.String $arg$1$1 = "abc";
                         long $arg$1$0 = 123L;
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelV.namedArgumentInvocationTopLevelV($arg$1$0, $arg$1$1);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelV_.namedArgumentInvocationTopLevelV($arg$1$0, $arg$1$1);
                     }
                     returning null;
                 );
@@ -69,6 +69,6 @@ final class namedArgumentInvocationTopLevelY {
         }
     }
     
-    private namedArgumentInvocationTopLevelY() {
+    private namedArgumentInvocationTopLevelY_() {
     }
 }

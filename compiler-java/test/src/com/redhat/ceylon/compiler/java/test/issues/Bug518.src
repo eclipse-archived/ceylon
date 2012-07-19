@@ -1,18 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-final class bug518 {
+final class bug518_ {
     
-    private bug518() {
+    private bug518_() {
     }
     
     static void bug518() {
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> sp = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Iterable<? extends .ceylon.language.Integer>>)(.ceylon.language.Ranged)new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L))).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> sp2 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Iterable<? extends .ceylon.language.Integer>>)(.ceylon.language.Ranged)new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L))).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
-        final .ceylon.language.Empty e1 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Empty>)(.ceylon.language.Ranged).ceylon.language.$empty.getEmpty()).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(0L));
+        final .ceylon.language.Empty e1 = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Empty>)(.ceylon.language.Ranged).ceylon.language.empty_.getEmpty()).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(0L));
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug518.bug518();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug518_.bug518();
     }
 }

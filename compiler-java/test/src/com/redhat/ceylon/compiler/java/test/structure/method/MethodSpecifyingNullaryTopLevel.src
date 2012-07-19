@@ -1,29 +1,29 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-final class f {
+final class f_ {
     
-    private f() {
+    private f_() {
     }
     
     static void f() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.method.f_.f();
     }
 }
 class MethodSpecifierTopLevel {
     
     private final void foo() {
-        .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
+        .com.redhat.ceylon.compiler.java.test.structure.method.f_.f();
     }
     
     MethodSpecifierTopLevel() {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel();
     }
 }
