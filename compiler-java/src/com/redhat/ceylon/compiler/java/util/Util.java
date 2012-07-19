@@ -339,4 +339,8 @@ public class Util {
         }
         return name;
     }
+
+    public static boolean isInitialLowerCase(String name) {
+        return !name.isEmpty() && Character.isLowerCase(name.charAt(0));
+    }
 }
