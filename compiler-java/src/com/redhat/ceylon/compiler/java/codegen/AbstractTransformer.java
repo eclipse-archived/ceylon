@@ -385,11 +385,11 @@ public abstract class AbstractTransformer implements Transformation {
      */
 
     boolean isBooleanTrue(Declaration decl) {
-        return decl == loader().getDeclaration("ceylon.language.$true", DeclarationType.VALUE);
+        return decl == loader().getDeclaration("ceylon.language.true", DeclarationType.VALUE);
     }
     
     boolean isBooleanFalse(Declaration decl) {
-        return decl == loader().getDeclaration("ceylon.language.$false", DeclarationType.VALUE);
+        return decl == loader().getDeclaration("ceylon.language.false", DeclarationType.VALUE);
     }
     
     /**
