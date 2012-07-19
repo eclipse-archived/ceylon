@@ -122,8 +122,13 @@ public class Repositories {
     }
     
     public File getUserRepoDir() {
-        File userDir = config.getUserDir();
-        return new File(userDir, "repo");
+        String ceylonUserRepo = System.getProperty("ceylon.user.repo");
+        if (ceylonUserRepo != null) {
+            return new File(ceylonUserRepo);
+        } else {
+            File userDir = config.getUserDir();
+            return new File(userDir, "repo");
+        }
     }
     
     public Repository getBootstrapRepository() {

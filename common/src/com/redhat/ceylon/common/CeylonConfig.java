@@ -182,7 +182,12 @@ public class CeylonConfig {
     }
     
     public File getUserDir() {
-        String userHome = System.getProperty("user.home");
-        return new File(userHome, ".ceylon");
+        String ceylonUserDir = System.getProperty("ceylon.user.dir");
+        if (ceylonUserDir != null) {
+            return new File(ceylonUserDir);
+        } else {
+            String userHome = System.getProperty("user.home");
+            return new File(userHome, ".ceylon");
+        }
     }
 }
