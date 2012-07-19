@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -332,10 +333,18 @@ public class Util {
     }
     
     public static String getMirrorName(AnnotatedMirror mirror) {
-        String name = strip(mirror.getName()); // FIXME The strip() really should't be necessary
+        String name;
         AnnotationMirror annot = mirror.getAnnotation(AbstractModelLoader.CEYLON_NAME_ANNOTATION);
         if (annot != null) {
             name = (String)annot.getValue();
+        } else {
+            name = mirror.getName();
+            if (mirror instanceof ClassMirror
+                    && Util.isInitialLowerCase(name)
+                    && name.endsWith("_")
+                    && mirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null) {
+                name = name.substring(0, name.length()-1);
+            }
         }
         return name;
     }
