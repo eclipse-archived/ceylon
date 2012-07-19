@@ -28,11 +28,13 @@ import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 
 public class ReflectionType implements TypeMirror {
@@ -54,7 +56,39 @@ public class ReflectionType implements TypeMirror {
         }
         if(type instanceof TypeVariable)
             return ((TypeVariable<?>)type).getName();
-        return ((Class<?>)type).getName();
+        Class<?> klass = (Class<?>)type;
+        StringBuilder sb = new StringBuilder();
+        if (klass.getEnclosingClass() == null) {
+            sb.append(unquoteLastPart(klass.getName()));
+        } else {
+            LinkedList<Class<?>> outers = new LinkedList<>();
+            Class<?> outer = klass.getEnclosingClass();
+            while (outer != null) {
+                outers.push(outer);
+                outer = outer.getEnclosingClass();
+            }
+            sb.append(unquoteLastPart(outers.pop().getName()));
+            for (Class<?> o : outers) {
+                sb.append('.').append(unquote(o.getSimpleName()));
+            }
+            sb.append('.').append(unquote(klass.getSimpleName()));
+        }
+        return sb.toString();
+    }
+    
+    private String unquote(String s) {
+        if (Util.isInitialLowerCase(s) && s.charAt(s.length()-1) == '_') {
+            return s.substring(0, s.length()-1);
+        }
+        return s;
+    }
+    
+    private String unquoteLastPart(String s) {
+        int index = s.lastIndexOf('.');
+        if (index != -1) {
+            return s.substring(0, index) + '.' + unquote(s.substring(index+1));
+        }
+        return s;
     }
 
     @Override
