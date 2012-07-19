@@ -6,7 +6,6 @@ import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 
 @Ignore
 @Ceylon(major = 2)
@@ -151,19 +150,14 @@ class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
         return Iterable$impl._getSequence(this); 
     }
 
-    @Override @Ignore public <Other>Array withLeading() { return this; }
-    @Override @Ignore public <Other>Array withTrailing() { return this; }
-    @Override @Ignore public <Other>Array withLeading$elements() { return this; }
-    @Override @Ignore public <Other>Array withTrailing$elements() { return this; }
-
-    @Override
+    @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
-    public <Other> List withLeading(@Sequenced Iterable<? extends Other> elems) {
-        return List$impl._withLeading(this, elems);
+    public <Other> Sequence withLeading(Other e) {
+        return List$impl._withLeading(this, e);
     }
-    @Override
+    @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
-    public <Other> List withTrailing(@Sequenced Iterable<? extends Other> elems) {
-        return List$impl._withTrailing(this, elems);
+    public <Other> Sequence withTrailing(Other e) {
+        return List$impl._withTrailing(this, e);
     }
 }

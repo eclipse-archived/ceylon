@@ -315,18 +315,17 @@ public interface Correspondence<Key,Item> {
         public Iterable<? extends Entry<? extends Integer, ? extends Item>> getIndexed() {
             return Iterable$impl._getIndexed(this);
         }
+        @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
             return Iterable$impl._chain(this, other);
         }
-        @Override @Ignore public <Other>Sequence withLeading() { return this; }
-        @Override @Ignore public <Other>Sequence withTrailing() { return this; }
-        @Override @Ignore public <Other>List withLeading$elements() { return this; }
-        @Override @Ignore public <Other>List withTrailing$elements() { return this; }
-        @Override @Ignore public <Other>Sequence withLeading(Iterable<? extends Other> elems) {
-            return Sequence$impl._withLeading(this, elems);
+        @SuppressWarnings("rawtypes")
+        @Override @Ignore public <Other>Sequence withLeading(Other e) {
+            return List$impl._withLeading(this, e);
         }
-        @Override @Ignore public <Other>Sequence withTrailing(Iterable<? extends Other> elems) {
-            return Sequence$impl._withTrailing(this, elems);
+        @SuppressWarnings("rawtypes")
+        @Override @Ignore public <Other>Sequence withTrailing(Other e) {
+            return List$impl._withTrailing(this, e);
         }
     }
 }

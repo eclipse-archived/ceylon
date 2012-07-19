@@ -72,28 +72,4 @@ public interface Sequence<Element>
             @TypeInfo("ceylon.language.Callable<Result,Element>")
             Callable<? extends Result> collecting);
 
-    @SuppressWarnings("rawtypes")
-    @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.Sequence<Element|Other>")
-    public <Other> Sequence withLeading(@Name("elements")
-            @TypeInfo("ceylon.language.Iterable<Other>")
-            @Sequenced Iterable<? extends Other> elements);
-
-    @SuppressWarnings("rawtypes")
-    @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.Sequence<Element|Other>")
-    public <Other> Sequence withTrailing(@Name("elements")
-            @TypeInfo("ceylon.language.Iterable<Other>")
-            @Sequenced Iterable<? extends Other> elements);
-
-    @SuppressWarnings("rawtypes")
-    @Ignore public <Other>Sequence withLeading();
-    @SuppressWarnings("rawtypes")
-    @Ignore public <Other>Sequence withTrailing();
-
-    @Ignore public <Other>Iterable<? extends Other> withLeading$elements();
-    @Ignore public <Other>Iterable<? extends Other> withTrailing$elements();
-
 }

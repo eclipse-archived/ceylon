@@ -198,12 +198,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return Correspondence$impl._definesEvery(this, keys);
     }
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
         return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Integer> definesEvery$keys() {
         return (Iterable)$empty.getEmpty();
     }
@@ -216,12 +216,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return Correspondence$impl._definesAny(this, keys);
     }
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Integer> definesAny$keys() {
         return (Iterable)$empty.getEmpty();
     }
@@ -235,13 +235,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public ceylon.language.List<? extends Element> items() {
         return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
 
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Integer> items$keys() {
         return (Iterable)$empty.getEmpty();
     }
@@ -488,28 +488,24 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
     }
 
-    @Override @Ignore public <Other>Range withLeading() { return this; }
-    @Override @Ignore public <Other>Range withTrailing() { return this; }
-    @Override @Ignore public <Other>Range withLeading$elements() { return this; }
-    @Override @Ignore public <Other>Range withTrailing$elements() { return this; }
-
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language.Sequence<Element|Other>")
-    @Override
-    public <Other>Sequence withLeading(@Sequenced Iterable<? extends Other> elems) {
-        return Sequence$impl._withLeading(this, elems);
+    @Override @SuppressWarnings("rawtypes")
+    public <Other>Sequence withLeading(Other e) {
+        return List$impl._withLeading(this, e);
     }
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language.Sequence<Element|Other>")
-    @Override
-    public <Other>Sequence withTrailing(@Sequenced Iterable<? extends Other> elems) {
-        return Sequence$impl._withTrailing(this, elems);
+    @Override @SuppressWarnings("rawtypes")
+    public <Other>Sequence withTrailing(Other e) {
+        return List$impl._withTrailing(this, e);
     }
 
 }

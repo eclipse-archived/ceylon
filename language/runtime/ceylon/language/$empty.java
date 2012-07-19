@@ -217,18 +217,15 @@ public class $empty {
         @Override @Ignore public Empty getCoalesced() { return this; }
         @SuppressWarnings({"rawtypes", "unchecked"})
         @Override @Ignore public Iterable getIndexed() { return this; }
+        @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
-        @Override @Ignore public Empty withLeading() { return this; }
-        @Override @Ignore public Empty withTrailing() { return this; }
-        @Override @Ignore public Empty withLeading$elements() { return this; }
-        @Override @Ignore public Empty withTrailing$elements() { return this; }
-        @SuppressWarnings("rawtypes")
-        @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elems) {
-            return (List)elems.getSequence();
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        @Override @Ignore public <Other>Sequence withLeading(Other e) {
+            return new ArraySequence<Other>(e);
         }
-        @SuppressWarnings("rawtypes")
-        @Override @Ignore public <Other>List withTrailing(Iterable<? extends Other> elems) {
-            return (List)elems.getSequence();
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        @Override @Ignore public <Other>Sequence withTrailing(Other e) {
+            return new ArraySequence<Other>(e);
         }
     };
     

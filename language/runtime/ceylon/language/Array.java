@@ -132,8 +132,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         }
     }
 
-    @SuppressWarnings("unchecked")
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public static <T> Array<T> instance(java.lang.Class typeClass, Iterable<? extends T> elements) {
         if (typeClass == null) {
             typeClass = java.lang.Object.class;
@@ -161,8 +160,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         }
     }
 
-    @SuppressWarnings("unchecked")
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public static <T> Array<T> instance(java.lang.Class typeClass, int size, T element) {
         if (typeClass == null) {
             typeClass = java.lang.Object.class;
@@ -442,11 +440,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
         return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable definesEvery$keys() {
         return $empty.getEmpty();
     }
@@ -458,11 +456,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable definesAny$keys() {
         return $empty.getEmpty();
     }
@@ -475,12 +473,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         return Correspondence$impl._items(this, keys);
     }
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> items() {
         return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Integer> items$keys() {
         return (Iterable)$empty.getEmpty();
     }
@@ -649,6 +647,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
     }

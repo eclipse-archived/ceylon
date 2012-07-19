@@ -21,12 +21,11 @@ public final class append {
     final Iterable<? extends Element> sequence,
     @Name("element")
     Element element) {
-    	ArraySequence<Element> as = new ArraySequence<Element>(element);
         if (sequence.getEmpty()) {
-        	return as;
+        	return new ArraySequence<Element>(element);
         }
         else {
-        	return ((Sequence<Element>) sequence).withTrailing(as);
+        	return ((Sequence<Element>) sequence).withTrailing(element);
         }
     }
 }

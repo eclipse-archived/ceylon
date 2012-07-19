@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
@@ -290,12 +288,14 @@ public final class Iterable$impl<Element> {
         };
     }
 
+    @SuppressWarnings("rawtypes")
     public <Other> Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain($this, other);
     }
+    @SuppressWarnings("rawtypes")
     public static <Element,Other> Iterable _chain(final Iterable<? extends Element> one, final Iterable<? extends Other> two) {
         return new AbstractIterable() {
-            @Override
+            @Override @SuppressWarnings("unchecked")
             @TypeInfo("ceylon.language.Iterator<Element|Other>")
             public Iterator getIterator() {
                 return new ChainedIterator(one, two);
@@ -414,6 +414,7 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public Iterable<? extends Entry<? extends Integer, ? extends Result>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    @SuppressWarnings("rawtypes")
     public <Other> Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
     }
@@ -527,6 +528,8 @@ class FilterIterable<Element> implements Iterable<Element> {
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    @Override @Ignore
+    @SuppressWarnings("rawtypes")
     public <Other> Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
     }

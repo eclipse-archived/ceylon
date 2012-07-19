@@ -83,26 +83,4 @@ public interface Empty
     public boolean defines(@Name("key") @TypeInfo("ceylon.language.Integer")
     Integer key);
 
-    @Annotations({@Annotation("actual")})
-    @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Other>")
-    public <Other> List withLeading(@Name("elements")
-            @TypeInfo("ceylon.language.Iterable<Other>")
-            @Sequenced Iterable<? extends Other> elements);
-
-    @Annotations({@Annotation("actual")})
-    @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Other>")
-    public <Other> List withTrailing(@Name("elements")
-            @TypeInfo("ceylon.language.Iterable<Other>")
-            @Sequenced Iterable<? extends Other> elements);
-
-    @SuppressWarnings("rawtypes")
-    @Ignore public <Other>List withLeading();
-    @SuppressWarnings("rawtypes")
-    @Ignore public <Other>List withTrailing();
-
-    @Ignore public <Other>Iterable<? extends Other> withLeading$elements();
-    @Ignore public <Other>Iterable<? extends Other> withTrailing$elements();
-
 }

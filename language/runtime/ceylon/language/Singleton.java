@@ -270,8 +270,7 @@ public class Singleton<Element>
     }
     @Override
     @TypeInfo("ceylon.language.Sequence<Result>")
-    @SuppressWarnings("unchecked")
-    public <Result> Sequence<Result> map(@Name("selecting")
+    public <Result> Sequence<? extends Result> map(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<Result,Element>")
             Callable<? extends Result> selecting) {
         return new Singleton<Result>(selecting.$call(element));
@@ -286,8 +285,7 @@ public class Singleton<Element>
     }
     @Override
     @TypeInfo("ceylon.language.Sequence<Result>")
-    @SuppressWarnings("unchecked")
-    public <Result> Sequence<Result> collect(@Name("selecting")
+    public <Result> Sequence<? extends Result> collect(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<Result,Element>")
             Callable<? extends Result> selecting) {
         return new Singleton<Result>(selecting.$call(element));
@@ -342,34 +340,24 @@ public class Singleton<Element>
     public Singleton<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return new Singleton<Entry<? extends Integer, ? extends Element>>(new Entry<Integer, Element>(Integer.instance(0), element));
     }
+    @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
     }
 
-    @Override @Ignore public <Other>Singleton withLeading() { return this; }
-    @Override @Ignore public <Other>Singleton withTrailing() { return this; }
-    @Override @Ignore public <Other>Singleton withLeading$elements() { return this; }
-    @Override @Ignore public <Other>Singleton withTrailing$elements() { return this; }
-
+    @Override @SuppressWarnings("rawtypes")
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language.Sequence<Element|Other>")
-    @Override
-    public <Other>Sequence withLeading(@Sequenced Iterable<? extends Other> elems) {
-        SequenceBuilder sb = new SequenceBuilder();
-        sb.appendAll(elems);
-        sb.append(element);
-        return (Sequence)sb.getSequence();
+    public <Other>Sequence withLeading(Other elem) {
+        return List$impl._withLeading(this, elem);
     }
-    @Override
+    @Override @SuppressWarnings("rawtypes")
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
     @TypeInfo("ceylon.language.Sequence<Element|Other>")
-    public <Other>Sequence withTrailing(@Sequenced Iterable<? extends Other> elems) {
-        SequenceBuilder sb = new SequenceBuilder();
-        sb.append(element);
-        sb.appendAll(elems);
-        return (Sequence)sb.getSequence();
+    public <Other>Sequence withTrailing(Other elem) {
+        return List$impl._withTrailing(this, elem);
     }
 
 }

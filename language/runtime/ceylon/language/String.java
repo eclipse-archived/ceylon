@@ -1130,21 +1130,21 @@ public abstract class String
         return instance(value);
     }
 
-    @Ignore
-    public static <Other>List withLeading(java.lang.String value, Iterable<? extends Other> elements) {
+    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static <Other>Sequence withLeading(java.lang.String value, Other e) {
         if (value.isEmpty()) {
-            return $array.array(elements);
+            return new ArraySequence(e);
         } else {
-            return List$impl._withLeading(instance(value), elements);
+            return List$impl._withLeading(instance(value), e);
         }
     }
 
-    @Ignore
-    public static <Other>List withTrailing(java.lang.String value, Iterable<? extends Other> elements) {
+    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static <Other>Sequence withTrailing(java.lang.String value, Other e) {
         if (value.isEmpty()) {
-            return $array.array(elements);
+            return new ArraySequence(e);
         } else {
-            return List$impl._withTrailing(instance(value), elements);
+            return List$impl._withTrailing(instance(value), e);
         }
     }
 

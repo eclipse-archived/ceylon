@@ -59,7 +59,7 @@ class StringOfNone extends String implements None<Character> {
     public Iterable<? extends Character> filter(Callable<? extends Boolean> f) {
         return this;
     }
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override @Ignore
     public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
         return (Iterable)$empty.getEmpty();
@@ -98,18 +98,17 @@ class StringOfNone extends String implements None<Character> {
         return 0;
     }
     @Override @Ignore
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed() { return (Iterable)this; }
+    @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
 
-    @Override @Ignore public <Other>String withLeading() { return this; }
-    @Override @Ignore public <Other>String withTrailing() { return this; }
-    @Ignore @Override public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)this; }
-    @Ignore @Override public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)this; }
-
-    @Override @Ignore public <Other>List withLeading(Iterable<? extends Other> elements) {
-        return $array.array(elements);
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore public <Other>Sequence withLeading(Other e) {
+        return List$impl._withLeading(this, e);
     }
-    @Override @Ignore public <Other>List withTrailing(Iterable<? extends Other> elements) {
-        return $array.array(elements);
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore public <Other>Sequence withTrailing(Other e) {
+        return List$impl._withTrailing(this, e);
     }
 }

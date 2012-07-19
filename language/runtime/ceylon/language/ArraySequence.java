@@ -176,12 +176,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesEvery() {
         return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
     }
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Integer> definesEvery$keys() {
         return (Iterable)$empty.getEmpty();
     }
@@ -193,12 +193,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean definesAny() {
         return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
     }
 
-    @Override
+    @Override @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Integer> definesAny$keys() {
         return (Iterable)$empty.getEmpty();
     }
@@ -210,11 +210,11 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    @Ignore
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
     public ceylon.language.List<? extends Element> items() {
         return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
     }
-    @Override
+    @Override @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Integer> items$keys() {
         return (Iterable)$empty.getEmpty();
     }
@@ -360,6 +360,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
+    @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
     }
@@ -370,27 +371,16 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return $empty.getEmpty();
     }
 
-    @Override @Ignore public <Other>ArraySequence withLeading() { return this; }
-    @Override @Ignore public <Other>ArraySequence withTrailing() { return this; }
-    @Override @Ignore public <Other>ArraySequence withLeading$elements() { return this; }
-    @Override @Ignore public <Other>ArraySequence withTrailing$elements() { return this; }
-
     @Override
     @Annotations({ @Annotation("actual") })
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <Other>Sequence withLeading(Iterable<? extends Other> elems) {
-        SequenceBuilder sb = new SequenceBuilder();
-        sb.appendAll(elems);
-        sb.appendAll(this);
-        return (Sequence)sb.getSequence();
+    @SuppressWarnings("rawtypes")
+    public <Other>Sequence withLeading(Other e) {
+        return List$impl._withLeading(this, e);
     }
     @Override
     @Annotations({ @Annotation("actual") })
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <Other>Sequence withTrailing(Iterable<? extends Other> elems) {
-        SequenceBuilder sb = new SequenceBuilder();
-        sb.appendAll(this);
-        sb.appendAll(elems);
-        return (Sequence)sb.getSequence();
+    @SuppressWarnings("rawtypes")
+    public <Other>Sequence withTrailing(Other e) {
+        return List$impl._withTrailing(this, e);
     }
 }

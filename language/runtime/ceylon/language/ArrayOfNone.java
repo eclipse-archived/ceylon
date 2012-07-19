@@ -67,20 +67,16 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     @Override @Ignore public Iterable<? extends Element> getCoalesced() { return this; }
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() { return (Iterable)this; }
+    @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
 
-    @Override @Ignore public <Other>Array withLeading() { return this; }
-    @Override @Ignore public <Other>Array withTrailing() { return this; }
-    @Override @Ignore public <Other>Array withLeading$elements() { return this; }
-    @Override @Ignore public <Other>Array withTrailing$elements() { return this; }
-
-    @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Array withLeading(Iterable<? extends Other> elements) {
-        return $array.array(elements);
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override @Ignore public <Other>Sequence withLeading(Other e) {
+        return new ArraySequence<Other>(e);
     }
-    @SuppressWarnings("rawtypes")
-    @Override @Ignore public <Other>Array withTrailing(Iterable<? extends Other> elements) {
-        return $array.array(elements);
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override @Ignore public <Other>Sequence withTrailing(Other e) {
+        return new ArraySequence<Other>(e);
     }
 
 }

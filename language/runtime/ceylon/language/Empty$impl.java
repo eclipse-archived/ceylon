@@ -102,29 +102,21 @@ public final class Empty$impl {
         return null;
     }
 
-    public <Other>Empty withLeading() { return $this; }
-    public <Other>Empty withTrailing() { return $this; }
-
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public <Other>Iterable<? extends Other> withLeading$elements() { return (Iterable)$this; }
+    public <Other> Sequence withLeading(Other e) {
+        return new ArraySequence<Other>(e);
+    }
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public <Other>Iterable<? extends Other> withTrailing$elements() { return (Iterable)$this; }
-
-    @SuppressWarnings("rawtypes")
-    public <Other> List withLeading(Iterable<? extends Other> elements) {
-        return List$impl._withLeading($this, elements);
+    public static <Element,Other> Sequence _withLeading(Empty orig, Other e) {
+        return new ArraySequence<Other>(e);
     }
-    @SuppressWarnings("rawtypes")
-    public static <Element,Other> List _withLeading(Empty orig, Iterable<? extends Other> elems) {
-        return (List) elems.getSequence();
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <Other> Sequence withTrailing(Other e) {
+        return new ArraySequence<Other>(e);
     }
-    @SuppressWarnings("rawtypes")
-    public <Other> List withTrailing(Iterable<? extends Other> elements) {
-        return List$impl._withTrailing($this, elements);
-    }
-    @SuppressWarnings("rawtypes")
-    public static <Element,Other> List _withTrailing(Empty orig, Iterable<? extends Other> elems) {
-        return (List) elems.getSequence();
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static <Element,Other> Sequence _withTrailing(Empty orig, Other e) {
+        return new ArraySequence<Other>(e);
     }
 
 }
