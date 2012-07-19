@@ -30,6 +30,30 @@ public class RepositoriesTest {
         Assert.assertTrue(testRepository(repos.getRepository("Two"), "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
     }
     
+    @Test
+    public void testGetBootstrapRepository() {
+        Assert.assertTrue(testRepository(repos.getBootstrapRepository(), "One", "foobar", null, null));
+    }
+    
+    @Test
+    public void testGetOutputRepository() {
+        Assert.assertTrue(testRepository(repos.getOutputRepository(), "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
+    }
+    
+    @Test
+    public void testGetCacheRepository() {
+        Assert.assertTrue(testRepository(repos.getCacheRepository(), "Three", "foobar", null, null));
+    }
+    
+    @Test
+    public void testGetLookupRepositories() {
+        Repository[] lookup = repos.getLookupRepositories();
+        Assert.assertTrue(lookup.length == 3);
+        Assert.assertTrue(testRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
+        Assert.assertTrue(testRepository(lookup[1], "Three", "foobar", null, null));
+        Assert.assertTrue(testRepository(lookup[2], "Four", "foobar", null, null));
+    }
+    
     private boolean testRepository(Repository repo, String name, String url, String user, String password) {
         return (repo != null)
                 && repo.getName().equals(name)
