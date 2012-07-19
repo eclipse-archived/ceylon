@@ -786,9 +786,6 @@ public class Naming implements LocalId {
         return getCompanionClassName(def).replace('.', '$');
     }
     public JCExpression makeLanguageValue(String string) {
-        if ("empty".equals(string)) {
-            string = "$empty"; // a little hack for now
-        }
         return makeFQIdent("ceylon", "language", quoteClassName(string), getGetterName(string));
     }
     
