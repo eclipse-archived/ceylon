@@ -132,7 +132,10 @@ public class Naming implements LocalId {
         return getGetterName(property);
     }
 
-    public static String strip(String str){
+    /**
+     * Removes any leading $ from the given string.
+     */
+    public static String stripLeadingDollar(String str){
         return (str.charAt(0) == '$') ? str.substring(1) : str;
     }
 
@@ -141,11 +144,11 @@ public class Naming implements LocalId {
     }
     
     public static String getGetterName(String property) {
-        return "get"+capitalize(strip(property));
+        return "get"+capitalize(stripLeadingDollar(property));
     }
 
     public static String getSetterName(String property){
-        return "set"+capitalize(strip(property));
+        return "set"+capitalize(stripLeadingDollar(property));
     }
     
     /**

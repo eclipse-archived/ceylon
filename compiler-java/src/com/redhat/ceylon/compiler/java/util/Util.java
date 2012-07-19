@@ -106,7 +106,7 @@ public class Util {
     }
 
     public static String strip(String str){
-        return Naming.strip(str);
+        return Naming.stripLeadingDollar(str);
     }
 
     public static String capitalize(String str){
