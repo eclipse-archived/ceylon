@@ -17,11 +17,18 @@ public class RepositoriesTest {
 
     CeylonConfig testConfig;
     Repositories repos;
+    Repositories defaultRepos;
     
     @Before
     public void setup() throws IOException {
         testConfig = ConfigParser.loadConfigFromFile(new File("test-src/com/redhat/ceylon/common/test/repos.config"));
+        if (testConfig.getInstallDir() == null) {
+            // Set a fake installation folder
+            System.setProperty("ceylon.home", "fake-install-dir");
+        }
         repos = Repositories.withConfig(testConfig);
+        CeylonConfig fakeConfig = new CeylonConfig();
+        defaultRepos = Repositories.withConfig(fakeConfig);
     }
     
     @Test
@@ -36,13 +43,30 @@ public class RepositoriesTest {
     }
     
     @Test
+    public void testGetDeafultBootstrapRepository() {
+        File dir = new File(testConfig.getInstallDir(), "repo");
+        Assert.assertTrue(testRepository(defaultRepos.getBootstrapRepository(), "bootstrap", dir.getAbsolutePath(), null, null));
+    }
+    
+    @Test
     public void testGetOutputRepository() {
         Assert.assertTrue(testRepository(repos.getOutputRepository(), "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
     }
     
     @Test
+    public void testGetDefaultOutputRepository() {
+        Assert.assertTrue(testRepository(defaultRepos.getOutputRepository(), "output", "./modules", null, null));
+    }
+    
+    @Test
     public void testGetCacheRepository() {
         Assert.assertTrue(testRepository(repos.getCacheRepository(), "Three", "foobar", null, null));
+    }
+    
+    @Test
+    public void testGetDefaultCacheRepository() {
+        File dir = defaultRepos.getUserRepoDir();
+        Assert.assertTrue(testRepository(defaultRepos.getCacheRepository(), "cache", dir.getAbsolutePath(), null, null));
     }
     
     @Test
@@ -52,6 +76,16 @@ public class RepositoriesTest {
         Assert.assertTrue(testRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
         Assert.assertTrue(testRepository(lookup[1], "Three", "foobar", null, null));
         Assert.assertTrue(testRepository(lookup[2], "Four", "foobar", null, null));
+    }
+    
+    @Test
+    public void testGetDefaultLookupRepositories() {
+        Repository[] lookup = defaultRepos.getLookupRepositories();
+        Assert.assertTrue(lookup.length == 3);
+        Assert.assertTrue(testRepository(lookup[0], "lookup1", "./modules", null, null));
+        File userDir = defaultRepos.getUserRepoDir();
+        Assert.assertTrue(testRepository(lookup[1], "lookup2", userDir.getAbsolutePath(), null, null));
+        Assert.assertTrue(testRepository(lookup[2], "lookup3", Repositories.REPO_URL_CEYLON, null, null));
     }
     
     private boolean testRepository(Repository repo, String name, String url, String user, String password) {
