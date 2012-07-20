@@ -130,7 +130,7 @@ public class Repositories {
             for (int i = 0; i < urls.length; i++) {
                 String url = urls[i];
                 Repository repo;
-                if (url.startsWith("@")) {
+                if (url.startsWith("+")) {
                     String name = url.substring(1);
                     repo = getRepository(name);
                 } else {
