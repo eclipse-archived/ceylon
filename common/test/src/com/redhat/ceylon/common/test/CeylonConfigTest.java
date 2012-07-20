@@ -18,7 +18,7 @@ public class CeylonConfigTest {
     
     @Before
     public void setup() throws IOException {
-        testConfig = ConfigParser.loadConfigFromFile(new File("test-src/com/redhat/ceylon/common/test/test.config"));
+        testConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
     }
     
     @Test

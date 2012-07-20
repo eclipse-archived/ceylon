@@ -22,7 +22,7 @@ public class RepositoriesTest {
     
     @Before
     public void setup() throws IOException {
-        testConfig = ConfigParser.loadConfigFromFile(new File("test-src/com/redhat/ceylon/common/test/repos.config"));
+        testConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/repos.config"));
         if (testConfig.getInstallDir() == null) {
             // Set a fake installation folder
             System.setProperty("ceylon.home", "fake-install-dir");
@@ -32,7 +32,7 @@ public class RepositoriesTest {
         CeylonConfig fakeConfig = new CeylonConfig();
         defaultRepos = Repositories.withConfig(fakeConfig);
         
-        CeylonConfig overriddenConfig = ConfigParser.loadConfigFromFile(new File("test-src/com/redhat/ceylon/common/test/overridden.config"));
+        CeylonConfig overriddenConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/overridden.config"));
         overriddenRepos = Repositories.withConfig(overriddenConfig);
     }
     
