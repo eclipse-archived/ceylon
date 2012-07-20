@@ -68,6 +68,7 @@ goto loop_args
 rem MINIMAL_CP are classes required by the tools to run
 set "MINIMAL_CP=%CEYLON_REPO%\com\redhat\ceylon\compiler\java\%CEYLON_VERSION%\com.redhat.ceylon.compiler.java-%CEYLON_VERSION%.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\typechecker\%CEYLON_VERSION%\com.redhat.ceylon.typechecker-%CEYLON_VERSION%.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\common\%CEYLON_VERSION%\com.redhat.ceylon.common-%CEYLON_VERSION%.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\module-resolver\%CEYLON_VERSION%\com.redhat.ceylon.module-resolver-%CEYLON_VERSION%.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\antlr-3.4-complete.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\sardine-314.jar"
