@@ -74,47 +74,6 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
         return this;
     }
 
-    /**
-     * It prepends ${ceylon.home} directory to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryManagerBuilderImpl addCeylonHome() {
-        final String ceylonHome = SecurityActions.getProperty("ceylon.home");
-        if (ceylonHome != null) {
-            final File repo = new File(ceylonHome, "repo");
-            if (repo.exists() && repo.isDirectory())
-                prependExternalRoot(new FileContentStore(repo).createRoot());
-            else
-                log.warning("Invalid CEYLON_HOME/repo: " + repo);
-        }
-        return this;
-    }
-
-    /**
-     * It prepends ./modules directory to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryManagerBuilderImpl prependModules() {
-        final File modules = new File("modules");
-        if (modules.exists() && modules.isDirectory())
-            prependExternalRoot(new FileContentStore(modules).createRoot());
-        else
-            log.debug("No such ./modules directory: " + modules);
-        return this;
-    }
-
-    /**
-     * It appends http://modules.ceylon-lang.org to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryManagerBuilderImpl addModulesCeylonLangOrg() {
-        appendExternalRoot(new RemoteContentStore(RepositoryManager.MODULES_CEYLON_LANG_ORG, log).createRoot());
-        return this;
-    }
-
     protected RepositoryManagerBuilderImpl prependExternalRoot(OpenNode externalRoot) {
         repository.prependRepository(new DefaultRepository(externalRoot));
         return this;

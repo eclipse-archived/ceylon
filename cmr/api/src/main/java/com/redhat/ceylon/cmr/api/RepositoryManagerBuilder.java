@@ -86,36 +86,6 @@ public class RepositoryManagerBuilder {
         return this;
     }
 
-    /**
-     * It prepends ${ceylon.home} directory to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryManagerBuilder addCeylonHome() {
-        getDelegate().addCeylonHome();
-        return this;
-    }
-
-    /**
-     * It prepends ./modules directory to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryManagerBuilder prependModules() {
-        getDelegate().prependModules();
-        return this;
-    }
-
-    /**
-     * It appends http://modules.ceylon-lang.org to roots, if it exists.
-     *
-     * @return this
-     */
-    public RepositoryManagerBuilder addModulesCeylonLangOrg() {
-        getDelegate().addModulesCeylonLangOrg();
-        return this;
-    }
-
     public RepositoryManagerBuilder prependRepository(Repository external) {
         getDelegate().prependRepository(external);
         return this;
