@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -74,7 +75,7 @@ public class Main {
         }
 
         final TypeChecker typeChecker;
-        final RepositoryManager repoman = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(
+        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
                 opts.getRepos(), opts.getOutDir(), new JULLogger());
         final List<String> onlyFiles = new ArrayList<String>();
         if (opts.isStdin()) {

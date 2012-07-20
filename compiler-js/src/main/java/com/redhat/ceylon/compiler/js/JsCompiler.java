@@ -16,6 +16,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -56,7 +57,7 @@ public class JsCompiler {
     public JsCompiler(TypeChecker tc, Options options) {
         this.tc = tc;
         opts = options;
-        outRepo = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(
+        outRepo = CeylonUtils.makeOutputRepositoryManager(
                 options.getOutDir(), new JULLogger(), options.getUser(), options.getPass());
         String outDir = options.getOutDir();
         if(!isURL(outDir)){

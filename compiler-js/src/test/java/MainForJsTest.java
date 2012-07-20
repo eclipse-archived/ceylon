@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.impl.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.js.JsCompiler;
@@ -36,7 +36,7 @@ public class MainForJsTest {
         }
 
         Options opts = Options.parse(new ArrayList<String>(Arrays.asList(opt ? "-optimize" : "", "-out", "build/test/node_modules", "-module")));
-        final RepositoryManager repoman = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(Collections.<String>emptyList(), opts.getOutDir(), new JULLogger());
+        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(Collections.<String>emptyList(), opts.getOutDir(), new JULLogger());
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
             .addSrcDirectory(new File("src/test/ceylon"))
             .addSrcDirectory(new File("../ceylon.language/test"));
