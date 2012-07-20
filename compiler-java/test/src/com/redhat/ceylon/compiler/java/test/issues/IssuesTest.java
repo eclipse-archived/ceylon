@@ -562,9 +562,8 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
-    public void testBug690() {
-        compile("Bug690_1.ceylon");
-        compile("Bug690_2.ceylon");
+    public void testBug690_fail() {
+        compile("Bug690_2.ceylon", "Bug690_1.ceylon");
     }
     
     @Test
