@@ -42,7 +42,6 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -51,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -177,19 +177,19 @@ abstract class InvocationBuilder {
             ProducedType classType = (ProducedType)qte.getTarget();
             resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), argExprs, null);
         } else {
-            if (primaryDeclaration instanceof FunctionalParameter
+            if (this instanceof IndirectInvocationBuilder
+                    && (primaryDeclaration instanceof Getter
+                            || (primaryDeclaration instanceof Value)
+                            && !Decl.isLocal(primaryDeclaration))) {
+                actualPrimExpr = gen.make().Apply(null, 
+                        gen.naming.makeQualIdent(primaryExpr, selector), 
+                        List.<JCExpression>nil());
+                selector = "$call";
+            } else if (primaryDeclaration instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
-                if (primaryDeclaration != null) {
-                    if (primaryExpr != null) {
-                        // e.g. qualified access to a captured FunctionalParameter
-                        actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
-                    } else if (primaryDeclaration instanceof Getter){
-                        actualPrimExpr = gen.make().Apply(null,  gen.naming.makeUnquotedIdent(selector), List.<JCExpression>nil());
-                    } else {
-                        actualPrimExpr = gen.naming.makeName((TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
-                    }
-                } else {
-                    // indirect with invocation as primary
+                actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
+                if (!gen.isCeylonCallable(primary.getTypeModel())) {                    
+                    actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
                 }
                 selector = "$call";
             }
