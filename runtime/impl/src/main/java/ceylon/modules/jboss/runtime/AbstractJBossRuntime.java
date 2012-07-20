@@ -17,21 +17,23 @@
 
 package ceylon.modules.jboss.runtime;
 
-import ceylon.modules.CeylonRuntimeException;
-import ceylon.modules.Configuration;
-import ceylon.modules.Main;
-import ceylon.modules.api.runtime.AbstractRuntime;
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.RepositoryBuilder;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.cmr.impl.JULLogger;
-import com.redhat.ceylon.cmr.spi.ContentTransformer;
-import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleNotFoundException;
+
+import ceylon.modules.CeylonRuntimeException;
+import ceylon.modules.Configuration;
+import ceylon.modules.Main;
+import ceylon.modules.api.runtime.AbstractRuntime;
+
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.impl.CeylonUtils;
+import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.cmr.spi.ContentTransformer;
+import com.redhat.ceylon.cmr.spi.MergeStrategy;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -80,29 +82,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      */
     protected RepositoryManager createRepository(Configuration conf) {
         Logger log = new JULLogger();
-        final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(log);
-
-        // prepend ./modules if no -rep
-        if (conf.repositories.isEmpty())
-            builder.prependModules();
-        else {
-            final RepositoryBuilder rb = builder.repositoryBuilder();
-            // any user defined repos, backwards because we prepend to be before the home repo
-            for (int i=conf.repositories.size()-1;i>=0;i--) {
-                String repo = conf.repositories.get(i);
-                try {
-                    builder.prependRepository(rb.buildRepository(repo));
-                } catch (Exception e) {
-                    log.warning("Failed to add repository: " + repo + ": " + e.getMessage());
-                }
-            }
-        }
-
-        // add ceylon.home
-        builder.addCeylonHome();
-
-        // add remote module repo
-        builder.addModulesCeylonLangOrg();
+        final RepositoryManagerBuilder builder = CeylonUtils.makeRepositoryManagerBuilder(conf.repositories, null, log);
 
         final MergeStrategy ms = getService(MergeStrategy.class, conf);
         if (ms != null)
