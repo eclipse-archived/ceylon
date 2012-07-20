@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug699 {
+    
+    Bug699() {
+        final .ceylon.language.Singleton<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> singleton = new .ceylon.language.Singleton<.ceylon.language.Callable<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call() {
+                return .ceylon.language.String.instance("hello");
+            }
+        });
+        .ceylon.language.print.print(singleton.getFirst().$call());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.Bug699();
+    }
+}
