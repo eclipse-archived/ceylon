@@ -18,6 +18,7 @@ public class RepositoriesTest {
     CeylonConfig testConfig;
     Repositories repos;
     Repositories defaultRepos;
+    Repositories overriddenRepos;
     
     @Before
     public void setup() throws IOException {
@@ -27,8 +28,12 @@ public class RepositoriesTest {
             System.setProperty("ceylon.home", "fake-install-dir");
         }
         repos = Repositories.withConfig(testConfig);
+        
         CeylonConfig fakeConfig = new CeylonConfig();
         defaultRepos = Repositories.withConfig(fakeConfig);
+        
+        CeylonConfig overriddenConfig = ConfigParser.loadConfigFromFile(new File("test-src/com/redhat/ceylon/common/test/overridden.config"));
+        overriddenRepos = Repositories.withConfig(overriddenConfig);
     }
     
     @Test
@@ -45,7 +50,12 @@ public class RepositoriesTest {
     @Test
     public void testGetDeafultBootstrapRepository() {
         File dir = new File(testConfig.getInstallDir(), "repo");
-        Assert.assertTrue(testRepository(defaultRepos.getBootstrapRepository(), "bootstrap", dir.getAbsolutePath(), null, null));
+        Assert.assertTrue(testRepository(defaultRepos.getBootstrapRepository(), "INSTALL", dir.getAbsolutePath(), null, null));
+    }
+    
+    @Test
+    public void testGetOverriddenBootstrapRepository() {
+        Assert.assertTrue(testRepository(overriddenRepos.getBootstrapRepository(), "INSTALL", "install", null, null));
     }
     
     @Test
@@ -55,7 +65,12 @@ public class RepositoriesTest {
     
     @Test
     public void testGetDefaultOutputRepository() {
-        Assert.assertTrue(testRepository(defaultRepos.getOutputRepository(), "output", "./modules", null, null));
+        Assert.assertTrue(testRepository(defaultRepos.getOutputRepository(), "LOCAL", "./modules", null, null));
+    }
+    
+    @Test
+    public void testGetOverriddenOutputRepository() {
+        Assert.assertTrue(testRepository(overriddenRepos.getOutputRepository(), "LOCAL", "local", null, null));
     }
     
     @Test
@@ -66,26 +81,41 @@ public class RepositoriesTest {
     @Test
     public void testGetDefaultCacheRepository() {
         File dir = defaultRepos.getUserRepoDir();
-        Assert.assertTrue(testRepository(defaultRepos.getCacheRepository(), "cache", dir.getAbsolutePath(), null, null));
+        Assert.assertTrue(testRepository(defaultRepos.getCacheRepository(), "CACHE", dir.getAbsolutePath(), null, null));
+    }
+    
+    @Test
+    public void testGetOverriddenCacheRepository() {
+        Assert.assertTrue(testRepository(overriddenRepos.getCacheRepository(), "CACHE", "cache", null, null));
     }
     
     @Test
     public void testGetLookupRepositories() {
         Repository[] lookup = repos.getLookupRepositories();
-        Assert.assertTrue(lookup.length == 3);
+        Assert.assertTrue(lookup.length == 4);
         Assert.assertTrue(testRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
         Assert.assertTrue(testRepository(lookup[1], "Three", "foobar", null, null));
         Assert.assertTrue(testRepository(lookup[2], "Four", "foobar", null, null));
+        Assert.assertTrue(testRepository(lookup[3], "%lookup-4", "foobar", null, null));
     }
     
     @Test
     public void testGetDefaultLookupRepositories() {
         Repository[] lookup = defaultRepos.getLookupRepositories();
         Assert.assertTrue(lookup.length == 3);
-        Assert.assertTrue(testRepository(lookup[0], "lookup1", "./modules", null, null));
+        Assert.assertTrue(testRepository(lookup[0], "LOCAL", "./modules", null, null));
         File userDir = defaultRepos.getUserRepoDir();
-        Assert.assertTrue(testRepository(lookup[1], "lookup2", userDir.getAbsolutePath(), null, null));
-        Assert.assertTrue(testRepository(lookup[2], "lookup3", Repositories.REPO_URL_CEYLON, null, null));
+        Assert.assertTrue(testRepository(lookup[1], "USER", userDir.getAbsolutePath(), null, null));
+        Assert.assertTrue(testRepository(lookup[2], "REMOTE", Repositories.REPO_URL_CEYLON, null, null));
+    }
+    
+    @Test
+    public void testGetOverriddenLookupRepositories() {
+        Repository[] lookup = overriddenRepos.getLookupRepositories();
+        Assert.assertTrue(lookup.length == 3);
+        Assert.assertTrue(testRepository(lookup[0], "LOCAL", "local", null, null));
+        Assert.assertTrue(testRepository(lookup[1], "USER", "user", null, null));
+        Assert.assertTrue(testRepository(lookup[2], "REMOTE", "http://remote", null, null));
     }
     
     private boolean testRepository(Repository repo, String name, String url, String user, String password) {
