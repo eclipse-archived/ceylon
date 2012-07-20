@@ -7,6 +7,7 @@
 	<classpathentry kind="src" path="spi/src/main/java"/>
 	<classpathentry kind="src" path="webdav/src/main/java"/>
 	<classpathentry kind="src" path="maven/src/main/java"/>
+	<classpathentry kind="src" path="ceylon/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="lib" path="lib/sardine-314.jar"/>

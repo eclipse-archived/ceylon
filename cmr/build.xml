@@ -14,6 +14,7 @@
     <property name="cmr-impl.src" location="${basedir}/impl/src/main/java"/>
     <property name="cmr-spi.src" location="${basedir}/spi/src/main/java"/>
     <property name="cmr-webdav.src" location="${basedir}/webdav/src/main/java"/>
+    <property name="cmr-ceylon.src" location="${basedir}/ceylon/src/main/java"/>
 
     <!-- jar generated -->
     <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
@@ -112,6 +113,9 @@
             <fileset dir="${cmr-webdav.src}">
                 <include name="**/*.java"/>
             </fileset>
+            <fileset dir="${cmr-ceylon.src}">
+                <include name="**/*.java"/>
+            </fileset>
         </zip>
         <antcall target="sha1sum">
             <param name="file" value="${build.dist}/${ceylon.module-resolver.src}"/>
@@ -162,6 +166,11 @@
                includeantruntime="false"/>
         <javac debug="true"
                srcdir="${cmr-webdav.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               includeantruntime="false"/>
+        <javac debug="true"
+               srcdir="${cmr-ceylon.src}"
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
