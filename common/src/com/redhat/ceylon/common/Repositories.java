@@ -95,11 +95,19 @@ public class Repositories {
     }
     
     private Repository[] getRepositoriesByType(String repoType) {
-        String names[] = config.getOptionValues(reposTypeKey(repoType));
-        if (names != null) {
-            ArrayList<Repository> repos = new ArrayList<Repository>(names.length);
-            for (String name : names) {
-                Repository repo = getRepository(name);
+        String urls[] = config.getOptionValues(reposTypeKey(repoType));
+        if (urls != null) {
+            ArrayList<Repository> repos = new ArrayList<Repository>(urls.length);
+            for (int i = 0; i < urls.length; i++) {
+                String url = urls[i];
+                Repository repo;
+                if (url.startsWith("@")) {
+                    String name = url.substring(1);
+                    repo = getRepository(name);
+                } else {
+                    String name = "%" + repoType + "-" + (i + 1);
+                    repo = new Repository(name, url, null, null);
+                }
                 if (repo != null) {
                     repos.add(repo);
                 }
