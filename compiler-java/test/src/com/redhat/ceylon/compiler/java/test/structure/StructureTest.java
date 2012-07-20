@@ -94,6 +94,10 @@ public class StructureTest extends CompilerTest {
     public void testAtrInnerAttributeGetterWithConflictingMethods(){
         compareWithJavaSource("attribute/InnerAttributeGetterWithConflictingMethods");
     }
+    @Test
+    public void testAtrFormalFunctionAttribute(){
+        compareWithJavaSource("attribute/FormalFunctionAttribute");
+    }
     
     //
     // Classes
