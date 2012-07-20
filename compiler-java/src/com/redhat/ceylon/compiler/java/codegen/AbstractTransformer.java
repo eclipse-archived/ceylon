@@ -237,8 +237,8 @@ public abstract class AbstractTransformer implements Transformation {
      * @param names The components of the name (may be null)
      * @see #makeQuotedQualIdentFromString(String)
      */
-    JCExpression makeQualIdent(JCExpression expr, String... names) {
-        return naming.makeQualIdent(expr, names);
+    JCExpression makeQualIdent(JCExpression expr, String name) {
+        return naming.makeQualIdent(expr, name);
     }
     
     JCExpression makeQuotedQualIdent(JCExpression expr, String... names) {
