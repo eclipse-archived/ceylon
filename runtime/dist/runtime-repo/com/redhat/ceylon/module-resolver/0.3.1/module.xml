@@ -28,6 +28,7 @@
     </resources>
 
     <dependencies>
+        <module name="com.redhat.ceylon.common" slot="0.3.1"/>
         <module name="org.jboss.jandex"/>
     </dependencies>
 </module>
