@@ -48,8 +48,8 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
-import com.redhat.ceylon.cmr.impl.CeylonUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Repositories;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
