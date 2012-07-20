@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import javax.tools.JavaFileObject.Kind;
@@ -290,27 +288,6 @@ public class Util {
     public static boolean isUnboxedVoid(Declaration decl) {
         return (decl instanceof Method)
                 && ((Method)decl).isDeclaredVoid();
-    }
-
-    public static File makeTempDir(String prefix){
-        try {
-            File dir = File.createTempFile(prefix, "");
-            if(!dir.delete()
-                    || !dir.mkdirs())
-                throw new RuntimeException("Failed to create tmp dir: "+dir);
-            return dir;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    public static void delete(File f){
-        if (f.isDirectory()) {
-            for (File c : f.listFiles())
-                delete(c);
-        }
-        if (!f.delete())
-            throw new RuntimeException("Failed to delete file: " + f.getPath());
     }
 
     public static boolean isJavaSource(ClassSymbol classSymbol) {
