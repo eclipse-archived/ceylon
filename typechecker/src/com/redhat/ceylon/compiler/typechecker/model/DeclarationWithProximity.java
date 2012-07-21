@@ -5,6 +5,7 @@ public class DeclarationWithProximity {
     private int proximity;
     private String name;
     private NamedArgumentList namedArgumentList; 
+    private boolean unimported;
     
     public NamedArgumentList getNamedArgumentList() {
         return namedArgumentList;
@@ -23,10 +24,18 @@ public class DeclarationWithProximity {
         this.name = declaration.getName();
     }
     
+    public DeclarationWithProximity(Declaration declaration, int proximity, boolean unimported) {
+        this.declaration = declaration;
+        this.proximity = proximity;
+        this.name = declaration.getName();
+        this.unimported = unimported;
+    }
+    
     public DeclarationWithProximity(Declaration declaration, DeclarationWithProximity dwp) {
         this.declaration = declaration;
         this.proximity = dwp.proximity;
         this.name = dwp.name;
+        this.unimported = dwp.unimported;
     }
     
     public DeclarationWithProximity(Import imp, int proximity) {
@@ -46,6 +55,10 @@ public class DeclarationWithProximity {
     public String getName() {
         return name;
     }
+    
+    public boolean isUnimported() {
+		return unimported;
+	}
     
     @Override
     public String toString() {

@@ -165,13 +165,24 @@ public class Package implements ImportableScope {
         if (unit!=null) {
             result.putAll(unit.getMatchingImportedDeclarations(startingWith, proximity));
         }
+        for (Map.Entry<String, DeclarationWithProximity> e: 
+        	getModule().getAvailableDeclarations(startingWith, proximity+1000).entrySet()) {
+    		boolean already = false;
+        	for (DeclarationWithProximity dwp: result.values()) {
+        		if (dwp.getDeclaration().equals(e.getValue().getDeclaration())) {
+        			already = true;
+        			break;
+        		}
+        	}
+    		if (!already) result.put(e.getKey(), e.getValue());
+        }
         return result;
     }
 
     public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
         Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d) ) {
+            if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d)) {
                 boolean already = false;
                 for (Import i: imports) {
                     if (!i.isWildcardImport() && 

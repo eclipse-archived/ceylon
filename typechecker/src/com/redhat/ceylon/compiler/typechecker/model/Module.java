@@ -1,7 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Module {
 
@@ -79,6 +84,25 @@ public class Module {
             list.addAll(mi.getModule().getSharedPackages());
         }
         return list;
+    }
+    
+    public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith, int proximity) {
+    	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+    	for (Package p: getAllPackages()) {
+    		if (!p.getModule().getNameAsString().startsWith("java") &&
+    				!p.getModule().getNameAsString().startsWith("ceylon.language")) {
+    			for (Declaration d: p.getMembers()) {
+    				try {
+    					if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d)) {
+    						result.put(d.getQualifiedNameString(), 
+    								new DeclarationWithProximity(d, proximity, true));
+    					}
+    				}
+    				catch (Exception e) {}
+    			}
+    		}
+        }
+        return result;
     }
 
     List<Package> getAllKnownPackages() {
