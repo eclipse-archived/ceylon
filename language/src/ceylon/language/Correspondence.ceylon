@@ -5,6 +5,7 @@ doc "Abstract supertype of objects which associate values
      values, and in other cases, for example maps, it is
      convenient to treat the subtype as a `Category` of its
      entries."
+see (Map, List)
 by "Gavin"
 shared interface Correspondence<in Key, out Item>
         given Key satisfies Object {
