@@ -1992,7 +1992,7 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 checkAssignable(e.getTypeModel(), at, a, 
                         "argument must be assignable to sequenced parameter " + 
-                        p.getName()+ " of " + pr.getDeclaration().getName());
+                        p.getName()+ " of " + pr.getDeclaration().getName(), 2101);
             }
         }
     }
