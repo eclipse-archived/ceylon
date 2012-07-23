@@ -58,6 +58,7 @@ shared interface Iterable<out Element>
     doc "An `Iterable` containing the results of applying
          the given mapping to the elements of to this 
          container."
+    see (collect)
     shared default Iterable<Result> map<Result>(
             doc "The mapping to apply to the elements."
             Result collecting(Element elem)) {
@@ -66,6 +67,7 @@ shared interface Iterable<out Element>
 
     doc "An `Iterable` containing the elements of this 
          container that satisfy the given predicate."
+    see (select)
     shared default Iterable<Element> filter(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) {
@@ -120,6 +122,7 @@ shared interface Iterable<out Element>
             Comparison? comparing(Element x, Element y)) { throw; }
 
     doc "An eager version of `map`."
+    see (map)
     shared default Result[] collect<Result>(
             doc "The transformation applied to the elements."
             Result collecting(Element element)) {
@@ -127,6 +130,7 @@ shared interface Iterable<out Element>
     }
 
     doc "An eager version of `filter`."
+    see (filter)
     shared default Element[] select(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element element)) {
