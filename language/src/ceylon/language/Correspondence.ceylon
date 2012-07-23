@@ -1,11 +1,11 @@
 doc "Abstract supertype of objects which associate values 
      with keys. `Correspondence` does not satisfy `Category`,
      since in some cases, for examples lists, it is 
-     convenient to consider the subtype a `Container` of its
+     convenient to consider the subtype a `Category` of its
      values, and in other cases, for example maps, it is
      convenient to treat the subtype as a `Category` of its
      entries."
-see (Map, List)
+see (Map, List, Category)
 by "Gavin"
 shared interface Correspondence<in Key, out Item>
         given Key satisfies Object {
