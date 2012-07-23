@@ -32,12 +32,17 @@ Build the compiler and tools
 First you must make sure you have built the 
 [ceylon.language](https://github.com/ceylon/ceylon.language), 
 [ceylon-spec](https://github.com/ceylon/ceylon-spec) and
+[ceylon-common](https://github.com/ceylon/ceylon-common) projects.
 [ceylon-module-resolver](https://github.com/ceylon/ceylon-module-resolver) projects.
 
 Go into `ceylon.language` first and run
 
     ant clean publish
     
+Then go into `ceylon-common` and run
+
+    ant clean publish
+
 Then go into `ceylon-module-resolver` and run
 
     ant clean publish
