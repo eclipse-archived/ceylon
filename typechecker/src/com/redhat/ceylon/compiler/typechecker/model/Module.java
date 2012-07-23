@@ -89,8 +89,10 @@ public class Module {
     public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith, int proximity) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
     	for (Package p: getAllPackages()) {
-    		if (!p.getModule().getNameAsString().startsWith("java") &&
-    				!p.getModule().getNameAsString().startsWith("ceylon.language")) {
+    		String moduleName = p.getModule().getNameAsString();
+			if (!moduleName.startsWith("java") &&
+    				!moduleName.startsWith("ceylon.language") &&
+    				!p.getNameAsString().isEmpty()) {
     			for (Declaration d: p.getMembers()) {
     				try {
     					if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d)) {
