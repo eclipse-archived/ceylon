@@ -200,7 +200,7 @@ Used with another target such as 'package'">
     </target>
 
     <target name="install-compiler" 
-          depends="compile-module-resolver, install-typechecker, install-language">
+          depends="install-typechecker, install-language">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
@@ -213,7 +213,7 @@ Used with another target such as 'package'">
     </target>
 
     <target name="install-typechecker" 
-            depends="compile-module-resolver, install-language">
+            depends="install-cmr, install-language">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
@@ -235,7 +235,7 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="compile-module-resolver" depends="install-common">
+    <target name="install-cmr" depends="install-common">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
@@ -253,7 +253,7 @@ Used with another target such as 'package'">
         </copy>
     </target>
 
-    <target name="install-runtime" depends="compile-module-resolver">
+    <target name="install-runtime" depends="install-cmr">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="dist" dir="${ceylon-runtime.dir}" inheritall="false">
           <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
