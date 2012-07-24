@@ -1310,11 +1310,23 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCAnnotation> makeAtModule(Module module) {
         String name = module.getNameAsString();
         String version = module.getVersion();
-        String doc = module.getDoc();
-        String license = module.getLicense();
+        String doc = null;
+        String license = null;
+        ArrayList<String> moduleAuthors = new ArrayList<>();
+        for (Annotation a : module.getAnnotations()) {
+            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+                if (a.getName().equals("doc")) {
+                    doc = a.getPositionalArguments().get(0);
+                } else if (a.getName().equals("license")) {
+                    license = a.getPositionalArguments().get(0);
+                } else if (a.getName().equals("by")) {
+                    moduleAuthors.addAll(a.getPositionalArguments());
+                }
+            }
+        }
         
         ListBuffer<JCExpression> authors = new ListBuffer<JCTree.JCExpression>();
-        for(String author : module.getAuthors()){
+        for(String author : moduleAuthors) {
         	authors.add(make().Literal(author));
         }
         
