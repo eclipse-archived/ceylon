@@ -1,9 +1,9 @@
-doc "Represents a collection which maps keys to values,
-     where a key can map to at most one value. Each such 
+doc "Represents a collection which maps keys to items,
+     where a key can map to at most one item. Each such 
      mapping may be represented by an `Entry`.
      
      A `Map` is a `Collection` of its `Entry`s, and a 
-     `Correspondence` from keys to values."
+     `Correspondence` from keys to items."
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
                   Correspondence<Object,Item> &

@@ -4,7 +4,16 @@ doc "Abstract supertype of objects which associate values
      convenient to consider the subtype a `Category` of its
      values, and in other cases, for example maps, it is
      convenient to treat the subtype as a `Category` of its
-     entries."
+     entries.
+     
+     An item for a given key may be obtained from a
+     `Correspondence` using the item operator:
+     
+         value bg = settings[\"backgroundColor\"] else white;
+     
+     The `item()` operation and item operator result in an
+     optional type, to reflect the possibility that there is
+     no item for the given key."
 see (Map, List, Category)
 by "Gavin"
 shared interface Correspondence<in Key, out Item>

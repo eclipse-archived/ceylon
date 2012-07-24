@@ -1,6 +1,14 @@
 doc "Abstract supertype of ranged objects which map a range
-     of natural numbers to values."
-see (Sequence, String)
+     of `Comparable` keys to ranges of values. The type
+     parameter `Span` abstracts the type of the resulting
+     range.
+     
+     A span may be obtained from an instance of `Ranged`
+     using the span operator:
+     
+         print(\"hello world\"[0..5])
+     "
+see (List, Sequence, String)
 shared interface Ranged<in Index, out Span> 
         given Index satisfies Comparable<Index> {
     

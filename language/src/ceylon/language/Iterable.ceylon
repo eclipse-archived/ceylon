@@ -4,6 +4,11 @@ doc "Abstract supertype of containers whose elements may be
      be a well-defined iteration order, and so the order of
      iterated elements may not be stable.
      
+     An instance of `Iterable` may be iterated using a `for`
+     loop:
+     
+         for (c in \"hello world\") { ... }
+     
      `Iterable` and its subtypes define various operations
      that return other iterable objects. Such operations 
      come in two flavors:

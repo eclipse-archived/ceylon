@@ -5,7 +5,13 @@ doc "Represents the range of totally ordered, ordinal values
      is larger than the last value, the range is decreasing.
      If the two values are equal, the range contains exactly
      one element. The range is always nonempty, containing 
-     at least one value."
+     at least one value.
+     
+     A range may be produced using the `..` operator:
+     
+         for (i in min..max) { ... }
+         if (char in `A`..`Z`) { ... }
+     "
 by "Gavin"
 shared class Range<Element>(first, last) 
         extends Object() 

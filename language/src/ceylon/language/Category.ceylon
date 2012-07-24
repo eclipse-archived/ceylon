@@ -3,7 +3,15 @@ doc "Abstract supertype of objects that contain other
      efficiently determine if a given value is an element. 
      `Category` does not satisfy `Container`, because it is 
      conceptually possible to have a `Category` whose 
-     emptiness cannot be computed."
+     emptiness cannot be computed.
+     
+     The `in` operator may be used to determine if a value
+     belongs to a `Category`:
+     
+         if (\"hello\" in \"hello world\") { ... }
+         if (69 in 0..100) { ... }
+         if (key->value in { for (n in 0..100) n.string->n**2 }) { ... }
+     "
 see (Container)
 by "Gavin"
 shared interface Category {
