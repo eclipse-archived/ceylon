@@ -15,6 +15,12 @@ public final class None$impl<Element> {
     static <Element> Element _getFirst(None<Element> $this){
         return null;
     }
+    public Element getLast(){
+        return _getLast($this);
+    }
+    static <Element> Element _getLast(None<Element> $this){
+        return null;
+    }
     
     public Iterator<Element> getIterator(){
         return _getIterator($this);

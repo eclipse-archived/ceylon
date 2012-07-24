@@ -14,42 +14,55 @@ shared interface Empty
         return emptyIterator;
     }
 
-    doc "Returns null for any given key."
-    shared actual Nothing item(Integer key) {
+    doc "Returns `null` for any given index."
+    shared actual Nothing item(Integer index) {
         return null;
     }
 
-    doc "Returns an Empty for any given segment."
+    doc "Returns an `Empty` for any given segment."
     shared actual Empty segment(Integer from, Integer length) {
         return this;
     }
 
-    doc "Returns an Empty for any given span."
+    doc "Returns an `Empty` for any given span."
     shared actual Empty span(Integer from, Integer? to) {
         return this;
     }
 
-    doc "Returns a string description of the empty List: `{}`"
+    doc "Returns an `Empty`."
+    shared actual Empty reversed {
+	    return this;
+    }
+
+    doc "Returns an `Empty`."
+    shared actual Empty sequence {
+        return this;
+    }
+
+    doc "Returns a string description of the empty List: `{}`."
     shared actual String string {
         return "{}";
     }
-    doc "Returns null."
+    doc "Returns `null`."
     shared actual Nothing lastIndex { return null; }
+
+    shared actual Nothing first { return null; }
+    shared actual Nothing last { return null; }
 
     //shared actual Empty rest { return this; }
 
-    doc "Returns an Empty."
+    doc "Returns an `Empty`."
     shared actual Empty clone {
         return this;
     }
 
-    doc "Returns false for any given element."
+    doc "Returns `false` for any given element."
     shared actual Boolean contains(Object element) {
         return false;
     }
 
-    doc "Returns 0 for any given element."
-    shared actual Integer count(Object element) {
+    doc "Returns 0 for any given predicate."
+    shared actual Integer count(Boolean selecting(Bottom element)) {
         return 0;
     }
 
@@ -57,4 +70,50 @@ shared interface Empty
         return false;
     }
 
+    shared actual Empty map<Result>(Result collecting(Bottom element)) {
+        return this;
+    }
+    shared actual Empty filter(Boolean selecting(Bottom element)) {
+        return this;
+    }
+    shared actual Result fold<Result>(Result initial,
+            Result accumulating(Result partial, Bottom element)) {
+        return initial;
+    }
+    shared actual Nothing find(Boolean selecting(Bottom element)) {
+        return null;
+    }
+    shared actual Empty sort(Comparison? comparing(Bottom a, Bottom b)) {
+        return this;
+    }
+    shared actual Empty collect<Result>(Result collecting(Bottom element)) {
+        return this;
+    }
+    shared actual Empty select(Boolean selecting(Bottom element)) {
+        return this;
+    }
+    shared actual Boolean any(Boolean selecting(Bottom element)) {
+        return false;
+    }
+    shared actual Boolean every(Boolean selecting(Bottom element)) {
+        return false;
+    }
+    shared actual Empty skipping(Integer skip) {
+        return this;
+    }
+    shared actual Empty taking(Integer take) {
+        return this;
+    }
+    shared actual Empty by(Integer step) {
+        return this;
+    }
+    shared actual Empty coalesced {
+        return this;
+    }
+    shared actual Sequence<Other> withLeading<Other>(Other other) {
+        return {other};
+    }
+    shared actual Sequence<Other>withTrailing<Other>(Other other) {
+        return {other};
+    }
 }

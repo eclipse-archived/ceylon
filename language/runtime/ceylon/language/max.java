@@ -7,25 +7,32 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon
+@Ceylon(major = 2)
 @Method
 public final class max {
     
     private max() {
     }
     
-    @TypeParameters(@TypeParameter(value="Value", satisfies="ceylon.language.Comparable<Value>"))
-    @TypeInfo("Value")
-    public static <Value extends Comparable<? super Value>>Value max(@Name("values")
-    @TypeInfo("ceylon.language.Sequence<Value>")
-    final Sequence<? extends Value> values) {
-        Value max = values.getFirst();
-        java.lang.Object $tmp;
-        for (Iterator<? extends Value> $val$iter$0 = values.getRest().getIterator(); !(($tmp = $val$iter$0.next()) instanceof Finished);) {
-            final Value val = (Value) $tmp;
-            if (val.compare(max).largerThan()) {
-                max = val;
-            }
+    @TypeParameters({@TypeParameter(value="Value", 
+            satisfies="ceylon.language.Comparable<Value>"),
+                     @TypeParameter(value="Null", 
+            satisfies="ceylon.language.Nothing")})
+    @TypeInfo("Null|Value")
+    public static <Value, Null> 
+    Value max(@Name("values")
+    @TypeInfo("ceylon.language.Iterable<Value>&ceylon.language.ContainerWithFirstElement<Value,Null>")
+    final Iterable<? extends Value> values) {
+        Value max = (Value) values.getFirst();
+        if (max!=null) {
+        	java.lang.Object $tmp;
+        	for (Iterator<? extends Value> $val$iter$0 = (Iterator<? extends Value>)values.getRest().getIterator(); 
+        			!(($tmp = $val$iter$0.next()) instanceof Finished);) {
+        		final Value val = (Value) $tmp;
+        		if (((Comparable<? super Value>)val).compare(max).largerThan()) {
+        			max = val;
+        		}
+        	}
         }
         return max;
     }

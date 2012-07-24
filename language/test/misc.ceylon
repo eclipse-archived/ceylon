@@ -37,4 +37,9 @@ void misc() {
     for (n->e in entries(bs.sequence...)) {
         assert(n==e, "entry iteration");
     }
+    
+    see(); by(); tagged();
+    every(); any(); count(); first();
+    join(); entries(); elements();
+    array(); coalesce(); string();
 }

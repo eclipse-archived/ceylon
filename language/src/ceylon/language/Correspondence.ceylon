@@ -1,7 +1,7 @@
 doc "Abstract supertype of objects which associate values 
      with keys. `Correspondence` does not satisfy `Category`,
      since in some cases, for examples lists, it is 
-     convenient to consider the subtype a `Category` of its
+     convenient to consider the subtype a `Container` of its
      values, and in other cases, for example maps, it is
      convenient to treat the subtype as a `Category` of its
      entries."
@@ -43,7 +43,7 @@ shared interface Correspondence<in Key, out Item>
          for every one of the given keys."
     see (defines)
     shared default Boolean definesEvery(Key... keys) {
-        for (Key key in keys) {
+        for (key in keys) {
             if (!defines(key)) {
                 return false;
             }
@@ -57,7 +57,7 @@ shared interface Correspondence<in Key, out Item>
          for any one of the given keys."
     see (defines)
     shared default Boolean definesAny(Key... keys) {
-        for (Key key in keys) {
+        for (key in keys) {
             if (defines(key)) {
                 return true;
             }
@@ -71,8 +71,8 @@ shared interface Correspondence<in Key, out Item>
          the same order as the corresponding keys."
     see (item)
     shared default Item?[] items(Key... keys) {
-        if (nonempty keys) {
-            return Items(keys.clone);
+        if (nonempty some = keys.sequence) {
+            return Items(some.clone);
         }
         else {
             return {};
@@ -120,11 +120,12 @@ shared interface Correspondence<in Key, out Item>
         shared actual Sequence<Item?> clone {
             return this;
         }
-                
+        shared actual Sequence<Item?> reversed {
+            return outer.Items(keys.reversed);
+        }
         shared actual Integer hash {
             return keys.hash;
         }
-        
     }
     
 }

@@ -5,6 +5,7 @@ void test_singleton() {
     assert(singleton.defines(0), "singleton defines");
     assert(!singleton.defines(1), "singleton defines");
     assert(singleton.string=="{ hello }", "singleton string");
+    assert(singleton.reversed==singleton, "singleton reversed");
     assert(nonempty singleton, "singleton nonempty");
     if (nonempty singleton) {
         assert(singleton.first=="hello", "singleton first");
@@ -59,6 +60,14 @@ void test_singleton() {
     assert(singleton.keys.contains(0), "singleton keys.contains(0)");
     assert(!singleton.keys.contains(1), "!singleton keys.contains(1)");
     assert(!singleton.keys.contains(2), "!singleton keys.contains(2)");
+    
+    // Disabled: does not pass typechecker on M3.1
+    //value ss = Singleton("Trompon").span(0, 0);
+    //switch(ss)
+    //case (is Empty) {}
+    //case (is Singleton<String>) {
+    //    String first = ss.first;
+    //}
 }
 
 void test_join() {
@@ -66,7 +75,8 @@ void test_join() {
     value l2 = { 4,5,6 };
     value l3 = {7,8,9};
     value joint = join(l1, l2, l3);
-    assert(joint.size==l1.size+l2.size+l3.size, "join");
+    assert(joint.size==l1.size+l2.size+l3.size, "join [1]");
+    assert(join("aa", "bb", "cc").sequence=={`a`, `a`, `b`, `b`, `c`, `c`}, "join [2]");
 }
 
 void test_zip() {
@@ -94,6 +104,24 @@ void test_exists_nonempty() {
     assert(t4 == "works", "nonempty 2");
 }
 
+void test_max_min() {
+    Integer mx1 = max({1, 2, 3});
+    assert(mx1==3, "max nonempty seq");
+    Nothing mx2 = max({});
+    Integer? mx3 = max(join({},{1, 2, 3}));
+    assert((mx3 else 10)==3, "max joined seq");
+    Integer? mx4 = max({1, 2, 3}.filter((Integer i) i>0));
+    assert((mx4 else 10)==3, "max filtered seq");
+    
+    Integer mn1 = min({1, 2, 3});
+    assert(mn1==1, "min nonempty seq");
+    Nothing mn2 = min({});
+    Integer? mn3 = min(join({},{1, 2, 3}));
+    assert((mn3 else 10)==1, "min joined seq");
+    Integer? mn4 = min({1, 2, 3}.filter((Integer i) i>0));
+    assert((mn4 else 10)==1, "min filtered seq");
+}
+
 shared void sequences() {
     value builder = SequenceBuilder<String>();
     value empty = builder.sequence;
@@ -106,6 +134,8 @@ shared void sequences() {
     assert(!nonempty empty.span(1, null), "empty.span(1,null)");
     assert(!nonempty empty.segment(1, 2), "empty sequence segment");
     assert(empty.string=="{}", "empty.string");
+    assert(empty.reversed==empty, "empty reversed");
+    assert(empty.sequence==empty, "empty.sequence");
 
     builder.append("hello");
     builder.append("world");
@@ -124,12 +154,13 @@ shared void sequences() {
     else {
         fail("sequence first");
     }
-    /*if (exists last = result.last) {
+    assert(result.sequence==result, "sequence.sequence");
+    if (exists last = result.last) {
         assert(last=="world", "sequence last");
     }
     else {
         fail("sequence last");
-    }*/
+    }
     assert(result.string=="{ hello, world }", "sequence.string 1");
 
     //span
@@ -146,6 +177,8 @@ shared void sequences() {
     assert(nonempty result.segment(1,1), "nonempty sequence.segment(1,1)");
     assert(!nonempty result.segment(0,0), "!nonempty sequence.segment(0,0)");
     //assert(!nonempty result.segment(1,-1), "!nonempty sequence.segment(1,-1)");
+    
+    assert (result.reversed=={"world", "hello"}, "sequence.reversed");
 
     if (exists str = result[0]) {
         assert(str=="hello", "sequence item");
@@ -222,6 +255,7 @@ shared void sequences() {
     value seq = { 1, 2, 3, 4 };
     assert(seq.size==4, "sequence size");
     assert(seq.string=="{ 1, 2, 3, 4 }", "sequence.string 4");
+    assert(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
     assert(seq.first==1, "sequence first");
     assert(seq.rest.string=="{ 2, 3, 4 }", "sequence.rest.string");
     variable value i:=0;
@@ -267,7 +301,7 @@ shared void sequences() {
     }
     assert(nonnull==2, "iterate sequence with nulls");
 
-    value coalesced = coalesce(nulls);
+    value coalesced = coalesce(nulls...).sequence;
     assert(coalesced.size==2, "coalesce size");
     assert(coalesced.string=="{ hello, world }", "coalesce.string");
     assert(coalesced.keys.contains(0), "coalesced keys");
@@ -276,7 +310,10 @@ shared void sequences() {
     assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
     assert(nonempty coalesced, "nonempty coalesced");
-
+    value coal2 = coalesce(for (c in "hElLo") null).sequence;
+    assert(!nonempty coal2, "nonempty coalesced2");
+    assert(coal2.size == 0, "coalesced2.size");
+    assert(!`h` in coal2, "coalesced2.contains");
     value entriesBuilder = SequenceBuilder<Integer->String>();
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
@@ -295,31 +332,26 @@ shared void sequences() {
     }
 
     value sequenceEntries = entries("X1", "X2", "X3");
-    assert(sequenceEntries.size==3, "entries size");
-    assert(nonempty sequenceEntries, "nonempty entries");
-    if (nonempty sequenceEntries) {
-        assert(sequenceEntries.first==Entry(0, "X1"), "entries first");
+    assert(sequenceEntries.sequence.size==3, "entries size");
+    assert(nonempty sequenceEntries.sequence, "nonempty entries");
+    if (exists primero=sequenceEntries.first) {
+        assert(primero==Entry(0, "X1"), "entries first");
     }
     else {
-        fail("entries empty");
+        fail("entries first");
     }
     for (nat->str in sequenceEntries) {
         assert("X"+(nat+1).string==str, "entries iteration");
     }
 
-    assert(append({},"foo").string=="{ foo }", "append to empty.string");
-    assert(prepend({},"foo").string=="{ foo }", "prepend to empty.string");
-    assert(append({1, 2},"foo").string=="{ 1, 2, foo }", "append.string");
-    assert(prepend({1, 2},"foo").string=="{ foo, 1, 2 }", "prepend.string");
-
-    assert(append({},"foo").size==1, "append to empty.size");
-    assert(prepend({},"foo").size==1, "prepend to empty.size");
-    assert(append({1, 2},"foo").size==3, "append.size");
-    assert(prepend({1, 2},"foo").size==3, "prepend.size");
-    assert(append({"one", "two" , "three"}, "four").size==4, "append");
-
     //More sequence-related functions
     test_join();
     test_zip();
     test_exists_nonempty();
+    test_max_min();
+    assert(nonempty emptyOrSingleton(1), "emptyOrSingleton [1]");
+    assert(!nonempty emptyOrSingleton(null), "emptyOrSingleton [2]");
+    
+    assert({"hello"}.withTrailing("world").first=="hello", "sequence with trailing");
+    assert({"world"}.withLeading("hello").first=="hello", "sequence with trailing");
 }

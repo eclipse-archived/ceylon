@@ -2,6 +2,9 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -12,7 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon
+@Ceylon(major = 2)
 @Class(extendsType="ceylon.language.Object")
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
@@ -22,146 +25,207 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
     "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Array<Element>>"
 })
 public abstract class Array<Element> implements List<Element>, FixedSized<Element> {
-    
+
     protected final java.lang.Object array;
-    
-    public Array(char... array) {
-        this.array = array;
-    }
-    
-    public Array(byte... array) {
-        this.array = array;
-    }
-    
-    public Array(short... array) {
-        this.array = array;
-    }
-    
-    public Array(int... array) {
-        this.array = array;
-    }
-    
-    public Array(long... array) {
-        this.array = array;
-    }
-    
-    public Array(float... array) {
-        this.array = array;
-    }
-    
-    public Array(double... array) {
-        this.array = array;
-    }
-    
-    public Array(boolean... array) {
+
+    protected Array(java.lang.Object array) {
         this.array = array;
     }
 
-    public Array(java.lang.String... array) {
-        this.array = array;
-    }
-
-    public Array(Element... array) {
-        this.array = array;
-    }
-    
-    @Ignore
-    Array(java.util.List<Element> list) {
-        this.array = list.toArray();
-    }
-
-    @Ignore
-    Array(int size) {
-        this.array = new Object[size];
-    }
-    
     @Ignore
     public static Array<Character> instance(char[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Character>();
+            return new ArrayOfNone<Character>(array);
         } else {
             return new ArrayOfSome<Character>(array);
         }
     }
-    
+
     @Ignore
     public static Array<Integer> instance(byte[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>();
+            return new ArrayOfNone<Integer>(array);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
     }
-    
+
     @Ignore
     public static Array<Integer> instance(short[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>();
+            return new ArrayOfNone<Integer>(array);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
     }
-    
+
     @Ignore
     public static Array<Integer> instance(int[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>();
+            return new ArrayOfNone<Integer>(array);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
     }
-    
+
     @Ignore
     public static Array<Integer> instance(long[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Integer>();
+            return new ArrayOfNone<Integer>(array);
         } else {
             return new ArrayOfSome<Integer>(array);
         }
     }
-    
+
     @Ignore
     public static Array<Float> instance(float[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Float>();
+            return new ArrayOfNone<Float>(array);
         } else {
             return new ArrayOfSome<Float>(array);
         }
     }
-    
+
     @Ignore
     public static Array<Float> instance(double[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Float>();
+            return new ArrayOfNone<Float>(array);
         } else {
             return new ArrayOfSome<Float>(array);
         }
     }
-    
+
     @Ignore
     public static Array<Boolean> instance(boolean[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<Boolean>();
+            return new ArrayOfNone<Boolean>(array);
         } else {
             return new ArrayOfSome<Boolean>(array);
         }
     }
-    
+
     @Ignore
     public static Array<String> instance(java.lang.String[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<String>();
+            return new ArrayOfNone<String>(array);
         } else {
             return new ArrayOfSome<String>(array);
         }
     }
-    
+
     @Ignore
     public static <T> Array<T> instance(T[] array) {
         if (array.length == 0) {
-            return new ArrayOfNone<T>();
+            return new ArrayOfNone<T>(array);
         } else {
             return new ArrayOfSome<T>(array);
+        }
+    }
+
+    @Ignore
+    public static <T> Array<T> instance(java.lang.Object array) {
+        int length = java.lang.reflect.Array.getLength(array);
+        if (length == 0) {
+            return new ArrayOfNone<T>(array);
+        } else {
+            return new ArrayOfSome<T>(array);
+        }
+    }
+
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public static <T> Array<T> instance(java.lang.Class typeClass, Iterable<? extends T> elements) {
+        if (typeClass == null) {
+            typeClass = java.lang.Object.class;
+        }
+        if (typeClass == int.class) {
+            return (Array<T>) instance(Util.toIntArray((Iterable<? extends Integer>) elements));
+        } else if (typeClass == long.class) {
+            return (Array<T>) instance(Util.toLongArray((Iterable<? extends Integer>) elements));
+        } else if (typeClass == byte.class) {
+            return (Array<T>) instance(Util.toByteArray((Iterable<? extends Integer>) elements));
+        } else if (typeClass == short.class) {
+            return (Array<T>) instance(Util.toShortArray((Iterable<? extends Integer>) elements));
+        } else if (typeClass == float.class) {
+            return (Array<T>) instance(Util.toFloatArray((Iterable<? extends Float>) elements));
+        } else if (typeClass == double.class) {
+            return (Array<T>) instance(Util.toDoubleArray((Iterable<? extends Float>) elements));
+        } else if (typeClass == boolean.class) {
+            return (Array<T>) instance(Util.toBooleanArray((Iterable<? extends Boolean>) elements));
+        } else if (typeClass == char.class) {
+            return (Array<T>) instance(Util.toCharArray((Iterable<? extends Character>) elements));
+        } else if (typeClass == java.lang.String.class) {
+            return (Array<T>) instance(Util.toJavaStringArray((Iterable<? extends String>) elements));
+        } else {
+            return (Array<T>) instance((T[]) Util.toArray(elements, typeClass));
+        }
+    }
+
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public static <T> Array<T> instance(java.lang.Class typeClass, int size, T element) {
+        if (typeClass == null) {
+            typeClass = java.lang.Object.class;
+        }
+        if (typeClass == int.class) {
+            int[] arr = new int[size];
+            if (element != null) {
+                Arrays.fill(arr, (int)((Integer)element).longValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == long.class) {
+            long[] arr = new long[size];
+            if (element != null) {
+                Arrays.fill(arr, ((Integer)element).longValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == byte.class) {
+            byte[] arr = new byte[size];
+            if (element != null) {
+                Arrays.fill(arr, (byte)((Integer)element).longValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == short.class) {
+            short[] arr = new short[size];
+            if (element != null) {
+                Arrays.fill(arr, (short)((Integer)element).longValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == float.class) {
+            float[] arr = new float[size];
+            if (element != null) {
+                Arrays.fill(arr, (float)((Float)element).doubleValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == double.class) {
+            double[] arr = new double[size];
+            if (element != null) {
+                Arrays.fill(arr, ((Float)element).doubleValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == boolean.class) {
+            boolean[] arr = new boolean[size];
+            if (element != null) {
+                Arrays.fill(arr, ((Boolean)element).booleanValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == char.class) {
+            char[] arr = new char[size];
+            if (element != null) {
+             // FIXME: this is invalid
+                Arrays.fill(arr, (char)((Character)element).intValue());
+            }
+            return (Array<T>) instance(arr);
+        } else if (typeClass == java.lang.String.class) {
+            java.lang.String[] arr = new java.lang.String[size];
+            if (element != null) {
+                Arrays.fill(arr, ((String)element).toString());
+            }
+            return (Array<T>) instance(arr);
+        } else {
+            T[] arr = (T[]) java.lang.reflect.Array.newInstance(typeClass, size);
+            if (element != null) {
+                Arrays.fill(arr, element);
+            }
+            return (Array<T>) instance(arr);
         }
     }
 
@@ -176,66 +240,68 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }*/
 
     @Override
-    public Array<? extends Element> span(@Name("from") Integer from, 
+    public Array<? extends Element> span(@Name("from") Integer from,
             @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer") Integer to) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long toIndex = to==null ? getSize()-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
+        java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return new ArrayOfNone<Element>();
+            return ArrayOfNone.instance(typeClass, null);
         } else {
-            if (array instanceof char[]) {
+            if (typeClass == char.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof byte[]) {
+            } else if (typeClass == byte.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof short[]) {
+            } else if (typeClass == short.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof int[]) {
+            } else if (typeClass == int.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof long[]) {
+            } else if (typeClass == long.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof float[]) {
+            } else if (typeClass == float.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof double[]) {
+            } else if (typeClass == double.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof boolean[]) {
+            } else if (typeClass == boolean.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (array instanceof java.lang.String[]) {
+            } else if (typeClass == java.lang.String.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
             } else {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
             }
         }
     }
-    
+
     @Override
-    public Array<? extends Element> segment(@Name("from") Integer from, 
+    public Array<? extends Element> segment(@Name("from") Integer from,
             @Name("length") long length) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long resultLength = length;
         long lastIndex = getLastIndex().longValue();
+        java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return new ArrayOfNone<Element>();
+            return ArrayOfNone.instance(typeClass, null);
         } else {
-            if (array instanceof char[]) {
+            if (typeClass == char.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof byte[]) {
+            } else if (typeClass == byte.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof short[]) {
+            } else if (typeClass == short.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof int[]) {
+            } else if (typeClass == int.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof long[]) {
+            } else if (typeClass == long.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof float[]) {
+            } else if (typeClass == float.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof double[]) {
+            } else if (typeClass == double.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof boolean[]) {
+            } else if (typeClass == boolean.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
-            } else if (array instanceof java.lang.String[]) {
+            } else if (typeClass == java.lang.String.class) {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
             } else {
                 return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)(fromIndex + resultLength)));
@@ -269,12 +335,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     public Iterator<Element> getIterator() {
         class ArrayIterator implements Iterator<Element> {
             private int idx = 0;
-            
+
             @Override
             public java.lang.Object next() {
                 if (idx < getSize()) {
                     return unsafeItem(idx++);
-                } 
+                }
                 else {
                     return exhausted.getExhausted();
                 }
@@ -297,60 +363,63 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     private Element item(int index) {
-        return index < 0 || index >= getSize() ? 
+        return index < 0 || index >= getSize() ?
                 null : unsafeItem(index);
     }
 
+    @SuppressWarnings("unchecked")
     protected Element unsafeItem(int index) {
-        if (array instanceof char[]) {
+        java.lang.Class<?> typeClass = array.getClass().getComponentType();
+        if (typeClass == char.class) {
             return (Element) Character.instance(((char[])array)[index]);
-        } else if (array instanceof byte[]) {
+        } else if (typeClass == byte.class) {
             return (Element) Integer.instance(((byte[])array)[index]);
-        } else if (array instanceof short[]) {
+        } else if (typeClass == short.class) {
             return (Element) Integer.instance(((short[])array)[index]);
-        } else if (array instanceof int[]) {
+        } else if (typeClass == int.class) {
             return (Element) Integer.instance(((int[])array)[index]);
-        } else if (array instanceof long[]) {
+        } else if (typeClass == long.class) {
             return (Element) Integer.instance(((long[])array)[index]);
-        } else if (array instanceof float[]) {
+        } else if (typeClass == float.class) {
             return (Element) Float.instance(((float[])array)[index]);
-        } else if (array instanceof double[]) {
+        } else if (typeClass == double.class) {
             return (Element) Float.instance(((float[])array)[index]);
-        } else if (array instanceof boolean[]) {
+        } else if (typeClass == boolean.class) {
             return (Element) Boolean.instance(((boolean[])array)[index]);
-        } else if (array instanceof java.lang.String[]) {
+        } else if (typeClass == java.lang.String.class) {
             return (Element) String.instance(((java.lang.String[])array)[index]);
         } else {
             return ((Element[])array)[index];
         }
     }
 
-    public void setItem(@Name("index") @TypeInfo("ceylon.language.Integer") long index, 
-            @Name("element") @TypeInfo("ceylon.language.Nothing|Element") Element element) {
+    public void setItem(@Name("index") @TypeInfo("ceylon.language.Integer") long index,
+            @Name("element") @TypeInfo("Element") Element element) {
         int idx = (int) index;
-        if (idx>=0 && idx < getSize()) {
-            if (array instanceof char[]) {
+        if (idx >= 0 && idx < getSize()) {
+            java.lang.Class<?> typeClass = array.getClass().getComponentType();
+            if (typeClass == char.class) {
                 // FIXME This is really unsafe! Should we try to do something more intelligent here??
                 ((char[])array)[idx] = (char) ((Character)element).codePoint;
-            } else if (array instanceof byte[]) {
+            } else if (typeClass == byte.class) {
                 // FIXME Another unsafe conversion
                 ((byte[])array)[idx] = (byte) ((Integer)element).longValue();
-            } else if (array instanceof short[]) {
+            } else if (typeClass == short.class) {
                 // FIXME Another unsafe conversion
                 ((short[])array)[idx] = (short) ((Integer)element).longValue();
-            } else if (array instanceof int[]) {
+            } else if (typeClass == int.class) {
                 // FIXME Another unsafe conversion
                 ((int[])array)[idx] = (int) ((Integer)element).longValue();
-            } else if (array instanceof long[]) {
+            } else if (typeClass == long.class) {
                 ((long[])array)[idx] = ((Integer)element).longValue();
-            } else if (array instanceof float[]) {
+            } else if (typeClass == float.class) {
                 // FIXME Another unsafe conversion
                 ((float[])array)[idx] = (float) ((Float)element).doubleValue();
-            } else if (array instanceof double[]) {
+            } else if (typeClass == double.class) {
                 ((double[])array)[idx] = ((Float)element).doubleValue();
-            } else if (array instanceof boolean[]) {
+            } else if (typeClass == boolean.class) {
                 ((boolean[])array)[idx] = ((Boolean)element).booleanValue();
-            } else if (array instanceof java.lang.String[]) {
+            } else if (typeClass == java.lang.String.class) {
                 ((java.lang.String[])array)[idx] = ((String)element).toString();
             } else {
                 ((Element[])array)[idx] = element;
@@ -359,60 +428,92 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
+    @Ignore
     public Category getKeys() {
         return Correspondence$impl._getKeys(this);
     }
 
     @Override
-    public boolean definesEvery(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @Ignore
+    public boolean definesEvery(@Sequenced @Name("keys")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
-
-    @Override
-    public boolean definesAny(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
-    Iterable<? extends Integer> keys) {
-        return Correspondence$impl._definesAny(this, keys);
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public boolean definesEvery() {
+        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
+    }
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable definesEvery$keys() {
+        return $empty.getEmpty();
     }
 
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Iterable<? extends Element> items(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @Ignore
+    public boolean definesAny(@Sequenced @Name("keys")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
+        return Correspondence$impl._definesAny(this, keys);
+    }
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public boolean definesAny() {
+        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
+    }
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable definesAny$keys() {
+        return $empty.getEmpty();
+    }
+
+    @Override
+    @Ignore
+    public Iterable<? extends Element> items(@Sequenced @Name("keys")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys){
         return Correspondence$impl._items(this, keys);
+    }
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Element> items() {
+        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
+    }
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Integer> items$keys() {
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
     public Array<Element> getClone() {
         return this;
     }
-    
+
     @Override
+    @Ignore
     public java.lang.String toString() {
-        return List$impl._toString(this);
+        return Collection$impl._toString(this);
     }
 
     @Ignore
     public java.lang.Object toArray() {
         return array;
     }
-    
+
     @Override
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object") 
+    @Ignore
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object")
     java.lang.Object that) {
         return List$impl._equals(this, that);
     }
 
     @Override
+    @Ignore
     public int hashCode() {
         return List$impl._hashCode(this);
     }
-    
+
     @Override
-    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object") 
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object")
     java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
         Iterator<Element> iter = getIterator();
@@ -426,14 +527,14 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public long count(@Name("element") @TypeInfo("ceylon.language.Object") 
-    java.lang.Object element) {
+    public long count(@Name("selecting") @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+            Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
         Iterator<Element> iter = getIterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
-            if (elem != null && element.equals(element)) {
+            if (elem != null && selecting.$call(elem).booleanValue()) {
                 count++;
             }
         }
@@ -441,134 +542,113 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @Ignore
+    public boolean containsEvery(@Sequenced @Name("elements")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
+    @Override
+    @Ignore
+    public boolean containsEvery() {
+        return Category$impl._containsEvery(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<?> containsEvery$elements() {
+        return $empty.getEmpty();
+    }
 
     @Override
-    public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @Ignore
+    public boolean containsAny(@Sequenced @Name("elements")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
-}
-
-@Ignore
-class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
-
-    public ArrayOfNone() {
-        super(0);
-    }
-    
     @Override
-    public long getSize() {
-        return 0;
-    }
-    
-    @Override
-    public boolean getEmpty() {
-        return true;
-    }
-    
-    @Override
-    public Element getFirst() {
-        return null;
-    }
-    
-}
-
-@Ignore
-class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
-
-    public ArrayOfSome(char... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(byte... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(short... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(int... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(long... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(float... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(double... array) {
-        super(array);
-    }
-    
-    public ArrayOfSome(boolean... array) {
-        super(array);
-    }
-
-    public ArrayOfSome(java.lang.String... array) {
-        super(array);
-    }
-
-    public ArrayOfSome(Element... array) {
-        super(array);
-    }
-    
     @Ignore
-    public ArrayOfSome(java.util.List<Element> list) {
-        super(list);
+    public boolean containsAny() {
+        return Category$impl._containsAny(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<?> containsAny$elements() {
+        return $empty.getEmpty();
     }
 
     @Override
-    public FixedSized<? extends Element> getRest() {
-        if (getSize() == 1) {
-            return $arrayOfNone.<Element>arrayOfNone();
-        } else {
-            if (array instanceof char[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, 1, (int)getSize()));
-            } else if (array instanceof byte[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, 1, (int)getSize()));
-            } else if (array instanceof short[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, 1, (int)getSize()));
-            } else if (array instanceof int[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, 1, (int)getSize()));
-            } else if (array instanceof long[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, 1, (int)getSize()));
-            } else if (array instanceof float[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, 1, (int)getSize()));
-            } else if (array instanceof double[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, 1, (int)getSize()));
-            } else if (array instanceof boolean[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, 1, (int)getSize()));
-            } else if (array instanceof java.lang.String[]) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, 1, (int)getSize()));
-            } else {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, 1, (int)getSize()));
-            }
-        }
-    }
+    @Annotations({@Annotation("actual"), @Annotation("formal")})
+    public abstract Array<? extends Element> getReversed();
 
-    @Override
-    public boolean getEmpty() {
-        return false;
+    @Override @Ignore
+    public Element find(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this, f);
     }
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
+        return List$impl._findLast(this, f);
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Element> sort(Callable<? extends Comparison> f) {
+        return Iterable$impl._sort(this, f);
+    }
+    @Override
+    @Ignore
+    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+        return new MapIterable<Element, Result>(this, f);
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f);
+    }
+    @Override @Ignore
+    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+        return new MapIterable<Element, Result>(this, f).getSequence();
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f).getSequence();
+    }
+    @Override
+    @Ignore
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+        return Iterable$impl._fold(this, ini, f);
+    }
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        return Iterable$impl._any(this, f);
+    }
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        return Iterable$impl._every(this, f);
+    }
+	@Override @Ignore
+	public Iterable<? extends Element> skipping(long skip) {
+		return Iterable$impl._skipping(this, skip);
+	}
 
-    /*@Override
-    public FixedSized<? extends Element> getRest() {
-        return span(Integer.instance(1), null);
-    }*/
-    
-    @Override
-    public Element getFirst() {
-        return unsafeItem(0); //FixedSized$impl._getFirst(this);
+	@Override @Ignore
+	public Iterable<? extends Element> taking(long take) {
+		return Iterable$impl._taking(this, take);
+	}
+
+	@Override @Ignore
+	public Iterable<? extends Element> by(long step) {
+		return Iterable$impl._by(this, step);
+	}
+    @Override @Ignore
+    public Iterable<? extends Element> getCoalesced() {
+        return Iterable$impl._getCoalesced(this);
     }
-    
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
 }

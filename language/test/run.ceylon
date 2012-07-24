@@ -6,6 +6,8 @@ shared void run() {
     booleans();
     print("Testing numbers");
     numbers();
+    print("Testing lists");
+    lists();
     print("Testing sequences");
     sequences();
     print("Testing characters");
@@ -36,7 +38,22 @@ shared void run() {
     testMaps();
     print("Set tests");
     testSets();
+    print("Iterables test: map/fold/filter/find/sort etc");
+    testIterables();
+    print("Testing comprehensions and comprehension-related functions");
+    comprehensions();
+    print("Testing process");
+    testProcess();
+    print("Interfaces");
+    testSatisfaction();
     results();
+}
+
+shared void runAndAssert() {
+    run();
+    if (failureCount!=0) {
+        throw Exception("There were " failureCount " failures (out of " assertionCount " assertions)");
+    }
 }
 
 shared void test() { run(); }

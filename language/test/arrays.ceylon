@@ -11,33 +11,34 @@ void testArrays() {
     if (exists i=a1[0]) {
         assert(i==10, "array.setItem");
     } else { fail("array.setItem"); }
-    a1.setItem(0,null);
-    if (exists i=a1[0]) {
-        fail("array.setItem (null)");
-    }
     value a2=array(1,2,3);
     value a3=arrayOfSome({1,2,3});
     assert(a2==a3, "array.equals");
     assert(a2.size==a3.size, "array.size");
     assert(nonempty a2, "nonempty array 2");
     a2.setItem(0,10);
-    a3.setItem(0,null);
     if (exists i=a2[0]) {
         assert(i==10, "array.setItem 2");
     } else { fail("array.setItem 2"); }
-    if (exists i=a3[0]) {
-        fail("array.setItem (null) 2");
-    }
-    function dot(Integer i) { return "."; }
-    function idx(Integer i) { return "Index " (i+1) ""; }
-    value a4 = makeArray(5, dot);
+    value a4 = arrayOfSize(5, ".");
     assert(a4.size == 5, "makeArray 1");
     if (exists i=a4[4]) {
         assert(i==".", "makeArray 2");
     } else { fail("makeArray 2"); }
-    value a5 = makeArray(3, idx);
+    value a5 = arrayOfSize(3, 0);
     assert(a5.size == 3, "makeArray 3");
     if (exists i=a5[2]) {
-        assert(i=="Index 3", "makeArray 4");
+        assert(i==0, "makeArray 4");
     } else { fail("makeArray 4"); }
+    value a6 = array<Integer?>(1);
+    a6.setItem(0,null);
+    if (exists i=a6[0]) {
+        fail("array.setItem (null)");
+    }
+    value a7=arrayOfSome<Integer?>({1,2,3});
+    a7.setItem(0,null);
+    if (exists i=a7[0]) {
+        fail("array.setItem (null) 2");
+    }
+    assert(array(1,2,3).reversed==array(3,2,1), "Array.reversed");
 }

@@ -108,8 +108,16 @@ shared class Range<Element>(first, last)
         }
     }
     
-    shared actual Integer count(Object element) {
-        return contains(element) then 1 else 0;
+    shared actual Integer count(Boolean selecting(Element element)) {
+        variable value e := first;
+        variable value c := 0;
+        while (includes(e)) {
+            if (selecting(e)) {
+                c++;
+            }
+            e := next(e);
+        }
+        return c;
     }
     
     doc "Determines if the range includes the given value."
@@ -121,33 +129,6 @@ shared class Range<Element>(first, last)
     /*shared Element[] excludingLast {
         throw; //todo!
     }*/
-
-    doc "Return a sequence of values in the range, beginning 
-         at the first value, and incrementing by a constant 
-         step size, until a value outside the range is 
-         reached. In the case of a decreasing range, the
-         sequence is generated using decrements of the step
-         size. The step size must be nonzero."
-    shared Sequence<Element> by(Integer stepSize) {
-        //todo: should we just give Range a step size? Or
-        //      add a subclass, perhaps?
-        if (stepSize.zero) {
-            throw Exception("step size must be nonzero");
-        }
-        if (first==last || stepSize.unit) {
-            return this;
-        }
-        value builder = SequenceAppender<Element>({first});
-        variable Element x := next(first);
-        value steps = 1..stepSize;
-        while (decreasing then x>=last else x<=last) {
-            builder.append(x);
-            for (i in steps) {
-                x := next(x);
-            }
-        }
-        return builder.sequence;
-    }
 
     /*shared Integer? index(Element x) {
     if (!includes(x)) {
@@ -184,17 +165,82 @@ shared class Range<Element>(first, last)
         return this;
     }
     
-    /*shared actual Set<Element> elements {
-        throw; //todo!
-    }*/
-    
-    shared actual Element[] segment(Integer from, 
-                                    Integer length) {
-        throw; //todo!
+    shared actual Range<Element>|Empty segment(
+            Integer from, 
+            Integer length) {
+        if (length<=0 || from>lastIndex) {
+            return {};
+        }
+        variable value x:=first;
+        variable value i:=0;
+        while (i++<from) { x:=next(x); }
+        variable value y:=x;
+        variable value j:=1;
+        while (j++<length && y<last) { y:=next(y); }
+        return Range<Element>(x, y);
     }
     
-    shared actual Element[] span(Integer from, Integer? to) {
-        throw; //todo
+    shared actual Range<Element>|Empty span(
+            Integer from, 
+            Integer? to) {
+        variable value toIndex:=to else lastIndex;
+        variable value fromIndex:=from;
+        if (toIndex<0) {
+            if (fromIndex<0) {
+                return {};
+            }
+            toIndex:=0;
+        }
+        else if (toIndex>lastIndex) {
+            if (fromIndex>lastIndex) {
+                return {};
+            }
+            toIndex:=lastIndex;
+        }
+        if (fromIndex<0) {
+            fromIndex:=0;
+        }
+        else if (fromIndex>lastIndex) {
+            fromIndex:=lastIndex;
+        }
+        variable value x:=first;
+        variable value i:=0;
+        while (i++<fromIndex) { x:=next(x); }
+        variable value y:=first;
+        variable value j:=0;
+        while (j++<toIndex) { y:=next(y); }
+        return Range<Element>(x, y);
     }
     
+    doc "Reverse this range, returning a new range."
+    shared actual Range<Element> reversed {
+        return Range(last,first);
+    }
+
+    shared actual Range<Element>|Empty skipping(Integer skip) {
+        variable value x:=0;
+        variable value e := first;
+        while (x++<skip) {
+            e:=next(e);
+        }
+        return includes(e) then Range(e, last) else {};
+    }
+    shared actual Range<Element>|Empty taking(Integer take) {
+        if (take == 0) {
+            return {};
+        }
+        variable value x:=0;
+        variable value e:=first;
+        while (++x<take) {
+            e:=next(e);
+        }
+        return includes(e) then Range(first, e) else this;
+    }
+
+    doc "Returns the range itself, since a Range cannot
+         contain nulls."
+    shared actual Range<Element> coalesced {
+        return this;
+    }
+
 }

@@ -1,7 +1,6 @@
 package ceylon.language;
 
-import java.util.StringTokenizer;
-
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -10,8 +9,9 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
-@Ceylon
+@Ceylon(major = 2)
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({"ceylon.language.List<ceylon.language.Character>",
                  "ceylon.language.Comparable<ceylon.language.String>",
@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
                  "ceylon.language.Summable<ceylon.language.String>",
                  "ceylon.language.Castable<ceylon.language.String>",
                  "ceylon.language.Cloneable<ceylon.language.String>"})
+@ValueType
 public abstract class String
     implements Comparable<String>, List<Character>,
                Summable<String>, Castable<String>,
@@ -27,16 +28,23 @@ public abstract class String
 
     public final java.lang.String value;
 
-    String(java.lang.String s) {
+    protected String(java.lang.String s) {
         value = s;
     }
 
+    @Override
     public java.lang.String toString() {
         return value;
     }
 
     @Ignore
+    public static java.lang.String toString(java.lang.String value) {
+        return value;
+    }
+
+    @Ignore
     public static ceylon.language.String instance(java.lang.String s) {
+        if (s==null) return null;
         return s.isEmpty() ? StringOfNone.instance : new StringOfSome(s);
     }
 
@@ -60,7 +68,17 @@ public abstract class String
         return value.toUpperCase();
     }
 
+    @Ignore
+    public static java.lang.String getUppercased(java.lang.String value) {
+        return value.toUpperCase();
+    }
+
     public java.lang.String getLowercased() {
+        return value.toLowerCase();
+    }
+
+    @Ignore
+    public static java.lang.String getLowercased(java.lang.String value) {
         return value.toLowerCase();
     }
 
@@ -69,7 +87,18 @@ public abstract class String
         if (that instanceof String) {
             String s = (String)that;
             return value.equals(s.value);
-        } 
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Ignore
+    public static boolean equals(java.lang.String value, java.lang.Object that) {
+        if (that instanceof String) {
+            String s = (String)that;
+            return value.equals(s.value);
+        }
         else {
             return false;
         }
@@ -80,9 +109,21 @@ public abstract class String
         return value.hashCode();
     }
 
+    @Ignore
+    public static int hashCode(java.lang.String value) {
+        return value.hashCode();
+    }
+
     @Override
     public Comparison compare(@Name("other") String other) {
         int c = value.compareTo(other.value);
+        return (c < 0) ? smaller.getSmaller() :
+            ((c == 0) ? equal.getEqual() : larger.getLarger());
+    }
+
+    @Ignore
+    public static Comparison compare(java.lang.String value, java.lang.String otherValue) {
+        int c = value.compareTo(otherValue);
         return (c < 0) ? smaller.getSmaller() :
             ((c == 0) ? equal.getEqual() : larger.getLarger());
     }
@@ -112,21 +153,46 @@ public abstract class String
         return (CastValue) this;
     }
 
+    @Ignore
+    public static <CastValue extends String> CastValue castTo(java.lang.String value) {
+        // FIXME Is this correct?
+        return (CastValue) instance(value);
+    }
+
     @Override
-    public String plus(@Name("other") String string) {
-        return instance(value + string.value);
+    public String plus(@Name("other") String other) {
+        return instance(value + other.value);
+    }
+
+    @Ignore
+    public static java.lang.String plus(java.lang.String value, java.lang.String otherValue) {
+        return value + otherValue;
     }
 
     @Override
     @TypeInfo("ceylon.language.Integer")
     public long getSize() {
         //TODO: should we cache this value in an instvar?
+        // But remember that we'll mostly be using the static verion
+        // of this method! So an instvar won't help much.
         return value.codePointCount(0, value.length());
     }
 
+    @Ignore
+    public static long getSize(java.lang.String value) {
+        return value.codePointCount(0, value.length());
+    }
+
+    @Override
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer getLastIndex() {
         long length = getSize();
+        return (length == 0) ? null : Integer.instance(length - 1);
+    }
+
+    @Ignore
+    public static Integer getLastIndex(java.lang.String value) {
+        long length = getSize(value);
         return (length == 0) ? null : Integer.instance(length - 1);
     }
 
@@ -135,16 +201,26 @@ public abstract class String
         return value.isEmpty();
     }
 
+    @Ignore
+    public static boolean getEmpty(java.lang.String value) {
+        return value.isEmpty();
+    }
+
     @Override
     public Character item(@Name("index") Integer key) {
-        int index = (int)key.longValue();
+        return item(value, key.longValue());
+    }
+
+    @Ignore
+    public static Character item(java.lang.String value, long key) {
+        int index = (int)key;
         int length = value.length();
         if (index < 0 || index >= length) {
             return null;
         }
         int offset = value.offsetByCodePoints(0, index);
         int codePoint = value.codePointAt(offset);
-        return new Character(codePoint);
+        return Character.instance(codePoint);
     }
 
     @Override
@@ -153,13 +229,27 @@ public abstract class String
         return index >= 0 && index < getSize();
     }
 
+    @Ignore
+    public static boolean defines(java.lang.String value, long key) {
+        long index = key;
+        return index >= 0 && index < getSize(value);
+    }
+
     @Override
+    @Ignore
     public Category getKeys() {
         return Correspondence$impl._getKeys(this);
     }
 
+    @Ignore
+    public static Category getKeys(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._getKeys(instance(value));
+    }
+
     @Override
-    public boolean definesEvery(@Name("keys") 
+    @Ignore
+    public boolean definesEvery(@Name("keys")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
@@ -167,8 +257,35 @@ public abstract class String
         return Correspondence$impl._definesEvery(this, keys);
     }
 
+    @Ignore
+    public static boolean definesEvery(java.lang.String value, Iterable<? extends Integer> keys) {
+        //TODO: inefficient ... better to cache the result
+        //      of getSize()
+        // TODO We're still boxing here!
+        return Correspondence$impl._definesEvery(instance(value), keys);
+    }
+
     @Override
-    public boolean definesAny(@Name("keys") 
+    @Ignore
+    public boolean definesEvery() {
+        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
+    }
+
+    @Ignore
+    public static boolean definesEvery(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._definesEvery(instance(value), (Iterable)$empty.getEmpty());
+    }
+
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> definesEvery$keys() {
+        return (Iterable)$empty.getEmpty();
+    }
+
+    @Override
+    @Ignore
+    public boolean definesAny(@Name("keys")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
@@ -176,17 +293,72 @@ public abstract class String
         return Correspondence$impl._definesAny(this, keys);
     }
 
+    @Ignore
+    public static boolean definesAny(java.lang.String value, Iterable<? extends Integer> keys) {
+        //TODO: inefficient ... better to cache the result
+        //      of getSize()
+        // TODO We're still boxing here!
+        return Correspondence$impl._definesAny(instance(value), keys);
+    }
+
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
-    public List<? extends Character> items(@Name("keys") 
+    @Ignore
+    public boolean definesAny() {
+        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
+    }
+
+    @Ignore
+    public static boolean definesAny(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._definesAny(instance(value), (Iterable)$empty.getEmpty());
+    }
+
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> definesAny$keys() {
+        return (Iterable)$empty.getEmpty();
+    }
+
+    @Override
+    @Ignore
+    public List<? extends Character> items(@Name("keys")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
 
+    @Ignore
+    public static List<? extends Character> items(java.lang.String value, Iterable<? extends Integer> keys) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._items(instance(value), keys);
+    }
+
+    @Override
+    @Ignore
+    public List<? extends Character> items() {
+        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
+    }
+
+    @Ignore
+    public static List<? extends Character> items(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Correspondence$impl._items(instance(value), (Iterable)$empty.getEmpty());
+    }
+
+    @Override
+    @Ignore
+    public Iterable<? extends Integer> items$keys() {
+        return (Iterable)$empty.getEmpty();
+    }
+
     @Override
     @TypeInfo("ceylon.language.Iterator<ceylon.language.Character>")
     public Iterator<Character> getIterator() {
+        return getIterator(value);
+    }
+
+    @Ignore
+    public static Iterator<Character> getIterator(final java.lang.String value) {
         class StringIterator implements Iterator<Character> {
             private int offset = 0;
 
@@ -203,51 +375,80 @@ public abstract class String
                 return result;
             }
         }
-        
+
         return new StringIterator();
     }
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
     public Iterable<? extends Character> getCharacters() {
+        return getCharacters(value);
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> getCharacters(java.lang.String value) {
         int length = value.length();
         if (length == 0) {
-            return $empty.getEmpty();
+            return (Iterable)$empty.getEmpty();
         }
-        Character[] chars = new Character[(int)getSize()];
+        Character[] chars = new Character[(int)getSize(value)];
         for (int offset = 0, i = 0; offset < length; i++) {
             int codePoint = value.codePointAt(offset);
-            chars[i] = new Character(codePoint);
+            chars[i] = Character.instance(codePoint);
             offset += java.lang.Character.charCount(codePoint);
         }
         return new ArraySequence<Character>(chars);
     }
-    
+
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer firstOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.indexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
-    
+
+    @Ignore
+    public static Integer firstOccurrence(java.lang.String value, java.lang.String substring) {
+        int index = value.indexOf(substring);
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
+    }
+
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public Integer lastOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.lastIndexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
-    
+
+    @Ignore
+    public static Integer lastOccurrence(java.lang.String value, java.lang.String substring) {
+        int index = value.lastIndexOf(substring);
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
+    }
+
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
-    public Integer firstCharacterOccurrence(@Name("character") 
+    public Integer firstCharacterOccurrence(@Name("character")
     @TypeInfo("ceylon.language.Character") int character) {
         int index = value.indexOf(character);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
-    
+
+    @Ignore
+    public static Integer firstCharacterOccurrence(java.lang.String value, int character) {
+        int index = value.indexOf(character);
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
+    }
+
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
-    public Integer lastCharacterOccurrence(@Name("character") 
+    public Integer lastCharacterOccurrence(@Name("character")
     @TypeInfo("ceylon.language.Character") int character) {
         int index = value.lastIndexOf(character);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
-    
+
+    @Ignore
+    public static Integer lastCharacterOccurrence(java.lang.String value, int character) {
+        int index = value.lastIndexOf(character);
+        return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
+    }
+
     @Override
     public boolean contains(@Name("element") java.lang.Object element) {
         if (element instanceof String) {
@@ -260,49 +461,163 @@ public abstract class String
             return false;
         }
     }
-    
-    @Override
-    public long count(@Name("element") java.lang.Object element) {
-        throw new Exception(null, null); //TODO!!!!!
+
+    @Ignore
+    public static boolean contains(java.lang.String value, java.lang.Object element) {
+        if (element instanceof String) {
+            return value.indexOf(((String)element).value) >= 0;
+        }
+        else if (element instanceof Character) {
+            return value.indexOf(((Character)element).intValue()) >= 0;
+        }
+        else {
+            return false;
+        }
     }
-    
+
     public boolean startsWith(@Name("substring") java.lang.String substring) {
         return value.startsWith(substring);
     }
-    
+
+    @Ignore
+    public static boolean startsWith(java.lang.String value, java.lang.String substring) {
+        return value.startsWith(substring);
+    }
+
     public boolean endsWith(@Name("substring") java.lang.String substring) {
         return value.endsWith(substring);
     }
-    
+
+    @Ignore
+    public static boolean endsWith(java.lang.String value, java.lang.String substring) {
+        return value.endsWith(substring);
+    }
+
     @Override
-    public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @Ignore
+    public boolean containsAny(@Sequenced @Name("elements")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
 
+    @Ignore
+    public static boolean containsAny(java.lang.String value, Iterable<?> elements) {
+        // TODO We're still boxing here!
+        return Category$impl._containsAny(instance(value), elements);
+    }
+
     @Override
-    public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @Ignore
+    public boolean containsAny() {
+        return Category$impl._containsAny(this, $empty.getEmpty());
+    }
+
+    @Ignore
+    public static boolean containsAny(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Category$impl._containsAny(instance(value), $empty.getEmpty());
+    }
+
+    @Override
+    @Ignore
+    public Iterable<?> containsAny$elements() {
+        return $empty.getEmpty();
+    }
+
+    @Override
+    @Ignore
+    public boolean containsEvery(@Sequenced @Name("elements")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
-    
-    public boolean longerThan(@TypeInfo("ceylon.language.Integer") 
-    @Name("length") long length) {
-        return getSize() > length;
+
+    @Ignore
+    public static boolean containsEvery(java.lang.String value, Iterable<?> elements) {
+        // TODO We're still boxing here!
+        return Category$impl._containsEvery(instance(value), elements);
     }
 
-    public boolean shorterThan(@TypeInfo("ceylon.language.Integer") 
-    @Name("length") long length) {
-        return getSize() < length;
+    @Override
+    @Ignore
+    public boolean containsEvery() {
+        return Category$impl._containsEvery(this, $empty.getEmpty());
     }
-    
+
+    @Ignore
+    public static boolean containsEvery(java.lang.String value) {
+        // TODO We're still boxing here!
+        return Category$impl._containsEvery(instance(value), $empty.getEmpty());
+    }
+
+    @Override
+    @Ignore
+    public Iterable<?> containsEvery$elements() {
+        return $empty.getEmpty();
+    }
+
+    public boolean longerThan(@TypeInfo("ceylon.language.Integer")
+    @Name("length") long length) {
+        try {
+            value.offsetByCodePoints(0, (int)length+1);
+            return true;
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return false;
+        }
+    }
+
+    @Ignore
+    public static boolean longerThan(java.lang.String value, long length) {
+        try {
+            value.offsetByCodePoints(0, (int)length+1);
+            return true;
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return false;
+        }
+    }
+
+    public boolean shorterThan(@TypeInfo("ceylon.language.Integer")
+    @Name("length") long length) {
+        try {
+            value.offsetByCodePoints(0, (int)length);
+            return false;
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return true;
+        }
+    }
+
+    @Ignore
+    public static boolean shorterThan(java.lang.String value, long length) {
+        try {
+            value.offsetByCodePoints(0, (int)length);
+            return false;
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return true;
+        }
+    }
+
+    @TypeInfo("ceylon.language.String")
     public java.lang.String getTrimmed() {
         return value.trim();
     }
-    
+
+    @Ignore
+    public static java.lang.String getTrimmed(java.lang.String value) {
+        return value.trim();
+    }
+
+    @TypeInfo("ceylon.language.String")
     public java.lang.String getNormalized() {
+        return getNormalized(value);
+    }
+
+    @Ignore
+    public static java.lang.String getNormalized(java.lang.String value) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         boolean previousWasWhitespace=false;
         for (int i=0;i<value.length();) {
@@ -319,14 +634,19 @@ public abstract class String
         }
         return result.toString();
     }
-    
+
     @TypeInfo("ceylon.language.String")
-    public java.lang.String initial(@TypeInfo("ceylon.language.Integer") 
+    public java.lang.String initial(@TypeInfo("ceylon.language.Integer")
     @Name("length") long length) {
-    	if (length <= 0) {
-    	    return "";
-    	} else if (length >= getSize()) {
-            return value; 
+    	return initial(value, length);
+    }
+
+    @Ignore
+    public static java.lang.String initial(java.lang.String value, long length) {
+        if (length <= 0) {
+            return "";
+        } else if (length >= getSize(value)) {
+            return value;
         } else {
             int offset = value.offsetByCodePoints(0, (int)length);
             return value.substring(0, (int)offset);
@@ -334,21 +654,32 @@ public abstract class String
     }
 
     @TypeInfo("ceylon.language.String")
-    public java.lang.String terminal(@TypeInfo("ceylon.language.Integer") 
+    public java.lang.String terminal(@TypeInfo("ceylon.language.Integer")
     @Name("length") long length) {
-    	if (length <= 0) {
-    	    return "";
-    	} else if (length >= getSize()) {
-    	    return value; 
-    	} else {
-            int offset = value.offsetByCodePoints(0, value.length()-(int)length);
-    	    return value.substring(offset, value.length());
-    	}
+    	return terminal(value, length);
     }
-    
+
+    @Ignore
+    public static java.lang.String terminal(java.lang.String value, long length) {
+        if (length <= 0) {
+            return "";
+        } else if (length >= getSize(value)) {
+            return value;
+        } else {
+            int offset = value.offsetByCodePoints(0, value.length()-(int)length);
+            return value.substring(offset, value.length());
+        }
+    }
+
+    @TypeInfo("ceylon.language.String")
     public java.lang.String join(@Name("strings") @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     Iterable<? extends String> strings) {
+        return join(value, strings);
+    }
+
+    @Ignore
+    public static java.lang.String join(java.lang.String value, Iterable<? extends String> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
         java.lang.Object elem = it.next();
@@ -360,49 +691,76 @@ public abstract class String
         }
         return result.toString();
     }
-    
+
+    @Ignore
+    public java.lang.String join() {
+        return join((Iterable)$empty.getEmpty());
+    }
+
+    @Ignore
+    public static java.lang.String join(java.lang.String value) {
+        return join(value, (Iterable)$empty.getEmpty());
+    }
+
     @Override
     @TypeInfo("ceylon.language.String")
-    public String segment(@Name("from") final Integer from, 
+    public String segment(@Name("from") final Integer from,
             @Name("length") final long length) {
-        long fromIndex = from.longValue();
+        return instance(segment(value, from.longValue(), length));
+    }
+
+    @Ignore
+    public static java.lang.String segment(java.lang.String value, final long from, final long length) {
+        long fromIndex = from;
         long resultLength = length;
-        long len = getSize();
+        long len = getSize(value);
         if (fromIndex >= len || resultLength <= 0) {
-            return instance("");
+            return "";
         }
         if ((fromIndex + resultLength) > len) {
             resultLength = len - fromIndex;
         }
         int start = value.offsetByCodePoints(0, (int)fromIndex);
         int end = value.offsetByCodePoints(start, (int)resultLength);
-        return instance(value.substring(start, end));
+        return value.substring(start, end);
     }
-    
+
     @Override
     @TypeInfo("ceylon.language.String")
-    public String span(@Name("from") final Integer from, 
-            @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer") 
+    public String span(@Name("from") final Integer from,
+            @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
             final Integer to) {
-        long len = getSize();
+        return instance(span(value, from.longValue(), to));
+    }
+
+    @Ignore
+    public static java.lang.String span(java.lang.String value, final long from, final Integer to) {
+        long len = getSize(value);
         if (len == 0) {
-            return instance("");
+            return "";
         }
-        long fromIndex = from.longValue();
+        long fromIndex = from;
         long toIndex = (to == null) ? len - 1 : to.longValue();
         if (fromIndex >= len || toIndex < fromIndex) {
-            return instance("");
+            return "";
         }
         if (toIndex >= len) {
             toIndex = len - 1;
         }
         int start = value.offsetByCodePoints(0, (int)fromIndex);
         int end = value.offsetByCodePoints(start, (int)(toIndex - fromIndex + 1));
-        return instance(value.substring(start, end));
+        return value.substring(start, end);
     }
-    
-    public java.lang.String getReversed() {
-        long len = getSize();
+
+    @Override
+    @TypeInfo("ceylon.language.String")
+    public String getReversed() {
+        return instance(getReversed(value));
+    }
+
+    @Ignore
+    public static java.lang.String getReversed(java.lang.String value) {
+        long len = getSize(value);
         if (len < 2) {
             return value;
         }
@@ -415,10 +773,16 @@ public abstract class String
         }
         return builder.toString();
     }
-    
+
+    @TypeInfo("ceylon.language.String")
     public java.lang.String repeat(
-            @TypeInfo("ceylon.language.Integer") 
+            @TypeInfo("ceylon.language.Integer")
             @Name("times") long times) {
+        return repeat(value, times);
+    }
+
+    @Ignore
+    public static java.lang.String repeat(java.lang.String value, long times) {
         int len = value.length();
         if (times<=0 || len==0) return "";
         if (times==1) return value;
@@ -428,84 +792,454 @@ public abstract class String
         }
         return builder.toString();
     }
-    
-    public java.lang.String replace( 
+
+    @TypeInfo("ceylon.language.String")
+    public java.lang.String replace(
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {
         return value.replace(substring, replacement);
     }
-    
+
+    @Ignore
+    public static java.lang.String replace(java.lang.String value, java.lang.String substring, java.lang.String replacement) {
+        return value.replace(substring, replacement);
+    }
+
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     public Iterable<? extends String> split(
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterable<ceylon.language.Character>")
+            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,ceylon.language.Character>")
             @Defaulted
-            @Name("separator") Iterable<? extends Character> separators,
+            @Name("separator") Callable<? extends Boolean> separator,
             @Defaulted
-            @Name("discardSeparators") boolean discardSeparators) {
+            @Name("discardSeparators") boolean discardSeparators,
+            @Defaulted
+            @Name("groupSeparators") boolean groupSeparators) {
         if (value.isEmpty()) {
             return new Singleton<String>(this);
         }
-        java.lang.String delims;
-        if (separators==null) {
-            delims = " \t\n\r\f";
+        return new Tokens(value, separator, !discardSeparators, groupSeparators);
+    }
+
+    @Ignore
+    public static Iterable<? extends String> split(java.lang.String value,
+            Callable<? extends Boolean> separator,
+            boolean discardSeparators,
+            boolean groupSeparators) {
+        if (value.isEmpty()) {
+            return new Singleton<String>(instance(value));
         }
-        else if (separators instanceof String) {
-            delims = separators.toString();
-        }
-        else {
-            java.lang.StringBuilder builder = new java.lang.StringBuilder();
-            java.lang.Object elem;
-            for (Iterator<? extends Character> iter=separators.getIterator(); !((elem = iter.next()) instanceof Finished);) {
-                builder.append(elem);
+        return new Tokens(value, separator, !discardSeparators, groupSeparators);
+    }
+
+    @Ignore
+    public Iterable<? extends String> split(
+            Callable<? extends Boolean> separator,
+            boolean discardSeparators) {
+        return split(separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
+    }
+
+    @Ignore
+    public static Iterable<? extends String> split(java.lang.String value,
+            Callable<? extends Boolean> separator,
+            boolean discardSeparators) {
+        return split(value, separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
+    }
+
+    @Ignore
+    public Iterable<? extends String> split(
+            Callable<? extends Boolean> separator) {
+        return split(separator, split$discardSeparators(separator));
+    }
+
+    @Ignore
+    public static Iterable<? extends String> split(java.lang.String value,
+            Callable<? extends Boolean> separator) {
+        return split(value, separator, split$discardSeparators(separator));
+    }
+
+    @Ignore
+    public Iterable<? extends String> split() {
+        return split(split$separator());
+    }
+
+    @Ignore
+    public static Iterable<? extends String> split(java.lang.String value) {
+        return split(value, split$separator());
+    }
+
+    @Ignore
+    public static Callable<? extends Boolean> split$separator(){
+        return new AbstractCallable<Boolean>("whitespace") {
+            @Override
+            public Boolean $call(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).getWhitespace());
             }
-            delims = builder.toString();
-        }
-        return new Tokens(value, delims, !discardSeparators);
+        };
+    }
+
+    @Ignore
+    public static boolean split$discardSeparators(Callable<? extends Boolean> separator){
+        return true;
+    }
+
+    @Ignore
+    public static boolean split$groupSeparators(Callable<? extends Boolean> separator, boolean discardSeparators){
+        return true;
     }
 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     public Iterable<? extends String> getLines() {
-        return split(instance("\n"), true);
+        return split(new AbstractCallable<Boolean>("whitespace") {
+            @Override
+            public Boolean $call(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).toString().equals("\n"));
+            }
+        }, true);
     }
+
+    @Ignore
+    public static Iterable<? extends String> getLines(java.lang.String value) {
+        return split(value, new AbstractCallable<Boolean>("whitespace") {
+            @Override
+            public Boolean $call(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).toString().equals("\n"));
+            }
+        }, true);
+    }
+
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     public Iterable<? extends Integer> occurrences(
             @Name("substring") java.lang.String substring) {
         return new Occurs(value, substring);
     }
 
+    @Ignore
+    public static Iterable<? extends Integer> occurrences(java.lang.String value, java.lang.String substring) {
+        return new Occurs(value, substring);
+    }
+
+    @Override
+    public String getClone() {
+        return this;
+    }
+
+    @Ignore
+    public static java.lang.String getClone(java.lang.String value) {
+        return value;
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> getRest(java.lang.String value) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return Iterable$impl._getSequence(instance(value));
+        }
+    }
+
+    @Ignore
+    public static Character getFirst(java.lang.String value) {
+        if (value.isEmpty()) {
+            return null;
+        } else {
+            return item(value, 0);
+        }
+    }
+
+    @Ignore
+    public static Character getLast(java.lang.String value) {
+        if (value.isEmpty()) {
+            return null;
+        } else {
+            return item(value, getLastIndex(value).longValue());
+        }
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> getSequence(java.lang.String value) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return Iterable$impl._getSequence(instance(value));
+        }
+    }
+
+    @Ignore
+    public static Character find(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return null;
+        } else {
+            return Iterable$impl._find(instance(value), f);
+        }
+    }
+
+    @Ignore
+    public static Character findLast(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return null;
+        } else {
+            return List$impl._findLast(instance(value), f);
+        }
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> sort(java.lang.String value, Callable<? extends Comparison> f) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return instance($string.string(Iterable$impl._sort(instance(value), f)));
+        }
+    }
+
+    @Override @Ignore
+    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+        return new MapIterable<Character, Result>(this, f);
+    }
+
+    @Ignore
+    public static <Result> Iterable<? extends Result> map(java.lang.String value, Callable<? extends Result> f) {
+        return new MapIterable<Character, Result>(instance(value), f);
+    }
+
+    @Override @Ignore
+    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+        return new MapIterable<Character, Result>(this, f).getSequence();
+    }
+    @Ignore
+    public static <Result> Iterable<? extends Result> collect(java.lang.String value, Callable<? extends Result> f) {
+        return new MapIterable<Character, Result>(instance(value), f).getSequence();
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> filter(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return String.instance($string.string(new FilterIterable<Character>(instance(value), f)));
+        }
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Character> select(Callable<? extends Boolean> f) {
+        return filter(f);
+    }
+    @Ignore
+    public static Iterable<? extends Character> select(java.lang.String value, Callable<? extends Boolean> f) {
+        return filter(value, f);
+    }
+
+    @Ignore
+    public static <Result> Result fold(java.lang.String value, Result ini, Callable<? extends Result> f) {
+        if (value.isEmpty()) {
+            return ini;
+        } else {
+            return Iterable$impl._fold(instance(value), ini, f);
+        }
+    }
+
+    @Ignore
+    public static boolean any(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return false;
+        } else {
+            return Iterable$impl._any(instance(value), f);
+        }
+    }
+
+    @Ignore
+    public static boolean every(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return false;
+        } else {
+            return Iterable$impl._every(instance(value), f);
+        }
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> skipping(java.lang.String value, long skip) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return instance(segment(value, skip, getSize(value)));
+        }
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> taking(java.lang.String value, long take) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return instance(segment(value, 0, take));
+        }
+    }
+
+    @Ignore
+    public static Iterable<? extends Character> by(java.lang.String value, long step) {
+        if (value.isEmpty()) {
+            return instance(value);
+        } else {
+            return instance($string.string(Iterable$impl._by(instance(value), step)));
+        }
+    }
+
+    @Ignore
+    public static long count(java.lang.String value, Callable<? extends Boolean> f) {
+        if (value.isEmpty()) {
+            return 0;
+        } else {
+            return Iterable$impl._count(instance(value), f);
+        }
+    }
+
+    @TypeInfo("ceylon.language.String")
+    @Override
+    public String getCoalesced() {
+        return this; //Can't have null characters
+    }
+
+    @Ignore
+    public static java.lang.String getCoalesced(java.lang.String value) {
+        return value;
+    }
+
+    @Ignore
+    public static Iterable<? extends Entry<? extends Integer, ? extends Character>> getIndexed(java.lang.String value) {
+        if (value.isEmpty()) {
+            return (Iterable)instance(value);
+        } else {
+            return Iterable$impl._getIndexed(instance(value));
+        }
+    }
+
+    @Ignore
+    public static <Other>Iterable chain(java.lang.String value, Iterable<? extends Other> other) {
+        if (value.isEmpty()) {
+            return other;
+        } else {
+            return Iterable$impl._chain(instance(value), other);
+        }
+    }
+
+    @Ignore
+    public static <Other>String withLeading(java.lang.String value) {
+        return instance(value);
+    }
+
+    @Ignore
+    public static <Other>String withTrailing(java.lang.String value) {
+        return instance(value);
+    }
+
+    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static <Other>Sequence withLeading(java.lang.String value, Other e) {
+        if (value.isEmpty()) {
+            return new ArraySequence(e);
+        } else {
+            return List$impl._withLeading(instance(value), e);
+        }
+    }
+
+    @Ignore @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static <Other>Sequence withTrailing(java.lang.String value, Other e) {
+        if (value.isEmpty()) {
+            return new ArraySequence(e);
+        } else {
+            return List$impl._withTrailing(instance(value), e);
+        }
+    }
+
     private static final class Tokens implements Iterable<String> {
         private final java.lang.String str;
-        private final java.lang.String delims;
+        private final ceylon.language.Callable<? extends Boolean> separator;
         private final boolean keepSeparators;
-        
-        public Tokens(java.lang.String str, java.lang.String delims, boolean keepSeparators) {
+        private final boolean groupSeparators;
+
+        public Tokens(java.lang.String str, ceylon.language.Callable<? extends Boolean> separator,
+                boolean keepSeparators, boolean groupSeparators) {
             this.str = str;
-            this.delims = delims;
+            this.separator = separator;
             this.keepSeparators = keepSeparators;
+            this.groupSeparators = groupSeparators;
         }
 
         @Override
         public Iterator<? extends String> getIterator() {
             class TokenIterator implements Iterator<String> {
-                private final StringTokenizer tokens;
-
-                private TokenIterator(StringTokenizer tokens) {
-                    this.tokens = tokens;
-                }
+                private final char[] chars = str.toCharArray();
+                private int index = 0;
+                private boolean first = true;
+                private boolean lastTokenWasSeparator = false;
 
                 @Override
                 public java.lang.Object next() {
-                    java.lang.Object result;
-                    if (tokens.hasMoreTokens()) {
-                        result = String.instance(tokens.nextToken());
+                    if (!eof()) {
+                        int start = index;
+                        // if we start with a separator, or if we returned a separator the last time
+                        // and we are still looking at a separator: return an empty token once
+                        if(((first && start == 0)
+                                || lastTokenWasSeparator)
+                                && peekSeparator()){
+                            first = false;
+                            lastTokenWasSeparator = false;
+                            return String.instance("");
+                        }
+                        // are we looking at a separator
+                        if(eatSeparator()){
+                            if(groupSeparators){
+                                // eat them all in one go if we group them
+                                do{}while(eatSeparator());
+                            }
+                            // do we return them?
+                            if(keepSeparators){
+                                lastTokenWasSeparator = true;
+                                return String.instance(new java.lang.String(chars, start, index-start));
+                            }
+                            // keep going and eat the next word
+                            start = index;
+                        }
+                        // eat until the next separator
+                        while(!eof() && !peekSeparator()){
+                            eatChar();
+                        }
+                        lastTokenWasSeparator = false;
+                        return String.instance(new java.lang.String(chars, start, index-start));
+                    } else if (lastTokenWasSeparator){
+                        // we're missing a last empty token before the EOF because the string ended
+                        // with a returned separator
+                        lastTokenWasSeparator = false;
+                        return String.instance("");
                     } else {
-                        result = exhausted.getExhausted();
+                        return exhausted.getExhausted();
                     }
-                    return result;
+                }
+
+                private boolean eof(){
+                    return index >= chars.length;
+                }
+
+                private boolean eatSeparator() {
+                    boolean ret = peekSeparator();
+                    if(ret)
+                        eatChar();
+                    return ret;
+                }
+
+                private void eatChar() {
+                    if(java.lang.Character.isHighSurrogate(chars[index]))
+                        index += 2;
+                    else
+                        index++;
+                }
+
+                private boolean peekSeparator() {
+                    if(eof())
+                        return false;
+                    int charCodePoint = java.lang.Character.codePointAt(chars, index);
+                    return separator.$call(Character.instance(charCodePoint)).booleanValue();
                 }
             }
-            
-            return new TokenIterator(new StringTokenizer(str, delims, keepSeparators));
+
+            return new TokenIterator();
         }
 
         @Override
@@ -513,17 +1247,106 @@ public abstract class String
             return getIterator().next() == exhausted.getExhausted();
         }
 
-        /*@Override
+        @Override
+        @Ignore
         public String getFirst() {
-            java.lang.Object result = getIterator().next();
-            return (String) ((result != exhausted.getExhausted()) ? result : null);
-        }*/
+        	return Iterable$impl._getFirst(this);
+        }
+        @Override @Ignore
+        public String getLast() {
+            return Iterable$impl._getLast(this);
+        }
+
+        @Override
+        @Ignore
+        public Iterable<? extends String> getRest() {
+        	return Iterable$impl._getRest(this);
+        }
+
+        @Override
+        @Ignore
+        public Iterable<? extends String> getSequence() {
+            return Iterable$impl._getSequence(this);
+        }
+        @Override @Ignore
+        public String find(Callable<? extends Boolean> f) {
+            return Iterable$impl._find(this, f);
+        }
+        @Override @Ignore
+        public String findLast(Callable<? extends Boolean> f) {
+            return Iterable$impl._findLast(this, f);
+        }
+        @Override
+        @Ignore
+        public Iterable<? extends String> sort(Callable<? extends Comparison> f) {
+            return Iterable$impl._sort(this, f);
+        }
+        @Override
+        @Ignore
+        public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+            return new MapIterable<String, Result>(this, f);
+        }
+        @Override
+        @Ignore
+        public Iterable<? extends String> filter(Callable<? extends Boolean> f) {
+            return new FilterIterable<String>(this, f);
+        }
+        @Override
+        @Ignore
+        public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+            return new MapIterable<String, Result>(this, f).getSequence();
+        }
+        @Override
+        @Ignore
+        public Iterable<? extends String> select(Callable<? extends Boolean> f) {
+            return new FilterIterable<String>(this, f).getSequence();
+        }
+        @Override
+        @Ignore
+        public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+            return Iterable$impl._fold(this, ini, f);
+        }
+        @Override @Ignore
+        public boolean any(Callable<? extends Boolean> f) {
+            return Iterable$impl._any(this, f);
+        }
+        @Override @Ignore
+        public boolean every(Callable<? extends Boolean> f) {
+            return Iterable$impl._every(this, f);
+        }
+        @Override @Ignore
+        public Iterable<? extends String> skipping(long n) {
+            return Iterable$impl._skipping(this, n);
+        }
+        @Override @Ignore
+        public Iterable<? extends String> taking(long n) {
+            return Iterable$impl._taking(this, n);
+        }
+        @Override @Ignore
+        public Iterable<? extends String> by(long n) {
+            return Iterable$impl._by(this, n);
+        }
+        @Override @Ignore
+        public long count(Callable<? extends Boolean> f) {
+            return Iterable$impl._count(this, f);
+        }
+        @Override @Ignore
+        public Iterable<? extends String> getCoalesced() {
+            return Iterable$impl._getCoalesced(this);
+        }
+        @Override @Ignore
+        public Iterable<? extends Entry<? extends Integer, ? extends String>> getIndexed() {
+            return Iterable$impl._getIndexed(this);
+        }
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+            return Iterable$impl._chain(this, other);
+        }
     }
 
     private static final class Occurs implements Iterable<Integer> {
         private final java.lang.String str;
         private final java.lang.String oc;
-        
+
         public Occurs(java.lang.String str, java.lang.String oc) {
             this.str = str;
             this.oc = oc;
@@ -544,7 +1367,7 @@ public abstract class String
                     return exhausted.getExhausted();
                 }
             }
-            
+
             return new OccurrenceIterator();
         }
 
@@ -553,25 +1376,97 @@ public abstract class String
             return getIterator().next() == exhausted.getExhausted();
         }
 
-        /*@Override
-        public String getFirst() {
-            java.lang.Object result = getIterator().next();
-            return (String) ((result != exhausted.getExhausted()) ? result : null);
-        }*/
-    }
+        @Override
+        @Ignore
+        public Integer getFirst() {
+        	return Iterable$impl._getFirst(this);
+        }
+        @Override @Ignore
+        public Integer getLast() {
+            return Iterable$impl._getLast(this);
+        }
 
-    @Override
-    public String getClone() {
-        return this;
-    }
+        @Override
+        @Ignore
+        public Iterable<? extends Integer> getRest() {
+        	return Iterable$impl._getRest(this);
+        }
 
-    @Ignore
-    public Iterable<? extends Character> split$separators(){
-        return null;
+        @Override
+        @Ignore
+        public Iterable<? extends Integer> getSequence() {
+            return Iterable$impl._getSequence(this);
+        }
+        @Override @Ignore
+        public Integer find(Callable<? extends Boolean> f) {
+            return Iterable$impl._find(this, f);
+        }
+        @Override @Ignore
+        public Integer findLast(Callable<? extends Boolean> f) {
+            return Iterable$impl._findLast(this, f);
+        }
+        @Override
+        @Ignore
+        public Iterable<? extends Integer> sort(Callable<? extends Comparison> f) {
+            return Iterable$impl._sort(this, f);
+        }
+        @Override
+        @Ignore
+        public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+            return new MapIterable<Integer, Result>(this, f);
+        }
+        @Override
+        @Ignore
+        public Iterable<? extends Integer> filter(Callable<? extends Boolean> f) {
+            return new FilterIterable<Integer>(this, f);
+        }
+        @Override @Ignore
+        public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+            return new MapIterable<Integer, Result>(this, f).getSequence();
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> select(Callable<? extends Boolean> f) {
+            return new FilterIterable<Integer>(this, f).getSequence();
+        }
+        @Override
+        @Ignore
+        public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+            return Iterable$impl._fold(this, ini, f);
+        }
+        @Override @Ignore
+        public boolean any(Callable<? extends Boolean> f) {
+            return Iterable$impl._any(this, f);
+        }
+        @Override @Ignore
+        public boolean every(Callable<? extends Boolean> f) {
+            return Iterable$impl._every(this, f);
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> skipping(long n) {
+            return Iterable$impl._skipping(this, n);
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> taking(long n) {
+            return Iterable$impl._taking(this, n);
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> by(long n) {
+            return Iterable$impl._by(this, n);
+        }
+        @Override @Ignore
+        public long count(Callable<? extends Boolean> f) {
+            return Iterable$impl._count(this, f);
+        }
+        @Override @Ignore
+        public Iterable<? extends Integer> getCoalesced() {
+            return Iterable$impl._getCoalesced(this);
+        }
+        @Override @Ignore
+        public Iterable<? extends Entry<? extends Integer, ? extends Integer>> getIndexed() {
+            return Iterable$impl._getIndexed(this);
+        }
+        @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+            return Iterable$impl._chain(this, other);
+        }
     }
-    @Ignore
-    public boolean split$discardSeparators(Iterable<? extends Character> separators){
-        return false;
-    }
-
 }

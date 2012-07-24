@@ -1,10 +1,10 @@
 package ceylon.language;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
@@ -12,54 +12,58 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon
+@Ceylon(major = 2)
 @Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes({"ceylon.language.Sequence<Element>", 
+@SatisfiedTypes({"ceylon.language.Sequence<Element>",
 	             "ceylon.language.Category"})
-@TypeParameters(@TypeParameter(value="Element", 
+@TypeParameters(@TypeParameter(value="Element",
     satisfies={"ceylon.language.Comparable<Element>",
 		       "ceylon.language.Ordinal<Element>"}))
 public class Range<Element extends Comparable<? super Element> & Ordinal<? extends Element>>
     implements Sequence<Element>, Category {
-    
+
     private final Element first;
     private final Element last;
     private final long size;
-    
-    public Range(@Name("first") Element first, 
+
+    public Range(@Name("first") Element first,
     		     @Name("last") Element last) {
         this.first = first;
         this.last = last;
         long index = 0;
         Element x = first;
-        while (!x.equals(last)) {
-            ++index;
-            x = next(x);
+        if (first instanceof Integer && last instanceof Integer) {
+            this.size = Math.abs(((Integer)last).value - ((Integer)first).value)+1;
+        } else {
+            while (!x.equals(last)) {
+                ++index;
+                x = next(x);
+            }
+            this.size = index+1;
         }
-        this.size = index+1;
     }
-    
+
     @Override
     public final Element getFirst(){
         return first;
     }
-    
+
     @Override
     public final Element getLast(){
         return last;
     }
-    
+
     @Override
     public final java.lang.String toString(){
         return first.toString() + ".." + last.toString();
     }
-    
+
     public final boolean getDecreasing(){
         return last.compare(first).smallerThan();
     }
-    
+
     private final Element next(Element x){
-        return getDecreasing() ? 
+        return getDecreasing() ?
         		x.getPredecessor() : x.getSuccessor();
     }
 
@@ -79,7 +83,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public FixedSized<? extends Element> getRest() {
     	if (first.equals(last)) {
-    	    return $empty.getEmpty();
+    	    return (FixedSized)$empty.getEmpty();
     	}
     	else {
             return new Range<Element>(next(getFirst()), getLast());
@@ -106,33 +110,27 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     @TypeInfo("ceylon.language.Iterator<Element>")
 	public Iterator<Element> getIterator() {
-        class RangeIterator implements Iterator<Element> {
-        	java.lang.Object current;
+        return new Iterator<Element>() {
+            private java.lang.Object current = first;
+            private boolean go = true;
 
-        	public RangeIterator() {
-            	this.current = first;
-            }
-            
             @TypeInfo("Element|ceylon.language.Finished")
-        	public java.lang.Object next() {
+            public java.lang.Object next() {
+                if (!go) return exhausted.getExhausted();
                 java.lang.Object result = current;
-                if (!(current instanceof Finished)){
-                    if(current.equals(getLast())) {
-                        current = exhausted.getExhausted();
-                    } else {
-                        current = Range.this.next((Element) current);
-                    }
+                if (current.equals(getLast())) {
+                    go = false;
+                } else {
+                    current = Range.this.next((Element) current);
                 }
                 return result;
             }
-            
+
             @Override
             public java.lang.String toString() {
                 return "RangeIterator";
             }
-        }
-        
-        return new RangeIterator();
+        };
     }
 
     @Override
@@ -147,23 +145,19 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     	}
     }
 
-    @Override
-    public final long count(@Name("element") java.lang.Object element) {
-        return contains(element) ? 1 : 0;
-    }
-    
     public final boolean includes(@Name("x") Element x){
         if (getDecreasing()){
-            return x.compare(first).asSmallAs() && 
+            return x.compare(first).asSmallAs() &&
                     x.compare(last).asLargeAs();
         }
         else {
-            return x.compare(first).asLargeAs() && 
+            return x.compare(first).asLargeAs() &&
                     x.compare(last).asSmallAs();
         }
     }
-    
+
     @Override
+    @Ignore
     public final boolean equals(@Name("that") java.lang.Object that){
         if (that instanceof Range) {
             Range<Element> $that = (Range<Element>) that;
@@ -173,135 +167,345 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             return List$impl._equals(this, that);
         }
     }
-    
+
     @Override
+    @Ignore
     public int hashCode(){
         return List$impl._hashCode(this);
     }
-    
+
     @Override
     public Range<Element> getClone() {
         return this;
     }
-    
+
     /*@Override
     public Ordered<Element> segment(long from, long length) {
         throw new RuntimeException("Not implemented"); //todo!
     }*/
 
     @Override
+    @Ignore
     public Category getKeys() {
         return Correspondence$impl._getKeys(this);
     }
 
     @Override
-    public boolean definesEvery(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @Ignore
+    public boolean definesEvery(@Sequenced @Name("keys")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
-
     @Override
-    public boolean definesAny(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
-    Iterable<? extends Integer> keys) {
-        return Correspondence$impl._definesAny(this, keys);
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public boolean definesEvery() {
+        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
+    }
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Integer> definesEvery$keys() {
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer")
+    @Ignore
+    public boolean definesAny(@Sequenced @Name("keys")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
+        return Correspondence$impl._definesAny(this, keys);
+    }
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public boolean definesAny() {
+        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
+    }
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Integer> definesAny$keys() {
+        return (Iterable)$empty.getEmpty();
+    }
+
+    @Override
+    @Ignore
+    public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
 
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public ceylon.language.List<? extends Element> items() {
+        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
+    }
+
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Integer> items$keys() {
+        return (Iterable)$empty.getEmpty();
+    }
+
     //TODO: @TypeInfo
     @Override
-    public boolean containsEvery(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @Ignore
+    public boolean containsEvery(@Sequenced @Name("elements")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
+    @Override
+    @Ignore
+    public boolean containsEvery() {
+        return Category$impl._containsEvery(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<?> containsEvery$elements() {
+        return $empty.getEmpty();
+    }
 
     //TODO: @TypeInfo
     @Override
-    public boolean containsAny(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>")
+    @Ignore
+    public boolean containsAny(@Sequenced @Name("elements")
+    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
+    @Override
+    @Ignore
+    public boolean containsAny() {
+        return Category$impl._containsAny(this, $empty.getEmpty());
+    }
+    @Override
+    @Ignore
+    public Iterable<?> containsAny$elements() {
+        return $empty.getEmpty();
+    }
 
     @Override
+    @Ignore
     public boolean getEmpty() {
         return Some$impl._getEmpty(this);
     }
 
     @Override
+    @Ignore
     public boolean defines(@Name("key") Integer key) {
         return List$impl._defines(this, key);
     }
 
+    @Annotations({@Annotation("actual")})
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public Sequence<? extends Element> getReversed() {
+    	return new Range<Element>(last, first);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> segment(
-    		@Name("from") final Integer from, 
+    		@Name("from") final Integer from,
     		@Name("length") final long length) {
         //only positive length for now
-        if (length<=0) return $empty.getEmpty();
-        if (!defines(from)) return $empty.getEmpty();
-        Element x = this.first;
-        for (int i=0; i < from.longValue(); i++) { x = this.next(x); }
+        if (length<=0 || from.value>getLastIndex().value) {
+        	return (ceylon.language.List)$empty.getEmpty();
+        }
+        Element x = first;
+        for (int i=0; i < from.value; i++) { x = next(x); }
         Element y = x;
-        for (int i=1; i < length; i++) { y = this.next(y); }
-        if (!includes(y)) { y = this.last; }
+        for (int i=1; i < length && y.compare(last).smallerThan(); i++) { y = next(y); }
         return new Range<Element>(x, y);
     }
-    
+
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> span(
-    		@Name("from") final Integer from,
+    		@Name("from") Integer from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
-    		@Name("to") final Integer to) {
-    	Integer fromIndex = largest.largest(Integer.instance(0), from);
-        Integer toIndex = to==null ? getLastIndex() : to;
-    	if (!defines(fromIndex)) {
-            //If it's an inverse range, adjust the "from" (upper bound)
-            if (fromIndex.compare(toIndex) == larger.getLarger() && defines(toIndex)) {
-                //Decrease the upper bound
-                while (!defines(fromIndex)) {
-                    fromIndex = fromIndex.getPredecessor();
-                }
-            } else {
-                return $empty.getEmpty();
-            }
-        } else while (!defines(toIndex)) {
-            //decrease the upper bound
-            toIndex = toIndex.getPredecessor();
+    		@Name("to") Integer to) {
+        Integer lastIndex = getLastIndex();
+		to = to==null ? lastIndex : to;
+        if (to.value<0) {
+        	if (from.value<0) {
+        		return (ceylon.language.List)$empty.getEmpty();
+        	}
+        	to = Integer.instance(0);
         }
-        return new Range<Element>(this.item(fromIndex), this.item(toIndex));
+        else if (to.value>lastIndex.value) {
+        	if (from.value>lastIndex.value) {
+        		return (ceylon.language.List)$empty.getEmpty();
+        	}
+        	to = lastIndex;
+        }
+        if (from.value<0) {
+        	from = Integer.instance(0);
+        }
+        else if (from.value>lastIndex.value) {
+        	from = lastIndex;
+        }
+        Element x = first;
+        for (int i=0; i < from.value; i++) { x = next(x); }
+        Element y = first;
+        for (int i=0; i < to.value; i++) { y = next(y); }
+        return new Range<Element>(x, y);
     }
-    
-    public Sequence<? extends Element> by(
-    		@TypeInfo("ceylon.language.Integer")
-    		@Name("stepSize") long stepSize) {
-    	if (stepSize==0) {
-    		throw new Exception(String.instance("step size must be nonzero"), null);
-    	}
-    	if (first.equals(last) || stepSize==1) {
-    		return this;
-    	}
-    	boolean decreasing = getDecreasing();
-    	List<Element> list = new ArrayList<Element>();
-    	for (Element elem = first; decreasing ? 
-    			elem.compare(last).asLargeAs() : elem.compare(last).asSmallAs();) {
-    		list.add(elem);
-    		for (int i=0; i<stepSize; i++) {
-    			elem = next(elem);
-    		}
-    	}
-    	return new ArraySequence<Element>(list);
+
+    @Override
+    @Ignore
+    public Iterable<? extends Element> by(final long step) {
+        if (step > 1 && first instanceof Integer && last instanceof Integer) {
+            //Optimize for Integer ranges
+            return new AbstractIterable<Element>() {
+                @Override
+                @Annotations(@Annotation("formal"))
+                @TypeInfo("ceylon.language.Iterator<Element>")
+                public Iterator<? extends Element> getIterator() {
+
+                    return new Iterator<Element>() {
+                        long current = ((Integer)first).value;
+                        final long lim = ((Integer)last).value;
+                        boolean inverse = lim < current;
+
+                        @TypeInfo("Element|ceylon.language.Finished")
+                        public java.lang.Object next() {
+                            long result = current;
+                            if (inverse) {
+                                if (current < lim) return exhausted.getExhausted();
+                                current-=step;
+                            } else {
+                                if (current > lim) return exhausted.getExhausted();
+                                current+=step;
+                            }
+                            return Integer.instance(result);
+                        }
+
+                        @Override
+                        public java.lang.String toString() {
+                            return "RangeIterator";
+                        }
+                    };
+                }
+            };
+        }
+    	return Iterable$impl._by(this, step);
+    }
+
+    @Override
+    @Ignore
+    public Sequence<? extends Element> getSequence() {
+        return Sequence$impl._getSequence(this);
+    }
+    @Override @Ignore
+    public Element find(Callable<? extends Boolean> f) {
+        Element e = first;
+        while (includes(e)) {
+            if (f.$call(e).booleanValue()) return e;
+            e = next(e);
+        }
+        return null;
+    }
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
+        return this.getReversed().find(f);
+    }
+    @Override
+    @Ignore
+    public Sequence<? extends Element> sort(Callable<? extends Comparison> f) {
+        return Sequence$impl._sort(this, f);
+    }
+    @Override
+    @Ignore
+    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+        return new MapIterable<Element, Result>(this, f);
+    }
+    @Override
+    @Ignore
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f);
+    }
+    @Override @Ignore
+    public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
+        return Sequence$impl._collect(this, f);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f).getSequence();
+    }
+    @Override
+    @Ignore
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+        return Iterable$impl._fold(this, ini, f);
+    }
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        return Iterable$impl._any(this, f);
+    }
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        return Iterable$impl._every(this, f);
+    }
+    @Override
+    @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
+    public Iterable<? extends Element> skipping(@Name("take") long skip) {
+        long x=0;
+        Element e=first;
+        while (x++<skip) {
+            e=next(e);
+        }
+        return this.includes(e) ? new Range(e, last) : (Iterable)$empty.getEmpty();
+    }
+    @Override
+    @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
+    public Iterable<? extends Element> taking(@Name("take") long take) {
+        if (take == 0) {
+            return (Iterable)$empty.getEmpty();
+        }
+        long x=0;
+        Element e=first;
+        while (++x<take) {
+            e=next(e);
+        }
+        return this.includes(e) ? new Range(first, e) : this;
+    }
+
+    @Override @Ignore
+    public long count(Callable<? extends Boolean> f) {
+        Element e = first;
+        long c = 0;
+        while (includes(e)) {
+            if (f.$call(e).booleanValue()) c++;
+            e = next(e);
+        }
+        return c;
+    }
+    @TypeInfo("ceylon.language.Range<Element>")
+    @Override
+    public Range<? extends Element> getCoalesced() {
+        return this; //There can be no nulls in a Range
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
+
+    @Annotations(@Annotation("actual"))
+    @TypeParameters(@TypeParameter("Other"))
+    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    @Override @SuppressWarnings("rawtypes")
+    public <Other>Sequence withLeading(Other e) {
+        return List$impl._withLeading(this, e);
+    }
+    @Annotations(@Annotation("actual"))
+    @TypeParameters(@TypeParameter("Other"))
+    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    @Override @SuppressWarnings("rawtypes")
+    public <Other>Sequence withTrailing(Other e) {
+        return List$impl._withTrailing(this, e);
     }
 
 }

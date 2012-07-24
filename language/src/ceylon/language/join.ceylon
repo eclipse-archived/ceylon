@@ -1,12 +1,8 @@
-doc "Given a list of sequences, return a new sequence 
-     formed by incrementally appending each sequence in the
-     list to the empty sequence. If the list of sequences is
-     empty, return the empty sequence."
+doc "Given a list of iterable objects, return a new sequence 
+     of all elements of the all given objects. If there are
+     no arguments, or if none of the arguments contains any
+     elements, return the empty sequence."
 see (SequenceBuilder)
-shared Element[] join<Element>(Element[]... sequences) {
-    value builder = SequenceBuilder<Element>();
-    for (sequence in sequences) {
-        builder.appendAll(sequence...);
-    }
-    return builder.sequence;
+shared Element[] join<Element>(Iterable<Element>... iterables) {
+    return { for (it in iterables) for (val in it) val };
 }

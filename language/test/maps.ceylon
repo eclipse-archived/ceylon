@@ -11,7 +11,7 @@ interface SetTestBase<out Element> satisfies Set<Element>
 class SetTest<Element>(Element... element)
             satisfies SetTestBase<Element>
             given Element satisfies Object {
-    shared actual Element[] elements = element;
+    shared actual Element[] elements = element.sequence;
     shared actual Integer size { return elements.size; }
     shared actual Boolean empty { return elements.empty; }
     shared actual SetTest<Element> clone { return this; }
@@ -22,39 +22,6 @@ class SetTest<Element>(Element... element)
             return other.elements == elements;
         }
         return false;
-    }
-    shared actual Boolean contains(Object element) {
-        for (e in elements) {
-            if (e == element) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean containsAny(Object... elems) {
-        for (e in elems) {
-            if (contains(e)) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean containsEvery(Object... elems) {
-        for (e in elems) {
-            if (!contains(e)) { return false; }
-        }
-        return true;
-    }
-    shared actual Integer count(Object element) {
-        return contains(element) then 1 else 0;
-    }
-    shared actual Boolean superset(Set<Object> set) {
-        for (e in set) {
-            if (!contains(e)) { return false; }
-        }
-        return true;
-    }
-    shared actual Boolean subset(Set<Object> set) {
-        for (e in elements) {
-            if (!(e in set)) { return false; }
-        }
-        return true;
     }
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
@@ -128,7 +95,7 @@ class MapTest<Key, Item>(Key->Item... entry)
             satisfies MapTestBase<Key, Item>
             given Key satisfies Object
             given Item satisfies Object {
-    shared actual Entry<Key, Item>[] entries = entry;
+    shared actual Entry<Key, Item>[] entries = entry.sequence;
     //REMOVE as soon as interfaces can have concrete members
     shared actual Boolean equals(Object other) {
         if (is MapTestBase<Object, Object> other) {
@@ -147,91 +114,12 @@ class MapTest<Key, Item>(Key->Item... entry)
         }
         return null;
     }
-    shared actual Item?[] items(Object... keys) {
-        value sb = SequenceBuilder<Item?>();
-        for (k in keys) { sb.append(item(k)); }
-        return sb.sequence;
-    }
-    shared actual Boolean defines(Object key) {
-        for (e in entries) {
-            if (e.key == key) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean definesAny(Object... keys) {
-        for (k in keys) {
-            if (defines(k)) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean definesEvery(Object... keys) {
-        for (k in keys) {
-            if (!defines(k)) { return false; }
-        }
-        return true;
-    }
-    shared actual Boolean contains(Object element) {
-        if (is Object->Object element) {
-            if (exists it = item(element.key)) { return it == element.item; }
-        }
-        return false;
-    }
-    shared actual Boolean containsAny(Object... element) {
-        for (e in element) {
-            if (contains(e)) { return true; }
-        }
-        return false;
-    }
-    shared actual Boolean containsEvery(Object... element) {
-        for (e in element) {
-            if (!contains(e)) { return false; }
-        }
-        return true;
-    }
-    //REMOVE as soon as interfaces can have concrete members
-    shared actual Integer count(Object element) {
-        return contains(element) then 1 else 0;
-    }
-    shared actual Set<Key> keys {
-        value sb = SequenceBuilder<Key>();
-        for (e in entries) { sb.append(e.key); }
-        return SetTest(sb.sequence...);
-    }
-    shared actual Collection<Item> values {
-        value sb = SequenceBuilder<Item>();
-        for (e in entries) { sb.append(e.item); }
-        return array(sb.sequence...);
-    }
-    shared actual Map<Item, Set<Key>> inverse {
-        value sb = SequenceBuilder<Item->Set<Key>>();
-        variable Integer count := 0;
-        for (e in entries) {
-            value keySB = SequenceBuilder<Key>();
-            variable Integer cnt2 := 0; 
-            variable Boolean duplicate := false;
-            for (e2 in entries) {
-                if (e2.item == e.item) {
-                    if (cnt2 < count) {
-                        duplicate := true;
-                        break;
-                    }
-                    keySB.append(e2.key);
-                }
-                ++cnt2;
-            }
-            if (!duplicate) {
-                sb.append(e.item->SetTest(keySB.sequence...));
-            }
-            ++count;
-        }
-        return MapTest(sb.sequence...);
-    }
 }
 
 void testMaps() {
     value m1 = MapTest<Integer, String>(1->"A", 2->"B", 3->"C", 4->"B");
-    assert(m1.count(2->"B")==1, "Map.count(2->B) is " m1.count(2->"B") " instead of 1");
-    assert(m1.count(4.2)==0, "Map.count 2");
+    assert(m1.count((Entry<Integer,String> x) x.key==2)==1, "Map.count(2->B) is " m1.count((Entry<Integer,String> x) x.key==2) " instead of 1");
+    assert(m1.count((Entry<Integer,String> x) x.key==100)==0, "Map.count 2");
     assert(2->"B" in m1, "Map.contains(2->B) should be true");
     assert(!(4.2 in m1), "Map.contains 2");
     assert(!(1->"C" in m1), "Map.contains 3");
@@ -245,21 +133,30 @@ void testMaps() {
     assert(!exists m1["hi"], "Map.item 3");
     assert(!(is Finished m1.iterator.next()), "Map.iterator");
     assert(m1.values.size==m1.size, "Map.values 1");
+    /* M4
     for (e in m1) {
         assert(e.item in m1.values, "Map.values 2");
-    }
+    }*/
     assert(m1.keys.size==m1.size, "Map.keys 1");
+    /* M4
     for (e in m1) {
         assert(e.key in m1.keys, "Map.keys.contains(" e.key ") should be true");
     }
     assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
+    */
+    assert(m1.size == m1.inverse.size, "Map.inverse 1");
+    value m2 = m1.mapItems((Integer k, String v) k*100);
+    assert(1->100 in m2, "Map.mapItems");
+    for (k->v in m2) {
+        if (v%100 != 0) { fail("Map.mapItems [2]"); }
+    }
 }
 
 void testSets() {
     value s1 = SetTest<Integer>(1, 2, 3);
     value emptySet = SetTest<Bottom>();
-    assert(s1.count(2)==1, "Set.count 1");
-    assert(s1.count(4.2)==0, "Set.count 2");
+    assert(s1.count((Integer x) x==2)==1, "Set.count 1");
+    assert(s1.count((Integer x) x==100)==0, "Set.count 2");
     assert(2 in s1, "Set.contains 1");
     assert(!(4.2 in s1), "Set.contains 2");
     assert(!(4 in s1), "Set.contains 3");

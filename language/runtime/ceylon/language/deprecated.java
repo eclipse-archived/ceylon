@@ -7,20 +7,26 @@ import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 2)
 @Method
 public final class deprecated
 {
+    private deprecated(){}
+    
     public static Nothing deprecated(
             @Defaulted
             @Name("reason") @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
-            java.lang.String reason) {
+            String reason) {
         return null;
     }
-    private deprecated(){}
+
+    @Ignore
+    public static Nothing deprecated() {
+        return deprecated($init$reason());
+    }
     
     @Ignore
-    public static java.lang.String $init$reason() {
+    public static String $init$reason() {
         return null;
     }
     

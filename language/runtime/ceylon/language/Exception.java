@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 2)
 @Class(extendsType="ceylon.language.IdentifiableObject")
 public class Exception extends RuntimeException {
 
@@ -58,7 +58,7 @@ public class Exception extends RuntimeException {
 
     @TypeInfo("ceylon.language.String")
     public java.lang.String toString() {
-        return "Exception \"" + getMessage() +"\""; 
+        return className.className(this) + " \"" + getMessage() +"\""; 
     }
     
     @Override

@@ -7,14 +7,19 @@ object emptyIterator satisfies Iterator<Bottom> {
 
 doc "A fixed-size collection with no elements."
 shared interface None<out Element>
-        satisfies FixedSized<Element> {
+        satisfies FixedSized<Element> &
+                  ContainerWithFirstElement<Bottom,Nothing> {
 
     doc "Returns `null`."
-    shared actual Nothing first {
+    shared actual default Nothing first {
+        return null;
+    }
+    doc "Returns `null`."
+    shared actual default Nothing last {
         return null;
     }
 
-    doc "Returns an emptyIterator."
+    doc "Returns `emptyIterator`."
     shared actual default Iterator<Element> iterator {
         return emptyIterator;
     }

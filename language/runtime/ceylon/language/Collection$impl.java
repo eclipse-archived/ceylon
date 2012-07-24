@@ -8,14 +8,14 @@ public final class Collection$impl<Element> {
     public Collection$impl(Collection<Element> $this) {
         this.$this = $this;
     }
-    public boolean getEmpty(Collection<Element> $this){
+    public boolean getEmpty(){
         return Collection$impl.<Element>_getEmpty(this.$this);
     }
     static <Element> boolean _getEmpty(Collection<Element> $this){
         return $this.getSize() == 0;
     }
     
-    public boolean contains(Collection<Element> $this, java.lang.Object element){
+    public boolean contains(java.lang.Object element){
         return Collection$impl.<Element>_contains(this.$this, element);
     }
     static <Element> boolean _contains(Collection<Element> $this, java.lang.Object element){
@@ -27,18 +27,27 @@ public final class Collection$impl<Element> {
         }
         return false;
     }
-    
-    public long count(Collection<Element> $this, java.lang.Object element){
-        return Collection$impl.<Element>_count(this.$this, element);
+
+    public java.lang.String toString() {
+        return Collection$impl.<Element>_toString($this);
     }
-    static <Element> long _count(Collection<Element> $this, java.lang.Object element){
-        long count=0;
+    static <Element> java.lang.String _toString(Collection<Element> $this) {
+        if ($this.getEmpty()) return "{}";
+        java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
         java.lang.Object elem;
-        for (ceylon.language.Iterator<?> $element$iter$1 = $this.getIterator(); !((elem = $element$iter$1.next()) instanceof Finished);) {
-            if (elem!=null && element.equals(elem)) {
-                count++;
+        boolean first=true;
+        for (Iterator<? extends Element> iter=$this.getIterator(); 
+                !((elem = iter.next()) instanceof Finished);) {
+            if (first) {
+                first = false;
             }
+            else {
+                result.append(", ");
+            }
+            result.append(elem);
         }
-        return count;
+        result.append(" }");
+        return result.toString();
     }
+
 }

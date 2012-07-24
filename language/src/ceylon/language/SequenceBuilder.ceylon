@@ -32,7 +32,7 @@ shared class SequenceBuilder<Element>() satisfies Sized {
 doc "This class is used for constructing a new nonempty 
      sequence by incrementally appending elements to an
      existing nonempty sequence. The existing sequence is
-     not modified, since sequences are immutable. This class 
+     not modified, since `Sequence`s are immutable. This class 
      is mutable but threadsafe."
 see (SequenceBuilder)
 shared class SequenceAppender<Element>(Sequence<Element> elements) 

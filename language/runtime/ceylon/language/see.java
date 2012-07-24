@@ -1,18 +1,23 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 2)
 @Method
 public class see
 {
     public static Nothing see(@Name("programElements") @Sequenced
-            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Void>")
+            @TypeInfo("ceylon.language.Iterable<ceylon.language.Void>")
             final ceylon.language.Iterable<? extends java.lang.Object> value) {
+        return null;
+    }
+    @Ignore
+    public static Nothing see() {
         return null;
     }
     private see(){}

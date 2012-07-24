@@ -1,13 +1,21 @@
-doc "Given a sequence of `Comparable` values, return the 
-     largest value in the sequence."
+doc "Given a nonempty sequence of `Comparable` values, 
+     return the largest value in the sequence."
 see (Comparable, min, largest)
-shared Value max<Value>(Sequence<Value> values) 
-        given Value satisfies Comparable<Value> {
-    variable value max := values.first;
-    for (val in values.rest) {
-        if (val>max) {
-            max:=val;
+shared Null|Value max<Value,Null>(Iterable<Value>&ContainerWithFirstElement<Value,Null> values) 
+        given Value satisfies Comparable<Value>
+        given Null satisfies Nothing {
+    ContainerWithFirstElement<Value,Null> cwfe = values;
+    value first = cwfe.first;
+    if (exists first) {
+        variable value max:=first;
+        for (val in values.rest) {
+            if (val>max) {
+                max:=val;
+            }
         }
+        return max;
     }
-    return max;
+    else {
+        return first;
+    }
 }

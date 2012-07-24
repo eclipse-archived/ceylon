@@ -2,12 +2,16 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
+@Ceylon(major = 2)
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes("ceylon.language.Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {
@@ -18,7 +22,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public ArraySequence(Element... array) {
         this(array,0);
     }
-    
+
     @Ignore
     ArraySequence(Element[] array, long first) {
     	if (array.length==0 || array.length<=first) {
@@ -45,7 +49,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public FixedSized<? extends Element> getRest() {
         if (first+1==array.length) {
-            return $empty.getEmpty();
+            return (FixedSized)$empty.getEmpty();
         }
         else {
             return new ArraySequence<Element>(array, first + 1);
@@ -69,17 +73,17 @@ public class ArraySequence<Element> implements Sequence<Element> {
         long toIndex = to==null ? array.length-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return $empty.getEmpty();
+            return (List)$empty.getEmpty();
         }
         else if (toIndex>lastIndex) {
             return new ArraySequence<Element>(array, fromIndex);
         }
         else {
-            return new ArraySequence<Element>(Arrays.copyOfRange(array, 
+            return new ArraySequence<Element>(Arrays.copyOfRange(array,
                     (int)fromIndex, (int)toIndex+1), 0);
         }
     }
-    
+
     @Override
     public List<? extends Element> segment(Integer from, long length) {
         long fromIndex = from.longValue();
@@ -87,13 +91,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
         long resultLength = length;
         long lastIndex = getLastIndex().longValue();
         if (fromIndex>lastIndex||resultLength<=0) {
-            return $empty.getEmpty();
+            return (List)$empty.getEmpty();
         }
         else if (fromIndex+resultLength>lastIndex) {
             return new ArraySequence<Element>(array, fromIndex);
         }
         else {
-            return new ArraySequence<Element>(Arrays.copyOfRange(array, 
+            return new ArraySequence<Element>(Arrays.copyOfRange(array,
                     (int)fromIndex, (int)(fromIndex + resultLength)), 0);
         }
     }
@@ -111,6 +115,16 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
+    public ArraySequence<? extends Element> getReversed() {
+    	Element[] reversed = (Element[]) java.lang.reflect.Array.newInstance(array.getClass()
+    			.getComponentType(), array.length);
+    	for (int i=0; i<array.length; i++) {
+    		reversed[array.length-1-i] = array[i];
+    	}
+		return new ArraySequence<Element>(reversed, 0);
+    }
+
+    @Override
     public boolean defines(Integer key) {
         long ind = key.longValue();
         return ind>=0 && ind+first<array.length;
@@ -121,14 +135,15 @@ public class ArraySequence<Element> implements Sequence<Element> {
         return new ArrayListIterator();
     }
 
-    public class ArrayListIterator implements Iterator<Element> {
+    public class ArrayListIterator
+            implements Iterator<Element> {
         private long idx = first;
-        
+
         @Override
         public java.lang.Object next() {
             if (idx <= getLastIndex().longValue()+first) {
                 return array[(int) idx++];
-            } 
+            }
             else {
                 return exhausted.getExhausted();
             }
@@ -144,54 +159,89 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public Element item(Integer key) {
         long index = key.longValue()+first;
-        return index<0 || index >= array.length ? 
+        return index<0 || index >= array.length ?
                 null : array[(int) index];
     }
 
     @Override
+    @Ignore
     public Category getKeys() {
         return Correspondence$impl._getKeys(this);
     }
 
     @Override
+    @Ignore
     public boolean definesEvery(Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
 
     @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public boolean definesEvery() {
+        return Correspondence$impl._definesEvery(this, (Iterable)$empty.getEmpty());
+    }
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Integer> definesEvery$keys() {
+        return (Iterable)$empty.getEmpty();
+    }
+
+    @Override
+    @Ignore
     public boolean definesAny(Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
 
     @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public boolean definesAny() {
+        return Correspondence$impl._definesAny(this, (Iterable)$empty.getEmpty());
+    }
+
+    @Override @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Integer> definesAny$keys() {
+        return (Iterable)$empty.getEmpty();
+    }
+
+    @Override
+    @Ignore
     public ceylon.language.List<? extends Element> items(Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
+    }
+
+    @Override
+    @Ignore @SuppressWarnings({"unchecked", "rawtypes"})
+    public ceylon.language.List<? extends Element> items() {
+        return Correspondence$impl._items(this, (Iterable)$empty.getEmpty());
+    }
+    @Override @SuppressWarnings({"unchecked", "rawtypes"})
+    public Iterable<? extends Integer> items$keys() {
+        return (Iterable)$empty.getEmpty();
     }
 
     @Override
     public ArraySequence<Element> getClone() {
         return this;
     }
-    
+
     @Override
+    @Ignore
     public java.lang.String toString() {
-        return List$impl._toString(this);
+        return Collection$impl._toString(this);
     }
 
-    public Element[] toArray() {
-        return array;
-    }
-    
     @Override
+    @Ignore
     public boolean equals(java.lang.Object that) {
         return List$impl._equals(this, that);
     }
 
     @Override
+    @Ignore
     public int hashCode() {
         return List$impl._hashCode(this);
     }
-    
+
     @Override
     public boolean contains(java.lang.Object element) {
         for (Element x: array) {
@@ -201,21 +251,136 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public long count(java.lang.Object element) {
+    public long count(Callable<? extends Boolean> f) {
         int count=0;
         for (Element x: array) {
-            if (x!=null && element.equals(x)) count++;
+            if (x!=null && f.$call(x).booleanValue()) count++;
         }
         return count;
     }
 
     @Override
+    @Ignore
     public boolean containsEvery(Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
 
     @Override
+    @Ignore
+    public boolean containsEvery() {
+        return Category$impl._containsEvery(this, $empty.getEmpty());
+    }
+
+    @Override
+    @Ignore
+    public Iterable<?>containsEvery$elements() {
+        return $empty.getEmpty();
+    }
+
+    @Override
+    @Ignore
     public boolean containsAny(Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
+    }
+
+    @Override
+    @Ignore
+    public boolean containsAny() {
+        return Category$impl._containsAny(this, $empty.getEmpty());
+    }
+
+    @Override
+    @Ignore
+    public Sequence<? extends Element> getSequence() {
+        return Sequence$impl._getSequence(this);
+    }
+
+    @Override @Ignore
+    public Element find(Callable<? extends Boolean> f) {
+        return Iterable$impl._find(this, f);
+    }
+    @Override @Ignore
+    public Element findLast(Callable<? extends Boolean> f) {
+        return List$impl._findLast(this, f);
+    }
+    @Override
+    @Ignore
+    public Sequence<? extends Element> sort(Callable<? extends Comparison> f) {
+        return Sequence$impl._sort(this, f);
+    }
+
+    @Override
+    public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
+        return new MapIterable<Element, Result>(this, f);
+    }
+    @Override
+    public Iterable<? extends Element> filter(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f);
+    }
+    @Override
+    public <Result> Sequence<? extends Result> collect(Callable<? extends Result> f) {
+        return Sequence$impl._collect(this, f);
+    }
+
+    @Override
+    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+        return new FilterIterable<Element>(this, f).getSequence();
+    }
+
+    @Override
+    @Ignore
+    public <Result> Result fold(Result ini, Callable<? extends Result> f) {
+        return Iterable$impl._fold(this, ini, f);
+    }
+    @Override @Ignore
+    public boolean any(Callable<? extends Boolean> f) {
+        return Iterable$impl._any(this, f);
+    }
+    @Override @Ignore
+    public boolean every(Callable<? extends Boolean> f) {
+        return Iterable$impl._every(this, f);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> skipping(long skip) {
+        return Iterable$impl._skipping(this, skip);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> taking(long take) {
+        return Iterable$impl._taking(this, take);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> by(long step) {
+        return Iterable$impl._by(this, step);
+    }
+    @Override @Ignore
+    public Iterable<? extends Element> getCoalesced() {
+        return Iterable$impl._getCoalesced(this);
+    }
+    @Override @Ignore
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
+        return Iterable$impl._getIndexed(this);
+    }
+    @SuppressWarnings("rawtypes")
+    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+        return Iterable$impl._chain(this, other);
+    }
+
+    @Override
+    @Ignore
+    public Iterable<?>containsAny$elements() {
+        return $empty.getEmpty();
+    }
+
+    @Override
+    @Annotations({ @Annotation("actual") })
+    @SuppressWarnings("rawtypes")
+    public <Other>Sequence withLeading(Other e) {
+        return List$impl._withLeading(this, e);
+    }
+    @Override
+    @Annotations({ @Annotation("actual") })
+    @SuppressWarnings("rawtypes")
+    public <Other>Sequence withTrailing(Other e) {
+        return List$impl._withTrailing(this, e);
     }
 }

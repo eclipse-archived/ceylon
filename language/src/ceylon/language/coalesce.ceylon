@@ -1,12 +1,6 @@
-doc "Return a sequence of all elements of the given sequence
-     which are not null."
-shared Element[] coalesce<Element>(Element?[] sequence) 
-        given Element satisfies Object {
-    value builder = SequenceBuilder<Element>();
-    for (element in sequence) {
-        if (exists element) {
-            builder.append(element);
-        }
-    }
-    return builder.sequence;
+doc "Return a sequence containing the given values which are
+     not null. If there are no values which are not null,
+     return an empty sequence."
+shared Iterable<Element&Object> coalesce<Element>(Element... values) {
+    return values.coalesced;
 }

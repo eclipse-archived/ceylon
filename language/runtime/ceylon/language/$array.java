@@ -9,28 +9,41 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon
+@Ceylon(major = 2)
 @Method
 public final class $array {
 
     private $array() {}
-
-    @Ignore
-    public static <Element> Array<? extends Element> array() {
-        return $arrayOfNone.<Element>arrayOfNone();
-    }
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Array<Element>")
-    public static <Element> Array<? extends Element> array(
+    public static <Element> Array<Element> array(
     @Name("elements")
     @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language.Iterable<Element>")
     final ceylon.language.Iterable<? extends Element> elements) {
-		if (elements.getEmpty()) {
-            return $arrayOfNone.<Element>arrayOfNone();
-		} else {
-            return $arrayOfSome.arrayOfSome(elements);
-		}
+        return array(null, elements);
     }
+    
+    @Ignore
+    public static <Element> Array<Element> array(
+            Class typeClass,
+            final ceylon.language.Iterable<? extends Element> elements) {
+        if (elements.getEmpty()) {
+            return $arrayOfNone.<Element>arrayOfNone(typeClass);
+        } else {
+            return $arrayOfSome.arrayOfSome(typeClass, elements);
+        }
+    }
+    
+    @Ignore
+    public static <Element> Array<Element> array() {
+        return $arrayOfNone.<Element>arrayOfNone(null);
+    }
+    
+    @Ignore
+    public static <Element> Array<Element> array(Class typeClass) {
+        return $arrayOfNone.<Element>arrayOfNone(typeClass);
+    }
+            
 }

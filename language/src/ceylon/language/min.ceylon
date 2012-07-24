@@ -1,13 +1,21 @@
-doc "Given a sequence of `Comparable` values, return the 
-     smallest value in the sequence."
+doc "Given a nonempty sequence of `Comparable` values, 
+     return the smallest value in the sequence."
 see (Comparable, max, smallest)
-shared Value min<Value>(Sequence<Value> values) 
-        given Value satisfies Comparable<Value> {
-    variable value min := values.first;
-    for (val in values.rest) {
-        if (val<min) {
-            min:=val;
+shared Null|Value min<Value,Null>(Iterable<Value>&ContainerWithFirstElement<Value,Null> values) 
+        given Value satisfies Comparable<Value>
+        given Null satisfies Nothing {
+    ContainerWithFirstElement<Value,Null> cwfe = values;
+    value first = cwfe.first;
+    if (exists first) {
+        variable value min:=first;
+        for (val in values.rest) {
+            if (val<min) {
+                min:=val;
+            }
         }
+        return min;
     }
-    return min;
+    else {
+        return first;
+    }
 }

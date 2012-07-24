@@ -3,7 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon @Object
+@Ceylon(major = 2) @Object
 public class $false extends Boolean {
     
     private final static $false value = new $false();

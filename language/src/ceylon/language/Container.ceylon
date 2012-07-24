@@ -8,7 +8,7 @@ doc "Abstract supertype of objects which may or may not
 see (Sized, Category)
 by "Gavin"
 shared interface Container {
-        
+    
     doc "Determine if the container is empty, that is, if
          it has no elements."
     shared formal Boolean empty;

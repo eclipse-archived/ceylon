@@ -1,34 +1,19 @@
 doc "Represents a collection which maps keys to values,
      where a key can map to at most one value. Each such 
-     mapping may be represented by an |Entry|.
+     mapping may be represented by an `Entry`.
      
-     A |Map| is a |Collection| of its |Entry|s, and a 
-     |Correspondence| from keys to values."
+     A `Map` is a `Collection` of its `Entry`s, and a 
+     `Correspondence` from keys to values."
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
-                  Correspondence<Object, Item> &
+                  Correspondence<Object,Item> &
                   Cloneable<Map<Key,Item>>
         given Key satisfies Object
         given Item satisfies Object {
 
-    doc "Returns 1 if the argument is an entry and its
-         key and item match an entry in this map."
-    shared actual default Integer count(Object element) {
-        if (is Key->Item element) {
-            if (exists item = item(element.key)) {
-                return item==element.item then 1 else 0;
-            }
-            else {
-                return 0;
-            }
-        }
-        else {
-            return 0;
-        }
-    }
-
-    doc "Two maps are considered equal if they have the same size,
-         the same set of keys, and equal elements stored under each key."
+    doc "Two `Map`s are considered equal if they have the 
+         same size, the same set of keys, and equal elements 
+         stored under each key."
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Object> that) {
             if (that.size==size) {
@@ -57,7 +42,7 @@ shared interface Map<out Key,out Item>
         return hashCode;
     }
 
-    doc "Returns the set of keys contained in this map."
+    doc "Returns the set of keys contained in this `Map`."
     actual shared default Set<Key> keys {
         object keySet satisfies Set<Key> {
             shared actual Set<Key> clone {
@@ -98,9 +83,10 @@ shared interface Map<out Key,out Item>
         return keySet;
     }
 
-    doc "Returns all the values stored in this map. An element
-         can be stored under more than one key in the map, and so
-         it can be contained more than once in the resulting collection."
+    doc "Returns all the values stored in this `Map`. An 
+         element can be stored under more than one key in 
+         the map, and so it can be contained more than once 
+         in the resulting collection."
     shared default Collection<Item> values {
         object valueCollection satisfies Collection<Item> {
             shared actual Collection<Item> clone {
@@ -126,9 +112,9 @@ shared interface Map<out Key,out Item>
         return valueCollection;
     }
 
-    doc "Returns a map in which every key is an Item in this map,
-         and every value is the set of keys that stored the Item
-         in this map."
+    doc "Returns a `Map` in which every key is an `Item` in 
+         this map, and every value is the set of keys that 
+         stored the `Item` in this map."
     shared default Map<Item, Set<Key>> inverse {
         object inverse satisfies Map<Item, Set<Key>> {
             shared actual Map<Item,Set<Key>> clone {
@@ -154,5 +140,27 @@ shared interface Map<out Key,out Item>
             }
         }
         return inverse;
+    }
+
+    shared default Map<Key,Result> mapItems<Result>(Result mapping(Key key, Item item)) 
+            given Result satisfies Object {
+        object mapped extends Object() 
+                satisfies Map<Key, Result> {
+            shared actual Map<Key, Result> clone { return this; } //TODO: should take a copy
+            shared actual Result? item(Object key) {
+                if (is Key key) {
+                    if (exists item=outer[key]) {
+                        return mapping(key, item);
+                    }
+                }
+                return null;
+            }
+            shared actual Iterator<Key->Result> iterator {
+                return elements { for (key->item in outer) key->mapping(key,item) }.iterator;
+            }
+            shared actual Integer size { return outer.size; }
+            shared actual String string { return "mapItems"; } //TODO
+        }
+        return mapped;
     }
 }

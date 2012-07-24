@@ -25,7 +25,7 @@ public final class List$impl<Element> {
         return lastIndex==null ? 0 : lastIndex.longValue()+1;
     }
 
-    public boolean defines(List<Element> $this, Integer key){
+    public boolean defines(Integer key){
         return List$impl.<Element>_defines($this, key);
     }
     static <Element> boolean _defines(List<Element> $this, Integer key){
@@ -92,21 +92,44 @@ public final class List$impl<Element> {
         return hashCode;
     }
     
-    public java.lang.String toString(List<Element> $this) {
-        return List$impl.<Element>_toString($this);
+    public Element findLast(Callable<? extends Boolean> sel) {
+        return List$impl.<Element>_findLast($this, sel);
     }
-    static <Element> java.lang.String _toString(List<Element> $this) {
-        if ($this.getEmpty()) return "{}";
-        java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
-        java.lang.Object elem;
-        for (Iterator<? extends Element> iter=$this.getIterator(); 
-                !((elem = iter.next()) instanceof Finished);) {
-            if (result.length() > 2) {
-                result.append(", ");
+    public static <Element> Element _findLast(List<Element> $this, Callable<? extends Boolean> sel) {
+        Integer last = $this.getLastIndex();
+        if (last != null) {
+            while (!last.getNegative()) {
+                Element e = $this.item(last);
+                if (e != null && sel.$call(e).booleanValue()) {
+                    return e;
+                }
+                last = last.getPredecessor();
             }
-            result.append(elem);
         }
-        result.append(" }");
-        return result.toString();
+        return null;
     }
+
+    @SuppressWarnings("rawtypes")
+    public <Other> Sequence withLeading(Other elements) {
+        return List$impl._withLeading($this, elements);
+    }
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static <Element,Other> Sequence _withLeading(List<? extends Element> orig, Other elem) {
+        SequenceBuilder sb = new SequenceBuilder();
+        sb.append(elem);
+        sb.appendAll(orig);
+        return (Sequence)sb.getSequence();
+    }
+    @SuppressWarnings("rawtypes")
+    public <Other> Sequence withTrailing(Other element) {
+        return List$impl._withTrailing($this, element);
+    }
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static <Element,Other> Sequence _withTrailing(List<? extends Element> orig, Other elem) {
+        SequenceBuilder sb = new SequenceBuilder();
+        sb.appendAll(orig);
+        sb.append(elem);
+        return (Sequence)sb.getSequence();
+    }
+
 }

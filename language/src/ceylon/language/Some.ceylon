@@ -1,6 +1,7 @@
 doc "A fixed-sized, non-empty collection."
 shared interface Some<out Element>
-        satisfies FixedSized<Element> {
+        satisfies FixedSized<Element> &
+                  ContainerWithFirstElement<Element,Bottom> {
 
     doc "Returns the first element, which always exists."
     shared actual default Element first {
@@ -18,7 +19,8 @@ shared interface Some<out Element>
         return false;
     }
 
-    doc "Returns a `FixedSized` containing all but the first element of this collection."
-    shared formal FixedSized<Element> rest;
+    doc "Returns a `FixedSized` containing all but the first 
+         element of this collection."
+    shared actual formal FixedSized<Element> rest;
 
 }

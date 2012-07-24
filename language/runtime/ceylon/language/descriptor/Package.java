@@ -1,12 +1,14 @@
 package ceylon.language.descriptor;
 
+import ceylon.language.Iterable;
+
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 2)
 public class Package {
     private final ceylon.language.Quoted name;
     
@@ -77,6 +79,6 @@ public class Package {
     final ceylon.language.Quoted name, 
     final boolean shared, 
     final java.lang.String doc) {
-        return ceylon.language.$empty.getEmpty();
+        return (Iterable)ceylon.language.$empty.getEmpty();
     }
 }

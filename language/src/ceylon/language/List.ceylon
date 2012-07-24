@@ -1,11 +1,11 @@
 doc "Represents a collection in which every element has a 
      unique non-negative integer index.
      
-     A |List| is a |Collection| of its elements, and a 
-     |Correspondence| from indices to elements."
+     A `List` is a `Collection` of its elements, and a 
+     `Correspondence` from indices to elements."
 shared interface List<out Element>
         satisfies Collection<Element> &
-                  Correspondence<Integer, Element> &
+                  Correspondence<Integer,Element> &
                   Ranged<Integer,List<Element>> &
                   Cloneable<List<Element>> {
 
@@ -59,11 +59,10 @@ shared interface List<out Element>
         return listIterator;
     }
 
-    /*doc "Reverse this sequence, returning a new nonempty
-         sequence."
-    shared formal Sequence<Element> reversed;*/
+    doc "Reverse this list, returning a new list."
+    shared formal List<Element> reversed;
 
-    /*doc "Select the elements between the given indexes. If 
+    /*doc "Select the elements between the given indices. If 
          the start index is the same as the end index,
          return a list with a single element. If the start 
          index is larger than the end index, return the
@@ -113,39 +112,69 @@ shared interface List<out Element>
     }
 
     shared actual default Integer hash {
-        variable Integer hashCode := 1;
-        for(Element elem in this) {
-            hashCode *= 31;
-            if(is Object elem){
-                hashCode += elem.hash;
-            }
-        }
-        return hashCode;
-    }
-
-    shared default actual String string {
-        return empty then "{}" 
-               else "{ " elementsString " }";
-    }
-
-    String elementsString {
-        variable Boolean first := true;
-        value result = StringBuilder();
+        variable value hash := 1;
         for (elem in this) {
-            if (first) {
-                first := false;
-            }
-            else {
-                result.append(", ");
-            }
-            if (exists elem) {
-                result.append(elem.string);
-            }
-            else {
-                result.append("null");
+            hash *= 31;
+            if (is Object elem) {
+                hash += elem.hash;
             }
         }
-        return result.string;
+        return hash;
+    }
+    
+    shared default actual Element? findLast(Boolean selecting(Element elem)) {
+        if (exists l=lastIndex) {
+            variable value index := l;
+            while (index >= 0) {
+                if (is Element elem = item(index--)) {
+                    if (selecting(elem)) {
+                        return elem;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    doc "Returns the first element of this List, if any."
+    shared actual default Element? first {
+        return this[0];
+    }
+    doc "Returns the last element of this List, if any."
+    shared actual default Element? last {
+        if (exists i = lastIndex) {
+            return this[i];
+        }
+        return null;
+    }
+
+    doc "Returns a new `List` that starts with the specified
+         element, followed by the elements of this `List`."
+    shared default Sequence<Element|Other> withLeading<Other>(Other element) {
+        value sb = SequenceBuilder<Element|Other>();
+        sb.append(element);
+        if (exists lastIndex) {
+            sb.appendAll(this...);
+        }
+        if (nonempty seq=sb.sequence) {
+            return seq;
+        }
+        throw; //Can't happen
+    }
+
+    doc "Returns a new `List` that contains the specified
+         element appended to the end of this `List`s'
+         elements."
+    shared default Sequence<Element|Other> withTrailing<Other>(Other element) {
+        value sb = SequenceBuilder<Element|Other>();
+        if (exists lastIndex) {
+            sb.appendAll(this...);
+        }
+        sb.append(element);
+        if (nonempty seq=sb.sequence) {
+            return seq;
+        }
+        throw; //Can't happen
     }
 
 }

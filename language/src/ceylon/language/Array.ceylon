@@ -1,4 +1,10 @@
-doc "A fixed-size array of elements which may or may not be empty."
+doc "A fixed-size array of elements. An array may have zero
+     size (an empty array). Arrays are mutable. Any element
+     of an array may be set to a new value.
+     
+     This class is provided primarily to support interoperation 
+     with Java, and for some performance-critical low-level 
+     programming tasks."
 shared abstract class Array<Element>() 
         extends Object()
         satisfies List<Element> & 
@@ -6,53 +12,66 @@ shared abstract class Array<Element>()
                   Cloneable<Array<Element>> &
                   Ranged<Integer, Array<Element>> {
 
-    doc "Replaces the existing item at the specified index with
-         the specified element. Does nothing if the index is
-         negative or beyond the array size."
-    shared formal void setItem(Integer index, Element? element);
-
-    shared actual Boolean equals(Object that) {
-        //TODO: copy/pasted from List
-        if (is List<Object> that) {
-            if (that.size==size) {
-                for (i in 0..size-1) {
-                    value x = this[i];
-                    value y = that[i];
-                    if (!exists x && !exists y) {
-                        continue;
-                    }
-                    if (is Object x) {
-                        if (is Object y) {
-                            if (x==y) {
-                                continue;
-                            }
-                        }
-                    }
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    shared actual Integer hash {
-        //TODO: copy/pasted from List
-        return size;
-    }
+    doc "Replace the existing element at the specified index 
+         with the given element. Does nothing if the specified 
+         index is negative or larger than the index of the 
+         last element in the array."
+    shared formal void setItem(
+            doc "The index of the element to replace."
+            Integer index, 
+            doc "The new element."
+            Element element);
+    
+    doc "Reverse this array, returning a new array."
+    shared actual formal Array<Element> reversed;
 
 }
 
-doc "Creates and returns an array containing the specified elements.
-     If called without any arguments, returns an empty array."
+doc "Create an array containing the given elements. If no
+     elements are provided, create an empty array of the
+     given element type."
 shared Array<Element> array<Element>(Element... elements) { throw; }
-doc "Returns an empty array."
+
+doc "Create an empty array of the given element type."
 shared Array<Element>&None<Element> arrayOfNone<Element>() { throw; }
-doc "Returns an array with the elements in the sequence.
-     This array can never be empty."
-shared Array<Element>&Some<Element> arrayOfSome<Element>(Sequence<Element> elements) { throw; }
-doc "Creates and returns an array of the specified size, populating it with the result
-     of calling `init` for each index."
-shared Array<Element> makeArray<Element>(Integer size, Callable<Element,Integer> init) { throw; }
+
+doc "Create a nonempty array with the elements of the given
+     sequence."
+shared Array<Element>&Some<Element> arrayOfSome<Element>(
+        doc "A nonempty sequence containing the elements."
+        Sequence<Element> elements) { throw; }
+
+doc "Create an array of the specified size, populating every 
+     index with the given element. If the specified size is
+     smaller than `1`, return an empty array of the given
+     element type."
+shared Array<Element> arrayOfSize<Element>(
+        doc "The size of the resulting array. If the size
+             is non-positive, an empty array will be 
+             created."
+        Integer size,
+        doc "The element value with which to populate the
+             array. All elements of the resulting array 
+             will have the same value." 
+        Element element) { throw; }
+
+doc "Efficiently copy the elements of one array to another 
+     array."
+shared void copyArray<Element>(
+        doc "The source array containing the elements to be 
+             copied."
+        Array<Element> source,
+        doc "The target array into which to copy the 
+             elements." 
+        Array<Element> target,
+        doc "The index of the first element to copy in the
+             source array." 
+        Integer from, 
+        doc "The index in the target array into which to 
+             copy the first element."
+        Integer to, 
+        doc "The number of elements to copy."
+        Integer length) { throw; }
+        //TODO: defaults!
+        //Integer from=0, Integer to=0, Integer length=smallest(source.size,target.size)) { throw; }
+        

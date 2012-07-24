@@ -5,6 +5,19 @@ void iterate<Element>(List<Element> list)
     }
 }
 
+void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String message)
+    given T satisfies Object {
+    
+    Iterator<T> bIterator = bIterable.iterator;
+    for(T a in aIterable){
+        T|Finished b = bIterator.next();
+        assert(b != exhausted, "" message ": Iterator B empty while expecting '" a "'");
+        assert(a == b, "" message ": Element '" a "' != '" b "'");
+    }
+    T|Finished b = bIterator.next();
+    assert(b == exhausted, "" message ": Iterator B not empty: extra '" b "'");
+}
+
 shared void strings() {
     value hello = "hello";
     
@@ -197,6 +210,9 @@ shared void strings() {
     assert(", ".join()=="", "string join no strings");
     assert(", ".join("foo")=="foo", "string join one string");
     assert(", ".join("foo", "bar", "baz")=="foo, bar, baz", "string join");
+    assert(",".join(for (c in "") c.string)=="", "string join empty comprehension");
+    assert(",".join(for (c in "A") c.string)=="A", "string join comprehension 1");
+    assert(",".join(for (c in "ABC") c.string)=="A,B,C", "string join comprehension 2");
     
     assert("hello world".startsWith(hello), "string starts with 1");
     assert("hello world".endsWith("world"), "string ends with 1");
@@ -205,18 +221,38 @@ shared void strings() {
     assert(!"".startsWith(hello), "empty string starts with");
     assert(!"".endsWith("world"), "empty string ends with");
     
-    assert(!"".split(null, true).empty, "\"\".split(null,true) is empty");
-    assert(!"hello".split(null, true).empty, "hello.split(null,true) is empty");
-    assert("hello world".split(null, true).iterator.next()=="hello", "string split first 3");
+    assert(!"".split((Character c) c.whitespace, true).empty, "\"\".split((Character c) c.whitespace,true) is empty");
+    assert(!"hello".split((Character c) c.whitespace, true).empty, "hello.split((Character c) c.whitespace,true) is empty");
+    assert("hello world".split((Character c) c.whitespace, true).iterator.next()=="hello", "string split first 3");
+    assert({"hello world".split((Character c) c==` `)...}.size==2, "string split discarding [1]");
+    assert({"hello world".split((Character c) c==` `, false)...}.size==3, "string split including [1]");
+    assert({"hello world".split()...}.size==2, "string split default");
+    assert({"hello world".split((Character c) c==`l`, true)...}.size==3, "string split discarding [2]");
+    assert({"hello world".split((Character c) c==`l`, false)...}.size==5, "string split including [2]");
+    assert({"hello world".split((Character c) c==`l`, false, false)...}.size==7, "string split including [3]");
     variable value count:=0;
-    for (tok in "hello world goodbye".split(" ", true)) {
+    for (tok in "hello world goodbye".split((Character c) c==` `, true)) {
         count++;
         assert(tok.size>4, "string token");
     }
     assert(count==3, "string tokens");
-    for (tok in "  ".split(" ", true)) {
-        fail("no string tokens");
-    }
+    
+    compareIterables({""}, "".split(), "Empty string");
+    compareIterables({"", ""}, " ".split((Character c) c==` `, true), "Two empty tokens");
+    compareIterables({"", " ", ""}, " ".split((Character c) c==` `, false), "Two empty tokens with WS");
+    compareIterables({"hello", "world"}, "hello world".split((Character c) c==` `, true), "Two parts");
+    compareIterables({"", "hello", "world", ""}, " hello world ".split((Character c) c==` `, true), "Two parts surounded with WS");
+    compareIterables({"hello", " ", "world"}, "hello world".split((Character c) c==` `, false), "Two parts with space token");
+    compareIterables({"", " ", "hello", " ", "world", " ", ""}, " hello world ".split((Character c) c==` `, false), "Two parts surounded with space tokens");
+    compareIterables({"hello", "   ", "world"}, "hello   world".split((Character c) c==` `, false), "Two parts with grouped space token");
+    compareIterables({"", "  ", "hello", "   ", "world", "    ", ""}, "  hello   world    ".split((Character c) c==` `, false), "Two parts surounded with grouped space tokens");
+    compareIterables({"a", "b"}, "a/b".split((Character c) c==`/`, true, false), "a/b");
+    compareIterables({"", "a", "b", ""}, "/a/b/".split((Character c) c==`/`, true, false), "/a/b/");
+    compareIterables({"", "", "a", "", "b", "", ""}, "//a//b//".split((Character c) c==`/`, true, false), "//a//b//");
+    compareIterables({"", "", "a", "", "b", "", ""}, "/?a/&b#/".split((Character c) c in "/&#?", true, false), "/?a/&b#/ no tokens");
+    compareIterables({"", "/", "", "?", "a", "/", "", "&", "b", "#", "", "/", ""}, "/?a/&b#/".split((Character c) c in "/&#?", false, false), "/?a/&b#/ with tokens");
+    compareIterables({"𐒄𐒅", "𐒁"}, "𐒄𐒅 𐒁".split((Character c) c==` `, true), "High-surrogate Unicode string");
+    compareIterables({"𐒄", "𐒁", ""}, "𐒄𐒅𐒁𐒕".split((Character c) c in "𐒅𐒕", true), "High-surrogate Unicode delimiters");
     
     assert("".reversed=="", "string reversed 1");
     assert("x".reversed=="x", "string reversed 2");
@@ -285,4 +321,6 @@ shared void strings() {
     assert("\{0022}"=="\"", "Unicode escape 9");
     assert("\{0027}"=="\'", "Unicode escape 10");
 
+    assert(string() == "", "string()");
+    assert(string(`h`, `i`)=="hi", "string(h,i)");
 }

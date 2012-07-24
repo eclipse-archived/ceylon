@@ -1,4 +1,4 @@
-doc "A 32-bit unicode character."
+doc "A 32-bit Unicode character."
 see (String)
 by "Gavin"
 shared abstract class Character()
@@ -46,10 +46,10 @@ shared abstract class Character()
     /*doc "The general category of the character"
     shared formal CharacterCategory category;*/
 
-    /*doc "The directionality of the character"
+    /*doc "The directionality of the character."
     shared formal CharacterDirectionality directionality;*/
     
-    doc "The code point of the character"
+    doc "The code point of the character."
     shared formal Integer integer;
 
 }

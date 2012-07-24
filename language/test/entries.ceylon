@@ -21,12 +21,12 @@ shared Range<Integer> range {
 }*/
 
 void test_entries_function() {
-    value e = entries("a", "b", "c", "X", "Y", "Z", "1", "2", "3", "d", "e", "f");
+    value e = entries("a", "b", "c", "X", "Y", "Z", "1", "2", "3", "d", "e", "f").sequence;
     value _e = Entry(-1, "null");
-    assert((e.item(2)?_e).key==2, "entries");
-    assert((e.item(2)?_e).item=="c", "entries");
-    assert(1->"a" == 1->"a", "entry.equals");
-    assert(1->"a" != 1->"b", "entry.equals");
+    assert((e[2] else _e).key==2, "entries [1]");
+    assert((e[2] else _e).item=="c", "entries [2]");
+    assert(1->"a" == 1->"a", "entry.equals [1]");
+    assert(1->"a" != 1->"b", "entry.equals [2]");
 }
 
 void entriesAndRanges() {
@@ -111,13 +111,13 @@ Range<Integer> range {
     assert(!nonempty (0..9).span(11,12), "(0..9).span(11,12) is NOT empty");
     assert(nonempty (0..9).span(5,3), "(0..9).span(5,3) is empty");
     
-    assert((1..1).by(5).string=="1..1", "range by");
-    assert((0..9).by(1).string=="0..9", "range by 1");
-    assert((0..9).by(3).string=="{ 0, 3, 6, 9 }", "range by");
-    assert((2..11).by(3).string=="{ 2, 5, 8, 11 }", "range by");
-    assert((0..9).by(4).string=="{ 0, 4, 8 }", "range by");
-    assert((2..11).by(4).string=="{ 2, 6, 10 }", "range by");
-
+    assert((1..1).by(5).sequence.string=="{ 1 }", "range by 5");
+    assert((0..9).by(1).sequence.string=="0..9", "range by 1");
+    assert((0..9).by(3).sequence.string=="{ 0, 3, 6, 9 }", "range by 3");
+    assert((2..11).by(3).sequence.string=="{ 2, 5, 8, 11 }", "range by 3");
+    assert((0..9).by(4).sequence.string=="{ 0, 4, 8 }", "range by 4");
+    assert((2..11).by(4).sequence.string=="{ 2, 6, 10 }", "range by 4");
+    
     //More range tests, from ceylon-js
     assert((1..10).string=="1..10", "range.string");
     value r1= 1..5;
@@ -144,11 +144,11 @@ Range<Integer> range {
     assert(!nonempty r4.rest, "nonempty range.rest");
     assert(r1.lastIndex==4, "range.lastIndex 1");
     assert(r2.lastIndex==3, "range.lastIndex 2");
-    assert(r1.by(2).string=="{ 1, 3, 5 }", "range.by 1");
-    assert(r1.by(3).string=="{ 1, 4 }", "range.by 2");
-    assert(r2.by(2).string=="{ 7, 5 }", "range.by 3");
-    assert(r2.by(3).string=="{ 7, 4 }", "range.by 4");
-    assert(r4.by(10).string=="123..123", "range.by 5");
+    assert(r1.by(2).sequence.string=="{ 1, 3, 5 }", "range.by 1");
+    assert(r1.by(3).sequence.string=="{ 1, 4 }", "range.by 2");
+    assert(r2.by(2).sequence.string=="{ 7, 5 }", "range.by 3");
+    assert(r2.by(3).sequence.string=="{ 7, 4 }", "range.by 4");
+    assert(r4.by(10).sequence.string=="{ 123 }", "range.by 5");
     assert(r1.segment(2,2).string=="3..4", "range.segment 1");
     assert(!nonempty r1.segment(1,0), "range.segment 2");
     assert(r1.segment(1,-1).empty, "range.segment 3");
@@ -177,7 +177,36 @@ Range<Integer> range {
     assert(!0 in 1..5, "range in 4");
     assert(!6 in 1..5, "range in 5");
     assert(!2..3 in 1..5, "range in 6");
+    
+    assert(!nonempty (1..5).span(-1,-2), "empty range [1]");
+    assert(!nonempty (1..5).span(-2,-1), "empty range [2]");
+    assert(!nonempty (1..5).span(6,8), "empty range [3]");
+    assert(!nonempty (1..5).span(8,6), "empty range [4]");
 
     //Test the entries function
     test_entries_function();
+    //Test comparisons by Key and Item
+    value e1 = entries("a", "B", "c", "D");
+    value k1 = e1.sort(byKey((Integer a, Integer b) b<=>a)).sequence;
+    value k2 = e1.sort(byItem((String a, String b) a<=>b)).sequence;
+    if (exists x=k1[0]) {
+        assert(x==3->"D", "byKey[1]");
+    } else { fail("byKey[1]"); }
+    if (exists x=k1[3]) {
+        assert(x==0->"a", "byKey[2]");
+    } else { fail("byKey[2]"); }
+    if (exists x=k2[0]) {
+        assert(x==1->"B", "byItem[1]");
+    } else { fail("byItem[1]"); }
+    if (exists x=k2[3]) {
+        assert(x==2->"c", "byItem[2]");
+    } else { fail("byItem[2]"); }
+    if (exists x=e1.find(forKey((Integer k) k==2))) {
+        assert(x == 2->"c", "forKey [1]");
+    } else { fail("forKey [2]"); }
+    if (exists x=e1.find(forItem((String s) s=="B"))) {
+        assert(x == 1->"B", "forItem [1]");
+    } else { fail("forItem [2]"); }
+    assert(e1.count(forItem((String s) s<"a"))==2, "forItem [3]");
+    assert(e1.map(forKey((Integer k) k.string.repeat(3))).sequence == {"000","111","222","333"}, "forKey [3]");
 }

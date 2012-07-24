@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon
+@Ceylon(major = 2)
 @Attribute
 @com.redhat.ceylon.compiler.java.metadata.Package(name = "ceylon.language", shared = true)
 final class $package {
