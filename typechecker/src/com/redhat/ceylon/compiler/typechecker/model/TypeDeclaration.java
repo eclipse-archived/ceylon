@@ -213,7 +213,8 @@ public abstract class TypeDeclaration extends Declaration
     /**
      * Get all members inherited by this type declaration
      * with the given name. Do not include members declared
-     * directly by this type. 
+     * directly by this type. Do not include declarations 
+     * refined by a supertype.
      */
     public List<Declaration> getInheritedMembers(String name) {
         return getInheritedMembers(name, new ArrayList<TypeDeclaration>());
