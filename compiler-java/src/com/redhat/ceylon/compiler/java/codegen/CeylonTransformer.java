@@ -25,15 +25,12 @@ import java.util.Iterator;
 import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -180,7 +177,7 @@ public class CeylonTransformer extends AbstractTransformer {
         at(decl);
         TypedDeclaration declarationModel = decl.getDeclarationModel(); 
         final String attrName = decl.getIdentifier().getText();
-        final String attrClassName = naming.getAttrClassName(declarationModel, 0);
+        final String attrClassName = Naming.getAttrClassName(declarationModel, 0);
         final Tree.SpecifierOrInitializerExpression expression;
         final Tree.Block block;
         if (decl instanceof Tree.AttributeDeclaration) {
@@ -208,106 +205,22 @@ public class CeylonTransformer extends AbstractTransformer {
     /** Creates a module class in the package, with the Module annotation required by the runtime. */
     public List<JCTree> transformModuleDescriptor(Tree.ModuleDescriptor module) {
         at(module);
-        JCTree getter = make().MethodDef(make().Modifiers(Flags.STATIC), names().fromString("getModule"),
-                //The return type is a class in the language module
-                makeJavaType(((com.redhat.ceylon.compiler.typechecker.model.Class)typeFact().getLanguageModuleDeclaration("Module")).getType()),
-                //just a getter, no params
-                List.<JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
-                //TODO for now we just return null - do we really need to return something?
-                make().Block(0, List.<JCStatement>of(make().Return(makeNull()))), null);
-        ListBuffer<JCExpression> annargs = new ListBuffer<JCExpression>();
-        ListBuffer<JCExpression> authors = new ListBuffer<JCExpression>();
-        StringBuilder modname = new StringBuilder();
-        for (Identifier id : module.getImportPath().getIdentifiers()) {
-            if (modname.length() > 0) {
-                modname.append('.');
-            }
-            modname.append(id.getText());
-        }
-        String modvers = module.getVersion().getText();
-        modvers = modvers.substring(0, modvers.length()-1).substring(1);
-        annargs.add(make().Assign(naming.makeUnquotedIdent("name"), make().Literal(modname.toString())));
-        annargs.add(make().Assign(naming.makeUnquotedIdent("version"), make().Literal(modvers)));
-        for (Tree.Annotation a : module.getAnnotationList().getAnnotations()) {
-            String annName = ((BaseMemberExpression)a.getPrimary()).getIdentifier().getText();
-            at(a);
-            if ("doc".equals(annName)) {
-                annargs.add(make().Assign(naming.makeUnquotedIdent("doc"), expressionGen().transformExpression(
-                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null)));
-            } else if ("by".equals(annName)) {
-                //There can be several by's each with an author name
-                authors.add(expressionGen().transformExpression(
-                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null));
-            } else if ("license".equals(annName)) {
-                annargs.add(make().Assign(naming.makeUnquotedIdent("license"), expressionGen().transformExpression(
-                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null)));
-            }
-            //TODO dependencies
-        }
-        if (!authors.isEmpty()) {
-            //TODO create array of authors
-            //annargs.add(make().Assign(naming.makeUnquotedIdent("by"), authors.toList()));
-        }
         return ClassDefinitionBuilder
                 .klass(this, false, "module", null)
                 .modifiers(Flags.FINAL)
                 .constructorModifiers(Flags.PRIVATE)
-                .annotations(List.<JCTree.JCAnnotation>of(make().Annotation(
-                        makeIdent(syms().ceylonAtModuleType), annargs.toList())))
-                .defs(List.<JCTree>of(getter))
+                .annotations(makeAtModule(module.getUnit().getPackage().getModule()))
                 .build();
 
     }
 
     public List<JCTree> transformPackageDescriptor(Tree.PackageDescriptor pack) {
         at(pack);
-        JCTree getter = make().MethodDef(make().Modifiers(Flags.STATIC), names().fromString("getPackage"),
-                //The return type is a class in the language module
-                makeJavaType(((com.redhat.ceylon.compiler.typechecker.model.Class)typeFact().getLanguageModuleDeclaration("Package")).getType()),
-                //just a getter, no params
-                List.<JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
-                //TODO for now we just return null - do we really need to return something?
-                make().Block(0, List.<JCStatement>of(make().Return(makeNull()))), null);
-        ListBuffer<JCExpression> annargs = new ListBuffer<JCExpression>();
-        ListBuffer<JCExpression> authors = new ListBuffer<JCExpression>();
-        StringBuilder modname = new StringBuilder();
-        for (Identifier id : pack.getImportPath().getIdentifiers()) {
-            if (modname.length() > 0) {
-                modname.append('.');
-            }
-            modname.append(id.getText());
-        }
-        annargs.add(make().Assign(naming.makeUnquotedIdent("name"), make().Literal(modname.toString())));
-        boolean sharePack = false;
-        for (Tree.Annotation a : pack.getAnnotationList().getAnnotations()) {
-            String annName = ((BaseMemberExpression)a.getPrimary()).getIdentifier().getText();
-            at(a);
-            if ("doc".equals(annName)) {
-                annargs.add(make().Assign(naming.makeUnquotedIdent("doc"), expressionGen().transformExpression(
-                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null)));
-            } else if ("by".equals(annName)) {
-                //There can be several by's each with an author name
-                authors.add(expressionGen().transformExpression(
-                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null));
-            } else if ("license".equals(annName)) {
-                annargs.add(make().Assign(naming.makeUnquotedIdent("license"), expressionGen().transformExpression(
-                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null)));
-            } else if ("shared".equals(annName)) {
-                sharePack = true;
-            }
-        }
-        annargs.add(make().Assign(naming.makeUnquotedIdent("shared"), makeBoolean(sharePack)));
-        if (!authors.isEmpty()) {
-            //TODO create array of authors
-            //annargs.add(make().Assign(naming.makeUnquotedIdent("by"), authors.toList()));
-        }
         return ClassDefinitionBuilder
                 .klass(this, false, "$package", null)
                 .modifiers(Flags.FINAL)
                 .constructorModifiers(Flags.PRIVATE)
-                .annotations(List.<JCTree.JCAnnotation>of(make().Annotation(
-                        makeIdent(syms().ceylonAtPackageType), annargs.toList())))
-                .defs(List.<JCTree>of(getter))
+                .annotations(makeAtPackage(pack.getUnit().getPackage()))
                 .build();
 
     }
@@ -321,22 +234,6 @@ public class CeylonTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
-
-        // if it's a module or package add a special annotation
-        if (declarationModel.isToplevel()) {
-            if (attrName.equals("module")
-        		&& declarationModel.getUnit().getFilename().equals("module.ceylon")) {
-                // module
-                Package pkg = (Package) declarationModel.getContainer();
-                Module module = pkg.getModule();
-                builder.annotations(makeAtModule(module));
-            } else if (attrName.equals("package")
-                    && declarationModel.getUnit().getFilename().equals("package.ceylon")) {
-                // package
-                Package pkg = (Package) declarationModel.getContainer();
-                builder.annotations(makeAtPackage(pkg));
-            }
-        }
 
         if (declarationModel instanceof Setter
                 || declarationModel instanceof Parameter) {
