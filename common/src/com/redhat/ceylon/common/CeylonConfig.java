@@ -175,6 +175,14 @@ public class CeylonConfig {
         }
     }
     
+    public CeylonConfig merge(CeylonConfig local) {
+        for (String key : local.getOptionNames(null)) {
+            String[] values = local.getOptionValues(key);
+            setOptionValues(key, values);
+        }
+        return this;
+    }
+
     // Some additional useful configuration options
     
     public static File getInstallDir() {
