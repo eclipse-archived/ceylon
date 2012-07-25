@@ -227,7 +227,9 @@ public abstract class TypeDeclaration extends Declaration
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
                 for (Declaration d: t.getMembers(name, visited)) {
                     if (d.isShared() && isResolvable(d)) {
-                        members.add(d);
+                        if (!members.contains(d)) {
+                        	members.add(d);
+                        }
                     }
                 }
             //}
@@ -236,7 +238,9 @@ public abstract class TypeDeclaration extends Declaration
         if (et!=null) {
             for (Declaration d: et.getMembers(name, visited)) {
                 if (d.isShared() && isResolvable(d)) {
-                    members.add(d);
+                    if (!members.contains(d)) {
+                    	members.add(d);
+                    }
                 }
             }
         }
