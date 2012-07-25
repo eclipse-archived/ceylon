@@ -93,7 +93,7 @@ public class Repositories {
             return new Repository(repoName, url, user, password);
         } else {
             if (REPO_NAME_INSTALL.equals(repoName)) {
-                File installDir = config.getInstallDir();
+                File installDir = CeylonConfig.getInstallDir();
                 if (installDir != null) {
                     // $INSTALLDIR/repo
                     File dir = new File(installDir, "repo");
@@ -163,7 +163,7 @@ public class Repositories {
         if (ceylonUserRepo != null) {
             return new File(ceylonUserRepo);
         } else {
-            File userDir = config.getUserDir();
+            File userDir = CeylonConfig.getUserDir();
             return new File(userDir, "repo");
         }
     }

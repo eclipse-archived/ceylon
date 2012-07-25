@@ -172,7 +172,7 @@ public class CeylonConfig {
     
     // Some additional useful configuration options
     
-    public File getInstallDir() {
+    public static File getInstallDir() {
         String ceylonHome = System.getProperty("ceylon.home");
         if (ceylonHome != null) {
             return new File(ceylonHome);
@@ -181,13 +181,17 @@ public class CeylonConfig {
         }
     }
     
-    public File getUserDir() {
+    public static File getDefaultUserDir() {
+        String userHome = System.getProperty("user.home");
+        return new File(userHome, ".ceylon");
+    }
+    
+    public static File getUserDir() {
         String ceylonUserDir = System.getProperty("ceylon.user.dir");
         if (ceylonUserDir != null) {
             return new File(ceylonUserDir);
         } else {
-            String userHome = System.getProperty("user.home");
-            return new File(userHome, ".ceylon");
+            return getDefaultUserDir();
         }
     }
 }
