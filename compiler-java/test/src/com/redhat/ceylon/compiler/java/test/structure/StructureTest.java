@@ -217,6 +217,11 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/RefinementAndIntersection");
     }
     @Test
+    public void testKlsRefinementIntersectionComposition(){
+        // See https://github.com/ceylon/ceylon-compiler/issues/696
+        compareWithJavaSource("klass/RefinementIntersectionComposition");
+    }
+    @Test
     public void testKlsRefinementWidening(){
         compareWithJavaSource("klass/RefinementWidening");
     }
