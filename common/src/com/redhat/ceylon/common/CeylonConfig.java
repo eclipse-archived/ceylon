@@ -165,9 +165,14 @@ public class CeylonConfig {
     }
     
     public String[] getOptionNames(String section) {
-        HashSet<String> on = sectionNames.get(section);
-        String[] res = new String[on.size()];
-        return on.toArray(res);
+        if (section == null) {
+            String[] res = new String[options.keySet().size()];
+            return options.keySet().toArray(res);
+        } else {
+            HashSet<String> on = sectionNames.get(section);
+            String[] res = new String[on.size()];
+            return on.toArray(res);
+        }
     }
     
     // Some additional useful configuration options
