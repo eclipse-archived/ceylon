@@ -89,8 +89,8 @@ class ModuleDescriptorReader {
     }
     
     /**
-     * Gets the module license
-     * @return The module version, or null if no version could be found
+     * Gets the module authors
+     * @return The list of module authors, or empty list of no authors could be found
      */
     public List<String> getModuleAuthors() {
         ArrayList<String> authors = new ArrayList<String>();
