@@ -456,10 +456,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     ProducedTypedReference nonWideningTypeDecl(ProducedTypedReference typedReference) {
-        TypedDeclaration decl = typedReference.getDeclaration();
-        TypedDeclaration refinedDeclaration = (TypedDeclaration) getRefinedDeclaration(typedReference);
-        if(decl != refinedDeclaration){
-            ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDeclaration);
+        ProducedTypedReference refinedTypedReference = getRefinedDeclaration(typedReference);
+        if(refinedTypedReference != null){
             /*
              * We are widening if the type:
              * - is not object
@@ -485,15 +483,23 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     /*
-     * So before I forget, this method looks for some cases such as None.first, which inherits from ContainerWithFirstElement
+     * We have several special cases here to find the best non-widening refinement in case of multiple inheritace:
+     * 
+     * - The first special case is for some decls like None.first, which inherits from ContainerWithFirstElement
      * twice: once with Nothing (erased to j.l.Object) and once with Element (a type param). Now, in order to not widen the
      * return type it can't be Nothing (j.l.Object), it must be Element (a type param that is not instantiated), because in Java
      * a type param refines j.l.Object but not the other way around.
-     * The second special case is when implementing an interface first with a non-erased type, then with an erased type. In this
+     * - The second special case is when implementing an interface first with a non-erased type, then with an erased type. In this
      * case we want the refined decl to be the one with the non-erased type.
+     * - The third special case is when we implement a declaration via multiple super types, without having any refining
+     * declarations in those supertypes, simply by instantiating a common super type with different type parameters
      */
-    private TypedDeclaration getRefinedDeclaration(ProducedTypedReference typedReference) {
-        Declaration decl = typedReference.getDeclaration();
+    private ProducedTypedReference getRefinedDeclaration(ProducedTypedReference typedReference) {
+        TypedDeclaration decl = typedReference.getDeclaration();
+        TypedDeclaration modelRefinedDecl = (TypedDeclaration)decl.getRefinedDeclaration();
+        // quick exit
+        if(decl == modelRefinedDecl)
+            return null;
         if(decl.getContainer() instanceof ClassOrInterface){
             // only try to find better if we're erasing to Object and we're not returning a type param
             if(willEraseToObject(typedReference.getType())
@@ -508,7 +514,7 @@ public abstract class AbstractTransformer implements Transformation {
                         ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
                         // if it is not instantiated, that's the one we're looking for
                         if(isTypeParameter(refinedTypedReference.getType()))
-                            return refinedDecl;
+                            return refinedTypedReference;
                     }
                     // second case
                     for(TypedDeclaration refinedDecl : refinedMembers){
@@ -516,12 +522,35 @@ public abstract class AbstractTransformer implements Transformation {
                         ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
                         // if we're not erasing this one to Object let's select it
                         if(!willEraseToObject(refinedTypedReference.getType()))
-                            return refinedDecl;
+                            return refinedTypedReference;
+                    }
+                    // third case
+                    if(isTypeParameter(modelRefinedDecl.getType())){
+                        // it can happen that we have inherited a method twice from a single refined declaration 
+                        // via different supertype instantiations, without having ever refined them in supertypes
+                        // so we try each super type to see if we already have a matching typed reference
+                        // first super type
+                        ProducedType extendedType = declaringType.getExtendedType();
+                        if(extendedType != null){
+                            ProducedTypedReference refinedTypedReference = getRefinedTypedReference(extendedType, modelRefinedDecl);
+                            ProducedType refinedType = refinedTypedReference.getType();
+                            if(!isTypeParameter(refinedType)
+                                    && !willEraseToObject(refinedType))
+                                return refinedTypedReference;
+                        }
+                        // then satisfied interfaces
+                        for(ProducedType satisfiedType : declaringType.getSatisfiedTypes()){
+                            ProducedTypedReference refinedTypedReference = getRefinedTypedReference(satisfiedType, modelRefinedDecl);
+                            ProducedType refinedType = refinedTypedReference.getType();
+                            if(!isTypeParameter(refinedType)
+                                    && !willEraseToObject(refinedType))
+                                return refinedTypedReference;
+                        }
                     }
                 }
             }
         }
-        return (TypedDeclaration) decl.getRefinedDeclaration();
+        return getRefinedTypedReference(typedReference, modelRefinedDecl);
     }
 
     public Set<TypedDeclaration> getRefinedMembers(TypeDeclaration decl,
@@ -554,11 +583,15 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private ProducedTypedReference getRefinedTypedReference(ProducedTypedReference typedReference, 
+            TypedDeclaration refinedDeclaration) {
+        return getRefinedTypedReference(typedReference.getQualifyingType(), refinedDeclaration);
+    }
+
+    private ProducedTypedReference getRefinedTypedReference(ProducedType qualifyingType, 
                                                             TypedDeclaration refinedDeclaration) {
         TypeDeclaration refinedContainer = (TypeDeclaration)refinedDeclaration.getContainer();
 
-        ProducedType containingType = typedReference.getQualifyingType();
-        ProducedType refinedContainerType = containingType.getSupertype(refinedContainer);
+        ProducedType refinedContainerType = qualifyingType.getSupertype(refinedContainer);
         return refinedDeclaration.getProducedTypedReference(refinedContainerType, Collections.<ProducedType>emptyList());
     }
 
