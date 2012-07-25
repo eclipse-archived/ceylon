@@ -1,0 +1,92 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface RefinementAndIntersection_G {
+    
+    public void g();
+}
+final class RefinementAndIntersection_G$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G $this;
+    
+    public void g() {
+    }
+    
+    RefinementAndIntersection_G$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G $this) {
+        this.$this = $this;
+    }
+}
+interface RefinementAndIntersection_H {
+    
+    public void h();
+}
+final class RefinementAndIntersection_H$impl {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H $this;
+    
+    public void h() {
+    }
+    
+    RefinementAndIntersection_H$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H $this) {
+        this.$this = $this;
+    }
+}
+interface RefinementAndIntersection_Co<T> {
+    
+    public abstract T get();
+}
+final class RefinementAndIntersection_Co$impl<T> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<? extends T> $this;
+    
+    RefinementAndIntersection_Co$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<? extends T> $this) {
+        this.$this = $this;
+    }
+}
+class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.bottom.getBottom();
+    }
+    
+    RefinementAndIntersection_SuperCoGood() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G>(this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SuperCoGood();
+    }
+}
+class RefinementAndIntersection_SubCoGood extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H> {
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H> $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.bottom.getBottom();
+    }
+    
+    RefinementAndIntersection_SubCoGood() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H>((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co)this);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood();
+    }
+}
+final class refinementAndIntersection_method {
+    
+    private refinementAndIntersection_method() {
+    }
+    
+    static void refinementAndIntersection_method() {
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood sub = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood();
+        ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G)sub.get()).g();
+        ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H)sub.get()).h();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.klass.refinementAndIntersection_method.refinementAndIntersection_method();
+    }
+}

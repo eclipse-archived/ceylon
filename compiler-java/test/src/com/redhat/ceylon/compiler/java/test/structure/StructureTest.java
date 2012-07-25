@@ -212,7 +212,8 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/RefinedVarianceInheritance2");
     }
     @Test
-    public void testKlsRefinementAndIntersection_fail(){
+    public void testKlsRefinementAndIntersection(){
+        // See https://github.com/ceylon/ceylon-compiler/issues/651
         compareWithJavaSource("klass/RefinementAndIntersection");
     }
     @Test
