@@ -173,6 +173,7 @@ public class CeylonDocToolTest {
         assertBug659ShowInheritedMembers(destDir);
         assertSequencedParameter(destDir);
         assertCallableParameter(destDir);
+        assertFencedCodeBlockWithSyntaxHighlighter(destDir);
     }
 
     @Test
@@ -205,6 +206,7 @@ public class CeylonDocToolTest {
         assertBug659ShowInheritedMembers(destDir);
         assertSequencedParameter(destDir);
         assertCallableParameter(destDir);
+        assertFencedCodeBlockWithSyntaxHighlighter(destDir);
     }
 
     @Test
@@ -538,6 +540,19 @@ public class CeylonDocToolTest {
 
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("<code>methodWithCallableParameter3\\(Void fce1\\(Void fce2\\(Void fce3\\(\\)\\)\\)\\)</code>"));
+    }
+
+    private void assertFencedCodeBlockWithSyntaxHighlighter(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<link href='.resources/shCore.css' rel='stylesheet' type='text/css'/>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<link href='.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<script type='text/javascript' src='.resources/shCore.js'>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<script type='text/javascript' src='.resources/shBrushCeylon.js'>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<pre class=\"brush: ceylon\">shared default Boolean subset\\(Set set\\) \\{"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {

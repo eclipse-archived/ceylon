@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.github.rjeschke.txtmark.BlockEmitter;
+import com.github.rjeschke.txtmark.Configuration;
 import com.github.rjeschke.txtmark.Processor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -91,11 +93,16 @@ public class Util {
     }
 
     public static String wikiToHTML(String text) {
-        if( text == null || text.isEmpty() ) {
+        if( text == null || text.length() == 0 ) {
             return text;
-        } else {
-            return Processor.process(text);
         }
+        
+        Configuration config = Configuration.builder()
+                .forceExtentedProfile()
+                .setCodeBlockEmitter(CeylondocBlockEmitter.INSTANCE)
+                .build();
+        
+        return Processor.process(text, config);
     }
 
     private static String getFirstLine(String text) {
@@ -276,4 +283,46 @@ public class Util {
         String qualifiedName = pkgName.isEmpty() ? name : pkgName + "." + name;
         return com.redhat.ceylon.compiler.java.util.Util.quoteJavaKeywords(qualifiedName);
     }
+    
+    private static class CeylondocBlockEmitter implements BlockEmitter {
+        
+        private static final CeylondocBlockEmitter INSTANCE = new CeylondocBlockEmitter();
+
+        @Override
+        public void emitBlock(StringBuilder out, List<String> lines, String meta) {
+            if (lines.isEmpty())
+                return;
+            
+            if( meta == null || meta.length() == 0 ) {
+                out.append("<pre>");
+            }
+            else {
+                out.append("<pre class=\"brush: ").append(meta).append("\">");
+            }
+
+            for (final String s : lines) {
+                for (int i = 0; i < s.length(); i++) {
+                    final char c = s.charAt(i);
+                    switch (c) {
+                    case '&':
+                        out.append("&amp;");
+                        break;
+                    case '<':
+                        out.append("&lt;");
+                        break;
+                    case '>':
+                        out.append("&gt;");
+                        break;
+                    default:
+                        out.append(c);
+                        break;
+                    }
+                }
+                out.append('\n');
+            }
+            out.append("</pre>\n");
+        }
+        
+    }
+    
 }

@@ -34,7 +34,7 @@
                            'this outer super is exists nonempty';
 //		var annotations = 'actual doc formal in out see shared';
             var annotations = 'shared abstract formal default actual variable deprecated small ' +
-                              'literal doc by see throws';
+                              'literal doc by see throws tagged';
 
 		this.regexList = [
 			{ regex: SyntaxHighlighter.regexLib.singleLineCComments,	css: 'comments' },		// one line comments

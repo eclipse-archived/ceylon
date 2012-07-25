@@ -63,6 +63,22 @@ shared class StubClass(
     
     shared void methodWithCallableParameter3(void fce1(void fce2(void fce3()))) {}
     
+    doc "Test fenced code block with syntax highlighter.
+    
+         ```ceylon
+         shared default Boolean subset(Set set) {
+             for (element in this) {
+                 if (!set.contains(element)) {
+                     return false;
+                 }
+             }
+             return true;
+         }
+         ```
+         
+         <i>Lorem ipsum dolor sit amet, consectetur...</i>"
+    shared void methodWithCodeExamples() {}
+        
     shared actual void formalMethodFromStubInterface() {}
     
     shared actual void defaultDeprecatedMethodFromStubInterface() {}
