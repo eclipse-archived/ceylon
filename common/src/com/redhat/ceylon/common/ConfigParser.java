@@ -26,7 +26,33 @@ public class ConfigParser {
     private enum Token { section, option, assign, comment, eol, error, eof };
     
     public static CeylonConfig loadDefaultConfig() throws IOException {
-        return (new ConfigParser()).parse();
+        File configFile;
+        String configFilename = System.getProperty(PROP_CEYLON_CONFIG_FILE);
+        if (configFilename != null) {
+            configFile = new File(configFilename);
+        } else {
+            configFile = new File(new File(System.getProperty("user.home"), ".ceylon"), "config");
+        }
+        return (new ConfigParser(configFile)).parse();
+    }
+    
+    public static CeylonConfig loadLocalConfig(File dir) throws IOException {
+        File userConfig1 = (new File(CeylonConfig.getDefaultUserDir(), "config")).getCanonicalFile().getAbsoluteFile();
+        File userConfig2 = (new File(CeylonConfig.getUserDir(), "config")).getCanonicalFile().getAbsoluteFile();
+        dir = dir.getCanonicalFile().getAbsoluteFile();
+        while (dir != null) {
+            File configFile = new File(dir, ".ceylon/config");
+            if (configFile.equals(userConfig1) || configFile.equals(userConfig2)) {
+                // We stop if we reach $HOME/.ceylon/config or whatever is defined by -Dceylon.config
+                break;
+            }
+            if (configFile.isFile()) {
+                return (new ConfigParser(configFile)).parse();
+            }
+            dir = dir.getParentFile();
+        }
+        // We didn't find any local config file, just return an empty CeylonConfig
+        return new CeylonConfig();
     }
     
     public static CeylonConfig loadConfigFromFile(File configFile) throws IOException {
@@ -37,15 +63,6 @@ public class ConfigParser {
         return (new ConfigParser(stream)).parse();
     }
     
-    private ConfigParser() {
-        String configFilename = System.getProperty(PROP_CEYLON_CONFIG_FILE);
-        if (configFilename != null) {
-            configFile = new File(configFilename);
-        } else {
-            configFile = new File(new File(System.getProperty("user.home"), ".ceylon"), "config");
-        }
-    }
-    
     private ConfigParser(File configFile) {
         this.configFile = configFile;
     }
@@ -54,7 +71,7 @@ public class ConfigParser {
         this.in = in;
     }
     
-    public CeylonConfig parse() throws IOException {
+    private CeylonConfig parse() throws IOException {
         config = new CeylonConfig();
         section = null;
         if (configFile == null || configFile.isFile()) {
