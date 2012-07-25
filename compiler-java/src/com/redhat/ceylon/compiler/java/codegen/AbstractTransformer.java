@@ -489,6 +489,8 @@ public abstract class AbstractTransformer implements Transformation {
      * twice: once with Nothing (erased to j.l.Object) and once with Element (a type param). Now, in order to not widen the
      * return type it can't be Nothing (j.l.Object), it must be Element (a type param that is not instantiated), because in Java
      * a type param refines j.l.Object but not the other way around.
+     * The second special case is when implementing an interface first with a non-erased type, then with an erased type. In this
+     * case we want the refined decl to be the one with the non-erased type.
      */
     private TypedDeclaration getRefinedDeclaration(ProducedTypedReference typedReference) {
         Declaration decl = typedReference.getDeclaration();
@@ -500,11 +502,20 @@ public abstract class AbstractTransformer implements Transformation {
                 Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), null);
                 // now we must select a different refined declaration if we refine it more than once
                 if(refinedMembers.size() > 1){
+                    // first case
                     for(TypedDeclaration refinedDecl : refinedMembers){
                         // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method
                         ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
                         // if it is not instantiated, that's the one we're looking for
                         if(isTypeParameter(refinedTypedReference.getType()))
+                            return refinedDecl;
+                    }
+                    // second case
+                    for(TypedDeclaration refinedDecl : refinedMembers){
+                        // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method
+                        ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
+                        // if we're not erasing this one to Object let's select it
+                        if(!willEraseToObject(refinedTypedReference.getType()))
                             return refinedDecl;
                     }
                 }
