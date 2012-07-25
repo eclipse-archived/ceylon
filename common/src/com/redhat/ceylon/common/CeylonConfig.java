@@ -16,6 +16,12 @@ public class CeylonConfig {
         if (instance == null) {
             try {
                 instance = ConfigParser.loadDefaultConfig();
+                try {
+                    CeylonConfig local = ConfigParser.loadLocalConfig(new File("."));
+                    instance.merge(local);
+                } catch (IOException e) {
+                    // Just ignore any errors
+                }
             } catch (IOException e) {
                 instance = new CeylonConfig();
             }
