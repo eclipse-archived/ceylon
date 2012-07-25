@@ -259,6 +259,59 @@ public class CeylonTransformer extends AbstractTransformer {
 
     }
 
+    public List<JCTree> transformPackageDescriptor(Tree.PackageDescriptor pack) {
+        at(pack);
+        JCTree getter = make().MethodDef(make().Modifiers(Flags.STATIC), names().fromString("getPackage"),
+                //The return type is a class in the language module
+                makeJavaType(((com.redhat.ceylon.compiler.typechecker.model.Class)typeFact().getLanguageModuleDeclaration("Package")).getType()),
+                //just a getter, no params
+                List.<JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
+                //TODO for now we just return null - do we really need to return something?
+                make().Block(0, List.<JCStatement>of(make().Return(makeNull()))), null);
+        ListBuffer<JCExpression> annargs = new ListBuffer<JCExpression>();
+        ListBuffer<JCExpression> authors = new ListBuffer<JCExpression>();
+        StringBuilder modname = new StringBuilder();
+        for (Identifier id : pack.getImportPath().getIdentifiers()) {
+            if (modname.length() > 0) {
+                modname.append('.');
+            }
+            modname.append(id.getText());
+        }
+        annargs.add(make().Assign(naming.makeUnquotedIdent("name"), make().Literal(modname.toString())));
+        boolean sharePack = false;
+        for (Tree.Annotation a : pack.getAnnotationList().getAnnotations()) {
+            String annName = ((BaseMemberExpression)a.getPrimary()).getIdentifier().getText();
+            at(a);
+            if ("doc".equals(annName)) {
+                annargs.add(make().Assign(naming.makeUnquotedIdent("doc"), expressionGen().transformExpression(
+                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null)));
+            } else if ("by".equals(annName)) {
+                //There can be several by's each with an author name
+                authors.add(expressionGen().transformExpression(
+                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null));
+            } else if ("license".equals(annName)) {
+                annargs.add(make().Assign(naming.makeUnquotedIdent("license"), expressionGen().transformExpression(
+                        a.getPositionalArgumentList().getPositionalArguments().get(0).getExpression(), BoxingStrategy.UNBOXED, null)));
+            } else if ("shared".equals(annName)) {
+                sharePack = true;
+            }
+        }
+        annargs.add(make().Assign(naming.makeUnquotedIdent("shared"), makeBoolean(sharePack)));
+        if (!authors.isEmpty()) {
+            //TODO create array of authors
+            //annargs.add(make().Assign(naming.makeUnquotedIdent("by"), authors.toList()));
+        }
+        return ClassDefinitionBuilder
+                .klass(this, false, "$package", null)
+                .modifiers(Flags.FINAL)
+                .constructorModifiers(Flags.PRIVATE)
+                .annotations(List.<JCTree.JCAnnotation>of(make().Annotation(
+                        makeIdent(syms().ceylonAtPackageType), annargs.toList())))
+                .defs(List.<JCTree>of(getter))
+                .build();
+
+    }
+
     public List<JCTree> transformAttribute(
             TypedDeclaration declarationModel,
             String attrName, String attrClassName,

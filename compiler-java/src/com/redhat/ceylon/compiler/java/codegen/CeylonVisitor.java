@@ -482,7 +482,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         appendList(gen.transformModuleDescriptor(that));
     }
     public void visit(Tree.PackageDescriptor that) {
-        
+        appendList(gen.transformPackageDescriptor(that));
     }
 
     /**
