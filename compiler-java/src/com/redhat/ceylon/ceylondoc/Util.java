@@ -29,13 +29,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.petebevin.markdown.MarkdownProcessor;
+import com.github.rjeschke.txtmark.Processor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -94,7 +94,7 @@ public class Util {
         if( text == null || text.isEmpty() ) {
             return text;
         } else {
-            return new MarkdownProcessor().markdown(text);
+            return Processor.process(text);
         }
     }
 

@@ -34,8 +34,8 @@
   <property name="build.dist" location="${build}/dist"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
-  <property name="markdown.version" value="faf3bf83000"/>
-  <property name="markdown.lib" location="${base.path}/markdownj-core-${markdown.version}.jar"/>
+  <property name="markdown.version" value="0.7-1fc6e2a548"/>
+  <property name="markdown.lib" location="${base.path}/txtmark-${markdown.version}.jar"/>
     
   <!-- Jarfiles everything ends up in -->
   <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
@@ -408,7 +408,7 @@
     <copy todir="${build.lib}">
         <fileset dir="${basedir}/lib">
             <include name="antlr-*-complete.jar"/>
-            <include name="markdownj-*.jar"/>
+            <include name="txtmark-*.jar"/>
         </fileset>
     </copy>    
   </target>

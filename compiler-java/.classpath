@@ -8,12 +8,12 @@
 	<classpathentry kind="src" path="test/ceylondoc"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/ant-1.8.2.jar"/>
-	<classpathentry kind="lib" path="lib/markdownj-core-faf3bf83000.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-spec"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>
 	<classpathentry kind="lib" path="lib/antlr-3.4-complete.jar"/>
 	<classpathentry kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
+	<classpathentry kind="lib" path="lib/txtmark-0.7-1fc6e2a548.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
