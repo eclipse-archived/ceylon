@@ -62,7 +62,7 @@ public class Util {
     public static String getDoc(Module module) {
         for (Annotation a : module.getAnnotations()) {
             if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
-                return a.getPositionalArguments().get(0);
+                return unquote(a.getPositionalArguments().get(0));
             }
         }
         return "";
@@ -72,7 +72,9 @@ public class Util {
         ArrayList<String> moduleAuthors = new ArrayList<>();
         for (Annotation a : module.getAnnotations()) {
             if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
-                moduleAuthors.addAll(a.getPositionalArguments());
+                for (String author : a.getPositionalArguments()) {
+                    moduleAuthors.add(unquote(author));
+                }
             }
         }
         return moduleAuthors;
@@ -82,7 +84,9 @@ public class Util {
         ArrayList<String> moduleAuthors = new ArrayList<>();
         for (Annotation a : module.getAnnotations()) {
             if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
-                moduleAuthors.addAll(a.getPositionalArguments());
+                for (String author : a.getPositionalArguments()) {
+                    moduleAuthors.add(unquote(author));
+                }
             }
         }
         return moduleAuthors;
@@ -91,7 +95,7 @@ public class Util {
     public static String getDoc(Package pkg) {
         for (Annotation a : pkg.getAnnotations()) {
             if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
-                return a.getPositionalArguments().get(0);
+                return unquote(a.getPositionalArguments().get(0));
             }
         }
         return "";
@@ -180,8 +184,12 @@ public class Util {
         return a;
     }
 
+    /** Remove quotes from a string, if it starts and ends with them. */
     public static String unquote(String string) {
-        return string.substring(1, string.length() - 1);
+        if (string.length() >= 2 && string.charAt(0) == '"' && string.charAt(string.length()-1) == '"') {
+            return string.substring(1, string.length() - 1);
+        }
+        return string;
     }
 
     public static String getModifiers(Declaration d) {
