@@ -15,10 +15,16 @@ import com.redhat.ceylon.common.ConfigParser;
 public class CeylonConfigTest {
 
     CeylonConfig testConfig;
+    CeylonConfig localConfig;
+    CeylonConfig mergedConfig;
     
     @Before
     public void setup() throws IOException {
         testConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
+        localConfig = ConfigParser.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
+        mergedConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/test.config"));
+        CeylonConfig localConfig2 = ConfigParser.loadLocalConfig(new File("test/src/com/redhat/ceylon/common/test"));
+        mergedConfig.merge(localConfig2);
     }
     
     @Test
@@ -105,6 +111,19 @@ public class CeylonConfigTest {
         Assert.assertTrue(compareStringArraysSorted(new String[]{"test"}, testConfig.getSectionNames("")));
         Assert.assertTrue(compareStringArraysSorted(new String[]{"commented", "multiple", "section"}, testConfig.getSectionNames("test")));
         Assert.assertTrue(compareStringArraysSorted(new String[]{"Aap", "Noot", "Mies"}, testConfig.getSectionNames("test.section")));
+    }
+    
+    @Test
+    public void testLocalConfig() {
+        Assert.assertEquals("bar", localConfig.getOption("local.foo", "notbar"));
+    }
+    
+    @Test
+    public void testMergedConfig() {
+        Assert.assertEquals("bar", mergedConfig.getOption("local.foo", "notbar"));
+        Assert.assertEquals("hallo", mergedConfig.getOption("test.string-hello"));
+        Assert.assertEquals("world", mergedConfig.getOption("test.string-world"));
+        Assert.assertTrue(compareStringArrays(new String[]{"one", "two"}, testConfig.getOptionValues("test.multiple.strings")));
     }
     
     private boolean compareStringArrays(String[] one, String[] two) {
