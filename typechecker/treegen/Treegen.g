@@ -62,20 +62,20 @@ memberDescription : d=DESCRIPTION
                   ;
 
 subnode : 
-          n=NODE_NAME '?'? f=FIELD_NAME ('(' NODE_NAME* ')')?
+          n=NODE_NAME '?'? f=FIELD_NAME
           { println("        private " + className($n.text) + " " + $f.text + ";"); }
           { println("        public " + className($n.text) + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
           { println("        public void set" + initialUpper($f.text) + "(" + className($n.text) + " node) { " + $f.text + " = node; connect(node); }\n"); }
-        | n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
+        | n=NODE_NAME '?'?
           { println("        private " + className($n.text) + " " + fieldName($n.text) + ";"); }
           { println("        public " + className($n.text) + " get" + className($n.text) + "() { return " + fieldName($n.text) + "; }"); }
           { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; connect(node); }\n"); }
-        | mn=NODE_NAME '*' ('(' NODE_NAME* ')')?
+        | mn=NODE_NAME '*'
           { println("        private List<" + className($mn.text) + "> " + fieldName($mn.text) + 
                                "s = new ArrayList<" + className($mn.text) + ">();"); }
           { println("        public List<" + className($mn.text) + "> get" + className($mn.text) + "s() { return " + fieldName($mn.text) + "s; }"); }
           { println("        public void add" + className($mn.text) + "(" + className($mn.text) + " node) { " + fieldName($mn.text) + "s.add(node); connect(node); }\n"); }
-        | mn=NODE_NAME '*' f=FIELD_NAME ('(' NODE_NAME* ')')?
+        | mn=NODE_NAME '*' f=FIELD_NAME
           { println("        private List<" + className($mn.text) + "> " + $f.text + 
                                "s = new ArrayList<" + className($mn.text) + ">();"); }
           { println("        public List<" + className($mn.text) + "> get" + initialUpper($f.text) + "s() { return " + $f.text + "s; }"); }

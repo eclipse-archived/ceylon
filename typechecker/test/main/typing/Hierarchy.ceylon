@@ -13,5 +13,5 @@ interface Hierarchy {
     
     class Good() satisfies SuperProducer & SubProducer {}
     
-    @error class Bad() satisfies SubProducer & OtherProducer {}
+    class Bad() satisfies SubProducer & OtherProducer {}
 }

@@ -32,8 +32,8 @@ node : '^' '('
        ')'
      ;
 
-subnode : n=NODE_NAME '?'? f=FIELD_NAME? ('(' NODE_NAME* ')')?
-        | mn=NODE_NAME '*' f=FIELD_NAME? ('(' NODE_NAME* ')')? 
+subnode : n=NODE_NAME '?'? f=FIELD_NAME? 
+        | mn=NODE_NAME '*' f=FIELD_NAME?
         ;
 
 field : 'abstract'? (TYPE_NAME|'boolean') FIELD_NAME ';';

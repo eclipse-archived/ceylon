@@ -3,7 +3,7 @@ class Parameters() {
     void x2(@type["String"] String s, @type["Integer"] Integer n) {}
     void x3(@type["Empty|Sequence<String>"] String[] s) {}
     void x4(@type["Nothing|String"] String? s) {}
-    void x5(@type["Empty|Sequence<String>"] String... s) {}
+    void x5(@type["Iterable<String>"] String... s) {}
     
     void x6(String s="hello", @error Integer n) {}
     void x7(String... s, @error Integer n) {}
@@ -28,6 +28,8 @@ class Parameters() {
     void broken5<T>(@error Entry<T,Unknown> e) {}
     @error broken5("hello"->"goodbye");
     
+    void broken6(void param(@error String paramOfParam="hello")) {}
+    
     class Super() {
     	shared default void greet(String greeting) {}
     }
@@ -35,5 +37,7 @@ class Parameters() {
     class Sub() extends Super() {
     	shared actual void greet(@error String greeting="hello") {}
     }
+    
+    void method()(@error String name="gavin")(@error String... names) {}
 
 }

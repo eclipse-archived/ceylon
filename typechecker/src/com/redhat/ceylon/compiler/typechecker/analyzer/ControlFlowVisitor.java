@@ -118,7 +118,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         if (that.getSpecifierExpression()!=null) {
-            checkExecutableStatementAllowed(that.getSpecifierExpression());
+            //checkExecutableStatementAllowed(that.getSpecifierExpression());
             super.visit(that);
         }
     }
@@ -208,6 +208,12 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Block that) {
+        super.visit(that);
+        that.setDefinitelyReturns(definitelyReturns);
+    }
+    
+    @Override
     public void visit(Tree.Declaration that) {
         Boolean efl = pauseLoop();
         super.visit(that);
@@ -269,6 +275,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.WhileStatement that) {
+        checkExecutableStatementAllowed(that);
         boolean d = beginIndefiniteReturnScope();
         Boolean b = beginLoop();
         that.getWhileClause().visit(this);
@@ -402,7 +409,8 @@ public class ControlFlowVisitor extends Visitor {
                         || t instanceof Tree.PostfixOperatorExpression
                         || t instanceof Tree.PrefixOperatorExpression
                         || t instanceof Tree.AssignmentOp)) {
-                    expr.addError("not a legal statement (not an invocation, assignment, or increment/decrement)");
+                    expr.addError("not a legal statement (not an invocation, assignment, or increment/decrement)", 
+                            3000);
                 }
             }
         }

@@ -619,4 +619,14 @@ interface DefiniteAssignment {
         @error print(s);
     }
     
+    class GoodWithAnonFunction() {
+        String name = "hello";
+        value x = () name;
+    }
+
+    class BadWithAnonFunction() {
+        String name;
+        @error value x = () name;
+    }
+    
 }

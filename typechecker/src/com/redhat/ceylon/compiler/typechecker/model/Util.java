@@ -109,29 +109,41 @@ public class Util {
                 List<ParameterList> pls = f.getParameterLists();
                 if (pls!=null && !pls.isEmpty()) {
                     List<Parameter> params = pls.get(0).getParameters();
-                    if (signature.size()!=params.size()) {
+                    int size = params.size();
+                    if (pls.get(0).hasSequencedParameter()) {
+                        //ignore sequenced args
+                        //TODO: don't ignore them! check that they 
+                        //      all actually match the sequenced
+                        //      param!
+                        size--;
+                        if (signature.size()<size) {
+                            return false;
+                        }
+                    }
+                    else if (signature.size()!=size) {
                         return false;
                     }
-                    else {
-                        for (int i=0; i<params.size(); i++) {
-                            //ignore optionality for resolving overloads, since
-                            //all all Java method params are treated as optional
-                            ProducedType pdt = params.get(i).getType();
-                            ProducedType sdt = signature.get(i);
-                            if (pdt==null || sdt==null) return false;
-                            ProducedType paramType = d.getUnit().getDefiniteType(pdt);
-                            ProducedType sigType = d.getUnit().getDefiniteType(sdt);
-                            TypeDeclaration paramTypeDec = paramType.getDeclaration();
-                            TypeDeclaration sigTypeDec = sigType.getDeclaration();
-                            if (sigTypeDec==null || paramTypeDec==null) return false;
-                            if (sigTypeDec instanceof UnknownType || paramTypeDec instanceof UnknownType) return false;
-                            if (!erase(sigTypeDec).inherits(erase(paramTypeDec)) &&
-                                    underlyingTypesUnequal(paramType, sigType)) {
-                                return false;
-                            }
+                    for (int i=0; i<size; i++) {
+                        //ignore optionality for resolving overloads, since
+                        //all Java method params are treated as optional
+                        ProducedType pdt = params.get(i).getType();
+                        ProducedType sdt = signature.get(i);
+                        if (pdt==null || sdt==null) return false;
+                        ProducedType paramType = d.getUnit().getDefiniteType(pdt);
+                        ProducedType sigType = d.getUnit().getDefiniteType(sdt);
+                        ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
+                        if (ast!=null) sigType = ast;
+                        if (sigType.isSubtypeOf(d.getUnit().getNothingDeclaration().getType())) {
+                            continue;
                         }
-                        return true;
+                        if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
+                        if (!erase(sigType.getDeclaration())
+                                .inherits(erase(paramType.getDeclaration())) &&
+                                underlyingTypesUnequal(paramType, sigType)) {
+                            return false;
+                        }
                     }
+                    return true;
                 }
                 else {
                     return false;
@@ -157,15 +169,28 @@ public class Util {
             if (dpls!=null&&!dpls.isEmpty() && rpls!=null&&!rpls.isEmpty()) {
                 List<Parameter> dpl = dpls.get(0).getParameters();
                 List<Parameter> rpl = rpls.get(0).getParameters();
-                if (dpl.size()==rpl.size()) {
-                    for (int i=0; i<dpl.size(); i++) {
+                int dplSize = dpl.size();
+                int rplSize = rpl.size();
+                //ignore sequenced parameters
+                boolean dhsp = dpls.get(0).hasSequencedParameter();
+                boolean rhsp = rpls.get(0).hasSequencedParameter();
+                //always prefer a signature without varargs 
+                //over one with a varargs parameter
+                if (!dhsp && rhsp) {
+                    return true;
+                }
+                //ignore sequenced parameters
+                if (dhsp) { dplSize--; }
+                if (rhsp) { dplSize--; }
+                if (dplSize==rplSize) {
+                    //if all parameters are of more specific
+                    //or equal type, prefer it
+                    for (int i=0; i<dplSize; i++) {
                         ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(i).getType());
-                        TypeDeclaration paramTypeDec = paramType.getDeclaration();
                         ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(i).getType());
-                        TypeDeclaration otherTypeDec = otherType.getDeclaration();
-                        if (otherTypeDec==null || paramTypeDec==null) return false;
-                        if (otherTypeDec instanceof UnknownType || paramTypeDec instanceof UnknownType) return false;
-                        if (!erase(paramTypeDec).inherits(erase(otherTypeDec)) &&
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        if (!erase(paramType.getDeclaration())
+                                    .inherits(erase(otherType.getDeclaration())) &&
                                 underlyingTypesUnequal(paramType, otherType)) {
                             return false;
                         }
@@ -269,35 +294,65 @@ public class Util {
         if (pt==null) {
             return;
         }
-        ProducedType selfType = pt.getDeclaration().getSelfType();
-		if (selfType!=null) {
-        	pt = selfType.substitute(pt.getTypeArguments()); //canonicalize type with self type to the self type
-        }
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType t: pt.getDeclaration().getCaseTypes() ) {
                 addToUnion( list, t.substitute(pt.getTypeArguments()) );
             }
         }
-        else {
-            Boolean included = pt.isWellDefined();
-            if (included) {
-                for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
-                    ProducedType t = iter.next();
-                    if (pt.isSubtypeOf(t)) {
-                        included = false;
-                        break;
+        else if (pt.isWellDefined()) {
+            boolean add=true;
+            boolean canonicalize=false;
+            ProducedType toReplace = null;
+            int i=0;
+            for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
+                ProducedType t = iter.next();
+                if (pt.isSubtypeOf(t)) {
+                    if (canonicalizeInUnion(pt, t)) {
+                        toReplace=canonicalizeSelfType(t);
                     }
-                    //TODO: I think in some very rare occasions 
-                    //      this can cause stack overflows!
-                    else if (pt.isSupertypeOf(t)) {
-                        iter.remove();
-                    }
+                    add=false;
+                    break;
                 }
+                //TODO: I think in some very rare occasions 
+                //      this can cause stack overflows!
+                else if (pt.isSupertypeOf(t)) {
+                    iter.remove();
+                    canonicalize=canonicalizeInUnion(pt, t);
+                }
+                i++;
             }
-            if (included) {
+            if (toReplace!=null) {
+                list.set(i,toReplace);
+            }
+            if (add) {
+                if (canonicalize) {
+                    pt = canonicalizeSelfType(pt);
+                }
                 list.add(pt);
             }
         }
+    }
+
+    private static boolean canonicalizeInUnion(ProducedType pt, ProducedType t) {
+        if (pt.getDeclaration() instanceof ClassOrInterface &&
+                t.getDeclaration() instanceof ClassOrInterface) {
+            return !pt.getDeclaration().equals(t.getDeclaration());
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Canonicalize a type with a self type, returning the
+     * argument of the self type
+     */
+    public static ProducedType canonicalizeSelfType(ProducedType pt) {
+        ProducedType selfType = pt.getDeclaration().getSelfType();
+		return selfType==null ? pt :
+        	selfType.substitute(pt.getTypeArguments());
+		    //this version doesn't seem to work for type families:
+		    //pt.getTypeArguments().get(selfType.getDeclaration());
     }
     
     /**
@@ -310,10 +365,7 @@ public class Util {
         if (pt==null) {
             return;
         }
-        ProducedType selfType = pt.getDeclaration().getSelfType();
-		if (selfType!=null) {
-        	pt = selfType.substitute(pt.getTypeArguments()); //canonicalize type with self type to the self type
-        }
+        pt = canonicalizeSelfType(pt);
         if (pt.getDeclaration() instanceof IntersectionType) {
             for (ProducedType t: pt.getDeclaration().getSatisfiedTypes() ) {
                 addToIntersection(list, t.substitute(pt.getTypeArguments()), unit);
@@ -363,7 +415,9 @@ public class Util {
                     else if (pt.isSubtypeOf(t)) {
                         iter.remove();
                     }
-                    else if ( pt.getDeclaration().equals(t.getDeclaration()) ) {
+                    else if (pt.getDeclaration() instanceof ClassOrInterface && 
+                            t.getDeclaration() instanceof ClassOrInterface && 
+                            pt.getDeclaration().equals(t.getDeclaration()) ) {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                         TypeDeclaration td = pt.getDeclaration();
                         List<ProducedType> args = new ArrayList<ProducedType>();
@@ -423,9 +477,11 @@ public class Util {
                         if (pt.getDeclaration() instanceof Class &&
                                 t.getDeclaration() instanceof Class ||
                             pt.getDeclaration() instanceof Interface &&
+                                t.getDeclaration() instanceof Class &&
                                 t.getDeclaration().equals(nd) ||
                                 //t.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing") ||
                             t.getDeclaration() instanceof Interface &&
+                            pt.getDeclaration() instanceof Class &&
                                 pt.getDeclaration().equals(nd)) {
                                 //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing")) {
                             //the meet of two classes unrelated by inheritance, or
@@ -481,19 +537,23 @@ public class Util {
         return it.canonicalize().getType();
     }
 
-    public static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
+    public static boolean isElementOfUnion(UnionType ut, ClassOrInterface ci) {
         for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
-            if (ct.equals(td)) return true;
+            if (ct instanceof ClassOrInterface && ct.equals(ci)) {
+                return true;
+            }
         }
         return false;
     }
     
-    public static boolean isElementOfIntersection(IntersectionType ut, TypeDeclaration td) {
+    /*public static boolean isElementOfIntersection(IntersectionType ut, ClassOrInterface td) {
         for (TypeDeclaration ct: ut.getSatisfiedTypeDeclarations()) {
-            if (ct.equals(td)) return true;
+            if (ct instanceof ClassOrInterface && ct.equals(td)) {
+                return true;
+            }
         }
         return false;
-    }
+    }*/
     
     public static Declaration lookupMember(List<Declaration> members, String name,
             List<ProducedType> signature, boolean includeParameters) {
@@ -558,6 +618,11 @@ public class Util {
             //declaration
             return inexactMatch;
         }
+    }
+
+    public static boolean isTypeUnknown(ProducedType type) {
+        return type==null || type.getDeclaration()==null ||
+                type.getDeclaration() instanceof UnknownType;
     }
 
 }

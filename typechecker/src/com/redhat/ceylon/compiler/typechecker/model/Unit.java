@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
@@ -22,6 +24,9 @@ public class Unit {
 	private List<ImportList> importLists = new ArrayList<ImportList>();
 	private Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
 	private Set<Declaration> duplicateDeclarations = new HashSet<Declaration>();
+    private final Set<String> dependentsOf = new HashSet<String>();
+    private String fullPath;
+    private String relativePath;
     
     public List<Import> getImports() {
         return imports;
@@ -31,6 +36,13 @@ public class Unit {
         return importLists;
     }
 
+    /**
+     * @return the dependentsOf
+     */
+    public Set<String> getDependentsOf() {
+        return dependentsOf;
+    }
+    
     public Set<Identifier> getUnresolvedReferences() {
         return unresolvedReferences;
     }
@@ -48,7 +60,15 @@ public class Unit {
     }
 
     public List<Declaration> getDeclarations() {
-        return declarations;
+        synchronized (declarations) {
+            return new ArrayList<Declaration>(declarations);
+        }
+    }
+    
+    public void addDeclaration(Declaration declaration) {
+        synchronized (declarations) {
+            declarations.add(declaration);
+        }
     }
 
     public String getFilename() {
@@ -59,7 +79,23 @@ public class Unit {
         this.filename = filename;
     }
 
-    @Override
+    public String getFullPath() {
+		return fullPath;
+	}
+
+	public void setFullPath(String fullPath) {
+		this.fullPath = fullPath;
+	}
+
+	public String getRelativePath() {
+		return relativePath;
+	}
+
+	public void setRelativePath(String relativePath) {
+		this.relativePath = relativePath;
+	}
+
+	@Override
     public String toString() {
         return "Unit[" + filename + "]";
     }
@@ -81,8 +117,7 @@ public class Unit {
     public Declaration getImportedDeclaration(String name, 
             List<ProducedType> signature) {
         for (Import i: getImports()) {
-            if (i.getTypeDeclaration()==null && 
-            		i.getAlias().equals(name)) {
+            if (i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
                 //correct overloaded version
@@ -115,7 +150,7 @@ public class Unit {
     
     public Map<String, DeclarationWithProximity> getMatchingImportedDeclarations(String startingWith, int proximity) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
-        for (Import i: getImports()) {
+        for (Import i: new ArrayList<Import>(getImports())) {
             if (i.getAlias()!=null &&
                     i.getAlias().toLowerCase().startsWith(startingWith.toLowerCase())) {
                 result.put(i.getAlias(), new DeclarationWithProximity(i, proximity));
@@ -241,12 +276,7 @@ public class Unit {
     public Interface getSummableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Summable");
     }
-    
-    //TODO: remove!
-    public Interface getSubtractableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Subtractable");
-    }
-        
+            
     public Interface getNumericDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Numeric");
     }
@@ -294,11 +324,7 @@ public class Unit {
     public TypeDeclaration getQuotedDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Quoted");
     }
-        
-    /*public Interface getEqualityDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Equality");
-    }*/
-        
+    
     public Interface getComparableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Comparable");
     }
@@ -315,6 +341,10 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("Range");
     }
         
+    public TypeDeclaration getArrayDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Array");
+    }
+        
     public Interface getRangedDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Ranged");
     }
@@ -324,8 +354,7 @@ public class Unit {
     }
     
     ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
-    	if (ref.getType()==null ||
-    	        ref.getType().getDeclaration() instanceof UnknownType) {
+    	if ( isTypeUnknown(ref.getType())) {
     		//special case for forward reference to member
     		//with inferred type TODO: something better
     		return new UnknownType(this).getType();
@@ -567,6 +596,23 @@ public class Unit {
     
     public BottomType getBottomDeclaration() {
         return new BottomType(this);
+    }
+
+    public ProducedType denotableType(ProducedType pt) {
+        if ( pt!=null && pt.getDeclaration()!=null &&
+                pt.getDeclaration().isAnonymous() ) {
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            addToIntersection(list, pt.getSupertype(pt.getDeclaration().getExtendedTypeDeclaration()), this);
+            for (TypeDeclaration td: pt.getDeclaration().getSatisfiedTypeDeclarations()) {
+                addToIntersection(list, pt.getSupertype(td), this);
+            }
+            IntersectionType it = new IntersectionType(this);
+            it.setSatisfiedTypes(list);
+            return it.getType();
+        }
+        else {
+            return pt;
+        }
     }
     
 }

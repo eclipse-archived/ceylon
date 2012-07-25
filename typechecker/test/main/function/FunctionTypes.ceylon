@@ -50,8 +50,10 @@ T do<T>(T f()) { return f(); }
 
 void method() {
     Callable<String,String> upperRef = upper;
-    Callable<Void,String> printRef = print;    
+    Callable<Void,String> printRef = print;
+    Callable<Void,Bottom> printRefContra = print;
     Callable<X,String> xRef = X;
+    Callable<Void,Bottom> xRefContra = X;
     X x = X("hello");
     Callable<X.Y> yRef = x.Y;
     Callable<Void> helloRef = x.hello;
@@ -132,6 +134,11 @@ void method() {
     @type["Entry<Object,Object>"] generic((Object obj) obj, () "hello");
     @type["Entry<Object,String>"] generic((Object obj) obj.string, () "hello");
     @type["Entry<String,String>"] generic((String str) str, () "hello");
+    
+    function fx(String g()) = do<String>;
+    @error function fy(String g()) = do;
+    value fw = do<String>;
+    @error value fz = do;
 }
 
 class Outer() {
@@ -169,3 +176,6 @@ void moreTests() {
         }
     };
 }
+
+Sequence<String()> singletonStringFunc = Singleton<String()>(()"hello");
+Sequence<Boolean()(String)> singletonBooleanFunc = Singleton<Boolean()(String)>((String s)()s=="hello");

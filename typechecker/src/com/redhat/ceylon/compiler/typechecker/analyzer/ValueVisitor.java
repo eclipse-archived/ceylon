@@ -61,7 +61,11 @@ public class ValueVisitor extends Visitor {
                     ((Value) d).setCaptured(true);
                 }
                 else if (d instanceof Parameter) {
-                    ((Parameter) d).setCaptured(true);
+                    if (!d.getContainer().equals(that.getScope())) { //a reference from a default argument 
+                                                                     //expression of the same parameter 
+                                                                     //list does not capture a parameter
+                        ((Parameter) d).setCaptured(true);
+                    }
                 }
                 /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
                     that.addError("access to variable local from capturing scope: " + declaration.getName());
@@ -142,5 +146,19 @@ public class ValueVisitor extends Visitor {
         super.visit(that);
         exitCapturingScope(cs);
     }
+    
+    @Override public void visit(Tree.DefaultArgument that) {
+        //parameter declarations capture 
+        //their default argument
+        boolean cs = enterCapturingScope();
+        super.visit(that);
+        exitCapturingScope(cs);
+    }    
+    
+    @Override public void visit(Tree.FunctionArgument that) {
+        boolean cs = enterCapturingScope();
+        super.visit(that);
+        exitCapturingScope(cs);
+    }    
     
 }

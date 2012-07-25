@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 /**
  * Validates that the initializer of a class does
@@ -244,16 +245,18 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.Return that) {
         super.visit(that);
-        if ( that.getExpression()!=null && inBody() ) {
-            checkSelfReference(that, that.getExpression().getTerm());    
+        Expression e = that.getExpression();
+        if ( e!=null && inBody() ) {
+            checkSelfReference(that, e.getTerm());    
         }
     }
 
     @Override
     public void visit(Tree.SpecifierOrInitializerExpression that) {
         super.visit(that);
-        if ( inBody() ) {
-            checkSelfReference(that, that.getExpression().getTerm());    
+        Expression e = that.getExpression();
+        if ( e!=null && inBody() ) {
+            checkSelfReference(that, e.getTerm());    
         }
     }
 
@@ -269,8 +272,11 @@ public class SelfReferenceVisitor extends Visitor {
     public void visit(Tree.PositionalArgumentList that) {
         super.visit(that);
         if ( inBody() ) {
-            for ( Tree.PositionalArgument arg: that.getPositionalArguments()) {
-                checkSelfReference(arg, arg.getExpression().getTerm());    
+            for (Tree.PositionalArgument arg: that.getPositionalArguments()) {
+                Expression e = arg.getExpression();
+                if (e!=null) {
+                    checkSelfReference(arg, e.getTerm());
+                }
             }
         }
     }
@@ -279,10 +285,13 @@ public class SelfReferenceVisitor extends Visitor {
     public void visit(Tree.NamedArgumentList that) {
         super.visit(that);
         if ( inBody() ) {
-            for ( Tree.NamedArgument arg: that.getNamedArguments()) {
+            for (Tree.NamedArgument arg: that.getNamedArguments()) {
                 if (arg instanceof Tree.SpecifiedArgument) {
                     Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) arg).getSpecifierExpression();
-                    checkSelfReference(se, se.getExpression().getTerm());    
+                    Expression e = se.getExpression();
+                    if (e!=null) {
+                        checkSelfReference(se, e.getTerm());
+                    }
                 }
             }
         }

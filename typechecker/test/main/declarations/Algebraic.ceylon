@@ -20,7 +20,8 @@ void enumConstraint<T>(T t)
     }
 }
 
-class EnumConstraint<T>(T... ts) given T of Float|Integer {
+class EnumConstraint<T>(T... ti) given T of Float|Integer {
+    value ts = ti.sequence;
     shared actual String string {
         switch (ts)
         case(is Empty) { print(ts); return "empty"; }
@@ -321,4 +322,30 @@ void testHardCase(J4 i) {
     }
     case (is J3) {}
     case (is Nothing) {}
+}
+
+interface Rsrc of File|Dir|Link {}
+interface File satisfies Rsrc {}
+interface Dir satisfies Rsrc {}
+interface Link satisfies Rsrc {}
+
+void use() {
+    
+    File|Link x = bottom;
+    switch(x) 
+    case (is File) {}
+    case (is Link) {}
+    
+    File|Dir|Link y = bottom;
+    switch(y)
+    case (is File|Dir) {}
+    case (is Link) {}
+    
+    Rsrc z = bottom;
+    if (is File|Dir z) {
+        switch(z) 
+        case (is File) {}
+        case (is Dir) {}
+    }
+    
 }

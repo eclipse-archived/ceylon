@@ -66,7 +66,7 @@ class TypeArgInference() {
     @type["Bottom"] method("hello");
     
     T? firstElt<T>(T... args) {
-        return args.first;
+        return args.sequence.first;
     }
     @type["Nothing|String"] firstElt("hello", "world");
     @type["Nothing|Sequence<String>"] firstElt({"hello", "world"});
@@ -131,5 +131,25 @@ class TypeArgInference() {
     @type["Nothing|TypeArgInference.A&TypeArgInference.B"] @error acceptOneOrTwo(test0);
     @type["Nothing"] @error acceptOneOrTwo(test1);
     @type["Nothing"] acceptOneOrTwo(test2);
+    
+    void higherVoid<X>(void f(X x)) {}
+    higherVoid((String x) print(x));
+    higherVoid { void f(String x) { print(x); } };
+
+    X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object { return f(null); }
+    @type["Integer|String"] higher((String? y) 1);
+    @type["Float|String"] higher { function f(String? y) { return 1.0; } };
+    function argfun(Integer? x) { return x?.float; }
+    @type["Nothing|Float|Integer"] higher(argfun);
+    
+    @type["Iterable<Integer>"] { "hello", "world" }.map((String s) s.size);
+    @type["Iterable<String>"] { "hello", "world" }.filter((String s) !s.empty);
+    @type["String"] { "hello", "world" }.fold("", (String result, String s) result+" "+s);
+    @type["Nothing|String"] { null, "hello", "world" }.find((String? s) exists s);
+
+    @type["Iterable<Integer>"] { "hello", "world" }.map { function collecting(String s) { return s.size; } };
+    @type["Iterable<String>"] { "hello", "world" }.filter { function selecting(String s) { return !s.empty; } };
+    @type["String"] { "hello", "world" }.fold { initial=""; function accumulating(String result, String s) { return result+" "+s; } };
+    @type["Nothing|String"] { null, "hello", "world" }.find { function selecting(String? s) { return exists s; } };
 
 }

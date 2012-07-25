@@ -20,11 +20,11 @@ public class ModuleHelper {
             LinkedList<Module> dependencyTree,
             Exception exceptionOnGetArtifact,
             ModuleManager moduleManager) {
-        StringBuilder error = new StringBuilder("Cannot find module ");
+        StringBuilder error = new StringBuilder("cannot find module ");
         if ( ArtifactContext.SRC.equals( artifactContext.getSuffix() ) ) {
             error.append("source ");
         }
-        error.append("artifact : ");
+        error.append("artifact ");
         error.append( artifactContext.toString() );
         if ( exceptionOnGetArtifact != null ) {
             error.append( "\ndue to connection error: " + exceptionOnGetArtifact.getMessage() );
@@ -41,11 +41,10 @@ public class ModuleHelper {
 //                            error.append(searchedProvider);
 //                        }
 //                    }
-        error.append("\n\tDependency tree: ");
+        error.append("\n\t- dependency tree: ");
         buildDependencyString(dependencyTree, module, error);
-        error.append(".");
         if ( module.getLanguageModule() == module ) {
-            error.append("\n\tGet ceylon.language and run 'ant publish' Get more information at http://ceylon-lang.org/code/source/#ceylonlanguage_module");
+            error.append("\n\tget ceylon.language and run 'ant publish' (more information at http://ceylon-lang.org/code/source/#ceylonlanguage_module)");
             //ceylon.language is essential to the type checker
             throw new LanguageModuleNotFoundException(error.toString());
         }
@@ -57,8 +56,11 @@ public class ModuleHelper {
 
     public static void buildDependencyString(LinkedList<Module> dependencyTree, Module module, StringBuilder error) {
         for (Module errorModule : dependencyTree) {
-            error.append(errorModule).append(" -> ");
+            error.append(errorModule.getNameAsString())
+                .append("/").append(errorModule.getVersion())
+                .append(" -> ");
         }
-        error.append(module);
+        error.append(module.getNameAsString())
+            .append("/").append(module.getVersion());
     }
 }

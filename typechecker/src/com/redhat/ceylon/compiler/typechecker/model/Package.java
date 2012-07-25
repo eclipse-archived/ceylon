@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Package implements Scope {
+public class Package implements ImportableScope {
 
     private List<String> name;
     private Module module;
@@ -36,9 +36,7 @@ public class Package implements Scope {
     
     public Iterable<Unit> getUnits() {
         synchronized (units) {
-            List<Unit> copiedList = new ArrayList<Unit>(units.size());
-            copiedList.addAll(units);
-            return copiedList;
+            return new ArrayList<Unit>(units);
         }
     }
     
@@ -65,7 +63,7 @@ public class Package implements Scope {
     @Override
     public List<Declaration> getMembers() {
         List<Declaration> result = new ArrayList<Declaration>();
-        for (Unit unit: units) {
+        for (Unit unit: getUnits()) {
             for (Declaration d: unit.getDeclarations()) {
                 if (d.getContainer().equals(this)) {
                     result.add(d);
@@ -132,6 +130,8 @@ public class Package implements Scope {
             List<ProducedType> signature) {
         //this implements the rule that imports hide 
         //toplevel members of a package
+        //TODO: would it be better to look in the given unit 
+        //      first, before checking imports?
         Declaration d = unit.getImportedDeclaration(name, signature);
         if (d!=null) {
             return d;
@@ -164,16 +164,28 @@ public class Package implements Scope {
         if (unit!=null) {
             result.putAll(unit.getMatchingImportedDeclarations(startingWith, proximity));
         }
+        for (Map.Entry<String, DeclarationWithProximity> e: 
+        	getModule().getAvailableDeclarations(startingWith, proximity+1000).entrySet()) {
+    		boolean already = false;
+        	for (DeclarationWithProximity dwp: result.values()) {
+        		if (dwp.getDeclaration().equals(e.getValue().getDeclaration())) {
+        			already = true;
+        			break;
+        		}
+        	}
+    		if (!already) result.put(e.getKey(), e.getValue());
+        }
         return result;
     }
 
-    Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
         Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d) ) {
+            if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d)) {
                 boolean already = false;
                 for (Import i: imports) {
-                    if (i.getDeclaration().equals(d)) {
+                    if (!i.isWildcardImport() && 
+                            i.getDeclaration().equals(d)) {
                         already = true;
                         break;
                     }

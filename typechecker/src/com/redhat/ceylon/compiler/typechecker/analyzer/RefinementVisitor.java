@@ -3,16 +3,21 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -21,8 +26,10 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -37,6 +44,172 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class RefinementVisitor extends Visitor {
     
+    private boolean broken=false;
+    
+    @Override
+    public void visit(Tree.AnyMethod that) {
+        super.visit(that);
+        TypedDeclaration td = that.getDeclarationModel();
+        for (Tree.ParameterList list: that.getParameterLists()) {
+            for (Tree.Parameter tp: list.getParameters()) {
+                if (tp!=null) {
+                    Parameter p = tp.getDeclarationModel();
+                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
+                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
+                                + p.getName());
+                    }
+                }
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AnyClass that) {
+        super.visit(that);
+        Class td = that.getDeclarationModel();
+        if (that.getParameterList()!=null) {
+            for (Tree.Parameter tp: that.getParameterList().getParameters()) {
+                if (tp!=null) {
+                    Parameter p = tp.getDeclarationModel();
+                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
+                        tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
+                                + p.getName());
+                    }
+                }
+            }
+        }
+    }
+    
+    private boolean isCompletelyVisible(Declaration member, ProducedType pt) {
+        if (pt.getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (pt.getDeclaration() instanceof IntersectionType) {
+            for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
+                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            if (!isVisible(member, pt.getDeclaration())) {
+                return false;
+            }
+            for (ProducedType at: pt.getTypeArgumentList()) {
+                if ( at!=null && !isCompletelyVisible(member, at) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    private boolean isVisible(Declaration member, TypeDeclaration type) {
+        return type instanceof TypeParameter || 
+                type.isVisible(member.getVisibleScope());
+    }
+
+    @Override public void visit(Tree.TypeDeclaration that) {
+        boolean ob = broken;
+        broken = false;
+        TypeDeclaration td = that.getDeclarationModel();
+        if (td!=null) {
+            if ("SubCo".equals(td.getName())) {
+                td.getName();
+            }
+            List<ProducedType> supertypes = td.getType().getSupertypes();
+            for (int i=0; i<supertypes.size(); i++) {
+                ProducedType st1 = supertypes.get(i);
+                for (int j=i+1; j<supertypes.size(); j++) {
+                    ProducedType st2 = supertypes.get(j);
+                    if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
+                        boolean ok = true;
+                        if (intersectionType(st1, st2, that.getUnit())
+                                .getDeclaration() instanceof BottomType) {
+                            ok = false;
+                        }
+                        else {
+                            //TODO: type arguments of the qualifying type?
+                            //can't inherit two instantiations of a contravariant type, since
+                            //we don't support contravariant refinement of parameter types
+                            for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
+                                ProducedType ta1 = st1.getTypeArguments().get(tp);
+                                ProducedType ta2 = st2.getTypeArguments().get(tp);
+                                if (!tp.isCovariant() && !ta1.isExactly(ta2)) {
+                                    ok = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!ok) {
+                            that.addError("type " + td.getName() +
+                                    " has the same supertype twice with incompatible type arguments: " +
+                                    st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
+                            broken = true;
+                        }
+                    }
+                }
+            }
+            if (!broken) {
+                Set<String> errors = new HashSet<String>();
+                for (ProducedType st: supertypes) {
+                    if (!isCompletelyVisible(td, st)) {
+                        that.addError("supertype of type is not visible everywhere type is visible: "
+                                + st.getProducedTypeName());
+                    }
+                    if (td instanceof ClassOrInterface && 
+                            !((ClassOrInterface) td).isAbstract()) {
+                        for (Declaration d: st.getDeclaration().getMembers()) {
+                            if (d.isShared() && !errors.contains(d.getName())) {
+                                Declaration r = td.getMember(d.getName(), null);
+                                if (r==null) {
+                                    //TODO: This seems to dupe some checks that are already 
+                                    //      done in TypeHierarchyVisitor, resulting in
+                                    //      multiple errors
+                                    that.addError("member " + d.getName() + 
+                                            " is inherited ambiguously and so must be refined by " + td.getName());
+                                    errors.add(d.getName());
+                                }
+                                /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
+                                    //TODO: I think this case never occurs, because getMember() always
+                                    //      returns null in the case of an ambiguity
+                                    List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+                                    if (d instanceof Generic) {
+                                        for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
+                                            typeArgs.add(refinedTypeParam.getType());
+                                        }
+                                    }
+                                    ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
+                                    ProducedType it = st.getTypedReference(d, typeArgs).getType();
+                                    checkAssignable(t, it, that, "type of member " + d.getName() + 
+                                            " must be assignable to all types inherited from instantiations of " +
+                                            st.getDeclaration().getName());
+                                }*/
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        super.visit(that);
+        broken = ob;
+    }
+    
+    @Override public void visit(Tree.TypedDeclaration that) {
+        TypedDeclaration td = that.getDeclarationModel();
+        if ( td.getType()!=null && !isCompletelyVisible(td,td.getType()) ) {
+            that.getType().addError("type of declaration is not visible everywhere declaration is visible: " 
+                        + td.getName());
+        }
+        super.visit(that);
+    }
+    
     @Override public void visit(Tree.Declaration that) {
         super.visit(that);
         Declaration dec = that.getDeclarationModel();
@@ -48,7 +221,7 @@ public class RefinementVisitor extends Visitor {
             
             if (!toplevel && !member) {
                 if (dec.isShared()) {
-                    that.addError("shared declaration is not a member of a class, interface, or package");
+                    that.addError("shared declaration is not a member of a class, interface, or package", 1200);
                 }
             }
             
@@ -57,7 +230,7 @@ public class RefinementVisitor extends Visitor {
                     dec instanceof ClassOrInterface;
             if (!mayBeShared) {
                 if (dec.isShared()) {
-                    that.addError("shared member is not a method, attribute, class, or interface");
+                    that.addError("shared member is not a method, attribute, class, or interface", 1200);
                 }
             }
             
@@ -96,47 +269,63 @@ public class RefinementVisitor extends Visitor {
         if (dec.isFormal() && ci instanceof Class) {
             Class c = (Class) ci;
             if (!c.isAbstract() && !c.isFormal()) {
-                that.addError("formal member belongs to non-abstract, non-formal class");
+                that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
         List<Declaration> others = ci.getInheritedMembers( dec.getName() );
         if (others.isEmpty()) {
             if (dec.isActual()) {
-                that.addError("actual member does not refine any inherited member");
+                that.addError("actual member does not refine any inherited member", 1300);
             }
         }
         else {
             for (Declaration refined: others) {
                 if (dec instanceof Method) {
                     if (!(refined instanceof Method)) {
-                        that.addError("refined declaration is not a method");
+                        that.addError("refined declaration is not a method: " + 
+                                message(refined));
                     }
                 }
                 else if (dec instanceof Class) {
                     if (!(refined instanceof Class)) {
-                        that.addError("refined declaration is not a class");
+                        that.addError("refined declaration is not a class: " + 
+                                message(refined));
                     }
                 }
                 else if (dec instanceof TypedDeclaration) {
                     if (refined instanceof Class || refined instanceof Method) {
-                        that.addError("refined declaration is not an attribute");
+                        that.addError("refined declaration is not an attribute: " + 
+                                message(refined));
                     }
                     else if (refined instanceof TypedDeclaration) {
                         if ( ((TypedDeclaration) refined).isVariable() && 
                                 !((TypedDeclaration) dec).isVariable()) {
-                            that.addError("non-variable attribute refines a variable attribute");
+                            if (dec instanceof Value) {
+                                that.addError("non-variable attribute refines a variable attribute: " + 
+                                        message(refined), 804);
+                            }
+                            else {
+                                that.addError("non-variable attribute refines a variable attribute: " + 
+                                        message(refined));
+                            }
                         }
                     }
                 }
                 if (!dec.isActual()) {
-                    that.addError("non-actual member refines an inherited member", 600);
+                    that.addError("non-actual member refines an inherited member: " + 
+                            message(refined), 600);
                 }
                 if (!refined.isDefault() && !refined.isFormal()) {
-                    that.addError("member refines a non-default, non-formal member", 500);
+                    that.addError("member refines a non-default, non-formal member: " + 
+                            message(refined), 500);
                 }
-                checkRefinedTypeAndParameterTypes(that, dec, ci, refined);
+                if (!broken) checkRefinedTypeAndParameterTypes(that, dec, ci, refined);
             }
         }
+    }
+    
+    static String message(Declaration refined) {
+        return refined.getName() + " in " + ((Declaration) refined.getContainer()).getName();
     }
 
     private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
@@ -148,18 +337,20 @@ public class RefinementVisitor extends Visitor {
             int refiningSize = refiningTypeParams.size();
             int refinedSize = refinedTypeParams.size();
             if (refiningSize!=refinedSize) {
-                that.addError("member does not have the same number of type parameters as refined member");
+                that.addError("member does not have the same number of type parameters as refined member: " + 
+                            message(refined));
             }
             for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
-                TypeParameter refinedTypParam = refinedTypeParams.get(i);
+                TypeParameter refinedTypeParam = refinedTypeParams.get(i);
                 TypeParameter refiningTypeParam = refiningTypeParams.get(i);
                 for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
-                    checkAssignable(refinedTypParam.getType(), t, that, 
+                    checkAssignable(refinedTypeParam.getType(), t, that, 
                         "member type parameter " + refiningTypeParam.getName() +
-                        " has constraint which refined member type parameter " + refinedTypParam.getName() +
+                        " has upper bound which refined member type parameter " + 
+                        refinedTypeParam.getName() + " of " + message(refined) + 
                         " does not satisfy");
                 }
-                typeArgs.add(refinedTypParam.getType());
+                typeArgs.add(refinedTypeParam.getType());
             }
         }
         ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
@@ -167,20 +358,23 @@ public class RefinementVisitor extends Visitor {
         if (refinedMember.getDeclaration() instanceof TypedDeclaration &&
                 ((TypedDeclaration) refinedMember.getDeclaration()).isVariable()) {
             checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
-                    "member type must be exactly the same as variable refined member type");
+                    "type of member must be exactly the same as type of variable refined member: " + 
+                            message(refined));
         }
         else {
             //note: this version checks return type and parameter types in one shot, but the
             //resulting error messages aren't as friendly, so do it the hard way instead!
             //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
             checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
-                    "member type must be assignable to refined member type");
+                    "type of member must be assignable to type of refined member: " + 
+                            message(refined));
         }
         if (dec instanceof Functional && refined instanceof Functional) {
            List<ParameterList> refiningParamLists = ((Functional) dec).getParameterLists();
            List<ParameterList> refinedParamLists = ((Functional) refined).getParameterLists();
            if (refinedParamLists.size()!=refiningParamLists.size()) {
-               that.addError("member type must have the same number of parameter lists as refined member");
+               that.addError("member must have the same number of parameter lists as refined member: " + 
+                            message(refined));
            }
            for (int i=0; i<refinedParamLists.size() && i<refiningParamLists.size(); i++) {
                checkParameterTypes(that, getParameterList(that, i), 
@@ -192,38 +386,38 @@ public class RefinementVisitor extends Visitor {
 
     private void checkUnshared(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual member is not shared", 700);
+            that.addError("actual member is not shared", 701);
         }
         if (dec.isFormal()) {
-            that.addError("formal member is not shared", 700);
+            that.addError("formal member is not shared", 702);
         }
         if (dec.isDefault()) {
-            that.addError("default member is not shared", 700);
+            that.addError("default member is not shared", 703);
         }
     }
 
     private void checkNonrefinableDeclaration(Tree.Declaration that,
             Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a getter, simple attribute, or class");
+            that.addError("actual declaration is not a getter, simple attribute, or class", 1301);
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a getter, simple attribute, or class");
+            that.addError("formal declaration is not a getter, simple attribute, or class", 1302);
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a getter, simple attribute, or class");
+            that.addError("default declaration is not a getter, simple attribute, or class", 1303);
         }
     }
 
     private void checkNonMember(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a member of a class or interface");
+            that.addError("actual declaration is not a member of a class or interface", 1301);
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a member of a class or interface");
+            that.addError("formal declaration is not a member of a class or interface", 1302);
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a member of a class or interface");
+            that.addError("default declaration is not a member of a class or interface", 1303);
         }
     }
 
