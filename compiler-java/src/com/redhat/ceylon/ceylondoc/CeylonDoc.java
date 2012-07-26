@@ -69,19 +69,8 @@ public abstract class CeylonDoc extends Markup {
             // try to simplify if possible
             if (ut.getCaseTypes().size()==2) {
                 Unit unit = decl.getUnit();
-                Class nothingDeclaration = unit.getNothingDeclaration();
-                if (com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, nothingDeclaration)) {
-                    ProducedType nonOptionalType = null;
-                    for (ProducedType ct : ut.getCaseTypes()) {
-                        TypeDeclaration ctd = ct.getDeclaration();
-                        if (ctd instanceof Class && ctd.equals(nothingDeclaration)) {
-                            continue;
-                        } else {
-                            nonOptionalType = ct;
-                            break;
-                        }
-                    }
-                    link(nonOptionalType);
+                if (com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, unit.getNothingDeclaration())) {
+                    link(getDefiniteTypeForDisplay(ut));
                     write("?");
                     return;
                 }
@@ -158,6 +147,25 @@ public abstract class CeylonDoc extends Markup {
         } else {
             write(name);
         }
+    }
+
+    /**
+     * When parameter is <code>UnionType[Element?]</code>, we can not use method <code>Unit.getDefiniteType()</code>, 
+     * because its result is <code>IntersectionType[Element&Object]</code> and to html is rendered <code>Element&Object?</code>.
+     */
+    private ProducedType getDefiniteTypeForDisplay(UnionType ut) {
+        ProducedType nonOptionalType = null;
+        Class nothingDeclaration = ut.getUnit().getNothingDeclaration();
+        for (ProducedType ct : ut.getCaseTypes()) {
+            TypeDeclaration ctd = ct.getDeclaration();
+            if (ctd instanceof Class && ctd.equals(nothingDeclaration)) {
+                continue;
+            } else {
+                nonOptionalType = ct;
+                break;
+            }
+        }
+        return nonOptionalType;
     }
 
     protected String getFileName(Scope klass) {
