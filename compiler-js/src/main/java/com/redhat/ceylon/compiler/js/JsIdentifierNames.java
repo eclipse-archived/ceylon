@@ -31,6 +31,7 @@ public class JsIdentifierNames {
     }
     
     private static Set<String> reservedWords = new HashSet<String>(); 
+    private static Set<String> substitutedMemberNames = new HashSet<String>();
     
     static {
         //reservedWords.add("abstract");
@@ -92,6 +93,9 @@ public class JsIdentifierNames {
         reservedWords.add("volatile");
         //reservedWords.add("while");
         reservedWords.add("with");
+        
+        //substitutedMemberNames.add("ceylon.language.String.split");
+        //substitutedMemberNames.add("ceylon.language.String.replace");
     }
     
     public JsIdentifierNames(boolean prototypeStyle) {
@@ -215,7 +219,8 @@ public class JsIdentifierNames {
             String suffix = nestingSuffix(decl);
             if (suffix.length() > 0) {
                 name += suffix;
-            } else if (!forGetterSetter && reservedWords.contains(name)) {
+            } else if ((!forGetterSetter && reservedWords.contains(name))
+                        || substitutedMemberNames.contains(decl.getQualifiedNameString())) {
                 name = '$' + name;
             }
         }
