@@ -136,7 +136,7 @@ function isOfType(obj, typeName) {
     if (obj === null) {
         return typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void";
     }
-    return obj.getT$all && typeName in obj.getT$all();
+    return obj.getT$all$ && typeName in obj.getT$all$();
 }
 function isOfTypes(obj, types) {
     if (obj===null) {
@@ -145,7 +145,7 @@ function isOfTypes(obj, types) {
     var unions = false;
     var inters = true;
     var _ints=false;
-    var objTypes = obj.getT$all();
+    var objTypes = obj.getT$all$();
     for (var i = 0; i < types.l.length; i++) {
         var t = types.l[i];
         var partial = false;
@@ -166,7 +166,7 @@ function isOfTypes(obj, types) {
 
 function className(obj) {
     if (obj === null) return String$('ceylon.language.Nothing');
-    return String$(obj.getT$name());
+    return String$(obj.getT$name$());
 }
 
 function identityHash(obj) {
