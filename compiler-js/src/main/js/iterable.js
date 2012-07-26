@@ -190,7 +190,7 @@ Iterable$proto.getIndexed = function() {
         var idx = 0;
         return function() {
             var e;
-            while ((e = it.next()) === null);
+            while ((e = it.next()) === null) {idx++;}
             return e === $finished ? e : Entry(Integer(idx++), e);
         }
     });
