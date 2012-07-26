@@ -65,10 +65,9 @@ public final class List$impl<Element> {
                 for (int i=0; i<$this.getSize(); i++) {
                     Element x = $this.item(Integer.instance(i));
                     java.lang.Object y = ((List) that).item(Integer.instance(i));
-                    if (x==y || x!=null && y!=null && x.equals(y)) {
-                        continue;
+                    if (x!=y && (x==null || y==null || !x.equals(y))) {
+                        return false;
                     }
-                    return false;
                 }
                 return true;
             }
