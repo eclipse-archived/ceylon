@@ -2,7 +2,58 @@ doc "Abstract supertype of containers whose elements may be
      iterated. An iterable container need not be finite, but
      its elements must at least be countable. There may not
      be a well-defined iteration order, and so the order of
-     iterated elements may not be stable."
+     iterated elements may not be stable.
+     
+     An instance of `Iterable` may be iterated using a `for`
+     loop:
+     
+         for (c in \"hello world\") { ... }
+     
+     `Iterable` and its subtypes define various operations
+     that return other iterable objects. Such operations 
+     come in two flavors:
+     
+     - _Lazy_ operations return a \"view\" of the receiving
+       iterable object. If the underlying iterable object is
+       mutable, then changes to the underlying object will
+       be reflected in the resulting view. Lazy operations
+       are usually efficient, avoiding memory allocation or
+       iteration of the receiving iterable object.
+       
+     - _Eager_ operations return an immutable object. If the
+       receiving iterable object is mutable, changes to this
+       object will not be reflected in the resulting 
+       immutable object. Eager operations are often 
+       expensive, involving memory allocation and iteration
+       of the receiving iterable object.
+     
+     Lazy operations are preferred, because they can be 
+     efficiently chained. For example:
+     
+         string.filter((Character c) c.letter).map((Character c) c.uppercased)
+     
+     is much less expensive than:
+     
+         string.select((Character c) c.letter).collect((Character c) c.uppercased)
+     
+     Furthermore, it is always easy to produce a new 
+     immutable iterable object given the view produced by a
+     lazy operation. For example:
+     
+         { string.filter((Character c) c.letter).map((Character c) c.uppercased)... }
+     
+     Lazy operations normally return an instance of 
+     `Iterable` or `Map`.
+     
+     However, there are certain scenarios where an eager 
+     operation is more useful, more convenient, or no more 
+     expensive than a lazy operation, including:
+     
+     - sorting operations, which are eager by nature,
+     - operations which preserve emptiness/nonemptiness of
+       the receiving iterable object.
+     
+     Eager operations normally return a sequence."
 see (Collection)
 by "Gavin"
 shared interface Iterable<out Element> 
@@ -58,6 +109,7 @@ shared interface Iterable<out Element>
     doc "An `Iterable` containing the results of applying
          the given mapping to the elements of to this 
          container."
+    see (collect)
     shared default Iterable<Result> map<Result>(
             doc "The mapping to apply to the elements."
             Result collecting(Element elem)) {
@@ -66,6 +118,7 @@ shared interface Iterable<out Element>
 
     doc "An `Iterable` containing the elements of this 
          container that satisfy the given predicate."
+    see (select)
     shared default Iterable<Element> filter(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) {
@@ -86,7 +139,7 @@ shared interface Iterable<out Element>
     }
 
     doc "The first element which satisfies the given 
-         predicate, if any."
+         predicate, if any, or `null` otherwise."
     shared default Element? find(
             doc "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
@@ -99,7 +152,7 @@ shared interface Iterable<out Element>
     }
 
     doc "The last element which satisfies the given
-         predicate, if any."
+         predicate, if any, or `null` otherwise."
     shared default Element? findLast(
             doc "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
@@ -112,32 +165,39 @@ shared interface Iterable<out Element>
         return last;
     }
 
-    doc "Returns a sequence containing the elements of this
+    doc "A sequence containing the elements of this
          container, sorted according to a function 
-         imposing a partial order upon the elements."
+         imposing a partial order upon the elements. This
+         operation is eager by nature."
     shared default Element[] sort(
             doc "The function comparing pairs of elements."
             Comparison? comparing(Element x, Element y)) { throw; }
 
-    doc "An eager version of `map`."
+    doc "A sequence containing the results of applying the
+         given mapping to the elements of this container. An 
+         eager counterpart to `map()`."
+    see (map)
     shared default Result[] collect<Result>(
             doc "The transformation applied to the elements."
             Result collecting(Element element)) {
         return map(collecting).sequence;
     }
 
-    doc "An eager version of `filter`."
+    doc "A sequence containing the elements of this 
+         container that satisfy the given predicate. An 
+         eager counterpart to `filter()`."
+    see (filter)
     shared default Element[] select(
             doc "The predicate the elements must satisfy."
             Boolean selecting(Element element)) {
         return filter(selecting).sequence;
     }
 
-    doc "Returns true if at least one element satisfies the
+    doc "Return `true` if at least one element satisfies the
          predicate function."
     shared default Boolean any(
-            doc "The function that evaluates an Element of
-                 the container."
+            doc "The predicate that at least one element 
+                 must satisfy."
             Boolean selecting(Element e)) {
         for (e in this) {
             if (selecting(e)) {
@@ -147,11 +207,11 @@ shared interface Iterable<out Element>
         return false;
     }
 
-    doc "Returns true if all elements satisfy the predicate
+    doc "Return `true` if all elements satisfy the predicate
          function."
     shared default Boolean every(
-            doc "The function that evaluates an Element of
-                 the container."
+            doc "The predicate that all elements must 
+                 satisfy."
             Boolean selecting(Element e)) {
         for (e in this) {
             if (!selecting(e)) {
@@ -202,9 +262,12 @@ shared interface Iterable<out Element>
         }
     }
 
-    doc "Returns the number of elements in this `Iterable` 
+    doc "Return the number of elements in this `Iterable` 
          that satisfy the predicate function."
-    shared default Integer count(Boolean selecting(Element element)) {
+    shared default Integer count(
+            doc "The predicate satisfied by the elements to
+                 be counted."
+            Boolean selecting(Element element)) {
         variable value count:=0;
         for (elem in this) {
             if (is Object elem) {
@@ -219,7 +282,7 @@ shared interface Iterable<out Element>
     doc "The non-null elements of this `Iterable`, in their
          original order."
     shared default Iterable<Element&Object> coalesced {
-        return elements(for (e in this) if (exists e) e);
+        return elements { for (e in this) if (exists e) e };
     }
 
     doc "All entries of form `index->element` where `index` 
@@ -228,7 +291,15 @@ shared interface Iterable<out Element>
          increasing `index`."
     shared default Iterable<Entry<Integer,Element&Object>> indexed {
         variable value i:=0;
-        return elements(for (e in this) if (exists e) i++->e);
+        function entryOrNull(Integer i, Element e) {
+            if (exists e) {
+                return i->e;
+            }
+            else {
+                return null;
+            }
+        }
+        return elements(for (e in this) entryOrNull(i++,e)).coalesced;
     }
 
     doc "The elements of this iterable object, in their
