@@ -178,6 +178,7 @@ void testIterables() {
     assert({}.indexed=={}, "Empty.indexed");
     assert(elements(for (c in "abc") c).indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "Iterable.indexed");
     assert("abc".indexed.sequence=={0->`a`, 1->`b`, 2->`c`}, "String.indexed");
+    assert({1,null,2}.indexed.sequence == {0->1, 2->2}, "indexed with nulls");
 
     //last (defined in ContainerWithFirst but tested here)
     assert((1..5000000000).last == 5000000000, "Range.last");
