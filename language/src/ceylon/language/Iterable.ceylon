@@ -291,7 +291,15 @@ shared interface Iterable<out Element>
          increasing `index`."
     shared default Iterable<Entry<Integer,Element&Object>> indexed {
         variable value i:=0;
-        return elements { for (e in this) if (exists e) i++->e };
+        function entryOrNull(Integer i, Element e) {
+            if (exists e) {
+                return i->e;
+            }
+            else {
+                return null;
+            }
+        }
+        return elements(for (e in this) entryOrNull(i++,e)).coalesced;
     }
 
     doc "The elements of this iterable object, in their
