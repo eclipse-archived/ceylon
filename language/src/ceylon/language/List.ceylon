@@ -116,8 +116,8 @@ shared interface List<out Element>
                             return false;
                         }
                     }
-                    else {
-                        return !exists y;
+                    else if (exists y) {
+                        return false;
                     }
                 }
                 else {
