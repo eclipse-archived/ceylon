@@ -181,6 +181,12 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration.getUnboxed() != null)
             return;
         
+        // functional parameter return values are always boxed
+        if(declaration instanceof FunctionalParameter){
+            declaration.setUnboxed(false);
+            return;
+        }
+        
         if(refinedDeclaration != declaration){
             // make sure refined declarations have already been set
             if(refinedDeclaration.getUnboxed() == null)
