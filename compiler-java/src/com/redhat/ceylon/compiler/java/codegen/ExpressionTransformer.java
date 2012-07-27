@@ -211,14 +211,15 @@ public class ExpressionTransformer extends AbstractTransformer {
             BoxingStrategy boxingStrategy, ProducedType expectedType, boolean forCompanion) {
         
         boolean canCast = false;
-        
+
         if (expectedType != null
                 // don't add cast to an erased type 
                 && (!willEraseToObject(expectedType) || willEraseToIterable(expectedType))
                 // don't add cast for null
                 && !isNothing(exprType)) {
             // full type erasure
-            if(!willEraseToObject(expectedType) && willEraseToObject(exprType)){
+            if(!willEraseToObject(expectedType) 
+                    && (willEraseToObject(exprType) || exprType.isRaw())){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
                 expectedType = getTypeOrSelfType(expectedType);
