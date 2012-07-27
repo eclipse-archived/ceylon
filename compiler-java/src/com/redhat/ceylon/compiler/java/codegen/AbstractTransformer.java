@@ -739,6 +739,10 @@ public abstract class AbstractTransformer implements Transformation {
         return type.getSupertype(typeFact.getArrayDeclaration()) != null;
     }
     
+    boolean isCeylonObject(ProducedType type) {
+        return sameType(syms().ceylonObjectType, type);
+    }
+    
     boolean isCeylonBasicType(ProducedType type) {
         return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
     }

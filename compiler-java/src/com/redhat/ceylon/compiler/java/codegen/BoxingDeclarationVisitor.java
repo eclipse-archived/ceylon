@@ -39,15 +39,19 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class BoxingDeclarationVisitor extends Visitor {
 
     protected abstract boolean isCeylonBasicType(ProducedType type);
+    protected abstract boolean isNothing(ProducedType type);
+    protected abstract boolean isObject(ProducedType type);
 
     @Override
     public void visit(FunctionArgument that) {
@@ -77,8 +81,24 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     private boolean containsRaw(ProducedType type) {
         for(ProducedType typeArg : type.getTypeArguments().values()){
             TypeDeclaration typeDeclaration = typeArg.getDeclaration();
-            if(typeDeclaration instanceof UnionType
-                    || typeDeclaration instanceof IntersectionType){
+            if(typeDeclaration instanceof UnionType){
+                UnionType ut = (UnionType) typeDeclaration;
+                List<ProducedType> caseTypes = ut.getCaseTypes();
+                // special case for optional types
+                if(caseTypes.size() == 2
+                        && (isNothing(caseTypes.get(0))
+                                || isNothing(caseTypes.get(1))))
+                    return false;
+                return true;
+            }
+            if(typeDeclaration instanceof IntersectionType){
+                IntersectionType ut = (IntersectionType) typeDeclaration;
+                List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+                // special case for non-optional types
+                if(satisfiedTypes.size() == 2
+                        && (isObject(satisfiedTypes.get(0))
+                                || isObject(satisfiedTypes.get(1))))
+                    return false;
                 return true;
             }
             if(containsRaw(typeArg))

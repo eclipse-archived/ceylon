@@ -33,4 +33,14 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
         return transformer.isCeylonBasicType(type);
     }
 
+    @Override
+    protected boolean isNothing(ProducedType type) {
+        return transformer.isNothing(type);
+    }
+
+    @Override
+    protected boolean isObject(ProducedType type) {
+        return transformer.isCeylonObject(type);
+    }
+
 }
