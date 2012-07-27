@@ -577,7 +577,7 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
-    public void testBug711_fail(){
+    public void testBug711(){
         compile("bug711/InterfaceWithGetter.java", "bug711/ClassWithGetterAndSetter.java");
         compareWithJavaSource("bug711/Bug711");
     }
