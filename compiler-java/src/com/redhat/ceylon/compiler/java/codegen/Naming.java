@@ -303,9 +303,18 @@ public class Naming implements LocalId {
     }
 
     static String getSetterName(Declaration decl){
-        // always use the refined decl
-        decl = CodegenUtil.getTopmostRefinedDeclaration(decl);
-        if(decl instanceof JavaBeanValue){
+        // use the refined decl except when the current declaration is variable and the refined isn't
+        Declaration refinedDecl = decl.getRefinedDeclaration();
+        if (decl instanceof Value && refinedDecl instanceof Value) {
+            Value v = (Value)decl;
+            Value rv = (Value)refinedDecl;
+            if (!v.isVariable() || rv.isVariable()) {
+                decl = refinedDecl;
+            }
+        } else {
+            decl = refinedDecl;
+        }
+        if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getSetterName();
         }
         return getSetterName(decl.getName());
