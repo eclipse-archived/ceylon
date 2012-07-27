@@ -26,13 +26,16 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
@@ -56,6 +59,32 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     public void visit(AnyMethod that) {
         super.visit(that);
         boxMethod(that.getDeclarationModel());
+        rawTypedDeclaration(that.getDeclarationModel());
+    }
+
+    private void rawTypedDeclaration(TypedDeclaration decl) {
+        // deal with invalid input
+        if(decl == null)
+            return;
+
+        ProducedType type = decl.getType();
+        if(type != null){
+            if(containsRaw(type))
+                type.setRaw(true);
+        }
+    }
+
+    private boolean containsRaw(ProducedType type) {
+        for(ProducedType typeArg : type.getTypeArguments().values()){
+            TypeDeclaration typeDeclaration = typeArg.getDeclaration();
+            if(typeDeclaration instanceof UnionType
+                    || typeDeclaration instanceof IntersectionType){
+                return true;
+            }
+            if(containsRaw(typeArg))
+                return true;
+        }
+        return false;
     }
 
     private void boxMethod(Method method) {
@@ -163,6 +192,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
         boxAttribute(declaration);
+        rawTypedDeclaration(declaration);
     }
 
     @Override

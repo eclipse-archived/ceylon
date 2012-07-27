@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -55,6 +56,22 @@ class CodegenUtil {
         return isUnBoxed(decl) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
 
+    static boolean isRaw(TypedDeclaration decl){
+        ProducedType type = decl.getType();
+        return type != null && type.isRaw();
+    }
+
+    static boolean isRaw(Term node){
+        ProducedType type = node.getTypeModel();
+        return type != null && type.isRaw();
+    }
+
+    static void markRaw(Term node) {
+        ProducedType type = node.getTypeModel();
+        if(type != null)
+            type.setRaw(true);
+    }
+    
     static boolean hasCompilerAnnotation(Tree.Declaration decl, String name){
         for(CompilerAnnotation annotation : decl.getCompilerAnnotations()){
             if(annotation.getIdentifier().getText().equals(name))
