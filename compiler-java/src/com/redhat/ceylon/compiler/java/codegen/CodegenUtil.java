@@ -93,16 +93,15 @@ class CodegenUtil {
     }
 
     static Declaration getTopmostRefinedDeclaration(Declaration decl){
-        if (decl instanceof Parameter && decl.getContainer() instanceof Functional) {
+        if(decl instanceof Parameter && decl.getContainer() instanceof Functional){
             // Parameters in a refined class, interface or method are not considered refinements themselves
             // so we have to look up the corresponding parameter in the container's refined declaration
             Functional func = (Functional)decl.getContainer();
             Parameter param = (Parameter)decl;
             Functional refinedFunc = (Functional) getTopmostRefinedDeclaration((Declaration)decl.getContainer());
             // shortcut if the functional doesn't override anything
-            if (refinedFunc == decl.getContainer()) {
+            if(refinedFunc == decl.getContainer())
                 return decl;
-            }
             if (func.getParameterLists().size() != refinedFunc.getParameterLists().size()) {
                 throw new RuntimeException("Different numbers of parameter lists");
             }
@@ -116,18 +115,8 @@ class CodegenUtil {
             }
         }
         Declaration refinedDecl = decl.getRefinedDeclaration();
-        if (refinedDecl != null && refinedDecl != decl) {
-            if (decl instanceof Value && refinedDecl instanceof Value) {
-                Value v = (Value)decl;
-                Value rv = (Value)refinedDecl;
-                if (v.isVariable() && !rv.isVariable()) {
-                    // In case a variable is refining a non-variable we return the
-                    // variable declaration so we don't lose information
-                    return decl;
-                }
-            }
+        if(refinedDecl != null && refinedDecl != decl)
             return getTopmostRefinedDeclaration(refinedDecl);
-        }
         return decl;
     }
     
