@@ -472,18 +472,18 @@ class TypeParameterErasure {
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds<.ceylon.language.String> parameterizedWithReallyErasedExplicitBoundsMiddle = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds<.ceylon.language.String>(.ceylon.language.String.instance(""));
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer> parameterizedWithParameterizedBounds = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L));
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer> parameterizedWithExplicitParameterizedBounds = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L));
-        parameterizedMiddle.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized(left, middle);
-        parameterizedMiddle.parameterized(middle, middle);
-        parameterizedMiddle.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle, middle);
-        parameterizedMiddle.parameterized(middle, middle);
-        parameterizedMiddle.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterizedWithBounds(left, middle);
-        parameterizedMiddle.parameterizedWithBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle, middle);
-        parameterizedMiddle.parameterizedWithIntersectionBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle, middle);
-        parameterizedMiddle.<.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
-        parameterizedMiddle.parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
-        parameterizedMiddle.<.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
-        parameterizedMiddle.<.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L), middle);
-        parameterizedMiddle.<.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L), middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized(left, middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).parameterized(middle, middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterized((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle, middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).parameterized(middle, middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterizedWithBounds(left, middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).parameterizedWithBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle, middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).parameterizedWithIntersectionBounds((.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle, middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).<.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).<.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).<.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L), middle);
+        ((.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle).<.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L), middle);
     }
     
     private final void testTypeParameterInstantiationsNamedArguments() {
@@ -562,7 +562,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$45$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$45$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$45$0 = left;
                 .java.lang.Object $arg$45$1 = middle;
             }
@@ -571,7 +571,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$46$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$46$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .java.lang.Object $arg$46$0 = middle;
                 .java.lang.Object $arg$46$1 = middle;
             }
@@ -580,7 +580,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$47$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$47$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$47$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
                 .java.lang.Object $arg$47$1 = middle;
             }
@@ -589,7 +589,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$48$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$48$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .java.lang.Object $arg$48$0 = middle;
                 .java.lang.Object $arg$48$1 = middle;
             }
@@ -598,7 +598,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$49$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$49$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$49$0 = left;
                 .java.lang.Object $arg$49$1 = middle;
             }
@@ -607,7 +607,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$50$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$50$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$50$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
                 .java.lang.Object $arg$50$1 = middle;
             }
@@ -616,7 +616,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$51$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$51$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $arg$51$0 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle;
                 .java.lang.Object $arg$51$1 = middle;
             }
@@ -625,7 +625,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$52$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$52$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .ceylon.language.String $arg$52$0 = .ceylon.language.String.instance("");
                 .java.lang.Object $arg$52$1 = middle;
             }
@@ -634,7 +634,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$53$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$53$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .java.lang.Object $arg$53$0 = .ceylon.language.String.instance("");
                 .java.lang.Object $arg$53$1 = middle;
             }
@@ -643,7 +643,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$54$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$54$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .ceylon.language.String $arg$54$0 = .ceylon.language.String.instance("");
                 .java.lang.Object $arg$54$1 = middle;
             }
@@ -652,7 +652,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$55$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$55$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .ceylon.language.Integer $arg$55$0 = .ceylon.language.Integer.instance(2L);
                 .java.lang.Object $arg$55$1 = middle;
             }
@@ -661,7 +661,7 @@ class TypeParameterErasure {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$56$callable$ = parameterizedMiddle;
+                .com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized $arg$56$callable$ = (.com.redhat.ceylon.compiler.java.test.expression.erasure.TypeParameterErasure.Parameterized<.java.lang.Object>)parameterizedMiddle;
                 .ceylon.language.Integer $arg$56$0 = .ceylon.language.Integer.instance(2L);
                 .java.lang.Object $arg$56$1 = middle;
             }
