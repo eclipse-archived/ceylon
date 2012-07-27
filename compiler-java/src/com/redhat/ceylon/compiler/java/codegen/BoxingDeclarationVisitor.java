@@ -220,6 +220,17 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         boxAttribute(declaration);
         rawTypedDeclaration(declaration);
     }
+    
+    @Override
+    public void visit(AttributeDeclaration that) {
+        if(that.getSpecifierOrInitializerExpression() != null
+                && that.getDeclarationModel() != null
+                && that.getType() instanceof Tree.ValueModifier
+                && that.getDeclarationModel().getType() == that.getSpecifierOrInitializerExpression().getExpression().getTypeModel()){
+            that.getDeclarationModel().setType(that.getDeclarationModel().getType().withoutUnderlyingType());
+        }
+        super.visit(that);
+    }
 
     @Override
     public void visit(AttributeArgument that) {
