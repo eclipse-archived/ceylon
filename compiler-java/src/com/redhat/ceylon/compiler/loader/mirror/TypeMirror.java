@@ -57,6 +57,11 @@ public interface TypeMirror {
     boolean isPrimitive();
 
     /**
+     * Returns true if this type is a Raw type (missing some type parameters)
+     */
+    boolean isRaw();
+    
+    /**
      * Returns the upper bound of this wildcard type if this is a wildcard type with an upper bound. Returns null otherwise.
      */
     TypeMirror getUpperBound();

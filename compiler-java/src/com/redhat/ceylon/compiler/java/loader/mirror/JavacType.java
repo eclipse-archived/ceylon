@@ -110,4 +110,9 @@ public class JavacType implements TypeMirror {
         }
         return lowerBound;
     }
+
+    @Override
+    public boolean isRaw() {
+        return type.isRaw();
+    }
 }
