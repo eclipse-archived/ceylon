@@ -304,7 +304,7 @@ public class Naming implements LocalId {
 
     static String getSetterName(Declaration decl){
         // always use the refined decl
-        decl = decl.getRefinedDeclaration();
+        decl = CodegenUtil.getTopmostRefinedDeclaration(decl);
         if(decl instanceof JavaBeanValue){
             return ((JavaBeanValue)decl).getSetterName();
         }
