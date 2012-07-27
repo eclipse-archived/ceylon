@@ -22,6 +22,7 @@ import java.util.Map;
 public class ProducedType extends ProducedReference {
     
     private String underlyingType;
+    private boolean isRaw;
 
     ProducedType() {}
 
@@ -1541,6 +1542,14 @@ public class ProducedType extends ProducedReference {
         pt.setQualifyingType(getQualifyingType());
         pt.setTypeArguments(getTypeArguments());
         return pt;
+    }
+
+    public boolean isRaw() {
+        return isRaw;
+    }
+
+    public void setRaw(boolean isRaw) {
+        this.isRaw = isRaw;
     }
     
 }
