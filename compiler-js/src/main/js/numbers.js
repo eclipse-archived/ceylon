@@ -5,11 +5,7 @@ function inheritProto(a,b,c,d,e,f,g);//IGNORE
 function Exception$(x){};//IGNORE
 var Object$,Castable,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,exports;//IGNORE
 
-function Integer(value) {
-    //var that = new Number(value);
-    //that.value = value;
-    return value;
-}
+function Integer(value) { return Number(value); }
 initExistingType(Integer, Number, 'ceylon.language.Integer', Object$, Scalar, Castable, Integral, Exponentiable);
 var origIntToString = Number.prototype.toString;
 inheritProtoI(Integer, Object$, Scalar, Castable, Integral, Exponentiable);
