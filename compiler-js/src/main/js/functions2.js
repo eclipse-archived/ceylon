@@ -1,7 +1,6 @@
 //More functions, related to comprehensions and iterables
 var exports=null;//IGNORE
 var $finished=null;//IGNORE
-function Integer(x){}//IGNORE
 function String$(a,b){}//IGNORE
 function StringBuilder(){}//IGNORE
 
@@ -32,13 +31,13 @@ function byDecreasing/*<Element,Value>*/(/*Callable<Value?,Element>*/comp) {
 }
 
 function count(/*Iterable<Boolean>*/truths) {
-    if (truths === undefined) return Integer(0);
+    if (truths === undefined) return 0;
     var c=0;
     var iter = truths.getIterator();
     var i; while ((i = iter.next()) !== $finished) {
         if (i) c++;
     }
-    return Integer(c);
+    return c;
 }
 
 function string(/*Iterable<Character>*/chars) {

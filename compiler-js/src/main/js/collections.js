@@ -4,7 +4,6 @@ function initTypeProto(a,b,c,d,e,f,g){}//IGNORE
 function inheritProto(a,b,c){}//IGNORE
 function exists(x){}//IGNORE
 function Exception(){}//IGNORE
-function Integer(x){}//IGNORE
 function isOfType(a,b){}//IGNORE
 function getBottom(){}//IGNORE
 function String$(x,l){}//IGNORE
@@ -18,7 +17,7 @@ function Sized(wat) {
 }
 initTypeProtoI(Sized, 'ceylon.language.Sized', Container);
 Sized.$$.prototype.getEmpty = function() {
-    return this.getSize().value === 0;
+    return this.getSize() == 0;
 }
 exports.Sized=Sized;
 
@@ -97,7 +96,7 @@ initTypeProtoI(None, 'ceylon.language.None', FixedSized, ContainerWithFirstEleme
 var None$proto = None.$$.prototype;
 None$proto.getFirst = function() { return null; }
 None$proto.getIterator = function() { return emptyIterator; }
-None$proto.getSize = function() { return Integer(0); }
+None$proto.getSize = function() { return 0; }
 None$proto.getEmpty = function() { return true; }
 None$proto.getFirst = function() { return null; }
 exports.None=None;
@@ -115,11 +114,11 @@ initTypeProtoI(List, 'ceylon.language.List', Collection, Correspondence, Ranged,
 var List$proto = List.$$.prototype;
 List$proto.getSize = function() {
     var li = this.getLastIndex();
-    return li === null ? Integer(0) : li.getSuccessor();
+    return li === null ? 0 : li.getSuccessor();
 }
 List$proto.defines = function(idx) {
     var li = this.getLastIndex();
-    if (li === null) li = Integer(-1);
+    if (li === null) li = -1;
     return li.compare(idx) !== smaller;
 }
 List$proto.getIterator = function() {
@@ -127,9 +126,9 @@ List$proto.getIterator = function() {
 }
 List$proto.equals = function(other) {
     if (isOfType(other, 'ceylon.language.List') && other.getSize().equals(this.getSize())) {
-        for (var i = 0; i < this.getSize().value; i++) {
-            var mine = this.item(Integer(i));
-            var theirs = other.item(Integer(i));
+        for (var i = 0; i < this.getSize(); i++) {
+            var mine = this.item(i);
+            var theirs = other.item(i);
             if (((mine === null) && theirs) || !(mine && mine.equals(theirs))) {
                 return false;
             }
@@ -144,10 +143,10 @@ List$proto.getHash = function() {
     var e; while ((e = iter.next()) != $finished) {
         hc*=31;
         if (e !== null) {
-            hc += e.getHash().value;
+            hc += e.getHash();
         }
     }
-    return Integer(hc);
+    return hc;
 }
 List$proto.getString = function() {
     var s = '{';
@@ -172,7 +171,7 @@ List$proto.getString = function() {
 List$proto.findLast = function(select) {
     var li = this.getLastIndex();
     if (li !== null) {
-        while (li.value>=0) {
+        while (li>=0) {
             var e = this.item(li);
             if (e !== null && select(e)) {
                 return e;
@@ -204,14 +203,14 @@ function ListIterator(list) {
     if (that.lastIndex === null) {
         that.lastIndex = -1;
     } else {
-        that.lastIndex = that.lastIndex.value;
+        that.lastIndex = that.lastIndex;
     }
     return that;
 }
 initTypeProtoI(ListIterator, 'ceylon.language.ListIterator', Iterator);
 ListIterator.$$.prototype.next = function() {
     if (this.index <= this.lastIndex) {
-        return this.list.item(Integer(this.index++));
+        return this.list.item(this.index++);
     }
     return $finished;
 }
@@ -241,7 +240,7 @@ Map$proto.getHash = function() {
         hc*=31;
         hc += elem.getHash().value;
     }
-    return Integer(hc);
+    return hc;
 }
 Map$proto.getValues = function() {
     function $map$values(outer) {
@@ -366,9 +365,9 @@ Set$proto.getHash = function() {
     var iter=this.getIterator();
     var elem;while((elem=iter.next())!=$finished) {
         hc*=31;
-        hc+=elem.getHash().value;
+        hc+=elem.getHash();
     }
-    return Integer(hc);
+    return hc;
 }
 exports.Set=Set;
 
@@ -392,7 +391,7 @@ Empty$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.In
 Empty$proto.definesEvery = function(x) { return false; }
 Empty$proto.definesAny = function(x) { return false; }
 Empty$proto.items = function(x) { return this; }
-Empty$proto.getSize = function() { return Integer(0); }
+Empty$proto.getSize = function() { return 0; }
 Empty$proto.item = function(x) { return null; }
 Empty$proto.getFirst = function() { return null; }
 Empty$proto.segment = function(a,b) { return this; }
@@ -402,7 +401,7 @@ Empty$proto.getString = function() { return String$("{}"); }
 Empty$proto.contains = function(x) { return false; }
 Empty$proto.getLastIndex = function() { return null; }
 Empty$proto.getClone = function() { return this; }
-Empty$proto.count = function(x) { return Integer(0); }
+Empty$proto.count = function(x) { return 0; }
 Empty$proto.getReversed = function() { return this; }
 Empty$proto.skipping = function(skip) { return this; }
 Empty$proto.taking = function(take) { return this; }
@@ -455,21 +454,21 @@ exports.EmptyArray=EmptyArray;
 function ArrayList(items) {
     var that = new ArrayList.$$;
     that.value=items;
-    that.size=new Integer(items.length);
-    that.lastIndex=new Integer(items.length-1);
+    that.size=items.length;
+    that.lastIndex=items.length-1;
     return that;
 }
 initTypeProto(ArrayList, 'ceylon.language.ArrayList', Array$, List);
 var ArrayList$proto = ArrayList.$$.prototype;
 ArrayList$proto.getSize = function() { return this.size; }
 ArrayList$proto.setItem = function(idx,elem) {
-    if (idx.value >= 0 && idx.value < this.size.value) {
-        this.value[idx.value] = elem;
+    if (idx >= 0 && idx < this.size) {
+        this.value[idx] = elem;
     }
 }
 ArrayList$proto.item = function(idx) {
-    if (idx.value >= 0 && idx.value < this.size.value) {
-        return this.value[idx.value];
+    if (idx >= 0 && idx < this.size) {
+        return this.value[idx];
     }
     return null;
 }
@@ -500,9 +499,9 @@ exports.array=function(elems) {
     }
 }
 exports.arrayOfSize=function(size, elem) {
-    if (size.value > 0) {
+    if (size > 0) {
         var elems = [];
-        for (var i = 0; i < size.value; i++) {
+        for (var i = 0; i < size; i++) {
             elems.push(elem);
         }
         return ArrayList(elems);

@@ -1208,7 +1208,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(NaturalLiteral that) {
-        out(clAlias, ".Integer(", that.getText(), ")");
+        out("(", that.getText(), ")");
     }
 
     @Override
@@ -1554,11 +1554,11 @@ public class GenerateJsVisitor extends Visitor
                 if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.String")) {
                     out(clAlias, ".String(");
                 } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Integer")) {
-                    out(clAlias, ".Integer(");
+                    out("(");
                 } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Float")) {
                     out(clAlias, ".Float(");
                 } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Boolean")) {
-                    out(clAlias, ".Boolean(");
+                    out("(");
                 } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Character")) {
                     out(clAlias, ".Character(");
                 } else {

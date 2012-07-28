@@ -4,7 +4,6 @@ function ArraySequence(x){}//IGNORE
 function Entry(a,b){}//IGNORE
 function Singleton(x){}//IGNORE
 function SequenceBuilder(){}//IGNORE
-function Integer(x){}//IGNORE
 function String$(f,x){}//IGNORE
 
 function print(line) { process$.writeLine(line.getString()); }

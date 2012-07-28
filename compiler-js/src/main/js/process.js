@@ -3,7 +3,6 @@
 function IdentifiableObject(x){}//IGNORE
 function inheritProto(x,y){}//IGNORE
 function String$(x){}//IGNORE
-function Integer$(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 var exports,$empty;//IGNORE
 
@@ -159,15 +158,15 @@ process$proto.readLine = function() {
 }
 
 process$proto.getMilliseconds = function() {
-    return Integer(Date.now());
+    return Date.now();
 }
 process$proto.getNanoseconds = function() {
-    return Integer(Date.now()*1000000);
+    return Date.now()*1000000;
 }
 
 if ((typeof process !== "undefined") && (process.exit !== undefined)) {
     process$proto.exit = function(code) {
-        process.exit(code.value);
+        process.exit(code);
     }
 } else {
     process$proto.exit = function() {}

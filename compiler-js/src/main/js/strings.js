@@ -1,6 +1,5 @@
 function initType(a,b,c,d,e,f,g,h,i,j,k,l);//IGNORE
 function inheritProto(a,b,c,d,e,f,g,h,j,i,k,l);//IGNORE
-function Integer(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 function Singleton(x){}//IGNORE
 function largest(a,b){}//IGNORE
@@ -15,6 +14,7 @@ function String$(value,size) {
 }
 initExistingType(String$, String, 'ceylon.language.String', Object$, Comparable,
         Ranged, FixedSized, Summable, Castable, Cloneable, List);
+var origStrToString = String.prototype.toString;
 inheritProtoI(String$, Object$, Comparable, Ranged, FixedSized, Summable, Castable,
         Cloneable, List);
 function StringOfSome() {}
@@ -28,8 +28,8 @@ String$proto.getT$name$ = function() {
 String$proto.getT$all$ = function() {
     return ((this.length!==0)?StringOfSome:StringOfNone).$$.T$all;
 }
+String$proto.toString = origStrToString;
 String$proto.getString = function() { return this }
-String$proto.toString = function() { return this.valueOf() }
 String$proto.plus = function(other) {
     var size = this.codePoints + other.codePoints;
     return String$(this+other, isNaN(size)?undefined:size);
@@ -45,21 +45,21 @@ String$proto.getSize = function() {
     if (this.codePoints===undefined) {
         this.codePoints = countCodepoints(this);
     }
-    return Integer(this.codePoints);
+    return this.codePoints;
 }
-String$proto.getLastIndex = function() { return this.getSize().equals(Integer(0)) ? null : this.getSize().getPredecessor(); }
+String$proto.getLastIndex = function() { return this.getSize().equals(0) ? null : this.getSize().getPredecessor(); }
 String$proto.span = function(from, to) {
-    var fromIndex = from.value;
-    var toIndex = (to===null || to===undefined) ? 0x7fffffff : to.value;
+    var fromIndex = from;
+    var toIndex = (to===null || to===undefined) ? 0x7fffffff : to;
     if (fromIndex > toIndex) {
         //TODO: should we return an empty string or a reverse string in this case?
         return String$("", 0);
     }
-    return this.segment(from, Integer(toIndex-fromIndex+1));
+    return this.segment(from, toIndex-fromIndex+1);
 }
 String$proto.segment = function(from, len) {
-    var fromIndex = from.value;
-    var maxCount = len.value + fromIndex;
+    var fromIndex = from;
+    var maxCount = len + fromIndex;
     if (fromIndex < 0) {fromIndex = 0;}
     var i1 = 0;
     var count = 0;
@@ -80,26 +80,26 @@ String$proto.getEmpty = function() {
     return this.length===0;
 }
 String$proto.longerThan = function(length) {
-    if (this.codePoints!==undefined) {return this.codePoints>length.value}
-    if (this.length <= length.value) {return false}
-    if (this.length<<1 > length.value) {return true}
+    if (this.codePoints!==undefined) {return this.codePoints>length}
+    if (this.length <= length) {return false}
+    if (this.length<<1 > length) {return true}
     this.codePoints = countCodepoints(this);
-    return this.codePoints>length.value;
+    return this.codePoints>length;
 }
 String$proto.shorterThan = function(length) {
-    if (this.codePoints!==undefined) {return this.codePoints<length.value}
-    if (this.length < length.value) {return true}
-    if (this.length<<1 >= length.value) {return false}
+    if (this.codePoints!==undefined) {return this.codePoints<length}
+    if (this.length < length) {return true}
+    if (this.length<<1 >= length) {return false}
     this.codePoints = countCodepoints(this);
-    return this.codePoints<length.value;
+    return this.codePoints<length;
 }
 String$proto.getIterator = function() {
 	return this.length === 0 ? emptyIterator : StringIterator(this);
 }
 String$proto.item = function(index) {
-    if (index.value<0 || index.value>=this.length) {return null}
+    if (index<0 || index>=this.length) {return null}
     var i = 0;
-    for (var count=0; count<index.value; count++) {
+    for (var count=0; count<index; count++) {
         if ((this.charCodeAt(i)&0xfc00) === 0xd800) {++i}
         if (++i >= this.length) {return null}
     }
@@ -122,10 +122,10 @@ String$proto.getTrimmed = function() {
     return result;
 }
 String$proto.initial = function(length) {
-    if (length.value >= this.codePoints) {return this}
+    if (length >= this.codePoints) {return this}
     var count = 0;
     var i = 0;
-    for (; i<this.length && count<length.value; ++i, ++count) {
+    for (; i<this.length && count<length; ++i, ++count) {
         if ((this.charCodeAt(i)&0xfc00) === 0xd800) {++i}
     }
     if (i >= this.length) {
@@ -135,10 +135,10 @@ String$proto.initial = function(length) {
     return String$(this.substr(0, i), count);
 }
 String$proto.terminal = function(length) {
-    if (length.value >= this.codePoints) {return this}
+    if (length >= this.codePoints) {return this}
     var count = 0;
     var i = this.length;
-    for (; i>0 && count<length.value; ++count) {
+    for (; i>0 && count<length; ++count) {
         if ((this.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
     }
     if (i <= 0) {
@@ -160,10 +160,10 @@ String$proto.getHash = function() {
     this._hash += this._hash << 15;
     this._hash = this._hash & ((1 << 29) - 1);
   }
-  return Integer(this._hash);
+  return this._hash;
 }
 String$proto.getFirst = function() {
-    return this.item(Integer(0));
+    return this.item(0);
 }
 
 function cmpSubString(str, subStr, offset) {
@@ -217,22 +217,22 @@ String$proto.getNormalized = function() {
     return String$(result, len);
 }
 String$proto.firstOccurrence = function(sub) {
-    if (sub.length == 0) {return Integer(0)}
+    if (sub.length == 0) {return 0}
     var bound = this.length - sub.length;
     for (var i=0, count=0; i<=bound; ++count) {
-        if (cmpSubString(this, sub, i)) {return Integer(count)}
+        if (cmpSubString(this, sub, i)) {return count}
         if ((this.charCodeAt(i++)&0xfc00) === 0xd800) {++i}
     }
     return null;
 }
 String$proto.lastOccurrence = function(sub) {
-    if (sub.length == 0) {return Integer(this.length>0 ? this.length-1 : 0)}
+    if (sub.length == 0) {return this.length>0 ? this.length-1 : 0}
     for (var i=this.length-sub.length; i>=0; --i) {
         if (cmpSubString(this, sub, i)) {
             for (var count=0; i>0; ++count) {
                 if ((this.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
             }
-            return Integer(count);
+            return count;
         }
     }
     return null;
@@ -243,7 +243,7 @@ String$proto.firstCharacterOccurrence = function(subc) {
         if (((cp&0xfc00) === 0xd800) && i<this.length) {
             cp = (cp<<10) + this.charCodeAt(i++) - 0x35fdc00;
         }
-        if (cp === subc.value) {return Integer(count);}
+        if (cp === subc.value) {return count;}
     }
     this.codePoints = count;
     return null;
@@ -256,7 +256,7 @@ String$proto.lastCharacterOccurrence = function(subc) {
         }
         if (cp === subc.value) {
             if (this.codePoints === undefined) {this.codePoints = countCodepoints(this);}
-            return Integer(this.codePoints - count - 1);
+            return this.codePoints - count - 1;
         }
     }
     this.codePoints = count;
@@ -268,11 +268,11 @@ String$proto.getCharacters = function() {
     //      all required interfaces, so "if(is ...)" will be false when it shouldn't.
     return this.length>0 ? this:$empty;
 }
-String$proto.getFirst = function() { return this.getSize().value>0?this.item(Integer(0)):null; }
-String$proto.getLast = function() { return this.getSize().value>0?this.item(this.getSize().getPredecessor()):null; }
+String$proto.getFirst = function() { return this.getSize()>0?this.item(0):null; }
+String$proto.getLast = function() { return this.getSize()>0?this.item(this.getSize().getPredecessor()):null; }
 String$proto.getKeys = function() {
     //TODO implement!!!
-    return this.getSize().value > 0 ? Range(Integer(0), this.getSize().getPredecessor()) : $empty;
+    return this.getSize() > 0 ? Range(0, this.getSize().getPredecessor()) : $empty;
 }
 String$proto.join = function(strings) {
     if (strings === undefined) {return String$("", 0)}
@@ -376,7 +376,7 @@ String$proto.$replace = function(sub, repl) {
 }
 String$proto.repeat = function(times) {
     var sb = StringBuilder();
-    for (var i = 0; i < times.value; i++) {
+    for (var i = 0; i < times; i++) {
         sb.append(this);
     }
     return sb.getString();
@@ -386,12 +386,12 @@ String$proto.getLines = function() {
     return this.$split(isNewline, true);
 }
 String$proto.occurrences = function(sub) {
-    if (sub.length == 0) {return Integer(0)}
+    if (sub.length == 0) {return 0}
     var ocs = [];
     var bound = this.length - sub.length;
     for (var i=0, count=0; i<=bound; ++count) {
         if (cmpSubString(this, sub, i)) {
-            ocs.push(Integer(count));
+            ocs.push(count);
             i+=sub.length;
         } else if ((this.charCodeAt(i++)&0xfc00) === 0xd800) {++i;}
     }
@@ -402,12 +402,12 @@ String$proto.filter = function(f) {
     return string(r);
 }
 String$proto.skipping = function(skip) {
-    if (skip.value==0) return this;
+    if (skip==0) return this;
     return this.segment(skip, this.getSize());
 }
 String$proto.taking = function(take) {
-    if (take.value==0) return $empty;
-    return this.segment(Integer(0), take);
+    if (take==0) return $empty;
+    return this.segment(0, take);
 }
 String$proto.by = function(step) {
     var r = Iterable.$$.prototype.by.apply(this, [step]);
@@ -469,7 +469,7 @@ Character$proto.getString = function() { return String$(codepointToString(this.v
 Character$proto.equals = function(other) {
     return other.constructor===Character.$$ && other.value===this.value;
 }
-Character$proto.getHash = function() {return Integer(this.value)}
+Character$proto.getHash = function() {return this.value}
 Character$proto.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
@@ -527,7 +527,7 @@ Character$proto.getDigit = function() {
     }
     return this.value>=0x1d7ce && this.value<=0x1d7ff;
 }
-Character$proto.getInteger = function() { return Integer(this.value); }
+Character$proto.getInteger = function() { return this.value; }
 Character$proto.getUppercase = function() {
     var str = codepointToString(this.value);
     return str.toLowerCase()!==str && !(this.value in $titlecase);

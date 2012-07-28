@@ -3,7 +3,6 @@
 
 //the Ceylon language module
 
-function Integer(x){}//IGNORE
 function exists(x){}//IGNORE
 function String$(x,y){}//IGNORE
 function ArraySequence(x){}//IGNORE
@@ -111,15 +110,15 @@ function Object$(wat) {
 }
 initTypeProto(Object$, 'ceylon.language.Object', Void);
 var Object$proto = Object$.$$.prototype;
-Object$proto.getString = function() { return String$(className(this).value + "@" + this.getHash().value); }
+Object$proto.getString = function() { return String$(className(this) + "@" + this.getHash()); }
 //Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
-Object$proto.toString=function() { return this.getString().value };
+Object$proto.toString=function() { return this.getString().valueOf(); }
 
 var identifiableObjectID=1;
 function $identityHash(x) {
     var hash = x.identifiableObjectID;
     return (hash !== undefined)
-            ? hash : (x.identifiableObjectID = Integer(identifiableObjectID++));
+            ? hash : (x.identifiableObjectID = identifiableObjectID++);
 }
 
 function Identifiable(obj) {}
@@ -276,7 +275,7 @@ Exception$proto.getMessage = function() {
            : (this.cause ? this.cause.getMessage() : String$("", 0));
 }
 Exception$proto.getString = function() {
-    return String$(className(this).value + ' "' + this.getMessage().value + '"');
+    return String$(className(this) + ' "' + this.getMessage() + '"');
 }
 
 //#include numbers.js
@@ -330,7 +329,7 @@ function Range(first, last) {
     that.last = last;
     var dec = first.compare(last) === larger;
     if (isOfType(first, 'ceylon.language.Integer') && isOfType(last, 'ceylon.language.Integer')) {
-        that.size=Integer((dec?first.value-last.value:last.value-first.value)+1);
+        that.size=(dec?first-last:last-first)+1;
     } else {
         var index = 0;
         var x = first;
@@ -338,7 +337,7 @@ function Range(first, last) {
             index++;
             x = dec ? x.getPredecessor() : x.getSuccessor();
         }
-        that.size = Integer(index+1);
+        that.size = index+1;
     }
     return that;
 }
@@ -354,11 +353,11 @@ Range$proto.next = function(x) {
     return this.getDecreasing() ? x.getPredecessor() : x.getSuccessor();
 }
 Range$proto.getSize = function() { return this.size; }
-Range$proto.getLastIndex = function() { return Integer(this.size.value-1); }
+Range$proto.getLastIndex = function() { return this.size-1; }
 Range$proto.item = function(index) {
     var idx = 0;
     var x = this.first;
-    while (idx < index.value) {
+    while (idx < index) {
         if (x.equals(this.last)) { return null; }
         else {
             idx++;
@@ -385,53 +384,53 @@ Range$proto.getRest = function() {
 }
 Range$proto.segment = function(from, len) {
     //only positive length for now
-    if (len.compare(Integer(0)) !== larger) return $empty;
+    if (len.compare(0) !== larger) return $empty;
     if (!this.defines(from)) return $empty;
     var x = this.first;
-    for (var i=0; i < from.value; i++) { x = this.next(x); }
+    for (var i=0; i < from; i++) { x = this.next(x); }
     var y = x;
-    for (var i=1; i < len.value; i++) { y = this.next(y); }
+    for (var i=1; i < len; i++) { y = this.next(y); }
     if (!this.includes(y)) { y = this.last; }
     return Range(x, y);
 }
 Range$proto.span = function(from, to) {
     var li = this.getLastIndex();
 	to = (to==null || to==undefined) ? li : to;
-    if (to.value<0) {
-    	if (from.value<0) {
+    if (to<0) {
+    	if (from<0) {
     		return $empty;
     	}
-    	to = Integer(0);
+    	to = 0;
     }
-    else if (to.value > li.value) {
-    	if (from.value > li.value) {
+    else if (to > li) {
+    	if (from > li) {
     		return $empty;
     	}
     	to = li;
     }
-    if (from.value < 0) {
-    	from = Integer(0);
+    if (from < 0) {
+    	from = 0;
     }
-    else if (from.value > li.value) {
+    else if (from > li) {
     	from = li;
     }
     var x = this.first;
-    for (var i=0; i < from.value; i++) { x = this.next(x); }
+    for (var i=0; i < from; i++) { x = this.next(x); }
     var y = this.first;
-    for (var i=0; i < to.value; i++) { y = this.next(y); }
+    for (var i=0; i < to; i++) { y = this.next(y); }
     return Range(x, y);
 }
 Range$proto.definesEvery = function(keys) {
-    for (var i = 0; i < keys.getSize().value; i++) {
-        if (!this.defines(keys.item(Integer(i)))) {
+    for (var i = 0; i < keys.getSize(); i++) {
+        if (!this.defines(keys.item(i))) {
             return false;
         }
     }
     return true;
 }
 Range$proto.definesAny = function(keys) {
-    for (var i = 0; i < keys.getSize().value; i++) {
-        if (this.defines(keys.item(Integer(i)))) {
+    for (var i = 0; i < keys.getSize(); i++) {
+        if (this.defines(keys.item(i))) {
             return true;
         }
     }
@@ -448,18 +447,18 @@ Range$proto.getReversed = function() { return Range(this.last, this.first); }
 Range$proto.skipping = function(skip) {
     var x=0;
     var e=this.first;
-    while (x++<skip.value) {
+    while (x++<skip) {
         e=this.next(e);
     }
     return this.includes(e) ? new Range(e, this.last) : $empty;
 }
 Range$proto.taking = function(take) {
-    if (take.value == 0) {
+    if (take == 0) {
         return $empty;
     }
     var x=0;
     var e=this.first;
-    while (++x<take.value) {
+    while (++x<take) {
         e=this.next(e);
     }
     return this.includes(e) ? new Range(this.first, e) : this;
@@ -475,7 +474,7 @@ Range$proto.count = function(f) {
         }
         e = this.next(e);
     }
-    return Integer(c);
+    return c;
 }
 
 function RangeIterator(range) {
@@ -517,7 +516,7 @@ Entry$proto.getItem = function() { return this.item; }
 Entry$proto.equals = function(other) {
     return other && isOfType(other, 'ceylon.language.Entry') && this.getKey().equals(other.getKey()) && this.getItem().equals(other.getItem());
 }
-Entry$proto.getHash = function() { Integer((31 + this.key.getHash().value) * 31 + this.item.getHash().value); }
+Entry$proto.getHash = function() { (31 + this.key.getHash()) * 31 + this.item.getHash(); }
 
 function getBottom() {
     throw Exception();

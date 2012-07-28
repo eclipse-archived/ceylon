@@ -27,7 +27,7 @@ Iterable$proto.getFirst = function() {
     return e === $finished ? null : e;
 }
 Iterable$proto.getRest = function() {
-    return this.skipping(Integer(1));
+    return this.skipping(1);
 }
 Iterable$proto.getSequence = function() {
     var a = [];
@@ -136,30 +136,30 @@ Iterable$proto.skipping = function(skip) {
         return $cmp$;
     }
     initTypeProto(skip$iter, 'ceylon.language.SkipIterable', IdentifiableObject, Iterable);
-    return skip$iter(this,skip.value);
+    return skip$iter(this,skip);
 }
 Iterable$proto.taking = function(take) {
-    if (take.value <= 0) return $empty;
+    if (take <= 0) return $empty;
     var iter = this;
     return Comprehension(function() {
         var it = iter.getIterator();
         var i = 0;
         return function() {
-            if (i >= take.value) {return $finished;}
+            if (i >= take) {return $finished;}
             ++i;
             return it.next();
         }
     });
 }
 Iterable$proto.by = function(step) {
-    if (step.value == 1) return this;
-    if (step.value < 1) throw Exception(String$("Step must be positive"));
+    if (step == 1) return this;
+    if (step < 1) throw Exception(String$("Step must be positive"));
     var iter = this;
     return Comprehension(function() {
         var it = iter.getIterator();
         return function() {
             var e = it.next();
-            for (var i=1; i<step.value && (it.next()!==$finished); i++);
+            for (var i=1; i<step && (it.next()!==$finished); i++);
             return e;
         }
     });
@@ -170,7 +170,7 @@ Iterable$proto.count = function(sel) {
     var e; while ((e = iter.next()) !== $finished) {
         if (sel(e)) c++;
     }
-    return Integer(c);
+    return c;
 }
 Iterable$proto.getCoalesced = function() {
     var iter = this;
@@ -191,7 +191,7 @@ Iterable$proto.getIndexed = function() {
         return function() {
             var e;
             while ((e = it.next()) === null) {idx++;}
-            return e === $finished ? e : Entry(Integer(idx++), e);
+            return e === $finished ? e : Entry(idx++, e);
         }
     });
 }
