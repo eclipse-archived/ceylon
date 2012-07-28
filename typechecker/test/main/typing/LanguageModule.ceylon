@@ -20,6 +20,7 @@ class LanguageModule() {
     @type["Iterable<Entry<Integer,String>>"] entries({"hello", "world"}...);
     for (Integer i->String s in entries("hello", "world", "!")) {}
     
-    print(append({"one", "two" , "three"}, "four").size==4);
+    //print(append({"one", "two" , "three"}, "four").size==4);
+    print({"one", "two" , "three"}.withTrailing("four").size==4);
 
 }
