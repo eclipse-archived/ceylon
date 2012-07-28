@@ -622,7 +622,7 @@ public class ProducedType extends ProducedReference {
         if (extendedType!=null) {
             ProducedType possibleResult = extendedType.getSupertype(c, list, 
                             ignoringSelfType);
-            if (possibleResult!=null) {
+            if (possibleResultIsMeaningful(possibleResult)) {
                 result = possibleResult;
             }
         }
@@ -630,7 +630,7 @@ public class ProducedType extends ProducedReference {
         for (ProducedType dst: getInternalSatisfiedTypes()) {
             ProducedType possibleResult = dst.getSupertype(c, list, 
                             ignoringSelfType);
-            if (possibleResult!=null) {
+            if (possibleResultIsMeaningful(possibleResult)) {
                 if (result==null || possibleResult.isSubtypeOf(result, ignoringSelfType)) {
                     result = possibleResult;
                 }
@@ -663,7 +663,7 @@ public class ProducedType extends ProducedReference {
             if (selfType!=null) {
                 ProducedType possibleResult = selfType.getSupertype(c, list, 
                             ignoringSelfType);
-                if (possibleResult!=null && (result==null || 
+                if (possibleResultIsMeaningful(possibleResult) && (result==null || 
                         possibleResult.isSubtypeOf(result, ignoringSelfType))) {
                     result = possibleResult;
                 }
@@ -672,6 +672,11 @@ public class ProducedType extends ProducedReference {
         
         return result;
     }
+
+	private boolean possibleResultIsMeaningful(ProducedType possibleResult) {
+		return possibleResult!=null && 
+				!(possibleResult.getDeclaration() instanceof UnknownType);
+	}
 
     /**
      * Given two instantiations of the same type declaration,

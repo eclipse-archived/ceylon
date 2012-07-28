@@ -69,5 +69,10 @@ public class UnionType extends TypeDeclaration {
     public boolean equals(Object object) {
         throw new UnsupportedOperationException("union types don't have well-defined equality");
     }
+    
+    @Override
+    public Declaration getMember(String name, List<ProducedType> signature) {
+    	return super.getMember(name, signature);
+    }
 
 }
