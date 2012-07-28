@@ -139,7 +139,7 @@ function Singleton(elem) {
 }
 initTypeProto(Singleton, 'ceylon.language.Singleton', Object$, Sequence);
 var Singleton$proto = Singleton.$$.prototype;
-Singleton$proto.getString = function() { return String$("{ " + this.elem.getString().value + " }") }
+Singleton$proto.getString = function() { return String$("{ " + this.elem.getString() + " }") }
 Singleton$proto.item = function(index) {
     return index.value===0 ? this.value[0] : null;
 }

@@ -78,18 +78,17 @@ Integer$proto.getSign = function() { return this.value > 0 ? Integer(1) : this.v
 Integer$proto.getHash = function() { return this; }
 
 function $parseInteger(s) {
-    var x = s.value;
     //xkcd.com/208/
-    if ((x.indexOf('_') >= 0 ? x.match(/^[+-]?\d{1,3}(_\d{3})+[kMGPT]?$/g) : x.match(/^[+-]?\d+[kMGPT]?$/g)) === null) {
+    if ((s.indexOf('_') >= 0 ? s.match(/^[+-]?\d{1,3}(_\d{3})+[kMGPT]?$/g) : s.match(/^[+-]?\d+[kMGPT]?$/g)) === null) {
         return null;
     }
-    x = x.replace("_", "");
+    s = s.replace("_", "");
     var mag = null;
-    if (x.match(/[kMGTP]$/g) !== null) {
-        mag = x[x.length-1];
-        x = x.slice(0,-1);
+    if (s.match(/[kMGTP]$/g) !== null) {
+        mag = s[s.length-1];
+        s = s.slice(0,-1);
     }
-    var i = parseInt(x);
+    var i = parseInt(s);
     var factor=1;
     switch(mag) {
         case 'P':factor*=1000;
@@ -100,7 +99,7 @@ function $parseInteger(s) {
     }
     return isNaN(i) ? null : Integer(i*factor);
 }
-function $parseFloat(s) { return Float(parseFloat(s.value)); }
+function $parseFloat(s) { return Float(parseFloat(s)); }
 
 function Float(value) {
     var that = new Float.$$;

@@ -354,7 +354,7 @@ Range$proto.next = function(x) {
     return this.getDecreasing() ? x.getPredecessor() : x.getSuccessor();
 }
 Range$proto.getSize = function() { return this.size; }
-Range$proto.getLastIndex = function() { return Integer(this.size-1); }
+Range$proto.getLastIndex = function() { return Integer(this.size.value-1); }
 Range$proto.item = function(index) {
     var idx = 0;
     var x = this.first;
@@ -438,7 +438,7 @@ Range$proto.definesAny = function(keys) {
     return false;
 }
 Range$proto.defines = function(idx) { return idx.compare(this.getSize()) === smaller; }
-Range$proto.getString = function() { return String$(this.first.getString().value + ".." + this.last.getString().value); }
+Range$proto.getString = function() { return String$(this.first.getString() + ".." + this.last.getString()); }
 Range$proto.equals = function(other) {
     if (!other) { return false; }
     return this.first.equals(other.getFirst()) && this.last.equals(other.getLast());
@@ -459,7 +459,7 @@ Range$proto.taking = function(take) {
     }
     var x=0;
     var e=this.first;
-    while (++x<take) {
+    while (++x<take.value) {
         e=this.next(e);
     }
     return this.includes(e) ? new Range(this.first, e) : this;
@@ -510,7 +510,7 @@ function Entry(key, item) {
 initTypeProto(Entry, 'ceylon.language.Entry', Object$);
 var Entry$proto = Entry.$$.prototype;
 Entry$proto.getString = function() {
-    return String$(this.key.getString().value + "->" + this.item.getString().value);
+    return String$(this.key.getString() + "->" + this.item.getString());
 }
 Entry$proto.getKey = function() { return this.key; }
 Entry$proto.getItem = function() { return this.item; }

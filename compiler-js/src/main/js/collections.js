@@ -157,7 +157,7 @@ List$proto.getString = function() {
     while ((item = iter.next()) !== $finished) {
         s += first ? ' ' : ', ';
         if (exists(item)) {
-            s += item.getString().value;
+            s += item.getString();
         } else {
             s += 'null';
         }

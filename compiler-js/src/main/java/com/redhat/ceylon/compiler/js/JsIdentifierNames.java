@@ -94,8 +94,8 @@ public class JsIdentifierNames {
         //reservedWords.add("while");
         reservedWords.add("with");
         
-        //substitutedMemberNames.add("ceylon.language.String.split");
-        //substitutedMemberNames.add("ceylon.language.String.replace");
+        substitutedMemberNames.add("ceylon.language.String.split");
+        substitutedMemberNames.add("ceylon.language.String.replace");
     }
     
     public JsIdentifierNames(boolean prototypeStyle) {

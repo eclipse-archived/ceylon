@@ -9,40 +9,41 @@ var Object$,List,Comparable,Ranged,FixedSized,Summable,Castable,Cloneable,smalle
 var $empty,$finished,IdentifiableObject,Iterator,exports;//IGNORE
 
 function String$(value,size) {
-    var that = new String$.$$;
-    that.value = value;
+    var that = new String(value);
     that.codePoints = size;
     return that;
 }
-initTypeProto(String$, 'ceylon.language.String', Object$, Comparable, Ranged, FixedSized,
-    Summable, Castable, Cloneable, List);
+initExistingType(String$, String, 'ceylon.language.String', Object$, Comparable,
+        Ranged, FixedSized, Summable, Castable, Cloneable, List);
+inheritProtoI(String$, Object$, Comparable, Ranged, FixedSized, Summable, Castable,
+        Cloneable, List);
 function StringOfSome() {}
 initType(StringOfSome, "ceylon.language.StringOfSome", String$, Some);
 function StringOfNone() {}
 initType(StringOfNone, "ceylon.language.StringOfNone", String$, None);
 var String$proto = String$.$$.prototype;
 String$proto.getT$name$ = function() {
-    return ((this.value.length!==0)?StringOfSome:StringOfNone).$$.T$name;
+    return ((this.length!==0)?StringOfSome:StringOfNone).$$.T$name;
 }
 String$proto.getT$all$ = function() {
-    return ((this.value.length!==0)?StringOfSome:StringOfNone).$$.T$all;
+    return ((this.length!==0)?StringOfSome:StringOfNone).$$.T$all;
 }
 String$proto.getString = function() { return this }
-String$proto.toString = function() { return this.value }
+String$proto.toString = function() { return this.valueOf() }
 String$proto.plus = function(other) {
     var size = this.codePoints + other.codePoints;
-    return String$(this.value+other.value, isNaN(size)?undefined:size);
+    return String$(this+other, isNaN(size)?undefined:size);
 }
-String$proto.equals = function(other) { return other && other.value===this.value }
+String$proto.equals = function(other) { return other.constructor===String && other.valueOf()===this.valueOf(); }
 String$proto.compare = function(other) {
-    var cmp = this.value.localeCompare(other.value);
+    var cmp = this.localeCompare(other);
     return cmp===0 ? equal : (cmp<0 ? smaller:larger);
 }
-String$proto.getUppercased = function() { return String$(this.value.toUpperCase()) }
-String$proto.getLowercased = function() { return String$(this.value.toLowerCase()) }
+String$proto.getUppercased = function() { return String$(this.toUpperCase()) }
+String$proto.getLowercased = function() { return String$(this.toLowerCase()) }
 String$proto.getSize = function() {
     if (this.codePoints===undefined) {
-        this.codePoints = countCodepoints(this.value);
+        this.codePoints = countCodepoints(this);
     }
     return Integer(this.codePoints);
 }
@@ -62,61 +63,61 @@ String$proto.segment = function(from, len) {
     if (fromIndex < 0) {fromIndex = 0;}
     var i1 = 0;
     var count = 0;
-    for (; i1<this.value.length && count<fromIndex; ++i1, ++count) {
-        if ((this.value.charCodeAt(i1)&0xfc00) === 0xd800) {++i1}
+    for (; i1<this.length && count<fromIndex; ++i1, ++count) {
+        if ((this.charCodeAt(i1)&0xfc00) === 0xd800) {++i1}
     }
     var i2 = i1;
-    for (; i2<this.value.length && count<maxCount; ++i2, ++count) {
-        if ((this.value.charCodeAt(i2)&0xfc00) === 0xd800) {++i2}
+    for (; i2<this.length && count<maxCount; ++i2, ++count) {
+        if ((this.charCodeAt(i2)&0xfc00) === 0xd800) {++i2}
     }
-    if (i2 >= this.value.length) {
+    if (i2 >= this.length) {
         this.codePoints = count;
         if (fromIndex === 0) {return this;}
     }
-    return String$(this.value.substring(i1, i2), count-fromIndex);
+    return String$(this.substring(i1, i2), count-fromIndex);
 }
 String$proto.getEmpty = function() {
-    return this.value.length===0;
+    return this.length===0;
 }
 String$proto.longerThan = function(length) {
     if (this.codePoints!==undefined) {return this.codePoints>length.value}
-    if (this.value.length <= length.value) {return false}
-    if (this.value.length<<1 > length.value) {return true}
-    this.codePoints = countCodepoints(this.value);
+    if (this.length <= length.value) {return false}
+    if (this.length<<1 > length.value) {return true}
+    this.codePoints = countCodepoints(this);
     return this.codePoints>length.value;
 }
 String$proto.shorterThan = function(length) {
     if (this.codePoints!==undefined) {return this.codePoints<length.value}
-    if (this.value.length < length.value) {return true}
-    if (this.value.length<<1 >= length.value) {return false}
-    this.codePoints = countCodepoints(this.value);
+    if (this.length < length.value) {return true}
+    if (this.length<<1 >= length.value) {return false}
+    this.codePoints = countCodepoints(this);
     return this.codePoints<length.value;
 }
 String$proto.getIterator = function() {
-	return this.value.length === 0 ? emptyIterator : StringIterator(this.value);
+	return this.length === 0 ? emptyIterator : StringIterator(this);
 }
 String$proto.item = function(index) {
-    if (index<0 || index>=this.value.length) {return null}
+    if (index.value<0 || index.value>=this.length) {return null}
     var i = 0;
-    for (var count=0; count<index; count++) {
-        if ((this.value.charCodeAt(i)&0xfc00) === 0xd800) {++i}
-        if (++i >= this.value.length) {return null}
+    for (var count=0; count<index.value; count++) {
+        if ((this.charCodeAt(i)&0xfc00) === 0xd800) {++i}
+        if (++i >= this.length) {return null}
     }
-    return Character(codepointFromString(this.value, i));
+    return Character(codepointFromString(this, i));
 }
 String$proto.getTrimmed = function() {
     // make use of the fact that all WS characters are single UTF-16 code units
     var from = 0;
-    while (from<this.value.length && (this.value.charCodeAt(from) in $WS)) {++from}
-    var to = this.value.length;
+    while (from<this.length && (this.charCodeAt(from) in $WS)) {++from}
+    var to = this.length;
     if (from < to) {
-        do {--to} while (from<to && (this.value.charCodeAt(to) in $WS));
+        do {--to} while (from<to && (this.charCodeAt(to) in $WS));
         ++to;
     }
-    if (from===0 && to===this.value.length) {return this}
-    var result = String$(this.value.substring(from, to));
+    if (from===0 && to===this.length) {return this}
+    var result = String$(this.substring(from, to));
     if (this.codePoints !== undefined) {
-        result.codePoints = this.codePoints - from - this.value.length + to;
+        result.codePoints = this.codePoints - from - this.length + to;
     }
     return result;
 }
@@ -124,32 +125,32 @@ String$proto.initial = function(length) {
     if (length.value >= this.codePoints) {return this}
     var count = 0;
     var i = 0;
-    for (; i<this.value.length && count<length.value; ++i, ++count) {
-        if ((this.value.charCodeAt(i)&0xfc00) === 0xd800) {++i}
+    for (; i<this.length && count<length.value; ++i, ++count) {
+        if ((this.charCodeAt(i)&0xfc00) === 0xd800) {++i}
     }
-    if (i >= this.value.length) {
+    if (i >= this.length) {
         this.codePoints = count;
         return this;
     }
-    return String$(this.value.substr(0, i), count);
+    return String$(this.substr(0, i), count);
 }
 String$proto.terminal = function(length) {
     if (length.value >= this.codePoints) {return this}
     var count = 0;
-    var i = this.value.length;
+    var i = this.length;
     for (; i>0 && count<length.value; ++count) {
-        if ((this.value.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
+        if ((this.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
     }
     if (i <= 0) {
         this.codePoints = count;
         return this;
     }
-    return String$(this.value.substr(i), count);
+    return String$(this.substr(i), count);
 }
 String$proto.getHash = function() {
     if (this._hash === undefined) {
-        for (var i = 0; i < this.value.length; i++) {
-          var c = this.value.charCodeAt(i);
+        for (var i = 0; i < this.length; i++) {
+          var c = this.charCodeAt(i);
           this._hash += c + (this._hash << 10);
           this._hash ^= this._hash >> 6;
     }
@@ -172,20 +173,20 @@ function cmpSubString(str, subStr, offset) {
     return true;
 }
 String$proto.startsWith = function(str) {
-    if (str.value.length > this.value.length) {return false}
-    return cmpSubString(this.value, str.value, 0);
+    if (str.length > this.length) {return false}
+    return cmpSubString(this, str, 0);
 }
 String$proto.endsWith = function(str) {
-    var start = this.value.length - str.value.length
+    var start = this.length - str.length
     if (start < 0) {return false}
-    return cmpSubString(this.value, str.value, start);
+    return cmpSubString(this, str, start);
 }
 String$proto.contains = function(sub) {
     var str;
-    if (sub.constructor === String$.$$) {str = sub.value}
+    if (sub.constructor === String) {str = sub}
     else if (sub.constructor !== Character.$$) {return false}
     else {str = codepointToString(sub.value)}
-    return this.value.indexOf(str) >= 0;
+    return this.indexOf(str) >= 0;
 }
 String$proto.getNormalized = function() {
     // make use of the fact that all WS characters are single UTF-16 code units
@@ -193,43 +194,43 @@ String$proto.getNormalized = function() {
     var len = 0;
     var first = true;
     var i1 = 0;
-    while (i1 < this.value.length) {
-        while (this.value.charCodeAt(i1) in $WS) {
-            if (++i1 >= this.value.length) {return String$(result)}
+    while (i1 < this.length) {
+        while (this.charCodeAt(i1) in $WS) {
+            if (++i1 >= this.length) {return String$(result)}
         }
         var i2 = i1;
-        var cc = this.value.charCodeAt(i2);
+        var cc = this.charCodeAt(i2);
         do {
             ++i2;
             if ((cc&0xfc00) === 0xd800) {++i2}
             ++len;
-            cc = this.value.charCodeAt(i2);
-        } while (i2<this.value.length && !(cc in $WS));
+            cc = this.charCodeAt(i2);
+        } while (i2<this.length && !(cc in $WS));
         if (!first) {
             result += " ";
             ++len;
         }
         first = false;
-        result += this.value.substring(i1, i2);
+        result += this.substring(i1, i2);
         i1 = i2+1;
     }
     return String$(result, len);
 }
 String$proto.firstOccurrence = function(sub) {
-    if (sub.value.length == 0) {return Integer(0)}
-    var bound = this.value.length - sub.value.length;
+    if (sub.length == 0) {return Integer(0)}
+    var bound = this.length - sub.length;
     for (var i=0, count=0; i<=bound; ++count) {
-        if (cmpSubString(this.value, sub.value, i)) {return Integer(count)}
-        if ((this.value.charCodeAt(i++)&0xfc00) === 0xd800) {++i}
+        if (cmpSubString(this, sub, i)) {return Integer(count)}
+        if ((this.charCodeAt(i++)&0xfc00) === 0xd800) {++i}
     }
     return null;
 }
 String$proto.lastOccurrence = function(sub) {
-    if (sub.value.length == 0) {return Integer(this.value.length>0 ? this.value.length-1 : 0)}
-    for (var i=this.value.length-sub.value.length; i>=0; --i) {
-        if (cmpSubString(this.value, sub.value, i)) {
+    if (sub.length == 0) {return Integer(this.length>0 ? this.length-1 : 0)}
+    for (var i=this.length-sub.length; i>=0; --i) {
+        if (cmpSubString(this, sub, i)) {
             for (var count=0; i>0; ++count) {
-                if ((this.value.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
+                if ((this.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
             }
             return Integer(count);
         }
@@ -237,10 +238,10 @@ String$proto.lastOccurrence = function(sub) {
     return null;
 }
 String$proto.firstCharacterOccurrence = function(subc) {
-    for (var i=0, count=0; i<this.value.length; count++) {
-        var cp = this.value.charCodeAt(i++);
-        if (((cp&0xfc00) === 0xd800) && i<this.value.length) {
-            cp = (cp<<10) + this.value.charCodeAt(i++) - 0x35fdc00;
+    for (var i=0, count=0; i<this.length; count++) {
+        var cp = this.charCodeAt(i++);
+        if (((cp&0xfc00) === 0xd800) && i<this.length) {
+            cp = (cp<<10) + this.charCodeAt(i++) - 0x35fdc00;
         }
         if (cp === subc.value) {return Integer(count);}
     }
@@ -248,13 +249,13 @@ String$proto.firstCharacterOccurrence = function(subc) {
     return null;
 }
 String$proto.lastCharacterOccurrence = function(subc) {
-    for (var i=this.value.length-1, count=0; i>=0; count++) {
-        var cp = this.value.charCodeAt(i--);
+    for (var i=this.length-1, count=0; i>=0; count++) {
+        var cp = this.charCodeAt(i--);
         if (((cp%0xfc00) === 0xdc00) && i>=0) {
-           cp = (this.value.charCodeAt(i--)<<10) + cp - 0x35fdc00;
+           cp = (this.charCodeAt(i--)<<10) + cp - 0x35fdc00;
         }
         if (cp === subc.value) {
-            if (this.codePoints === undefined) {this.codePoints = countCodepoints(this.value);}
+            if (this.codePoints === undefined) {this.codePoints = countCodepoints(this);}
             return Integer(this.codePoints - count - 1);
         }
     }
@@ -265,10 +266,10 @@ String$proto.getCharacters = function() {
     //we can cheat and add the required behavior to String, avoiding the need to create a Sequence...
     //TODO: this probably doesn't work completely because String doesn't satisfy
     //      all required interfaces, so "if(is ...)" will be false when it shouldn't.
-    return this.value.length>0 ? this:$empty;
+    return this.length>0 ? this:$empty;
 }
 String$proto.getFirst = function() { return this.getSize().value>0?this.item(Integer(0)):null; }
-String$proto.getLast = function() { return this.getSize().value>0?this.item(Integer(this.getSize().getPredecessor())):null; }
+String$proto.getLast = function() { return this.getSize().value>0?this.item(this.getSize().getPredecessor()):null; }
 String$proto.getKeys = function() {
     //TODO implement!!!
     return this.getSize().value > 0 ? Range(Integer(0), this.getSize().getPredecessor()) : $empty;
@@ -278,21 +279,20 @@ String$proto.join = function(strings) {
     var it = strings.getIterator();
     var str = it.next();
     if (str === $finished) {return String$("", 0);}
-    if (this.codePoints === undefined) {this.codePoints = countCodepoints(this.value)}
-    var result = str.value;
+    if (this.codePoints === undefined) {this.codePoints = countCodepoints(this)}
+    var result = str;
     var len = str.codePoints;
     while ((str = it.next()) !== $finished) {
-        result += this.value;
-        result += str.value;
+        result += this;
+        result += str;
         len += this.codePoints + str.codePoints;
     }
     return String$(result, isNaN(len)?undefined:len);
 }
 function isWhitespace(c) { return c.value in $WS; }
-String$proto.split = function(sep, discard, group) {
-    var value = this.value;
+String$proto.$split = function(sep, discard, group) {
     // shortcut for empty input
-    if (value.length === 0) {return Singleton(this);}
+    if (this.length === 0) {return Singleton(this);}
     
     if (sep === undefined) {sep = isWhitespace}
     if (discard === undefined) {discard = true}
@@ -303,14 +303,15 @@ String$proto.split = function(sep, discard, group) {
     var tokenBegin = 0;
     var tokenBeginCount = 0;
     var separator = true;
+    var value = this;
     function pushToken(tokenEnd) {
         tokens.push(String$(value.substring(tokenBegin, tokenEnd), count-tokenBeginCount));
     }
-    for (var i=0, count=0; i<value.length; ++count) {
+    for (var i=0, count=0; i<this.length; ++count) {
         var j = i;
-        var cp = value.charCodeAt(i++);
-        if ((cp&0xfc00)===0xd800 && i<value.length) {
-            cp = (cp<<10) + value.charCodeAt(i++) - 0x35fdc00;
+        var cp = this.charCodeAt(i++);
+        if ((cp&0xfc00)===0xd800 && i<this.length) {
+            cp = (cp<<10) + this.charCodeAt(i++) - 0x35fdc00;
         }
         
         if (sep(Character(cp))) {
@@ -319,7 +320,7 @@ String$proto.split = function(sep, discard, group) {
                 pushToken(j);
                 if (!discard) {
                     // store separator as token
-                    tokens.push(String$(value.substring(j, i), 1));
+                    tokens.push(String$(this.substring(j, i), 1));
                 }
                 // next token begins after this character
                 tokenBegin = i;
@@ -360,18 +361,18 @@ String$proto.split = function(sep, discard, group) {
 }
 String$proto.getReversed = function() {
     var result = "";
-    for (var i=this.value.length; i>0;) {
-        var cc = this.value.charCodeAt(--i);
+    for (var i=this.length; i>0;) {
+        var cc = this.charCodeAt(--i);
         if ((cc&0xfc00)!==0xdc00 || i===0) {
-            result += this.value.charAt(i);
+            result += this.charAt(i);
         } else {
-            result += this.value.substr(--i, 2);
+            result += this.substr(--i, 2);
         }
     }
     return String$(result);
 }
-String$proto.replace = function(sub, repl) {
-    return String$(this.value.replace(new RegExp(sub.value, 'g'), repl.value));
+String$proto.$replace = function(sub, repl) {
+    return String$(this.replace(new RegExp(sub, 'g'), repl));
 }
 String$proto.repeat = function(times) {
     var sb = StringBuilder();
@@ -382,17 +383,17 @@ String$proto.repeat = function(times) {
 }
 function isNewline(c) { return c.value===10; }
 String$proto.getLines = function() {
-    return this.split(isNewline, true);
+    return this.$split(isNewline, true);
 }
 String$proto.occurrences = function(sub) {
-    if (sub.value.length == 0) {return Integer(0)}
+    if (sub.length == 0) {return Integer(0)}
     var ocs = [];
-    var bound = this.value.length - sub.value.length;
+    var bound = this.length - sub.length;
     for (var i=0, count=0; i<=bound; ++count) {
-        if (cmpSubString(this.value, sub.value, i)) {
+        if (cmpSubString(this, sub, i)) {
             ocs.push(Integer(count));
-            i+=sub.value.length;
-        } else if ((this.value.charCodeAt(i++)&0xfc00) === 0xd800) {++i;}
+            i+=sub.length;
+        } else if ((this.charCodeAt(i++)&0xfc00) === 0xd800) {++i;}
     }
     return ocs.length > 0 ? ArrayList(ocs) : $empty;
 }
@@ -561,14 +562,14 @@ initTypeProto(StringBuilder, 'ceylon.language.StringBuilder', IdentifiableObject
 var StringBuilder$proto = StringBuilder.$$.prototype;
 StringBuilder$proto.getString = function() { return String$(this.value); }
 StringBuilder$proto.append = function(s) {
-    this.value = this.value + s.value;
+    this.value = this.value + s;
     return this;
 }
 StringBuilder$proto.appendAll = function(strings) {
     if (strings === null || strings === undefined) { return this; }
     for (var i = 0; i < strings.value.length; i++) {
         var _s = strings.value[i];
-        this.value += _s?_s.value:"null";
+        this.value += _s?_s:"null";
     }
     return this;
 }
