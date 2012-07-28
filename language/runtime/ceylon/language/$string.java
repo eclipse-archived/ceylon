@@ -17,13 +17,17 @@ public final class $string {
     public static java.lang.String string(@Name("characters") @Sequenced 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Character>")
     final Iterable<? extends Character> characters) {
-        java.lang.StringBuilder sb = new java.lang.StringBuilder();
-        java.lang.Object $tmp;
-        for (Iterator<? extends Character> $val$iter$0 = characters.getIterator(); 
-                !(($tmp = $val$iter$0.next()) instanceof Finished);) {
-            sb.append($tmp);
+        if (characters instanceof String) {
+            return ((String)characters).toString();
+        } else {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder();
+            java.lang.Object $tmp;
+            for (Iterator<? extends Character> $val$iter$0 = characters.getIterator(); 
+                    !(($tmp = $val$iter$0.next()) instanceof Finished);) {
+                sb.append($tmp);
+            }
+            return sb.toString();
         }
-        return sb.toString();
     }
     @Ignore
     public static java.lang.String string() {
