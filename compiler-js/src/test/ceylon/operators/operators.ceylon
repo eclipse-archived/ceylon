@@ -35,8 +35,8 @@ void testIntegerOperators() {
 
     i1 := 2 ** 10;
     assert(i1==1024, "power");
-    i2 := 100 ** 6;
-    assert(i2==1000000000000, "power");
+    i2 := 10 ** 6;
+    assert(i2==1000000, "power");
 }
 
 void testFloatOperators() {
