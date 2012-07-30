@@ -186,4 +186,25 @@ public class ReflectionType implements TypeMirror {
         lowerBound = new ReflectionType(ct[0]);
         return lowerBound;
     }
+
+    @Override
+    public boolean isRaw() {
+        if(type instanceof ParameterizedType){
+            // we're raw if our type is a parameterised type that should have type params
+            ParameterizedType ptype = ((ParameterizedType)type);
+            Class<?> klass = (Class<?>) ptype.getRawType();
+            return klass.getTypeParameters().length != ptype.getActualTypeArguments().length;
+        }
+        if(type instanceof GenericArrayType)
+            return getComponentType().isRaw();
+        if(type instanceof TypeVariable)
+            return false;
+        if(type instanceof WildcardType)
+            return false;
+        if(type instanceof Class){
+            // we're raw if our type is a parameterised type that should have type params
+            return ((Class<?>)type).getTypeParameters().length != 0;
+        }
+        throw new RuntimeException("Unknown type: "+type);
+    }
 }

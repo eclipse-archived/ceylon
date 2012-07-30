@@ -303,6 +303,8 @@ public abstract class CeylonDoc extends Markup {
         open("head");
         tag("meta charset='UTF-8'");
         around("title", title);
+        tag("link href='" + getResourceUrl("shCore.css") + "' rel='stylesheet' type='text/css'");
+        tag("link href='" + getResourceUrl("shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
         tag("link href='" + getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
         for (String add : additional) {
             if (add.endsWith(".css")) {
@@ -312,6 +314,8 @@ public abstract class CeylonDoc extends Markup {
             }
         }
         around("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js") + "'");
+        around("script type='text/javascript' src='" + getResourceUrl("shCore.js") + "'");
+        around("script type='text/javascript' src='" + getResourceUrl("shBrushCeylon.js") + "'");
         around("script type='text/javascript' src='" + getResourceUrl("index.js") + "'");
         around("script type='text/javascript' src='" + getResourceUrl("ceylond.js") + "'");
         for (String add : additional) {

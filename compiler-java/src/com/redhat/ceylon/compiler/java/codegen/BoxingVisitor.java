@@ -21,8 +21,10 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
@@ -81,6 +83,8 @@ public abstract class BoxingVisitor extends Visitor {
                 || isBooleanTrue(decl)
                 || isBooleanFalse(decl))
             CodegenUtil.markUnBoxed(that);
+        if(CodegenUtil.isRaw((TypedDeclaration) decl))
+            CodegenUtil.markRaw(that);
     }
 
     @Override
@@ -91,6 +95,8 @@ public abstract class BoxingVisitor extends Visitor {
             return;
         if (Decl.isValueTypeDecl(that.getPrimary())) {
             CodegenUtil.markUnBoxed(that);
+            if(CodegenUtil.isRaw((TypedDeclaration) that.getDeclaration()))
+                CodegenUtil.markRaw(that);
         } else {
             propagateFromDeclaration(that, (TypedDeclaration)that.getDeclaration());
         }
@@ -314,11 +320,15 @@ public abstract class BoxingVisitor extends Visitor {
     private void propagateFromDeclaration(Term that, TypedDeclaration term) {
         if(CodegenUtil.isUnBoxed(term))
             CodegenUtil.markUnBoxed(that);
+        if(CodegenUtil.isRaw(term))
+            CodegenUtil.markRaw(that);
     }
 
     private void propagateFromTerm(Term that, Term term) {
         if(CodegenUtil.isUnBoxed(term))
             CodegenUtil.markUnBoxed(that);
+        if(CodegenUtil.isRaw(term))
+            CodegenUtil.markRaw(that);
     }
 
 }

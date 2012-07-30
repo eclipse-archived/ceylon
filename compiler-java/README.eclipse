@@ -20,13 +20,13 @@ Setting up Eclipse to build the Ceylon compiler
 
     b) Click the "Browse..." button
 
-    c) Select the folder where the compiler, language and spec projects are located
+    c) Select the folder where the compiler, language, spec, common and module-resolver projects are located
 
     d) Click "Ok"
 
  5. Back in the Wizard dialog:
 
-    a) Make sure the projects ceylon-compiler, ceylon-spec and ceylon.language are selected
+    a) Make sure the projects ceylon-compiler, ceylon-spec, ceylon.language, ceylon-common and ceylon-module-resolver are selected
 
     b) Click "Finish"
 

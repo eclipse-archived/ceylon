@@ -562,5 +562,32 @@ public class IssuesTest extends CompilerTest {
     public void testBug676() {
         compareWithJavaSource("Bug676");
     }
+    
+    @Test
+    public void testBug689() {
+        compile("Bug689_ModelLoader.ceylon");
+        compareWithJavaSource("Bug689");
+    }
+
+    @Test
+    public void testBug690_fail() {
+        compile("Bug690_2.ceylon", "Bug690_1.ceylon");
+    }
+    
+    @Test
+    public void testBug693_fail() {
+        compareWithJavaSource("Bug693");
+    }
+    
+    @Test
+    public void testBug699() {
+        compareWithJavaSource("Bug699");
+    }
+
+    @Test
+    public void testBug711(){
+        compile("bug711/InterfaceWithGetter.java", "bug711/ClassWithGetterAndSetter.java");
+        compareWithJavaSource("bug711/Bug711");
+    }
 }
 

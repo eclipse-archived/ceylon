@@ -175,7 +175,7 @@ public class Naming implements LocalId {
             this.expr = expr;
         }
         void select(String s) {
-            expr = iors(expr, s);
+            expr = makeQualIdent(expr, s);
         }
         DeclName append(String s) {
             sb.append(s);
@@ -365,9 +365,18 @@ public class Naming implements LocalId {
     }
 
     static String getSetterName(Declaration decl){
-        // always use the refined decl
-        decl = decl.getRefinedDeclaration();
-        if(decl instanceof JavaBeanValue){
+        // use the refined decl except when the current declaration is variable and the refined isn't
+        Declaration refinedDecl = decl.getRefinedDeclaration();
+        if (decl instanceof Value && refinedDecl instanceof Value) {
+            Value v = (Value)decl;
+            Value rv = (Value)refinedDecl;
+            if (!v.isVariable() || rv.isVariable()) {
+                decl = refinedDecl;
+            }
+        } else {
+            decl = refinedDecl;
+        }
+        if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getSetterName();
         }
         return getSetterName(decl.getName());
@@ -464,8 +473,9 @@ public class Naming implements LocalId {
      * @param expr A starting expression (may be null)
      * @param names The components of the name (may be null)
      * @see #makeQuotedQualIdentFromString(String)
+     * @see #makeQualIdent(JCExpression, String)
      */
-    JCExpression makeQualIdent(JCExpression expr, String... names) {
+    private JCExpression makeQualIdent(JCExpression expr, String... names) {
         if (names != null) {
             for (String component : names) {
                 if (component != null) {
@@ -619,39 +629,51 @@ public class Naming implements LocalId {
         return expr;
     }
 
-    private JCExpression iors(JCExpression expr, String name) {
+    /**
+     * A select <i>expr.name</i> if both arguments are non-null,
+     * an unquoted ident for 'name' if the given expression is null,
+     * or the given expression if the given name is null.
+     * 
+     * It is an error to call this method with two null arguments.
+     * @see #makeQualIdent(JCExpression, String...)
+     */
+    JCExpression makeQualIdent(JCExpression expr, String name) {
+        Assert.that(expr != null || name != null);
         if (expr == null) {
             return makeUnquotedIdent(name);
+        } else if (name == null) {
+            return expr;
+        } else {
+            return makeSelect(expr, name);
         }
-        return makeSelect(expr, name);
     }
     
     private JCExpression addMemberName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_IDENT) != 0) {
             Assert.not((namingOptions & NA_GETTER | NA_SETTER) == 0);
-            expr = iors(expr, decl.getName());
+            expr = makeQualIdent(expr, decl.getName());
         } else if ((namingOptions & NA_SETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no setter");
-            expr = iors(expr, getSetterName(decl.getName()));
+            expr = makeQualIdent(expr, getSetterName(decl.getName()));
         } else if ((namingOptions & NA_GETTER) != 0) {
             Assert.not(decl instanceof Method, "A method has no getter");
-            expr = iors(expr, getGetterName(decl));
+            expr = makeQualIdent(expr, getGetterName(decl));
         } else if (decl instanceof Getter
                 || decl instanceof Value) {
             if (decl.getType().isCallable()) {
-                expr = iors(expr, decl.getName());
+                expr = makeQualIdent(expr, decl.getName());
             } else {
-                expr = iors(expr, getGetterName(decl));
+                expr = makeQualIdent(expr, getGetterName(decl));
             }
         } else if (decl instanceof Setter) {
-            expr = iors(expr, getSetterName(decl.getName()));
+            expr = makeQualIdent(expr, getSetterName(decl.getName()));
         } else if (decl instanceof Method) {
-            expr = iors(expr, getMethodName(decl.getName()));
+            expr = makeQualIdent(expr, getMethodName(decl.getName()));
         } else if (decl instanceof Parameter) {
             if ((namingOptions & NA_ALIASED) != 0) {
-                expr = iors(expr, getAliasedParameterName((Parameter)decl));
+                expr = makeQualIdent(expr, getAliasedParameterName((Parameter)decl));
             } else {
-                expr = iors(expr, decl.getName());
+                expr = makeQualIdent(expr, decl.getName());
             }
         }
         return expr;
@@ -671,7 +693,7 @@ public class Naming implements LocalId {
                         expr = maker.Ident(names.empty);
                     }
                     for (int ii = 0; ii < packageName.size(); ii++) {
-                        expr = iors(expr, quoteIfJavaKeyword(packageName.get(ii)));
+                        expr = makeQualIdent(expr, quoteIfJavaKeyword(packageName.get(ii)));
                     }
                     break;
                 } else if (s instanceof ClassOrInterface) {
@@ -690,16 +712,20 @@ public class Naming implements LocalId {
             if (outerNames != null) {
                 for (int ii = outerNames.size()-1; ii >= 0; ii--) {
                     String outerName = outerNames.get(ii);
-                    expr = iors(expr, outerName);
+                    expr = makeQualIdent(expr, outerName);
                 }
             }
         }
         if ((namingOptions & NA_WRAPPER) != 0) {
-            expr = iors(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+            expr = makeQualIdent(expr, getQuotedClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
-            expr = iors(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
+//<<<<<<< HEAD
+//            expr = iors(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
+//=======
+            expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+//>>>>>>> origin/master
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
-            expr = iors(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+            expr = makeQualIdent(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
         }
         return expr;
     }

@@ -32,20 +32,20 @@ a {
  border-top-right-radius: 5px;
 }
 
-table tr:last-child td:first-child {
+.category tr:last-child td:first-child {
  -webkit-border-bottom-left-radius: 5px;
  -moz-border-radius-bottomleft: 5px;
  border-bottom-left-radius: 5px;
 }
 
-table tr:last-child td:last-child {
+.category tr:last-child td:last-child {
  -webkit-border-bottom-right-radius: 5px;
  -moz-border-radius-bottomright: 5px;
  border-bottom-right-radius: 5px;
 }
 
 .nav,
-table {
+.category {
  -webkit-border-radius: 5px;
  -moz-border-radius: 5px;
  border-radius: 5px;
@@ -95,11 +95,13 @@ table {
  margin: 1em 0;
 }
 
-td, th, .collapsible .short {
+.category td,
+.category th, 
+.collapsible .short {
  padding: 0.2em 0.5em;
 }
 
-th {
+.category th {
  border-bottom: 1px solid gray;
 }
 
@@ -438,4 +440,17 @@ ul.inheritance ul.inheritance li:before {
     margin: 0px;
     padding: 0px;
     text-align: center;
+}
+
+.description .syntaxhighlighter {
+    background-color: rgb(252, 252, 252) !important;
+    border: 1px solid rgb(230, 230, 230) !important;
+    padding: 8px !important;
+    margin: 4px !important;
+    width: auto !important;
+}
+
+.description .syntaxhighlighter .line.alt1,
+.description .syntaxhighlighter .line.alt2 {
+    background-color: rgb(252, 252, 252) !important;
 }

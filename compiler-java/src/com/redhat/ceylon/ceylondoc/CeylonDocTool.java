@@ -43,6 +43,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -103,7 +104,7 @@ public class CeylonDocTool {
         this.log = new CeylondLogger();
         
         // set up the artifact repository
-        RepositoryManager repository = com.redhat.ceylon.compiler.java.util.Util.makeRepositoryManager(repositories, null, log );
+        RepositoryManager repository = CeylonUtils.makeRepositoryManager(repositories, null, log );
         builder.setRepositoryManager(repository);
         
         // we need to plug in the module manager which can load from .cars
@@ -300,7 +301,7 @@ public class CeylonDocTool {
         collectSubclasses();
 
         // make a destination repo
-        RepositoryManager outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(this.outputRepository, log, user, pass);
+        RepositoryManager outputRepository = CeylonUtils.makeOutputRepositoryManager(this.outputRepository, log, user, pass);
 
         try{
             // document every module

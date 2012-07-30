@@ -48,7 +48,10 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.Repositories;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -223,7 +226,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     private void clearOutputRepositoryManager() {
         if(outputRepoManager instanceof CachingRepositoryManager){
             File tmpDir = ((CachingRepositoryManager)outputRepoManager).getCacheFolder();
-            Util.delete(tmpDir);
+            FileUtil.delete(tmpDir);
             // invalidate it
             outputRepoManager = null;
         }
@@ -238,13 +241,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if(repoManager != null)
             return repoManager;
         // lazy loading
+
+        // any user defined repos
         List<String> userRepos = new LinkedList<String>();
         userRepos.addAll(options.getMulti(OptionName.CEYLONREPO));
-        // make sure we add the output repo if not in user repos
         String outRepo = getOutputRepoOption();
-        if(userRepos.contains(outRepo))
-            outRepo = null;
-        repoManager = Util.makeRepositoryManager(userRepos, outRepo, getLogger());
+        
+        repoManager = CeylonUtils.makeRepositoryManager(userRepos, outRepo, getLogger());
         return repoManager;
     }
 
@@ -257,25 +260,27 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // any user defined repos
         String outRepo = getOutputRepoOption();
         
+        // username and password for WebDAV
         String user = options.get(OptionName.CEYLONUSER);
         String password = options.get(OptionName.CEYLONPASS);
         
-        outputRepoManager = Util.makeOutputRepositoryManager(outRepo, getLogger(), user, password);
+        outputRepoManager = CeylonUtils.makeOutputRepositoryManager(outRepo, getLogger(), user, password);
         return outputRepoManager;
     }
 
     private String getOutputRepoOption() {
         // we use D and not CEYLONOUT here since that's where the option is stored
-        String outRepo = options.get(OptionName.D);
-        return outRepo != null ? outRepo : "modules";
+        return options.get(OptionName.D);
     }
 
     @Override
     protected File getClassOutDir() {
         File outDir = super.getClassOutDir();
         // set the default value for Ceylon
-        if(outDir == null)
-            classOutDir = new File("modules");
+        if (outDir == null) {
+            String dir = Repositories.get().getOutputRepository().getUrl();
+            classOutDir = new File(dir);
+        }
         return outDir;
     }
 }

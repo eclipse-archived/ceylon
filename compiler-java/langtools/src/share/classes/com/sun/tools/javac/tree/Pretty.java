@@ -828,7 +828,11 @@ public class Pretty extends JCTree.Visitor {
             if (!tree.typeargs.isEmpty()) {
                 if (tree.meth.getTag() == JCTree.SELECT) {
                     JCFieldAccess left = (JCFieldAccess)tree.meth;
+                    if(left.selected.getTag() == JCTree.TYPECAST)
+                        print("(");
                     printExpr(left.selected);
+                    if(left.selected.getTag() == JCTree.TYPECAST)
+                        print(")");
                     print(".<");
                     printExprs(tree.typeargs);
                     print(">" + left.name);

@@ -24,22 +24,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import javax.tools.JavaFileObject.Kind;
 
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
-import com.redhat.ceylon.cmr.impl.FileContentStore;
-import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
-import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
-import com.redhat.ceylon.cmr.spi.StructureBuilder;
-import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
@@ -186,93 +174,6 @@ public class Util {
         return sb.toString();
     }
 
-    public static RepositoryManager makeRepositoryManager(List<String> userRepos, String outRepo, Logger log) {
-        final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(log);
-
-        // any user defined repos first
-        if(userRepos.isEmpty()){
-            builder.prependModules();
-        }else{
-            // go in reverse order because we prepend
-            for (int i=userRepos.size()-1;i>=0;i--) {
-                String repo = userRepos.get(i);
-                boolean maven = false;
-                if(repo.startsWith("mvn:")){
-                    maven = true;
-                    repo = repo.substring(4);
-                }
-                try {
-                    // we need to prepend to bypass the caching repo
-                    if(!maven){
-                        Repository root = builder.repositoryBuilder().buildRepository(repo);
-                        builder.prependRepository(root);
-                    }else{
-                        Repository mvnRepo = MavenRepositoryHelper.getMavenRepository(repo, log);
-                        builder.prependRepository(mvnRepo);
-                    }
-                } catch (Exception e) {
-                    log.warning("Failed to add repository: " + repo + ": "+e.getMessage());
-                }
-            }
-        }
-
-        if(outRepo != null){
-            try{
-                Repository root = builder.repositoryBuilder().buildRepository(outRepo);
-                builder.prependRepository(root);
-            }catch(Exception e){
-                log.debug("Failed to add output repository as input repository (doesn't matter): " + outRepo + ": "+e.getMessage());
-            }
-        }
-        
-        // Caching repo
-        builder.addCeylonHome();
-
-        // add remote module repo
-        builder.addModulesCeylonLangOrg();
-
-        return builder.buildRepository();
-    }
-
-    public static RepositoryManager makeOutputRepositoryManager(String outRepo, Logger log, String user, String password) {
-        if(outRepo == null){
-            outRepo = "modules";
-        }
-
-        if(!isHTTP(outRepo, log)){
-            File repoFolder = new File(outRepo);
-            if(repoFolder.exists()){
-                if(!repoFolder.isDirectory())
-                    log.error("Output repository is not a directory: "+outRepo);
-                else if(!repoFolder.canWrite())
-                    log.error("Output repository is not writable: "+outRepo);
-            }else if(!repoFolder.mkdirs())
-                log.error("Failed to create output repository: "+outRepo);
-            StructureBuilder structureBuilder = new FileContentStore(repoFolder);
-            return new SimpleRepositoryManager(structureBuilder, log);
-        }else{
-            File cachingDir = makeTempDir("ceylonc");
-
-            // HTTP
-            WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log);
-            davContentStore.setUsername(user);
-            davContentStore.setPassword(password);
-
-            return new CachingRepositoryManager(davContentStore, cachingDir, log);
-        }
-    }
-
-    private static boolean isHTTP(String repo, Logger log) {
-        try {
-            URL url = new URL(repo);
-            String protocol = url.getProtocol();
-            return "http".equals(protocol) || "https".equals(protocol);
-        } catch (MalformedURLException e) {
-            log.debug("Invalid repo URL: "+repo+" (assuming file)");
-            return false;
-        }
-    }
-
     public static void copy(InputStream inputStream, OutputStream outputStream) throws IOException {
         byte[] buffer = new byte[4096];
         int read;
@@ -282,7 +183,6 @@ public class Util {
         outputStream.flush();
     }
 
-
     public static boolean isSubPackage(String moduleName, String pkgName) {
         return pkgName.equals(moduleName)
                 || pkgName.startsWith(moduleName+".");
@@ -291,27 +191,6 @@ public class Util {
     public static boolean isUnboxedVoid(Declaration decl) {
         return (decl instanceof Method)
                 && ((Method)decl).isDeclaredVoid();
-    }
-
-    public static File makeTempDir(String prefix){
-        try {
-            File dir = File.createTempFile(prefix, "");
-            if(!dir.delete()
-                    || !dir.mkdirs())
-                throw new RuntimeException("Failed to create tmp dir: "+dir);
-            return dir;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    public static void delete(File f){
-        if (f.isDirectory()) {
-            for (File c : f.listFiles())
-                delete(c);
-        }
-        if (!f.delete())
-            throw new RuntimeException("Failed to delete file: " + f.getPath());
     }
 
     public static boolean isJavaSource(ClassSymbol classSymbol) {

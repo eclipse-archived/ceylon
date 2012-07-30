@@ -42,7 +42,6 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -51,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -75,6 +75,7 @@ abstract class InvocationBuilder {
     protected final Declaration primaryDeclaration;
     protected final ProducedType returnType;
     protected final List<JCExpression> primaryTypeArguments;
+    protected boolean handleBoxing;
     protected boolean unboxed;
     protected BoxingStrategy boxingStrategy;
     private final ListBuffer<JCExpression> args = ListBuffer.lb();
@@ -142,6 +143,10 @@ abstract class InvocationBuilder {
         this.unboxed = unboxed;
     }
 
+    public void handleBoxing(boolean b) {
+        handleBoxing = b;
+    }
+
     public final void setBoxingStrategy(BoxingStrategy boxingStrategy) {
         this.boxingStrategy = boxingStrategy;
     }
@@ -177,19 +182,19 @@ abstract class InvocationBuilder {
             ProducedType classType = (ProducedType)qte.getTarget();
             resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), argExprs, null);
         } else {
-            if (primaryDeclaration instanceof FunctionalParameter
+            if (this instanceof IndirectInvocationBuilder
+                    && (primaryDeclaration instanceof Getter
+                            || (primaryDeclaration instanceof Value)
+                            && !Decl.isLocal(primaryDeclaration))) {
+                actualPrimExpr = gen.make().Apply(null, 
+                        gen.naming.makeQualIdent(primaryExpr, selector), 
+                        List.<JCExpression>nil());
+                selector = "$call";
+            } else if (primaryDeclaration instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
-                if (primaryDeclaration != null) {
-                    if (primaryExpr != null) {
-                        // e.g. qualified access to a captured FunctionalParameter
-                        actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
-                    } else if (primaryDeclaration instanceof Getter){
-                        actualPrimExpr = gen.make().Apply(null,  gen.naming.makeUnquotedIdent(selector), List.<JCExpression>nil());
-                    } else {
-                        actualPrimExpr = gen.naming.makeName((TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
-                    }
-                } else {
-                    // indirect with invocation as primary
+                actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
+                if (!gen.isCeylonCallable(primary.getTypeModel())) {                    
+                    actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
                 }
                 selector = "$call";
             }
@@ -205,9 +210,10 @@ abstract class InvocationBuilder {
             }
         }
         
-        resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, returnType, 
-                !unboxed, boxingStrategy, returnType);
-        
+        if(handleBoxing)
+            resultExpr = gen.expressionGen().applyErasureAndBoxing(resultExpr, returnType, 
+                    !unboxed, boxingStrategy, returnType);
+
         return resultExpr;
     }
 
@@ -240,10 +246,7 @@ abstract class InvocationBuilder {
                 return transformInvocation(primaryExpr, selector, args);
             }
         });
-        
-        //result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
-        //        !unboxed, boxingStrategy, returnType);
-        
+
         return result;
     }
 
@@ -341,14 +344,6 @@ abstract class InvocationBuilder {
         } else {
             throw new RuntimeException("Illegal State");
         }
-        if (primaryDeclaration instanceof FunctionalParameter) {
-            // Callables always have boxed return type
-            builder.setBoxingStrategy(invocation.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
-            builder.setUnboxed(false);
-        } else {
-            builder.setBoxingStrategy(BoxingStrategy.INDIFFERENT);
-            builder.setUnboxed(invocation.getUnboxed());
-        }
         builder.compute();
         return builder;
     }
@@ -370,6 +365,7 @@ abstract class InvocationBuilder {
                 gen.getReturnTypeOfCallable(expr.getTypeModel()),
                 expr, 
                 parameterList);
+        builder.handleBoxing(true);
         builder.compute();
         return builder;
     }
@@ -399,6 +395,7 @@ abstract class InvocationBuilder {
         } else {
             throw new RuntimeException();
         }
+        builder.handleBoxing(true);
         builder.compute();
         return builder;
     }
@@ -738,7 +735,7 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
     private final java.util.List<Parameter> callableParameters;
     
     private final java.util.List<Parameter> functionalParameters;
-    
+
     public CallableInvocationBuilder(
             AbstractTransformer gen, Tree.MemberOrTypeExpression primary,
             Declaration primaryDeclaration, ProducedReference producedReference, ProducedType returnType,
@@ -749,6 +746,7 @@ class CallableInvocationBuilder extends DirectInvocationBuilder {
         setUnboxed(expr.getUnboxed());
         setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
     }
+
     @Override
     protected int getNumArguments() {
         return functionalParameters.size();
@@ -865,8 +863,9 @@ class CallableSpecifierInvocationBuilder extends InvocationBuilder {
     protected JCExpression makeInvocation(List<JCExpression> args) {
         gen.at(node);
         JCExpression result = gen.make().Apply(primaryTypeArguments, gen.naming.makeQuotedQualIdent(callable, "$call"), args);
-        result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
-                !unboxed, boxingStrategy, returnType);
+        if(handleBoxing)
+            result = gen.expressionGen().applyErasureAndBoxing(result, returnType, 
+                    !unboxed, boxingStrategy, returnType);
         return result;
     }
 }

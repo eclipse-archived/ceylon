@@ -172,6 +172,8 @@ public class CeylonDocToolTest {
         assertDocumentationOfRefinedMember(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertSequencedParameter(destDir);
+        assertCallableParameter(destDir);
+        assertFencedCodeBlockWithSyntaxHighlighter(destDir);
     }
 
     @Test
@@ -203,6 +205,8 @@ public class CeylonDocToolTest {
         assertDocumentationOfRefinedMember(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertSequencedParameter(destDir);
+        assertCallableParameter(destDir);
+        assertFencedCodeBlockWithSyntaxHighlighter(destDir);
     }
 
     @Test
@@ -526,6 +530,30 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("<code>methodWithSequencedParameter\\(Integer... numbers\\)</code>"));
 	}
+    
+    private void assertCallableParameter(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<code>methodWithCallableParameter1\\(Void onClick\\(\\)\\)</code>"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<code>methodWithCallableParameter2&lt;Element&gt;\\(Boolean selecting\\(<span class='type-parameter'>Element</span> element\\)\\)</code>"));
+
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<code>methodWithCallableParameter3\\(Void fce1\\(Void fce2\\(Void fce3\\(\\)\\)\\)\\)</code>"));
+    }
+
+    private void assertFencedCodeBlockWithSyntaxHighlighter(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<link href='.resources/shCore.css' rel='stylesheet' type='text/css'/>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<link href='.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<script type='text/javascript' src='.resources/shCore.js'>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<script type='text/javascript' src='.resources/shBrushCeylon.js'>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("<pre class=\"brush: ceylon\">shared default Boolean subset\\(Set set\\) \\{"));
+    }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
         String outputRepo = tool.getOutputRepository();

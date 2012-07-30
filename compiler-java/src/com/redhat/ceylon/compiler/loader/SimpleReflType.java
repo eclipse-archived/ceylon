@@ -76,4 +76,9 @@ public class SimpleReflType implements TypeMirror {
         return null;
     }
 
+    @Override
+    public boolean isRaw() {
+        return false;
+    }
+
 }

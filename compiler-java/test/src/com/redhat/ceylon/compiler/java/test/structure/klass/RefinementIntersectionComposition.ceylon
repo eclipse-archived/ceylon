@@ -17,30 +17,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.codegen;
+@nomodel
+interface RIC_A {}
+@nomodel
+interface RIC_B {}
+@nomodel
+interface RIC_C {}
 
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-
-public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
-    private AbstractTransformer transformer;
-    
-    public CompilerBoxingDeclarationVisitor(AbstractTransformer transformer){
-        this.transformer = transformer;
-    }
-
-    @Override
-    protected boolean isCeylonBasicType(ProducedType type) {
-        return transformer.isCeylonBasicType(type);
-    }
-
-    @Override
-    protected boolean isNothing(ProducedType type) {
-        return transformer.isNothing(type);
-    }
-
-    @Override
-    protected boolean isObject(ProducedType type) {
-        return transformer.isCeylonObject(type);
-    }
-
+@nomodel
+interface RIC_Top<out T> {
+    shared formal T val;
+    formal shared T get();
+}
+@nomodel
+abstract class RIC_Middle() satisfies RIC_Top<RIC_A> {}
+@nomodel
+interface RIC_Left satisfies RIC_Top<RIC_B> {}
+@nomodel
+interface RIC_Right satisfies RIC_Top<RIC_C> {}
+@nomodel
+class RIC_Bottom_From_Class() extends RIC_Middle() satisfies RIC_Left & RIC_Right {
+    shared actual Bottom val { return bottom; }
+    shared actual RIC_A & RIC_B & RIC_C get() { return bottom; }
+}
+@nomodel
+class RIC_Bottom_From_Interface() satisfies RIC_Left & RIC_Right {
+    shared actual Bottom val { return bottom; }
+    shared actual RIC_B & RIC_C get() { return bottom; }
 }

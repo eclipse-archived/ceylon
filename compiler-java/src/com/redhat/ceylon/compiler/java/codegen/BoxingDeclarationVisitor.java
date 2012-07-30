@@ -26,25 +26,32 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class BoxingDeclarationVisitor extends Visitor {
 
     protected abstract boolean isCeylonBasicType(ProducedType type);
+    protected abstract boolean isNothing(ProducedType type);
+    protected abstract boolean isObject(ProducedType type);
 
     @Override
     public void visit(FunctionArgument that) {
@@ -56,6 +63,48 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     public void visit(AnyMethod that) {
         super.visit(that);
         boxMethod(that.getDeclarationModel());
+        rawTypedDeclaration(that.getDeclarationModel());
+    }
+
+    private void rawTypedDeclaration(TypedDeclaration decl) {
+        // deal with invalid input
+        if(decl == null)
+            return;
+
+        ProducedType type = decl.getType();
+        if(type != null){
+            if(containsRaw(type))
+                type.setRaw(true);
+        }
+    }
+
+    private boolean containsRaw(ProducedType type) {
+        for(ProducedType typeArg : type.getTypeArguments().values()){
+            TypeDeclaration typeDeclaration = typeArg.getDeclaration();
+            if(typeDeclaration instanceof UnionType){
+                UnionType ut = (UnionType) typeDeclaration;
+                List<ProducedType> caseTypes = ut.getCaseTypes();
+                // special case for optional types
+                if(caseTypes.size() == 2
+                        && (isNothing(caseTypes.get(0))
+                                || isNothing(caseTypes.get(1))))
+                    return false;
+                return true;
+            }
+            if(typeDeclaration instanceof IntersectionType){
+                IntersectionType ut = (IntersectionType) typeDeclaration;
+                List<ProducedType> satisfiedTypes = ut.getSatisfiedTypes();
+                // special case for non-optional types
+                if(satisfiedTypes.size() == 2
+                        && (isObject(satisfiedTypes.get(0))
+                                || isObject(satisfiedTypes.get(1))))
+                    return false;
+                return true;
+            }
+            if(containsRaw(typeArg))
+                return true;
+        }
+        return false;
     }
 
     private void boxMethod(Method method) {
@@ -132,6 +181,12 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration.getUnboxed() != null)
             return;
         
+        // functional parameter return values are always boxed
+        if(declaration instanceof FunctionalParameter){
+            declaration.setUnboxed(false);
+            return;
+        }
+        
         if(refinedDeclaration != declaration){
             // make sure refined declarations have already been set
             if(refinedDeclaration.getUnboxed() == null)
@@ -163,6 +218,18 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
         boxAttribute(declaration);
+        rawTypedDeclaration(declaration);
+    }
+    
+    @Override
+    public void visit(AttributeDeclaration that) {
+        if(that.getSpecifierOrInitializerExpression() != null
+                && that.getDeclarationModel() != null
+                && that.getType() instanceof Tree.ValueModifier
+                && that.getDeclarationModel().getType() == that.getSpecifierOrInitializerExpression().getExpression().getTypeModel()){
+            that.getDeclarationModel().setType(that.getDeclarationModel().getType().withoutUnderlyingType());
+        }
+        super.visit(that);
     }
 
     @Override

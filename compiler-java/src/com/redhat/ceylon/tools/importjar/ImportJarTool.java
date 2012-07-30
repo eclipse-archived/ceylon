@@ -26,6 +26,7 @@ import javax.annotation.PostConstruct;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.tools.Plugin;
 import com.redhat.ceylon.tools.annotation.Argument;
@@ -135,7 +136,7 @@ public class ImportJarTool implements Plugin {
     }
     
     public void publish() {
-        RepositoryManager outputRepository = com.redhat.ceylon.compiler.java.util.Util.makeOutputRepositoryManager(this.out, log, user, pass);
+        RepositoryManager outputRepository = CeylonUtils.makeOutputRepositoryManager(this.out, log, user, pass);
 
         ArtifactContext context = new ArtifactContext(module, version, ArtifactContext.JAR);
         context.setForceOperation(true);

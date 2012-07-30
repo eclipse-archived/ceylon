@@ -17,30 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.codegen;
-
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-
-public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
-    private AbstractTransformer transformer;
-    
-    public CompilerBoxingDeclarationVisitor(AbstractTransformer transformer){
-        this.transformer = transformer;
-    }
-
-    @Override
-    protected boolean isCeylonBasicType(ProducedType type) {
-        return transformer.isCeylonBasicType(type);
-    }
-
-    @Override
-    protected boolean isNothing(ProducedType type) {
-        return transformer.isNothing(type);
-    }
-
-    @Override
-    protected boolean isObject(ProducedType type) {
-        return transformer.isCeylonObject(type);
-    }
-
+@nomodel
+class Bug699() {
+    value singleton = Singleton(()"hello");
+    print(singleton.first());
 }

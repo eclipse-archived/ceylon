@@ -17,30 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.codegen;
-
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-
-public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
-    private AbstractTransformer transformer;
+class Bug689_ModelLoader<X,Y>(X x, Y y, X&Y xy) {
     
-    public CompilerBoxingDeclarationVisitor(AbstractTransformer transformer){
-        this.transformer = transformer;
+    shared Sequence<X|Y> parameterisedMethodWithUnion<X,Y>(X x, Y y) {
+        return {x,y};
     }
-
-    @Override
-    protected boolean isCeylonBasicType(ProducedType type) {
-        return transformer.isCeylonBasicType(type);
+    shared Sequence<X|Y> methodWithUnion(X x, Y y) {
+        return {x,y};
     }
-
-    @Override
-    protected boolean isNothing(ProducedType type) {
-        return transformer.isNothing(type);
-    }
-
-    @Override
-    protected boolean isObject(ProducedType type) {
-        return transformer.isCeylonObject(type);
-    }
-
+    shared Sequence<X|Y> attributeWithUnion = {x,y};
+    shared variable Sequence<X|Y> variableWithUnion := {x,y};
 }

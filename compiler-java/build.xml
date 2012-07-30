@@ -34,8 +34,8 @@
   <property name="build.dist" location="${build}/dist"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
-  <property name="markdown.version" value="faf3bf83000"/>
-  <property name="markdown.lib" location="${base.path}/markdownj-core-${markdown.version}.jar"/>
+  <property name="markdown.version" value="0.7-1fc6e2a548"/>
+  <property name="markdown.lib" location="${base.path}/txtmark-${markdown.version}.jar"/>
     
   <!-- Jarfiles everything ends up in -->
   <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
@@ -185,6 +185,7 @@
     <artifact:pom id="antlr.pom.tmp"
                 groupId="org.ceylon-lang"
                 artifactId="antlr-complete"
+                name="antlr-complete"
                 version="${antlr.version}">
     </artifact:pom>
     <artifact:writepom pomrefid="antlr.pom.tmp" file="${build.poms}/antlr.xml"/>
@@ -195,6 +196,7 @@
     <artifact:pom id="common.pom.tmp"
                 groupId="org.ceylon-lang" 
                 artifactId="ceylon-common" 
+                name="ceylon-common"
                 version="${module.com.redhat.ceylon.common.version}">
     </artifact:pom>
     <artifact:writepom pomrefid="common.pom.tmp" file="${build.poms}/common.xml"/>
@@ -205,6 +207,7 @@
     <artifact:pom id="typechecker.pom.tmp"
                 groupId="org.ceylon-lang" 
                 artifactId="ceylon-spec" 
+                name="ceylon-spec"
                 version="${module.com.redhat.ceylon.typechecker.version}">
       <dependency groupId="org.ceylon-lang" 
                   artifactId="antlr-complete" 
@@ -218,6 +221,7 @@
     <artifact:pom id="module-resolver.pom.tmp"
                 groupId="org.ceylon-lang" 
                 artifactId="ceylon-module-resolver" 
+                name="ceylon-module-resolver"
                 version="${module.com.redhat.ceylon.module-resolver.version}">
     </artifact:pom>
     <artifact:writepom pomrefid="module-resolver.pom.tmp" file="${build.poms}/module-resolver.xml"/>
@@ -228,6 +232,7 @@
     <artifact:pom id="language.pom.tmp"
                 groupId="org.ceylon-lang" 
                 artifactId="ceylon.language" 
+                name="ceylon.language"
                 version="${module.ceylon.language.version}">
     </artifact:pom>
     <artifact:writepom pomrefid="language.pom.tmp" file="${build.poms}/language.xml"/>
@@ -238,6 +243,7 @@
     <artifact:pom id="markdown.pom.tmp"
                 groupId="org.ceylon-lang" 
                 artifactId="markdown" 
+                name="markdown"
                 version="${markdown.version}">
     </artifact:pom>
     <artifact:writepom pomrefid="markdown.pom.tmp" file="${build.poms}/markdown.xml"/>
@@ -248,6 +254,7 @@
     <artifact:pom id="compiler.pom.tmp"
                 groupId="org.ceylon-lang" 
                 artifactId="ceylon-compiler" 
+                name="ceylon-compiler"
                 version="${module.com.redhat.ceylon.compiler.version}">
       <dependency groupId="org.ceylon-lang" 
           artifactId="ceylon-common" 
@@ -408,7 +415,7 @@
     <copy todir="${build.lib}">
         <fileset dir="${basedir}/lib">
             <include name="antlr-*-complete.jar"/>
-            <include name="markdownj-*.jar"/>
+            <include name="txtmark-*.jar"/>
         </fileset>
     </copy>    
   </target>

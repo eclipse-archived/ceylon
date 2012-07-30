@@ -1071,6 +1071,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setType(type);
             method.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
             method.setDeclaredVoid(methodMirror.isDeclaredVoid());
+            type.setRaw(methodMirror.getReturnType().isRaw());
         }catch(TypeParserException x){
             logError("Invalid type signature for method return type of "+klass.getQualifiedNameString()+"."+methodMirror.getName()+": "+x.getMessage());
             throw x;
@@ -1221,6 +1222,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, VarianceLocation.INVARIANT);
             value.setType(type);
             value.setUncheckedNullType(!isCeylon && !fieldMirror.getType().isPrimitive());
+            type.setRaw(fieldMirror.getType().isRaw());
         }catch(TypeParserException x){
             logError("Invalid type signature for field "+klass.getQualifiedNameString()+"."+value.getName()+": "+x.getMessage());
             throw x;
@@ -1240,6 +1242,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ProducedType type = obtainType(methodMirror.getReturnType(), methodMirror, klass, VarianceLocation.INVARIANT);
             value.setType(type);
             value.setUncheckedNullType(!isCeylon && !methodMirror.getReturnType().isPrimitive());
+            type.setRaw(methodMirror.getReturnType().isRaw());
         }catch(TypeParserException x){
             logError("Invalid type signature for getter type of "+klass.getQualifiedNameString()+"."+methodName+": "+x.getMessage());
             throw x;
