@@ -185,7 +185,8 @@ public class RefinementVisitor extends Visitor {
 		if (!broken) {
 		    Set<String> errors = new HashSet<String>();
 		    for (ProducedType st: supertypes) {
-		        if (!isCompletelyVisible(td, st)) {
+		        if (that instanceof Tree.Declaration && //don't do this check for ObjectArguments
+		        		!isCompletelyVisible(td, st)) {
 		            that.addError("supertype of type is not visible everywhere type is visible: "
 		                    + st.getProducedTypeName());
 		        }
