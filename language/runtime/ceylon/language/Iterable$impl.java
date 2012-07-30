@@ -275,7 +275,7 @@ public final class Iterable$impl<Element> {
             private final Iterator<? extends Element> orig = $this.getIterator();
             @Override public java.lang.Object next() {
                 java.lang.Object tmp = null;
-                while ((tmp = orig.next()) == null);
+                while ((tmp = orig.next()) == null) { i++; }
                 return tmp == exhausted_.getExhausted() ? tmp : new Entry<Integer, Element>(Integer.instance(i++), (Element)tmp);
             }
 
