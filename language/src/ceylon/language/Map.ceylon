@@ -4,6 +4,7 @@ doc "Represents a collection which maps keys to items,
      
      A `Map` is a `Collection` of its `Entry`s, and a 
      `Correspondence` from keys to items."
+see (forKey, forItem, byItem, byKey)
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
                   Correspondence<Object,Item> &

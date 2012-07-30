@@ -167,8 +167,16 @@ shared interface Iterable<out Element>
 
     doc "A sequence containing the elements of this
          container, sorted according to a function 
-         imposing a partial order upon the elements. This
-         operation is eager by nature."
+         imposing a partial order upon the elements.
+         
+         For convenience, the functions `byIncreasing()` 
+         and `byDecreasing()` produce a suitable 
+         comparison function:
+         
+             "Hello World!".sort(byIncreasing((Character c) c.lowercased))
+         
+         This operation is eager by nature."
+    see (byIncreasing, byDecreasing)
     shared default Element[] sort(
             doc "The function comparing pairs of elements."
             Comparison? comparing(Element x, Element y)) { throw; }
