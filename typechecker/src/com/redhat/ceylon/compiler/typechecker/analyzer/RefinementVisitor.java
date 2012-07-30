@@ -120,86 +120,109 @@ public class RefinementVisitor extends Visitor {
         broken = false;
         TypeDeclaration td = that.getDeclarationModel();
         if (td!=null) {
-            if ("SubCo".equals(td.getName())) {
-                td.getName();
-            }
-            List<ProducedType> supertypes = td.getType().getSupertypes();
-            for (int i=0; i<supertypes.size(); i++) {
-                ProducedType st1 = supertypes.get(i);
-                for (int j=i+1; j<supertypes.size(); j++) {
-                    ProducedType st2 = supertypes.get(j);
-                    if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
-                        boolean ok = true;
-                        if (intersectionType(st1, st2, that.getUnit())
-                                .getDeclaration() instanceof BottomType) {
-                            ok = false;
-                        }
-                        else {
-                            //TODO: type arguments of the qualifying type?
-                            //can't inherit two instantiations of a contravariant type, since
-                            //we don't support contravariant refinement of parameter types
-                            for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
-                                ProducedType ta1 = st1.getTypeArguments().get(tp);
-                                ProducedType ta2 = st2.getTypeArguments().get(tp);
-                                if (!tp.isCovariant() && !ta1.isExactly(ta2)) {
-                                    ok = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!ok) {
-                            that.addError("type " + td.getName() +
-                                    " has the same supertype twice with incompatible type arguments: " +
-                                    st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
-                            broken = true;
-                        }
-                    }
-                }
-            }
-            if (!broken) {
-                Set<String> errors = new HashSet<String>();
-                for (ProducedType st: supertypes) {
-                    if (!isCompletelyVisible(td, st)) {
-                        that.addError("supertype of type is not visible everywhere type is visible: "
-                                + st.getProducedTypeName());
-                    }
-                    if (td instanceof ClassOrInterface && 
-                            !((ClassOrInterface) td).isAbstract()) {
-                        for (Declaration d: st.getDeclaration().getMembers()) {
-                            if (d.isShared() && !errors.contains(d.getName())) {
-                                Declaration r = td.getMember(d.getName(), null);
-                                if (r==null) {
-                                    //TODO: This seems to dupe some checks that are already 
-                                    //      done in TypeHierarchyVisitor, resulting in
-                                    //      multiple errors
-                                    that.addError("member " + d.getName() + 
-                                            " is inherited ambiguously and so must be refined by " + td.getName());
-                                    errors.add(d.getName());
-                                }
-                                /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
-                                    //TODO: I think this case never occurs, because getMember() always
-                                    //      returns null in the case of an ambiguity
-                                    List<ProducedType> typeArgs = new ArrayList<ProducedType>();
-                                    if (d instanceof Generic) {
-                                        for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
-                                            typeArgs.add(refinedTypeParam.getType());
-                                        }
-                                    }
-                                    ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
-                                    ProducedType it = st.getTypedReference(d, typeArgs).getType();
-                                    checkAssignable(t, it, that, "type of member " + d.getName() + 
-                                            " must be assignable to all types inherited from instantiations of " +
-                                            st.getDeclaration().getName());
-                                }*/
-                            }
-                        }
-                    }
-                }
-            }
+            validateRefinement(that, td);
         }
         super.visit(that);
         broken = ob;
     }
+
+    @Override public void visit(Tree.ObjectDefinition that) {
+        boolean ob = broken;
+        broken = false;
+        Value v = that.getDeclarationModel();
+        if (v!=null) {
+            validateRefinement(that, v.getType().getDeclaration());
+        }
+        super.visit(that);
+        broken = ob;
+    }
+
+    @Override public void visit(Tree.ObjectArgument that) {
+        boolean ob = broken;
+        broken = false;
+        Value v = that.getDeclarationModel();
+        if (v!=null) {
+            validateRefinement(that, v.getType().getDeclaration());
+        }
+        super.visit(that);
+        broken = ob;
+    }
+
+	private void validateRefinement(Tree.StatementOrArgument that, TypeDeclaration td) {
+		List<ProducedType> supertypes = td.getType().getSupertypes();
+		for (int i=0; i<supertypes.size(); i++) {
+		    ProducedType st1 = supertypes.get(i);
+		    for (int j=i+1; j<supertypes.size(); j++) {
+		        ProducedType st2 = supertypes.get(j);
+		        if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
+		            boolean ok = true;
+		            if (intersectionType(st1, st2, that.getUnit())
+		                    .getDeclaration() instanceof BottomType) {
+		                ok = false;
+		            }
+		            else {
+		                //TODO: type arguments of the qualifying type?
+		                //can't inherit two instantiations of a contravariant type, since
+		                //we don't support contravariant refinement of parameter types
+		                for (TypeParameter tp: st1.getDeclaration().getTypeParameters()) {
+		                    ProducedType ta1 = st1.getTypeArguments().get(tp);
+		                    ProducedType ta2 = st2.getTypeArguments().get(tp);
+		                    if (!tp.isCovariant() && !ta1.isExactly(ta2)) {
+		                        ok = false;
+		                        break;
+		                    }
+		                }
+		            }
+		            if (!ok) {
+		                that.addError("type " + td.getName() +
+		                        " has the same supertype twice with incompatible type arguments: " +
+		                        st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
+		                broken = true;
+		            }
+		        }
+		    }
+		}
+		if (!broken) {
+		    Set<String> errors = new HashSet<String>();
+		    for (ProducedType st: supertypes) {
+		        if (!isCompletelyVisible(td, st)) {
+		            that.addError("supertype of type is not visible everywhere type is visible: "
+		                    + st.getProducedTypeName());
+		        }
+		        if (td instanceof ClassOrInterface && 
+		                !((ClassOrInterface) td).isAbstract()) {
+		            for (Declaration d: st.getDeclaration().getMembers()) {
+		                if (d.isShared() && !errors.contains(d.getName())) {
+		                    Declaration r = td.getMember(d.getName(), null);
+		                    if (r==null) {
+		                        //TODO: This seems to dupe some checks that are already 
+		                        //      done in TypeHierarchyVisitor, resulting in
+		                        //      multiple errors
+		                        that.addError("member " + d.getName() + 
+		                                " is inherited ambiguously and so must be refined by " + td.getName());
+		                        errors.add(d.getName());
+		                    }
+		                    /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
+		                        //TODO: I think this case never occurs, because getMember() always
+		                        //      returns null in the case of an ambiguity
+		                        List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+		                        if (d instanceof Generic) {
+		                            for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
+		                                typeArgs.add(refinedTypeParam.getType());
+		                            }
+		                        }
+		                        ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
+		                        ProducedType it = st.getTypedReference(d, typeArgs).getType();
+		                        checkAssignable(t, it, that, "type of member " + d.getName() + 
+		                                " must be assignable to all types inherited from instantiations of " +
+		                                st.getDeclaration().getName());
+		                    }*/
+		                }
+		            }
+		        }
+		    }
+		}
+	}
     
     @Override public void visit(Tree.TypedDeclaration that) {
         TypedDeclaration td = that.getDeclarationModel();
