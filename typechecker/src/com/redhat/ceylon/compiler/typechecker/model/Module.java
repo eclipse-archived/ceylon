@@ -90,14 +90,26 @@ public class Module {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
     	for (Package p: getAllPackages()) {
     		String moduleName = p.getModule().getNameAsString();
-			if (!moduleName.startsWith("java") &&
-    				!moduleName.startsWith("ceylon.language") &&
-    				!p.getNameAsString().isEmpty()) {
+			boolean isJdk = moduleName.startsWith("java");
+			boolean isLanguageModule = moduleName.equals("ceylon.language");
+			boolean isDefaultPackage = p.getNameAsString().isEmpty();
+			if ((!isJdk||startingWith.length()>1) && !isDefaultPackage) {
+				int prox;
+				if (isJdk) {
+					prox=200;
+				}
+				else if (isLanguageModule) {
+					prox=100; 
+				}
+				else {
+					prox=proximity;
+				}
     			for (Declaration d: p.getMembers()) {
     				try {
-    					if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d)) {
+    					if (isResolvable(d) && d.isShared() && 
+    							isNameMatching(startingWith, d)) {
     						result.put(d.getQualifiedNameString(), 
-    								new DeclarationWithProximity(d, proximity, true));
+    								new DeclarationWithProximity(d, prox, true));
     					}
     				}
     				catch (Exception e) {}
