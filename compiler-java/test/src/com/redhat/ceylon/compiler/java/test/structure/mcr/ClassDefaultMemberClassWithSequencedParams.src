@@ -1,0 +1,119 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+class ClassDefaultMemberClassWithSequencedParams {
+    
+    ClassDefaultMemberClassWithSequencedParams() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member Member$new(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+        return new Member(i);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member Member$new() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member$impl $ceylontmp$impl$1 = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member$impl();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$2 = $ceylontmp$impl$1.$init$i();
+            }
+            returning new Member($ceylontmp$i$2);
+        );
+    }
+    
+    public final class Member$impl {
+        
+        public Member$impl() {
+            super();
+        }
+        
+        public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$i() {
+            return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        }
+    }
+    
+    public class Member {
+        
+        protected Member(.ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member m1() {
+        (
+            let
+            {
+                .ceylon.language.Iterable $arg$3$0 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+            }
+            returning Member$new($arg$3$0);
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member$impl $arg$4$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member$impl();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$4$0 = $arg$4$this$.$init$i();
+            }
+            returning Member$new($arg$4$0);
+        );
+        Member$new();
+        return Member$new(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams();
+    }
+}
+class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams {
+    
+    ClassDefaultMemberClassWithSequencedParams_sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member Member$new(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+        return new Member(i);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member Member$new() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member$impl $ceylontmp$impl$6 = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member$impl();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$7 = $ceylontmp$impl$6.$init$i();
+            }
+            returning new Member($ceylontmp$i$7);
+        );
+    }
+    
+    public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member {
+        
+        protected Member(.ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+            super(i);
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member m2() {
+        (
+            let
+            {
+                .ceylon.language.Iterable $arg$8$0 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+            }
+            returning Member$new($arg$8$0);
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member$impl $arg$9$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member$impl();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$9$0 = $arg$9$this$.$init$i();
+            }
+            returning Member$new($arg$9$0);
+        );
+        Member$new();
+        return Member$new(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L)));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub();
+    }
+}

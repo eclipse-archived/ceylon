@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+abstract class ClassFormalMemberClass {
+    
+    ClassFormalMemberClass() {
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass.Member Member$new();
+    
+    public abstract class Member {
+        
+        protected Member() {
+        }
+    }
+    
+    public final void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass qual) {
+        Member$new();
+        Member$new();
+        qual.Member$new();
+        qual.Member$new();
+    }
+}
+class ClassFormalMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass {
+    
+    ClassFormalMemberClass_sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub.Member Member$new() {
+        return new Member();
+    }
+    
+    public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass.Member {
+        
+        protected Member() {
+            super();
+        }
+    }
+    
+    public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub qual) {
+        Member$new();
+        Member$new();
+        qual.Member$new();
+        qual.Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass_sub();
+    }
+}

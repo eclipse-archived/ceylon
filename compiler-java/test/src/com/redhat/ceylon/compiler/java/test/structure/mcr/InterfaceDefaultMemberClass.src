@@ -1,0 +1,74 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+interface InterfaceDefaultMemberClass {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl.Member Member$new();
+    
+    public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass qual);
+}
+final class InterfaceDefaultMemberClass$impl {
+    
+    InterfaceDefaultMemberClass$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl.Member Member$new() {
+        return new Member();
+    }
+    
+    public class Member {
+        
+        protected Member() {
+        }
+    }
+    
+    public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass qual) {
+        $this.Member$new();
+        $this.Member$new();
+        qual.Member$new();
+        qual.Member$new();
+    }
+}
+class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass {
+    
+    InterfaceMemberDefaultClass_sub() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this;
+    }
+    
+    @.java.lang.Override
+    public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass qual) {
+        $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this.m1(qual);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub.Member Member$new() {
+        return new Member();
+    }
+    
+    public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl.Member {
+        
+        protected Member() {
+            $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this.super();
+        }
+    }
+    
+    public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub qual) {
+        Member$new();
+        Member$new();
+        qual.Member$new();
+        qual.Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceMemberDefaultClass_sub();
+    }
+}

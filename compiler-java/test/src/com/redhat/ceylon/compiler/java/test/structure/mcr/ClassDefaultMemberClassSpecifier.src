@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+class ClassDefaultMemberClassSpecifier {
+    
+    ClassDefaultMemberClassSpecifier(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other) {
+        this.other = other;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member Member$new() {
+        return new Member();
+    }
+    
+    public class Member {
+        
+        protected Member() {
+        }
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s() {
+        return ClassDefaultMemberClassSpecifier.this.Member$new();
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s2() {
+        return other.Member$new();
+    }
+}

@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+class ClassDefaultMemberClass {
+    
+    ClassDefaultMemberClass() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member Member$new() {
+        return new Member();
+    }
+    
+    public class Member {
+        
+        protected Member() {
+        }
+    }
+    
+    public final void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass qual) {
+        Member$new();
+        Member$new();
+        qual.Member$new();
+        qual.Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass();
+    }
+}
+class ClassDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass {
+    
+    ClassDefaultMemberClass_sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.Member Member$new() {
+        return new Member();
+    }
+    
+    public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member {
+        
+        protected Member() {
+            super();
+        }
+    }
+    
+    public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub qual) {
+        Member$new();
+        Member$new();
+        qual.Member$new();
+        qual.Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub();
+    }
+}

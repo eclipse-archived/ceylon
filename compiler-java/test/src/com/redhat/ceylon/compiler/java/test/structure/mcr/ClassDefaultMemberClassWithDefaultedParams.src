@@ -1,0 +1,103 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+class ClassDefaultMemberClassWithDefaultedParams {
+    
+    ClassDefaultMemberClassWithDefaultedParams() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member Member$new(final long i) {
+        return new Member(i);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member Member$new() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member$impl $ceylontmp$impl$1 = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member$impl();
+                long $ceylontmp$i$2 = $ceylontmp$impl$1.$init$i();
+            }
+            returning new Member($ceylontmp$i$2);
+        );
+    }
+    
+    public final class Member$impl {
+        
+        public Member$impl() {
+            super();
+        }
+        
+        public final long $init$i() {
+            return 1L;
+        }
+    }
+    
+    public class Member {
+        
+        protected Member(long i) {
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member m1() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member$impl $arg$3$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member$impl();
+                long $arg$3$0 = $arg$3$this$.$init$i();
+            }
+            returning Member$new($arg$3$0);
+        );
+        return Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams();
+    }
+}
+class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams {
+    
+    ClassDefaultMemberClassWithDefaultedParams_sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member Member$new(final long i) {
+        return new Member(i);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member Member$new() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member$impl $ceylontmp$impl$5 = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member$impl();
+                long $ceylontmp$i$6 = $ceylontmp$impl$5.$init$i();
+            }
+            returning new Member($ceylontmp$i$6);
+        );
+    }
+    
+    public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member {
+        
+        protected Member(long i) {
+            super(i);
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member m2() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member$impl $arg$7$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member$impl();
+                long $arg$7$0 = $arg$7$this$.$init$i();
+            }
+            returning Member$new($arg$7$0);
+        );
+        return Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub();
+    }
+}
