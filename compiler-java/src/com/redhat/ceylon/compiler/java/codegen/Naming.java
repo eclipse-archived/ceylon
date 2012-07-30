@@ -722,7 +722,7 @@ public class Naming implements LocalId {
 //<<<<<<< HEAD
 //            expr = iors(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
 //=======
-            expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
+            expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
 //>>>>>>> origin/master
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
             expr = makeQualIdent(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
