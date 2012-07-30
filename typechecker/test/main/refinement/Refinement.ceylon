@@ -262,3 +262,12 @@ void testQux() {
     Qux().print("hello", "world");
     QuxQux().print({"hello", "world"});
 }
+
+interface DefinesHashAndEq {
+    shared actual Integer hash { return 0; }
+    shared actual Boolean equals(Object that) { return false; }
+}
+@error object hasToRefineHash satisfies DefinesHashAndEq {}
+object doesntHaveToRefineHash extends Object() satisfies DefinesHashAndEq {}
+@error class HasToRefineHash() satisfies DefinesHashAndEq {}
+class DoesntHaveToRefineHash() extends Object() satisfies DefinesHashAndEq {}
