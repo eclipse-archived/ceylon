@@ -894,7 +894,7 @@ public class TypeVisitor extends Visitor {
             }
             if (!list.isEmpty()) {
                 if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
-                    that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 900);
+                    that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
                 }
                 td.setCaseTypes(list);
             }
