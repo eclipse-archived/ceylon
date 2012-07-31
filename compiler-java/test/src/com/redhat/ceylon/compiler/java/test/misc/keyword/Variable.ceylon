@@ -39,7 +39,6 @@ class Variable() {
         Boolean long = false;
         Boolean native = false;
         Boolean new = false;
-        Boolean pkg = false;
         Boolean private = false;
         Boolean protected = false;
         Boolean public = false;

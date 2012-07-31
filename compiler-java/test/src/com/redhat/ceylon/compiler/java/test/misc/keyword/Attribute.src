@@ -96,11 +96,6 @@ class Attribute {
     public final boolean getNew() {
         return new;
     }
-    private final boolean pkg;
-    
-    public final boolean getPkg() {
-        return pkg;
-    }
     private final boolean private;
     
     public final boolean getPrivate() {
@@ -172,7 +167,6 @@ class Attribute {
         this.long = false;
         this.native = false;
         this.new = false;
-        this.pkg = false;
         this.private = false;
         this.protected = false;
         this.public = false;

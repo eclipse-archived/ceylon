@@ -59,9 +59,6 @@ class Parameter {
     private final void m19(final boolean new) {
     }
     
-    private final void m20(final boolean pkg) {
-    }
-    
     private final void m21(final boolean private) {
     }
     

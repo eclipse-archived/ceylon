@@ -38,7 +38,6 @@ class Attribute() {
     shared Boolean long = false;
     shared Boolean native = false;
     shared Boolean new = false;
-    shared Boolean pkg = false;
     shared Boolean private = false;
     shared Boolean protected = false;
     shared Boolean public = false;
