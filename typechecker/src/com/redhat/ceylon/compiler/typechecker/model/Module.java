@@ -88,12 +88,13 @@ public class Module {
     
     public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith, int proximity) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+		int jdkResults = 0;
     	for (Package p: getAllPackages()) {
     		String moduleName = p.getModule().getNameAsString();
 			boolean isJdk = moduleName.startsWith("java");
 			boolean isLanguageModule = moduleName.equals("ceylon.language");
 			boolean isDefaultPackage = p.getNameAsString().isEmpty();
-			if ((!isJdk||startingWith.length()>1) && !isDefaultPackage) {
+			if ((!isJdk||jdkResults<10) && !isDefaultPackage) {
 				int prox;
 				if (isJdk) {
 					prox=200;
@@ -105,11 +106,13 @@ public class Module {
 					prox=proximity;
 				}
     			for (Declaration d: p.getMembers()) {
+    				if (isJdk&&jdkResults>=10) break;
     				try {
     					if (isResolvable(d) && d.isShared() && 
     							isNameMatching(startingWith, d)) {
     						result.put(d.getQualifiedNameString(), 
     								new DeclarationWithProximity(d, prox, true));
+    						if (isJdk) jdkResults++;
     					}
     				}
     				catch (Exception e) {}
