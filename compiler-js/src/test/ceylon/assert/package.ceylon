@@ -1,4 +1,5 @@
-Package package {
-  shared=true;
-  name='assert';
-}
+doc "Basic assertion functions"
+by "Gavin King"
+by "Enrique Zamudio"
+by "Ivo Kasiuk"
+shared package assert;

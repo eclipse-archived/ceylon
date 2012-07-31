@@ -1,8 +1,6 @@
-Module module {
-    name='invocations';
-    version='0.1';
-    dependencies={
-        Import { name='assert'; version='0.1'; },
-        Import { name='functions'; version='0.1'; }
-    };
+by "Enrique Zamudio"
+by "Ivo Kasiuk"
+module invocations '0.1' {
+    import assert '0.1';
+    import functions '0.1';
 }

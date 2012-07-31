@@ -1,4 +1,3 @@
-Package package {
-  name='members';
-  shared=true;
-}
+by "Enrique Zamudio"
+by "Ivo Kasiuk"
+shared package members;
