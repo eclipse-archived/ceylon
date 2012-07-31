@@ -151,4 +151,13 @@ class GenericRefinement() {
 		            given T satisfies Baz<T&Integer> {}
 		}
     }
+    
+    void meth<Null>(Null n) 
+            given Null satisfies Nothing {
+        @error
+        object obj 
+            extends Object()
+            satisfies Empty & 
+                ContainerWithFirstElement<Bottom,Null> {}
+    }
 }
