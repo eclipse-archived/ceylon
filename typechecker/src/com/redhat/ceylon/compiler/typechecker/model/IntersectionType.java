@@ -14,32 +14,12 @@ public class IntersectionType extends TypeDeclaration {
     
     @Override
     public String getName() {
-        String name = "";
-        for (ProducedType pt: getSatisfiedTypes()) {
-            if (pt==null) {
-                name+="<unknown>";
-            }
-            else {
-                name+=pt.getProducedTypeName(false);
-            }
-            name+="&";
-        }
-        return name.substring(0,name.length()-1);
+        return getType().getProducedTypeName();
     }
     
     @Override
     public String getQualifiedNameString() {
-        String name = "";
-        for (ProducedType pt: getSatisfiedTypes()) {
-            if (pt==null) {
-                name+="<unknown>";
-            }
-            else {
-                name+=pt.getProducedTypeQualifiedName();
-            }
-            name+="&";
-        }
-        return name.substring(0,name.length()-1);
+        return getType().getProducedTypeQualifiedName();
     }
     
     @Override
@@ -49,12 +29,12 @@ public class IntersectionType extends TypeDeclaration {
     
     @Override @Deprecated
     public List<String> getQualifiedName() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("intersection types don't have names");
     }
     
     @Override
     public ProducedType getType() {
-        if (getSatisfiedTypes().size()==0) {
+        if (getSatisfiedTypes().isEmpty()) {
             return unit.getVoidDeclaration().getType();
         }
         else if (getSatisfiedTypes().size()==1) {
@@ -71,13 +51,23 @@ public class IntersectionType extends TypeDeclaration {
      * a union of intersections, instead of an intersection of unions.
      */
 	public TypeDeclaration canonicalize() {
-		for (ProducedType st: getSatisfiedTypes()) {
+	    List<ProducedType> sts = getSatisfiedTypes();
+		if (sts.isEmpty()) {
+	        return unit.getBottomDeclaration();
+	    }
+	    else if (sts.size()==1) {
+	    	TypeDeclaration d = sts.get(0).getDeclaration();
+	    	if (d instanceof BottomType) {
+	    		return d;
+	    	}
+	    }
+		for (ProducedType st: sts) {
 			if (st.getDeclaration() instanceof UnionType) {
 				TypeDeclaration result = new UnionType(unit);
 				List<ProducedType> ulist = new ArrayList<ProducedType>();
 				for (ProducedType ct: st.getDeclaration().getCaseTypes()) {
 					List<ProducedType> ilist = new ArrayList<ProducedType>();
-					for (ProducedType pt: getSatisfiedTypes()) {
+					for (ProducedType pt: sts) {
 						if (pt==st) {
 							addToIntersection(ilist, ct, unit);
 						}
@@ -99,6 +89,11 @@ public class IntersectionType extends TypeDeclaration {
     @Override
     public DeclarationKind getDeclarationKind() {
         return null;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        throw new UnsupportedOperationException("intersection types don't have well-defined equality");
     }
 
 }

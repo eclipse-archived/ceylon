@@ -26,6 +26,8 @@ interface Interfaces {
         return x.uppercased;
     }
     
+    String uppercase(String x) = upper;
+    
     String str {
         @error return super.string;
     }
@@ -45,6 +47,12 @@ interface Interfaces {
         shared String goodbye = upper("goodbye");
         shared Integer times = 1;
     }
+    
+    @error for (c in "hello") {}
+    @error while (true) {}
+    @error if (true) {}
+    @error try {} finally {}
+    @error switch (1==0) case (true) {} case (false) {}
     
     @error MemberClass();
     

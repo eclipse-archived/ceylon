@@ -29,3 +29,43 @@ void test() {
     foo.compare(foo);
     Foo foo2 = foo;
 }
+
+class SelfTypeEquivalence1() {
+    interface Self<T> of T {}
+    class X() satisfies Self<X> {}
+    interface Inv<T> {}
+    Inv<Self<X>> l1 { throw; }
+    Inv<X> l2 { throw; }
+    Inv<Self<X>> l3 = l2;
+    Inv<X> l4 = l1;
+}
+
+class SelfTypeEquivalence2() {
+    interface Self<T> of T {}
+    class X() {}
+    interface Inv<T> {}
+    Inv<Self<X>> l1 { throw; }
+    Inv<X> l2 { throw; }
+    @error Inv<Self<X>> l3 = l2;
+    @error Inv<X> l4 = l1;
+}
+
+class SelfTypeEquivalence3() {
+    interface Self<T> of T {}
+    class X() {}
+    interface Inv<out T> {}
+    Inv<Self<X>> l1 { throw; }
+    Inv<X> l2 { throw; }
+    @error Inv<Self<X>> l3 = l2;
+    Inv<X> l4 = l1;
+}
+
+class SelfTypeEquivalence4() {
+    interface Self<T> of T {}
+    class X() {}
+    interface Inv<in T> {}
+    Inv<Self<X>> l1 { throw; }
+    Inv<X> l2 { throw; }
+    Inv<Self<X>> l3 = l2;
+    @error Inv<X> l4 = l1;
+}

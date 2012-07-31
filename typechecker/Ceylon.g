@@ -136,7 +136,8 @@ importDeclaration returns [Import importDeclaration]
     ;
 
 importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
-    @init { ImportMemberOrTypeList il=null; }
+    @init { ImportMemberOrTypeList il=null; 
+            boolean wildcarded = false; }
     :
     LBRACE
     { il = new ImportMemberOrTypeList($LBRACE);
@@ -146,22 +147,27 @@ importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
       { if ($ie1.importMemberOrType!=null)
             il.addImportMemberOrType($ie1.importMemberOrType); } 
       ( 
-        COMMA 
-        ie2=importElement 
-        { if ($ie2.importMemberOrType!=null)
-            il.addImportMemberOrType($ie2.importMemberOrType); } 
-      )*
-      ( 
-        c=COMMA
-        { il.setEndToken($c); }
+        c1=COMMA 
+        { il.setEndToken($c1); 
+          if (wildcarded) 
+              displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException(RBRACE, input)); }
         (
-          iw=importWildcard 
-          { il.setImportWildcard($iw.importWildcard); 
-            il.setEndToken(null); } 
+          ie2=importElement 
+          { if ($ie2.importMemberOrType!=null)
+                il.addImportMemberOrType($ie2.importMemberOrType);
+            if ($ie2.importMemberOrType!=null)
+                il.setEndToken(null); } 
+        | iw=importWildcard
+          { wildcarded = true;
+            if ($iw.importWildcard!=null) 
+                il.setImportWildcard($iw.importWildcard); 
+            if ($iw.importWildcard!=null) 
+                il.setEndToken(null); } 
         | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(ELLIPSIS, input)); }
         )
-      )?
+      )*
     | iw=importWildcard { il.setImportWildcard($iw.importWildcard); }
     )?
     RBRACE
@@ -169,22 +175,27 @@ importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
     ;
 
 importElement returns [ImportMemberOrType importMemberOrType]
+    @init { Alias alias = null; }
     : compilerAnnotations
-    (
-      memberAlias? memberName
+    ( in1=importName 
       { $importMemberOrType = new ImportMember(null);
-        if ($memberAlias.alias!=null) 
-            $importMemberOrType.setAlias($memberAlias.alias);
-        $importMemberOrType.setIdentifier($memberName.identifier); }
-    | typeAlias? typeName
-      { $importMemberOrType = new ImportType(null);
-        if ($typeAlias.alias!=null)
-            $importMemberOrType.setAlias($typeAlias.alias);
-        $importMemberOrType.setIdentifier($typeName.identifier); }
+        $importMemberOrType.setIdentifier($in1.identifier); }
+      ( SPECIFY
+        { alias = new Alias($SPECIFY);
+          alias.setIdentifier($in1.identifier);
+          $importMemberOrType.setAlias(alias); 
+          $importMemberOrType.setIdentifier(null); }
         (
-          importElementList
-          { $importMemberOrType.setImportMemberOrTypeList($importElementList.importMemberOrTypeList); }
-        )?
+          in2=importName 
+          { $importMemberOrType.setIdentifier($in2.identifier); }
+        | { displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException($in1.identifier.getToken().getType(), input)); }
+        )
+      )?
+      (
+        iel2=importElementList
+        { $importMemberOrType.setImportMemberOrTypeList($iel2.importMemberOrTypeList); }
+      )?
     )
     { if ($importMemberOrType!=null)
         $importMemberOrType.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
@@ -195,16 +206,9 @@ importWildcard returns [ImportWildcard importWildcard]
       { $importWildcard = new ImportWildcard($ELLIPSIS); }
     ;
 
-memberAlias returns [Alias alias]
-    : memberNameDeclaration SPECIFY
-      { $alias = new Alias($SPECIFY); 
-        $alias.setIdentifier($memberNameDeclaration.identifier); }
-    ;
-
-typeAlias returns [Alias alias]
-    : typeNameDeclaration SPECIFY
-      { $alias = new Alias($SPECIFY); 
-        $alias.setIdentifier($typeNameDeclaration.identifier); }
+importName returns [Identifier identifier]
+    : memberName { $identifier=$memberName.identifier; }
+    | typeName { $identifier=$typeName.identifier; }
     ;
 
 packagePath returns [ImportPath importPath]
@@ -625,10 +629,10 @@ attributeBody[StaticType type] returns [Node result]
     : 
       (namedArguments)
       => namedArguments //first try to match with no directives or control structures
-      { SpecifierExpression specifier = new SpecifierExpression(null);
+      { SpecifierExpression specifier = new SyntheticSpecifierExpression(null);
         SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
         Expression e = new Expression(null);
-        InvocationExpression ie = new InvocationExpression(null);
+        InvocationExpression ie = new SyntheticInvocationExpression(null);
         BaseTypeExpression bme = new BaseTypeExpression(null);
         if (t!=null) bme.setIdentifier(t.getIdentifier());
         bme.setTypeArguments(new InferredTypeArguments(null));
@@ -652,11 +656,11 @@ methodBody[StaticType type] returns [Block block]
     : 
       (namedArguments)
       => namedArguments //first try to match with no directives or control structures
-      { $block = new Block(null);
+      { $block = new SyntheticBlock(null);
         SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
         Return r = new Return(null);
         Expression e = new Expression(null);
-        InvocationExpression ie = new InvocationExpression(null);
+        InvocationExpression ie = new SyntheticInvocationExpression(null);
         BaseTypeExpression bme = new BaseTypeExpression(null);
         if (t!=null) bme.setIdentifier(t.getIdentifier());
         bme.setTypeArguments(new InferredTypeArguments(null));
@@ -908,18 +912,14 @@ typeParameters returns [TypeParameterList typeParameterList]
       { $typeParameterList = new TypeParameterList($SMALLER_OP); }
       tp1=typeParameter
       { if ($tp1.typeParameter instanceof TypeParameterDeclaration)
-            $typeParameterList.addTypeParameterDeclaration((TypeParameterDeclaration)$tp1.typeParameter);
-        if ($tp1.typeParameter instanceof SequencedTypeParameterDeclaration)
-            $typeParameterList.setSequencedTypeParameterDeclaration((SequencedTypeParameterDeclaration)$tp1.typeParameter); }
+            $typeParameterList.addTypeParameterDeclaration($tp1.typeParameter); }
       (
         c=COMMA
         { $typeParameterList.setEndToken($c); }
         (
           tp2=typeParameter
           { if ($tp2.typeParameter instanceof TypeParameterDeclaration)
-                $typeParameterList.addTypeParameterDeclaration((TypeParameterDeclaration)$tp2.typeParameter);
-            if ($tp2.typeParameter instanceof SequencedTypeParameterDeclaration)
-                $typeParameterList.setSequencedTypeParameterDeclaration((SequencedTypeParameterDeclaration)$tp2.typeParameter); 
+                $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter);
             $typeParameterList.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(UIDENTIFIER, input)); }
@@ -930,23 +930,20 @@ typeParameters returns [TypeParameterList typeParameterList]
     //-> ^(TYPE_PARAMETER_LIST[$SMALLER_OP] typeParameter+)
     ;
 
-typeParameter returns [Declaration typeParameter]
-    @init { TypeParameterDeclaration tpd = new TypeParameterDeclaration(null);
-            SequencedTypeParameterDeclaration spd = new SequencedTypeParameterDeclaration(null); }
-    : { $typeParameter = tpd; }
+typeParameter returns [TypeParameterDeclaration typeParameter]
+    : { $typeParameter = new TypeParameterDeclaration(null); }
       ( 
         variance 
-        { tpd.setTypeVariance($variance.typeVariance); } 
+        { $typeParameter.setTypeVariance($variance.typeVariance); } 
       )? 
       typeNameDeclaration
-      { tpd.setIdentifier($typeNameDeclaration.identifier); } 
+      { $typeParameter.setIdentifier($typeNameDeclaration.identifier); } 
+      (
+        ELLIPSIS
+        { $typeParameter.setSequenced(true);
+          $typeParameter.setEndToken($ELLIPSIS); }
+      )?
     //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
-    | { $typeParameter = spd; }
-      typeNameDeclaration
-      { spd.setIdentifier($typeNameDeclaration.identifier); } 
-      ELLIPSIS
-      { $typeParameter.setEndToken($ELLIPSIS); }
-    //-> ^(SEQUENCED_TYPE_PARAMETER typeName)
     ;
 
 variance returns [TypeVariance typeVariance]
@@ -1286,8 +1283,8 @@ elementSelectionOperator returns [IndexOperator operator]
 enumeration returns [SequenceEnumeration sequenceEnumeration]
     : LBRACE { $sequenceEnumeration = new SequenceEnumeration($LBRACE); } 
       (
-        expressions
-        { $sequenceEnumeration.setExpressionList($expressions.expressionList); }
+        sequencedArgument
+        { $sequenceEnumeration.setSequencedArgument($sequencedArgument.sequencedArgument); }
       | 
         comprehension
         { $sequenceEnumeration.setComprehension($comprehension.comprehension); }
@@ -1342,7 +1339,7 @@ typeArgumentsStart
     (
       UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
       ((INTERSECTION_OP|UNION_OP|ENTRY_OP) UIDENTIFIER ('.' UIDENTIFIER)* (DEFAULT_OP|ARRAY)*)*
-      (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS)
+      (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS|LPAREN|RPAREN)
     | 
       LARGER_OP //for IDE only!
     )
@@ -1411,6 +1408,10 @@ sequencedArgument returns [SequencedArgument sequencedArgument]
       { sequencedArgument = new SequencedArgument(null);
         sequencedArgument.setExpressionList($expressions.expressionList);
         sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+      (
+        ELLIPSIS
+        { sequencedArgument.setEllipsis(new Ellipsis($ELLIPSIS)); }
+      )?
     ;
 
 namedArgument returns [NamedArgument namedArgument]
@@ -1593,7 +1594,7 @@ functionOrExpression returns [Expression expression]
         FUNCTION_MODIFIER 
         { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       | VOID_MODIFIER
-         { fa.setType(new FunctionModifier($VOID_MODIFIER)); }
+         { fa.setType(new VoidModifier($VOID_MODIFIER)); }
       )?
       p1=parameters
       { fa.addParameterList($p1.parameterList); }
@@ -2038,9 +2039,10 @@ stringTemplate returns [StringTemplate stringTemplate]
         $stringTemplate.addStringLiteral($sl1.stringLiteral); }
       (
         (interpolatedExpressionStart) 
-         => expression sl2=stringLiteral
-        { $stringTemplate.addExpression($expression.expression);
-          $stringTemplate.addStringLiteral($sl2.stringLiteral); }
+         => e=expression sl2=stringLiteral
+        { $stringTemplate.addExpression($e.expression);
+          if (sl2!=null) 
+              $stringTemplate.addStringLiteral($sl2.stringLiteral); }
       )+
     ;
 
@@ -2082,28 +2084,22 @@ type returns [StaticType type]
     ;
     
 entryType returns [StaticType type]
-    @init { BaseType bt=null; 
-            TypeArgumentList tal=null; }
-    : ut1=abbreviatedType
-      { $type=$ut1.type; 
-        bt = new BaseType(null); 
-        tal = new TypeArgumentList(null); 
-        tal.addType($ut1.type); 
-        bt.setTypeArgumentList(tal); }
+    @init { EntryType bt=null; }
+    : t1=abbreviatedType
+      { $type=$t1.type; }
       (
         ENTRY_OP
-        { bt.setEndToken($ENTRY_OP); 
-          CommonToken tok = new CommonToken($ENTRY_OP);
-          tok.setText("Entry");
-          bt.setIdentifier( new Identifier(tok) ); }
+        { bt=new EntryType(null);
+          bt.setKeyType($type);
+          bt.setEndToken($ENTRY_OP); 
+          $type=bt; }
         (
-          ut2=abbreviatedType
-          { tal.addType($ut2.type);
+          t2=abbreviatedType
+          { bt.setValueType($t2.type);
             bt.setEndToken(null); }
-        | { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(UIDENTIFIER, input)); }
+//        | { displayRecognitionError(getTokenNames(), 
+//                new MismatchedTokenException(UIDENTIFIER, input)); }
         )
-        { $type=bt; }
       )?
     ;
 
@@ -2121,8 +2117,8 @@ unionType returns [StaticType type]
             it2=intersectionType
             { ut.addStaticType($it2.type);
               ut.setEndToken(null); }
-          | { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(UIDENTIFIER, input)); }
+//          | { displayRecognitionError(getTokenNames(), 
+//                new MismatchedTokenException(UIDENTIFIER, input)); }
           )
         )+
         { $type = ut; }
@@ -2143,8 +2139,8 @@ intersectionType returns [StaticType type]
             at2=entryType
             { it.addStaticType($at2.type);
               it.setEndToken(null); }
-          | { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(UIDENTIFIER, input)); }
+//          | { displayRecognitionError(getTokenNames(), 
+//                new MismatchedTokenException(UIDENTIFIER, input)); }
           )
         )+
         { $type = it; }
@@ -2152,37 +2148,42 @@ intersectionType returns [StaticType type]
     ;
 
 abbreviatedType returns [StaticType type]
+    @init { FunctionType bt=null; }
     : qualifiedType
       { $type=$qualifiedType.type; }
       (
         DEFAULT_OP 
-        { UnionType ot = new UnionType(null);
-          CommonToken tok = new CommonToken($DEFAULT_OP);
-          tok.setText("Nothing");
-          BaseType bt = new BaseType($DEFAULT_OP);
-          bt.setIdentifier( new Identifier(tok) );
-          ot.addStaticType(bt);
-          ot.addStaticType($type);
+        { OptionalType ot = new OptionalType(null);
+          ot.setDefiniteType($type);
+          ot.setEndToken($DEFAULT_OP);
           $type=ot; }
       | ARRAY 
-        { UnionType ot = new UnionType(null);
-          CommonToken tok = new CommonToken($ARRAY);
-          tok.setText("Empty");
-          BaseType bt = new BaseType($ARRAY);
-          bt.setIdentifier( new Identifier(tok) );
-          ot.addStaticType(bt);
-          tok = new CommonToken($ARRAY);
-          tok.setText("Sequence");
-          bt = new BaseType($ARRAY);
-          bt.setIdentifier( new Identifier(tok) );
-          TypeArgumentList tal = new TypeArgumentList(null);
-          tal.addType($type);
-          bt.setTypeArgumentList(tal);
-          ot.addStaticType(bt);
+        { SequenceType ot = new SequenceType(null);
+          ot.setElementType($type);
+          ot.setEndToken($DEFAULT_OP);
           $type=ot; }
+      | LPAREN
+        { bt = new FunctionType(null);
+          bt.setEndToken($LPAREN);
+          bt.setReturnType($type);
+          $type=bt; }
+          (
+            t1=type
+            { if ($t1.type!=null)
+                  bt.addArgumentType($t1.type); }
+            (
+              COMMA
+              { bt.setEndToken($COMMA); } 
+              t2=type
+              { if ($t2.type!=null)
+                  bt.getArgumentTypes().add($t2.type); }
+            )*
+          )?
+        RPAREN
+        { bt.setEndToken($RPAREN); }
       )*
     ;
-
+    
 qualifiedType returns [SimpleType type]
     : ot=typeNameWithArguments
       { BaseType bt = new BaseType(null);
@@ -2763,8 +2764,15 @@ variable returns [Variable variable]
 var returns [Variable variable]
     : { $variable = new Variable(null); }
     (
-      type 
-      { $variable.setType($type.type); }
+      ( type 
+        { $variable.setType($type.type); }
+      | VOID_MODIFIER
+        { $variable.setType(new VoidModifier($VOID_MODIFIER)); }
+      | FUNCTION_MODIFIER
+        { $variable.setType(new VoidModifier($FUNCTION_MODIFIER)); }
+      | VALUE_MODIFIER
+        { $variable.setType(new VoidModifier($VALUE_MODIFIER)); }
+      )
       mn1=memberName 
       { $variable.setIdentifier($mn1.identifier); }
       ( 

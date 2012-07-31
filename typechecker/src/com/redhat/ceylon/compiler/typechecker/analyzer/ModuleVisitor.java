@@ -11,6 +11,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -137,9 +142,39 @@ public class ModuleVisitor extends Visitor {
                     }
                     moduleManager.addModuleDependencyDefinition(moduleImport, that);
                 }
-                //else we leave it behind unprocessed
             }
         }
+        //this is from master, who knows what it does?
+        /*if (id.getText().equals("Package")) {
+            Tree.SpecifiedArgument nsa = getArgument(that, "name");
+            String packageName = argumentToString(nsa);
+            if (packageName==null) {
+                that.addError("missing package name");
+            }
+            if (packageName.isEmpty()) {
+                nsa.addError("empty package name");
+            }
+            else if (packageName.startsWith(Module.DEFAULT_MODULE_NAME)) {
+                nsa.addError("default is a reserved package name");
+            }
+            else if (pkg.getName().isEmpty()) {
+                that.addError("package descriptor may not be defined in the root source directory");
+            }
+            else {
+                if ( !pkg.getNameAsString().equals(packageName) ) {
+                    nsa.addError("package name does not match descriptor location");
+                }
+                pkg.setDoc(argumentToString(getArgument(that, "doc")));
+                String shared = argumentToString(getArgument(that, "shared"));
+                if (shared!=null && shared.equals("true")) {
+                    pkg.setShared(true);
+                }
+                List<String> by = argumentToStrings(getArgument(that, "by"));
+                if (by!=null) {
+                    pkg.getAuthors().addAll(by);
+                }
+            }
+        }*/
     }
 
     private List<String> getNameAsList(Tree.ImportPath that) {
@@ -150,6 +185,65 @@ public class ModuleVisitor extends Visitor {
         return name;
     }
     
+    private List<String> argumentToStrings(Tree.SpecifiedArgument sa) {
+        if (sa==null) return null;
+        Tree.SpecifierExpression se = sa.getSpecifierExpression();
+        if (se!=null && se.getExpression()!=null) {
+            Tree.Term term = se.getExpression().getTerm();
+            if (term instanceof Tree.SequenceEnumeration) {
+                List<String> result = new ArrayList<String>();
+                SequencedArgument sqa = ((Tree.SequenceEnumeration) term).getSequencedArgument();
+                if (sqa!=null) {
+                    ExpressionList el = sqa.getExpressionList();
+                    if (el!=null) {
+                        for (Tree.Expression exp: el.getExpressions()) {
+                            result.add(termToString(exp.getTerm()));
+                        }
+                    }
+                }
+                return result;
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+
+    private String argumentToString(Tree.SpecifiedArgument sa) {
+        if (sa==null) return null;
+        Tree.SpecifierExpression se = sa.getSpecifierExpression();
+        if (se!=null && se.getExpression()!=null) {
+            Tree.Term term = se.getExpression().getTerm();
+            return termToString(term);
+        }
+        else {
+            return null;
+        }
+    }
+
+    private String termToString(Tree.Term term) {
+        if (term instanceof Tree.Literal) {
+            String text = term.getText();
+            if (text.length()>=2 &&
+                    (text.startsWith("'") && text.endsWith("'") || 
+                    text.startsWith("\"") && text.endsWith("\"")) ) {
+                return text.substring(1, text.length()-1);
+            }
+            else {
+                return text;
+            }
+        }
+        else if (term instanceof Tree.BaseMemberExpression) {
+            return ((Tree.BaseMemberExpression) term).getIdentifier().getText();
+        }
+        else {
+        	term.addError("module and package descriptors must be defined using literal value expressions");
+            return null;
+        }
+    }
     public enum Phase {
         SRC_MODULE,
         REMAINING

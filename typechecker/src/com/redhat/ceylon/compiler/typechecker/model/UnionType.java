@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,32 +12,12 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public String getName() {
-        String name = "";
-        for (ProducedType pt: getCaseTypes()) {
-            if (pt==null) {
-                name+="<unknown>";
-            }
-            else {
-                name+=pt.getProducedTypeName(false);
-            }
-            name+="|";
-        }
-        return name.substring(0,name.length()-1);
+        return getType().getProducedTypeName();
     }
     
     @Override
     public String getQualifiedNameString() {
-        String name = "";
-        for (ProducedType pt: getCaseTypes()) {
-            if (pt==null) {
-                name+="<unknown>";
-            }
-            else {
-                name+=pt.getProducedTypeQualifiedName();
-            }
-            name+="|";
-        }
-        return name.substring(0,name.length()-1);
+        return getType().getProducedTypeQualifiedName();
     }
     
     @Override
@@ -46,7 +27,7 @@ public class UnionType extends TypeDeclaration {
     
     @Override @Deprecated
     public List<String> getQualifiedName() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("union types don't have names");
     }
     
     @Override
@@ -67,16 +48,26 @@ public class UnionType extends TypeDeclaration {
     	//TODO: this can result in the wrong parameter types, and the
     	//      same bug also affects intersection types
     	Map<String, DeclarationWithProximity> result = super.getMatchingMemberDeclarations(startingWith, proximity);
-		result.putAll(getCaseTypes().get(0).getDeclaration().getMatchingMemberDeclarations(startingWith, proximity));
-    	for (ProducedType ct: getCaseTypes()) {
-    		result.keySet().retainAll(ct.getDeclaration().getMatchingMemberDeclarations(startingWith, proximity).keySet());
-    	}
+		TypeDeclaration d = getCaseTypes().get(0).getDeclaration();
+		Iterator<Map.Entry<String, DeclarationWithProximity>> iter = d.getMatchingMemberDeclarations(startingWith, proximity)
+		        .entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, DeclarationWithProximity> e = iter.next();
+		    if (getMember(e.getKey(), null)!=null) {
+		        result.put(e.getKey(), e.getValue());
+		    }
+		}
     	return result;
     }
 
     @Override
     public DeclarationKind getDeclarationKind() {
         return null;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        throw new UnsupportedOperationException("union types don't have well-defined equality");
     }
 
 }

@@ -130,8 +130,8 @@ class Union() {
     String|Integer sssnf = sssn.first;
     
     function first<T>(T... args) {
-        if (nonempty args) {
-            return args.first;
+        if (nonempty seq = args.sequence) {
+            return seq.first;
         }
         else {
             throw;
@@ -193,7 +193,7 @@ class Union() {
     
     class Sorted<out Elem>(Elem... them) 
             given Elem satisfies Comparable<Elem> {
-        shared Elem[] elements = them;
+        shared Elem[] elements = them.sequence;
     }
     Sorted<Integer>|Sorted<String> sorted = Sorted(+1,-1);
     @type["Empty|Sequence<Integer|String>"] value elems = sorted.elements;
@@ -229,5 +229,34 @@ class Union() {
     @error switch (maybe)
     case (is String) {}
     case (is String|Nothing) {}
+    
+    Comparable<String> elem1 = "hello";
+    String elem2 = "world";
+    @type["Sequence<String>"] value selfTypeSeq1 = { elem1, elem2 };
+    @type["Sequence<String>"] value selfTypeSeq2 = { elem2, elem1 };
+    @type["Sequence<String>"] value selfTypeSeq3 = true then selfTypeSeq1 else selfTypeSeq2;
+    @type["Sequence<String>"] value selfTypeSeq4 = true then selfTypeSeq2 else selfTypeSeq1;
+    Sequence<String> selfTypeSeq5 = selfTypeSeq1;
+    Sequence<String> selfTypeSeq6 = selfTypeSeq2;
+    Sequence<Comparable<String>> selfTypeSeq7 = selfTypeSeq1;
+    Sequence<Comparable<String>> selfTypeSeq8 = selfTypeSeq2;
+    
+    for (String s in {elem1, elem2}) {}
+    for (String s in {elem2, elem1}) {}
+    for (Comparable<String> s in {elem1, elem2}) {}
+    for (Comparable<String> s in {elem2, elem1}) {}
+    
+    for (s in {elem1, elem1}) {
+        @type["Comparable<String>"] value sss = s;
+    }
+    for (s in {elem2, elem2}) {
+        @type["String"] value sss = s;
+    }
+    for (s in {elem1, elem2}) {
+        @type["String"] value sss = s;
+    }
+    for (s in {elem2, elem1}) {
+        @type["String"] value sss = s;
+    }
     
 }

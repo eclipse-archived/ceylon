@@ -78,10 +78,10 @@ interface TypeInference {
         
         @error @type["unknown"] function g() = burp;
         
-        @error @type["Sequence<unknown>"] value seq = { burp };
+        @type["Sequence<unknown>"] value seq = { @error burp };
         
         @type["Sequence<unknown>"] function createSeq() {
-            @error @type["Sequence<unknown>"] return { hi };
+            @type["Sequence<unknown>"] return { @error hi };
         }
         
         Sequence<T> singleton<T>(T element) {

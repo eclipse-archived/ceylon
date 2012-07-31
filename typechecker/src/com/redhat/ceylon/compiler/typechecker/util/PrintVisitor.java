@@ -72,6 +72,12 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 print(" <" + type.getProducedTypeName() + ">");
             }
         }
+        if (node instanceof Tree.ComprehensionClause) {
+            ProducedType type = ((Tree.ComprehensionClause) node).getTypeModel();
+            if (type!=null) {
+                print(" <" + type.getProducedTypeName() + ">");
+            }
+        }
         if (node instanceof Tree.Type) {
             ProducedType type = ((Tree.Type) node).getTypeModel();
             if (type!=null) {
@@ -105,10 +111,10 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
         }
         if (node instanceof Tree.Declaration) {
             Declaration d = ((Tree.Declaration) node).getDeclarationModel();
-            if (d.isCaptured()) {
-                print("[captured]");
-            }
             if (d!=null) {
+                if (d.isCaptured()) {
+                    print("[captured]");
+                }
                 print(" => " + d);
             }
         }

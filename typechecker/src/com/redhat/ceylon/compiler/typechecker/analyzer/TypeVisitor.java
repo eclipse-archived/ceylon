@@ -8,9 +8,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
-import static java.lang.Character.isUpperCase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +23,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -33,12 +36,15 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Second phase of type analysis.
@@ -67,17 +73,21 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.Import that) {
         Package importedPackage = getPackage(that.getImportPath());
         if (importedPackage!=null) {
-            ImportList il = (ImportList) that.getScope();
-            il.setImportedPackage(importedPackage);
-            il.setContainer(that.getUnit().getPackage());
-            that.setImportList(il);
-            Set<String> names = new HashSet<String>();
+            that.getImportPath().setPackageModel(importedPackage);
             Tree.ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
             if (imtl!=null) {
+                ImportList il = imtl.getImportList();
+                il.setImportedScope(importedPackage);
+                Set<String> names = new HashSet<String>();
                 for (Tree.ImportMemberOrType member: imtl.getImportMemberOrTypes()) {
                     names.add(importMember(member, importedPackage, il));
                 }
-                if (imtl.getImportWildcard()!=null) {
+                if (imtl.getImportWildcard()==null) {
+                    if (imtl.getImportMemberOrTypes().isEmpty()) {
+                        imtl.addError("empty import list");
+                    }
+                }
+                else {
                     importAllMembers(importedPackage, names, il);
                 }
             }
@@ -88,7 +98,8 @@ public class TypeVisitor extends Visitor {
             ImportList il) {
         for (Declaration dec: importedPackage.getMembers()) {
             if (dec.isShared() && !dec.isAnonymous() && 
-                    !ignoredMembers.contains(dec.getName())) {
+                    !ignoredMembers.contains(dec.getName()) &&
+                    !isNonimportable(importedPackage, dec.getName())) {
                 Import i = new Import();
                 i.setAlias(dec.getName());
                 i.setDeclaration(dec);
@@ -107,6 +118,12 @@ public class TypeVisitor extends Visitor {
         else if (o.isWildcardImport()) {
             unit.getImports().remove(o);
             il.getImports().remove(o);
+            if (o.getDeclaration().equals(dec)) {
+                //this case only happens in the IDE,
+                //due to reuse of the Unit
+                unit.getImports().add(i);
+                il.getImports().add(i);
+            }
         }
     }
 
@@ -116,11 +133,22 @@ public class TypeVisitor extends Visitor {
             Module module = unit.getPackage().getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
-                if (!pkg.getModule().equals(module) && !pkg.isShared()) {
+                if (pkg.getModule().equals(module)) {
+                    return pkg;
+                }
+                if (!pkg.isShared()) {
                     path.addError("imported package is not shared: " + 
                             nameToImport);
                 }
-                return pkg; 
+                //check that the package really does belong to
+                //an imported module, to work around bug where
+                //default package thinks it can see stuff in
+                //all modules in the same source dir
+                for (ModuleImport mi: module.getImports()) {
+                    if (mi.getModule().equals(pkg.getModule())) {
+                        return pkg; 
+                    }
+                }
             }
             path.addError("package not found in dependent modules: " + nameToImport);
         }
@@ -143,7 +171,11 @@ public class TypeVisitor extends Visitor {
     
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage, 
             ImportList il) {
+        if (member.getIdentifier()==null) {
+            return null;
+        }
         Import i = new Import();
+        member.setImportModel(i);
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
         if (alias==null) {
@@ -152,16 +184,31 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
+        if (isNonimportable(importedPackage, name)) {
+            member.getIdentifier().addError("root type may not be imported");
+            return name;
+        }
+        for (Declaration d: unit.getDeclarations()) {
+            String n = d.getName();
+            if (d.isToplevel() && n!=null && 
+                    i.getAlias().equals(n)) {
+                if (alias==null) {
+                    member.getIdentifier()
+                        .addError("toplevel declaration with this name declared in this unit: " + n);
+                }
+                else {
+                    alias.addError("toplevel declaration with this name declared in this unit: " + n);
+                }
+            }
+        }
         Declaration d = importedPackage.getMember(name, null);
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
-        }
-        else if ("java.lang.Object".equals(d.getQualifiedNameString())) {
-            member.getIdentifier().addError("root type may not be imported");
+            unit.getUnresolvedReferences().add(member.getIdentifier());
         }
         else {
-            if (!d.isShared()) {
+            if (!d.isShared() && !d.getUnit().getPackage().equals(unit.getPackage())) {
                 member.getIdentifier().addError("imported declaration is not shared: " +
                         name, 400);
             }
@@ -171,42 +218,58 @@ public class TypeVisitor extends Visitor {
             }
             i.setDeclaration(d);
             member.setDeclarationModel(d);
+            if (il.hasImport(d)) {
+                member.getIdentifier().addError("already imported: " +
+                        name);
+            }
             addImport(member, il, i);
+            checkAliasCase(alias, d);
         }
+        importMembers(member, d);
+        return name;
+    }
+
+    public void importMembers(Tree.ImportMemberOrType member, Declaration d) {
         Tree.ImportMemberOrTypeList imtl = member.getImportMemberOrTypeList();
         if (imtl!=null) {
+            if (imtl.getImportMemberOrTypes().isEmpty()) {
+                imtl.addError("empty import list");
+            }
         	if (d instanceof TypeDeclaration) {
+                ImportList til = imtl.getImportList();
+                til.setImportedScope((TypeDeclaration) d);
         		for (Tree.ImportMemberOrType submember: imtl.getImportMemberOrTypes()) {
-        			importMember(submember, (TypeDeclaration) d);
+        			importMember(submember, (TypeDeclaration) d, til);
             	}
             }
         	else {
         		imtl.addError("member alias list must follow a type");
         	}
         }
-        return name;
     }
 
-    private void addImport(Tree.ImportMemberOrType member, ImportList il,
-            Import i) {
-        Import o = unit.getImport(i.getAlias());
-        if (o==null) {
-            unit.getImports().add(i);
-            il.getImports().add(i);
-        }
-        else if (o.isWildcardImport()) {
-            unit.getImports().remove(o);
-            il.getImports().remove(o);
-            unit.getImports().add(i);
-            il.getImports().add(i);
-        }
-        else {
-            member.addError("duplicate import: " + i.getAlias());
+    private void checkAliasCase(Tree.Alias alias, Declaration d) {
+        if (alias!=null) {
+            if (d instanceof TypeDeclaration &&
+                    alias.getIdentifier().getToken().getType()!=CeylonLexer.UIDENTIFIER) {
+                alias.getIdentifier().addError("imported type should have uppercase alias: " +
+                    d.getName());
+            }
+            if (d instanceof TypedDeclaration &&
+                    alias.getIdentifier().getToken().getType()!=CeylonLexer.LIDENTIFIER) {
+                alias.getIdentifier().addError("imported member should have lowercase alias: " +
+                    d.getName());
+            }
         }
     }
-        
-    private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d) {
+
+    private void importMember(Tree.ImportMemberOrType member, TypeDeclaration d, 
+            ImportList il) {
+        if (member.getIdentifier()==null) {
+            return;
+        }
         Import i = new Import();
+        member.setImportModel(i);
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
         if (alias==null) {
@@ -219,6 +282,7 @@ public class TypeVisitor extends Visitor {
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name + " of " + d.getName(), 100);
+            unit.getUnresolvedReferences().add(member.getIdentifier());
         }
         else {
             if (!m.isShared()) {
@@ -237,15 +301,58 @@ public class TypeVisitor extends Visitor {
             }
             i.setDeclaration(m);
             member.setDeclarationModel(m);
-            unit.getImports().add(i);
-            //TODO: check for dupe!!
+            if (il.hasImport(m)) {
+                member.getIdentifier().addError("already imported: " +
+                        name + " of " + d.getName());
+            }
+            if (m.isStaticallyImportable()) {
+                addImport(member, il, i);
+            }
+            else {
+                addMemberImport(member, il, i);
+            }
+            checkAliasCase(alias, m);
         }
-        if (member.getImportMemberOrTypeList()!=null) {
-        	member.getImportMemberOrTypeList()
-        	        .addError("member aliases of member aliases not supported");
+        importMembers(member, m);
+        //imtl.addError("member aliases may not have member aliases");
+    }
+
+    private void addMemberImport(Tree.ImportMemberOrType member, ImportList il,
+            Import i) {
+        if (il.getImport(i.getAlias())==null) {
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else {
+            member.addError("duplicate member import alias: " + i.getAlias());
         }
     }
     
+    private boolean isNonimportable(Package pkg, String name) {
+        return pkg.getQualifiedNameString().equals("java.lang") &&
+        		("Object".equals(name) ||
+                 "Exception".equals(name) /*||
+                 "Throwable".equals(name)*/);
+    }
+
+    private void addImport(Tree.ImportMemberOrType member, ImportList il,
+            Import i) {
+        Import o = unit.getImport(i.getAlias());
+        if (o==null) {
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else if (o.isWildcardImport()) {
+            unit.getImports().remove(o);
+            il.getImports().remove(o);
+            unit.getImports().add(i);
+            il.getImports().add(i);
+        }
+        else {
+            member.addError("duplicate import alias: " + i.getAlias());
+        }
+    }
+        
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);
@@ -269,18 +376,57 @@ public class TypeVisitor extends Visitor {
             addToIntersection(types, st.getTypeModel(), unit);
         }
         it.setSatisfiedTypes(types);
-        ProducedType pt = it.getType();
-        that.setTypeModel(pt);
+        that.setTypeModel(it.getType());
         //that.setTarget(pt);
     }
 
+    @Override 
+    public void visit(Tree.SequenceType that) {
+        super.visit(that);
+        ProducedType et = that.getElementType().getTypeModel();
+        if (et!=null) {
+            that.setTypeModel(unit.getEmptyType(unit.getSequenceType(et)));
+        }
+    }
+    
+    @Override
+    public void visit(Tree.OptionalType that) {
+        super.visit(that);
+        ProducedType dt = that.getDefiniteType().getTypeModel();
+        if (dt!=null) {
+            that.setTypeModel(unit.getOptionalType(dt));
+        }
+    }
+    
+    @Override
+    public void visit(Tree.EntryType that) {
+        super.visit(that);
+        ProducedType kt = that.getKeyType().getTypeModel();
+        ProducedType vt = that.getValueType()==null ? 
+                new UnknownType(unit).getType() : 
+                that.getValueType().getTypeModel();
+        that.setTypeModel(unit.getEntryType(kt, vt));
+    }
+    
+    @Override
+    public void visit(Tree.FunctionType that) {
+        super.visit(that);
+        List<ProducedType> args = new ArrayList<ProducedType>();
+        args.add(that.getReturnType().getTypeModel());
+        for (Tree.StaticType st: that.getArgumentTypes()) {
+            args.add(st.getTypeModel());
+        }
+        that.setTypeModel(unit.getCallableDeclaration()
+                .getProducedType(null, args));
+    }
+    
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("type declaration does not exist or is ambiguous: " + 
-                    name(that.getIdentifier()), 100);
+                    name(that.getIdentifier()), 102);
             unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
@@ -371,7 +517,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-            that.setTypeModel(unit.getEmptyType(unit.getSequenceType(type)));
+            that.setTypeModel(unit.getIterableType(type));
         }
     }
 
@@ -460,15 +606,6 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
     }
     
-    @Override
-    public void visit(Tree.SequencedTypeParameterDeclaration that) {
-        Class vd = unit.getVoidDeclaration();
-        if (vd!=null) {
-            that.getDeclarationModel().setExtendedType(vd.getType());
-        }
-        super.visit(that);
-    }
-    
     @Override 
     public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
@@ -520,9 +657,26 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        if (that.getSpecifierExpression()==null
+        SpecifierExpression sie = that.getSpecifierExpression();
+        if (sie==null
                 && that.getType() instanceof Tree.FunctionModifier) {
             that.getType().addError("method must specify an explicit return type or definition");
+        }
+        TypedDeclaration dec = that.getDeclarationModel();
+        if (dec!=null) {
+            Scope s = dec.getContainer();
+            if (s instanceof Functional) {
+                Parameter param = ((Functional) s).getParameter( dec.getName() );
+                if (param instanceof ValueParameter && 
+                        ((ValueParameter) param).isHidden()) {
+                    ProducedType ft = dec.getProducedReference(null, 
+                            Collections.<ProducedType>emptyList()).getFullType();
+                    param.setType(ft);
+                    if (sie!=null) {
+                        sie.addError("has matching initializer parameter: " + dec.getName());
+                    }
+                }
+            }
         }
     }
     
@@ -530,9 +684,6 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
-        if (sie==null && that.getType() instanceof Tree.ValueModifier) {
-            that.getType().addError("attribute must specify an explicit type or definition", 200);
-        }
         TypedDeclaration dec = that.getDeclarationModel();
         if (dec!=null) {
             Scope s = dec.getContainer();
@@ -574,7 +725,12 @@ public class TypeVisitor extends Visitor {
             }*/
             ProducedType type = et.getTypeModel();
             if (type!=null) {
-                if (!isExtendable(type) && !inLanguageModule(that)) {
+                if (type.getDeclaration()==td) {
+                    //TODO: handle indirect circularities!
+                    et.addError("directly extends itself: " + td.getName());
+                    return;
+                }
+                if (!type.getDeclaration().isExtendable() && !inLanguageModule(that)) {
                     et.addError("directly extends a special language type: " +
                         type.getProducedTypeName());
                 }
@@ -615,17 +771,6 @@ public class TypeVisitor extends Visitor {
                 .startsWith("ceylon.language");
     }
     
-    private boolean isExtendable(ProducedType type) {
-        TypeDeclaration d = type.getDeclaration();
-        return !d.equals(unit.getBooleanDeclaration()) &&
-                !d.equals(unit.getCharacterDeclaration()) &&
-                !d.equals(unit.getIntegerDeclaration()) &&
-                !d.equals(unit.getFloatDeclaration()) &&
-                !d.equals(unit.getEntryDeclaration()) &&
-                !d.equals(unit.getRangeDeclaration()) &&
-                !d.equals(unit.getStringDeclaration());
-    }
-    
     @Override 
     public void visit(Tree.SatisfiedTypes that) {
         super.visit(that);
@@ -637,8 +782,12 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
             if (type!=null) {
-                if (type.getDeclaration().getQualifiedNameString()
-                        .equals("ceylon.language.Callable")) {
+                if (type.getDeclaration()==td) {
+                    //TODO: handle indirect circularities!
+                    t.addError("directly extends itself: " + td.getName());
+                    continue;
+                }
+                if (type.isCallable()) {
                     t.addError("directly satisfies Callable");
                 }
                 if (!(td instanceof TypeParameter)) {
@@ -692,7 +841,7 @@ public class TypeVisitor extends Visitor {
                 if (od!=null) {
                     ProducedType type = od.getType();
                     TypeDeclaration dec = type.getDeclaration();
-                    if (!dec.isToplevel() && isUpperCase(dec.getName().charAt(0))) {
+                    if (!dec.isToplevel() && !dec.isAnonymous()) {
                         bme.addError("case must refer to a toplevel object declaration");
                     }
                     else {
@@ -742,14 +891,31 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.ValueParameterDeclaration that) {
         super.visit(that);
         if (that.getType() instanceof LocalModifier) {
+            //i.e. an attribute initializer parameter
             ValueParameter d = that.getDeclarationModel();
             Declaration a = that.getScope().getDirectMember(d.getName(), null);
             if (a==null) {
                 that.addError("attribute does not exist: " + d.getName());
             }
-            else if (!(a instanceof Value)) {
-                that.addError("not a simple attribute: " + d.getName());
+            else if (!(a instanceof Value) && !(a instanceof Method)) {
+                that.addError("not a simple attribute or method: " + d.getName());
             }
+            else if (a.isFormal()) {
+                that.addError("initializer parameter refers to a formal attribute: " + 
+                        d.getName());
+            }
+            else {
+                ((MethodOrValue) a).setInitializerParameter(d);
+            }
+            /*if (d.isHidden() && d.getDeclaration() instanceof Method) {
+                if (a instanceof Method) {
+                    that.addWarning("initializer parameters for inner methods of methods not yet supported");
+                }
+                if (a instanceof Value && ((Value) a).isVariable()) {
+                    that.addWarning("initializer parameters for variables of methods not yet supported");
+                    
+                }
+            }*/
         }
     }
     

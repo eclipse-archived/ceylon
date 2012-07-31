@@ -258,6 +258,24 @@ TypeConstraints?
         
         </section>
         
+        <section>
+            <title>Imported name</title>
+            
+            <para>Inside a compilation unit which imports a declaration, the declaration
+            may be referred to by its <emphasis>imported name</emphasis>. For an import
+            element with an alias, the imported name is the alias. For an import element
+            with no alias, or for a wildcard import, the imported name is the name of the
+            declaration.</para>
+            
+            <para>An import element may not result in an imported name that is the same
+            as the name of a toplevel declaration contained in the compilation unit in
+            which the import element occurs.</para>
+            
+            <para>Two import elements occurring in the same compilation unit may not result 
+            in the same imported name.</para>
+            
+        </section>
+        
         </section>
         
         <!--
@@ -944,8 +962,8 @@ SequencedParam?
               or</para>
            </listitem>
            <listitem>
-              <para>is inherited from an interface or superclass, and is not refined by 
-              a declaration occurring earlier in the body of the class.</para>
+              <para>is inherited from an interface or superclass, and is not refined 
+              by a declaration occurring earlier in the body of the class.</para>
            </listitem>
         </itemizedlist>
         
@@ -953,15 +971,15 @@ SequencedParam?
         <literal>extend</literal> a member or nested class of an interface or 
         superclass of the class.</para>
         
-        <para>Furthermore, a statement or declaration that contained in the initializer 
+        <para>Furthermore, a statement or declaration contained in the initializer 
         of a class may not:</para>
         
         <itemizedlist>
            <listitem>
               <para>pass a self reference to the instance being initialized as an 
               argument of an instantiation, method invocation, or <literal>extends</literal> 
-              clause expression or as the value of an attribute assignment or specification, 
-              or</para>
+              clause expression or as the value of an attribute assignment or 
+              specification, or</para>
            </listitem>
            <listitem>
               <para><literal>return</literal> a self reference to the instance being 
@@ -1670,7 +1688,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         <itemizedlist>
             <listitem>
-                <para>a block of code, or</para>
+                <para>a block of code,</para>
             </listitem>
             <listitem>
                 <para>a reference to another method, or</para>
@@ -1680,6 +1698,9 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             </listitem>
         </itemizedlist>
         
+        <para>If a method is referenced by a parameter, it must not specify any 
+        implementation.</para>
+
         <!--
         <para>A member method body may invoke, evaluate or assign members of the instance
         being invoked&mdash;the current instance of the class which defines the 
@@ -2267,8 +2288,10 @@ else {
         must (directly or indirectly) extend the class <literal>IdentifiableObject</literal> 
         defined in <literal>ceylon.language</literal>.</para>
         
+        <!--
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be <literal>variable</literal>.</para>
+        -->
         
         <!--<section id="attributebodies">
             <title>Attribute bodies</title>-->
@@ -2295,8 +2318,8 @@ else {
             <title>Simple attributes and locals</title>
             
         <para>A simple attribute defines state. The value of a simple attribute or local
-        may be specified or initialized as part of the declaration, or via a later 
-        specification statement or assignment.</para>
+        may be specified or initialized as part of the declaration, via a later 
+        specification statement or assignment, or via a parameter that references it.</para>
         
         <programlisting>SimpleAttribute: AttributeHeader ( (Specifier | Initializer)? ";" | NamedArguments )</programlisting>
         
@@ -2382,10 +2405,10 @@ else {
             
             <programlisting>String greeting;
 switch (language)
-case ("en") {
+case (en) {
     greeting = "Hello";
 }
-case ("es") {
+case (es) {
     greeting = "Hola";
 }
 else {

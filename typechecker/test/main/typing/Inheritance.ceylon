@@ -173,4 +173,12 @@ class Inheritance() {
         }
     }
     
+    class XXXX(String s) {}
+    class YYYY(s) extends XXXX(s) {
+        shared String s;
+    }
+    
 }
+
+interface MyIdentif satisfies Identifiable {}
+class MyClass() extends Object() satisfies MyIdentif {}

@@ -149,7 +149,8 @@ public class SpecificationVisitor extends Visitor {
 
     private void visitReference(Tree.Primary that) {
         if (that instanceof Tree.MemberOrTypeExpression) {
-            Declaration member = ((Tree.MemberOrTypeExpression) that).getDeclaration();
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that;
+            Declaration member = mte.getDeclaration();
             //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
             //TODO: check superclass members are not in declaration section!
             if ( member==declaration && 
@@ -157,8 +158,8 @@ public class SpecificationVisitor extends Visitor {
                 if (!declared) {
                     //you are allowed to refer to later 
                     //declarations in a class declaration
-                    //section
-                    if (!isForwardReferenceable()) {
+                    //section or interface
+                    if (!isForwardReferenceable() && !hasParameter) {
                         if (declaration.getContainer() instanceof Class) {
                             that.addError("forward reference to class member in initializer: " + 
                                     member.getName() + " is not yet declared (forward references must occur in declaration section)");
@@ -172,7 +173,7 @@ public class SpecificationVisitor extends Visitor {
                 else if (!specified.definitely) {
                     //you are allowed to refer to formal
                     //declarations in a class declaration
-                    //section
+                    //section or interface
                     if (!declaration.isFormal()) {
                         if (isVariable()) {
                             that.addError("not definitely initialized: " + 
@@ -188,30 +189,39 @@ public class SpecificationVisitor extends Visitor {
                                 member.getName());                    
                     }
                 }
-                else {
-                    if ( member.isDefault() && !isForwardReferenceable() ) {
-                        that.addError("default member may not be used in initializer: " + 
-                                member.getName());                    
-                    }
+                if ( !mte.getAssigned() && member.isDefault() && 
+                        !isForwardReferenceable() ) {
+                    that.addError("default member may not be used in initializer: " + 
+                            member.getName());                    
                 }
             }
         }
     }
 
     private boolean isForwardReferenceable() {
-        return declarationSection || hasParameter ||
+        return declarationSection ||
                 declaration.isToplevel() ||
                 declaration.isInterfaceMember();
+    }
+    
+    private void assign(Tree.Term term) {
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression m = (Tree.MemberOrTypeExpression) term;
+            m.setAssigned(true);
+        }
     }
     
     @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
+        assign(lt);
         if (lt instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
             Declaration member = getBaseDeclaration(m, null);
             if (member==declaration) {
-                that.getRightTerm().visit(this);
+                if (that.getRightTerm()!=null) {
+                    that.getRightTerm().visit(this);
+                }
                 checkVariable(lt, that);
                 specify();
                 lt.visit(this);
@@ -224,18 +234,21 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AssignmentOp that) {
+        assign(that.getLeftTerm());
         super.visit(that);
         checkVariable(that.getLeftTerm(), that);
     }
 
     @Override
     public void visit(Tree.PostfixOperatorExpression that) {
+        assign(that.getTerm());
         super.visit(that);
         checkVariable(that.getTerm(), that);
     }
     
     @Override
     public void visit(Tree.PrefixOperatorExpression that) {
+        assign(that.getTerm());
         super.visit(that);
         checkVariable(that.getTerm(), that);
     }
@@ -254,7 +267,7 @@ public class SpecificationVisitor extends Visitor {
                                         member.getName(), 803);
                     }
                     else {
-                        node.addError("not a variable: " +
+                        term.addError("not a variable: " +
                                 member.getName(), 800);
                     }
                 }
@@ -265,6 +278,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.Term m = that.getBaseMemberExpression();
+        assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
 	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m, null);
 	        if (member==declaration) {
@@ -274,9 +288,10 @@ public class SpecificationVisitor extends Visitor {
 	                        m.getIdentifier().getText());
 	            }
 	            else*/ if (isVariable()) {
-	                that.getSpecifierExpression()
+	                //don't do it here!
+	                /*that.getSpecifierExpression()
 	                        .addError("variable values must be assigned using \":=\": " +
-	                            member.getName(), 802);
+	                            member.getName(), 802);*/
 	            }
 	            else if (!declared) {
                     that.addError("specified value is not yet declared: " + 
@@ -355,7 +370,7 @@ public class SpecificationVisitor extends Visitor {
             }
             else if (declaration.isInterfaceMember() && !declaration.isFormal()) {
                 that.addError("interface method must be formal or specified: " +
-                        declaration.getName());
+                        declaration.getName(), 1400);
             }
         }
     }

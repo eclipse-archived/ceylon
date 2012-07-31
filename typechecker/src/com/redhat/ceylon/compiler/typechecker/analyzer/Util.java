@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-class Util extends Visitor {
+class Util {
     
     static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
             List<ProducedType> signature) {
@@ -154,43 +154,114 @@ class Util extends Visitor {
         }
         return null;
     }
-            
+    
+    private static String message(ProducedType type, String problem, ProducedType otherType) {
+        String typeName = type.getProducedTypeName();
+        String otherTypeName = otherType.getProducedTypeName();
+        if (otherTypeName.equals(typeName)) {
+            typeName = type.getProducedTypeQualifiedName();
+            otherTypeName = otherType.getProducedTypeQualifiedName();
+        }
+        return ": " + typeName + problem + otherTypeName;
+    }
+    
+    private static String message(ProducedType type, String problem) {
+        String typeName = type.getProducedTypeName();
+        return ": " + typeName + problem;
+    }
+    
+    static boolean checkCallable(ProducedType type, Node node, String message) {
+        if (isTypeUnknown(type)) {
+            addTypeUnknownError(node, message);
+            return false;
+        }
+        else if (!type.isCallable()) {
+            if (!hasError(node)) {
+                node.addError(message + message(type, " is not a subtype of Callable"));
+            }
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    static ProducedType checkSupertype(ProducedType pt, TypeDeclaration td, 
+            Node node, String message) {
+        if (isTypeUnknown(pt)) {
+            addTypeUnknownError(node, message);
+            return null;
+        }
+        else {
+            ProducedType supertype = pt.getSupertype(td);
+            if (supertype==null) {
+                node.addError(message + message(pt, " is not a subtype of " + td.getName()));
+            }
+            return supertype;
+        }
+    }
+
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
-        if (type==null||supertype==null) {
-        	//this is always a bug now, i suppose?
-            node.addError(message);
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
+        	addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	if (type.getDeclaration() instanceof UnknownType) {
-            	node.addError(message + ": type of expression cannot be determined");
-            }
-        	else {
-	            node.addError(message + ": " + type.getProducedTypeName() + 
-	                    " is not assignable to " + supertype.getProducedTypeName());
-        	}
+        	node.addError(message + message(type, " is not assignable to ", supertype));
+        }
+    }
+
+    static void checkAssignable(ProducedType type, ProducedType supertype, 
+            Node node, String message, int code) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, message);
+        }
+        else if (!type.isSubtypeOf(supertype)) {
+            node.addError(message + message(type, " is not assignable to ", supertype), code);
         }
     }
 
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             TypeDeclaration td, Node node, String message) {
-        if (type==null||supertype==null) {
-            node.addError(message);
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype, td)) {
-            node.addError(message + ": " + type.getProducedTypeName() + 
-                    " is not assignable to " + supertype.getProducedTypeName());
+            node.addError(message + message(type, " is not assignable to ", supertype));
         }
     }
 
     static void checkIsExactly(ProducedType type, ProducedType supertype, 
             Node node, String message) {
-        if (type==null||supertype==null) {
-            node.addError(message + ": type not known");
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, message);
         }
         else if (!type.isExactly(supertype)) {
-            node.addError(message + ": " + type.getProducedTypeName() + 
-                    " is not exactly " + supertype.getProducedTypeName());
+            node.addError(message + message(type, " is not exactly ", supertype));
+        }
+    }
+    
+    private static boolean hasError(Node node) {
+        class ErrorVisitor extends Visitor {
+            boolean found = false;
+            @Override
+            public void visitAny(Node that) {
+                if (that.getErrors().isEmpty()) {
+                    super.visitAny(that);
+                }
+                else {
+                    found = true;
+                }
+            }
+        }
+        ErrorVisitor ev = new ErrorVisitor();
+        node.visit(ev);
+        return ev.found;
+    }
+
+    private static void addTypeUnknownError(Node node, String message) {
+        if (!hasError(node)) {
+            node.addError(message + ": type cannot be determined");
         }
     }
 

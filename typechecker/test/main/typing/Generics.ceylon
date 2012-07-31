@@ -100,9 +100,8 @@ class Generics() {
             shared actual GoodClassInheritance clone = GoodClassInheritance();
             shared actual X? item(Integer key) { return null; }
             shared actual X[] segment(Integer from, Integer length) { return this; }
-            shared actual X first {
-                throw;
-            }
+            shared actual X first { throw; }
+            shared actual Sequence<X> reversed { return this; }
             shared actual X[] span(Integer from, Integer? to) { return this; }
         }
         @error class BadClassInheritance() satisfies Sequence<Y> {}
@@ -414,7 +413,7 @@ class Generics() {
 
     interface Super1 satisfies Inter1<Bottom> & Inter2<String> {}
     interface Super2 satisfies Inter1<Integer> & Inter2<Object> {}
-    class Impl() satisfies Super1 & Super2 {}
+    @error class Impl() satisfies Super1 & Super2 {}
     value impl = Impl();
     String implget1 = impl.get();
     @error Integer implget2 = impl.get();
@@ -427,7 +426,7 @@ class Generics() {
 
     interface Super3 satisfies Inter1<Object> & Inter2<String> {}
     interface Super4 satisfies Inter1<Integer> & Inter2<Bottom> {}
-    class Conc() satisfies Super3 & Super4 {}
+    @error class Conc() satisfies Super3 & Super4 {}
     value conc = Conc();
     String concget1 = conc.get();
     Integer concget2 = conc.get();
@@ -475,4 +474,38 @@ class Generics() {
     class A4<in V, W>() extends Algebraic<Bottom,V,W>() {}
     class A5<out U, W>() extends Algebraic<U,Void,W>() {}
     class A6<out U, in V, W>() extends Algebraic<U,V,W>() {}
+    
+    T genericMethod1<T>(T t) given T satisfies Numeric<T> {
+        return t;
+    }
+    T genericMethod2<T>(T? t) given T satisfies Object {
+        if (exists t) {
+            return t;
+        }
+        else {
+            throw;
+        }
+    }
+    @error genericMethod1("hello");
+    @type["Integer"] genericMethod1(1);
+    @type["String"] genericMethod2("hello");
+    @type["String"] genericMethod2(true then "hello");
+    
+    @type["Iterable<String>"] coalesce(null, "hello");
+    @type["Empty|Sequence<String>"] join({}, {"hello", "world"}, {"goodbye"});
+    
+    class ParamOuter<T>() {
+        class Inner<Y>(){
+            class Innerest() {}
+            @error ParamOuter<String>.Inner<Y>.Innerest();
+            @error ParamOuter<T>.Inner<Integer>.Innerest();
+            ParamOuter<T>.Inner<Y>.Innerest();
+        }
+        @error ParamOuter<String>.Inner<Integer>();
+        ParamOuter<T>.Inner<Integer>();
+    }
+    
+    String->Object okEntry;
+    @error String->Void brokenEntry1;
+    @error Nothing->String brokenEntry2;
 }

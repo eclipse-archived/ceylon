@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,12 +14,10 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
@@ -332,7 +329,7 @@ public class ModuleManager {
                 //populate module.getDependencies()
                 modulePhasedUnit.visitModules();
             } catch (Exception e) {
-                StringBuilder error = new StringBuilder("Unable to read source artifact for ");
+                StringBuilder error = new StringBuilder("unable to read source artifact for ");
                 error.append(artifactContext.toString());
                 error.append( "\ndue to connection error: ").append(e.getMessage());
                 attachErrorToDependencyDeclaration(moduleImport, error.toString());

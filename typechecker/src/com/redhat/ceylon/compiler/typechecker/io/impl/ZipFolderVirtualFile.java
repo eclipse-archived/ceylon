@@ -1,12 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.io.impl;
 
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.zip.ZipEntry;
+
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>

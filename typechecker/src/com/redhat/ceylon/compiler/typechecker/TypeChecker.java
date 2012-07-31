@@ -23,9 +23,10 @@ import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 //TODO make an interface?
 public class TypeChecker {
 
-    public static final String LANGUAGE_MODULE_VERSION = "0.2";
+    public static final String LANGUAGE_MODULE_VERSION = "0.3.1";
 
     private final boolean verbose;
+    private final boolean statistics;
     private final List<VirtualFile> srcDirectories;
     private final Context context;
     private final PhasedUnits phasedUnits;
@@ -36,11 +37,12 @@ public class TypeChecker {
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, RepositoryManager repositoryManager, boolean verifyDependencies,
-            AssertionVisitor assertionVisitor, ModuleManagerFactory moduleManagerFactory, boolean verbose,
+            AssertionVisitor assertionVisitor, ModuleManagerFactory moduleManagerFactory, boolean verbose, boolean statistics,
             List<String> moduleFilters) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
+        this.statistics = statistics;
         this.context = new Context(repositoryManager, vfs);
         this.phasedUnits = new PhasedUnits(context, moduleManagerFactory);
         this.verifyDependencies = verifyDependencies;
@@ -49,7 +51,7 @@ public class TypeChecker {
         phasedUnits.setModuleFilters(moduleFilters);
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
-        if(verbose)
+        if(statistics)
         	System.out.println("Parsed in " + time/1000000 + " ms");
     }
 
@@ -120,7 +122,7 @@ public class TypeChecker {
         long start = System.nanoTime();
         executePhases(phasedUnits, false);
         long time = System.nanoTime()-start;
-        if(verbose)
+        if(statistics)
         	System.out.println("Type checked in " + time/1000000 + " ms");
     }
 
@@ -160,6 +162,9 @@ public class TypeChecker {
         for (PhasedUnit pu: listOfUnits) {
             pu.analyseFlow();
         }
+        for (PhasedUnit pu: listOfUnits) {
+            pu.analyseUsage();
+        }
 
         if (!forceSilence) {
             for (PhasedUnit pu : listOfUnits) {
@@ -169,7 +174,7 @@ public class TypeChecker {
                 pu.generateStatistics(statsVisitor);
                 pu.runAssertions(assertionVisitor);
             }
-            if(verbose)
+            if(verbose||statistics)
             	statsVisitor.print();
             assertionVisitor.print(verbose);
         }

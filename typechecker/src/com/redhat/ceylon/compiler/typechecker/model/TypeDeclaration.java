@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public abstract class TypeDeclaration extends Declaration 
-        implements Scope, Generic, Cloneable {
+        implements ImportableScope, Generic, Cloneable {
 
     private ProducedType extendedType;
     private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
@@ -370,7 +370,7 @@ public abstract class TypeDeclaration extends Declaration
             //looking for, return it
             //TODO: should also return it if we're 
             //      calling from local scope!
-            if (isAbstraction(d)){
+            if (signature!=null && isAbstraction(d)){
                 // look for a supertype decl that matches the signature better
                 Declaration s = getSupertypeDeclaration(name, signature);
                 if (s!=null && !isAbstraction(s)) {
@@ -405,7 +405,7 @@ public abstract class TypeDeclaration extends Declaration
         //declarations
         Declaration d = getDirectMemberOrParameter(name, signature);
         if (d!=null) {
-            if(isAbstraction(d)){
+            if (signature!=null && isAbstraction(d)){
                 // look for a supertype decl that matches the signature better
                 Declaration s = getSupertypeDeclaration(name, signature);
                 if (s!=null && !isAbstraction(s)) {
@@ -510,6 +510,16 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
 
+    public boolean isExtendable() {
+        return !equals(unit.getBooleanDeclaration()) &&
+                !equals(unit.getCharacterDeclaration()) &&
+                !equals(unit.getIntegerDeclaration()) &&
+                !equals(unit.getFloatDeclaration()) &&
+                !equals(unit.getEntryDeclaration()) &&
+                !equals(unit.getRangeDeclaration()) &&
+                !equals(unit.getStringDeclaration());
+    }
+    
     /**
      * Is this a class or interface alias? 
      */
@@ -525,28 +535,49 @@ public abstract class TypeDeclaration extends Declaration
         return selfType;
     }
     
+    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+        //TODO: fix copy/paste from below!
+        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && d.isShared() && 
+                    isNameMatching(startingWith, d) ) {
+                boolean already = false;
+                for (Import i: imports) {
+                    if (i.getDeclaration().equals(d)) {
+                        already = true;
+                        break;
+                    }
+                }
+                if (!already) {
+                    result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                }
+            }
+        }
+        return result;
+    }
+    
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-        Map<String, DeclarationWithProximity> result = getMatchingMemberDeclarations(startingWith, proximity);
-        //TODO: is this correct? I thought inherited declarations hide outer
-        //      declarations! I think this is a bug
-        result.putAll(super.getMatchingDeclarations(unit, startingWith, proximity));
+        Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity);
+        //Inherited declarations hide outer and imported declarations
+        result.putAll(getMatchingMemberDeclarations(startingWith, proximity));
+        //Local declarations always hide inherited declarations, even if non-shared
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && isNameMatching(startingWith, d)) {
+                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+            }
+        }
         return result;
     }
 
     public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
         Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
-        TypeDeclaration et = getExtendedTypeDeclaration();
         for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-            //TODO: account for the case where one interface refines
-            //      a formal member of a second interface
-            result.putAll(st.getMatchingMemberDeclarations(startingWith, proximity+1));
+            mergeMembers(result, st.getMatchingMemberDeclarations(startingWith, proximity+1));
         }
+        TypeDeclaration et = getExtendedTypeDeclaration();
         if (et!=null) {
-            //TODO: Object has a formal declaration of "string", that might 
-            //      be refined by an interface, in which case we should ignore
-            //      it here
-            result.putAll(et.getMatchingMemberDeclarations(startingWith, proximity+1));
+            mergeMembers(result, et.getMatchingMemberDeclarations(startingWith, proximity+1));
         }
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
@@ -556,6 +587,16 @@ public abstract class TypeDeclaration extends Declaration
         }
         //TODO: self type?
         return result;
+    }
+
+    private void mergeMembers(Map<String, DeclarationWithProximity> result,
+            Map<String, DeclarationWithProximity> etm) {
+        for (Map.Entry<String, DeclarationWithProximity> e: etm.entrySet()) {
+            DeclarationWithProximity dwp = result.get(e.getKey());
+            if (dwp==null || !dwp.getDeclaration().refines(e.getValue().getDeclaration())) {
+                result.put(e.getKey(), e.getValue());
+            }
+        }
     }
 
 }

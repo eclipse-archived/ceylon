@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
+import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -22,6 +24,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     private List<Message> foundErrors = new ArrayList<Message>();
     private int errors = 0;
     private int warnings = 0;
+    private boolean usageWarnings = false;
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
@@ -108,8 +111,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.err.println(
             message + " at " + 
             that.getLocation() + " of " +
-            that.getUnit().getFilename() + " in " + 
-            that.getUnit().getPackage().getNameAsString());
+            file(that));
     }
 
     protected void out(Node that, LexError err) {
@@ -118,8 +120,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             "lex error encountered [" +
             err.getMessage() + "] at " + 
             err.getHeader() + " of " + 
-            that.getUnit().getFilename() + " in " + 
-            that.getUnit().getPackage().getNameAsString());
+            file(that));
     }
 
     protected void out(Node that, ParseError err) {
@@ -128,8 +129,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             "parse error encountered [" +
             err.getMessage() + "] at " + 
             err.getHeader() + " of " + 
-            that.getUnit().getFilename() + " in " + 
-            that.getUnit().getPackage().getNameAsString());
+            file(that));
     }
 
     protected void out(UnexpectedError err) {
@@ -137,9 +137,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.err.println(
             "unexpected error encountered [" +
             err.getMessage() + "] at " + 
-            err.getTreeNode().getLocation() + " of " +
-            err.getTreeNode().getUnit().getFilename() + " in " + 
-            err.getTreeNode().getUnit().getPackage().getNameAsString());
+            loc(err));
     }
 
     protected void out(AnalysisError err) {
@@ -147,20 +145,37 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.err.println(
             "error encountered [" +
             err.getMessage() + "] at " + 
-            err.getTreeNode().getLocation() + " of " +
-            err.getTreeNode().getUnit().getFilename() + " in " + 
-                    err.getTreeNode().getUnit().getPackage().getNameAsString());
+            loc(err));
     }
 
     protected void out(AnalysisWarning err) {
         warnings++;
         System.out.println(
-            "warning encountered [" +
+            "warning encountered [" + 
             err.getMessage() + "] at " + 
-            err.getTreeNode().getLocation() + " of " +
-            err.getTreeNode().getUnit().getFilename() + " in " + 
-            err.getTreeNode().getUnit().getPackage().getNameAsString());
+            loc(err));
     }
+
+    /**
+     * Prints warning messages for unused declarations.
+     *
+     * @param err error message
+     */
+    protected void out(UsageWarning err) {
+        System.out.println(
+            "warning encountered [" +
+            err.getMessage() + "] at " +
+            loc(err));
+    }
+
+	private String loc(AnalysisMessage err) {
+		return err.getTreeNode().getLocation() + " of " +
+		            file(err.getTreeNode());
+	}
+
+	private String file(Node that) {
+		return that.getUnit().getRelativePath();
+	}
 
     private void checkErrors(Node that) {
     	for (Message err: foundErrors) {
@@ -193,6 +208,11 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                     if (includeWarnings()) {
                         out( (AnalysisWarning) err );
                     }
+                } 
+                else if (err instanceof UsageWarning) {
+                    if (usageWarnings) {
+                        out( (UsageWarning) err );
+                    }
                 }
             }
         }
@@ -210,6 +230,15 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         return true;
     }
     
+    /**
+     * Enables or disables output of the warnings for the unused declarations
+     * 
+     * @param usageWarnings true to enable output and false otherwise.
+     */
+    public void includeUsageWarnings(boolean usageWarnings) {
+        this.usageWarnings = usageWarnings;
+    }
+
     @Override
     public void visitAny(Node that) {
         foundErrors.addAll(that.getErrors());

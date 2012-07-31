@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
  */
 public class TypeCheckerBuilder {
     private boolean verbose = false;
+    private boolean statistics = false;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
@@ -95,6 +96,22 @@ public class TypeCheckerBuilder {
         return this;
     }
     
+    public TypeCheckerBuilder statistics(boolean statistics) {
+        this.statistics = statistics;
+        return this;
+    }
+
+    /**
+     * Enables or disables output of the warning messages about unused declarations.
+     *
+     * @param usageWarnings error message.
+     * @return type checker instance.
+     */
+    public TypeCheckerBuilder usageWarnings(boolean usageWarnings) {
+        this.assertionVisitor.includeUsageWarnings(usageWarnings);
+        return this;
+    }
+
     public TypeCheckerBuilder moduleManagerFactory(ModuleManagerFactory moduleManagerFactory){
     	this.moduleManagerFactory = moduleManagerFactory;
     	return this;
@@ -108,7 +125,7 @@ public class TypeCheckerBuilder {
         if (repositoryManager == null) {
             repositoryManager = new RepositoryManagerBuilder( new LeakingLogger() ).buildRepository();
         }
-        return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose, moduleFilters);
+        return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose, statistics, moduleFilters);
     }
 
 }

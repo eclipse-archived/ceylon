@@ -9,6 +9,7 @@ import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
@@ -176,7 +177,11 @@ public abstract class Node {
 	}
     
     public void setEndToken(Token endToken) {
-		this.endToken = endToken;
+        //the tokens ANTLR inserts to represent missing tokens
+        //don't come with useful offset information
+        if (endToken==null || !isMissingToken(endToken)) {
+            this.endToken = endToken;
+        }
 	}
     
     /**
@@ -201,7 +206,11 @@ public abstract class Node {
     public void addWarning(String message) {
         errors.add( new AnalysisWarning(this, message) );
     }
-    
+
+    public void addUsageWarning(String message) {
+        errors.add( new UsageWarning(this, message) );
+    }
+
     public void addParseError(ParseError error) {
         errors.add(error);
     }
@@ -248,7 +257,7 @@ public abstract class Node {
 		}
 	}
 
-	protected List<Node> getChildren() {
+	public List<Node> getChildren() {
 		return children;
 	}
 
