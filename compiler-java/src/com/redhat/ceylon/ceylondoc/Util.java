@@ -62,7 +62,7 @@ public class Util {
     }
 
     public static String getDoc(Module module) {
-        List<String> doc = getAnnotationValues(module, "doc");
+        List<String> doc = getAnnotationValues(module.getAnnotations(), "doc");
         return doc != null && !doc.isEmpty() ? wikiToHTML(unquote(doc.get(0))) : "";
     }
     /** Returns the list of authors specified in the module through "by" annotations. */
@@ -87,7 +87,7 @@ public class Util {
     }
 
     public static String getDoc(Package pkg) {
-        List<String> doc = getAnnotationValues(pkg, "doc");
+        List<String> doc = getAnnotationValues(pkg.getAnnotations(), "doc");
         return doc != null && !doc.isEmpty() ? wikiToHTML(unquote(doc.get(0))) : "";
     }
 
@@ -182,18 +182,9 @@ public class Util {
         }
         return a;
     }
-    /** Finds the annotation with the specified name, in the Module. */
-    public static List<String> getAnnotationValues(Module m, String name) {
-        for (Annotation a : m.getAnnotations()) {
-            if (a.getName().equals(name) && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
-                return a.getPositionalArguments();
-            }
-        }
-        return null;
-    }
-    /** Finds the annotation with the specified name, in the Package. */
-    public static List<String> getAnnotationValues(Package p, String name) {
-        for (Annotation a : p.getAnnotations()) {
+    /** Finds the annotation with the specified name from the list. */
+    public static List<String> getAnnotationValues(List<Annotation> anns, String name) {
+        for (Annotation a : anns) {
             if (a.getName().equals(name) && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
                 return a.getPositionalArguments();
             }
