@@ -256,19 +256,4 @@ public abstract class Declaration extends Element {
     
     public abstract DeclarationKind getDeclarationKind();
 
-    /**
-     * Gets the number of expressions referencing this declaration.
-     *
-     * @return number of references
-     */
-    public int getRefCount() {
-        return refCount;
-    }
-
-    /**
-     * Increment number of references.
-     */
-    public void incRefCount() {
-        refCount++;
-    }
 }
