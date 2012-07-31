@@ -35,7 +35,9 @@ shared interface Set<out Element>
     }
 
     doc "Two `Set`s are considered equal if they have the 
-         same size and share all the same elements."
+         same size and if every element of the first set is
+         also an element of the second set, as determined
+         by `contains()`."
     shared actual default Boolean equals(Object that) {
         if (is Set<Object> that) {
             if (that.size==size) {
@@ -74,7 +76,7 @@ shared interface Set<out Element>
 
     doc "Returns a new `Set` containing only the elements 
          contained in either this `Set` or the given `Set`, 
-         but not both."
+         but no element contained in both sets."
     shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object;
 

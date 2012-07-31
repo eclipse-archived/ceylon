@@ -98,8 +98,16 @@ shared interface List<out Element>
     shared actual formal List<Element> segment(Integer from,
                                            Integer length);*/
 
-    doc "Two `List`s are considered equal if they have the 
-         same size and for every index have equal elements."
+    doc "Two `List`s are considered equal iff they have the 
+         same `size` and _entry sets_. The entry set of a 
+         list `l` is the set of elements of `l.indexed`. 
+         This definition is equivalent to the more intuitive 
+         notion that two lists are equal iff they have the 
+         same `size` and for every index either:
+         
+         - the lists both have the element `null`, or
+         - the lists both have a non-null element, and the
+           two elements are equal."
     shared actual default Boolean equals(Object that) {
         if (is List<Void> that) {
             if (that.size==size) {

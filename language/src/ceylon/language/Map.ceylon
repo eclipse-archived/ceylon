@@ -12,9 +12,12 @@ shared interface Map<out Key,out Item>
         given Key satisfies Object
         given Item satisfies Object {
 
-    doc "Two `Map`s are considered equal if they have the 
-         same size, the same set of keys, and equal elements 
-         stored under each key."
+    doc "Two `Map`s are considered equal iff they have the 
+         same _entry sets_. The entry set of a `Map` is the
+         set of `Entry`s belonging to the map. Therefore, the
+         maps are equal iff they have same set of `keys`, and 
+         for every key in the key set, the maps have equal
+         items."
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Object> that) {
             if (that.size==size) {
