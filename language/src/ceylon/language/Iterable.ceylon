@@ -285,8 +285,22 @@ shared interface Iterable<out Element>
             return this;
         } 
         else {
-           variable value i:=0;
-           return elements { for (e in this) if (i++%step==0) e };
+            object iterable satisfies Iterable<Element> {
+                shared actual Iterator<Element> iterator {
+                    value outerIterable { return outer; }
+                    object iterator satisfies Iterator<Element> {
+                        value iter = outerIterable.iterator;
+                        actual shared Element|Finished next() {
+                            value next = iter.next();
+                            variable value i:=0;
+                            while (++i<step && !is Finished iterator.next()) {}
+                            return next;
+                        }
+                    }
+                    return iterator;
+                }
+            }
+            return iterable;
         }
     }
 
