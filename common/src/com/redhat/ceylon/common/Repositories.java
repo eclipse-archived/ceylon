@@ -104,8 +104,8 @@ public class Repositories {
                 File dir = new File(".", "modules");
                 return new Repository(REPO_NAME_LOCAL, dir.getPath(), null, null);
             } else if (REPO_NAME_CACHE.equals(repoName)) {
-                // $HOME/.ceylon/repo
-                File dir = getUserRepoDir();
+                // $HOME/.ceylon/cache
+                File dir = getCacheRepoDir();
                 return new Repository(REPO_NAME_CACHE, dir.getAbsolutePath(), null, null);
             } else if (REPO_NAME_USER.equals(repoName)) {
                 // $HOME/.ceylon/repo
@@ -165,6 +165,16 @@ public class Repositories {
         } else {
             File userDir = CeylonConfig.getUserDir();
             return new File(userDir, "repo");
+        }
+    }
+    
+    public File getCacheRepoDir() {
+        String ceylonUserRepo = System.getProperty("ceylon.cache.repo");
+        if (ceylonUserRepo != null) {
+            return new File(ceylonUserRepo);
+        } else {
+            File userDir = CeylonConfig.getUserDir();
+            return new File(userDir, "cache");
         }
     }
     
