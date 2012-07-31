@@ -29,7 +29,8 @@ public class NamedArgumentList extends Element implements Scope {
         Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity+1);
         if (getParameterList()!=null) {
             for (Parameter p: getParameterList().getParameters()) {
-                if (p.getName().startsWith(startingWith) && !getArgumentNames().contains(p.getName())) {
+                if (p.getName().startsWith(startingWith) && 
+                		!getArgumentNames().contains(p.getName())) {
                     result.put(p.getName(), new DeclarationWithProximity(p, this));
                 }
             }

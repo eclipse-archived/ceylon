@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
@@ -84,30 +85,34 @@ public class Module {
         return list;
     }
     
-    public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
 		int jdkResults = 0;
     	for (Package p: getAllPackages()) {
     		String moduleName = p.getModule().getNameAsString();
 			boolean isJdk = moduleName.startsWith("java");
 			boolean isLanguageModule = moduleName.equals("ceylon.language");
-			boolean isDefaultPackage = p.getNameAsString().isEmpty();
-			if ((!isJdk||jdkResults<10) && !isDefaultPackage) {
-				int prox;
-				if (isJdk) {
-					prox=200;
-				}
-				else if (isLanguageModule) {
-					prox=100; 
-				}
-				else {
-					prox=proximity;
-				}
+			String packageName = p.getNameAsString();
+			boolean isDefaultPackage = packageName.isEmpty();
+			if ((!isJdk||jdkResults<10) && 
+					(!isJdk||packageName.startsWith("java")) && 
+					!isDefaultPackage) {
     			for (Declaration d: p.getMembers()) {
     				if (isJdk&&jdkResults>=10) break;
     				try {
     					if (isResolvable(d) && d.isShared() && 
+    							!isOverloadedVersion(d) &&
     							isNameMatching(startingWith, d)) {
+    						int prox;
+    						if (isJdk) {
+    							prox=500;
+    						}
+    						else if (isLanguageModule) {
+    							prox=200; 
+    						}
+    						else {
+    							prox=250;
+    						}
     						result.put(d.getQualifiedNameString(), 
     								new DeclarationWithProximity(d, prox, 
     										!isLanguageModule));

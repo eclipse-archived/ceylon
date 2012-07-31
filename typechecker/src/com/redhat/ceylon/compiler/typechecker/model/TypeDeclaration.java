@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
@@ -545,6 +546,7 @@ public abstract class TypeDeclaration extends Declaration
         Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
+            		!isOverloadedVersion(d) &&
                     isNameMatching(startingWith, d) ) {
                 boolean already = false;
                 for (Import i: imports) {
@@ -568,8 +570,10 @@ public abstract class TypeDeclaration extends Declaration
         result.putAll(getMatchingMemberDeclarations(startingWith, proximity));
         //Local declarations always hide inherited declarations, even if non-shared
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && isNameMatching(startingWith, d)) {
-                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+            if (isResolvable(d) && !isOverloadedVersion(d) &&
+            		isNameMatching(startingWith, d)) {
+                result.put(d.getName(), 
+                		new DeclarationWithProximity(d, proximity));
             }
         }
         return result;
@@ -586,8 +590,10 @@ public abstract class TypeDeclaration extends Declaration
         }
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
+            		!isOverloadedVersion(d) &&
                     isNameMatching(startingWith, d)) {
-                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                result.put(d.getName(), 
+                		new DeclarationWithProximity(d, proximity));
             }
         }
         //TODO: self type?

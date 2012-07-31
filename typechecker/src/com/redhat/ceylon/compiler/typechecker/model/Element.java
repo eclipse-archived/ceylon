@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
@@ -124,7 +125,7 @@ public abstract class Element {
     	Map<String, DeclarationWithProximity> result = getContainer()
     			.getMatchingDeclarations(unit, startingWith, proximity+1);
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && isNameMatching(startingWith, d)) {
+            if (isResolvable(d) && !isOverloadedVersion(d) && isNameMatching(startingWith, d)) {
                 result.put(d.getName(), new DeclarationWithProximity(d, proximity));
             }
         }
