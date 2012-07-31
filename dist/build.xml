@@ -184,6 +184,7 @@ Used with another target such as 'package'">
             <fileset dir="${ceylon-compiler.dir}/build/lib">
                 <include name="antlr-*-complete.jar"/>
                 <include name="markdownj-*.jar"/>
+                <include name="txtmark-*.jar"/>
             </fileset>
         </copy>
     </target>
