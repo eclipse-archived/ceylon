@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.cmr.module.def;
+package com.redhat.ceylon.compiler.java.test.cmr.modules.def;
 
 /*
  * Copyright Red Hat Inc. and/or its affiliates and other contributors

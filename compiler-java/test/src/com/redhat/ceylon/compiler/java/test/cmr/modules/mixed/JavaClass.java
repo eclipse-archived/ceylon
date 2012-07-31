@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.cmr.module.mixed;
+package com.redhat.ceylon.compiler.java.test.cmr.modules.mixed;
 
 /*
  * Copyright Red Hat Inc. and/or its affiliates and other contributors

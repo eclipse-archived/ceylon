@@ -102,7 +102,7 @@ public class CMRTestHTTP extends CompilerTest {
         try{
             // then try to compile only one module (the other being loaded from its car) 
             result = getCompilerTask(Arrays.asList("-out", destDir, "-rep", repoAURL),
-                    "modules/depend/b/module.ceylon", "module/depend/b/package.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
+                    "modules/depend/b/module.ceylon", "modules/depend/b/package.ceylon", "modules/depend/b/a.ceylon", "modules/depend/b/B.ceylon").call();
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
