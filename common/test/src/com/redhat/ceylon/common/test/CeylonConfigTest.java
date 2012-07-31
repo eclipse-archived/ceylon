@@ -70,6 +70,13 @@ public class CeylonConfigTest {
     }
     
     @Test
+    public void testCurrentDirs() {
+        Assert.assertTrue(compareCurrentDir("test/src/com/redhat/ceylon/common/test", testConfig.getOption("test.currentdir-simple")));
+        Assert.assertTrue(compareCurrentDir("test/src/com/redhat/ceylon/common/test/with/extra/path", testConfig.getOption("test.currentdir-extra")));
+        Assert.assertTrue(compareCurrentDir("before/${DIR}", testConfig.getOption("test.currentdir-fake")));
+    }
+    
+    @Test
     public void testCommentedStrings() {
         Assert.assertEquals("hello", testConfig.getOption("test.commented.string-hello"));
         Assert.assertEquals("world", testConfig.getOption("test.commented.string-world"));
@@ -116,6 +123,8 @@ public class CeylonConfigTest {
     @Test
     public void testLocalConfig() {
         Assert.assertEquals("bar", localConfig.getOption("local.foo", "notbar"));
+        Assert.assertTrue(compareCurrentDir("test/.ceylon", localConfig.getOption("local.dir")));
+        Assert.assertTrue(compareCurrentDir("test", localConfig.getOption("local.dir2")));
     }
     
     @Test
@@ -123,7 +132,7 @@ public class CeylonConfigTest {
         Assert.assertEquals("bar", mergedConfig.getOption("local.foo", "notbar"));
         Assert.assertEquals("hallo", mergedConfig.getOption("test.string-hello"));
         Assert.assertEquals("world", mergedConfig.getOption("test.string-world"));
-        Assert.assertTrue(compareStringArrays(new String[]{"one", "two"}, testConfig.getOptionValues("test.multiple.strings")));
+        Assert.assertTrue(compareStringArrays(new String[]{"one", "two"}, mergedConfig.getOptionValues("test.multiple.strings")));
     }
     
     private boolean compareStringArrays(String[] one, String[] two) {
@@ -134,5 +143,15 @@ public class CeylonConfigTest {
         Arrays.sort(one);
         Arrays.sort(two);
         return Arrays.equals(one, two);
+    }
+    
+    private boolean compareCurrentDir(String one, String two) {
+        File f1 = new File(one);
+        File f2 = new File(two);
+        try {
+            return f1.getCanonicalFile().equals(f2.getCanonicalFile());
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
