@@ -96,10 +96,10 @@ class Attribute {
     public final boolean getNew() {
         return new;
     }
-    private final boolean package;
+    private final boolean pkg;
     
-    public final boolean getPackage() {
-        return package;
+    public final boolean getPkg() {
+        return pkg;
     }
     private final boolean private;
     
@@ -172,7 +172,7 @@ class Attribute {
         this.long = false;
         this.native = false;
         this.new = false;
-        this.package = false;
+        this.pkg = false;
         this.private = false;
         this.protected = false;
         this.public = false;

@@ -59,7 +59,7 @@ class Method {
     private final void $new() {
     }
     
-    private final void $package() {
+    private final void pkg() {
     }
     
     private final void $private() {

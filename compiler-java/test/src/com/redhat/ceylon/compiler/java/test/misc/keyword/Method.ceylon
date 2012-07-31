@@ -38,7 +38,7 @@ class Method() {
     void long() {}
     void native() {}
     void new() {}
-    void package() {}
+    void pkg() {}
     void private() {}
     void protected() {}
     void public() {}
