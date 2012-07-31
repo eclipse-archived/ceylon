@@ -18,11 +18,11 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C (Integer n){
+shared class C (Integer n){
 }
 
 @nomodel
-interface I {
+shared interface I {
  shared formal Boolean id(Boolean x);
 }
 
