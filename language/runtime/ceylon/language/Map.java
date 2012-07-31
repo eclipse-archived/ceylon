@@ -46,6 +46,7 @@ public interface Map<Key,Item>
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Map<Key,Result>")
+    @TypeParameters(@TypeParameter(value = "Result", satisfies = "ceylon.language.Object"))
     public <Result> Map<? extends Key, ? extends Result> mapItems(
             @Name("mapping") @TypeInfo("ceylon.language.Callable<Result,Key,Item>")
             Callable<? extends Result> mapping);
