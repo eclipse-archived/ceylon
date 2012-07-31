@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug493;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.issues.bug493", doc = "A JSON parser / serialiser", by = {"Stéphane Épardaud"}, version = "1", dependencies = {})
 final class module {
     
     private module() {
