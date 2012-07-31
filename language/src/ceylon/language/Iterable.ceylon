@@ -173,7 +173,7 @@ shared interface Iterable<out Element>
          and `byDecreasing()` produce a suitable 
          comparison function:
          
-             "Hello World!".sort(byIncreasing((Character c) c.lowercased))
+             \"Hello World!\".sort(byIncreasing((Character c) c.lowercased))
          
          This operation is eager by nature."
     see (byIncreasing, byDecreasing)
