@@ -1,0 +1,1 @@
+module com.redhat.ceylon.compiler.java.test.cmr.modules.java '1' {}

@@ -76,7 +76,7 @@ public class CMRTestHTTP extends CompilerTest {
     @Test
     public void testMdlHTTPRepos() throws IOException{
         RequestCounter rq = new RequestCounter();
-        String moduleA = "com.redhat.ceylon.compiler.java.test.cmr.module.depend.a";
+        String moduleA = "com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a";
         
         // Clean up any cached version
         File carFileInHomeRepo = getModuleArchive(moduleA, "6.6.6", Util.getHomeRepository());
@@ -87,7 +87,7 @@ public class CMRTestHTTP extends CompilerTest {
         File repo = makeRepo();
         
         Boolean result = getCompilerTask(Arrays.asList("-out", repo.getPath()),
-                "module/depend/a/module.ceylon", "module/depend/a/package.ceylon", "module/depend/a/A.ceylon").call();
+                "modules/depend/a/module.ceylon", "modules/depend/a/package.ceylon", "modules/depend/a/A.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
         
         File carFile = getModuleArchive(moduleA, "6.6.6", repo.getPath());
@@ -102,13 +102,13 @@ public class CMRTestHTTP extends CompilerTest {
         try{
             // then try to compile only one module (the other being loaded from its car) 
             result = getCompilerTask(Arrays.asList("-out", destDir, "-rep", repoAURL),
-                    "module/depend/b/module.ceylon", "module/depend/b/package.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
+                    "modules/depend/b/module.ceylon", "module/depend/b/package.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
             server.stop(1);
         }
-        carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.depend.b", "6.6.6");
+        carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b", "6.6.6");
         assertTrue(carFile.exists());
         
         // make sure it cached the module in the home repo
@@ -142,24 +142,24 @@ public class CMRTestHTTP extends CompilerTest {
         
         try{
             // then try to compile our module by outputting to HTTP 
-            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL), "module/single/module.ceylon").call();
+            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL), "modules/single/module.ceylon").call();
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
             server.stop(1);
         }
         
-        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.single", "6.6.6", repo.getPath());
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6", repo.getPath());
         assertTrue(carFile.exists());
 
         JarFile car = new JarFile(carFile);
 
         // make sure it's not empty
-        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/single/module.class");
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/module.class");
         assertNotNull(moduleClass);
         car.close();
 
-        File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.module.single", "6.6.6", repo.getPath());
+        File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6", repo.getPath());
         assertTrue(srcFile.exists());
         
         rq.check(requests);
@@ -185,40 +185,40 @@ public class CMRTestHTTP extends CompilerTest {
         
         try{
             // then try to compile our module by outputting to HTTP 
-            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL), "module/mixed/JavaClass.java").call();
+            Boolean result = getCompilerTask(Arrays.asList("-out", repoAURL), "modules/mixed/JavaClass.java").call();
             Assert.assertEquals(Boolean.TRUE, result);
-            result = getCompilerTask(Arrays.asList("-out", repoAURL), "module/mixed/CeylonClass.ceylon").call();
+            result = getCompilerTask(Arrays.asList("-out", repoAURL), "modules/mixed/CeylonClass.ceylon").call();
             Assert.assertEquals(Boolean.TRUE, result);
 
         }finally{
             server.stop(1);
         }
 
-        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.module.mixed", "6.6.6", repo.getPath());
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.mixed", "6.6.6", repo.getPath());
         assertTrue(carFile.exists());
 
         JarFile car = new JarFile(carFile);
 
         // make sure it's not empty
-        ZipEntry entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/module.class");
+        ZipEntry entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/mixed/module.class");
         assertNotNull(entry);
-        entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/CeylonClass.class");
+        entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/mixed/CeylonClass.class");
         assertNotNull(entry);
-        entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/JavaClass.class");
+        entry = car.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/mixed/JavaClass.class");
         assertNotNull(entry);
         car.close();
 
-        File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.module.mixed", "6.6.6", repo.getPath());
+        File srcFile = getSourceArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.mixed", "6.6.6", repo.getPath());
         assertTrue(srcFile.exists());
 
         JarFile src = new JarFile(srcFile);
 
         // make sure it's not empty
-        entry = src.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/module.ceylon");
+        entry = src.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/mixed/module.ceylon");
         assertNotNull(entry);
-        entry = src.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/CeylonClass.ceylon");
+        entry = src.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/mixed/CeylonClass.ceylon");
         assertNotNull(entry);
-        entry = src.getEntry("com/redhat/ceylon/compiler/java/test/cmr/module/mixed/JavaClass.java");
+        entry = src.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/mixed/JavaClass.java");
         assertNotNull(entry);
         src.close();
 

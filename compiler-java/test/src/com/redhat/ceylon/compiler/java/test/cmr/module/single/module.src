@@ -1,9 +1,0 @@
-package com.redhat.ceylon.compiler.java.test.cmr.module.single;
-
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon
-@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.cmr.module.single", version = "6.6.6", dependencies = {})
-final class module {
-    
-    private module() {
-    }
-}
