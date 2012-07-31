@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.pkg;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
-@.com.redhat.ceylon.compiler.java.metadata.Package(name = "com.redhat.ceylon.compiler.java.test.structure.pkg", shared = true)
+@.com.redhat.ceylon.compiler.java.metadata.Package(name = "com.redhat.ceylon.compiler.java.test.structure.pkg", doc = "Great documentation", shared = true)
 final class $package {
     
     private $package() {
