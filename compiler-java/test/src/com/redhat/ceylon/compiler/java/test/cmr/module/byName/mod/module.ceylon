@@ -1,4 +1,1 @@
-Module module {
-    name = 'mod';
-    version = '1';
-}
+module mod '1' {}

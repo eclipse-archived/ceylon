@@ -17,12 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
-Module module {
-    name = 'com.redhat.ceylon.compiler.java.test.cmr.module.implicit.a';
-    version = '1.2.3';
-    doc = "Bla bla.";
-    by = { "David Festal" };
-    license = 'http://www.gnu.org/licenses/gpl.html';
-    dependencies = { };
-}
+doc "Bla bla."
+by "David Festal"
+license "http://www.gnu.org/licenses/gpl.html"
+module com.redhat.ceylon.compiler.java.test.cmr.module.implicit.a '1.2.3' {}

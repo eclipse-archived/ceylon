@@ -1,4 +1,1 @@
-Package package {
-    name='a';
-    shared=true;
-}
+shared package a;

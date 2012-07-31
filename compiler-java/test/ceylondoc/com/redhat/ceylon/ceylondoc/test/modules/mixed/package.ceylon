@@ -1,4 +1,1 @@
-Package package {
-    name='com.redhat.ceylon.ceylondoc.test.modules.mixed';
-    shared=true;
-}
+shared package com.redhat.ceylon.ceylondoc.test.modules.mixed;

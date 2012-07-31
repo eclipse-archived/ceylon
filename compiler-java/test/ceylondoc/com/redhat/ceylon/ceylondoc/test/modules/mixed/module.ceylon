@@ -1,4 +1,1 @@
-Module module {
-    name='com.redhat.ceylon.ceylondoc.test.modules.mixed';
-    version='1.0.0';
-}
+module com.redhat.ceylon.ceylondoc.test.modules.mixed '1.0.0' {}

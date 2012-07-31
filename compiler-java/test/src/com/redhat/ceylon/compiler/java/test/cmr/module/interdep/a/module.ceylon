@@ -17,17 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+doc "Bla bla."
+by "Stef FroMage"
+license "http://www.gnu.org/licenses/gpl.html"
 @error
-Module module {
-    name = 'com.redhat.ceylon.compiler.java.test.cmr.module.interdep.a';
-    version = '6.6.6';
-    doc = "Bla bla.";
-    by = { "Stef FroMage" };
-    license = 'http://www.gnu.org/licenses/gpl.html';
-    Import {
-        name = 'com.redhat.ceylon.compiler.java.test.cmr.module.interdep.b';
-        version = '6.6.6';
-        optional = false;
-        export = false;
-    }
+module com.redhat.ceylon.compiler.java.test.cmr.module.interdep.a '6.6.6' {
+    import com.redhat.ceylon.compiler.java.test.cmr.module.interdep.b '6.6.6';
 }

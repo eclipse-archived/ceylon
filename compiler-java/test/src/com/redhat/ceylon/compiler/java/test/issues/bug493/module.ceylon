@@ -17,12 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+doc "A JSON parser / serialiser"
+by "Stéphane Épardaud"
 @nomodel
-Module module {
-    name='com.redhat.ceylon.compiler.java.test.issues.bug493';
-    version='1';
-    by = {"Stéphane Épardaud"};
-    doc = "A JSON parser / serialiser";
-    dependencies = {
-    };
-}
+module com.redhat.ceylon.compiler.java.test.issues.bug493 '1' {}

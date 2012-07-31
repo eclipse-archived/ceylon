@@ -1,6 +1,3 @@
-Module module {
-    name = 'goes.into.module';
-    version = '1';
-}
+module goes.into.module '1' {}
 
 A B B ERROR

@@ -1,4 +1,1 @@
-Module module {
-    name = 'com.redhat.ceylon.compiler.java.test.cmr.module.mixed';
-    version = '6.6.6';
-}
+module com.redhat.ceylon.compiler.java.test.cmr.module.mixed '6.6.6' {}

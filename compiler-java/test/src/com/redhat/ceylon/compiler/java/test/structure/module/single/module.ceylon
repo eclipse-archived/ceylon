@@ -17,11 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Module module {
-    name = 'com.redhat.ceylon.compiler.java.test.structure.module.single';
-    version = '6.6.6';
-    doc = "Bla bla.";
-    by = { "Stef FroMage" };
-    license = 'http://www.gnu.org/licenses/gpl.html';
-    dependencies = {};
-}
+doc "Bla bla."
+by "Stef FroMage"
+license "http://www.gnu.org/licenses/gpl.html"
+module com.redhat.ceylon.compiler.java.test.structure.module.single '6.6.6' {}

@@ -17,16 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Module module {
-    name = 'com.redhat.ceylon.compiler.java.test.cmr.module.jarDependency.ceylon';
-    version = '6.6.6';
-    doc = "Bla bla.";
-    by = { "Stef FroMage" };
-    license = 'http://www.gnu.org/licenses/gpl.html';
-    dependencies = {
-        Import {
-            name = 'com.redhat.ceylon.compiler.java.test.cmr.module.jarDependency.java';
-            version = '1.0';
-        }
-    };
+doc "Bla bla."
+by "Stef FroMage"
+license "http://www.gnu.org/licenses/gpl.html"
+module com.redhat.ceylon.compiler.java.test.cmr.module.jarDependency.ceylon '6.6.6' {
+    import com.redhat.ceylon.compiler.java.test.cmr.module.jarDependency.java '1.0';
 }

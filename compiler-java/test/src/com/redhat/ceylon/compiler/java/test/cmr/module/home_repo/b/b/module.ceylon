@@ -1,8 +1,3 @@
-Module module {
-    name = 'b';
-    version = '1.0';
-    Import {
-        name = 'a';
-        version = '1.0';
-    }
+module b '1.0' {
+    import a '1.0';
 }
