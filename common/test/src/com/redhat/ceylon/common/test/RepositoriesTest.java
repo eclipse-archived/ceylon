@@ -80,7 +80,7 @@ public class RepositoriesTest {
     
     @Test
     public void testGetDefaultCacheRepository() {
-        File dir = defaultRepos.getUserRepoDir();
+        File dir = defaultRepos.getCacheRepoDir();
         Assert.assertTrue(testRepository(defaultRepos.getCacheRepository(), "CACHE", dir.getAbsolutePath(), null, null));
     }
     
