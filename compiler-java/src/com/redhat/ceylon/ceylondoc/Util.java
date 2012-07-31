@@ -60,13 +60,47 @@ public class Util {
     public static String getDoc(Declaration decl) {
         return wikiToHTML(getRawDoc(decl));
     }
-    
+
     public static String getDoc(Module module) {
-        return wikiToHTML(module.getDoc());
+        for (Annotation a : module.getAnnotations()) {
+            if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+                return unquote(a.getPositionalArguments().get(0));
+            }
+        }
+        return "";
     }
-    
+    /** Returns the list of authors specified in the module through "by" annotations. */
+    public static List<String> getAuthors(Module module) {
+        ArrayList<String> moduleAuthors = new ArrayList<>();
+        for (Annotation a : module.getAnnotations()) {
+            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
+                for (String author : a.getPositionalArguments()) {
+                    moduleAuthors.add(unquote(author));
+                }
+            }
+        }
+        return moduleAuthors;
+    }
+    /** Returns the list of authors specified in the package through "by" annotations. */
+    public static List<String> getAuthors(Package module) {
+        ArrayList<String> moduleAuthors = new ArrayList<>();
+        for (Annotation a : module.getAnnotations()) {
+            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
+                for (String author : a.getPositionalArguments()) {
+                    moduleAuthors.add(unquote(author));
+                }
+            }
+        }
+        return moduleAuthors;
+    }
+
     public static String getDoc(Package pkg) {
-        return wikiToHTML(pkg.getDoc());
+        for (Annotation a : pkg.getAnnotations()) {
+            if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+                return unquote(a.getPositionalArguments().get(0));
+            }
+        }
+        return "";
     }
 
     public static String getDocFirstLine(Declaration decl) {
@@ -74,11 +108,11 @@ public class Util {
     }
 
     public static String getDocFirstLine(Package pkg) {
-        return wikiToHTML(getFirstLine(pkg.getDoc()));
+        return wikiToHTML(getFirstLine(getDoc(pkg)));
     }
 
     public static String getDocFirstLine(Module module) {
-        return wikiToHTML(getFirstLine(module.getDoc()));
+        return wikiToHTML(getFirstLine(getDoc(module)));
     }
     
     public static List<String> getTags(Declaration decl) {
@@ -161,8 +195,12 @@ public class Util {
         return a;
     }
 
+    /** Remove quotes from a string, if it starts and ends with them. */
     public static String unquote(String string) {
-        return string.substring(1, string.length() - 1);
+        if (string.length() >= 2 && string.charAt(0) == '"' && string.charAt(string.length()-1) == '"') {
+            return string.substring(1, string.length() - 1);
+        }
+        return string;
     }
 
     public static String getModifiers(Declaration d) {

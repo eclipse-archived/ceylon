@@ -20,8 +20,12 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.ArrayList;
+
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -473,7 +477,14 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.FunctionArgument fn) {
         append(gen.expressionGen().transform(fn));
     }
-    
+
+    public void visit(Tree.ModuleDescriptor that) {
+        appendList(gen.transformModuleDescriptor(that));
+    }
+    public void visit(Tree.PackageDescriptor that) {
+        appendList(gen.transformPackageDescriptor(that));
+    }
+
     /**
      * Gets all the results which were appended during the visit
      * @return The results

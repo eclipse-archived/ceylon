@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
@@ -1355,17 +1356,34 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtCeylonType, annotationArgs);
     }
 
-    List<JCAnnotation> makeAtModule(Module module) {
-        String name = module.getNameAsString();
-        String version = module.getVersion();
-        String doc = module.getDoc();
-        String license = module.getLicense();
-        
+    /** Returns a ListBuffer with assignment expressions for the doc, license and by arguments, as well as name,
+     * to be used in an annotation which requires them (such as Module and Package) */
+    ListBuffer<JCExpression> getLicenseAuthorsDocAnnotationArguments(String name, java.util.List<Annotation> anns) {
         ListBuffer<JCExpression> authors = new ListBuffer<JCTree.JCExpression>();
-        for(String author : module.getAuthors()){
-        	authors.add(make().Literal(author));
+        ListBuffer<JCExpression> res = new ListBuffer<JCExpression>();
+        res.add(make().Assign(naming.makeUnquotedIdent("name"), make().Literal(name)));
+        for (Annotation a : anns) {
+            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+                if (a.getName().equals("doc")) {
+                    res.add(make().Assign(naming.makeUnquotedIdent("doc"),
+                            make().Literal(Util.unquote(a.getPositionalArguments().get(0)))));
+                } else if (a.getName().equals("license")) {
+                    res.add(make().Assign(naming.makeUnquotedIdent("license"),
+                            make().Literal(Util.unquote(a.getPositionalArguments().get(0)))));
+                } else if (a.getName().equals("by")) {
+                    for (String author : a.getPositionalArguments()) {
+                        authors.add(make().Literal(Util.unquote(author)));
+                    }
+                }
+            }
         }
-        
+        if (!authors.isEmpty()) {
+            res.add(make().Assign(naming.makeUnquotedIdent("by"), make().NewArray(null, null, authors.toList())));
+        }
+        return res;
+    }
+
+    List<JCAnnotation> makeAtModule(Module module) {
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
         for(ModuleImport dependency : module.getImports()){
             Module dependencyModule = dependency.getModule();
@@ -1374,10 +1392,12 @@ public abstract class AbstractTransformer implements Transformation {
                     // nor ceylon.language
                     || dependencyModule.getNameAsString().equals("ceylon.language"))
                 continue;
-            JCExpression dependencyName = make().Assign(naming.makeUnquotedIdent("name"), make().Literal(dependencyModule.getNameAsString()));
+            JCExpression dependencyName = make().Assign(naming.makeUnquotedIdent("name"),
+                    make().Literal(dependencyModule.getNameAsString()));
             JCExpression dependencyVersion = null;
             if(dependencyModule.getVersion() != null)
-                dependencyVersion = make().Assign(naming.makeUnquotedIdent("version"), make().Literal(dependencyModule.getVersion()));
+                dependencyVersion = make().Assign(naming.makeUnquotedIdent("version"),
+                        make().Literal(dependencyModule.getVersion()));
             List<JCExpression> spec;
             if(dependencyVersion != null)
                 spec = List.<JCExpression>of(dependencyName, dependencyVersion);
@@ -1387,32 +1407,20 @@ public abstract class AbstractTransformer implements Transformation {
             // TODO : add the export & optional annotations also ?
             imports.add(atImport);
         }
-        
-        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("name"), make().Literal(name));
-        JCExpression versionAttribute = make().Assign(naming.makeUnquotedIdent("version"), make().Literal(version));
-        JCExpression byAttribute = make().Assign(naming.makeUnquotedIdent("by"), make().NewArray(null, null, authors.toList()));
-        JCExpression importAttribute = make().Assign(naming.makeUnquotedIdent("dependencies"), make().NewArray(null, null, imports.toList()));
-        
-        List<JCExpression> annotationArgs = List.<JCExpression>of(nameAttribute, versionAttribute, byAttribute, importAttribute);
-        if( doc != null ) {
-        	JCExpression docAttribute = make().Assign(naming.makeUnquotedIdent("doc"), make().Literal(doc));
-        	annotationArgs = annotationArgs.append(docAttribute);
-        }
-        if( license != null ) {
-        	JCExpression licenseAttribute = make().Assign(naming.makeUnquotedIdent("license"), make().Literal(license));
-        	annotationArgs = annotationArgs.append(licenseAttribute);
-        }
-        
-        return makeModelAnnotation(syms().ceylonAtModuleType, annotationArgs);
+
+        ListBuffer<JCExpression> annotationArgs = getLicenseAuthorsDocAnnotationArguments(
+                module.getNameAsString(), module.getAnnotations());
+        annotationArgs.add(make().Assign(naming.makeUnquotedIdent("version"), make().Literal(module.getVersion())));
+        annotationArgs.add(make().Assign(naming.makeUnquotedIdent("dependencies"),
+                make().NewArray(null, null, imports.toList())));
+        return makeModelAnnotation(syms().ceylonAtModuleType, annotationArgs.toList());
     }
 
     List<JCAnnotation> makeAtPackage(Package pkg) {
-        String name = pkg.getNameAsString();
-        boolean shared = pkg.isShared();
-        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("name"), make().Literal(name));
-        JCExpression sharedAttribute = make().Assign(naming.makeUnquotedIdent("shared"), makeBoolean(shared));
-        return makeModelAnnotation(syms().ceylonAtPackageType, 
-                List.<JCExpression>of(nameAttribute, sharedAttribute));
+        ListBuffer<JCExpression> annotationArgs = getLicenseAuthorsDocAnnotationArguments(
+                pkg.getNameAsString(), pkg.getAnnotations());
+        annotationArgs.add(make().Assign(naming.makeUnquotedIdent("shared"), makeBoolean(pkg.isShared())));
+        return makeModelAnnotation(syms().ceylonAtPackageType, annotationArgs.toList());
     }
 
     List<JCAnnotation> makeAtName(String name) {
