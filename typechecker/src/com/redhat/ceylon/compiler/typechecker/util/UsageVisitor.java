@@ -5,6 +5,7 @@
 package com.redhat.ceylon.compiler.typechecker.util;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -18,8 +19,18 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
         Declaration d = that.getDeclarationModel();
-        if (d != null && d.getRefCount() == 0) {
-            that.addUsageWarning(String.format("Import is never used: %s", d.getName()));
+        if (d!=null) {
+        	int count = d.getRefCount();
+        	if (d instanceof Functional) {
+        		if (((Functional) d).isAbstraction()) {
+        			for (Declaration od: ((Functional) d).getOverloads()) {
+        				count+=od.getRefCount();
+        			}
+        		}
+        	}
+        	if (count==0) {
+        		that.addUsageWarning("Import is never used: " + d.getName());
+        	}
         }
     }
 
