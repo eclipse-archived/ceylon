@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared Integer package() {
+shared Integer pkg() {
     return 0;
 }
