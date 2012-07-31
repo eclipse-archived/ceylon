@@ -4,10 +4,12 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
+import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
@@ -367,14 +369,29 @@ public class RefinementVisitor extends Visitor {
             for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
                 TypeParameter refinedTypeParam = refinedTypeParams.get(i);
                 TypeParameter refiningTypeParam = refiningTypeParams.get(i);
-                for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
-                    checkAssignable(refinedTypeParam.getType(), t, that, 
-                        "member type parameter " + refiningTypeParam.getName() +
-                        " has upper bound which refined member type parameter " + 
-                        refinedTypeParam.getName() + " of " + message(refined) + 
-                        " does not satisfy");
+                if (refiningTypeParam.getName().equals("TT")) {
+                	refiningTypeParam.getName();
                 }
-                typeArgs.add(refinedTypeParam.getType());
+                ProducedType refinedProducedType = refinedTypeParam.getType();
+				for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
+                	ProducedType bound = t.substitute(singletonMap(refiningTypeParam, refinedProducedType));
+                	Map<TypeParameter, ProducedType> args = ci.getType()
+                			.getSupertype((TypeDeclaration)refined.getContainer())
+                			.getTypeArguments();
+                	boolean ok = false;
+                	for (ProducedType st: refinedTypeParam.getSatisfiedTypes()) {
+                		if (st.substitute(args).isSubtypeOf(bound)) {
+                			ok = true;
+                		}
+                	}
+                	if (!ok) {
+                		that.addError("member type parameter " + refiningTypeParam.getName() +
+                				" has upper bound which refined member type parameter " + 
+                				refinedTypeParam.getName() + " of " + message(refined) + 
+                				" does not satisfy: " + t.getProducedTypeName());
+                	}
+                }
+                typeArgs.add(refinedProducedType);
             }
         }
         ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);

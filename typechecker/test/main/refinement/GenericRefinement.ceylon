@@ -90,5 +90,65 @@ class GenericRefinement() {
     		shared actual Float num = f;
     	}
     }
+    
+    interface Constraints {
+		interface Foo {
+		    shared formal void accept<T>(T t) 
+		            given T satisfies Comparable<T>;
+		}
+		class Bar() satisfies Foo {
+		    shared actual void accept<T>(T t)
+		            given T satisfies Comparable<T> {}
+		}
+    }
 
+    interface MoreConstraints {
+        interface Baz<X> {}
+		interface Foo<S> {
+		    shared formal void accept<T>(T t) 
+		            given T satisfies Baz<T&S>;
+		}
+		class Bar() satisfies Foo<String> {
+		    shared actual void accept<T>(T t)
+		            given T satisfies Baz<T&String> {}
+		}
+    }
+
+    interface OkConstraints {
+        interface Baz<X> {}
+		interface Foo<S> {
+		    shared formal void accept<T>(T t) 
+		            given T satisfies List<T&S>;
+		}
+		class Bar() satisfies Foo<String> {
+		    shared actual void accept<T>(T t)
+		            given T satisfies List<String> {}
+		}
+    }
+
+    interface BadConstraints {
+        interface Baz<X> {}
+		interface Foo<S> {
+		    shared formal void accept<T>(T t) 
+		            given T satisfies Comparable<T&S>;
+		}
+		class Bar() satisfies Foo<String> {
+		    @error
+		    shared actual void accept<T>(T t)
+		            given T satisfies Comparable<String> {}
+		}
+    }
+
+    interface BrokenConstraints {
+        interface Baz<X> {}
+		interface Foo<S> {
+		    shared formal void accept<T>(T t) 
+		            given T satisfies Baz<T&S>;
+		}
+		class Bar() satisfies Foo<String> {
+		    @error
+		    shared actual void accept<T>(T t)
+		            given T satisfies Baz<T&Integer> {}
+		}
+    }
 }
