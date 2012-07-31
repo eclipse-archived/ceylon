@@ -62,45 +62,33 @@ public class Util {
     }
 
     public static String getDoc(Module module) {
-        for (Annotation a : module.getAnnotations()) {
-            if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
-                return unquote(a.getPositionalArguments().get(0));
+        List<String> doc = getAnnotationValues(module, "doc");
+        return doc != null && !doc.isEmpty() ? wikiToHTML(unquote(doc.get(0))) : "";
+    }
+    /** Returns the list of authors specified in the module through "by" annotations. */
+    public static List<String> getAuthors(List<Annotation> anns) {
+        ArrayList<String> moduleAuthors = new ArrayList<>();
+        for (Annotation a : anns) {
+            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
+                for (String author : a.getPositionalArguments()) {
+                    moduleAuthors.add(unquote(author));
+                }
             }
         }
-        return "";
+        return moduleAuthors;
     }
     /** Returns the list of authors specified in the module through "by" annotations. */
     public static List<String> getAuthors(Module module) {
-        ArrayList<String> moduleAuthors = new ArrayList<>();
-        for (Annotation a : module.getAnnotations()) {
-            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
-                for (String author : a.getPositionalArguments()) {
-                    moduleAuthors.add(unquote(author));
-                }
-            }
-        }
-        return moduleAuthors;
+        return getAuthors(module.getAnnotations());
     }
     /** Returns the list of authors specified in the package through "by" annotations. */
-    public static List<String> getAuthors(Package module) {
-        ArrayList<String> moduleAuthors = new ArrayList<>();
-        for (Annotation a : module.getAnnotations()) {
-            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
-                for (String author : a.getPositionalArguments()) {
-                    moduleAuthors.add(unquote(author));
-                }
-            }
-        }
-        return moduleAuthors;
+    public static List<String> getAuthors(Package pkg) {
+        return getAuthors(pkg.getAnnotations());
     }
 
     public static String getDoc(Package pkg) {
-        for (Annotation a : pkg.getAnnotations()) {
-            if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
-                return unquote(a.getPositionalArguments().get(0));
-            }
-        }
-        return "";
+        List<String> doc = getAnnotationValues(pkg, "doc");
+        return doc != null && !doc.isEmpty() ? wikiToHTML(unquote(doc.get(0))) : "";
     }
 
     public static String getDocFirstLine(Declaration decl) {
@@ -193,6 +181,24 @@ public class Util {
             a = getAnnotation(decl.getRefinedDeclaration(), name);
         }
         return a;
+    }
+    /** Finds the annotation with the specified name, in the Module. */
+    public static List<String> getAnnotationValues(Module m, String name) {
+        for (Annotation a : m.getAnnotations()) {
+            if (a.getName().equals(name) && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+                return a.getPositionalArguments();
+            }
+        }
+        return null;
+    }
+    /** Finds the annotation with the specified name, in the Package. */
+    public static List<String> getAnnotationValues(Package p, String name) {
+        for (Annotation a : p.getAnnotations()) {
+            if (a.getName().equals(name) && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+                return a.getPositionalArguments();
+            }
+        }
+        return null;
     }
 
     /** Remove quotes from a string, if it starts and ends with them. */
