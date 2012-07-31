@@ -35,7 +35,7 @@ public class ReferenceCounter extends Visitor {
 		if (d!=null) inc(d);
     }
     @Override
-    public void visit(Tree.Type that) {
+    public void visit(Tree.SimpleType that) {
         super.visit(that);
         ProducedType t = that.getTypeModel();
         if (t!=null) {
