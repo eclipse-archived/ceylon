@@ -23,7 +23,7 @@ void javaKeywords(){
     sync := jk.char;
     jk.byte(1);
     int(1);
-    sync := package;
+    sync := pkg;
     sync := char;
     char := 1;
     sync := byte.hash;

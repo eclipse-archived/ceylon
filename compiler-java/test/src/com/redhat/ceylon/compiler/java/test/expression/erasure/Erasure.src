@@ -368,7 +368,7 @@ class Test {
         );
         .java.lang.Object $p1$12;
         if (($p1$12 = p1) instanceof .ceylon.language.Category) {
-            final .ceylon.language.Category $p1$13 = (.ceylon.language.Category)$p1$12;
+            final .java.lang.Object $p1$13 = (.java.lang.Object)$p1$12;
         }
         sync = (
             let

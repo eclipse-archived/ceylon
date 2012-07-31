@@ -20,27 +20,25 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCImport;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -179,7 +177,7 @@ public class CeylonTransformer extends AbstractTransformer {
         at(decl);
         TypedDeclaration declarationModel = decl.getDeclarationModel(); 
         final String attrName = decl.getIdentifier().getText();
-        final String attrClassName = naming.getAttrClassName(declarationModel, 0);
+        final String attrClassName = Naming.getAttrClassName(declarationModel, 0);
         final Tree.SpecifierOrInitializerExpression expression;
         final Tree.Block block;
         if (decl instanceof Tree.AttributeDeclaration) {
@@ -204,6 +202,29 @@ public class CeylonTransformer extends AbstractTransformer {
                 block, expression, setterDecl);
     }
 
+    /** Creates a module class in the package, with the Module annotation required by the runtime. */
+    public List<JCTree> transformModuleDescriptor(Tree.ModuleDescriptor module) {
+        at(module);
+        return ClassDefinitionBuilder
+                .klass(this, false, "module", null)
+                .modifiers(Flags.FINAL)
+                .constructorModifiers(Flags.PRIVATE)
+                .annotations(makeAtModule(module.getUnit().getPackage().getModule()))
+                .build();
+
+    }
+
+    public List<JCTree> transformPackageDescriptor(Tree.PackageDescriptor pack) {
+        at(pack);
+        return ClassDefinitionBuilder
+                .klass(this, false, "$package", null)
+                .modifiers(Flags.FINAL)
+                .constructorModifiers(Flags.PRIVATE)
+                .annotations(makeAtPackage(pack.getUnit().getPackage()))
+                .build();
+
+    }
+
     public List<JCTree> transformAttribute(
             TypedDeclaration declarationModel,
             String attrName, String attrClassName,
@@ -213,22 +234,6 @@ public class CeylonTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
-
-        // if it's a module or package add a special annotation
-        if (declarationModel.isToplevel()) {
-            if (attrName.equals("module")
-        		&& declarationModel.getUnit().getFilename().equals("module.ceylon")) {
-                // module
-                Package pkg = (Package) declarationModel.getContainer();
-                Module module = pkg.getModule();
-                builder.annotations(makeAtModule(module));
-            } else if (attrName.equals("package")
-                    && declarationModel.getUnit().getFilename().equals("package.ceylon")) {
-                // package
-                Package pkg = (Package) declarationModel.getContainer();
-                builder.annotations(makeAtPackage(pkg));
-            }
-        }
 
         if (declarationModel instanceof Setter
                 || declarationModel instanceof Parameter) {

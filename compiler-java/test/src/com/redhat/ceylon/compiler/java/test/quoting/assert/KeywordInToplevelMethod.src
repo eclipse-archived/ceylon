@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
-public final class package_ {
+public final class pkg_ {
     
-    private package_() {
+    private pkg_() {
     }
     
-    public static long $package() {
+    public static long pkg() {
         return 0L;
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.package_.$package();
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.pkg_.pkg();
     }
 }

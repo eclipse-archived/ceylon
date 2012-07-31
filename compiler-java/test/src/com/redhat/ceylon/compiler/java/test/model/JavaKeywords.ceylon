@@ -29,7 +29,7 @@ shared Integer int (Integer int) {
     return int;
 }
 
-shared Integer package = 1;
+shared Integer pkg = 1;
 
 shared Integer char {
     return 1;

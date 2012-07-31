@@ -68,7 +68,7 @@ public class ModuleDoc extends CeylonDoc {
         
         around("div class='doc'", getDoc(module));
         
-        writeBy(module.getAuthors(), false);
+        writeBy(Util.getAuthors(module), false);
     }
 
     private void packages() throws IOException {

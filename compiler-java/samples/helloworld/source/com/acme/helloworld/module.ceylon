@@ -1,8 +1,4 @@
-Module module {
- name = 'com.acme.helloworld';
- version = '1.0.0';
- by = {"Stef Epardaud"};
- dependencies = {};
- doc = "Hello World";
- license = 'Public domain';
-}
+doc "Hello World"
+by "Stef Epardaud"
+license "Public Domain"
+module com.acme.helloworld '1.0.0' {}

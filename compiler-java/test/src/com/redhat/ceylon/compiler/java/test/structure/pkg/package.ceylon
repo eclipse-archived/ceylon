@@ -17,9 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Package package {
- name = 'com.redhat.ceylon.compiler.java.test.structure.pkg';
- shared = true;
- doc = "Great documentation";
- by = {};
-}
+doc "Great documentation"
+shared package com.redhat.ceylon.compiler.java.test.structure.pkg;

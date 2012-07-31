@@ -60,13 +60,35 @@ public class Util {
     public static String getDoc(Declaration decl) {
         return wikiToHTML(getRawDoc(decl));
     }
-    
+
     public static String getDoc(Module module) {
-        return wikiToHTML(module.getDoc());
+        List<String> doc = getAnnotationValues(module.getAnnotations(), "doc");
+        return doc != null && !doc.isEmpty() ? wikiToHTML(unquote(doc.get(0))) : "";
     }
-    
+    /** Returns the list of authors specified in the module through "by" annotations. */
+    public static List<String> getAuthors(List<Annotation> anns) {
+        ArrayList<String> moduleAuthors = new ArrayList<>();
+        for (Annotation a : anns) {
+            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
+                for (String author : a.getPositionalArguments()) {
+                    moduleAuthors.add(unquote(author));
+                }
+            }
+        }
+        return moduleAuthors;
+    }
+    /** Returns the list of authors specified in the module through "by" annotations. */
+    public static List<String> getAuthors(Module module) {
+        return getAuthors(module.getAnnotations());
+    }
+    /** Returns the list of authors specified in the package through "by" annotations. */
+    public static List<String> getAuthors(Package pkg) {
+        return getAuthors(pkg.getAnnotations());
+    }
+
     public static String getDoc(Package pkg) {
-        return wikiToHTML(pkg.getDoc());
+        List<String> doc = getAnnotationValues(pkg.getAnnotations(), "doc");
+        return doc != null && !doc.isEmpty() ? wikiToHTML(unquote(doc.get(0))) : "";
     }
 
     public static String getDocFirstLine(Declaration decl) {
@@ -74,11 +96,11 @@ public class Util {
     }
 
     public static String getDocFirstLine(Package pkg) {
-        return wikiToHTML(getFirstLine(pkg.getDoc()));
+        return wikiToHTML(getFirstLine(getDoc(pkg)));
     }
 
     public static String getDocFirstLine(Module module) {
-        return wikiToHTML(getFirstLine(module.getDoc()));
+        return wikiToHTML(getFirstLine(getDoc(module)));
     }
     
     public static List<String> getTags(Declaration decl) {
@@ -160,9 +182,22 @@ public class Util {
         }
         return a;
     }
+    /** Finds the annotation with the specified name from the list. */
+    public static List<String> getAnnotationValues(List<Annotation> anns, String name) {
+        for (Annotation a : anns) {
+            if (a.getName().equals(name) && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+                return a.getPositionalArguments();
+            }
+        }
+        return null;
+    }
 
+    /** Remove quotes from a string, if it starts and ends with them. */
     public static String unquote(String string) {
-        return string.substring(1, string.length() - 1);
+        if (string.length() >= 2 && string.charAt(0) == '"' && string.charAt(string.length()-1) == '"') {
+            return string.substring(1, string.length() - 1);
+        }
+        return string;
     }
 
     public static String getModifiers(Declaration d) {

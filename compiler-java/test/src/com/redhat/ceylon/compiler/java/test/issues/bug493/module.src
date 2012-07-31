@@ -1,29 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug493;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.issues.bug493", doc = "A JSON parser / serialiser", by = {"St\u00e9phane \u00c9pardaud"}, version = "1", dependencies = {})
 final class module_ {
-    private static final .ceylon.language.descriptor.Module[] value;
-    static {
-        value = new .ceylon.language.descriptor.Module[]{(
-            let
-            {
-                .ceylon.language.Quoted $arg$0$0 = .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.java.test.issues.bug493");
-                .ceylon.language.Quoted $arg$0$1 = .ceylon.language.Quoted.instance("1");
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$3 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("St\u00e9phane \u00c9pardaud"));
-                .java.lang.String $arg$0$2 = "A JSON parser / serialiser";
-                .ceylon.language.Iterable<? extends .ceylon.language.descriptor.Import> $arg$0$5 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
-                .ceylon.language.Quoted $arg$0$4 = .ceylon.language.descriptor.Module.$init$license($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3);
-            }
-            returning new .ceylon.language.descriptor.Module($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3, $arg$0$4, $arg$0$5);
-        )};
-    }
-    
-    static .ceylon.language.descriptor.Module getModule() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
-        }
-    }
     
     private module_() {
     }

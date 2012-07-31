@@ -1,33 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
-@.com.redhat.ceylon.compiler.java.metadata.Attribute
-@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.annotations", version = "1.2.3", by = {"Stef FroMage", "Tomas Hradec"}, dependencies = {}, doc = "Bla bla.", license = "http://www.gnu.org/licenses/gpl.html")
+@.com.redhat.ceylon.compiler.java.metadata.Module(name = "com.redhat.ceylon.compiler.java.test.annotations", doc = "Bla bla.", license = "http://www.gnu.org/licenses/gpl.html", by = {"Stef FroMage", "Tomas Hradec"}, version = "1.2.3", dependencies = {})
 final class module_ {
-    private static final .ceylon.language.descriptor.Module[] value;
-    static {
-        value = new .ceylon.language.descriptor.Module[]{(
-            let
-            {
-                .ceylon.language.Quoted $arg$0$0 = .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.java.test.annotations");
-                .ceylon.language.Quoted $arg$0$1 = .ceylon.language.Quoted.instance("1.2.3");
-                .java.lang.String $arg$0$2 = "Bla bla.";
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$0$3 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("Stef FroMage"), .ceylon.language.String.instance("Tomas Hradec"));
-                .ceylon.language.Quoted $arg$0$4 = .ceylon.language.Quoted.instance("http://www.gnu.org/licenses/gpl.html");
-                .ceylon.language.Iterable<? extends .ceylon.language.descriptor.Import> $arg$0$5 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
-            }
-            returning new .ceylon.language.descriptor.Module($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3, $arg$0$4, $arg$0$5);
-        )};
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.descriptor.Module")
-    static .ceylon.language.descriptor.Module getModule() {
-        try {
-            return value[0];
-        } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.RecursiveInitializationException();
-        }
-    }
     
     private module_() {
     }

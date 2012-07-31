@@ -17,11 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Module module {
-    name = 'com.redhat.ceylon.compiler.java.test.runtime';
-    version = '0.1';
-    doc = "The Ceylon tests.";
-    by = { "Stef Epardaud" };
-    license = 'http://www.gnu.org/licenses/gpl.html';
-    dependencies = {};
-}
+doc "The Ceylon tests."
+by "Stef Epardaud"
+license "http://www.gnu.org/licenses/gpl.html"
+module com.redhat.ceylon.compiler.java.test.runtime '0.1' {}

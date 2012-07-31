@@ -1,4 +1,1 @@
-Module module {
-    name = 'com.redhat.ceylon.ceylondoc.test.modules.multi.a';
-    version = '1';
-}
+module com.redhat.ceylon.ceylondoc.test.modules.multi.a '1' {}

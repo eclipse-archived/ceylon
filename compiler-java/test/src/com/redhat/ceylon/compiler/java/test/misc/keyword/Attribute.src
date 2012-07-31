@@ -96,11 +96,6 @@ class Attribute {
     public final boolean getNew() {
         return new;
     }
-    private final boolean package;
-    
-    public final boolean getPackage() {
-        return package;
-    }
     private final boolean private;
     
     public final boolean getPrivate() {
@@ -172,7 +167,6 @@ class Attribute {
         this.long = false;
         this.native = false;
         this.new = false;
-        this.package = false;
         this.private = false;
         this.protected = false;
         this.public = false;

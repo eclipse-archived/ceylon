@@ -1,6 +1,7 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.Logger;
@@ -11,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 class ModuleDescriptorReader {
@@ -75,14 +77,28 @@ class ModuleDescriptorReader {
      * @return The module version, or null if no version could be found
      */
     public String getModuleLicense() {
-        return moduleDescriptor.getLicense();
+        for (Annotation ann : moduleDescriptor.getAnnotations()) {
+            if (ann.getName().equals("license")) {
+                List<String> args = ann.getPositionalArguments();
+                if (args != null && !args.isEmpty()) {
+                    return args.get(0);
+                }
+            }
+        }
+        return null;
     }
     
     /**
-     * Gets the module license
-     * @return The module version, or null if no version could be found
+     * Gets the module authors
+     * @return The list of module authors, or empty list of no authors could be found
      */
     public List<String> getModuleAuthors() {
-        return moduleDescriptor.getAuthors();
+        ArrayList<String> authors = new ArrayList<String>();
+        for (Annotation ann : moduleDescriptor.getAnnotations()) {
+            if (ann.getName().equals("by")) {
+                authors.addAll(ann.getPositionalArguments());
+            }
+        }
+        return authors;
     }
 }

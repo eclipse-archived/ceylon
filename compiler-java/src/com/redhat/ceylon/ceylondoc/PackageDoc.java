@@ -159,7 +159,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         
         around("div class='doc'", getDoc(pkg));
         
-        writeBy(pkg.getAuthors(), false);
+        writeBy(Util.getAuthors(pkg), false);
     }
 
     protected void subMenu() throws IOException {
