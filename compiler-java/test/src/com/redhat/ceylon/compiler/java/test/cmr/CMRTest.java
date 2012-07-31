@@ -480,8 +480,9 @@ public class CMRTest extends CompilerTest {
         assertEquals(Boolean.TRUE, ceylonTask.call());
     }
 
+    // fails due to https://github.com/ceylon/ceylon-spec/issues/369
     @Test
-    public void testMdlMavenDependency() throws IOException{
+    public void testMdlMavenDependency_fail() throws IOException{
         // Try to compile the ceylon module
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "mvn:http://repo1.maven.org/maven2"), 
                 (DiagnosticListener<? super FileObject>)null, 
