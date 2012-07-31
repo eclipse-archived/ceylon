@@ -587,5 +587,10 @@ public class IssuesTest extends CompilerTest {
         compile("bug711/InterfaceWithGetter.java", "bug711/ClassWithGetterAndSetter.java");
         compareWithJavaSource("bug711/Bug711");
     }
+
+    @Test
+    public void testBug715() {
+        compile("Bug715.ceylon");
+    }
 }
 
