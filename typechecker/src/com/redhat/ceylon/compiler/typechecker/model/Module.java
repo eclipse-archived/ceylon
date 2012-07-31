@@ -94,11 +94,10 @@ public class Module {
 			boolean isLanguageModule = moduleName.equals("ceylon.language");
 			String packageName = p.getNameAsString();
 			boolean isDefaultPackage = packageName.isEmpty();
-			if ((!isJdk||jdkResults<10) && 
-					(!isJdk||packageName.startsWith("java")) && 
+			if ((!isJdk || (jdkResults<10 && packageName.startsWith("java"))) && 
 					!isDefaultPackage) {
     			for (Declaration d: p.getMembers()) {
-    				if (isJdk&&jdkResults>=10) break;
+    				if (isJdk && jdkResults>=10) break;
     				try {
     					if (isResolvable(d) && d.isShared() && 
     							!isOverloadedVersion(d) &&
