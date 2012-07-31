@@ -44,7 +44,7 @@ public class StructureTest extends CompilerTest {
     
     @Test
     public void testMdlModule(){
-        compareWithJavaSource("module/single/module");
+        compareWithJavaSource("modules/single/module");
     }
 
     //

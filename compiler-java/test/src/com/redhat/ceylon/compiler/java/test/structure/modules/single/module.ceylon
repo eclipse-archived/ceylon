@@ -20,4 +20,4 @@
 doc "Bla bla."
 by "Stef FroMage"
 license "http://www.gnu.org/licenses/gpl.html"
-module com.redhat.ceylon.compiler.java.test.structure.module.single '6.6.6' {}
+module com.redhat.ceylon.compiler.java.test.structure.modules.single '6.6.6' {}
