@@ -111,7 +111,8 @@ public class Module {
     					if (isResolvable(d) && d.isShared() && 
     							isNameMatching(startingWith, d)) {
     						result.put(d.getQualifiedNameString(), 
-    								new DeclarationWithProximity(d, prox, true));
+    								new DeclarationWithProximity(d, prox, 
+    										!isLanguageModule));
     						if (isJdk) jdkResults++;
     					}
     				}
