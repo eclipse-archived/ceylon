@@ -167,8 +167,16 @@ shared interface Iterable<out Element>
 
     doc "A sequence containing the elements of this
          container, sorted according to a function 
-         imposing a partial order upon the elements. This
-         operation is eager by nature."
+         imposing a partial order upon the elements.
+         
+         For convenience, the functions `byIncreasing()` 
+         and `byDecreasing()` produce a suitable 
+         comparison function:
+         
+             \"Hello World!\".sort(byIncreasing((Character c) c.lowercased))
+         
+         This operation is eager by nature."
+    see (byIncreasing, byDecreasing)
     shared default Element[] sort(
             doc "The function comparing pairs of elements."
             Comparison? comparing(Element x, Element y)) { throw; }
@@ -220,7 +228,7 @@ shared interface Iterable<out Element>
         }
         return true;
     }
-
+    
     doc "Produce an `Iterable` containing the elements of
          this iterable object, after skipping the first 
          `skip` elements. If this iterable object does not 
@@ -228,8 +236,15 @@ shared interface Iterable<out Element>
          elements, the `Iterable` contains no elements."
     shared default Iterable<Element> skipping(Integer skip) {
         if (skip <= 0) { return this; }
-        variable value i:=0;
-        return elements { for (e in this) if (i++>skip) e };
+        object iterable satisfies Iterable<Element> {
+            shared actual Iterator<Element> iterator {
+                value iterator = outer.iterator;
+                variable value i:=0;
+                while (i++<skip && !is Finished iterator.next()) {}
+                return iterator;
+            }
+        }
+        return iterable;
     }
 
     doc "Produce an `Iterable` containing the first `take`
@@ -239,8 +254,21 @@ shared interface Iterable<out Element>
          contains the same elements as this iterable object."
     shared default Iterable<Element> taking(Integer take) {
         if (take <= 0) { return {}; }
-        variable value i:=0;
-        return elements { for (e in this) if (i++<take) e };
+        object iterable satisfies Iterable<Element> {
+            shared actual Iterator<Element> iterator {
+                value outerIterable { return outer; }
+                object iterator satisfies Iterator<Element> {
+                    value iter = outerIterable.iterator;
+                    variable value i:=0;
+                    actual shared Element|Finished next() {
+                        return ++i>take then exhausted 
+                                else iter.next();
+                    }
+                }
+                return iterator;
+            }
+        }
+        return iterable;
     }
     
     doc "Produce an `Iterable` containing every `step`th 

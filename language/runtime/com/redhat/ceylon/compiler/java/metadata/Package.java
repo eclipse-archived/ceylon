@@ -17,4 +17,10 @@ public @interface Package {
     public boolean shared();
     /** The name of the package */
     public String name();
+    /** The package documentation. */
+    public String doc() default "";
+    /** The module author(s). */
+    public String[] by() default {};
+    /** The module license */
+    public String license() default "";
 }
