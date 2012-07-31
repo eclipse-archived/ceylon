@@ -281,7 +281,8 @@ shared interface Iterable<out Element>
          
          results in an iterable object with the elements
          `0`, `3`, `6`, and `9` in that order."
-    throws (Exception, "if `step<1`") //TODO: better exception type
+    throws (Exception, "if the given step size is nonpositive, 
+                        i.e. `step<1`") //TODO: better exception type
     shared default Iterable<Element> by(Integer step) {
         if (step <= 0) {
             throw Exception("step size must be greater than zero");
