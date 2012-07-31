@@ -96,6 +96,13 @@ public class Util {
                 ((Functional) d).isAbstraction();
     }
     
+    public static boolean isOverloadedVersion(Declaration decl) {
+        if (decl instanceof Functional) {
+            return ((Functional)decl).isOverloaded();
+        }
+        return false;
+    }
+
     static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d) {
         if (d instanceof Class && ((Class) d).isAbstract()) {
             return false;

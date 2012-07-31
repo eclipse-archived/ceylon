@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
@@ -158,7 +159,7 @@ public class Package implements ImportableScope {
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
         Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && isNameMatching(startingWith, d)) {
+            if (isResolvable(d) && !isOverloadedVersion(d) && isNameMatching(startingWith, d) ) {
                 result.put(d.getName(), new DeclarationWithProximity(d, proximity+1));
             }
         }
@@ -166,7 +167,7 @@ public class Package implements ImportableScope {
             result.putAll(unit.getMatchingImportedDeclarations(startingWith, proximity));
         }
         for (Map.Entry<String, DeclarationWithProximity> e: 
-        	getModule().getAvailableDeclarations(startingWith, proximity+1000).entrySet()) {
+        	getModule().getAvailableDeclarations(startingWith).entrySet()) {
     		boolean already = false;
         	for (DeclarationWithProximity dwp: result.values()) {
         		if (dwp.getDeclaration().equals(e.getValue().getDeclaration())) {
@@ -179,10 +180,13 @@ public class Package implements ImportableScope {
         return result;
     }
 
-    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, 
+    		String startingWith, List<Import> imports, int proximity) {
         Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
-            if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d)) {
+            if (isResolvable(d) && d.isShared() && 
+            		!isOverloadedVersion(d) &&
+            		isNameMatching(startingWith, d)) {
                 boolean already = false;
                 for (Import i: imports) {
                     if (!i.isWildcardImport() && 
@@ -192,7 +196,8 @@ public class Package implements ImportableScope {
                     }
                 }
                 if (!already) {
-                    result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+                    result.put(d.getName(), 
+                    		new DeclarationWithProximity(d, proximity));
                 }
             }
         }
