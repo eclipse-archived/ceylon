@@ -433,14 +433,17 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
     The argument of such a callable parameter may be either a reference to a 
     named method declared elsewhere, or a new method defined inline as part of 
     the method invocation. A method may even return an invocable reference to 
-    another method.</para>
+    another method.
+    </para>
+    
+    <programlisting>value result = find((String s) s.size>1, "C", "Java", "Ceylon");</programlisting>
     
     <programlisting>value matches = find((String s) !s.empty, "", "hello", "world");</programlisting>
     
     <!-- 
     <para>
-    Finally, nested method declarations receive a closure of 
-    immutable references defined in the surrounding scope.
+    Finally, nested method declarations receive a closure of immutable references 
+    defined in the surrounding scope.
     </para>
     -->
     </section>

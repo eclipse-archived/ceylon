@@ -1,5 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class ModuleVisitor extends Visitor {
     
-    //TODO: we need to add *much* more validation of the
-    //      format of the descriptor
-    
     /**
      * Instance of the visited module which will receive
      * the dependencies declaration
@@ -58,121 +59,93 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
     }
     
-    @Override
-    public void visit(Tree.InvocationExpression that) {
-        Tree.Primary p = that.getPrimary();
-        if (p instanceof Tree.BaseTypeExpression) {
-            Identifier id = ((BaseTypeExpression) p).getIdentifier();
-            if (id!=null) {
-                switch (phase) {
-                    case SRC_MODULE:
-                        visitForSrcModulePhase(that,id);
-                        break;
-                    case REMAINING:
-                        visitForRemainingPhase(that,id);
-                        break;
-                }
-            }
-        }
-        super.visit(that);
+    private String getVersionString(Tree.QuotedLiteral that) {
+        return that==null ? null : that.getText()
+                .substring(1, that.getText().length() - 1);
     }
-
-    private void visitForSrcModulePhase(Tree.InvocationExpression that, Identifier id) {
-        if (id.getText().equals("Module")) {
-            Tree.SpecifiedArgument nsa = getArgument(that, "name");
-            String moduleName = argumentToString(nsa);
-            if (moduleName==null) {
+    
+    @Override
+    public void visit(Tree.ModuleDescriptor that) {
+        super.visit(that);
+        if (phase==Phase.SRC_MODULE) {
+            String version = getVersionString(that.getVersion());
+            List<String> name = getNameAsList(that.getImportPath());
+            if (name.isEmpty()) {
                 that.addError("missing module name");
             }
-            if (moduleName.isEmpty()) {
-                nsa.addError("empty module name");
-            }
-            else if (moduleName.startsWith(Module.DEFAULT_MODULE_NAME)) {
-                nsa.addError("default is a reserved module name");
-            }
-            else if (pkg.getName().isEmpty()) {
-                that.addError("module descriptor may not be defined in the root source directory");
+            else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
+                that.getImportPath().addError("default is a reserved module name");
             }
             else {
-                Tree.SpecifiedArgument vsa = getArgument(that, "version");
-                if (vsa!=null) {
-                    String version = argumentToString(vsa);
-                    if (version==null) {
-                        that.addError("missing module version");
-                    }
-                    else {
-                        if (version.isEmpty()) {
-                            vsa.addError("empty version identifier");
-                        }
-                    }
-                    //mainModule = pkg.getModule();
-                    mainModule = moduleManager.getOrCreateModule(pkg.getName(),version); //in compiler the Package has a null Module
-                    if (mainModule == null) {
-                        nsa.addError("module could not be defined");
-                    }
-                    else {
-                        mainModule.setVersion(version);
-                        if ( !mainModule.getNameAsString().equals(moduleName) ) {
-                            nsa.addError("module name does not match descriptor location");
-                        }
-                        moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
-                        mainModule.setDoc(argumentToString(getArgument(that, "doc")));
-                        mainModule.setLicense(argumentToString(getArgument(that, "license")));
-                        List<String> by = argumentToStrings(getArgument(that, "by"));
-                        if (by!=null) {
-                            mainModule.getAuthors().addAll(by);
-                        }
-                        mainModule.setAvailable(true);
-                    }
+                mainModule = moduleManager.getOrCreateModule(name, version);
+                mainModule.setVersion(version);
+                if ( !mainModule.getNameAsString().equals(formatPath(that.getImportPath().getIdentifiers())) ) {
+                    that.getImportPath()
+                        .addError("module name does not match descriptor location");
                 }
+                moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
+                mainModule.setAvailable(true);
+                buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
             }
         }
     }
-
-    private void visitForRemainingPhase(Tree.InvocationExpression that, Identifier id) {
-        if (id.getText().equals("Import")) {
-            Tree.SpecifiedArgument nsa = getArgument(that, "name");
-            String moduleName = argumentToString(nsa);
-            if (moduleName==null) {
-                that.addError("missing imported module name");
+    
+    @Override
+    public void visit(Tree.PackageDescriptor that) {
+        super.visit(that);
+        if (phase==Phase.REMAINING) {
+            List<String> name = getNameAsList(that.getImportPath());
+            if (name.isEmpty()) {
+                that.addError("missing packge name");
             }
-            else if (moduleName.isEmpty()) {
-                nsa.addError("empty imported module name");
-            }
-            else if (moduleName.equals(Module.DEFAULT_MODULE_NAME)) {
-                nsa.addError("cannot import the default module");
+            else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
+                that.getImportPath().addError("default is a reserved module name");
             }
             else {
-                Tree.SpecifiedArgument vsa = getArgument(that, "version");
-                if (vsa!=null) {
-                    String version = argumentToString(vsa);
-                    if (version.isEmpty()) {
-                        vsa.addError("empty version identifier");
+                if ( !pkg.getNameAsString().equals(formatPath(that.getImportPath().getIdentifiers())) ) {
+                    that.getImportPath()
+                        .addError("package name does not match descriptor location");
+                }
+                if (hasAnnotation(that.getAnnotationList(), "shared")) {
+                    pkg.setShared(true);
+                }
+                buildAnnotations(that.getAnnotationList(), pkg.getAnnotations());
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.ImportModule that) {
+        super.visit(that);
+        if (phase==Phase.REMAINING) {
+            String version = getVersionString(that.getVersion());
+            List<String> name = getNameAsList(that.getImportPath());
+            if (name.isEmpty()) {
+                that.addError("missing module name");
+            }
+            else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
+                that.getImportPath().addError("default is a reserved module name");
+            }
+            else {
+                Module importedModule = moduleManager.getOrCreateModule(name,version);
+                if (mainModule != null) {
+                    if (importedModule.getVersion() == null) {
+                        importedModule.setVersion(version);
                     }
-                    Module importedModule = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(moduleName),version);
-                    if (importedModule == null) {
-                        nsa.addError("module not found");
+                    ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
+                    if (moduleImport == null) {
+                        boolean optional = hasAnnotation(that.getAnnotationList(), "optional");
+                        boolean export = hasAnnotation(that.getAnnotationList(), "export");
+                        moduleImport = new ModuleImport(importedModule, optional, export);
+                        buildAnnotations(that.getAnnotationList(), moduleImport.getAnnotations());
+                        mainModule.getImports().add(moduleImport);
                     }
-                    else if (mainModule != null) {
-                        if (importedModule.getVersion() == null) {
-                            importedModule.setVersion(version);
-                        }
-                        String optionalString = argumentToString(getArgument(that, "optional"));
-                        String exportString = argumentToString(getArgument(that, "export"));
-                        ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
-                        if (moduleImport == null) {
-                            boolean optional = optionalString!=null && optionalString.equals("true");
-                            boolean export = exportString!=null && exportString.equals("true");
-                            moduleImport = new ModuleImport(importedModule, optional, export);
-                            mainModule.getImports().add(moduleImport);
-                        }
-                        moduleManager.addModuleDependencyDefinition(moduleImport, that);
-                    }
-                    //else we leave it behind unprocessed
+                    moduleManager.addModuleDependencyDefinition(moduleImport, that);
                 }
             }
         }
-        if (id.getText().equals("Package")) {
+        //this is from master, who knows what it does?
+        /*if (id.getText().equals("Package")) {
             Tree.SpecifiedArgument nsa = getArgument(that, "name");
             String packageName = argumentToString(nsa);
             if (packageName==null) {
@@ -201,25 +174,15 @@ public class ModuleVisitor extends Visitor {
                     pkg.getAuthors().addAll(by);
                 }
             }
-        }
+        }*/
     }
 
-    private Tree.SpecifiedArgument getArgument(Tree.InvocationExpression that, String name) {
-        NamedArgumentList nal = that.getNamedArgumentList();
-        if (nal==null) {
-        	that.addError("module and package descriptors must be defined using named argument lists");
+    private List<String> getNameAsList(Tree.ImportPath that) {
+        List<String> name = new ArrayList<String>();
+        for (Tree.Identifier i: that.getIdentifiers()) {
+           name.add(i.getText()); 
         }
-        else {
-			for (Tree.NamedArgument arg: nal.getNamedArguments()) {
-	            if (arg instanceof Tree.SpecifiedArgument) {
-	                Tree.Identifier aid = arg.getIdentifier();
-	                if (aid!=null && aid.getText().equals(name)) {
-	                    return (Tree.SpecifiedArgument) arg;
-	                }
-	            }
-	        }
-        }
-        return null;
+        return name;
     }
     
     private List<String> argumentToStrings(Tree.SpecifiedArgument sa) {
@@ -285,7 +248,9 @@ public class ModuleVisitor extends Visitor {
         SRC_MODULE,
         REMAINING
     }
+    
     public Module getMainModule() {
         return mainModule;
     }
+    
 }

@@ -128,7 +128,7 @@
         appear escaped using <literal>\i</literal> or <literal>\I</literal>:</para>
         
         <para><literal>
-        import
+        module package import
         class interface object given value assign void function
         of extends satisfies adapts abstracts
         in out

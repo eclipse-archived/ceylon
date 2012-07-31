@@ -15,9 +15,8 @@ public class Package implements ImportableScope {
     private List<String> name;
     private Module module;
     private List<Unit> units = new ArrayList<Unit>();
-    private String doc;
     private boolean shared = false;
-    private List<String> authors = new ArrayList<String>();
+    private List<Annotation> annotations = new ArrayList<Annotation>();
     
     public Module getModule() {
         return module;
@@ -199,6 +198,10 @@ public class Package implements ImportableScope {
         return result;
     }
     
+    public List<Annotation> getAnnotations() {
+        return annotations;
+    }
+
     @Override
     public int hashCode() {
         return getName().hashCode();
@@ -214,16 +217,4 @@ public class Package implements ImportableScope {
         }
     }
     
-    public String getDoc() {
-        return doc;
-    }
-    
-    public void setDoc(String license) {
-        this.doc = license;
-    }
-    
-    public List<String> getAuthors() {
-        return authors;
-    }
-
 }

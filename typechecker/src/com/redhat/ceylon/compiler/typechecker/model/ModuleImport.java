@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Describes data specific to module imports
  *
@@ -9,6 +12,7 @@ public class ModuleImport {
     private final boolean optional;
     private final boolean export;
     private final Module module;
+    private List<Annotation> annotations = new ArrayList<Annotation>();
 
     public ModuleImport(Module module, boolean optional, boolean export) {
         this.module = module;
@@ -26,6 +30,10 @@ public class ModuleImport {
 
     public Module getModule() {
         return module;
+    }
+    
+    public List<Annotation> getAnnotations() {
+        return annotations;
     }
 
     @Override

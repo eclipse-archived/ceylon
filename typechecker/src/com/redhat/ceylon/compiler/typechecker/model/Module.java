@@ -18,10 +18,8 @@ public class Module {
     private List<ModuleImport> imports = new ArrayList<ModuleImport>();
     private Module languageModule;
     private boolean available;
-    private String license;
-    private String doc;
-    private List<String> authors = new ArrayList<String>();
     private boolean isDefault;
+    private List<Annotation> annotations = new ArrayList<Annotation>();
 
     /**
      * Whether or not the module is available in the
@@ -165,26 +163,6 @@ public class Module {
         return "Module[" + getNameAsString() + ", " + getVersion() + "]";
     }
     
-    public String getDoc() {
-        return doc;
-    }
-    
-    public void setDoc(String doc) {
-        this.doc = doc;
-    }
-    
-    public String getLicense() {
-        return license;
-    }
-    
-    public void setLicense(String license) {
-        this.license = license;
-    }
-    
-    public List<String> getAuthors() {
-		return authors;
-	}
-
     /**
      * Is this the default module hosting all units outside of an explicit module
      */
@@ -195,7 +173,11 @@ public class Module {
     public void setDefault(boolean isDefault) {
         this.isDefault = isDefault;
     }
-    
+
+    public List<Annotation> getAnnotations() {
+        return annotations;
+    }
+
     public boolean isJava() {
         return false;
     }

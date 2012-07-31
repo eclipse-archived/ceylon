@@ -1,4 +1,4 @@
-import imports.package { 
+import imports.pack { 
     method, attribute, singleton,
     Class, Interface, Dupe, Alias,
     @error Class
