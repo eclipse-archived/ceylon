@@ -15,6 +15,7 @@ import java.util.InvalidPropertiesFormatException;
 
 public class ConfigParser {
     private File configFile;
+    private File currentDir;
     private CeylonConfig config;
     private InputStream in;
     private LineNumberReader counterdr;
@@ -59,16 +60,18 @@ public class ConfigParser {
         return (new ConfigParser(configFile)).parse();
     }
     
-    public static CeylonConfig loadConfigFromStream(InputStream stream) throws IOException {
-        return (new ConfigParser(stream)).parse();
+    public static CeylonConfig loadConfigFromStream(InputStream stream, File currentDir) throws IOException {
+        return (new ConfigParser(stream, currentDir)).parse();
     }
     
     private ConfigParser(File configFile) {
         this.configFile = configFile;
+        this.currentDir = configFile.getParentFile();
     }
     
-    private ConfigParser(InputStream in) {
+    private ConfigParser(InputStream in, File currentDir) {
         this.in = in;
+        this.currentDir = currentDir;
     }
     
     private CeylonConfig parse() throws IOException {
@@ -143,6 +146,12 @@ public class ConfigParser {
         } else {
             value = "true";
         }
+        
+        // Special "variable" to get the current directory for this config file
+        if (value.startsWith("${DIR}")) {
+            value = currentDir.getCanonicalPath() + value.substring(6);
+        }
+        
         String optName = section + "." + option;
         String[] oldval = config.getOptionValues(optName);
         if (oldval == null) {
