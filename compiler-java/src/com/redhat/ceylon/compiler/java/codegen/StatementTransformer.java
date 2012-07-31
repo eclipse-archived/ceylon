@@ -153,7 +153,8 @@ public class StatementTransformer extends AbstractTransformer {
             if (cond instanceof Tree.IsCondition) {
                 Tree.IsCondition isdecl = (Tree.IsCondition) cond;
                 name = isdecl.getVariable().getIdentifier().getText();
-                toType = isdecl.getType().getTypeModel();
+                // use the type of the variable, which is more precise than the type we test for
+                toType = isdecl.getVariable().getType().getTypeModel();
                 specifierExpr = isdecl.getVariable().getSpecifierExpression().getExpression();
             } else if (cond instanceof Tree.NonemptyCondition) {
                 Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition) cond;
@@ -231,7 +232,10 @@ public class StatementTransformer extends AbstractTransformer {
                     test = makeNonEmptyTest(firstTimeTestExpr, tmpVarName);
                 } else {
                     // is
-                    test = makeTypeTest(firstTimeTestExpr, tmpVarName, toType);
+                    test = makeTypeTest(firstTimeTestExpr, tmpVarName,
+                            // only test the types we're testing for, not the type of
+                            // the variable (which can be more precise)
+                            ((Tree.IsCondition)cond).getType().getTypeModel());
                 }
             }
         } else if (cond instanceof Tree.BooleanCondition) {
