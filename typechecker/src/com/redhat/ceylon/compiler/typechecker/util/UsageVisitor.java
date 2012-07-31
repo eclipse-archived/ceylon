@@ -8,6 +8,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -15,24 +17,43 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author kulikov
  */
 public class UsageVisitor extends Visitor {
+	
+	private ReferenceCounter rc;
+	
+	public UsageVisitor(ReferenceCounter rc) {
+		this.rc = rc;
+	}
+	
     @Override
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
-        Declaration d = that.getDeclarationModel();
+        if (!referenced(that)) {
+    		that.addUsageWarning("Import is never used: " + 
+    				that.getDeclarationModel().getName());
+    	}
+    }
+
+	private boolean referenced(Tree.ImportMemberOrType that) {
+		Declaration d = that.getDeclarationModel();
+        boolean referenced=true;
         if (d!=null) {
-        	int count = d.getRefCount();
+        	referenced = rc.referenced(d);
         	if (d instanceof Functional) {
         		if (((Functional) d).isAbstraction()) {
         			for (Declaration od: ((Functional) d).getOverloads()) {
-        				count+=od.getRefCount();
+        				referenced=referenced||rc.referenced(od);
         			}
         		}
         	}
-        	if (count==0) {
-        		that.addUsageWarning("Import is never used: " + d.getName());
+        	ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
+        	if (imtl!=null) {
+        		for (ImportMemberOrType m: imtl.getImportMemberOrTypes()) {
+					referenced=referenced||referenced(m);
+        		}
         	}
         }
-    }
+		return referenced;
+	}
 
     @Override
     public void visit(Tree.Declaration that) {
@@ -41,7 +62,7 @@ public class UsageVisitor extends Visitor {
         if (declaration!=null && 
         		!declaration.isShared() && 
         		!declaration.isToplevel() && 
-        		declaration.getRefCount() == 0 &&
+        		!rc.referenced(declaration) &&
         		!(declaration instanceof Parameter) &&
         		!(that instanceof Tree.Variable)) {
             that.addUsageWarning("declaration is never used: " + 

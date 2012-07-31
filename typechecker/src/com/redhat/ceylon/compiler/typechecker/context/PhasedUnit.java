@@ -241,8 +241,9 @@ public class PhasedUnit {
     }
 
     public synchronized void analyseUsage() {
-        compilationUnit.visit(new ReferenceCounter());
-        compilationUnit.visit(new UsageVisitor());
+        ReferenceCounter rc = new ReferenceCounter();
+		compilationUnit.visit(rc);
+        compilationUnit.visit(new UsageVisitor(rc));
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {
