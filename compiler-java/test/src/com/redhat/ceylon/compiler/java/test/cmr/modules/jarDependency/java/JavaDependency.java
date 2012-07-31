@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.cmr.module.jarDependency.java;
+package com.redhat.ceylon.compiler.java.test.cmr.modules.jarDependency.java;
 
 public class JavaDependency {
     public void m(){} 
