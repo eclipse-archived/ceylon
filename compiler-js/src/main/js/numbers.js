@@ -73,10 +73,12 @@ JSNum$proto.getPredecessor = function() { return this-1 }
 JSNum$proto.getUnit = function() { return this == 1 }
 JSNum$proto.getZero = function() { return this == 0 }
 JSNum$proto.getFractionalPart = function() {
-    return this.$float ? Float(this - (this|0)) : 0;
+    if (!this.$float) { return 0; }
+    return Float(this - (this>=0 ? Math.floor(this) : Math.ceil(this)));
 }
 JSNum$proto.getWholePart = function() {
-    return this.$float ? Float(this|0) : this.valueOf();
+    if (!this.$float) { return this.valueOf(); }
+    return Float(this>=0 ? Math.floor(this) : Math.ceil(this));
 }
 JSNum$proto.getSign = function() { return this > 0 ? 1 : this < 0 ? -1 : 0; }
 JSNum$proto.getHash = function() {
