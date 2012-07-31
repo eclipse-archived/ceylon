@@ -6,8 +6,8 @@ doc "A nonempty, immutable sequence of values. A sequence of
      
      The union type `Empty|Sequence<Element>`, abbreviated
      `Element[]`, represents a possibly-empty sequence. The
-     `if (nonempty ...) construct may be used to obtain an
-     instance of `Sequence`:
+     `if (nonempty ...)` construct may be used to obtain an
+     instance of `Sequence` from a possibly-empty sequence:
      
          Integer[] nums = ... ;
          if (nonmpty nums) {

@@ -275,7 +275,12 @@ shared interface Iterable<out Element>
          element of this iterable object. If the step size 
          is `1`, the `Iterable` contains the same elements 
          as this iterable object. The step size must be 
-         greater than zero."
+         greater than zero. The expression
+         
+             (0..10).by(3)
+         
+         results in an iterable object with the elements
+         `0`, `3`, `6`, and `9` in that order."
     throws (Exception, "if `step<1`") //TODO: better exception type
     shared default Iterable<Element> by(Integer step) {
         if (step <= 0) {
@@ -322,7 +327,9 @@ shared interface Iterable<out Element>
     }
 
     doc "The non-null elements of this `Iterable`, in their
-         original order."
+         original order. For null elements of the original 
+         `Iterable`, there is no entry in the resulting 
+         iterable object."
     shared default Iterable<Element&Object> coalesced {
         return elements { for (e in this) if (exists e) e };
     }
@@ -330,18 +337,42 @@ shared interface Iterable<out Element>
     doc "All entries of form `index->element` where `index` 
          is the position at which `element` occurs, for every
          non-null element of this `Iterable`, ordered by
-         increasing `index`."
+         increasing `index`. For a null element at a given
+         position in the original `Iterable`, there is no 
+         entry with the corresponding index in the resulting 
+         iterable object. The expression 
+         
+             { \"hello\", null, \"world\" }.indexed
+             
+         results in an iterable object with the entries
+         `0->\"hello\"` and `2->\"world\"`."
     shared default Iterable<Entry<Integer,Element&Object>> indexed {
-        variable value i:=0;
-        function entryOrNull(Integer i, Element e) {
-            if (exists e) {
-                return i->e;
+            object iterable satisfies Iterable<Entry<Integer,Element&Object>?> {
+                shared actual Iterator<Entry<Integer,Element&Object>?> iterator {
+                    value outerIterable { return outer; }
+                    object iterator satisfies Iterator<Entry<Integer,Element&Object>?> {
+                        value iter = outerIterable.iterator;
+                        variable value i:=0;
+                        actual shared Entry<Integer,Element&Object>?|Finished next() {
+                            value next = iter.next();
+                            if (is Element next) {
+                                if (exists next) {
+                                    return i++->next;
+                                }
+                                else {
+                                    i++;
+                                    return null;
+                                }
+                            }
+                            else {
+                                return exhausted;
+                            }
+                        }
+                    }
+                    return iterator;
+                }
             }
-            else {
-                return null;
-            }
-        }
-        return elements(for (e in this) entryOrNull(i++,e)).coalesced;
+            return iterable.coalesced;
     }
 
     doc "The elements of this iterable object, in their
