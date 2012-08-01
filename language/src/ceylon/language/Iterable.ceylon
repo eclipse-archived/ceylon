@@ -390,4 +390,9 @@ shared interface Iterable<out Element>
         return chained;
     }
 
+    shared default Map<Grouping,Sequence<Element>> group<Grouping>(Grouping grouping(Element elem))
+            given Grouping satisfies Object {
+        throw;
+    }
+
 }
