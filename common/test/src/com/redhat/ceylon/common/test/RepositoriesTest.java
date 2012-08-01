@@ -67,55 +67,55 @@ public class RepositoriesTest {
     
     @Test
     public void testGetRepository() {
-        Assert.assertTrue(testRepository(repos.getRepository("One"), "One", "foobar", null, null));
-        Assert.assertTrue(testRepository(repos.getRepository("Two"), "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
+        assertRepository(repos.getRepository("One"), "One", "foobar", null, null);
+        assertRepository(repos.getRepository("Two"), "Two", "foobar", "pietjepluk", "noencryptionfornow!");
     }
     
     @Test
     public void testGetBootstrapRepository() {
-        Assert.assertTrue(testRepository(repos.getBootstrapRepository(), "One", "foobar", null, null));
+        assertRepository(repos.getBootstrapRepository(), "One", "foobar", null, null);
     }
     
     @Test
     public void testGetDeafultBootstrapRepository() {
         File dir = new File(testConfig.getInstallDir(), "repo");
-        Assert.assertTrue(testRepository(defaultRepos.getBootstrapRepository(), "INSTALL", dir.getAbsolutePath(), null, null));
+        assertRepository(defaultRepos.getBootstrapRepository(), "INSTALL", dir.getAbsolutePath(), null, null);
     }
     
     @Test
     public void testGetOverriddenBootstrapRepository() {
-        Assert.assertTrue(testRepository(overriddenRepos.getBootstrapRepository(), "INSTALL", "install", null, null));
+        assertRepository(overriddenRepos.getBootstrapRepository(), "INSTALL", "install", null, null);
     }
     
     @Test
     public void testGetOutputRepository() {
-        Assert.assertTrue(testRepository(repos.getOutputRepository(), "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
+        assertRepository(repos.getOutputRepository(), "Two", "foobar", "pietjepluk", "noencryptionfornow!");
     }
     
     @Test
     public void testGetDefaultOutputRepository() {
-        Assert.assertTrue(testRepository(defaultRepos.getOutputRepository(), "LOCAL", "./modules", null, null));
+        assertRepository(defaultRepos.getOutputRepository(), "LOCAL", "./modules", null, null);
     }
     
     @Test
     public void testGetOverriddenOutputRepository() {
-        Assert.assertTrue(testRepository(overriddenRepos.getOutputRepository(), "LOCAL", "local", null, null));
+        assertRepository(overriddenRepos.getOutputRepository(), "LOCAL", "local", null, null);
     }
     
     @Test
     public void testGetCacheRepository() {
-        Assert.assertTrue(testRepository(repos.getCacheRepository(), "Three", "foobar", null, null));
+        assertRepository(repos.getCacheRepository(), "Three", "foobar", null, null);
     }
     
     @Test
     public void testGetDefaultCacheRepository() {
         File dir = defaultRepos.getCacheRepoDir();
-        Assert.assertTrue(testRepository(defaultRepos.getCacheRepository(), "CACHE", dir.getAbsolutePath(), null, null));
+        assertRepository(defaultRepos.getCacheRepository(), "CACHE", dir.getAbsolutePath(), null, null);
     }
     
     @Test
     public void testGetOverriddenCacheRepository() {
-        Assert.assertTrue(testRepository(overriddenRepos.getCacheRepository(), "CACHE", "cache", null, null));
+        assertRepository(overriddenRepos.getCacheRepository(), "CACHE", "cache", null, null);
     }
     
     @Test
@@ -123,11 +123,11 @@ public class RepositoriesTest {
         Repository[] lookup = repos.getLookupRepositories();
         passwordPrompt.prompts.put("Password for userfoo at foobar: ", "passwordfoo");
         Assert.assertTrue(lookup.length == 5);
-        Assert.assertTrue(testRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
-        Assert.assertTrue(testRepository(lookup[1], "Three", "foobar", null, null));
-        Assert.assertTrue(testRepository(lookup[2], "Four", "foobar", null, null));
-        Assert.assertTrue(testRepository(lookup[3], "Five", "foobar", "userfoo", "passwordfoo"));
-        Assert.assertTrue(testRepository(lookup[4], "%lookup-5", "foobar", null, null));
+        assertRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!");
+        assertRepository(lookup[1], "Three", "foobar", null, null);
+        assertRepository(lookup[2], "Four", "foobar", null, null);
+        assertRepository(lookup[3], "Five", "foobar", "userfoo", "passwordfoo");
+        assertRepository(lookup[4], "%lookup-5", "foobar", null, null);
         passwordPrompt.assertSeenPrompts("Password for userfoo at foobar: ");
     }
     
@@ -135,30 +135,26 @@ public class RepositoriesTest {
     public void testGetDefaultLookupRepositories() {
         Repository[] lookup = defaultRepos.getLookupRepositories();
         Assert.assertTrue(lookup.length == 3);
-        Assert.assertTrue(testRepository(lookup[0], "LOCAL", "./modules", null, null));
+        assertRepository(lookup[0], "LOCAL", "./modules", null, null);
         File userDir = defaultRepos.getUserRepoDir();
-        Assert.assertTrue(testRepository(lookup[1], "USER", userDir.getAbsolutePath(), null, null));
-        Assert.assertTrue(testRepository(lookup[2], "REMOTE", Repositories.REPO_URL_CEYLON, null, null));
+        assertRepository(lookup[1], "USER", userDir.getAbsolutePath(), null, null);
+        assertRepository(lookup[2], "REMOTE", Repositories.REPO_URL_CEYLON, null, null);
     }
     
     @Test
     public void testGetOverriddenLookupRepositories() {
         Repository[] lookup = overriddenRepos.getLookupRepositories();
         Assert.assertTrue(lookup.length == 3);
-        Assert.assertTrue(testRepository(lookup[0], "LOCAL", "local", null, null));
-        Assert.assertTrue(testRepository(lookup[1], "USER", "user", null, null));
-        Assert.assertTrue(testRepository(lookup[2], "REMOTE", "http://remote", null, null));
+        assertRepository(lookup[0], "LOCAL", "local", null, null);
+        assertRepository(lookup[1], "USER", "user", null, null);
+        assertRepository(lookup[2], "REMOTE", "http://remote", null, null);
     }
     
-    private boolean testRepository(Repository repo, String name, String url, String user, String password) {
-        return (repo != null)
-                && repo.getName().equals(name)
-                && repo.getUrl().equals(url)
-                && testEq(repo.getUser(), user)
-                && testEq(repo.getPassword(), password);
-    }
-
-    private boolean testEq(String value1, String value2) {
-        return (value1 == null) && (value2 == null) || (value1 != null && value2 != null && value1.equals(value2));
+    private void assertRepository(Repository repo, String name, String url, String user, String password) {
+        Assert.assertNotNull(repo);
+        Assert.assertEquals(name, repo.getName());
+        Assert.assertEquals(url, repo.getUrl());
+        Assert.assertEquals(user, repo.getUser());
+        Assert.assertEquals(password, repo.getPassword());
     }
 }
