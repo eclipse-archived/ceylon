@@ -502,6 +502,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
+        //This should be done where the TypeInfo annotation is parsed
+        //to avoid retarded errors because of a space after a comma
+        typeName = typeName.trim();
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             if ("ceylon.language.Bottom".equals(typeName)) {
