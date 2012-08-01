@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -357,7 +358,7 @@ public class TypeHierarchyVisitor extends Visitor {
             type = new Type();
             type.declaration = declaration;
             for (Declaration member : declaration.getMembers()) {
-                if (!(member instanceof MethodOrValue) || 
+                if (!(member instanceof MethodOrValue || member instanceof Class) || 
                         member.isStaticallyImportable()) {
                     continue;
                 }
