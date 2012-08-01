@@ -243,7 +243,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // Erased types need a type cast
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_TYPE_ARGUMENT);
                 result = make().TypeCast(targetType, result);
-            }else if(needsRawCast(exprType, expectedType)){
+            }else if(needsRawCast(exprType, expectedType, (flags & EXPR_EXPECTED_TYPE_NOT_RAW) != 0)){
                 // type param erasure
                 JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
                 result = make().TypeCast(targetType, result);
@@ -255,14 +255,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy);
         // now check if we need variance casts
         if (canCast) {
-            ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, forCompanion);
+            ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType,
+                    (flags & EXPR_FOR_COMPANION) != 0);
         }
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy);
         return ret;
     }
 
-    private boolean needsRawCast(ProducedType exprType, ProducedType expectedType) {
+    private boolean needsRawCast(ProducedType exprType, ProducedType expectedType, boolean expectedTypeNotRaw) {
         if(exprType.isExactly(expectedType))
             return false;
         // make sure we work on definite types
@@ -273,16 +274,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             // something fishy
             if(commonType == null)
                 return false;
-            ProducedType expectedTypeErasure = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(expectedType));
-            if(hasErasedTypeParameters(expectedTypeErasure, false))
-                return false;
+            if(!expectedTypeNotRaw){
+                ProducedType expectedTypeErasure = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(expectedType));
+                if(hasErasedTypeParameters(expectedTypeErasure, false))
+                    return false;
+            }
             return hasErasedTypeParameters(commonType, true);
         }else{
             ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
             if(commonType == null || !(commonType.getDeclaration() instanceof ClassOrInterface))
                 return false;
-            if(hasErasedTypeParameters(expectedType, false))
-                return false;
+            if(!expectedTypeNotRaw){
+                if(hasErasedTypeParameters(expectedType, false))
+                    return false;
+            }
             return hasErasedTypeParameters(commonType, true);
         }
     }

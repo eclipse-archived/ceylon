@@ -109,7 +109,7 @@ abstract class InvocationBuilder {
             this.onValueType = false;
         }
     }
-    
+
     static final List<JCExpression> transformTypeArguments(
             AbstractTransformer gen,
             java.util.List<ProducedType> typeArguments) {
@@ -421,6 +421,11 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
 
     protected abstract boolean hasParameter(int argIndex);
 
+    // to be overridden
+    protected boolean isParameterRaw(int argIndex) {
+        return false;
+    }
+
     /** Gets the number of arguments actually being supplied */
     protected abstract int getNumArguments();
 
@@ -486,9 +491,12 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
                 type = gen.typeFact().getIteratedType(type);
             }
             BoxingStrategy boxingStrategy = getParameterBoxingStrategy(argIndex);
+            int flags = 0;
+            if(!isParameterRaw(argIndex))
+                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
             JCExpression ret = gen.expressionGen().transformExpression(expr, 
                     boxingStrategy, 
-                    type);
+                    type, flags);
             if(isParameterSequenced(argIndex)
                     && isJavaMethod()
                     && dontBoxSequence()){
@@ -696,6 +704,13 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
     protected boolean dontBoxSequence() {
         return positional.getEllipsis() != null || positional.getComprehension() != null;
     }
+    
+    @Override
+    protected boolean isParameterRaw(int argIndex){
+        Parameter param = getParameter(argIndex);
+        return param.getType().isRaw();
+    }
+    
     protected boolean hasDefaultArgument(int ii) {
         return parameters.get(ii).isDefaulted();
     }
