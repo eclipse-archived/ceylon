@@ -2,6 +2,11 @@ package com.redhat.ceylon.common.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -10,15 +15,37 @@ import org.junit.Test;
 
 import com.redhat.ceylon.common.CeylonConfig;
 import com.redhat.ceylon.common.ConfigParser;
+import com.redhat.ceylon.common.PromptedPassword.PasswordPrompt;
 import com.redhat.ceylon.common.Repositories;
 import com.redhat.ceylon.common.Repositories.Repository;
 
 public class RepositoriesTest {
 
+    static class MockPasswordPrompt implements PasswordPrompt {
+        
+        final Map<String, String> prompts = new HashMap<String, String>();
+        final List<String> seenPrompts = new ArrayList<String>();
+        
+        public MockPasswordPrompt() {
+        }
+        
+        @Override
+        public char[] getPassword(String prompt) {
+            this.seenPrompts.add(prompt);
+            String password = prompts.get(prompt);
+            return password != null ? password.toCharArray() : null;
+        }
+        
+        public void assertSeenPrompts(String... prompts) {
+            Assert.assertEquals(Arrays.asList(prompts), seenPrompts);
+        }
+    }
+    
     CeylonConfig testConfig;
     Repositories repos;
     Repositories defaultRepos;
     Repositories overriddenRepos;
+    MockPasswordPrompt passwordPrompt;
     
     @Before
     public void setup() throws IOException {
@@ -27,6 +54,8 @@ public class RepositoriesTest {
             // Set a fake installation folder
             System.setProperty("ceylon.home", "fake-install-dir");
         }
+        passwordPrompt = new MockPasswordPrompt();
+        testConfig.setPasswordPrompt(passwordPrompt);
         repos = Repositories.withConfig(testConfig);
         
         CeylonConfig fakeConfig = new CeylonConfig();
@@ -92,11 +121,14 @@ public class RepositoriesTest {
     @Test
     public void testGetLookupRepositories() {
         Repository[] lookup = repos.getLookupRepositories();
-        Assert.assertTrue(lookup.length == 4);
+        passwordPrompt.prompts.put("Password for userfoo at foobar: ", "passwordfoo");
+        Assert.assertTrue(lookup.length == 5);
         Assert.assertTrue(testRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
         Assert.assertTrue(testRepository(lookup[1], "Three", "foobar", null, null));
         Assert.assertTrue(testRepository(lookup[2], "Four", "foobar", null, null));
-        Assert.assertTrue(testRepository(lookup[3], "%lookup-4", "foobar", null, null));
+        Assert.assertTrue(testRepository(lookup[3], "Five", "foobar", "userfoo", "passwordfoo"));
+        Assert.assertTrue(testRepository(lookup[4], "%lookup-5", "foobar", null, null));
+        passwordPrompt.assertSeenPrompts("Password for userfoo at foobar: ");
     }
     
     @Test
