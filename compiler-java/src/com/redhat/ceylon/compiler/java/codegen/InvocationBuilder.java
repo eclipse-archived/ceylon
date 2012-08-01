@@ -1129,7 +1129,8 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         argExpr = gen.expressionGen().transformComprehension(namedArgumentList.getComprehension());
                     } else {
                         if (primaryDeclaration instanceof FunctionalParameter) {
-                            argExpr = gen.makeEmptyAsIterable();
+                            // honestly I don't know if it needs a cast but it can't hurt
+                            argExpr = gen.makeEmptyAsIterable(true);
                         } else {
                             argExpr = makeDefaultedArgumentMethodCall(param);
                             hasDefaulted |= true;

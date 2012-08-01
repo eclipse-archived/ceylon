@@ -1832,8 +1832,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.JT_RAW);
     }
     
-    JCExpression makeEmptyAsIterable(){
-        return make().TypeCast(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), makeEmpty());
+    JCExpression makeEmptyAsIterable(boolean needsCast){
+        if(needsCast)
+            return make().TypeCast(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), makeEmpty());
+        return makeEmpty();
     }
     
     JCExpression makeEmpty() {
