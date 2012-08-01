@@ -545,7 +545,9 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
 
     @Override
     protected ProducedType getParameterType(int argIndex) {
-        return parameterTypes.get(argIndex);
+        // in the Java code, all Callable.call() params are of type Object so let's not
+        // pretend they are typed, this saves a lot of casting.
+        return gen.typeFact().getObjectDeclaration().getType();
     }
 
     @Override
