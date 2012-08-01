@@ -395,10 +395,10 @@ String$proto.occurrences = function(sub) {
             i+=sub.length;
         } else if ((this.charCodeAt(i++)&0xfc00) === 0xd800) {++i;}
     }
-    return ocs.length > 0 ? ArrayList(ocs) : $empty;
+    return ocs.length > 0 ? ocs : $empty;
 }
-String$proto.filter = function(f) {
-    var r = Iterable.$$.prototype.filter.apply(this, [f]);
+String$proto.$filter = function(f) {
+    var r = Iterable.$$.prototype.$filter.apply(this, [f]);
     return string(r);
 }
 String$proto.skipping = function(skip) {
@@ -413,8 +413,8 @@ String$proto.by = function(step) {
     var r = Iterable.$$.prototype.by.apply(this, [step]);
     return string(r);
 }
-String$proto.sort = function(f) {
-    var r = Iterable.$$.prototype.sort.apply(this, [f]);
+String$proto.$sort = function(f) {
+    var r = Iterable.$$.prototype.$sort.apply(this, [f]);
     return string(r);
 }
 String$proto.getCoalesced = function() { return this; }

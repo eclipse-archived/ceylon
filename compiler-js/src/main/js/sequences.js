@@ -172,8 +172,8 @@ Singleton$proto.equals = function(other) {
     }
     return false;
 }
-Singleton$proto.map = function(f) { return ArraySequence([ f(this.elem) ]); }
-Singleton$proto.filter = function(f) {
+Singleton$proto.$map = function(f) { return ArraySequence([ f(this.elem) ]); }
+Singleton$proto.$filter = function(f) {
     return f(this.elem) ? this : $empty;
 }
 Singleton$proto.fold = function(v,f) {
@@ -188,7 +188,7 @@ Singleton$proto.findLast = function(f) {
 Singleton$proto.any = function(f) {
     return f(this.elem);
 }
-Singleton$proto.every = function(f) {
+Singleton$proto.$every = function(f) {
     return f(this.elem);
 }
 Singleton$proto.skipping = function(skip) {
@@ -200,7 +200,7 @@ Singleton$proto.taking = function(take) {
 Singleton$proto.by = function(step) {
     return this;
 }
-Singleton$proto.sort = function(f) { return this; }
+Singleton$proto.$sort = function(f) { return this; }
 Singleton$proto.count = function(f) {
 	return f(this.elem) ? 1 : 0;
 }

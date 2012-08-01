@@ -375,7 +375,12 @@ function Array$() {
     var that = new Array$.$$;
     return that;
 }
-initTypeProto(Array$, 'ceylon.language.Array', Object$, FixedSized, Cloneable, Ranged, List);
+initExistingType(Array$, Array, 'ceylon.language.Array', Object$, FixedSized,
+        Cloneable, Ranged, List);
+var Array$proto = Array.prototype;
+var origArrToString = Array$proto.toString;
+inheritProtoI(Array$, Object$, FixedSized, Cloneable, Ranged, List);
+Array$proto.toString = origArrToString;
 exports.Array=Array$;
 
 function Empty() {
@@ -406,14 +411,14 @@ Empty$proto.getReversed = function() { return this; }
 Empty$proto.skipping = function(skip) { return this; }
 Empty$proto.taking = function(take) { return this; }
 Empty$proto.by = function(step) { return this; }
-Empty$proto.every = function(f) { return false; }
+Empty$proto.$every = function(f) { return false; }
 Empty$proto.any = function(f) { return false; }
-Empty$proto.sort = function(f) { return this; }
-Empty$proto.map = function(f) { return this; }
+Empty$proto.$sort = function(f) { return this; }
+Empty$proto.$map = function(f) { return this; }
 Empty$proto.fold = function(i,r) { return i; }
 Empty$proto.find = function(f) { return null; }
 Empty$proto.findLast = function(f) { return null; }
-Empty$proto.filter = function(f) { return this; }
+Empty$proto.$filter = function(f) { return this; }
 Empty$proto.getCoalesced = function() { return this; }
 Empty$proto.getIndexed = function() { return this; }
 Empty$proto.withLeading = function(other) {
@@ -440,62 +445,64 @@ exports.Empty=Empty;
 exports.emptyIterator=emptyIterator;
 
 function EmptyArray() {
-    var that = new EmptyArray.$$;
-    return that;
+    return [];
 }
 initTypeProto(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
-EmptyArray.$$.prototype.setItem = function(i,e) {}
-EmptyArray.$$.prototype.item = function(x) { return null; }
-EmptyArray.$$.prototype.getReversed = function() { return this; }
-EmptyArray.$$.prototype.chain = function(other) { return other; }
+function ArrayList(items) {
+    return items;
+}
+initTypeProto(ArrayList, 'ceylon.language.ArrayList', Array$, List);
+
+Array$proto.getT$name$ = function() {
+    return (this.length>0 ? ArrayList : EmptyArray).$$.T$name;
+}
+Array$proto.getT$all$ = function() {
+    return (this.length>0 ? ArrayList : EmptyArray).$$.T$all;
+}
 
 exports.EmptyArray=EmptyArray;
 
-function ArrayList(items) {
-    var that = new ArrayList.$$;
-    that.value=items;
-    that.size=items.length;
-    that.lastIndex=items.length-1;
-    return that;
-}
-initTypeProto(ArrayList, 'ceylon.language.ArrayList', Array$, List);
-var ArrayList$proto = ArrayList.$$.prototype;
-ArrayList$proto.getSize = function() { return this.size; }
-ArrayList$proto.setItem = function(idx,elem) {
-    if (idx >= 0 && idx < this.size) {
-        this.value[idx] = elem;
+Array$proto.getSize = function() { return this.length; }
+Array$proto.setItem = function(idx,elem) {
+    if (idx >= 0 && idx < this.length) {
+        this[idx] = elem;
     }
 }
-ArrayList$proto.item = function(idx) {
-    if (idx >= 0 && idx < this.size) {
-        return this.value[idx];
+Array$proto.item = function(idx) {
+    if (idx >= 0 && idx < this.length) {
+        return this[idx];
     }
     return null;
 }
-ArrayList$proto.getLastIndex = function() {
-    return this.lastIndex;
+Array$proto.getLastIndex = function() {
+    return this.length>0 ? (this.length-1) : null;
 }
-ArrayList$proto.getReversed = function() {
-    var arr = this.value.slice(0);
+Array$proto.getReversed = function() {
+    if (this.length === 0) { return this; }
+    var arr = this.slice(0);
     arr.reverse();
-    return ArrayList(arr);
+    return arr;
+}
+Array$proto.chain = function(other) {
+    if (this.length === 0) { return other; }
+    return Iterable.$$.prototype.chain.call(this, other);
 }
 
 exports.ArrayList=ArrayList;
-exports.arrayOfNone=function() { return EmptyArray(); }
+exports.arrayOfNone=function() { return []; }
 exports.arrayOfSome=function(/*Sequence*/elems) { //In practice it's an ArraySequence
-    return ArrayList(elems.value);
+    return elems.value;
 }
 exports.array=function(elems) {
     if (elems === null || elems === undefined) {
-        return EmptyArray();
+        return [];
     } else {
         var e=[];
         var iter=elems.getIterator();
         var item;while((item=iter.next())!==$finished) {
             e.push(item);
         }
-        return e.length==0 ? EmptyArray() : ArrayList(e);
+        return e;
     }
 }
 exports.arrayOfSize=function(size, elem) {
@@ -504,8 +511,8 @@ exports.arrayOfSize=function(size, elem) {
         for (var i = 0; i < size; i++) {
             elems.push(elem);
         }
-        return ArrayList(elems);
-    } else return EmptyArray();
+        return elems;
+    } else return [];
 }
 
 function Comprehension(makeNextFunc, compr) {

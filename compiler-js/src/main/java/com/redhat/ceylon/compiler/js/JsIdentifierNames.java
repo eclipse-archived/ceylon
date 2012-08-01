@@ -52,7 +52,7 @@ public class JsIdentifierNames {
         //reservedWords.add("else");
         reservedWords.add("enum");
         reservedWords.add("export");
-        reservedWords.add("extends");
+        //reservedWords.add("extends");
         reservedWords.add("false");
         reservedWords.add("final");
         //reservedWords.add("finally");
@@ -71,7 +71,7 @@ public class JsIdentifierNames {
         reservedWords.add("native");
         reservedWords.add("new");
         reservedWords.add("null");
-        reservedWords.add("package");
+        //reservedWords.add("package");
         reservedWords.add("private");
         reservedWords.add("protected");
         reservedWords.add("public");
@@ -96,6 +96,10 @@ public class JsIdentifierNames {
         
         substitutedMemberNames.add("ceylon.language.String.split");
         substitutedMemberNames.add("ceylon.language.String.replace");
+        substitutedMemberNames.add("ceylon.language.Iterable.filter");
+        substitutedMemberNames.add("ceylon.language.Iterable.every");
+        substitutedMemberNames.add("ceylon.language.Iterable.map");
+        substitutedMemberNames.add("ceylon.language.Iterable.sort");
     }
     
     public JsIdentifierNames(boolean prototypeStyle) {
@@ -219,9 +223,18 @@ public class JsIdentifierNames {
             String suffix = nestingSuffix(decl);
             if (suffix.length() > 0) {
                 name += suffix;
-            } else if ((!forGetterSetter && reservedWords.contains(name))
-                        || substitutedMemberNames.contains(decl.getQualifiedNameString())) {
+            } else if (!forGetterSetter && reservedWords.contains(name)) {
                 name = '$' + name;
+            } else {
+                Declaration refinedDecl = decl;
+                while (true) {
+                    Declaration d = refinedDecl.getRefinedDeclaration();
+                    if ((d == null) || (d == refinedDecl)) { break; }
+                    refinedDecl = d;
+                }
+                if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
+                    name = '$' + name;
+                }
             }
         }
         return name;

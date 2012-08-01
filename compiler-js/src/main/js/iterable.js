@@ -38,7 +38,7 @@ Iterable$proto.getSequence = function() {
     }
     return ArraySequence(a);
 }
-Iterable$proto.map = function(mapper) {
+Iterable$proto.$map = function(mapper) {
     var iter = this;
     return Comprehension(function() {
         var it = iter.getIterator();
@@ -49,7 +49,7 @@ Iterable$proto.map = function(mapper) {
         }
     });
 }
-Iterable$proto.filter = function(select) {
+Iterable$proto.$filter = function(select) {
     var iter = this;
     return Comprehension(function() {
         var it = iter.getIterator();
@@ -88,7 +88,7 @@ Iterable$proto.findLast = function(select) {
     }
     return last;
 }
-Iterable$proto.sort = function(/*Callable<Comparison?,Element,Element>*/comparing) {
+Iterable$proto.$sort = function(/*Callable<Comparison?,Element,Element>*/comparing) {
     var a = [];
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
@@ -111,7 +111,7 @@ Iterable$proto.any = function(/*Callable<Boolean,Element>*/selecting) {
     }
     return false;
 }
-Iterable$proto.every = function(/*Callable<Boolean,Element>*/selecting) {
+Iterable$proto.$every = function(/*Callable<Boolean,Element>*/selecting) {
     var iter = this.getIterator();
     var e; while ((e = iter.next()) !== $finished) {
         if (!selecting(e)) {
@@ -204,10 +204,10 @@ Iterable$proto.getLast = function() {
     return l;
 }
 Iterable$proto.collect = function(collecting) {
-    return this.map(collecting).getSequence();
+    return this.$map(collecting).getSequence();
 }
 Iterable$proto.select = function(selecting) {
-    return this.filter(selecting).getSequence();
+    return this.$filter(selecting).getSequence();
 }
 
 exports.Iterable=Iterable;
