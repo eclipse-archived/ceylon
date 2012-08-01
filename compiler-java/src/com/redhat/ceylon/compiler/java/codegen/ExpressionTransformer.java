@@ -87,6 +87,10 @@ import com.sun.tools.javac.util.Name;
  */
 public class ExpressionTransformer extends AbstractTransformer {
 
+    // flags for transformExpression
+    public static final int EXPR_FOR_COMPANION = 1;
+    public static final int EXPR_EXPECTED_TYPE_NOT_RAW = 1 << 1;
+
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
         // get an initialisation error
@@ -138,6 +142,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transformExpression(final Tree.Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
+        return transformExpression(expr, boxingStrategy, expectedType, 0);
+    }
+    
+    JCExpression transformExpression(final Tree.Term expr, BoxingStrategy boxingStrategy, 
+            ProducedType expectedType, int flags) {
         if (expr == null) {
             return null;
         }
@@ -174,7 +183,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             v.defs = prevDefs;
         }
 
-        result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType);
+        result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType, flags);
 
         return result;
     }
@@ -194,21 +203,28 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Boxing and erasure of expressions
     
-    private JCExpression applyErasureAndBoxing(JCExpression result, Tree.Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
+    private JCExpression applyErasureAndBoxing(JCExpression result, Tree.Term expr, BoxingStrategy boxingStrategy, 
+            ProducedType expectedType) {
+        return applyErasureAndBoxing(result, expr, boxingStrategy, expectedType, 0);
+    }
+    
+    private JCExpression applyErasureAndBoxing(JCExpression result, Tree.Term expr, BoxingStrategy boxingStrategy, 
+                ProducedType expectedType, int flags) {
         ProducedType exprType = expr.getTypeModel();
         boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
-        return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType);
+        return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType, flags);
     }
     
     JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
-        return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType, false);
+        return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType, 0);
     }
     
     JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
-            BoxingStrategy boxingStrategy, ProducedType expectedType, boolean forCompanion) {
+            BoxingStrategy boxingStrategy, ProducedType expectedType, 
+            int flags) {
         
         boolean canCast = false;
 
