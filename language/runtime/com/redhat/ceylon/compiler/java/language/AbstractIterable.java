@@ -1,5 +1,16 @@
-package ceylon.language;
+package com.redhat.ceylon.compiler.java.language;
 
+
+import ceylon.language.Boolean;
+import ceylon.language.Callable;
+import ceylon.language.Comparison;
+import ceylon.language.Entry;
+import ceylon.language.Integer;
+import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
+import ceylon.language.Map;
+import ceylon.language.Sequence;
+import ceylon.language.exhausted;
 
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
