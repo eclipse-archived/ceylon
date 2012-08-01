@@ -168,3 +168,9 @@ shared interface Map<out Key,out Item>
         return mapped;
     }
 }
+
+shared Map<Key, Item> map<Key, Item>(Entry<Key,Item>... entries)
+        given Key satisfies Object
+        given Item satisfies Object {
+    throw;
+}
