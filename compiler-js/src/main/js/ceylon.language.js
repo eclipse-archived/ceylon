@@ -191,16 +191,16 @@ Correspondence$proto.defines = function(key) {
     return exists(this.item(key));
 }
 Correspondence$proto.definesEvery = function(keys) {
-    for (var i=0; i<keys.value.length; i++) {
-        if (!this.defines(keys.value[i])) {
+    for (var i=0; i<keys.length; i++) {
+        if (!this.defines(keys[i])) {
             return false;
         }
     }
     return true;
 }
 Correspondence$proto.definesAny = function(keys) {
-    for (var i=0; i<keys.value.length; i++) {
-        if (this.defines(keys.value[i])) {
+    for (var i=0; i<keys.length; i++) {
+        if (this.defines(keys[i])) {
             return true;
         }
     }
@@ -209,8 +209,8 @@ Correspondence$proto.definesAny = function(keys) {
 Correspondence$proto.items = function(keys) {
     if (nonempty(keys)) {
         var r=[];
-        for (var i = 0; i < keys.value.length; i++) {
-            r.push(this.item(keys.value[i]));
+        for (var i = 0; i < keys.length; i++) {
+            r.push(this.item(keys[i]));
         }
         return ArraySequence(r);
     }

@@ -20,27 +20,70 @@ Sequence$proto.getLast = function() {
     return last;
 }
 
-
-function ArraySequence(/* js array */value) {
-    var that = new ArraySequence.$$;
-    that.value = value;
+function Array$() {
+    var that = new Array$.$$;
     return that;
 }
+initExistingType(Array$, Array, 'ceylon.language.Array', Object$, FixedSized,
+        Cloneable, Ranged, List);
+var Array$proto = Array.prototype;
+var origArrToString = Array$proto.toString;
+inheritProtoI(Array$, Object$, FixedSized, Cloneable, Ranged, List);
+Array$proto.toString = origArrToString;
+exports.Array=Array$;
+
+function EmptyArray() {
+    return [];
+}
+initTypeProto(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
+function ArrayList(items) {
+    return items;
+}
+initTypeProto(ArrayList, 'ceylon.language.ArrayList', Array$, List);
+function ArraySequence(/* js array */value) {
+    value.$seq = true;
+    return value;
+}
 initTypeProto(ArraySequence, 'ceylon.language.ArraySequence', IdentifiableObject, Sequence);
-var ArraySequence$proto = ArraySequence.$$.prototype;
-ArraySequence$proto.item = function(index) {
-    var result = this.value[index];
+
+Array$proto.getT$name$ = function() {
+    return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$name;
+}
+Array$proto.getT$all$ = function() {
+    return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$all;
+}
+
+exports.EmptyArray=EmptyArray;
+
+Array$proto.getSize = function() { return this.length; }
+Array$proto.setItem = function(idx,elem) {
+    if (idx >= 0 && idx < this.length) {
+        this[idx] = elem;
+    }
+}
+Array$proto.item = function(idx) {
+    var result = this[idx];
     return result!==undefined ? result:null;
 }
-ArraySequence$proto.getSize = function() { return this.value.length }
-ArraySequence$proto.getEmpty = function() { return this.value.length === 0; }
-ArraySequence$proto.getLastIndex = function() { return this.getSize().getPredecessor(); }
-ArraySequence$proto.getFirst = function() { return this.item(0); }
-ArraySequence$proto.getLast = function() { return this.item(this.getLastIndex()); }
-ArraySequence$proto.segment = function(from, len) {
+Array$proto.getLastIndex = function() {
+    return this.length>0 ? (this.length-1) : null;
+}
+Array$proto.getReversed = function() {
+    if (this.length === 0) { return this; }
+    var arr = this.slice(0);
+    arr.reverse();
+    return this.$seq ? ArraySequence(arr) : arr;
+}
+Array$proto.chain = function(other) {
+    if (this.length === 0) { return other; }
+    return Iterable.$$.prototype.chain.call(this, other);
+}
+Array$proto.getFirst = function() { return this.length>0 ? this[0] : null; }
+Array$proto.getLast = function() { return this.length>0 ? this[this.length-1] : null; }
+Array$proto.segment = function(from, len) {
     var seq = [];
-    if (len.compare(0) === larger) {
-        var stop = from.plus(len);
+    if (len > 0) {
+        var stop = from + len;
         for (var i=from; i < stop; i++) {
             var x = this.item(i);
             if (x !== null) { seq.push(x); }
@@ -48,11 +91,11 @@ ArraySequence$proto.segment = function(from, len) {
     }
     return ArraySequence(seq);
 }
-ArraySequence$proto.span = function(from, to) {
+Array$proto.span = function(from, to) {
     var fromIndex = largest(0,from);
     var toIndex = to === null || to === undefined ? this.getLastIndex() : smallest(to, this.getLastIndex());
     var seq = [];
-    if (fromIndex === toIndex) {
+    if (fromIndex == toIndex) {
         return Singleton(this.item(from));
     } else if (toIndex > fromIndex) {
         for (var i = fromIndex; i <= toIndex && this.defines(i); i++) {
@@ -66,10 +109,10 @@ ArraySequence$proto.span = function(from, to) {
     }
     return ArraySequence(seq);
 }
-ArraySequence$proto.getRest = function() {
-    return this.getSize().equals(1) ? $empty : ArraySequence(this.value.slice(1));
+Array$proto.getRest = function() {
+    return this.length<=1 ? $empty : ArraySequence(this.slice(1));
 }
-ArraySequence$proto.items = function(keys) {
+Array$proto.items = function(keys) {
     var seq = [];
     for (var i = 0; i < keys.getSize(); i++) {
         var key = keys.item(i);
@@ -77,19 +120,41 @@ ArraySequence$proto.items = function(keys) {
     }
     return ArraySequence(seq);
 }
-ArraySequence$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
-ArraySequence$proto.contains = function(elem) {
-    for (var i=0; i<this.value.length; i++) {
-        if (elem.equals(this.value[i])) {
+Array$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
+Array$proto.contains = function(elem) {
+    for (var i=0; i<this.length; i++) {
+        if (elem.equals(this[i])) {
             return true;
         }
     }
     return false;
 }
-ArraySequence$proto.getReversed = function() {
-    var arr = this.value.slice(0);
-    arr.reverse();
-    return ArraySequence(arr);
+
+exports.ArrayList=ArrayList;
+exports.arrayOfNone=function() { return []; }
+exports.arrayOfSome=function(/*Sequence*/elems) { //In practice it's an ArraySequence
+    return elems;
+}
+exports.array=function(elems) {
+    if (elems === null || elems === undefined) {
+        return [];
+    } else {
+        var e=[];
+        var iter=elems.getIterator();
+        var item;while((item=iter.next())!==$finished) {
+            e.push(item);
+        }
+        return e;
+    }
+}
+exports.arrayOfSize=function(size, elem) {
+    if (size > 0) {
+        var elems = [];
+        for (var i = 0; i < size; i++) {
+            elems.push(elem);
+        }
+        return elems;
+    } else return [];
 }
 
 function TypeCategory(seq, type) {

@@ -567,8 +567,8 @@ StringBuilder$proto.append = function(s) {
 }
 StringBuilder$proto.appendAll = function(strings) {
     if (strings === null || strings === undefined) { return this; }
-    for (var i = 0; i < strings.value.length; i++) {
-        var _s = strings.value[i];
+    for (var i = 0; i < strings.length; i++) {
+        var _s = strings[i];
         this.value += _s?_s:"null";
     }
     return this;

@@ -69,9 +69,9 @@ function join(seqs) {
 //receives ArraySequences, returns ArraySequence
 function zip(keys, items) {
     var entries = []
-    var numEntries = Math.min(keys.value.length, items.value.length);
+    var numEntries = Math.min(keys.length, items.length);
     for (var i = 0; i < numEntries; i++) {
-        entries[i] = Entry(keys.value[i], items.value[i]);
+        entries[i] = Entry(keys[i], items[i]);
     }
     return ArraySequence(entries);
 }

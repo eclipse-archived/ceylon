@@ -26,16 +26,16 @@ function Category(wat) {
 }
 initType(Category, 'ceylon.language.Category');
 Category.$$.prototype.containsEvery = function(keys) {
-    for (var i = 0; i < keys.value.length; i++) {
-        if (!this.contains(keys.value[i])) {
+    for (var i = 0; i < keys.length; i++) {
+        if (!this.contains(keys[i])) {
             return false;
         }
     }
     return true;
 }
 Category.$$.prototype.containsAny = function(keys) {
-    for (var i = 0; i < keys.value.length; i++) {
-        if (this.contains(keys.value[i])) {
+    for (var i = 0; i < keys.length; i++) {
+        if (this.contains(keys[i])) {
             return true;
         }
     }
@@ -238,7 +238,7 @@ Map$proto.getHash = function() {
     var iter=this.getIterator();
     var elem; while((elem=iter.next())!=$finished) {
         hc*=31;
-        hc += elem.getHash().value;
+        hc += elem.getHash();
     }
     return hc;
 }
@@ -371,18 +371,6 @@ Set$proto.getHash = function() {
 }
 exports.Set=Set;
 
-function Array$() {
-    var that = new Array$.$$;
-    return that;
-}
-initExistingType(Array$, Array, 'ceylon.language.Array', Object$, FixedSized,
-        Cloneable, Ranged, List);
-var Array$proto = Array.prototype;
-var origArrToString = Array$proto.toString;
-inheritProtoI(Array$, Object$, FixedSized, Cloneable, Ranged, List);
-Array$proto.toString = origArrToString;
-exports.Array=Array$;
-
 function Empty() {
     var that = new Empty.$$;
     that.value = [];
@@ -443,77 +431,6 @@ var emptyIterator=EmptyIterator();
 exports.empty=$empty;
 exports.Empty=Empty;
 exports.emptyIterator=emptyIterator;
-
-function EmptyArray() {
-    return [];
-}
-initTypeProto(EmptyArray, 'ceylon.language.EmptyArray', Array$, None);
-function ArrayList(items) {
-    return items;
-}
-initTypeProto(ArrayList, 'ceylon.language.ArrayList', Array$, List);
-
-Array$proto.getT$name$ = function() {
-    return (this.length>0 ? ArrayList : EmptyArray).$$.T$name;
-}
-Array$proto.getT$all$ = function() {
-    return (this.length>0 ? ArrayList : EmptyArray).$$.T$all;
-}
-
-exports.EmptyArray=EmptyArray;
-
-Array$proto.getSize = function() { return this.length; }
-Array$proto.setItem = function(idx,elem) {
-    if (idx >= 0 && idx < this.length) {
-        this[idx] = elem;
-    }
-}
-Array$proto.item = function(idx) {
-    if (idx >= 0 && idx < this.length) {
-        return this[idx];
-    }
-    return null;
-}
-Array$proto.getLastIndex = function() {
-    return this.length>0 ? (this.length-1) : null;
-}
-Array$proto.getReversed = function() {
-    if (this.length === 0) { return this; }
-    var arr = this.slice(0);
-    arr.reverse();
-    return arr;
-}
-Array$proto.chain = function(other) {
-    if (this.length === 0) { return other; }
-    return Iterable.$$.prototype.chain.call(this, other);
-}
-
-exports.ArrayList=ArrayList;
-exports.arrayOfNone=function() { return []; }
-exports.arrayOfSome=function(/*Sequence*/elems) { //In practice it's an ArraySequence
-    return elems.value;
-}
-exports.array=function(elems) {
-    if (elems === null || elems === undefined) {
-        return [];
-    } else {
-        var e=[];
-        var iter=elems.getIterator();
-        var item;while((item=iter.next())!==$finished) {
-            e.push(item);
-        }
-        return e;
-    }
-}
-exports.arrayOfSize=function(size, elem) {
-    if (size > 0) {
-        var elems = [];
-        for (var i = 0; i < size; i++) {
-            elems.push(elem);
-        }
-        return elems;
-    } else return [];
-}
 
 function Comprehension(makeNextFunc, compr) {
     if (compr===undefined) {compr = new Comprehension.$$;}

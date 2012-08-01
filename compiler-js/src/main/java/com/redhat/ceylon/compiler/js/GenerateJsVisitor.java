@@ -1186,7 +1186,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(StringTemplate that) {
         List<StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
-        out(clAlias, ".StringBuilder().appendAll(", clAlias, ".ArraySequence([");
+        out(clAlias, ".StringBuilder().appendAll([");
         for (int i = 0; i < literals.size(); i++) {
             StringLiteral literal = literals.get(i);
             boolean nonemptyLiteral = (literal.getText().length() > 2);
@@ -1198,7 +1198,7 @@ public class GenerateJsVisitor extends Visitor
                 out(",");
             }
         }
-        out("])).getString()");
+        out("]).getString()");
     }
 
     @Override
@@ -1507,14 +1507,14 @@ public class GenerateJsVisitor extends Visitor
                 int boxType = boxUnboxStart(arg.getExpression().getTerm(), arg.getParameter());
                 if (!sequenced && arg.getParameter() != null && arg.getParameter().isSequenced() && that.getEllipsis() == null) {
                     sequenced=true;
-                    out(clAlias, ".ArraySequence([");
+                    out("[");
                 }
                 arg.visit(this);
                 boxUnboxEnd(boxType);
                 first = false;
             }
             if (sequenced) {
-                out("])");
+                out("]");
             }
         }
         if (that.getComprehension() != null) {
@@ -1656,14 +1656,14 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequencedArgument that) {
-        out(clAlias, ".ArraySequence([");
+        out("[");
         boolean first=true;
         for (Expression arg: that.getExpressionList().getExpressions()) {
             if (!first) out(",");
             arg.visit(this);
             first = false;
         }
-        out("])");
+        out("]");
     }
 
     @Override
@@ -1674,14 +1674,14 @@ public class GenerateJsVisitor extends Visitor
         } else if (that.getSequencedArgument() != null) {
             SequencedArgument sarg = that.getSequencedArgument();
             if (sarg.getEllipsis() == null) {
-                out(clAlias, ".ArraySequence([");
+                out("[");
                 boolean first=true;
                 for (Expression arg: sarg.getExpressionList().getExpressions()) {
                     if (!first) out(",");
                     arg.visit(this);
                     first = false;
                 }
-                out("])");
+                out("]");
             } else {
                 sarg.getExpressionList().getExpressions().get(0).visit(this);
                 out(".getSequence()");
