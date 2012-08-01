@@ -3,7 +3,7 @@ doc "Abstraction of numeric types supporting addition,
      `Integer` and `Float`. Additionally, a numeric type 
      is expected to define a total order via an 
      implementation of `Comparable`."
-see (Integer, Float)
+see (Integer, Float, Comparable)
 by "Gavin"
 shared interface Numeric<Other> of Other
         satisfies Summable<Other> & Invertable<Other>
