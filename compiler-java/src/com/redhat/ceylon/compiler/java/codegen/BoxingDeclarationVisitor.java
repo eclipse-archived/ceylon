@@ -127,10 +127,10 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 || refinedParameterLists.isEmpty())
             return;
 
-        boxParameterLists(methodParameterLists, refinedParameterLists);
+        boxAndRawParameterLists(methodParameterLists, refinedParameterLists);
     }
     
-    private void boxParameterLists(List<ParameterList> paramLists, List<ParameterList> refinedParamLists) {
+    private void boxAndRawParameterLists(List<ParameterList> paramLists, List<ParameterList> refinedParamLists) {
         if (paramLists.size() != refinedParamLists.size()) {
             throw new RuntimeException();
         }
@@ -145,10 +145,12 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 Parameter param = paramList.getParameters().get(jj);
                 Parameter refinedParam = refinedParamList.getParameters().get(jj);
                 if (param instanceof Functional && refinedParam instanceof Functional) {
-                    boxParameterLists(((Functional)param).getParameterLists(),
+                    boxAndRawParameterLists(((Functional)param).getParameterLists(),
                             ((Functional)refinedParam).getParameterLists());
                 }
                 setBoxingState(param, refinedParam);
+                // also mark params as raw if needed
+                rawTypedDeclaration(param);
             }
         }
     }
@@ -164,7 +166,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(parameterLists.isEmpty())
             return;
-        boxParameterLists(parameterLists, parameterLists);
+        boxAndRawParameterLists(parameterLists, parameterLists);
     }
     
     private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
