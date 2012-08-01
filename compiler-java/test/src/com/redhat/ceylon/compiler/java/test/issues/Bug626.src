@@ -112,6 +112,11 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     public <Other>.ceylon.language.Iterable chain(final .ceylon.language.Iterable<? extends Other> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
+    
+    @.java.lang.Override
+    public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends .ceylon.language.Iterable<?>>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
+        return $ceylon$language$Iterable$this.group(grouping);
+    }
     private final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Iterable<?>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     

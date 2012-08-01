@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 final class x {
     private static final .ceylon.language.Iterable<? extends .ceylon.language.String>[] value;
     static {
-        value = new .ceylon.language.Iterable[]{new .ceylon.language.AbstractIterable<.ceylon.language.String>(){
+        value = new .ceylon.language.Iterable[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.String>(){

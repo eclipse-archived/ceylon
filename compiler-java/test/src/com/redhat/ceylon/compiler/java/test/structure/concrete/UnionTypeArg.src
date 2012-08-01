@@ -112,6 +112,11 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     public .ceylon.language.Iterable chain(final .ceylon.language.Iterable other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Map group(final .ceylon.language.Callable grouping) {
+        return $ceylon$language$Iterable$this.group(grouping);
+    }
     private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Iterator iterator;
@@ -234,6 +239,11 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     @.java.lang.Override
     public .ceylon.language.Iterable chain(final .ceylon.language.Iterable other) {
         return $ceylon$language$Iterable$this.chain(other);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Map group(final .ceylon.language.Callable grouping) {
+        return $ceylon$language$Iterable$this.group(grouping);
     }
     private final .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
