@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;

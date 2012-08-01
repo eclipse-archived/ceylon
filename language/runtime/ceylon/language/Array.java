@@ -3,6 +3,8 @@ package ceylon.language;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.FilterIterable;
+import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
