@@ -16,8 +16,10 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
+import ceylon.language.Sequence;
 import ceylon.language.Set;
 
 /** An immutable map returned by certain methods and functions of the language module.
@@ -296,6 +298,10 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @TypeParameters(@TypeParameter("Other"))
     public <Other> Iterable chain(Iterable<? extends Other> other) {
         return iter$impl.chain(other);
+    }
+    @Override @Ignore
+    public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Key, ? extends Item>>> group(Callable<? extends Key2> grouping) {
+        return Iterable$impl._group(this, grouping);
     }
 
     @Override

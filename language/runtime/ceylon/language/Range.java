@@ -492,6 +492,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
     }
+    @Override @Ignore
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
+        return Iterable$impl._group(this, grouping);
+    }
 
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))

@@ -364,6 +364,10 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
     }
+    @Override @Ignore
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
+        return Iterable$impl._group(this, grouping);
+    }
 
     @Override
     @Ignore

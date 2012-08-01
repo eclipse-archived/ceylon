@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
+import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -1119,6 +1120,14 @@ public abstract class String
             return Iterable$impl._chain(instance(value), other);
         }
     }
+    @Ignore
+    public static <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(java.lang.String value, Callable<? extends Key> grouping) {
+        if (value.isEmpty()) {
+            return new InternalMap<Key, Sequence<? extends Character>>(java.util.Collections.<Key,Sequence<Character>>emptyMap());
+        } else {
+            return Iterable$impl._group(instance(value), grouping);
+        }
+    }
 
     @Ignore
     public static <Other>String withLeading(java.lang.String value) {
@@ -1341,6 +1350,10 @@ public abstract class String
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
             return Iterable$impl._chain(this, other);
         }
+        @Override @Ignore
+        public <Key> Map<? extends Key, ? extends Sequence<? extends String>> group(Callable<? extends Key> grouping) {
+            return Iterable$impl._group(this, grouping);
+        }
     }
 
     private static final class Occurs implements Iterable<Integer> {
@@ -1467,6 +1480,10 @@ public abstract class String
         }
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
             return Iterable$impl._chain(this, other);
+        }
+        @Override @Ignore
+        public <Key> Map<? extends Key, ? extends Sequence<? extends Integer>> group(Callable<? extends Key> grouping) {
+            return Iterable$impl._group(this, grouping);
         }
     }
 }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
@@ -302,6 +303,28 @@ public final class Iterable$impl<Element> {
             }
         };
     }
+
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
+        return Iterable$impl._group($this, grouping);
+    }
+    public static <Element,Key> Map<? extends Key, ? extends Sequence<? extends Element>> _group(Iterable<? extends Element> $this, Callable<? extends Key> grouping) {
+        java.util.HashMap<Key, SequenceBuilder<Element>> m = new java.util.HashMap<Key, SequenceBuilder<Element>>();
+        java.lang.Object $tmp;
+        for (Iterator<? extends Element> i = $this.getIterator(); !(($tmp = i.next()) instanceof Finished);) {
+            Key k = grouping.$call($tmp);
+            if (!m.containsKey(k)) {
+                m.put(k, new SequenceBuilder<Element>());
+            }
+            m.get(k).append((Element)$tmp);
+        }
+        java.util.HashMap<Key, Sequence<? extends Element>> m2 = new java.util.HashMap<Key, Sequence<? extends Element>>(m.size());
+        for (java.util.Map.Entry<Key, SequenceBuilder<Element>> e : m.entrySet()) {
+            e.getValue().getSequence();
+            m2.put(e.getKey(), (Sequence<? extends Element>)e.getValue().getSequence());
+        }
+        return new InternalMap<Key, Sequence<? extends Element>>(m2);
+    }
+
 }
 
 class MapIterable<Element, Result> implements Iterable<Result> {
@@ -414,9 +437,13 @@ class MapIterable<Element, Result> implements Iterable<Result> {
     public Iterable<? extends Entry<? extends Integer, ? extends Result>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("rawtypes") @Override @Ignore
     public <Other> Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
+    }
+    @Override @Ignore
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Result>> group(Callable<? extends Key> grouping) {
+        return Iterable$impl._group(this, grouping);
     }
 }
 
@@ -528,9 +555,12 @@ class FilterIterable<Element> implements Iterable<Element> {
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
-    @Override @Ignore
-    @SuppressWarnings("rawtypes")
+    @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
+    }
+    @Override @Ignore
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
+        return Iterable$impl._group(this, grouping);
     }
 }

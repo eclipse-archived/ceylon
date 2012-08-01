@@ -1,7 +1,6 @@
 package ceylon.language;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -17,7 +16,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 @TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceBuilder<Element> implements Sized {
 
-    List<Element> list;
+    java.util.List<Element> list;
     
     public SequenceBuilder() {}
      

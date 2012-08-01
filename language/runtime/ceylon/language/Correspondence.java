@@ -319,6 +319,10 @@ public interface Correspondence<Key,Item> {
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
             return Iterable$impl._chain(this, other);
         }
+        @Override @Ignore
+        public <Key> Map<? extends Key, ? extends Sequence<? extends Item>> group(Callable<? extends Key> grouping) {
+            return Iterable$impl._group(this, grouping);
+        }
         @SuppressWarnings("rawtypes")
         @Override @Ignore public <Other>Sequence withLeading(Other e) {
             return List$impl._withLeading(this, e);

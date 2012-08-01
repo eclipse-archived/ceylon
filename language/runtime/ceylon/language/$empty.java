@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -226,6 +227,10 @@ public class $empty {
         @SuppressWarnings({"rawtypes", "unchecked"})
         @Override @Ignore public <Other>Sequence withTrailing(Other e) {
             return new ArraySequence<Other>(e);
+        }
+        @Override @Ignore
+        public <Key> Map<? extends Key, ? extends Sequence<? extends java.lang.Object>> group(Callable<? extends Key> grouping) {
+            return new InternalMap<Key, Sequence<? extends java.lang.Object>>(java.util.Collections.<Key,Sequence<java.lang.Object>>emptyMap());
         }
     };
     
