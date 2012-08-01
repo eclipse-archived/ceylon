@@ -169,6 +169,7 @@ shared interface Map<out Key,out Item>
     }
 }
 
+doc "Creates a map containing the specified entries."
 shared Map<Key, Item> map<Key, Item>(Entry<Key,Item>... entries)
         given Key satisfies Object
         given Item satisfies Object {
