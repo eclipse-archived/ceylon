@@ -12,8 +12,8 @@ shared interface Identifiable {
     doc "Identity equality comparing the identity of the two 
          values. May be refined by subtypes for which value 
          equality is more appropriate. Implementations must
-         respect the constraint that if `x===y` then
-         `x==y` (equality is consistent with identity)."
+         respect the constraint that if `x===y` then `x==y` 
+         (equality is consistent with identity)."
     shared default actual Boolean equals(Object that) {
         if (is Identifiable that) {
             return this===that;
