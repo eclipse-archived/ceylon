@@ -215,8 +215,14 @@ public class CallableBuilder {
         } else {
             castType = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
         }
-        // make it raw: it can't hurt and it may even be required if the target method's param is raw
-        JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, JT_NO_PRIMITIVES | gen.JT_RAW), argExpr);
+        JCExpression cast;
+        // let's not cast to Object there's no point
+        if(gen.willEraseToObject(castType) && !gen.willEraseToIterable(castType))
+            cast = argExpr;
+        else{
+            // make it raw: it can't hurt and it may even be required if the target method's param is raw
+            cast = gen.make().TypeCast(gen.makeJavaType(castType, JT_NO_PRIMITIVES | gen.JT_RAW), argExpr);
+        }
         // TODO Should this be calling applyErasureAndBoxing() instead?
         BoxingStrategy boxingStrategy;
         if (param.getUnboxed() == null) {
