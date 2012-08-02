@@ -3496,7 +3496,7 @@ public class ExpressionVisitor extends Visitor {
                                             .get(i).addError("type parameter " + param.getName() 
                                             + " of declaration " + member.getName()
                                             + " has argument " + argType.getProducedTypeName() 
-                                            + " not assignable to " + sts.getProducedTypeName());
+                                            + " not assignable to " + sts.getProducedTypeName(), 2102);
                                 }
                                 return false;
                             }
