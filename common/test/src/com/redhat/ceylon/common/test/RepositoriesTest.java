@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import com.redhat.ceylon.common.CeylonConfig;
 import com.redhat.ceylon.common.ConfigParser;
+import com.redhat.ceylon.common.Authentication.PasswordPrompt;
+import com.redhat.ceylon.common.Credentials;
 import com.redhat.ceylon.common.Repositories;
 import com.redhat.ceylon.common.Repositories.Repository;
 
@@ -122,7 +124,8 @@ public class RepositoriesTest {
         Assert.assertNotNull(repo);
         Assert.assertEquals(name, repo.getName());
         Assert.assertEquals(url, repo.getUrl());
-        Assert.assertEquals(user, repo.getUser());
-        Assert.assertEquals(password, repo.getPassword());
+        Credentials credentials = repo.getCredentials();
+        Assert.assertEquals(user, credentials != null ? credentials.getUser() : null);
+        Assert.assertEquals(password, credentials != null ? credentials.getPassword() : null);
     }
 }

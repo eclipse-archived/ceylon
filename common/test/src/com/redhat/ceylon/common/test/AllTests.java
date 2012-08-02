@@ -8,7 +8,10 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     CeylonConfigTest.class,
     ConfigWriterTest.class,
-    RepositoriesTest.class
+    RepositoriesTest.class,
+    KeystoresTest.class,
+    ProxiesTest.class,
+    AuthenticationTest.class
 })
 public class AllTests {
 }
