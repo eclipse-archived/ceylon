@@ -192,10 +192,3 @@ shared interface Map<out Key,out Item>
         return mapped;
     }
 }
-
-doc "Creates a new map with the given entries."
-shared Map<Key, Item> map<Key, Item>(Key->Item... entries)
-        given Key satisfies Object
-        given Item satisfies Object {
-    throw;
-}
