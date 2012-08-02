@@ -150,7 +150,7 @@ void testMaps() {
     for (k->v in m2) {
         if (v%100 != 0) { fail("Map.mapItems [2]"); }
     }
-    testInternalMap();
+    testLazyMap();
 }
 
 void testSets() {
@@ -174,12 +174,13 @@ void testSets() {
     assert(emptySet.complement(s1)==emptySet, "Set.complement 2");
 }
 
-void testInternalMap() {
-    value m = map("a"->1, "b"->2, "c"->3);
-    assert(m.size == 3, "internal map size");
+void testLazyMap() {
+    value m = LazyMap("a"->1, "b"->2, "c"->3);
+    assert(m.size == 3, "LazyMap size");
     if (exists v=m["a"]) {
-        assert(v==1, "internal map item");
-    } else { fail("internal map item"); }
-    assert(m.fold(0, (Integer x, String->Integer e) x+e.item)==6, "internal map fold");
-    assert(m.every((String->Integer e) e.key in "abc"), "internal map every");
+        assert(v==1, "LazyMap item");
+    } else { fail("LazyMap item"); }
+    assert(m.fold(0, (Integer x, String->Integer e) x+e.item)==6, "LazyMap fold");
+    assert(m.every((String->Integer e) e.key in "abc"), "LazyMap every");
+    assert("b"->2 in m, "LazyMap contains");
 }
