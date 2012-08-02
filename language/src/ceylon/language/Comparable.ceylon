@@ -1,6 +1,10 @@
 doc "The general contract for values whose magnitude can be 
      compared. `Comparable` imposes a total ordering upon
      instances of any type that satisfies the interface.
+     If a type `T` satisfies `Comparable<T>`, then instances
+     of `T` may be compared using the comparison operators
+     `<`, `>`, `<=`, >=`, and `<=>`.
+     
      The total order of a type must be consistent with the 
      definition of equality for the type. That is, there
      are three mutually exclusive possibilities:

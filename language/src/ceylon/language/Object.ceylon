@@ -1,6 +1,6 @@
 doc "The abstract supertype of all types representing 
      definite values. Any two `Object`s may be compared
-     for value equality using the `==` operator:
+     for value equality using the `==` and `!=` operators:
      
          true==false
          1==\"hello world\"
