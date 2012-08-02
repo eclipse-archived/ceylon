@@ -290,6 +290,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(hasErasedTypeParameters(expectedType, false))
                     return false;
             }
+            // Surely this is a sign of a really badly designed method but I (Stef) have a strong
+            // feeling that callables never need a raw cast
+            if(isCeylonCallable(commonType))
+                return false;
             return hasErasedTypeParameters(commonType, true);
         }
     }
