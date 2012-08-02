@@ -1,5 +1,3 @@
-import ceylon.language { createMap=map }
-
 doc "Represents a collection which maps _keys_ to _items_,
      where a key can map to at most one item. Each such 
      mapping may be represented by an `Entry`.
@@ -140,7 +138,7 @@ shared interface Map<out Key,out Item>
                 extends Object() 
                 satisfies Map<Item, Set<Key>> {
             shared actual Map<Item,Set<Key>> clone {
-                return createMap(this...);
+                return LazyMap(this...);
             }
             shared actual Set<Key>? item(Object key) {
                 //TODO
