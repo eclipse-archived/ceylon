@@ -81,14 +81,14 @@ final class indirectTypeParam {
             
             @.java.lang.Override
             public .ceylon.language.Iterable<? extends .java.lang.Object> $call(final .java.lang.Object $param$0) {
-                return .ceylon.language.join.join((.ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>>)$param$0);
+                return .ceylon.language.join.join((.ceylon.language.Iterable)$param$0);
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends X>> j2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends X>>("ceylon.language.Callable<ceylon.language.Empty|ceylon.language.Sequence<X>,ceylon.language.Iterable<ceylon.language.Iterable<X>>>"){
             
             @.java.lang.Override
             public .ceylon.language.Iterable<? extends X> $call(final .java.lang.Object $param$0) {
-                return .ceylon.language.join.<X>join((.ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends X>>)$param$0);
+                return .ceylon.language.join.<X>join((.ceylon.language.Iterable)$param$0);
             }
         };
     }

@@ -162,7 +162,7 @@ final class bug626f {
         final .ceylon.language.Iterable<?> temp = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> $arg$0$0 = new .com.redhat.ceylon.compiler.java.test.issues.Bug626();
+                .ceylon.language.Iterable $arg$0$0 = new .com.redhat.ceylon.compiler.java.test.issues.Bug626();
             }
             returning .ceylon.language.join.join($arg$0$0);
         );

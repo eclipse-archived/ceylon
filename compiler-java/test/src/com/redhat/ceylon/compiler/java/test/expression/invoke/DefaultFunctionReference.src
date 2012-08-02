@@ -28,7 +28,7 @@ final class defaultFunctionReference {
                 return (
                     let
                     {
-                        .ceylon.language.print.print((.java.lang.Object)$param$0);
+                        .ceylon.language.print.print($param$0);
                     }
                     returning null;
                 );

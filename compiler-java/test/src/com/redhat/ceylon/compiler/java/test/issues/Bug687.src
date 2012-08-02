@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug687 {
     
+    private final <T>void method(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+    
     public final <T extends .ceylon.language.Number>void sort(final .ceylon.language.Iterable<? extends T> elements) {
     }
     

@@ -97,7 +97,7 @@ class VoidBoxing {
                         return (
                             let
                             {
-                                returnsvoid((.java.lang.Object)$param$0);
+                                returnsvoid($param$0);
                             }
                             returning null;
                         );
@@ -113,7 +113,7 @@ class VoidBoxing {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        return returnsVoid((.java.lang.Object)$param$0);
+                        return returnsVoid($param$0);
                     }
                 });
             }
@@ -126,7 +126,7 @@ class VoidBoxing {
                 return (
                     let
                     {
-                        returnsvoid((.java.lang.Object)$param$0);
+                        returnsvoid($param$0);
                     }
                     returning null;
                 );
@@ -136,7 +136,7 @@ class VoidBoxing {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                return returnsVoid((.java.lang.Object)$param$0);
+                return returnsVoid($param$0);
             }
         });
         final .java.lang.Object v11 = (
@@ -146,7 +146,7 @@ class VoidBoxing {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        final .java.lang.Object s = (.java.lang.Object)$param$0;
+                        final .java.lang.Object s = $param$0;
                         return s;
                     }
                 });
@@ -157,7 +157,7 @@ class VoidBoxing {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object s = (.java.lang.Object)$param$0;
+                final .java.lang.Object s = $param$0;
                 return s;
             }
         });
@@ -203,7 +203,7 @@ class VoidBoxing {
                         return (
                             let
                             {
-                                returnsvoid((.java.lang.Object)$param$0);
+                                returnsvoid($param$0);
                             }
                             returning null;
                         );
@@ -219,7 +219,7 @@ class VoidBoxing {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        return returnsVoid((.java.lang.Object)$param$0);
+                        return returnsVoid($param$0);
                     }
                 });
             }
@@ -232,7 +232,7 @@ class VoidBoxing {
                 return (
                     let
                     {
-                        returnsvoid((.java.lang.Object)$param$0);
+                        returnsvoid($param$0);
                     }
                     returning null;
                 );
@@ -242,7 +242,7 @@ class VoidBoxing {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                return returnsVoid((.java.lang.Object)$param$0);
+                return returnsVoid($param$0);
             }
         });
         v = (
@@ -252,7 +252,7 @@ class VoidBoxing {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        final .java.lang.Object s = (.java.lang.Object)$param$0;
+                        final .java.lang.Object s = $param$0;
                         return s;
                     }
                 });
@@ -263,7 +263,7 @@ class VoidBoxing {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object s = (.java.lang.Object)$param$0;
+                final .java.lang.Object s = $param$0;
                 return s;
             }
         });

@@ -19,6 +19,9 @@
  */
 @nomodel
 class Bug687()  {
+    void method<T>(void foo(T t)) {
+    }
+
     shared void sort<T>(T... elements) 
         given T satisfies Number {
     }
