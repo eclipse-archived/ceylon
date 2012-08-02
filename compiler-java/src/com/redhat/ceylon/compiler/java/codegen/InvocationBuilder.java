@@ -1008,7 +1008,12 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
                 ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
                 final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
-                JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? JT_TYPE_ARGUMENT : 0);
+                // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
+                // not match, so we go raw
+                int flags = JT_RAW;
+                if(boxType == BoxingStrategy.BOXED)
+                    flags |= JT_TYPE_ARGUMENT;
+                JCExpression typeExpr = gen.makeJavaType(type, flags);
                 JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
                 statements = ListBuffer.<JCStatement>of(varDecl);
