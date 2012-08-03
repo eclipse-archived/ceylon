@@ -12,7 +12,7 @@ class TestList<Element>(Element... items) satisfies List<Element> {
 
 void lists() {
     value a = TestList(1,2,3,4);
-    value b = TestList(1,2,3,4,5,6,7,8);
+    value b = LazyList(1,2,3,4,5,6,7,8);
     //withLeading
     assert({}.withLeading("A")=={"A"}, "Empty.withLeading(A)");
     assert({}.withLeading("foo").size==1, "{}.withLeading.size");
@@ -40,4 +40,24 @@ void lists() {
     assert((1..3).withTrailing(4).last==4, "Range.withTrailing(a).last");
     assert("abc".withTrailing(1)=={`a`,`b`,`c`,1}, "String.withTrailing(1)");
     assert("".withTrailing(1)=={1}, "\"\".withTrailing(1)");
+
+    //LazyList
+    assert(b.size == 8, "LazyList.size");
+    if (exists i=b.lastIndex) {
+        assert(i==7, "LazyList.lastIndex");
+    } else { fail("LazyList.lastIndex"); }
+    if (exists e=b[4]) {
+        assert(e==5, "LazyList.item");
+    } else { fail("LazyList.item"); }
+    assert(b.span(2,4)=={3,4,5}, "LazyList.span & equals");
+    assert(b.segment(2,3)=={3,4,5}, "LazyList.segment");
+    if (exists e=b.findLast((Integer x) true)) {
+        assert(e==8, "LazyList.findLast");
+    } else { fail("LazyList.findLast"); }
+    if (exists e=b.first) {
+        assert(e==1, "LazyList.first");
+    } else { fail("LazyList.last"); }
+    if (exists e=b.last) {
+        assert(e==8, "LazyList.last");
+    } else { fail("LazyList.last"); }
 }
