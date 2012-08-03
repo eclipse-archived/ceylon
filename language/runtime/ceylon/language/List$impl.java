@@ -109,8 +109,8 @@ public final class List$impl<Element> {
     }
 
     @SuppressWarnings("rawtypes")
-    public <Other> Sequence withLeading(Other elements) {
-        return List$impl._withLeading($this, elements);
+    public <Other> Sequence withLeading(Other element) {
+        return List$impl._withLeading($this, element);
     }
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static <Element,Other> Sequence _withLeading(List<? extends Element> orig, Other elem) {
