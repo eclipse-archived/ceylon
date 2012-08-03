@@ -1543,7 +1543,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
         List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
-        if(caseTypes != null){
+        if(caseTypes != null && !caseTypes.isEmpty()){
             try{
                 klass.setCaseTypes(getTypesList(caseTypes, klass));
             }catch(TypeParserException x){
