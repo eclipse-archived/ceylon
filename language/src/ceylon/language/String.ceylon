@@ -265,8 +265,7 @@ shared abstract class String()
     see (size)
     shared actual formal Boolean empty;
 
-    doc "Returns the string itself, since a String cannot
-         contain nulls."
+    doc "Returns this string."
     shared actual String coalesced {
         return this;
     }
