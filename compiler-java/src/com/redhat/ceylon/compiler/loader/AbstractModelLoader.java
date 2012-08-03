@@ -539,6 +539,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
+        // FIXME: this needs to move to the type parser and report warnings
         //This should be done where the TypeInfo annotation is parsed
         //to avoid retarded errors because of a space after a comma
         typeName = typeName.trim();
