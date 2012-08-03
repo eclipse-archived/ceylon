@@ -60,4 +60,5 @@ void lists() {
     if (exists e=b.last) {
         assert(e==8, "LazyList.last");
     } else { fail("LazyList.last"); }
+    assert(b.reversed==8..1, "LazyList.reversed");
 }
