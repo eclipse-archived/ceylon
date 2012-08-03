@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.loader.model.LazyClassAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyContainer;
 import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
@@ -62,6 +63,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
@@ -114,6 +116,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_METHOD_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Method";
     private static final String CEYLON_ANNOTATIONS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Annotations";
     public static final String CEYLON_VALUETYPE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ValueType";
+    public static final String CEYLON_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Alias";
 
     private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
@@ -333,9 +336,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 pkg.addMember(d);
                 d.setContainer(pkg);
             }
+            
+            // aliases have their own completion routine
+            if(d instanceof LazyClassAlias){
+                complete((LazyClassAlias)d);
+            }
         }
         
         return decl;
+    }
+
+    private void complete(LazyClassAlias alias) {
+        // type parameters
+        setTypeParameters(alias, alias.classMirror);
+        
+        // now resolve the extended type
+        AnnotationMirror aliasAnnotation = alias.classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION);
+        String extendedTypeString = (String) aliasAnnotation.getValue();
+        // FIXME: the scope is not fully set up at this time
+        ProducedType extendedType = decodeType(extendedTypeString, alias);
+        alias.setExtendedType(extendedType);
+        // must be a class
+        Class declaration = (Class) extendedType.getDeclaration();
+        
+        // copy the parameters from the extended type
+        alias.setParameterList(declaration.getParameterList());
     }
 
     public Declaration getOrCreateDeclaration(ClassMirror classMirror,
@@ -392,29 +417,33 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
             break;
         case CLASS:
-            List<MethodMirror> constructors = getClassConstructors(classMirror);
-            if (!constructors.isEmpty()) {
-                if (constructors.size() > 1) {
-                    // If the class has multiple constructors we make a copy of the class
-                    // for each one (each with it's own single constructor) and make them
-                    // a subclass of the original
-                    Class supercls = makeLazyClass(classMirror, null, null, false);
-                    supercls.setAbstraction(true);
-                    List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
-                    for (MethodMirror constructor : constructors) {
-                        LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
-                        subdecl.setOverloaded(true);
-                        overloads.add(subdecl);
-                        decls.add(subdecl);
+            if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
+                decl = makeClassAlias(classMirror);
+            }else{
+                List<MethodMirror> constructors = getClassConstructors(classMirror);
+                if (!constructors.isEmpty()) {
+                    if (constructors.size() > 1) {
+                        // If the class has multiple constructors we make a copy of the class
+                        // for each one (each with it's own single constructor) and make them
+                        // a subclass of the original
+                        Class supercls = makeLazyClass(classMirror, null, null, false);
+                        supercls.setAbstraction(true);
+                        List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
+                        for (MethodMirror constructor : constructors) {
+                            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
+                            subdecl.setOverloaded(true);
+                            overloads.add(subdecl);
+                            decls.add(subdecl);
+                        }
+                        supercls.setOverloads(overloads);
+                        decl = supercls;
+                    } else {
+                        MethodMirror constructor = constructors.get(0);
+                        decl = makeLazyClass(classMirror, null, constructor, false);
                     }
-                    supercls.setOverloads(overloads);
-                    decl = supercls;
                 } else {
-                    MethodMirror constructor = constructors.get(0);
-                    decl = makeLazyClass(classMirror, null, constructor, false);
+                    decl = makeLazyClass(classMirror, null, null, false);
                 }
-            } else {
-                decl = makeLazyClass(classMirror, null, null, false);
             }
             break;
         case INTERFACE:
@@ -429,6 +458,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             decls.add(decl);
         }
         return decl;
+    }
+
+    private Declaration makeClassAlias(ClassMirror classMirror) {
+        // we're going to make an eager ClassAlias, but that should be OK since it's impossible that the
+        // aliased type refers to this alias, since aliases are not reified
+        Class alias = new LazyClassAlias(classMirror);
+        
+        return alias;
     }
 
     private void checkBinaryCompatibility(ClassMirror classMirror) {
