@@ -265,6 +265,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language.Integer")
     public long getSize() {
+        //TODO Does this need to eliminate duplicate keys?
         return entries.count(new AbstractCallable<Boolean>("LazyMap_size") {
             @Override
             public Boolean $call(java.lang.Object e) {
@@ -274,8 +275,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override
-    public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>") Iterable<?> elements) {
+    public boolean containsEvery(Iterable<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -333,4 +333,8 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
         return map$impl.mapItems(mapping);
     }
 
+    @Override @Ignore
+    public java.lang.String toString() {
+        return map$impl.toString();
+    }
 }
