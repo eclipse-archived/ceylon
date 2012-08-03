@@ -10,7 +10,19 @@ shared class LazySet<Element>(Element... elems)
         return LazySet(elems...);
     }
     shared actual Integer size {
-        return elems.count((Element e) true);
+        variable value c:=0;
+        value sorted = elems.sort(byIncreasing((Element e) e.hash));
+        if (exists l=sorted.first) {
+            c:=1;
+            variable Element last := l;
+            for (e in sorted.rest) {
+                if (e!=last) {
+                    c++;
+                    last:=e;
+                }
+            }
+        }
+        return c;
     }
     shared actual Iterator<Element> iterator {
         return elems.iterator;
