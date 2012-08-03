@@ -132,13 +132,13 @@ public class LazySet<Element> implements Set<Element> {
     }
 
     @Override
-    @Annotations(@Annotation("actual"))
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language.Boolean")
     public boolean equals(java.lang.Object other) {
         return set$impl.equals(other);
     }
     @Override
-    @Annotations(@Annotation("actual"))
+    @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language.Integer")
     public int hashCode() {
         return set$impl.hashCode();
