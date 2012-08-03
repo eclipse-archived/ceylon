@@ -296,7 +296,7 @@ public class LazyList<Element> implements List<Element> {
         if (length > 0) {
             long p = from.value;
             Iterable<? extends Element> els = p>0 ? elems.skipping(p) : elems;
-            return new LazyList(els.taking(length));
+            return new LazyList<Element>(els.taking(length));
         } else {
             return (List<? extends Element>)$empty.getEmpty();
         }
