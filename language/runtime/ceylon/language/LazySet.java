@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import java.util.HashSet;
+
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -40,12 +42,13 @@ public class LazySet<Element> implements Set<Element> {
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language.Integer")
     public long getSize() {
-        return elems.count(new AbstractCallable<Boolean>("LazyMap_size") {
-            @Override
-            public Boolean $call(java.lang.Object e) {
-                return $true.getTrue();
-            }
-        });
+        //This is to avoid counting duplicates
+        HashSet<Element> s = new HashSet<Element>();
+        java.lang.Object $tmp;
+        for (Iterator<? extends Element> i = elems.getIterator(); !(($tmp = i.next()) instanceof Finished);) {
+            s.add((Element)$tmp);
+        }
+        return s.size();
     }
 
     @Override
