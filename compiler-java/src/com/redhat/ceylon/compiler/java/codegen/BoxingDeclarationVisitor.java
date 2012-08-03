@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -156,7 +157,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(ClassDefinition that) {
+    public void visit(AnyClass that) {
         super.visit(that);
         Class klass = that.getDeclarationModel();
         // deal with invalid input
@@ -166,7 +167,18 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(parameterLists.isEmpty())
             return;
-        boxAndRawParameterLists(parameterLists, parameterLists);
+        List<ParameterList> refinedParameterLists;
+        // If this is an alias we're bound by the aliased type's parameters, not by ours
+        // For ex:
+        // - class AliasedType<T>(T x){}
+        // - class Alias(Integer x) = AliasedType<Integer>;
+        // where Alias's x parameter is not really unboxed
+        if(klass.isAlias())
+            refinedParameterLists = klass.getExtendedTypeDeclaration().getParameterLists();
+        else
+            refinedParameterLists = parameterLists;
+        
+        boxAndRawParameterLists(parameterLists, refinedParameterLists);
     }
     
     private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
