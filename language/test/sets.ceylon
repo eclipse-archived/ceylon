@@ -111,7 +111,6 @@ void testSets() {
     assert(s2.size==s3.size, "LazySet.size");
     assert(4 in s2, "LazySet.contains");
     assert(s2|s1 == LazySet(1,2,3,4,5,"a"), "LazySet.union");
-print("lazy union: " s2|s1 "");
     assert(s2&s3 == LazySet("a", 5), "LazySet.intersection");
     assert(s2^s3 == LazySet(3,4,"b","c"), "LazySet.exclusiveUnion");
     assert(s2~s3 == LazySet("b", "c"), "LazySet.complement");
