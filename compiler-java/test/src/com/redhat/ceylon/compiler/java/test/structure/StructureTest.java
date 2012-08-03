@@ -459,5 +459,30 @@ public class StructureTest extends CompilerTest {
     public void testMethodInitializerParameter() {
         compareWithJavaSource("method/MethodInitializerParameter");
     }
-    
+
+    //
+    // Aliases
+
+    @Test
+    public void testAlsClassAlias() {
+        compareWithJavaSource("alias/ClassAlias");
+    }
+
+    @Test
+    public void testAlsClassAliasWithParameters() {
+        compareWithJavaSource("alias/ClassAliasWithParameters");
+    }
+
+    @Test
+    public void testAlsClassAliasWithTypeParameters() {
+        compareWithJavaSource("alias/ClassAliasWithTypeParameters");
+    }
+
+    @Test
+    public void testAlsClassAliasFromModelLoader() {
+        compile("alias/ClassAlias.ceylon", 
+                "alias/ClassAliasWithParameters.ceylon",
+                "alias/ClassAliasWithTypeParameters.ceylon");
+        compareWithJavaSource("alias/ClassAliasFromModelLoader");
+    }
 }
