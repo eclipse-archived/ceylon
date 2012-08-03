@@ -349,8 +349,11 @@ public class LazyList<Element> implements List<Element> {
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language.List<Element>")
     public List<? extends Element> getReversed() {
-        // TODO Auto-generated method stub
-        return null;
+        Iterable<? extends Element> seq = elems.getSequence();
+        if (seq.getEmpty()) {
+            return this;
+        }
+        return ((Sequence<? extends Element>)seq).getReversed();
     }
 
     @SuppressWarnings("rawtypes")
@@ -369,8 +372,28 @@ public class LazyList<Element> implements List<Element> {
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language.Boolean")
     public boolean equals(java.lang.Object obj) {
-        //TODO optimize
-        return list$impl.equals(obj);
+        if (obj instanceof List) {
+            @SuppressWarnings("rawtypes")
+            List other = (List)obj;
+            long c = elems.count(new AbstractCallable<Boolean>("LazyList_lastIndex") {
+                @Override
+                public Boolean $call(java.lang.Object e) {
+                    return $true.getTrue();
+                }
+            });
+            if (other.getSize()==c) {
+                Iterator<? extends Element> iter = elems.getIterator();
+                for (int i = 0; i<c;i++) {
+                    java.lang.Object x = other.item(Integer.instance(i));
+                    java.lang.Object y = iter.next();
+                    if (x!=y && (x==null || y==null || !x.equals(y))) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

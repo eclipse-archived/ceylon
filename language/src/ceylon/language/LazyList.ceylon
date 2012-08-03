@@ -22,8 +22,17 @@ shared class LazyList<out Element>(Element... elems)
         return elems.iterator;
     }
 
+    doc "Returns a `List` with the elements of this
+         `List` in reverse order. This operation will
+         create copy the elements to a new `List`,
+         so changes to the original `Iterable` will
+         no longer be reflected in the new `List`."
     shared actual List<Element> reversed {
-        throw;//TODO this is going to be tricky
+        //I truly see no other way of doing this ATM
+        if (nonempty s=elems.sequence) {
+            return s.reversed;
+        }
+        return this;
     }
 
     shared actual List<Element> clone {
