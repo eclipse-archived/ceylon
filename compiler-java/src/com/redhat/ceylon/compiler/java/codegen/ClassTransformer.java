@@ -1484,8 +1484,10 @@ public class ClassTransformer extends AbstractTransformer {
      * Makes a {@code main()} method which calls the given top-level method
      * @param def
      */
-    private JCMethodDecl makeMainForClass(final ClassOrInterface model) {
+    private JCMethodDecl makeMainForClass(ClassOrInterface model) {
         at(null);
+        if(model.isAlias())
+            model = model.getExtendedTypeDeclaration();
         JCExpression nameId = makeJavaType(model.getType(), JT_RAW);
         JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
         return makeMainMethod(model, expr);
