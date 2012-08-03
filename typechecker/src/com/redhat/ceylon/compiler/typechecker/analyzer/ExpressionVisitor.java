@@ -3548,7 +3548,7 @@ public class ExpressionVisitor extends Visitor {
             TypeParameter param) {
         
         List<ProducedType> caseTypes = param.getCaseTypes();
-        if (caseTypes==null) {
+        if (caseTypes==null || caseTypes.isEmpty()) {
             //no enumerated constraint
             return true;
         }
@@ -3568,7 +3568,7 @@ public class ExpressionVisitor extends Visitor {
         //then the constraint is satisfied
         if (argType.getDeclaration() instanceof TypeParameter) {
             List<ProducedType> argCaseTypes = argType.getDeclaration().getCaseTypes();
-            if (argCaseTypes!=null) {
+            if (argCaseTypes!=null && !argCaseTypes.isEmpty()) {
                 for (ProducedType act: argCaseTypes) {
                     boolean foundCase = false;
                     for (ProducedType ct: caseTypes) {
@@ -3738,7 +3738,7 @@ public class ExpressionVisitor extends Visitor {
         for (ProducedType supertype: type.getSupertypes()) {
             if (!type.isExactly(supertype)) {
                 TypeDeclaration std = supertype.getDeclaration();
-                if (std.getCaseTypes()!=null) {
+                if (std.getCaseTypes()!=null && !std.getCaseTypes().isEmpty()) {
                     List<ProducedType> types=new ArrayList<ProducedType>();
                     for (ProducedType ct: std.getCaseTypes()) {
                         ProducedType cst = type.getSupertype(ct.getDeclaration());
