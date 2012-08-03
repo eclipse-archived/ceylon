@@ -54,13 +54,13 @@ public class CeylonDocToolTest {
 
     @Rule 
     public TestName name = new TestName();
-    
-    private CeylonDocTool tool(String pathname, String moduleName, 
+
+    private CeylonDocTool tool(List<File> path, List<String> modules, 
             boolean throwOnError, String... repositories)
             throws IOException {
-        CeylonDocTool tool = new CeylonDocTool(Arrays.asList(new File(pathname)), 
+        CeylonDocTool tool = new CeylonDocTool(path, 
                 Arrays.asList(repositories), 
-                Arrays.asList(moduleName),
+                modules,
                 throwOnError);
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (dir.exists()) {
@@ -68,6 +68,14 @@ public class CeylonDocToolTest {
         }
         tool.setOutputRepository(dir.getAbsolutePath(), null, null);
         return tool;
+    }
+    
+    private CeylonDocTool tool(String pathname, String moduleName, 
+            boolean throwOnError, String... repositories)
+            throws IOException {
+        return tool(Arrays.asList(new File(pathname)),
+                Arrays.asList(moduleName),
+                throwOnError, repositories);
     }
 
     protected void assertFileExists(File destDir, String path) {
@@ -322,17 +330,24 @@ public class CeylonDocToolTest {
     @Ignore("Disabled unless you have the sdk checked out")
     @Test
     public void ceylonMath() throws IOException {
-        String pathname = "../ceylon-sdk/math/source";
-        String moduleName = "ceylon.math";
-        CeylonDocTool tool = tool(pathname, moduleName, false);
+        String[] moduleNames = {"file", "collection", "net", "json", "process", "math"};
+        List<String> fullModuleNames = new ArrayList<String>(moduleNames.length);
+        List<File> path = new ArrayList<File>(moduleNames.length);
+        for(String moduleName : moduleNames){
+            path.add(new File("../ceylon-sdk/"+moduleName+"/source"));
+            fullModuleNames.add("ceylon." + moduleName);
+        }
+        CeylonDocTool tool = tool(path, fullModuleNames, false);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
-        Module module = makeModule("ceylon.math", "0.2");
-        File destDir = getOutputDir(tool, module);
-        
-        assertFileExists(destDir, "index.html");
+        for(String moduleName : moduleNames){
+            Module module = makeModule("ceylon." + moduleName, "0.3.3");
+            File destDir = getOutputDir(tool, module);
+
+            assertFileExists(destDir, "index.html");
+        }
     }
 
     private Module makeDefaultModule() {
