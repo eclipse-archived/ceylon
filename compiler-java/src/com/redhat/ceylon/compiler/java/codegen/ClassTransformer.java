@@ -37,6 +37,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -116,28 +117,34 @@ public class ClassTransformer extends AbstractTransformer {
                 .klass(this, Decl.isAncestorLocal(def), className, aliasedClassName);
 
         if (def instanceof Tree.AnyClass) {
-            Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
-            for (Tree.Parameter param : paramList.getParameters()) {
-                classBuilder.parameter(param);
-                DefaultArgument defaultArgument = param.getDefaultArgument();
-                if (defaultArgument != null
-                        || param.getDeclarationModel().isSequenced()) {
-                    ClassDefinitionBuilder cbForDevaultValues;
-                    if (Strategy.defaultParameterMethodStatic(model)) {
-                        cbForDevaultValues = classBuilder;
-                    } else {
-                        cbForDevaultValues = classBuilder.getCompanionBuilder(model);
+            if(def instanceof Tree.ClassDefinition){
+                Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
+                for (Tree.Parameter param : paramList.getParameters()) {
+                    classBuilder.parameter(param);
+                    DefaultArgument defaultArgument = param.getDefaultArgument();
+                    if (defaultArgument != null
+                            || param.getDeclarationModel().isSequenced()) {
+                        ClassDefinitionBuilder cbForDevaultValues;
+                        if (Strategy.defaultParameterMethodStatic(model)) {
+                            cbForDevaultValues = classBuilder;
+                        } else {
+                            cbForDevaultValues = classBuilder.getCompanionBuilder(model);
+                        }
+                        cbForDevaultValues.defs(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param));
+                        // Add overloaded constructors for defaulted parameter
+                        MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
+                        makeOverloadsForDefaultedParameter(OL_BODY,
+                                overloadBuilder,
+                                model, paramList, param);
                     }
-                    cbForDevaultValues.defs(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param));
-                    // Add overloaded constructors for defaulted parameter
-                    MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
-                    makeOverloadsForDefaultedParameter(OL_BODY,
-                            overloadBuilder,
-                            model, paramList, param);
                 }
+                satisfaction((Class)model, classBuilder);
+                at(def);
+            }else{
+                // class alias
+                classBuilder.constructorModifiers(PRIVATE);
+                classBuilder.annotations(makeAtAlias(model.getExtendedType()));
             }
-            satisfaction((Class)model, classBuilder);
-            at(def);
         }
         
         if (def instanceof Tree.AnyInterface) {
@@ -705,6 +712,7 @@ public class ClassTransformer extends AbstractTransformer {
         result |= Decl.isShared(cdecl) ? PUBLIC : 0;
         result |= cdecl.isAbstract() && (cdecl instanceof Class) ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
+        result |= cdecl.isAlias() ? FINAL : 0;
 
         return result;
     }
