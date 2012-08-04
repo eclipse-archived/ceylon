@@ -162,6 +162,10 @@ public class CeylonConfig {
         setOption(key, Boolean.toString(value));
     }
     
+    public boolean isSectionDefined(String section) {
+        return sectionNames.containsKey(section);
+    }
+    
     public String[] getSectionNames(String section) {
         if (section == null) {
             section = "";
