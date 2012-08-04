@@ -118,6 +118,13 @@ public class CeylonConfigTest {
         Assert.assertTrue(compareStringArraysSorted(new String[]{"test"}, testConfig.getSectionNames("")));
         Assert.assertTrue(compareStringArraysSorted(new String[]{"commented", "multiple", "section"}, testConfig.getSectionNames("test")));
         Assert.assertTrue(compareStringArraysSorted(new String[]{"Aap", "Noot", "Mies"}, testConfig.getSectionNames("test.section")));
+        Assert.assertTrue(compareStringArraysSorted(new String[]{}, testConfig.getSectionNames("test.multiple")));
+    }
+    
+    @Test
+    public void testOptionNames() {
+        Assert.assertTrue(compareStringArrays(new String[]{"foo", "fooz"}, testConfig.getOptionNames("test.section.Mies")));
+        Assert.assertTrue(compareStringArrays(new String[]{"local.dir", "test.string-hello", "test.multiple.strings", "local.dir2", "local.foo"}, localConfig.getOptionNames(null)));
     }
     
     @Test
