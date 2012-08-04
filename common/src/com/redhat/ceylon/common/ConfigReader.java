@@ -74,7 +74,7 @@ public class ConfigReader {
             throw new InvalidPropertiesFormatException("Invalid section name in configuration file at line " + (counterdr.getLineNumber() + 1));
         }
         skipWhitespace(false);
-        if (peek() == '\"') {
+        if (reader.peek() == '\"') {
             String subSection = readString();
             expect('"');
             section += "." + subSection;
@@ -207,7 +207,7 @@ public class ConfigReader {
     }
 
     private Token peekToken() throws IOException {
-        int c = peek();
+        int c = reader.peek();
         if (isCommentChar(c)) {
             return Token.comment;
         } else if (c == '[') {
@@ -223,12 +223,6 @@ public class ConfigReader {
         } else {
             return Token.error;
         }
-    }
-    
-    private int peek() throws IOException {
-        int c = reader.read();
-        reader.unread(c);
-        return c;
     }
     
     private boolean gobble(int chr) throws IOException {
@@ -294,6 +288,14 @@ class MemoPushbackReader extends PushbackReader {
         memo.setLength(memo.length() - 1);
     }
 
+    public int peek() throws IOException {
+        int c = super.read();
+        if (c != -1) {
+            super.unread(c);
+        }
+        return c;
+    }
+    
     @Override
     public void reset() throws IOException {
         super.reset();
