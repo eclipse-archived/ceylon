@@ -209,6 +209,22 @@ Iterable$proto.collect = function(collecting) {
 Iterable$proto.select = function(selecting) {
     return this.$filter(selecting).getSequence();
 }
+Iterable$proto.group = function(grouping) {
+    var map = HashMap();
+    var it = this.getIterator();
+    var elem;
+    var newSeq = ArraySequence([]);
+    while ((elem=it.next()) !== $finished) {
+        var key = grouping(elem);
+        var seq = map.put(Entry(key, newSeq), true);
+        if (seq === null) {
+            seq = newSeq;
+            newSeq = ArraySequence([]);
+        }
+        seq.push(elem);
+    }
+    return map;
+}
 
 exports.Iterable=Iterable;
 

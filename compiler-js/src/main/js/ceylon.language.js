@@ -223,6 +223,7 @@ exports.Correspondence=Correspondence;
 
 //#include iterable.js
 //#include collections.js
+//#include maps.js
 
 function Summable(wat) {
     return wat;
@@ -295,6 +296,7 @@ Boolean.prototype.getT$all$ = function() {
     return (this.valueOf()?trueClass:falseClass).$$.T$all;
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
+Boolean.prototype.getHash = function() {return this.valueOf()?1:0;}
 var trueString = String$("true", 4);
 var falseString = String$("false", 5);
 Boolean.prototype.getString = function() {return this.valueOf()?trueString:falseString;}
