@@ -318,3 +318,74 @@ ChainedIterator$proto.next = function() {
     return elem;
 }
 exports.ChainedIterator=ChainedIterator;
+
+function LazyList(elems, lst) {
+    if (lst===undefined) {lst = new LazyList.$$;}
+    IdentifiableObject(lst);
+    lst.elems = elems;
+    return lst;
+}
+initTypeProto(LazyList, 'ceylon.language.LazyList', IdentifiableObject, List);
+var LazyList$proto = LazyList.$$.prototype;
+LazyList$proto.getIterator = function() { return this.elems.getIterator(); }
+LazyList$proto.getClone = function() { return this; }
+LazyList$proto.getFirst = function() { return this.elems.getFirst(); }
+LazyList$proto.getLast = function() { return this.elems.getLast(); }
+LazyList$proto.findLast = function(selecting) {
+    return this.elems.findLast(selecting);
+}
+LazyList$proto.getSize = function() {
+    if (isOfType(this.elems, 'ceylon.language.Sized')) {
+        return this.elems.getSize();
+    }
+    var it = this.elems.getIterator();
+    var count = 0;
+    while (it.next() !== $finished) {++count;}
+    return count;
+}
+LazyList$proto.getLastIndex = function() {
+    var size = this.getSize();
+    return size>0 ? (size-1) : null;
+}
+LazyList$proto.getEmpty = function() { return this.elems.getEmpty(); }
+LazyList$proto.item = function(index) {
+    var it = this.elems.getIterator();
+    var elem;
+    var count = 0;
+    while ((elem=it.next()) !== $finished) {
+        if (count++ == index) { return elem; }
+    }
+    return null;
+}
+LazyList$proto.getReversed = function() { return this.elems.getSequence().getReversed(); }
+LazyList$proto.equals = function(other) {
+    if (!isOfType(other, 'ceylon.language.List')) { return false; }
+    var it1 = this.elems.getIterator();
+    var it2 = other.getIterator();
+    var e1;
+    while ((e1=it1.next()) !== $finished) {
+        var e2 = it2.next();
+        var n1 = e1===null;
+        if ((n1 ^ (e2===null)) || !(n1 || e1.equals(e2))) { return false; }
+    }
+    return it2.next()===$finished;
+}
+LazyList$proto.segment = function(from, length) {
+    if (length <= 0) { return $empty; }
+    var seg = (from > 0) ? this.elems.skipping(from) : this.elems;
+    return LazyList(seg.taking(length));
+}
+LazyList$proto.span = function(from, to) {
+    if ((to === undefined) || (to === null)) {
+        return (from > 0) ? LazyList(this.elems.skipping(from)) : this;
+    }
+    if (to < 0) { to = 0; }
+    if (from < 0) { from = 0; }
+    if (to < from) {
+        var seg = (to > 0) ? this.elems.skipping(to) : this.elems;
+        return seq.taking(from-to+1).getSequence().getReversed();
+    }
+    var seq = (from > 0) ? this.elems.skipping(from) : this.elems;
+    return LazyList(seq.taking(to-from+1));
+}
+exports.LazyList=LazyList;
