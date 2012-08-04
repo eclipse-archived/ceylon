@@ -44,6 +44,7 @@ public class CeylonConfig {
     public CeylonConfig() {
         options = new HashMap<String, String[]>();
         sectionNames = new HashMap<String, HashSet<String>>();
+        sectionNames.put("", new HashSet<String>());
         optionNames = new HashMap<String, HashSet<String>>();
     }
     
@@ -61,20 +62,20 @@ public class CeylonConfig {
                 }
                 parentSectionName += parts[i];
             }
-            if (parts.length > 3) {
-                initLookupKey(parentSectionName + ".#");
-            }
+            initLookupKey(parentSectionName + ".#");
             sectionName = parentSectionName + '.' + subsectionName;
         } else {
             sectionName = subsectionName;
         }
         
-        HashSet<String> sn = sectionNames.get(parentSectionName);
+        HashSet<String> psn = sectionNames.get(parentSectionName);
+        psn.add(subsectionName);
+        
+        HashSet<String> sn = sectionNames.get(sectionName);
         if (sn == null) {
             sn = new HashSet<String>();
-            sectionNames.put(parentSectionName, sn);
+            sectionNames.put(sectionName, sn);
         }
-        sn.add(subsectionName);
         
         if (!"#".equals(optionName)) {
             HashSet<String> on = optionNames.get(sectionName);
@@ -175,7 +176,7 @@ public class CeylonConfig {
             String[] res = new String[options.keySet().size()];
             return options.keySet().toArray(res);
         } else {
-            HashSet<String> on = sectionNames.get(section);
+            HashSet<String> on = optionNames.get(section);
             String[] res = new String[on.size()];
             return on.toArray(res);
         }
