@@ -278,7 +278,9 @@ class MemoPushbackReader extends PushbackReader {
     @Override
     public int read() throws IOException {
         int c = super.read();
-        memo.append((char)c);
+        if (c != -1) {
+            memo.append((char)c);
+        }
         return c;
     }
 
