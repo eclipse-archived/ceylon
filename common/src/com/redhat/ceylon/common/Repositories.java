@@ -2,7 +2,6 @@ package com.redhat.ceylon.common;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Repositories {
     private CeylonConfig config;
@@ -48,7 +47,7 @@ public class Repositories {
         private final String name;
         private final String url;
         private final String user;
-        private final Password password;
+        private final String password;
         
         public String getName() {
             return name;
@@ -63,33 +62,14 @@ public class Repositories {
         }
         
         public String getPassword() {
-            char[] chars = this.password.getPassword();
-            try {
-                return chars != null ? new String(chars) : null;
-            }
-            finally {
-                if (chars != null) {
-                    Arrays.fill(chars, ' ');
-                }
-            }
+            return password;
         }
         
-        public Repository(String name, String url, String user, final String password) {
+        public Repository(String name, String url, String user, String password) {
             this.name = name;
             this.url = url;
             this.user = user;
-            this.password = new Password() {
-                public char[] getPassword() {
-                    return password != null ? password.toCharArray() : null;
-                }
-            };
-        }
-        
-        public Repository(String name, String url, String user, PromptedPassword passwordPromise) {
-            this.name = name;
-            this.url = url;
-            this.user = user;
-            this.password = passwordPromise;
+            this.password = password;
         }
     }
     
@@ -110,37 +90,30 @@ public class Repositories {
         if (url != null) {
             String user = config.getOption(repoKey(repoName, ITEM_USER));
             String password = config.getOption(repoKey(repoName, ITEM_PASSWORD));
-            if (user != null && password == null) {
-                return new Repository(repoName, url, user, 
-                        new PromptedPassword(config.getPasswordPrompt(), 
-                                CommonMessages.msg("repositories.password.prompt", user, url)));
-            }
-            // else no password, or plain text password
             return new Repository(repoName, url, user, password);
-            
         } else {
             if (REPO_NAME_INSTALL.equals(repoName)) {
                 File installDir = CeylonConfig.getInstallDir();
                 if (installDir != null) {
                     // $INSTALLDIR/repo
                     File dir = new File(installDir, "repo");
-                    return new Repository(REPO_NAME_INSTALL, dir.getAbsolutePath(), null, (String)null);
+                    return new Repository(REPO_NAME_INSTALL, dir.getAbsolutePath(), null, null);
                 }
             } else if (REPO_NAME_LOCAL.equals(repoName)) {
                 // ./modules
                 File dir = new File(".", "modules");
-                return new Repository(REPO_NAME_LOCAL, dir.getPath(), null, (String)null);
+                return new Repository(REPO_NAME_LOCAL, dir.getPath(), null, null);
             } else if (REPO_NAME_CACHE.equals(repoName)) {
                 // $HOME/.ceylon/cache
                 File dir = getCacheRepoDir();
-                return new Repository(REPO_NAME_CACHE, dir.getAbsolutePath(), null, (String)null);
+                return new Repository(REPO_NAME_CACHE, dir.getAbsolutePath(), null, null);
             } else if (REPO_NAME_USER.equals(repoName)) {
                 // $HOME/.ceylon/repo
                 File userRepoDir = getUserRepoDir();
-                return new Repository(REPO_NAME_USER, userRepoDir.getAbsolutePath(), null, (String)null);
+                return new Repository(REPO_NAME_USER, userRepoDir.getAbsolutePath(), null, null);
             } else if (REPO_NAME_REMOTE.equals(repoName)) {
                 // http://modules.ceylon-lang.org
-                return new Repository(REPO_NAME_REMOTE, REPO_URL_CEYLON, null, (String)null);
+                return new Repository(REPO_NAME_REMOTE, REPO_URL_CEYLON, null, null);
             }
             return null;
         }
@@ -162,7 +135,7 @@ public class Repositories {
                     repo = getRepository(name);
                 } else {
                     String name = "%" + repoType + "-" + (i + 1);
-                    repo = new Repository(name, url, null, (String)null);
+                    repo = new Repository(name, url, null, null);
                 }
                 if (repo != null) {
                     repos.add(repo);

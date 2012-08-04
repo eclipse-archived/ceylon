@@ -5,14 +5,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.redhat.ceylon.common.PromptedPassword.ConsolePasswordPrompt;
-import com.redhat.ceylon.common.PromptedPassword.PasswordPrompt;
-
 public class CeylonConfig {
     private HashMap<String, String[]> options;
     private HashMap<String, HashSet<String>> sectionNames;
     private HashMap<String, HashSet<String>> optionNames;
-    private PasswordPrompt passwordPrompt;
     
     private static CeylonConfig instance;
     
@@ -216,25 +212,5 @@ public class CeylonConfig {
         } else {
             return getDefaultUserDir();
         }
-    }
-
-    /**
-     * Gets the password prompt, using a {@link ConsolePasswordPrompt} as a 
-     * fallback.
-     * @return
-     */
-    public PasswordPrompt getPasswordPrompt() {
-        if (passwordPrompt == null) {
-            passwordPrompt = new PromptedPassword.ConsolePasswordPrompt();
-        }
-        return passwordPrompt;
-    }
-    
-    /**
-     * Sets the password prompt
-     * @param passwordPrompt
-     */
-    public void setPasswordPrompt(PromptedPassword.PasswordPrompt passwordPrompt) {
-        this.passwordPrompt = passwordPrompt;
     }
 }
