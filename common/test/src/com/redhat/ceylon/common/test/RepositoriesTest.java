@@ -23,7 +23,7 @@ public class RepositoriesTest {
     @Before
     public void setup() throws IOException {
         testConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/repos.config"));
-        if (testConfig.getInstallDir() == null) {
+        if (CeylonConfig.getInstallDir() == null) {
             // Set a fake installation folder
             System.setProperty("ceylon.home", "fake-install-dir");
         }
@@ -49,7 +49,7 @@ public class RepositoriesTest {
     
     @Test
     public void testGetDeafultBootstrapRepository() {
-        File dir = new File(testConfig.getInstallDir(), "repo");
+        File dir = new File(CeylonConfig.getInstallDir(), "repo");
         assertRepository(defaultRepos.getBootstrapRepository(), "INSTALL", dir.getAbsolutePath(), null, null);
     }
     
@@ -93,10 +93,10 @@ public class RepositoriesTest {
     public void testGetLookupRepositories() {
         Repository[] lookup = repos.getLookupRepositories();
         Assert.assertTrue(lookup.length == 4);
-        Assert.assertTrue(testRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!"));
-        Assert.assertTrue(testRepository(lookup[1], "Three", "foobar", null, null));
-        Assert.assertTrue(testRepository(lookup[2], "Four", "foobar", null, null));
-        Assert.assertTrue(testRepository(lookup[3], "%lookup-4", "foobar", null, null));
+        assertRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!");
+        assertRepository(lookup[1], "Three", "foobar", null, null);
+        assertRepository(lookup[2], "Four", "foobar", null, null);
+        assertRepository(lookup[3], "%lookup-4", "foobar", null, null);
     }
     
     @Test
