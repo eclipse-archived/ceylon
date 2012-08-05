@@ -114,7 +114,7 @@ public class CeylonConfigTest {
     
     @Test
     public void testSectionNames() {
-        Assert.assertTrue(compareStringArraysSorted(new String[]{"test"}, testConfig.getSectionNames(null)));
+        Assert.assertTrue(compareStringArraysSorted(new String[]{"test", "test.commented", "test.multiple", "test.section", "test.section.Aap", "test.section.Mies", "test.section.Noot"}, testConfig.getSectionNames(null)));
         Assert.assertTrue(compareStringArraysSorted(new String[]{"test"}, testConfig.getSectionNames("")));
         Assert.assertTrue(compareStringArraysSorted(new String[]{"commented", "multiple", "section"}, testConfig.getSectionNames("test")));
         Assert.assertTrue(compareStringArraysSorted(new String[]{"Aap", "Noot", "Mies"}, testConfig.getSectionNames("test.section")));
