@@ -167,7 +167,7 @@
         (for scientific notation) or a <emphasis>magnitude</emphasis> (an SI unit
         prefix). A natural literal may include a magnitude.</para>
         
-        <programlisting>Exponent: ("E"|"e") ("+"|"-")? Digits</programlisting>
+        <programlisting>Exponent: ("E"|"e") ("+"|"-")? Digit+</programlisting>
         
         <programlisting>Magnitude: "k" | "M" | "G" | "T" | "P"</programlisting>
         <programlisting>FractionalMagnitude: "m" | "u" | "n" | "p" | "f"</programlisting>
