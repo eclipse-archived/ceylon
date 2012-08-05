@@ -266,6 +266,7 @@ function hashSetFromMap(map) {
     return set;
 }
 var HashSet$proto = HashSet.$$.prototype;
+HashSet$proto.add = function(elem) { this.map.put(Entry(elem, true)); }
 HashSet$proto.addAll = function(elems) {
     var it = elems.getIterator();
     var elem;
@@ -290,7 +291,7 @@ HashSet$proto.intersection = function(other) {
     var it = this.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
-        if (other.contains(elem)) { set.map.add(Entry(elem, true)); }
+        if (other.contains(elem)) { set.map.put(Entry(elem, true)); }
     }
     return set;
 }
@@ -299,7 +300,7 @@ HashSet$proto.exclusiveUnion = function(other) {
     var it = other.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
-        if (this.map.item(elem) === null) { set.map.add(Entry(elem, true)); }
+        if (this.map.item(elem) === null) { set.map.put(Entry(elem, true)); }
     }
     return set;
 }
@@ -308,7 +309,7 @@ HashSet$proto.complement = function(other) {
     var it = this.getIterator();
     var elem;
     while ((elem=it.next()) !== $finished) {
-        if (!other.contains(elem)) { set.map.add(Entry(elem, true)); }
+        if (!other.contains(elem)) { set.map.put(Entry(elem, true)); }
     }
     return set;
 }
@@ -345,3 +346,87 @@ HashSetIterator.$$.prototype.next = function() {
     var entry = this.mapIt.next();
     return (entry !== $finished) ? entry.getKey() : $finished;
 }
+
+function LazyMap(entries, map) {
+    if (map===undefined) {map = new LazyMap.$$;}
+    IdentifiableObject(map);
+    map.entries = entries;
+    return map;
+}
+initTypeProto(LazyMap, 'ceylon.language.LazyMap', IdentifiableObject, Map);
+var LazyMap$proto = LazyMap.$$.prototype;
+LazyMap$proto.getEmpty = function() { return this.entries.getEmpty(); }
+LazyMap$proto.getSize = function() {
+    var it = this.entries.getIterator();
+    var count = 0;
+    while (it.next() !== $finished) { ++count; }
+    return count;
+}
+LazyMap$proto.getClone = function() { return this; }
+LazyMap$proto.getIterator = function() { return this.entries.getIterator(); }
+LazyMap$proto.item = function(key) {
+    var it = this.entries.getIterator();
+    var entry;
+    while ((entry=it.next()) !== $finished) {
+        if (entry.getKey().equals(key)) { return entry.getItem(); }
+    }
+    return null;
+}
+LazyMap$proto.equals = function(other) {
+    var hmap = HashMap(this.entries);
+    var it = other.getIterator();
+    var count = 0;
+    var entry;
+    while ((entry=it.next()) !== $finished) {
+        if (!hmap.contains(entry)) { return false; }
+        ++count;
+    }
+    return count==hmap.getSize();
+}
+exports.LazyMap=LazyMap;
+
+function LazySet(elems, set) {
+    if (set===undefined) {set = new LazySet.$$;}
+    IdentifiableObject(set);
+    set.elems = elems;
+    return set;
+}
+initTypeProto(LazySet, 'ceylon.language.LazySet', IdentifiableObject, Set);
+var LazySet$proto = LazySet.$$.prototype;
+LazySet$proto.getEmpty = function() { return this.elems.getEmpty(); }
+LazySet$proto.getSize = function() { return HashSet(this.elems).getSize(); }
+LazySet$proto.getClone = function() { return this; }
+LazySet$proto.getIterator = function() { return HashSet(this.elems).getIterator(); }
+LazySet$proto.equals = function(other) {
+    var hset = HashSet(this.elems);
+    var it = other.getIterator();
+    var elem;
+    var count = 0;
+    while ((elem=it.next()) !== $finished) {
+        if (!hset.contains(elem)) { return false; }
+        ++count;
+    }
+    return count==hset.getSize();
+}
+LazySet$proto.union = function(other) {
+    var set = HashSet(this.elems);
+    set.addAll(other);
+    return set;
+}
+LazySet$proto.intersection = function(other) {
+    var set = HashSet(this.elems);
+    var result = HashSet();
+    var it = other.getIterator();
+    var elem;
+    while ((elem=it.next()) !== $finished) {
+        if (set.contains(elem)) { result.add(elem); }
+    }
+    return result;
+}
+LazySet$proto.exclusiveUnion = function(other) {
+    return other.exclusiveUnion(HashSet(this.elems));
+}
+LazySet$proto.complement = function(other) {
+    return other.complement(HashSet(this.elems));
+}
+exports.LazySet=LazySet;
