@@ -72,6 +72,11 @@ public class ConfigParser {
             ConfigReader reader = new ConfigReader(in, new ConfigReaderListener() {
 
                 @Override
+                public void setup() throws IOException {
+                    // We ignore the setup
+                }
+
+                @Override
                 public void onSection(String section, String text) {
                     // We ignore sections
                 }
@@ -103,6 +108,11 @@ public class ConfigParser {
                 @Override
                 public void onWhitespace(String text) {
                     // We ignore white space
+                }
+
+                @Override
+                public void cleanup() throws IOException {
+                    // We ignore the cleanup
                 }
                 
             });
