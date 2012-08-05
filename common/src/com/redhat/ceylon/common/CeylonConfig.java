@@ -15,7 +15,7 @@ public class CeylonConfig {
     public static CeylonConfig get() {
         if (instance == null) {
             try {
-                instance = ConfigParser.loadDefaultConfig();
+                instance = ConfigParser.loadUserConfig();
                 try {
                     CeylonConfig local = ConfigParser.loadLocalConfig(new File("."));
                     instance.merge(local);

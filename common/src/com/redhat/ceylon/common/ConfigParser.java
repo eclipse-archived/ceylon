@@ -15,7 +15,7 @@ public class ConfigParser {
     
     public static final String PROP_CEYLON_CONFIG_FILE = "ceylon.config";
     
-    public static CeylonConfig loadDefaultConfig() throws IOException {
+    public static CeylonConfig loadUserConfig() throws IOException {
         File configFile;
         String configFilename = System.getProperty(PROP_CEYLON_CONFIG_FILE);
         if (configFilename != null) {
