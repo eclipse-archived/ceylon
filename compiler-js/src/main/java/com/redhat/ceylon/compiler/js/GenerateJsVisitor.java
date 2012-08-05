@@ -2608,6 +2608,58 @@ public class GenerateJsVisitor extends Visitor
                    oldValueVar, ")");
        }
    }
+   
+    @Override
+    public void visit(UnionOp that) {
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".union(");
+                termgen.right();
+                out(")");
+            }
+        });
+    }
+    
+    @Override
+    public void visit(IntersectionOp that) {
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".intersection(");
+                termgen.right();
+                out(")");
+            }
+        });
+    }
+
+    @Override
+    public void visit(XorOp that) {
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".exclusiveUnion(");
+                termgen.right();
+                out(")");
+            }
+        });
+    }
+    
+    @Override
+    public void visit(ComplementOp that) {
+        binaryOp(that, new BinaryOpGenerator() {
+            @Override
+            public void generate(BinaryOpTermGenerator termgen) {
+                termgen.left();
+                out(".complement(");
+                termgen.right();
+                out(")");
+            }
+        });
+    }
 
    @Override public void visit(Exists that) {
        unaryOp(that, new UnaryOpGenerator() {
