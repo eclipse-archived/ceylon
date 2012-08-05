@@ -208,11 +208,23 @@ public class CeylonConfig {
         return sectionNames.containsKey(section);
     }
     
+    /**
+     * Returns the list of all section names, the root section names
+     * or the sub section names of the given section depending on the
+     * argument being passed
+     * @param section Returns the subsections of the section being passed.
+     * Will return the root section names if being passed an empty string.
+     * And will return all section names if being passed null.
+     * @return An array of the requested section names
+     */
     public String[] getSectionNames(String section) {
-        if (section == null) {
-            section = "";
+        HashSet<String> sn;
+        if (section != null) {
+            sn = sectionNames.get(section);
+        } else {
+            sn = new HashSet<String>(sectionNames.keySet());
+            sn.remove("");
         }
-        HashSet<String> sn = sectionNames.get(section);
         String[] res = new String[sn.size()];
         return sn.toArray(res);
     }
