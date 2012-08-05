@@ -234,9 +234,17 @@ public class CeylonConfig {
             String[] res = new String[options.keySet().size()];
             return options.keySet().toArray(res);
         } else {
-            HashSet<String> on = optionNames.get(section);
-            String[] res = new String[on.size()];
-            return on.toArray(res);
+            if (isSectionDefined(section)) {
+                HashSet<String> on = optionNames.get(section);
+                if (on != null) {
+                    String[] res = new String[on.size()];
+                    return on.toArray(res);
+                } else {
+                    return new String[0];
+                }
+            } else {
+                return null;
+            }
         }
     }
     
