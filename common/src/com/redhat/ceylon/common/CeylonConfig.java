@@ -124,8 +124,12 @@ public class CeylonConfig {
     }
     
     public void setOptionValues(String key, String[] values) {
-        options.put(key, values);
-        initLookupKey(key);
+        if (values != null && values.length > 0) {
+            options.put(key, values);
+            initLookupKey(key);
+        } else {
+            removeOption(key);
+        }
     }
     
     public String getOption(String key) {
