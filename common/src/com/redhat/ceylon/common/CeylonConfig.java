@@ -256,6 +256,12 @@ public class CeylonConfig {
         return this;
     }
 
+    public CeylonConfig copy() {
+        CeylonConfig cfg = new CeylonConfig();
+        cfg.merge(this);
+        return cfg;
+    }
+
     // Some additional useful configuration options
     
     public static File getInstallDir() {
