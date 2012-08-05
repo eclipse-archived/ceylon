@@ -28,7 +28,7 @@ public class ConfigParser {
     
     public static CeylonConfig loadUserConfig() throws IOException {
         File configFile = findUserConfig();
-        return (new ConfigParser(configFile)).parse();
+        return (new ConfigParser(configFile)).parse(true);
     }
     
     public static File findLocalConfig(File dir) throws IOException {
@@ -53,7 +53,7 @@ public class ConfigParser {
     public static CeylonConfig loadLocalConfig(File dir) throws IOException {
         File configFile = findLocalConfig(dir);
         if (configFile != null) {
-            return (new ConfigParser(configFile)).parse();
+            return (new ConfigParser(configFile)).parse(true);
         } else {
             // No config file, just return an empty CeylonConfig
             return new CeylonConfig();
@@ -61,11 +61,15 @@ public class ConfigParser {
     }
     
     public static CeylonConfig loadConfigFromFile(File configFile) throws IOException {
-        return (new ConfigParser(configFile)).parse();
+        return (new ConfigParser(configFile)).parse(true);
+    }
+    
+    public static CeylonConfig loadOriginalConfigFromFile(File configFile) throws IOException {
+        return (new ConfigParser(configFile)).parse(false);
     }
     
     public static CeylonConfig loadConfigFromStream(InputStream stream, File currentDir) throws IOException {
-        return (new ConfigParser(stream, currentDir)).parse();
+        return (new ConfigParser(stream, currentDir)).parse(currentDir != null);
     }
     
     private ConfigParser(File configFile) {
@@ -78,7 +82,7 @@ public class ConfigParser {
         this.currentDir = currentDir;
     }
     
-    private CeylonConfig parse() throws IOException {
+    private CeylonConfig parse(final boolean replaceVars) throws IOException {
         config = new CeylonConfig();
         if (configFile == null || configFile.isFile()) {
             if (configFile != null) {
@@ -98,11 +102,13 @@ public class ConfigParser {
 
                 @Override
                 public void onOption(String name, String value, String text) {
-                    // Special "variable" to get the current directory for this config file
-                    if (value.startsWith("${DIR}")) {
-                        try {
-                            value = currentDir.getCanonicalPath() + value.substring(6);
-                        } catch (IOException e) { }
+                    if (replaceVars) {
+                        // Special "variable" to get the current directory for this config file
+                        if (value.startsWith("${DIR}")) {
+                            try {
+                                value = currentDir.getCanonicalPath() + value.substring(6);
+                            } catch (IOException e) { }
+                        }
                     }
                     
                     String[] oldval = config.getOptionValues(name);
