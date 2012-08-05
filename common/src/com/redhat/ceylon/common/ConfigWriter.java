@@ -127,7 +127,14 @@ public class ConfigWriter {
             @Override
             public void onOption(String name, String value, String text) throws IOException {
                 if (config.isOptionDefined(name)) {
-                    writer.write(text);
+                    String existingValue = config.getOptionValues(name)[0];
+                    if (value.equals(existingValue)) {
+                        // The value hasn't changed, we'll write the option *exactly* as it was
+                        writer.write(text);
+                    } else {
+                        // The value has changed, we will write a new option
+                        writeOptionValue(writer, name, value);
+                    }
                     removeOptionValue(name);
                     skipToNewline = false;
                 } else {
@@ -207,11 +214,15 @@ public class ConfigWriter {
     protected static void writeOption(Writer writer, CeylonConfig config, String name) throws IOException {
         String[] values = config.getOptionValues(name);
         for (String value : values) {
-            writer.write(name);
-            writer.write("=");
-            writer.write(quote(value));
+            writeOptionValue(writer, name, value);
             writer.write(System.lineSeparator());
         }
+    }
+
+    protected static void writeOptionValue(Writer writer, String name, String value) throws IOException {
+        writer.write(name);
+        writer.write("=");
+        writer.write(quote(value));
     }
 
     private static String quote(String value) {
