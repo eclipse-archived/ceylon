@@ -143,11 +143,59 @@ public class ConfigWriter {
         reader.process();
         writer.flush();
         // Now write what's left of the configuration to the output
-        write(config, out);
+        writeSections(writer, config, out);
     }
 
-    public static void write(CeylonConfig config, OutputStream out) throws IOException {
-        // TODO
+    public static void write(CeylonConfig orgconfig, OutputStream out) throws IOException {
+        final CeylonConfig config = orgconfig.copy();
+        final Writer writer = new BufferedWriter(new OutputStreamWriter(out, Charset.forName("UTF-8")));
+        writeSections(writer, config, out);
+    }
+
+    private static void writeSections(Writer writer, CeylonConfig config, OutputStream out) throws IOException {
+        String[] sections = config.getSectionNames(null);
+        Arrays.sort(sections);
+        for (String section : sections) {
+            if (config.getOptionNames(section).length > 0) {
+                writer.write(System.lineSeparator());
+                writer.write("[");
+                writer.write(section);
+                writer.write("]");
+                writer.write(System.lineSeparator());
+                writeOptions(writer, config, section);
+            }
+        }
+    }
+
+    protected static void writeOptions(Writer writer, CeylonConfig config, String section) throws IOException {
+        String[] names = config.getOptionNames(section);
+        for (String name : names) {
+            writeOption(writer, config, name);
+            config.removeOption(name);
+        }
+    }
+    
+    protected static void writeOption(Writer writer, CeylonConfig config, String name) throws IOException {
+        String[] values = config.getOptionValues(name);
+        for (String value : values) {
+            writer.write(name);
+            writer.write("=");
+            writer.write(quote(value));
+            writer.write(System.lineSeparator());
+        }
+    }
+
+    private static String quote(String value) {
+        value = value.replace("\\", "\\\\");
+        value = value.replace("\"", "\\\"");
+        value = value.replace("\t", "\\t");
+        value = value.replace("\n", "\\n");
+        boolean needsQuotes = value.contains(";") || value.contains("#") || value.endsWith(" ");
+        if (needsQuotes) {
+            return "\"" + value + "\"";
+        } else {
+            return value;
+        }
     }
 }
 
