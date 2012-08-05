@@ -189,6 +189,16 @@ public class CeylonConfig {
     public void setBoolOption(String key, boolean value) {
         setOption(key, Boolean.toString(value));
     }
+
+    public void removeOption(String key) {
+        options.remove(key);
+        
+        Key k = new Key(key);
+        HashSet<String> on = optionNames.get(k.getSectionName());
+        if (on != null) {
+            on.remove(k.getOptionName());
+        }
+    }
     
     public boolean isSectionDefined(String section) {
         return sectionNames.containsKey(section);
