@@ -48,42 +48,70 @@ public class CeylonConfig {
         optionNames = new HashMap<String, HashSet<String>>();
     }
     
-    private void initLookupKey(String key) {
-        String[] parts = key.split("\\.");
+    class Key {
+        private String subsectionName; 
+        private String optionName;
+        private String sectionName;
+        private String parentSectionName;
         
-        String subsectionName = parts[parts.length - 2]; 
-        String optionName = parts[parts.length - 1];
-        String sectionName;
-        String parentSectionName = "";
-        if (parts.length > 2) {
-            for (int i = 0; i < parts.length - 2; i++) {
-                if (i > 0) {
-                    parentSectionName += '.';
-                }
-                parentSectionName += parts[i];
-            }
-            initLookupKey(parentSectionName + ".#");
-            sectionName = parentSectionName + '.' + subsectionName;
-        } else {
-            sectionName = subsectionName;
+        public String getSubsectionName() {
+            return subsectionName;
         }
+
+
+        public String getOptionName() {
+            return optionName;
+        }
+
+
+        public String getSectionName() {
+            return sectionName;
+        }
+
+
+        public String getParentSectionName() {
+            return parentSectionName;
+        }
+
+        public Key(String key) {
+            String[] parts = key.split("\\.");
+            subsectionName = parts[parts.length - 2]; 
+            optionName = parts[parts.length - 1];
+            parentSectionName = "";
+            if (parts.length > 2) {
+                for (int i = 0; i < parts.length - 2; i++) {
+                    if (i > 0) {
+                        parentSectionName += '.';
+                    }
+                    parentSectionName += parts[i];
+                }
+                initLookupKey(parentSectionName + ".#");
+                sectionName = parentSectionName + '.' + subsectionName;
+            } else {
+                sectionName = subsectionName;
+            }
+        }
+    }
+    
+    private void initLookupKey(String key) {
+        Key k = new Key(key);
         
-        HashSet<String> psn = sectionNames.get(parentSectionName);
-        psn.add(subsectionName);
+        HashSet<String> psn = sectionNames.get(k.getParentSectionName());
+        psn.add(k.getSubsectionName());
         
-        HashSet<String> sn = sectionNames.get(sectionName);
+        HashSet<String> sn = sectionNames.get(k.getSectionName());
         if (sn == null) {
             sn = new HashSet<String>();
-            sectionNames.put(sectionName, sn);
+            sectionNames.put(k.getSectionName(), sn);
         }
         
-        if (!"#".equals(optionName)) {
-            HashSet<String> on = optionNames.get(sectionName);
+        if (!"#".equals(k.getOptionName())) {
+            HashSet<String> on = optionNames.get(k.getSectionName());
             if (on == null) {
                 on = new HashSet<String>();
-                optionNames.put(sectionName, on);
+                optionNames.put(k.getSectionName(), on);
             }
-            on.add(optionName);
+            on.add(k.getOptionName());
         }
     }
     
