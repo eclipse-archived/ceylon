@@ -113,7 +113,7 @@ void testSets() {
     assert(s2|s1 == LazySet(1,2,3,4,5,"a"), "LazySet.union");
     assert(s2&s3 == LazySet("a", 5), "LazySet.intersection");
     assert(s2^s3 == LazySet(3,4,"b","c"), "LazySet.exclusiveUnion");
-    assert(s2~s3 == LazySet("b", "c"), "LazySet.complement");
+    assert(s2~s3 == LazySet(3, 4), "LazySet.complement");
     assert(s2.superset(s4), "LazySet.superset 1");
     assert(s3.superset(s4), "LazySet.superset 2");
     assert(s2.subset(LazySet("a","b","c",3,4,5,"d","e",1,2,3)), "LazySet.subset");
