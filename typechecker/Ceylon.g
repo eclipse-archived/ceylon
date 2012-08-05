@@ -2819,7 +2819,7 @@ impliedVariable returns [Variable variable]
 
 fragment
 Digits
-    : Digit ('_' | Digit)+
+    : Digit ('_' | Digit)*
     ;
 
 fragment 
