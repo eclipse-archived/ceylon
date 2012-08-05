@@ -152,4 +152,23 @@ class Primaries() {
     
     String angstroms = "\{00E5}ngstr\{00F6}ms";
     
+    value i1 = 1_123;
+    @error value i2 = 1_12;
+    @error value i3 = 1_1234;
+    @error value i4 = 1_1234_123;
+    @error value i5 = 1_123_1234;
+    value i6 = 1_123_123;
+    
+    value f1 = 1_123.0;
+    @error value f2 = 1_12.0;
+    @error value f3 = 1_1234.0;
+    @error value f4 = 1_123_1234.0;
+    @error value f5 = 1_1234_123.0;
+    value f6 = 1_123_123.0;
+    value f7 = 1.123_1;
+    @error value f8 = 1.12_1;
+    @error value f9 = 1.1234_1;
+    @error value f10 = 1.123_1234;
+    value f11 = 1.123_123;
+    
 }

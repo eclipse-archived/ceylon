@@ -2751,12 +2751,12 @@ impliedVariable returns [Variable variable]
 
 fragment
 Digits
-    : Digit+ ('_' Digit+)*
+    : Digit ('_' | Digit)+
     ;
 
 fragment 
 Exponent    
-    : ( 'e' | 'E' ) ( '+' | '-' )? Digit+ 
+    : ( 'e' | 'E' ) ( '+' | '-' )? Digit*
     ;
 
 fragment
