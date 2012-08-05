@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ConfigWriter {
 
@@ -146,5 +148,118 @@ public class ConfigWriter {
 
     public static void write(CeylonConfig config, OutputStream out) throws IOException {
         // TODO
+    }
+}
+
+interface ImprovedConfigReaderListener extends ConfigReaderListener {
+    public void onSectionEnd(String section) throws IOException;
+}
+
+// This adapter class improves on the standard ConfigReaderListener interface
+// by adding an onSectionEnd() event which will be triggered at the end of
+// each configuration section. It tries to be smart about this by considering
+// whitespace and comments on the last option line to be still part of the
+// last section while considering all whitespace and comments before a section
+// line to be part of the new section
+class ImprovedConfigReaderListenerAdapter implements ConfigReaderListener {
+    private ImprovedConfigReaderListener listener;
+    
+    private String currentSection;
+    private boolean skipToNewline;
+    private ArrayList<Text> buffer;
+    
+    interface Text {
+        String getText();
+    }
+    
+    class Comment implements Text {
+        private String text;
+        public Comment(String text) {
+            this.text = text;
+        }
+        @Override
+        public String getText() {
+            return text;
+        }
+    }
+    
+    class Whitespace implements Text {
+        private String text;
+        public Whitespace(String text) {
+            this.text = text;
+        }
+        @Override
+        public String getText() {
+            return text;
+        }
+    }
+    
+    public ImprovedConfigReaderListenerAdapter(ImprovedConfigReaderListener listener) {
+        this.listener = listener;
+        this.currentSection = null;
+        this.skipToNewline = false;
+        this.buffer = new ArrayList<Text>();
+    }
+
+    @Override
+    public void setup() throws IOException {
+        // Ignoring setup
+    }
+
+    @Override
+    public void onSection(String section, String text) throws IOException {
+        if (currentSection != null) {
+            listener.onSectionEnd(currentSection);
+        }
+        flushBuffer();
+        currentSection = section;
+        listener.onSection(section, text);
+        skipToNewline = true;
+    }
+
+    @Override
+    public void onOption(String name, String value, String text) throws IOException {
+        flushBuffer();
+        listener.onOption(name, value, text);
+        skipToNewline = true;
+    }
+
+    @Override
+    public void onComment(String text) throws IOException {
+        if (skipToNewline) {
+            listener.onComment(text);
+            skipToNewline = !text.contains("\n");
+        } else {
+            buffer.add(new Comment(text));
+        }
+    }
+
+    @Override
+    public void onWhitespace(String text) throws IOException {
+        if (skipToNewline) {
+            listener.onWhitespace(text);
+            skipToNewline = !text.contains("\n");
+        } else {
+            buffer.add(new Whitespace(text));
+        }
+    }
+
+    @Override
+    public void cleanup() throws IOException {
+        if (currentSection != null) {
+            listener.onSectionEnd(currentSection);
+        }
+        flushBuffer();
+    }
+    
+    private void flushBuffer() throws IOException {
+        for (Text t : buffer) {
+            if (t instanceof Comment) {
+                listener.onComment(t.getText());
+            } else if (t instanceof Whitespace) {
+                listener.onWhitespace(t.getText());
+            }
+        }
+        buffer.clear();
     }
 }
