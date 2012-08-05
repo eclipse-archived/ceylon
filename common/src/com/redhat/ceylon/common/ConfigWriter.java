@@ -98,24 +98,38 @@ public class ConfigWriter {
         }
     }
 
-    public static void write(final CeylonConfig config, InputStream in, OutputStream out) throws IOException {
+    public static void write(CeylonConfig orgconfig, InputStream in, OutputStream out) throws IOException {
+        final CeylonConfig config = orgconfig.copy();
         final Writer writer = new BufferedWriter(new OutputStreamWriter(out, Charset.forName("UTF-8")));
-        ConfigReader reader = new ConfigReader(in, new ConfigReaderListener() {
-            boolean skipToNewline = false;
+        ConfigReader reader = new ConfigReader(in, new ImprovedConfigReaderListenerAdapter(new ImprovedConfigReaderListener() {
+            private boolean skipToNewline = false;
+
+            @Override
+            public void setup() throws IOException {
+                // Ignoring setup
+            }
             
             @Override
             public void onSection(String section, String text) throws IOException {
                 if (config.isSectionDefined(section)) {
                     writer.write(text);
+                    skipToNewline = false;
                 } else {
                     skipToNewline = true;
                 }
             }
 
             @Override
+            public void onSectionEnd(String section) throws IOException {
+                writeOptions(writer, config, section);
+            }
+
+            @Override
             public void onOption(String name, String value, String text) throws IOException {
                 if (config.isOptionDefined(name)) {
                     writer.write(text);
+                    removeOptionValue(name);
+                    skipToNewline = false;
                 } else {
                     skipToNewline = true;
                 }
@@ -123,23 +137,38 @@ public class ConfigWriter {
 
             @Override
             public void onComment(String text) throws IOException {
-                if (!skipToNewline) {
-                    writer.write(text);
-                } else {
+                if (skipToNewline) {
                     skipToNewline = !text.contains("\n");
+                } else {
+                    writer.write(text);
                 }
             }
 
             @Override
             public void onWhitespace(String text) throws IOException {
-                if (!skipToNewline) {
-                    writer.write(text);
-                } else {
+                if (skipToNewline) {
                     skipToNewline = !text.contains("\n");
+                } else {
+                    writer.write(text);
+                }
+            }
+
+            @Override
+            public void cleanup() throws IOException {
+                // Ignoring cleanup
+            }
+
+            private void removeOptionValue(String name) {
+                String[] values = config.getOptionValues(name);
+                if (values.length > 1) {
+                    values = Arrays.copyOfRange(values, 1, values.length);
+                    config.setOptionValues(name, values);
+                } else {
+                    config.removeOption(name);
                 }
             }
             
-        });
+        }));
         reader.process();
         writer.flush();
         // Now write what's left of the configuration to the output
