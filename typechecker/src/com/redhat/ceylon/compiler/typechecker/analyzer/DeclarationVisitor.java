@@ -1020,4 +1020,33 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         scope = s;
     }
+    
+	static final String digits = "\\d+";
+	static final String groups = "\\d{1,3}(_\\d{3})+";
+	static final String fractionalGroups = "(\\d{3}_)+\\d{1,3}";
+	static final String magnitude = "k|M|G|T|P";
+	static final String fractionalMagnitude = "m|u|n|p|f";
+	static final String exponent = "(e|E)(\\+|-)?" + digits;
+
+	@Override
+    public void visit(Tree.NaturalLiteral that) {
+        super.visit(that);
+    	String text = that.getToken().getText();
+		if (!text.matches("^(" + digits + "|" + groups + ")(" + magnitude + ")?$")) {
+    		that.addError("illegal integer literal format");
+    	}    	
+    }
+    
+    @Override
+    public void visit(Tree.FloatLiteral that) {
+        super.visit(that);
+    	String text = that.getToken().getText();
+		if (!text.matches("^(" + digits + "|" + groups + ")(\\.(" + 
+				digits + "|" + fractionalGroups  + ")(" + 
+				magnitude + "|" + fractionalMagnitude + "|" + exponent + ")?|" +
+				fractionalMagnitude + ")$")) {
+    		that.addError("illegal integer literal format");
+    	}
+    }
+    
 }
