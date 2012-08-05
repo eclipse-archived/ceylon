@@ -1,6 +1,10 @@
 doc "A collection of unique elements.
 
-     A `Set` is a `Collection` of its elements."
+     A `Set` is a `Collection` of its elements.
+     
+     Sets may be the subject of the binary union, 
+     intersection, exclusive union, and complement operators 
+     `|`, `&`, `^`, and `~`."
 shared interface Set<out Element>
         satisfies Collection<Element> &
                   Cloneable<Set<Element>>
@@ -81,7 +85,7 @@ shared interface Set<out Element>
             given Other satisfies Object;
 
     doc "Returns a new `Set` containing all the elements in 
-         the given `Set` that are not contained in this 
+         this `Set` that are not contained in the given
          `Set`."
     shared formal Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object;
