@@ -31,6 +31,8 @@ public class ConfigReader {
             counterdr = new LineNumberReader(new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8"))));
             reader = new MemoPushbackReader(counterdr);
 
+            listener.setup();
+            
             Token tok;
             skipWhitespace(true);
             flushWhitespace();
@@ -60,6 +62,8 @@ public class ConfigReader {
                 skipWhitespace(true);
                 flushWhitespace();
             }
+            
+            listener.cleanup();
         } finally {
             if (reader != null) {
                 reader.close();
@@ -151,6 +155,7 @@ public class ConfigReader {
                 reader.unread(c);
                 break;
             } else if (isCommentChar(c) && !hasQuote) {
+                reader.unread(c);
                 break;
             } else if (c == '\\') {
                 int c2 = reader.read();
