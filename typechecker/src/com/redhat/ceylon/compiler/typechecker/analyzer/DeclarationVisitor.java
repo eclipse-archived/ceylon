@@ -1045,7 +1045,7 @@ public class DeclarationVisitor extends Visitor {
 				digits + "|" + fractionalGroups  + ")(" + 
 				magnitude + "|" + fractionalMagnitude + "|" + exponent + ")?|" +
 				fractionalMagnitude + ")$")) {
-    		that.addError("illegal integer literal format");
+    		that.addError("illegal floating literal format");
     	}
     }
     
