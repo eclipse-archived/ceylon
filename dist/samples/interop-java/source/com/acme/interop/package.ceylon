@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- Package package {
-    name = 'com.acme.interop';
-    shared = true;
-    doc = "The classic Hello World example with Java interop";
-}
+doc "The classic Hello World example with Java interop"
+shared
+package com.acme.interop;

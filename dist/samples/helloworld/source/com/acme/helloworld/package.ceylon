@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- Package package {
-    name = 'com.acme.helloworld';
-    shared = true;
-    doc = "The classic Hello World example";
-}
+doc "The classic Hello World example"
+shared
+package com.acme.helloworld;

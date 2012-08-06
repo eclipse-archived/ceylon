@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-Module module {
- name = 'com.acme.interop';
- version = '1.0.0';
- by = {"Stef Epardaud"};
- dependencies = {};
- doc = "The classic Hello World module with Java interop";
- license = 'Public domain';
-}
+doc "The classic Hello World module with Java interop"
+by "Stef Epardaud"
+license "Public domain"
+module com.acme.interop '1.0.0' {}

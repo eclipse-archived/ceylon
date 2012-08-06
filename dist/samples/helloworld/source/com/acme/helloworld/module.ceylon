@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-Module module {
- name = 'com.acme.helloworld';
- version = '1.0.0';
- by = {"Stef Epardaud"};
- dependencies = {};
- doc = "The classic Hello World module";
- license = 'Public domain';
-}
+doc "The classic Hello World module"
+by "Stef Epardaud"
+license "Public domain"
+module com.acme.helloworld '1.0.0' {}
