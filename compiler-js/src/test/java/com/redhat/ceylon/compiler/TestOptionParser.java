@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,7 @@ public class TestOptionParser {
         Assert.assertTrue(args.contains("f2.ceylon"));
         Assert.assertTrue(o.getRepos().isEmpty());
         Assert.assertEquals("modules", o.getOutDir());
-        Assert.assertEquals("source", o.getSrcDir());
+        Assert.assertEquals("source", o.getSrcDirs().get(0));
     }
 
     @Test
@@ -37,7 +38,7 @@ public class TestOptionParser {
         Assert.assertFalse(o.getRepos().contains("modules"));
         Assert.assertEquals("username", o.getUser());
         Assert.assertEquals("passwd", o.getPass());
-        Assert.assertEquals("/tmp", o.getSrcDir());
+        Assert.assertEquals("/tmp", o.getSrcDirs().get(0));
         Assert.assertEquals("/tmp", o.getOutDir());
     }
 
@@ -53,4 +54,15 @@ public class TestOptionParser {
         Assert.assertTrue(repos.contains("r3"));
     }
 
+    @Test
+    public void testSourceDirs() {
+        ArrayList<String> args = new ArrayList<String>(Arrays.asList("-src", "/a", "-src", "/b",
+                "-src", "/c" + File.pathSeparator + "/d"));
+        Options o = Options.parse(args);
+        Assert.assertEquals(4, o.getSrcDirs().size());
+        Assert.assertEquals("/a", o.getSrcDirs().get(0));
+        Assert.assertEquals("/b", o.getSrcDirs().get(1));
+        Assert.assertEquals("/c", o.getSrcDirs().get(2));
+        Assert.assertEquals("/d", o.getSrcDirs().get(3));
+    }
 }
