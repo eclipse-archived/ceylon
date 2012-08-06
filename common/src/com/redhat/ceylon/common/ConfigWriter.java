@@ -127,13 +127,14 @@ public class ConfigWriter {
             @Override
             public void onOption(String name, String value, String text) throws IOException {
                 if (config.isOptionDefined(name)) {
-                    String existingValue = config.getOptionValues(name)[0];
-                    if (value.equals(existingValue)) {
+                    String[] newValues = config.getOptionValues(name);
+                    if (value.equals(newValues[0])) {
                         // The value hasn't changed, we'll write the option *exactly* as it was
                         writer.write(text);
                     } else {
                         // The value has changed, we will write a new option
-                        writeOptionValue(writer, name, value);
+                        CeylonConfig.Key k = new CeylonConfig.Key(name);
+                        writeOptionValue(writer, k.getOptionName(), newValues[0]);
                     }
                     removeOptionValue(name);
                     skipToNewline = false;
@@ -180,6 +181,7 @@ public class ConfigWriter {
         writer.flush();
         // Now write what's left of the configuration to the output
         writeSections(writer, config, out);
+        writer.flush();
     }
 
     public static void write(CeylonConfig orgconfig, OutputStream out) throws IOException {
@@ -199,23 +201,35 @@ public class ConfigWriter {
                 writer.write("]");
                 writer.write(System.lineSeparator());
                 writeOptions(writer, config, section);
+                writer.write(System.lineSeparator());
             }
         }
     }
 
     protected static void writeOptions(Writer writer, CeylonConfig config, String section) throws IOException {
         String[] names = config.getOptionNames(section);
-        for (String name : names) {
-            writeOption(writer, config, name);
-            config.removeOption(name);
+        if (names != null) {
+            for (int i=0; i < names.length; i++) {
+                String name = names[i];
+                writeOption(writer, config, section, name);
+                config.removeOption(section + "." + name);
+                if (i < (names.length - 1)) {
+                    writer.write(System.lineSeparator());
+                }
+            }
         }
     }
     
-    protected static void writeOption(Writer writer, CeylonConfig config, String name) throws IOException {
-        String[] values = config.getOptionValues(name);
-        for (String value : values) {
-            writeOptionValue(writer, name, value);
-            writer.write(System.lineSeparator());
+    protected static void writeOption(Writer writer, CeylonConfig config, String section, String name) throws IOException {
+        String[] values = config.getOptionValues(section + "." + name);
+        if (values != null) {
+            for (int i=0; i < values.length; i++) {
+                String value = values[i];
+                writeOptionValue(writer, name, value);
+                if (i < (values.length - 1)) {
+                    writer.write(System.lineSeparator());
+                }
+            }
         }
     }
 
