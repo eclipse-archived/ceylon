@@ -28,6 +28,7 @@ JAVA_CP="$CEYLON_REPO/com/redhat/ceylon/compiler/java/$CEYLON_VERSION/com.redhat
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com.redhat.ceylon.typechecker-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/module-resolver/$CEYLON_VERSION/com.redhat.ceylon.module-resolver-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/ant/$CEYLON_VERSION/com.redhat.ceylon.ant-$CEYLON_VERSION.jar"
+JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/common/$CEYLON_VERSION/com.redhat.ceylon.common-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/antlr-3.4-complete.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/sardine-314.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/slf4j-api-1.6.1.jar"
