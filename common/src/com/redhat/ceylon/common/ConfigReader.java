@@ -91,18 +91,16 @@ public class ConfigReader {
     private void handleOption() throws IOException {
         String option = readName(false);
         String optName = section + "." + option;
-        String value;
         skipWhitespace(false);
         Token tok = peekToken();
         if (tok == Token.assign) {
             expect('=');
-            value = readValue();
+            handleOptionValue(optName);
         } else if (tok == Token.error) {
             throw new InvalidPropertiesFormatException("Unexpected token in configuration file at line " + (counterdr.getLineNumber() + 1));
         } else {
-            value = "true";
+            listener.onOption(optName, "true", reader.getAndClearMemo());
         }
-        listener.onOption(optName, value, reader.getAndClearMemo());
     }
 
     private String readName(boolean forSection) throws IOException {
@@ -142,7 +140,7 @@ public class ConfigReader {
         return str.toString();
     }
 
-    private String readValue() throws IOException {
+    private void handleOptionValue(String optName) throws IOException {
         StringBuilder str = new StringBuilder();
         skipWhitespace(false);
         boolean hasQuote = gobble('\"');
@@ -176,12 +174,31 @@ public class ConfigReader {
             }
             str.append((char)c);
         }
+        String res = str.toString();
         if (hasQuote) {
             expect('\"');
-            return str.toString();
+            listener.onOption(optName, res, reader.getAndClearMemo());
         } else {
-            return str.toString().trim();
+            String memo = reader.getAndClearMemo();
+            // Is there still some whitespace?
+            String ws = rightTrimmings(res);
+            if (!ws.isEmpty()) {
+                listener.onOption(optName, res.trim(), memo.trim());
+                listener.onWhitespace(ws);
+            } else {
+                listener.onOption(optName, res.trim(), memo);
+            }
         }
+    }
+
+    private String rightTrimmings(String txt) {
+        int st = txt.length();
+        char[] val = txt.toCharArray();
+
+        while ((st > 0) && (val[st - 1] <= ' ')) {
+            st--;
+        }
+        return (st > 0) ? txt.substring(st) : txt;
     }
 
     private void expect(int expected) throws IOException {
