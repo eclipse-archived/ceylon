@@ -5,7 +5,7 @@
 <project name="project" default="default">
 	
 	<property name="ceylon.home" value="../.."/>
-	<property name="ceylon.ant.lib" value="${ceylon.home}/repo/com/redhat/ceylon/ant/0.3.1/com.redhat.ceylon.ant-0.3.1.jar"/>
+	<property name="ceylon.ant.lib" value="${ceylon.home}/repo/com/redhat/ceylon/ant/0.4/com.redhat.ceylon.ant-0.4.jar"/>
 	
 	<target name="ceylon-ant-taskdefs">
 	  <path id="ant-tasks">
