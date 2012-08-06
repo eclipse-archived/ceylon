@@ -50,7 +50,6 @@ public class Repositories {
         private final String name;
         private final String url;
         private final Credentials credentials;
-        private final Proxies.Proxy proxy;
         
         public String getName() {
             return name;
@@ -76,15 +75,10 @@ public class Repositories {
             return credentials;
         }
 
-        public Proxies.Proxy getProxy() {
-            return proxy;
-        }
-
-        public Repository(String name, String url, Credentials credentials, Proxies.Proxy proxy) {
+        public Repository(String name, String url, Credentials credentials) {
             this.name = name;
             this.url = url;
             this.credentials = credentials;
-            this.proxy = proxy;
         }
     }
     
@@ -109,32 +103,31 @@ public class Repositories {
             String keystore = config.getOption(repoKey(repoName, ITEM_PASSWORD_KS));
             String prompt = CommonMessages.msg("repository.password.prompt", user, url);
             Credentials credentials = Credentials.create(user, password, keystore, alias, prompt);
-            Proxies.Proxy proxy = Proxies.get().getProxy();
-            return new Repository(repoName, url, credentials, proxy);
+            return new Repository(repoName, url, credentials);
         } else {
             if (REPO_NAME_INSTALL.equals(repoName)) {
                 File installDir = CeylonConfig.getInstallDir();
                 if (installDir != null) {
                     // $INSTALLDIR/repo
                     File dir = new File(installDir, "repo");
-                    return new Repository(REPO_NAME_INSTALL, dir.getAbsolutePath(), null, null);
+                    return new Repository(REPO_NAME_INSTALL, dir.getAbsolutePath(), null);
                 }
             } else if (REPO_NAME_LOCAL.equals(repoName)) {
                 // ./modules
                 File dir = new File(".", "modules");
-                return new Repository(REPO_NAME_LOCAL, dir.getPath(), null, null);
+                return new Repository(REPO_NAME_LOCAL, dir.getPath(), null);
             } else if (REPO_NAME_CACHE.equals(repoName)) {
                 // $HOME/.ceylon/cache
                 File dir = getCacheRepoDir();
-                return new Repository(REPO_NAME_CACHE, dir.getAbsolutePath(), null, null);
+                return new Repository(REPO_NAME_CACHE, dir.getAbsolutePath(), null);
             } else if (REPO_NAME_USER.equals(repoName)) {
                 // $HOME/.ceylon/repo
                 File userRepoDir = getUserRepoDir();
-                return new Repository(REPO_NAME_USER, userRepoDir.getAbsolutePath(), null, null);
+                return new Repository(REPO_NAME_USER, userRepoDir.getAbsolutePath(), null);
             } else if (REPO_NAME_REMOTE.equals(repoName)) {
                 // http://modules.ceylon-lang.org
                 Proxies.Proxy proxy = Proxies.get().getProxy();
-                return new Repository(REPO_NAME_REMOTE, REPO_URL_CEYLON, null, proxy);
+                return new Repository(REPO_NAME_REMOTE, REPO_URL_CEYLON, null);
             }
             return null;
         }
@@ -156,7 +149,7 @@ public class Repositories {
                     repo = getRepository(name);
                 } else {
                     String name = "%" + repoType + "-" + (i + 1);
-                    repo = new Repository(name, url, null, Proxies.get().getProxy());
+                    repo = new Repository(name, url, null);
                 }
                 if (repo != null) {
                     repos.add(repo);
