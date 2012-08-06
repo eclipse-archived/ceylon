@@ -201,7 +201,6 @@ public class ConfigWriter {
                 writer.write("]");
                 writer.write(System.lineSeparator());
                 writeOptions(writer, config, section);
-                writer.write(System.lineSeparator());
             }
         }
     }
@@ -213,9 +212,7 @@ public class ConfigWriter {
                 String name = names[i];
                 writeOption(writer, config, section, name);
                 config.removeOption(section + "." + name);
-                if (i < (names.length - 1)) {
-                    writer.write(System.lineSeparator());
-                }
+                writer.write(System.lineSeparator());
             }
         }
     }
