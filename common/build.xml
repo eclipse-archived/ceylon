@@ -43,6 +43,11 @@
                 classpathref="classpath">
             <include name="**/*.java"/>
         </javac>
+    	<copy todir="${build.classes}">
+    		<fileset dir="${src}">
+    			<include name="**/*.properties"/>
+    		</fileset>
+        </copy>
     </target>
 
     <!-- constant to declare a file binary for checksumsum -->
