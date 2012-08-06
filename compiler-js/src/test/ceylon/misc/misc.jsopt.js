@@ -1,5 +1,5 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl1=require('ceylon/language/0.3.1/ceylon.language');
+var $$$cl1=require('ceylon/language/0.4/ceylon.language');
 
 //InterfaceDefinition X at misc.ceylon (1:0-5:0)
 function X($$x){
@@ -195,7 +195,7 @@ function $var(){
     return $$$cl1.Integer(5);
 }
 exports.$var=$var;
-var $$$cl1=require('ceylon/language/0.3.1/ceylon.language');
+var $$$cl1=require('ceylon/language/0.4/ceylon.language');
 var $$$a12=require('default/assert');
 
 //ClassDefinition TestObjects at objects.ceylon (3:0-17:0)
@@ -324,7 +324,7 @@ function test_objects(){
     }
     
 }
-var $$$cl1=require('ceylon/language/0.3.1/ceylon.language');
+var $$$cl1=require('ceylon/language/0.4/ceylon.language');
 var $$$m322=require('default/members');
 
 //MethodDefinition test at testit.ceylon (3:0-39:0)

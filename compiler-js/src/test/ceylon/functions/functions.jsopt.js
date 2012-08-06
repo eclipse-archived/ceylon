@@ -1,5 +1,5 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl1=require('ceylon/language/0.3.1/ceylon.language');
+var $$$cl1=require('ceylon/language/0.4/ceylon.language');
 var $$$a12=require('default/assert');
 
 //MethodDefinition find at anonymous.ceylon (3:0-10:0)
@@ -109,7 +109,7 @@ function testAnonymous(){
     }
     
 }
-var $$$cl1=require('ceylon/language/0.3.1/ceylon.language');
+var $$$cl1=require('ceylon/language/0.4/ceylon.language');
 var $$$a12=require('default/assert');
 
 //MethodDefinition helloWorld at functions.ceylon (3:0-5:0)
@@ -458,7 +458,7 @@ function test(){
     $$$a12.results();
 }
 exports.test=test;
-var $$$cl1=require('ceylon/language/0.3.1/ceylon.language');
+var $$$cl1=require('ceylon/language/0.4/ceylon.language');
 var $$$a12=require('default/assert');
 
 //MethodDefinition multiCompare at multiples.ceylon (3:0-5:0)

@@ -1,5 +1,5 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl1=require('ceylon/language/0.3.1/ceylon.language');
+var $$$cl1=require('ceylon/language/0.4/ceylon.language');
 var $$$a12=require('default/assert');
 
 //AttributeDeclaration firstName at attributes.ceylon (3:0-3:26)
