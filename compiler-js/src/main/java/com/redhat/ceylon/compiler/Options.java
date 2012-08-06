@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Options {
     private List<String> repos = new ArrayList<String>();
     private String user;
     private String pass;
-    private String srcDir = "source";
+    private List<String> srcDirs = new ArrayList<String>();
     private String outDir = "modules";
     private boolean optimize;
     private boolean modulify = true;
@@ -62,7 +63,13 @@ public class Options {
                     } else if ("-pass".equals(s)) {
                         opts.pass=v;
                     } else if ("-src".equals(s)) {
-                        opts.srcDir=v;
+                        //Split the value
+                        int pos;
+                        while ((pos = v.indexOf(File.pathSeparator)) >= 0) {
+                            opts.srcDirs.add(v.substring(0, pos));
+                            v = v.substring(pos+File.pathSeparator.length());
+                        }
+                        opts.srcDirs.add(v);
                     } else if ("-out".equals(s)) {
                         opts.outDir=v;
                     } else {
@@ -70,6 +77,9 @@ public class Options {
                     }
                 }
             }
+        }
+        if (opts.srcDirs.isEmpty()) {
+            opts.srcDirs.add("source");
         }
         return opts;
     }
@@ -146,8 +156,9 @@ public class Options {
     public String getPass() {
         return pass;
     }
-    public String getSrcDir() {
-        return srcDir;
+    /** Returns a list of the source directories. By default it's just one, "source". */
+    public List<String> getSrcDirs() {
+        return srcDirs;
     }
     public String getOutDir() {
         return outDir;
