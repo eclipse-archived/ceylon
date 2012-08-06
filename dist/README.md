@@ -1,6 +1,6 @@
 # Ceylon distribution
 
-This is the Milestone 3 "V2000" release of the Ceylon command line tools (version 
+This is the Milestone 4 "Ratatouille" release of the Ceylon command line tools (version 
 0.4). This is a pre-release version of the platform for review by the community.
 
 Ceylon is a programming language for writing large programs in a team environment. 
