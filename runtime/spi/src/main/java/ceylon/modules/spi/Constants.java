@@ -35,7 +35,7 @@ public enum Constants {
     CEYLON_RUNTIME_MODULE("ceylon.runtime"),
     MERGE_STRATEGY("com.redhat.ceylon.cmr.spi.MergeStrategy"),
     CONTENT_TRANSFORMER("com.redhat.ceylon.cmr.spi.ContentTransformer"),
-    CEYLON_VERSION("0.4 'V2000'");
+    CEYLON_VERSION("0.4 'Ratatouille'");
 
     private String value;
 
