@@ -267,8 +267,17 @@ public class ConfigReader {
     
     private void flushWhitespace() throws IOException {
         String ws = reader.getAndClearMemo();
-        if (!ws.isEmpty()) {
-            listener.onWhitespace(ws);
+        while (!ws.isEmpty()) {
+            String txt;
+            int p = ws.indexOf('\n');
+            if (p >= 0) {
+                txt = ws.substring(0, p + 1);
+                ws = ws.substring(p + 1);
+            } else {
+                txt = ws;
+                ws = "";
+            }
+            listener.onWhitespace(txt);
         }
     }
     
