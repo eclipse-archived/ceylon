@@ -30,7 +30,7 @@
     </organization>
 
     <properties>
-        <version.com.redhat.ceylon.language>0.3.1</version.com.redhat.ceylon.language>
+        <version.com.redhat.ceylon.language>0.4</version.com.redhat.ceylon.language>
         <version.com.redhat.ceylon.cmr>1.0.0-SNAPSHOT</version.com.redhat.ceylon.cmr>
         <version.org.jboss.modules>1.1.1.GA</version.org.jboss.modules>
         <version.org.jboss.shrinkwrap>1.0.0-cr-1</version.org.jboss.shrinkwrap>

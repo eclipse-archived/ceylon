@@ -7,14 +7,14 @@ dist/target/
 dist/lib/
 dist/bin/jboss-modules.jar
 dist/bin/ceylon-runtime-bootstrap.jar
-dist/runtime-repo/ceylon/language/0.3.1/ceylon.language-0.3.1.car
+dist/runtime-repo/ceylon/language/0.4/ceylon.language-0.4.car
 dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-spi.jar
 dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-api.jar
 dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-impl.jar
 dist/runtime-repo/ceylon/runtime/main/ceylon.modules.spi.jar
 dist/runtime-repo/ceylon/runtime/main/ceylon.modules.api.jar
 dist/runtime-repo/ceylon/runtime/main/ceylon.modules.jboss.jar
-dist/runtime-repo/ceylon/language/0.3.1/ceylon.language-0.3.1.car.index
+dist/runtime-repo/ceylon/language/0.4/ceylon.language-0.4.car.index
 dist/runtime-repo/ceylon/runtime/main/ceylon.modules.api.jar.index
 dist/runtime-repo/ceylon/runtime/main/ceylon.modules.jboss.jar.index
 dist/runtime-repo/ceylon/runtime/main/ceylon.modules.spi.jar.index
