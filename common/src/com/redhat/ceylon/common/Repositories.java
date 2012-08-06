@@ -21,6 +21,8 @@ public class Repositories {
     private static final String REPO_NAME_REMOTE = "REMOTE";
     
     private static final String ITEM_PASSWORD = "password";
+    private static final String ITEM_PASSWORD_KS = "password-keystore";
+    private static final String ITEM_PASSWORD_KS_ALIAS = "password-alias";
     private static final String ITEM_USER = "user";
     private static final String ITEM_URL = "url";
     
@@ -44,10 +46,11 @@ public class Repositories {
     }
     
     public static class Repository {
+
         private final String name;
         private final String url;
-        private final String user;
-        private final String password;
+        private final Credentials credentials;
+        private final Proxies.Proxy proxy;
         
         public String getName() {
             return name;
@@ -57,19 +60,31 @@ public class Repositories {
             return url;
         }
         
+        /** Use {@link #getCredentials()} */
+        @Deprecated
         public String getUser() {
-            return user;
+            return credentials != null ? credentials.getUser() : null;
         }
         
+        /** Use {@link #getCredentials()} */
+        @Deprecated
         public String getPassword() {
-            return password;
+            return credentials != null ? credentials.getPassword() : null;
         }
         
-        public Repository(String name, String url, String user, String password) {
+        public Credentials getCredentials() {
+            return credentials;
+        }
+
+        public Proxies.Proxy getProxy() {
+            return proxy;
+        }
+
+        public Repository(String name, String url, Credentials credentials, Proxies.Proxy proxy) {
             this.name = name;
             this.url = url;
-            this.user = user;
-            this.password = password;
+            this.credentials = credentials;
+            this.proxy = proxy;
         }
     }
     
@@ -90,7 +105,12 @@ public class Repositories {
         if (url != null) {
             String user = config.getOption(repoKey(repoName, ITEM_USER));
             String password = config.getOption(repoKey(repoName, ITEM_PASSWORD));
-            return new Repository(repoName, url, user, password);
+            final String alias = config.getOption(repoKey(repoName, ITEM_PASSWORD_KS_ALIAS));
+            String keystore = config.getOption(repoKey(repoName, ITEM_PASSWORD_KS));
+            String prompt = CommonMessages.msg("repository.password.prompt", user, url);
+            Credentials credentials = Credentials.create(user, password, keystore, alias, prompt);
+            Proxies.Proxy proxy = Proxies.get().getProxy();
+            return new Repository(repoName, url, credentials, proxy);
         } else {
             if (REPO_NAME_INSTALL.equals(repoName)) {
                 File installDir = CeylonConfig.getInstallDir();
@@ -113,7 +133,8 @@ public class Repositories {
                 return new Repository(REPO_NAME_USER, userRepoDir.getAbsolutePath(), null, null);
             } else if (REPO_NAME_REMOTE.equals(repoName)) {
                 // http://modules.ceylon-lang.org
-                return new Repository(REPO_NAME_REMOTE, REPO_URL_CEYLON, null, null);
+                Proxies.Proxy proxy = Proxies.get().getProxy();
+                return new Repository(REPO_NAME_REMOTE, REPO_URL_CEYLON, null, proxy);
             }
             return null;
         }
@@ -135,7 +156,7 @@ public class Repositories {
                     repo = getRepository(name);
                 } else {
                     String name = "%" + repoType + "-" + (i + 1);
-                    repo = new Repository(name, url, null, null);
+                    repo = new Repository(name, url, null, Proxies.get().getProxy());
                 }
                 if (repo != null) {
                     repos.add(repo);
