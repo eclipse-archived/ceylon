@@ -14,8 +14,17 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Serializes {@link CeylonConfig} instances to streams and files.
+ * 
+ * All serialization uses the UTF-8 character encoding.
+ */
 public class ConfigWriter {
 
+    /**
+     * Reads config from the given source file, updating it using the given 
+     * configuration and writing in to the destination file. 
+     */
     public static void write(CeylonConfig config, File source, File destination) throws IOException {
         boolean overwriteSource = destination.getCanonicalFile().equals(source.getCanonicalFile());
         if (source.isFile()) {
@@ -52,6 +61,10 @@ public class ConfigWriter {
         }
     }
 
+    /**
+     * Reads config from the given source file, updating it using the given 
+     * configuration and writing in to the given output.
+     */
     public static void write(CeylonConfig config, File source, OutputStream out) throws IOException {
         if (source.isFile()) {
             InputStream in = null;
@@ -84,6 +97,9 @@ public class ConfigWriter {
         }
     }
 
+    /**
+     * Write the given configuration to the given file.
+     */
     public static void write(CeylonConfig config, File destination) throws IOException {
         OutputStream out = null;
         try {
@@ -98,6 +114,10 @@ public class ConfigWriter {
         }
     }
 
+    /**
+     * Reads config from the given input, updating it using the given 
+     * configuration and writing in to the given output.
+     */
     public static void write(CeylonConfig orgconfig, InputStream in, OutputStream out) throws IOException {
         final CeylonConfig config = orgconfig.copy();
         final Writer writer = new BufferedWriter(new OutputStreamWriter(out, Charset.forName("UTF-8")));
@@ -184,6 +204,9 @@ public class ConfigWriter {
         writer.flush();
     }
 
+    /**
+     * Write the given configuration to the given output stream.
+     */
     public static void write(CeylonConfig orgconfig, OutputStream out) throws IOException {
         final CeylonConfig config = orgconfig.copy();
         final Writer writer = new BufferedWriter(new OutputStreamWriter(out, Charset.forName("UTF-8")));

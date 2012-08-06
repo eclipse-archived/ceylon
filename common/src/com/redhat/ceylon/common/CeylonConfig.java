@@ -273,6 +273,10 @@ public class CeylonConfig {
 
     // Some additional useful configuration options
     
+    /**
+     * The installation directory. As given by the {@code ceylon.user.dir}
+     * system property
+     */
     public static File getInstallDir() {
         String ceylonHome = System.getProperty("ceylon.home");
         if (ceylonHome != null) {
@@ -282,11 +286,18 @@ public class CeylonConfig {
         }
     }
     
+    /**
+     * The default user directory, that is {@code ~/.ceylon}.
+     */
     public static File getDefaultUserDir() {
         String userHome = System.getProperty("user.home");
         return new File(userHome, ".ceylon");
     }
     
+    /**
+     * The effective user directory, checking the {@code ceylon.user.dir}
+     * system property then defaulting to {@link #getDefaultUserDir()}.
+     */
     public static File getUserDir() {
         String ceylonUserDir = System.getProperty("ceylon.user.dir");
         if (ceylonUserDir != null) {
