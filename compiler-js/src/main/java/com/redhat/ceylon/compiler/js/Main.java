@@ -35,6 +35,8 @@ public class Main {
             System.err.println("  -user <value>      User name for output repository (HTTP only)");
             System.err.println("  -pass <value>      Password for output repository (HTTP only)");
             System.err.println("  -src <directory>   Path to source files (default: ./source)");
+            System.err.println("                     Can be specified multiple times; you can also");
+            System.err.println("                     specify several paths separated by '" + File.pathSeparator + "'");
             System.err.println("  -out <url>         Output module repository (default: ./modules)");
             System.err.println("  -version           Version information");
             System.err.println("  -help              Print a synopsis of standard options");
@@ -126,20 +128,28 @@ public class Main {
             TypeCheckerBuilder tcb = new TypeCheckerBuilder()
                 .verbose(opts.isVerbose());
             tcb.setRepositoryManager(repoman);
-            final File root = new File(opts.getSrcDir());
-            final String path = root.getAbsolutePath();
+            final List<File> roots = new ArrayList<File>(opts.getSrcDirs().size());
+            for (String _srcdir : opts.getSrcDirs()) {
+                roots.add(new File(_srcdir));
+            }
             final List<String> modfilters = new ArrayList<String>();
             boolean stop = false;
             for (String filedir : args) {
                 File f = new File(filedir);
+                boolean once=false;
                 if (f.exists() && f.isFile()) {
-                    if (f.getAbsolutePath().startsWith(path)) {
-                        if (opts.isVerbose()) {
-                            System.out.printf("Adding %s to compilation set%n", filedir);
+                    for (File root : roots) {
+                        if (f.getAbsolutePath().startsWith(root.getAbsolutePath())) {
+                            if (opts.isVerbose()) {
+                                System.out.printf("Adding %s to compilation set%n", filedir);
+                            }
+                            onlyFiles.add(filedir);
+                            once=true;
+                            break;
                         }
-                        onlyFiles.add(filedir);
-                    } else {
-                        System.err.printf("%s is not in the current source path: [%s]%n", f.getAbsolutePath(), root);
+                    }
+                    if (!once) {
+                        System.err.printf("%s is not in any source path: %n", f.getAbsolutePath());
                         stop=true;
                         f=null;
                     }
@@ -155,13 +165,19 @@ public class Main {
                 } else {
                     //Parse, may be a module name
                     String[] modpath = filedir.split("\\.");
-                    f = root;
-                    for (String pe : modpath) {
-                        f = new File(f, pe);
-                        if (!(f.exists() && f.isDirectory())) {
-                            System.err.printf("ceylonc-js: Could not find source files for module: %s%n", filedir);
-                            f=null;
-                            break;
+                    f = null;
+                    for (File root : roots) {
+                        File _f = root;
+                        for (String pe : modpath) {
+                            _f = new File(_f, pe);
+                            if (!(_f.exists() && _f.isDirectory())) {
+                                System.err.printf("ceylonc-js: Could not find source files for module: %s%n", filedir);
+                                _f=null;
+                                break;
+                            }
+                        }
+                        if (_f != null) {
+                            f = _f;
                         }
                     }
                     if (f == null) {
@@ -186,22 +202,29 @@ public class Main {
                 }
                 if (f != null) {
                     if ("module.ceylon".equals(f.getName().toLowerCase())) {
-                        String _f = f.getParentFile().getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
-                        modfilters.add(_f);
-                        if (opts.isVerbose()) {
-                            System.out.println("Adding to module filters: " + _f);
-                        }
-                    } else {
-                        File middir = f.getParentFile();
-                        while (!middir.getAbsolutePath().equals(root.getAbsolutePath())) {
-                            if (new File(middir, "module.ceylon").exists()) {
-                                String _f = middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
+                        String _f = f.getParentFile().getAbsolutePath();
+                        for (File root : roots) {
+                            if (root.getAbsolutePath().startsWith(_f)) {
+                                _f = _f.substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
                                 modfilters.add(_f);
                                 if (opts.isVerbose()) {
                                     System.out.println("Adding to module filters: " + _f);
                                 }
                             }
-                            middir = middir.getParentFile();
+                        }
+                    } else {
+                        for (File root : roots) {
+                            File middir = f.getParentFile();
+                            while (middir != null && !middir.getAbsolutePath().equals(root.getAbsolutePath())) {
+                                if (new File(middir, "module.ceylon").exists()) {
+                                    String _f = middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
+                                    modfilters.add(_f);
+                                    if (opts.isVerbose()) {
+                                        System.out.println("Adding to module filters: " + _f);
+                                    }
+                                }
+                                middir = middir.getParentFile();
+                            }
                         }
                     }
                 }
@@ -210,7 +233,9 @@ public class Main {
                 help(false);
                 return;
             }
-            tcb.addSrcDirectory(root);
+            for (File root : roots) {
+                tcb.addSrcDirectory(root);
+            }
             if (!modfilters.isEmpty()) {
                 tcb.setModuleFilters(modfilters);
             }
