@@ -18,7 +18,7 @@ public class ConfigReader {
     private MemoPushbackReader reader;
     private String section;
     
-    private enum Token { section, option, assign, comment, eol, error, eof };
+    private enum Token { section, option, assign, comment, eol, error, eof }
     
     public ConfigReader(InputStream in, ConfigReaderListener listener) {
         this.in = in;
