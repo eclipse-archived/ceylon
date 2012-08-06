@@ -48,7 +48,7 @@ public class CeylonConfig {
         optionNames = new HashMap<String, HashSet<String>>();
     }
     
-    class Key {
+    public static class Key {
         private String subsectionName; 
         private String optionName;
         private String sectionName;
@@ -74,7 +74,13 @@ public class CeylonConfig {
         }
 
         public Key(String key) {
+            if (key == null) {
+                throw new IllegalArgumentException("Illegal key");
+            }
             String[] parts = key.split("\\.");
+            if (parts.length < 2) {
+                throw new IllegalArgumentException("Illegal key");
+            }
             subsectionName = parts[parts.length - 2]; 
             optionName = parts[parts.length - 1];
             parentSectionName = "";
@@ -85,7 +91,6 @@ public class CeylonConfig {
                     }
                     parentSectionName += parts[i];
                 }
-                initLookupKey(parentSectionName + ".#");
                 sectionName = parentSectionName + '.' + subsectionName;
             } else {
                 sectionName = subsectionName;
@@ -95,6 +100,10 @@ public class CeylonConfig {
     
     private void initLookupKey(String key) {
         Key k = new Key(key);
+
+        if (!k.getParentSectionName().isEmpty()) {
+            initLookupKey(k.getParentSectionName() + ".#");
+        }
         
         HashSet<String> psn = sectionNames.get(k.getParentSectionName());
         psn.add(k.getSubsectionName());
