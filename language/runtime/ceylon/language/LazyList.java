@@ -349,11 +349,7 @@ public class LazyList<Element> implements List<Element> {
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeInfo("ceylon.language.List<Element>")
     public List<? extends Element> getReversed() {
-        Iterable<? extends Element> seq = elems.getSequence();
-        if (seq.getEmpty()) {
-            return this;
-        }
-        return ((Sequence<? extends Element>)seq).getReversed();
+        return ((List<? extends Element>)elems.getSequence()).getReversed();
     }
 
     @SuppressWarnings("rawtypes")
