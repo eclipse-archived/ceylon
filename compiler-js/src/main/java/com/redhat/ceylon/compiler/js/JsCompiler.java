@@ -1,23 +1,26 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringWriter;
+import java.io.FileWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -42,7 +45,24 @@ public class JsCompiler {
     protected List<Message> errors = new ArrayList<Message>();
     protected List<Message> unitErrors = new ArrayList<Message>();
     protected List<String> files;
-    private final Map<Module, Writer> output = new HashMap<Module, Writer>();
+    private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
+
+    /** A container for things we need to keep per-module. */
+    private final class JsOutput {
+        private final File f = File.createTempFile("jsout", ".tmp");
+        private final Writer w = new FileWriter(f);
+        private Set<String> s = new HashSet<String>();
+        private JsOutput() throws IOException {}
+        Writer getWriter() { return w; }
+        File close() throws IOException {
+            w.close();
+            return f;
+        }
+        void addSource(String src) {
+            s.add(src);
+        }
+        Set<String> getSources() { return s; }
+    }
 
     private final Visitor unitVisitor = new Visitor() {
         @Override
@@ -142,6 +162,11 @@ public class JsCompiler {
             	// platform-dependent too
             	String path = pathFromVFS.replace('/', File.separatorChar);
                 if (files == null || files.contains(path)) {
+                    JsOutput modsrc = output.get(pu.getPackage().getModule());
+                    if (modsrc == null) {
+                        modsrc = new JsOutput();
+                        output.put(pu.getPackage().getModule(), modsrc);
+                    }
                     String name = pu.getUnitFile().getName();
                     if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
                         compileUnit(pu, names);
@@ -150,7 +175,8 @@ public class JsCompiler {
                             break;
                         }
                     }
-                }else{
+                    modsrc.addSource(pu.getUnit().getFullPath());
+                } else {
                     if (opts.isVerbose()) {
                     	System.err.println("Files does not contain "+path);
                     	for(String p : files)
@@ -167,31 +193,51 @@ public class JsCompiler {
     /** Creates a writer if needed. Right now it's one file per package. */
     protected Writer getWriter(PhasedUnit pu) throws IOException {
         Module mod = pu.getPackage().getModule();
-        Writer writer = output.get(mod);
-        if (writer==null) {
-            writer = new StringWriter();
-            output.put(mod, writer);
+        JsOutput jsout = output.get(mod);
+        if (jsout==null) {
+            jsout = new JsOutput();
+            output.put(mod, jsout);
             if (opts.isModulify()) {
-                beginWrapper(writer);
+                beginWrapper(jsout.getWriter());
             }
         }
-        return writer;
+        return jsout.getWriter();
     }
 
     /** Closes all output writers and puts resulting artifacts in the output repo. */
     protected void finish() throws IOException {
-        for (Map.Entry<Module,Writer> entry: output.entrySet()) {
+        for (Map.Entry<Module,JsOutput> entry: output.entrySet()) {
+            JsOutput jsout = entry.getValue();
             if (opts.isModulify()) {
-                endWrapper(entry.getValue());
+                endWrapper(jsout.getWriter());
             }
-            String out = ((StringWriter)entry.getValue()).getBuffer().toString();
+            //Create the JS file
+            File jsart = entry.getValue().close();
             ArtifactContext artifact = new ArtifactContext(entry.getKey().getNameAsString(), entry.getKey().getVersion());
-            artifact.setFetchSingleArtifact(true);
             artifact.setSuffix(".js");
             if(opts.isVerbose()){
             	System.err.println("Outputting for "+entry.getKey().getNameAsString());
             }
-            outRepo.putArtifact(artifact, new ByteArrayInputStream(out.getBytes()));
+            outRepo.putArtifact(artifact, jsart);
+            //js file signature
+            artifact.setForceOperation(true);
+            ArtifactContext sha1Context = artifact.getSha1Context();
+            sha1Context.setForceOperation(true);
+            File sha1File = ShaSigner.sign(jsart, new JULLogger(), opts.isVerbose());
+            outRepo.putArtifact(sha1Context, sha1File);
+            //Create the src archive if it doesn't exist
+            artifact = new ArtifactContext(entry.getKey().getNameAsString(), entry.getKey().getVersion(), ArtifactContext.SRC);
+            if (outRepo.getArtifact(artifact) == null) {
+                Set<File> sourcePaths = new HashSet<File>();
+                for (String sp : opts.getSrcDirs()) {
+                    sourcePaths.add(new File(sp));
+                }
+                SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, sourcePaths,
+                        entry.getKey().getNameAsString(), entry.getKey().getVersion(), opts.isVerbose(), new JULLogger());
+                sac.copySourceFiles(jsout.getSources());
+            }
+            sha1File.deleteOnExit();
+            jsart.deleteOnExit();
         }
     }
 

@@ -16,11 +16,12 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 /**
  * Entry point for the type checker
- * Pass the source diretory as parameter. The source directory is relative to
+ * Pass the source directory as parameter. The source directory is relative to
  * the startup directory.
  *
  * @author Gavin King <gavin@hibernate.org>
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
+ * @author Enrique Zamudio
  */
 public class Main {
 
