@@ -79,6 +79,7 @@
         <zip destfile="${build.dist}/${ceylon.common.jar}">
             <fileset dir="${build.classes}">
                 <include name="**/*.class"/>
+            	<include name="**/*.properties"/>
             </fileset>
         </zip>
         <antcall target="sha1sum">
