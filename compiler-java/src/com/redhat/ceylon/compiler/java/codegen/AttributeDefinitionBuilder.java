@@ -57,7 +57,6 @@ public class AttributeDefinitionBuilder {
     private final MethodDefinitionBuilder setterBuilder;
     
     private AbstractTransformer owner;
-    private boolean ancestorLocal;
 
     private boolean toplevel = false;
 
@@ -70,7 +69,6 @@ public class AttributeDefinitionBuilder {
             typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
         
-        this.ancestorLocal = Decl.isLocal(attrType);
         this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
         this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
         this.owner = owner;
@@ -124,7 +122,7 @@ public class AttributeDefinitionBuilder {
                 .klass(owner, className, null)
                 .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                 .constructorModifiers(Flags.PRIVATE)
-                .annotations(!ancestorLocal ? owner.makeAtAttribute() : List.<JCTree.JCAnnotation>nil())
+                .annotations(owner.makeAtAttribute())
                 .annotations(annotations.toList())
                 .defs(defs.toList())
                 .build();
@@ -243,9 +241,6 @@ public class AttributeDefinitionBuilder {
     }
 
     public AttributeDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        if (ancestorLocal) {
-            return this;
-        }
         this.annotations.appendList(annotations);
         return this;
     }
