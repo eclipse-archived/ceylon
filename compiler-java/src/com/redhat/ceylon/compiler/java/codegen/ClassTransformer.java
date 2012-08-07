@@ -978,7 +978,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(
-                this, Decl.isLocal(model), model.isClassOrInterfaceMember(), 
+                this, model.isClassOrInterfaceMember(), 
                 methodName);
         final ParameterList parameterList = model.getParameterLists().get(0);
         Tree.ParameterList paramList = def.getParameterLists().get(0);
@@ -990,7 +990,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (model.getRefinedDeclaration() == model) {
                     
                     if (transformOverloads) {
-                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(),
+                        MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, model.isClassOrInterfaceMember(),
                                 methodName);
                         JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(
                                 overloadsFlags, 

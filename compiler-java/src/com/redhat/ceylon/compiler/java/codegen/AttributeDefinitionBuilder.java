@@ -82,13 +82,13 @@ public class AttributeDefinitionBuilder {
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
         getterBuilder = MethodDefinitionBuilder
-            .method2(owner, ancestorLocal, Naming.getGetterName(attrType))
+            .method2(owner, Naming.getGetterName(attrType))
             .block(generateDefaultGetterBlock())
             .isOverride(attrType.isActual())
             .annotations(owner.makeAtAnnotations(attrType.getAnnotations()))
             .resultType(this.attrType, attrType);
         setterBuilder = MethodDefinitionBuilder
-            .method2(owner, ancestorLocal, Naming.getSetterName(attrType))
+            .method2(owner, Naming.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
             .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())

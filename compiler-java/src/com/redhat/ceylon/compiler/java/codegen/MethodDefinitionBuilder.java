@@ -83,12 +83,12 @@ public class MethodDefinitionBuilder {
     
     private boolean built = false;
 
-    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ignoreAnnotations, boolean isMember, String name) {
-        return new MethodDefinitionBuilder(gen, ignoreAnnotations, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean isMember, String name) {
+        return new MethodDefinitionBuilder(gen, false, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
     }
     
-    public static MethodDefinitionBuilder method2(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
-        return new MethodDefinitionBuilder(gen, ignoreAnnotations, name);
+    public static MethodDefinitionBuilder method2(AbstractTransformer gen, String name) {
+        return new MethodDefinitionBuilder(gen, false, name);
     }
     
     public static MethodDefinitionBuilder callable(AbstractTransformer gen) {
