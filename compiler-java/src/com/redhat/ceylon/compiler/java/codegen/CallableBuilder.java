@@ -141,7 +141,7 @@ public class CallableBuilder {
     
     public JCNewClass build() {
         // Generate a subclass of Callable
-        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen, false, true, "$call");
+        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.callable(gen);
         callMethod.isOverride(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);

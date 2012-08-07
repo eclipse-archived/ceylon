@@ -87,6 +87,10 @@ public class MethodDefinitionBuilder {
         return new MethodDefinitionBuilder(gen, ignoreAnnotations, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
     }
     
+    public static MethodDefinitionBuilder callable(AbstractTransformer gen) {
+        return method(gen, false, true, "$call");
+    }
+    
     public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
         return new MethodDefinitionBuilder(gen, ignoreAnnotations, name);
     }
