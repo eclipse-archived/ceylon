@@ -91,12 +91,12 @@ public class MethodDefinitionBuilder {
         return new MethodDefinitionBuilder(gen, ancestorLocal, name);
     }
     
-    public static MethodDefinitionBuilder constructor(AbstractTransformer gen, boolean ancestorLocal) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, null);
+    public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
+        return new MethodDefinitionBuilder(gen, false, null);
     }
 
-    public static MethodDefinitionBuilder main(AbstractTransformer gen, boolean ancestorLocal) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, "main")
+    public static MethodDefinitionBuilder main(AbstractTransformer gen) {
+        return new MethodDefinitionBuilder(gen, false, "main")
             .modifiers(PUBLIC | STATIC)
             .parameter(0, "args", gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
     }

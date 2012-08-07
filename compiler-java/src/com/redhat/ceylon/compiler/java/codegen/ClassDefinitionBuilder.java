@@ -269,7 +269,7 @@ public class ClassDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder addConstructor() {
-        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen, false);
+        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen);
         this.constructors.append(constructor);
         return constructor;
     }

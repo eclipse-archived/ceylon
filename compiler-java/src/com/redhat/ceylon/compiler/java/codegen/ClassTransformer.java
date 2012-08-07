@@ -1528,7 +1528,7 @@ public class ClassTransformer extends AbstractTransformer {
     private JCMethodDecl makeMainMethod(Declaration decl, JCExpression callee) {
         // Add a main() method
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
-                .main(this, Decl.isAncestorLocal(decl))
+                .main(this)
                 .annotations(makeAtIgnore());
         // Add call to process.setupArguments
         JCExpression argsId = makeUnquotedIdent("args");
