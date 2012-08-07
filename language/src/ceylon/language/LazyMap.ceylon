@@ -8,7 +8,7 @@ shared class LazyMap<out Key,out Item>(Key->Item... entries)
         given Item satisfies Object {
 
     shared actual LazyMap<Key, Item> clone {
-        return LazyMap(entries...);
+        return this;
     }
 
     shared actual Integer size {

@@ -28,15 +28,11 @@ shared class LazyList<out Element>(Element... elems)
          so changes to the original `Iterable` will
          no longer be reflected in the new `List`."
     shared actual List<Element> reversed {
-        //I truly see no other way of doing this ATM
-        if (nonempty s=elems.sequence) {
-            return s.reversed;
-        }
-        return this;
+        return elems.sequence.reversed;
     }
 
     shared actual List<Element> clone {
-        return LazyList(elems...);
+        return this;
     }
 
     shared actual List<Element> span(

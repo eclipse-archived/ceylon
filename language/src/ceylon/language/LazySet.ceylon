@@ -7,7 +7,7 @@ shared class LazySet<Element>(Element... elems)
         given Element satisfies Object {
 
     shared actual LazySet<Element> clone {
-        return LazySet(elems...);
+        return this;
     }
     shared actual Integer size {
         variable value c:=0;
