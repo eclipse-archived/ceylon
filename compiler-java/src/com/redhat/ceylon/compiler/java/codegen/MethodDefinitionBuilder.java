@@ -132,7 +132,7 @@ public class MethodDefinitionBuilder {
         
 
         return gen.make().MethodDef(
-                gen.make().Modifiers(modifiers, gen.filterAnnotations(getAnnotations())), 
+                gen.make().Modifiers(modifiers, getAnnotations().toList()), 
                 makeName(name),
                 resultTypeExpr,
                 typeParams.toList(), 
