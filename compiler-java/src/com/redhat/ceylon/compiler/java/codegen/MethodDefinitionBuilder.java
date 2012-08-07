@@ -64,8 +64,8 @@ public class MethodDefinitionBuilder {
     
     private long modifiers;
 
-    private boolean isActual;
-    private boolean isFormal;
+    private boolean isOverride;
+    private boolean isAbstract;
     
     private JCExpression resultTypeExpr;
     private List<JCAnnotation> resultTypeAnnos;
@@ -113,7 +113,7 @@ public class MethodDefinitionBuilder {
             throw new IllegalStateException();
         }
         built = true;
-        if (isActual) {
+        if (isOverride) {
             this.annotations.appendList(gen.makeAtOverride());
         }
         if (resultTypeAnnos != null) {
@@ -142,7 +142,7 @@ public class MethodDefinitionBuilder {
     }
 
     private JCBlock makeBody(ListBuffer<JCStatement> body2) {
-        return (!isFormal && (body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
+        return (!isAbstract && (body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
     }
 
     JCExpression makeVoidType() {
@@ -268,13 +268,13 @@ public class MethodDefinitionBuilder {
         return parameter(mods, paramName, aliasedName, param, param, param.getType(), flags);
     }
 
-    public MethodDefinitionBuilder isActual(boolean isActual) {
-        this.isActual = isActual;
+    public MethodDefinitionBuilder isOverride(boolean isOverride) {
+        this.isOverride = isOverride;
         return this;
     }
     
-    public MethodDefinitionBuilder isFormal(boolean isFormal) {
-        this.isFormal = isFormal;
+    public MethodDefinitionBuilder isAbstract(boolean isAbstract) {
+        this.isAbstract = isAbstract;
         return this;
     }
     

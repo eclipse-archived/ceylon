@@ -1021,7 +1021,7 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder
                 .modifiers(transformMethodDeclFlags(model));
             if (actualAndAnnotations) {
-                methodBuilder.isActual(model.isActual())
+                methodBuilder.isOverride(model.isActual())
                     .modelAnnotations(model.getAnnotations());
             }
             if (CodegenUtil.hasCompilerAnnotation(def, "test")){

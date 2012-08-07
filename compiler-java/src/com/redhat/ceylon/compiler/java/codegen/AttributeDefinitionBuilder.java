@@ -84,14 +84,14 @@ public class AttributeDefinitionBuilder {
         getterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, ancestorLocal, Naming.getGetterName(attrType))
             .block(generateDefaultGetterBlock())
-            .isActual(attrType.isActual())
+            .isOverride(attrType.isActual())
             .annotations(owner.makeAtAnnotations(attrType.getAnnotations()))
             .resultType(this.attrType, attrType);
         setterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, ancestorLocal, Naming.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
-            .isActual(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
+            .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
             .parameter(Flags.FINAL, attrName, attrType, nonWideningTypedRef.getDeclaration(), nonWideningType, 0);
     }
     
@@ -251,8 +251,8 @@ public class AttributeDefinitionBuilder {
     }
 
     public AttributeDefinitionBuilder isFormal(boolean isFormal) {
-        getterBuilder.isFormal(isFormal);
-        setterBuilder.isFormal(isFormal);
+        getterBuilder.isAbstract(isFormal);
+        setterBuilder.isAbstract(isFormal);
         return this;
     }
 
@@ -325,8 +325,8 @@ public class AttributeDefinitionBuilder {
      * so we'd need two parameters.
      */
     public AttributeDefinitionBuilder notActual() {
-        getterBuilder.isActual(false);
-        setterBuilder.isActual(false);
+        getterBuilder.isOverride(false);
+        setterBuilder.isOverride(false);
         return this;
     }
 }
