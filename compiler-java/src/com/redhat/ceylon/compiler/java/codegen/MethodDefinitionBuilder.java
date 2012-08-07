@@ -79,16 +79,16 @@ public class MethodDefinitionBuilder {
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
-    private boolean ancestorLocal;
+    private boolean ignoreAnnotations;
     
     private boolean built = false;
 
-    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ancestorLocal, boolean isMember, String name) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ignoreAnnotations, boolean isMember, String name) {
+        return new MethodDefinitionBuilder(gen, ignoreAnnotations, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
     }
     
-    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ancestorLocal, String name) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, name);
+    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
+        return new MethodDefinitionBuilder(gen, ignoreAnnotations, name);
     }
     
     public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
@@ -101,24 +101,34 @@ public class MethodDefinitionBuilder {
             .parameter(0, "args", gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
     }
     
-    private MethodDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name) {
+    private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
         this.gen = gen;
         this.name = name;
-        this.ancestorLocal = ancestorLocal;
+        if (name != null && name.indexOf('$') != -1) {
+            this.ignoreAnnotations = true;
+        } else {
+            this.ignoreAnnotations = ignoreAnnotations;
+        }
         resultTypeExpr = makeVoidType();
     }
     
     private ListBuffer<JCAnnotation> getAnnotations() {
         ListBuffer<JCAnnotation> result = ListBuffer.lb();
-        result.appendList(this.annotations);
+        if (!ignoreAnnotations) {
+            result.appendList(this.annotations);   
+        }
         if (isOverride) {
             result.appendList(gen.makeAtOverride());
         }
-        if (resultTypeAnnos != null && !ancestorLocal) {
-            result.appendList(resultTypeAnnos);
-        }
-        if(!typeParamAnnotations.isEmpty() && !ancestorLocal) {
-            result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+        if (ignoreAnnotations) {
+            result.appendList(gen.makeAtIgnore());
+        } else {
+            if (resultTypeAnnos != null) {
+                result.appendList(resultTypeAnnos);
+            }
+            if(!typeParamAnnotations.isEmpty()) {
+                result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+            }
         }
         
         return result;
@@ -186,10 +196,15 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
+    /** 
+     * The class will be generated with the {@code @Ignore} annotation only
+     */
+    public MethodDefinitionBuilder ignoreAnnotations() {
+        ignoreAnnotations = true;
+        return this;
+    }
+    
     public MethodDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        if (ancestorLocal) {
-            return this;
-        }
         this.annotations.appendList(annotations);
         return this;
     }

@@ -416,8 +416,8 @@ public class ClassTransformer extends AbstractTransformer {
             boolean rawifyParametersAndResults) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), ancestorLocal, methodName);
         concreteWrapper.modifiers(mods);
-        concreteWrapper.annotations(makeAtIgnore());
-        concreteWrapper.annotations(makeAtOverride());
+        concreteWrapper.ignoreAnnotations();
+        concreteWrapper.isOverride(true);
         if (!rawifyParametersAndResults) {
             for (TypeParameter tp : typeParameters) {
                 concreteWrapper.typeParameter(tp);
@@ -504,7 +504,11 @@ public class ClassTransformer extends AbstractTransformer {
             } else {
                 thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
             }
-            thisMethod.annotations(forImplementor ? makeAtOverride() : makeAtIgnore());
+            if (forImplementor) {
+                thisMethod.isOverride(true);
+            } else {
+                thisMethod.ignoreAnnotations();
+            }
             thisMethod.modifiers(PUBLIC);
             if (forImplementor) {
                 thisMethod.body(make().Return(naming.makeCompanionFieldName(iface)));
@@ -1233,7 +1237,7 @@ public class ClassTransformer extends AbstractTransformer {
             int flags, MethodDefinitionBuilder overloadBuilder,
             final Declaration model, java.util.List<Parameter> parameters,
             final Parameter currentParam) {
-        overloadBuilder.annotations(makeAtIgnore());
+        overloadBuilder.ignoreAnnotations();
         
         final JCExpression methName;
         if (model instanceof Method) {
@@ -1360,7 +1364,7 @@ public class ClassTransformer extends AbstractTransformer {
         Parameter parameter = currentParam.getDeclarationModel();
         String name = Naming.getDefaultedParamMethodName(container, parameter );
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(container), true, name);
-        methodBuilder.annotations(makeAtIgnore());
+        methodBuilder.ignoreAnnotations();
         int modifiers = 0;
         if (noBody) {
             modifiers |= PUBLIC | ABSTRACT;
@@ -1529,7 +1533,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Add a main() method
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
                 .main(this)
-                .annotations(makeAtIgnore());
+                .ignoreAnnotations();
         // Add call to process.setupArguments
         JCExpression argsId = makeUnquotedIdent("args");
         JCMethodInvocation processExpr = make().Apply(null, naming.makeLanguageValue("process"), List.<JCTree.JCExpression>nil());
