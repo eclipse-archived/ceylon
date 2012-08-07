@@ -122,7 +122,7 @@ public class ClassTransformer extends AbstractTransformer {
             className = def.getIdentifier().getText();
         }
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, Decl.isAncestorLocal(def), className, aliasedClassName);
+                .klass(this, className, aliasedClassName);
 
         if (def instanceof Tree.AnyClass) {
             if(def instanceof Tree.ClassDefinition){
@@ -864,7 +864,7 @@ public class ClassTransformer extends AbstractTransformer {
         naming.noteDecl(model);
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, Decl.isAncestorLocal(def), name, Decl.isShared(def));
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
         builder.defs(classGen().transform(def, builder));
         
         // Toplevel method
@@ -1429,7 +1429,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         String name = model.getName();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
-                this, Decl.isAncestorLocal(model), name, null);
+                this, name, null);
         
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;

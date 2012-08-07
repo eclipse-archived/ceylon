@@ -88,27 +88,25 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCTree> also = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
 
-    private final boolean ancestorLocal = false;
-    
     private boolean built = false;
     
     private boolean isCompanion = false;
 
     private ClassDefinitionBuilder containingClassBuilder;
 
-    public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
-        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name, aliasedName);
+    public static ClassDefinitionBuilder klass(AbstractTransformer gen, String name, String aliasedName) {
+        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, name, aliasedName);
         builder.containingClassBuilder = gen.current();
         gen.replace(builder);
         return builder;
     }
     
-    public static ClassDefinitionBuilder object(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
-        return klass(gen, ancestorLocal, name, aliasedName);
+    public static ClassDefinitionBuilder object(AbstractTransformer gen, String name, String aliasedName) {
+        return klass(gen, name, aliasedName);
     }
     
-    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String name, boolean shared) {
-        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, name, null);
+    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String name, boolean shared) {
+        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, name, null);
         builder.containingClassBuilder = gen.current();
         gen.replace(builder);
         return builder
@@ -117,10 +115,9 @@ public class ClassDefinitionBuilder {
             .constructorModifiers(PRIVATE);
     }
 
-    private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name, String aliasedName) {
+    private ClassDefinitionBuilder(AbstractTransformer gen, String name, String aliasedName) {
         this.gen = gen;
         this.name = Naming.quoteClassName(name);
-        //this.ancestorLocal = ancestorLocal;
         
         extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
@@ -129,9 +126,6 @@ public class ClassDefinitionBuilder {
         }
         if (!aliasedName.equals(Naming.quoteIfJavaKeyword(name))) {
             annotations(gen.makeAtName(aliasedName));
-        }
-        if (ancestorLocal) {
-            this.annotations.appendList(gen.makeAtIgnore());
         }
     }
 
@@ -155,7 +149,7 @@ public class ClassDefinitionBuilder {
         }
         
         JCTree.JCClassDecl klass = gen.make().ClassDef(
-                gen.make().Modifiers(modifiers, annotations.toList()),
+                gen.make().Modifiers(modifiers, getAnnotations()),
                 gen.names().fromString(name),
                 typeParams.toList(),
                 extending,
@@ -275,7 +269,7 @@ public class ClassDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder addConstructor() {
-        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen, ancestorLocal);
+        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen, false);
         this.constructors.append(constructor);
         return constructor;
     }
@@ -371,12 +365,23 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
+    private boolean ignoreAnnotations = false;
+    
+    public ClassDefinitionBuilder ignoreAnnotations() {
+        ignoreAnnotations = true;
+        return this;
+    }
+    
     public ClassDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        if (ancestorLocal) {
-            return this;
-        }
         this.annotations.appendList(annotations);
         return this;
+    }
+    
+    private List<JCAnnotation> getAnnotations() {
+        if (ignoreAnnotations) {
+            return gen.makeAtIgnore();
+        }
+        return this.annotations.toList();
     }
 
     // Create a parameter for the constructor
@@ -468,8 +473,8 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl) {
         if (concreteInterfaceMemberDefs == null) {
-            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, gen.naming.getCompanionClassName(decl).replaceFirst(".*\\.", ""), null)
-                .annotations(gen.makeAtIgnore());
+            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, gen.naming.getCompanionClassName(decl).replaceFirst(".*\\.", ""), null)
+                .ignoreAnnotations();
             concreteInterfaceMemberDefs.isCompanion = true;
         }
         return concreteInterfaceMemberDefs;

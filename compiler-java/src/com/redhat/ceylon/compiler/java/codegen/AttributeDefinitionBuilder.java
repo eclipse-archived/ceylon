@@ -121,7 +121,7 @@ public class AttributeDefinitionBuilder {
         appendDefinitionsTo(defs);
         if (className != null) {
             return ClassDefinitionBuilder
-                .klass(owner, ancestorLocal, className, null)
+                .klass(owner, className, null)
                 .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                 .constructorModifiers(Flags.PRIVATE)
                 .annotations(!ancestorLocal ? owner.makeAtAttribute() : List.<JCTree.JCAnnotation>nil())
