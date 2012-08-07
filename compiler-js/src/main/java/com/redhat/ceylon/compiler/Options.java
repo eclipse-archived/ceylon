@@ -25,6 +25,7 @@ public class Options {
     private boolean help;
     private boolean version;
     private boolean stdin;
+    private boolean gensrc = true;
 
     /** Creates and returns an Options object from a command-list argument list. The list itself
      * is modified, so at the end it only contains the files to compile. */
@@ -189,6 +190,18 @@ public class Options {
     }
     public boolean isHelp() {
         return help;
+    }
+
+    /** Sets the option to generate the source archive or skip it.
+     * The default is to generate it, but it can be set to false
+     * for example when doing joint compilation with another backend
+     * that will generate .src archives. */
+    public void setGenerateSourceArchive(boolean flag) {
+        gensrc = flag;
+    }
+    /** Tells whether to generate the .src archive (default true). */
+    public boolean isGenerateSourceArchive() {
+        return gensrc;
     }
 
 }
