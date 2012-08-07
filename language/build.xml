@@ -182,10 +182,17 @@
       
     <target name="test" depends="compile.tests"
         description="compile and run the tests">
-        <java classname="run" classpath="${tests.car};${runtime.jar}"/>
+        <java classname="runAndExit" classpath="${tests.car};${runtime.jar}"
+            resultproperty="test.ceylon.result"/>
+    	
+    	<condition property="test.fail.ceylon">
+    		<not><equals arg1="${test.ceylon.result}" arg2="0"/></not>
+    	</condition>
     	
         <mkdir dir="${test.reports}"/>
-        <junit printsummary="yes" haltonfailure="no">
+        <junit printsummary="yes" haltonfailure="no" 
+        	errorproperty="test.fail.junit"
+        	failureproperty="test.fail.junit">
           <classpath refid="test.run.classpath"/>
           <formatter type="xml"/>
 
@@ -202,5 +209,9 @@
           </fileset>
           <report format="frames" todir="${test.reports}"/>
         </junitreport>
+    	
+    	<fail if="${test.fail.ceylon}" message="There were ${test.ceylon.result} failure(s) in the Ceylon tests"/>
+    	<fail if="${test.fail.junit}"  message="There were Junit test failures"/>
+    	
     </target>
 </project>

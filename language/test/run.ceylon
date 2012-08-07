@@ -56,4 +56,12 @@ shared void runAndAssert() {
     }
 }
 
+shared void runAndExit() {
+    run();
+    if (failureCount!=0) {
+        print("There were " failureCount " failures (out of " assertionCount " assertions)");
+    }
+    process.exit(failureCount ==0 then 0 else 1);   
+}
+
 shared void test() { run(); }
