@@ -366,18 +366,38 @@ public class ClassDefinitionBuilder {
     }
 
     private boolean ignoreAnnotations = false;
+    private boolean noAnnotations = false;
     
+    /** 
+     * The class will be generated with the {@code @Ignore} annotation only
+     */
     public ClassDefinitionBuilder ignoreAnnotations() {
         ignoreAnnotations = true;
         return this;
     }
     
+    /** 
+     * The class will be generated with no annotations at all
+     */
+    public ClassDefinitionBuilder noAnnotations() {
+        noAnnotations = true;
+        return this;
+    }
+    
+    /**
+     * Adds the given annotations to this class, unless 
+     * they're {@linkplain #ignoreAnnotations() ignored}
+     * @see #ignoreAnnotations()
+     */
     public ClassDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
         this.annotations.appendList(annotations);
         return this;
     }
     
     private List<JCAnnotation> getAnnotations() {
+        if (noAnnotations) {
+            return List.nil();
+        }
         if (ignoreAnnotations) {
             return gen.makeAtIgnore();
         }
