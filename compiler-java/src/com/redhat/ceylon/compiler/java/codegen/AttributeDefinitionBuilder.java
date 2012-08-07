@@ -70,7 +70,7 @@ public class AttributeDefinitionBuilder {
             typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
         
-        this.ancestorLocal = Decl.isAncestorLocal(attrType);
+        this.ancestorLocal = Decl.isLocal(attrType);
         this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
         this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
         this.owner = owner;

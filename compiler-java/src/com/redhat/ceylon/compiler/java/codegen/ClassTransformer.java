@@ -983,7 +983,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(
-                this, Decl.isAncestorLocal(model), model.isClassOrInterfaceMember(), 
+                this, Decl.isLocal(model), model.isClassOrInterfaceMember(), 
                 methodName);
         final ParameterList parameterList = model.getParameterLists().get(0);
         Tree.ParameterList paramList = def.getParameterLists().get(0);
@@ -1363,7 +1363,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(currentParam);
         Parameter parameter = currentParam.getDeclarationModel();
         String name = Naming.getDefaultedParamMethodName(container, parameter );
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, Decl.isAncestorLocal(container), true, name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, true, name);
         methodBuilder.ignoreAnnotations();
         int modifiers = 0;
         if (noBody) {
