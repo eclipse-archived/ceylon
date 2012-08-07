@@ -464,6 +464,23 @@ public class ClassDefinitionBuilder {
         return parameter(name, param, param.isSequenced(), param.isDefaulted());
     }
     
+    public ClassDefinitionBuilder method(MethodDefinitionBuilder mdb) {
+        if (mdb != null) {
+            if (isCompanion) {
+                mdb.noAnnotations();
+            }
+            defs(mdb.build());
+        }
+        return this;
+    }
+    
+    public ClassDefinitionBuilder methods(List<MethodDefinitionBuilder> mdbs) {
+        for (MethodDefinitionBuilder mdb : mdbs) {
+            method(mdb);
+        }
+        return this;
+    }
+    
     public ClassDefinitionBuilder defs(JCTree statement) {
         if (statement != null) {
             this.defs.append(statement);
@@ -519,7 +536,7 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder method(Tree.AnyMethod method) {
-        defs(gen.classGen().transform(method, this));
+        methods(gen.classGen().transform(method, this));
         return this;
     }
 

@@ -132,13 +132,13 @@ public class ClassTransformer extends AbstractTransformer {
                     DefaultArgument defaultArgument = param.getDefaultArgument();
                     if (defaultArgument != null
                             || param.getDeclarationModel().isSequenced()) {
-                        ClassDefinitionBuilder cbForDevaultValues;
+                        MethodDefinitionBuilder m = makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param);
                         if (Strategy.defaultParameterMethodStatic(model)) {
-                            cbForDevaultValues = classBuilder;
+                            classBuilder.method(m);
                         } else {
-                            cbForDevaultValues = classBuilder.getCompanionBuilder(model);
+                            classBuilder.getCompanionBuilder(model).method(m);
                         }
-                        cbForDevaultValues.defs(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param));
+                        
                         // Add overloaded constructors for defaulted parameter
                         MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
                         makeOverloadsForDefaultedParameter(OL_BODY,
@@ -171,7 +171,7 @@ public class ClassTransformer extends AbstractTransformer {
                     type = type.getQualifyingType();
                 }
                 
-                classBuilder.defs(makeCompanionAccessor((Interface)model, model.getType(), false));
+                classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), false));
                 // Build the companion class
                 buildCompanion(def, (Interface)model, classBuilder);
             }else{
@@ -281,7 +281,7 @@ public class ClassTransformer extends AbstractTransformer {
                             // If that method has a defaulted parameter, 
                             // we need to generate a default value method
                             // which also delegates to the $impl
-                            final JCMethodDecl defaultValueDelegate = makeDelegateToCompanion(iface,
+                            final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
                                     typedParameter,
                                     PUBLIC | FINAL, 
                                     typeParameters, 
@@ -289,9 +289,9 @@ public class ClassTransformer extends AbstractTransformer {
                                     Naming.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     rawifyParametersAndResults);
-                            classBuilder.defs(defaultValueDelegate);
+                            classBuilder.method(defaultValueDelegate);
                             
-                            final JCMethodDecl overload = makeDelegateToCompanion(iface,
+                            final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
                                     typedMember,
                                     PUBLIC | FINAL, 
                                     typeParameters,  
@@ -299,7 +299,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     naming.selector(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
                                     rawifyParametersAndResults);
-                            classBuilder.defs(overload);
+                            classBuilder.method(overload);
                         }
                     }
                 }
@@ -308,7 +308,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // delegating to the $impl instance
                 if (needsCompanionDelegate(model, member)) {
                     
-                    final JCMethodDecl concreteMemberDelegate = makeDelegateToCompanion(iface,
+                    final MethodDefinitionBuilder concreteMemberDelegate = makeDelegateToCompanion(iface,
                             typedMember,
                             PUBLIC, 
                             method.getTypeParameters(), 
@@ -316,7 +316,7 @@ public class ClassTransformer extends AbstractTransformer {
                             naming.selector(method), 
                             method.getParameterLists().get(0).getParameters(),
                             rawifyParametersAndResults);
-                    classBuilder.defs(concreteMemberDelegate);
+                    classBuilder.method(concreteMemberDelegate);
                      
                 }
             } else if (member instanceof Getter
@@ -327,7 +327,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (needsCompanionDelegate(model, member)) {
                     if (member instanceof Value 
                             || member instanceof Getter) {
-                        final JCMethodDecl getterDelegate = makeDelegateToCompanion(iface, 
+                        final MethodDefinitionBuilder getterDelegate = makeDelegateToCompanion(iface, 
                                 typedMember,
                                 PUBLIC | (attr.isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
@@ -335,10 +335,10 @@ public class ClassTransformer extends AbstractTransformer {
                                 Naming.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
                                 rawifyParametersAndResults);
-                        classBuilder.defs(getterDelegate);
+                        classBuilder.method(getterDelegate);
                     }
                     if (member instanceof Setter) { 
-                        final JCMethodDecl setterDelegate = makeDelegateToCompanion(iface, 
+                        final MethodDefinitionBuilder setterDelegate = makeDelegateToCompanion(iface, 
                                 typedMember,
                                 PUBLIC | (attr.isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
@@ -346,7 +346,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                                 rawifyParametersAndResults);
-                        classBuilder.defs(setterDelegate);
+                        classBuilder.method(setterDelegate);
                     }
                     if (member instanceof Value 
                             && ((Value)attr).isVariable()) {
@@ -403,7 +403,7 @@ public class ClassTransformer extends AbstractTransformer {
     /**
      * Generates a method which delegates to the companion instance $Foo$impl
      */
-    private JCMethodDecl makeDelegateToCompanion(Interface iface,
+    private MethodDefinitionBuilder makeDelegateToCompanion(Interface iface,
             ProducedTypedReference typedMember, final long mods,
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
@@ -438,8 +438,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             concreteWrapper.body(gen().make().Return(expr));
         }
-        final JCMethodDecl build = concreteWrapper.build();
-        return build;
+        return concreteWrapper;
     }
 
     private Boolean hasImpl(Interface iface) {
@@ -472,11 +471,11 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.field(PRIVATE | FINAL, fieldName, 
                 makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES), null, false);
 
-        classBuilder.defs(makeCompanionAccessor(iface, satisfiedType, true));
+        classBuilder.method(makeCompanionAccessor(iface, satisfiedType, true));
         
     }
     
-    private List<JCTree> makeCompanionAccessor(Interface iface, ProducedType satisfiedType, boolean forImplementor) {
+    private MethodDefinitionBuilder makeCompanionAccessor(Interface iface, ProducedType satisfiedType, boolean forImplementor) {
         // Doing this only for interfaces with inner classes breaks BC for implementors
         // when an inner class is added to the interface. OTOH it means we 
         // don't have to have an access on every Ceylon interface when it 
@@ -510,9 +509,9 @@ public class ClassTransformer extends AbstractTransformer {
             } else {
                 thisMethod.noBody();
             }
-            return List.<JCTree>of(thisMethod.build());
+            return thisMethod;
         }
-        return List.<JCTree>nil();
+        return null;
     }
 
     private void buildCompanion(final Tree.ClassOrInterface def,
@@ -864,7 +863,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
-        builder.defs(classGen().transform(def, builder));
+        builder.methods(classGen().transform(def, builder));
         
         // Toplevel method
         if (Strategy.generateMain(def)) {
@@ -886,13 +885,13 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    public List<JCTree> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
+    public List<MethodDefinitionBuilder> transform(Tree.AnyMethod def, ClassDefinitionBuilder classBuilder) {
         // Transform the method body of the 'inner-most method'
         List<JCStatement> body = transformMethodBody(def);        
         return transform(def, classBuilder, body);
     }
 
-    List<JCTree> transform(Tree.AnyMethod def,
+    List<MethodDefinitionBuilder> transform(Tree.AnyMethod def,
             ClassDefinitionBuilder classBuilder, List<JCStatement> body) {
         final Method model = def.getDeclarationModel();
         final String methodName = naming.selector(model);
@@ -920,7 +919,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             boolean transformDefaultValues = def instanceof MethodDeclaration || block != null;
             
-            List<JCTree> companionDefs = transformMethod(def, model, methodName, 
+            List<MethodDefinitionBuilder> companionDefs = transformMethod(def, model, methodName, 
                         transformMethod,
                         actualAndAnnotations,
                         cbody,
@@ -928,13 +927,11 @@ public class ClassTransformer extends AbstractTransformer {
                         overloadsDelegator,
                         transformDefaultValues,
                         false);
-            classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).defs(companionDefs);
+            classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).methods(companionDefs);
         }
         
-        List<JCTree> result;
-        if (Strategy.onlyOnCompanion(model)) {
-            result = List.<JCTree>nil();
-        } else {
+        List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
+        if (!Strategy.onlyOnCompanion(model)) {
             // Transform it for the interface/class
             List<JCStatement> cbody = !model.isInterfaceMember() ? transformMplBody(model, body) : null;
             result = transformMethod(def, model, methodName, true, true, 
@@ -963,13 +960,13 @@ public class ClassTransformer extends AbstractTransformer {
      * @param transformDefaultValues Whether to generate default value methods
      * @param defaultValuesBody Whether the default value methods should have a body
      */
-    private List<JCTree> transformMethod(Tree.AnyMethod def,
+    private List<MethodDefinitionBuilder> transformMethod(Tree.AnyMethod def,
             final Method model, final String methodName,
             boolean transformMethod, boolean actualAndAnnotations, List<JCStatement> body, 
             boolean transformOverloads, int overloadsFlags, 
             boolean transformDefaultValues, boolean defaultValuesBody) {
         
-        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+        ListBuffer<MethodDefinitionBuilder> lb = ListBuffer.<MethodDefinitionBuilder>lb();
         boolean needsRaw = false;
         if (Decl.withinClassOrInterface(model)) {
             final Scope refinedFrom = model.getRefinedDeclaration().getContainer();
@@ -992,10 +989,10 @@ public class ClassTransformer extends AbstractTransformer {
                     if (transformOverloads) {
                         MethodDefinitionBuilder overloadBuilder = MethodDefinitionBuilder.method(this, model.isClassOrInterfaceMember(),
                                 methodName);
-                        JCMethodDecl overloadedMethod = makeOverloadsForDefaultedParameter(
+                        MethodDefinitionBuilder overloadedMethod = makeOverloadsForDefaultedParameter(
                                 overloadsFlags, 
                                 overloadBuilder, 
-                                model, parameterList.getParameters(), parameter).build();
+                                model, parameterList.getParameters(), parameter);
                         lb.append(overloadedMethod);
                     }
                     
@@ -1026,7 +1023,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (CodegenUtil.hasCompilerAnnotation(def, "test")){
                 methodBuilder.annotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
             }
-            lb.append(methodBuilder.build());
+            lb.append(methodBuilder);
         }
         return lb.toList();
     }
@@ -1353,7 +1350,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Creates a (possibly abstract) method for retrieving the value for a 
      * defaulted parameter
      */
-    private JCMethodDecl makeParamDefaultValueMethod(boolean noBody, Declaration container, 
+    private MethodDefinitionBuilder makeParamDefaultValueMethod(boolean noBody, Declaration container, 
             Tree.ParameterList params, Tree.Parameter currentParam) {
         at(currentParam);
         Parameter parameter = currentParam.getDeclarationModel();
@@ -1407,7 +1404,7 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.block(body);
         }
 
-        return methodBuilder.build();
+        return methodBuilder;
     }
 
     public List<JCTree> transformObjectDefinition(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
