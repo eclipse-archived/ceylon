@@ -80,7 +80,7 @@ public class ClassDefinitionBuilder {
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
     
-    private final ListBuffer<JCVariableDecl> params = ListBuffer.lb();
+    private final ListBuffer<ParameterDefinitionBuilder> params = ListBuffer.lb();
     
     private final ListBuffer<MethodDefinitionBuilder> constructors = ListBuffer.lb();
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
@@ -406,6 +406,18 @@ public class ClassDefinitionBuilder {
 
     // Create a parameter for the constructor
     private ClassDefinitionBuilder parameter(String name, Parameter decl, boolean isSequenced, boolean isDefaulted) {
+        JCExpression type = paramType(decl);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        pdb.sequenced(isSequenced);
+        pdb.defaulted(isDefaulted);
+        pdb.type(type, gen.makeJavaTypeAnnotations(decl));
+        params.append(pdb);
+
+        initParam(name, decl);
+        return this;
+    }
+
+    private JCExpression paramType(Parameter decl) {
         JCExpression type;
         MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
         if (attr instanceof Value) {
@@ -417,21 +429,11 @@ public class ClassDefinitionBuilder {
             ProducedType paramType = decl.getType();
             type = gen.makeJavaType(decl, paramType, 0);
         }
-        
-        List<JCAnnotation> annots = List.nil();
-        if (gen.needsAnnotations(decl)) {
-            annots = annots.appendList(gen.makeAtName(name));
-            if (isSequenced) {
-                annots = annots.appendList(gen.makeAtSequenced());
-            }
-            if (isDefaulted) {
-                annots = annots.appendList(gen.makeAtDefaulted());
-            }
-            annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
-        }
-        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(Flags.PARAMETER, annots), gen.names().fromString(name), type, null);
-        params.append(var);
+        return type;
+    }
 
+    private void initParam(String name, Parameter decl) {
+        JCExpression type = paramType(decl);
         if (decl.isCaptured()) {
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
@@ -450,7 +452,6 @@ public class ClassDefinitionBuilder {
                                 gen.naming.makeName(decl, Naming.NA_IDENT))));
             }
         }
-        return this;
     }
     
     public ClassDefinitionBuilder parameter(Tree.Parameter param) {

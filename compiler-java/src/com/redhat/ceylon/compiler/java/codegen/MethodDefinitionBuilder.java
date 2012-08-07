@@ -75,11 +75,13 @@ public class MethodDefinitionBuilder {
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
     private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
     
-    private final ListBuffer<JCVariableDecl> params = ListBuffer.lb();
+    private final ListBuffer<ParameterDefinitionBuilder> params = ListBuffer.lb();
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
     private boolean ignoreAnnotations;
+    
+    private boolean noAnnotations = false;
     
     private boolean built = false;
 
@@ -119,23 +121,24 @@ public class MethodDefinitionBuilder {
     
     private ListBuffer<JCAnnotation> getAnnotations() {
         ListBuffer<JCAnnotation> result = ListBuffer.lb();
-        if (!ignoreAnnotations) {
-            result.appendList(this.annotations);   
-        }
-        if (isOverride) {
-            result.appendList(gen.makeAtOverride());
-        }
-        if (ignoreAnnotations) {
-            result.appendList(gen.makeAtIgnore());
-        } else {
-            if (resultTypeAnnos != null) {
-                result.appendList(resultTypeAnnos);
+        if (!noAnnotations) {
+            if (!ignoreAnnotations) {
+                result.appendList(this.annotations);   
             }
-            if(!typeParamAnnotations.isEmpty()) {
-                result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+            if (isOverride) {
+                result.appendList(gen.makeAtOverride());
+            }
+            if (ignoreAnnotations) {
+                result.appendList(gen.makeAtIgnore());
+            } else {
+                if (resultTypeAnnos != null) {
+                    result.appendList(resultTypeAnnos);
+                }
+                if(!typeParamAnnotations.isEmpty()) {
+                    result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+                }
             }
         }
-        
         return result;
     }
     
@@ -145,6 +148,10 @@ public class MethodDefinitionBuilder {
         }
         built = true;
         
+        ListBuffer<JCVariableDecl> params = ListBuffer.lb();
+        for (ParameterDefinitionBuilder pdb : this.params) {
+            params.append(pdb.build());
+        }
 
         return gen.make().MethodDef(
                 gen.make().Modifiers(modifiers, getAnnotations().toList()), 
@@ -209,6 +216,11 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
+    public MethodDefinitionBuilder noAnnotations() {
+        noAnnotations = true;
+        return this;
+    }
+    
     public MethodDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
         this.annotations.appendList(annotations);
         return this;
@@ -229,16 +241,13 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder parameters(List<JCVariableDecl> decls) {
-        params.appendList(decls);
+    public MethodDefinitionBuilder parameters(List<ParameterDefinitionBuilder> pdbs) {
+        params.appendList(pdbs);
         return this;
     }
     
-    public MethodDefinitionBuilder parameter(JCVariableDecl decl) {
-        if ((decl.mods.flags & Flags.PARAMETER) == 0) {
-            throw new RuntimeException("Needs PARAMETER flag");
-        }
-        params.append(decl);
+    public MethodDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
+        params.append(pdb);
         return this;
     }
 
@@ -256,25 +265,23 @@ public class MethodDefinitionBuilder {
             }
         }
         JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
-        List<JCAnnotation> annots = List.nil();
-        if (gen.needsAnnotations(decl)) {
-            annots = annots.appendList(gen.makeAtName(name));
-            if (decl instanceof Parameter && ((Parameter)decl).isSequenced()) {
-                annots = annots.appendList(gen.makeAtSequenced());
-            }
-            if (decl instanceof Parameter && ((Parameter)decl).isDefaulted()) {
-                annots = annots.appendList(gen.makeAtDefaulted());
-            }
-            annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
-        }
-        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots), gen.names().fromString(aliasedName), type, null));
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        pdb.modifiers(modifiers);
+        pdb.aliasName(aliasedName);
+        pdb.sequenced(decl instanceof Parameter && ((Parameter)decl).isSequenced());
+        pdb.defaulted(decl instanceof Parameter && ((Parameter)decl).isDefaulted());
+        pdb.type(type, gen.makeJavaTypeAnnotations(decl));
+        return parameter(pdb);
     }
     
     public MethodDefinitionBuilder parameter(long modifiers, String name, JCExpression paramType, List<JCAnnotation> annots) {
         if (annots == null) {
             annots = List.nil();
         }
-        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots), gen.names().fromString(name), paramType, null));
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        pdb.modifiers(modifiers);
+        pdb.type(paramType, annots);
+        return parameter(pdb);
     }
 
     public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int mods, int flags) {
@@ -370,5 +377,22 @@ public class MethodDefinitionBuilder {
     public MethodDefinitionBuilder modelAnnotations(java.util.List<Annotation> annotations) {
         annotations(gen.makeAtAnnotations(annotations));
         return this;
+    }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getAnnotations()).append(' ');
+        sb.append(Flags.toString(this.modifiers)).append(' ');
+        sb.append(resultTypeExpr).append(' ');
+        sb.append(name).append('(');
+        int i = 0;
+        for (ParameterDefinitionBuilder param : params) {
+            sb.append(param);
+            if (i < params.count -1) {
+                sb.append(',');
+            }
+        }
+        sb.append(')');
+        return sb.toString();
     }
 }
