@@ -87,12 +87,17 @@ public class MethodDefinitionBuilder {
         return new MethodDefinitionBuilder(gen, ignoreAnnotations, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
     }
     
-    public static MethodDefinitionBuilder callable(AbstractTransformer gen) {
-        return method(gen, false, true, "$call");
+    public static MethodDefinitionBuilder method2(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
+        return new MethodDefinitionBuilder(gen, ignoreAnnotations, name);
     }
     
-    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
-        return new MethodDefinitionBuilder(gen, ignoreAnnotations, name);
+    public static MethodDefinitionBuilder callable(AbstractTransformer gen) {
+        return systemMethod(gen, "$call");
+    }
+    
+    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, String name) {
+        MethodDefinitionBuilder builder = new MethodDefinitionBuilder(gen, true, name);
+        return builder;
     }
     
     public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
@@ -108,11 +113,7 @@ public class MethodDefinitionBuilder {
     private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
         this.gen = gen;
         this.name = name;
-        if (name != null && name.indexOf('$') != -1) {
-            this.ignoreAnnotations = true;
-        } else {
-            this.ignoreAnnotations = ignoreAnnotations;
-        }
+        this.ignoreAnnotations = ignoreAnnotations;
         resultTypeExpr = makeVoidType();
     }
     

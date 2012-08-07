@@ -288,7 +288,6 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedParameter.getType(), 
                                     Naming.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    Decl.isAncestorLocal(model),
                                     rawifyParametersAndResults);
                             classBuilder.defs(defaultValueDelegate);
                             
@@ -299,7 +298,6 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedMember.getType(), 
                                     naming.selector(method), 
                                     parameters.subList(0, parameters.indexOf(param)),
-                                    Decl.isAncestorLocal(model),
                                     rawifyParametersAndResults);
                             classBuilder.defs(overload);
                         }
@@ -317,7 +315,6 @@ public class ClassTransformer extends AbstractTransformer {
                             method.getType(), 
                             naming.selector(method), 
                             method.getParameterLists().get(0).getParameters(),
-                            Decl.isAncestorLocal(model),
                             rawifyParametersAndResults);
                     classBuilder.defs(concreteMemberDelegate);
                      
@@ -337,7 +334,6 @@ public class ClassTransformer extends AbstractTransformer {
                                 typedMember.getType(), 
                                 Naming.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
-                                Decl.isAncestorLocal(model),
                                 rawifyParametersAndResults);
                         classBuilder.defs(getterDelegate);
                     }
@@ -349,7 +345,6 @@ public class ClassTransformer extends AbstractTransformer {
                                 typeFact().getVoidDeclaration().getType(), 
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
-                                Decl.isAncestorLocal(model),
                                 rawifyParametersAndResults);
                         classBuilder.defs(setterDelegate);
                     }
@@ -412,9 +407,9 @@ public class ClassTransformer extends AbstractTransformer {
             ProducedTypedReference typedMember, final long mods,
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
-            final String methodName, final java.util.List<Parameter> parameters, boolean ancestorLocal,
+            final String methodName, final java.util.List<Parameter> parameters, 
             boolean rawifyParametersAndResults) {
-        final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), ancestorLocal, methodName);
+        final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
         concreteWrapper.ignoreAnnotations();
         concreteWrapper.isOverride(true);
@@ -494,8 +489,8 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         if (hasInnerClasses) {
-            MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.method(
-                    this, true, true, getCompanionAccessorName(iface));
+            MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
+                    this, getCompanionAccessorName(iface));
             if (!forImplementor && Decl.isAncestorLocal(iface)) {
                 // For a local interface the return type cannot be a local
                 // companion class, because that won't be visible at the 
@@ -1363,7 +1358,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(currentParam);
         Parameter parameter = currentParam.getDeclarationModel();
         String name = Naming.getDefaultedParamMethodName(container, parameter );
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, true, true, name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.systemMethod(this, name);
         methodBuilder.ignoreAnnotations();
         int modifiers = 0;
         if (noBody) {
