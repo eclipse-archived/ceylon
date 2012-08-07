@@ -108,22 +108,31 @@ public class MethodDefinitionBuilder {
         resultTypeExpr = makeVoidType();
     }
     
+    private ListBuffer<JCAnnotation> getAnnotations() {
+        ListBuffer<JCAnnotation> result = ListBuffer.lb();
+        result.appendList(this.annotations);
+        if (isOverride) {
+            result.appendList(gen.makeAtOverride());
+        }
+        if (resultTypeAnnos != null && !ancestorLocal) {
+            result.appendList(resultTypeAnnos);
+        }
+        if(!typeParamAnnotations.isEmpty() && !ancestorLocal) {
+            result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+        }
+        
+        return result;
+    }
+    
     public JCTree.JCMethodDecl build() {
         if (built) {
             throw new IllegalStateException();
         }
         built = true;
-        if (isOverride) {
-            this.annotations.appendList(gen.makeAtOverride());
-        }
-        if (resultTypeAnnos != null) {
-            annotations(resultTypeAnnos);
-        }
-        if(!typeParamAnnotations.isEmpty())
-            annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+        
 
         return gen.make().MethodDef(
-                gen.make().Modifiers(modifiers, gen.filterAnnotations(annotations)), 
+                gen.make().Modifiers(modifiers, gen.filterAnnotations(getAnnotations())), 
                 makeName(name),
                 resultTypeExpr,
                 typeParams.toList(), 
