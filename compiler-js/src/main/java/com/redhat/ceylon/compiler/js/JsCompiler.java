@@ -211,12 +211,14 @@ public class JsCompiler {
             if (opts.isModulify()) {
                 endWrapper(jsout.getWriter());
             }
+            String moduleName = entry.getKey().getNameAsString();
+            String moduleVersion = entry.getKey().getVersion();
             //Create the JS file
             File jsart = entry.getValue().close();
-            ArtifactContext artifact = new ArtifactContext(entry.getKey().getNameAsString(), entry.getKey().getVersion());
+            ArtifactContext artifact = new ArtifactContext(moduleName, moduleVersion);
             artifact.setSuffix(".js");
             if(opts.isVerbose()){
-            	System.err.println("Outputting for "+entry.getKey().getNameAsString());
+            	System.err.println("Outputting for "+moduleName);
             }
             outRepo.putArtifact(artifact, jsart);
             //js file signature
@@ -225,15 +227,14 @@ public class JsCompiler {
             sha1Context.setForceOperation(true);
             File sha1File = ShaSigner.sign(jsart, new JULLogger(), opts.isVerbose());
             outRepo.putArtifact(sha1Context, sha1File);
-            //Create the src archive if it doesn't exist
-            artifact = new ArtifactContext(entry.getKey().getNameAsString(), entry.getKey().getVersion(), ArtifactContext.SRC);
-            if (outRepo.getArtifact(artifact) == null) {
+            //Create the src archive
+            if (opts.isGenerateSourceArchive()) {
                 Set<File> sourcePaths = new HashSet<File>();
                 for (String sp : opts.getSrcDirs()) {
                     sourcePaths.add(new File(sp));
                 }
                 SourceArchiveCreator sac = CeylonUtils.makeSourceArchiveCreator(outRepo, sourcePaths,
-                        entry.getKey().getNameAsString(), entry.getKey().getVersion(), opts.isVerbose(), new JULLogger());
+                        moduleName, moduleVersion, opts.isVerbose(), new JULLogger());
                 sac.copySourceFiles(jsout.getSources());
             }
             sha1File.deleteOnExit();
