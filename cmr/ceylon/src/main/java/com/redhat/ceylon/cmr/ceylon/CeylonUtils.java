@@ -1,6 +1,7 @@
 package com.redhat.ceylon.cmr.ceylon;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -9,9 +10,11 @@ import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
+import com.redhat.ceylon.cmr.impl.SourceArchiveCreatorImpl;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.common.FileUtil;
@@ -141,6 +144,20 @@ public class CeylonUtils {
         } catch(Exception e) {
             log.debug("Failed to add repository as input repository: " + repoUrl + ": "+e.getMessage());
         }
+    }
+
+    /** Create and return a new SourceArchiveCreator.
+     * @param repoManager The output RepositoryManager where the .src archive will be placed
+     * @param sourcePaths The root directories that contain source files
+     * @param moduleName The module name, used for the artifact
+     * @param moduleVersion The module version, used for the artifact
+     * @param verbose If true, will print additional info about its progress
+     * @param log The CMR logger to use for printing progress info.
+     * @throws IOException */
+    public static SourceArchiveCreator makeSourceArchiveCreator(RepositoryManager repoManager,
+            Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion,
+            boolean verbose, Logger log) throws IOException {
+        return new SourceArchiveCreatorImpl(repoManager, sourcePaths, moduleName, moduleVersion, verbose, log);
     }
 
 }
