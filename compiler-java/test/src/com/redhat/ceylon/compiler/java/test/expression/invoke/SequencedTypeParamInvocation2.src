@@ -5,9 +5,6 @@ final class sequencedTypeParamInvocation2 {
     private sequencedTypeParamInvocation2() {
     }
     
-    static <T>void sequencedTypeParamInvocation2(final .ceylon.language.Iterable<? extends T> ts) {
-    }
-    
     static final <T>void sequencedTypeParamInvocation2() {
         (
             let
@@ -21,6 +18,9 @@ final class sequencedTypeParamInvocation2 {
     
     static final <T>.ceylon.language.Iterable<? extends T> sequencedTypeParamInvocation2$ts() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+    }
+    
+    static <T>void sequencedTypeParamInvocation2(final .ceylon.language.Iterable<? extends T> ts) {
     }
 }
 final class sequencedTypeParamInvocation2_test {

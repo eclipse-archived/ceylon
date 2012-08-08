@@ -8,9 +8,6 @@ class Bug687 {
     private final <T>void method(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
     
-    public final <T extends .ceylon.language.Number>void sort(final .ceylon.language.Iterable<? extends T> elements) {
-    }
-    
     public final <T extends .ceylon.language.Number>void sort() {
         (
             let
@@ -26,10 +23,10 @@ class Bug687 {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
-    public final <T extends .ceylon.language.Number>void sort3(final .ceylon.language.Iterable<? extends T> elements) {
+    public final <T extends .ceylon.language.Number>void sort(final .ceylon.language.Iterable<? extends T> elements) {
     }
     
-    public final void sort2(final .ceylon.language.Iterable elements) {
+    public final <T extends .ceylon.language.Number>void sort3(final .ceylon.language.Iterable<? extends T> elements) {
     }
     
     public final void sort2() {
@@ -45,6 +42,9 @@ class Bug687 {
     
     public final .ceylon.language.Iterable sort2$elements() {
         return .ceylon.language.$empty.getEmpty();
+    }
+    
+    public final void sort2(final .ceylon.language.Iterable elements) {
     }
     
     private final void foo(final .ceylon.language.Callable<? extends .java.lang.Object> p) {

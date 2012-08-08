@@ -31,6 +31,21 @@ class Local {
         return 0L;
     }
     
+    private final void local() {
+        (
+            let
+            {
+                long $ceylontmp$i$7 = local$i();
+                local($ceylontmp$i$7);
+            }
+            returning null;
+        );
+    }
+    
+    private final long local$i() {
+        return 0L;
+    }
+    
     private final void local(final long i) {
         
         final class LC$impl {
@@ -161,21 +176,6 @@ class Local {
         }
     }
     
-    private final void local() {
-        (
-            let
-            {
-                long $ceylontmp$i$7 = local$i();
-                local($ceylontmp$i$7);
-            }
-            returning null;
-        );
-    }
-    
-    private final long local$i() {
-        return 0L;
-    }
-    
     final class C$impl {
         
         C$impl() {
@@ -205,6 +205,21 @@ class Local {
             this.i = i;
         }
         private final long i;
+        
+        private final void local2() {
+            (
+                let
+                {
+                    long $ceylontmp$j$15 = local2$j();
+                    local2($ceylontmp$j$15);
+                }
+                returning null;
+            );
+        }
+        
+        private final long local2$j() {
+            return 0L;
+        }
         
         private final void local2(final long j) {
             
@@ -281,21 +296,6 @@ class Local {
                 }
             }
         }
-        
-        private final void local2() {
-            (
-                let
-                {
-                    long $ceylontmp$j$15 = local2$j();
-                    local2($ceylontmp$j$15);
-                }
-                returning null;
-            );
-        }
-        
-        private final long local2$j() {
-            return 0L;
-        }
     }
     
     final class I$impl {
@@ -304,6 +304,21 @@ class Local {
             this.$this = $this;
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I $this;
+        
+        private final void local3() {
+            (
+                let
+                {
+                    long $ceylontmp$i$21 = local3$i();
+                    local3($ceylontmp$i$21);
+                }
+                returning null;
+            );
+        }
+        
+        private final long local3$i() {
+            return 0L;
+        }
         
         private void local3(final long i) {
             
@@ -379,21 +394,6 @@ class Local {
                     }
                 }
             }
-        }
-        
-        private final void local3() {
-            (
-                let
-                {
-                    long $ceylontmp$i$21 = local3$i();
-                    local3($ceylontmp$i$21);
-                }
-                returning null;
-            );
-        }
-        
-        private final long local3$i() {
-            return 0L;
         }
     }
     

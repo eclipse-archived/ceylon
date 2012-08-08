@@ -14,9 +14,6 @@ class NamedArgumentWithEmptySequence {
         );
     }
     
-    private final void m(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
-    }
-    
     private final void m() {
         (
             let
@@ -30,6 +27,9 @@ class NamedArgumentWithEmptySequence {
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$b() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+    }
+    
+    private final void m(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
     }
     
     public static void main(.java.lang.String[] args) {

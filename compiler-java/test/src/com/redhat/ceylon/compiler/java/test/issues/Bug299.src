@@ -33,9 +33,6 @@ class Bug299 {
         Inner(.java.lang.String s) {
         }
         
-        private final void m(final .java.lang.String s) {
-        }
-        
         private final void m() {
             (
                 let
@@ -49,6 +46,9 @@ class Bug299 {
         
         private final .java.lang.String m$s() {
             return "b";
+        }
+        
+        private final void m(final .java.lang.String s) {
         }
     }
     
@@ -78,9 +78,6 @@ class Bug299 {
             Inner(.java.lang.String s) {
             }
             
-            private final void m(final .java.lang.String s) {
-            }
-            
             private final void m() {
                 (
                     let
@@ -94,6 +91,9 @@ class Bug299 {
             
             private final .java.lang.String m$s() {
                 return "b";
+            }
+            
+            private final void m(final .java.lang.String s) {
             }
         }
     }

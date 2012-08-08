@@ -5,10 +5,6 @@ final class defaultFunctionReference {
     private defaultFunctionReference() {
     }
     
-    static void defaultFunctionReference(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
-        f.$call(.ceylon.language.Integer.instance(1L));
-    }
-    
     static final void defaultFunctionReference() {
         (
             let
@@ -34,6 +30,10 @@ final class defaultFunctionReference {
                 );
             }
         };
+    }
+    
+    static void defaultFunctionReference(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        f.$call(.ceylon.language.Integer.instance(1L));
     }
 }
 final class defaultFunctionReference_call {

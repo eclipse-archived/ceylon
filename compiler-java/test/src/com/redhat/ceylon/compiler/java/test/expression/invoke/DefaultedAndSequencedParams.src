@@ -5,20 +5,6 @@ class DefaultedAndSequenced {
     DefaultedAndSequenced() {
     }
     
-    private final void m(final .java.lang.String s, final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Boolean> b) {
-    }
-    
-    private final void m(final .java.lang.String s, final long i) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $ceylontmp$b$4 = m$b(s, i);
-                m(s, i, $ceylontmp$b$4);
-            }
-            returning null;
-        );
-    }
-    
     private final void m(final .java.lang.String s) {
         (
             let
@@ -35,8 +21,22 @@ class DefaultedAndSequenced {
         return 1L;
     }
     
+    private final void m(final .java.lang.String s, final long i) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean> $ceylontmp$b$4 = m$b(s, i);
+                m(s, i, $ceylontmp$b$4);
+            }
+            returning null;
+        );
+    }
+    
     private final .ceylon.language.Iterable<? extends .ceylon.language.Boolean> m$b(final .java.lang.String s, final long i) {
         return new .ceylon.language.ArraySequence<.ceylon.language.Boolean>(.ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false));
+    }
+    
+    private final void m(final .java.lang.String s, final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Boolean> b) {
     }
     
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced self() {

@@ -5,9 +5,6 @@ class C<T> {
     C() {
     }
     
-    private final void m(final long i) {
-    }
-    
     private final void m() {
         (
             let
@@ -23,8 +20,7 @@ class C<T> {
         return 1L;
     }
     
-    public final long m2(final long i) {
-        return i;
+    private final void m(final long i) {
     }
     
     public final long m2() {
@@ -41,18 +37,8 @@ class C<T> {
         return 1L;
     }
     
-    private final long m3(final long i, final long n) {
+    public final long m2(final long i) {
         return i;
-    }
-    
-    private final long m3(final long i) {
-        return (
-            let
-            {
-                long $ceylontmp$n$8 = m3$n(i);
-            }
-            returning m3(i, $ceylontmp$n$8);
-        );
     }
     
     private final long m3() {
@@ -70,11 +56,21 @@ class C<T> {
         return 1L;
     }
     
+    private final long m3(final long i) {
+        return (
+            let
+            {
+                long $ceylontmp$n$8 = m3$n(i);
+            }
+            returning m3(i, $ceylontmp$n$8);
+        );
+    }
+    
     private final long m3$n(final long i) {
         return 2L * i;
     }
     
-    private final long m4(final long i, final long n) {
+    private final long m3(final long i, final long n) {
         return i;
     }
     
@@ -92,18 +88,8 @@ class C<T> {
         return 2L * i;
     }
     
-    private final <U>long m5(final long i, final T t, final U u) {
+    private final long m4(final long i, final long n) {
         return i;
-    }
-    
-    private final <U>long m5(final long i, final T t) {
-        return (
-            let
-            {
-                U $ceylontmp$u$15 = m5$u(i, t);
-            }
-            returning m5(i, t, $ceylontmp$u$15);
-        );
     }
     
     private final <U>long m5(final long i) {
@@ -121,8 +107,22 @@ class C<T> {
         return null;
     }
     
+    private final <U>long m5(final long i, final T t) {
+        return (
+            let
+            {
+                U $ceylontmp$u$15 = m5$u(i, t);
+            }
+            returning m5(i, t, $ceylontmp$u$15);
+        );
+    }
+    
     private final <U>U m5$u(final long i, final T t) {
         return null;
+    }
+    
+    private final <U>long m5(final long i, final T t, final U u) {
+        return i;
     }
     
     private final void positional(final .com.redhat.ceylon.compiler.java.test.structure.nesting.C<.ceylon.language.Boolean> c) {

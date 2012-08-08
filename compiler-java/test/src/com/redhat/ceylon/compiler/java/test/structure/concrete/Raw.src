@@ -12,11 +12,11 @@ interface RawInv<T, U> {
     
     public T mDefault(final T t);
     
-    public abstract T mDefaulted(final T t);
-    
     public abstract T mDefaulted();
     
     public abstract T mDefaulted$t();
+    
+    public abstract T mDefaulted(final T t);
     
     public abstract U getA2();
 }
@@ -123,11 +123,11 @@ interface RawIn<T, U> {
     
     public void mDefault(final T t);
     
-    public abstract void mDefaulted(final T t);
-    
     public abstract void mDefaulted();
     
     public abstract T mDefaulted$t();
+    
+    public abstract void mDefaulted(final T t);
     
     public abstract void m2(final U u);
 }

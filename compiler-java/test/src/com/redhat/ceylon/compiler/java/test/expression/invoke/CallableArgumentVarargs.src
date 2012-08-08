@@ -13,9 +13,6 @@ final class callableArgumentVarargs_g {
     private callableArgumentVarargs_g() {
     }
     
-    static void callableArgumentVarargs_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
-    }
-    
     static final void callableArgumentVarargs_g() {
         (
             let
@@ -29,6 +26,9 @@ final class callableArgumentVarargs_g {
     
     static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentVarargs_g$s() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+    }
+    
+    static void callableArgumentVarargs_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
     }
 }
 final class callableArgumentVarargs_m {

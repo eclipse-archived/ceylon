@@ -5,17 +5,6 @@ public final class twoParamListsDefaulted {
     private twoParamListsDefaulted() {
     }
     
-    public static .ceylon.language.Callable<? extends .ceylon.language.String> twoParamListsDefaulted(final .java.lang.String firstName) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
-            
-            @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final .java.lang.String lastName = ((.ceylon.language.String)$param$0).toString();
-                return .ceylon.language.String.instance(firstName + " " + lastName);
-            }
-        };
-    }
-    
     public static final .ceylon.language.Callable<? extends .ceylon.language.String> twoParamListsDefaulted() {
         return (
             let
@@ -28,6 +17,17 @@ public final class twoParamListsDefaulted {
     
     public static final .java.lang.String twoParamListsDefaulted$firstName() {
         return "John";
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> twoParamListsDefaulted(final .java.lang.String firstName) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String lastName = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(firstName + " " + lastName);
+            }
+        };
     }
 }
 final class twoParamListsDefaulted_caller {

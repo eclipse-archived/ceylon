@@ -4,11 +4,11 @@ interface I1 {
     
     public abstract long i1();
     
-    public long m1(final long n);
-    
     public long m1();
     
     public abstract long m1$n();
+    
+    public long m1(final long n);
 }
 final class I1$impl {
     
@@ -16,10 +16,6 @@ final class I1$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
-    
-    public long m1(final long n) {
-        return n + $this.i1();
-    }
     
     public final long m1() {
         return (
@@ -33,6 +29,10 @@ final class I1$impl {
     
     public final long m1$n() {
         return $this.i1();
+    }
+    
+    public long m1(final long n) {
+        return n + $this.i1();
     }
 }
 class CI1 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 {
@@ -71,11 +71,11 @@ interface I2 {
     
     public abstract long i2();
     
-    public long m2(final long n);
-    
     public long m2();
     
     public abstract long m2$n();
+    
+    public long m2(final long n);
 }
 final class I2$impl {
     
@@ -83,10 +83,6 @@ final class I2$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
-    
-    public long m2(final long n) {
-        return n + $this.i2();
-    }
     
     public final long m2() {
         return (
@@ -100,6 +96,10 @@ final class I2$impl {
     
     public final long m2$n() {
         return $this.i2();
+    }
+    
+    public long m2(final long n) {
+        return n + $this.i2();
     }
 }
 interface I3 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
@@ -115,11 +115,11 @@ interface I4 {
     
     public abstract long i4();
     
-    public long m4(final long n);
-    
     public long m4();
     
     public abstract long m4$n();
+    
+    public long m4(final long n);
 }
 final class I4$impl {
     
@@ -127,10 +127,6 @@ final class I4$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I4 $this;
-    
-    public long m4(final long n) {
-        return n;
-    }
     
     public final long m4() {
         return (
@@ -144,6 +140,10 @@ final class I4$impl {
     
     public final long m4$n() {
         return $this.i4();
+    }
+    
+    public long m4(final long n) {
+        return n;
     }
 }
 class CI3 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {

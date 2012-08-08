@@ -6,15 +6,15 @@ interface This {
     
     public abstract long m1();
     
-    public long m2(final long i1, final long i2);
-    
-    public long m2(final long i1);
-    
     public long m2();
     
     public abstract long m2$i1();
     
+    public long m2(final long i1);
+    
     public abstract long m2$i2(final long i1);
+    
+    public long m2(final long i1, final long i2);
 }
 final class This$impl {
     
@@ -22,20 +22,6 @@ final class This$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.This $this;
-    
-    public long m2(final long i1, final long i2) {
-        return $this.m1() + $this.m1() + i1 + i2;
-    }
-    
-    public final long m2(final long i1) {
-        return (
-            let
-            {
-                long $ceylontmp$i2$4 = m2$i2(i1);
-            }
-            returning m2(i1, $ceylontmp$i2$4);
-        );
-    }
     
     public final long m2() {
         return (
@@ -52,8 +38,22 @@ final class This$impl {
         return $this.m1();
     }
     
+    public final long m2(final long i1) {
+        return (
+            let
+            {
+                long $ceylontmp$i2$4 = m2$i2(i1);
+            }
+            returning m2(i1, $ceylontmp$i2$4);
+        );
+    }
+    
     public final long m2$i2(final long i1) {
         return $this.m1();
+    }
+    
+    public long m2(final long i1, final long i2) {
+        return $this.m1() + $this.m1() + i1 + i2;
     }
     
     class Inner {

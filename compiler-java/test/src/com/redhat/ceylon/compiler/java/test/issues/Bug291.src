@@ -12,10 +12,6 @@ final class run {
             private holaMundo() {
             }
             
-            void holaMundo(final .java.lang.String name) {
-                .ceylon.language.print.print(.ceylon.language.String.instance("hola " + name));
-            }
-            
             final void holaMundo() {
                 (
                     let
@@ -29,6 +25,10 @@ final class run {
             
             private final .java.lang.String holaMundo$name() {
                 return "mundo";
+            }
+            
+            void holaMundo(final .java.lang.String name) {
+                .ceylon.language.print.print(.ceylon.language.String.instance("hola " + name));
             }
         }
         final holaMundo holaMundo = new holaMundo();

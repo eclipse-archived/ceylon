@@ -2,17 +2,17 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface TypeParamRename<T, U> {
     
-    public U m(final T t);
-    
     public U m();
     
     public abstract T m$t();
     
-    public <V, W>W m2(final V v);
+    public U m(final T t);
     
     public <V, W>W m2();
     
     public abstract <V, W>V m2$v();
+    
+    public <V, W>W m2(final V v);
 }
 final class TypeParamRename$impl<T, U> {
     
@@ -20,10 +20,6 @@ final class TypeParamRename$impl<T, U> {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this;
-    
-    public U m(final T t) {
-        throw new .ceylon.language.Exception(null, null);
-    }
     
     public final U m() {
         return (
@@ -39,7 +35,7 @@ final class TypeParamRename$impl<T, U> {
         return null;
     }
     
-    public <V, W>W m2(final V v) {
+    public U m(final T t) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -55,6 +51,10 @@ final class TypeParamRename$impl<T, U> {
     
     public final <V, W>V m2$v() {
         return null;
+    }
+    
+    public <V, W>W m2(final V v) {
+        throw new .ceylon.language.Exception(null, null);
     }
 }
 class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y> {

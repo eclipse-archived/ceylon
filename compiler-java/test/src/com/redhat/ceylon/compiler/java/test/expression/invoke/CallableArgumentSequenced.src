@@ -13,9 +13,6 @@ final class callableArgumentSequenced_g {
     private callableArgumentSequenced_g() {
     }
     
-    static void callableArgumentSequenced_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
-    }
-    
     static final void callableArgumentSequenced_g() {
         (
             let
@@ -29,6 +26,9 @@ final class callableArgumentSequenced_g {
     
     static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentSequenced_g$s() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+    }
+    
+    static void callableArgumentSequenced_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
     }
 }
 final class callableArgumentSequenced_m {

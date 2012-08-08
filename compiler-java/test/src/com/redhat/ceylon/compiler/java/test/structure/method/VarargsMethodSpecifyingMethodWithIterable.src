@@ -8,10 +8,6 @@ class VarargsMethodSpecifyingMethodWithIterable {
     private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
-    private final void bar(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
-        foo(ints);
-    }
-    
     private final void bar() {
         (
             let
@@ -25,6 +21,10 @@ class VarargsMethodSpecifyingMethodWithIterable {
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> bar$ints() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+    }
+    
+    private final void bar(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
+        foo(ints);
     }
     
     public static void main(.java.lang.String[] args) {

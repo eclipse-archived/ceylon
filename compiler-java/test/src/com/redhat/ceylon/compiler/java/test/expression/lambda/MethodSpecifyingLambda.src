@@ -5,10 +5,6 @@ class MethodSpecifyingLambda {
     MethodSpecifyingLambda() {
     }
     
-    public final .java.lang.String m(final .java.lang.String name) {
-        return ("hello " + name).toString();
-    }
-    
     public final .java.lang.String m() {
         return (
             let
@@ -21,6 +17,10 @@ class MethodSpecifyingLambda {
     
     public final .java.lang.String m$name() {
         return "world";
+    }
+    
+    public final .java.lang.String m(final .java.lang.String name) {
+        return ("hello " + name).toString();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -5,9 +5,6 @@ public final class $assert {
     private $assert() {
     }
     
-    public static void $assert(final boolean assertion, final .java.lang.String message) {
-    }
-    
     public static final void $assert(final boolean assertion) {
         (
             let
@@ -21,6 +18,9 @@ public final class $assert {
     
     public static final .java.lang.String assert$message(final boolean assertion) {
         return "";
+    }
+    
+    public static void $assert(final boolean assertion, final .java.lang.String message) {
     }
 }
 final class m {

@@ -5,13 +5,6 @@ class MethodWithVarargs {
     MethodWithVarargs() {
     }
     
-    public final void f1(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
-        .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = ns.getIterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
-            final long n = ((.ceylon.language.Integer)$elem$0).longValue();
-        }
-    }
-    
     public final void f1() {
         (
             let
@@ -27,10 +20,10 @@ class MethodWithVarargs {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
-    public final void f2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
-        .java.lang.Object $elem$4;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$5 = ns.getIterator(); !(($elem$4 = $n$iter$5.next()) instanceof .ceylon.language.Finished); ) {
-            final long n = ((.ceylon.language.Integer)$elem$4).longValue();
+    public final void f1(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
+        .java.lang.Object $elem$0;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = ns.getIterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((.ceylon.language.Integer)$elem$0).longValue();
         }
     }
     
@@ -49,10 +42,10 @@ class MethodWithVarargs {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
-    public final void f3(final .ceylon.language.Iterable<? extends .java.lang.Object> os) {
-        .java.lang.Object $elem$8;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$9 = os.getIterator(); !(($elem$8 = $o$iter$9.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object o = (.java.lang.Object)$elem$8;
+    public final void f2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
+        .java.lang.Object $elem$4;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$5 = ns.getIterator(); !(($elem$4 = $n$iter$5.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((.ceylon.language.Integer)$elem$4).longValue();
         }
     }
     
@@ -69,6 +62,13 @@ class MethodWithVarargs {
     
     public final .ceylon.language.Iterable<? extends .java.lang.Object> f3$os() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+    }
+    
+    public final void f3(final .ceylon.language.Iterable<? extends .java.lang.Object> os) {
+        .java.lang.Object $elem$8;
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$9 = os.getIterator(); !(($elem$8 = $o$iter$9.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object o = (.java.lang.Object)$elem$8;
+        }
     }
     
     private final void m() {

@@ -12,20 +12,6 @@ final class getterArgumentNamedInvocation {
             private callFunction() {
             }
             
-            void callFunction(final long i, final .java.lang.String s) {
-            }
-            
-            final void callFunction(final long i) {
-                (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$s$4 = callFunction$s(i);
-                        callFunction(i, $ceylontmp$s$4);
-                    }
-                    returning null;
-                );
-            }
-            
             final void callFunction() {
                 (
                     let
@@ -42,8 +28,22 @@ final class getterArgumentNamedInvocation {
                 return 2L;
             }
             
+            final void callFunction(final long i) {
+                (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$s$4 = callFunction$s(i);
+                        callFunction(i, $ceylontmp$s$4);
+                    }
+                    returning null;
+                );
+            }
+            
             private final .java.lang.String callFunction$s(final long i) {
                 return "";
+            }
+            
+            void callFunction(final long i, final .java.lang.String s) {
             }
         }
         final callFunction callFunction = new callFunction();

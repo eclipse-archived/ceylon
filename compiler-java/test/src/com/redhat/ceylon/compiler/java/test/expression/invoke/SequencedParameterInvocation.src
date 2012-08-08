@@ -5,9 +5,6 @@ class SequencedParameterInvocation {
     SequencedParameterInvocation() {
     }
     
-    private final void m(final .java.lang.String a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
-    }
-    
     private final void m(final .java.lang.String a) {
         (
             let
@@ -23,7 +20,7 @@ class SequencedParameterInvocation {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
-    private final void m2(final .java.lang.String a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+    private final void m(final .java.lang.String a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
     }
     
     private final void m2(final .java.lang.String a) {
@@ -39,6 +36,9 @@ class SequencedParameterInvocation {
     
     private final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> m2$i(final .java.lang.String a) {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+    }
+    
+    private final void m2(final .java.lang.String a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
     }
     
     private final void f() {

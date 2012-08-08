@@ -6,11 +6,11 @@ interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolea
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<? extends T, ? super X> $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl();
     
-    public abstract <U>T m1(final X b, final U u);
-    
     public abstract <U>T m1(final X b);
     
     public abstract <U>U m1$u(final X b);
+    
+    public abstract <U>T m1(final X b, final U u);
 }
 final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     

@@ -7,9 +7,6 @@ class DefaultedAndTypeParams<X> {
     }
     private final X init;
     
-    public final <Y>void m(final Y y, final X x) {
-    }
-    
     public final <Y>void m(final Y y) {
         (
             let
@@ -23,6 +20,9 @@ class DefaultedAndTypeParams<X> {
     
     public final <Y>X m$x(final Y y) {
         return init;
+    }
+    
+    public final <Y>void m(final Y y, final X x) {
     }
 }
 final class defaultedAndTypeParams_m {

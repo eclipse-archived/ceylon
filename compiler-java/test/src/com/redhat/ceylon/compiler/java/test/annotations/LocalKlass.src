@@ -35,9 +35,6 @@ public class LocalKlass {
             public final void setI2(final long i2) {
             }
             
-            public final void m2(final long arg1, final .ceylon.language.Iterable<? extends T> t) {
-            }
-            
             public final void m2(final long arg1) {
                 (
                     let
@@ -51,6 +48,9 @@ public class LocalKlass {
             
             public final .ceylon.language.Iterable<? extends T> m2$t(final long arg1) {
                 return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+            }
+            
+            public final void m2(final long arg1, final .ceylon.language.Iterable<? extends T> t) {
             }
             
             @.java.lang.Override

@@ -69,10 +69,6 @@ class MethodInitializerParameter<T> {
             }
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
-            void m(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
-                m.$call(i, seq);
-            }
-            
             final void m(final long i) {
                 (
                     let
@@ -86,6 +82,10 @@ class MethodInitializerParameter<T> {
             
             private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$seq(final long i) {
                 return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
+            }
+            
+            void m(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+                m.$call(i, seq);
             }
         }
         final m m = new m();
@@ -146,10 +146,6 @@ class MethodInitializerParameter<T> {
             }
             private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
-            void m(final long i) {
-                m.$call(i);
-            }
-            
             final void m() {
                 (
                     let
@@ -163,6 +159,10 @@ class MethodInitializerParameter<T> {
             
             private final long m$i() {
                 return 1L;
+            }
+            
+            void m(final long i) {
+                m.$call(i);
             }
         }
         final m m = new m();

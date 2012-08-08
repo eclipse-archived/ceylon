@@ -7,10 +7,6 @@ class MethodDefaultedParamCaptureInitParam {
     }
     private final .java.lang.String s;
     
-    private final .java.lang.String m(final .java.lang.String t) {
-        return t.toString();
-    }
-    
     private final .java.lang.String m() {
         return (
             let
@@ -23,5 +19,9 @@ class MethodDefaultedParamCaptureInitParam {
     
     private final .java.lang.String m$t() {
         return s;
+    }
+    
+    private final .java.lang.String m(final .java.lang.String t) {
+        return t.toString();
     }
 }

@@ -7,10 +7,6 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     C() {
     }
     
-    private final <U>T m1(final X b, final U u) {
-        throw new .ceylon.language.Exception(null, null);
-    }
-    
     private final <U>T m1(final X b) {
         return (
             let
@@ -23,6 +19,10 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
     private final <U>U m1$u(final X b) {
         return null;
+    }
+    
+    private final <U>T m1(final X b, final U u) {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     class CC {
