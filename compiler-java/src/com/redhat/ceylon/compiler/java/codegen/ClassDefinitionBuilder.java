@@ -85,7 +85,6 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<MethodDefinitionBuilder> constructors = ListBuffer.lb();
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
     private ClassDefinitionBuilder concreteInterfaceMemberDefs;
-    private final ListBuffer<JCTree> body = ListBuffer.lb();
     private final ListBuffer<JCTree> also = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
 
@@ -205,7 +204,6 @@ public class ClassDefinitionBuilder {
                 && (((modifiers & INTERFACE) != 0)
                     || !(concreteInterfaceMemberDefs.defs.isEmpty()
                     && concreteInterfaceMemberDefs.init.isEmpty()
-                    && concreteInterfaceMemberDefs.body.isEmpty()
                     && concreteInterfaceMemberDefs.constructors.isEmpty()));
     }
 
@@ -214,7 +212,6 @@ public class ClassDefinitionBuilder {
     }
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
-        defs.appendList(this.defs);
         if ((modifiers & INTERFACE) == 0) {
             if (superCall != null) {
                 init.prepend(superCall);
@@ -226,7 +223,7 @@ public class ClassDefinitionBuilder {
                 defs.append(builder.build());
             }
         }
-        defs.appendList(body);
+        defs.appendList(this.defs);
     }
 
     private JCExpression getSuperclass(ProducedType extendedType) {
@@ -457,14 +454,14 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder body(JCTree statement) {
         if (statement != null) {
-            this.body.append(statement);
+            this.defs.append(statement);
         }
         return this;
     }
     
     public ClassDefinitionBuilder body(List<JCTree> body) {
         if (body != null) {
-            this.body.appendList(body);
+            this.defs.appendList(body);
         }
         return this;
     }
