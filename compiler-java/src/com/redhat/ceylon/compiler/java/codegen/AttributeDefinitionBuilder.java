@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -59,6 +60,8 @@ public class AttributeDefinitionBuilder {
     private AbstractTransformer owner;
 
     private boolean toplevel = false;
+    
+    private boolean noAnnotations = false;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName, boolean toplevel) {
         int typeFlags = 0;
@@ -144,11 +147,13 @@ public class AttributeDefinitionBuilder {
 
         if (readable) {
             getterBuilder.modifiers(getGetSetModifiers());
+            getterBuilder.noAnnotations(noAnnotations);
             defs.append(getterBuilder.build());
         }
 
         if (writable) {
             setterBuilder.modifiers(getGetSetModifiers());
+            setterBuilder.noAnnotations(noAnnotations);
             defs.append(setterBuilder.build());
         }
     }
@@ -240,6 +245,11 @@ public class AttributeDefinitionBuilder {
         return this;
     }
 
+    public AttributeDefinitionBuilder noAnnotations() {
+        this.noAnnotations = true;
+        return this;
+    }
+    
     public AttributeDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
         this.annotations.appendList(annotations);
         return this;

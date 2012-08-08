@@ -203,7 +203,7 @@ public class ClassTransformer extends AbstractTransformer {
         // If it's a Class without initializer parameters...
         if (Strategy.generateMain(def)) {
             // ... then add a main() method
-            classBuilder.defs(makeMainForClass(model));
+            classBuilder.method(makeMainForClass(model));
         }
         
         return classBuilder
@@ -490,6 +490,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (hasInnerClasses) {
             MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
                     this, getCompanionAccessorName(iface));
+            thisMethod.noAnnotations();
             if (!forImplementor && Decl.isAncestorLocal(iface)) {
                 // For a local interface the return type cannot be a local
                 // companion class, because that won't be visible at the 
@@ -654,21 +655,23 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         if (useField) {
-            classBuilder.defs(makeGetter(decl, false));
+            classBuilder.attribute(makeGetter(decl, false));
             if (Decl.withinInterface(decl)) {
-                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(makeGetter(decl, true));
+                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true));
             }
             if (Decl.isMutable(decl)) {
-                classBuilder.defs(makeSetter(decl, false));
+                classBuilder.attribute(makeSetter(decl, false));
                 if (Decl.withinInterface(decl)) {
-                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(makeSetter(decl, true));
+                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true));
                 }
             }
         }
     }
 
-	public List<JCTree> transform(AttributeSetterDefinition decl, boolean forCompanion) {
-	    ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+	public AttributeDefinitionBuilder transform(AttributeSetterDefinition decl, boolean forCompanion) {
+	    if (Strategy.onlyOnCompanion(decl.getDeclarationModel()) && !forCompanion) {
+	        return null;
+	    }
         String name = decl.getIdentifier().getText();
         final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                 /* 
@@ -688,15 +691,14 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        if (!Strategy.onlyOnCompanion(decl.getDeclarationModel()) || forCompanion) {
-            lb.appendList(builder.build());
-        }
         
-        return lb.toList();
+        return builder;
     }
 
-    public List<JCTree> transform(AttributeGetterDefinition decl, boolean forCompanion) {
-        ListBuffer<JCTree> lb = ListBuffer.<JCTree>lb();
+    public AttributeDefinitionBuilder transform(AttributeGetterDefinition decl, boolean forCompanion) {
+        if (Strategy.onlyOnCompanion(decl.getDeclarationModel()) && !forCompanion) {
+            return null;
+        }
         String name = decl.getIdentifier().getText();
         final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
@@ -712,11 +714,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             builder.isFormal(true);
         }
-        if (!Strategy.onlyOnCompanion(decl.getDeclarationModel()) || forCompanion) {
-            lb.appendList(builder.build());
-        }
-        
-        return lb.toList();
+        return builder;    
     }
 
     private int transformClassDeclFlags(ClassOrInterface cdecl) {
@@ -806,7 +804,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private List<JCTree> makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, AttributeDefinitionBuilder builder, boolean isGetter) {
+    private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, AttributeDefinitionBuilder builder, boolean isGetter) {
         at(decl);
         if (forCompanion) {
             if (decl.getSpecifierOrInitializerExpression() != null) {
@@ -838,11 +836,10 @@ public class ClassTransformer extends AbstractTransformer {
             builder.notActual();
         return builder
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion))
-            .isFormal(Decl.isFormal(decl) && !forCompanion)
-            .build();
+            .isFormal(Decl.isFormal(decl) && !forCompanion);
     }
     
-    private List<JCTree> makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion) {
+    private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
@@ -850,7 +847,7 @@ public class ClassTransformer extends AbstractTransformer {
         return makeGetterOrSetter(decl, forCompanion, getter, true);
     }
 
-    private List<JCTree> makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion) {
+    private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, attrName, decl.getDeclarationModel());
@@ -868,7 +865,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Toplevel method
         if (Strategy.generateMain(def)) {
             // Add a main() method
-            builder.defs(makeMainForFunction(model));
+            builder.method(makeMainForFunction(model));
         }
         
         List<JCTree> result = builder.build();
@@ -1229,6 +1226,7 @@ public class ClassTransformer extends AbstractTransformer {
             int flags, MethodDefinitionBuilder overloadBuilder,
             final Declaration model, java.util.List<Parameter> parameters,
             final Parameter currentParam) {
+        // need annotations for BC, but the method isn't really there
         overloadBuilder.ignoreAnnotations();
         
         final JCExpression methName;
@@ -1495,7 +1493,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Makes a {@code main()} method which calls the given top-level method
      * @param def
      */
-    private JCMethodDecl makeMainForClass(ClassOrInterface model) {
+    private MethodDefinitionBuilder makeMainForClass(ClassOrInterface model) {
         at(null);
         if(model.isAlias())
             model = model.getExtendedTypeDeclaration();
@@ -1508,10 +1506,10 @@ public class ClassTransformer extends AbstractTransformer {
      * Makes a {@code main()} method which calls the given top-level method
      * @param method
      */
-    private JCMethodDecl makeMainForFunction(Method method) {
+    private MethodDefinitionBuilder makeMainForFunction(Method method) {
         at(null);
         JCExpression qualifiedName = naming.makeName(method, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
-        JCMethodDecl mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil()));
+        MethodDefinitionBuilder mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil()));
         return mainMethod;
     }
     
@@ -1521,7 +1519,7 @@ public class ClassTransformer extends AbstractTransformer {
      * @param decl
      * @param callee
      */
-    private JCMethodDecl makeMainMethod(Declaration decl, JCExpression callee) {
+    private MethodDefinitionBuilder makeMainMethod(Declaration decl, JCExpression callee) {
         // Add a main() method
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
                 .main(this)
@@ -1532,7 +1530,7 @@ public class ClassTransformer extends AbstractTransformer {
         methbuilder.body(make().Exec(make().Apply(null, makeSelect(processExpr, "setupArguments"), List.<JCTree.JCExpression>of(argsId))));
         // Add call to toplevel method
         methbuilder.body(make().Exec(callee));
-        return methbuilder.build();
+        return methbuilder;
     }
     
     void copyTypeParameters(Tree.AnyMethod def, MethodDefinitionBuilder methodBuilder) {

@@ -150,6 +150,9 @@ public class MethodDefinitionBuilder {
         
         ListBuffer<JCVariableDecl> params = ListBuffer.lb();
         for (ParameterDefinitionBuilder pdb : this.params) {
+            if (noAnnotations || ignoreAnnotations) {
+                pdb.noAnnotations();
+            }
             params.append(pdb.build());
         }
 
@@ -217,7 +220,11 @@ public class MethodDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder noAnnotations() {
-        noAnnotations = true;
+        return noAnnotations(true);
+    }
+    
+    public MethodDefinitionBuilder noAnnotations(boolean noAnnotations) {
+        this.noAnnotations = noAnnotations;
         return this;
     }
     
@@ -395,4 +402,6 @@ public class MethodDefinitionBuilder {
         sb.append(')');
         return sb.toString();
     }
+
+    
 }

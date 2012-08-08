@@ -214,6 +214,9 @@ public class ClassDefinitionBuilder {
                 createConstructor(init.toList());
             }
             for (MethodDefinitionBuilder builder : constructors) {
+                if (noAnnotations || ignoreAnnotations) {
+                    builder.noAnnotations();
+                }
                 defs.append(builder.build());
             }
         }
@@ -464,6 +467,24 @@ public class ClassDefinitionBuilder {
         return parameter(name, param, param.isSequenced(), param.isDefaulted());
     }
     
+    /**
+     * Appends the attribute built by the given builder 
+     * (the attribute is built without annotations if necessary).
+     */
+    public ClassDefinitionBuilder attribute(AttributeDefinitionBuilder adb) {
+        if (adb != null) {
+            if (isCompanion) {
+                adb.noAnnotations();
+            }
+            defs(adb.build());
+        }
+        return this;
+    }
+    
+    /**
+     * Appends the method built by the given builder 
+     * (the method is built without annotations if necessary).
+     */
     public ClassDefinitionBuilder method(MethodDefinitionBuilder mdb) {
         if (mdb != null) {
             if (isCompanion) {
@@ -474,6 +495,10 @@ public class ClassDefinitionBuilder {
         return this;
     }
     
+    /**
+     * Appends the methods built by the given builder 
+     * (the methods are built without annotations if necessary).
+     */
     public ClassDefinitionBuilder methods(List<MethodDefinitionBuilder> mdbs) {
         for (MethodDefinitionBuilder mdb : mdbs) {
             method(mdb);
@@ -481,13 +506,19 @@ public class ClassDefinitionBuilder {
         return this;
     }
     
-    public ClassDefinitionBuilder defs(JCTree statement) {
+    /**
+     * Appends the given tree
+     */
+    private ClassDefinitionBuilder defs(JCTree statement) {
         if (statement != null) {
             this.defs.append(statement);
         }
         return this;
     }
     
+    /**
+     * Appends the given trees.
+     */
     public ClassDefinitionBuilder defs(List<JCTree> defs) {
         if (defs != null) {
             this.defs.appendList(defs);
