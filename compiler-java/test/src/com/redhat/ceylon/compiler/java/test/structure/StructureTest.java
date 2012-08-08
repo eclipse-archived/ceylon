@@ -468,6 +468,12 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("alias/ClassAlias");
     }
 
+    @Ignore("Type checker bug? https://github.com/ceylon/ceylon-spec/issues/380")
+    @Test
+    public void testAlsMemberClassAlias() {
+        compareWithJavaSource("alias/MemberClassAlias");
+    }
+
     @Test
     public void testAlsClassAliasWithParameters() {
         compareWithJavaSource("alias/ClassAliasWithParameters");
