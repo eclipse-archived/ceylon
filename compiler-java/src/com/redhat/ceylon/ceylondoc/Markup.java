@@ -28,7 +28,7 @@ import java.io.Writer;
 
 public class Markup {
 
-    private final Writer writer;
+    protected final Writer writer;
 
     public Markup(Writer writer) {
         super();

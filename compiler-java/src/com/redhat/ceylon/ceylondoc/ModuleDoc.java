@@ -94,19 +94,9 @@ public class ModuleDoc extends CeylonDoc {
         close("tr");
     }
 
+    @Override
+    protected Object getFromObject() {
+        return module;
+    }
 
-    @Override
-    protected String getObjectUrl(Object to) throws IOException {
-        return tool.getObjectUrl(module, to);
-    }
-    
-    @Override
-    protected String getResourceUrl(String to) throws IOException {
-        return tool.getResourceUrl(module, to);
-    }
-    
-    @Override
-    protected String getSrcUrl(Object to) throws IOException {
-        return tool.getSrcUrl(module, to);
-    }
 }

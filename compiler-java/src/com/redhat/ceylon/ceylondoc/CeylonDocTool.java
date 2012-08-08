@@ -94,6 +94,7 @@ public class CeylonDocTool {
     private File tempDestDir;
     private CeylondLogger log;
     private List<String> compiledClasses = new LinkedList<String>();
+    private Module currentModule;
 
     public CeylonDocTool(List<File> sourceFolders, List<String> repositories, List<String> moduleSpecs,
             boolean haltOnError) {
@@ -345,20 +346,27 @@ public class CeylonDocTool {
     }
 
     private void documentModule(Module module) throws IOException {
-        doc(module);
-        makeIndex(module);
-        makeSearch(module);
-        
-        File resourcesDir = getResourcesDir(module);
-        copyResource("resources/style.css", new File(resourcesDir, "style.css"));
-        copyResource("resources/shCore.css", new File(resourcesDir, "shCore.css"));
-        copyResource("resources/shThemeDefault.css", new File(resourcesDir, "shThemeDefault.css"));
-        copyResource("resources/jquery-1.7.min.js", new File(resourcesDir, "jquery-1.7.min.js"));
-        copyResource("resources/ceylond.js", new File(resourcesDir, "ceylond.js"));
-        copyResource("resources/shCore.js", new File(resourcesDir, "shCore.js"));
-        copyResource("resources/shBrushCeylon.js", new File(resourcesDir, "shBrushCeylon.js"));
-        copyResource("resources/icons.png", new File(resourcesDir, "icons.png"));
-        copyResource("resources/NOTICE.txt", new File(getOutputFolder(module), "NOTICE.txt"));
+        try {
+            currentModule = module;
+            
+            doc(module);
+            makeIndex(module);
+            makeSearch(module);
+            
+            File resourcesDir = getResourcesDir(module);
+            copyResource("resources/style.css", new File(resourcesDir, "style.css"));
+            copyResource("resources/shCore.css", new File(resourcesDir, "shCore.css"));
+            copyResource("resources/shThemeDefault.css", new File(resourcesDir, "shThemeDefault.css"));
+            copyResource("resources/jquery-1.7.min.js", new File(resourcesDir, "jquery-1.7.min.js"));
+            copyResource("resources/ceylond.js", new File(resourcesDir, "ceylond.js"));
+            copyResource("resources/shCore.js", new File(resourcesDir, "shCore.js"));
+            copyResource("resources/shBrushCeylon.js", new File(resourcesDir, "shBrushCeylon.js"));
+            copyResource("resources/icons.png", new File(resourcesDir, "icons.png"));
+            copyResource("resources/NOTICE.txt", new File(getOutputFolder(module), "NOTICE.txt"));
+        }
+        finally {
+            currentModule = null;
+        }
     }
 
     private void collectSubclasses() throws IOException {
@@ -641,7 +649,7 @@ public class CeylonDocTool {
      * Gets the base URL
      * @return Gets the base URL
      */
-    protected URI getBaseUrl(Module module) throws IOException {
+    private URI getBaseUrl(Module module) throws IOException {
         return getOutputFolder(module).getCanonicalFile().toURI();
     }
     
@@ -766,4 +774,9 @@ public class CeylonDocTool {
             return null;
         return new int[]{node.getToken().getLine(), node.getEndToken().getLine()};
     }
+    
+    protected Module getCurrentModule() {
+        return currentModule;
+    }
+    
 }

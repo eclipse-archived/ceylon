@@ -67,11 +67,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 } else {
                     first = false;
                 }
-                if (targetDecl instanceof TypeDeclaration) {
-                    link(((TypeDeclaration) targetDecl).getType());
-                } else {
-                    linkToDeclaration(targetDecl);
-                }
+                linkRenderer().to(targetDecl).write();
             }
         }
         close("div");
@@ -103,7 +99,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeIcon(d);
         around("span class='modifiers'", getModifiers(d));
         write(" ");
-        link(d.getType());
+        linkRenderer().to(d.getType()).write();
         close("code", "td");
         open("td");
         writeLinkSource(d);
@@ -141,9 +137,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         String srcUrl;
         if (m.isToplevel()) {
-            srcUrl = getSrcUrl(m);
+            srcUrl = linkRenderer().getSrcUrl(m);
         } else {
-            srcUrl = getSrcUrl(m.getContainer());
+            srcUrl = linkRenderer().getSrcUrl(m.getContainer());
         }
         int[] lines = tool.getDeclarationSrcLocation(m);
         if(lines != null){
@@ -186,7 +182,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 } else if (param.isSequenced()) {
                     writeSequencedParameter(param);
                 } else {
-                    link(param.getType());
+                    linkRenderer().to(param.getType()).write();
                     write(" ", param.getName());
                 }
             }
@@ -195,7 +191,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     private void writeFunctionalParameter(FunctionalParameter functionParam) throws IOException {
-        link(functionParam.getType());
+        linkRenderer().to(functionParam.getType()).write();
         write(" ");
         write(functionParam.getName());
         writeParameterList(functionParam);
@@ -203,7 +199,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
     private void writeSequencedParameter(Parameter param) throws IOException {
         ProducedType sequencedParamType = param.getUnit().getIteratedType(param.getType());
-        link(sequencedParamType);
+        linkRenderer().to(sequencedParamType).write();
         write("...");
         write(" ", param.getName());
     }
@@ -264,7 +260,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 Scope declScope = resolveScope(decl);
                 Declaration excTypeDecl = resolveDeclaration(declScope, excType);
                 if (excTypeDecl instanceof TypeDeclaration) {
-                    link(((TypeDeclaration)excTypeDecl).getType());
+                    linkRenderer().to(excTypeDecl).write();
                 } else {
                     write(excType);
                 }
