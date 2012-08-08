@@ -997,11 +997,11 @@ public class ClassTransformer extends AbstractTransformer {
                                 overloadsFlags, 
                                 overloadBuilder, 
                                 model, parameterList.getParameters(), parameter).build();
-                        lb.prepend(overloadedMethod);
+                        lb.append(overloadedMethod);
                     }
                     
                     if (transformDefaultValues) {
-                        lb.add(makeParamDefaultValueMethod(defaultValuesBody, model, paramList, param));    
+                        lb.append(makeParamDefaultValueMethod(defaultValuesBody, model, paramList, param));    
                     }
                 }
             }    
@@ -1027,7 +1027,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (CodegenUtil.hasCompilerAnnotation(def, "test")){
                 methodBuilder.annotations(List.of(make().Annotation(naming.makeFQIdent("org", "junit", "Test"), List.<JCTree.JCExpression>nil())));
             }
-            lb.prepend(methodBuilder.build());
+            lb.append(methodBuilder.build());
         }
         return lb.toList();
     }
