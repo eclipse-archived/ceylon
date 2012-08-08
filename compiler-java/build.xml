@@ -34,7 +34,7 @@
   <property name="build.dist" location="${build}/dist"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
-  <property name="markdown.version" value="0.7-1fc6e2a548"/>
+  <property name="markdown.version" value="0.7-8bc64aa0f1"/>
   <property name="markdown.lib" location="${base.path}/txtmark-${markdown.version}.jar"/>
     
   <!-- Jarfiles everything ends up in -->
