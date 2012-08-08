@@ -452,20 +452,6 @@ public class ClassDefinitionBuilder {
         return this;
     }
     
-    public ClassDefinitionBuilder body(JCTree statement) {
-        if (statement != null) {
-            this.defs.append(statement);
-        }
-        return this;
-    }
-    
-    public ClassDefinitionBuilder body(List<JCTree> body) {
-        if (body != null) {
-            this.defs.appendList(body);
-        }
-        return this;
-    }
-    
     public ClassDefinitionBuilder init(JCStatement statement) {
         if (statement != null) {
             this.init.append(statement);

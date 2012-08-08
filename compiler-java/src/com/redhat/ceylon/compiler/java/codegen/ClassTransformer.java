@@ -203,7 +203,7 @@ public class ClassTransformer extends AbstractTransformer {
         // If it's a Class without initializer parameters...
         if (Strategy.generateMain(def)) {
             // ... then add a main() method
-            classBuilder.body(makeMainForClass(model));
+            classBuilder.defs(makeMainForClass(model));
         }
         
         return classBuilder
@@ -865,12 +865,12 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, Decl.isAncestorLocal(def), name, Decl.isShared(def));
-        builder.body(classGen().transform(def, builder));
+        builder.defs(classGen().transform(def, builder));
         
         // Toplevel method
         if (Strategy.generateMain(def)) {
             // Add a main() method
-            builder.body(makeMainForFunction(model));
+            builder.defs(makeMainForFunction(model));
         }
         
         List<JCTree> result = builder.build();
@@ -1463,7 +1463,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)))
                     .is(PUBLIC, Decl.isShared(decl))
                     .is(STATIC, true);
-            objectClassBuilder.body(builder.build());
+            objectClassBuilder.defs(builder.build());
         }
 
         List<JCTree> result = objectClassBuilder
