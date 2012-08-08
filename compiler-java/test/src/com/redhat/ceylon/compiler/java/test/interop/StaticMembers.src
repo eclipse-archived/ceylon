@@ -61,6 +61,10 @@ final class staticMethodsAndSubClassesOnType {
 }
 class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass {
     
+    StaticMethodsAndSubClasses() {
+        super();
+    }
+    
     private final void test() {
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
@@ -68,10 +72,6 @@ class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.i
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field;
         .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
-    }
-    
-    StaticMethodsAndSubClasses() {
-        super();
     }
     
     public static void main(.java.lang.String[] args) {

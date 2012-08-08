@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting.ccc;
 
 class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
+    C() {
+    }
+    
     private final <U>T m1(final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
     }
@@ -22,21 +25,18 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
     class CC {
         
+        CC() {
+        }
+        
         class CCC {
+            
+            CCC() {
+            }
             
             private final T m2() {
                 return m1(null);
             }
-            
-            CCC() {
-            }
         }
-        
-        CC() {
-        }
-    }
-    
-    C() {
     }
     
     public static void main(.java.lang.String[] args) {

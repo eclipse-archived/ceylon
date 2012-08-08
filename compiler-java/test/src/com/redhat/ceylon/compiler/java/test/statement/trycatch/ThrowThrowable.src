@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class ThrowThrowable {
     
+    ThrowThrowable() {
+    }
+    
     private final void m() {
         try {
         } catch (final .java.lang.Exception e) {
@@ -11,9 +14,6 @@ class ThrowThrowable {
                 throw $cause$1;
             }
         }
-    }
-    
-    ThrowThrowable() {
     }
     
     public static void main(.java.lang.String[] args) {

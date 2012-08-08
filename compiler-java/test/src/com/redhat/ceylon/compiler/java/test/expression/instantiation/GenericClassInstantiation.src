@@ -7,14 +7,17 @@ class Single<Element> {
 }
 public class KlassTypeParams<U, V> {
     
+    public KlassTypeParams(U u, V v) {
+    }
+    
     public final U foo(final U u, final V v) {
         return u;
     }
-    
-    public KlassTypeParams(U u, V v) {
-    }
 }
 class KlassTypeParamsInstantiation {
+    
+    KlassTypeParamsInstantiation() {
+    }
     
     public final .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParams<.ceylon.language.String, .ceylon.language.Integer> m() {
         return new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParams<.ceylon.language.String, .ceylon.language.Integer>(.ceylon.language.String.instance("foo"), .ceylon.language.Integer.instance(2L));
@@ -42,15 +45,15 @@ class KlassTypeParamsInstantiation {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.Single<.ceylon.language.Integer> s = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.Single<.ceylon.language.Integer>(.ceylon.language.Integer.instance(69L));
     }
     
-    KlassTypeParamsInstantiation() {
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiation();
     }
 }
 class KlassTypeParamsInstantiationT<T> {
+    
+    KlassTypeParamsInstantiationT() {
+    }
     
     class Inner<G> {
         
@@ -60,9 +63,6 @@ class KlassTypeParamsInstantiationT<T> {
     
     private final void m() {
         new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT<T>.Inner<.ceylon.language.String>();
-    }
-    
-    KlassTypeParamsInstantiationT() {
     }
     
     public static void main(.java.lang.String[] args) {

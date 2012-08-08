@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug620<T extends .ceylon.language.Numeric<T>> {
     
+    Bug620() {
+    }
+    
     private final void m(final .ceylon.language.Numeric<T> init) {
         .ceylon.language.Numeric<T> n = init;
         n = ((T)n).plus((T)n);
-    }
-    
-    Bug620() {
     }
     
     public static void main(.java.lang.String[] args) {

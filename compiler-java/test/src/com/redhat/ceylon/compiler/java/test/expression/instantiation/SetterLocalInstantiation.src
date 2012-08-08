@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class SetterLocalInstantiation {
     
+    SetterLocalInstantiation() {
+    }
+    
     private final long getI() {
         return 0L;
     }
@@ -14,9 +17,6 @@ class SetterLocalInstantiation {
             }
         }
         final LocalClass l = new LocalClass();
-    }
-    
-    SetterLocalInstantiation() {
     }
     
     public static void main(.java.lang.String[] args) {

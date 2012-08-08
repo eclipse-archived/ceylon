@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug479 {
+    
+    Bug479() {
+        this.baseString = "John Doe";
+        this._underscoredBaseString = "Jane Doe";
+    }
     private final .java.lang.String baseString;
     
     private final .java.lang.String getBaseString() {
@@ -26,11 +31,6 @@ class Bug479 {
     
     public final .java.lang.String get_underscoredFooUnderscoredBaseString() {
         return "underscoredFoo" + get_underscoredBaseString();
-    }
-    
-    Bug479() {
-        this.baseString = "John Doe";
-        this._underscoredBaseString = "Jane Doe";
     }
     
     public static void main(.java.lang.String[] args) {

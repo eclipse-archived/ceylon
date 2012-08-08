@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug490 {
     
+    Bug490() {
+    }
+    
     private final void f() {
         final int c = 'a';
         .ceylon.language.print.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().appendCodePoint(c).toString()));
         .ceylon.language.print.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("a").appendCodePoint(c).append("b").append(2L).append("c").toString()));
-    }
-    
-    Bug490() {
     }
     
     public static void main(.java.lang.String[] args) {

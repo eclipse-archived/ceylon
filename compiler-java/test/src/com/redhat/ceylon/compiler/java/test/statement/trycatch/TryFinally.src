@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class TryFinally {
     
+    TryFinally() {
+    }
+    
     private final void t() {
     }
     
@@ -14,9 +17,6 @@ class TryFinally {
         } finally {
             f();
         }
-    }
-    
-    TryFinally() {
     }
     
     public static void main(.java.lang.String[] args) {

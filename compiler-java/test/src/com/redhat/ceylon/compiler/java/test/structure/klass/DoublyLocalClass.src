@@ -2,23 +2,23 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class DoublyLocalClass {
     
+    DoublyLocalClass() {
+    }
+    
     private final void m() {
         
         class LocalClass {
+            
+            LocalClass() {
+                final LocalClass.Innermost i = new LocalClass.Innermost();
+            }
             
             class Innermost {
                 
                 Innermost() {
                 }
             }
-            
-            LocalClass() {
-                final LocalClass.Innermost i = new LocalClass.Innermost();
-            }
         }
-    }
-    
-    DoublyLocalClass() {
     }
     
     public static void main(.java.lang.String[] args) {

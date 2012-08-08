@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodWithParam {
     
+    MethodWithParam() {
+    }
+    
     private final void f(final long i) {
     }
     
     public final void f2(final long i) {
-    }
-    
-    MethodWithParam() {
     }
     
     public static void main(.java.lang.String[] args) {

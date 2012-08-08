@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.import_;
 
 class ImportWildcard {
     
+    ImportWildcard() {
+    }
+    
     private final void m() {
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C1();
         new .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.C2();
@@ -9,9 +12,6 @@ class ImportWildcard {
         b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f2.getF2();
         .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.m1.m1();
         .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.m2.m2();
-    }
-    
-    ImportWildcard() {
     }
     
     public static void main(.java.lang.String[] args) {

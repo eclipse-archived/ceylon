@@ -2,24 +2,24 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 class InnerAttributeGetterLateInitialisation {
     
+    InnerAttributeGetterLateInitialisation() {
+    }
+    
     private final void m() {
         final long m;
         m = 2L;
         
         final class innerGetter$getter {
             
-            long getInnerGetter() {
-                return m;
+            private innerGetter$getter() {
             }
             
-            private innerGetter$getter() {
+            long getInnerGetter() {
+                return m;
             }
         }
         final innerGetter$getter innerGetter$getter = new innerGetter$getter();
         final long n = innerGetter$getter.getInnerGetter();
-    }
-    
-    InnerAttributeGetterLateInitialisation() {
     }
     
     public static void main(.java.lang.String[] args) {

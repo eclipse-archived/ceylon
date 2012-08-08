@@ -13,6 +13,10 @@ interface I1 {
     public abstract boolean m1$b(final long i);
 }
 final class I1$impl {
+    
+    I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
     
     public final .java.lang.String m1(final long i) {
@@ -43,10 +47,6 @@ final class I1$impl {
     public final boolean m1$b(final long i) {
         return false;
     }
-    
-    I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this) {
-        this.$this = $this;
-    }
 }
 interface I2 {
     
@@ -61,6 +61,10 @@ interface I2 {
     public abstract boolean m2$b(final long i);
 }
 final class I2$impl {
+    
+    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
     
     public final .java.lang.String m2(final long i) {
@@ -91,12 +95,13 @@ final class I2$impl {
     public final boolean m2$b(final long i) {
         return false;
     }
-    
-    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {
-        this.$this = $this;
-    }
 }
 class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
+    
+    C() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this;
     
     @.java.lang.Override
@@ -148,11 +153,6 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, 
     @.java.lang.Override
     public final .java.lang.String m2(final long i, final boolean b) {
         return "";
-    }
-    
-    C() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

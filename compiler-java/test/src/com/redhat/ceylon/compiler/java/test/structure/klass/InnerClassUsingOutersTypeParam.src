@@ -2,11 +2,19 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 public class InnerClassUsingOutersTypeParam<T> {
     
+    public InnerClassUsingOutersTypeParam() {
+    }
+    
     public final T item(final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cell) {
         return cell.getCar();
     }
     
     public class Cell {
+        
+        public Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
+            this.car = car;
+            this.cdr = cdr;
+        }
         private final T car;
         
         public final T getCar() {
@@ -17,14 +25,6 @@ public class InnerClassUsingOutersTypeParam<T> {
         public final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell getCdr() {
             return cdr;
         }
-        
-        public Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
-            this.car = car;
-            this.cdr = cdr;
-        }
-    }
-    
-    public InnerClassUsingOutersTypeParam() {
     }
     
     public static void main(.java.lang.String[] args) {

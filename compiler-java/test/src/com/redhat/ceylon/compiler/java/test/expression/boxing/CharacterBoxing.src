@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
 class CharacterBoxing {
     
+    CharacterBoxing() {
+    }
+    
     private final void m() {
         final int b1 = 'A';
         final int b2 = .ceylon.language.Character.getLowercased(b1);
@@ -34,9 +37,6 @@ class CharacterBoxing {
         } else {
             return ' ';
         }
-    }
-    
-    CharacterBoxing() {
     }
     
     public static void main(.java.lang.String[] args) {

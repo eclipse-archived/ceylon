@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class MethodLocalAccess {
     
+    MethodLocalAccess() {
+    }
+    
     private final long m1() {
         final long n1 = 1L;
         return n1;
@@ -11,11 +14,11 @@ class MethodLocalAccess {
         
         final class n2$getter {
             
-            long getN2() {
-                return 1L;
+            private n2$getter() {
             }
             
-            private n2$getter() {
+            long getN2() {
+                return 1L;
             }
         }
         final n2$getter n2$getter = new n2$getter();
@@ -26,6 +29,9 @@ class MethodLocalAccess {
         
         final class selfref$getter {
             
+            private selfref$getter() {
+            }
+            
             long getSelfref() {
                 if (getSelfref() > 0L) {
                     return 1L;
@@ -33,15 +39,9 @@ class MethodLocalAccess {
                     return 0L;
                 }
             }
-            
-            private selfref$getter() {
-            }
         }
         final selfref$getter selfref$getter = new selfref$getter();
         return selfref$getter.getSelfref();
-    }
-    
-    MethodLocalAccess() {
     }
     
     public static void main(.java.lang.String[] args) {

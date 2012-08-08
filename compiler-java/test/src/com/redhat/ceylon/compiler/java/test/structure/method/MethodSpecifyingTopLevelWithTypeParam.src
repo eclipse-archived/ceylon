@@ -11,15 +11,15 @@ final class methodSpecifyingTopLevelWithTypeParam_f {
 }
 class MethodSpecifyingTopLevelWithTypeParam<S, T> {
     
+    MethodSpecifyingTopLevelWithTypeParam() {
+    }
+    
     private final .java.lang.String foo(final long i) {
         return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f.<.ceylon.language.String, .ceylon.language.Integer>methodSpecifyingTopLevelWithTypeParam_f(.ceylon.language.Integer.instance(i)).toString();
     }
     
     private final S bar(final T y) {
         return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingTopLevelWithTypeParam_f.<S, T>methodSpecifyingTopLevelWithTypeParam_f(y);
-    }
-    
-    MethodSpecifyingTopLevelWithTypeParam() {
     }
     
     public static void main(.java.lang.String[] args) {

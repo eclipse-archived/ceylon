@@ -15,11 +15,11 @@ final class f {
 }
 class MethodSpecifierTopLevel {
     
-    private final void foo() {
-        .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
+    MethodSpecifierTopLevel() {
     }
     
-    MethodSpecifierTopLevel() {
+    private final void foo() {
+        .com.redhat.ceylon.compiler.java.test.structure.method.f.f();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentWithSequence {
     
+    NamedArgumentWithSequence() {
+    }
+    
     private final void m(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
     }
     
@@ -85,9 +88,6 @@ class NamedArgumentWithSequence {
             }
             returning null;
         );
-    }
-    
-    NamedArgumentWithSequence() {
     }
     
     public static void main(.java.lang.String[] args) {

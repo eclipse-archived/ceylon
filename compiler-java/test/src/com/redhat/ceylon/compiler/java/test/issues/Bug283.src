@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug283 {
+    
+    Bug283() {
+        this.oi = 0L;
+    }
     private long oi;
     
     private final long getOi() {
@@ -124,10 +128,6 @@ class Bug283 {
             }
             returning $ceylontmpop15;
         );
-    }
-    
-    Bug283() {
-        this.oi = 0L;
     }
     
     public static void main(.java.lang.String[] args) {

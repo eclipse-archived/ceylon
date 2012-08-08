@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodDefaultedParamCaptureInitParam {
+    
+    MethodDefaultedParamCaptureInitParam(.java.lang.String s) {
+        this.s = s;
+    }
     private final .java.lang.String s;
     
     private final .java.lang.String m(final .java.lang.String t) {
@@ -19,9 +23,5 @@ class MethodDefaultedParamCaptureInitParam {
     
     private final .java.lang.String m$t() {
         return s;
-    }
-    
-    MethodDefaultedParamCaptureInitParam(.java.lang.String s) {
-        this.s = s;
     }
 }

@@ -12,19 +12,19 @@ final class bug674 {
     static void bug674() {
         
         final class X$impl<T> {
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<T> $this;
             
             X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<T> $this) {
                 this.$this = $this;
             }
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<T> $this;
         }
         
         final class Y$impl {
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y $this;
             
             Y$impl(.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y $this) {
                 this.$this = $this;
             }
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y $this;
         }
         final .com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y> y = (.com.redhat.ceylon.compiler.java.test.issues.bug674$0$X<.com.redhat.ceylon.compiler.java.test.issues.bug674$0$Y>).ceylon.language.bottom.getBottom();
     }

@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.swtch;
 
 class SwitchIsVarSubst {
     
+    SwitchIsVarSubst() {
+    }
+    
     private final .java.lang.String m(final .java.lang.Object b) {
         final .java.lang.String name;
         {
@@ -15,9 +18,6 @@ class SwitchIsVarSubst {
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         return name;
-    }
-    
-    SwitchIsVarSubst() {
     }
     
     public static void main(.java.lang.String[] args) {

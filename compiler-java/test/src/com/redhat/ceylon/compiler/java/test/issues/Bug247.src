@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 final class bug247_toplevel {
+    
+    private bug247_toplevel() {
+    }
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -16,9 +19,6 @@ final class bug247_toplevel {
     
     static void setBug247_toplevel(final long bug247_toplevel) {
         value[0] = bug247_toplevel;
-    }
-    
-    private bug247_toplevel() {
     }
 }
 final class bug247 {

@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
 class VoidBoxing {
+    
+    VoidBoxing() {
+        this.valueVoid = .ceylon.language.Integer.instance(1L);
+        this.variableVoid = getValueVoid();
+    }
     private final .java.lang.Object valueVoid;
     
     private final .java.lang.Object getValueVoid() {
@@ -267,11 +272,6 @@ class VoidBoxing {
                 return s;
             }
         });
-    }
-    
-    VoidBoxing() {
-        this.valueVoid = .ceylon.language.Integer.instance(1L);
-        this.variableVoid = getValueVoid();
     }
     
     public static void main(.java.lang.String[] args) {

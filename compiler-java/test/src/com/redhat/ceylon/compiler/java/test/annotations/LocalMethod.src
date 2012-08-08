@@ -4,6 +4,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalMethod {
     
+    public LocalMethod() {
+    }
+    
     private final void m() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
@@ -33,9 +36,6 @@ public class LocalMethod {
             }
         }
         final m2 m2 = new m2();
-    }
-    
-    public LocalMethod() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

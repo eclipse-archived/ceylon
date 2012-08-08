@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class OuterClass {
     
+    OuterClass() {
+    }
+    
     private final long m() {
         
         class LocalClass {
@@ -11,9 +14,6 @@ class OuterClass {
         }
         final LocalClass l = new LocalClass();
         return 0L;
-    }
-    
-    OuterClass() {
     }
     
     public static void main(.java.lang.String[] args) {

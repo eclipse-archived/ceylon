@@ -5,18 +5,18 @@ interface Bug445<T> {
     public .com.redhat.ceylon.compiler.java.test.issues.Bug445$impl<T> $com$redhat$ceylon$compiler$java$test$issues$Bug445$impl();
 }
 final class Bug445$impl<T> {
+    
+    Bug445$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug445<T> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug445<T> $this;
     
     class Inner {
         
-        private final void t(final T t) {
-        }
-        
         Inner() {
         }
-    }
-    
-    Bug445$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug445<T> $this) {
-        this.$this = $this;
+        
+        private final void t(final T t) {
+        }
     }
 }

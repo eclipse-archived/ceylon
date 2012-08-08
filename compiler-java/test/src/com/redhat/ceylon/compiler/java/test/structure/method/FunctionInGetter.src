@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class FunctionInGetter {
     
+    FunctionInGetter() {
+    }
+    
     private final .java.lang.String getFoo() {
         if (true) {
             final long i = 1L;
@@ -19,9 +22,6 @@ class FunctionInGetter {
             return bar.bar();
         }
         return "";
-    }
-    
-    FunctionInGetter() {
     }
     
     public static void main(.java.lang.String[] args) {

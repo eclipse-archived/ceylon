@@ -11,11 +11,11 @@ final class foo {
 }
 class RefinedMethodSpecifyingTopLevel {
     
-    public long f(final boolean b) {
-        return 1L;
+    RefinedMethodSpecifyingTopLevel() {
     }
     
-    RefinedMethodSpecifyingTopLevel() {
+    public long f(final boolean b) {
+        return 1L;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -25,13 +25,13 @@ class RefinedMethodSpecifyingTopLevel {
 }
 class RefinedMethodSpecifyingTopLevelSub extends .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel {
     
+    RefinedMethodSpecifyingTopLevelSub() {
+        super();
+    }
+    
     @.java.lang.Override
     public final long f(final boolean b) {
         return .com.redhat.ceylon.compiler.java.test.structure.method.foo.foo(b);
-    }
-    
-    RefinedMethodSpecifyingTopLevelSub() {
-        super();
     }
     
     public static void main(.java.lang.String[] args) {

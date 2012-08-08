@@ -10,20 +10,20 @@ interface Bug510 {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug510$impl {
+    
+    Bug510$impl(.com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510 $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510 $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final class Bug510inner$impl {
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this;
         
         Bug510inner$impl(.com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this) {
             this.$this = $this;
         }
-    }
-    
-    Bug510$impl(.com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510 $this) {
-        this.$this = $this;
+        private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
@@ -48,6 +48,9 @@ final class $assert {
 @.com.redhat.ceylon.compiler.java.metadata.Name("volatile")
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class $volatile {
+    
+    private $volatile() {
+    }
     private static final long[] value;
     static {
         value = new long[]{5L};
@@ -60,9 +63,6 @@ final class $volatile {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private $volatile() {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)

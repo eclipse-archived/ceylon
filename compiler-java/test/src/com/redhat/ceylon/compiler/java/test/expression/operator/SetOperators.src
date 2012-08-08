@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 public class SetOperators {
     
+    public SetOperators() {
+    }
+    
     private final void testSetOperatorsWithSameTypes(final .ceylon.language.Set<? extends .ceylon.language.Integer> a, final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
         .ceylon.language.Set<? extends .ceylon.language.Integer> x;
         x = a.union(b);
@@ -209,9 +212,6 @@ public class SetOperators {
             }
             returning $ceylontmpop21;
         );
-    }
-    
-    public SetOperators() {
     }
     
     public static void main(.java.lang.String[] args) {

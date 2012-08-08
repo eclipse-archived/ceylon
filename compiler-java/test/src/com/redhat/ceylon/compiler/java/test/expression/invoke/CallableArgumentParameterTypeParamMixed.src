@@ -28,6 +28,9 @@ final class callableArgumentParameterTypeParamMixed_baz {
 }
 class CallableArgumentParameterTypeParamMixed<X> {
     
+    CallableArgumentParameterTypeParamMixed() {
+    }
+    
     private final <Y>void m() {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f.<.ceylon.language.Integer, .ceylon.language.Boolean>callableArgumentParameterTypeParamMixed_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language.Callable<ceylon.language.Integer,ceylon.language.Integer,ceylon.language.Boolean>"){
             
@@ -71,9 +74,6 @@ class CallableArgumentParameterTypeParamMixed<X> {
                 return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar.callableArgumentParameterTypeParamMixed_bar($param$0, (Y)$param$1);
             }
         });
-    }
-    
-    CallableArgumentParameterTypeParamMixed() {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class CallableArgumentReturningQualifiedClass {
     
+    CallableArgumentReturningQualifiedClass() {
+    }
+    
     public class D {
         
         public D() {
@@ -19,9 +22,6 @@ class CallableArgumentReturningQualifiedClass {
                 return CallableArgumentReturningQualifiedClass.this.new D();
             }
         });
-    }
-    
-    CallableArgumentReturningQualifiedClass() {
     }
     
     public static void main(.java.lang.String[] args) {

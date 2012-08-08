@@ -4,15 +4,15 @@ interface C$I {
 }
 class C {
     
+    C() {
+    }
+    
     final class I$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.C$I $this;
         
         I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.C$I $this) {
             this.$this = $this;
         }
-    }
-    
-    C() {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.C$I $this;
     }
     
     public static void main(.java.lang.String[] args) {

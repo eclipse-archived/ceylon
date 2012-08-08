@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 final class $transient {
     
+    private $transient() {
+    }
+    
     public class InnerClass_0 {
         
         public InnerClass_0() {
@@ -27,9 +30,6 @@ final class $transient {
             }
         }
         final InnerClass_2 x = new InnerClass_2();
-    }
-    
-    private $transient() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$assert.$transient[] value;
     static {

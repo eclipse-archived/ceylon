@@ -1,6 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class MethodInitializerParameter<T> {
+    
+    MethodInitializerParameter(.ceylon.language.Callable<? extends .java.lang.Object> m, .ceylon.language.Callable<? extends .java.lang.Object> m2, .ceylon.language.Callable<? extends T> m3, .ceylon.language.Callable<? extends .java.lang.Object> m4) {
+        this.m = m;
+        this.m2 = m2;
+        this.m3 = m3;
+        this.m4 = m4;
+    }
     private final .ceylon.language.Callable<? extends .java.lang.Object> m;
     
     private final void m(final long i) {
@@ -50,12 +57,5 @@ class MethodInitializerParameter<T> {
     
     private final long m4$i() {
         return 1L;
-    }
-    
-    MethodInitializerParameter(.ceylon.language.Callable<? extends .java.lang.Object> m, .ceylon.language.Callable<? extends .java.lang.Object> m2, .ceylon.language.Callable<? extends T> m3, .ceylon.language.Callable<? extends .java.lang.Object> m4) {
-        this.m = m;
-        this.m2 = m2;
-        this.m3 = m3;
-        this.m4 = m4;
     }
 }

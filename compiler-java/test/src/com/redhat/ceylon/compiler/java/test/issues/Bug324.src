@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug324 {
     
+    Bug324() {
+    }
+    
     class Bug324 {
         
         Bug324() {
@@ -15,9 +18,6 @@ class Bug324 {
             Bug324() {
             }
         }
-    }
-    
-    Bug324() {
     }
     
     public static void main(.java.lang.String[] args) {

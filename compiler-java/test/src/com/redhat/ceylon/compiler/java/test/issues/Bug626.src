@@ -1,6 +1,14 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> {
+    
+    Bug626() {
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Iterable<?>>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Iterable<?>, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
+        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>>).ceylon.language.bottom.getBottom();
+    }
     private final .ceylon.language.Iterable$impl<.ceylon.language.Iterable<?>> $ceylon$language$Iterable$this;
     
     @.java.lang.Override
@@ -135,14 +143,6 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>> getIterator() {
         return iterator;
-    }
-    
-    Bug626() {
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Iterable<?>>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Iterable<?>, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
-        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>>).ceylon.language.bottom.getBottom();
     }
     
     public static void main(.java.lang.String[] args) {

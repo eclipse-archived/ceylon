@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 public final class topLevelObjectShared {
     
-    public final void y() {
+    private topLevelObjectShared() {
     }
     
-    private topLevelObjectShared() {
+    public final void y() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared[] value;
     static {

@@ -56,6 +56,10 @@ final class fields {
 }
 class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFields {
     
+    CeylonFields() {
+        super();
+    }
+    
     private final void f() {
         final long i1 = readOnlyField;
         final long i2 = readWriteField;
@@ -92,10 +96,6 @@ class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFie
             }
             returning $ceylontmpop11;
         );
-    }
-    
-    CeylonFields() {
-        super();
     }
     
     public static void main(.java.lang.String[] args) {

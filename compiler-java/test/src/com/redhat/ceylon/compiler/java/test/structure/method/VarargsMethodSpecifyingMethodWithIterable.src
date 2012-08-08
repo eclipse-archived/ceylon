@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class VarargsMethodSpecifyingMethodWithIterable {
     
+    VarargsMethodSpecifyingMethodWithIterable() {
+    }
+    
     private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
@@ -22,9 +25,6 @@ class VarargsMethodSpecifyingMethodWithIterable {
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> bar$ints() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
-    }
-    
-    VarargsMethodSpecifyingMethodWithIterable() {
     }
     
     public static void main(.java.lang.String[] args) {

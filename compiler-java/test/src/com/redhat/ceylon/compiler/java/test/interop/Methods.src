@@ -53,15 +53,15 @@ final class overloadedConstructors {
 }
 class OverloadedMembersAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass {
     
+    OverloadedMembersAndSubClasses() {
+        super();
+    }
+    
     private final void test() {
         method();
         method(1L);
         method(1L, 2L);
         topMethod();
-    }
-    
-    OverloadedMembersAndSubClasses() {
-        super();
     }
     
     public static void main(.java.lang.String[] args) {

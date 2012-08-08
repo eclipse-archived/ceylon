@@ -1,6 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class QualifiedAttributeAssign {
+    
+    QualifiedAttributeAssign() {
+        this.b = true;
+        this.b2 = true;
+        this.q = new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign();
+    }
     private boolean b;
     
     private final boolean getB() {
@@ -34,18 +40,16 @@ class QualifiedAttributeAssign {
         f.setB(f.getB());
     }
     
-    QualifiedAttributeAssign() {
-        this.b = true;
-        this.b2 = true;
-        this.q = new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign();
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign();
     }
 }
 class QualifiedAttributeAssignFoo {
+    
+    QualifiedAttributeAssignFoo() {
+        this.b = true;
+    }
     private boolean b;
     
     public final boolean getB() {
@@ -54,10 +58,6 @@ class QualifiedAttributeAssignFoo {
     
     public final void setB(final boolean b) {
         this.b = b;
-    }
-    
-    QualifiedAttributeAssignFoo() {
-        this.b = true;
     }
     
     public static void main(.java.lang.String[] args) {

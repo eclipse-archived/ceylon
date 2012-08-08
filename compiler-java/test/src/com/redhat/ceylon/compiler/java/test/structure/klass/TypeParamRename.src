@@ -15,6 +15,10 @@ interface TypeParamRename<T, U> {
     public abstract <V, W>V m2$v();
 }
 final class TypeParamRename$impl<T, U> {
+    
+    TypeParamRename$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this;
     
     public U m(final T t) {
@@ -52,12 +56,12 @@ final class TypeParamRename$impl<T, U> {
     public final <V, W>V m2$v() {
         return null;
     }
-    
-    TypeParamRename$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this) {
-        this.$this = $this;
-    }
 }
 class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y> {
+    
+    TypeParamRenameKls() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this;
     
     @.java.lang.Override
@@ -88,10 +92,6 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.
     @.java.lang.Override
     public <A, B>B m2(final A v) {
         throw new .ceylon.language.Exception(null, null);
-    }
-    
-    TypeParamRenameKls() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
     }
     
     public static void main(.java.lang.String[] args) {

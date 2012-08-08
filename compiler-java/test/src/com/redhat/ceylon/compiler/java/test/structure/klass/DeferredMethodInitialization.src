@@ -1,6 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class DeferredInitializedMethod {
+    
+    DeferredInitializedMethod() {
+        this.s = null;
+        s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String name = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance("hello " + name);
+            }
+        };
+    }
     private .ceylon.language.Callable<? extends .ceylon.language.String> s;
     
     private final .java.lang.String s(final .java.lang.String name) {
@@ -19,18 +31,6 @@ class DeferredInitializedMethod {
     
     private final .java.lang.String s$name() {
         return "world";
-    }
-    
-    DeferredInitializedMethod() {
-        this.s = null;
-        s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
-            
-            @.java.lang.Override
-            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
-                final .java.lang.String name = ((.ceylon.language.String)$param$0).toString();
-                return .ceylon.language.String.instance("hello " + name);
-            }
-        };
     }
     
     public static void main(.java.lang.String[] args) {

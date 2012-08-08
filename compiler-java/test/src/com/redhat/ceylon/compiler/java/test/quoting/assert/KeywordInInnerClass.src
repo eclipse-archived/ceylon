@@ -2,32 +2,32 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInInnerClass {
     
+    KeywordInInnerClass() {
+    }
+    
     private final void m() {
         
         class Inner {
+            
+            Inner() {
+                this.transient = new Inner.$transient();
+            }
             private final Inner.$transient transient;
             
             final class $transient {
                 
-                public final void $enum() {
+                private $transient() {
                 }
                 
-                private $transient() {
+                public final void $enum() {
                 }
             }
             
             public final Inner.$transient getTransient() {
                 return transient;
             }
-            
-            Inner() {
-                this.transient = new Inner.$transient();
-            }
         }
         new Inner().getTransient().$enum();
-    }
-    
-    KeywordInInnerClass() {
     }
     
     public static void main(.java.lang.String[] args) {

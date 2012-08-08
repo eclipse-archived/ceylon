@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodWithDefaultParams {
+    
+    MethodWithDefaultParams() {
+        this.prop = 42L;
+    }
     private final long prop;
     
     public final long getProp() {
@@ -163,10 +167,6 @@ class MethodWithDefaultParams {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
-    MethodWithDefaultParams() {
-        this.prop = 42L;
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams();
@@ -225,6 +225,10 @@ interface MethodWithDefaultParams2 {
     public abstract .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n);
 }
 final class MethodWithDefaultParams2$impl {
+    
+    MethodWithDefaultParams2$impl(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this;
     
     public final long getProp() {
@@ -367,9 +371,5 @@ final class MethodWithDefaultParams2$impl {
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n) {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
-    }
-    
-    MethodWithDefaultParams2$impl(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
-        this.$this = $this;
     }
 }

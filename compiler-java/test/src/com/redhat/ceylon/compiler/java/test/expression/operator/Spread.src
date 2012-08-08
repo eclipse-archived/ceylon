@@ -58,6 +58,9 @@ final class spread {
     }
 }
 final class x {
+    
+    private x() {
+    }
     private static final .java.lang.String[] value;
     static {
         value = new .java.lang.String[]{"x"};
@@ -69,8 +72,5 @@ final class x {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private x() {
     }
 }

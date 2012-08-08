@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class SequenceInstantiation {
     
+    SequenceInstantiation() {
+    }
+    
     public final .ceylon.language.Sequence<? extends .ceylon.language.Integer> m() {
         return new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(getN1()), .ceylon.language.Integer.instance(n2()));
     }
@@ -12,9 +15,6 @@ class SequenceInstantiation {
     
     private final long n2() {
         return 5L;
-    }
-    
-    SequenceInstantiation() {
     }
     
     public static void main(.java.lang.String[] args) {

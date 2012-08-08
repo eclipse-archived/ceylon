@@ -32,6 +32,14 @@ final class attributes {
     }
 }
 class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.JavaBean {
+    
+    CeylonAttributes() {
+        super();
+        this.booleanWithGet = false;
+        this.booleanWithIs = false;
+        this.url = "";
+        this.urlEncoderForHTML = "";
+    }
     private boolean booleanWithGet;
     
     @.java.lang.Override
@@ -90,14 +98,6 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
         setURL("");
         syncStr = getURLEncoderForHTML();
         setURLEncoderForHTML("");
-    }
-    
-    CeylonAttributes() {
-        super();
-        this.booleanWithGet = false;
-        this.booleanWithIs = false;
-        this.url = "";
-        this.urlEncoderForHTML = "";
     }
     
     public static void main(.java.lang.String[] args) {

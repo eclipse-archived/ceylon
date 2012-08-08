@@ -2,6 +2,26 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentInvocation {
     
+    NamedArgumentInvocation() {
+        (
+            let
+            {
+                .java.lang.String $arg$6$1 = "foo";
+                long $arg$6$0 = 0L;
+                v($arg$6$0, $arg$6$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .java.lang.String $arg$7$1 = "foo";
+                long $arg$7$0 = 0L;
+            }
+            returning f($arg$7$0, $arg$7$1);
+        );
+    }
+    
     private final boolean f(final long n, final .java.lang.String s) {
         return true;
     }
@@ -70,26 +90,6 @@ class NamedArgumentInvocation {
                 long $arg$5$0 = 2L;
             }
             returning $arg$5$callable$.f($arg$5$0, $arg$5$1);
-        );
-    }
-    
-    NamedArgumentInvocation() {
-        (
-            let
-            {
-                .java.lang.String $arg$6$1 = "foo";
-                long $arg$6$0 = 0L;
-                v($arg$6$0, $arg$6$1);
-            }
-            returning null;
-        );
-        (
-            let
-            {
-                .java.lang.String $arg$7$1 = "foo";
-                long $arg$7$0 = 0L;
-            }
-            returning f($arg$7$0, $arg$7$1);
         );
     }
     

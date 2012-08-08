@@ -14,19 +14,19 @@ class Bug623Direct extends .java.lang.Object {
 interface Bug623 {
 }
 final class Bug623$impl {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug623 $this;
     
     Bug623$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug623 $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug623 $this;
 }
 class Bug623Indirect extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.test.issues.Bug623 {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$Bug623$this;
     
     Bug623Indirect() {
         super();
         this.$com$redhat$ceylon$compiler$java$test$issues$Bug623$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl(this);
     }
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug623$impl $com$redhat$ceylon$compiler$java$test$issues$Bug623$this;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);

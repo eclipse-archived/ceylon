@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInClassGetter {
     
+    KeywordInClassGetter() {
+    }
+    
     private final .java.lang.String getAssert() {
         return "";
     }
     
     private final void setAssert(final .java.lang.String assert) {
-    }
-    
-    KeywordInClassGetter() {
     }
     
     public static void main(.java.lang.String[] args) {

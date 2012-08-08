@@ -17,6 +17,10 @@ interface This {
     public abstract long m2$i2(final long i1);
 }
 final class This$impl {
+    
+    This$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.This $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.This $this;
     
     public long m2(final long i1, final long i2) {
@@ -54,15 +58,11 @@ final class This$impl {
     
     class Inner {
         
+        Inner() {
+        }
+        
         private final void m3() {
             m2(1L, 2L);
         }
-        
-        Inner() {
-        }
-    }
-    
-    This$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.This $this) {
-        this.$this = $this;
     }
 }

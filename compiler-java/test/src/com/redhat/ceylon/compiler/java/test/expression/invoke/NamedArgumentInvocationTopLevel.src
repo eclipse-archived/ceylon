@@ -18,6 +18,9 @@ public final class namedArgumentInvocationTopLevelV {
     }
 }
 final class namedArgumentInvocationTopLevelX {
+    
+    private namedArgumentInvocationTopLevelX() {
+    }
     private static final long[] value;
     static {
         value = new long[]{(
@@ -37,11 +40,11 @@ final class namedArgumentInvocationTopLevelX {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private namedArgumentInvocationTopLevelX() {
-    }
 }
 final class namedArgumentInvocationTopLevelY {
+    
+    private namedArgumentInvocationTopLevelY() {
+    }
     private static final .java.lang.Object[] value;
     static {
         value = new .java.lang.Object[]{(
@@ -67,8 +70,5 @@ final class namedArgumentInvocationTopLevelY {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private namedArgumentInvocationTopLevelY() {
     }
 }

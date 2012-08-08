@@ -2,10 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class InitializerVarargs {
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.String> $init$fs(final .java.lang.String f) {
-        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
-    }
-    
     InitializerVarargs(final .java.lang.String f) {
         (
             let
@@ -22,5 +18,9 @@ class InitializerVarargs {
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $ff$iter$3 = fs.getIterator(); !(($elem$2 = $ff$iter$3.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.String ff = ((.ceylon.language.String)$elem$2).toString();
         }
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.String> $init$fs(final .java.lang.String f) {
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
 }

@@ -17,12 +17,12 @@ final class checkedExceptionsInMethod {
 }
 class CheckedExceptions extends .com.redhat.ceylon.compiler.java.test.interop.JavaCheckedExceptions {
     
-    @.java.lang.Override
-    public final void m() {
-    }
-    
     CheckedExceptions() {
         super();
+    }
+    
+    @.java.lang.Override
+    public final void m() {
     }
     
     public static void main(.java.lang.String[] args) {

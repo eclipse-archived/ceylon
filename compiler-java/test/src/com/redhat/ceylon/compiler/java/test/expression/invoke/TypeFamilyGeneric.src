@@ -2,23 +2,23 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 abstract class TypeFamilyGeneric<N extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<N>.Node> {
     
+    TypeFamilyGeneric() {
+    }
+    
     public class Node {
         
         public Node() {
         }
     }
-    
-    TypeFamilyGeneric() {
-    }
 }
 interface Inv<T> {
 }
 final class Inv$impl<T> {
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<T> $this;
     
     Inv$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<T> $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<T> $this;
 }
 final class typeFamilyGeneric {
     
@@ -29,22 +29,22 @@ final class typeFamilyGeneric {
         
         final class l1$getter {
             
-            .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<X>.Node> getL1() {
-                throw new .ceylon.language.Exception(null, null);
+            private l1$getter() {
             }
             
-            private l1$getter() {
+            .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<X>.Node> getL1() {
+                throw new .ceylon.language.Exception(null, null);
             }
         }
         final l1$getter l1$getter = new l1$getter();
         
         final class l2$getter {
             
-            .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<X> getL2() {
-                throw new .ceylon.language.Exception(null, null);
+            private l2$getter() {
             }
             
-            private l2$getter() {
+            .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<X> getL2() {
+                throw new .ceylon.language.Exception(null, null);
             }
         }
         final l2$getter l2$getter = new l2$getter();

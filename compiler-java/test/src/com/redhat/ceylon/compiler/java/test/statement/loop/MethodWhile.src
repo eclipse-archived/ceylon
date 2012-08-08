@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.loop;
 
 class MethodWhile {
     
+    MethodWhile() {
+    }
+    
     public final void m() {
         boolean cont = true;
         while ((
@@ -58,9 +61,6 @@ class MethodWhile {
             final long $i$8 = ((.ceylon.language.Integer)$i$7).longValue();
             int = .ceylon.language.String.instance("");
         }
-    }
-    
-    MethodWhile() {
     }
     
     public static void main(.java.lang.String[] args) {

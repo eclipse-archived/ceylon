@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.lambda;
 
 class MethodSpecifyingLambda {
     
+    MethodSpecifyingLambda() {
+    }
+    
     public final .java.lang.String m(final .java.lang.String name) {
         return ("hello " + name).toString();
     }
@@ -18,9 +21,6 @@ class MethodSpecifyingLambda {
     
     public final .java.lang.String m$name() {
         return "world";
-    }
-    
-    MethodSpecifyingLambda() {
     }
     
     public static void main(.java.lang.String[] args) {

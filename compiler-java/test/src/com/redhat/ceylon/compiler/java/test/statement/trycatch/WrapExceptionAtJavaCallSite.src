@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class ReplaceExceptionAtJavaCallSite {
     
+    ReplaceExceptionAtJavaCallSite() {
+    }
+    
     private final void m() {
         final .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower jt = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower();
         final boolean n = jt.throwException();
@@ -9,9 +12,6 @@ class ReplaceExceptionAtJavaCallSite {
         final boolean x = jt.throwRuntimeException();
         final boolean y = jt.throwError();
         final boolean z = jt.throwsMultiple();
-    }
-    
-    ReplaceExceptionAtJavaCallSite() {
     }
     
     public static void main(.java.lang.String[] args) {

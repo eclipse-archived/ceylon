@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodWithVarargs {
     
+    MethodWithVarargs() {
+    }
+    
     public final void f1(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = ns.getIterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
@@ -79,9 +82,6 @@ class MethodWithVarargs {
         f3(new .ceylon.language.ArraySequence<.java.lang.Object>(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L))));
         f3(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         f3(new .ceylon.language.ArraySequence<.java.lang.Object>(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("foo"), .ceylon.language.Float.instance(5.0)));
-    }
-    
-    MethodWithVarargs() {
     }
     
     public static void main(.java.lang.String[] args) {

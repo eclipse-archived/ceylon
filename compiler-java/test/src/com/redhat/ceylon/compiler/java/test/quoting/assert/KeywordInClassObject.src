@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInClassObject {
+    
+    KeywordInClassObject() {
+        this.assert = new .com.redhat.ceylon.compiler.java.test.quoting.$assert.KeywordInClassObject.$assert();
+    }
     private final .com.redhat.ceylon.compiler.java.test.quoting.$assert.KeywordInClassObject.$assert assert;
     
     final class $assert {
@@ -15,10 +19,6 @@ class KeywordInClassObject {
     
     private final void m() {
         final .java.lang.String s = getAssert().toString();
-    }
-    
-    KeywordInClassObject() {
-        this.assert = new .com.redhat.ceylon.compiler.java.test.quoting.$assert.KeywordInClassObject.$assert();
     }
     
     public static void main(.java.lang.String[] args) {

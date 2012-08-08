@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 public abstract class LogicalOperatorsParent<B> {
     
+    public LogicalOperatorsParent() {
+    }
+    
     public abstract B getBoxedB1();
     
     public abstract void setBoxedB1(final B boxedB1);
@@ -9,11 +12,16 @@ public abstract class LogicalOperatorsParent<B> {
     public abstract B getBoxedB2();
     
     public abstract void setBoxedB2(final B boxedB2);
-    
-    public LogicalOperatorsParent() {
-    }
 }
 public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsParent<.ceylon.language.Boolean> {
+    
+    public LogicalOperators() {
+        super();
+        this.b1 = false;
+        this.b2 = false;
+        this.boxedB1 = .ceylon.language.Boolean.instance(getB1());
+        this.boxedB2 = .ceylon.language.Boolean.instance(getB2());
+    }
     private boolean b1;
     
     private final boolean getB1() {
@@ -133,14 +141,6 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
             }
             returning $ceylontmpopV11;
         )));
-    }
-    
-    public LogicalOperators() {
-        super();
-        this.b1 = false;
-        this.b2 = false;
-        this.boxedB1 = .ceylon.language.Boolean.instance(getB1());
-        this.boxedB2 = .ceylon.language.Boolean.instance(getB2());
     }
     
     public static void main(.java.lang.String[] args) {

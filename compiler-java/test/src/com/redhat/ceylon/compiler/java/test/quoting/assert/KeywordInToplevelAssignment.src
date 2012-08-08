@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 final class $assert {
+    
+    private $assert() {
+    }
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -16,9 +19,6 @@ final class $assert {
     
     static void setAssert(final long assert) {
         value[0] = assert;
-    }
-    
-    private $assert() {
     }
 }
 final class keywordInToplevelAssignment {

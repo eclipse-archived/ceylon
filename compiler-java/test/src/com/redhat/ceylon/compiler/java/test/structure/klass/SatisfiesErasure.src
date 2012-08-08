@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class SatisfiesErasure {
     
+    SatisfiesErasure() {
+    }
+    
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
         return false;
@@ -15,9 +18,6 @@ class SatisfiesErasure {
     @.java.lang.Override
     public final .java.lang.String toString() {
         return "An SatisfiesErasure object";
-    }
-    
-    SatisfiesErasure() {
     }
     
     public static void main(.java.lang.String[] args) {

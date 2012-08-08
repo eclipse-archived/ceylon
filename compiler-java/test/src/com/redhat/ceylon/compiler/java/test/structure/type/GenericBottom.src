@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
 class GenericBottom<T, U> {
+    
+    GenericBottom(.java.lang.Object argObject) {
+        this.attrTp = (T).ceylon.language.bottom.getBottom();
+        this.attrIntersection = .ceylon.language.bottom.getBottom();
+    }
     private final T attrTp;
     
     private final T getAttrTp() {
@@ -36,10 +41,5 @@ class GenericBottom<T, U> {
         t = (T)g.methodIntersection(.ceylon.language.bottom.getBottom());
         t = g.getGetterTp();
         t = (T)g.getGetterIntersection();
-    }
-    
-    GenericBottom(.java.lang.Object argObject) {
-        this.attrTp = (T).ceylon.language.bottom.getBottom();
-        this.attrIntersection = .ceylon.language.bottom.getBottom();
     }
 }

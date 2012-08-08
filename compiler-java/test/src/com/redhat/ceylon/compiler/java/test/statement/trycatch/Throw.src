@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class Throw {
     
-    private final void t() {
-        throw new .ceylon.language.Exception(null, null);
+    Throw() {
     }
     
-    Throw() {
+    private final void t() {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     public static void main(.java.lang.String[] args) {

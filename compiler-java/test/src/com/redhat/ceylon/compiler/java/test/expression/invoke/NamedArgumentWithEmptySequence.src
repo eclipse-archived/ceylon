@@ -2,6 +2,18 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentWithEmptySequence {
     
+    NamedArgumentWithEmptySequence() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence $arg$2$this$ = this;
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$2$0 = $arg$2$this$.m$b();
+                m($arg$2$0);
+            }
+            returning null;
+        );
+    }
+    
     private final void m(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
     }
     
@@ -18,18 +30,6 @@ class NamedArgumentWithEmptySequence {
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$b() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
-    }
-    
-    NamedArgumentWithEmptySequence() {
-        (
-            let
-            {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence $arg$2$this$ = this;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$2$0 = $arg$2$this$.m$b();
-                m($arg$2$0);
-            }
-            returning null;
-        );
     }
     
     public static void main(.java.lang.String[] args) {

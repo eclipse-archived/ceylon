@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 
 class Foo {
     
-    public final void a() {
+    Foo() {
     }
     
-    Foo() {
+    public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -15,11 +15,11 @@ class Foo {
 }
 class Bar extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     
-    public final void b() {
-    }
-    
     Bar() {
         super();
+    }
+    
+    public final void b() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -29,11 +29,11 @@ class Bar extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
 }
 class Baz extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     
-    public final void c() {
-    }
-    
     Baz() {
         super();
+    }
+    
+    public final void c() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -43,10 +43,10 @@ class Baz extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
 }
 class GenInv<T> {
     
-    public final void a() {
+    GenInv() {
     }
     
-    GenInv() {
+    public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -56,10 +56,10 @@ class GenInv<T> {
 }
 class GenCov<T> {
     
-    public final void a() {
+    GenCov() {
     }
     
-    GenCov() {
+    public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -69,10 +69,10 @@ class GenCov<T> {
 }
 class GenCon<T> {
     
-    public final void a() {
+    GenCon() {
     }
     
-    GenCon() {
+    public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -85,18 +85,18 @@ interface ISats {
     public abstract void z();
 }
 final class ISats$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats $this;
     
     ISats$impl(.com.redhat.ceylon.compiler.java.test.structure.type.ISats $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats $this;
 }
 class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats> {
     
-    public final void a() {
+    Sats() {
     }
     
-    Sats() {
+    public final void a() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -105,15 +105,15 @@ class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats>
     }
 }
 class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar implements .com.redhat.ceylon.compiler.java.test.structure.type.ISats {
-    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this;
-    
-    @.java.lang.Override
-    public final void z() {
-    }
     
     BarSats() {
         super();
         this.$com$redhat$ceylon$compiler$java$test$structure$type$ISats$this = new .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this;
+    
+    @.java.lang.Override
+    public final void z() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -144,6 +144,9 @@ class ExtBottom extends .com.redhat.ceylon.compiler.java.test.structure.type.Gen
     }
 }
 class Conversions {
+    
+    Conversions() {
+    }
     
     public final void m() {
         final .com.redhat.ceylon.compiler.java.test.structure.type.Foo c1 = new .com.redhat.ceylon.compiler.java.test.structure.type.Foo();
@@ -179,9 +182,6 @@ class Conversions {
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenInv<?> b1;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenCov<?> b2;
         final .com.redhat.ceylon.compiler.java.test.structure.type.GenCon<?> b3;
-    }
-    
-    Conversions() {
     }
     
     public static void main(.java.lang.String[] args) {

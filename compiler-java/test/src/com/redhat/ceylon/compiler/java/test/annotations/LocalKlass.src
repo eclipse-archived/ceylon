@@ -4,6 +4,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalKlass {
     
+    public LocalKlass() {
+    }
+    
     private final void m() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
@@ -11,6 +14,12 @@ public class LocalKlass {
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.Sized"})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
         class Inner<T> implements .ceylon.language.Sized {
+            
+            Inner() {
+                this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
+                this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+                this.i1 = 1L;
+            }
             private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
             private final .ceylon.language.Container$impl $ceylon$language$Container$this;
             private final long i1;
@@ -53,16 +62,7 @@ public class LocalKlass {
             public final boolean getEmpty() {
                 return true;
             }
-            
-            Inner() {
-                this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
-                this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-                this.i1 = 1L;
-            }
         }
-    }
-    
-    public LocalKlass() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

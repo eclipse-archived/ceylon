@@ -2,15 +2,15 @@ package com.redhat.ceylon.compiler.java.test.statement.local;
 
 class FunctionKeyword {
     
+    FunctionKeyword() {
+    }
+    
     private final long test() {
         return 0L;
     }
     
     private final void m() {
         final long n = test();
-    }
-    
-    FunctionKeyword() {
     }
     
     public static void main(.java.lang.String[] args) {

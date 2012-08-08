@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class ExceptionAttr {
+    
+    ExceptionAttr() {
+        this.e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
+    }
     private .java.lang.Throwable e;
     
     public final .java.lang.Throwable getE() {
@@ -9,10 +13,6 @@ class ExceptionAttr {
     
     public final void setE(final .java.lang.Throwable e) {
         this.e = e;
-    }
-    
-    ExceptionAttr() {
-        this.e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
     }
     
     public static void main(.java.lang.String[] args) {

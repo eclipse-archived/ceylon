@@ -13,6 +13,10 @@ interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolea
     public abstract <U>U m1$u(final X b);
 }
 final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this;
     
     public final <U>T m1(final X b) {
@@ -31,23 +35,19 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
     
     class IC {
         
+        IC() {
+        }
+        
         final class ICI$impl {
+            
+            ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this) {
+                this.$this = $this;
+            }
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this;
             
             private T m2() {
                 return m1(null);
             }
-            
-            ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this) {
-                this.$this = $this;
-            }
         }
-        
-        IC() {
-        }
-    }
-    
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this) {
-        this.$this = $this;
     }
 }

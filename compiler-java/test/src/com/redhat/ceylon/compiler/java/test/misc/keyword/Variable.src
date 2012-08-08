@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.misc.keyword;
 
 class Variable {
     
+    Variable() {
+    }
+    
     private final void m() {
         final boolean abstract = false;
         final boolean assert = false;
@@ -32,9 +35,6 @@ class Variable {
         final boolean throws = false;
         final boolean transient = false;
         final boolean volatile = false;
-    }
-    
-    Variable() {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 class SatisfiesFileFilter implements .java.io.FileFilter {
     
+    SatisfiesFileFilter() {
+    }
+    
     @.java.lang.Override
     public final boolean accept(final .java.io.File f) {
         return true;
-    }
-    
-    SatisfiesFileFilter() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -17,12 +17,12 @@ class SatisfiesFileFilter implements .java.io.FileFilter {
 }
 class SatisfiesFilenameFilter implements .java.io.FilenameFilter {
     
+    SatisfiesFilenameFilter() {
+    }
+    
     @.java.lang.Override
     public final boolean accept(final .java.io.File dir, final .java.lang.String name) {
         return true;
-    }
-    
-    SatisfiesFilenameFilter() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -47,6 +47,9 @@ final class test {
     }
 }
 class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.test.interop.JavaInterface<.ceylon.language.Boolean, .ceylon.language.Integer> {
+    
+    JavaInterfaceImpl() {
+    }
     
     @.java.lang.Override
     public final boolean booleanMethod(final boolean b) {
@@ -111,9 +114,6 @@ class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.test.interop
     @.java.lang.Override
     public final <M>M methodTypeParamMethod(final M b) {
         return (M).ceylon.language.bottom.getBottom();
-    }
-    
-    JavaInterfaceImpl() {
     }
     
     public static void main(.java.lang.String[] args) {

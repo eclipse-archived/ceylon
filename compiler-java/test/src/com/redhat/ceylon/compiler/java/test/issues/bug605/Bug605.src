@@ -34,22 +34,22 @@ final class bug605mth {
         
         final class hash$getter {
             
-            long getHash() {
-                return 1L;
+            private hash$getter() {
             }
             
-            private hash$getter() {
+            long getHash() {
+                return 1L;
             }
         }
         final hash$getter hash$getter = new hash$getter();
         
         final class string$getter {
             
-            .java.lang.String getString() {
-                return "hello";
+            private string$getter() {
             }
             
-            private string$getter() {
+            .java.lang.String getString() {
+                return "hello";
             }
         }
         final string$getter string$getter = new string$getter();
@@ -76,26 +76,29 @@ final class bug605mth {
 }
 class Bug605cls {
     
+    Bug605cls() {
+    }
+    
     private final void mth() {
         
         final class hash$getter {
             
-            long getHash() {
-                return 1L;
+            private hash$getter() {
             }
             
-            private hash$getter() {
+            long getHash() {
+                return 1L;
             }
         }
         final hash$getter hash$getter = new hash$getter();
         
         final class string$getter {
             
-            .java.lang.String getString() {
-                return "hello";
+            private string$getter() {
             }
             
-            private string$getter() {
+            .java.lang.String getString() {
+                return "hello";
             }
         }
         final string$getter string$getter = new string$getter();
@@ -115,9 +118,6 @@ class Bug605cls {
         final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
     }
     
-    Bug605cls() {
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug605.Bug605cls();
@@ -125,19 +125,19 @@ class Bug605cls {
 }
 final class hash {
     
-    static long getHash() {
-        return 1L;
+    private hash() {
     }
     
-    private hash() {
+    static long getHash() {
+        return 1L;
     }
 }
 final class string {
     
-    static .java.lang.String getString() {
-        return "hello";
+    private string() {
     }
     
-    private string() {
+    static .java.lang.String getString() {
+        return "hello";
     }
 }

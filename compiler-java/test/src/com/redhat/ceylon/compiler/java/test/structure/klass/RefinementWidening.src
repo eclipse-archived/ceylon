@@ -66,31 +66,34 @@ class RWContrParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure
 interface RWTopI {
 }
 final class RWTopI$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI $this;
     
     RWTopI$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI $this;
 }
 interface RWLeft extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI {
 }
 final class RWLeft$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft $this;
     
     RWLeft$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft $this;
 }
 interface RWRight extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI {
 }
 final class RWRight$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWRight $this;
     
     RWRight$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWRight $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWRight $this;
 }
 abstract class RWTop<X, Y> {
+    
+    RWTop() {
+    }
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWInvParam<.ceylon.language.Number> m();
     
@@ -115,11 +118,12 @@ abstract class RWTop<X, Y> {
     public abstract Y classBound();
     
     public abstract Y classBound_erasure();
-    
-    RWTop() {
-    }
 }
 abstract class RWBottom<Z> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTop<.ceylon.language.Number, Z> {
+    
+    RWBottom() {
+        super();
+    }
     
     @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWInvParamExt<.ceylon.language.Number> m();
@@ -156,8 +160,4 @@ abstract class RWBottom<Z> extends .com.redhat.ceylon.compiler.java.test.structu
     
     @.java.lang.Override
     public abstract Z classBound_erasure();
-    
-    RWBottom() {
-        super();
-    }
 }

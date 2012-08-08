@@ -13,11 +13,11 @@ final class getterArgumentNamedInvocationBoxing {
                 
                 final class $item$1 {
                     
-                    long getItem() {
-                        return 1L;
+                    private $item$1() {
                     }
                     
-                    private $item$1() {
+                    long getItem() {
+                        return 1L;
                     }
                 }
                 final $item$1 $item$1 = new $item$1();
@@ -32,11 +32,11 @@ final class getterArgumentNamedInvocationBoxing {
                 
                 final class $item$3 {
                     
-                    T getItem() {
-                        return t;
+                    private $item$3() {
                     }
                     
-                    private $item$3() {
+                    T getItem() {
+                        return t;
                     }
                 }
                 final $item$3 $item$3 = new $item$3();

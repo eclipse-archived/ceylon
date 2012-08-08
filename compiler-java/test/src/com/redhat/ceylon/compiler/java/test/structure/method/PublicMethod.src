@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class PublicMethod {
     
-    public final void f() {
+    PublicMethod() {
     }
     
-    PublicMethod() {
+    public final void f() {
     }
     
     public static void main(.java.lang.String[] args) {

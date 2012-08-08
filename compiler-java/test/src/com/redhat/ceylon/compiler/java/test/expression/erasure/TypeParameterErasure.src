@@ -7,14 +7,14 @@ interface TPETop {
     public abstract long getTopAttribute();
 }
 final class TPETop$impl {
+    
+    TPETop$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop $this;
     
     public final long getTopAttribute() {
         return $this.getTopAttribute();
-    }
-    
-    TPETop$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop $this) {
-        this.$this = $this;
     }
 }
 interface TPELeft extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop {
@@ -24,14 +24,14 @@ interface TPELeft extends .com.redhat.ceylon.compiler.java.test.expression.erasu
     public abstract long getLeftAttribute();
 }
 final class TPELeft$impl {
+    
+    TPELeft$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $this;
     
     public final long getLeftAttribute() {
         return $this.getLeftAttribute();
-    }
-    
-    TPELeft$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $this) {
-        this.$this = $this;
     }
 }
 interface TPERight extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop {
@@ -41,17 +41,24 @@ interface TPERight extends .com.redhat.ceylon.compiler.java.test.expression.eras
     public abstract long getRightAttribute();
 }
 final class TPERight$impl {
+    
+    TPERight$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $this;
     
     public final long getRightAttribute() {
         return $this.getRightAttribute();
     }
-    
-    TPERight$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $this) {
-        this.$this = $this;
-    }
 }
 class TPECLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft {
+    
+    TPECLeft() {
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl(this);
+        this.topAttribute = 1L;
+        this.leftAttribute = 1L;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
     
@@ -75,19 +82,21 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasu
         return leftAttribute;
     }
     
-    TPECLeft() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl(this);
-        this.topAttribute = 1L;
-        this.leftAttribute = 1L;
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECLeft();
     }
 }
 class TPECMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight {
+    
+    TPECMiddle() {
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPERight$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl(this);
+        this.topAttribute = 1L;
+        this.leftAttribute = 1L;
+        this.rightAttribute = 1L;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPERight$this;
@@ -122,21 +131,15 @@ class TPECMiddle implements .com.redhat.ceylon.compiler.java.test.expression.era
         return rightAttribute;
     }
     
-    TPECMiddle() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPELeft$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$TPERight$this = new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl(this);
-        this.topAttribute = 1L;
-        this.leftAttribute = 1L;
-        this.rightAttribute = 1L;
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle();
     }
 }
 class TypeParameterErasure {
+    
+    TypeParameterErasure() {
+    }
     
     private final <T>T parameterized(final T t) {
         return t;
@@ -373,6 +376,9 @@ class TypeParameterErasure {
     
     class Parameterized<T> {
         
+        Parameterized(T t) {
+        }
+        
         public final <Inner>Inner parameterized(final Inner i, final T t) {
             return i;
         }
@@ -400,9 +406,6 @@ class TypeParameterErasure {
             i.compare(i);
             return i;
         }
-        
-        Parameterized(T t) {
-        }
     }
     
     class ParameterizedWithBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft> {
@@ -414,9 +417,6 @@ class TypeParameterErasure {
     }
     
     class ParameterizedWithIntersectionBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight> {
-        
-        private final void requiresCastLeft(final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft l) {
-        }
         
         ParameterizedWithIntersectionBounds(T t) {
             t.left();
@@ -442,6 +442,9 @@ class TypeParameterErasure {
                 }
                 returning null;
             );
+        }
+        
+        private final void requiresCastLeft(final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft l) {
         }
     }
     
@@ -678,9 +681,6 @@ class TypeParameterErasure {
         TestPrimitiveBound(T init) {
             T n = init;
         }
-    }
-    
-    TypeParameterErasure() {
     }
     
     public static void main(.java.lang.String[] args) {

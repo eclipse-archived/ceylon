@@ -2,10 +2,6 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentInvocationInitWithEmptySequence {
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$b() {
-        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
-    }
-    
     NamedArgumentInvocationInitWithEmptySequence() {
         (
             let
@@ -25,5 +21,9 @@ class NamedArgumentInvocationInitWithEmptySequence {
             }
             returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence($arg$2$0);
         );
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$b() {
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
 }

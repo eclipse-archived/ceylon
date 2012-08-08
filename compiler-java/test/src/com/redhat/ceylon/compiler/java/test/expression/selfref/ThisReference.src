@@ -2,15 +2,15 @@ package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
 class ThisReference {
     
+    ThisReference() {
+    }
+    
     public final .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference m() {
         return this;
     }
     
     public final void test() {
         this.test();
-    }
-    
-    ThisReference() {
     }
     
     public static void main(.java.lang.String[] args) {

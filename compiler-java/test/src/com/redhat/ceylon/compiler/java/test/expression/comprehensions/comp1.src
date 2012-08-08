@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
 final class x {
+    
+    private x() {
+    }
     private static final .ceylon.language.Iterable<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.Iterable[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
@@ -36,8 +39,5 @@ final class x {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private x() {
     }
 }

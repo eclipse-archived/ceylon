@@ -1,6 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class Fookls {
+    
+    Fookls(long init) {
+        this.init = init;
+        this.prop = 42L;
+        this.privProp = 24L;
+    }
     private final long prop;
     
     public final long getProp() {
@@ -244,14 +250,12 @@ class Fookls {
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
-    
-    Fookls(long init) {
-        this.init = init;
-        this.prop = 42L;
-        this.privProp = 24L;
-    }
 }
 class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls {
+    
+    Foosubkls(long init) {
+        super(init);
+    }
     
     @.java.lang.Override
     public final void f1(final long n) {
@@ -291,10 +295,6 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
-    }
-    
-    Foosubkls(long init) {
-        super(init);
     }
 }
 interface Barface {
@@ -362,6 +362,10 @@ interface Barface {
     public abstract .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n);
 }
 final class Barface$impl {
+    
+    Barface$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this;
     
     public final long getProp() {
@@ -535,12 +539,13 @@ final class Barface$impl {
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
-    
-    Barface$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this) {
-        this.$this = $this;
-    }
 }
 class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface {
+    
+    Barkls() {
+        this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl(this);
+        this.prop = 42L;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this;
     
     @.java.lang.Override
@@ -689,11 +694,6 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
-    }
-    
-    Barkls() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl(this);
-        this.prop = 42L;
     }
     
     public static void main(.java.lang.String[] args) {

@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 final class arr1 {
+    
+    private arr1() {
+    }
     private static final .ceylon.language.Array<.ceylon.language.Integer>[] value;
     static {
         value = new .ceylon.language.Array[]{.ceylon.language.$array.<.ceylon.language.Integer>array(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)))};
@@ -13,11 +16,11 @@ final class arr1 {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private arr1() {
-    }
 }
 final class arr3 {
+    
+    private arr3() {
+    }
     private static final .ceylon.language.Array<.ceylon.language.Integer>[] value;
     static {
         value = new .ceylon.language.Array[]{(
@@ -35,8 +38,5 @@ final class arr3 {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private arr3() {
     }
 }

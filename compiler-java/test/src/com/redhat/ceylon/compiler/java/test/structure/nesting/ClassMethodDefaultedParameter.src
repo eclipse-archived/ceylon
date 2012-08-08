@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 class C<T> {
     
+    C() {
+    }
+    
     private final void m(final long i) {
     }
     
@@ -213,9 +216,6 @@ class C<T> {
         c.<.ceylon.language.String>m5(5L);
         <.ceylon.language.String>m5(5L, null);
         <.ceylon.language.String>m5(5L, null, .ceylon.language.String.instance(""));
-    }
-    
-    C() {
     }
     
     public static void main(.java.lang.String[] args) {

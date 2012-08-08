@@ -43,6 +43,9 @@ final class switchMatch_bar extends .com.redhat.ceylon.compiler.java.test.statem
 }
 class SwitchMatch {
     
+    SwitchMatch() {
+    }
+    
     private final void onObject() {
         final .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop fb = .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo.getSwitchMatch_foo();
         {
@@ -95,9 +98,6 @@ class SwitchMatch {
                 .ceylon.language.print.print(.ceylon.language.String.instance("null"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
-    }
-    
-    SwitchMatch() {
     }
     
     public static void main(.java.lang.String[] args) {

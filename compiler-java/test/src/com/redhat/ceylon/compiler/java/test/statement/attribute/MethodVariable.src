@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.statement.attribute;
 
 class MethodVariable {
     
-    private final void m() {
-        .java.lang.String f;
+    MethodVariable() {
     }
     
-    MethodVariable() {
+    private final void m() {
+        .java.lang.String f;
     }
     
     public static void main(.java.lang.String[] args) {

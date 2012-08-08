@@ -2,26 +2,26 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class ObjectInMethod {
     
+    ObjectInMethod() {
+    }
+    
     private final void m() {
         final long i = 1L;
         
         final class foo {
+            
+            private foo() {
+                this.string = .ceylon.language.Integer.toString(i);
+            }
             private final .java.lang.String string;
             
             @.java.lang.Override
             public final .java.lang.String toString() {
                 return string;
             }
-            
-            private foo() {
-                this.string = .ceylon.language.Integer.toString(i);
-            }
         }
         final foo foo = new foo();
         final .java.lang.String s = foo.toString();
-    }
-    
-    ObjectInMethod() {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 public class NullHandlingOperators {
     
+    public NullHandlingOperators() {
+    }
+    
     private final <T>T box(final T t) {
         return t;
     }
@@ -134,9 +137,6 @@ public class NullHandlingOperators {
             }
             returning $ceylontmp14 != null ? $ceylontmp14 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
         );
-    }
-    
-    public NullHandlingOperators() {
     }
     
     public static void main(.java.lang.String[] args) {

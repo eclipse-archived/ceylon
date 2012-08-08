@@ -41,6 +41,10 @@ interface I<T> {
     public abstract <U>U m5$u(final long i, final T t);
 }
 final class I$impl<T> {
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this;
     
     public final void m() {
@@ -142,10 +146,6 @@ final class I$impl<T> {
     
     public final <U>U m5$u(final long i, final T t) {
         return null;
-    }
-    
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
-        this.$this = $this;
     }
 }
 final class positional {
@@ -259,6 +259,10 @@ final class named {
     }
 }
 class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> {
+    
+    C() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this;
     
     @.java.lang.Override
@@ -353,10 +357,6 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
     @.java.lang.Override
     public final <U>long m5(final long i, final T t, final U u) {
         return i;
-    }
-    
-    C() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>(this);
     }
     
     public static void main(.java.lang.String[] args) {

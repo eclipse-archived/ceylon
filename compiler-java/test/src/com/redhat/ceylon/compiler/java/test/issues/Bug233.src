@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.Bug233_Java {
     
+    Bug233_Ceylon(.com.redhat.ceylon.compiler.java.test.issues.Bug233_Type arg) {
+        super(arg);
+    }
+    
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type f(final .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type arg) {
         return (
@@ -11,9 +15,5 @@ class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.Bug233_
             }
             returning $ceylontmp0 != null ? $ceylontmp0 : new .com.redhat.ceylon.compiler.java.test.issues.Bug233_Type();
         );
-    }
-    
-    Bug233_Ceylon(.com.redhat.ceylon.compiler.java.test.issues.Bug233_Type arg) {
-        super(arg);
     }
 }

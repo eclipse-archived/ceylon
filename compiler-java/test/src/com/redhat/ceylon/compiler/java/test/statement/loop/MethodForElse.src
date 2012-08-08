@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.loop;
 
 class MethodForElse {
     
+    MethodForElse() {
+    }
+    
     public final long m(final .ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
         boolean $doforelse$0 = true;
         .java.lang.Object $elem$1;
@@ -33,9 +36,6 @@ class MethodForElse {
             return 0L;
         }
         return 2L;
-    }
-    
-    MethodForElse() {
     }
     
     public static void main(.java.lang.String[] args) {

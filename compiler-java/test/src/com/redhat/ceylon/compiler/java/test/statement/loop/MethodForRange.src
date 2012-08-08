@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.java.test.statement.loop;
 
 class MethodForRange {
     
+    MethodForRange() {
+    }
+    
     public final void m() {
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $i$iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).getIterator(); !(($elem$0 = $i$iter$1.next()) instanceof .ceylon.language.Finished); ) {
             final long i = ((.ceylon.language.Integer)$elem$0).longValue();
         }
-    }
-    
-    MethodForRange() {
     }
     
     public static void main(.java.lang.String[] args) {

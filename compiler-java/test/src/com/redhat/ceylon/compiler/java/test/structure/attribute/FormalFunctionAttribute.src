@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 abstract class FormalFunctionAttribute {
     
+    FormalFunctionAttribute() {
+    }
+    
     public abstract .ceylon.language.Callable<? extends .java.lang.Object> getF();
     
     public final void run() {
         getF().$call();
-    }
-    
-    FormalFunctionAttribute() {
     }
 }

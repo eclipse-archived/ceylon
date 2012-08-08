@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class DefaultedAndSequenced {
     
+    DefaultedAndSequenced() {
+    }
+    
     private final void m(final .java.lang.String s, final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Boolean> b) {
     }
     
@@ -208,9 +211,6 @@ class DefaultedAndSequenced {
             }
             returning null;
         );
-    }
-    
-    DefaultedAndSequenced() {
     }
     
     public static void main(.java.lang.String[] args) {

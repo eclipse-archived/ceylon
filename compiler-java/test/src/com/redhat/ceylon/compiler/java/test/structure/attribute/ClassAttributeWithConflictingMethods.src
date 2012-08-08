@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 abstract class ClassAttributeWithConflictingMethods {
+    
+    ClassAttributeWithConflictingMethods() {
+        this.attr = "";
+    }
     private .java.lang.String attr;
     
     public final .java.lang.String getAttr() {
@@ -21,9 +25,5 @@ abstract class ClassAttributeWithConflictingMethods {
     private final void m() {
         $setAttr($getAttr());
         this.$setAttr(this.$getAttr());
-    }
-    
-    ClassAttributeWithConflictingMethods() {
-        this.attr = "";
     }
 }

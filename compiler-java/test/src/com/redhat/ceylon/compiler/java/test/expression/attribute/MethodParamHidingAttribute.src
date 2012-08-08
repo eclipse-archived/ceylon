@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class MethodParamHidingAttribute {
     
-    private final void m(final boolean b) {
-        final boolean b2 = b;
-    }
-    
     MethodParamHidingAttribute() {
         final boolean b = true;
+    }
+    
+    private final void m(final boolean b) {
+        final boolean b2 = b;
     }
     
     public static void main(.java.lang.String[] args) {

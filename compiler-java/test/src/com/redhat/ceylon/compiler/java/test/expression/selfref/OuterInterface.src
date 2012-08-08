@@ -7,6 +7,10 @@ interface OuterInterface<T> {
     public void m2();
 }
 final class OuterInterface$impl<T> {
+    
+    OuterInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this;
     
     private void m() {
@@ -17,16 +21,12 @@ final class OuterInterface$impl<T> {
     
     class InnerClass {
         
+        InnerClass() {
+        }
+        
         private final void m3() {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.m();
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.m2();
         }
-        
-        InnerClass() {
-        }
-    }
-    
-    OuterInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this) {
-        this.$this = $this;
     }
 }

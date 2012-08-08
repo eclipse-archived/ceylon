@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 public class GenericMethodInvocationMixedClass<U> {
     
-    public final <V>U bar(final U u, final V v) {
-        return u;
+    public GenericMethodInvocationMixedClass() {
     }
     
-    public GenericMethodInvocationMixedClass() {
+    public final <V>U bar(final U u, final V v) {
+        return u;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -15,6 +15,9 @@ public class GenericMethodInvocationMixedClass<U> {
     }
 }
 class GenericMethodInvocationMixed<X> {
+    
+    GenericMethodInvocationMixed() {
+    }
     
     public final .java.lang.String m() {
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String> k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass<.ceylon.language.String>();
@@ -50,9 +53,6 @@ class GenericMethodInvocationMixed<X> {
             }
             returning $arg$1$callable$.<Y>bar($arg$1$0, $arg$1$1);
         );
-    }
-    
-    GenericMethodInvocationMixed() {
     }
     
     public static void main(.java.lang.String[] args) {

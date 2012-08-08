@@ -2,19 +2,19 @@ package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 final class topLevelGetter {
     
-    static long getTopLevelGetter() {
-        return 0L;
+    private topLevelGetter() {
     }
     
-    private topLevelGetter() {
+    static long getTopLevelGetter() {
+        return 0L;
     }
 }
 public final class topLevelGetterShared {
     
-    public static long getTopLevelGetterShared() {
-        return 0L;
+    private topLevelGetterShared() {
     }
     
-    private topLevelGetterShared() {
+    public static long getTopLevelGetterShared() {
+        return 0L;
     }
 }

@@ -6,11 +6,11 @@ interface LocalInterfaceAlias_Toplevel {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class LocalInterfaceAlias_Toplevel$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel $this;
     
     LocalInterfaceAlias_Toplevel$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InterfaceAlias_Foo")
@@ -30,33 +30,33 @@ final class localInterfaceAliasMethod {
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         final class InterfaceAlias_Foo$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo $this;
             
             InterfaceAlias_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo $this) {
                 this.$this = $this;
             }
+            private final .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo $this;
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod.InterfaceAlias_Foo"})
         class Class1 implements .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo {
-            private final InterfaceAlias_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this;
             
             Class1() {
                 this.$com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this = new InterfaceAlias_Foo$impl(this);
             }
+            private final InterfaceAlias_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this;
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel"})
         class Class2 implements .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel {
-            private final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl $com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$this;
             
             Class2() {
                 this.$com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$this = new .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl(this);
             }
+            private final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel$impl $com$redhat$ceylon$compiler$java$test$structure$alias$LocalInterfaceAlias_Toplevel$this;
         }
         final Class1 foo1 = new Class1();
         final Class2 foo2 = new Class2();

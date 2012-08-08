@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class C<X> {
     
-    public final <Y>X f(final X x, final Y y) {
-        throw new .ceylon.language.Exception(null, null);
+    C() {
     }
     
-    C() {
+    public final <Y>X f(final X x, final Y y) {
+        throw new .ceylon.language.Exception(null, null);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -15,6 +15,11 @@ class C<X> {
     }
 }
 class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> {
+    
+    MethodSpecifyingTopLevelWithTypeParamMixed() {
+        this.c = new .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String>();
+        this.c2 = new .com.redhat.ceylon.compiler.java.test.structure.method.C<S>();
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String> c;
     
     public final .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String> getC() {
@@ -32,11 +37,6 @@ class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> {
     
     private final S bar(final S x, final T y) {
         return getC2().<T>f(x, y);
-    }
-    
-    MethodSpecifyingTopLevelWithTypeParamMixed() {
-        this.c = new .com.redhat.ceylon.compiler.java.test.structure.method.C<.ceylon.language.String>();
-        this.c2 = new .com.redhat.ceylon.compiler.java.test.structure.method.C<S>();
     }
     
     public static void main(.java.lang.String[] args) {

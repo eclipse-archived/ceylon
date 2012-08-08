@@ -3,6 +3,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 class ObjectArgumentNamedInvocationChained {
     
+    ObjectArgumentNamedInvocationChained() {
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained")
     public final .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained callFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
@@ -10,9 +13,6 @@ class ObjectArgumentNamedInvocationChained {
     final .java.lang.Object o) {
         .ceylon.language.print.print(.ceylon.language.String.instance(o.toString()));
         return this;
-    }
-    
-    ObjectArgumentNamedInvocationChained() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -44,6 +44,12 @@ public final class objectArgumentNamedInvocationChained {
                         @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language.Object")
                         @.com.redhat.ceylon.compiler.java.metadata.Object
                         final class o extends .java.lang.Object {
+                            
+                            private o() {
+                                super();
+                                this.string = "Foo";
+                                this.hash = (int)0L;
+                            }
                             private final .java.lang.String string;
                             
                             @.java.lang.Override
@@ -61,12 +67,6 @@ public final class objectArgumentNamedInvocationChained {
                             public final int hashCode() {
                                 return hash;
                             }
-                            
-                            private o() {
-                                super();
-                                this.string = "Foo";
-                                this.hash = (int)0L;
-                            }
                         }
                         final o $arg$1$0 = new o();
                     }
@@ -78,6 +78,12 @@ public final class objectArgumentNamedInvocationChained {
                 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language.Object")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
                 final class o extends .java.lang.Object {
+                    
+                    private o() {
+                        super();
+                        this.string = "Bar";
+                        this.hash = (int)0L;
+                    }
                     private final .java.lang.String string;
                     
                     @.java.lang.Override
@@ -94,12 +100,6 @@ public final class objectArgumentNamedInvocationChained {
                     @.java.lang.Override
                     public final int hashCode() {
                         return hash;
-                    }
-                    
-                    private o() {
-                        super();
-                        this.string = "Bar";
-                        this.hash = (int)0L;
                     }
                 }
                 final o $arg$0$0 = new o();

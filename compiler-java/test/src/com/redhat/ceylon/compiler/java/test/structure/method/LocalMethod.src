@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class LocalMethod {
     
+    LocalMethod() {
+    }
+    
     private final void m() {
         
         final class local {
@@ -15,9 +18,6 @@ class LocalMethod {
         }
         final local local = new local();
         final long n = local.local();
-    }
-    
-    LocalMethod() {
     }
     
     public static void main(.java.lang.String[] args) {

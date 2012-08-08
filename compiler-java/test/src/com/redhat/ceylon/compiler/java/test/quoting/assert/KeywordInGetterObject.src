@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInGetterObject {
     
+    KeywordInGetterObject() {
+    }
+    
     private final long getI() {
         
         final class $assert {
@@ -12,9 +15,6 @@ class KeywordInGetterObject {
         final $assert assert = new $assert();
         final .java.lang.String s = assert.toString();
         return 0L;
-    }
-    
-    KeywordInGetterObject() {
     }
     
     public static void main(.java.lang.String[] args) {

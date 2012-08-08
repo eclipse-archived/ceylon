@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
 final class toplevelObject {
+    
+    private toplevelObject() {
+    }
     private static final .java.lang.Object[] value;
     static {
         value = new .java.lang.Object[]{.ceylon.language.bottom.getBottom()};
@@ -13,11 +16,11 @@ final class toplevelObject {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private toplevelObject() {
-    }
 }
 final class toplevelInteger {
+    
+    private toplevelInteger() {
+    }
     private static final long[] value;
     static {
         value = new long[]{((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue()};
@@ -30,11 +33,13 @@ final class toplevelInteger {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private toplevelInteger() {
-    }
 }
 class BottomClass {
+    
+    BottomClass(.java.lang.Object argObject, long argInteger) {
+        final .java.lang.Object attrObject = .ceylon.language.bottom.getBottom();
+        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
+    }
     
     private final .java.lang.Object methodObject(final .java.lang.Object o) {
         return .ceylon.language.bottom.getBottom();
@@ -46,10 +51,5 @@ class BottomClass {
     
     private final void f() {
         new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.bottom.getBottom(), ((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue());
-    }
-    
-    BottomClass(.java.lang.Object argObject, long argInteger) {
-        final .java.lang.Object attrObject = .ceylon.language.bottom.getBottom();
-        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
     }
 }

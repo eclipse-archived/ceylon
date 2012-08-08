@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class MethodInvocation {
     
+    MethodInvocation() {
+    }
+    
     public final void m() {
         n();
         o(1L);
@@ -18,9 +21,6 @@ class MethodInvocation {
     
     public final void p() {
         return;
-    }
-    
-    MethodInvocation() {
     }
     
     public static void main(.java.lang.String[] args) {

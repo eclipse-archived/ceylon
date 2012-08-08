@@ -2,27 +2,27 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class ObjectInGetter {
     
+    ObjectInGetter() {
+    }
+    
     private final .java.lang.String getFoo() {
         if (true) {
             final long i = 1L;
             
             final class bar {
                 
+                private bar() {
+                }
+                
                 @.java.lang.Override
                 public final .java.lang.String toString() {
                     return .ceylon.language.Integer.toString(i);
-                }
-                
-                private bar() {
                 }
             }
             final bar bar = new bar();
             return bar.toString();
         }
         return "";
-    }
-    
-    ObjectInGetter() {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentSequencedTypeParamInvocation<T> {
     
+    NamedArgumentSequencedTypeParamInvocation() {
+    }
+    
     public final void algo(final .ceylon.language.Iterable<? extends T> strings) {
     }
     
@@ -18,9 +21,6 @@ class NamedArgumentSequencedTypeParamInvocation<T> {
     
     public final .ceylon.language.Iterable<? extends T> algo$strings() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
-    }
-    
-    NamedArgumentSequencedTypeParamInvocation() {
     }
     
     public static void main(.java.lang.String[] args) {

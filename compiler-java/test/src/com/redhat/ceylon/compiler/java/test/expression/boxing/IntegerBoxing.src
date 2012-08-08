@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
 class IntegerBoxing {
+    
+    IntegerBoxing() {
+        this.attrInteger = 1L;
+    }
     private long attrInteger;
     
     private final long getAttrInteger() {
@@ -101,10 +105,6 @@ class IntegerBoxing {
     }
     
     private final void test(final long i) {
-    }
-    
-    IntegerBoxing() {
-        this.attrInteger = 1L;
     }
     
     public static void main(.java.lang.String[] args) {

@@ -6,6 +6,9 @@ interface C$CI<T extends .ceylon.language.String, X extends .ceylon.language.Boo
 }
 class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
+    C() {
+    }
+    
     private final <U>T m1(final X b, final U u) {
         throw new .ceylon.language.Exception(null, null);
     }
@@ -25,24 +28,21 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     }
     
     final class CI$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI<? extends T, ? super X> $this;
-        
-        class CIC {
-            
-            private final T m2() {
-                return m1(null);
-            }
-            
-            CIC() {
-            }
-        }
         
         CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI<? extends T, ? super X> $this) {
             this.$this = $this;
         }
-    }
-    
-    C() {
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI<? extends T, ? super X> $this;
+        
+        class CIC {
+            
+            CIC() {
+            }
+            
+            private final T m2() {
+                return m1(null);
+            }
+        }
     }
     
     public static void main(.java.lang.String[] args) {

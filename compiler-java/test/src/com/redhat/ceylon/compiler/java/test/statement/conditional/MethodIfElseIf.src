@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
 class MethodIfElseIf {
     
+    MethodIfElseIf() {
+    }
+    
     private final long m() {
         if (true) {
             return 1L;
@@ -12,9 +15,6 @@ class MethodIfElseIf {
                 return 3L;
             }
         }
-    }
-    
-    MethodIfElseIf() {
     }
     
     public static void main(.java.lang.String[] args) {

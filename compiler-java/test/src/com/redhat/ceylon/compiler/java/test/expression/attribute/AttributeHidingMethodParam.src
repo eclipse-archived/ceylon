@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class AttributeHidingMethodParam {
+    
+    AttributeHidingMethodParam() {
+        this.b = true;
+    }
     private final boolean b;
     
     private final boolean getB() {
@@ -9,10 +13,6 @@ class AttributeHidingMethodParam {
     
     private final boolean m(final boolean b) {
         return this.getB();
-    }
-    
-    AttributeHidingMethodParam() {
-        this.b = true;
     }
     
     public static void main(.java.lang.String[] args) {

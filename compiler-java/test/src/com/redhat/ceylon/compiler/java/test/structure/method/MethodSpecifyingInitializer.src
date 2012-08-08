@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodSpecifierType {
     
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType foo() {
-        return new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType();
+    MethodSpecifierType() {
     }
     
-    MethodSpecifierType() {
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType foo() {
+        return new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierType();
     }
     
     public static void main(.java.lang.String[] args) {

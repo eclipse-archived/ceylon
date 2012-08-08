@@ -8,6 +8,9 @@ class E extends .ceylon.language.Exception {
 }
 class TryCatchSubclass {
     
+    TryCatchSubclass() {
+    }
+    
     private final void t() {
     }
     
@@ -25,9 +28,6 @@ class TryCatchSubclass {
         } catch (final .java.lang.Exception e) {
             cexception(e);
         }
-    }
-    
-    TryCatchSubclass() {
     }
     
     public static void main(.java.lang.String[] args) {

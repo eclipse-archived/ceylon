@@ -43,22 +43,22 @@ interface Bug627Abstract {
     public abstract .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.Bug627Enum> elements();
 }
 final class Bug627Abstract$impl {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract $this;
     
     Bug627Abstract$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract $this;
 }
 class Bug627Concrete implements .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract {
+    
+    Bug627Concrete() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug627Abstract$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract$impl(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract$impl $com$redhat$ceylon$compiler$java$test$issues$Bug627Abstract$this;
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.Bug627Enum> elements() {
         return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
-    }
-    
-    Bug627Concrete() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$Bug627Abstract$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug627Abstract$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

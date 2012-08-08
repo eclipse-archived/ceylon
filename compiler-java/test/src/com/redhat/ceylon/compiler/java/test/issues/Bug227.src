@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 public class Bug227 {
+    
+    public Bug227() {
+        this._num = 1L;
+    }
     private long _num;
     
     private final long get_num() {
@@ -17,10 +21,6 @@ public class Bug227 {
     
     public final void setNum(final long num) {
         set_num(num);
-    }
-    
-    public Bug227() {
-        this._num = 1L;
     }
     
     public static void main(.java.lang.String[] args) {

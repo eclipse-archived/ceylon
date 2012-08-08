@@ -1,16 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodInitializerParameter<T> {
+    
+    MethodInitializerParameter(T t) {
+        this.t = t;
+    }
     private final T t;
     
     private final void unary(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m {
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             private m() {
                 this.m = m$;
             }
+            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             void m(final long i) {
                 m.$call(i);
@@ -31,11 +35,11 @@ class MethodInitializerParameter<T> {
     private final void nary(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m {
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             private m() {
                 this.m = m$;
             }
+            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             void m(final long i1, final long i2, final long i3, final long i4) {
                 m.$call(i1, i2, i3, i4);
@@ -59,11 +63,11 @@ class MethodInitializerParameter<T> {
     private final void sequenced(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m {
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             private m() {
                 this.m = m$;
             }
+            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             void m(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
                 m.$call(i, seq);
@@ -112,11 +116,11 @@ class MethodInitializerParameter<T> {
     private final void typeParameter(final .ceylon.language.Callable<? extends T> m$) {
         
         final class m {
-            private final .ceylon.language.Callable<? extends T> m;
             
             private m() {
                 this.m = m$;
             }
+            private final .ceylon.language.Callable<? extends T> m;
             
             T m(final T t) {
                 return m.$call(t);
@@ -136,11 +140,11 @@ class MethodInitializerParameter<T> {
     private final void defaultedParameter(final .ceylon.language.Callable<? extends .java.lang.Object> m$) {
         
         final class m {
-            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             private m() {
                 this.m = m$;
             }
+            private final .ceylon.language.Callable<? extends .java.lang.Object> m;
             
             void m(final long i) {
                 m.$call(i);
@@ -181,9 +185,5 @@ class MethodInitializerParameter<T> {
             }
             returning null;
         );
-    }
-    
-    MethodInitializerParameter(T t) {
-        this.t = t;
     }
 }

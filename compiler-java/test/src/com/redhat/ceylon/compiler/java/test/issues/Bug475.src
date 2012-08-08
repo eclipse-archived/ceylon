@@ -1,14 +1,14 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 abstract class Bug475 {
+    
+    Bug475() {
+        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
+    }
     private final int hash;
     
     @.java.lang.Override
     public final int hashCode() {
         return hash;
-    }
-    
-    Bug475() {
-        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom.getBottom()).longValue();
     }
 }

@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>> {
     
+    SelfType() {
+    }
+    
     public abstract long compareTo(final T other);
     
     public final long reverseCompareTo(final T other) {
@@ -11,9 +14,6 @@ abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expressi
     public final T self() {
         final T x = (T)this;
         return (T)this;
-    }
-    
-    SelfType() {
     }
 }
 final class selfType {
@@ -27,14 +27,14 @@ final class selfType {
 }
 abstract class SelfType2<T> {
     
+    SelfType2() {
+    }
+    
     public abstract long compareTo(final T other);
     
     public final T self() {
         final T x = (T)this;
         return (T)this;
-    }
-    
-    SelfType2() {
     }
 }
 final class selfType2 {

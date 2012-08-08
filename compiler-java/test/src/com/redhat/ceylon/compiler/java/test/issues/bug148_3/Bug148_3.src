@@ -17,13 +17,13 @@ public final class bug148_3 {
 }
 final class f {
     
+    private f() {
+    }
+    
     static long getF() {
         return 2L;
     }
     
     static void setF(final long f) {
-    }
-    
-    private f() {
     }
 }

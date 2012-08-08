@@ -5,11 +5,11 @@ interface NullSafeVoidMethodReference {
     public abstract void invoke();
 }
 final class NullSafeVoidMethodReference$impl {
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference $this;
     
     NullSafeVoidMethodReference$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference $this;
 }
 final class test {
     

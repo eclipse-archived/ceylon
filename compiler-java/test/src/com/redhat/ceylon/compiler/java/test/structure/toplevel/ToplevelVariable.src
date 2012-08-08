@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 final class topLevelVariable {
+    
+    private topLevelVariable() {
+    }
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -16,8 +19,5 @@ final class topLevelVariable {
     
     static void setTopLevelVariable(final long topLevelVariable) {
         value[0] = topLevelVariable;
-    }
-    
-    private topLevelVariable() {
     }
 }

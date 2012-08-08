@@ -3,29 +3,22 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 interface BasicOperatorsA {
 }
 final class BasicOperatorsA$impl {
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA $this;
     
     BasicOperatorsA$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA $this;
 }
 interface BasicOperatorsB {
 }
 final class BasicOperatorsB$impl {
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB $this;
     
     BasicOperatorsB$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB $this;
 }
 public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .ceylon.language.Castable<.java.lang.Object>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
-    private final .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$this;
-    private final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$this;
-    private final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Numeric$this;
-    private final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Summable$this;
-    private final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertable$this;
-    private final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Ordinal$this;
-    private final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$this;
     
     public EqualityAndComparisonInteger() {
         super();
@@ -37,8 +30,18 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
         this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
         this.$ceylon$language$Comparable$this = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>(this);
     }
+    private final .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$this;
+    private final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Integral$this;
+    private final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Numeric$this;
+    private final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Summable$this;
+    private final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertable$this;
+    private final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Ordinal$this;
+    private final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Comparable$this;
 }
 public class EqualityAndComparisonOperators {
+    
+    public EqualityAndComparisonOperators() {
+    }
     
     private final void equalityAndComparisonUnboxed(final .java.lang.Object o1, final .java.lang.Object o2) {
         boolean sync = o1 == o2;
@@ -122,9 +125,6 @@ public class EqualityAndComparisonOperators {
             }
             returning $ceylontmp6 instanceof .java.lang.Throwable;
         );
-    }
-    
-    public EqualityAndComparisonOperators() {
     }
     
     public static void main(.java.lang.String[] args) {

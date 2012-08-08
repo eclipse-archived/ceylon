@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.stringtemp;
 
 class StringTemplate {
     
+    StringTemplate() {
+    }
+    
     private final void m1(final .java.lang.String s) {
         final .java.lang.String t = new .java.lang.StringBuilder().append("Foo ").append(s).append(" bar").toString();
     }
@@ -20,9 +23,6 @@ class StringTemplate {
     
     private final void m5() {
         final .java.lang.String t = new .java.lang.StringBuilder().append("Foo ").append(4L).append(" bar").toString();
-    }
-    
-    StringTemplate() {
     }
     
     public static void main(.java.lang.String[] args) {

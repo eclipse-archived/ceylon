@@ -1,6 +1,23 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
+    
+    EmptyImpl() {
+        super();
+        this.$ceylon$language$Empty$this = new .ceylon.language.Empty$impl(this);
+        this.$ceylon$language$List$this = new .ceylon.language.List$impl<.java.lang.Object>(this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<.java.lang.Object>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<?>>((.ceylon.language.Cloneable<.ceylon.language.Collection<?>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .java.lang.Object>(this);
+        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<?>>((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<?>>)(.ceylon.language.Ranged)this);
+        this.$ceylon$language$None$this = new .ceylon.language.None$impl<.java.lang.Object>(this);
+        this.$ceylon$language$FixedSized$this = new .ceylon.language.FixedSized$impl<.java.lang.Object>(this);
+    }
     private final .ceylon.language.Empty$impl $ceylon$language$Empty$this;
     
     @.java.lang.Override
@@ -284,23 +301,6 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
         return $ceylon$language$None$this.getEmpty();
     }
     private final .ceylon.language.FixedSized$impl<.java.lang.Object> $ceylon$language$FixedSized$this;
-    
-    EmptyImpl() {
-        super();
-        this.$ceylon$language$Empty$this = new .ceylon.language.Empty$impl(this);
-        this.$ceylon$language$List$this = new .ceylon.language.List$impl<.java.lang.Object>(this);
-        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<.java.lang.Object>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
-        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<?>>((.ceylon.language.Cloneable<.ceylon.language.Collection<?>>)(.ceylon.language.Cloneable)this);
-        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .java.lang.Object>(this);
-        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<?>>((.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<?>>)(.ceylon.language.Ranged)this);
-        this.$ceylon$language$None$this = new .ceylon.language.None$impl<.java.lang.Object>(this);
-        this.$ceylon$language$FixedSized$this = new .ceylon.language.FixedSized$impl<.java.lang.Object>(this);
-    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);

@@ -23,11 +23,11 @@ final class getterArgumentNamedInvocationGeneric {
                 
                 final class $i$1 {
                     
-                    T getI() {
-                        return t;
+                    private $i$1() {
                     }
                     
-                    private $i$1() {
+                    T getI() {
+                        return t;
                     }
                 }
                 final $i$1 $i$1 = new $i$1();

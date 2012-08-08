@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 public final class $strictfp {
     
+    private $strictfp() {
+    }
+    
     public static long getStrictfp() {
         return 0L;
     }
     
     public static void setStrictfp(final long strictfp) {
-    }
-    
-    private $strictfp() {
     }
 }

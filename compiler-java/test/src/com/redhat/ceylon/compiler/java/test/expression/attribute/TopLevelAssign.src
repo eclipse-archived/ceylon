@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 final class topLevelAssignB1 {
+    
+    private topLevelAssignB1() {
+    }
     private static boolean[] value;
     static {
         value = new boolean[]{true};
@@ -17,11 +20,11 @@ final class topLevelAssignB1 {
     static void setTopLevelAssignB1(final boolean topLevelAssignB1) {
         value[0] = topLevelAssignB1;
     }
-    
-    private topLevelAssignB1() {
-    }
 }
 public final class topLevelAssignB2 {
+    
+    private topLevelAssignB2() {
+    }
     private static boolean[] value;
     static {
         value = new boolean[]{true};
@@ -38,20 +41,17 @@ public final class topLevelAssignB2 {
     public static void setTopLevelAssignB2(final boolean topLevelAssignB2) {
         value[0] = topLevelAssignB2;
     }
-    
-    private topLevelAssignB2() {
-    }
 }
 class TopLevelAssign {
+    
+    TopLevelAssign() {
+    }
     
     private final void m() {
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1.setTopLevelAssignB1(false);
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2.setTopLevelAssignB2(false);
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3.setTopLevelAssignB3(false);
         .com.redhat.ceylon.compiler.java.test.expression.attribute.topLevelAssignB4.setTopLevelAssignB4(false);
-    }
-    
-    TopLevelAssign() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -61,6 +61,9 @@ class TopLevelAssign {
 }
 final class topLevelAssignB3 {
     
+    private topLevelAssignB3() {
+    }
+    
     static boolean getTopLevelAssignB3() {
         return true;
     }
@@ -68,11 +71,11 @@ final class topLevelAssignB3 {
     static void setTopLevelAssignB3(final boolean topLevelAssignB3) {
         throw new .ceylon.language.Exception(null, null);
     }
-    
-    private topLevelAssignB3() {
-    }
 }
 public final class topLevelAssignB4 {
+    
+    private topLevelAssignB4() {
+    }
     
     public static boolean getTopLevelAssignB4() {
         return true;
@@ -80,8 +83,5 @@ public final class topLevelAssignB4 {
     
     public static void setTopLevelAssignB4(final boolean topLevelAssignB4) {
         throw new .ceylon.language.Exception(null, null);
-    }
-    
-    private topLevelAssignB4() {
     }
 }

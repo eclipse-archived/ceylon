@@ -16,11 +16,11 @@ final class methodSpecifyingToplevelWithResult_f {
 }
 class MethodSpecifyingToplevelWithResult {
     
-    private final long foo() {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingToplevelWithResult_f.methodSpecifyingToplevelWithResult_f();
+    MethodSpecifyingToplevelWithResult() {
     }
     
-    MethodSpecifyingToplevelWithResult() {
+    private final long foo() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingToplevelWithResult_f.methodSpecifyingToplevelWithResult_f();
     }
     
     public static void main(.java.lang.String[] args) {

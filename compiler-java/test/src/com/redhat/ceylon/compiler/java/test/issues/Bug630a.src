@@ -18,6 +18,10 @@ interface Bug630 {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug630$impl {
+    
+    Bug630$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug630 $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug630 $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("default"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
@@ -31,9 +35,5 @@ final class Bug630$impl {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Object")
     final .java.lang.Object other) {
         return false;
-    }
-    
-    Bug630$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug630 $this) {
-        this.$this = $this;
     }
 }

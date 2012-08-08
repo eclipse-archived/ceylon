@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug687 {
     
+    Bug687() {
+    }
+    
     private final <T>void method(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
     
@@ -85,9 +88,6 @@ class Bug687 {
             }
         };
         f.$call(.ceylon.language.$empty.getEmpty());
-    }
-    
-    Bug687() {
     }
     
     public static void main(.java.lang.String[] args) {

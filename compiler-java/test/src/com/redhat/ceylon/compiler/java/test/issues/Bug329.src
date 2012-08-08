@@ -5,17 +5,22 @@ interface Bug329_Something {
     public abstract .java.lang.Object getSomething();
 }
 final class Bug329_Something$impl {
+    
+    Bug329_Something$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug329_Something $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something $this;
     
     public final .java.lang.Object getSomething() {
         return $this.getSomething();
     }
-    
-    Bug329_Something$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug329_Something $this) {
-        this.$this = $this;
-    }
 }
 final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
+    
+    private bug329_se() {
+        this.something = .ceylon.language.String.instance("somethingElse");
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
+    }
     private final .ceylon.language.String something;
     
     @.java.lang.Override
@@ -23,11 +28,6 @@ final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bu
         return something;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this;
-    
-    private bug329_se() {
-        this.something = .ceylon.language.String.instance("somethingElse");
-        this.$com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
-    }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se[]{new .com.redhat.ceylon.compiler.java.test.issues.bug329_se()};
@@ -43,15 +43,15 @@ final class bug329_se implements .com.redhat.ceylon.compiler.java.test.issues.Bu
 }
 final class bug329_se2 implements .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something {
     
+    private bug329_se2() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
+    }
+    
     @.java.lang.Override
     public final .ceylon.language.String getSomething() {
         return .ceylon.language.String.instance("somethingElse");
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl $com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this;
-    
-    private bug329_se2() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$Bug329_Something$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug329_Something$impl(this);
-    }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug329_se2[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2[]{new .com.redhat.ceylon.compiler.java.test.issues.bug329_se2()};

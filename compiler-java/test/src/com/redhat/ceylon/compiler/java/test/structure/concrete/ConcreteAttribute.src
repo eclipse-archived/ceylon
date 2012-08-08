@@ -13,6 +13,10 @@ interface ConcreteAttribute<A> {
     public A getADefault();
 }
 final class ConcreteAttribute$impl<A> {
+    
+    ConcreteAttribute$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this;
     
     private final A getANonShared() {
@@ -38,10 +42,6 @@ final class ConcreteAttribute$impl<A> {
     public final A getADefault() {
         return null;
     }
-    
-    ConcreteAttribute$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this) {
-        this.$this = $this;
-    }
 }
 final class concreteAttributeCallsite {
     
@@ -60,6 +60,10 @@ final class concreteAttributeCallsite {
     }
 }
 class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<B> {
+    
+    ConcreteAttributeGetterImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
     
     @.java.lang.Override
@@ -89,10 +93,6 @@ class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java
     public final void setADefault(final B aDefault) {
     }
     
-    ConcreteAttributeGetterImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<B>(this);
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeGetterImpl();
@@ -118,6 +118,13 @@ final class concreteAttributeGetterImplCallsite {
     }
 }
 class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<C> {
+    
+    ConcreteAttributeValueImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C>(this);
+        this.aFormal = null;
+        this.aVariableFormal = null;
+        this.aDefault = null;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this;
     
     @.java.lang.Override
@@ -150,13 +157,6 @@ class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.
     
     public final void setADefault(final C aDefault) {
         this.aDefault = aDefault;
-    }
-    
-    ConcreteAttributeValueImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute$impl<C>(this);
-        this.aFormal = null;
-        this.aVariableFormal = null;
-        this.aDefault = null;
     }
     
     public static void main(.java.lang.String[] args) {
