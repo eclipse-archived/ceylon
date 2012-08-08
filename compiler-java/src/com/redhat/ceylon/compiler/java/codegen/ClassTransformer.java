@@ -105,6 +105,14 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         final ClassOrInterface model = def.getDeclarationModel();
+        
+        // we only create types for aliases so they can be imported with the model loader
+        // and since we can't import local declarations let's just not create those types
+        // in that case
+        if(model.isAlias()
+                && Decl.isAncestorLocal(def))
+            return List.nil();
+        
         naming.noteDecl(model);
         final String className;
         String aliasedClassName = def.getIdentifier().getText();
