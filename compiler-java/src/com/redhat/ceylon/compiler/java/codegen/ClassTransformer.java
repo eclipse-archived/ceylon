@@ -144,6 +144,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // class alias
                 classBuilder.constructorModifiers(PRIVATE);
                 classBuilder.annotations(makeAtAlias(model.getExtendedType()));
+                classBuilder.isAlias(true);
             }
         }
         
@@ -168,6 +169,7 @@ public class ClassTransformer extends AbstractTransformer {
             }else{
                 // interface alias
                 classBuilder.annotations(makeAtAlias(model.getExtendedType()));
+                classBuilder.isAlias(true);
             }
         }
         

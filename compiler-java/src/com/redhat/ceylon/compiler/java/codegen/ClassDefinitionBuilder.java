@@ -68,6 +68,8 @@ public class ClassDefinitionBuilder {
     private long modifiers;
     private long constructorModifiers = -1;
     
+    private boolean isAlias = false;
+    
     private JCExpression extending;
     private JCStatement superCall;
     
@@ -198,7 +200,8 @@ public class ClassDefinitionBuilder {
     }
 
     private boolean hasCompanion() {
-        return concreteInterfaceMemberDefs != null
+        return !isAlias
+                && concreteInterfaceMemberDefs != null
                 && (((modifiers & INTERFACE) != 0)
                     || !(concreteInterfaceMemberDefs.defs.isEmpty()
                     && concreteInterfaceMemberDefs.init.isEmpty()
@@ -513,6 +516,11 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder modelAnnotations(java.util.List<Annotation> annotations) {
         annotations(gen.makeAtAnnotations(annotations));
+        return this;
+    }
+    
+    public ClassDefinitionBuilder isAlias(boolean isAlias){
+        this.isAlias = isAlias;
         return this;
     }
 }
