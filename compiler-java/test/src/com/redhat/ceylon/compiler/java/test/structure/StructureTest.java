@@ -490,6 +490,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testAlsInterfaceAliasWithTypeParameters() {
+        compareWithJavaSource("alias/InterfaceAliasWithTypeParameters");
+    }
+
+    @Test
     public void testAlsClassAliasFromModelLoader() {
         compile("alias/ClassAlias.ceylon", 
                 "alias/ClassAliasWithParameters.ceylon",
