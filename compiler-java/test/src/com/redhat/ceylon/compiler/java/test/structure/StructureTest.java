@@ -473,6 +473,16 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("alias/InterfaceAlias");
     }
 
+    @Test
+    public void testAlsLocalClassAlias() {
+        compareWithJavaSource("alias/LocalClassAlias");
+    }
+
+    @Test
+    public void testAlsLocalInterfaceAlias() {
+        compareWithJavaSource("alias/LocalInterfaceAlias");
+    }
+
     @Ignore("Type checker bug? https://github.com/ceylon/ceylon-spec/issues/380")
     @Test
     public void testAlsMemberClassAlias() {
