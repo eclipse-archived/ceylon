@@ -4,13 +4,50 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class Klass {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Klass(final long p1) {
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$p2$1 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p2(p1);
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$p3$2 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p3(p1, $ceylontmp$p2$1);
+                this(p1, $ceylontmp$p2$1, $ceylontmp$p3$2);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Klass(final long p1, final .ceylon.language.Integer p2) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$p3$4 = .com.redhat.ceylon.compiler.java.test.annotations.Klass.$init$p3(p1, p2);
+                this(p1, p2, $ceylontmp$p3$4);
+            }
+            returning null;
+        );
+    }
+    
     public Klass(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     long p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     .ceylon.language.Integer p2, @.com.redhat.ceylon.compiler.java.metadata.Name("p3")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     .ceylon.language.Iterable<? extends .ceylon.language.Integer> p3) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .ceylon.language.Integer $init$p2(final long p1) {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$p3(final long p1, final .ceylon.language.Integer p2) {
+        return (.ceylon.language.Iterable).ceylon.language.$empty.getEmpty();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
