@@ -148,22 +148,27 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.AnyInterface) {
-            //  Copy all the qualifying type's type parameters into the interface
-            ProducedType type = model.getType().getQualifyingType();
-            while (type != null) {
-                java.util.List<TypeParameter> typeArguments = type.getDeclaration().getTypeParameters();
-                if (typeArguments == null) {
-                    continue;
+            if(def instanceof Tree.InterfaceDefinition){
+                //  Copy all the qualifying type's type parameters into the interface
+                ProducedType type = model.getType().getQualifyingType();
+                while (type != null) {
+                    java.util.List<TypeParameter> typeArguments = type.getDeclaration().getTypeParameters();
+                    if (typeArguments == null) {
+                        continue;
+                    }
+                    for (TypeParameter typeArgument : typeArguments) {
+                        classBuilder.typeParameter(typeArgument);
+                    }
+                    type = type.getQualifyingType();
                 }
-                for (TypeParameter typeArgument : typeArguments) {
-                    classBuilder.typeParameter(typeArgument);
-                }
-                type = type.getQualifyingType();
+                
+                classBuilder.defs(makeCompanionAccessor((Interface)model, model.getType(), false));
+                // Build the companion class
+                buildCompanion(def, (Interface)model, classBuilder);
+            }else{
+                // interface alias
+                classBuilder.annotations(makeAtAlias(model.getExtendedType()));
             }
-            
-            classBuilder.defs(makeCompanionAccessor((Interface)model, model.getType(), false));
-            // Build the companion class
-            buildCompanion(def, (Interface)model, classBuilder);   
         }
         
         // Transform the class/interface members
@@ -712,7 +717,7 @@ public class ClassTransformer extends AbstractTransformer {
         result |= Decl.isShared(cdecl) ? PUBLIC : 0;
         result |= cdecl.isAbstract() && (cdecl instanceof Class) ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
-        result |= cdecl.isAlias() ? FINAL : 0;
+        result |= cdecl.isAlias() && (cdecl instanceof Class) ? FINAL : 0;
 
         return result;
     }
