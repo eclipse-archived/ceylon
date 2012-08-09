@@ -44,7 +44,7 @@ public class JsCompiler {
 
     protected List<Message> errors = new ArrayList<Message>();
     protected List<Message> unitErrors = new ArrayList<Message>();
-    protected List<String> files;
+    protected Set<String> files;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
 
     /** A container for things we need to keep per-module. */
@@ -111,7 +111,7 @@ public class JsCompiler {
 
     /** Sets the names of the files to compile. By default this is null, which means all units from the typechecker
      * will be compiled. */
-    public void setFiles(List<String> files) {
+    public void setFiles(Set<String> files) {
         this.files = files;
     }
 
@@ -154,6 +154,7 @@ public class JsCompiler {
      * @return true is compilation was successful (0 errors/warnings), false otherwise. */
     public boolean generate() throws IOException {
         errors.clear();
+        output.clear();
         try {
             JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
@@ -162,11 +163,7 @@ public class JsCompiler {
             	// platform-dependent too
             	String path = pathFromVFS.replace('/', File.separatorChar);
                 if (files == null || files.contains(path)) {
-                    JsOutput modsrc = output.get(pu.getPackage().getModule());
-                    if (modsrc == null) {
-                        modsrc = new JsOutput();
-                        output.put(pu.getPackage().getModule(), modsrc);
-                    }
+                    JsOutput modsrc = getOutput(pu);
                     String name = pu.getUnitFile().getName();
                     if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
                         compileUnit(pu, names);
@@ -179,8 +176,9 @@ public class JsCompiler {
                 } else {
                     if (opts.isVerbose()) {
                     	System.err.println("Files does not contain "+path);
-                    	for(String p : files)
+                    	for (String p : files) {
                     		System.err.println(" Files: "+p);
+                    	}
                     }
                 }
             }
@@ -190,8 +188,9 @@ public class JsCompiler {
         return errCount == 0;
     }
 
-    /** Creates a writer if needed. Right now it's one file per package. */
-    protected Writer getWriter(PhasedUnit pu) throws IOException {
+    /** Creates a JsOutput if needed, for the PhasedUnit.
+     * Right now it's one file per module. */
+    private JsOutput getOutput(PhasedUnit pu) throws IOException {
         Module mod = pu.getPackage().getModule();
         JsOutput jsout = output.get(mod);
         if (jsout==null) {
@@ -201,7 +200,11 @@ public class JsCompiler {
                 beginWrapper(jsout.getWriter());
             }
         }
-        return jsout.getWriter();
+        return jsout;
+    }
+    /** Returns the writer for the Phased Unit. */
+    protected Writer getWriter(PhasedUnit pu) throws IOException {
+        return getOutput(pu).getWriter();
     }
 
     /** Closes all output writers and puts resulting artifacts in the output repo. */

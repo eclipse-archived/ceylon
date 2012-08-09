@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -80,7 +82,7 @@ public class Main {
         final TypeChecker typeChecker;
         final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
                 opts.getRepos(), opts.getOutDir(), new JULLogger());
-        final List<String> onlyFiles = new ArrayList<String>();
+        final Set<String> onlyFiles = new HashSet<String>();
         if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {
                 @Override
@@ -133,7 +135,7 @@ public class Main {
             for (String _srcdir : opts.getSrcDirs()) {
                 roots.add(new File(_srcdir));
             }
-            final List<String> modfilters = new ArrayList<String>();
+            final Set<String> modfilters = new HashSet<String>();
             boolean stop = false;
             for (String filedir : args) {
                 File f = new File(filedir);
@@ -238,7 +240,9 @@ public class Main {
                 tcb.addSrcDirectory(root);
             }
             if (!modfilters.isEmpty()) {
-                tcb.setModuleFilters(modfilters);
+                ArrayList<String> _modfilters = new ArrayList<String>();
+                _modfilters.addAll(modfilters);
+                tcb.setModuleFilters(_modfilters);
             }
             tcb.statistics(opts.isProfile());
             typeChecker = tcb.getTypeChecker();
