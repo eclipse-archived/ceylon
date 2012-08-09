@@ -66,7 +66,7 @@ public class ModuleDoc extends CeylonDoc {
         writeSourceLink(module);
         close("div");
         
-        around("div class='doc'", getDoc(module));
+        around("div class='doc'", getDoc(module, linkRenderer()));
         
         writeBy(Util.getAuthors(module), false);
     }
@@ -89,7 +89,7 @@ public class ModuleDoc extends CeylonDoc {
         }
         close("code", "td");
         open("td");
-        write(Util.getDocFirstLine(pkg));
+        write(Util.getDocFirstLine(pkg, linkRenderer()));
         close("td");
         close("tr");
     }

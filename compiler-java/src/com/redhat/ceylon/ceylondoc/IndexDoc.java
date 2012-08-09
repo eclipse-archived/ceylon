@@ -76,12 +76,12 @@ public class IndexDoc extends CeylonDoc {
         }
         // get rid of the eventual final dangling JSON list comma but adding a module entry 
         writeIndexElement(module.getNameAsString(), tool.kind(module), 
-                linkRenderer().to(module).getUrl(), Util.getDocFirstLine(module), null);
+                linkRenderer().to(module).getUrl(), Util.getDocFirstLine(module, linkRenderer()), null);
     }
 
     private void indexPackage(Package pkg) throws IOException {
         writeIndexElement(pkg.getNameAsString(), tool.kind(pkg), 
-                linkRenderer().to(pkg).getUrl(), Util.getDocFirstLine(pkg), null);
+                linkRenderer().to(pkg).getUrl(), Util.getDocFirstLine(pkg, linkRenderer()), null);
         write(",\n");
         indexMembers(pkg);
     }
@@ -117,7 +117,7 @@ public class IndexDoc extends CeylonDoc {
         }else
             throw new RuntimeException("Unknown type of object: "+decl);
         String type = tool.kind(decl);
-        String doc = Util.getDocFirstLine(decl);
+        String doc = Util.getDocFirstLine(decl, linkRenderer());
         List<String> tags = Util.getTags(decl);
         tagIndex.addAll(tags);
         writeIndexElement(name, type, url, doc, tags);

@@ -26,12 +26,18 @@ public class LinkRenderer {
     private CeylonDocTool ceylonDocTool;
     private Writer writer;
     private String customText;
+    private Scope scope;
     private boolean skipTypeArguments;
     
     public LinkRenderer(CeylonDocTool ceylonDocTool, Writer writer, Object from) {
         this.ceylonDocTool = ceylonDocTool;
         this.writer = writer;
         this.from = from;
+    }
+    
+    public LinkRenderer to(String declarationName) {
+        to = declarationName;
+        return this;
     }
 
     public LinkRenderer to(Declaration declaration) {
@@ -58,29 +64,50 @@ public class LinkRenderer {
         this.customText = customText;
         return this;
     }
+    
+    public LinkRenderer useScope(Module module) {
+        scope = module.getPackage(module.getNameAsString());
+        return this;
+    }
 
+    public LinkRenderer useScope(Package pkg) {
+        scope = pkg;
+        return this;
+    }
+
+    public LinkRenderer useScope(Declaration decl) {
+        scope = resolveScope(decl);
+        return this;
+    }
+    
     public LinkRenderer skipTypeArguments() {
         this.skipTypeArguments = true;
         return this;
     }
     
     public String getAnchor() {
-        if (to instanceof ProducedType) {
-            processProducedType((ProducedType) to);
-        } else if (to instanceof IntersectionType) {
-            processIntersectionType((IntersectionType) to);
-        } else if (to instanceof UnionType) {
-            processUnionType((UnionType) to);
-        } else if (to instanceof ClassOrInterface) {
-            processClassOrInterface((ClassOrInterface) to);
-        } else if (to instanceof Declaration) {
-            processDeclaration((Declaration) to);
-        } else if (to instanceof Module) {
-            processModule((Module) to);
-        } else if (to instanceof Package) {
-            processPackage((Package) to);
+        try {
+            if (to instanceof String) {
+                processDeclarationName((String) to);
+            } else if (to instanceof ProducedType) {
+                processProducedType((ProducedType) to);
+            } else if (to instanceof IntersectionType) {
+                processIntersectionType((IntersectionType) to);
+            } else if (to instanceof UnionType) {
+                processUnionType((UnionType) to);
+            } else if (to instanceof ClassOrInterface) {
+                processClassOrInterface((ClassOrInterface) to);
+            } else if (to instanceof Declaration) {
+                processDeclaration((Declaration) to);
+            } else if (to instanceof Module) {
+                processModule((Module) to);
+            } else if (to instanceof Package) {
+                processPackage((Package) to);
+            }
+            return buffer.toString();
+        } finally {
+            buffer.setLength(0);
         }
-        return buffer.toString();
     }
     
     public String getUrl() {
@@ -206,6 +233,49 @@ public class LinkRenderer {
             appendAnchor(declUrl, declName);
         } else {
             buffer.append(declName);
+        }
+    }
+
+    private void processDeclarationName(String declName) {
+        String[] declNames = declName.split("\\.");
+        Scope currentScope = scope;
+        Declaration currentDecl = null;
+        for (String currentDeclName : declNames) {
+            currentDecl = resolveDeclaration(currentScope, currentDeclName);
+            if (currentDecl != null) {
+                currentScope = resolveScope(currentDecl);
+            }
+        }
+    
+        if (currentDecl != null) {
+            if (currentDecl instanceof ClassOrInterface) {
+                processClassOrInterface((ClassOrInterface) currentDecl);
+            } else {
+                processDeclaration(currentDecl);
+            }
+        } else {
+            buffer.append(declName);
+        }
+    }
+
+    private Declaration resolveDeclaration(Scope scope, String declName) {
+        if (scope == null) {
+            return null;
+        }
+        Declaration member = scope.getMember(declName, null);
+        if (member != null) {
+            return member;
+        }
+        return resolveDeclaration(scope.getContainer(), declName);
+    }
+
+    private Scope resolveScope(Declaration decl) {
+        if (decl == null) {
+            return null;
+        } else if (decl instanceof Scope) {
+            return (Scope) decl;
+        } else {
+            return decl.getContainer();
         }
     }
 

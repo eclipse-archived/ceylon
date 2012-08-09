@@ -78,6 +78,23 @@ shared class StubClass(
          
          <i>Lorem ipsum dolor sit amet, consectetur...</i>"
     shared void methodWithCodeExamples() {}
+    
+    doc "Wiki-style links:
+    
+         1. StubClass = [[StubClass]]
+         1. StubInterface = [[StubInterface]]
+         1. StubInnerException = [[StubInnerException]]
+         1. stubTopLevelMethod = [[stubTopLevelMethod]]
+         1. stubTopLevelAttribute = [[stubTopLevelAttribute]]
+         1. StubInterface.formalMethodFromStubInterface = [[StubInterface.formalMethodFromStubInterface]]
+         1. StubClass.StubInnerClass = [[StubClass.StubInnerClass]]
+         1. StubClass.StubInnerClass.innerMethod = [[StubClass.StubInnerClass.innerMethod]]
+         1. link to StubInterface with custom name = [[custom stub interface|StubInterface]]
+         1. unresolvable = [[unresolvable]]
+         1. Integer = [[Integer]] (external links are broken, see issue 225)
+         
+         "
+    shared void methodWithLinksInDoc() {}
         
     shared actual void formalMethodFromStubInterface() {}
     

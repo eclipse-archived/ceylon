@@ -121,7 +121,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     protected void writeDescription(Declaration d) throws IOException {
         open("div class='description'");
         writeDeprecated(d);
-        around("div class='doc'", getDoc(d));
+        around("div class='doc'", getDoc(d, linkRenderer()));
         if( d instanceof MethodOrValue ) {
         	writeParameters(d);
             writeThrows(d);        
@@ -218,7 +218,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     		List<ParameterList> parameterLists = ((Functional)decl).getParameterLists();
     		for (ParameterList parameterList : parameterLists) {
     			for (Parameter parameter : parameterList.getParameters()) {
-    				String doc = getDoc(parameter);
+    				String doc = getDoc(parameter, linkRenderer());
     				if( !doc.isEmpty() ) {
     					if( first ) {
     						first = false;
@@ -266,7 +266,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 }
 
                 if (excDesc != null) {
-                    write(Util.wikiToHTML(Util.unquote(excDesc)));
+                    write(Util.wikiToHTML(Util.unquote(excDesc), linkRenderer().useScope(decl)));
                 }
 
                 close("li");
@@ -289,7 +289,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     text += Util.unquote(reason);
                 }
             }
-            write(Util.wikiToHTML(text));
+            write(Util.wikiToHTML(text, linkRenderer().useScope(decl)));
             close("div");
         }
     }

@@ -560,7 +560,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         writeEnclosingType();
 
         // description
-        around("div class='doc'", getDoc(klass));
+        around("div class='doc'", getDoc(klass, linkRenderer()));
 
         writeBy(klass);
         writeSee(klass);
