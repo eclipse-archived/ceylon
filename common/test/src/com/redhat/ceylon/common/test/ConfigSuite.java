@@ -8,8 +8,13 @@ import com.redhat.ceylon.tools.ToolsSuite;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
-    ConfigSuite.class,
-    ToolsSuite.class
+    CeylonConfigTest.class,
+    ConfigWriterTest.class,
+    RepositoriesTest.class,
+    KeystoresTest.class,
+    ProxiesTest.class,
+    AuthenticationTest.class
 })
-public class AllTests {
+public class ConfigSuite {
+
 }
