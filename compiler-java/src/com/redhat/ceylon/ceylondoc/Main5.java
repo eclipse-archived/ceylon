@@ -22,7 +22,7 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.io.IOException;
 
-import com.redhat.ceylon.tools.Java7Checker;
+import com.redhat.ceylon.common.tool.Java7Checker;
 
 public class Main5 {
 

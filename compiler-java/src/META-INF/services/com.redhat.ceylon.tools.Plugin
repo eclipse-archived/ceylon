@@ -1,5 +1,3 @@
 com.redhat.ceylon.compiler.CompileTool
-com.redhat.ceylon.tools.HelpTool
-com.redhat.ceylon.tools.importjar.ImportJarTool
+com.redhat.ceylon.importjar.ImportJarTool
 com.redhat.ceylon.ceylondoc.DocTool
-#com.redhat.ceylon.tool.example.ExampleTool

@@ -47,6 +47,14 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
+import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Section;
+import com.redhat.ceylon.common.tool.Sections;
+import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -74,14 +82,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
-import com.redhat.ceylon.tools.Plugin;
-import com.redhat.ceylon.tools.annotation.Argument;
-import com.redhat.ceylon.tools.annotation.Description;
-import com.redhat.ceylon.tools.annotation.Option;
-import com.redhat.ceylon.tools.annotation.OptionArgument;
-import com.redhat.ceylon.tools.annotation.Section;
-import com.redhat.ceylon.tools.annotation.Sections;
-import com.redhat.ceylon.tools.annotation.Summary;
 
 @Summary("Generates Ceylon API documentation from Ceylon source files")
 @Description("The default module repositories are `modules` and " +

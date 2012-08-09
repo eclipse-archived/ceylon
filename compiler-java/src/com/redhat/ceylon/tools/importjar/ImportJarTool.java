@@ -28,11 +28,11 @@ import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
-import com.redhat.ceylon.tools.Plugin;
-import com.redhat.ceylon.tools.annotation.Argument;
-import com.redhat.ceylon.tools.annotation.Option;
-import com.redhat.ceylon.tools.annotation.OptionArgument;
-import com.redhat.ceylon.tools.annotation.Summary;
+import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("Imports a jar file into a Ceylon module repository")
 public class ImportJarTool implements Plugin {

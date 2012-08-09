@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.tools.Plugin;
-import com.redhat.ceylon.tools.annotation.OptionArgument;
-import com.redhat.ceylon.tools.annotation.Argument;
-import com.redhat.ceylon.tools.annotation.ArgumentStyle;
-import com.redhat.ceylon.tools.annotation.Description;
-import com.redhat.ceylon.tools.annotation.JavacStyle;
-import com.redhat.ceylon.tools.annotation.Option;
-import com.redhat.ceylon.tools.annotation.Rest;
-import com.redhat.ceylon.tools.annotation.Section;
-import com.redhat.ceylon.tools.annotation.Sections;
-import com.redhat.ceylon.tools.annotation.Summary;
+import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.ArgumentStyle;
+import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.JavacStyle;
+import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Rest;
+import com.redhat.ceylon.common.tool.Section;
+import com.redhat.ceylon.common.tool.Sections;
+import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")

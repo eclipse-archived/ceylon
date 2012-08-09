@@ -30,7 +30,7 @@
 
 package com.redhat.ceylon.compiler.java;
 
-import com.redhat.ceylon.tools.Java7Checker;
+import com.redhat.ceylon.common.tool.Java7Checker;
 
 
 public class Main5 {
