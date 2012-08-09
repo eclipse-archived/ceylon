@@ -44,7 +44,7 @@ import com.redhat.ceylon.compiler.java.test.runtime.RuntimeSuite;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
-import com.redhat.ceylon.tools.ToolsSuite;
+import com.redhat.ceylon.tools.CompilerToolsTests;
 
 @RunWith(ConcurrentSuite.class) 
 @SuiteClasses({
@@ -73,7 +73,7 @@ import com.redhat.ceylon.tools.ToolsSuite;
     LanguageSuite.class,
     BcTests.class,
     ExpressionTest3.class,
-    ToolsSuite.class
+    CompilerToolsTests.class
 })
 public class ConcurrentTests {
 }
