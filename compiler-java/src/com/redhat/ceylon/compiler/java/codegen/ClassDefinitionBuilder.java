@@ -408,15 +408,8 @@ public class ClassDefinitionBuilder {
     }
 
     // Create a parameter for the constructor
-    private ClassDefinitionBuilder parameter(String name, Parameter decl, boolean isSequenced, boolean isDefaulted) {
-        JCExpression type = paramType(decl);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
-        pdb.sequenced(isSequenced);
-        pdb.defaulted(isDefaulted);
-        pdb.type(type, gen.makeJavaTypeAnnotations(decl));
+    private ClassDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
         params.append(pdb);
-
-        initParam(name, decl);
         return this;
     }
 
@@ -457,14 +450,16 @@ public class ClassDefinitionBuilder {
         }
     }
     
-    public ClassDefinitionBuilder parameter(Tree.Parameter param) {
-        gen.at(param);
-        return parameter(param.getDeclarationModel());
-    }
-    
     public ClassDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(name, param, param.isSequenced(), param.isDefaulted());
+        JCExpression type = paramType(param);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        pdb.sequenced(param.isSequenced());
+        pdb.defaulted(param.isDefaulted());
+        pdb.type(type, gen.makeJavaTypeAnnotations(param));
+        parameter(pdb);
+        initParam(name, param);
+        return this;
     }
     
     /**

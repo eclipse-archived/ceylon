@@ -107,9 +107,11 @@ public class MethodDefinitionBuilder {
     }
 
     public static MethodDefinitionBuilder main(AbstractTransformer gen) {
-        return new MethodDefinitionBuilder(gen, false, "main")
-            .modifiers(PUBLIC | STATIC)
-            .parameter(0, "args", gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
+        MethodDefinitionBuilder mdb = new MethodDefinitionBuilder(gen, false, "main")
+            .modifiers(PUBLIC | STATIC);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(mdb.gen, "args");
+        pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
+        return mdb.parameter(pdb);
     }
     
     private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
@@ -263,6 +265,17 @@ public class MethodDefinitionBuilder {
     }
     
     private MethodDefinitionBuilder parameter(long modifiers, String name, String aliasedName, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags) {
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        pdb.modifiers(modifiers);
+        pdb.aliasName(aliasedName);
+        pdb.sequenced(decl instanceof Parameter && ((Parameter)decl).isSequenced());
+        pdb.defaulted(decl instanceof Parameter && ((Parameter)decl).isDefaulted());
+        pdb.type(paramType(nonWideningDecl, nonWideningType, flags), gen.makeJavaTypeAnnotations(decl));
+        return parameter(pdb);
+    }
+
+    private JCExpression paramType(TypedDeclaration nonWideningDecl,
+            ProducedType nonWideningType, int flags) {
         if (gen.typeFact().isUnion(nonWideningType) 
                 || gen.typeFact().isIntersection(nonWideningType)) {
             final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType().getDeclaration();
@@ -272,25 +285,9 @@ public class MethodDefinitionBuilder {
             }
         }
         JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
-        pdb.modifiers(modifiers);
-        pdb.aliasName(aliasedName);
-        pdb.sequenced(decl instanceof Parameter && ((Parameter)decl).isSequenced());
-        pdb.defaulted(decl instanceof Parameter && ((Parameter)decl).isDefaulted());
-        pdb.type(type, gen.makeJavaTypeAnnotations(decl));
-        return parameter(pdb);
+        return type;
     }
     
-    public MethodDefinitionBuilder parameter(long modifiers, String name, JCExpression paramType, List<JCAnnotation> annots) {
-        if (annots == null) {
-            annots = List.nil();
-        }
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
-        pdb.modifiers(modifiers);
-        pdb.type(paramType, annots);
-        return parameter(pdb);
-    }
-
     public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int mods, int flags) {
         String name = paramDecl.getName();
         return parameter(mods, name, paramDecl, paramDecl, paramType, flags);

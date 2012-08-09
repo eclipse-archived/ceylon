@@ -128,7 +128,8 @@ public class ClassTransformer extends AbstractTransformer {
             if(def instanceof Tree.ClassDefinition){
                 Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
                 for (Tree.Parameter param : paramList.getParameters()) {
-                    classBuilder.parameter(param);
+                    at(param);
+                    classBuilder.parameter(param.getDeclarationModel());
                     DefaultArgument defaultArgument = param.getDefaultArgument();
                     if (defaultArgument != null
                             || param.getDeclarationModel().isSequenced()) {
@@ -528,8 +529,10 @@ public class ClassTransformer extends AbstractTransformer {
                 null, false);
         MethodDefinitionBuilder ctor = companionBuilder.addConstructor();
         ctor.modifiers(model.isShared() ? PUBLIC : 0);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(this, "$this");
+        pdb.type(makeJavaType(thisType), null);
         // ...initialize the $this field from a ctor parameter...
-        ctor.parameter(0, "$this", makeJavaType(thisType), null);
+        ctor.parameter(pdb);
         ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
                 make().Exec(
                         make().Assign(
