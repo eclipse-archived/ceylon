@@ -27,7 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class Search extends CeylonDoc {
 
-    public Search(Module module, CeylonDocTool tool, Writer writer) {
+    public Search(Module module, DocTool tool, Writer writer) {
         super(module, tool, writer);
     }
 

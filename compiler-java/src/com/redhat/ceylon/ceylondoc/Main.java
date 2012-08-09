@@ -118,10 +118,15 @@ public class Main {
         }
 
         try{
-            CeylonDocTool ceylonDocTool = new CeylonDocTool(sourceFolders, repositories, modules, false);
+            DocTool ceylonDocTool = new DocTool();
+            ceylonDocTool.setSourceFolders(sourceFolders);
+            ceylonDocTool.setRepositories(repositories);
+            ceylonDocTool.setModuleSpecs(modules);
+            ceylonDocTool.setHaltOnError(false);
             ceylonDocTool.setOutputRepository(destDir, user, pass);
             ceylonDocTool.setIncludeNonShared(includeNonShared);
             ceylonDocTool.setIncludeSourceCode(includeSourceCode);
+            ceylonDocTool.init();
             ceylonDocTool.makeDoc();
         }catch(CeylondException x){
             System.err.println(CeylondMessages.msg("error", x.getLocalizedMessage()));

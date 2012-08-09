@@ -71,7 +71,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     
     private final boolean sharingPageWithModule;
 
-	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
+	public PackageDoc(DocTool tool, Writer writer, Package pkg) throws IOException {
 		super(pkg.getModule(), tool, writer);
 		this.sharingPageWithModule = tool.isRootPackage(module, pkg);
 		this.pkg = pkg;

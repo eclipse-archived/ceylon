@@ -32,7 +32,7 @@ public class ModuleDoc extends CeylonDoc {
 
     private Module module;
 
-    public ModuleDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
+    public ModuleDoc(DocTool tool, Writer writer, Module module) throws IOException {
         super(module, tool, writer);
         this.module = module;
     }
