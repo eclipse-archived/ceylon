@@ -17,6 +17,8 @@
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
     <property name="ceylon.common.repo" value="${ceylon.repo.dir}/${ceylon.common.dir}"/>
     <property name="ceylon.common.dist" value="${build.dist}/${ceylon.common.dir}"/>
+	
+	<property name="test.reports" location="${build}/test-reports"/>
 
     <!-- Classpath for the build tools. -->
     <path id="classpath">
@@ -99,20 +101,38 @@
 
     </target>
 
+	<target name="compile.tests">
+        <mkdir dir="${build.classes}" />
+        <javac
+                srcdir="${test.src}"
+                destdir="${build.classes}"
+                debug="true"
+                classpathref="test.run.classpath">
+            <include name="**/*.java"/>
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${test.src}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+	</target>
+	
     <target name="test"
-            depends="publish"
+            depends="publish,compile.tests"
             description="Run tests">
         <mkdir dir="${test.reports}"/>
         <junit printsummary="yes" haltonfailure="no">
           <classpath refid="test.run.classpath"/>
 
           <formatter type="xml"/>
-
-          <batchtest fork="yes" todir="${test.reports}">
-            <fileset dir="${test.src}">
-              <include name="**/*Test.java"/>
-            </fileset>
-          </batchtest>
+          <test name="com.redhat.ceylon.common.test.AllTests" 
+          	fork="yes" todir="${test.reports}"/>
         </junit>
+        <junitreport todir="${test.reports}">
+          <fileset dir="${test.reports}">
+            <include name="TEST-*.xml"/>
+          </fileset>
+          <report format="frames" todir="${test.reports}"/>
+        </junitreport>
     </target>
 </project>
