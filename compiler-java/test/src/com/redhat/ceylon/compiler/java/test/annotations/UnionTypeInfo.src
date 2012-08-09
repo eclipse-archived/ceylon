@@ -43,11 +43,14 @@ class UnionTypeInfo {
         return sharedAttr;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
     private final .java.lang.Object getGetter() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
-    private final void setGetter(final .java.lang.Object getter) {
+    private final void setGetter(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
+    final .java.lang.Object getter) {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -61,7 +64,10 @@ class UnionTypeInfo {
     final .java.lang.Object sharedGetter) {
     }
     
-    private final .java.lang.Object method(final .java.lang.Object methodParam) {
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
+    private final .java.lang.Object method(@.com.redhat.ceylon.compiler.java.metadata.Name("methodParam")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
+    final .java.lang.Object methodParam) {
         final .java.lang.Object val = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
         return val;
     }
