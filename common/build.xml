@@ -47,7 +47,7 @@
         </javac>
     	<copy todir="${build.classes}">
     		<fileset dir="${src}">
-    			<include name="**/*.properties"/>
+    			<exclude name="**/*.java"/>
     		</fileset>
         </copy>
     </target>
