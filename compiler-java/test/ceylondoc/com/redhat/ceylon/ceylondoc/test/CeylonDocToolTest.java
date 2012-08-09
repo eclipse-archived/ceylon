@@ -42,7 +42,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import com.redhat.ceylon.ceylondoc.CeylonDocTool;
+import com.redhat.ceylon.ceylondoc.DocTool;
 import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -54,14 +54,16 @@ public class CeylonDocToolTest {
 
     @Rule 
     public TestName name = new TestName();
-
-    private CeylonDocTool tool(List<File> path, List<String> modules, 
+    
+    private DocTool tool(List<File> pathname, List<String> moduleName, 
             boolean throwOnError, String... repositories)
             throws IOException {
-        CeylonDocTool tool = new CeylonDocTool(path, 
-                Arrays.asList(repositories), 
-                modules,
-                throwOnError);
+        DocTool tool = new DocTool();
+        tool.setSourceFolders(pathname); 
+        tool.setRepositories(Arrays.asList(repositories));
+        tool.setModuleSpecs(moduleName);
+        tool.setHaltOnError(throwOnError);
+        tool.init();
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (dir.exists()) {
             Util.delete(dir);
@@ -70,7 +72,7 @@ public class CeylonDocToolTest {
         return tool;
     }
     
-    private CeylonDocTool tool(String pathname, String moduleName, 
+    private DocTool tool(String pathname, String moduleName, 
             boolean throwOnError, String... repositories)
             throws IOException {
         return tool(Arrays.asList(new File(pathname)),
@@ -156,7 +158,7 @@ public class CeylonDocToolTest {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
 
-        CeylonDocTool tool = tool(pathname, moduleName, true);
+        DocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -191,7 +193,7 @@ public class CeylonDocToolTest {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
         
-        CeylonDocTool tool = tool(pathname, moduleName, true);
+        DocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(true);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -228,7 +230,7 @@ public class CeylonDocToolTest {
         // compile the b module
         compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
         
-        CeylonDocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.c", true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.c", true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
@@ -241,7 +243,7 @@ public class CeylonDocToolTest {
         compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.b");
         
         // now run docs on c, which uses b, which uses a
-        CeylonDocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.c", true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.c", true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
@@ -253,7 +255,7 @@ public class CeylonDocToolTest {
         // compile the java code first
         compileJavaModule(pathname, "com/redhat/ceylon/ceylondoc/test/modules/mixed/Java.java");
         
-        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
@@ -262,7 +264,7 @@ public class CeylonDocToolTest {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a";
         
-        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
 
         Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
@@ -283,7 +285,7 @@ public class CeylonDocToolTest {
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub";
         
         try{
-            CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+            DocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
             tool.makeDoc();
         }catch(RuntimeException x){
             Assert.assertEquals("Can't find module: com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub", x.getMessage());
@@ -297,7 +299,7 @@ public class CeylonDocToolTest {
         String pathname = "test/ceylondoc";
         String moduleName = "default";
         
-        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
 
         Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
@@ -318,7 +320,7 @@ public class CeylonDocToolTest {
     public void ceylonLanguage() throws IOException {
         String pathname = "../ceylon.language/src";
         String moduleName = "ceylon.language";
-        CeylonDocTool tool = tool(pathname, moduleName, false);
+        DocTool tool = tool(pathname, moduleName, false);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -339,7 +341,7 @@ public class CeylonDocToolTest {
             path.add(new File("../ceylon-sdk/"+moduleName+"/source"));
             fullModuleNames.add("ceylon." + moduleName);
         }
-        CeylonDocTool tool = tool(path, fullModuleNames, false);
+        DocTool tool = tool(path, fullModuleNames, false);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -618,7 +620,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("id='bug691AbbreviatedOptionalType2'><code><i class='icon-shared-member'></i><span class='modifiers'>shared</span> <span class='type-parameter'>Element</span>\\?</code>"));
     }
     
-    private File getOutputDir(CeylonDocTool tool, Module module) {
+    private File getOutputDir(DocTool tool, Module module) {
         String outputRepo = tool.getOutputRepository();
         return new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(new File(outputRepo), module),
                 "module-doc");
