@@ -18,7 +18,7 @@ import com.redhat.ceylon.cmr.impl.SourceArchiveCreatorImpl;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.Repositories;
+import com.redhat.ceylon.common.config.Repositories;
 
 public class CeylonUtils {
 

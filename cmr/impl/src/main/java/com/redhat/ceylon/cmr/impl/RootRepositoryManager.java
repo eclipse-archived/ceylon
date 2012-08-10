@@ -20,6 +20,7 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.*;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.config.Repositories;
 
 import java.io.*;
 import java.util.List;
