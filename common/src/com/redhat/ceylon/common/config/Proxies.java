@@ -1,4 +1,4 @@
-package com.redhat.ceylon.common;
+package com.redhat.ceylon.common.config;
 
 
 public class Proxies {
@@ -80,7 +80,7 @@ public class Proxies {
         String password = config.getOption(proxyKey(ITEM_PASSWORD));
         String ks = config.getOption(proxyKey(ITEM_KEYSTORE));
         String alias = config.getOption(proxyKey(ITEM_ALIAS));
-        String prompt = CommonMessages.msg("proxy.password.prompt", host, String.valueOf(port), type);
+        String prompt = ConfigMessages.msg("proxy.password.prompt", host, String.valueOf(port), type);
         Credentials credentials = Credentials.create(user, password, ks, alias, prompt);
         return new Proxy(host, (int)port, type, nonProxyHosts, credentials);
     }

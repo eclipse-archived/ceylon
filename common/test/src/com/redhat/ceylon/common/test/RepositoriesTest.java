@@ -8,12 +8,12 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.CeylonConfig;
-import com.redhat.ceylon.common.ConfigParser;
-import com.redhat.ceylon.common.Authentication.PasswordPrompt;
-import com.redhat.ceylon.common.Credentials;
-import com.redhat.ceylon.common.Repositories;
-import com.redhat.ceylon.common.Repositories.Repository;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.ConfigParser;
+import com.redhat.ceylon.common.config.Credentials;
+import com.redhat.ceylon.common.config.Repositories;
+import com.redhat.ceylon.common.config.Authentication.PasswordPrompt;
+import com.redhat.ceylon.common.config.Repositories.Repository;
 
 public class RepositoriesTest {
 

@@ -22,12 +22,10 @@ package com.redhat.ceylon.common;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-public class CommonMessages {
+public class Messages {
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("com.redhat.ceylon.common.messages");
-
-    public static String msg(String msgKey, Object... msgArgs) {
-        String msg = RESOURCE_BUNDLE.getString(msgKey);
+    protected static String msg(ResourceBundle bundle, String msgKey, Object... msgArgs) {
+        String msg = bundle.getString(msgKey);
         if (msgArgs != null) {
             msg = MessageFormat.format(msg, msgArgs);
         }

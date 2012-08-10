@@ -9,12 +9,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.CeylonConfig;
-import com.redhat.ceylon.common.Authentication;
-import com.redhat.ceylon.common.Authentication.UsernamePassword;
-import com.redhat.ceylon.common.Keystores;
-import com.redhat.ceylon.common.Repositories;
-import com.redhat.ceylon.common.Repositories.Repository;
+import com.redhat.ceylon.common.config.Authentication;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.Keystores;
+import com.redhat.ceylon.common.config.Repositories;
+import com.redhat.ceylon.common.config.Authentication.UsernamePassword;
+import com.redhat.ceylon.common.config.Repositories.Repository;
 
 public class AuthenticationTest extends AbstractKeystoreTest {
     private Repositories repos;

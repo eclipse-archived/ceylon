@@ -1,4 +1,4 @@
-package com.redhat.ceylon.common;
+package com.redhat.ceylon.common.config;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class Repositories {
             String password = config.getOption(repoKey(repoName, ITEM_PASSWORD));
             final String alias = config.getOption(repoKey(repoName, ITEM_PASSWORD_KS_ALIAS));
             String keystore = config.getOption(repoKey(repoName, ITEM_PASSWORD_KS));
-            String prompt = CommonMessages.msg("repository.password.prompt", user, url);
+            String prompt = ConfigMessages.msg("repository.password.prompt", user, url);
             Credentials credentials = Credentials.create(user, password, keystore, alias, prompt);
             return new Repository(repoName, url, credentials);
         } else {

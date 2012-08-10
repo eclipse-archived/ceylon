@@ -15,10 +15,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.Authentication;
-import com.redhat.ceylon.common.CeylonConfig;
-import com.redhat.ceylon.common.Proxies;
-import com.redhat.ceylon.common.Proxies.Proxy;
+import com.redhat.ceylon.common.config.Authentication;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.Proxies;
+import com.redhat.ceylon.common.config.Proxies.Proxy;
 
 public class ProxiesTest extends AbstractKeystoreTest {
 

@@ -6,9 +6,9 @@ import java.security.GeneralSecurityException;
 
 import org.junit.Assert;
 
-import com.redhat.ceylon.common.CeylonConfig;
-import com.redhat.ceylon.common.Keystores;
-import com.redhat.ceylon.common.Keystores.Store;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.Keystores;
+import com.redhat.ceylon.common.config.Keystores.Store;
 
 public abstract class AbstractKeystoreTest extends AbstractConfigTest {
 

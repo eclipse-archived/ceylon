@@ -1,4 +1,4 @@
-package com.redhat.ceylon.common;
+package com.redhat.ceylon.common.config;
 
 import java.io.Console;
 import java.io.IOException;
@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.common.Keystores.Store;
-import com.redhat.ceylon.common.Proxies.Proxy;
+import com.redhat.ceylon.common.config.Keystores.Store;
+import com.redhat.ceylon.common.config.Proxies.Proxy;
 
 /**
  * Utility class for making use of {@link Credentials} and {@link Proxies}
@@ -133,7 +133,7 @@ public class Authentication {
         }
         
         private String msg(String key, Object... args) {
-            return CommonMessages.msg(
+            return ConfigMessages.msg(
                     (passwordKeystore == null ? "keystore.default." :"keystore.named.") + key,
                     args);
         }

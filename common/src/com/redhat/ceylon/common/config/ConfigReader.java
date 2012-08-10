@@ -1,4 +1,4 @@
-package com.redhat.ceylon.common;
+package com.redhat.ceylon.common.config;
 
 import java.io.BufferedReader;
 import java.io.IOException;

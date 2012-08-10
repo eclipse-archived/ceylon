@@ -6,8 +6,8 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Before;
 
-import com.redhat.ceylon.common.CeylonConfig;
-import com.redhat.ceylon.common.ConfigParser;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.ConfigParser;
 
 public abstract class AbstractConfigTest {
     protected final File testDir = new File("build/test-stores");

@@ -8,9 +8,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.CeylonConfig;
-import com.redhat.ceylon.common.Keystores;
-import com.redhat.ceylon.common.Keystores.Store;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.Keystores;
+import com.redhat.ceylon.common.config.Keystores.Store;
 
 public class KeystoresTest extends AbstractKeystoreTest {
     

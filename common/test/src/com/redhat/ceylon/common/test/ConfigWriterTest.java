@@ -11,9 +11,9 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.CeylonConfig;
-import com.redhat.ceylon.common.ConfigParser;
-import com.redhat.ceylon.common.ConfigWriter;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.ConfigParser;
+import com.redhat.ceylon.common.config.ConfigWriter;
 
 public class ConfigWriterTest {
 

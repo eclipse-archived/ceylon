@@ -1,4 +1,4 @@
-package com.redhat.ceylon.common;
+package com.redhat.ceylon.common.config;
 
 /**
  * Configuration items which know about username/password credentials

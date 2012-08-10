@@ -10,7 +10,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
-import com.redhat.ceylon.common.Authentication.PasswordPrompt;
+import com.redhat.ceylon.common.config.Authentication.PasswordPrompt;
 
 class MockPasswordPrompt implements PasswordPrompt {
     
