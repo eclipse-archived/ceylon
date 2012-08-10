@@ -91,12 +91,12 @@ public class ImportJarTool implements Plugin {
         this.out = out;
     }
     
-    @Argument(argumentName="module", multiplicity="{1}", order=0)
+    @Argument(argumentName="module", multiplicity="1", order=0)
     public void setModuleSpec(String module) {
         parseModuleSpec(module);
     }
     
-    @Argument(argumentName="jar-file", multiplicity="{1}", order=1)
+    @Argument(argumentName="jar-file", multiplicity="1", order=1)
     public void setFile(String jarFile) {
         this.jarFile = jarFile;
     }
