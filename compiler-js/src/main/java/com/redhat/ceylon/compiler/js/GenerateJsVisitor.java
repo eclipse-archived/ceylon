@@ -1238,7 +1238,10 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(BaseMemberExpression that) {
-        
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) {
+            //Don't even bother processing a node with errors
+            return;
+        }
         Declaration decl = that.getDeclaration();
         String name = decl.getName();
         String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
