@@ -190,6 +190,9 @@
         	<include name="**/*Main5.java"/>
             <include name="**/Java7Checker.java"/>
     	</javac>
+    	<copy todir="${build.bootstrap}">
+    		<fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
+    	</copy>
     </target>
 
     <!-- Rule to build runtime jar -->
