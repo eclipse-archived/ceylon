@@ -5,10 +5,12 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.dist" value="${build.dir}/dist"/>
     <property name="build.classes" location="${build.dir}/classes"/>
+	<property name="build.bin" value="${build.dir}/bin"/>
 
     <property name="src" location="src"/>
     <property name="test.src" location="test/src"/>
     <property name="test.reports" location="${build.dir}/test-reports"/>
+	<property name="bin" location="bin"/>
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
@@ -47,6 +49,7 @@
         </javac>
     	<copy todir="${build.classes}">
     		<fileset dir="${src}">
+    			<include name="**/*"/>
     			<exclude name="**/*.java"/>
     		</fileset>
         </copy>
@@ -75,13 +78,34 @@
             description="Clean local ceylon repository">
         <delete dir="${ceylon.common.repo}"/>
     </target>
+	
+	<target name="dist.bin">
+    	<mkdir dir="${build.bin}"/>
+		<copy todir="${build.bin}">
+            <fileset dir="${bin}">
+            	<exclude name="**/*.in"/>
+            </fileset>
+        </copy>
+		<filter token="VERSION" value="${module.com.redhat.ceylon.common.version}"/>
+        <copy todir="${build.bin}" filtering="yes">
+            <fileset dir="${bin}">
+                <include name="**/*.in"/>
+            </fileset>
+            <globmapper from="*.in" to="*"/>
+        </copy>
+        <chmod perm="0755">
+            <fileset dir="${build.bin}">
+                <include name="cey"/>
+            </fileset>
+        </chmod>
+	</target>
 
-    <target name="dist" depends="compile">
+    <target name="dist" depends="compile, dist.bin">
         <mkdir dir="${build.dist}"/>
+    	
         <zip destfile="${build.dist}/${ceylon.common.jar}">
             <fileset dir="${build.classes}">
-                <include name="**/*.class"/>
-            	<include name="**/*.properties"/>
+                <include name="**/*"/>
             </fileset>
         </zip>
         <antcall target="sha1sum">
