@@ -117,16 +117,11 @@ public class LazySet<Element> implements Set<Element> {
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
     @TypeInfo("ceylon.language.Set<Element>")
-    public <Other> Set<? extends Element> complement(Set<? extends Other> set) {
-        return new LazySet(set.filter(new AbstractCallable<Boolean>("Set_xor2"){
+    public <Other> Set<? extends Element> complement(final Set<? extends Other> set) {
+        return new LazySet(this.filter(new AbstractCallable<Boolean>("Set_xor2"){
             @Override
             public Boolean $call(final java.lang.Object e) {
-                return Boolean.instance(elems.find(new AbstractCallable<Boolean>("Set_find2"){
-                    @Override
-                    public Boolean $call(java.lang.Object o) {
-                        return Boolean.instance(e.equals(o));
-                    }
-                }) == null);
+                return Boolean.instance(!set.contains(e));
             }
         }));
     }

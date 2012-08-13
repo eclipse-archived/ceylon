@@ -44,7 +44,7 @@ shared class LazySet<Element>(Element... elems)
     }
     shared actual Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object {
-        return LazySet(for (e in set) if (is Element e) if (!exists elems.find((Element o) e==o)) e);
+        return LazySet(for (e in this) if (!e in set) e);
     }
 
     shared actual default Boolean equals(Object that) {
