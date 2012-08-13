@@ -231,7 +231,13 @@ shared void strings() {
     assert({"hello world".split((Character c) c==`l`, true)...}.size==3, "string split discarding [2]");
     assert({"hello world".split("l", true)...}.size==3, "string split discarding [3]");
     assert({"hello world".split((Character c) c==`l`, false)...}.size==5, "string split including [2]");
-    assert({"hello world".split((Character c) c==`l`, false, false)...}.size==7, "string split including [3]");
+    assert({"hello world".split((Character c) c==`l`, false, false)...}=={"he","l","","l","o wor","l","d"}, "string split including [3]");
+    assert({"hello world".split((Character c) c==`l`, false, true)...}=={"he","ll","o wor", "l", "d"}, "string split including [4]");
+    assert({"hello world".split("l", false, false)...}=={"he","l","","l","o wor","l","d"}, "string split including [5]");
+    assert({"hello world".split("l", false, true)...}=={"he","ll","o wor", "l", "d"}, "string split including [6]");
+    //With strings
+    assert({"hello world".split("eo")...}=={"hello world".split({`e`,`o`})...}, "string split chars [1]");
+    assert({"hello world".split("eo")...}=={"hello world".split(StringBuilder().append("o").append("e").string) ...}, "string split chars");
     variable value count:=0;
     for (tok in "hello world goodbye".split()) {
         count++;
