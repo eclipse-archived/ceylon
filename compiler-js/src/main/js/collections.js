@@ -58,6 +58,26 @@ Collection$proto.contains = function(obj) {
     }
     return false;
 }
+Collection$proto.getString = function() {
+    var s = '{';
+    var first = true;
+    var iter = this.getIterator();
+    var item;
+    while ((item = iter.next()) !== $finished) {
+        s += first ? ' ' : ', ';
+        if (exists(item)) {
+            s += item.getString();
+        } else {
+            s += 'null';
+        }
+        first = false;
+    }
+    if (!first) {
+        s += ' ';
+    }
+    s += '}';
+    return String$(s);
+}
 exports.Collection=Collection;
 
 function FixedSized(wat) {
@@ -147,26 +167,6 @@ List$proto.getHash = function() {
         }
     }
     return hc;
-}
-List$proto.getString = function() {
-    var s = '{';
-    var first = true;
-    var iter = this.getIterator();
-    var item;
-    while ((item = iter.next()) !== $finished) {
-        s += first ? ' ' : ', ';
-        if (exists(item)) {
-            s += item.getString();
-        } else {
-            s += 'null';
-        }
-        first = false;
-    }
-    if (!first) {
-        s += ' ';
-    }
-    s += '}';
-    return String$(s);
 }
 List$proto.findLast = function(select) {
     var li = this.getLastIndex();
