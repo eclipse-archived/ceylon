@@ -1,3 +1,5 @@
+import com.redhat.ceylon.ceylondoc.test.modules.single.a { A1, AliasA2 = A2 }
+
 /*
  * Copyright Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the authors tag. All rights reserved.
@@ -92,6 +94,8 @@ shared class StubClass(
          1. StubInterface with custom name = [[custom stub interface|StubInterface]]
          1. unresolvable = [[unresolvable]]
          1. Integer = [[Integer]] (external links are broken, see issue 225)
+         1. imported A1 = [[A1]]
+         1. imported AliasA2 = [[AliasA2]]
 
          
          Wiki-style links with full qualified name:

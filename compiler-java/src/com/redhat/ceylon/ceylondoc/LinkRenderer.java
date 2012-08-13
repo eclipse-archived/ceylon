@@ -9,6 +9,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -252,10 +253,14 @@ public class LinkRenderer {
         
         String[] declNames = declName.split("\\.");
         Declaration currentDecl = null;
+        boolean isNested = false;
         for (String currentDeclName : declNames) {
-            currentDecl = resolveDeclaration(currentScope, currentDeclName);
+            currentDecl = resolveDeclaration(currentScope, currentDeclName, isNested);
             if (currentDecl != null) {
                 currentScope = resolveScope(currentDecl);
+                isNested = true;
+            } else {
+                break;
             }
         }
     
@@ -270,15 +275,22 @@ public class LinkRenderer {
         }
     }
 
-    private Declaration resolveDeclaration(Scope scope, String declName) {
-        if (scope == null) {
-            return null;
+    private Declaration resolveDeclaration(Scope scope, String declName, boolean isNested) {
+        Declaration decl = null;
+
+        if (scope != null) {
+            decl = scope.getMember(declName, null);
+
+            if (decl == null && !isNested && scope instanceof Element) {
+                decl = ((Element) scope).getUnit().getImportedDeclaration(declName, null);
+            }
+
+            if (decl == null && !isNested) {
+                decl = resolveDeclaration(scope.getContainer(), declName, isNested);
+            }
         }
-        Declaration member = scope.getMember(declName, null);
-        if (member != null) {
-            return member;
-        }
-        return resolveDeclaration(scope.getContainer(), declName);
+
+        return decl;
     }
 
     private Scope resolveScope(Declaration decl) {

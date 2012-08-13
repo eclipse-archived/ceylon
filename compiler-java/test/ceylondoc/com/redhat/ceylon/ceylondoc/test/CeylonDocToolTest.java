@@ -588,6 +588,11 @@ public class CeylonDocToolTest {
                 Pattern.compile("unresolvable = unresolvable"));
         
         assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("imported A1 = <a href='a/class_A1.html'>A1</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("imported AliasA2 = <a href='a/class_A2.html'>AliasA2</a>"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("fullStubInterface = <a href='interface_StubInterface.html'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a href='interface_StubInterface.html#formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface.formalMethodFromStubInterface</a>"));
