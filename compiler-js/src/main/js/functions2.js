@@ -92,6 +92,21 @@ function forItem(/*Callable<Result,Item>*/f) {
     }
 }
 
+function combine(/*Callable<Result,Element,Other>*/f, /*Iterable<Element>*/i1, /*Iterable<Other>*/i2) {
+    return Comprehension(function(){
+        var ei = i1.getIterator();
+        var oi = i2.getIterator();
+        return function() {
+            var ne = ei.next();
+            var no = oi.next();
+            if (ne === $finished || no === $finished) {
+                return $finished;
+            }
+            return f(ne, no);
+        };
+    });
+}
+
 exports.forKey=forKey;
 exports.forItem=forItem;
 exports.emptyOrSingleton=emptyOrSingleton;
@@ -104,3 +119,4 @@ exports.count=count;
 exports.string=string;
 exports.byKey=byKey;
 exports.byItem=byItem;
+exports.combine=combine;
