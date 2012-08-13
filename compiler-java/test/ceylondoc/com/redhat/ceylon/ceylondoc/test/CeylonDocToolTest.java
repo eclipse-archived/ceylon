@@ -452,7 +452,7 @@ public class CeylonDocToolTest {
         
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='interface_StubInterface.html'>StubInterface</a>, <a href='index.html#stubTopLevelAttribute'>stubTopLevelAttribute</a>, <a href='index.html#stubTopLevelMethod'>stubTopLevelMethod</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#methodWithSee'>methodWithSee</a>, <a href='class_StubException.html'>StubException</a></div>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#attributeWithSee'>attributeWithSee</a>, <a href='class_StubException.html'>StubException</a></div>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#attributeWithSee'>attributeWithSee</a>, <a href='class_StubException.html'>StubException</a>, <a href='a/class_A1.html'>A1</a></div>"));
     }
     
     private void assertIcons(File destDir) throws IOException {

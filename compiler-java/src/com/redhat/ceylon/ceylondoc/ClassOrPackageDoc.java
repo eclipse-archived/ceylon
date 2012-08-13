@@ -38,8 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
@@ -57,39 +55,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         open("div class='see'");
         write("See also: ");
         for (String target : see.getPositionalArguments()) {
-            // try to resolve in containing scopes
-            
-            Scope declScope = resolveScope(decl);
-            Declaration targetDecl = resolveDeclaration(declScope, target);
-            if(targetDecl != null){
-                if (!first) {
-                    write(", ");
-                } else {
-                    first = false;
-                }
-                linkRenderer().to(targetDecl).write();
+            if (!first) {
+                write(", ");
+            } else {
+                first = false;
             }
+            linkRenderer().to(target).useScope(decl).write();
         }
         close("div");
-    }
-
-    private Scope resolveScope(Declaration decl) {
-        if (decl == null) {
-            return null;
-        } else if (decl instanceof Scope) {
-            return (Scope) decl;
-        } else {
-            return decl.getContainer();
-        }
-    }
-
-    private Declaration resolveDeclaration(Scope decl, String target) {
-        if(decl == null)
-            return null;
-        Declaration member = decl.getMember(target, null);
-        if (member != null)
-            return member;
-        return resolveDeclaration(decl.getContainer(), target);
     }
     
     protected void doc(MethodOrValue d) throws IOException {
@@ -256,14 +229,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 }
 
                 open("li");
-
-                Scope declScope = resolveScope(decl);
-                Declaration excTypeDecl = resolveDeclaration(declScope, excType);
-                if (excTypeDecl instanceof TypeDeclaration) {
-                    linkRenderer().to(excTypeDecl).write();
-                } else {
-                    write(excType);
-                }
+                
+                linkRenderer().to(excType).useScope(decl).write();
 
                 if (excDesc != null) {
                     write(Util.wikiToHTML(Util.unquote(excDesc), linkRenderer().useScope(decl)));
