@@ -304,6 +304,7 @@ String$proto.$split = function(sep, discard, group) {
     var tokenBeginCount = 0;
     var count = 0;
     var value = this;
+    var separator = true;
 
     function pushToken(tokenEnd) {
         tokens.push(String$(value.substring(tokenBegin, tokenEnd), count-tokenBeginCount));
@@ -318,21 +319,42 @@ String$proto.$split = function(sep, discard, group) {
             if ((cp&0xfc00)===0xd800 && i<this.length) {
                 cp = (cp<<10) + this.charCodeAt(i++) - 0x35fdc00;
             }
-            ++count;
             if (cp in sepChars) {
-                if (tokenBegin != j) {
+                if (!group) {
+                    // ungrouped separator: store preceding token
+                    pushToken(j);
+                    if (!discard) {
+                        // store separator as token
+                        tokens.push(String$(this.substring(j, i), 1));
+                    }
+                    // next token begins after this character
+                    tokenBegin = i;
+                    tokenBeginCount = count + 1;
+                } else if (!separator || (j == 0)) {
+                    // begin of grouped separator: store preceding token
+                    pushToken(j);
+                    // separator token begins at this character
+                    tokenBegin = j;
+                    tokenBeginCount = count;
+                }
+                separator = true;
+
+            } else if (separator) {
+                // first non-separator after separators or at beginning
+                if (!discard && (tokenBegin != j)) {
+                    // store preceding grouped separator (if group=false then tokenBegin=j)
                     pushToken(j);
                 }
-                if (!discard) {tokens.push(String$(value.substring(j, i), 1))}
-                tokenBegin = i;
+                // non-separator token begins at this character
+                tokenBegin = j;
                 tokenBeginCount = count;
+                separator = false;
             }
         }
         if (tokenBegin != i) {
             pushToken(i);
         }
     } else {
-        var separator = true;
         for (var i=0; i<this.length; ++count) {
             var j = i;
             var cp = this.charCodeAt(i++);
