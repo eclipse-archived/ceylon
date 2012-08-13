@@ -810,9 +810,9 @@ public abstract class String
 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     public Iterable<? extends String> split(
-            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,ceylon.language.Character>")
+            @TypeInfo("ceylon.language.Iterable<ceylon.language.Character>|ceylon.language.Callable<ceylon.language.Boolean,ceylon.language.Character>")
             @Defaulted
-            @Name("separator") Callable<? extends Boolean> separator,
+            @Name("separator") java.lang.Object separator,
             @Defaulted
             @Name("discardSeparators") boolean discardSeparators,
             @Defaulted
@@ -825,7 +825,7 @@ public abstract class String
 
     @Ignore
     public static Iterable<? extends String> split(java.lang.String value,
-            Callable<? extends Boolean> separator,
+            java.lang.Object separator,
             boolean discardSeparators,
             boolean groupSeparators) {
         if (value.isEmpty()) {
@@ -836,27 +836,27 @@ public abstract class String
 
     @Ignore
     public Iterable<? extends String> split(
-            Callable<? extends Boolean> separator,
+            java.lang.Object separator,
             boolean discardSeparators) {
         return split(separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
     public static Iterable<? extends String> split(java.lang.String value,
-            Callable<? extends Boolean> separator,
+            java.lang.Object separator,
             boolean discardSeparators) {
         return split(value, separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
     public Iterable<? extends String> split(
-            Callable<? extends Boolean> separator) {
+            java.lang.Object separator) {
         return split(separator, split$discardSeparators(separator));
     }
 
     @Ignore
     public static Iterable<? extends String> split(java.lang.String value,
-            Callable<? extends Boolean> separator) {
+            java.lang.Object separator) {
         return split(value, separator, split$discardSeparators(separator));
     }
 
@@ -881,12 +881,12 @@ public abstract class String
     }
 
     @Ignore
-    public static boolean split$discardSeparators(Callable<? extends Boolean> separator){
+    public static boolean split$discardSeparators(java.lang.Object separator){
         return true;
     }
 
     @Ignore
-    public static boolean split$groupSeparators(Callable<? extends Boolean> separator, boolean discardSeparators){
+    public static boolean split$groupSeparators(java.lang.Object separator, boolean discardSeparators){
         return true;
     }
 
@@ -1161,11 +1161,11 @@ public abstract class String
 
     private static final class Tokens implements Iterable<String> {
         private final java.lang.String str;
-        private final ceylon.language.Callable<? extends Boolean> separator;
+        private final java.lang.Object separator;
         private final boolean keepSeparators;
         private final boolean groupSeparators;
 
-        public Tokens(java.lang.String str, ceylon.language.Callable<? extends Boolean> separator,
+        public Tokens(java.lang.String str, java.lang.Object separator,
                 boolean keepSeparators, boolean groupSeparators) {
             this.str = str;
             this.separator = separator;
@@ -1242,11 +1242,23 @@ public abstract class String
                         index++;
                 }
 
+                @SuppressWarnings("unchecked")
                 private boolean peekSeparator() {
                     if(eof())
                         return false;
                     int charCodePoint = java.lang.Character.codePointAt(chars, index);
-                    return separator.$call(Character.instance(charCodePoint)).booleanValue();
+                    if (separator instanceof Callable) {
+                        return ((Callable<Boolean>)separator).$call(Character.instance(charCodePoint)).booleanValue();
+                    } else {
+                        java.lang.Object $tmp;
+                        for (Iterator<? extends Character> iter = ((Iterable<? extends Character>)separator).getIterator();
+                                !(($tmp = iter.next()) instanceof Finished);) {
+                            if (((Character)$tmp).getInteger() == charCodePoint) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
                 }
             }
 

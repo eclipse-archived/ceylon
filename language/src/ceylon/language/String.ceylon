@@ -69,7 +69,7 @@ shared abstract class String()
                  is a separator characters at which to split.
                  Default to split at any Unicode whitespace
                  character."
-            Boolean separator(Character ch) = (Character ch) ch.whitespace,
+            Iterable<Character>|Callable<Boolean,Character> separator = (Character ch) ch.whitespace,
             doc "Specifies that the separator characters
                  occurring in the string should be discarded.
                  If `false`, they will be included in the
