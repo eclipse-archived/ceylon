@@ -1175,9 +1175,9 @@ public abstract class String
 
         @Override
         public Iterator<? extends String> getIterator() {
-            class TokenIterator implements Iterator<String> {
-                private final char[] chars = str.toCharArray();
-                private int index = 0;
+            abstract class TokenIterator implements Iterator<String> {
+                protected final char[] chars = str.toCharArray();
+                protected int index = 0;
                 private boolean first = true;
                 private boolean lastTokenWasSeparator = false;
 
@@ -1224,7 +1224,7 @@ public abstract class String
                     }
                 }
 
-                private boolean eof(){
+                protected boolean eof(){
                     return index >= chars.length;
                 }
 
@@ -1242,14 +1242,44 @@ public abstract class String
                         index++;
                 }
 
-                @SuppressWarnings("unchecked")
-                private boolean peekSeparator() {
-                    if(eof())
-                        return false;
-                    int charCodePoint = java.lang.Character.codePointAt(chars, index);
-                    if (separator instanceof Callable) {
+                protected abstract boolean peekSeparator();
+            }
+
+            if (separator instanceof Callable) {
+                return new TokenIterator() {
+                    @SuppressWarnings("unchecked")
+                    protected final boolean peekSeparator() {
+                        if(eof())
+                            return false;
+                        int charCodePoint = java.lang.Character.codePointAt(chars, index);
                         return ((Callable<Boolean>)separator).$call(Character.instance(charCodePoint)).booleanValue();
-                    } else {
+                    }
+                };
+            } else if (separator instanceof java.lang.String) {
+                return new TokenIterator() {
+                    protected final boolean peekSeparator() {
+                        if(eof())
+                            return false;
+                        int charCodePoint = java.lang.Character.codePointAt(chars, index);
+                        return ((java.lang.String)separator).indexOf(charCodePoint) >= 0;
+                    }
+                };
+            } else if (separator instanceof String) {
+                return new TokenIterator() {
+                    protected final boolean peekSeparator() {
+                        if(eof())
+                            return false;
+                        int charCodePoint = java.lang.Character.codePointAt(chars, index);
+                        return ((String)separator).value.indexOf(charCodePoint) >= 0;
+                    }
+                };
+            } else {
+                return new TokenIterator() {
+                    @SuppressWarnings("unchecked")
+                    protected final boolean peekSeparator() {
+                        if(eof())
+                            return false;
+                        int charCodePoint = java.lang.Character.codePointAt(chars, index);
                         java.lang.Object $tmp;
                         for (Iterator<? extends Character> iter = ((Iterable<? extends Character>)separator).getIterator();
                                 !(($tmp = iter.next()) instanceof Finished);) {
@@ -1259,10 +1289,8 @@ public abstract class String
                         }
                         return false;
                     }
-                }
+                };
             }
-
-            return new TokenIterator();
         }
 
         @Override
