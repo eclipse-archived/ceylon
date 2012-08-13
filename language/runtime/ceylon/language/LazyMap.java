@@ -27,6 +27,10 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     private final Correspondence$impl<Key,Item> corr$impl = new Correspondence$impl<Key,Item>((Correspondence<Key,Item>)this);
     private final Category$impl cat$impl = new Category$impl((Category)this);
 
+    @Ignore @SuppressWarnings("unchecked")
+    public LazyMap() {
+        this.entries = (Iterable)$empty.getEmpty();
+    }
     public LazyMap(@Name("entries") @Sequenced
             @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<Key,Item>>")
             Iterable<? extends Entry<? extends Key,? extends Item>> entries) {

@@ -23,6 +23,10 @@ public class LazyList<Element> implements List<Element> {
     private final Category$impl cat$impl = new Category$impl(this);
     private final Correspondence$impl<Integer,Element> corr$impl = new Correspondence$impl<Integer,Element>(this);
 
+    @Ignore @SuppressWarnings("unchecked")
+    public LazyList() {
+        this.elems = (Iterable<? extends Element>)$empty.getEmpty();
+    }
     public LazyList(@Name("elems") @Sequenced
             @TypeInfo("ceylon.language.Iterable<Element>")
             Iterable<? extends Element> elems) {

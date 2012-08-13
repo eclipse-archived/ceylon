@@ -25,6 +25,10 @@ public class LazySet<Element> implements Set<Element> {
     private final Set$impl<Element> set$impl = new Set$impl<Element>(this);
     private final Category$impl cat$impl = new Category$impl(this);
 
+    @Ignore @SuppressWarnings("unchecked")
+    public LazySet() {
+        this.elems = (Iterable<? extends Element>)$empty.getEmpty();
+    }
     public LazySet(@Name("elems") @Sequenced
             @TypeInfo("ceylon.language.Iterable<Element>")
             Iterable<? extends Element> elems) {
