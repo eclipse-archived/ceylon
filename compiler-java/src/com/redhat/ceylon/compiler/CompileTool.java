@@ -112,7 +112,7 @@ public class CompileTool implements Plugin{
     }
 
     @Override
-    public int run() {
+    public void run() {
         List<String> arguments = new ArrayList<>();
         for (File source : this.source) {
             arguments.add("-src");
@@ -146,14 +146,9 @@ public class CompileTool implements Plugin{
             arguments.add(moduleSpec);
         }
         
-        try {
-            System.out.println(arguments);
-            com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylon compile");
-            return compiler.compile(arguments.toArray(new String[arguments.size()]));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 1;
-        }
+        System.out.println(arguments);
+        com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylon compile");
+        compiler.compile(arguments.toArray(new String[arguments.size()]));
     }
     
     

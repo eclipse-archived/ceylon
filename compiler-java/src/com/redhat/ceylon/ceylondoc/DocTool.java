@@ -399,13 +399,8 @@ public class DocTool implements Plugin {
     }
 
     @Override
-    public int run() {
-        try {
-            makeDoc();
-            return 0;
-        } catch (IOException e) {
-            return 1;
-        }
+    public void run() throws Exception {
+        makeDoc();    
     }
     
     public void makeDoc() throws IOException {

@@ -163,9 +163,8 @@ public class ImportJarTool implements Plugin {
     }
     
     @Override
-    public int run(){
+    public void run(){
         publish();
-        return 0;
     }
 
     public class CMRLogger implements Logger {
