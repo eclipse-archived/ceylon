@@ -360,7 +360,6 @@ public class Util {
         
     }
     
-    // TODO support fully-qualified declaration name, eg. [[ceylon.math.whole.Whole]]
     private static class CeylondocSpanEmitter implements SpanEmitter {
 
         private final LinkRenderer linkRenderer;

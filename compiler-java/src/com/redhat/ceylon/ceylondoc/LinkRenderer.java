@@ -88,7 +88,7 @@ public class LinkRenderer {
     public String getAnchor() {
         try {
             if (to instanceof String) {
-                processDeclarationName((String) to);
+                processDeclarationLink((String) to);
             } else if (to instanceof ProducedType) {
                 processProducedType((ProducedType) to);
             } else if (to instanceof IntersectionType) {
@@ -236,9 +236,21 @@ public class LinkRenderer {
         }
     }
 
-    private void processDeclarationName(String declName) {
+    private void processDeclarationLink(String declLink) {
+        String declName;
+        Scope currentScope;
+        
+        int pkgSeparatorIndex = declLink.indexOf("@");
+        if( pkgSeparatorIndex == -1 ) {
+            declName = declLink;
+            currentScope = scope;
+        } else {
+            String pkgName = declLink.substring(0, pkgSeparatorIndex);
+            declName = declLink.substring(pkgSeparatorIndex+1, declLink.length());
+            currentScope = ceylonDocTool.getCurrentModule().getPackage(pkgName);
+        }
+        
         String[] declNames = declName.split("\\.");
-        Scope currentScope = scope;
         Declaration currentDecl = null;
         for (String currentDeclName : declNames) {
             currentDecl = resolveDeclaration(currentScope, currentDeclName);
@@ -254,7 +266,7 @@ public class LinkRenderer {
                 processDeclaration(currentDecl);
             }
         } else {
-            buffer.append(declName);
+            buffer.append(declLink);
         }
     }
 

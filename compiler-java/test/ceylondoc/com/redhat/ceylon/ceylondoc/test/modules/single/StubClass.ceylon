@@ -89,9 +89,17 @@ shared class StubClass(
          1. StubInterface.formalMethodFromStubInterface = [[StubInterface.formalMethodFromStubInterface]]
          1. StubClass.StubInnerClass = [[StubClass.StubInnerClass]]
          1. StubClass.StubInnerClass.innerMethod = [[StubClass.StubInnerClass.innerMethod]]
-         1. link to StubInterface with custom name = [[custom stub interface|StubInterface]]
+         1. StubInterface with custom name = [[custom stub interface|StubInterface]]
          1. unresolvable = [[unresolvable]]
          1. Integer = [[Integer]] (external links are broken, see issue 225)
+
+         
+         Wiki-style links with full qualified name:
+         
+         1. fullStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface]]
+         1. fullStubInterface.formalMethodFromStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface.formalMethodFromStubInterface]]
+         1. fullStubInterface with custom name = [[full custom stub interface|com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface]]
+         1. fullUnresolvable = [[unresolvable@StubInterface]]
          
          "
     shared void methodWithLinksInDoc() {}

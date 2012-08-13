@@ -583,9 +583,18 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("StubClass.StubInnerClass.innerMethod = <a href='class_StubClass.StubInnerClass.html#innerMethod'>StubClass.StubInnerClass.innerMethod</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
-                Pattern.compile("link to StubInterface with custom name = <a href='interface_StubInterface.html'>custom stub interface</a>"));
+                Pattern.compile("StubInterface with custom name = <a href='interface_StubInterface.html'>custom stub interface</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("unresolvable = unresolvable"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("fullStubInterface = <a href='interface_StubInterface.html'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a href='interface_StubInterface.html#formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface.formalMethodFromStubInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("fullStubInterface with custom name = <a href='interface_StubInterface.html'>full custom stub interface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("fullUnresolvable = unresolvable@StubInterface"));
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
