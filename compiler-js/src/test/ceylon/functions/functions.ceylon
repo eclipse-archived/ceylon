@@ -113,6 +113,10 @@ String namedArgFunc(String x="x", String y=x+"y", String... z) {
     return result;
 }
 
+class Issue105(i, Issue105... more) {
+    shared Integer i;
+}
+
 void testNamedArguments() {
     assert(namedArgFunc{}=="x,xy", "named arguments 1");
     assert(namedArgFunc{x="a";}=="a,ay", "named arguments 2");
@@ -126,6 +130,9 @@ void testNamedArguments() {
     assert(namedArgFunc{z={};}=="x,xy", "named arguments 10");
     assert(namedArgFunc{z={"c", "d"};}=="x,xy,c,d", "named arguments 11");
     assert(namedArgFunc{y="b";z={"c"};x="a";}=="a,b,c", "named arguments 12");
+    
+    value issue105 = Issue105 { i=1; Issue105 { i=2; } };
+    assert(issue105.i==1, "issue #105");
 }
 
 shared void test() {
