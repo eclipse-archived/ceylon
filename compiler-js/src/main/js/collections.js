@@ -26,6 +26,7 @@ function Category(wat) {
 }
 initType(Category, 'ceylon.language.Category');
 Category.$$.prototype.containsEvery = function(keys) {
+    if (keys === undefined) return true;
     for (var i = 0; i < keys.length; i++) {
         if (!this.contains(keys[i])) {
             return false;
@@ -34,6 +35,7 @@ Category.$$.prototype.containsEvery = function(keys) {
     return true;
 }
 Category.$$.prototype.containsAny = function(keys) {
+    if (keys === undefined) return true;
     for (var i = 0; i < keys.length; i++) {
         if (this.contains(keys[i])) {
             return true;
@@ -322,7 +324,7 @@ exports.ChainedIterator=ChainedIterator;
 function LazyList(elems, lst) {
     if (lst===undefined) {lst = new LazyList.$$;}
     IdentifiableObject(lst);
-    lst.elems = elems;
+    lst.elems = elems===undefined?$empty:elems;
     return lst;
 }
 initTypeProto(LazyList, 'ceylon.language.LazyList', IdentifiableObject, List);

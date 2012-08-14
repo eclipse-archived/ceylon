@@ -113,6 +113,7 @@ Array$proto.getRest = function() {
     return this.length<=1 ? $empty : ArraySequence(this.slice(1));
 }
 Array$proto.items = function(keys) {
+    if (keys === undefined) return $empty;
     var seq = [];
     for (var i = 0; i < keys.getSize(); i++) {
         var key = keys.item(i);

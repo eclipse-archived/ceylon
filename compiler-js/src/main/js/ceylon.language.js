@@ -191,6 +191,7 @@ Correspondence$proto.defines = function(key) {
     return exists(this.item(key));
 }
 Correspondence$proto.definesEvery = function(keys) {
+	if (keys === undefined) return true;
     for (var i=0; i<keys.length; i++) {
         if (!this.defines(keys[i])) {
             return false;
@@ -199,6 +200,7 @@ Correspondence$proto.definesEvery = function(keys) {
     return true;
 }
 Correspondence$proto.definesAny = function(keys) {
+	if (keys === undefined) return true;
     for (var i=0; i<keys.length; i++) {
         if (this.defines(keys[i])) {
             return true;

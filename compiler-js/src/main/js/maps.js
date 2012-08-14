@@ -350,7 +350,7 @@ HashSetIterator.$$.prototype.next = function() {
 function LazyMap(entries, map) {
     if (map===undefined) {map = new LazyMap.$$;}
     IdentifiableObject(map);
-    map.entries = entries;
+    map.entries = entries===undefined?$empty:entries;
     return map;
 }
 initTypeProto(LazyMap, 'ceylon.language.LazyMap', IdentifiableObject, Map);
@@ -388,7 +388,7 @@ exports.LazyMap=LazyMap;
 function LazySet(elems, set) {
     if (set===undefined) {set = new LazySet.$$;}
     IdentifiableObject(set);
-    set.elems = elems;
+    set.elems = elems===undefined?$empty:elems;
     return set;
 }
 initTypeProto(LazySet, 'ceylon.language.LazySet', IdentifiableObject, Set);
