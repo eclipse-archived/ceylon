@@ -133,10 +133,11 @@ public class AbstractDoc {
         Synopsis synopsis = out.synopsis(bundle.getString("section.SYNOPSIS"));
         // TODO Make auto generated SYNOPSIS better -- we need to know which options
         // form groups, or should we just have a @Synopses({@Synopsis(""), ...})
-        synopsis.appendSynopsis(model.getCeylonInvocation() + " ");
+        synopsis.appendSynopsis(model.getCeylonInvocation());
         ArrayList<OptionModel<?>> options = sortedOptions(model.getPlugin().getOptions());
         if (!options.isEmpty()) {
             for (OptionModel<?> option : options) {
+                synopsis.appendSynopsis(" ");
                 final ArgumentModel<?> argument = option.getArgument();
                 if (!argument.getMultiplicity().isRequired()) {
                     synopsis.appendSynopsis("[");
