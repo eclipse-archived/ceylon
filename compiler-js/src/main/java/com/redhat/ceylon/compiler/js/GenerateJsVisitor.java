@@ -3,8 +3,10 @@ package com.redhat.ceylon.compiler.js;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -1461,35 +1463,17 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(InvocationExpression that) {
         if (that.getNamedArgumentList()!=null) {
+            NamedArgumentList argList = that.getNamedArgumentList();
             out("(");
-            that.getNamedArgumentList().visit(this);
+            
+            Map<String, String> argVarNames = defineNamedArguments(argList);
+            
             that.getPrimary().visit(this);
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
-                    for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : f.getParameterLists()) {
-                        List<String> argNames = that.getNamedArgumentList().getNamedArgumentList().getArgumentNames();
-                        boolean first=true;
-                        out("(");
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
-                            if (!first) out(",");
-                            boolean namedArgumentGiven = argNames.contains(p.getName());
-                            if (p.isSequenced() && that.getNamedArgumentList().getSequencedArgument()==null && !namedArgumentGiven) {
-                                if (that.getNamedArgumentList().getComprehension() == null) {
-                                    out(clAlias, ".empty");
-                                } else {
-                                    out("$$$comp$$$");
-                                }
-                            } else if (p.isSequenced() || namedArgumentGiven) {
-                                out(names.name(p));
-                            } else {
-                                out("undefined");
-                            }
-                            first = false;
-                        }
-                        out(")");
-                    }
+                    applyNamedArguments(argList, f, argVarNames);
                 }
             }
             out(")");
@@ -1498,7 +1482,65 @@ public class GenerateJsVisitor extends Visitor
             super.visit(that);
         }
     }
+    
+    private Map<String, String> defineNamedArguments(NamedArgumentList argList) {
+        Map<String, String> argVarNames = new HashMap<String, String>();
+        for (NamedArgument arg: argList.getNamedArguments()) {
+            String paramName = arg.getParameter().getName();
+            String varName = names.createTempVariable(paramName);
+            argVarNames.put(paramName, varName);
+            retainedVars.add(varName);
+            out(varName, "=");
+            arg.visit(this);
+            out(",");
+        }
+        SequencedArgument sarg = argList.getSequencedArgument();
+        if (sarg!=null) {
+            String paramName = sarg.getParameter().getName();
+            String varName = names.createTempVariable(paramName);
+            argVarNames.put(paramName, varName);
+            retainedVars.add(varName);
+            out(varName, "=");
+            sarg.visit(this);
+            out(",");
+        }
+        if (argList.getComprehension() != null) {
+            String varName = names.createTempVariable("comp");
+            argVarNames.put("$comp$", varName);
+            retainedVars.add(varName);
+            out(varName, "=");
+            argList.getComprehension().visit(this);
+            out(",");
+        }
+        return argVarNames;
+    }
 
+    private void applyNamedArguments(NamedArgumentList argList, Functional func,
+                Map<String, String> argVarNames) {
+        for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : func.getParameterLists()) {
+            List<String> argNames = argList.getNamedArgumentList().getArgumentNames();
+            boolean first=true;
+            out("(");
+            for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
+                if (!first) out(",");
+                boolean namedArgumentGiven = argNames.contains(p.getName());
+                if (p.isSequenced() && argList.getSequencedArgument()==null && !namedArgumentGiven) {
+                    if (argList.getComprehension() == null) {
+                        out(clAlias, ".empty");
+                    } else {
+                        out(argVarNames.get("$comp$"));
+                    }
+                } else if (p.isSequenced() || namedArgumentGiven) {
+                    out(argVarNames.get(p.getName()));
+                } else {
+                    out("undefined");
+                }
+                first = false;
+            }
+            out(")");
+        }        
+    }
+    
     @Override
     public void visit(PositionalArgumentList that) {
         out("(");
@@ -1630,31 +1672,6 @@ public class GenerateJsVisitor extends Visitor
         visitStatements(that.getBlock().getStatements());
         endBlock();
         out("())");
-    }
-
-    @Override
-    public void visit(NamedArgumentList that) {
-        for (NamedArgument arg: that.getNamedArguments()) {
-            String varName = names.name(arg.getParameter());
-            retainedVars.add(varName);
-            out(varName, "=");
-            arg.visit(this);
-            out(",");
-        }
-        SequencedArgument sarg = that.getSequencedArgument();
-        if (sarg!=null) {
-            String varName = names.name(sarg.getParameter());
-            retainedVars.add(varName);
-            out(varName, "=");
-            sarg.visit(this);
-            out(",");
-        }
-        if (that.getComprehension() != null) {
-            retainedVars.add("$$$comp$$$");
-            out("$$$comp$$$=");
-            that.getComprehension().visit(this);
-            out(",");
-        }
     }
 
     @Override
