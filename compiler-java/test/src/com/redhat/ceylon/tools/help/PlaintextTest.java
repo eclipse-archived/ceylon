@@ -37,11 +37,6 @@ public class PlaintextTest {
     }
     
     @Test
-    public void test1() throws Exception {
-        renderAndCompare("test.md", "test.txt");
-    }
-    
-    @Test
     public void test2() throws Exception {
         renderAndCompare("test2.md", "test2.txt");
         

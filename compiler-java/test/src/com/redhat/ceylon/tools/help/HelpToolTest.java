@@ -7,12 +7,17 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tool.ArgumentParserFactory;
+import com.redhat.ceylon.common.tool.PluginFactory;
+import com.redhat.ceylon.common.tool.PluginLoader;
 import com.redhat.ceylon.common.tool.PluginModel;
-import com.redhat.ceylon.common.tool.ToolTest;
 import com.redhat.ceylon.tools.help.HelpTool;
 
-public class HelpToolTest extends ToolTest {
+public class HelpToolTest {
 
+    protected final ArgumentParserFactory apf = new ArgumentParserFactory();
+    protected final PluginFactory pluginFactory = new PluginFactory(apf);
+    protected final PluginLoader pluginLoader = new PluginLoader(apf);
     @Test
     public void testHelp() {
         PluginModel<HelpTool> model = pluginLoader.loadToolModel("help");
@@ -59,6 +64,14 @@ public class HelpToolTest extends ToolTest {
         PluginModel<HelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
         HelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("import-jar"));
+        tool.run();
+    }
+    
+    @Test
+    public void testHelpDocTool() {
+        PluginModel<HelpTool> model = pluginLoader.loadToolModel("help");
+        Assert.assertNotNull(model);
+        HelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("doc-tool"));
         tool.run();
     }
 
