@@ -1,6 +1,5 @@
 package com.redhat.ceylon.tools.help;
 
-import com.redhat.ceylon.common.tool.ArgumentModel;
 
 interface Output {
 

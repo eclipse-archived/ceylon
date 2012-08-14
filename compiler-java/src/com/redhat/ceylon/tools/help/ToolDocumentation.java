@@ -2,7 +2,6 @@ package com.redhat.ceylon.tools.help;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -10,7 +9,6 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.PluginModel;
-import com.redhat.ceylon.common.tool.Section;
 import com.redhat.ceylon.common.tool.Sections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tools;
@@ -101,7 +99,7 @@ class ToolDocumentation<T extends Plugin> {
         return msg;
     }
 
-    public String getOptionDescription(OptionModel opt) {
+    public String getOptionDescription(OptionModel<?> opt) {
         String msg = msg("option."+opt.getLongName());
         if (msg.isEmpty()) {
             Description description = opt.getArgument().getSetter().getAnnotation(Description.class);

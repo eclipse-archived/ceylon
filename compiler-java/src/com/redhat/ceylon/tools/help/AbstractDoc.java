@@ -107,7 +107,7 @@ public class AbstractDoc {
 
     private void printToolOptions(Output out, ToolDocumentation<?> model) {
         Options options = out.options(bundle.getString("section.OPTIONS"));
-        for (OptionModel opt : sortedOptions(model.getPlugin().getOptions())) {
+        for (OptionModel<?> opt : sortedOptions(model.getPlugin().getOptions())) {
             String shortName = opt.getShortName() != null ? "-" + opt.getShortName() : null;
             String longName = opt.getLongName() != null ? "--" + opt.getLongName() : null;
             String argumentName = opt.isPureOption() ? null : opt.getArgument().getName();
@@ -131,10 +131,10 @@ public class AbstractDoc {
         // TODO Make auto generated SYNOPSIS better -- we need to know which options
         // form groups, or should we just have a @Synopses({@Synopsis(""), ...})
         synopsis.appendSynopsis(model.getCeylonInvocation() + " ");
-        ArrayList<OptionModel> options = sortedOptions(model.getPlugin().getOptions());
+        ArrayList<OptionModel<?>> options = sortedOptions(model.getPlugin().getOptions());
         if (!options.isEmpty()) {
-            for (OptionModel option : options) {
-                final ArgumentModel argument = option.getArgument();
+            for (OptionModel<?> option : options) {
+                final ArgumentModel<?> argument = option.getArgument();
                 if (!argument.getMultiplicity().isRequired()) {
                     synopsis.appendSynopsis("[");
                 }
@@ -158,7 +158,7 @@ public class AbstractDoc {
         }
         if (!model.getPlugin().getArguments().isEmpty()) {
             synopsis.appendSynopsis(" [--] ");
-            for (ArgumentModel argument : model.getPlugin().getArguments()) {
+            for (ArgumentModel<?> argument : model.getPlugin().getArguments()) {
                 String name = argument.getName();
                 if (!argument.getMultiplicity().isRequired()) {
                     synopsis.appendSynopsis("[");
@@ -180,18 +180,18 @@ public class AbstractDoc {
         synopsis.endSynopsis();
     }
 
-    private ArrayList<OptionModel> sortedOptions(final Collection<OptionModel> options2) {
-        ArrayList<OptionModel> options = new ArrayList<OptionModel>(options2);
-        Collections.sort(options, new Comparator<OptionModel>() {
+    private ArrayList<OptionModel<?>> sortedOptions(final Collection<OptionModel<?>> options2) {
+        ArrayList<OptionModel<?>> options = new ArrayList<OptionModel<?>>(options2);
+        Collections.sort(options, new Comparator<OptionModel<?>>() {
             @Override
-            public int compare(OptionModel o1, OptionModel o2) {
+            public int compare(OptionModel<?> o1, OptionModel<?> o2) {
                 return o1.getLongName().compareTo(o2.getLongName());
             }
         });
         return options;
     }
 
-    private String multiplicity(ArgumentModel argument, String name) {
+    private String multiplicity(ArgumentModel<?> argument, String name) {
         name = "<" + name + ">";
         if (argument.getMultiplicity().isMultivalued()) {
             name += "...";

@@ -7,9 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.common.tool.Argument;
-import com.redhat.ceylon.common.tool.ArgumentStyle;
 import com.redhat.ceylon.common.tool.Description;
-import com.redhat.ceylon.common.tool.JavacStyle;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Plugin;
@@ -47,7 +45,6 @@ import com.redhat.ceylon.common.tool.Summary;
     name="CONFIGURATION VARIABLES",
     text="Blah blah blah")
 })
-@ArgumentStyle(JavacStyle.class)
 public class CompileTool implements Plugin{
 
     private List<File> source = Collections.singletonList(new File("source"));

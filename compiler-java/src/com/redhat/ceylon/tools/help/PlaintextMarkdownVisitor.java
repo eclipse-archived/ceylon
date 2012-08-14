@@ -49,6 +49,7 @@ public class PlaintextMarkdownVisitor implements Visitor {
     
     @Override
     public void visit(Comment node) {
+        // it's a comment!
     }
     
     @Override
@@ -105,6 +106,7 @@ public class PlaintextMarkdownVisitor implements Visitor {
             out.append("##").newline();
             break;
         case 6:
+        default:
             out.append("# ");
             node.childrenAccept(this);
             out.append("#").newline();
@@ -205,6 +207,10 @@ public class PlaintextMarkdownVisitor implements Visitor {
             break;
         case ITALIC:
             out.append(node.getText());
+            break;
+        default:
+            out.append(node.getText());
+            break;
         }
     }
 
