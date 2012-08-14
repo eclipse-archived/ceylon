@@ -35,41 +35,43 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
     @Override
     public void title(String title) {
         html.open("html", "head");
-        html.open("title").text(title).close("title");
-        html.tag("link rel='stylesheet'type='text/css' href='doc-tool.css'");
-        html.close("head");
+        html.open("title").text(title).close("title").text("\n");
+        html.tag("link rel='stylesheet'type='text/css' href='doc-tool.css'").text("\n");
+        html.close("head").text("\n");
         html.open("h1").text(title).close("h1");
+        html.text("\n");
     }
 
     @Override
     public HtmlOutput section(String title) {
-        html.open("div class='section'");
+        html.open("div class='section section-"+title+"'");
         html.open("h2").unescaped(markdown(title)).close("h2");
+        html.text("\n");
         return this;
     }
     
     @Override
     public void endSection() {
-        html.close("div");
+        html.close("div").text("\n\n");
     }
     
     @Override
     public void paragraph(String paraMd) {
-        html.unescaped(markdown(paraMd));    
+        html.unescaped(markdown(paraMd));
     }
 
     @Override
     public HtmlOutput synopsis(String title) {
-        html.open("div class='synopsis'");
-        html.open("h2").unescaped(markdown(title)).close("h2");
+        html.open("div class='section section-synopsis'").text("\n");
+        html.open("h2").unescaped(markdown(title)).close("h2").text("\n");
         html.open("pre");
         return this;
     }
     
     @Override
     public void endSynopsis() {
-        html.close("pre");
-        html.close("div");
+        html.close("pre").text("\n");
+        html.close("div").text("\n\n");
     }
 
     @Override
@@ -94,22 +96,23 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
 
     @Override
     public HtmlOutput options(String title) {
-        html.open("div class='options'");
-        html.open("h2").text(title).close("h2");
+        html.open("div class='section section-options'").text("\n");
+        html.open("h2").text(title).close("h2").text("\n");
         html.open("dl");
         return this;
     }
     
     @Override
     public void endOptions() {
-        html.close("dl", "div");
+        html.close("dl").text("\n");
+        html.close("div").text("\n\n");
         
     }
     
     @Override
     public void option(String shortName, String longName, String argumentName,
             String descriptionMd) {
-        html.open("dt");
+        html.open("dt class='option'");
         html.open("code id='long" + longName + "'").text(longName);
         if (argumentName != null) {
             html.text("=").text(argumentName);
@@ -123,10 +126,10 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
             }
             html.close("code");
         }
-        html.close("dt");
-        html.open("dd");
+        html.close("dt").text("\n");
+        html.open("dd class='option-description'");
         html.unescaped(markdown(descriptionMd));
-        html.close("dd");
+        html.close("dd").text("\n");
     }
 
     @Override
