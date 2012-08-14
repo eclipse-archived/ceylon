@@ -9,6 +9,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.Section;
 import com.redhat.ceylon.common.tool.Sections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tools;

@@ -112,6 +112,9 @@ public class AbstractDoc {
             String longName = opt.getLongName() != null ? "--" + opt.getLongName() : null;
             String argumentName = opt.isPureOption() ? null : opt.getArgument().getName();
             String descriptionMd = model.getOptionDescription(opt);
+            if (descriptionMd == null || descriptionMd.isEmpty()) {
+                descriptionMd = bundle.getString("option.undocumented");
+            }
             options.option(shortName, longName, argumentName, descriptionMd);
         }
         options.endOptions();
