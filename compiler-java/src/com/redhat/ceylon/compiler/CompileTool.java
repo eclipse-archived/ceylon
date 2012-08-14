@@ -34,16 +34,21 @@ import com.redhat.ceylon.common.tool.Summary;
         "\n\n" +
         "The compiler searches for dependencies in the following locations:" +
         "\n\n"+
-        "* module archives in the specified repositories,"+
-        "* source archives in the specified repositories, and"+
-        "* module directories in the specified source directories.")
+        "* module archives in the specified repositories,\n"+
+        "* source archives in the specified repositories, and\n"+
+        "* module directories in the specified source directories.\n")
 @Sections({
 @Section(
-    name="EXAMPLE",
-    text="Blah blah"),
-@Section(
-    name="CONFIGURATION VARIABLES",
-    text="Blah blah blah")
+    name="Specifying `javac` options",
+    text="It is possible to pass options to the `javac` compiler by prefixing them " +
+    "with `--javac=` and separating the javac option from its argument (if any) " +
+    "using another `=`. For example:\n\n" +
+    "* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and," +
+    "* the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`\n" +
+    "\n" +
+    "**Important note**: There is no guarantee that any particular `javac` " +
+    "option or combination of options will work, or continue to work in " +
+    "future releases.")
 })
 public class CompileTool implements Plugin{
 
@@ -60,13 +65,15 @@ public class CompileTool implements Plugin{
     }
     
     @OptionArgument(longName="src", argumentName="dir")
-    @Description("Specifies a source directory.")
+    @Description("Specifies a source directory " +
+    		"(default: `./source`).")
     public void setSource(List<File> source) {
         this.source = source;
     }
     
     @OptionArgument(longName="repo", argumentName="url")
-    @Description("Specifies a module repository containing dependencies.")
+    @Description("Specifies a module repository containing dependencies. " +
+    		"(default: `modules` http://modules.ceylon-lang.org)")
     public void setRepository(List<URI> repo) {
         this.repo = repo;
     }
@@ -78,19 +85,22 @@ public class CompileTool implements Plugin{
     }
     
     @OptionArgument(argumentName="url")
-    @Description("Specifies the output module repository (which must be publishable).")
+    @Description("Specifies the output module repository (which must be publishable). " +
+    		"(default: `./modules`)")
     public void setOut(File out) {
         this.out = out;
     }
     
     @OptionArgument(argumentName="name")
-    @Description("Sets the user name for use with an authenticated output repository.")
+    @Description("Sets the user name for use with an authenticated output repository" +
+    		"(no default).")
     public void setUser(String user) {
         this.user = user;
     }
     
     @OptionArgument(argumentName="secret")
-    @Description("Sets the password for use with an authenticated output repository.")
+    @Description("Sets the password for use with an authenticated output repository" +
+    		"(no default).")
     public void setPass(String pass) {
         this.pass = pass;
     }
@@ -98,11 +108,14 @@ public class CompileTool implements Plugin{
     @Argument(argumentName="modules", multiplicity="+")
     @Description("A list of module names (without versions) or file paths " +
     		"specifying the source code to compile.")
-    public void setModule(List<String> module) {
-        this.module = module;
+    public void setModule(List<String> moduleOrFile) {
+        this.module = moduleOrFile;
     }
     
-    /** We collect any other arguments to pass to the underlying javac*/
+    /** 
+     * We collect any other arguments.
+     * Long options of the form {@code --javac:<option>}  
+     */
     @Rest
     public void setRest(List<String> rest) {
         this.rest = rest;
@@ -137,7 +150,7 @@ public class CompileTool implements Plugin{
             arguments.add(uri.toString());
         }
         
-        arguments.addAll(rest);
+        addJavacArguments(arguments);
         
         for (String moduleSpec : this.module) {
             arguments.add(moduleSpec);
@@ -147,7 +160,22 @@ public class CompileTool implements Plugin{
         com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylon compile");
         compiler.compile(arguments.toArray(new String[arguments.size()]));
     }
-    
-    
 
+    private void addJavacArguments(List<String> arguments) {
+        for (String argument : rest) {
+            if (argument.startsWith("--javac=")) {
+                argument = argument.substring("--javac=".length());
+                String value = null;
+                int index = argument.indexOf('=');
+                if (index != -1) {
+                    value = index < argument.length() ? argument.substring(index+1) : "";
+                    argument = argument.substring(0, index);
+                }
+                arguments.add(argument);
+                if (value != null) {
+                    arguments.add(value);
+                }
+            }
+        }
+    }
 }
