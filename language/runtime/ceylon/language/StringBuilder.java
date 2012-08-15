@@ -17,12 +17,14 @@ public class StringBuilder {
     public final synchronized java.lang.String toString() {
         return builder.toString();
     }
-    
+
+    @TypeInfo("ceylon.language.StringBuilder")
     public final synchronized StringBuilder append(@Name("string") java.lang.String string) {
         builder.append(string);
         return this;
     }
     
+    @TypeInfo("ceylon.language.StringBuilder")
     public final synchronized StringBuilder appendAll(@Sequenced @Name("strings") 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     Iterable<? extends String> strings) {
@@ -34,23 +36,64 @@ public class StringBuilder {
     }
     @Ignore
     public final synchronized StringBuilder appendAll() {
-        return appendAll((Iterable)$empty.getEmpty());
+        return this;
     }
     
+    @TypeInfo("ceylon.language.StringBuilder")
     public final synchronized StringBuilder appendCharacter(@Name("character") 
     @TypeInfo("ceylon.language.Character") int character) {
         builder.append(java.lang.Character.toChars(character));
         return this;
     }
     
-    public StringBuilder appendNewline() {
+    @TypeInfo("ceylon.language.StringBuilder")
+    public final synchronized StringBuilder appendNewline() {
     	builder.append('\n');
     	return this;
     }
     
-    public StringBuilder appendSpace() {
+    @TypeInfo("ceylon.language.StringBuilder")
+    public final synchronized StringBuilder appendSpace() {
     	builder.append(' ');
     	return this;
     }
-    
+
+    @TypeInfo("ceylon.language.StringBuilder")
+    public final synchronized StringBuilder reset() {
+        builder.setLength(0);
+        return this;
+    }
+
+    @TypeInfo("ceylon.language.StringBuilder")
+    public final synchronized StringBuilder insert(
+            @Name("pos") @TypeInfo("ceylon.language.Integer") int pos,
+            @Name("content") @TypeInfo("ceylon.language.String|ceylon.language.Character")
+            java.lang.Object content) {
+        if (pos < 0) pos = 0;
+        if (pos >= builder.length()) {
+            builder.append(content);
+        } else {
+            builder.insert(pos, content);
+        }
+        return this;
+    }
+
+    @TypeInfo("ceylon.language.StringBuilder")
+    public final synchronized StringBuilder delete(
+            @Name("pos") @TypeInfo("ceylon.language.Integer") int pos,
+            @Name("count") @TypeInfo("ceylon.language.Integer") int count) {
+        if (pos < 0) pos = 0; else if (pos > builder.length()) return this;
+        if (count == 1) {
+            builder.deleteCharAt(pos);
+        } else if (count > 0) {
+            builder.delete(pos, pos+count);
+        }
+        return this;
+    }
+
+    @TypeInfo("ceylon.language.Integer")
+    public int getSize() {
+        return builder.length();
+    }
+
 }
