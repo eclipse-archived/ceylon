@@ -43,7 +43,7 @@ import com.redhat.ceylon.common.tool.Summary;
     text="It is possible to pass options to the `javac` compiler by prefixing them " +
     "with `--javac=` and separating the javac option from its argument (if any) " +
     "using another `=`. For example:\n\n" +
-    "* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and," +
+    "* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and,\n" +
     "* the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`\n" +
     "\n" +
     "**Important note**: There is no guarantee that any particular `javac` " +
