@@ -17,5 +17,9 @@ shared interface Ordinal<out Other> of Other
     throws (OverflowException,
            "if this is the minimum value")
     shared formal Other predecessor;
-    
+
+    doc "Returns the distance between the receiver and
+         another Ordinal of the same type."
+    shared formal Integer distanceFrom(Other other);
+
 }
