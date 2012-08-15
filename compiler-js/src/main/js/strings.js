@@ -634,6 +634,30 @@ StringBuilder$proto.appendSpace = function() {
     this.value = this.value + " ";
     return this;
 }
+StringBuilder$proto.getSize = function() {
+    return countCodepoints(this.value);
+}
+StringBuilder$proto.reset = function() {
+    this.value = "";
+    return this;
+}
+StringBuilder$proto.insert = function(pos, content) {
+    if (pos <= 0) {
+        this.value = content + this.value;
+    } else if (pos >= this.getSize()) {
+        this.value = this.value + content;
+    } else {
+        this.value = this.value.slice(0, pos) + content + this.value.slice(pos);
+    }
+    return this;
+}
+StringBuilder$proto.$delete = function(pos, count) {
+    if (pos < 0) pos=0; else if (pos>this.getSize()) return this;
+    if (count > 0) {
+        this.value = this.value.slice(0, pos) + this.value.slice(pos+count);
+    }
+    return this;
+}
 
 exports.String=String$;
 exports.Character=Character;
