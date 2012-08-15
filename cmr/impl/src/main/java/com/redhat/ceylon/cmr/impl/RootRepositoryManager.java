@@ -35,12 +35,11 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     private final FileContentStore fileContentStore;
 
     private static File getRootDir() {
-        String repo = SecurityActions.getProperty("ceylon.repo");
-        if (repo == null)
-            repo = SecurityActions.getProperty("user.home") + File.separator + ".ceylon" + File.separator + "repo" + File.separator;
-        final File root = new File(repo);
-        if (root.exists() == false && root.mkdirs() == false)
-            throw new IllegalArgumentException("Cannot create Ceylon repo root directory: " + root);
+        com.redhat.ceylon.common.config.Repositories.Repository rootRepo = Repositories.get().getCacheRepository();
+        final File root = new File(rootRepo.getUrl());
+        if (!root.exists() && !root.mkdirs()) {
+            throw new IllegalArgumentException("Cannot create Ceylon cache repository directory: " + rootRepo.getUrl());
+        }
         return root;
     }
 
