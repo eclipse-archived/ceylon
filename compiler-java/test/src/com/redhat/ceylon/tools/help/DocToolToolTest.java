@@ -3,9 +3,12 @@ package com.redhat.ceylon.tools.help;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,17 +29,36 @@ public class DocToolToolTest {
     protected final PluginLoader pluginLoader = new PluginLoader(apf);
     private File dir = FileUtil.makeTempDir("DocToolToolTest");
     
-    private void runDocTool(String toolName) throws IOException {
+    private void runDocTool(String toolName, String... otherArgs) throws IOException {
         PluginModel<DocToolTool> model = pluginLoader.loadToolModel("doc-tool");
         Assert.assertNotNull(model);
-        DocToolTool tool = pluginFactory.bindArguments(model, Arrays.asList(toolName, "--output=" + dir.getAbsolutePath()));
+        List<String> toolArgs = new ArrayList<>();
+        toolArgs.addAll(Arrays.asList(toolName, "--output=" + dir.getAbsolutePath()));
+        toolArgs.addAll(Arrays.asList(otherArgs));
+        DocToolTool tool = pluginFactory.bindArguments(model, toolArgs);
         Assert.assertEquals(0, dir.listFiles().length);
         tool.run();
+    }
+
+    private void assertHtmlFiles(String toolName) throws IOException {
         List<File> files = Arrays.asList(dir.listFiles());
         Assert.assertFalse(files.isEmpty());
         Assert.assertTrue(files.contains(new File(dir, "doc-tool.css")));
-        File file = new File(dir, toolName + ".html");
-        Assert.assertTrue(files.contains(file));
+        File file = new File(dir, "ceylon-" + toolName + ".html");
+        Assert.assertTrue(file+" not in output", files.contains(file));
+        dump(file);
+    }
+    
+    private void assertTxtFiles(String toolName) throws IOException {
+        List<File> files = Arrays.asList(dir.listFiles());
+        Assert.assertFalse(files.isEmpty());
+        File file = new File(dir, "ceylon-" + toolName + ".txt");
+        Assert.assertTrue(file+" not in output", files.contains(file));
+        dump(file);
+    }
+        
+
+    private void dump(File file) throws IOException {
         try (BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
             String line = r.readLine();
             while (line != null) {
@@ -44,37 +66,100 @@ public class DocToolToolTest {
                 line = r.readLine();
             }
         }
-        
     }
     
     @Test
     public void testExample() throws Exception {
         runDocTool("example");
+        assertHtmlFiles("example");
+    }
+    
+    @Test
+    public void testExampleTxt() throws Exception {
+        runDocTool("example", "--format=txt");
+        assertTxtFiles("example");
     }
     
     @Test
     public void testHelp() throws Exception {
         runDocTool("help");
+        assertHtmlFiles("help");
+    }
+    
+    @Test
+    public void testHelpTxt() throws Exception {
+        runDocTool("help", "--format=txt");
+        assertTxtFiles("help");
     }
     
     @Test
     public void testCompiler() throws Exception {
         runDocTool("compile");
+        assertHtmlFiles("compile");
+    }
+    
+    @Test
+    public void testCompilerTxt() throws Exception {
+        runDocTool("compile", "--format=txt");
+        assertTxtFiles("compile");
     }
     
     @Test
     public void testDoc() throws Exception {
         runDocTool("doc");
+        assertHtmlFiles("doc");
+    }
+    
+    @Test
+    public void testDocTxt() throws Exception {
+        runDocTool("doc", "--format=txt");
+        assertTxtFiles("doc");
     }
     
     @Test
     public void testImportJar() throws Exception {
         runDocTool("import-jar");
+        assertHtmlFiles("import-jar");
+    }
+    
+    @Test
+    public void testImportJarTxt() throws Exception {
+        runDocTool("import-jar", "--format=txt");
+        assertTxtFiles("import-jar");
     }
     
     @Test
     public void testDocTool() throws Exception {
         runDocTool("doc-tool");
+        assertHtmlFiles("doc-tool");
     }
+    
+    @Test
+    public void testDocToolTxt() throws Exception {
+        runDocTool("doc-tool", "--format=txt");
+        assertTxtFiles("doc-tool");
+    }
+    
+    @Test
+    public void testAll() throws Exception {
+        runDocTool(DocToolTool.ALL_TOOLS, "--index");
+        assertHtmlFiles("compile");
+        assertHtmlFiles("doc");
+        assertHtmlFiles("import-jar");
+        assertHtmlFiles("help");
+        assertHtmlFiles("doc-tool");
+        Assert.assertTrue(Arrays.asList(dir.listFiles()).contains(new File(dir, "index.html")));
+    }
+    
+    @Test
+    public void testAllTxt() throws Exception {
+        runDocTool(DocToolTool.ALL_TOOLS, "--format=txt");
+        assertTxtFiles("compile");
+        assertTxtFiles("doc");
+        assertTxtFiles("import-jar");
+        assertTxtFiles("help");
+        assertTxtFiles("doc-tool");
+    }
+    
 
 }

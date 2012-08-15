@@ -52,8 +52,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Plugin;
-import com.redhat.ceylon.common.tool.Section;
-import com.redhat.ceylon.common.tool.Sections;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -102,16 +101,16 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
         "\n\n" +
         "If no version identifier is specified for a module, the module is " +
         "assumed to exist in a source directory.")
-@Sections({
-@Section(name="EXAMPLE",
-text="The following would compile the org.hibernate module source code found in " +
-     "the ~/projects/hibernate/src directory to the " +
-     "repository ~/projects/hibernate/build:\n" +
-     "\n" +
-     "    ceylond org.hibernate/3.0.0.beta \\n"+
-     "        -src ~/projects/hibernate/src \\n"+
-     "        -out ~/projects/hibernate/build")
-})
+@RemainingSections(
+"## EXAMPLE\n" +
+"\n" +
+"The following would compile the `org.hibernate` module source code found in " +
+"the `~/projects/hibernate/src` directory to the " +
+"repository `~/projects/hibernate/build`:\n" +
+"\n" +
+"    ceylond org.hibernate/3.0.0.beta \\\n"+
+"        -src ~/projects/hibernate/src \\\n"+
+"        -out ~/projects/hibernate/build")
 public class DocTool implements Plugin {
 
     private List<PhasedUnit> phasedUnits;

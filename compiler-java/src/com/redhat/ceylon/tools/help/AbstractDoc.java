@@ -6,12 +6,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
+import org.tautua.markdownpapers.ast.Document;
+
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.PluginLoader;
 import com.redhat.ceylon.common.tool.PluginModel;
-import com.redhat.ceylon.common.tool.Section;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Tools;
@@ -97,12 +98,22 @@ public class AbstractDoc {
     }
 
     private void printToolSections(Output out, ToolDocumentation<?> model) {
-        for (Section section : model.getSections()) {
-            com.redhat.ceylon.tools.help.Output.Section s = out.section(model.getSectionName(section));
-            s.paragraph(model.getSectionText(section));
-            s.endSection();
+        String sections = model.getSections();
+        if (sections != null && !sections.isEmpty()) {
+            Document doc = Markdown.markdown(sections);
+            for (Markdown.Section sect : Markdown.extractSections(doc)) {
+                if (sect.getHeading() == null) {
+                    // TODO Warn that there were no section headings
+                }
+                Document sectionDoc = sect.getDoc();
+                // Adjust the heading levels, so that the most prominent 
+                // heading is H2
+                Markdown.adjustHeadings(sectionDoc, 2-sect.getHeading().getLevel());
+                com.redhat.ceylon.tools.help.Output.Section s = out.section();
+                s.paragraph(sectionDoc);
+                s.endSection();
+            }
         }
-    
     }
 
     private void printToolOptions(Output out, ToolDocumentation<?> model) {
@@ -115,7 +126,7 @@ public class AbstractDoc {
             if (descriptionMd == null || descriptionMd.isEmpty()) {
                 descriptionMd = bundle.getString("option.undocumented");
             }
-            options.option(shortName, longName, argumentName, descriptionMd);
+            options.option(shortName, longName, argumentName, Markdown.markdown(descriptionMd));
         }
         options.endOptions();
     }
@@ -123,8 +134,10 @@ public class AbstractDoc {
     protected void printToolDescription(Output out, ToolDocumentation<?> model) {
         final String description = model.getDescription();
         if (!description.isEmpty()) {
-            Output.Section s = out.section(bundle.getString("section.DESCRIPTION"));
-            s.paragraph(description);
+            Output.Section s = out.section();
+            s.paragraph(Markdown.markdown(
+                    "##" + bundle.getString("section.DESCRIPTION") + "\n\n" +
+                    description));
             s.endSection();
         }
     }
@@ -207,8 +220,10 @@ public class AbstractDoc {
         // XXX The whole dash between ceylon and the tool name is a bit of a 
         // man(1)-ism which we probably don't want to follow
         out.title(model.getCeylonInvocation());
-        Output.Section s = out.section(bundle.getString("section.NAME"));
-        s.paragraph(model.getCeylonInvocation() + " - " + model.getSummary());
+        Output.Section s = out.section();
+        s.paragraph(Markdown.markdown(
+                "##" + bundle.getString("section.NAME") + "\n\n" +
+                "`" + model.getCeylonInvocation() + "` - " + model.getSummary()));
         s.endSection();
         
     }

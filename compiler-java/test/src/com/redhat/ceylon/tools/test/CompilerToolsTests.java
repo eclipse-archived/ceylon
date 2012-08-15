@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.redhat.ceylon.tools.test.ImportJarToolTest;
+import com.redhat.ceylon.tools.help.DocToolToolTest;
 import com.redhat.ceylon.tools.help.HelpToolTest;
 import com.redhat.ceylon.tools.help.PlaintextTest;
 
@@ -15,6 +16,7 @@ import com.redhat.ceylon.tools.help.PlaintextTest;
     ImportJarToolTest.class,
     PlaintextTest.class,
     HelpToolTest.class,
+    DocToolToolTest.class
 })
 public class CompilerToolsTests {
 

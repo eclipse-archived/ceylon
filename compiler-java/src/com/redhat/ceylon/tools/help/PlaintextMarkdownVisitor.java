@@ -1,12 +1,9 @@
 package com.redhat.ceylon.tools.help;
 
-import java.util.TreeMap;
-
 import org.tautua.markdownpapers.ast.CharRef;
 import org.tautua.markdownpapers.ast.Code;
 import org.tautua.markdownpapers.ast.CodeSpan;
 import org.tautua.markdownpapers.ast.CodeText;
-import org.tautua.markdownpapers.ast.Comment;
 import org.tautua.markdownpapers.ast.Document;
 import org.tautua.markdownpapers.ast.Emphasis;
 import org.tautua.markdownpapers.ast.Header;
@@ -21,35 +18,18 @@ import org.tautua.markdownpapers.ast.Node;
 import org.tautua.markdownpapers.ast.Paragraph;
 import org.tautua.markdownpapers.ast.Quote;
 import org.tautua.markdownpapers.ast.Resource;
-import org.tautua.markdownpapers.ast.ResourceDefinition;
 import org.tautua.markdownpapers.ast.Ruler;
-import org.tautua.markdownpapers.ast.SimpleNode;
 import org.tautua.markdownpapers.ast.Tag;
 import org.tautua.markdownpapers.ast.Text;
-import org.tautua.markdownpapers.ast.Visitor;
 
 import com.redhat.ceylon.common.tool.WordWrap;
 
-public class PlaintextMarkdownVisitor implements Visitor {
+class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
 
     private WordWrap out;
-    private TreeMap<String, Resource> refLinks;
-
+    
     public PlaintextMarkdownVisitor(WordWrap out) {
         this.out = out;
-    }
-
-    @Override
-    public void visit(Document node) {
-        PreVisitor preVisitor = new PreVisitor();
-        node.accept(preVisitor);
-        this.refLinks = preVisitor.refLinks;
-        node.childrenAccept(this);
-    }
-    
-    @Override
-    public void visit(Comment node) {
-        // it's a comment!
     }
     
     @Override
@@ -114,11 +94,6 @@ public class PlaintextMarkdownVisitor implements Visitor {
         }
         out.newline();
     }
-
-    @Override
-    public void visit(List node) {
-        node.childrenAccept(this);
-    }
     
     @Override
     public void visit(Item node) {
@@ -155,7 +130,6 @@ public class PlaintextMarkdownVisitor implements Visitor {
         out.setPrefix(null);
     }
 
-    
     @Override
     public void visit(CodeText node) {
         int first = out.getIndentFirstLine();
@@ -216,6 +190,8 @@ public class PlaintextMarkdownVisitor implements Visitor {
 
     @Override
     public void visit(Image node) {
+        // TODO Issue a warning? Or should we try to copy the image into the
+        // target directory?
         node.childrenAccept(this);
     }
 
@@ -237,7 +213,7 @@ public class PlaintextMarkdownVisitor implements Visitor {
     public void visit(Link node) {
         Resource resource = node.getResource();
         if (resource == null) {
-            resource = refLinks.get(node.getReference());
+            resource = ((Document)node.jjtGetParent()).findResource(node.getReference());
         }
         if (resource != null) {
             out.append(node.getText()).append(" (").append(resource.getLocation()).append(")");
@@ -252,20 +228,9 @@ public class PlaintextMarkdownVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ResourceDefinition node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(SimpleNode node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
     public void visit(final Text node) {
         if (node.isWhitespace()) {
             final Node parent = node.jjtGetParent();
-            Node child = node;
             Node ancestor = parent;
             while (ancestor != null) {
                 if (ancestor instanceof Header
@@ -273,132 +238,10 @@ public class PlaintextMarkdownVisitor implements Visitor {
                     // filter whitespace at the start of headers
                     return;
                 }
-                child = ancestor;
                 ancestor = ancestor.jjtGetParent();
             }
         }
         out.append(node.getValue());
-    }
-
-}
-
-
-class PreVisitor implements Visitor {
-
-    TreeMap<String, Resource> refLinks = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    
-    PreVisitor() {
-    }
-    
-    @Override
-    public void visit(CharRef node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Code node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(CodeSpan node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(CodeText node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Comment node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Document node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Emphasis node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Header node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Image node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Line node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(LineBreak node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Link node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(List node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(InlineUrl node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Item node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Paragraph node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Quote node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(ResourceDefinition node) {
-        String id = node.getId();
-        refLinks.put(id, node.getResource());    
-    }
-
-    @Override
-    public void visit(Ruler node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(SimpleNode node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Tag node) {
-        node.childrenAccept(this);
-    }
-
-    @Override
-    public void visit(Text node) {
-        node.childrenAccept(this);
     }
 
 }

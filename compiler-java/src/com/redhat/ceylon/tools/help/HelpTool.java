@@ -5,6 +5,7 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
@@ -17,6 +18,10 @@ import com.redhat.ceylon.common.tool.WordWrap;
 @Description(
 "If a <command> is given, displays help about that ceylon tool on the standard output." +
 "If no <command> is given, displays the synopsis of the top level `ceylon` command. "
+)
+@RemainingSections(
+"## SEE ALSO\n\n" +
+"* `ceylon doc-tool` for generating documentation about ceylon tools\n"
 )
 public class HelpTool extends AbstractDoc implements Plugin {
 

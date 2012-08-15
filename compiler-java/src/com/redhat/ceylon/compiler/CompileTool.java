@@ -12,8 +12,7 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.Rest;
-import com.redhat.ceylon.common.tool.Section;
-import com.redhat.ceylon.common.tool.Sections;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
@@ -37,19 +36,19 @@ import com.redhat.ceylon.common.tool.Summary;
         "* module archives in the specified repositories,\n"+
         "* source archives in the specified repositories, and\n"+
         "* module directories in the specified source directories.\n")
-@Sections({
-@Section(
-    name="Specifying `javac` options",
-    text="It is possible to pass options to the `javac` compiler by prefixing them " +
-    "with `--javac=` and separating the javac option from its argument (if any) " +
-    "using another `=`. For example:\n\n" +
-    "* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and,\n" +
-    "* the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`\n" +
-    "\n" +
-    "**Important note**: There is no guarantee that any particular `javac` " +
-    "option or combination of options will work, or continue to work in " +
-    "future releases.")
-})
+@RemainingSections(
+"## Specifying `javac` options\n" +
+"\n"+
+"It is possible to pass options to the `javac` compiler by prefixing them " +
+"with `--javac=` and separating the javac option from its argument (if any) " +
+"using another `=`. For example:\n" +
+"\n" +
+"* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and,\n" +
+"* the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`\n" +
+"\n" +
+"**Important note**: There is no guarantee that any particular `javac` " +
+"option or combination of options will work, or continue to work in " +
+"future releases.")
 public class CompileTool implements Plugin{
 
     private List<File> source = Collections.singletonList(new File("source"));

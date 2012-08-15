@@ -1,12 +1,9 @@
 package com.redhat.ceylon.tools.help;
 
-import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.tautua.markdownpapers.HtmlEmitter;
-import org.tautua.markdownpapers.ast.Document;
-import org.tautua.markdownpapers.parser.ParseException;
-import org.tautua.markdownpapers.parser.Parser;
+import org.tautua.markdownpapers.ast.Node;
 
 
 class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Section {
@@ -17,15 +14,11 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
         this.html = html;
     }
     
-    private String markdown(String markdown) {
-        Parser parser = new Parser(new StringReader(markdown));
-        Document doc;
-        try {
-            doc = parser.parse();
-        } catch (ParseException e) {
-            // Really should at least encode this
-            return markdown;
-        }
+    Html getHtml() {
+        return html;
+    }
+    
+    private String markdown(Node doc) {
         StringWriter sw = new StringWriter();
         HtmlEmitter markdownVisitor = new HtmlEmitter(sw);
         doc.accept(markdownVisitor);
@@ -38,14 +31,14 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
         html.open("title").text(title).close("title").text("\n");
         html.tag("link rel='stylesheet'type='text/css' href='doc-tool.css'").text("\n");
         html.close("head").text("\n");
+        html.open("body").text("\n");
         html.open("h1").text(title).close("h1");
         html.text("\n");
     }
 
     @Override
-    public HtmlOutput section(String title) {
-        html.open("div class='section section-"+title+"'");
-        html.open("h2").unescaped(markdown(title)).close("h2");
+    public HtmlOutput section() {
+        html.open("div class='section'");
         html.text("\n");
         return this;
     }
@@ -56,14 +49,14 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
     }
     
     @Override
-    public void paragraph(String paraMd) {
+    public void paragraph(Node paraMd) {
         html.unescaped(markdown(paraMd));
     }
 
     @Override
     public HtmlOutput synopsis(String title) {
         html.open("div class='section section-synopsis'").text("\n");
-        html.open("h2").unescaped(markdown(title)).close("h2").text("\n");
+        html.open("h2").text(title).close("h2").text("\n");
         html.open("pre");
         return this;
     }
@@ -111,7 +104,7 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
     
     @Override
     public void option(String shortName, String longName, String argumentName,
-            String descriptionMd) {
+            Node descriptionMd) {
         html.open("dt class='option'");
         html.open("code id='long" + longName + "'").text(longName);
         if (argumentName != null) {

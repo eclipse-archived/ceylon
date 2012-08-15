@@ -1,7 +1,5 @@
 package com.redhat.ceylon.tools.help;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -9,8 +7,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.PluginModel;
-import com.redhat.ceylon.common.tool.Section;
-import com.redhat.ceylon.common.tool.Sections;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tools;
 
@@ -73,31 +70,12 @@ class ToolDocumentation<T extends Plugin> {
         return msg;
     }
 
-    public List<Section> getSections() {
-        List<Section> result = new ArrayList<Section>(3);
-        Sections sections = model.getToolClass().getAnnotation(Sections.class);
+    public String getSections() {
+        RemainingSections sections = model.getToolClass().getAnnotation(RemainingSections.class);
         if (sections != null) {
-            for (Section s : sections.value()) {
-                result.add(s);
-            }
+            return sections.value();
         }
-        return result;
-    }
-    
-    public String getSectionName(Section section) {
-        String msg = msg("section.name."+section.name());
-        if (msg.isEmpty()) {
-            msg = section.name();
-        }
-        return msg;
-    }
-    
-    public String getSectionText(Section section) {
-        String msg = msg("section.text."+section.name());
-        if (msg.isEmpty()) {
-            msg = section.text();
-        }
-        return msg;
+        return "";
     }
 
     public String getOptionDescription(OptionModel<?> opt) {

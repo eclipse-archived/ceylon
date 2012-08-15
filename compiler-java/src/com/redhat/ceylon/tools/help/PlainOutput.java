@@ -1,11 +1,8 @@
 package com.redhat.ceylon.tools.help;
 
-import java.io.StringReader;
 import java.io.StringWriter;
 
-import org.tautua.markdownpapers.ast.Document;
-import org.tautua.markdownpapers.parser.ParseException;
-import org.tautua.markdownpapers.parser.Parser;
+import org.tautua.markdownpapers.ast.Node;
 
 import com.redhat.ceylon.common.tool.WordWrap;
 
@@ -20,15 +17,7 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
         // TODO Markdown to plain text
     }
     
-    private String markdown(String markdown) {
-        Parser parser = new Parser(new StringReader(markdown));
-        
-        Document doc;
-        try {
-            doc = parser.parse();
-        } catch (ParseException e) {
-            return markdown;
-        }
+    private String markdown(Node doc) {
         StringWriter sw = new StringWriter();
         PlaintextMarkdownVisitor markdownVisitor = new PlaintextMarkdownVisitor(out);
         doc.accept(markdownVisitor);
@@ -42,8 +31,7 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
     }
 
     @Override
-    public PlainOutput section(String title) {
-        out.append(title.toUpperCase()).newline();
+    public PlainOutput section() {
         return this;
     }
     
@@ -54,7 +42,7 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
     }
     
     @Override
-    public void paragraph(String paraMd) {
+    public void paragraph(Node paraMd) {
         out.setIndent(8);
         out.append(markdown(paraMd));
         out.setIndent(0);
@@ -68,7 +56,7 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
     }
     
     @Override
-    public void option(String shortName, String longName, String argumentName, String description) {
+    public void option(String shortName, String longName, String argumentName, Node description) {
         numOptions++;
         if (shortName != null) {
             out.append(shortName);
@@ -84,7 +72,7 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
         out.setIndent(12);
         out.newline();
         if (description != null) {
-            out.append(description);
+            out.append(markdown(description));
         } else {
             out.append("Not documented");
         }
