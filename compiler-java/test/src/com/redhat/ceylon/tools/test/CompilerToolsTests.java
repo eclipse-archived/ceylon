@@ -1,10 +1,10 @@
-package com.redhat.ceylon.tools;
+package com.redhat.ceylon.tools.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.redhat.ceylon.tools.importjar.ImportJarToolTest;
+import com.redhat.ceylon.tools.test.ImportJarToolTest;
 import com.redhat.ceylon.tools.help.HelpToolTest;
 import com.redhat.ceylon.tools.help.PlaintextTest;
 

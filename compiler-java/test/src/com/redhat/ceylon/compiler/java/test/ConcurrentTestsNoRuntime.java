@@ -41,7 +41,7 @@ import com.redhat.ceylon.compiler.java.test.recovery.RecoveryTest;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
-import com.redhat.ceylon.tools.CompilerToolsTests;
+import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
 /**
  * DO NOT USE in Eclipse for development as it doesn't run the runtime tests

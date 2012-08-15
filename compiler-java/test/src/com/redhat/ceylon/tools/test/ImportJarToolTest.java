@@ -1,4 +1,4 @@
-package com.redhat.ceylon.tools.importjar;
+package com.redhat.ceylon.tools.test;
 
 import java.util.Collections;
 
@@ -9,7 +9,7 @@ import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.PluginFactory;
 import com.redhat.ceylon.common.tool.PluginLoader;
 import com.redhat.ceylon.common.tool.PluginModel;
-import com.redhat.ceylon.tools.importjar.ImportJarTool;
+import com.redhat.ceylon.importjar.ImportJarTool;
 
 import junit.framework.Assert;
 
