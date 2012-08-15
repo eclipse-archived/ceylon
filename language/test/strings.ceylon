@@ -190,7 +190,13 @@ shared void strings() {
         .appendAll("c", "d").appendSpace()
         .append("e").string=="abcd e",
         "string builder chained calls");
-    
+    assert(builder.size == 29, "StringBuilder.size");
+    assert(builder.insert(5,`,`).insert(12,"!!!").string=="hello, world!!! goodbye everyone ", "StringBuilder.insert");
+    assert(builder.delete(12,3).delete(5,1).delete(99999,1).string=="hello world goodbye everyone ", "StringBuilder.delete 1");
+    assert(builder.delete(28,100).string=="hello world goodbye everyone", "StringBuilder.delete 2");
+    assert(builder.size==28, "StringBuilder.size 2");
+    assert(builder.reset().size==0, "StringBuilder.reset");
+
     assert("hello world".initial(0)=="", "string initial 1");
     assert("hello world".terminal(0)=="", "string terminal 1");
     assert("hello world".initial(1)=="h", "string initial 2");
