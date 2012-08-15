@@ -36,6 +36,8 @@
 
   <property name="markdown.version" value="0.7-8bc64aa0f1"/>
   <property name="markdown.lib" location="${base.path}/txtmark-${markdown.version}.jar"/>
+  <property name="markdown-papers.version" value="1.2.7"/>
+  <property name="markdown-papers.lib" location="${base.path}/markdownpapers-core-${markdown-papers.version}.jar"/>
     
   <!-- Jarfiles everything ends up in -->
   <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
@@ -63,6 +65,7 @@
     <pathelement path="${ceylon.language.lib}"/>
     <pathelement path="${antlr.lib}"/>
     <pathelement path="${markdown.lib}"/>
+  	<pathelement path="${markdown-papers.lib}"/>
   </path>
 
   <path id="test.compile.classpath">
@@ -330,6 +333,7 @@
   	<copy todir="${build.classes}">
       <fileset dir="${ceylonc.src}">
         <include name="com/redhat/**/resources/**"/>
+      	<include name="com/redhat/**/*.properties"/>
         <include name="META-INF/**"/>
       </fileset>
   	</copy>
@@ -416,6 +420,7 @@
         <fileset dir="${basedir}/lib">
             <include name="antlr-*-complete.jar"/>
             <include name="txtmark-*.jar"/>
+        	<include name="markdownpapers-core-*.jar"/>
         </fileset>
     </copy>    
   </target>
