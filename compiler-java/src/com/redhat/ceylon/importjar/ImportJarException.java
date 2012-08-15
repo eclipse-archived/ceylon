@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.tools.importjar;
+package com.redhat.ceylon.importjar;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+@SuppressWarnings("serial")
+public class ImportJarException extends RuntimeException {
 
-public class ImportJarMessages {
+    public ImportJarException(String msgKey) {
+        super(ImportJarMessages.msg(msgKey));
+    }
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("com.redhat.ceylon.tools.resources.import-jar-messages");
+    public ImportJarException(String msgKey, Exception cause) {
+        super(ImportJarMessages.msg(msgKey), cause);
+    }
 
-    public static String msg(String msgKey, Object... msgArgs) {
-        String msg = RESOURCE_BUNDLE.getString(msgKey);
-        if (msgArgs != null) {
-            msg = MessageFormat.format(msg, msgArgs);
-        }
-        return msg;
+    public ImportJarException(String msgKey, Object[] msgArgs, Exception cause) {
+        super(ImportJarMessages.msg(msgKey, msgArgs), cause);
     }
 
 }

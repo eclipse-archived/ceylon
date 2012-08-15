@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.tools.importjar;
+package com.redhat.ceylon.importjar;
 
 import java.io.IOException;
 
