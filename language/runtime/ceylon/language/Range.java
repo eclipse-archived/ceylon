@@ -74,11 +74,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         return Integer.instance(size - 1);
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings({ "unchecked", "rawtypes" })
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public FixedSized<? extends Element> getRest() {
     	if (first.equals(last)) {
-    	    return (FixedSized<? extends Element>)$empty.getEmpty();
+    	    return (FixedSized)$empty.getEmpty();
     	}
     	else {
             return new Range<Element>(next(getFirst()), getLast());
@@ -298,14 +298,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     	return new Range<Element>(last, first);
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings({ "unchecked", "rawtypes" })
     @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> segment(
     		@Name("from") final Integer from,
     		@Name("length") final long length) {
         //only positive length for now
         if (length<=0 || from.value>getLastIndex().value) {
-        	return (ceylon.language.List<? extends Element>)$empty.getEmpty();
+        	return (ceylon.language.List)$empty.getEmpty();
         }
         Element x = first;
         for (int i=0; i < from.value; i++) { x = next(x); }
@@ -314,7 +314,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         return new Range<Element>(x, y);
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings({ "unchecked", "rawtypes" })
     @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> span(
     		@Name("from") Integer from,
@@ -324,13 +324,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 		to = to==null ? lastIndex : to;
         if (to.value<0) {
         	if (from.value<0) {
-        		return (ceylon.language.List<? extends Element>)$empty.getEmpty();
+        		return (ceylon.language.List)$empty.getEmpty();
         	}
         	to = Integer.instance(0);
         }
         else if (to.value>lastIndex.value) {
         	if (from.value>lastIndex.value) {
-        		return (ceylon.language.List<? extends Element>)$empty.getEmpty();
+        		return (ceylon.language.List)$empty.getEmpty();
         	}
         	to = lastIndex;
         }
@@ -449,13 +449,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         while (x++<skip) {
             e=next(e);
         }
-        return this.includes(e) ? new Range<Element>(e, last) : (Iterable<? extends Element>)$empty.getEmpty();
+        return this.includes(e) ? new Range<Element>(e, last) : (Iterable)$empty.getEmpty();
     }
-    @Override @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings({ "unchecked", "rawtypes" })
     @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
     public Iterable<? extends Element> taking(@Name("take") long take) {
         if (take == 0) {
-            return (Iterable<? extends Element>)$empty.getEmpty();
+            return (Iterable)$empty.getEmpty();
         }
         long x=0;
         Element e=first;
