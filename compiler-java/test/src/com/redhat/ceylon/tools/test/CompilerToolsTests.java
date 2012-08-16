@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.redhat.ceylon.tools.test.ImportJarToolTest;
 import com.redhat.ceylon.tools.help.DocToolToolTest;
 import com.redhat.ceylon.tools.help.HelpToolTest;
+import com.redhat.ceylon.tools.help.MarkdownTest;
 import com.redhat.ceylon.tools.help.PlaintextTest;
 
 @RunWith(Suite.class)
@@ -15,6 +16,7 @@ import com.redhat.ceylon.tools.help.PlaintextTest;
     DocToolTest.class,
     ImportJarToolTest.class,
     PlaintextTest.class,
+    MarkdownTest.class,
     HelpToolTest.class,
     DocToolToolTest.class
 })
