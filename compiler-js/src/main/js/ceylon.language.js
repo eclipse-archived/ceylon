@@ -331,18 +331,8 @@ function Range(first, last) {
     var that = new Range.$$;
     that.first = first;
     that.last = last;
-    var dec = first.compare(last) === larger;
-    if (isOfType(first, 'ceylon.language.Integer') && isOfType(last, 'ceylon.language.Integer')) {
-        that.size=(dec?first-last:last-first)+1;
-    } else {
-        var index = 0;
-        var x = first;
-        while (!x.equals(last)) { //some replicated code because we don't yet have the functions here
-            index++;
-            x = dec ? x.getPredecessor() : x.getSuccessor();
-        }
-        that.size = index+1;
-    }
+    var dist = last.distanceFrom(first);
+    that.size=(dist>0?dist:-dist)+1;
     return that;
 }
 initTypeProto(Range, 'ceylon.language.Range', Object$, Sequence, Category);
