@@ -39,8 +39,10 @@ shared class Range<Element>(first, last)
                 else x.successor;
     }
 
+    value distance = last.distanceFrom(first);
+
     doc "The nonzero number of elements in the range."
-    shared actual Integer size = last.distanceFrom(first).positiveValue+1;
+    shared actual Integer size = (distance.positive then distance else -distance)+1;
     
     doc "The index of the end of the range."
     shared actual Integer lastIndex { 
