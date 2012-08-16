@@ -5,7 +5,7 @@ doc "Abstraction of ordinal types, that is, types with
      `Ordinal` types may be used to generate a `Range`."
 see (Character, Integer, Integral, Range)
 by "Gavin"
-shared interface Ordinal<out Other> of Other
+shared interface Ordinal<Other> of Other
         given Other satisfies Ordinal<Other> {
 
     doc "The successor of this value."
