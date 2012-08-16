@@ -337,4 +337,5 @@ shared void strings() {
 
     assert(string() == "", "string()");
     assert(string(`h`, `i`)=="hi", "string(h,i)");
+    assert(`z`.distanceFrom(`a`)==25, "Character.distanceFrom");
 }
