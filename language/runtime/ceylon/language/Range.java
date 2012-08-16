@@ -22,7 +22,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 @TypeParameters(@TypeParameter(value="Element",
     satisfies={"ceylon.language.Comparable<Element>",
 		       "ceylon.language.Ordinal<Element>"}))
-public class Range<Element extends Comparable<? super Element> & Ordinal<? extends Element>>
+public class Range<Element extends Comparable<? super Element> & Ordinal<? super Element>>
     implements Sequence<Element>, Category {
 
     private final Element first;
@@ -33,17 +33,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		     @Name("last") Element last) {
         this.first = first;
         this.last = last;
-        long index = 0;
-        Element x = first;
-        if (first instanceof Integer && last instanceof Integer) {
-            this.size = Math.abs(((Integer)last).value - ((Integer)first).value)+1;
-        } else {
-            while (!x.equals(last)) {
-                ++index;
-                x = next(x);
-            }
-            this.size = index+1;
-        }
+        this.size = Math.abs(last.distanceFrom(first))+1;
     }
 
     @Override
@@ -65,9 +55,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return last.compare(first).smallerThan();
     }
 
-    private final Element next(Element x){
-        return getDecreasing() ?
-        		x.getPredecessor() : x.getSuccessor();
+    @SuppressWarnings("unchecked")
+    @TypeInfo("Element")
+    private final Element next(@Name("x") @TypeInfo("Element") Element x){
+        return (Element) (getDecreasing() ?
+        		x.getPredecessor() : x.getSuccessor());
     }
 
     @Override
@@ -82,11 +74,11 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return Integer.instance(size - 1);
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public FixedSized<? extends Element> getRest() {
     	if (first.equals(last)) {
-    	    return (FixedSized)$empty.getEmpty();
+    	    return (FixedSized<? extends Element>)$empty.getEmpty();
     	}
     	else {
             return new Range<Element>(next(getFirst()), getLast());
@@ -110,7 +102,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return x;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language.Iterator<Element>")
 	public Iterator<Element> getIterator() {
         return new Iterator<Element>() {
@@ -136,7 +128,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         };
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public final boolean contains(@Name("element") java.lang.Object element) {
         // FIXME
     	try {
@@ -163,6 +155,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Ignore
     public final boolean equals(@Name("that") java.lang.Object that){
         if (that instanceof Range) {
+            @SuppressWarnings("unchecked")
             Range<Element> $that = (Range<Element>) that;
             return $that.getFirst().equals(getFirst()) && $that.getLast().equals(getLast());
         }
@@ -305,14 +298,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     	return new Range<Element>(last, first);
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> segment(
     		@Name("from") final Integer from,
     		@Name("length") final long length) {
         //only positive length for now
         if (length<=0 || from.value>getLastIndex().value) {
-        	return (ceylon.language.List)$empty.getEmpty();
+        	return (ceylon.language.List<? extends Element>)$empty.getEmpty();
         }
         Element x = first;
         for (int i=0; i < from.value; i++) { x = next(x); }
@@ -321,7 +314,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return new Range<Element>(x, y);
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
     public ceylon.language.List<? extends Element> span(
     		@Name("from") Integer from,
@@ -331,13 +324,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 		to = to==null ? lastIndex : to;
         if (to.value<0) {
         	if (from.value<0) {
-        		return (ceylon.language.List)$empty.getEmpty();
+        		return (ceylon.language.List<? extends Element>)$empty.getEmpty();
         	}
         	to = Integer.instance(0);
         }
         else if (to.value>lastIndex.value) {
         	if (from.value>lastIndex.value) {
-        		return (ceylon.language.List)$empty.getEmpty();
+        		return (ceylon.language.List<? extends Element>)$empty.getEmpty();
         	}
         	to = lastIndex;
         }
@@ -448,7 +441,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public boolean every(Callable<? extends Boolean> f) {
         return Iterable$impl._every(this, f);
     }
-    @Override
+    @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
     public Iterable<? extends Element> skipping(@Name("take") long skip) {
         long x=0;
@@ -456,20 +449,20 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         while (x++<skip) {
             e=next(e);
         }
-        return this.includes(e) ? new Range(e, last) : (Iterable)$empty.getEmpty();
+        return this.includes(e) ? new Range<Element>(e, last) : (Iterable<? extends Element>)$empty.getEmpty();
     }
-    @Override
+    @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
     public Iterable<? extends Element> taking(@Name("take") long take) {
         if (take == 0) {
-            return (Iterable)$empty.getEmpty();
+            return (Iterable<? extends Element>)$empty.getEmpty();
         }
         long x=0;
         Element e=first;
         while (++x<take) {
             e=next(e);
         }
-        return this.includes(e) ? new Range(first, e) : this;
+        return this.includes(e) ? new Range<Element>(first, e) : this;
     }
 
     @Override @Ignore
