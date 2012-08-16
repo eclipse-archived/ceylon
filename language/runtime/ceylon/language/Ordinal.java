@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 2)
-@TypeParameters(@TypeParameter(value = "Other", variance = Variance.OUT,
+@TypeParameters(@TypeParameter(value = "Other", variance = Variance.NONE,
     		       satisfies="ceylon.language.Ordinal<Other>"))
 @CaseTypes(of = "Other")
 public interface Ordinal<Other extends Ordinal<? extends Other>> {
