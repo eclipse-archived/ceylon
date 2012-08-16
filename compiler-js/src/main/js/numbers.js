@@ -84,6 +84,9 @@ JSNum$proto.getSign = function() { return this > 0 ? 1 : this < 0 ? -1 : 0; }
 JSNum$proto.getHash = function() {
     return this.$float ? String$(this.toPrecision()).getHash() : this.valueOf();
 }
+JSNum$proto.distanceFrom = function(other) {
+    return (this.$float ? this.getWholePart() : this) - other;
+}
 
 function $parseInteger(s) {
     //xkcd.com/208/

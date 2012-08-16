@@ -601,6 +601,9 @@ Character$proto.getPredecessor = function() {
     if ((succ&0xf800) === 0xd800) {return Character(0xd7ff)}
     return Character((succ>=0) ? succ:0x10ffff);
 }
+Character$proto.distanceFrom = function(other) {
+    return this.value - other.value;
+}
 
 function StringBuilder() {
     var that = new StringBuilder.$$;
