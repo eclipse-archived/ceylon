@@ -218,11 +218,18 @@ public class SmokeTestCase {
         builder.prependRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
         ArtifactContext ac = new ArtifactContext("org.jboss.jboss-vfs", "3.0.1.GA");
+        File file = null;
         try {
-            File file = manager.getArtifact(ac);
+            file = manager.getArtifact(ac);
             Assert.assertNotNull(file);
+            Assert.assertEquals("org.jboss.jboss-vfs-3.0.1.GA.jar", file.getName());
         } finally {
+            // delete the jar, not the car
+            ac.setSuffix(ArtifactContext.JAR);
             manager.removeArtifact(ac);
+            // temporary workaround, because the jar is not stored at the right place
+            if(file != null)
+                file.delete();
         }
     }
 
