@@ -5,11 +5,6 @@ import org.tautua.markdownpapers.ast.Node;
 
 interface Output {
 
-    interface Section {
-        public void paragraph(Node paraMd);
-        public void endSection();
-    }
-    
     interface Options {
         public void option(String shortName, String longName, String argumentName, Node descriptionMd);
         public void endOptions();
@@ -26,9 +21,9 @@ interface Output {
     }
     
     public void title(String title);
-    public Options options(String title);
-    public Synopsis synopsis(String title);
-    public Section section();
+    public Options startOptions(String title);
+    public Synopsis startSynopsis(String title);
+    public void section(Node paraMd);
     
     public void end();
     

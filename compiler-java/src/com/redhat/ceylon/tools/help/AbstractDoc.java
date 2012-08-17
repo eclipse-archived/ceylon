@@ -49,7 +49,7 @@ public class AbstractDoc {
         */
         // TODO Nasty hack here: Should be able to describe the top level tool's synopsis
         // through the Synopsis interface
-        Synopsis synopsis = out.synopsis("SYNOPSIS");
+        Synopsis synopsis = out.startSynopsis("SYNOPSIS");
         wrap.setIndent(8);
         wrap.append(Tools.progName() + " --version").newline();
         wrap.append(Tools.progName() + " <command> [<args>]").newline();
@@ -102,22 +102,22 @@ public class AbstractDoc {
         if (sections != null && !sections.isEmpty()) {
             Document doc = Markdown.markdown(sections);
             for (Markdown.Section sect : Markdown.extractSections(doc)) {
+                Document sectionDoc = sect.getDoc();
                 if (sect.getHeading() == null) {
                     // TODO Warn that there were no section headings
+                    continue;
+                } else {
+                    // Adjust the heading levels, so that the most prominent 
+                    // heading is H2
+                    Markdown.adjustHeadings(sectionDoc, 2-sect.getHeading().getLevel());
                 }
-                Document sectionDoc = sect.getDoc();
-                // Adjust the heading levels, so that the most prominent 
-                // heading is H2
-                Markdown.adjustHeadings(sectionDoc, 2-sect.getHeading().getLevel());
-                com.redhat.ceylon.tools.help.Output.Section s = out.section();
-                s.paragraph(sectionDoc);
-                s.endSection();
+                out.section(sectionDoc);
             }
         }
     }
 
     private void printToolOptions(Output out, ToolDocumentation<?> model) {
-        Options options = out.options(bundle.getString("section.OPTIONS"));
+        Options options = out.startOptions(bundle.getString("section.OPTIONS"));
         for (OptionModel<?> opt : sortedOptions(model.getPlugin().getOptions())) {
             String shortName = opt.getShortName() != null ? "-" + opt.getShortName() : null;
             String longName = opt.getLongName() != null ? "--" + opt.getLongName() : null;
@@ -134,16 +134,14 @@ public class AbstractDoc {
     protected void printToolDescription(Output out, ToolDocumentation<?> model) {
         final String description = model.getDescription();
         if (!description.isEmpty()) {
-            Output.Section s = out.section();
-            s.paragraph(Markdown.markdown(
+            out.section(Markdown.markdown(
                     "##" + bundle.getString("section.DESCRIPTION") + "\n\n" +
                     description));
-            s.endSection();
         }
     }
 
     private void printToolSynopsis(Output out, ToolDocumentation<?> model) {
-        Synopsis synopsis = out.synopsis(bundle.getString("section.SYNOPSIS"));
+        Synopsis synopsis = out.startSynopsis(bundle.getString("section.SYNOPSIS"));
         // TODO Make auto generated SYNOPSIS better -- we need to know which options
         // form groups, or should we just have a @Synopses({@Synopsis(""), ...})
         synopsis.appendSynopsis(model.getCeylonInvocation());
@@ -174,24 +172,22 @@ public class AbstractDoc {
             }
         }
         if (!model.getPlugin().getArguments().isEmpty()) {
-            synopsis.appendSynopsis(" [--] ");
+            synopsis.appendSynopsis(" [--]");
             for (ArgumentModel<?> argument : model.getPlugin().getArguments()) {
+                synopsis.appendSynopsis(" ");
                 String name = argument.getName();
                 if (!argument.getMultiplicity().isRequired()) {
                     synopsis.appendSynopsis("[");
                 }
                 synopsis.appendSynopsis("<");
-                name = multiplicity(argument, name);
                 synopsis.argumentSynopsis(name);
                 if (argument.getMultiplicity().isMultivalued()) {
                     synopsis.appendSynopsis("...");
                 }
                 synopsis.appendSynopsis(">");
-                //sb.append(name);
                 if (!argument.getMultiplicity().isRequired()) {
                     synopsis.appendSynopsis("]");
                 }
-                synopsis.appendSynopsis(" ");
             }
         }
         synopsis.endSynopsis();
@@ -220,11 +216,9 @@ public class AbstractDoc {
         // XXX The whole dash between ceylon and the tool name is a bit of a 
         // man(1)-ism which we probably don't want to follow
         out.title(model.getCeylonInvocation());
-        Output.Section s = out.section();
-        s.paragraph(Markdown.markdown(
+        out.section(Markdown.markdown(
                 "##" + bundle.getString("section.NAME") + "\n\n" +
                 "`" + model.getCeylonInvocation() + "` - " + model.getSummary()));
-        s.endSection();
         
     }
 

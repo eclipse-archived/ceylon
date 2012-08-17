@@ -28,7 +28,7 @@ import com.redhat.ceylon.common.tool.WordWrap;
 @Summary("Generates documentation about a tool")
 @Description("Extracts tool metadata and generates documentation in a directory.")
 @RemainingSections(
-"## SEE ALSO\n\n" +
+"## See Also\n\n" +
 "* `ceylon help` For generating help about ceylon tools at the command line\n" +
 "* `ceylon doc` For generating API documentation about ceylon modules\n"
 )

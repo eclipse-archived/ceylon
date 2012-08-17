@@ -1,12 +1,10 @@
 package com.redhat.ceylon.tools.help;
 
-import java.io.StringWriter;
-
 import org.tautua.markdownpapers.ast.Node;
 
 import com.redhat.ceylon.common.tool.WordWrap;
 
-class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Section {
+class PlainOutput implements Output, Output.Options, Output.Synopsis {
 
     private final WordWrap out;
     private int numOptions;
@@ -17,11 +15,9 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
         // TODO Markdown to plain text
     }
     
-    private String markdown(Node doc) {
-        StringWriter sw = new StringWriter();
+    private void markdown(Node doc) {
         PlaintextMarkdownVisitor markdownVisitor = new PlaintextMarkdownVisitor(out);
         doc.accept(markdownVisitor);
-        return sw.toString();
     }
 
     @Override
@@ -31,26 +27,15 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
     }
 
     @Override
-    public PlainOutput section() {
-        return this;
-    }
-    
-    @Override
-    public void endSection() {
-        out.newline();
-        out.newline();
-    }
-    
-    @Override
-    public void paragraph(Node paraMd) {
-        out.setIndent(8);
-        out.append(markdown(paraMd));
+    public void section(Node paraMd) {
+        markdown(paraMd);
         out.setIndent(0);
+        out.newline();
     }
 
     @Override
-    public Options options(String title) {
-        out.append(title).newline();
+    public Options startOptions(String title) {
+        out.append(title.toUpperCase()).newline();
         out.setIndent(8);
         return this;
     }
@@ -72,13 +57,12 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
         out.setIndent(12);
         out.newline();
         if (description != null) {
-            out.append(markdown(description));
+            markdown(description);
         } else {
             out.append("Not documented");
         }
         out.newline();
         out.setIndent(8);
-        out.newline();
     }
     
     public void endOptions() {
@@ -90,8 +74,8 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis, Output.Sec
     }
 
     @Override
-    public Synopsis synopsis(String title) {
-        out.append(title).newline();
+    public Synopsis startSynopsis(String title) {
+        out.append(title.toUpperCase()).newline();
         out.setIndent(8);
         return this;
     }

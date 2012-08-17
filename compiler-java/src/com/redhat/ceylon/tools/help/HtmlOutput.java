@@ -6,7 +6,7 @@ import org.tautua.markdownpapers.HtmlEmitter;
 import org.tautua.markdownpapers.ast.Node;
 
 
-class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Section {
+class HtmlOutput implements Output, Output.Options, Output.Synopsis {
 
     private final Html html;
     
@@ -37,24 +37,15 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
     }
 
     @Override
-    public HtmlOutput section() {
+    public void section(Node paraMd) {
         html.open("div class='section'");
         html.text("\n");
-        return this;
-    }
-    
-    @Override
-    public void endSection() {
+        html.unescaped(markdown(paraMd));
         html.close("div").text("\n\n");
     }
     
     @Override
-    public void paragraph(Node paraMd) {
-        html.unescaped(markdown(paraMd));
-    }
-
-    @Override
-    public HtmlOutput synopsis(String title) {
+    public HtmlOutput startSynopsis(String title) {
         html.open("div class='section section-synopsis'").text("\n");
         html.open("h2").text(title).close("h2").text("\n");
         html.open("pre");
@@ -88,7 +79,7 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis, Output.Sect
     }
 
     @Override
-    public HtmlOutput options(String title) {
+    public HtmlOutput startOptions(String title) {
         html.open("div class='section section-options'").text("\n");
         html.open("h2").text(title).close("h2").text("\n");
         html.open("dl");

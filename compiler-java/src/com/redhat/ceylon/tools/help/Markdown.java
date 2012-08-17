@@ -19,7 +19,7 @@ public class Markdown {
 
     /** Parses the given string as Markdown */
     static Document markdown(String markdown) {
-        Parser parser = new Parser(new StringReader(markdown));
+        Parser parser = new Parser(new StringReader(markdown.replaceAll("\\s+$", "")));
         try {
             return parser.parse();
         } catch (ParseException e) {

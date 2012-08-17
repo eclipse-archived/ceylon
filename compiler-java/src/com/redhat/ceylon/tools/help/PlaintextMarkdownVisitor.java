@@ -28,6 +28,10 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
 
     private WordWrap out;
     
+    private int headerLevel = -1;
+
+    private boolean inCode;
+    
     public PlaintextMarkdownVisitor(WordWrap out) {
         this.out = out;
     }
@@ -40,58 +44,55 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
                 if (ii == 0) {
                     continue;
                 }
-                Node prev = parent.jjtGetChild(ii-1);
-                if (prev instanceof Paragraph
-                        || prev instanceof List) {
-                    out.newline();
-                }
             }
         }
         switch (node.getLevel()) {
         case 1:
+        case 2:
+            out.setIndent(0);
+            break;
+        case 3:
+            out.setIndent(3);
+            break;
+        case 4:
+            out.setIndent(5);
+            break;
+        case 5:
+            out.setIndent(6);
+            break;
+        case 6:
+        default:
+            out.setIndent(7);
+            break;
+        }
+        
+        out.newline();
+        switch (node.getLevel()) {
+        case 1:
             int col = out.getColumn();
+            this.headerLevel = node.getLevel();
             node.childrenAccept(this);
+            this.headerLevel = -1;
             int num = out.getColumn() - col;
             out.newline();
             for (int ii = 0; ii < num; ii++) {
                 out.append("=");
             }
             out.newline();
+            out.setIndent(8);
             break;
         case 2:
-            col = out.getColumn();
-            out.append("#### ");
-            node.childrenAccept(this);
-            out.append("####");
-            num = out.getColumn() - col;
-            out.newline();
-            for (int ii = 0; ii < num; ii++) {
-                out.append("-");
-            }
-            out.newline();
-            break;
         case 3:
-            out.append("#### ");
-            node.childrenAccept(this);
-            out.append("####").newline();
-            break;
         case 4:
-            out.append("### ");
-            node.childrenAccept(this);
-            out.append("###").newline();
-            break;
         case 5:
-            out.append("## ");
-            node.childrenAccept(this);
-            out.append("##").newline();
-            break;
         case 6:
         default:
-            out.append("# ");
+            this.headerLevel = node.getLevel();
             node.childrenAccept(this);
-            out.append("#").newline();
-            break;
-        }
+            this.headerLevel = -1;
+            out.newline();
+            out.setIndent(8);
+            break;        }
         out.newline();
     }
     
@@ -102,16 +103,16 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
             for (int ii = 0; ii < node.jjtGetParent().jjtGetNumChildren(); ii++) {
                 if (node.jjtGetParent().jjtGetChild(ii) == node) {
                     out.append((ii+1)+". ");
-                    out.setIndentRestLines(rest + 3);
+                    out.setIndent(rest + 3);
                     break;
                 }
             }
         } else {
             out.append("* ");
-            out.setIndentRestLines(rest + 2);
+            out.setIndent(rest + 2);
         }
         node.childrenAccept(this);
-        out.setIndentRestLines(rest);
+        out.setIndent(rest);
         out.newline().newline();
     }
 
@@ -132,20 +133,15 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
 
     @Override
     public void visit(CodeText node) {
-        int first = out.getIndentFirstLine();
-        int rest = out.getIndentRestLines();
-        out.setIndent(rest+4);
         out.append(node.getValue());
-        out.setIndentFirstLine(first);
-        out.setIndentRestLines(rest);
-        out.newline().newline();
+        out.newline();
     }
     
     @Override
     public void visit(Code node) {
-        out.setIndent(4);
+        this.inCode = true;
         node.childrenAccept(this);
-        out.setIndent(0);
+        this.inCode = false;
     }
     
     @Override
@@ -169,23 +165,29 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
 
     @Override
     public void visit(CodeSpan node) {
-        out.append("`").append(node.getText()).append("`");
+        String text = node.getText();
+        if (uppercaseText()) {
+            text = text.toUpperCase();
+        }
+        out.append("'").append(text).append("'");
     }
 
     @Override
     public void visit(Emphasis node) {
+        String text = node.getText();
+        if (uppercaseText()) {
+            text = text.toUpperCase();
+        }
         switch (node.getType()) {
         case ITALIC_AND_BOLD:
         case BOLD:
-            out.append(node.getText().toUpperCase());
+            text = text.toUpperCase();
             break;
         case ITALIC:
-            out.append(node.getText());
-            break;
-        default:
-            out.append(node.getText());
+        default:    
             break;
         }
+        out.append(text);
     }
 
     @Override
@@ -198,8 +200,11 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
     @Override
     public void visit(Line node) {
         node.childrenAccept(this);
-        if (!node.isEmpty() && !node.isEnding()) {
+        if (!node.isEmpty() && !node.isEnding() ) {
             out.append(" ");
+        }
+        if (node.isEmpty() && inCode) {
+            out.newline();
         }
     }
 
@@ -213,7 +218,11 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
     public void visit(Link node) {
         Resource resource = node.getResource();
         if (resource == null) {
-            resource = ((Document)node.jjtGetParent()).findResource(node.getReference());
+            Node doc = node.jjtGetParent();
+            while (!(doc instanceof Document)) {
+                doc = doc.jjtGetParent();
+            }
+            resource = ((Document)doc).findResource(node.getReference());
         }
         if (resource != null) {
             out.append(node.getText()).append(" (").append(resource.getLocation()).append(")");
@@ -230,18 +239,21 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
     @Override
     public void visit(final Text node) {
         if (node.isWhitespace()) {
-            final Node parent = node.jjtGetParent();
-            Node ancestor = parent;
-            while (ancestor != null) {
-                if (ancestor instanceof Header
-                        && parent.jjtGetChild(0) == node) {
-                    // filter whitespace at the start of headers
-                    return;
-                }
-                ancestor = ancestor.jjtGetParent();
+            if (headerLevel >= 1
+                    && node.jjtGetParent().jjtGetChild(0) == node) {
+                // filter whitespace at the start of headers
+                return;
             }
         }
-        out.append(node.getValue());
+        String text = node.getValue();
+        if (uppercaseText()) {
+            text = text.toUpperCase();
+        }
+        out.append(text);
+    }
+
+    private boolean uppercaseText() {
+        return headerLevel == 1 || headerLevel == 2;
     }
 
 }
