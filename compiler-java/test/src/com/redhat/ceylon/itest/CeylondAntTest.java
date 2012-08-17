@@ -20,7 +20,6 @@
 package com.redhat.ceylon.itest;
 
 import java.io.File;
-import java.util.regex.Pattern;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +27,7 @@ import org.junit.Test;
 public class CeylondAntTest extends AntBasedTest {
 
     public CeylondAntTest() throws Exception {
-        super("test-src/com/redhat/ceylon/itest/ceylond-ant.xml");
+        super("test/src/com/redhat/ceylon/itest/ceylond-ant.xml");
     }
     
     @Test

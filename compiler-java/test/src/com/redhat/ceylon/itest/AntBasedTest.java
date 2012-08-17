@@ -58,6 +58,7 @@ public abstract class AntBasedTest {
     protected static final String EXEC_CEYLONC = "script.ceylonc";
     protected static final String EXEC_CEYLOND = "script.ceylond";
     protected static final String EXEC_CEYLON = "script.ceylon";
+    protected static final String EXEC_CEY = "script.cey";
     protected static final String ARG_VERBOSE = "arg.verbose";
     protected static final String ARG_SRC = "arg.src";
     protected static final String ARG_OUT = "arg.out";
@@ -202,8 +203,9 @@ public abstract class AntBasedTest {
         System.setProperty(EXEC_CEYLONC, scriptDir + "/ceylonc" + scriptExt);
         System.setProperty(EXEC_CEYLOND, scriptDir + "/ceylond" + scriptExt);
         System.setProperty(EXEC_CEYLON, "../ceylon-runtime/build/dist/bin/ceylon" + scriptExt);
+        System.setProperty(EXEC_CEY, "../ceylon-common/build/bin/cey" + scriptExt);
         System.setProperty(ARG_VERBOSE, "false");
-        System.setProperty(ARG_SRC, "test-src/com/redhat/ceylon/itest");
+        System.setProperty(ARG_SRC, "test/src/com/redhat/ceylon/itest");
         out = File.createTempFile("ceylon-ant-test.", ".out.d");
         out.delete();
         out.mkdirs();

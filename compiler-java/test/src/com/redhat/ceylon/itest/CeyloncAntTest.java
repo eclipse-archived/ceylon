@@ -28,7 +28,7 @@ import org.junit.Test;
 public class CeyloncAntTest extends AntBasedTest {
 
     public CeyloncAntTest() throws Exception {
-        super("test-src/com/redhat/ceylon/itest/ceylonc-ant.xml");
+        super("test/src/com/redhat/ceylon/itest/ceylonc-ant.xml");
     }
     
     @Test
@@ -115,7 +115,7 @@ public class CeyloncAntTest extends AntBasedTest {
         
         result = ant("foo-file-mtime");
         Assert.assertEquals(0, result.getStatusCode());
-        assertContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] No need to compile .*?/test-src/com/redhat/ceylon/itest/com/example/foo/a/foo.ceylon, it's up to date$", Pattern.MULTILINE));
+        assertContainsMatch(result.getStdout(), Pattern.compile("^  \\[ceylonc\\] No need to compile .*?/test/src/com/redhat/ceylon/itest/com/example/foo/a/foo.ceylon, it's up to date$", Pattern.MULTILINE));
         assertContains(result.getStdout(), "[ceylonc] Everything's up to date");
         Assert.assertEquals(lastModified, car.lastModified());
     }
