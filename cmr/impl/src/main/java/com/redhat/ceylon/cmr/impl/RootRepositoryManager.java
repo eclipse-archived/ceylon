@@ -155,7 +155,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
         try {
             if (node != null) {
-                Node sl = node.getChild(SHA1 + LOCAL);
+                Node sl = parent.getChild(child + SHA1 + LOCAL);
                 if (sl != null) {
                     fileContentStore.removeFile(sl);
                 }
