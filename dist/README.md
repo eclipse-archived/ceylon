@@ -16,7 +16,7 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 ## Distribution layout
 
 - `bin`            - Unix/Windows commands
-- `doc`            - The Ceylon spec in HTML and PDF format
+- `doc`            - Documentation about Ceylon including the spec in HTML and PDF format
 - `lib`            - Required libraries for the Ceylon commands
 - `repo`           - Required bootstrap Ceylon modules (language, tools)
 - `runtime-repo`   - Required runtime Ceylon modules (module system)

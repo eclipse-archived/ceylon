@@ -96,7 +96,7 @@ Used with another target such as 'package'">
     </target>
 
     <target name="package" 
-            depends="clean-projects, install-all, generate-spec, generate-apidoc, zip"
+            depends="clean-projects, install-all, generate-spec, generate-apidoc, generate-tooldoc, zip"
             description="Generates a distributable zip file">
     </target>
 
@@ -298,6 +298,16 @@ Used with another target such as 'package'">
             <arg value="ceylon.language"/>
         </exec>
     </target>
+	
+	<target name="generate-tooldoc">
+        <exec executable="${dist.dir}/bin/cey" failonerror="yes">
+        	<arg value="doc-tool"/>
+            <arg value="--output=${dist.dir}/doc/en/toolset"/>
+            <arg value="--index"/>
+            <arg value="+plumbing"/>
+        	<arg value="+porcelain"/>
+        </exec>	
+	</target>
 
     <target name="get-code" depends="use-git-pull,use-git-clone,checkout-tagged"
             description="Downloads latest code for all projects">
