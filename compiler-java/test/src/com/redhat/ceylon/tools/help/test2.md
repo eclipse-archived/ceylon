@@ -71,20 +71,19 @@ Here's a code block:
     public static void main(String[] args) {
     
     }
-    
+
  
 ------------------
 
 ### Mix it up
 
 * A list item with a blockquote:
+
   > This is a blockquote
   > inside a list item.
-    
+
 * And let's try a 
   * nested list
-    1. in fact
-    1. multiply nested!
     
 
 ## Inline things

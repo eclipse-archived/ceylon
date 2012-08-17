@@ -37,9 +37,45 @@ public class PlaintextTest {
     }
     
     @Test
-    public void test2() throws Exception {
-        renderAndCompare("test2.md", "test2.txt");
-        
+    public void testHeadings() throws Exception {
+        renderAndCompare("headings.md", "headings.txt");   
+    }
+    
+    @Test
+    public void testParagraphs() throws Exception {
+        renderAndCompare("paragraphs.md", "paragraphs.txt");   
+    }
+    
+    @Test
+    public void testLists() throws Exception {
+        renderAndCompare("lists.md", "lists.txt");   
+    }
+    
+    @Test
+    public void testBlockquotes() throws Exception {
+        renderAndCompare("blockquotes.md", "blockquotes.txt");   
+    }
+    
+    @Test
+    public void testCodeblocks() throws Exception {
+        renderAndCompare("codeblocks.md", "codeblocks.txt");   
+    }
+    
+    @Test
+    public void testNesting_fail() throws Exception {
+        // Unfortunately it look like markdownpapers doesn't correctly
+        // handle nesting
+        renderAndCompare("nesting.md", "nesting.txt");   
+    }
+    
+    @Test
+    public void testEmphasis() throws Exception {
+        renderAndCompare("emphasis.md", "emphasis.txt");   
+    }
+    
+    @Test
+    public void testLinks() throws Exception {
+        renderAndCompare("links.md", "links.txt");   
     }
     
 }
