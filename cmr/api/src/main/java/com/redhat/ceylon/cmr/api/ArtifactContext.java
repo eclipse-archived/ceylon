@@ -31,6 +31,7 @@ import java.io.Serializable;
 public class ArtifactContext implements Serializable, ContentOptions {
     public static final String CAR = ".car";
     public static final String JAR = ".jar";
+    public static final String JS = ".js";
     public static final String ZIP = ".zip";
     public static final String SRC = ".src";
     public static final String DOCS = "module-doc";
