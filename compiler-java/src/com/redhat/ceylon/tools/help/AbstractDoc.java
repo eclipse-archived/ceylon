@@ -22,7 +22,7 @@ import com.redhat.ceylon.tools.help.Output.Synopsis;
 
 public class AbstractDoc {
 
-    protected ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.sections");
+    protected ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
     protected PluginLoader toolLoader;
     
     public AbstractDoc() {

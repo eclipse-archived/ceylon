@@ -46,7 +46,7 @@ public class DocToolTool extends AbstractDoc implements Plugin {
 
             @Override
             URL[] supportingResources() {
-                return new URL[]{getClass().getResource("doc-tool.css")};
+                return new URL[]{getClass().getResource("resources/doc-tool.css")};
             }
         }, 
         txt(".txt") {
