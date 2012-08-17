@@ -68,4 +68,6 @@ public interface Repository {
     ArtifactResult getArtifactResult(RepositoryManager manager, Node node);
 
     String getDisplayString();
+
+    void complete(ArtifactLookup lookup, ArtifactLookupResultByName result);
 }

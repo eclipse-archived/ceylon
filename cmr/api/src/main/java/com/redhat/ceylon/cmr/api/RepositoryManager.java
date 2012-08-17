@@ -75,4 +75,6 @@ public interface RepositoryManager {
      * @return the display strings
      */
     List<String> getRepositoriesDisplayString();
+    
+    ArtifactLookupResultByName complete(ArtifactLookup lookup);
 }

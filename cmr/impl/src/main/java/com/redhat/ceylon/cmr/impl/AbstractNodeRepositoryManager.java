@@ -28,6 +28,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactLookup;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -310,5 +312,14 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
         log.debug(" -> Artifact " + context + " not found in any repository");
         return null; // not found
+    }
+    
+    @Override
+    public ArtifactLookupResultByName complete(ArtifactLookup lookup) {
+        ArtifactLookupResultByName result = new ArtifactLookupResultByName();
+        for(Repository root : roots){
+            root.complete(lookup, result);
+        }
+        return result;
     }
 }

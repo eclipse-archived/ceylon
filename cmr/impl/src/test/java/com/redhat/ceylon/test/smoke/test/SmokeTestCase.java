@@ -251,4 +251,78 @@ public class SmokeTestCase {
         result = manager.getArtifactResult(ac);
         Assert.assertNotNull(result);
     }
+
+    private void testComplete(String query, String[] expected, RepositoryManager manager){
+        testComplete(query, expected, manager, ArtifactLookup.Type.JVM);
+    }
+    
+    private void testComplete(String query, String[] expected, RepositoryManager manager,
+            ArtifactLookup.Type type){
+        ArtifactLookup lookup = new ArtifactLookup(query, type);
+        ArtifactLookupResultByName result = manager.complete(lookup);
+        int i=0;
+        Assert.assertEquals(expected.length, result.getResults().size());
+        for(String name : result.getResults()){
+            Assert.assertEquals(expected[i++], name);
+        }
+    }
+    
+    @Test
+    public void testCompleteEmpty() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        String[] expected = new String[]{
+            "hello",
+            "moduletest",
+            "org.jboss.acme",
+            "test-jar",
+        };
+        testComplete("", expected, manager);
+    }
+
+    @Test
+    public void testCompleteEmptyJS() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        String[] expected = new String[]{};
+        testComplete("", expected, manager, ArtifactLookup.Type.JS);
+    }
+
+    @Test
+    public void testCompleteHe() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        String[] expected = new String[]{
+            "hello",
+        };
+        testComplete("he", expected, manager);
+    }
+
+    @Test
+    public void testCompleteOrg() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        String[] expected = new String[]{
+            "org.jboss.acme",
+        };
+        testComplete("org", expected, manager);
+    }
+
+    @Test
+    public void testCompleteOrgDot() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        String[] expected = new String[]{
+            "org.jboss.acme",
+        };
+        testComplete("org.", expected, manager);
+    }
+
+    @Test
+    public void testCompleteStopAtVersion() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        String[] expected = new String[]{};
+        testComplete("org.jboss.acme.", expected, manager);
+    }
 }

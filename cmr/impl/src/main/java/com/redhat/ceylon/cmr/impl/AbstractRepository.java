@@ -17,6 +17,10 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactLookup;
+import com.redhat.ceylon.cmr.api.ArtifactLookup.Type;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -126,5 +130,106 @@ public abstract class AbstractRepository implements Repository {
     @Override
     public String getDisplayString() {
         return root.getDisplayString();
+    }
+    
+    @Override
+    public void complete(ArtifactLookup lookup, ArtifactLookupResultByName result) {
+        // we NEED the -1 limit here to get empty tokens
+        String[] paths = lookup.getName().split("\\.", -1);
+        // find the right parent
+        Node parent = root;
+        for(int i=0;i<paths.length-1;i++){
+            parent = parent.getChild(paths[i]);
+            // no completion from here
+            if(parent == null)
+                return;
+        }
+        String lastPart = paths[paths.length-1];
+        // now find a matching child
+        for(Node child : parent.getChildren()){
+            if(child.getLabel().startsWith(lastPart)
+                    && hasChildrenContainingArtifact(child, lookup.getType())){
+                Node deepestNode = findDeepestUnambiguousNode(child, lookup.getType());
+                String path = toModuleName(deepestNode);
+                result.addResult(path);
+            }
+        }
+    }
+
+    private Node findDeepestUnambiguousNode(Node node, Type type) {
+        Node childWithArtifacts = null;
+        for(Node child : node.getChildren()){
+            if(hasChildrenContainingArtifact(child, type)){
+                if(childWithArtifacts == null)
+                    childWithArtifacts = child;
+                else{
+                    // we have two children with artifacts so it's ambiguous
+                    return node;
+                }
+            }
+            // ignore the child if it has no artifacts
+        }
+        // if we have only one, find its deepest node
+        // FIXME: this is very unefficient and should be done in one pass
+        if(childWithArtifacts != null)
+            return findDeepestUnambiguousNode(childWithArtifacts, type);
+        return node;
+    }
+
+    private boolean hasChildrenContainingArtifact(Node node, Type type) {
+        // We don't look directly at our children, we want the children's children, because if there's
+        // nothing in those children it means either this is an empty folder, or its children contain
+        // artifacts (in which case we don't want to match it since its name must be a version component),
+        // or we could only find artifacts of the wrong type.
+        
+        // This allows us to never match the default module, since it's at "/default/default.car" which
+        // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
+        for(Node child : node.getChildren()){
+            String name = child.getLabel();
+            // Winner of the less aptly-named method
+            boolean isFolder = !child.hasBinaries();
+            if(isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(child, type))
+                return true;
+        }
+        // could not find any
+        return false;
+    }
+
+    private boolean containsArtifact(Node node, Type type) {
+        for(Node child : node.getChildren()){
+            String name = child.getLabel();
+            // Winner of the less aptly-named method
+            boolean isFolder = !child.hasBinaries();
+            if(isFolder){
+                // recurse
+                if(!name.equals(ArtifactContext.DOCS) && containsArtifact(child, type))
+                    return true;
+            }else if(isArtifactOfType(name, type)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // FIXME: this is weak, we should check the full artifact name
+    private boolean isArtifactOfType(String name, Type type) {
+        switch(type){
+        case JS:
+            return name.endsWith(ArtifactContext.JS);
+        case JVM:
+            return name.endsWith(ArtifactContext.CAR)
+                    || name.endsWith(ArtifactContext.JAR);
+        case SRC:
+            return name.endsWith(ArtifactContext.SRC);
+        }
+        return false;
+    }
+
+    private String toModuleName(Node node) {
+        String path = NodeUtils.getFullPath(node, ".");
+        // That's sort of an invariant, but let's be safe
+        if(path.startsWith("."))
+            path = path.substring(1);
+        return path;
     }
 }

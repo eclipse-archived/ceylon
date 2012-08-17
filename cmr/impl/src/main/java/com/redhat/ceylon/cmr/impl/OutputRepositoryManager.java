@@ -89,4 +89,9 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     public String toString() {
         return "OutputRepositoryManager: " + output;
     }
+    
+    @Override
+    public ArtifactLookupResultByName complete(ArtifactLookup lookup) {
+        return new ArtifactLookupResultByName();
+    }
 }
