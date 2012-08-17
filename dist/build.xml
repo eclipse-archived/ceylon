@@ -281,10 +281,8 @@ Used with another target such as 'package'">
 
     <target name="generate-spec">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false"/>
-        <copy todir="${dist.dir}/doc">
-            <fileset dir="${ceylon-spec.dir}/build">
-                <exclude name="dist,classes"/>
-            </fileset>
+        <copy todir="${dist.dir}/doc/en/spec">
+            <fileset dir="${ceylon-spec.dir}/build/en"/>        	
         </copy>
     </target>
 
