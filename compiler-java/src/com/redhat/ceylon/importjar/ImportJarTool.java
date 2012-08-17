@@ -29,12 +29,21 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("Imports a jar file into a Ceylon module repository")
+@Description("Imports the given `<jar-file>` using the module name and version " +
+		"given by `<module>` into the repository named by the " +
+		"`--out` option.\n" +
+		"\n" +
+		"`<module>` is a module name and version separated with a slash, for example " +
+		"`com.example.foobar/1.2.0`.\n" +
+		"\n" +
+		"`<jar-file>` is the name of the Jar file to import.")
 public class ImportJarTool implements Plugin {
 
     private String module;
@@ -60,6 +69,7 @@ public class ImportJarTool implements Plugin {
     }
 
     @OptionArgument(argumentName="name")
+    @Description("Sets the user name for use with an authenticated output repository.")
     public void setUser(String user) {
         this.user = user;
     }
@@ -69,6 +79,7 @@ public class ImportJarTool implements Plugin {
     }
 
     @OptionArgument(argumentName="secret")
+    @Description("Sets the password for use with an authenticated output repository.")
     public void setPass(String pass) {
         this.pass = pass;
     }
@@ -78,6 +89,7 @@ public class ImportJarTool implements Plugin {
     }
     
     @Option
+    @Description("Produce verbose output.")
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
     }
@@ -87,6 +99,9 @@ public class ImportJarTool implements Plugin {
     }
 
     @OptionArgument(argumentName="dir-or-url")
+    @Description("Specifies the module repository (which must be publishable) " +
+    		"into which the jar file should be imported. " +
+            "(default: `./modules`)")
     public void setOut(String out) {
         this.out = out;
     }

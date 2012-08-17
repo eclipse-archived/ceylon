@@ -16,8 +16,8 @@ import com.redhat.ceylon.common.tool.WordWrap;
  */
 @Summary("Display help information about other ceylon tools")
 @Description(
-"If a <command> is given, displays help about that ceylon tool on the standard output." +
-"If no <command> is given, displays the synopsis of the top level `ceylon` command. "
+"If a `<command>` is given, displays help about that ceylon tool on the standard output.\n\n" +
+"If no `<command>` is given, displays the synopsis of the top level `ceylon` command. "
 )
 @RemainingSections(
 "## SEE ALSO\n\n" +

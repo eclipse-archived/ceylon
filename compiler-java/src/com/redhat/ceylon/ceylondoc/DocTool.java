@@ -146,7 +146,7 @@ public class DocTool implements Plugin {
     }
 
     @OptionArgument(longName="src", argumentName="dir")
-    @Description("A directory containing Ceylon and/or Java source code")
+    @Description("A directory containing Ceylon and/or Java source code (default: `./source`")
     public void setSourceFolders(List<File> sourceFolders) {
         this.sourceFolders = sourceFolders;
     }
@@ -278,7 +278,7 @@ public class DocTool implements Plugin {
     }
     
     @OptionArgument(longName="out", argumentName="dir-or-url")
-    @Description("The URL of the module repository where output should be published")
+    @Description("The URL of the module repository where output should be published (default: `./out`")
     public void setOutputRepository(String outputRepository) {
         this.outputRepository = outputRepository;
     }

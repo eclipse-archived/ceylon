@@ -113,7 +113,7 @@ public class CompileTool implements Plugin{
     }
     
     @Option
-    @Description("")
+    @Description("Produce verbose output.")
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
     }
