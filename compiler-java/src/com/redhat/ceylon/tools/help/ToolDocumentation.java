@@ -48,15 +48,19 @@ class ToolDocumentation<T extends Plugin> {
         return "";
     }
     
-    public String getSummary() {
+    public String getSummaryValue() {
         String msg = msg("summary");
         if (msg.isEmpty()) {
-            Summary summary = model.getToolClass().getAnnotation(Summary.class);
+            Summary summary = getSummary();
             if (summary != null) {
                 msg = summary.value();
             }
         }
         return msg;
+    }
+
+    private Summary getSummary() {
+        return model.getToolClass().getAnnotation(Summary.class);
     }
 
     public String getDescription() {

@@ -99,6 +99,11 @@ class PlainOutput implements Output, Output.Options, Output.Synopsis {
     public void argumentSynopsis(String name) {
         out.append(name);
     }
+    
+    @Override
+    public void nextSynopsis() {
+        out.newline();
+    }
 
     @Override
     public void endSynopsis() {

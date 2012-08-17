@@ -17,6 +17,7 @@ interface Output {
         public void shortOptionSynopsis(String string);
         public void argumentSynopsis(String name);
         public void endSynopsis();
+        public void nextSynopsis();
                 
     }
     

@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 
@@ -35,7 +36,8 @@ import com.redhat.ceylon.common.tool.WordWrap;
 )
 public class DocToolTool extends AbstractDoc implements Plugin {
 
-    static final String ALL_TOOLS = "+all";
+    static final String PLUMBING_TOOLS = "+plumbing";
+    static final String PORCELAIN_TOOLS = "+porcelain";
     
     public static enum Format {
         html(".html") {
@@ -75,8 +77,9 @@ public class DocToolTool extends AbstractDoc implements Plugin {
     private boolean index = false;
 
     @Argument(argumentName="tool", multiplicity="+")
-    @Description("The tool(s) to generate the documentation for. The special " +
-    		"value `" + ALL_TOOLS + "` generates documentation about all known tools.")
+    @Description("The tool(s) to generate the documentation for. " +
+    		"The special value `" + PORCELAIN_TOOLS + "` generates documentation about all known high level tools, " +
+            "and the special value `" + PLUMBING_TOOLS + "` generates documentation about all known low level tools.")
     public void setTool(List<String> tools) {
         this.tools = tools;
     }
@@ -129,17 +132,29 @@ public class DocToolTool extends AbstractDoc implements Plugin {
 
     private List<ToolDocumentation<?>> loadModels() {
         List<ToolDocumentation<?>> models = new ArrayList<>(tools.size());
-        if (tools.contains(ALL_TOOLS)) {
-            models = new ArrayList<>();
+        if (tools.contains(PLUMBING_TOOLS)) {
+            tools.remove(PLUMBING_TOOLS);
             for (String toolName : toolLoader.getToolNames()) {
-                models.add(loadModel(toolName));
-            }
-        } else {
-            models = new ArrayList<>(tools.size());
-            for (String toolName : tools) {
-                models.add(loadModel(toolName));
+                ToolDocumentation<?> loadModel = loadModel(toolName);
+                if (loadModel.getPlugin().isPlumbing()) {
+                    models.add(loadModel);
+                }
             }
         }
+        if (tools.contains(PORCELAIN_TOOLS)) {
+            tools.remove(PORCELAIN_TOOLS);
+            for (String toolName : toolLoader.getToolNames()) {
+                ToolDocumentation<?> loadModel = loadModel(toolName);
+                if (loadModel.getPlugin().isPorcelain()) {
+                    models.add(loadModel);
+                }
+            }
+        }
+        
+        for (String toolName : tools) {
+            models.add(loadModel(toolName));
+        }
+        
         return models;
     }
 
@@ -157,7 +172,7 @@ public class DocToolTool extends AbstractDoc implements Plugin {
     private void generateDoc(List<ToolDocumentation<?>> models)
             throws IOException {
         for (ToolDocumentation<?> model : models) {
-            File out = new File(dir, Tools.progName() + "-" + model.getName() + format.extension);
+            File out = new File(dir, filename(model));
             try (FileWriter writer = new FileWriter(out)) {
                 Output htmlOutput = format.newOutput(this, writer);
                 printToolHelp(htmlOutput, model);
@@ -168,24 +183,48 @@ public class DocToolTool extends AbstractDoc implements Plugin {
         }
     }
 
+    private String filename(ToolDocumentation<?> model) {
+        return Tools.progName() + "-" + model.getName() + format.extension;
+    }
+
     private void generateIndexHtml(List<ToolDocumentation<?>> models) throws IOException {
         File indexFile = new File(dir, "index" + format.extension);
+        ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
         try (FileWriter writer = new FileWriter(indexFile)) {
             HtmlOutput htmlOutput = (HtmlOutput)Format.html.newOutput(this, writer);
             Html html = htmlOutput.getHtml();
-            String title = Tools.progName() + " tools";
-            htmlOutput.title(title);
-            html.open("h1").text(title).close("h1");
-            html.open("dl");
+            htmlOutput.title(bundle.getString("index.title"));
+            
+            List<ToolDocumentation<?>> porcelain = new ArrayList<>();
+            List<ToolDocumentation<?>> plumbing = new ArrayList<>();
             for (ToolDocumentation<?> model : models) {
-                html.open("dt").open("code");
-                html.text(Tools.progName() +" " + model.getName());
-                html.close("code", "dt");
-                html.open("dd").text(model.getSummary()).close("dd");
+                if (model.getPlugin().isPorcelain()) {
+                    porcelain.add(model);
+                } else if (model.getPlugin().isPlumbing()) {
+                    plumbing.add(model);
+                }
             }
-            html.close("dl");
+            if (!porcelain.isEmpty()) {
+                html.open("p").text(bundle.getString("index.porcelain.tools")).close("p");
+                generateToolList(porcelain, html);
+            }
+            if (!plumbing.isEmpty()) {
+                html.open("p").text(bundle.getString("index.plumbing.tools")).close("p");
+                generateToolList(plumbing, html);
+            }
             html.close("body", "html");
         }
+    }
+
+    private void generateToolList(List<ToolDocumentation<?>> models, Html html) {
+        html.open("dl");
+        for (ToolDocumentation<?> model : models) {
+            html.open("dt", "code", "a href='" + filename(model) + "'");
+            html.text(Tools.progName() +" " + model.getName());
+            html.close("a", "code", "dt");
+            html.open("dd").text(model.getSummaryValue()).close("dd");
+        }
+        html.close("dl");
     }
 
     private void prepareDirectory() {

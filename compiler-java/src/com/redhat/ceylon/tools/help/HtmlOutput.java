@@ -57,6 +57,11 @@ class HtmlOutput implements Output, Output.Options, Output.Synopsis {
         html.close("pre").text("\n");
         html.close("div").text("\n\n");
     }
+    
+    @Override
+    public void nextSynopsis() {
+        html.close("pre").text("\n").open("pre");
+    }
 
     @Override
     public void appendSynopsis(String s) {

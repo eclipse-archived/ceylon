@@ -7,8 +7,10 @@ import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.PluginModel;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
+import com.redhat.ceylon.tools.help.Output.Synopsis;
 
 /**
  * A plugin which provides help about other plugins 
@@ -49,6 +51,59 @@ public class HelpTool extends AbstractDoc implements Plugin {
         }
         wrap.flush();
     }
+    
+    protected final void printTopLevelHelp(Output out, WordWrap wrap, Iterable<String> toolNames) {
+        final PluginModel<Tool> root = toolLoader.loadToolModel("");
+        final ToolDocumentation<Tool> docModel = new ToolDocumentation<Tool>(root);
+        printToolSummary(out, docModel);
+        
+        Synopsis synopsis = out.startSynopsis(bundle.getString("section.SYNOPSIS"));
+        synopsis.appendSynopsis(Tools.progName());
+        synopsis.longOptionSynopsis("--version");
+        synopsis.nextSynopsis();
+        synopsis.appendSynopsis(Tools.progName());
+        synopsis.argumentSynopsis("[<cey-options>]");
+        synopsis.appendSynopsis(" ");
+        synopsis.argumentSynopsis("<command>");
+        synopsis.appendSynopsis(" ");
+        synopsis.argumentSynopsis("[<command-options>]");
+        synopsis.appendSynopsis(" ");
+        synopsis.argumentSynopsis("[<command-args>]");
+        synopsis.endSynopsis();
+        
+        printToolDescription(out, docModel);
+        
+        wrap.setIndent(8);
+        int max = 0;
+        for (String toolName : toolNames) {
+            max = Math.max(max, toolName.length());
+        }
+        wrap.addTabStop(max + 12);
+        wrap.setIndentRestLines(max + 12);
+        for (String toolName : toolNames) {
+            final PluginModel<Plugin> model = toolLoader.loadToolModel(toolName);
+            if (model == null) {
+                throw new RuntimeException(toolName);
+            }
+            if (!model.isPorcelain()) {
+                continue;
+            }
+            final Class<Plugin> toolClass = model.getToolClass();
+            final Summary summary = toolClass.getAnnotation(Summary.class);
+            wrap.append(toolName);
+            if (summary != null) {
+                wrap.tab().append(summary.value());
+            }
+            wrap.newline();
+        }
+        wrap.removeTabStop(max + 12);
+        wrap.setIndent(8);
+        wrap.newline();
+        wrap.append("See '" + Tools.progName() + " help <command>' for more information on a particular command");
+        wrap.setIndent(0);
+        wrap.newline();
+    }
+
     
 
 }

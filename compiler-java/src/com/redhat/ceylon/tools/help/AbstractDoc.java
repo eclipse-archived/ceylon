@@ -10,13 +10,7 @@ import org.tautua.markdownpapers.ast.Document;
 
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.OptionModel;
-import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.PluginLoader;
-import com.redhat.ceylon.common.tool.PluginModel;
-import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tool;
-import com.redhat.ceylon.common.tool.Tools;
-import com.redhat.ceylon.common.tool.WordWrap;
 import com.redhat.ceylon.tools.help.Output.Options;
 import com.redhat.ceylon.tools.help.Output.Synopsis;
 
@@ -33,61 +27,6 @@ public class AbstractDoc {
         this.toolLoader = toolLoader;
     }
     
-    protected final void printTopLevelHelp(Output out, WordWrap wrap, Iterable<String> toolNames) {
-        final PluginModel<Tool> root = toolLoader.loadToolModel("");
-        final ToolDocumentation<Tool> docModel = new ToolDocumentation<Tool>(root);
-        printToolSummary(out, docModel);
-        
-        /*
-        out.print("SYNOPSIS").println();
-        out.setIndent(8);
-        out.print(Tools.progName() + " --version").println();
-        out.print(Tools.progName() + " <command> [<args>]").println();
-        out.setIndent(0);
-        out.println();
-        out.println();
-        */
-        // TODO Nasty hack here: Should be able to describe the top level tool's synopsis
-        // through the Synopsis interface
-        Synopsis synopsis = out.startSynopsis("SYNOPSIS");
-        wrap.setIndent(8);
-        wrap.append(Tools.progName() + " --version").newline();
-        wrap.append(Tools.progName() + " <command> [<args>]").newline();
-        wrap.setIndent(0);
-        wrap.newline();
-        wrap.newline();
-        synopsis.endSynopsis();
-        
-        printToolDescription(out, docModel);
-        
-        wrap.setIndent(8);
-        int max = 0;
-        for (String toolName : toolNames) {
-            max = Math.max(max, toolName.length());
-        }
-        wrap.addTabStop(max + 12);
-        wrap.setIndentRestLines(max + 12);
-        for (String toolName : toolNames) {
-            final PluginModel<Plugin> model = toolLoader.loadToolModel(toolName);
-            if (model == null) {
-                throw new RuntimeException(toolName);
-            }
-            final Class<Plugin> toolClass = model.getToolClass();
-            final Summary summary = toolClass.getAnnotation(Summary.class);
-            wrap.append(toolName);
-            if (summary != null) {
-                wrap.tab().append(summary.value());
-            }
-            wrap.newline();
-        }
-        wrap.removeTabStop(max + 12);
-        wrap.setIndent(8);
-        wrap.newline();
-        wrap.append("See '" + Tools.progName() + " help <command>' for more information on a particular command");
-        wrap.setIndent(0);
-        wrap.newline();
-    }
-
     protected void printToolHelp(Output out, ToolDocumentation<?> model) {
         printToolSummary(out, model);
         printToolSynopsis(out, model);
@@ -218,7 +157,7 @@ public class AbstractDoc {
         out.title(model.getCeylonInvocation());
         out.section(Markdown.markdown(
                 "##" + bundle.getString("section.NAME") + "\n\n" +
-                "`" + model.getCeylonInvocation() + "` - " + model.getSummary()));
+                "`" + model.getCeylonInvocation() + "` - " + model.getSummaryValue()));
         
     }
 
