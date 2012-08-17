@@ -59,6 +59,7 @@ public class CompileTool implements Plugin{
     private List<String> rest = Collections.emptyList();
     private String user;
     private String pass;
+    private boolean verbose = false;
 
     public CompileTool() {
     }
@@ -111,6 +112,12 @@ public class CompileTool implements Plugin{
         this.module = moduleOrFile;
     }
     
+    @Option
+    @Description("")
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+    
     /** 
      * We collect any other arguments.
      * Long options of the form {@code --javac:<option>}  
@@ -130,6 +137,10 @@ public class CompileTool implements Plugin{
         
         if (d) {
             arguments.add("-d");
+        }
+        
+        if (verbose) {
+            arguments.add("-verbose");
         }
         
         arguments.add("-out");
@@ -156,8 +167,12 @@ public class CompileTool implements Plugin{
         }
         
         System.out.println(arguments);
+        System.out.flush();
         com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylon compile");
-        compiler.compile(arguments.toArray(new String[arguments.size()]));
+        int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
+        if (result != 0) {
+            throw new RuntimeException("Compilation failed");
+        }
     }
 
     private void addJavacArguments(List<String> arguments) {
