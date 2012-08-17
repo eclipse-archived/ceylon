@@ -31,6 +31,7 @@ public class DocToolToolTest {
     
     private void runDocTool(String toolName, String... otherArgs) throws IOException {
         PluginModel<DocToolTool> model = pluginLoader.loadToolModel("doc-tool");
+        Assert.assertTrue(model.isPorcelain());
         Assert.assertNotNull(model);
         List<String> toolArgs = new ArrayList<>();
         toolArgs.addAll(Arrays.asList(toolName, "--output=" + dir.getAbsolutePath()));
@@ -142,7 +143,7 @@ public class DocToolToolTest {
     
     @Test
     public void testAll() throws Exception {
-        runDocTool(DocToolTool.ALL_TOOLS, "--index");
+        runDocTool(DocToolTool.PORCELAIN_TOOLS, "--index");
         assertHtmlFiles("compile");
         assertHtmlFiles("doc");
         assertHtmlFiles("import-jar");
@@ -153,12 +154,18 @@ public class DocToolToolTest {
     
     @Test
     public void testAllTxt() throws Exception {
-        runDocTool(DocToolTool.ALL_TOOLS, "--format=txt");
+        runDocTool(DocToolTool.PORCELAIN_TOOLS, "--format=txt");
         assertTxtFiles("compile");
         assertTxtFiles("doc");
         assertTxtFiles("import-jar");
         assertTxtFiles("help");
         assertTxtFiles("doc-tool");
+    }
+
+    @Test
+    public void testTopLevelTxt() throws Exception {
+        runDocTool("", "--format=txt");
+        assertTxtFiles("");
     }
     
 

@@ -21,6 +21,7 @@ public class HelpToolTest {
     @Test
     public void testHelp() {
         PluginModel<HelpTool> model = pluginLoader.loadToolModel("help");
+        Assert.assertTrue(model.isPorcelain());
         Assert.assertNotNull(model);
         HelpTool tool = pluginFactory.bindArguments(model, Collections.<String>emptyList());
         tool.run();
