@@ -5,15 +5,13 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
 public interface InterfaceAliasWithTypeParameters_Foo<T> {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
 public final class InterfaceAliasWithTypeParameters_Foo$impl<T> {
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<T> $this;
     
     public InterfaceAliasWithTypeParameters_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<T> $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<T> $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<T>")
