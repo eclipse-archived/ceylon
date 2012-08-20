@@ -1,4 +1,4 @@
-class OrdinalImpl<out Other>() of Other
+class OrdinalImpl<Other>() of Other
         satisfies Ordinal<Other>
         given Other satisfies OrdinalImpl<Other> {
         
@@ -8,5 +8,9 @@ class OrdinalImpl<out Other>() of Other
     
     shared actual Other predecessor {
         return bottom;
+    }
+    
+    shared actual Integer distanceFrom(Other other) {
+        return 0;
     }
 }

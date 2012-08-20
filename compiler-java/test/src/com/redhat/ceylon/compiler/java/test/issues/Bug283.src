@@ -94,8 +94,8 @@ class Bug283 {
         --oi2;
     }
     
-    private final <T extends .ceylon.language.Ordinal<? extends T>>void m3(final T t0) {
-        .ceylon.language.Ordinal<? extends T> t = t0;
+    private final <T extends .ceylon.language.Ordinal<T>>void m3(final T t0) {
+        .ceylon.language.Ordinal<T> t = t0;
         (
             let
             {
