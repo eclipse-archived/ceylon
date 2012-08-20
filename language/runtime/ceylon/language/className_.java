@@ -21,6 +21,10 @@ public final class className_ {
             name = name.substring(0, i) + 
                     name.substring(i+1);
         }
+        if (name.endsWith("_") 
+                && object.getClass().getAnnotation(Ceylon.class) != null) {
+            name = name.substring(0, name.length()-1);
+        }
         return name;
     }
 }
