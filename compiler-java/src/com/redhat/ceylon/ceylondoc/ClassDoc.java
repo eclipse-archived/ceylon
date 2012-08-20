@@ -293,7 +293,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("th");
             write(title);
             open("code");
-            linkRenderer().to(superClass).write();
+            linkToDeclaration(superClass);
             close("code");
             close("th");
             close("tr");
@@ -307,7 +307,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else {
                     first = false;
                 }
-                linkRenderer().to(member).write();
+                linkToDeclaration(member);
             }
             close("code", "td", "tr", "table");
         }
@@ -424,7 +424,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("th");
             write(title);
             open("code");
-            linkRenderer().to(superInterface).write();
+            linkToDeclaration(superInterface);
             close("code");
             close("th");
             close("tr");
@@ -438,7 +438,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else {
                     first = false;
                 }
-                linkRenderer().to(member).write();
+                linkToDeclaration(member);
             }
             close("code", "td", "tr", "table");
         }
@@ -497,7 +497,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("td");
         open("td");
         writeIcon(c);
-        linkRenderer().to(c).write();
+        linkToDeclaration(c);
         writeTagged(c);
         tag("br");
         writeDescription(c);
@@ -695,7 +695,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("div class='enclosingType'");
             write("Enclosing " + (enclosingType instanceof Class ? "class: " : "interface: "));
             writeIcon(enclosingType);
-            linkRenderer().to(enclosingType).write();
+            linkToDeclaration(enclosingType);
             close("div");
         }
     }

@@ -51,6 +51,10 @@ public abstract class CeylonDoc extends Markup {
         return new LinkRenderer(tool, writer, getFromObject());
     }
     
+    protected void linkToDeclaration(Declaration declaration) throws IOException {
+        linkRenderer().to(declaration).write();
+    }
+    
     protected abstract Object getFromObject();
 
     protected static Package getPackage(Scope decl) {
