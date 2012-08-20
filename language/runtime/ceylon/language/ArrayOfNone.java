@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -69,6 +70,10 @@ class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
     @Override @Ignore public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() { return (Iterable)this; }
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) { return other; }
+    @Override @Ignore
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
+        return new InternalMap<Key, Sequence<? extends Element>>(java.util.Collections.<Key,Sequence<Element>>emptyMap());
+    }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override @Ignore public <Other>Sequence withLeading(Other e) {

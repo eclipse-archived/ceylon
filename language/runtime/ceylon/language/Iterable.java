@@ -143,4 +143,11 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
             @TypeInfo("ceylon.language.Iterable<Other>")
             Iterable<? extends Other> other);
 
+    @Annotations(@Annotation("default"))
+    @TypeParameters(@TypeParameter(value="Grouping",satisfies="ceylon.language.Object"))
+    @TypeInfo("ceylon.language.Map<Grouping,ceylon.language.Sequence<Element>>")
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(@Name("grouping")
+            @TypeInfo("ceylon.language.Callable<Grouping,Element>")
+            Callable<? extends Key> grouping);
+
 }

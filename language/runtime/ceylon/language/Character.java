@@ -1,10 +1,13 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 2)
@@ -14,7 +17,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 @ValueType
 public final class Character
         implements Comparable<Character>, Ordinal<Character> {
-	
+
     public final int codePoint;
 
     private Character(int codePoint) {
@@ -39,69 +42,69 @@ public final class Character
     public static java.lang.String toString(int codePoint) {
         return java.lang.String.valueOf(java.lang.Character.toChars(codePoint));
     }
-    
+
     public boolean getLowercase() {
         return java.lang.Character.isLowerCase(codePoint);
-    }    
-    
+    }
+
     @Ignore
     public static boolean getLowercase(int codePoint) {
         return java.lang.Character.isLowerCase(codePoint);
-    }    
-    
+    }
+
     public boolean getUppercase(){
         return java.lang.Character.isUpperCase(codePoint);
     }
-    
+
     @Ignore
     public static boolean getUppercase(int codePoint) {
         return java.lang.Character.isUpperCase(codePoint);
     }
-    
+
     public boolean getTitlecase(){
         return java.lang.Character.isTitleCase(codePoint);
     }
-    
+
     @Ignore
     public static boolean getTitlecase(int codePoint) {
         return java.lang.Character.isTitleCase(codePoint);
     }
-    
+
     public boolean getDigit(){
         return java.lang.Character.isDigit(codePoint);
     }
-    
+
     @Ignore
     public static boolean getDigit(int codePoint) {
         return java.lang.Character.isDigit(codePoint);
     }
-    
+
     public boolean getLetter(){
         return java.lang.Character.isLetter(codePoint);
     }
-    
+
     @Ignore
     public static boolean getLetter(int codePoint) {
         return java.lang.Character.isLetter(codePoint);
     }
-    
+
     public boolean getWhitespace(){
         return java.lang.Character.isWhitespace(codePoint);
-    }       
-    
+    }
+
     @Ignore
     public static boolean getWhitespace(int codePoint) {
         return java.lang.Character.isWhitespace(codePoint);
-    }       
+    }
 
     public boolean getControl(){
         return java.lang.Character.isISOControl(codePoint);
-    }       
+    }
 
     @Ignore
     public static boolean getControl(int codePoint) {
         return java.lang.Character.isISOControl(codePoint);
-    }       
+    }
 
     public ceylon.language.Character getLowercased() {
         return new Character(java.lang.Character.toLowerCase(codePoint));
@@ -199,34 +202,49 @@ public final class Character
 	public boolean asSmallAs(@Name("other") Character other) {
 		return codePoint<=other.codePoint;
 	}*/
-    
+
     @Override
     public Character getPredecessor() {
     	return new Character(codePoint-1);
     }
-    
+
     @Ignore
     public static int getPredecessor(int codePoint) {
         return codePoint-1;
     }
-    
+
     @Override
     public Character getSuccessor() {
     	return new Character(codePoint+1);
     }
-    
+
     @Ignore
     public static int getSuccessor(int codePoint) {
         return codePoint+1;
     }
-    
+
+    @Override
+    @Annotations(@Annotation("formal"))
+    @TypeInfo("ceylon.language.Integer")
+    public long distanceFrom(Character other) {
+        return codePoint-other.codePoint;
+    }
+    @Ignore
+    public long distanceFrom(int other) {
+        return codePoint-other;
+    }
+    @Ignore
+    public static long distanceFrom(char a, char b) {
+        return a-b;
+    }
+
     public long getInteger() {
         return codePoint;
     }
-    
+
     @Ignore
     public static long getInteger(int codePoint) {
         return codePoint;
     }
-    
+
 }

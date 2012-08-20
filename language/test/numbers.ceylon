@@ -414,4 +414,7 @@ shared void numbers() {
     assert(sum({1,2,3})==6, "sum()");
     assert(max({1,3,2})==3, "max()");
     assert(min({3,1,2})==1, "min()");
+
+    //Ordinals
+    assert(10.distanceFrom(2) == 10-2, "Integer.distanceFrom");
 }

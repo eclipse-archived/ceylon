@@ -39,19 +39,14 @@ shared class Range<Element>(first, last)
                 else x.successor;
     }
 
-    variable Integer index:=0;
-    variable Element x:=first;
-    while (x!=last) {
-        ++index;
-        x:=next(x);
-    }
-    
+    value distance = last.distanceFrom(first);
+
     doc "The nonzero number of elements in the range."
-    shared actual Integer size = index+1;
+    shared actual Integer size = (distance.positive then distance else -distance)+1;
     
     doc "The index of the end of the range."
     shared actual Integer lastIndex { 
-        return index; 
+        return size-1; 
     }
     
     doc "The rest of the range, without the start of the

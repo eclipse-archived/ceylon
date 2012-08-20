@@ -190,7 +190,13 @@ shared void strings() {
         .appendAll("c", "d").appendSpace()
         .append("e").string=="abcd e",
         "string builder chained calls");
-    
+    assert(builder.size == 29, "StringBuilder.size");
+    assert(builder.insert(5,`,`).insert(12,"!!!").string=="hello, world!!! goodbye everyone ", "StringBuilder.insert");
+    assert(builder.delete(12,3).delete(5,1).delete(99999,1).string=="hello world goodbye everyone ", "StringBuilder.delete 1");
+    assert(builder.delete(28,100).string=="hello world goodbye everyone", "StringBuilder.delete 2");
+    assert(builder.size==28, "StringBuilder.size 2");
+    assert(builder.reset().size==0, "StringBuilder.reset");
+
     assert("hello world".initial(0)=="", "string initial 1");
     assert("hello world".terminal(0)=="", "string terminal 1");
     assert("hello world".initial(1)=="h", "string initial 2");
@@ -223,19 +229,27 @@ shared void strings() {
     
     assert(!"".split((Character c) c.whitespace, true).empty, "\"\".split((Character c) c.whitespace,true) is empty");
     assert(!"hello".split((Character c) c.whitespace, true).empty, "hello.split((Character c) c.whitespace,true) is empty");
-    assert("hello world".split((Character c) c.whitespace, true).iterator.next()=="hello", "string split first 3");
+    assert("hello world".split((Character c) c.whitespace, true).iterator.next()=="hello", "string split first 3.1");
+    assert("hello world".split(" ", true).iterator.next()=="hello", "string split first 3.2");
     assert({"hello world".split((Character c) c==` `)...}.size==2, "string split discarding [1]");
     assert({"hello world".split((Character c) c==` `, false)...}.size==3, "string split including [1]");
     assert({"hello world".split()...}.size==2, "string split default");
     assert({"hello world".split((Character c) c==`l`, true)...}.size==3, "string split discarding [2]");
+    assert({"hello world".split("l", true)...}.size==3, "string split discarding [3]");
     assert({"hello world".split((Character c) c==`l`, false)...}.size==5, "string split including [2]");
-    assert({"hello world".split((Character c) c==`l`, false, false)...}.size==7, "string split including [3]");
+    assert({"hello world".split((Character c) c==`l`, false, false)...}=={"he","l","","l","o wor","l","d"}, "string split including [3]");
+    assert({"hello world".split((Character c) c==`l`, false, true)...}=={"he","ll","o wor", "l", "d"}, "string split including [4]");
+    assert({"hello world".split("l", false, false)...}=={"he","l","","l","o wor","l","d"}, "string split including [5]");
+    assert({"hello world".split("l", false, true)...}=={"he","ll","o wor", "l", "d"}, "string split including [6]");
+    //With strings
+    assert({"hello world".split("eo")...}=={"hello world".split({`e`,`o`})...}, "string split chars [1]");
+    assert({"hello world".split("eo")...}=={"hello world".split(StringBuilder().append("o").append("e").string) ...}, "string split chars");
     variable value count:=0;
-    for (tok in "hello world goodbye".split((Character c) c==` `, true)) {
+    for (tok in "hello world goodbye".split()) {
         count++;
         assert(tok.size>4, "string token");
     }
-    assert(count==3, "string tokens");
+    assert(count==3, "string tokens default");
     
     compareIterables({""}, "".split(), "Empty string");
     compareIterables({"", ""}, " ".split((Character c) c==` `, true), "Two empty tokens");
@@ -323,4 +337,5 @@ shared void strings() {
 
     assert(string() == "", "string()");
     assert(string(`h`, `i`)=="hi", "string(h,i)");
+    assert(`z`.distanceFrom(`a`)==25, "Character.distanceFrom");
 }

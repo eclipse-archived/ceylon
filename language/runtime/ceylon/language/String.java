@@ -1,6 +1,9 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
+import com.redhat.ceylon.compiler.java.language.FilterIterable;
+import com.redhat.ceylon.compiler.java.language.InternalMap;
+import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -807,9 +810,9 @@ public abstract class String
 
     @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
     public Iterable<? extends String> split(
-            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,ceylon.language.Character>")
+            @TypeInfo("ceylon.language.Iterable<ceylon.language.Character>|ceylon.language.Callable<ceylon.language.Boolean,ceylon.language.Character>")
             @Defaulted
-            @Name("separator") Callable<? extends Boolean> separator,
+            @Name("separator") java.lang.Object separator,
             @Defaulted
             @Name("discardSeparators") boolean discardSeparators,
             @Defaulted
@@ -822,7 +825,7 @@ public abstract class String
 
     @Ignore
     public static Iterable<? extends String> split(java.lang.String value,
-            Callable<? extends Boolean> separator,
+            java.lang.Object separator,
             boolean discardSeparators,
             boolean groupSeparators) {
         if (value.isEmpty()) {
@@ -833,27 +836,27 @@ public abstract class String
 
     @Ignore
     public Iterable<? extends String> split(
-            Callable<? extends Boolean> separator,
+            java.lang.Object separator,
             boolean discardSeparators) {
         return split(separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
     public static Iterable<? extends String> split(java.lang.String value,
-            Callable<? extends Boolean> separator,
+            java.lang.Object separator,
             boolean discardSeparators) {
         return split(value, separator, discardSeparators, split$groupSeparators(separator, discardSeparators));
     }
 
     @Ignore
     public Iterable<? extends String> split(
-            Callable<? extends Boolean> separator) {
+            java.lang.Object separator) {
         return split(separator, split$discardSeparators(separator));
     }
 
     @Ignore
     public static Iterable<? extends String> split(java.lang.String value,
-            Callable<? extends Boolean> separator) {
+            java.lang.Object separator) {
         return split(value, separator, split$discardSeparators(separator));
     }
 
@@ -878,12 +881,12 @@ public abstract class String
     }
 
     @Ignore
-    public static boolean split$discardSeparators(Callable<? extends Boolean> separator){
+    public static boolean split$discardSeparators(java.lang.Object separator){
         return true;
     }
 
     @Ignore
-    public static boolean split$groupSeparators(Callable<? extends Boolean> separator, boolean discardSeparators){
+    public static boolean split$groupSeparators(java.lang.Object separator, boolean discardSeparators){
         return true;
     }
 
@@ -1119,6 +1122,14 @@ public abstract class String
             return Iterable$impl._chain(instance(value), other);
         }
     }
+    @Ignore
+    public static <Key> Map<? extends Key, ? extends Sequence<? extends Character>> group(java.lang.String value, Callable<? extends Key> grouping) {
+        if (value.isEmpty()) {
+            return new InternalMap<Key, Sequence<? extends Character>>(java.util.Collections.<Key,Sequence<Character>>emptyMap());
+        } else {
+            return Iterable$impl._group(instance(value), grouping);
+        }
+    }
 
     @Ignore
     public static <Other>String withLeading(java.lang.String value) {
@@ -1150,11 +1161,11 @@ public abstract class String
 
     private static final class Tokens implements Iterable<String> {
         private final java.lang.String str;
-        private final ceylon.language.Callable<? extends Boolean> separator;
+        private final java.lang.Object separator;
         private final boolean keepSeparators;
         private final boolean groupSeparators;
 
-        public Tokens(java.lang.String str, ceylon.language.Callable<? extends Boolean> separator,
+        public Tokens(java.lang.String str, java.lang.Object separator,
                 boolean keepSeparators, boolean groupSeparators) {
             this.str = str;
             this.separator = separator;
@@ -1164,9 +1175,9 @@ public abstract class String
 
         @Override
         public Iterator<? extends String> getIterator() {
-            class TokenIterator implements Iterator<String> {
-                private final char[] chars = str.toCharArray();
-                private int index = 0;
+            abstract class TokenIterator implements Iterator<String> {
+                protected final char[] chars = str.toCharArray();
+                protected int index = 0;
                 private boolean first = true;
                 private boolean lastTokenWasSeparator = false;
 
@@ -1213,7 +1224,7 @@ public abstract class String
                     }
                 }
 
-                private boolean eof(){
+                protected boolean eof(){
                     return index >= chars.length;
                 }
 
@@ -1231,15 +1242,55 @@ public abstract class String
                         index++;
                 }
 
-                private boolean peekSeparator() {
-                    if(eof())
-                        return false;
-                    int charCodePoint = java.lang.Character.codePointAt(chars, index);
-                    return separator.$call(Character.instance(charCodePoint)).booleanValue();
-                }
+                protected abstract boolean peekSeparator();
             }
 
-            return new TokenIterator();
+            if (separator instanceof Callable) {
+                return new TokenIterator() {
+                    @SuppressWarnings("unchecked")
+                    protected final boolean peekSeparator() {
+                        if(eof())
+                            return false;
+                        int charCodePoint = java.lang.Character.codePointAt(chars, index);
+                        return ((Callable<Boolean>)separator).$call(Character.instance(charCodePoint)).booleanValue();
+                    }
+                };
+            } else if (separator instanceof java.lang.String) {
+                return new TokenIterator() {
+                    protected final boolean peekSeparator() {
+                        if(eof())
+                            return false;
+                        int charCodePoint = java.lang.Character.codePointAt(chars, index);
+                        return ((java.lang.String)separator).indexOf(charCodePoint) >= 0;
+                    }
+                };
+            } else if (separator instanceof String) {
+                return new TokenIterator() {
+                    protected final boolean peekSeparator() {
+                        if(eof())
+                            return false;
+                        int charCodePoint = java.lang.Character.codePointAt(chars, index);
+                        return ((String)separator).value.indexOf(charCodePoint) >= 0;
+                    }
+                };
+            } else {
+                return new TokenIterator() {
+                    @SuppressWarnings("unchecked")
+                    protected final boolean peekSeparator() {
+                        if(eof())
+                            return false;
+                        int charCodePoint = java.lang.Character.codePointAt(chars, index);
+                        java.lang.Object $tmp;
+                        for (Iterator<? extends Character> iter = ((Iterable<? extends Character>)separator).getIterator();
+                                !(($tmp = iter.next()) instanceof Finished);) {
+                            if (((Character)$tmp).getInteger() == charCodePoint) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                };
+            }
         }
 
         @Override
@@ -1340,6 +1391,10 @@ public abstract class String
         }
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
             return Iterable$impl._chain(this, other);
+        }
+        @Override @Ignore
+        public <Key> Map<? extends Key, ? extends Sequence<? extends String>> group(Callable<? extends Key> grouping) {
+            return Iterable$impl._group(this, grouping);
         }
     }
 
@@ -1467,6 +1522,10 @@ public abstract class String
         }
         @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
             return Iterable$impl._chain(this, other);
+        }
+        @Override @Ignore
+        public <Key> Map<? extends Key, ? extends Sequence<? extends Integer>> group(Callable<? extends Key> grouping) {
+            return Iterable$impl._group(this, grouping);
         }
     }
 }

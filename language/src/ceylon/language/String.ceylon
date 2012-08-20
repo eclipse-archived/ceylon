@@ -1,7 +1,49 @@
 doc "A string of characters. Each character in the string is 
      a 32-bit Unicode character. The internal UTF-16 
-     encoding is hidden from clients."
+     encoding is hidden from clients.
+     
+     A string is a `Category` of its `Character`s, and of
+     its substrings:
+     
+         `w` in greeting 
+         \"hello\" in greeting
+     
+     Strings are summable:
+     
+         String greeting = \"hello\" + \" \" + \"world\";
+     
+     They are efficiently iterable:
+     
+         for (char in \"hello world\") { ... }
+     
+     They are `List`s of `Character`s:
+     
+         value char = \"hello world\"[5];
+     
+     They are ranged:
+     
+         String who = \"hello world\"[6...];
+     
+     Note that since `string[index]` evaluates to the 
+     optional type `Character?`, it is often more convenient
+     to write `string[index..index]`, which evaluates to a
+     `String` containing a single character, or to the empty
+     string \"\" if `index` refers to a position outside the
+     string.
+     
+     The `string()` function makes it possible to use 
+     comprehensions to transform strings:
+     
+         string(for (s in \"hello world\") if (s.letter) s.uppercased)
+     
+     Since a `String` has an underlying UTF-16 encoding, 
+     certain operations are expensive, requiring iteration
+     of the characters of the string. In particular, `size`
+     requires iteration of the whole string, and `item()`,
+     `span()`, and `segment()` require iteration from the 
+     beginning of the string to the given index."
 by "Gavin"
+see (string)
 shared abstract class String()
         extends Object()
         satisfies List<Character> & Comparable<String> &
@@ -27,7 +69,7 @@ shared abstract class String()
                  is a separator characters at which to split.
                  Default to split at any Unicode whitespace
                  character."
-            Boolean separator(Character ch) = (Character ch) ch.whitespace,
+            Iterable<Character>|Callable<Boolean,Character> separator = (Character ch) ch.whitespace,
             doc "Specifies that the separator characters
                  occurring in the string should be discarded.
                  If `false`, they will be included in the
@@ -223,8 +265,7 @@ shared abstract class String()
     see (size)
     shared actual formal Boolean empty;
 
-    doc "Returns the string itself, since a String cannot
-         contain nulls."
+    doc "Returns this string."
     shared actual String coalesced {
         return this;
     }

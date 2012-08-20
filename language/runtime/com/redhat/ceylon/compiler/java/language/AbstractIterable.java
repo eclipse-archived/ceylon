@@ -1,5 +1,16 @@
-package ceylon.language;
+package com.redhat.ceylon.compiler.java.language;
 
+
+import ceylon.language.Boolean;
+import ceylon.language.Callable;
+import ceylon.language.Comparison;
+import ceylon.language.Entry;
+import ceylon.language.Integer;
+import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
+import ceylon.language.Map;
+import ceylon.language.Sequence;
+import ceylon.language.exhausted_;
 
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -115,8 +126,13 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
         return Iterable$impl._getIndexed(this);
     }
-    @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
+    @Override @Ignore @SuppressWarnings("rawtypes")
+    public <Other>Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
+    }
+    @Override @Ignore
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
+        return Iterable$impl._group(this, grouping);
     }
 
 }

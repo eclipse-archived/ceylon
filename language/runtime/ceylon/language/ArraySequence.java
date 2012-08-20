@@ -2,6 +2,8 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.language.FilterIterable;
+import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -363,6 +365,10 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @SuppressWarnings("rawtypes")
     @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
         return Iterable$impl._chain(this, other);
+    }
+    @Override @Ignore
+    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
+        return Iterable$impl._group(this, grouping);
     }
 
     @Override

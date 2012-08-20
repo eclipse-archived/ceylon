@@ -208,7 +208,27 @@ void testIterables() {
     assert(array(1,2).chain({3,4}).sequence=={1,2,3,4}, "ArrayOfSome.chain");
     assert(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}, "Singletons.chain");
 
+    //group
+    value grouped = (1..10).group((Integer i) i%2==0 then "even" else "odd");
+    assert(grouped.size == 2, "Iterable.group 1");
+    if (exists v=grouped["even"]) {
+        assert(v.size == 5, "Iterable.group 2");
+        assert(v.every((Integer i) i%2==0), "Iterable.group 3");
+    } else { fail("Iterable.group 2"); }
+    assert(grouped.defines("odd"), "Iterable.group 4");
+    value gr2 = "aBcDeFg".group((Character c) c.lowercase);
+    assert(gr2.size == 2, "Iterable.group 5");
+    if (exists v=gr2[true]) {
+        assert(v.size == 4, "Iterable.group 6");
+        assert(v.every((Character i) i.lowercase), "Iterable.group 7");
+    } else { fail("Iterable.group 6"); }
+    assert(gr2.defines(false), "Iterable.group 8");
+
     //Iterable-related functions
     assert({"aaa", "tt", "z"}.sort(byIncreasing((String s) s.size)).sequence=={"z","tt","aaa"}, "sort(byIncreasing)");
     assert({"z", "aaa", "tt"}.sort(byDecreasing((String s) s.size)).sequence=={"aaa","tt","z"}, "sort(byDecreasing)");
+    Iterable<String> combined = combine<String,Character,Integer>((Character c, Integer i) "comb " c "+" i "",
+        "hello", { 1,2,3,4 });
+    assert(combined.sequence.size==4, "combine [1]");
+    assert(combined.sequence == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }, "combine [2]");
 }

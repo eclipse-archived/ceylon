@@ -37,9 +37,19 @@ void misc() {
     for (n->e in entries(bs.sequence...)) {
         assert(n==e, "entry iteration");
     }
-    
+
+    //Test empty varargs
     see(); by(); tagged();
-    every(); any(); count(); first();
-    join(); entries(); elements();
-    array(); coalesce(); string();
+    any(); array(); coalesce(); count();
+    elements(); entries(); every(); first();
+    join(); string();
+    ",".join();
+    StringBuilder().appendAll();
+    SequenceBuilder().appendAll();
+    LazyList<Bottom>(); LazyMap<Bottom,Bottom>(); LazySet<Bottom>();
+    {1,2,3}.items();
+    {1,2,3}.definesAny();
+    {1,2,3}.definesEvery();
+    {1,2,3}.containsAny();
+    {1,2,3}.containsEvery();
 }

@@ -175,7 +175,7 @@ public class Util {
     // Java variadic conversions
     
     @SuppressWarnings("unchecked")
-    private static <T> List<T> collectIterable(Iterable<? extends T> sequence) {
+    public static <T> List<T> collectIterable(Iterable<? extends T> sequence) {
         List<T> list = new LinkedList<T>();
         if (sequence != null) {
             Iterator<? extends T> iterator = sequence.getIterator();

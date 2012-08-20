@@ -1,13 +1,13 @@
 doc "Abstract supertype of objects which associate values 
      with keys. `Correspondence` does not satisfy `Category`,
-     since in some cases, for examples lists, it is 
+     since in some cases&mdash;`List`, for example&mdash;it is 
      convenient to consider the subtype a `Category` of its
-     values, and in other cases, for example maps, it is
-     convenient to treat the subtype as a `Category` of its
+     values, and in other cases&mdash;`Map`, for example&mdash;it 
+     is convenient to treat the subtype as a `Category` of its
      entries.
      
-     An item for a given key may be obtained from a
-     `Correspondence` using the item operator:
+     The item corresponding to a given key may be obtained 
+     from a `Correspondence` using the item operator:
      
          value bg = settings[\"backgroundColor\"] else white;
      

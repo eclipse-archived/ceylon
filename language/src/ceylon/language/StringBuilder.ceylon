@@ -34,4 +34,34 @@ shared class StringBuilder() {
         appendCharacter(` `);
         return this;
     }
+
+    doc "Remove all content and return to initial state."
+    shared StringBuilder reset() {
+        throw;
+    }
+
+    doc "Insert a String or Character at the specified position.
+         If the position is beyond the end of the current
+         string, the new content is simply appended to the
+         current content. If the position is a negative number,
+         the new content is inserted at index 0."
+    shared StringBuilder insert(Integer pos, Character|String content) {
+        throw;
+    }
+
+    doc "Deletes the specified number of characters from the
+         current content, starting at the specified position.
+         If the position is beyond the end of the current content,
+         nothing is deleted. If the number of characters to delete
+         is greater than the available characters from the given
+         position, the content is truncated at the given position."
+    shared StringBuilder delete(Integer pos, Integer count) {
+        throw;
+    }
+
+    doc "Returns the size of the current content."
+    shared Integer size {
+        throw;
+    }
+
 }

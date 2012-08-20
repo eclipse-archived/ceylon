@@ -1,6 +1,10 @@
 doc "A collection of unique elements.
 
-     A `Set` is a `Collection` of its elements."
+     A `Set` is a `Collection` of its elements.
+     
+     Sets may be the subject of the binary union, 
+     intersection, exclusive union, and complement operators 
+     `|`, `&`, `^`, and `~`."
 shared interface Set<out Element>
         satisfies Collection<Element> &
                   Cloneable<Set<Element>>
@@ -35,7 +39,9 @@ shared interface Set<out Element>
     }
 
     doc "Two `Set`s are considered equal if they have the 
-         same size and share all the same elements."
+         same size and if every element of the first set is
+         also an element of the second set, as determined
+         by `contains()`."
     shared actual default Boolean equals(Object that) {
         if (is Set<Object> that) {
             if (that.size==size) {
@@ -74,12 +80,12 @@ shared interface Set<out Element>
 
     doc "Returns a new `Set` containing only the elements 
          contained in either this `Set` or the given `Set`, 
-         but not both."
+         but no element contained in both sets."
     shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object;
 
     doc "Returns a new `Set` containing all the elements in 
-         the given `Set` that are not contained in this 
+         this `Set` that are not contained in the given
          `Set`."
     shared formal Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object;

@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.FilterIterable;
+import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
@@ -259,6 +261,10 @@ public final class Map$impl<Key,Item> {
 			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
 				return Iterable$impl._chain(this, other);
 			}
+		    @Override @Ignore
+		    public <Key2> Map<? extends Key2, ? extends Sequence<? extends Key>> group(Callable<? extends Key2> grouping) {
+		        return Iterable$impl._group(this, grouping);
+		    }
         }
         return new keySet();
     }
@@ -442,6 +448,10 @@ public final class Map$impl<Key,Item> {
 			@Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
 				return Iterable$impl._chain(this, other);
 			}
+		    @Override @Ignore
+		    public <Key2> Map<? extends Key2, ? extends Sequence<? extends Item>> group(Callable<? extends Key2> grouping) {
+		        return Iterable$impl._group(this, grouping);
+		    }
         }
         return new valueCollection();
     }
@@ -707,6 +717,10 @@ public final class Map$impl<Key,Item> {
             @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
                 return Iterable$impl._chain(this, other);
             }
+            @Override @Ignore
+            public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Item, ? extends Set<Key>>>> group(Callable<? extends Key2> grouping) {
+                return Iterable$impl._group(this, grouping);
+            }
 
 			@Override @Ignore
 			public <Result> Map<? extends Item, ? extends Result> mapItems(Callable<? extends Result> mapping) {
@@ -913,6 +927,10 @@ public final class Map$impl<Key,Item> {
             }
             @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
                 return Iterable$impl._chain(this, other);
+            }
+            @Override @Ignore
+            public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Key, ? extends Result>>> group(Callable<? extends Key2> grouping) {
+                return Iterable$impl._group(this, grouping);
             }
 
             @Override

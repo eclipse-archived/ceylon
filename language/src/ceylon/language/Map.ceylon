@@ -1,10 +1,24 @@
-doc "Represents a collection which maps keys to items,
+doc "Represents a collection which maps _keys_ to _items_,
      where a key can map to at most one item. Each such 
      mapping may be represented by an `Entry`.
      
      A `Map` is a `Collection` of its `Entry`s, and a 
-     `Correspondence` from keys to items."
-see (forKey, forItem, byItem, byKey)
+     `Correspondence` from keys to items.
+
+     The prescence of an entry in a map may be tested
+     using the `in` operator:
+     
+         if (\"lang\"->\"en_AU\" in settings) { ... }
+     
+     The entries of the map may be iterated using `for`:
+     
+         for (key->item in settings) { ... }
+     
+     The item for a key may be obtained using the item
+     operator:
+     
+         String lang = settings[\"lang\"] else \"en_US\";"
+see (Entry, forKey, forItem, byItem, byKey)
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
                   Correspondence<Object,Item> &
@@ -12,9 +26,12 @@ shared interface Map<out Key,out Item>
         given Key satisfies Object
         given Item satisfies Object {
 
-    doc "Two `Map`s are considered equal if they have the 
-         same size, the same set of keys, and equal elements 
-         stored under each key."
+    doc "Two `Map`s are considered equal iff they have the 
+         same _entry sets_. The entry set of a `Map` is the
+         set of `Entry`s belonging to the map. Therefore, the
+         maps are equal iff they have same set of `keys`, and 
+         for every key in the key set, the maps have equal
+         items."
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Object> that) {
             if (that.size==size) {
@@ -45,39 +62,37 @@ shared interface Map<out Key,out Item>
 
     doc "Returns the set of keys contained in this `Map`."
     actual shared default Set<Key> keys {
-        object keySet satisfies Set<Key> {
+        object keySet 
+                extends Object() 
+                satisfies Set<Key> {
             shared actual Set<Key> clone {
+                //TODO: take a shallow copy
                 return this;
             }
-            shared actual Boolean equals(Object that) {
-                return false;
-            }
-            shared actual Integer hash {
-                return outer.size;
-            }
             shared actual Iterator<Key> iterator {
-                return bottom;
+                return outer.map(forKey((Key k) k)).iterator;
             }
             shared actual Integer size {
                 return outer.size;
             }
-            shared actual String string {
-                return "";
-            }
             shared actual Set<Key> complement<Other>(Set<Other> set)
                     given Other satisfies Object {
+                //TODO
                 return bottom;
             }
             shared actual Set<Key|Other> exclusiveUnion<Other>(Set<Other> set)
                     given Other satisfies Object {
+                //TODO
                 return bottom;
             }
             shared actual Set<Key&Other> intersection<Other>(Set<Other> set)
                     given Other satisfies Object {
+                //TODO
                 return bottom;
             }
             shared actual Set<Key|Other> union<Other>(Set<Other> set)
                     given Other satisfies Object {
+                //TODO
                 return bottom;
             }
         }
@@ -89,26 +104,28 @@ shared interface Map<out Key,out Item>
          the map, and so it can be contained more than once 
          in the resulting collection."
     shared default Collection<Item> values {
-        object valueCollection satisfies Collection<Item> {
+        object valueCollection 
+                extends Object() 
+                satisfies Collection<Item> {
             shared actual Collection<Item> clone {
+                //TODO: take a shallow copy
                 return this;
             }
             shared actual Boolean equals(Object that) {
+                //TODO: what is a reasonable
+                //      definition of equality
+                //      for a bag?
                 return false;
             }
             shared actual Integer hash {
                 return outer.size;
             }
             shared actual Iterator<Item> iterator {
-                return bottom;
+                return outer.map((Entry<Key,Item> e) e.item).iterator;
             }
             shared actual Integer size {
                 return outer.size;
             }
-            shared actual String string {
-                return "";
-            }
-
         }
         return valueCollection;
     }
@@ -117,37 +134,42 @@ shared interface Map<out Key,out Item>
          this map, and every value is the set of keys that 
          stored the `Item` in this map."
     shared default Map<Item, Set<Key>> inverse {
-        object inverse satisfies Map<Item, Set<Key>> {
+        object inverse 
+                extends Object() 
+                satisfies Map<Item, Set<Key>> {
             shared actual Map<Item,Set<Key>> clone {
-                return this;
-            }
-            shared actual Boolean equals(Object that) {
-                return false;
-            }
-            shared actual Integer hash {
-                return outer.size;
+                return LazyMap(this...);
             }
             shared actual Set<Key>? item(Object key) {
+                //TODO
                 return bottom;
             }
             shared actual Iterator<Entry<Item,Set<Key>>> iterator {
+                //TODO
                 return bottom;
             }
             shared actual Integer size {
                 return outer.size;
             }
-            shared actual String string {
-                return "";
-            }
         }
         return inverse;
     }
 
-    shared default Map<Key,Result> mapItems<Result>(Result mapping(Key key, Item item)) 
+    doc "Returns a `Map` with the same keys as this map. For
+         every key, the item is the result of applying the
+         given transformation function."
+    shared default Map<Key,Result> mapItems<Result>(
+            doc "The function that transforms a key/item
+                 pair, producing the item of the resulting
+                 map."
+            Result mapping(Key key, Item item)) 
             given Result satisfies Object {
         object mapped extends Object() 
                 satisfies Map<Key, Result> {
-            shared actual Map<Key, Result> clone { return this; } //TODO: should take a copy
+            shared actual Map<Key, Result> clone {
+                //TODO: should take a copy 
+                return this;
+            }
             shared actual Result? item(Object key) {
                 if (is Key key) {
                     if (exists item=outer[key]) {
@@ -157,10 +179,13 @@ shared interface Map<out Key,out Item>
                 return null;
             }
             shared actual Iterator<Key->Result> iterator {
-                return elements { for (key->item in outer) key->mapping(key,item) }.iterator;
+                return outer.map((Key->Item e) 
+                        e.key->mapping(e.key,e.item))
+                                .iterator;
             }
-            shared actual Integer size { return outer.size; }
-            shared actual String string { return "mapItems"; } //TODO
+            shared actual Integer size { 
+                return outer.size; 
+            }
         }
         return mapped;
     }

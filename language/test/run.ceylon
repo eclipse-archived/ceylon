@@ -46,6 +46,8 @@ shared void run() {
     testProcess();
     print("Interfaces");
     testSatisfaction();
+    print("Test sort");
+    testSort();
     results();
 }
 
@@ -54,6 +56,14 @@ shared void runAndAssert() {
     if (failureCount!=0) {
         throw Exception("There were " failureCount " failures (out of " assertionCount " assertions)");
     }
+}
+
+shared void runAndExit() {
+    run();
+    if (failureCount!=0) {
+        print("There were " failureCount " failures (out of " assertionCount " assertions)");
+    }
+    process.exit(failureCount ==0 then 0 else 1);   
 }
 
 shared void test() { run(); }
