@@ -182,7 +182,7 @@
       
     <target name="test" depends="compile.tests"
         description="compile and run the tests">
-        <java classname="runAndExit" classpath="${tests.car};${runtime.jar}"
+        <java classname="runAndExit_" classpath="${tests.car};${runtime.jar}"
             resultproperty="test.ceylon.result"/>
     	
     	<condition property="test.fail.ceylon">
