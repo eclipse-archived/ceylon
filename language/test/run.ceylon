@@ -46,6 +46,8 @@ shared void run() {
     testProcess();
     print("Interfaces");
     testSatisfaction();
+    print("Test sort");
+    testSort();
     results();
 }
 
