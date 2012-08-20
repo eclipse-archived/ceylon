@@ -43,7 +43,7 @@ void misc() {
     any(); array(); coalesce(); count();
     elements(); entries(); every(); first();
     join(); string();
-    ",".join();
+    ",".join(); sort();
     StringBuilder().appendAll();
     SequenceBuilder().appendAll();
     LazyList<Bottom>(); LazyMap<Bottom,Bottom>(); LazySet<Bottom>();
