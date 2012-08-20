@@ -5,7 +5,19 @@ public class ArtifactLookup {
     private Type type;
 
     public enum Type {
-        SRC, JVM, JS
+        SRC(ArtifactContext.SRC), 
+        JVM(ArtifactContext.CAR, ArtifactContext.JAR), 
+        JS(ArtifactContext.JS);
+        
+        private String[] suffixes;
+
+        Type(String... suffixes){
+            this.suffixes = suffixes;
+        }
+
+        public String[] getSuffixes() {
+            return suffixes;
+        }
     }
     
     public ArtifactLookup(String name, Type type){
