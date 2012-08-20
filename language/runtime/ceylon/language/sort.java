@@ -31,8 +31,9 @@ public final class sort {
             return (Iterable)$empty.getEmpty();   
         }
         
-        Element[] array = Util.toArray(elements, (Class<Element>) Comparable.class);
-        Arrays.sort(array, new Comparator<Element>() {
+        java.util.List<Element> list = Util.collectIterable(elements);
+
+        java.util.Collections.sort(list, new Comparator<Element>() {
             public int compare(Element x, Element y) {
                 Comparison result = x.compare(y);
                 if (result.largerThan()) return 1;
@@ -40,8 +41,8 @@ public final class sort {
                 return 0;
             }
         });
-        
-        return new ArraySequence<Element>(array);
+
+        return new ArraySequence<Element>(list);
     }
     
     @Ignore
