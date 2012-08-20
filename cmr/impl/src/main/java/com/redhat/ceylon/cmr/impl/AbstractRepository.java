@@ -21,12 +21,15 @@ import com.redhat.ceylon.cmr.api.ArtifactLookup;
 import com.redhat.ceylon.cmr.api.ArtifactLookup.Type;
 import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
 import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
+import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -231,5 +234,48 @@ public abstract class AbstractRepository implements Repository {
         if(path.startsWith("."))
             path = path.substring(1);
         return path;
+    }
+    
+    @Override
+    public void listVersions(ArtifactLookup lookup, ArtifactLookupResult result) {
+        // FIXME: handle default module
+        // FIXME: we should really get this splitting done somewhere in common
+        String name = lookup.getName();
+        Node namePart = NodeUtils.getNode(root, Arrays.asList(name.split("\\.")));
+        if(namePart == null)
+            return;
+        String[] suffixes = lookup.getType().getSuffixes();
+        // now each child is supposed to be a version part, let's verify that
+        for(Node child : namePart.getChildren()){
+            // Winner of the less aptly-named method
+            boolean isFolder = !child.hasBinaries();
+            // ignore non-folders
+            if(!isFolder)
+                continue;
+            // now make sure we can find the artifact we're looking for in there
+            String version = child.getLabel();
+            // avoid duplicates
+            if(result.hasVersion(version))
+                continue;
+            // try every known suffix
+            for(String suffix : suffixes){
+                String artifactName = getArtifactName(name, version, suffix);
+                Node artifact = child.getChild(artifactName);
+                if(artifact == null)
+                    continue;
+                // we found the artifact: let's notify
+                ArtifactLookupVersion newVersion = result.addVersion(version);
+                if(newVersion != null){
+                    try {
+                        File file = artifact.getContent(File.class);
+                        if(file != null)
+                            BytecodeUtils.readModuleInfo(name, file, newVersion);
+                    } catch (IOException e) {
+                        // bah
+                    }
+                }
+                break;
+            }
+        }
     }
 }

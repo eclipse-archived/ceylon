@@ -18,6 +18,8 @@ package com.redhat.ceylon.cmr.impl;
 
 import org.jboss.jandex.*;
 
+import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,26 +48,7 @@ public final class BytecodeUtils {
      * @return module info list
      */
     public static List<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
-        final Index index;
-        try {
-            // TODO -- remove this with new Jandex release
-            final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
-            if (indexFile.exists() == false) {
-                JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
-            }
-
-            final InputStream stream = new FileInputStream(indexFile);
-            try {
-                index = new IndexReader(stream).read();
-            } finally {
-                stream.close();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        final DotName moduleClassName = DotName.createSimple(moduleName + ".module");
-        final ClassInfo moduleClass = index.getClassByName(moduleClassName);
+        final ClassInfo moduleClass = getModuleInfo(moduleName, jarFile);
         if (moduleClass == null)
             return Collections.emptyList();
 
@@ -97,6 +80,52 @@ public final class BytecodeUtils {
         return infos;
     }
 
+    private static ClassInfo getModuleInfo(final String moduleName,
+            final File jarFile) {
+        final Index index;
+        try {
+            // TODO -- remove this with new Jandex release
+            final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
+            if (indexFile.exists() == false) {
+                JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
+            }
+
+            final InputStream stream = new FileInputStream(indexFile);
+            try {
+                index = new IndexReader(stream).read();
+            } finally {
+                stream.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read index for zip file "+jarFile.getPath(), e);
+        }
+
+        final DotName moduleClassName = DotName.createSimple(moduleName + ".module");
+        final ClassInfo moduleClass = index.getClassByName(moduleClassName);
+        return moduleClass;
+    }
+
+    public static void readModuleInfo(String moduleName, File moduleArchive, ArtifactLookupVersion version){
+        final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
+        if(moduleClass == null)
+            return;
+        
+        List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
+        if (annotations == null || annotations.isEmpty())
+            return;
+
+        final AnnotationInstance moduleAnnotation = annotations.get(0);
+        AnnotationValue doc = moduleAnnotation.value("doc");
+        if(doc != null)
+            version.setDoc(doc.asString());
+        AnnotationValue license = moduleAnnotation.value("license");
+        if(license != null)
+            version.setLicense(license.asString());
+        AnnotationValue by = moduleAnnotation.value("by");
+        if(by != null)
+            version.setBy(by.asStringArray());
+    }
+    
     private static String asString(AnnotationInstance ai, String name) {
         final AnnotationValue av = ai.value(name);
         if (av == null)

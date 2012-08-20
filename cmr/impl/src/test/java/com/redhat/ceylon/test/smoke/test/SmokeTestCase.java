@@ -28,6 +28,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map.Entry;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -324,5 +325,25 @@ public class SmokeTestCase {
 
         String[] expected = new String[]{};
         testComplete("org.jboss.acme.", expected, manager);
+    }
+
+    private void testListVersions(String query, String[] expected, RepositoryManager manager){
+        ArtifactLookup lookup = new ArtifactLookup(query, ArtifactLookup.Type.JVM);
+        ArtifactLookupResult result = manager.listVersions(lookup);
+        int i=0;
+        Assert.assertEquals(expected.length, result.getVersions().size());
+        for(Entry<String, ArtifactLookupVersion> name : result.getVersions().entrySet()){
+            Assert.assertEquals(expected[i++], name.getKey());
+        }
+    }
+
+    @Test
+    public void testListVersion() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        String[] expected = new String[]{
+            "1.0.0.Final",
+        };
+        testListVersions("org.jboss.acme", expected, manager);
     }
 }

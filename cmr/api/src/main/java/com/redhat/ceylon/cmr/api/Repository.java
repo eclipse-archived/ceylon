@@ -70,4 +70,6 @@ public interface Repository {
     String getDisplayString();
 
     void complete(ArtifactLookup lookup, ArtifactLookupResultByName result);
+
+    void listVersions(ArtifactLookup lookup, ArtifactLookupResult result);
 }
