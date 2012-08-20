@@ -20,6 +20,7 @@ package com.redhat.ceylon.test.smoke.test;
 import com.redhat.ceylon.cmr.api.*;
 import com.redhat.ceylon.cmr.impl.*;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
+
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -273,6 +274,7 @@ public class SmokeTestCase {
         RepositoryManager manager = getRepositoryManager();
 
         String[] expected = new String[]{
+            "com",
             "hello",
             "moduletest",
             "org.jboss.acme",
@@ -327,13 +329,19 @@ public class SmokeTestCase {
         testComplete("org.jboss.acme.", expected, manager);
     }
 
-    private void testListVersions(String query, String[] expected, RepositoryManager manager){
+    private void testListVersions(String query, ArtifactLookupVersion[] expected, RepositoryManager manager){
         ArtifactLookup lookup = new ArtifactLookup(query, ArtifactLookup.Type.JVM);
         ArtifactLookupResult result = manager.listVersions(lookup);
         int i=0;
         Assert.assertEquals(expected.length, result.getVersions().size());
-        for(Entry<String, ArtifactLookupVersion> name : result.getVersions().entrySet()){
-            Assert.assertEquals(expected[i++], name.getKey());
+        for(Entry<String, ArtifactLookupVersion> entry : result.getVersions().entrySet()){
+            ArtifactLookupVersion expectedVersion = expected[i++];
+            ArtifactLookupVersion version = entry.getValue();
+            Assert.assertEquals(expectedVersion.getVersion(), entry.getKey());
+            Assert.assertEquals(expectedVersion.getVersion(), version.getVersion());
+            Assert.assertEquals(expectedVersion.getDoc(), version.getDoc());
+            Assert.assertEquals(expectedVersion.getLicense(), version.getLicense());
+            Assert.assertArrayEquals(expectedVersion.getBy(), version.getBy());
         }
     }
 
@@ -341,9 +349,9 @@ public class SmokeTestCase {
     public void testListVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        String[] expected = new String[]{
-            "1.0.0.Final",
+        ArtifactLookupVersion[] expected = new ArtifactLookupVersion[]{
+            new ArtifactLookupVersion("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
         };
-        testListVersions("org.jboss.acme", expected, manager);
+        testListVersions("com.acme.helloworld", expected, manager);
     }
 }
