@@ -32,6 +32,7 @@ import java.util.Set;
 import com.github.rjeschke.txtmark.BlockEmitter;
 import com.github.rjeschke.txtmark.Configuration;
 import com.github.rjeschke.txtmark.Processor;
+import com.github.rjeschke.txtmark.SpanEmitter;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -57,13 +58,12 @@ public class Util {
 
     private static final int FIRST_LINE_MAX_SIZE = 120;
 
-    public static String getDoc(Declaration decl) {
-        return wikiToHTML(getRawDoc(decl));
+    public static String getDoc(Declaration decl, LinkRenderer linkRenderer) {
+        return wikiToHTML(getRawDoc(decl), linkRenderer.useScope(decl));
     }
 
-    public static String getDoc(Module module) {
-        List<String> doc = getAnnotationValues(module.getAnnotations(), "doc");
-        return doc != null && !doc.isEmpty() ? wikiToHTML(unquote(doc.get(0))) : "";
+    public static String getDoc(Module module, LinkRenderer linkRenderer) {
+        return wikiToHTML(getRawDoc(module.getAnnotations()), linkRenderer.useScope(module));
     }
     /** Returns the list of authors specified in the module through "by" annotations. */
     public static List<String> getAuthors(List<Annotation> anns) {
@@ -86,21 +86,20 @@ public class Util {
         return getAuthors(pkg.getAnnotations());
     }
 
-    public static String getDoc(Package pkg) {
-        List<String> doc = getAnnotationValues(pkg.getAnnotations(), "doc");
-        return doc != null && !doc.isEmpty() ? wikiToHTML(unquote(doc.get(0))) : "";
+    public static String getDoc(Package pkg, LinkRenderer linkRenderer) {
+        return wikiToHTML(getRawDoc(pkg.getAnnotations()), linkRenderer.useScope(pkg));
     }
 
-    public static String getDocFirstLine(Declaration decl) {
-        return wikiToHTML(getFirstLine(getRawDoc(decl)));
+    public static String getDocFirstLine(Declaration decl, LinkRenderer linkRenderer) {
+        return wikiToHTML(getFirstLine(getRawDoc(decl)), linkRenderer.useScope(decl));
     }
 
-    public static String getDocFirstLine(Package pkg) {
-        return wikiToHTML(getFirstLine(getDoc(pkg)));
+    public static String getDocFirstLine(Package pkg, LinkRenderer linkRenderer) {
+        return wikiToHTML(getFirstLine(getRawDoc(pkg.getAnnotations())), linkRenderer.useScope(pkg));
     }
 
-    public static String getDocFirstLine(Module module) {
-        return wikiToHTML(getFirstLine(getDoc(module)));
+    public static String getDocFirstLine(Module module, LinkRenderer linkRenderer) {
+        return wikiToHTML(getFirstLine(getRawDoc(module.getAnnotations())), linkRenderer.useScope(module));
     }
     
     public static List<String> getTags(Declaration decl) {
@@ -113,8 +112,8 @@ public class Util {
         }
         return tags;
     }
-
-    public static String wikiToHTML(String text) {
+    
+    public static String wikiToHTML(String text, LinkRenderer linkRenderer) {
         if( text == null || text.length() == 0 ) {
             return text;
         }
@@ -122,6 +121,7 @@ public class Util {
         Configuration config = Configuration.builder()
                 .forceExtentedProfile()
                 .setCodeBlockEmitter(CeylondocBlockEmitter.INSTANCE)
+                .setSpecialLinkEmitter(new CeylondocSpanEmitter(linkRenderer))
                 .build();
         
         return Processor.process(text, config);
@@ -166,6 +166,15 @@ public class Util {
         }
         return "";
     }
+    
+    private static String getRawDoc(List<Annotation> anns) {
+        for (Annotation a : anns) {
+            if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
+                return unquote(a.getPositionalArguments().get(0));
+            }
+        }
+        return "";
+    }
 
     public static Annotation getAnnotation(Declaration decl, String name) {
         for (Annotation a : decl.getAnnotations()) {
@@ -181,15 +190,6 @@ public class Util {
             a = getAnnotation(decl.getRefinedDeclaration(), name);
         }
         return a;
-    }
-    /** Finds the annotation with the specified name from the list. */
-    public static List<String> getAnnotationValues(List<Annotation> anns, String name) {
-        for (Annotation a : anns) {
-            if (a.getName().equals(name) && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
-                return a.getPositionalArguments();
-            }
-        }
-        return null;
     }
 
     /** Remove quotes from a string, if it starts and ends with them. */
@@ -359,5 +359,31 @@ public class Util {
         }
         
     }
+    
+    private static class CeylondocSpanEmitter implements SpanEmitter {
+
+        private final LinkRenderer linkRenderer;
+        
+        public CeylondocSpanEmitter(LinkRenderer linkRenderer) {
+            this.linkRenderer = linkRenderer;
+        }
+
+        @Override
+        public void emitSpan(StringBuilder out, String content) {
+            String customName;
+            String declName; 
+            int indexOf = content.indexOf("|");
+            if( indexOf == -1 ) {
+                customName = content;
+                declName = content;
+            } else {
+                customName = content.substring(0, indexOf);
+                declName = content.substring(indexOf+1, content.length()); 
+            }
+            String link = linkRenderer.to(declName).useCustomText(customName).getAnchor();
+            out.append(link);
+        }
+        
+    }    
     
 }

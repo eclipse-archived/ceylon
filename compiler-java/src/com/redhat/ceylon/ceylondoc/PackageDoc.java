@@ -157,7 +157,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         writeSourceLink(pkg);
         close("div");
         
-        around("div class='doc'", getDoc(pkg));
+        around("div class='doc'", getDoc(pkg, linkRenderer()));
         
         writeBy(Util.getAuthors(pkg), false);
     }
@@ -250,7 +250,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         writeIcon(d);
         around("span class='modifiers'", getModifiers(d));
         write(" ");
-        link(d.getType());
+        linkRenderer().to(d.getType()).write();
         close("code", "td");
         open("td");
         writeTagged(d);
@@ -258,20 +258,10 @@ public class PackageDoc extends ClassOrPackageDoc {
         close("td");
         close("tr");
     }
-
-    @Override
-    protected String getObjectUrl(Object to) throws IOException {
-        return tool.getObjectUrl(pkg, to);
-    }
-
-    @Override
-    protected String getResourceUrl(String to) throws IOException {
-        return tool.getResourceUrl(pkg, to);
-    }
     
     @Override
-    protected String getSrcUrl(Object to) throws IOException {
-        return tool.getSrcUrl(pkg, to);
+    protected Object getFromObject() {
+        return pkg;
     }
 
     @Override

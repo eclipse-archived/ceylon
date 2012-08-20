@@ -20,12 +20,10 @@
 
 package com.redhat.ceylon.ceylondoc;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -33,16 +31,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public abstract class CeylonDoc extends Markup {
 
@@ -55,137 +47,15 @@ public abstract class CeylonDoc extends Markup {
         this.tool = tool;
     }
     
-    protected boolean inCurrentModule(Scope scope) {
-        return module.equals(getPackage(scope).getModule());
+    protected LinkRenderer linkRenderer() {
+        return new LinkRenderer(tool, writer, getFromObject());
     }
     
-    protected void link(ProducedType type) throws IOException {
-        // Avoid NPEs for things the typechecker will produce errors for
-        if(type == null)
-            return;
-        TypeDeclaration decl = type.getDeclaration();
-        if(decl instanceof UnionType){
-            UnionType ut = (UnionType) decl;
-            // try to simplify if possible
-            if (ut.getCaseTypes().size()==2) {
-                Unit unit = decl.getUnit();
-                if (com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, unit.getNothingDeclaration())) {
-                    link(getDefiniteTypeForDisplay(ut));
-                    write("?");
-                    return;
-                }
-                if (com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
-                        com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, unit.getSequenceDeclaration())) {
-                    link(unit.getElementType(type));
-                    write("[]");
-                    return;
-                }
-            }
-            // simplification failed, do it the hard way
-            boolean first = true;
-            for(ProducedType ud : ut.getCaseTypes()){
-                if(first){
-                    first = false;
-                }else{
-                    write("|");
-                }
-                link(ud);
-            }
-        }else if(decl instanceof IntersectionType){
-            IntersectionType it = (IntersectionType) decl;
-            boolean first = true;
-            for(ProducedType id : it.getSatisfiedTypes()){
-                if(first){
-                    first = false;
-                }else{
-                    write("&amp;");
-                }
-                link(id);
-            }
-        }else if(decl instanceof ClassOrInterface){
-            link((ClassOrInterface) decl, type.getTypeArgumentList());
-        } else if (decl instanceof TypeParameter) {
-            around("span class='type-parameter'", decl.getName());
-        } else {
-            write(type.getProducedTypeName());
-        }
+    protected void linkToDeclaration(Declaration declaration) throws IOException {
+        linkRenderer().to(declaration).write();
     }
-
-    protected void link(ClassOrInterface decl, List<ProducedType> typeParameters) throws IOException {
-        String name = decl.getName();
-        if (inCurrentModule(decl)) {
-            around("a href='" + getObjectUrl(decl) + "'", name);
-        } else {
-            write(name);
-        }
-        if (typeParameters != null && !typeParameters.isEmpty()) {
-            write("&lt;");
-            boolean once = false;
-            for (ProducedType typeParam : typeParameters) {
-                if (!once)
-                    once = true;
-                else
-                    write(",");
-                link(typeParam);
-            }
-            write("&gt;");
-        }
-    }
-
-    protected void linkToDeclaration(Declaration decl) throws IOException {
-        String name = decl.getName();
-        Scope container = decl.getContainer();
-
-        if (inCurrentModule(container)) {
-            String sectionPackageAnchor = "#section-package";
-            String containerUrl = getObjectUrl(container);
-            if (containerUrl.endsWith(sectionPackageAnchor)) {
-                containerUrl = containerUrl.substring(0, containerUrl.length() - sectionPackageAnchor.length());
-            }
-            String declarationUrl = containerUrl + "#" + name;
-            around("a href='" + declarationUrl + "'", name);
-        } else {
-            write(name);
-        }
-    }
-
-    /**
-     * When parameter is <code>UnionType[Element?]</code>, we can not use method <code>Unit.getDefiniteType()</code>, 
-     * because its result is <code>IntersectionType[Element&Object]</code> and to html is rendered <code>Element&Object?</code>.
-     */
-    private ProducedType getDefiniteTypeForDisplay(UnionType ut) {
-        ProducedType nonOptionalType = null;
-        Class nothingDeclaration = ut.getUnit().getNothingDeclaration();
-        for (ProducedType ct : ut.getCaseTypes()) {
-            TypeDeclaration ctd = ct.getDeclaration();
-            if (ctd instanceof Class && ctd.equals(nothingDeclaration)) {
-                continue;
-            } else {
-                nonOptionalType = ct;
-                break;
-            }
-        }
-        return nonOptionalType;
-    }
-
-    protected String getFileName(Scope klass) {
-        List<String> name = new LinkedList<String>();
-        while (klass instanceof Declaration) {
-            name.add(0, ((Declaration) klass).getName());
-            klass = klass.getContainer();
-        }
-        return join(".", name) + ".html";
-    }
-
-    protected File getFolder(Package pkg) {
-        File dir = new File(tool.getOutputFolder(pkg.getModule()), join("/", pkg.getName()));
-        dir.mkdirs();
-        return dir;
-    }
-
-    protected File getFolder(ClassOrInterface klass) {
-        return getFolder(getPackage(klass));
-    }
+    
+    protected abstract Object getFromObject();
 
     protected static Package getPackage(Scope decl) {
         while (!(decl instanceof Package)) {
@@ -194,31 +64,14 @@ public abstract class CeylonDoc extends Markup {
         return (Package) decl;
     }
 
-    protected static String join(String str, List<String> parts) {
-        StringBuilder stringBuilder = new StringBuilder();
-        Iterator<String> iterator = parts.iterator();
-        while (iterator.hasNext()) {
-            stringBuilder.append(iterator.next());
-            if (iterator.hasNext())
-                stringBuilder.append(str);
-        }
-        return stringBuilder.toString();
-    }
-
     protected boolean shouldInclude(Declaration decl){
         return tool.shouldInclude(decl);
     }
     
-    protected abstract String getObjectUrl(Object to) throws IOException;
-    
-    protected abstract String getResourceUrl(String to) throws IOException;
-    
-    protected abstract String getSrcUrl(Object to) throws IOException;
-
     protected void writeNav(Module module, Object decl, DocType docType) throws IOException {
         open("div class='nav menu'");
         open("div");
-        around("a href='"+getObjectUrl(module)+"'", getAccessKeyed("Overview", 'O', "Module documentation"));
+        linkRenderer().to(module).useCustomText(getAccessKeyed("Overview", 'O', "Module documentation")).write();
         close("div");
         if(docType == DocType.PACKAGE)
             open("div class='selected'");
@@ -226,21 +79,20 @@ public abstract class CeylonDoc extends Markup {
             open("div");
         if(docType != DocType.MODULE
                 && docType != DocType.SEARCH) {
-            String url;
+            String accessKeyed = getAccessKeyed("Package", 'P', "Package documentation");
             if (decl instanceof Declaration) {
-                url = getObjectUrl(getPackage(((Declaration)decl).getContainer()));
+                linkRenderer().to(getPackage(((Declaration)decl).getContainer())).useCustomText(accessKeyed).write();
             } else if (decl instanceof Package) {
-                url = getObjectUrl((Package)decl);
+                linkRenderer().to((Package)decl).useCustomText(accessKeyed).write();
             } else {
                 throw new RuntimeException("" + decl);
             }
-            around("a href='" + url + "'", getAccessKeyed("Package", 'P', "Package documentation"));
         } else
             write("Package");
         close("div");
         if(docType == DocType.TYPE){
             open("div class='selected'");
-            around("a href='"+getObjectUrl(decl)+"'", getAccessKeyed("Type", 'T', "Type documentation"));
+            linkRenderer().to((ClassOrInterface)decl).useCustomText(getAccessKeyed("Type", 'T', "Type documentation")).write();
         }else{
             open("div");
             write("Type");
@@ -248,7 +100,7 @@ public abstract class CeylonDoc extends Markup {
         close("div");
 
         open("div");
-        around("a href='"+getResourceUrl("../search.html")+"'", getAccessKeyed("Search", 'S', "Search this module"));
+        around("a href='"+linkRenderer().getResourceUrl("../search.html")+"'", getAccessKeyed("Search", 'S', "Search this module"));
         close("div");
         
         writeFilterDropdownMenu(docType);
@@ -299,8 +151,8 @@ public abstract class CeylonDoc extends Markup {
         write("jQuery('html').keypress(function(evt){\n");
         write(" evt = evt || window.event;\n");
         write(" var keyCode = evt.keyCode || evt.which;\n");
-        writeKeyboardShortcut('s', getResourceUrl("../search.html"));
-        writeKeyboardShortcut('o', getResourceUrl("../index.html"));
+        writeKeyboardShortcut('s', linkRenderer().getResourceUrl("../search.html"));
+        writeKeyboardShortcut('o', linkRenderer().getResourceUrl("../index.html"));
         writeAdditionalKeyboardShortcuts();
         write("});\n");
         close("script");
@@ -322,24 +174,24 @@ public abstract class CeylonDoc extends Markup {
         open("head");
         tag("meta charset='UTF-8'");
         around("title", title);
-        tag("link href='" + getResourceUrl("shCore.css") + "' rel='stylesheet' type='text/css'");
-        tag("link href='" + getResourceUrl("shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
-        tag("link href='" + getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
+        tag("link href='" + linkRenderer().getResourceUrl("shCore.css") + "' rel='stylesheet' type='text/css'");
+        tag("link href='" + linkRenderer().getResourceUrl("shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
+        tag("link href='" + linkRenderer().getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
         for (String add : additional) {
             if (add.endsWith(".css")) {
-                tag("link href='" + getResourceUrl(add) + "' rel='stylesheet' type='text/css'");
+                tag("link href='" + linkRenderer().getResourceUrl(add) + "' rel='stylesheet' type='text/css'");
             } else if (!add.endsWith(".js")) {
                 throw new RuntimeException(CeylondMessages.msg("error.unexpectedAdditionalResource", add));
             }
         }
-        around("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js") + "'");
-        around("script type='text/javascript' src='" + getResourceUrl("shCore.js") + "'");
-        around("script type='text/javascript' src='" + getResourceUrl("shBrushCeylon.js") + "'");
-        around("script type='text/javascript' src='" + getResourceUrl("index.js") + "'");
-        around("script type='text/javascript' src='" + getResourceUrl("ceylond.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("jquery-1.7.min.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shCore.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shBrushCeylon.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("index.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("ceylond.js") + "'");
         for (String add : additional) {
             if (add.endsWith(".js")) {
-                around("script type='text/javascript' src='" + getResourceUrl(add) + "'");
+                around("script type='text/javascript' src='" + linkRenderer().getResourceUrl(add) + "'");
             } else if (!add.endsWith(".css")) {
                 throw new RuntimeException(CeylondMessages.msg("error.unexpectedAdditionalResource", add));
             }
@@ -350,7 +202,7 @@ public abstract class CeylonDoc extends Markup {
     }
     
     protected void writeSourceLink(Object modPkgOrDecl) throws IOException {
-        String srcUrl = getSrcUrl(modPkgOrDecl);
+        String srcUrl = linkRenderer().getSrcUrl(modPkgOrDecl);
         if (tool.isIncludeSourceCode() && srcUrl != null) {
             open("a class='link-source-code "+DocType.typeOf(modPkgOrDecl).name().toLowerCase()+"' href='" + srcUrl + "'");
             write("<i class='icon-source-code'></i>");

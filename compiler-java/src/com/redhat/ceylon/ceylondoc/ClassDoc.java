@@ -293,7 +293,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("th");
             write(title);
             open("code");
-            link(superClass.getType());
+            linkToDeclaration(superClass);
             close("code");
             close("th");
             close("tr");
@@ -424,7 +424,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("th");
             write(title);
             open("code");
-            link(superInterface.getType());
+            linkToDeclaration(superInterface);
             close("code");
             close("th");
             close("tr");
@@ -497,7 +497,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("td");
         open("td");
         writeIcon(c);
-        link(c.getType());
+        linkToDeclaration(c);
         writeTagged(c);
         tag("br");
         writeDescription(c);
@@ -535,7 +535,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             for (ProducedType superType : superTypes) {
                 open("ul class='inheritance'", "li");
                 writeIcon(superType.getDeclaration());
-                link(superType);
+                linkRenderer().to(superType).write();
                 i++;
             }
             while (i-- > 0) {
@@ -560,7 +560,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         writeEnclosingType();
 
         // description
-        around("div class='doc'", getDoc(klass));
+        around("div class='doc'", getDoc(klass, linkRenderer()));
 
         writeBy(klass);
         writeSee(klass);
@@ -590,20 +590,10 @@ public class ClassDoc extends ClassOrPackageDoc {
     private boolean hasConstructor() {
         return (klass instanceof Class);
     }
-
-	@Override
-	protected String getObjectUrl(Object to) throws IOException {
-	    return tool.getObjectUrl(klass, to);
-	}
-	
-	@Override
-    protected String getResourceUrl(String to) throws IOException {
-        return tool.getResourceUrl(klass, to);
-    }
-	
-	@Override
-    protected String getSrcUrl(Object to) throws IOException {
-        return tool.getSrcUrl(klass, to);
+    
+    @Override
+    protected Object getFromObject() {
+        return klass;
     }
 
     private String getClassName() throws IOException {
@@ -676,7 +666,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else {
                     first = false;
                 }
-                link(typeDeclaration, null);
+                linkRenderer().to(typeDeclaration).skipTypeArguments().write();
             }
             close("div");
         }
@@ -693,7 +683,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else {
                     first = false;
                 }
-                link(typeDeclaration);
+                linkRenderer().to(typeDeclaration).write();
             }
             close("div");
         }
@@ -705,7 +695,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("div class='enclosingType'");
             write("Enclosing " + (enclosingType instanceof Class ? "class: " : "interface: "));
             writeIcon(enclosingType);
-            link(enclosingType.getType());
+            linkToDeclaration(enclosingType);
             close("div");
         }
     }

@@ -76,12 +76,12 @@ public class IndexDoc extends CeylonDoc {
         }
         // get rid of the eventual final dangling JSON list comma but adding a module entry 
         writeIndexElement(module.getNameAsString(), tool.kind(module), 
-                getObjectUrl(module), Util.getDocFirstLine(module), null);
+                linkRenderer().to(module).getUrl(), Util.getDocFirstLine(module, linkRenderer()), null);
     }
 
     private void indexPackage(Package pkg) throws IOException {
         writeIndexElement(pkg.getNameAsString(), tool.kind(pkg), 
-                getObjectUrl(pkg), Util.getDocFirstLine(pkg), null);
+                linkRenderer().to(pkg).getUrl(), Util.getDocFirstLine(pkg, linkRenderer()), null);
         write(",\n");
         indexMembers(pkg);
     }
@@ -102,7 +102,7 @@ public class IndexDoc extends CeylonDoc {
         String name = decl.getName();
         String url;
         if(decl instanceof ClassOrInterface){
-            url = getObjectUrl(decl);
+            url = linkRenderer().to(decl).getUrl();
         }else if(decl instanceof Method
                 || decl instanceof Value
                 || decl instanceof Getter){
@@ -117,7 +117,7 @@ public class IndexDoc extends CeylonDoc {
         }else
             throw new RuntimeException("Unknown type of object: "+decl);
         String type = tool.kind(decl);
-        String doc = Util.getDocFirstLine(decl);
+        String doc = Util.getDocFirstLine(decl, linkRenderer());
         List<String> tags = Util.getTags(decl);
         tagIndex.addAll(tags);
         writeIndexElement(name, type, url, doc, tags);
@@ -167,19 +167,10 @@ public class IndexDoc extends CeylonDoc {
         }
         return escaped.toString();
     }
+    
+    @Override
+    protected Object getFromObject() {
+        return module;
+    }
 
-    @Override
-    protected String getObjectUrl(Object to) throws IOException {
-        return tool.getObjectUrl(module, to);
-    }
-    
-    @Override
-    protected String getResourceUrl(String to) throws IOException {
-        return tool.getResourceUrl(module, to);
-    }
-    
-    @Override
-    protected String getSrcUrl(Object to) throws IOException {
-        return tool.getSrcUrl(module, to);
-    }
 }

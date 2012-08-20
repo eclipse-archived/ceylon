@@ -17,35 +17,4 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-
-package com.redhat.ceylon.ceylondoc;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-
-public class Search extends CeylonDoc {
-
-    public Search(Module module, CeylonDocTool tool, Writer writer) {
-        super(module, tool, writer);
-    }
-
-    public void generate() throws IOException {
-        htmlHead("Search");
-        writeNav(module, null, DocType.SEARCH);
-        include("resources/search.html");
-        close("body", "html");
-    }
-    
-    @Override
-    protected Object getFromObject() {
-        return module;
-    }
-
-    protected void writeKeyboardShortcuts() throws IOException {
-        // Hack: Don't do shortcuts on the search page, because it interferes 
-        // with the search
-    }
-
-}
+shared class A2(){}
