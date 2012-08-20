@@ -45,6 +45,7 @@ if not exist "%JAVA%" (
 
 rem MINIMAL_CP are classes required by the tools to run
 set "MINIMAL_CP=%CEYLON_REPO%\com\redhat\ceylon\compiler\java\%CEYLON_VERSION%\com.redhat.ceylon.compiler.java-%CEYLON_VERSION%.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\compiler\js\%CEYLON_VERSION%\com.redhat.ceylon.compiler.js-%CEYLON_VERSION%.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\typechecker\%CEYLON_VERSION%\com.redhat.ceylon.typechecker-%CEYLON_VERSION%.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\common\%CEYLON_VERSION%\com.redhat.ceylon.common-%CEYLON_VERSION%.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\module-resolver\%CEYLON_VERSION%\com.redhat.ceylon.module-resolver-%CEYLON_VERSION%.jar"
@@ -57,3 +58,5 @@ set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\httpcore-4.1.1.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\commons-logging-1.1.1.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\commons-codec-1.4.jar"
 set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\jandex-1.0.3.Final.jar"
+set "MINIMAL_CP=%MINIMAL_CP%:%CEYLON_HOME%\lib\txtmark-0.7-8bc64aa0f1.jar"
+set "MINIMAL_CP=%MINIMAL_CP%:%CEYLON_HOME%\lib\markdownpapers-core-1.2.7.jar"
