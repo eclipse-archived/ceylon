@@ -1,7 +1,11 @@
 package com.redhat.ceylon.cmr.api;
 
-public class ArtifactLookupResult implements Comparable<ArtifactLookupResult> {
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+public class ArtifactLookupResult {
     private String name;
+    private SortedMap<String, ArtifactLookupVersion> versions = new TreeMap<String, ArtifactLookupVersion>();
 
     public ArtifactLookupResult(String name) {
         this.name = name;
@@ -11,26 +15,19 @@ public class ArtifactLookupResult implements Comparable<ArtifactLookupResult> {
         return name;
     }
 
-    @Override
-    public int compareTo(ArtifactLookupResult other) {
-        return name.compareTo(other.name);
+    public ArtifactLookupVersion addVersion(String version) {
+        if(versions.containsKey(version))
+            return null;
+        ArtifactLookupVersion newVersion = new ArtifactLookupVersion(version);
+        versions.put(version, newVersion);
+        return newVersion;
     }
-    
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == this)
-            return true;
-        if(obj instanceof ArtifactLookupResult){
-            return name.equals(((ArtifactLookupResult)obj).name);
-        }
-        return false;
+
+    public SortedMap<String, ArtifactLookupVersion> getVersions() {
+        return versions;
     }
-    
-    @Override
-    public int hashCode() {
-        int code = 31;
-        code = 37 * code + ArtifactLookupResult.class.getName().hashCode();
-        code = 37 * code + name.hashCode();
-        return code;
+
+    public boolean hasVersion(String version) {
+        return versions.containsKey(version);
     }
 }
