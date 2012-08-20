@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
 class FloatBoxing {
+    
+    FloatBoxing() {
+        this.attrFloat = 1.0;
+    }
     private double attrFloat;
     
     private final double getAttrFloat() {
@@ -57,10 +61,6 @@ class FloatBoxing {
     }
     
     private final void test(final double f) {
-    }
-    
-    FloatBoxing() {
-        this.attrFloat = 1.0;
     }
     
     public static void main(.java.lang.String[] args) {

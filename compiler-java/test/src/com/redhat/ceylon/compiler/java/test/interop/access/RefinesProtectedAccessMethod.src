@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.java.test.interop.access;
 
 class RefinesProtectedAccessMethod extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers {
     
+    RefinesProtectedAccessMethod() {
+        super();
+    }
+    
     @.java.lang.Override
     public final void protectedAccessMethod() {
         super.protectedAccessMethod();
-    }
-    
-    RefinesProtectedAccessMethod() {
-        super();
     }
     
     public static void main(.java.lang.String[] args) {

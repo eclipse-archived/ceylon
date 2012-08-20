@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class CallableReturnMethod {
     
+    CallableReturnMethod() {
+    }
+    
     private final long f() {
         return 1L;
     }
@@ -34,9 +37,6 @@ class CallableReturnMethod {
                 return .ceylon.language.Integer.instance(c.f());
             }
         };
-    }
-    
-    CallableReturnMethod() {
     }
     
     public static void main(.java.lang.String[] args) {

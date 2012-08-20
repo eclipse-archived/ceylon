@@ -38,13 +38,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
-	public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
+	public ClassOrPackageDoc(Module module, DocTool tool, Writer writer) {
 		super(module, tool, writer);
 	}
 
@@ -57,43 +55,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         open("div class='see'");
         write("See also: ");
         for (String target : see.getPositionalArguments()) {
-            // try to resolve in containing scopes
-            
-            Scope declScope = resolveScope(decl);
-            Declaration targetDecl = resolveDeclaration(declScope, target);
-            if(targetDecl != null){
-                if (!first) {
-                    write(", ");
-                } else {
-                    first = false;
-                }
-                if (targetDecl instanceof TypeDeclaration) {
-                    link(((TypeDeclaration) targetDecl).getType());
-                } else {
-                    linkToDeclaration(targetDecl);
-                }
+            if (!first) {
+                write(", ");
+            } else {
+                first = false;
             }
+            linkRenderer().to(target).useScope(decl).write();
         }
         close("div");
-    }
-
-    private Scope resolveScope(Declaration decl) {
-        if (decl == null) {
-            return null;
-        } else if (decl instanceof Scope) {
-            return (Scope) decl;
-        } else {
-            return decl.getContainer();
-        }
-    }
-
-    private Declaration resolveDeclaration(Scope decl, String target) {
-        if(decl == null)
-            return null;
-        Declaration member = decl.getMember(target, null);
-        if (member != null)
-            return member;
-        return resolveDeclaration(decl.getContainer(), target);
     }
     
     protected void doc(MethodOrValue d) throws IOException {
@@ -103,7 +72,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeIcon(d);
         around("span class='modifiers'", getModifiers(d));
         write(" ");
-        link(d.getType());
+        linkRenderer().to(d.getType()).write();
         close("code", "td");
         open("td");
         writeLinkSource(d);
@@ -125,7 +94,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     protected void writeDescription(Declaration d) throws IOException {
         open("div class='description'");
         writeDeprecated(d);
-        around("div class='doc'", getDoc(d));
+        around("div class='doc'", getDoc(d, linkRenderer()));
         if( d instanceof MethodOrValue ) {
         	writeParameters(d);
             writeThrows(d);        
@@ -141,9 +110,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         String srcUrl;
         if (m.isToplevel()) {
-            srcUrl = getSrcUrl(m);
+            srcUrl = linkRenderer().getSrcUrl(m);
         } else {
-            srcUrl = getSrcUrl(m.getContainer());
+            srcUrl = linkRenderer().getSrcUrl(m.getContainer());
         }
         int[] lines = tool.getDeclarationSrcLocation(m);
         if(lines != null){
@@ -186,7 +155,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 } else if (param.isSequenced()) {
                     writeSequencedParameter(param);
                 } else {
-                    link(param.getType());
+                    linkRenderer().to(param.getType()).write();
                     write(" ", param.getName());
                 }
             }
@@ -195,7 +164,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     private void writeFunctionalParameter(FunctionalParameter functionParam) throws IOException {
-        link(functionParam.getType());
+        linkRenderer().to(functionParam.getType()).write();
         write(" ");
         write(functionParam.getName());
         writeParameterList(functionParam);
@@ -203,7 +172,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
     private void writeSequencedParameter(Parameter param) throws IOException {
         ProducedType sequencedParamType = param.getUnit().getIteratedType(param.getType());
-        link(sequencedParamType);
+        linkRenderer().to(sequencedParamType).write();
         write("...");
         write(" ", param.getName());
     }
@@ -222,7 +191,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     		List<ParameterList> parameterLists = ((Functional)decl).getParameterLists();
     		for (ParameterList parameterList : parameterLists) {
     			for (Parameter parameter : parameterList.getParameters()) {
-    				String doc = getDoc(parameter);
+    				String doc = getDoc(parameter, linkRenderer());
     				if( !doc.isEmpty() ) {
     					if( first ) {
     						first = false;
@@ -260,17 +229,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 }
 
                 open("li");
-
-                Scope declScope = resolveScope(decl);
-                Declaration excTypeDecl = resolveDeclaration(declScope, excType);
-                if (excTypeDecl instanceof TypeDeclaration) {
-                    link(((TypeDeclaration)excTypeDecl).getType());
-                } else {
-                    write(excType);
-                }
+                
+                linkRenderer().to(excType).useScope(decl).write();
 
                 if (excDesc != null) {
-                    write(Util.wikiToHTML(Util.unquote(excDesc)));
+                    write(Util.wikiToHTML(Util.unquote(excDesc), linkRenderer().useScope(decl)));
                 }
 
                 close("li");
@@ -293,7 +256,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     text += Util.unquote(reason);
                 }
             }
-            write(Util.wikiToHTML(text));
+            write(Util.wikiToHTML(text, linkRenderer().useScope(decl)));
             close("div");
         }
     }

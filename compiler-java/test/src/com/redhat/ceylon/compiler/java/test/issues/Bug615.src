@@ -5,27 +5,27 @@ interface I {
     public abstract .ceylon.language.Integer getX();
 }
 final class I$impl {
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.issues.I $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.I $this;
     
     public final .ceylon.language.Integer getX() {
         return $this.getX();
     }
-    
-    I$impl(.com.redhat.ceylon.compiler.java.test.issues.I $this) {
-        this.$this = $this;
-    }
 }
 class C implements .com.redhat.ceylon.compiler.java.test.issues.I {
+    
+    C(.ceylon.language.Integer x) {
+        this.x = x;
+        this.$com$redhat$ceylon$compiler$java$test$issues$I$this = new .com.redhat.ceylon.compiler.java.test.issues.I$impl(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.I$impl $com$redhat$ceylon$compiler$java$test$issues$I$this;
     private final .ceylon.language.Integer x;
     
     @.java.lang.Override
     public final .ceylon.language.Integer getX() {
         return x;
-    }
-    
-    C(.ceylon.language.Integer x) {
-        this.x = x;
-        this.$com$redhat$ceylon$compiler$java$test$issues$I$this = new .com.redhat.ceylon.compiler.java.test.issues.I$impl(this);
     }
 }

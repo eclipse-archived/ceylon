@@ -10,24 +10,24 @@ public interface I {
     public abstract boolean id(final boolean x);
 }
 public final class I$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.toplevel.I $this;
     
     public I$impl(.com.redhat.ceylon.compiler.java.test.structure.toplevel.I $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.toplevel.I $this;
 }
 public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.compiler.java.test.structure.toplevel.C implements .com.redhat.ceylon.compiler.java.test.structure.toplevel.I {
+    
+    private topLevelObjectWithSuperTypes_() {
+        super(2L);
+        this.$com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl(this);
+    }
     
     @.java.lang.Override
     public final boolean id(final boolean x) {
         return x;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl $com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this;
-    
-    private topLevelObjectWithSuperTypes_() {
-        super(2L);
-        this.$com$redhat$ceylon$compiler$java$test$structure$toplevel$I$this = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.I$impl(this);
-    }
     private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_[]{new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_()};

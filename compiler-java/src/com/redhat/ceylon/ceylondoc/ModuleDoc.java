@@ -32,7 +32,7 @@ public class ModuleDoc extends CeylonDoc {
 
     private Module module;
 
-    public ModuleDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
+    public ModuleDoc(DocTool tool, Writer writer, Module module) throws IOException {
         super(module, tool, writer);
         this.module = module;
     }
@@ -66,7 +66,7 @@ public class ModuleDoc extends CeylonDoc {
         writeSourceLink(module);
         close("div");
         
-        around("div class='doc'", getDoc(module));
+        around("div class='doc'", getDoc(module, linkRenderer()));
         
         writeBy(Util.getAuthors(module), false);
     }
@@ -89,24 +89,14 @@ public class ModuleDoc extends CeylonDoc {
         }
         close("code", "td");
         open("td");
-        write(Util.getDocFirstLine(pkg));
+        write(Util.getDocFirstLine(pkg, linkRenderer()));
         close("td");
         close("tr");
     }
 
+    @Override
+    protected Object getFromObject() {
+        return module;
+    }
 
-    @Override
-    protected String getObjectUrl(Object to) throws IOException {
-        return tool.getObjectUrl(module, to);
-    }
-    
-    @Override
-    protected String getResourceUrl(String to) throws IOException {
-        return tool.getResourceUrl(module, to);
-    }
-    
-    @Override
-    protected String getSrcUrl(Object to) throws IOException {
-        return tool.getSrcUrl(module, to);
-    }
 }

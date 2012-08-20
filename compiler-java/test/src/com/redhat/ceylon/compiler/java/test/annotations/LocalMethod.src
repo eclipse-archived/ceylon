@@ -4,19 +4,20 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalMethod {
     
+    public LocalMethod() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
     private final void m() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         @.com.redhat.ceylon.compiler.java.metadata.Method
         final class m2_ {
             
             private m2_() {
             }
             
-            void m2(final long i1, final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
-            }
-            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
             final void m2(final long i1) {
                 (
                     let
@@ -28,14 +29,18 @@ public class LocalMethod {
                 );
             }
             
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final .ceylon.language.Iterable<? extends .ceylon.language.String> m2$s(final long i1) {
                 return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
             }
+            
+            void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("i1")
+            final long i1, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+            @.com.redhat.ceylon.compiler.java.metadata.Sequenced
+            final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
+            }
         }
         final m2_ m2 = new m2_();
-    }
-    
-    public LocalMethod() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

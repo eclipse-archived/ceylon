@@ -4,37 +4,37 @@ public interface interfaceWithinObject$Z_ {
 }
 final class interfaceWithinObject_ {
     
+    private interfaceWithinObject_() {
+        this.z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_();
+    }
+    
     public final class Z$impl {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ $this;
         
         public Z$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ $this) {
             this.$this = $this;
         }
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ $this;
     }
     
     public class ZI implements .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
         
         public ZI() {
             this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
         }
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ z;
     
     public final class z_ implements .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
         
         private z_() {
             this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
         }
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this;
     }
     
     public final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ getZ() {
         return z;
-    }
-    
-    private interfaceWithinObject_() {
-        this.z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_();
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_[] value;
     static {

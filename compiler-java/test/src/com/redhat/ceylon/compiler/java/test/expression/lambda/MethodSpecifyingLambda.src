@@ -2,8 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.lambda;
 
 class MethodSpecifyingLambda {
     
-    public final .java.lang.String m(final .java.lang.String name) {
-        return ("hello " + name).toString();
+    MethodSpecifyingLambda() {
     }
     
     public final .java.lang.String m() {
@@ -20,7 +19,8 @@ class MethodSpecifyingLambda {
         return "world";
     }
     
-    MethodSpecifyingLambda() {
+    public final .java.lang.String m(final .java.lang.String name) {
+        return ("hello " + name).toString();
     }
     
     public static void main(.java.lang.String[] args) {

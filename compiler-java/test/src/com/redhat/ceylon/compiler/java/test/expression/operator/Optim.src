@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 final class optimToplevelInteger_ {
+    
+    private optimToplevelInteger_() {
+    }
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -17,11 +20,11 @@ final class optimToplevelInteger_ {
     static void setOptimToplevelInteger(final long optimToplevelInteger) {
         value[0] = optimToplevelInteger;
     }
-    
-    private optimToplevelInteger_() {
-    }
 }
 abstract class OptimSuperclass<I, F, C, S, B> {
+    
+    OptimSuperclass() {
+    }
     
     public abstract void boxedIntegerArithmetic(final I n2);
     
@@ -40,11 +43,13 @@ abstract class OptimSuperclass<I, F, C, S, B> {
     public abstract void boxedCharacterComparison(final C c2);
     
     public abstract void boxedBooleanComparison(final B b2);
-    
-    OptimSuperclass() {
-    }
 }
 class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass<.ceylon.language.Integer, .ceylon.language.Float, .ceylon.language.Character, .ceylon.language.String, .ceylon.language.Boolean> {
+    
+    Optim() {
+        super();
+        this.fieldInteger = 0L;
+    }
     
     private final long $getInteger() {
         return 1L;
@@ -276,22 +281,22 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         
         final class localGetterInteger$getter_ {
             
-            long getLocalGetterInteger() {
-                return 0L;
+            private localGetterInteger$getter_() {
             }
             
-            private localGetterInteger$getter_() {
+            long getLocalGetterInteger() {
+                return 0L;
             }
         }
         final localGetterInteger$getter_ localGetterInteger$getter_ = new localGetterInteger$getter_();
         
         final class localGetterInteger$setter_ {
+            
+            private localGetterInteger$setter_() {
+            }
             private long value;
             
             void setLocalGetterInteger(final long localGetterInteger) {
-            }
-            
-            private localGetterInteger$setter_() {
             }
         }
         final localGetterInteger$setter_ localGetterInteger$setter_ = new localGetterInteger$setter_();
@@ -549,11 +554,6 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = o == .ceylon.language.Boolean.instance(b2);
         sync = .ceylon.language.String.instance(s1).equals(.ceylon.language.Boolean.instance(b2));
         sync = !.ceylon.language.String.instance(s1).equals(.ceylon.language.Boolean.instance(b2));
-    }
-    
-    Optim() {
-        super();
-        this.fieldInteger = 0L;
     }
     
     public static void main(.java.lang.String[] args) {

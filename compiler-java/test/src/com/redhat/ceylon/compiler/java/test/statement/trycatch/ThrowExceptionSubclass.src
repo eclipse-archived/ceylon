@@ -8,11 +8,11 @@ class ThrowExceptionSubclassE extends .ceylon.language.Exception {
 }
 class ThrowExceptionSubclass {
     
-    private final void t() {
-        throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowExceptionSubclassE(.ceylon.language.String.instance("Bang!"), null);
+    ThrowExceptionSubclass() {
     }
     
-    ThrowExceptionSubclass() {
+    private final void t() {
+        throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowExceptionSubclassE(.ceylon.language.String.instance("Bang!"), null);
     }
     
     public static void main(.java.lang.String[] args) {

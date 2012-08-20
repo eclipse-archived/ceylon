@@ -21,6 +21,9 @@ class A {
     }
 }
 final class test_ {
+    
+    private test_() {
+    }
     private static final .com.redhat.ceylon.compiler.java.test.issues.C<.com.redhat.ceylon.compiler.java.test.issues.A>[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.issues.C[]{new .com.redhat.ceylon.compiler.java.test.issues.C<.com.redhat.ceylon.compiler.java.test.issues.A>()};
@@ -32,8 +35,5 @@ final class test_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private test_() {
     }
 }

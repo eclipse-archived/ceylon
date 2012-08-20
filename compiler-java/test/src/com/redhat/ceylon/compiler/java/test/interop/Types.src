@@ -371,6 +371,10 @@ final class operationsOnBytes2_ {
 }
 class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.TypesJava {
     
+    OperationsOnBytes() {
+        super();
+    }
+    
     private final void m() {
         byte_attr = (byte)(byte_attr + byte_attr);
         byte_attr = (byte)(byte_attr * byte_attr);
@@ -429,10 +433,6 @@ class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.Ty
         sync = byte_attr == byte_attr;
         sync = !(byte_attr == byte_attr);
         sync = byte_attr < byte_attr;
-    }
-    
-    OperationsOnBytes() {
-        super();
     }
     
     public static void main(.java.lang.String[] args) {

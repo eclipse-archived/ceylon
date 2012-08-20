@@ -141,8 +141,8 @@ public class CallableBuilder {
     
     public JCNewClass build() {
         // Generate a subclass of Callable
-        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen, false, true, "$call");
-        callMethod.isActual(true);
+        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.callable(gen);
+        callMethod.isOverride(true);
         callMethod.modifiers(Flags.PUBLIC);
         ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
         callMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
@@ -178,16 +178,26 @@ public class CallableBuilder {
     }
     
     private static Name makeParamName(AbstractTransformer gen, int paramIndex) {
-        return gen.names().fromString("$param$"+paramIndex);
+        return gen.names().fromString(getParamName(paramIndex));
+    }
+
+    private static String getParamName(int paramIndex) {
+        return "$param$"+paramIndex;
     }
     
-    private JCVariableDecl makeCallableCallParam(long flags, int ii) {
+    private ParameterDefinitionBuilder makeCallableCallParam(long flags, int ii) {
         JCExpression type = gen.makeIdent(gen.syms().objectType);
         if ((flags & Flags.VARARGS) != 0) {
             type = gen.make().TypeArray(type);
         }
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, getParamName(ii));
+        pdb.modifiers(Flags.FINAL | flags);
+        pdb.type(type, null);
+        return pdb;
+        /*
         return gen.make().VarDef(gen.make().Modifiers(Flags.FINAL | Flags.PARAMETER | flags), 
                 makeParamName(gen, ii), type, null);
+                */
     }
     
     public static JCExpression unpickCallableParameter(AbstractTransformer gen,
@@ -215,7 +225,14 @@ public class CallableBuilder {
         } else {
             castType = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
         }
-        JCTypeCast cast = gen.make().TypeCast(gen.makeJavaType(castType, JT_NO_PRIMITIVES), argExpr);
+        JCExpression cast;
+        // let's not cast to Object there's no point
+        if(gen.willEraseToObject(castType) && !gen.willEraseToIterable(castType))
+            cast = argExpr;
+        else{
+            // make it raw: it can't hurt and it may even be required if the target method's param is raw
+            cast = gen.make().TypeCast(gen.makeJavaType(castType, JT_NO_PRIMITIVES | gen.JT_RAW), argExpr);
+        }
         // TODO Should this be calling applyErasureAndBoxing() instead?
         BoxingStrategy boxingStrategy;
         if (param.getUnboxed() == null) {

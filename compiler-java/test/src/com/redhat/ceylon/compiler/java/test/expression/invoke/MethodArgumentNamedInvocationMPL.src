@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class MethodArgumentNamedInvocationMPL {
     
+    MethodArgumentNamedInvocationMPL() {
+    }
+    
     private final void m1(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
         final .java.lang.String s = f.$call().$call(.ceylon.language.Integer.instance(1L)).toString();
     }
@@ -262,9 +265,6 @@ class MethodArgumentNamedInvocationMPL {
             }
             returning null;
         );
-    }
-    
-    MethodArgumentNamedInvocationMPL() {
     }
     
     public static void main(.java.lang.String[] args) {

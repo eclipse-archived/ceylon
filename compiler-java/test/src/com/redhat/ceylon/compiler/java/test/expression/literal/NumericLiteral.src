@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.literal;
 
 class NumericLiteral {
     
+    NumericLiteral() {
+    }
+    
     public final void m() {
         final long i1 = 9223372036854775807L;
         final long i2 = -9223372036854775808L;
@@ -15,9 +18,6 @@ class NumericLiteral {
         final double f4 = -4.9E-324;
         final double f5 = 0.0;
         final double f6 = -0.0;
-    }
-    
-    NumericLiteral() {
     }
     
     public static void main(.java.lang.String[] args) {

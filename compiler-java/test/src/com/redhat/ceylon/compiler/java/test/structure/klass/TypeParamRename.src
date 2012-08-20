@@ -2,24 +2,24 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface TypeParamRename<T, U> {
     
-    public U m(final T t);
-    
     public U m();
     
     public abstract T m$t();
     
-    public <V, W>W m2(final V v);
+    public U m(final T t);
     
     public <V, W>W m2();
     
     public abstract <V, W>V m2$v();
+    
+    public <V, W>W m2(final V v);
 }
 final class TypeParamRename$impl<T, U> {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this;
     
-    public U m(final T t) {
-        throw new .ceylon.language.Exception(null, null);
+    TypeParamRename$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this) {
+        this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this;
     
     public final U m() {
         return (
@@ -35,7 +35,7 @@ final class TypeParamRename$impl<T, U> {
         return null;
     }
     
-    public <V, W>W m2(final V v) {
+    public U m(final T t) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -53,11 +53,15 @@ final class TypeParamRename$impl<T, U> {
         return null;
     }
     
-    TypeParamRename$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this) {
-        this.$this = $this;
+    public <V, W>W m2(final V v) {
+        throw new .ceylon.language.Exception(null, null);
     }
 }
 class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y> {
+    
+    TypeParamRenameKls() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this;
     
     @.java.lang.Override
@@ -88,10 +92,6 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.
     @.java.lang.Override
     public <A, B>B m2(final A v) {
         throw new .ceylon.language.Exception(null, null);
-    }
-    
-    TypeParamRenameKls() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<X, Y>(this);
     }
     
     public static void main(.java.lang.String[] args) {

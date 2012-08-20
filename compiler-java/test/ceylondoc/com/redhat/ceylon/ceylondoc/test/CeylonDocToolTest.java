@@ -42,7 +42,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import com.redhat.ceylon.ceylondoc.CeylonDocTool;
+import com.redhat.ceylon.ceylondoc.DocTool;
 import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -55,19 +55,29 @@ public class CeylonDocToolTest {
     @Rule 
     public TestName name = new TestName();
     
-    private CeylonDocTool tool(String pathname, String moduleName, 
+    private DocTool tool(List<File> pathname, List<String> moduleName, 
             boolean throwOnError, String... repositories)
             throws IOException {
-        CeylonDocTool tool = new CeylonDocTool(Arrays.asList(new File(pathname)), 
-                Arrays.asList(repositories), 
-                Arrays.asList(moduleName),
-                throwOnError);
+        DocTool tool = new DocTool();
+        tool.setSourceFolders(pathname); 
+        tool.setRepositories(Arrays.asList(repositories));
+        tool.setModuleSpecs(moduleName);
+        tool.setHaltOnError(throwOnError);
+        tool.init();
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (dir.exists()) {
             Util.delete(dir);
         }
         tool.setOutputRepository(dir.getAbsolutePath(), null, null);
         return tool;
+    }
+    
+    private DocTool tool(String pathname, String moduleName, 
+            boolean throwOnError, String... repositories)
+            throws IOException {
+        return tool(Arrays.asList(new File(pathname)),
+                Arrays.asList(moduleName),
+                throwOnError, repositories);
     }
 
     protected void assertFileExists(File destDir, String path) {
@@ -148,7 +158,7 @@ public class CeylonDocToolTest {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
 
-        CeylonDocTool tool = tool(pathname, moduleName, true);
+        DocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -170,10 +180,12 @@ public class CeylonDocToolTest {
         assertDeprecated(destDir);
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
-        assertBug659ShowInheritedMembers(destDir);
         assertSequencedParameter(destDir);
         assertCallableParameter(destDir);
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
+        assertWikiStyleLinkSyntax(destDir);
+        assertBug659ShowInheritedMembers(destDir);
+        assertBug691AbbreviatedOptionalType(destDir);
     }
 
     @Test
@@ -181,7 +193,7 @@ public class CeylonDocToolTest {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
         
-        CeylonDocTool tool = tool(pathname, moduleName, true);
+        DocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(true);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -203,10 +215,12 @@ public class CeylonDocToolTest {
         assertDeprecated(destDir);
         assertTagged(destDir);
         assertDocumentationOfRefinedMember(destDir);
-        assertBug659ShowInheritedMembers(destDir);
         assertSequencedParameter(destDir);
         assertCallableParameter(destDir);
         assertFencedCodeBlockWithSyntaxHighlighter(destDir);
+        assertWikiStyleLinkSyntax(destDir);
+        assertBug659ShowInheritedMembers(destDir);
+        assertBug691AbbreviatedOptionalType(destDir);
     }
 
     @Test
@@ -216,7 +230,7 @@ public class CeylonDocToolTest {
         // compile the b module
         compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
         
-        CeylonDocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.c", true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.c", true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
@@ -229,7 +243,7 @@ public class CeylonDocToolTest {
         compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.b");
         
         // now run docs on c, which uses b, which uses a
-        CeylonDocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.c", true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.c", true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
@@ -241,7 +255,7 @@ public class CeylonDocToolTest {
         // compile the java code first
         compileJavaModule(pathname, "com/redhat/ceylon/ceylondoc/test/modules/mixed/Java.java");
         
-        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
     }
 
@@ -250,7 +264,7 @@ public class CeylonDocToolTest {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a";
         
-        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
 
         Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
@@ -271,7 +285,7 @@ public class CeylonDocToolTest {
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub";
         
         try{
-            CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+            DocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
             tool.makeDoc();
         }catch(RuntimeException x){
             Assert.assertEquals("Can't find module: com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub", x.getMessage());
@@ -285,7 +299,7 @@ public class CeylonDocToolTest {
         String pathname = "test/ceylondoc";
         String moduleName = "default";
         
-        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        DocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.makeDoc();
 
         Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
@@ -306,7 +320,7 @@ public class CeylonDocToolTest {
     public void ceylonLanguage() throws IOException {
         String pathname = "../ceylon.language/src";
         String moduleName = "ceylon.language";
-        CeylonDocTool tool = tool(pathname, moduleName, false);
+        DocTool tool = tool(pathname, moduleName, false);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -320,17 +334,24 @@ public class CeylonDocToolTest {
     @Ignore("Disabled unless you have the sdk checked out")
     @Test
     public void ceylonMath() throws IOException {
-        String pathname = "../ceylon-sdk/math/source";
-        String moduleName = "ceylon.math";
-        CeylonDocTool tool = tool(pathname, moduleName, false);
+        String[] moduleNames = {"file", "collection", "net", "json", "process", "math"};
+        List<String> fullModuleNames = new ArrayList<String>(moduleNames.length);
+        List<File> path = new ArrayList<File>(moduleNames.length);
+        for(String moduleName : moduleNames){
+            path.add(new File("../ceylon-sdk/"+moduleName+"/source"));
+            fullModuleNames.add("ceylon." + moduleName);
+        }
+        DocTool tool = tool(path, fullModuleNames, false);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
-        Module module = makeModule("ceylon.math", "0.2");
-        File destDir = getOutputDir(tool, module);
-        
-        assertFileExists(destDir, "index.html");
+        for(String moduleName : moduleNames){
+            Module module = makeModule("ceylon." + moduleName, "0.3.3");
+            File destDir = getOutputDir(tool, module);
+
+            assertFileExists(destDir, "index.html");
+        }
     }
 
     private Module makeDefaultModule() {
@@ -433,7 +454,7 @@ public class CeylonDocToolTest {
         
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='interface_StubInterface.html'>StubInterface</a>, <a href='index.html#stubTopLevelAttribute'>stubTopLevelAttribute</a>, <a href='index.html#stubTopLevelMethod'>stubTopLevelMethod</a>"));
         assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#methodWithSee'>methodWithSee</a>, <a href='class_StubException.html'>StubException</a></div>"));
-        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#attributeWithSee'>attributeWithSee</a>, <a href='class_StubException.html'>StubException</a></div>"));
+        assertMatchInFile(destDir, "class_StubClass.html", Pattern.compile("<div class='see'>See also: <a href='class_StubClass.html#attributeWithSee'>attributeWithSee</a>, <a href='class_StubException.html'>StubException</a>, <a href='a/class_A1.html'>A1</a></div>"));
     }
     
     private void assertIcons(File destDir) throws IOException {
@@ -517,16 +538,7 @@ public class CeylonDocToolTest {
                 Pattern.compile("Deprecated in StubInterface.defaultDeprecatedMethodFromStubInterface"));
     }
     
-	private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
-		assertMatchInFile(destDir, "class_StubClass.html",
-				Pattern.compile("Show inherited methods"));
-		assertMatchInFile(destDir, "class_StubClass.html",
-				Pattern.compile("<a href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>"));
-		assertMatchInFile(destDir, "class_StubClass.html",
-				Pattern.compile("<a href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a>"));
-	}
-	
-    private void assertSequencedParameter(File destDir) throws IOException {
+	private void assertSequencedParameter(File destDir) throws IOException {
         assertMatchInFile(destDir, "class_StubClass.html", 
                 Pattern.compile("<code>methodWithSequencedParameter\\(Integer... numbers\\)</code>"));
 	}
@@ -555,7 +567,60 @@ public class CeylonDocToolTest {
                 Pattern.compile("<pre class=\"brush: ceylon\">shared default Boolean subset\\(Set set\\) \\{"));
     }
     
-    private File getOutputDir(CeylonDocTool tool, Module module) {
+    private void assertWikiStyleLinkSyntax(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("StubClass = <a href='class_StubClass.html'>StubClass</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("StubInterface = <a href='interface_StubInterface.html'>StubInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("StubInnerException = <a href='class_StubClass.StubInnerException.html'>StubInnerException</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("stubTopLevelMethod = <a href='index.html#stubTopLevelMethod'>stubTopLevelMethod</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("stubTopLevelAttribute = <a href='index.html#stubTopLevelAttribute'>stubTopLevelAttribute</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("StubInterface.formalMethodFromStubInterface = <a href='interface_StubInterface.html#formalMethodFromStubInterface'>StubInterface.formalMethodFromStubInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("StubClass.StubInnerClass = <a href='class_StubClass.StubInnerClass.html'>StubClass.StubInnerClass</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("StubClass.StubInnerClass.innerMethod = <a href='class_StubClass.StubInnerClass.html#innerMethod'>StubClass.StubInnerClass.innerMethod</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("StubInterface with custom name = <a href='interface_StubInterface.html'>custom stub interface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("unresolvable = unresolvable"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("imported A1 = <a href='a/class_A1.html'>A1</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("imported AliasA2 = <a href='a/class_A2.html'>AliasA2</a>"));
+        
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("fullStubInterface = <a href='interface_StubInterface.html'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("fullStubInterface.formalMethodFromStubInterface = <a href='interface_StubInterface.html#formalMethodFromStubInterface'>com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface.formalMethodFromStubInterface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("fullStubInterface with custom name = <a href='interface_StubInterface.html'>full custom stub interface</a>"));
+        assertMatchInFile(destDir, "class_StubClass.html", 
+                Pattern.compile("fullUnresolvable = unresolvable@StubInterface"));
+    }
+
+    private void assertBug659ShowInheritedMembers(File destDir) throws IOException {
+    	assertMatchInFile(destDir, "class_StubClass.html",
+    			Pattern.compile("Show inherited methods"));
+    	assertMatchInFile(destDir, "class_StubClass.html",
+    			Pattern.compile("<a href='interface_StubInterface.html#defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>"));
+    	assertMatchInFile(destDir, "class_StubClass.html",
+    			Pattern.compile("<a href='interface_StubInterface.html#formalMethodFromStubInterface'>formalMethodFromStubInterface</a>"));
+    }
+
+    private void assertBug691AbbreviatedOptionalType(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("id='bug691AbbreviatedOptionalType1'><code><i class='icon-shared-member'></i><span class='modifiers'>shared</span> String\\?</code>"));
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("id='bug691AbbreviatedOptionalType2'><code><i class='icon-shared-member'></i><span class='modifiers'>shared</span> <span class='type-parameter'>Element</span>\\?</code>"));
+    }
+    
+    private File getOutputDir(DocTool tool, Module module) {
         String outputRepo = tool.getOutputRepository();
         return new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(new File(outputRepo), module),
                 "module-doc");

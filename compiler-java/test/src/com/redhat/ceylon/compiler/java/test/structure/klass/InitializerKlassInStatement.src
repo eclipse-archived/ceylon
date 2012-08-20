@@ -8,12 +8,12 @@ class InitializerKlassInStatement {
             
             class KlassInStatement1 {
                 
+                KlassInStatement1() {
+                }
+                
                 @.java.lang.Override
                 public final .java.lang.String toString() {
                     return .ceylon.language.Integer.toString(i);
-                }
-                
-                KlassInStatement1() {
                 }
             }
             final .java.lang.String s = new KlassInStatement1().toString();

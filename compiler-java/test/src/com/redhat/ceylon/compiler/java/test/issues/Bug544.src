@@ -6,14 +6,14 @@ class Bug544 {
     }
 }
 class Bug544sub extends .com.redhat.ceylon.compiler.java.test.issues.Bug544 {
-    private final .java.lang.String s;
-    
-    public final .java.lang.String getS() {
-        return s;
-    }
     
     Bug544sub(.java.lang.String s) {
         super(s);
         this.s = s;
+    }
+    private final .java.lang.String s;
+    
+    public final .java.lang.String getS() {
+        return s;
     }
 }

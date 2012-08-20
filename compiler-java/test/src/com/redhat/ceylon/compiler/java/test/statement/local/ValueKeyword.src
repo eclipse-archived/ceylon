@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.local;
 
 class ValueKeyword {
     
+    ValueKeyword() {
+    }
+    
     private final void m() {
         final .java.lang.String f = "";
         final .java.lang.String l = f;
@@ -10,9 +13,6 @@ class ValueKeyword {
     
     private final long test() {
         return 0L;
-    }
-    
-    ValueKeyword() {
     }
     
     public static void main(.java.lang.String[] args) {

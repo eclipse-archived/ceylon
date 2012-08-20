@@ -5,26 +5,26 @@ interface ConcreteGetter {
     public long getI();
 }
 final class ConcreteGetter$impl {
+    
+    ConcreteGetter$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter $this;
     
     public final long getI() {
         return 1L;
     }
-    
-    ConcreteGetter$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter $this) {
-        this.$this = $this;
-    }
 }
 class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
+    
+    ConcreteGetterImplementor() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public long getI() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this.getI();
-    }
-    
-    ConcreteGetterImplementor() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -33,15 +33,15 @@ class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.test
     }
 }
 class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
+    
+    ConcreteGetterOverrider() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public final long getI() {
         return 2L;
-    }
-    
-    ConcreteGetterOverrider() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -50,15 +50,15 @@ class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.test.s
     }
 }
 class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
+    
+    ConcreteGetterOverrider2() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this;
     
     @.java.lang.Override
     public long getI() {
         return 3L;
-    }
-    
-    ConcreteGetterOverrider2() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

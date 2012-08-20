@@ -27,7 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class Search extends CeylonDoc {
 
-    public Search(Module module, CeylonDocTool tool, Writer writer) {
+    public Search(Module module, DocTool tool, Writer writer) {
         super(module, tool, writer);
     }
 
@@ -37,22 +37,12 @@ public class Search extends CeylonDoc {
         include("resources/search.html");
         close("body", "html");
     }
-
-    @Override
-    protected String getObjectUrl(Object to) throws IOException {
-        return tool.getObjectUrl(module, to);
-    }
-
-    @Override
-    protected String getResourceUrl(String to) throws IOException {
-        return tool.getResourceUrl(module, to);
-    }
-
-    @Override
-    protected String getSrcUrl(Object to) throws IOException {
-        return tool.getSrcUrl(module, to);
-    }
     
+    @Override
+    protected Object getFromObject() {
+        return module;
+    }
+
     protected void writeKeyboardShortcuts() throws IOException {
         // Hack: Don't do shortcuts on the search page, because it interferes 
         // with the search

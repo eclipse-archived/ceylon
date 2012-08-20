@@ -6,13 +6,17 @@ interface I$II<T extends .ceylon.language.String, X extends .ceylon.language.Boo
 }
 interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    public abstract <U>T m1(final X b, final U u);
-    
     public abstract <U>T m1(final X b);
     
     public abstract <U>U m1$u(final X b);
+    
+    public abstract <U>T m1(final X b, final U u);
 }
 final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I<? extends T, ? super X> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I<? extends T, ? super X> $this;
     
     public final <U>T m1(final X b) {
@@ -30,26 +34,22 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
     }
     
     final class II$impl {
+        
+        II$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II<? extends T, ? super X> $this) {
+            this.$this = $this;
+        }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II<? extends T, ? super X> $this;
         
         final class III$impl {
+            
+            III$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III<? extends T, ? super X> $this) {
+                this.$this = $this;
+            }
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III<? extends T, ? super X> $this;
             
             private T m2() {
                 return m1(null);
             }
-            
-            III$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II$III<? extends T, ? super X> $this) {
-                this.$this = $this;
-            }
         }
-        
-        II$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I$II<? extends T, ? super X> $this) {
-            this.$this = $this;
-        }
-    }
-    
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.iii.I<? extends T, ? super X> $this) {
-        this.$this = $this;
     }
 }

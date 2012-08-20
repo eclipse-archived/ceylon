@@ -29,7 +29,7 @@ final class callableArgumentVarargs2_m_ {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs2_g_.callableArgumentVarargs2_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs2_g_.callableArgumentVarargs2_g((.ceylon.language.Iterable)$param$0);
                     }
                     returning null;
                 );

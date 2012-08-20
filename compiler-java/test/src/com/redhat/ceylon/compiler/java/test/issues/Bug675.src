@@ -5,15 +5,6 @@ public final class bug675_ {
     private bug675_() {
     }
     
-    public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>> bug675(final .ceylon.language.Iterable<? extends Element> elements) {
-        .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> $k$iter$1 = .com.redhat.ceylon.compiler.java.test.issues.bug675_.<.ceylon.language.Integer>bug675(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getIterator(); !(($elem$0 = $k$iter$1.next()) instanceof .ceylon.language.Finished); ) {
-            final long k = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getKey().longValue();
-            final long v = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getItem().longValue();
-        }
-        return elements.getIndexed();
-    }
-    
     public static final <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>> bug675() {
         return (
             let
@@ -26,5 +17,14 @@ public final class bug675_ {
     
     public static final <Element>.ceylon.language.Iterable<? extends Element> bug675$elements() {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
+    public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>> bug675(final .ceylon.language.Iterable<? extends Element> elements) {
+        .java.lang.Object $elem$0;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> $k$iter$1 = .com.redhat.ceylon.compiler.java.test.issues.bug675_.<.ceylon.language.Integer>bug675(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getIterator(); !(($elem$0 = $k$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final long k = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getKey().longValue();
+            final long v = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)$elem$0).getItem().longValue();
+        }
+        return elements.getIndexed();
     }
 }

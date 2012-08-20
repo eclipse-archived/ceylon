@@ -11,6 +11,9 @@ class SelfTypeInstantiation<T> {
     }
 }
 final class selfTypeInstantiation_ {
+    
+    private selfTypeInstantiation_() {
+    }
     private static final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.ceylon.language.String>[] value;
     static {
         value = new .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation[]{new .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.ceylon.language.String>()};
@@ -22,8 +25,5 @@ final class selfTypeInstantiation_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private selfTypeInstantiation_() {
     }
 }

@@ -26,9 +26,15 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
+    // Tests of the new-style scripts
+    CeylonCompileScriptTest.class,
+    CeylonDocScriptTest.class,
+    CeylonRunScriptTest.class,
+    // Tests of the ant tasks
     CeyloncAntTest.class,
     CeylondAntTest.class,
     CeylonAntTest.class,
+    // Tests of the old-style scripts
     CeyloncScriptTest.class,
     CeylondScriptTest.class,
     CeylonScriptTest.class

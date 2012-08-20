@@ -2,11 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodWithVarargs {
     
-    public final void f1(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
-        .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = ns.getIterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
-            final long n = ((.ceylon.language.Integer)$elem$0).longValue();
-        }
+    MethodWithVarargs() {
     }
     
     public final void f1() {
@@ -24,10 +20,10 @@ class MethodWithVarargs {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    public final void f2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
-        .java.lang.Object $elem$4;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$5 = ns.getIterator(); !(($elem$4 = $n$iter$5.next()) instanceof .ceylon.language.Finished); ) {
-            final long n = ((.ceylon.language.Integer)$elem$4).longValue();
+    public final void f1(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
+        .java.lang.Object $elem$0;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = ns.getIterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((.ceylon.language.Integer)$elem$0).longValue();
         }
     }
     
@@ -46,10 +42,10 @@ class MethodWithVarargs {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    public final void f3(final .ceylon.language.Iterable<? extends .java.lang.Object> os) {
-        .java.lang.Object $elem$8;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$9 = os.getIterator(); !(($elem$8 = $o$iter$9.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object o = (.java.lang.Object)$elem$8;
+    public final void f2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ns) {
+        .java.lang.Object $elem$4;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$5 = ns.getIterator(); !(($elem$4 = $n$iter$5.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((.ceylon.language.Integer)$elem$4).longValue();
         }
     }
     
@@ -68,6 +64,13 @@ class MethodWithVarargs {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
+    public final void f3(final .ceylon.language.Iterable<? extends .java.lang.Object> os) {
+        .java.lang.Object $elem$8;
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$9 = os.getIterator(); !(($elem$8 = $o$iter$9.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object o = (.java.lang.Object)$elem$8;
+        }
+    }
+    
     private final void m() {
         f1(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         f2(1L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
@@ -79,9 +82,6 @@ class MethodWithVarargs {
         f3(new .ceylon.language.ArraySequence<.java.lang.Object>(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L))));
         f3(new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         f3(new .ceylon.language.ArraySequence<.java.lang.Object>(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("foo"), .ceylon.language.Float.instance(5.0)));
-    }
-    
-    MethodWithVarargs() {
     }
     
     public static void main(.java.lang.String[] args) {

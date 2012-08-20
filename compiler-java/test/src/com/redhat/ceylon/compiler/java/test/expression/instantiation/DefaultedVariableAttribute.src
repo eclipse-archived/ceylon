@@ -2,6 +2,34 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class DefaultedVariableAttribute {
     
+    DefaultedVariableAttribute() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$firstName$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$firstName();
+                .ceylon.language.String $ceylontmp$lastName$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName($ceylontmp$firstName$1);
+                this($ceylontmp$firstName$1, $ceylontmp$lastName$2);
+            }
+            returning null;
+        );
+    }
+    
+    DefaultedVariableAttribute(final .ceylon.language.String firstName$) {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$lastName$4 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName(firstName$);
+                this(firstName$, $ceylontmp$lastName$4);
+            }
+            returning null;
+        );
+    }
+    
+    DefaultedVariableAttribute(.ceylon.language.String firstName, .ceylon.language.String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    
     static .ceylon.language.String $init$firstName() {
         return null;
     }
@@ -56,33 +84,5 @@ class DefaultedVariableAttribute {
             final .java.lang.String $last$10 = ((.ceylon.language.String)$last$9).toString();
             setLastName(.ceylon.language.String.instance($last$10));
         }
-    }
-    
-    DefaultedVariableAttribute() {
-        (
-            let
-            {
-                .ceylon.language.String $ceylontmp$firstName$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$firstName();
-                .ceylon.language.String $ceylontmp$lastName$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName($ceylontmp$firstName$1);
-                this($ceylontmp$firstName$1, $ceylontmp$lastName$2);
-            }
-            returning null;
-        );
-    }
-    
-    DefaultedVariableAttribute(final .ceylon.language.String firstName$) {
-        (
-            let
-            {
-                .ceylon.language.String $ceylontmp$lastName$4 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$init$lastName(firstName$);
-                this(firstName$, $ceylontmp$lastName$4);
-            }
-            returning null;
-        );
-    }
-    
-    DefaultedVariableAttribute(.ceylon.language.String firstName, .ceylon.language.String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 }

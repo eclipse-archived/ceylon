@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class SequencedTypeParamInvocation<T> {
     
-    public final void algo(final .ceylon.language.Iterable<? extends T> strings) {
+    SequencedTypeParamInvocation() {
     }
     
     public final void algo() {
@@ -20,7 +20,7 @@ class SequencedTypeParamInvocation<T> {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    SequencedTypeParamInvocation() {
+    public final void algo(final .ceylon.language.Iterable<? extends T> strings) {
     }
     
     public static void main(.java.lang.String[] args) {

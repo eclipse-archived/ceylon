@@ -69,7 +69,7 @@ final class anonFunctionNullary_ {
                 return new .ceylon.language.ArraySequence<.ceylon.language.Float>(.ceylon.language.Float.instance(1.0));
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> if3 = (.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .java.lang.Object>>("ceylon.language.Callable<ceylon.language.Sequence<ceylon.language.Integer|ceylon.language.Float>>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> if3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .java.lang.Object>>("ceylon.language.Callable<ceylon.language.Sequence<ceylon.language.Integer|ceylon.language.Float>>"){
             
             @.java.lang.Override
             public .ceylon.language.Sequence $call() {
@@ -139,7 +139,7 @@ final class anonFunctionNullary_ {
                 return new .ceylon.language.ArraySequence<T>(t);
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> it3 = (.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .java.lang.Object>>("ceylon.language.Callable<ceylon.language.Sequence<T|ceylon.language.Integer>>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> it3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .java.lang.Object>>("ceylon.language.Callable<ceylon.language.Sequence<T|ceylon.language.Integer>>"){
             
             @.java.lang.Override
             public .ceylon.language.Sequence $call() {

@@ -5,9 +5,6 @@ final class f1_ {
     private f1_() {
     }
     
-    static void f1(final long i) {
-    }
-    
     static final void f1() {
         (
             let
@@ -22,14 +19,13 @@ final class f1_ {
     static final long f1$i() {
         return 1L;
     }
+    
+    static void f1(final long i) {
+    }
 }
 final class f2_ {
     
     private f2_() {
-    }
-    
-    static long f2(final long i) {
-        return i;
     }
     
     static final long f2() {
@@ -45,24 +41,14 @@ final class f2_ {
     static final long f2$i() {
         return 1L;
     }
+    
+    static long f2(final long i) {
+        return i;
+    }
 }
 final class f3_ {
     
     private f3_() {
-    }
-    
-    static long f3(final long i, final long n) {
-        return i;
-    }
-    
-    static final long f3(final long i) {
-        return (
-            let
-            {
-                long $ceylontmp$n$8 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n(i);
-            }
-            returning f3(i, $ceylontmp$n$8);
-        );
     }
     
     static final long f3() {
@@ -80,17 +66,27 @@ final class f3_ {
         return 1L;
     }
     
+    static final long f3(final long i) {
+        return (
+            let
+            {
+                long $ceylontmp$n$8 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f3_.f3$n(i);
+            }
+            returning f3(i, $ceylontmp$n$8);
+        );
+    }
+    
     static final long f3$n(final long i) {
         return 2L * i;
+    }
+    
+    static long f3(final long i, final long n) {
+        return i;
     }
 }
 final class f4_ {
     
     private f4_() {
-    }
-    
-    static long f4(final long i, final long n) {
-        return i;
     }
     
     static final long f4(final long i) {
@@ -106,14 +102,14 @@ final class f4_ {
     static final long f4$n(final long i) {
         return 2L * i;
     }
+    
+    static long f4(final long i, final long n) {
+        return i;
+    }
 }
 final class f5_ {
     
     private f5_() {
-    }
-    
-    static <U>long f5(final long i, final U u) {
-        return i;
     }
     
     static final <U>long f5(final long i) {
@@ -128,6 +124,10 @@ final class f5_ {
     
     static final <U>U f5$u(final long i) {
         return null;
+    }
+    
+    static <U>long f5(final long i, final U u) {
+        return i;
     }
 }
 final class positional_ {

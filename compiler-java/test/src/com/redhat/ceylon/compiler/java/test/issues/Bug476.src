@@ -3,31 +3,34 @@ package com.redhat.ceylon.compiler.java.test.issues;
 interface Bug476A {
 }
 final class Bug476A$impl {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug476A $this;
     
     Bug476A$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug476A $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug476A $this;
 }
 interface Bug476B extends .com.redhat.ceylon.compiler.java.test.issues.Bug476A {
 }
 final class Bug476B$impl {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug476B $this;
     
     Bug476B$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug476B $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug476B $this;
 }
 interface Bug476C {
 }
 final class Bug476C$impl {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug476C $this;
     
     Bug476C$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug476C $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug476C $this;
 }
 abstract class Bug476Top<T> {
+    
+    Bug476Top() {
+    }
     
     public abstract T m();
     
@@ -36,11 +39,13 @@ abstract class Bug476Top<T> {
     public abstract T getAttr();
     
     public abstract T getAttr2();
-    
-    Bug476Top() {
-    }
 }
 class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.Bug476Top<.com.redhat.ceylon.compiler.java.test.issues.Bug476A> {
+    
+    Bug476Bottom() {
+        super();
+        this.attr = .ceylon.language.bottom_.getBottom();
+    }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.Bug476A m() {
@@ -70,17 +75,26 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.Bu
     public final void setAttr2(final .com.redhat.ceylon.compiler.java.test.issues.Bug476A attr2) {
     }
     
-    Bug476Bottom() {
-        super();
-        this.attr = .ceylon.language.bottom_.getBottom();
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.Bug476Bottom();
     }
 }
 public abstract class Bug476<T> implements .ceylon.language.List<T> {
+    
+    public Bug476() {
+        this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>(this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<T>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<T, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
+        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
+        this.string = ((.ceylon.language.String).ceylon.language.bottom_.getBottom()).toString();
+    }
     private final .ceylon.language.List$impl<T> $ceylon$language$List$this;
     
     @.java.lang.Override
@@ -224,6 +238,11 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     public <Other>.ceylon.language.Iterable chain(final .ceylon.language.Iterable<? extends Other> other) {
         return $ceylon$language$Iterable$this.chain(other);
     }
+    
+    @.java.lang.Override
+    public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends T>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
+        return $ceylon$language$Iterable$this.group(grouping);
+    }
     private final .ceylon.language.ContainerWithFirstElement$impl<T, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
     private final .ceylon.language.Container$impl $ceylon$language$Container$this;
     private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
@@ -336,19 +355,5 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
         return ((.ceylon.language.Boolean).ceylon.language.bottom_.getBottom()).booleanValue();
-    }
-    
-    public Bug476() {
-        this.$ceylon$language$List$this = new .ceylon.language.List$impl<T>(this);
-        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<T>(this);
-        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<T>(this);
-        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<T, .java.lang.Object>(this);
-        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
-        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
-        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(this);
-        this.$ceylon$language$Ranged$this = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(this);
-        this.string = ((.ceylon.language.String).ceylon.language.bottom_.getBottom()).toString();
     }
 }

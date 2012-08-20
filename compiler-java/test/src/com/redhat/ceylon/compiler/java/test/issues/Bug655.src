@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug655 {
     
+    Bug655() {
+    }
+    
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug655 select(final .ceylon.language.Callable<? extends .ceylon.language.String> predicates) {
         return this;
     }
@@ -22,9 +25,6 @@ class Bug655 {
                 return .ceylon.language.String.instance(nome());
             }
         }).where();
-    }
-    
-    Bug655() {
     }
     
     public static void main(.java.lang.String[] args) {

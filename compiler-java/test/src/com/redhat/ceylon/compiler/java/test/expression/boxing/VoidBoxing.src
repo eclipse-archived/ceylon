@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
 class VoidBoxing {
+    
+    VoidBoxing() {
+        this.valueVoid = .ceylon.language.Integer.instance(1L);
+        this.variableVoid = getValueVoid();
+    }
     private final .java.lang.Object valueVoid;
     
     private final .java.lang.Object getValueVoid() {
@@ -97,7 +102,7 @@ class VoidBoxing {
                         return (
                             let
                             {
-                                returnsvoid((.java.lang.Object)$param$0);
+                                returnsvoid($param$0);
                             }
                             returning null;
                         );
@@ -113,7 +118,7 @@ class VoidBoxing {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        return returnsVoid((.java.lang.Object)$param$0);
+                        return returnsVoid($param$0);
                     }
                 });
             }
@@ -126,7 +131,7 @@ class VoidBoxing {
                 return (
                     let
                     {
-                        returnsvoid((.java.lang.Object)$param$0);
+                        returnsvoid($param$0);
                     }
                     returning null;
                 );
@@ -136,7 +141,7 @@ class VoidBoxing {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                return returnsVoid((.java.lang.Object)$param$0);
+                return returnsVoid($param$0);
             }
         });
         final .java.lang.Object v11 = (
@@ -146,7 +151,7 @@ class VoidBoxing {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        final .java.lang.Object s = (.java.lang.Object)$param$0;
+                        final .java.lang.Object s = $param$0;
                         return s;
                     }
                 });
@@ -157,7 +162,7 @@ class VoidBoxing {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object s = (.java.lang.Object)$param$0;
+                final .java.lang.Object s = $param$0;
                 return s;
             }
         });
@@ -203,7 +208,7 @@ class VoidBoxing {
                         return (
                             let
                             {
-                                returnsvoid((.java.lang.Object)$param$0);
+                                returnsvoid($param$0);
                             }
                             returning null;
                         );
@@ -219,7 +224,7 @@ class VoidBoxing {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        return returnsVoid((.java.lang.Object)$param$0);
+                        return returnsVoid($param$0);
                     }
                 });
             }
@@ -232,7 +237,7 @@ class VoidBoxing {
                 return (
                     let
                     {
-                        returnsvoid((.java.lang.Object)$param$0);
+                        returnsvoid($param$0);
                     }
                     returning null;
                 );
@@ -242,7 +247,7 @@ class VoidBoxing {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                return returnsVoid((.java.lang.Object)$param$0);
+                return returnsVoid($param$0);
             }
         });
         v = (
@@ -252,7 +257,7 @@ class VoidBoxing {
                     
                     @.java.lang.Override
                     public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                        final .java.lang.Object s = (.java.lang.Object)$param$0;
+                        final .java.lang.Object s = $param$0;
                         return s;
                     }
                 });
@@ -263,15 +268,10 @@ class VoidBoxing {
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
-                final .java.lang.Object s = (.java.lang.Object)$param$0;
+                final .java.lang.Object s = $param$0;
                 return s;
             }
         });
-    }
-    
-    VoidBoxing() {
-        this.valueVoid = .ceylon.language.Integer.instance(1L);
-        this.variableVoid = getValueVoid();
     }
     
     public static void main(.java.lang.String[] args) {

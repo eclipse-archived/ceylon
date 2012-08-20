@@ -8,6 +8,10 @@ interface Objects$ObjectsI {
 }
 class Objects {
     
+    Objects() {
+        final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_ objects_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_();
+    }
+    
     abstract class Dummy {
         
         Dummy() {
@@ -16,6 +20,10 @@ class Objects {
     
     final class objects_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
         
+        private objects_o_() {
+            super();
+        }
+        
         class DummyC {
             
             DummyC() {
@@ -23,19 +31,19 @@ class Objects {
         }
         
         final class DummyI$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this;
             
             DummyI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this) {
                 this.$this = $this;
             }
-        }
-        
-        private objects_o_() {
-            super();
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this;
         }
     }
     
     class ObjectsC {
+        
+        ObjectsC() {
+            final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_ objectsc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_();
+        }
         
         final class objectsc_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
             
@@ -46,27 +54,31 @@ class Objects {
         
         class ObjectsCC {
             
+            ObjectsCC() {
+                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_ objectscc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_();
+            }
+            
             final class objectscc_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
                 
                 private objectscc_o_() {
                     super();
                 }
             }
-            
-            ObjectsCC() {
-                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_ objectscc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_();
-            }
-        }
-        
-        ObjectsC() {
-            final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_ objectsc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_();
         }
     }
     
     final class ObjectsI$impl {
+        
+        ObjectsI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this) {
+            this.$this = $this;
+        }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this;
         
         class ObjectsIC {
+            
+            ObjectsIC() {
+                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_ objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_();
+            }
             
             final class objectsic_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
                 
@@ -74,14 +86,6 @@ class Objects {
                     super();
                 }
             }
-            
-            ObjectsIC() {
-                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_ objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_();
-            }
-        }
-        
-        ObjectsI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this) {
-            this.$this = $this;
         }
     }
     
@@ -105,10 +109,6 @@ class Objects {
             final local_o2_ local_o2 = new local_o2_();
         } finally {
         }
-    }
-    
-    Objects() {
-        final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_ objects_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_();
     }
     
     public static void main(.java.lang.String[] args) {

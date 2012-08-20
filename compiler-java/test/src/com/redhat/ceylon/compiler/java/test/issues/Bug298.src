@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class OuterClass {
     
+    OuterClass() {
+    }
+    
     public class InnerClass {
         
         public InnerClass() {
         }
-    }
-    
-    OuterClass() {
     }
     
     public static void main(.java.lang.String[] args) {

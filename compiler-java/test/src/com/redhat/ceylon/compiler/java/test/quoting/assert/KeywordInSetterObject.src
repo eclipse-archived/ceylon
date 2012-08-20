@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInSetterObject {
     
+    KeywordInSetterObject() {
+    }
+    
     private final long getI() {
         return 0L;
     }
@@ -15,9 +18,6 @@ class KeywordInSetterObject {
         }
         final assert_ assert = new assert_();
         final .java.lang.String s = assert.toString();
-    }
-    
-    KeywordInSetterObject() {
     }
     
     public static void main(.java.lang.String[] args) {

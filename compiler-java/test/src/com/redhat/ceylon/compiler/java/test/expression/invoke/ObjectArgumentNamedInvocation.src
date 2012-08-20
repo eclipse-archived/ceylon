@@ -23,6 +23,11 @@ public final class objectArgumentNamedInvocation_ {
                 
                 final class o_ extends .java.lang.Object {
                     
+                    private o_() {
+                        super();
+                        this.hash = (int)0L;
+                    }
+                    
                     @.java.lang.Override
                     public final boolean equals(final .java.lang.Object other) {
                         return false;
@@ -32,11 +37,6 @@ public final class objectArgumentNamedInvocation_ {
                     @.java.lang.Override
                     public final int hashCode() {
                         return hash;
-                    }
-                    
-                    private o_() {
-                        super();
-                        this.hash = (int)0L;
                     }
                 }
                 final o_ $arg$0$0 = new o_();

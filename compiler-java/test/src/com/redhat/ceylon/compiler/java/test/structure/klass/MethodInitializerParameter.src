@@ -1,16 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class MethodInitializerParameter<T> {
+    
+    MethodInitializerParameter(.ceylon.language.Callable<? extends .java.lang.Object> m, .ceylon.language.Callable<? extends .java.lang.Object> m2, .ceylon.language.Callable<? extends T> m3, .ceylon.language.Callable<? extends .java.lang.Object> m4) {
+        this.m = m;
+        this.m2 = m2;
+        this.m3 = m3;
+        this.m4 = m4;
+    }
     private final .ceylon.language.Callable<? extends .java.lang.Object> m;
     
     private final void m(final long i) {
         m.$call(i);
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> m2;
-    
-    private final void m2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
-        m2.$call(i, seq);
-    }
     
     private final void m2(final long i) {
         (
@@ -26,16 +29,16 @@ class MethodInitializerParameter<T> {
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m2$seq(final long i) {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
+    
+    private final void m2(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+        m2.$call(i, seq);
+    }
     private final .ceylon.language.Callable<? extends T> m3;
     
     private final T m3(final T t) {
         return m3.$call(t);
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> m4;
-    
-    private final void m4(final long i) {
-        m4.$call(i);
-    }
     
     private final void m4() {
         (
@@ -52,10 +55,7 @@ class MethodInitializerParameter<T> {
         return 1L;
     }
     
-    MethodInitializerParameter(.ceylon.language.Callable<? extends .java.lang.Object> m, .ceylon.language.Callable<? extends .java.lang.Object> m2, .ceylon.language.Callable<? extends T> m3, .ceylon.language.Callable<? extends .java.lang.Object> m4) {
-        this.m = m;
-        this.m2 = m2;
-        this.m3 = m3;
-        this.m4 = m4;
+    private final void m4(final long i) {
+        m4.$call(i);
     }
 }

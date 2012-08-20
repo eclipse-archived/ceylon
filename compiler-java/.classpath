@@ -14,6 +14,7 @@
 	<classpathentry kind="lib" path="lib/antlr-3.4-complete.jar"/>
 	<classpathentry kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
-	<classpathentry kind="lib" path="lib/txtmark-0.7-1fc6e2a548.jar"/>
+	<classpathentry kind="lib" path="lib/txtmark-0.7-8bc64aa0f1.jar"/>
+	<classpathentry kind="lib" path="lib/markdownpapers-core-1.2.7.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

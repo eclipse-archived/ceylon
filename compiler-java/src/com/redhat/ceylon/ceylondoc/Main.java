@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
-    private static final String CEYLOND_VERSION = "0.3.1 'V2000'";
+    private static final String CEYLOND_VERSION = "0.4 'Ratatouille'";
     private static final int SC_OK = 0;
     private static final int SC_ARGS = 1;
     private static final int SC_ERROR = 2;
@@ -118,10 +118,15 @@ public class Main {
         }
 
         try{
-            CeylonDocTool ceylonDocTool = new CeylonDocTool(sourceFolders, repositories, modules, false);
+            DocTool ceylonDocTool = new DocTool();
+            ceylonDocTool.setSourceFolders(sourceFolders);
+            ceylonDocTool.setRepositories(repositories);
+            ceylonDocTool.setModuleSpecs(modules);
+            ceylonDocTool.setHaltOnError(false);
             ceylonDocTool.setOutputRepository(destDir, user, pass);
             ceylonDocTool.setIncludeNonShared(includeNonShared);
             ceylonDocTool.setIncludeSourceCode(includeSourceCode);
+            ceylonDocTool.init();
             ceylonDocTool.makeDoc();
         }catch(CeylondException x){
             System.err.println(CeylondMessages.msg("error", x.getLocalizedMessage()));

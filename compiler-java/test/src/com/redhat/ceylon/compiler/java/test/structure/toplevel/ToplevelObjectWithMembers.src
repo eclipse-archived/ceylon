@@ -1,6 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 final class topLevelObjectWithMembers_ {
+    
+    private topLevelObjectWithMembers_() {
+        final boolean val = true;
+        this.valShared = true;
+        this.valCaptured = true;
+        boolean var = false;
+        this.varShared = false;
+        this.varCaptured = false;
+    }
     private final boolean valShared;
     
     public final boolean getValShared() {
@@ -36,15 +45,6 @@ final class topLevelObjectWithMembers_ {
     
     public final boolean yShared() {
         return getVarCaptured();
-    }
-    
-    private topLevelObjectWithMembers_() {
-        final boolean val = true;
-        this.valShared = true;
-        this.valCaptured = true;
-        boolean var = false;
-        this.varShared = false;
-        this.varCaptured = false;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_[] value;
     static {

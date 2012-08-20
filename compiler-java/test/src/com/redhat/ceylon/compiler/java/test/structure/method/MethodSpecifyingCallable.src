@@ -16,11 +16,11 @@ final class methodSpecifyingCallable_f_ {
 }
 class MethodSpecifyingCallable {
     
-    private final .java.lang.String foo(final long i) {
-        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f().$call(.ceylon.language.Integer.instance(i)).toString();
+    MethodSpecifyingCallable() {
     }
     
-    MethodSpecifyingCallable() {
+    private final .java.lang.String foo(final long i) {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f().$call(.ceylon.language.Integer.instance(i)).toString();
     }
     
     public static void main(.java.lang.String[] args) {

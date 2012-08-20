@@ -91,6 +91,9 @@ public final class globalMethodOptionalCharacter_ {
     }
 }
 public final class globalAttrInteger_ {
+    
+    private globalAttrInteger_() {
+    }
     private static final long[] value;
     static {
         value = new long[]{1L};
@@ -103,11 +106,11 @@ public final class globalAttrInteger_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrInteger_() {
-    }
 }
 public final class globalAttrFloat_ {
+    
+    private globalAttrFloat_() {
+    }
     private static final double[] value;
     static {
         value = new double[]{1.0};
@@ -120,11 +123,11 @@ public final class globalAttrFloat_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrFloat_() {
-    }
 }
 public final class globalAttrString_ {
+    
+    private globalAttrString_() {
+    }
     private static final .java.lang.String[] value;
     static {
         value = new .java.lang.String[]{"a"};
@@ -137,11 +140,11 @@ public final class globalAttrString_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrString_() {
-    }
 }
 public final class globalAttrBoolean_ {
+    
+    private globalAttrBoolean_() {
+    }
     private static final boolean[] value;
     static {
         value = new boolean[]{true};
@@ -154,11 +157,11 @@ public final class globalAttrBoolean_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrBoolean_() {
-    }
 }
 public final class globalAttrCharacter_ {
+    
+    private globalAttrCharacter_() {
+    }
     private static final int[] value;
     static {
         value = new int[]{'a'};
@@ -171,11 +174,11 @@ public final class globalAttrCharacter_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrCharacter_() {
-    }
 }
 public final class globalAttrOptionalInteger_ {
+    
+    private globalAttrOptionalInteger_() {
+    }
     private static final .ceylon.language.Integer[] value;
     static {
         value = new .ceylon.language.Integer[]{null};
@@ -188,11 +191,11 @@ public final class globalAttrOptionalInteger_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrOptionalInteger_() {
-    }
 }
 public final class globalAttrOptionalFloat_ {
+    
+    private globalAttrOptionalFloat_() {
+    }
     private static final .ceylon.language.Float[] value;
     static {
         value = new .ceylon.language.Float[]{null};
@@ -205,11 +208,11 @@ public final class globalAttrOptionalFloat_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrOptionalFloat_() {
-    }
 }
 public final class globalAttrOptionalString_ {
+    
+    private globalAttrOptionalString_() {
+    }
     private static final .ceylon.language.String[] value;
     static {
         value = new .ceylon.language.String[]{null};
@@ -222,11 +225,11 @@ public final class globalAttrOptionalString_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrOptionalString_() {
-    }
 }
 public final class globalAttrOptionalBoolean_ {
+    
+    private globalAttrOptionalBoolean_() {
+    }
     private static final .ceylon.language.Boolean[] value;
     static {
         value = new .ceylon.language.Boolean[]{null};
@@ -239,11 +242,11 @@ public final class globalAttrOptionalBoolean_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrOptionalBoolean_() {
-    }
 }
 public final class globalAttrOptionalCharacter_ {
+    
+    private globalAttrOptionalCharacter_() {
+    }
     private static final .ceylon.language.Character[] value;
     static {
         value = new .ceylon.language.Character[]{null};
@@ -256,11 +259,41 @@ public final class globalAttrOptionalCharacter_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private globalAttrOptionalCharacter_() {
-    }
 }
 class BasicTypes {
+    
+    BasicTypes(long paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, int paramCharacter, .ceylon.language.Integer paramOptionalInteger, .ceylon.language.Float paramOptionalFloat, .ceylon.language.String paramOptionalString, .ceylon.language.Boolean paramOptionalBoolean, .ceylon.language.Character paramOptionalCharacter) {
+        final long privateNonCapturedAttrInteger;
+        final double privateNonCapturedAttrFloat;
+        final .java.lang.String privateNonCapturedAttrString;
+        final boolean privateNonCapturedAttrBoolean;
+        final int privateNonCapturedAttrCharacter;
+        final .ceylon.language.Integer privateNonCapturedAttrOptionalInteger;
+        final .ceylon.language.Float privateNonCapturedAttrOptionalFloat;
+        final .ceylon.language.String privateNonCapturedAttrOptionalString;
+        final .ceylon.language.Boolean privateNonCapturedAttrOptionalBoolean;
+        final .ceylon.language.Character privateNonCapturedAttrOptionalCharacter;
+        this.privateAttrInteger = 1L;
+        this.privateAttrFloat = 1.0;
+        this.privateAttrString = "a";
+        this.privateAttrBoolean = true;
+        this.privateAttrCharacter = 'a';
+        this.privateAttrOptionalInteger = null;
+        this.privateAttrOptionalFloat = null;
+        this.privateAttrOptionalString = null;
+        this.privateAttrOptionalBoolean = null;
+        this.privateAttrOptionalCharacter = null;
+        this.sharedAttrInteger = 1L;
+        this.sharedAttrFloat = 1.0;
+        this.sharedAttrString = "a";
+        this.sharedAttrBoolean = true;
+        this.sharedAttrCharacter = 'a';
+        this.sharedAttrOptionalInteger = null;
+        this.sharedAttrOptionalFloat = null;
+        this.sharedAttrOptionalString = null;
+        this.sharedAttrOptionalBoolean = null;
+        this.sharedAttrOptionalCharacter = null;
+    }
     private final long privateAttrInteger;
     
     private final long getPrivateAttrInteger() {
@@ -414,50 +447,22 @@ class BasicTypes {
     private final .ceylon.language.Character methodOptionalCharacter(final .ceylon.language.Character i) {
         return i;
     }
-    
-    BasicTypes(long paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, int paramCharacter, .ceylon.language.Integer paramOptionalInteger, .ceylon.language.Float paramOptionalFloat, .ceylon.language.String paramOptionalString, .ceylon.language.Boolean paramOptionalBoolean, .ceylon.language.Character paramOptionalCharacter) {
-        final long privateNonCapturedAttrInteger;
-        final double privateNonCapturedAttrFloat;
-        final .java.lang.String privateNonCapturedAttrString;
-        final boolean privateNonCapturedAttrBoolean;
-        final int privateNonCapturedAttrCharacter;
-        final .ceylon.language.Integer privateNonCapturedAttrOptionalInteger;
-        final .ceylon.language.Float privateNonCapturedAttrOptionalFloat;
-        final .ceylon.language.String privateNonCapturedAttrOptionalString;
-        final .ceylon.language.Boolean privateNonCapturedAttrOptionalBoolean;
-        final .ceylon.language.Character privateNonCapturedAttrOptionalCharacter;
-        this.privateAttrInteger = 1L;
-        this.privateAttrFloat = 1.0;
-        this.privateAttrString = "a";
-        this.privateAttrBoolean = true;
-        this.privateAttrCharacter = 'a';
-        this.privateAttrOptionalInteger = null;
-        this.privateAttrOptionalFloat = null;
-        this.privateAttrOptionalString = null;
-        this.privateAttrOptionalBoolean = null;
-        this.privateAttrOptionalCharacter = null;
-        this.sharedAttrInteger = 1L;
-        this.sharedAttrFloat = 1.0;
-        this.sharedAttrString = "a";
-        this.sharedAttrBoolean = true;
-        this.sharedAttrCharacter = 'a';
-        this.sharedAttrOptionalInteger = null;
-        this.sharedAttrOptionalFloat = null;
-        this.sharedAttrOptionalString = null;
-        this.sharedAttrOptionalBoolean = null;
-        this.sharedAttrOptionalCharacter = null;
-    }
 }
 abstract class TypeParameterClass<ClassParam> {
+    
+    TypeParameterClass(ClassParam classParam) {
+    }
     
     public abstract ClassParam getAttr();
     
     public abstract ClassParam classParamMethod(final ClassParam param);
-    
-    TypeParameterClass(ClassParam classParam) {
-    }
 }
 class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass<.ceylon.language.Integer> {
+    
+    IntegerParameterClass(long classParam) {
+        super(.ceylon.language.Integer.instance(classParam));
+        this.attr = .ceylon.language.Integer.instance(classParam);
+    }
     private final .ceylon.language.Integer attr;
     
     @.java.lang.Override
@@ -468,10 +473,5 @@ class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.struct
     @.java.lang.Override
     public final .ceylon.language.Integer classParamMethod(final .ceylon.language.Integer param) {
         return param;
-    }
-    
-    IntegerParameterClass(long classParam) {
-        super(.ceylon.language.Integer.instance(classParam));
-        this.attr = .ceylon.language.Integer.instance(classParam);
     }
 }

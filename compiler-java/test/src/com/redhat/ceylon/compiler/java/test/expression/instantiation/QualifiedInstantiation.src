@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class QualifiedInstantiation {
     
+    QualifiedInstantiation() {
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner inner;
+    }
+    
     class Inner {
         
         Inner(.java.lang.String s) {
@@ -36,10 +40,6 @@ class QualifiedInstantiation {
             }
             returning $arg$2$callable$.new Inner($arg$2$0);
         );
-    }
-    
-    QualifiedInstantiation() {
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiation.Inner inner;
     }
     
     public static void main(.java.lang.String[] args) {

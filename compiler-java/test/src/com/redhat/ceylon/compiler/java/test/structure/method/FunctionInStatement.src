@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class FunctionInStatement {
     
+    FunctionInStatement() {
+    }
+    
     private final void m() {
         if (true) {
             final long i = 1L;
@@ -18,9 +21,6 @@ class FunctionInStatement {
             final foo_ foo = new foo_();
             final .java.lang.String s = foo.foo();
         }
-    }
-    
-    FunctionInStatement() {
     }
     
     public static void main(.java.lang.String[] args) {

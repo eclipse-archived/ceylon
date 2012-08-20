@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 final class b1_ {
+    
+    private b1_() {
+    }
     private static final boolean[] value;
     static {
         value = new boolean[]{true};
@@ -13,11 +16,11 @@ final class b1_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private b1_() {
-    }
 }
 public final class b2_ {
+    
+    private b2_() {
+    }
     private static final boolean[] value;
     static {
         value = new boolean[]{true};
@@ -30,20 +33,17 @@ public final class b2_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private b2_() {
-    }
 }
 class TopLevelAccess {
+    
+    TopLevelAccess() {
+    }
     
     private final void m() {
         final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.getB1();
         final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.getB2();
         final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.getB3();
         final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.getB4();
-    }
-    
-    TopLevelAccess() {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -53,19 +53,19 @@ class TopLevelAccess {
 }
 final class b3_ {
     
-    static boolean getB3() {
-        return true;
+    private b3_() {
     }
     
-    private b3_() {
+    static boolean getB3() {
+        return true;
     }
 }
 public final class b4_ {
     
-    public static boolean getB4() {
-        return true;
+    private b4_() {
     }
     
-    private b4_() {
+    public static boolean getB4() {
+        return true;
     }
 }

@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.statement.attribute;
 
 class MethodVariableWithLateInitializer {
     
+    MethodVariableWithLateInitializer() {
+    }
+    
     public final void m() {
         .java.lang.String f;
         f = "";
-    }
-    
-    MethodVariableWithLateInitializer() {
     }
     
     public static void main(.java.lang.String[] args) {

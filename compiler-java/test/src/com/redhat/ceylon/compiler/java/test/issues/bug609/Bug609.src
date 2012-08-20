@@ -178,6 +178,9 @@ final class bug609mth_ {
 }
 class Bug609cls {
     
+    Bug609cls() {
+    }
+    
     private final void mth() {
         
         final class wait_ {
@@ -245,9 +248,6 @@ class Bug609cls {
         getClass.$getClass();
         finalize.$finalize();
         clone.$clone();
-    }
-    
-    Bug609cls() {
     }
     
     public static void main(.java.lang.String[] args) {

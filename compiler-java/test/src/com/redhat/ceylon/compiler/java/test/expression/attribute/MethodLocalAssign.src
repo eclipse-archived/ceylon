@@ -2,11 +2,17 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class MethodLocalAssign {
     
+    MethodLocalAssign() {
+    }
+    
     private final void m() {
         boolean b = true;
         b = false;
         
         final class b1_ {
+            
+            private b1_() {
+            }
             private boolean value;
             {
                 value = true;
@@ -19,39 +25,33 @@ class MethodLocalAssign {
             void setB1(final boolean b1) {
                 value = b1;
             }
-            
-            private b1_() {
-            }
         }
         final b1_ b1_ = new b1_();
         b1_.setB1(false);
         
         final class b2$getter_ {
             
-            boolean getB2() {
-                return b1_.getB1();
+            private b2$getter_() {
             }
             
-            private b2$getter_() {
+            boolean getB2() {
+                return b1_.getB1();
             }
         }
         final b2$getter_ b2$getter_ = new b2$getter_();
         
         final class b2$setter_ {
+            
+            private b2$setter_() {
+            }
             private boolean value;
             
             void setB2(final boolean b2) {
                 b1_.setB1(b2);
             }
-            
-            private b2$setter_() {
-            }
         }
         final b2$setter_ b2$setter_ = new b2$setter_();
         b2$setter_.setB2(true);
-    }
-    
-    MethodLocalAssign() {
     }
     
     public static void main(.java.lang.String[] args) {

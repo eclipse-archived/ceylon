@@ -2,28 +2,22 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface I1 {
     
-    public abstract .java.lang.String m1(final long i, final boolean b);
-    
-    public abstract .java.lang.String m1(final long i);
-    
     public abstract .java.lang.String m1();
     
     public abstract long m1$i();
     
+    public abstract .java.lang.String m1(final long i);
+    
     public abstract boolean m1$b(final long i);
+    
+    public abstract .java.lang.String m1(final long i, final boolean b);
 }
 final class I1$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
     
-    public final .java.lang.String m1(final long i) {
-        return (
-            let
-            {
-                boolean $ceylontmp$b$4 = m1$b(i);
-            }
-            returning $this.m1(i, $ceylontmp$b$4);
-        );
+    I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this) {
+        this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
     
     public final .java.lang.String m1() {
         return (
@@ -40,38 +34,38 @@ final class I1$impl {
         return 0L;
     }
     
+    public final .java.lang.String m1(final long i) {
+        return (
+            let
+            {
+                boolean $ceylontmp$b$4 = m1$b(i);
+            }
+            returning $this.m1(i, $ceylontmp$b$4);
+        );
+    }
+    
     public final boolean m1$b(final long i) {
         return false;
     }
-    
-    I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this) {
-        this.$this = $this;
-    }
 }
 interface I2 {
-    
-    public abstract .java.lang.String m2(final long i, final boolean b);
-    
-    public abstract .java.lang.String m2(final long i);
     
     public abstract .java.lang.String m2();
     
     public abstract long m2$i();
     
+    public abstract .java.lang.String m2(final long i);
+    
     public abstract boolean m2$b(final long i);
+    
+    public abstract .java.lang.String m2(final long i, final boolean b);
 }
 final class I2$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
     
-    public final .java.lang.String m2(final long i) {
-        return (
-            let
-            {
-                boolean $ceylontmp$b$14 = m2$b(i);
-            }
-            returning $this.m2(i, $ceylontmp$b$14);
-        );
+    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {
+        this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
     
     public final .java.lang.String m2() {
         return (
@@ -88,15 +82,26 @@ final class I2$impl {
         return 0L;
     }
     
+    public final .java.lang.String m2(final long i) {
+        return (
+            let
+            {
+                boolean $ceylontmp$b$14 = m2$b(i);
+            }
+            returning $this.m2(i, $ceylontmp$b$14);
+        );
+    }
+    
     public final boolean m2$b(final long i) {
         return false;
     }
-    
-    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {
-        this.$this = $this;
-    }
 }
 class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
+    
+    C() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this;
     
     @.java.lang.Override
@@ -148,11 +153,6 @@ class C implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, 
     @.java.lang.Override
     public final .java.lang.String m2(final long i, final boolean b) {
         return "";
-    }
-    
-    C() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
     }
     
     public static void main(.java.lang.String[] args) {

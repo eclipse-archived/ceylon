@@ -21,11 +21,9 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -40,11 +38,12 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.compiler.java.util.ShaSigner;
-import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
@@ -92,28 +91,22 @@ public class JarOutputRepositoryManager {
         private File originalJarFile;
         private File outputJarFile;
         private JarOutputStream jarOutputStream;
-        private File originalSrcFile;
-        private File outputSrcFile;
-        private JarOutputStream srcOutputStream;
         final private Set<String> modifiedSourceFiles = new HashSet<String>();
         final private Properties writtenClassesMapping = new Properties(); 
-        private Log log;
+        private Logger cmrLog;
         private Options options;
-        private CeyloncFileManager ceyloncFileManager;
         private RepositoryManager repoManager;
         private ArtifactContext carContext;
-        private ArtifactContext srcContext;
+        private SourceArchiveCreator creator;
         
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
-            this.log = log;
             this.options = options;
-            this.ceyloncFileManager = ceyloncFileManager;
             this.repoManager = repoManager;
             this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
-            this.srcContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.SRC);
-
+            this.cmrLog = new JavacLogger(options, Log.instance(ceyloncFileManager.getContext()));
+            this.creator = CeylonUtils.makeSourceArchiveCreator(repoManager, ceyloncFileManager.getLocation(StandardLocation.SOURCE_PATH),
+                    module.getNameAsString(), module.getVersion(), options.get(OptionName.VERBOSE) != null, cmrLog);
             setupJarOutput();
-            setupSrcOutput();
         }
 
         private void setupJarOutput() throws IOException {
@@ -121,13 +114,6 @@ public class JarOutputRepositoryManager {
             outputJarFile = File.createTempFile("car", ".tmp");
             originalJarFile = targetJarFile;
             jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
-        }
-
-        private void setupSrcOutput() throws IOException {
-            File targetSrcFile = repoManager.getArtifact(srcContext);
-            outputSrcFile = File.createTempFile("src", ".tmp");
-            originalSrcFile = targetSrcFile;
-            srcOutputStream = new JarOutputStream(new FileOutputStream(outputSrcFile));
         }
 
         private Properties getPreviousMapping() throws IOException {
@@ -152,22 +138,12 @@ public class JarOutputRepositoryManager {
             }
             return null;
         }
-        
-        private static interface EntryFilter {
-            boolean avoid(String entryFullName);
-        }
 
         public void close() throws IOException {
-            final Set<String> copiedSourceFiles = copySourceFiles();
-            finishUpdatingJar(originalSrcFile, outputSrcFile, srcContext, srcOutputStream, new EntryFilter() {
-                @Override
-                public boolean avoid(String entryFullName) {
-                    return copiedSourceFiles.contains(entryFullName);
-                }
-            });
+            final Set<String> copiedSourceFiles = creator.copySourceFiles(modifiedSourceFiles);
 
             final Properties previousMapping = getPreviousMapping();
-            EntryFilter filterForCars = new EntryFilter() {
+            JarUtils.JarEntryFilter filterForCars = new JarUtils.JarEntryFilter() {
                 @Override
                 public boolean avoid(String entryFullName) {
                     boolean classWasUpdated = writtenClassesMapping.containsKey(entryFullName);
@@ -179,10 +155,11 @@ public class JarOutputRepositoryManager {
                 }
             };
             writeMappingJarEntry(previousMapping, filterForCars);
-            finishUpdatingJar(originalJarFile, outputJarFile, carContext, jarOutputStream, filterForCars);
+            JarUtils.finishUpdatingJar(originalJarFile, outputJarFile, carContext, jarOutputStream, filterForCars,
+                    repoManager, options.get(OptionName.VERBOSE) != null, cmrLog);
         }
 
-        private void writeMappingJarEntry(Properties previousMapping, EntryFilter filter) {
+        private void writeMappingJarEntry(Properties previousMapping, JarUtils.JarEntryFilter filter) {
             Properties newMapping = new Properties();
             newMapping.putAll(writtenClassesMapping);
             if (previousMapping != null) {
@@ -209,107 +186,11 @@ public class JarOutputRepositoryManager {
             }
         }
 
-        private Set<String> copySourceFiles() throws IOException {
-            Set<String> copiedFiles = new HashSet<String>();
-            for(String prefixedSourceFile : modifiedSourceFiles){
-                // must remove the prefix first
-                String sourceFile = toPlatformIndependentPath(prefixedSourceFile);
-                srcOutputStream.putNextEntry(new ZipEntry(sourceFile));
-                try {
-                    InputStream inputStream = new FileInputStream(prefixedSourceFile);
-                    try {
-                        Util.copy(inputStream, srcOutputStream);
-                    } finally {
-                        inputStream.close();
-                    }
-                } finally {
-                    srcOutputStream.closeEntry();
-                }
-                copiedFiles.add(sourceFile);
-            }
-            return copiedFiles;
-        }
-
-        private String toPlatformIndependentPath(String prefixedSourceFile) {
-            String sourceFile = getSourceFilePath(ceyloncFileManager, prefixedSourceFile);
-            // zips are UNIX-friendly
-            sourceFile = sourceFile.replace(File.separatorChar, '/');
-            return sourceFile;
-        }
-        
-        private static String getSourceFilePath(JavacFileManager fileManager, String file){
-            Iterable<? extends File> prefixes = fileManager.getLocation(StandardLocation.SOURCE_PATH);
-
-            // find the matching source prefix
-            int srcDirLength = 0;
-            for (File prefixFile : prefixes) {
-                String prefix = prefixFile.getPath();
-                if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
-                    srcDirLength = prefix.length();
-                }
-                String absPrefix = prefixFile.getAbsolutePath();
-                if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
-                    srcDirLength = absPrefix.length();
-                }
-            }
-            
-            String path = file.substring(srcDirLength);
-            if(path.startsWith(File.separator))
-                path = path.substring(1);
-            return path;
-        }
-
-        public void finishUpdatingJar(File originalFile, File outputFile, ArtifactContext context, 
-                JarOutputStream jarOutputStream, EntryFilter filter) throws IOException {
-            // now copy all previous jar entries
-            if(originalFile != null){
-                JarFile jarFile = new JarFile(originalFile);
-                Enumeration<JarEntry> entries = jarFile.entries();
-                while(entries.hasMoreElements()){
-                    JarEntry entry = entries.nextElement();
-                    // skip the old entry if we overwrote it
-                    if(filter.avoid(entry.getName()))
-                        continue;
-                    ZipEntry copiedEntry = new ZipEntry(entry.getName());
-                    // Preserve the modification time and comment
-                    copiedEntry.setTime(entry.getTime());
-                    copiedEntry.setComment(entry.getComment());
-                    jarOutputStream.putNextEntry(copiedEntry);
-                    InputStream inputStream = jarFile.getInputStream(entry);
-                    Util.copy(inputStream, jarOutputStream);
-                    inputStream.close();
-                    jarOutputStream.closeEntry();
-                }
-                jarFile.close();
-            }
-            jarOutputStream.flush();
-            jarOutputStream.close();
-            if(options.get(OptionName.VERBOSE) != null){
-                Log.printLines(log.noticeWriter, "[done writing to jar: "+outputFile.getPath()+"]");
-            }
-            File sha1File = ShaSigner.sign(outputFile, log, options);
-            try{
-                context.setForceOperation(true);
-                repoManager.putArtifact(context, outputFile);
-                ArtifactContext sha1Context = context.getSha1Context();
-                sha1Context.setForceOperation(true);
-                repoManager.putArtifact(sha1Context, sha1File);
-            }catch(RuntimeException x){
-                log.error("ceylon", "Failed to write module to repository: "+x.getMessage());
-                // fatal errors go all the way up but don't print anything if we logged an error
-                throw x;
-            }finally{
-                // now cleanup
-                outputFile.delete();
-                sha1File.delete();
-            }
-        }
-
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
             modifiedSourceFiles.add(sourceFile.getPath());
             // record the class file we produce so that we don't save it from the original jar
         	fileName = fileName.replace(File.separatorChar, '/');
-        	addMappingEntry(fileName, toPlatformIndependentPath(sourceFile.getPath()));
+        	addMappingEntry(fileName, JarUtils.toPlatformIndependentPath(creator.getSourcePaths(), sourceFile.getPath()));
             return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, fileName);
         }
 

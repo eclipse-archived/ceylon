@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class QualifiedParameterisedInstantiation<G> {
     
+    QualifiedParameterisedInstantiation() {
+    }
+    
     class Inner<T> {
         
         Inner(.java.lang.String s) {
@@ -28,9 +31,6 @@ class QualifiedParameterisedInstantiation<G> {
             }
             returning $arg$1$callable$.new Inner<.ceylon.language.Integer>($arg$1$0);
         );
-    }
-    
-    QualifiedParameterisedInstantiation() {
     }
     
     public static void main(.java.lang.String[] args) {

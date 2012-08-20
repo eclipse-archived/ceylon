@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodTypeParams {
     
-    private final <U, V>U f(final U u, final V v) {
-        return u;
+    MethodTypeParams() {
     }
     
-    MethodTypeParams() {
+    private final <U, V>U f(final U u, final V v) {
+        return u;
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
 class MethodIfExists {
     
+    MethodIfExists() {
+    }
+    
     public final long m(final .ceylon.language.Integer x) {
         .ceylon.language.Integer $x$0;
         if (($x$0 = x) != null) {
@@ -18,9 +21,6 @@ class MethodIfExists {
             return $y$3;
         }
         return 0L;
-    }
-    
-    MethodIfExists() {
     }
     
     public static void main(.java.lang.String[] args) {

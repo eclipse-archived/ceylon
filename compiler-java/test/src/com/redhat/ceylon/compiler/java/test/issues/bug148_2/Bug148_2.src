@@ -1,6 +1,9 @@
 package bug148_2;
 
 final class f_ {
+    
+    private f_() {
+    }
     private static long[] value;
     static {
         value = new long[]{2L};
@@ -16,9 +19,6 @@ final class f_ {
     
     static void setF(final long f) {
         value[0] = f;
-    }
-    
-    private f_() {
     }
 }
 public final class bug148_2_ {

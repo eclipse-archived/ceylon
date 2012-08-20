@@ -2,52 +2,42 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface Concrete<A> {
     
-    public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq);
-    
-    public void mShared(final A a);
-    
     public void mShared();
     
     public abstract A mShared$a();
     
+    public void mShared(final A a);
+    
     public abstract .ceylon.language.Iterable<? extends A> mShared$aseq(final A a);
     
-    public abstract void mFormal(final A a, final .ceylon.language.Iterable<? extends A> aseq);
-    
-    public abstract void mFormal(final A a);
+    public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq);
     
     public abstract void mFormal();
     
     public abstract A mFormal$a();
     
+    public abstract void mFormal(final A a);
+    
     public abstract .ceylon.language.Iterable<? extends A> mFormal$aseq(final A a);
     
-    public void mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq);
-    
-    public void mDefault(final A a);
+    public abstract void mFormal(final A a, final .ceylon.language.Iterable<? extends A> aseq);
     
     public void mDefault();
     
     public abstract A mDefault$a();
     
+    public void mDefault(final A a);
+    
     public abstract .ceylon.language.Iterable<? extends A> mDefault$aseq(final A a);
+    
+    public void mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq);
 }
 final class Concrete$impl<A> {
+    
+    Concrete$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this;
-    
-    private void mNonShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
-    }
-    
-    private final void mNonShared(final A a) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$4 = mNonShared$aseq(a);
-                mNonShared(a, $ceylontmp$aseq$4);
-            }
-            returning null;
-        );
-    }
     
     private final void mNonShared() {
         (
@@ -65,23 +55,22 @@ final class Concrete$impl<A> {
         return null;
     }
     
+    private final void mNonShared(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$4 = mNonShared$aseq(a);
+                mNonShared(a, $ceylontmp$aseq$4);
+            }
+            returning null;
+        );
+    }
+    
     private final .ceylon.language.Iterable<? extends A> mNonShared$aseq(final A a) {
         return new .ceylon.language.ArraySequence<A>(a);
     }
     
-    public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
-        mNonShared();
-    }
-    
-    public final void mShared(final A a) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$9 = mShared$aseq(a);
-                mShared(a, $ceylontmp$aseq$9);
-            }
-            returning null;
-        );
+    private void mNonShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
     }
     
     public final void mShared() {
@@ -100,19 +89,23 @@ final class Concrete$impl<A> {
         return null;
     }
     
+    public final void mShared(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$9 = mShared$aseq(a);
+                mShared(a, $ceylontmp$aseq$9);
+            }
+            returning null;
+        );
+    }
+    
     public final .ceylon.language.Iterable<? extends A> mShared$aseq(final A a) {
         return new .ceylon.language.ArraySequence<A>(a);
     }
     
-    public final void mFormal(final A a) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$19 = mFormal$aseq(a);
-                $this.mFormal(a, $ceylontmp$aseq$19);
-            }
-            returning null;
-        );
+    public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
+        mNonShared();
     }
     
     public final void mFormal() {
@@ -131,22 +124,19 @@ final class Concrete$impl<A> {
         return null;
     }
     
-    public final .ceylon.language.Iterable<? extends A> mFormal$aseq(final A a) {
-        return new .ceylon.language.ArraySequence<A>(a);
-    }
-    
-    public void mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
-    }
-    
-    public final void mDefault(final A a) {
+    public final void mFormal(final A a) {
         (
             let
             {
-                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$29 = mDefault$aseq(a);
-                mDefault(a, $ceylontmp$aseq$29);
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$19 = mFormal$aseq(a);
+                $this.mFormal(a, $ceylontmp$aseq$19);
             }
             returning null;
         );
+    }
+    
+    public final .ceylon.language.Iterable<? extends A> mFormal$aseq(final A a) {
+        return new .ceylon.language.ArraySequence<A>(a);
     }
     
     public final void mDefault() {
@@ -165,12 +155,22 @@ final class Concrete$impl<A> {
         return null;
     }
     
+    public final void mDefault(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends A> $ceylontmp$aseq$29 = mDefault$aseq(a);
+                mDefault(a, $ceylontmp$aseq$29);
+            }
+            returning null;
+        );
+    }
+    
     public final .ceylon.language.Iterable<? extends A> mDefault$aseq(final A a) {
         return new .ceylon.language.ArraySequence<A>(a);
     }
     
-    Concrete$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this) {
-        this.$this = $this;
+    public void mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
     }
 }
 final class concreteCallsites_ {
@@ -326,6 +326,10 @@ final class concreteCallsites_ {
     }
 }
 class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<B> {
+    
+    ConcreteImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<B>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<B> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
     
     @.java.lang.Override
@@ -400,10 +404,6 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.test.structure
     
     @.java.lang.Override
     public final void mFormal(final B b, final .ceylon.language.Iterable<? extends B> bseq) {
-    }
-    
-    ConcreteImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<B>(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -564,6 +564,10 @@ final class concreteImplCallsites_ {
     }
 }
 class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<C> {
+    
+    ConcreteImplWithDefault() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<C>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<C> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
     
     @.java.lang.Override
@@ -637,10 +641,6 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.tes
     
     @.java.lang.Override
     public final void mDefault(final C c, final .ceylon.language.Iterable<? extends C> cseq) {
-    }
-    
-    ConcreteImplWithDefault() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<C>(this);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -801,6 +801,10 @@ final class concreteImplWithDefaultCallsites_ {
     }
 }
 abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<D> {
+    
+    Abstract() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
     
     @.java.lang.Override
@@ -871,10 +875,6 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.test.stru
     @.java.lang.Override
     public void mDefault(final D a, final .ceylon.language.Iterable<? extends D> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mDefault(a, aseq);
-    }
-    
-    Abstract() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<D>(this);
     }
 }
 final class abstractCallsites_ {
@@ -1031,12 +1031,12 @@ final class abstractCallsites_ {
 }
 class AbstractSub<E> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract<E> {
     
-    @.java.lang.Override
-    public final void mFormal(final E e, final .ceylon.language.Iterable<? extends E> eseq) {
-    }
-    
     AbstractSub() {
         super();
+    }
+    
+    @.java.lang.Override
+    public final void mFormal(final E e, final .ceylon.language.Iterable<? extends E> eseq) {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -1197,6 +1197,10 @@ final class abstractSubCallsites_ {
     }
 }
 abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<F> {
+    
+    AbstractImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this;
     
     @.java.lang.Override
@@ -1270,10 +1274,6 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.test.
     
     @.java.lang.Override
     public void mDefault(final F f, final .ceylon.language.Iterable<? extends F> fseq) {
-    }
-    
-    AbstractImpl() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<F>(this);
     }
 }
 final class abstractImpl_ {
@@ -1430,12 +1430,12 @@ final class abstractImpl_ {
 }
 class AbstractImplSub<G> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl<G> {
     
-    @.java.lang.Override
-    public final void mDefault(final G g, final .ceylon.language.Iterable<? extends G> gseq) {
-    }
-    
     AbstractImplSub() {
         super();
+    }
+    
+    @.java.lang.Override
+    public final void mDefault(final G g, final .ceylon.language.Iterable<? extends G> gseq) {
     }
     
     public static void main(.java.lang.String[] args) {

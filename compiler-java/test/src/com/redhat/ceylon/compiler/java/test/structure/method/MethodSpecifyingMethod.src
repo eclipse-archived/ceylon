@@ -2,15 +2,15 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class MethodSpecifierMethod {
     
+    MethodSpecifierMethod() {
+    }
+    
     private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod bar() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     private final void foo() {
         bar();
-    }
-    
-    MethodSpecifierMethod() {
     }
     
     public static void main(.java.lang.String[] args) {

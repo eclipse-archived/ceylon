@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class AttributeAccess {
+    
+    AttributeAccess() {
+        this.b1 = true;
+        this.b2 = true;
+    }
     private final boolean b1;
     
     private final boolean getB1() {
@@ -25,11 +30,6 @@ class AttributeAccess {
         final boolean bb2 = getB2();
         final boolean bb3 = getB3();
         final boolean bb4 = getB4();
-    }
-    
-    AttributeAccess() {
-        this.b1 = true;
-        this.b2 = true;
     }
     
     public static void main(.java.lang.String[] args) {

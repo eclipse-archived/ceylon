@@ -10,6 +10,11 @@ final class bug261_ {
         long vl;
         
         class Inner {
+            
+            Inner() {
+                this.vi = 0L;
+                this.vj = 0L;
+            }
             private long vi;
             
             public final long getVi() {
@@ -27,11 +32,6 @@ final class bug261_ {
             
             public final void setVj(final long vj) {
                 this.vj = vj;
-            }
-            
-            Inner() {
-                this.vi = 0L;
-                this.vj = 0L;
             }
         }
         final Inner inner = new Inner();

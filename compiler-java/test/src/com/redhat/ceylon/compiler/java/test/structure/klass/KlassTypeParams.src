@@ -2,6 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class KlassTypeParams<U, V> {
     
+    KlassTypeParams(U uu, V vv) {
+        this.attr = uu;
+        this.var = vv;
+    }
+    
     private final U foo(final U u, final V v) {
         return u;
     }
@@ -30,10 +35,5 @@ class KlassTypeParams<U, V> {
     
     private final void setGetset(final V getset) {
         setVar(getset);
-    }
-    
-    KlassTypeParams(U uu, V vv) {
-        this.attr = uu;
-        this.var = vv;
     }
 }

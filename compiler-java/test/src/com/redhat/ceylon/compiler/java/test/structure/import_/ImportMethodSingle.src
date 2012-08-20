@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.import_;
 
 class ImportMethodSingle {
     
-    private final void m() {
-        .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.m1_.m1();
+    ImportMethodSingle() {
     }
     
-    ImportMethodSingle() {
+    private final void m() {
+        .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.m1_.m1();
     }
     
     public static void main(.java.lang.String[] args) {

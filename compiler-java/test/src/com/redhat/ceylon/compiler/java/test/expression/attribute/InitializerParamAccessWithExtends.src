@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class InitializerParamAccessWithExtends extends .java.lang.Object {
+    
+    InitializerParamAccessWithExtends(boolean b) {
+        super();
+        this.b = b;
+    }
     private final boolean b;
     
     private final boolean m() {
@@ -16,21 +21,16 @@ class InitializerParamAccessWithExtends extends .java.lang.Object {
     public final int hashCode() {
         return (int)0L;
     }
-    
-    InitializerParamAccessWithExtends(boolean b) {
-        super();
-        this.b = b;
-    }
 }
 class InitializerParamAccessWithExtends2 extends .com.redhat.ceylon.compiler.java.test.expression.attribute.InitializerParamAccessWithExtends {
-    private final boolean b;
-    
-    private final boolean m() {
-        return b;
-    }
     
     InitializerParamAccessWithExtends2(boolean b) {
         super(b);
         this.b = b;
+    }
+    private final boolean b;
+    
+    private final boolean m() {
+        return b;
     }
 }

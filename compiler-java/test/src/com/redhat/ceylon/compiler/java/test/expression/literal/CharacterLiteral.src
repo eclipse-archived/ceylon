@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.literal;
 
 class CharacterLiteral {
     
+    CharacterLiteral() {
+    }
+    
     public final void m() {
         final int c1 = 'a';
         final int c2 = 'I';
@@ -9,9 +12,6 @@ class CharacterLiteral {
         final int c4 = '\\';
         final int c5 = '\t';
         final int c6 = '\n';
-    }
-    
-    CharacterLiteral() {
     }
     
     public static void main(.java.lang.String[] args) {

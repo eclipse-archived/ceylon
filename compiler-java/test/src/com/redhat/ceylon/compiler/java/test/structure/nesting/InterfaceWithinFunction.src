@@ -10,11 +10,11 @@ final class interfaceWithinFunction_ {
     static void interfaceWithinFunction() {
         
         final class Foo$impl {
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction$0$Foo_ $this;
             
             Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction$0$Foo_ $this) {
                 this.$this = $this;
             }
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction$0$Foo_ $this;
         }
     }
     

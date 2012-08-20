@@ -564,6 +564,11 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
+    public void testBug687() {
+        compareWithJavaSource("Bug687");
+    }
+    
+    @Test
     public void testBug689() {
         compile("Bug689_ModelLoader.ceylon");
         compareWithJavaSource("Bug689");

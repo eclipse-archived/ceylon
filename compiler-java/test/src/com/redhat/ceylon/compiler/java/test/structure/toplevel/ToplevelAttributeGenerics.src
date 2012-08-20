@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 final class topLevelAttributeGenerics_ {
+    
+    private topLevelAttributeGenerics_() {
+    }
     private static final .ceylon.language.List<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
@@ -13,11 +16,11 @@ final class topLevelAttributeGenerics_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private topLevelAttributeGenerics_() {
-    }
 }
 public final class topLevelAttributeGenericsShared_ {
+    
+    private topLevelAttributeGenericsShared_() {
+    }
     private static final .ceylon.language.List<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
@@ -30,11 +33,11 @@ public final class topLevelAttributeGenericsShared_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private topLevelAttributeGenericsShared_() {
-    }
 }
 final class topLevelVariableGenerics_ {
+    
+    private topLevelVariableGenerics_() {
+    }
     private static .ceylon.language.List<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
@@ -51,11 +54,11 @@ final class topLevelVariableGenerics_ {
     static void setTopLevelVariableGenerics(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenerics) {
         value[0] = topLevelVariableGenerics;
     }
-    
-    private topLevelVariableGenerics_() {
-    }
 }
 public final class topLevelVariableGenericsShared_ {
+    
+    private topLevelVariableGenericsShared_() {
+    }
     private static .ceylon.language.List<? extends .ceylon.language.String>[] value;
     static {
         value = new .ceylon.language.List[]{new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
@@ -71,8 +74,5 @@ public final class topLevelVariableGenericsShared_ {
     
     public static void setTopLevelVariableGenericsShared(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenericsShared) {
         value[0] = topLevelVariableGenericsShared;
-    }
-    
-    private topLevelVariableGenericsShared_() {
     }
 }

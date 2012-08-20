@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInCallable {
     
+    KeywordInCallable() {
+    }
+    
     private final void m(final .ceylon.language.Callable<? extends .java.lang.Object> do) {
         do.$call();
         
@@ -44,9 +47,6 @@ class KeywordInCallable {
     }
     
     private final void $assert() {
-    }
-    
-    KeywordInCallable() {
     }
     
     public static void main(.java.lang.String[] args) {

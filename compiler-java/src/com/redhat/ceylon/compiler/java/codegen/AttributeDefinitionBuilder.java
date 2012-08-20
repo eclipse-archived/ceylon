@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -57,9 +56,10 @@ public class AttributeDefinitionBuilder {
     private final MethodDefinitionBuilder setterBuilder;
     
     private AbstractTransformer owner;
-    private boolean ancestorLocal;
 
     private boolean toplevel = false;
+    
+    private boolean noAnnotations = false;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel) {
@@ -71,7 +71,6 @@ public class AttributeDefinitionBuilder {
             typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
         
-        this.ancestorLocal = Decl.isAncestorLocal(attrType);
         this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
         this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
         this.owner = owner;
@@ -83,16 +82,16 @@ public class AttributeDefinitionBuilder {
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
         getterBuilder = MethodDefinitionBuilder
-            .systemMethod(owner, ancestorLocal, Naming.getGetterName(attrType))
+            .method2(owner, Naming.getGetterName(attrType))
             .block(generateDefaultGetterBlock())
-            .isActual(attrType.isActual())
+            .isOverride(attrType.isActual())
             .annotations(owner.makeAtAnnotations(attrType.getAnnotations()))
             .resultType(this.attrType, attrType);
         setterBuilder = MethodDefinitionBuilder
-            .systemMethod(owner, ancestorLocal, Naming.getSetterName(attrType))
+            .method2(owner, Naming.getSetterName(attrType))
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
-            .isActual(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
+            .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
             .parameter(Flags.FINAL, attrName, attrType, nonWideningTypedRef.getDeclaration(), nonWideningType, 0);
     }
     
@@ -127,10 +126,10 @@ public class AttributeDefinitionBuilder {
         appendDefinitionsTo(defs);
         if (javaClassName != null) {
             return ClassDefinitionBuilder
-                .klass(owner, ancestorLocal, javaClassName, null)
+                .klass(owner, javaClassName, null)
                 .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                 .constructorModifiers(Flags.PRIVATE)
-                .annotations(!ancestorLocal ? owner.makeAtAttribute() : List.<JCTree.JCAnnotation>nil())
+                .annotations(owner.makeAtAttribute())
                 .annotations(annotations.toList())
                 .defs(defs.toList())
                 .build();
@@ -152,11 +151,13 @@ public class AttributeDefinitionBuilder {
 
         if (readable) {
             getterBuilder.modifiers(getGetSetModifiers());
+            getterBuilder.noAnnotations(noAnnotations);
             defs.append(getterBuilder.build());
         }
 
         if (writable) {
             setterBuilder.modifiers(getGetSetModifiers());
+            setterBuilder.noAnnotations(noAnnotations);
             defs.append(setterBuilder.build());
         }
     }
@@ -248,17 +249,19 @@ public class AttributeDefinitionBuilder {
         return this;
     }
 
+    public AttributeDefinitionBuilder noAnnotations() {
+        this.noAnnotations = true;
+        return this;
+    }
+    
     public AttributeDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        if (ancestorLocal) {
-            return this;
-        }
         this.annotations.appendList(annotations);
         return this;
     }
 
     public AttributeDefinitionBuilder isFormal(boolean isFormal) {
-        getterBuilder.isFormal(isFormal);
-        setterBuilder.isFormal(isFormal);
+        getterBuilder.isAbstract(isFormal);
+        setterBuilder.isAbstract(isFormal);
         return this;
     }
 
@@ -331,8 +334,8 @@ public class AttributeDefinitionBuilder {
      * so we'd need two parameters.
      */
     public AttributeDefinitionBuilder notActual() {
-        getterBuilder.isActual(false);
-        setterBuilder.isActual(false);
+        getterBuilder.isOverride(false);
+        setterBuilder.isOverride(false);
         return this;
     }
 }

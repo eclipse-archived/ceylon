@@ -26,7 +26,6 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -35,11 +34,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -68,6 +65,8 @@ public class ClassDefinitionBuilder {
     private long modifiers;
     private long constructorModifiers = -1;
     
+    private boolean isAlias = false;
+    
     private JCExpression extending;
     private JCStatement superCall;
     
@@ -78,36 +77,35 @@ public class ClassDefinitionBuilder {
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
     
-    private final ListBuffer<JCVariableDecl> params = ListBuffer.lb();
+    private final ListBuffer<ParameterDefinitionBuilder> params = ListBuffer.lb();
     
     private final ListBuffer<MethodDefinitionBuilder> constructors = ListBuffer.lb();
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
     private ClassDefinitionBuilder concreteInterfaceMemberDefs;
-    private final ListBuffer<JCTree> body = ListBuffer.lb();
     private final ListBuffer<JCTree> also = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
 
-    private final boolean ancestorLocal = false;
-    
     private boolean built = false;
     
     private boolean isCompanion = false;
 
     private ClassDefinitionBuilder containingClassBuilder;
 
-    public static ClassDefinitionBuilder klass(AbstractTransformer gen, boolean ancestorLocal, String javaClassName, String ceylonClassName) {
-        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, javaClassName, ceylonClassName);
+
+    public static ClassDefinitionBuilder klass(AbstractTransformer gen, String javaClassName, String ceylonClassName) {
+        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName);
         builder.containingClassBuilder = gen.current();
         gen.replace(builder);
         return builder;
     }
     
-    public static ClassDefinitionBuilder object(AbstractTransformer gen, boolean ancestorLocal, String ceylonClassName) {
-        return klass(gen, ancestorLocal, Naming.quoteClassName(ceylonClassName), ceylonClassName);
+
+    public static ClassDefinitionBuilder object(AbstractTransformer gen, String ceylonClassName) {
+        return klass(gen, Naming.quoteClassName(ceylonClassName), ceylonClassName);
     }
     
-    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, boolean ancestorLocal, String ceylonClassName, boolean shared) {
-        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, ancestorLocal, Naming.quoteClassName(ceylonClassName), null);
+    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String ceylonClassName, boolean shared) {
+        final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, Naming.quoteClassName(ceylonClassName), null);
         builder.containingClassBuilder = gen.current();
         gen.replace(builder);
         return builder
@@ -116,22 +114,17 @@ public class ClassDefinitionBuilder {
             .constructorModifiers(PRIVATE);
     }
 
-    private ClassDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, 
+    private ClassDefinitionBuilder(AbstractTransformer gen,  
             String javaClassName, 
             String ceylonClassName) {
         this.gen = gen;
         this.name = javaClassName;
-        //this.ancestorLocal = ancestorLocal;
-        
         extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
         
         if (ceylonClassName != null && !ceylonClassName.equals(javaClassName)) {
             // Only add @Name if it's different from the Java name
             annotations(gen.makeAtName(ceylonClassName));
-        }
-        if (ancestorLocal) {
-            this.annotations.appendList(gen.makeAtIgnore());
         }
     }
 
@@ -155,7 +148,7 @@ public class ClassDefinitionBuilder {
         }
         
         JCTree.JCClassDecl klass = gen.make().ClassDef(
-                gen.make().Modifiers(modifiers, annotations.toList()),
+                gen.make().Modifiers(modifiers, getAnnotations()),
                 gen.names().fromString(name),
                 typeParams.toList(),
                 extending,
@@ -199,11 +192,11 @@ public class ClassDefinitionBuilder {
     }
 
     private boolean hasCompanion() {
-        return concreteInterfaceMemberDefs != null
+        return !isAlias
+                && concreteInterfaceMemberDefs != null
                 && (((modifiers & INTERFACE) != 0)
                     || !(concreteInterfaceMemberDefs.defs.isEmpty()
                     && concreteInterfaceMemberDefs.init.isEmpty()
-                    && concreteInterfaceMemberDefs.body.isEmpty()
                     && concreteInterfaceMemberDefs.constructors.isEmpty()));
     }
 
@@ -212,7 +205,6 @@ public class ClassDefinitionBuilder {
     }
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
-        defs.appendList(this.defs);
         if ((modifiers & INTERFACE) == 0) {
             if (superCall != null) {
                 init.prepend(superCall);
@@ -221,10 +213,13 @@ public class ClassDefinitionBuilder {
                 createConstructor(init.toList());
             }
             for (MethodDefinitionBuilder builder : constructors) {
+                if (noAnnotations || ignoreAnnotations) {
+                    builder.noAnnotations();
+                }
                 defs.append(builder.build());
             }
         }
-        defs.appendList(body);
+        defs.appendList(this.defs);
     }
 
     private JCExpression getSuperclass(ProducedType extendedType) {
@@ -276,7 +271,7 @@ public class ClassDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder addConstructor() {
-        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen, ancestorLocal);
+        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen);
         this.constructors.append(constructor);
         return constructor;
     }
@@ -372,16 +367,52 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
+    private boolean ignoreAnnotations = false;
+    private boolean noAnnotations = false;
+    
+    /** 
+     * The class will be generated with the {@code @Ignore} annotation only
+     */
+    public ClassDefinitionBuilder ignoreAnnotations() {
+        ignoreAnnotations = true;
+        return this;
+    }
+    
+    /** 
+     * The class will be generated with no annotations at all
+     */
+    public ClassDefinitionBuilder noAnnotations() {
+        noAnnotations = true;
+        return this;
+    }
+    
+    /**
+     * Adds the given annotations to this class, unless 
+     * they're {@linkplain #ignoreAnnotations() ignored}
+     * @see #ignoreAnnotations()
+     */
     public ClassDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        if (ancestorLocal) {
-            return this;
-        }
         this.annotations.appendList(annotations);
         return this;
     }
+    
+    private List<JCAnnotation> getAnnotations() {
+        if (noAnnotations) {
+            return List.nil();
+        }
+        if (ignoreAnnotations) {
+            return gen.makeAtIgnore();
+        }
+        return this.annotations.toList();
+    }
 
     // Create a parameter for the constructor
-    private ClassDefinitionBuilder parameter(String name, Parameter decl, boolean isSequenced, boolean isDefaulted) {
+    private ClassDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
+        params.append(pdb);
+        return this;
+    }
+
+    private JCExpression paramType(Parameter decl) {
         JCExpression type;
         MethodOrValue attr = CodegenUtil.findMethodOrValueForParam(decl);
         if (attr instanceof Value) {
@@ -393,21 +424,11 @@ public class ClassDefinitionBuilder {
             ProducedType paramType = decl.getType();
             type = gen.makeJavaType(decl, paramType, 0);
         }
-        
-        List<JCAnnotation> annots = List.nil();
-        if (gen.needsAnnotations(decl)) {
-            annots = annots.appendList(gen.makeAtName(name));
-            if (isSequenced) {
-                annots = annots.appendList(gen.makeAtSequenced());
-            }
-            if (isDefaulted) {
-                annots = annots.appendList(gen.makeAtDefaulted());
-            }
-            annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
-        }
-        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(Flags.PARAMETER, annots), gen.names().fromString(name), type, null);
-        params.append(var);
+        return type;
+    }
 
+    private void initParam(String name, Parameter decl) {
+        JCExpression type = paramType(decl);
         if (decl.isCaptured()) {
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
@@ -426,43 +447,75 @@ public class ClassDefinitionBuilder {
                                 gen.naming.makeName(decl, Naming.NA_IDENT))));
             }
         }
-        return this;
-    }
-    
-    public ClassDefinitionBuilder parameter(Tree.Parameter param) {
-        gen.at(param);
-        return parameter(param.getDeclarationModel());
     }
     
     public ClassDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(name, param, param.isSequenced(), param.isDefaulted());
+        JCExpression type = paramType(param);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        pdb.sequenced(param.isSequenced());
+        pdb.defaulted(param.isDefaulted());
+        pdb.type(type, gen.makeJavaTypeAnnotations(param));
+        parameter(pdb);
+        initParam(name, param);
+        return this;
     }
     
-    public ClassDefinitionBuilder defs(JCTree statement) {
+    /**
+     * Appends the attribute built by the given builder 
+     * (the attribute is built without annotations if necessary).
+     */
+    public ClassDefinitionBuilder attribute(AttributeDefinitionBuilder adb) {
+        if (adb != null) {
+            if (isCompanion) {
+                adb.noAnnotations();
+            }
+            defs(adb.build());
+        }
+        return this;
+    }
+    
+    /**
+     * Appends the method built by the given builder 
+     * (the method is built without annotations if necessary).
+     */
+    public ClassDefinitionBuilder method(MethodDefinitionBuilder mdb) {
+        if (mdb != null) {
+            if (isCompanion) {
+                mdb.noAnnotations();
+            }
+            defs(mdb.build());
+        }
+        return this;
+    }
+    
+    /**
+     * Appends the methods built by the given builder 
+     * (the methods are built without annotations if necessary).
+     */
+    public ClassDefinitionBuilder methods(List<MethodDefinitionBuilder> mdbs) {
+        for (MethodDefinitionBuilder mdb : mdbs) {
+            method(mdb);
+        }
+        return this;
+    }
+    
+    /**
+     * Appends the given tree
+     */
+    private ClassDefinitionBuilder defs(JCTree statement) {
         if (statement != null) {
             this.defs.append(statement);
         }
         return this;
     }
     
+    /**
+     * Appends the given trees.
+     */
     public ClassDefinitionBuilder defs(List<JCTree> defs) {
         if (defs != null) {
             this.defs.appendList(defs);
-        }
-        return this;
-    }
-    
-    public ClassDefinitionBuilder body(JCTree statement) {
-        if (statement != null) {
-            this.body.append(statement);
-        }
-        return this;
-    }
-    
-    public ClassDefinitionBuilder body(List<JCTree> body) {
-        if (body != null) {
-            this.body.appendList(body);
         }
         return this;
     }
@@ -484,8 +537,8 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl) {
         if (concreteInterfaceMemberDefs == null) {
             String className = gen.naming.getCompanionClassName(decl).replaceFirst(".*\\.", "");
-            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, ancestorLocal, className, decl.getName())
-                .annotations(gen.makeAtIgnore());
+            concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, className, decl.getName())
+                .ignoreAnnotations();
             concreteInterfaceMemberDefs.isCompanion = true;
         }
         return concreteInterfaceMemberDefs;
@@ -509,12 +562,17 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder method(Tree.AnyMethod method) {
-        defs(gen.classGen().transform(method, this));
+        methods(gen.classGen().transform(method, this));
         return this;
     }
 
     public ClassDefinitionBuilder modelAnnotations(java.util.List<Annotation> annotations) {
         annotations(gen.makeAtAnnotations(annotations));
+        return this;
+    }
+    
+    public ClassDefinitionBuilder isAlias(boolean isAlias){
+        this.isAlias = isAlias;
         return this;
     }
 }

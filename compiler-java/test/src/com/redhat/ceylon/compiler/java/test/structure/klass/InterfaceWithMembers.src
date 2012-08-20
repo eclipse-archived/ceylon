@@ -11,6 +11,10 @@ interface InterfaceWithMembers {
     public abstract void m();
 }
 final class InterfaceWithMembers$impl {
+    
+    InterfaceWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers $this;
     
     public final boolean getB() {
@@ -23,9 +27,5 @@ final class InterfaceWithMembers$impl {
     
     public final void setB2(final boolean b2) {
         $this.setB2(b2);
-    }
-    
-    InterfaceWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers $this) {
-        this.$this = $this;
     }
 }

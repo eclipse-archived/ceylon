@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 abstract class ClassAttributeGetterSetter {
     
+    ClassAttributeGetterSetter() {
+        this.f5 = "";
+    }
+    
     private final .java.lang.String getF() {
         return "";
     }
@@ -31,12 +35,12 @@ abstract class ClassAttributeGetterSetter {
     public .java.lang.String getF5() {
         return f5;
     }
-    
-    ClassAttributeGetterSetter() {
-        this.f5 = "";
-    }
 }
 class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter {
+    
+    SubClassAttributeGetterSetter() {
+        super();
+    }
     
     @.java.lang.Override
     public final .java.lang.String getF3() {
@@ -61,10 +65,6 @@ class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.tes
     }
     
     public final void setF5(final .java.lang.String f5) {
-    }
-    
-    SubClassAttributeGetterSetter() {
-        super();
     }
     
     public static void main(.java.lang.String[] args) {

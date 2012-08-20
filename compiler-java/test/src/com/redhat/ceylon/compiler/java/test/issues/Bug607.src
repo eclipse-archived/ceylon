@@ -8,6 +8,9 @@ final class bug607mth_ {
     static void bug607mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$) {
         
         final class arg3_ {
+            
+            private arg3_() {
+            }
             private .java.lang.String value;
             {
                 value = arg3$;
@@ -19,9 +22,6 @@ final class bug607mth_ {
             
             void setArg3(final .java.lang.String arg3) {
                 value = arg3;
-            }
-            
-            private arg3_() {
             }
         }
         final arg3_ arg3_ = new arg3_();
@@ -41,9 +41,15 @@ final class bug607mth_ {
 }
 class Bug607cls {
     
+    Bug607cls() {
+    }
+    
     private final void mth(final .java.lang.String arg1, .java.lang.String arg2, final .java.lang.String arg3$) {
         
         final class arg3_ {
+            
+            private arg3_() {
+            }
             private .java.lang.String value;
             {
                 value = arg3$;
@@ -55,9 +61,6 @@ class Bug607cls {
             
             void setArg3(final .java.lang.String arg3) {
                 value = arg3;
-            }
-            
-            private arg3_() {
             }
         }
         final arg3_ arg3_ = new arg3_();
@@ -73,9 +76,6 @@ class Bug607cls {
             }
         }
         final cap_ cap = new cap_();
-    }
-    
-    Bug607cls() {
     }
     
     public static void main(.java.lang.String[] args) {

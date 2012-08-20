@@ -2,11 +2,19 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 public class MutableList<T> {
     
+    public MutableList() {
+    }
+    
     public final T item(final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cell) {
         return cell.getCar();
     }
     
     public class Cell<T> {
+        
+        public Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
+            this.car = car;
+            this.cdr = cdr;
+        }
         private final T car;
         
         public final T getCar() {
@@ -17,14 +25,6 @@ public class MutableList<T> {
         public final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> getCdr() {
             return cdr;
         }
-        
-        public Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
-            this.car = car;
-            this.cdr = cdr;
-        }
-    }
-    
-    public MutableList() {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -1,6 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class Fookls {
+    
+    Fookls(long init) {
+        this.init = init;
+        this.prop = 42L;
+        this.privProp = 24L;
+    }
     private final long prop;
     
     public final long getProp() {
@@ -15,9 +21,6 @@ class Fookls {
     
     private final long getInit() {
         return init;
-    }
-    
-    public void f1(final long n) {
     }
     
     public final void f1() {
@@ -35,7 +38,7 @@ class Fookls {
         return 5L;
     }
     
-    public void f2(final long n, final .java.lang.String s) {
+    public void f1(final long n) {
     }
     
     public final void f2(final long n) {
@@ -53,18 +56,7 @@ class Fookls {
         return "test";
     }
     
-    public void f3(final long n, final long m) {
-    }
-    
-    public final void f3(final long n) {
-        (
-            let
-            {
-                long $ceylontmp$m$8 = f3$m(n);
-                f3(n, $ceylontmp$m$8);
-            }
-            returning null;
-        );
+    public void f2(final long n, final .java.lang.String s) {
     }
     
     public final void f3() {
@@ -83,22 +75,22 @@ class Fookls {
         return 5L;
     }
     
+    public final void f3(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$8 = f3$m(n);
+                f3(n, $ceylontmp$m$8);
+            }
+            returning null;
+        );
+    }
+    
     public final long f3$m(final long n) {
         return n;
     }
     
-    public void f4(final long n, final long m) {
-    }
-    
-    public final void f4(final long n) {
-        (
-            let
-            {
-                long $ceylontmp$m$13 = f4$m(n);
-                f4(n, $ceylontmp$m$13);
-            }
-            returning null;
-        );
+    public void f3(final long n, final long m) {
     }
     
     public final void f4() {
@@ -117,11 +109,22 @@ class Fookls {
         return 5L;
     }
     
+    public final void f4(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$13 = f4$m(n);
+                f4(n, $ceylontmp$m$13);
+            }
+            returning null;
+        );
+    }
+    
     public final long f4$m(final long n) {
         return n + 1L;
     }
     
-    public void f5(final long n) {
+    public void f4(final long n, final long m) {
     }
     
     public final void f5() {
@@ -139,7 +142,7 @@ class Fookls {
         return getProp();
     }
     
-    public void f6(final long n) {
+    public void f5(final long n) {
     }
     
     public final void f6() {
@@ -157,7 +160,7 @@ class Fookls {
         return getPrivProp();
     }
     
-    public void f7(final long n) {
+    public void f6(final long n) {
     }
     
     public final void f7() {
@@ -175,7 +178,7 @@ class Fookls {
         return this.getProp();
     }
     
-    public void f8(final long n) {
+    public void f7(final long n) {
     }
     
     public final void f8() {
@@ -193,7 +196,7 @@ class Fookls {
         return getInit();
     }
     
-    public void f9(final long n) {
+    public void f8(final long n) {
     }
     
     public final void f9() {
@@ -211,18 +214,7 @@ class Fookls {
         return .ceylon.language.Integer.getSuccessor(getProp());
     }
     
-    public void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
-    }
-    
-    public final void fa(final long n) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$28 = fa$seq(n);
-                fa(n, $ceylontmp$seq$28);
-            }
-            returning null;
-        );
+    public void f9(final long n) {
     }
     
     public final void fa() {
@@ -241,17 +233,29 @@ class Fookls {
         return 5L;
     }
     
+    public final void fa(final long n) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$28 = fa$seq(n);
+                fa(n, $ceylontmp$seq$28);
+            }
+            returning null;
+        );
+    }
+    
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    Fookls(long init) {
-        this.init = init;
-        this.prop = 42L;
-        this.privProp = 24L;
+    public void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
 }
 class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls {
+    
+    Foosubkls(long init) {
+        super(init);
+    }
     
     @.java.lang.Override
     public final void f1(final long n) {
@@ -292,76 +296,76 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
     @.java.lang.Override
     public final void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
-    
-    Foosubkls(long init) {
-        super(init);
-    }
 }
 interface Barface {
     
     public abstract long getProp();
     
-    public abstract void f1(final long n);
-    
     public abstract void f1();
     
     public abstract long f1$n();
     
-    public abstract void f2(final long n, final .java.lang.String s);
+    public abstract void f1(final long n);
     
     public abstract void f2(final long n);
     
     public abstract .java.lang.String f2$s(final long n);
     
-    public abstract void f3(final long n, final long m);
-    
-    public abstract void f3(final long n);
+    public abstract void f2(final long n, final .java.lang.String s);
     
     public abstract void f3();
     
     public abstract long f3$n();
     
+    public abstract void f3(final long n);
+    
     public abstract long f3$m(final long n);
     
-    public abstract void f4(final long n, final long m);
-    
-    public abstract void f4(final long n);
+    public abstract void f3(final long n, final long m);
     
     public abstract void f4();
     
     public abstract long f4$n();
     
+    public abstract void f4(final long n);
+    
     public abstract long f4$m(final long n);
     
-    public abstract void f5(final long n);
+    public abstract void f4(final long n, final long m);
     
     public abstract void f5();
     
     public abstract long f5$n();
     
-    public abstract void f7(final long n);
+    public abstract void f5(final long n);
     
     public abstract void f7();
     
     public abstract long f7$n();
     
-    public abstract void f9(final long n);
+    public abstract void f7(final long n);
     
     public abstract void f9();
     
     public abstract long f9$n();
     
-    public abstract void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq);
-    
-    public abstract void fa(final long n);
+    public abstract void f9(final long n);
     
     public abstract void fa();
     
     public abstract long fa$n();
     
+    public abstract void fa(final long n);
+    
     public abstract .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n);
+    
+    public abstract void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq);
 }
 final class Barface$impl {
+    
+    Barface$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this;
     
     public final long getProp() {
@@ -398,17 +402,6 @@ final class Barface$impl {
         return "test";
     }
     
-    public final void f3(final long n) {
-        (
-            let
-            {
-                long $ceylontmp$m$41 = f3$m(n);
-                $this.f3(n, $ceylontmp$m$41);
-            }
-            returning null;
-        );
-    }
-    
     public final void f3() {
         (
             let
@@ -425,19 +418,19 @@ final class Barface$impl {
         return 5L;
     }
     
-    public final long f3$m(final long n) {
-        return n;
-    }
-    
-    public final void f4(final long n) {
+    public final void f3(final long n) {
         (
             let
             {
-                long $ceylontmp$m$51 = f4$m(n);
-                $this.f4(n, $ceylontmp$m$51);
+                long $ceylontmp$m$41 = f3$m(n);
+                $this.f3(n, $ceylontmp$m$41);
             }
             returning null;
         );
+    }
+    
+    public final long f3$m(final long n) {
+        return n;
     }
     
     public final void f4() {
@@ -454,6 +447,17 @@ final class Barface$impl {
     
     public final long f4$n() {
         return 5L;
+    }
+    
+    public final void f4(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$51 = f4$m(n);
+                $this.f4(n, $ceylontmp$m$51);
+            }
+            returning null;
+        );
     }
     
     public final long f4$m(final long n) {
@@ -505,17 +509,6 @@ final class Barface$impl {
         return .ceylon.language.Integer.getSuccessor($this.getProp());
     }
     
-    public final void fa(final long n) {
-        (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$73 = fa$seq(n);
-                $this.fa(n, $ceylontmp$seq$73);
-            }
-            returning null;
-        );
-    }
-    
     public final void fa() {
         (
             let
@@ -532,15 +525,27 @@ final class Barface$impl {
         return 5L;
     }
     
+    public final void fa(final long n) {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$73 = fa$seq(n);
+                $this.fa(n, $ceylontmp$seq$73);
+            }
+            returning null;
+        );
+    }
+    
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
-    
-    Barface$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this) {
-        this.$this = $this;
-    }
 }
 class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface {
+    
+    Barkls() {
+        this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl(this);
+        this.prop = 42L;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this;
     
     @.java.lang.Override
@@ -689,11 +694,6 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     
     @.java.lang.Override
     public final void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
-    }
-    
-    Barkls() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl(this);
-        this.prop = 42L;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -980,7 +980,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$103$callable$ = f;
                 long $arg$103$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$103$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$103$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$103$callable$.fa($arg$103$0, $arg$103$1);
             }
             returning null;
@@ -1268,7 +1268,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$129$callable$ = f2;
                 long $arg$129$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$129$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$129$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$129$callable$.fa($arg$129$0, $arg$129$1);
             }
             returning null;
@@ -1513,7 +1513,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$151$callable$ = b;
                 long $arg$151$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$151$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$151$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$151$callable$.fa($arg$151$0, $arg$151$1);
             }
             returning null;
@@ -1758,7 +1758,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$173$callable$ = b2;
                 long $arg$173$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$173$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$173$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$173$callable$.fa($arg$173$0, $arg$173$1);
             }
             returning null;

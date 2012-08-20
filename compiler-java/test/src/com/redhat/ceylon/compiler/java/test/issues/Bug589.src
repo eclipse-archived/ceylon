@@ -2,7 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 public abstract class Bug589 {
     
-    public abstract void inc(final long i);
+    public Bug589() {
+    }
     
     public final void inc() {
         (
@@ -19,6 +20,5 @@ public abstract class Bug589 {
         return 1L;
     }
     
-    public Bug589() {
-    }
+    public abstract void inc(final long i);
 }

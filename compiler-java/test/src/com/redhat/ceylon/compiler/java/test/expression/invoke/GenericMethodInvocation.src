@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 public class KlassMethodTypeParams {
     
-    public final <U, V>U bar(final U u, final V v) {
-        return u;
+    public KlassMethodTypeParams() {
     }
     
-    public KlassMethodTypeParams() {
+    public final <U, V>U bar(final U u, final V v) {
+        return u;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -15,6 +15,9 @@ public class KlassMethodTypeParams {
     }
 }
 class GenericMethodInvocation {
+    
+    GenericMethodInvocation() {
+    }
     
     public final .java.lang.String m() {
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams k = new .com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams();
@@ -32,9 +35,6 @@ class GenericMethodInvocation {
             }
             returning $arg$0$callable$.<.ceylon.language.String, .ceylon.language.Integer>bar($arg$0$0, $arg$0$1);
         ).toString();
-    }
-    
-    GenericMethodInvocation() {
     }
     
     public static void main(.java.lang.String[] args) {

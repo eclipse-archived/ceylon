@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.statement.attribute;
 
 class MethodVariableWithInitializer {
     
-    public final void m() {
-        .java.lang.String f = "";
+    MethodVariableWithInitializer() {
     }
     
-    MethodVariableWithInitializer() {
+    public final void m() {
+        .java.lang.String f = "";
     }
     
     public static void main(.java.lang.String[] args) {

@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
 public final class topLevelAttributeShared_ {
+    
+    private topLevelAttributeShared_() {
+    }
     private static final long[] value;
     static {
         value = new long[]{0L};
@@ -12,8 +15,5 @@ public final class topLevelAttributeShared_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private topLevelAttributeShared_() {
     }
 }

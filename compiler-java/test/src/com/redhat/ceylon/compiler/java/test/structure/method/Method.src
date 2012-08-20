@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class Method {
     
-    private final void f() {
+    Method() {
     }
     
-    Method() {
+    private final void f() {
     }
     
     public static void main(.java.lang.String[] args) {

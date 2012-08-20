@@ -8,11 +8,11 @@ final class deferredFunctionInitialization_ {
     static void deferredFunctionInitialization() {
         
         final class s_ {
-            private .ceylon.language.Callable<? extends .ceylon.language.String> s;
             
             private s_() {
                 this.s = null;
             }
+            private .ceylon.language.Callable<? extends .ceylon.language.String> s;
             
             .java.lang.String s() {
                 if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call().toString();

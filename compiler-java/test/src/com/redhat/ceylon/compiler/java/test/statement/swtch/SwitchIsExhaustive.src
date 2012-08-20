@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.swtch;
 
 class SwitchIsExhaustive {
     
+    SwitchIsExhaustive() {
+    }
+    
     private final .java.lang.String m(final .java.lang.Object b) {
         final .java.lang.String name;
         {
@@ -21,9 +24,6 @@ class SwitchIsExhaustive {
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         return name;
-    }
-    
-    SwitchIsExhaustive() {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 
 class OptionalType {
     
+    OptionalType() {
+    }
+    
     public final void m() {
         final .ceylon.language.Integer n1 = .ceylon.language.Integer.instance(1L);
         final .ceylon.language.Integer n2 = null;
-    }
-    
-    OptionalType() {
     }
     
     public static void main(.java.lang.String[] args) {

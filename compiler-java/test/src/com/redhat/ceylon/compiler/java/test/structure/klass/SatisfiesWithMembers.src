@@ -11,6 +11,10 @@ interface SatisfiesWithMembers {
     public abstract void m();
 }
 final class SatisfiesWithMembers$impl {
+    
+    SatisfiesWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this;
     
     public final boolean getB() {
@@ -24,12 +28,14 @@ final class SatisfiesWithMembers$impl {
     public final void setB2(final boolean b2) {
         $this.setB2(b2);
     }
-    
-    SatisfiesWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this) {
-        this.$this = $this;
-    }
 }
 class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
+    
+    SatisfiesWithMembersClass() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl(this);
+        this.b = true;
+        this.b2 = false;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this;
     private final boolean b;
     
@@ -52,12 +58,6 @@ class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test
     @.java.lang.Override
     public final void m() {
         return;
-    }
-    
-    SatisfiesWithMembersClass() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl(this);
-        this.b = true;
-        this.b2 = false;
     }
     
     public static void main(.java.lang.String[] args) {

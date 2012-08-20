@@ -26,14 +26,14 @@ interface Bug310 {
     public abstract long getI();
 }
 final class Bug310$impl {
+    
+    Bug310$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug310 $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug310 $this;
     
     public final long getI() {
         return $this.getI();
-    }
-    
-    Bug310$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug310 $this) {
-        this.$this = $this;
     }
 }
 final class bug310_ {

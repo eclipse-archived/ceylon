@@ -109,7 +109,7 @@ abstract class InvocationBuilder {
             this.onValueType = false;
         }
     }
-    
+
     static final List<JCExpression> transformTypeArguments(
             AbstractTransformer gen,
             java.util.List<ProducedType> typeArguments) {
@@ -421,6 +421,11 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
 
     protected abstract boolean hasParameter(int argIndex);
 
+    // to be overridden
+    protected boolean isParameterRaw(int argIndex) {
+        return false;
+    }
+
     /** Gets the number of arguments actually being supplied */
     protected abstract int getNumArguments();
 
@@ -486,9 +491,12 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
                 type = gen.typeFact().getIteratedType(type);
             }
             BoxingStrategy boxingStrategy = getParameterBoxingStrategy(argIndex);
+            int flags = 0;
+            if(!isParameterRaw(argIndex))
+                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
             JCExpression ret = gen.expressionGen().transformExpression(expr, 
                     boxingStrategy, 
-                    type);
+                    type, flags);
             if(isParameterSequenced(argIndex)
                     && isJavaMethod()
                     && dontBoxSequence()){
@@ -537,7 +545,9 @@ class IndirectInvocationBuilder extends SimpleInvocationBuilder {
 
     @Override
     protected ProducedType getParameterType(int argIndex) {
-        return parameterTypes.get(argIndex);
+        // in the Java code, all Callable.call() params are of type Object so let's not
+        // pretend they are typed, this saves a lot of casting.
+        return gen.typeFact().getObjectDeclaration().getType();
     }
 
     @Override
@@ -696,6 +706,13 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
     protected boolean dontBoxSequence() {
         return positional.getEllipsis() != null || positional.getComprehension() != null;
     }
+    
+    @Override
+    protected boolean isParameterRaw(int argIndex){
+        Parameter param = getParameter(argIndex);
+        return param.getType().isRaw();
+    }
+    
     protected boolean hasDefaultArgument(int ii) {
         return parameters.get(ii).isDefaulted();
     }
@@ -991,7 +1008,12 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
                 ProducedType type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
                 final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
-                JCExpression typeExpr = gen.makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? JT_TYPE_ARGUMENT : 0);
+                // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
+                // not match, so we go raw
+                int flags = JT_RAW;
+                if(boxType == BoxingStrategy.BOXED)
+                    flags |= JT_TYPE_ARGUMENT;
+                JCExpression typeExpr = gen.makeJavaType(type, flags);
                 JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
                 statements = ListBuffer.<JCStatement>of(varDecl);
@@ -1129,7 +1151,8 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                         argExpr = gen.expressionGen().transformComprehension(namedArgumentList.getComprehension());
                     } else {
                         if (primaryDeclaration instanceof FunctionalParameter) {
-                            argExpr = gen.makeEmptyAsIterable();
+                            // honestly I don't know if it needs a cast but it can't hurt
+                            argExpr = gen.makeEmptyAsIterable(true);
                         } else {
                             argExpr = makeDefaultedArgumentMethodCall(param);
                             hasDefaulted |= true;

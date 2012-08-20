@@ -3,6 +3,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class attr1_ {
+    
+    private attr1_() {
+    }
     private static final long[] value;
     static {
         value = new long[]{1L};
@@ -16,13 +19,13 @@ final class attr1_ {
             throw new .ceylon.language.RecursiveInitializationException();
         }
     }
-    
-    private attr1_() {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class attr2_ {
+    
+    private attr2_() {
+    }
     private static long[] value;
     static {
         value = new long[]{1L};
@@ -43,25 +46,25 @@ final class attr2_ {
     final long attr2) {
         value[0] = attr2;
     }
-    
-    private attr2_() {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class attr3_ {
     
+    private attr3_() {
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     static long getAttr3() {
         return 1L;
-    }
-    
-    private attr3_() {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class attr4_ {
+    
+    private attr4_() {
+    }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     static long getAttr4() {
@@ -71,8 +74,5 @@ final class attr4_ {
     static void setAttr4(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
     final long attr4) {
-    }
-    
-    private attr4_() {
     }
 }

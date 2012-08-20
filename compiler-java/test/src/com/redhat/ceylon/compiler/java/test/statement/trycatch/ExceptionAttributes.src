@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class ExceptionAttributes {
     
+    ExceptionAttributes() {
+    }
+    
     private final void m(final .java.lang.Throwable e) {
         final .java.lang.Throwable c = e.getCause();
         .java.lang.Throwable $cause$0;
@@ -11,9 +14,6 @@ class ExceptionAttributes {
             final .ceylon.language.String message = .ceylon.language.String.instance($cause$1.getMessage());
         }
         final .java.lang.String message = e.getMessage();
-    }
-    
-    ExceptionAttributes() {
     }
     
     public static void main(.java.lang.String[] args) {

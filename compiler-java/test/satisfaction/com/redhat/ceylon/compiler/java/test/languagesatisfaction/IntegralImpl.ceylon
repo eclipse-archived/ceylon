@@ -44,5 +44,9 @@ class IntegralImpl<Other>() of Other satisfies Integral<Other>
     shared actual Boolean unit {
         return bottom;
     }
+    
+    shared actual Integer distanceFrom(Other other) {
+        return 0;
+    }
 
 }

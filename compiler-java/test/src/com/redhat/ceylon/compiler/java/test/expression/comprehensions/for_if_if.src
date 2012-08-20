@@ -1,9 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
 final class x_ {
+    
+    private x_() {
+    }
     private static final .ceylon.language.Iterable<? extends .ceylon.language.Integer>[] value;
     static {
-        value = new .ceylon.language.Iterable[]{new .ceylon.language.AbstractIterable<.ceylon.language.Integer>(){
+        value = new .ceylon.language.Iterable[]{new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
@@ -48,8 +51,5 @@ final class x_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private x_() {
     }
 }

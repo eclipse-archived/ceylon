@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.loop;
 
 class MethodForIterator {
     
+    MethodForIterator() {
+    }
+    
     public final void m(final .ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s$iter$1 = seq.getIterator(); !(($elem$0 = $s$iter$1.next()) instanceof .ceylon.language.Finished); ) {
@@ -30,9 +33,6 @@ class MethodForIterator {
         for (.ceylon.language.Iterator<? extends .ceylon.language.Character> $c$iter$11 = .ceylon.language.String.instance("wim").getIterator(); !(($elem$10 = $c$iter$11.next()) instanceof .ceylon.language.Finished); ) {
             final int c = ((.ceylon.language.Character)$elem$10).intValue();
         }
-    }
-    
-    MethodForIterator() {
     }
     
     public static void main(.java.lang.String[] args) {

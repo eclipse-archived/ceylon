@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInMethod {
     
-    private final void $assert() {
+    KeywordInMethod() {
     }
     
-    KeywordInMethod() {
+    private final void $assert() {
     }
     
     public static void main(.java.lang.String[] args) {

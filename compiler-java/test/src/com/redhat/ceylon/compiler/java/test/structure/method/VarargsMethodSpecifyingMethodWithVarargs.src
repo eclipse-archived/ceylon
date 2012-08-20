@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class VarargsMethodSpecifyingMethodWithVarargs {
     
-    private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    VarargsMethodSpecifyingMethodWithVarargs() {
     }
     
     private final void foo() {
@@ -20,8 +20,7 @@ class VarargsMethodSpecifyingMethodWithVarargs {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    private final void bar(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
-        foo(ints);
+    private final void foo(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
     }
     
     private final void bar() {
@@ -39,7 +38,8 @@ class VarargsMethodSpecifyingMethodWithVarargs {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    VarargsMethodSpecifyingMethodWithVarargs() {
+    private final void bar(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
+        foo(ints);
     }
     
     public static void main(.java.lang.String[] args) {

@@ -1,6 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 public class SequenceOperators {
+    
+    public SequenceOperators() {
+        this.c1 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""));
+        this.c2 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""));
+        this.sequence = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
     private final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c1;
     
     private final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> getC1() {
@@ -153,12 +159,6 @@ public class SequenceOperators {
         .java.lang.String sync;
         sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L)).toString();
         sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), null).toString();
-    }
-    
-    public SequenceOperators() {
-        this.c1 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""));
-        this.c2 = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""));
-        this.sequence = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
     public static void main(.java.lang.String[] args) {

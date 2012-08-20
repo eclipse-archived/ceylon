@@ -1,6 +1,38 @@
 package com.redhat.ceylon.compiler.java.test.misc.keyword;
 
 class Attribute {
+    
+    Attribute() {
+        this.abstract = false;
+        this.assert = false;
+        this.boolean = false;
+        this.byte = false;
+        this.char = false;
+        this.const = false;
+        this.default = false;
+        this.do = false;
+        this.double = false;
+        this.enum = false;
+        this.final = false;
+        this.float = false;
+        this.goto = false;
+        this.implements = false;
+        this.instanceof = false;
+        this.int = false;
+        this.long = false;
+        this.native = false;
+        this.new = false;
+        this.private = false;
+        this.protected = false;
+        this.public = false;
+        this.short = false;
+        this.static = false;
+        this.strictfp = false;
+        this.synchronized = false;
+        this.throws = false;
+        this.transient = false;
+        this.volatile = false;
+    }
     private final boolean abstract;
     
     public final boolean getAbstract() {
@@ -145,38 +177,6 @@ class Attribute {
     
     public final boolean getVolatile() {
         return volatile;
-    }
-    
-    Attribute() {
-        this.abstract = false;
-        this.assert = false;
-        this.boolean = false;
-        this.byte = false;
-        this.char = false;
-        this.const = false;
-        this.default = false;
-        this.do = false;
-        this.double = false;
-        this.enum = false;
-        this.final = false;
-        this.float = false;
-        this.goto = false;
-        this.implements = false;
-        this.instanceof = false;
-        this.int = false;
-        this.long = false;
-        this.native = false;
-        this.new = false;
-        this.private = false;
-        this.protected = false;
-        this.public = false;
-        this.short = false;
-        this.static = false;
-        this.strictfp = false;
-        this.synchronized = false;
-        this.throws = false;
-        this.transient = false;
-        this.volatile = false;
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,15 +2,18 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 class InnerAttributeGetterWithConflictingMethods {
     
+    InnerAttributeGetterWithConflictingMethods() {
+    }
+    
     private final void m() {
         
         final class x$getter_ {
             
-            long getX() {
-                return 2L;
+            private x$getter_() {
             }
             
-            private x$getter_() {
+            long getX() {
+                return 2L;
             }
         }
         final x$getter_ x$getter_ = new x$getter_();
@@ -27,9 +30,6 @@ class InnerAttributeGetterWithConflictingMethods {
         final getX_ getX = new getX_();
         final long n = x$getter_.getX();
         final long n2 = getX.getX();
-    }
-    
-    InnerAttributeGetterWithConflictingMethods() {
     }
     
     public static void main(.java.lang.String[] args) {

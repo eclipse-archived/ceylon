@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 class Bug406 {
     
+    Bug406() {
+    }
+    
     private final void test() {
         final .ceylon.language.Iterable<? extends .ceylon.language.String> full = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
         final .ceylon.language.Iterable<? extends .ceylon.language.String> spread1 = (
@@ -24,9 +27,6 @@ class Bug406 {
         if (($s1s$3 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)spread1).item(.ceylon.language.Integer.instance(0L))) != null) {
             final .java.lang.String $s1s$4 = $s1s$3.toString();
         }
-    }
-    
-    Bug406() {
     }
     
     public static void main(.java.lang.String[] args) {

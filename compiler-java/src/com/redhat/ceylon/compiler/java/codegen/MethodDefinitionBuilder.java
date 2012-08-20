@@ -64,8 +64,8 @@ public class MethodDefinitionBuilder {
     
     private long modifiers;
 
-    private boolean isActual;
-    private boolean isFormal;
+    private boolean isOverride;
+    private boolean isAbstract;
     
     private JCExpression resultTypeExpr;
     private List<JCAnnotation> resultTypeAnnos;
@@ -75,37 +75,73 @@ public class MethodDefinitionBuilder {
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
     private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
     
-    private final ListBuffer<JCVariableDecl> params = ListBuffer.lb();
+    private final ListBuffer<ParameterDefinitionBuilder> params = ListBuffer.lb();
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
-    private boolean ancestorLocal;
+    private boolean ignoreAnnotations;
+    
+    private boolean noAnnotations = false;
     
     private boolean built = false;
 
-    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean ancestorLocal, boolean isMember, String name) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean isMember, String name) {
+        return new MethodDefinitionBuilder(gen, false, isMember ? Naming.getErasedMethodName(name) : Naming.getMethodName(name));
     }
     
-    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, boolean ancestorLocal, String name) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, name);
+    public static MethodDefinitionBuilder method2(AbstractTransformer gen, String name) {
+        return new MethodDefinitionBuilder(gen, false, name);
     }
     
-    public static MethodDefinitionBuilder constructor(AbstractTransformer gen, boolean ancestorLocal) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, null);
+    public static MethodDefinitionBuilder callable(AbstractTransformer gen) {
+        return systemMethod(gen, "$call");
+    }
+    
+    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, String name) {
+        MethodDefinitionBuilder builder = new MethodDefinitionBuilder(gen, true, name);
+        return builder;
+    }
+    
+    public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
+        return new MethodDefinitionBuilder(gen, false, null);
     }
 
-    public static MethodDefinitionBuilder main(AbstractTransformer gen, boolean ancestorLocal) {
-        return new MethodDefinitionBuilder(gen, ancestorLocal, "main")
-            .modifiers(PUBLIC | STATIC)
-            .parameter(0, "args", gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
+    public static MethodDefinitionBuilder main(AbstractTransformer gen) {
+        MethodDefinitionBuilder mdb = new MethodDefinitionBuilder(gen, false, "main")
+            .modifiers(PUBLIC | STATIC);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(mdb.gen, "args");
+        pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
+        return mdb.parameter(pdb);
     }
     
-    private MethodDefinitionBuilder(AbstractTransformer gen, boolean ancestorLocal, String name) {
+    private MethodDefinitionBuilder(AbstractTransformer gen, boolean ignoreAnnotations, String name) {
         this.gen = gen;
         this.name = name;
-        this.ancestorLocal = ancestorLocal;
+        this.ignoreAnnotations = ignoreAnnotations;
         resultTypeExpr = makeVoidType();
+    }
+    
+    private ListBuffer<JCAnnotation> getAnnotations() {
+        ListBuffer<JCAnnotation> result = ListBuffer.lb();
+        if (!noAnnotations) {
+            if (!ignoreAnnotations) {
+                result.appendList(this.annotations);   
+            }
+            if (isOverride) {
+                result.appendList(gen.makeAtOverride());
+            }
+            if (ignoreAnnotations) {
+                result.appendList(gen.makeAtIgnore());
+            } else {
+                if (resultTypeAnnos != null) {
+                    result.appendList(resultTypeAnnos);
+                }
+                if(!typeParamAnnotations.isEmpty()) {
+                    result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+                }
+            }
+        }
+        return result;
     }
     
     public JCTree.JCMethodDecl build() {
@@ -113,17 +149,17 @@ public class MethodDefinitionBuilder {
             throw new IllegalStateException();
         }
         built = true;
-        if (isActual) {
-            this.annotations.appendList(gen.makeAtOverride());
+        
+        ListBuffer<JCVariableDecl> params = ListBuffer.lb();
+        for (ParameterDefinitionBuilder pdb : this.params) {
+            if (noAnnotations || ignoreAnnotations) {
+                pdb.noAnnotations();
+            }
+            params.append(pdb.build());
         }
-        if (resultTypeAnnos != null) {
-            annotations(resultTypeAnnos);
-        }
-        if(!typeParamAnnotations.isEmpty())
-            annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
 
         return gen.make().MethodDef(
-                gen.make().Modifiers(modifiers, gen.filterAnnotations(annotations)), 
+                gen.make().Modifiers(modifiers, getAnnotations().toList()), 
                 makeName(name),
                 resultTypeExpr,
                 typeParams.toList(), 
@@ -142,7 +178,7 @@ public class MethodDefinitionBuilder {
     }
 
     private JCBlock makeBody(ListBuffer<JCStatement> body2) {
-        return (!isFormal && (body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
+        return (!isAbstract && (body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
     }
 
     JCExpression makeVoidType() {
@@ -177,10 +213,24 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
+    /** 
+     * The class will be generated with the {@code @Ignore} annotation only
+     */
+    public MethodDefinitionBuilder ignoreAnnotations() {
+        ignoreAnnotations = true;
+        return this;
+    }
+    
+    public MethodDefinitionBuilder noAnnotations() {
+        return noAnnotations(true);
+    }
+    
+    public MethodDefinitionBuilder noAnnotations(boolean noAnnotations) {
+        this.noAnnotations = noAnnotations;
+        return this;
+    }
+    
     public MethodDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
-        if (ancestorLocal) {
-            return this;
-        }
         this.annotations.appendList(annotations);
         return this;
     }
@@ -200,16 +250,13 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder parameters(List<JCVariableDecl> decls) {
-        params.appendList(decls);
+    public MethodDefinitionBuilder parameters(List<ParameterDefinitionBuilder> pdbs) {
+        params.appendList(pdbs);
         return this;
     }
     
-    public MethodDefinitionBuilder parameter(JCVariableDecl decl) {
-        if ((decl.mods.flags & Flags.PARAMETER) == 0) {
-            throw new RuntimeException("Needs PARAMETER flag");
-        }
-        params.append(decl);
+    public MethodDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
+        params.append(pdb);
         return this;
     }
 
@@ -218,6 +265,17 @@ public class MethodDefinitionBuilder {
     }
     
     private MethodDefinitionBuilder parameter(long modifiers, String name, String aliasedName, TypedDeclaration decl, TypedDeclaration nonWideningDecl, ProducedType nonWideningType, int flags) {
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, name);
+        pdb.modifiers(modifiers);
+        pdb.aliasName(aliasedName);
+        pdb.sequenced(decl instanceof Parameter && ((Parameter)decl).isSequenced());
+        pdb.defaulted(decl instanceof Parameter && ((Parameter)decl).isDefaulted());
+        pdb.type(paramType(nonWideningDecl, nonWideningType, flags), gen.makeJavaTypeAnnotations(decl));
+        return parameter(pdb);
+    }
+
+    private JCExpression paramType(TypedDeclaration nonWideningDecl,
+            ProducedType nonWideningType, int flags) {
         if (gen.typeFact().isUnion(nonWideningType) 
                 || gen.typeFact().isIntersection(nonWideningType)) {
             final TypeDeclaration refinedTypeDecl = ((TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(nonWideningDecl)).getType().getDeclaration();
@@ -227,27 +285,9 @@ public class MethodDefinitionBuilder {
             }
         }
         JCExpression type = gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
-        List<JCAnnotation> annots = List.nil();
-        if (gen.needsAnnotations(decl)) {
-            annots = annots.appendList(gen.makeAtName(name));
-            if (decl instanceof Parameter && ((Parameter)decl).isSequenced()) {
-                annots = annots.appendList(gen.makeAtSequenced());
-            }
-            if (decl instanceof Parameter && ((Parameter)decl).isDefaulted()) {
-                annots = annots.appendList(gen.makeAtDefaulted());
-            }
-            annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
-        }
-        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots), gen.names().fromString(aliasedName), type, null));
+        return type;
     }
     
-    public MethodDefinitionBuilder parameter(long modifiers, String name, JCExpression paramType, List<JCAnnotation> annots) {
-        if (annots == null) {
-            annots = List.nil();
-        }
-        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots), gen.names().fromString(name), paramType, null));
-    }
-
     public MethodDefinitionBuilder parameter(Parameter paramDecl, ProducedType paramType, int mods, int flags) {
         String name = paramDecl.getName();
         return parameter(mods, name, paramDecl, paramDecl, paramType, flags);
@@ -268,13 +308,13 @@ public class MethodDefinitionBuilder {
         return parameter(mods, paramName, aliasedName, param, param, param.getType(), flags);
     }
 
-    public MethodDefinitionBuilder isActual(boolean isActual) {
-        this.isActual = isActual;
+    public MethodDefinitionBuilder isOverride(boolean isOverride) {
+        this.isOverride = isOverride;
         return this;
     }
     
-    public MethodDefinitionBuilder isFormal(boolean isFormal) {
-        this.isFormal = isFormal;
+    public MethodDefinitionBuilder isAbstract(boolean isAbstract) {
+        this.isAbstract = isAbstract;
         return this;
     }
     
@@ -342,4 +382,23 @@ public class MethodDefinitionBuilder {
         annotations(gen.makeAtAnnotations(annotations));
         return this;
     }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getAnnotations()).append(' ');
+        sb.append(Flags.toString(this.modifiers)).append(' ');
+        sb.append(resultTypeExpr).append(' ');
+        sb.append(name).append('(');
+        int i = 0;
+        for (ParameterDefinitionBuilder param : params) {
+            sb.append(param);
+            if (i < params.count -1) {
+                sb.append(',');
+            }
+        }
+        sb.append(')');
+        return sb.toString();
+    }
+
+    
 }

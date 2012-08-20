@@ -2,9 +2,16 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class LocalClassWithLocalObject {
     
+    LocalClassWithLocalObject() {
+    }
+    
     private final void m() {
         
         class Inner {
+            
+            Inner() {
+                this.o = new Inner.o_();
+            }
             private final Inner.o_ o;
             
             final class o_ {
@@ -16,14 +23,7 @@ class LocalClassWithLocalObject {
             public final Inner.o_ getO() {
                 return o;
             }
-            
-            Inner() {
-                this.o = new Inner.o_();
-            }
         }
-    }
-    
-    LocalClassWithLocalObject() {
     }
     
     public static void main(.java.lang.String[] args) {

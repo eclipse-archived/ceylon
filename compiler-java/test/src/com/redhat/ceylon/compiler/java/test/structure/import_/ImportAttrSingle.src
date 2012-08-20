@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.import_;
 
 class ImportAttrSingle {
     
-    private final void m() {
-        final boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.getF1();
+    ImportAttrSingle() {
     }
     
-    ImportAttrSingle() {
+    private final void m() {
+        final boolean b = .com.redhat.ceylon.compiler.java.test.structure.import_.pkg.f1_.getF1();
     }
     
     public static void main(.java.lang.String[] args) {

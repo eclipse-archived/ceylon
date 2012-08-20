@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class Foo<T> {
     
-    public final void bar(final T t) {
+    Foo() {
     }
     
-    Foo() {
+    public final void bar(final T t) {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,15 +2,15 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
 class MethodIfElse {
     
+    MethodIfElse() {
+    }
+    
     public final long m() {
         if (true) {
             return 1L;
         } else {
             return 2L;
         }
-    }
-    
-    MethodIfElse() {
     }
     
     public static void main(.java.lang.String[] args) {

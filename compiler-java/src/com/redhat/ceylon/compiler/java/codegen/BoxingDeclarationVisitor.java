@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -127,10 +128,10 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 || refinedParameterLists.isEmpty())
             return;
 
-        boxParameterLists(methodParameterLists, refinedParameterLists);
+        boxAndRawParameterLists(methodParameterLists, refinedParameterLists);
     }
     
-    private void boxParameterLists(List<ParameterList> paramLists, List<ParameterList> refinedParamLists) {
+    private void boxAndRawParameterLists(List<ParameterList> paramLists, List<ParameterList> refinedParamLists) {
         if (paramLists.size() != refinedParamLists.size()) {
             throw new RuntimeException();
         }
@@ -145,16 +146,18 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 Parameter param = paramList.getParameters().get(jj);
                 Parameter refinedParam = refinedParamList.getParameters().get(jj);
                 if (param instanceof Functional && refinedParam instanceof Functional) {
-                    boxParameterLists(((Functional)param).getParameterLists(),
+                    boxAndRawParameterLists(((Functional)param).getParameterLists(),
                             ((Functional)refinedParam).getParameterLists());
                 }
                 setBoxingState(param, refinedParam);
+                // also mark params as raw if needed
+                rawTypedDeclaration(param);
             }
         }
     }
 
     @Override
-    public void visit(ClassDefinition that) {
+    public void visit(AnyClass that) {
         super.visit(that);
         Class klass = that.getDeclarationModel();
         // deal with invalid input
@@ -164,7 +167,18 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // deal with invalid input
         if(parameterLists.isEmpty())
             return;
-        boxParameterLists(parameterLists, parameterLists);
+        List<ParameterList> refinedParameterLists;
+        // If this is an alias we're bound by the aliased type's parameters, not by ours
+        // For ex:
+        // - class AliasedType<T>(T x){}
+        // - class Alias(Integer x) = AliasedType<Integer>;
+        // where Alias's x parameter is not really unboxed
+        if(klass.isAlias())
+            refinedParameterLists = klass.getExtendedTypeDeclaration().getParameterLists();
+        else
+            refinedParameterLists = parameterLists;
+        
+        boxAndRawParameterLists(parameterLists, refinedParameterLists);
     }
     
     private void setBoxingState(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {

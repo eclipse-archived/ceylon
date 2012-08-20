@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.swtch;
 
 class SwitchIsNonExhaustive {
     
+    SwitchIsNonExhaustive() {
+    }
+    
     private final .java.lang.String m(final .java.lang.Object b) {
         final .java.lang.String name;
         {
@@ -14,9 +17,6 @@ class SwitchIsNonExhaustive {
             }
         }
         return name;
-    }
-    
-    SwitchIsNonExhaustive() {
     }
     
     public static void main(.java.lang.String[] args) {

@@ -2,34 +2,34 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 class InnerAttributeGetterSetter {
     
+    InnerAttributeGetterSetter() {
+    }
+    
     private final void m() {
         
         final class innerGetterSetter$getter_ {
             
-            long getInnerGetterSetter() {
-                return 0L;
+            private innerGetterSetter$getter_() {
             }
             
-            private innerGetterSetter$getter_() {
+            long getInnerGetterSetter() {
+                return 0L;
             }
         }
         final innerGetterSetter$getter_ innerGetterSetter$getter_ = new innerGetterSetter$getter_();
         
         final class innerGetterSetter$setter_ {
+            
+            private innerGetterSetter$setter_() {
+            }
             private long value;
             
             void setInnerGetterSetter(final long innerGetterSetter) {
-            }
-            
-            private innerGetterSetter$setter_() {
             }
         }
         final innerGetterSetter$setter_ innerGetterSetter$setter_ = new innerGetterSetter$setter_();
         final long n = innerGetterSetter$getter_.getInnerGetterSetter();
         innerGetterSetter$setter_.setInnerGetterSetter(1L);
-    }
-    
-    InnerAttributeGetterSetter() {
     }
     
     public static void main(.java.lang.String[] args) {

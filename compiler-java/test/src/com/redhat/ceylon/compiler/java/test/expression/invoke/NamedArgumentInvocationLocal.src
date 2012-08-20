@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 public class NamedArgumentInvocationLocal {
     
+    public NamedArgumentInvocationLocal() {
+    }
+    
     public final void f() {
         
         final class m_ {
@@ -43,15 +46,15 @@ public class NamedArgumentInvocationLocal {
         );
     }
     
-    public NamedArgumentInvocationLocal() {
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal();
     }
 }
 class X {
+    
+    X() {
+    }
     
     private final void foo(final .java.lang.String s, final boolean b) {
     }
@@ -86,9 +89,6 @@ class X {
             }
             returning null;
         );
-    }
-    
-    X() {
     }
     
     public static void main(.java.lang.String[] args) {

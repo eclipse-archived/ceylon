@@ -7,25 +7,21 @@ interface Bug510$Bug510inner {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 interface Bug510 {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
-@.com.redhat.ceylon.compiler.java.metadata.Name("Bug510")
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug510$impl {
+    
+    Bug510$impl(.com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510 $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510 $this;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
-    @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final class Bug510inner$impl {
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this;
         
         Bug510inner$impl(.com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this) {
             this.$this = $this;
         }
-    }
-    
-    Bug510$impl(.com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510 $this) {
-        this.$this = $this;
+        private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
@@ -48,6 +44,9 @@ final class assert_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class volatile_ {
+    
+    private volatile_() {
+    }
     private static final long[] value;
     static {
         value = new long[]{5L};
@@ -60,9 +59,6 @@ final class volatile_ {
         } catch (.java.lang.NullPointerException ex) {
             throw new .ceylon.language.RecursiveInitializationException();
         }
-    }
-    
-    private volatile_() {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)

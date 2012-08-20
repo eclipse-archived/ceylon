@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.misc.keyword;
 
 class Parameter {
     
+    Parameter() {
+    }
+    
     private final void m1(final boolean abstract) {
     }
     
@@ -87,9 +90,6 @@ class Parameter {
     }
     
     private final void m30(final boolean volatile) {
-    }
-    
-    Parameter() {
     }
     
     public static void main(.java.lang.String[] args) {

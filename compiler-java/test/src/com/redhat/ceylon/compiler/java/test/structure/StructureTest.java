@@ -459,5 +459,63 @@ public class StructureTest extends CompilerTest {
     public void testMethodInitializerParameter() {
         compareWithJavaSource("method/MethodInitializerParameter");
     }
-    
+
+    //
+    // Aliases
+
+    @Test
+    public void testAlsClassAlias() {
+        compareWithJavaSource("alias/ClassAlias");
+    }
+
+    @Test
+    public void testAlsInterfaceAlias() {
+        compareWithJavaSource("alias/InterfaceAlias");
+    }
+
+    @Test
+    public void testAlsLocalClassAlias() {
+        compareWithJavaSource("alias/LocalClassAlias");
+    }
+
+    @Test
+    public void testAlsLocalInterfaceAlias() {
+        compareWithJavaSource("alias/LocalInterfaceAlias");
+    }
+
+    @Ignore("Type checker bug? https://github.com/ceylon/ceylon-spec/issues/380")
+    @Test
+    public void testAlsMemberClassAlias() {
+        compareWithJavaSource("alias/MemberClassAlias");
+    }
+
+    @Test
+    public void testAlsClassAliasWithParameters() {
+        compareWithJavaSource("alias/ClassAliasWithParameters");
+    }
+
+    @Test
+    public void testAlsClassAliasWithTypeParameters() {
+        compareWithJavaSource("alias/ClassAliasWithTypeParameters");
+    }
+
+    @Test
+    public void testAlsInterfaceAliasWithTypeParameters() {
+        compareWithJavaSource("alias/InterfaceAliasWithTypeParameters");
+    }
+
+    @Test
+    public void testAlsClassAliasFromModelLoader() {
+        compile("alias/ClassAlias.ceylon", 
+                "alias/ClassAliasWithParameters.ceylon",
+                "alias/ClassAliasWithTypeParameters.ceylon");
+        compareWithJavaSource("alias/ClassAliasFromModelLoader");
+    }
+
+    @Test
+    public void testAlsInterfaceAliasFromModelLoader() {
+        compile("alias/InterfaceAlias.ceylon", 
+                "alias/InterfaceAliasWithTypeParameters.ceylon");
+        compareWithJavaSource("alias/InterfaceAliasFromModelLoader");
+    }
 }

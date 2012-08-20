@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class LocalClassOuterClass {
     
+    LocalClassOuterClass() {
+    }
+    
     private final void m() {
         
         class LocalClass {
@@ -9,9 +12,6 @@ class LocalClassOuterClass {
             LocalClass() {
             }
         }
-    }
-    
-    LocalClassOuterClass() {
     }
     
     public static void main(.java.lang.String[] args) {

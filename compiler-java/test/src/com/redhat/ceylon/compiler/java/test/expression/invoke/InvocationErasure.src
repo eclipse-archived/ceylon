@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class MethodErasure {
     
+    MethodErasure() {
+    }
+    
     private final long m1() {
         return hashCode();
     }
@@ -31,9 +34,6 @@ class MethodErasure {
     
     private final long $toString() {
         return 0L;
-    }
-    
-    MethodErasure() {
     }
     
     public static void main(.java.lang.String[] args) {

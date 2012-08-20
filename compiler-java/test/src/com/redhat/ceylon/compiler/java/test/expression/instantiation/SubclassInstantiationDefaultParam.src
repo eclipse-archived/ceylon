@@ -2,10 +2,6 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class SubclassInstantiationDefaultParam {
     
-    static .java.lang.String $init$name() {
-        return "tom";
-    }
-    
     SubclassInstantiationDefaultParam() {
         (
             let
@@ -18,6 +14,10 @@ class SubclassInstantiationDefaultParam {
     }
     
     SubclassInstantiationDefaultParam(.java.lang.String name) {
+    }
+    
+    static .java.lang.String $init$name() {
+        return "tom";
     }
 }
 class SubclassInstantiationDefaultParamSub extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.SubclassInstantiationDefaultParam {

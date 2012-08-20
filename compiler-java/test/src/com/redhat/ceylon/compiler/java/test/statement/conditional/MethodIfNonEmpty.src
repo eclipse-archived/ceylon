@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
 class MethodIfNonEmpty {
     
+    MethodIfNonEmpty() {
+    }
+    
     public final long m(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> x) {
         .ceylon.language.Iterable<? extends .ceylon.language.Integer> $x$0;
         if (($x$0 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$0).getEmpty()) {
@@ -17,9 +20,6 @@ class MethodIfNonEmpty {
             final .ceylon.language.Iterable<? extends .ceylon.language.Character> $s$3 = (.ceylon.language.Iterable<? extends .ceylon.language.Character>)$s$2;
             .ceylon.language.print_.print($s$3);
         }
-    }
-    
-    MethodIfNonEmpty() {
     }
     
     public static void main(.java.lang.String[] args) {

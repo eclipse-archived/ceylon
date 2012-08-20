@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
 class BooleanBoxing {
     
+    BooleanBoxing() {
+    }
+    
     private final void m() {
         final boolean b1 = true;
         final boolean b2 = !b1;
@@ -32,9 +35,6 @@ class BooleanBoxing {
         } else {
             return false;
         }
-    }
-    
-    BooleanBoxing() {
     }
     
     public static void main(.java.lang.String[] args) {

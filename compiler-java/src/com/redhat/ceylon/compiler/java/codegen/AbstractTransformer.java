@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -57,6 +58,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -1431,6 +1434,11 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
+    List<JCAnnotation> makeAtAlias(ProducedType type) {
+        String name = serialiseTypeSignature(type);
+        return makeModelAnnotation(syms().ceylonAtAliasType, List.<JCExpression>of(make().Literal(name)));
+    }
+
     final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
         JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name));
         // variance
@@ -1572,13 +1580,20 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Annotation(makeIdent(syms().ceylonAtAnnotationType), attributes);
     }
 
-    boolean needsAnnotations(Declaration decl) {
+    /** Determine whether the given declaration requires a 
+     * {@code @TypeInfo} annotation 
+     */
+    private boolean needsJavaTypeAnnotations(Declaration decl) {
         Declaration reqdecl = decl;
         if (reqdecl instanceof Parameter) {
             Parameter p = (Parameter)reqdecl;
             reqdecl = p.getDeclaration();
         }
-        return reqdecl.isToplevel() || (reqdecl.isClassOrInterfaceMember() && reqdecl.isShared() && !Decl.isAncestorLocal(reqdecl));
+        if (reqdecl instanceof TypeDeclaration) {
+            return true;
+        } else { // TypedDeclaration
+            return !Decl.isLocal(reqdecl);
+        }
     }
 
     List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
@@ -1590,7 +1605,7 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             type = decl.getType();
         }
-        return makeJavaTypeAnnotations(type, needsAnnotations(decl));
+        return makeJavaTypeAnnotations(type, needsJavaTypeAnnotations(decl));
     }
 
     private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {
@@ -1832,8 +1847,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeSequence(elems, typeFact().getObjectDeclaration().getType(), CeylonTransformer.JT_RAW);
     }
     
-    JCExpression makeEmptyAsIterable(){
-        return make().TypeCast(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), makeEmpty());
+    JCExpression makeEmptyAsIterable(boolean needsCast){
+        if(needsCast)
+            return make().TypeCast(makeJavaType(typeFact().getIterableDeclaration().getType(), JT_RAW), makeEmpty());
+        return makeEmpty();
     }
     
     JCExpression makeEmpty() {
@@ -2164,24 +2181,4 @@ public abstract class AbstractTransformer implements Transformation {
         return pos;
     }
 
-    /**
-     * Returns a copy of the given annotations, unless {@code @Ignore} is present, 
-     * in which case returns a singleton containing {@code @Ignore}. 
-     */
-    List<JCAnnotation> filterAnnotations(
-            ListBuffer<JCAnnotation> annotations) {
-        ListBuffer<JCAnnotation> lb = ListBuffer.<JCAnnotation>lb();
-        for (JCAnnotation anno : annotations) {
-            JCTree type = anno.getAnnotationType();
-            if (type instanceof JCFieldAccess
-                    && ((JCFieldAccess)type).sym != null
-                    && ((JCFieldAccess)type).sym.type == syms().ceylonAtIgnore) {
-                lb.clear();
-                lb.add(anno);
-                break;
-            }
-            lb.add(anno);
-        }
-        return lb.toList();
-    }
 }

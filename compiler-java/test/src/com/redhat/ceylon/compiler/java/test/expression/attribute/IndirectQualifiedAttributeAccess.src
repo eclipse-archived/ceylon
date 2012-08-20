@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class IndirectQualifiedAttributeAccess {
+    
+    IndirectQualifiedAttributeAccess() {
+        this.b = true;
+        this.q = new .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess();
+    }
     private final boolean b;
     
     private final boolean getB() {
@@ -14,11 +19,6 @@ class IndirectQualifiedAttributeAccess {
     
     private final boolean test() {
         return getQ().getB();
-    }
-    
-    IndirectQualifiedAttributeAccess() {
-        this.b = true;
-        this.q = new .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess();
     }
     
     public static void main(.java.lang.String[] args) {

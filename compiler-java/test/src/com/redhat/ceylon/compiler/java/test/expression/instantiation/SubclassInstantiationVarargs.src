@@ -2,10 +2,6 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
 class Foo {
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.String> $init$name() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
-    }
-    
     Foo() {
         (
             let
@@ -18,6 +14,10 @@ class Foo {
     }
     
     Foo(.ceylon.language.Iterable<? extends .ceylon.language.String> name) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.String> $init$name() {
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
 }
 class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {

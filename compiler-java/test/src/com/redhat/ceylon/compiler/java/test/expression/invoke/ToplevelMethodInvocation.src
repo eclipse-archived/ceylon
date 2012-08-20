@@ -24,12 +24,12 @@ final class topLevelMethodInvocationMethod2_ {
 }
 class ToplevelMethodInvocation {
     
+    ToplevelMethodInvocation() {
+    }
+    
     private final long m() {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod1_.topLevelMethodInvocationMethod1();
         return .com.redhat.ceylon.compiler.java.test.expression.invoke.topLevelMethodInvocationMethod2_.topLevelMethodInvocationMethod2(1L, "");
-    }
-    
-    ToplevelMethodInvocation() {
     }
     
     public static void main(.java.lang.String[] args) {

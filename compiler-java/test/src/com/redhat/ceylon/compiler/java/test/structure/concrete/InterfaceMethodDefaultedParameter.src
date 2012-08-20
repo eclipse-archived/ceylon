@@ -2,45 +2,49 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface I<T> {
     
-    public abstract void m(final long i);
-    
     public abstract void m();
     
     public abstract long m$i();
     
-    public abstract long m2(final long i);
+    public abstract void m(final long i);
     
     public abstract long m2();
     
     public abstract long m2$i();
     
-    public abstract long m3(final long i, final long n);
-    
-    public abstract long m3(final long i);
+    public abstract long m2(final long i);
     
     public abstract long m3();
     
     public abstract long m3$i();
     
+    public abstract long m3(final long i);
+    
     public abstract long m3$n(final long i);
     
-    public abstract long m4(final long i, final long n);
+    public abstract long m3(final long i, final long n);
     
     public abstract long m4(final long i);
     
     public abstract long m4$n(final long i);
     
-    public abstract <U>long m5(final long i, final T t, final U u);
-    
-    public abstract <U>long m5(final long i, final T t);
+    public abstract long m4(final long i, final long n);
     
     public abstract <U>long m5(final long i);
     
     public abstract <U>T m5$t(final long i);
     
+    public abstract <U>long m5(final long i, final T t);
+    
     public abstract <U>U m5$u(final long i, final T t);
+    
+    public abstract <U>long m5(final long i, final T t, final U u);
 }
 final class I$impl<T> {
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this;
     
     public final void m() {
@@ -72,16 +76,6 @@ final class I$impl<T> {
         return 1L;
     }
     
-    public final long m3(final long i) {
-        return (
-            let
-            {
-                long $ceylontmp$n$12 = m3$n(i);
-            }
-            returning $this.m3(i, $ceylontmp$n$12);
-        );
-    }
-    
     public final long m3() {
         return (
             let
@@ -95,6 +89,16 @@ final class I$impl<T> {
     
     public final long m3$i() {
         return 1L;
+    }
+    
+    public final long m3(final long i) {
+        return (
+            let
+            {
+                long $ceylontmp$n$12 = m3$n(i);
+            }
+            returning $this.m3(i, $ceylontmp$n$12);
+        );
     }
     
     public final long m3$n(final long i) {
@@ -115,16 +119,6 @@ final class I$impl<T> {
         return 2L * i;
     }
     
-    public final <U>long m5(final long i, final T t) {
-        return (
-            let
-            {
-                U $ceylontmp$u$26 = m5$u(i, t);
-            }
-            returning $this.m5(i, t, $ceylontmp$u$26);
-        );
-    }
-    
     public final <U>long m5(final long i) {
         return (
             let
@@ -140,12 +134,18 @@ final class I$impl<T> {
         return null;
     }
     
-    public final <U>U m5$u(final long i, final T t) {
-        return null;
+    public final <U>long m5(final long i, final T t) {
+        return (
+            let
+            {
+                U $ceylontmp$u$26 = m5$u(i, t);
+            }
+            returning $this.m5(i, t, $ceylontmp$u$26);
+        );
     }
     
-    I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
-        this.$this = $this;
+    public final <U>U m5$u(final long i, final T t) {
+        return null;
     }
 }
 final class positional_ {
@@ -259,6 +259,10 @@ final class named_ {
     }
 }
 class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> {
+    
+    C() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T> $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this;
     
     @.java.lang.Override
@@ -353,10 +357,6 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
     @.java.lang.Override
     public final <U>long m5(final long i, final T t, final U u) {
         return i;
-    }
-    
-    C() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I$impl<T>(this);
     }
     
     public static void main(.java.lang.String[] args) {

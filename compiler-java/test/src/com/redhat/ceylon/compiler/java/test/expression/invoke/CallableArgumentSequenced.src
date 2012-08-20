@@ -13,9 +13,6 @@ final class callableArgumentSequenced_g_ {
     private callableArgumentSequenced_g_() {
     }
     
-    static void callableArgumentSequenced_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
-    }
-    
     static final void callableArgumentSequenced_g() {
         (
             let
@@ -29,6 +26,9 @@ final class callableArgumentSequenced_g_ {
     
     static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentSequenced_g$s() {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
+    static void callableArgumentSequenced_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
     }
 }
 final class callableArgumentSequenced_m_ {
@@ -44,7 +44,7 @@ final class callableArgumentSequenced_m_ {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g((.ceylon.language.Iterable<? extends .ceylon.language.String>)$param$0);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentSequenced_g_.callableArgumentSequenced_g((.ceylon.language.Iterable)$param$0);
                     }
                     returning null;
                 );

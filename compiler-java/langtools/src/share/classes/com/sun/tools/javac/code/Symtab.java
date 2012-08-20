@@ -218,6 +218,7 @@ public class Symtab {
     public final Type ceylonAtAnnotationType;
     public final Type ceylonAtNamedArgumentType;
     public final Type ceylonAtValueTypeType;
+    public final Type ceylonAtAliasType;
 
     public final Type ceylonUtilType;
 
@@ -576,6 +577,7 @@ public class Symtab {
         ceylonAtAnnotationType = enterClass("com.redhat.ceylon.compiler.java.metadata.Annotation");
         ceylonAtNamedArgumentType = enterClass("com.redhat.ceylon.compiler.java.metadata.NamedArgument");
         ceylonAtValueTypeType = enterClass("com.redhat.ceylon.compiler.java.metadata.ValueType");
+        ceylonAtAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.Alias");
         
         ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
 
@@ -794,7 +796,7 @@ public class Symtab {
         ceylonSequenceType = enterClass("ceylon.language.Sequence");
         ceylonArrayType = enterClass("ceylon.language.Array");
         ceylonArraySequenceType = enterClass("ceylon.language.ArraySequence");
-        ceylonAbstractIterableType = enterClass("ceylon.language.AbstractIterable");
+        ceylonAbstractIterableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractIterable");
         ceylonCharacterType = enterClass("ceylon.language.Character");
         ceylonBooleanType = enterClass("ceylon.language.Boolean");
         ceylonIteratorType = enterClass("ceylon.language.Iterator");

@@ -3,24 +3,24 @@ package com.redhat.ceylon.compiler.java.test.issues;
 interface IBug441 extends .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.IBug441> {
 }
 final class IBug441$impl {
-    private final .com.redhat.ceylon.compiler.java.test.issues.IBug441 $this;
     
     IBug441$impl(.com.redhat.ceylon.compiler.java.test.issues.IBug441 $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.issues.IBug441 $this;
 }
 class Bug441 implements .com.redhat.ceylon.compiler.java.test.issues.IBug441, .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.Bug441> {
+    
+    Bug441() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$IBug441$this = new .com.redhat.ceylon.compiler.java.test.issues.IBug441$impl(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.IBug441>((.ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.IBug441>)(.ceylon.language.Cloneable)this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.IBug441$impl $com$redhat$ceylon$compiler$java$test$issues$IBug441$this;
     private final .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.IBug441> $ceylon$language$Cloneable$this;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.Bug441 getClone() {
         return this;
-    }
-    
-    Bug441() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$IBug441$this = new .com.redhat.ceylon.compiler.java.test.issues.IBug441$impl(this);
-        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.IBug441>((.ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.IBug441>)(.ceylon.language.Cloneable)this);
     }
     
     public static void main(.java.lang.String[] args) {

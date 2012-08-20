@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentWithSequence {
     
-    private final void m(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
+    NamedArgumentWithSequence() {
     }
     
     private final void m(final long a) {
@@ -20,7 +20,7 @@ class NamedArgumentWithSequence {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    private final void m2(final .java.lang.Throwable a, final .ceylon.language.Iterable<? extends .java.lang.Throwable> b) {
+    private final void m(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
     }
     
     private final void m2(final .java.lang.Throwable a) {
@@ -38,7 +38,7 @@ class NamedArgumentWithSequence {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    private final void m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
+    private final void m2(final .java.lang.Throwable a, final .ceylon.language.Iterable<? extends .java.lang.Throwable> b) {
     }
     
     private final void m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a) {
@@ -54,6 +54,9 @@ class NamedArgumentWithSequence {
     
     private final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> m3$b(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a) {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
+    private final void m3(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
     }
     
     private final void invoke() {
@@ -85,9 +88,6 @@ class NamedArgumentWithSequence {
             }
             returning null;
         );
-    }
-    
-    NamedArgumentWithSequence() {
     }
     
     public static void main(.java.lang.String[] args) {

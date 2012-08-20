@@ -5,10 +5,6 @@ final class toplevel_ {
     private toplevel_() {
     }
     
-    static .java.lang.String toplevel(final .java.lang.String name) {
-        return ("hello " + name).toString();
-    }
-    
     static final .java.lang.String toplevel() {
         return (
             let
@@ -21,5 +17,9 @@ final class toplevel_ {
     
     static final .java.lang.String toplevel$name() {
         return "world";
+    }
+    
+    static .java.lang.String toplevel(final .java.lang.String name) {
+        return ("hello " + name).toString();
     }
 }

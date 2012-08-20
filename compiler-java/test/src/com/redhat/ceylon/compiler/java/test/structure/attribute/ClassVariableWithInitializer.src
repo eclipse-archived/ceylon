@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 class ClassVariableWithInitializer {
+    
+    ClassVariableWithInitializer() {
+        .java.lang.String f = "";
+        this.f2 = "";
+    }
     private .java.lang.String f2;
     
     public final .java.lang.String getF2() {
@@ -9,11 +14,6 @@ class ClassVariableWithInitializer {
     
     public final void setF2(final .java.lang.String f2) {
         this.f2 = f2;
-    }
-    
-    ClassVariableWithInitializer() {
-        .java.lang.String f = "";
-        this.f2 = "";
     }
     
     public static void main(.java.lang.String[] args) {

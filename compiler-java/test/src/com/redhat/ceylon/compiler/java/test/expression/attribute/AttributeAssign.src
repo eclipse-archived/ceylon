@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class AttributeAssign {
+    
+    AttributeAssign() {
+        this.b1 = true;
+        this.b2 = true;
+    }
     private boolean b1;
     
     private final boolean getB1() {
@@ -41,11 +46,6 @@ class AttributeAssign {
         setB2(false);
         setB3(false);
         setB4(false);
-    }
-    
-    AttributeAssign() {
-        this.b1 = true;
-        this.b2 = true;
     }
     
     public static void main(.java.lang.String[] args) {

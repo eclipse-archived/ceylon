@@ -1,10 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class DefaultedAndTypeParams<X> {
-    private final X init;
     
-    public final <Y>void m(final Y y, final X x) {
+    DefaultedAndTypeParams(X init) {
+        this.init = init;
     }
+    private final X init;
     
     public final <Y>void m(final Y y) {
         (
@@ -21,8 +22,7 @@ class DefaultedAndTypeParams<X> {
         return init;
     }
     
-    DefaultedAndTypeParams(X init) {
-        this.init = init;
+    public final <Y>void m(final Y y, final X x) {
     }
 }
 final class defaultedAndTypeParams_m_ {

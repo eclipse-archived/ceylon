@@ -1,6 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 abstract class ClassAttribute {
+    
+    ClassAttribute() {
+        final .java.lang.String uncapturedvar;
+        publicvar = "";
+        uncapturedvar = "";
+        capturedvar = "";
+    }
     private final .java.lang.String publicvar;
     
     public final .java.lang.String getPublicvar() {
@@ -19,15 +26,14 @@ abstract class ClassAttribute {
     private final .java.lang.String m() {
         return getCapturedvar();
     }
-    
-    ClassAttribute() {
-        final .java.lang.String uncapturedvar;
-        publicvar = "";
-        uncapturedvar = "";
-        capturedvar = "";
-    }
 }
 class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute {
+    
+    SubClassAttribute() {
+        super();
+        this.formalvar = "";
+        formalvarShortcut = "";
+    }
     private final .java.lang.String formalvar;
     
     @.java.lang.Override
@@ -39,12 +45,6 @@ class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.
     @.java.lang.Override
     public final .java.lang.String getFormalvarShortcut() {
         return formalvarShortcut;
-    }
-    
-    SubClassAttribute() {
-        super();
-        this.formalvar = "";
-        formalvarShortcut = "";
     }
     
     public static void main(.java.lang.String[] args) {

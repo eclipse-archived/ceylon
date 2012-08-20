@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class SequencedParameterInvocation {
     
-    private final void m(final .java.lang.String a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
+    SequencedParameterInvocation() {
     }
     
     private final void m(final .java.lang.String a) {
@@ -20,7 +20,7 @@ class SequencedParameterInvocation {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    private final void m2(final .java.lang.String a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+    private final void m(final .java.lang.String a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
     }
     
     private final void m2(final .java.lang.String a) {
@@ -38,13 +38,13 @@ class SequencedParameterInvocation {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
+    private final void m2(final .java.lang.String a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
+    }
+    
     private final void f() {
         m("foo");
         m("foo", new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         m2("foo", new .ceylon.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>(this, this, this));
-    }
-    
-    SequencedParameterInvocation() {
     }
     
     public static void main(.java.lang.String[] args) {

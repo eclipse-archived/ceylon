@@ -1,13 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 abstract class MyInteger extends .java.lang.Object implements .ceylon.language.Castable<.java.lang.Object>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> {
-    private final .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$this;
-    private final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Integral$this;
-    private final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Numeric$this;
-    private final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Summable$this;
-    private final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$this;
-    private final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Ordinal$this;
-    private final .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Exponentiable$this;
     
     MyInteger() {
         super();
@@ -19,8 +12,18 @@ abstract class MyInteger extends .java.lang.Object implements .ceylon.language.C
         this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
         this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(this);
     }
+    private final .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$this;
+    private final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Integral$this;
+    private final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Numeric$this;
+    private final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Summable$this;
+    private final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$this;
+    private final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Ordinal$this;
+    private final .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Exponentiable$this;
 }
 final class toplevelN1_ {
+    
+    private toplevelN1_() {
+    }
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -37,11 +40,11 @@ final class toplevelN1_ {
     static void setToplevelN1(final long toplevelN1) {
         value[0] = toplevelN1;
     }
-    
-    private toplevelN1_() {
-    }
 }
 final class toplevelN2_ {
+    
+    private toplevelN2_() {
+    }
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -58,11 +61,11 @@ final class toplevelN2_ {
     static void setToplevelN2(final long toplevelN2) {
         value[0] = toplevelN2;
     }
-    
-    private toplevelN2_() {
-    }
 }
 final class toplevelI1_ {
+    
+    private toplevelI1_() {
+    }
     private static long[] value;
     static {
         value = new long[]{0L};
@@ -79,11 +82,19 @@ final class toplevelI1_ {
     static void setToplevelI1(final long toplevelI1) {
         value[0] = toplevelI1;
     }
-    
-    private toplevelI1_() {
-    }
 }
 class ArithmeticOperators {
+    
+    ArithmeticOperators(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
+        this.initN = initN;
+        this.initI = initI;
+        this.n1 = 0L;
+        this.n2 = 0L;
+        this.i1 = 0L;
+        this.boxedN1 = initN;
+        this.boxedN2 = initN;
+        this.boxedI1 = initI;
+    }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN;
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI;
     private long n1;
@@ -589,6 +600,9 @@ class ArithmeticOperators {
     private final void unboxedLocalGetters() {
         
         final class n1_ {
+            
+            private n1_() {
+            }
             private long value;
             {
                 value = 0L;
@@ -601,13 +615,13 @@ class ArithmeticOperators {
             void setN1(final long n1) {
                 value = n1;
             }
-            
-            private n1_() {
-            }
         }
         final n1_ n1_ = new n1_();
         
         final class n2_ {
+            
+            private n2_() {
+            }
             private long value;
             {
                 value = 0L;
@@ -620,13 +634,13 @@ class ArithmeticOperators {
             void setN2(final long n2) {
                 value = n2;
             }
-            
-            private n2_() {
-            }
         }
         final n2_ n2_ = new n2_();
         
         final class i1_ {
+            
+            private i1_() {
+            }
             private long value;
             {
                 value = 0L;
@@ -639,77 +653,74 @@ class ArithmeticOperators {
             void setI1(final long i1) {
                 value = i1;
             }
-            
-            private i1_() {
-            }
         }
         final i1_ i1_ = new i1_();
         
         final class getterN1$getter_ {
             
-            long getGetterN1() {
-                return n1_.getN1();
+            private getterN1$getter_() {
             }
             
-            private getterN1$getter_() {
+            long getGetterN1() {
+                return n1_.getN1();
             }
         }
         final getterN1$getter_ getterN1$getter_ = new getterN1$getter_();
         
         final class getterN1$setter_ {
+            
+            private getterN1$setter_() {
+            }
             private long value;
             
             void setGetterN1(final long getterN1) {
                 n1_.setN1(getterN1);
-            }
-            
-            private getterN1$setter_() {
             }
         }
         final getterN1$setter_ getterN1$setter_ = new getterN1$setter_();
         
         final class getterN2$getter_ {
             
-            long getGetterN2() {
-                return n2_.getN2();
+            private getterN2$getter_() {
             }
             
-            private getterN2$getter_() {
+            long getGetterN2() {
+                return n2_.getN2();
             }
         }
         final getterN2$getter_ getterN2$getter_ = new getterN2$getter_();
         
         final class getterN2$setter_ {
+            
+            private getterN2$setter_() {
+            }
             private long value;
             
             void setGetterN2(final long getterN2) {
                 n2_.setN2(getterN2);
-            }
-            
-            private getterN2$setter_() {
             }
         }
         final getterN2$setter_ getterN2$setter_ = new getterN2$setter_();
         
         final class getterI1$getter_ {
             
-            long getGetterI1() {
-                return i1_.getI1();
+            private getterI1$getter_() {
             }
             
-            private getterI1$getter_() {
+            long getGetterI1() {
+                return i1_.getI1();
             }
         }
         final getterI1$getter_ getterI1$getter_ = new getterI1$getter_();
         
         final class getterI1$setter_ {
+            
+            private getterI1$setter_() {
+            }
             private long value;
             
             void setGetterI1(final long getterI1) {
                 i1_.setI1(getterI1);
-            }
-            
-            private getterI1$setter_() {
             }
         }
         final getterI1$setter_ getterI1$setter_ = new getterI1$setter_();
@@ -1014,19 +1025,11 @@ class ArithmeticOperators {
             returning $ceylontmpop95;
         );
     }
-    
-    ArithmeticOperators(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
-        this.initN = initN;
-        this.initI = initI;
-        this.n1 = 0L;
-        this.n2 = 0L;
-        this.i1 = 0L;
-        this.boxedN1 = initN;
-        this.boxedN2 = initN;
-        this.boxedI1 = initI;
-    }
 }
 final class toplevelGetterN1_ {
+    
+    private toplevelGetterN1_() {
+    }
     
     static long getToplevelGetterN1() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.getToplevelN1();
@@ -1035,11 +1038,11 @@ final class toplevelGetterN1_ {
     static void setToplevelGetterN1(final long toplevelGetterN1) {
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.setToplevelN1(toplevelGetterN1);
     }
-    
-    private toplevelGetterN1_() {
-    }
 }
 final class toplevelGetterN2_ {
+    
+    private toplevelGetterN2_() {
+    }
     
     static long getToplevelGetterN2() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.getToplevelN2();
@@ -1048,11 +1051,11 @@ final class toplevelGetterN2_ {
     static void setToplevelGetterN2(final long toplevelGetterN2) {
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.setToplevelN2(toplevelGetterN2);
     }
-    
-    private toplevelGetterN2_() {
-    }
 }
 final class toplevelGetterI1_ {
+    
+    private toplevelGetterI1_() {
+    }
     
     static long getToplevelGetterI1() {
         return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.getToplevelI1();
@@ -1060,8 +1063,5 @@ final class toplevelGetterI1_ {
     
     static void setToplevelGetterI1(final long toplevelGetterI1) {
         .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.setToplevelI1(toplevelGetterI1);
-    }
-    
-    private toplevelGetterI1_() {
     }
 }

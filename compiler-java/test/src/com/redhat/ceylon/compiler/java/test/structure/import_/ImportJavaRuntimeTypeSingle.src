@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.import_;
 
 class ImportJavaRuntimeTypeSingle {
     
-    private final void m(final .java.util.List<.ceylon.language.Integer> l) {
-        new .java.lang.Throwable();
+    ImportJavaRuntimeTypeSingle() {
     }
     
-    ImportJavaRuntimeTypeSingle() {
+    private final void m(final .java.util.List<.ceylon.language.Integer> l) {
+        new .java.lang.Throwable();
     }
     
     public static void main(.java.lang.String[] args) {

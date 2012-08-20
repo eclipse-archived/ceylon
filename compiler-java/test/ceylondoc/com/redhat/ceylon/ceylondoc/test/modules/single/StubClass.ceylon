@@ -1,3 +1,5 @@
+import com.redhat.ceylon.ceylondoc.test.modules.single.a { A1, AliasA2 = A2 }
+
 /*
  * Copyright Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the authors tag. All rights reserved.
@@ -47,7 +49,7 @@ shared class StubClass(
     shared void methodWithThrows() {}
     
     doc "The stub method with `see`."
-    see (attributeWithSee, StubException)
+    see (attributeWithSee, StubException, A1)
     shared void methodWithSee() {}
     
     doc "The stub method with `tagged` and long description <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</i>"
@@ -78,10 +80,41 @@ shared class StubClass(
          
          <i>Lorem ipsum dolor sit amet, consectetur...</i>"
     shared void methodWithCodeExamples() {}
+    
+    doc "Wiki-style links:
+    
+         1. StubClass = [[StubClass]]
+         1. StubInterface = [[StubInterface]]
+         1. StubInnerException = [[StubInnerException]]
+         1. stubTopLevelMethod = [[stubTopLevelMethod]]
+         1. stubTopLevelAttribute = [[stubTopLevelAttribute]]
+         1. StubInterface.formalMethodFromStubInterface = [[StubInterface.formalMethodFromStubInterface]]
+         1. StubClass.StubInnerClass = [[StubClass.StubInnerClass]]
+         1. StubClass.StubInnerClass.innerMethod = [[StubClass.StubInnerClass.innerMethod]]
+         1. StubInterface with custom name = [[custom stub interface|StubInterface]]
+         1. unresolvable = [[unresolvable]]
+         1. Integer = [[Integer]] (external links are broken, see issue 225)
+         1. imported A1 = [[A1]]
+         1. imported AliasA2 = [[AliasA2]]
+
+         
+         Wiki-style links with full qualified name:
+         
+         1. fullStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface]]
+         1. fullStubInterface.formalMethodFromStubInterface = [[com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface.formalMethodFromStubInterface]]
+         1. fullStubInterface with custom name = [[full custom stub interface|com.redhat.ceylon.ceylondoc.test.modules.single@StubInterface]]
+         1. fullUnresolvable = [[unresolvable@StubInterface]]
+         
+         "
+    shared void methodWithLinksInDoc() {}
         
     shared actual void formalMethodFromStubInterface() {}
     
     shared actual void defaultDeprecatedMethodFromStubInterface() {}
+    
+    shared String? bug691AbbreviatedOptionalType1() { throw; }
+    
+    shared Element? bug691AbbreviatedOptionalType2<Element>() { throw; }
     
     doc "This is `StubInnerInterface`"
     tagged("stubInnerTag1")

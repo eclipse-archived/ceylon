@@ -12,20 +12,6 @@ final class getterArgumentNamedInvocation_ {
             private callFunction_() {
             }
             
-            void callFunction(final long i, final .java.lang.String s) {
-            }
-            
-            final void callFunction(final long i) {
-                (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$s$4 = callFunction$s(i);
-                        callFunction(i, $ceylontmp$s$4);
-                    }
-                    returning null;
-                );
-            }
-            
             final void callFunction() {
                 (
                     let
@@ -42,8 +28,22 @@ final class getterArgumentNamedInvocation_ {
                 return 2L;
             }
             
+            final void callFunction(final long i) {
+                (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$s$4 = callFunction$s(i);
+                        callFunction(i, $ceylontmp$s$4);
+                    }
+                    returning null;
+                );
+            }
+            
             private final .java.lang.String callFunction$s(final long i) {
                 return "";
+            }
+            
+            void callFunction(final long i, final .java.lang.String s) {
             }
         }
         final callFunction_ callFunction = new callFunction_();
@@ -54,11 +54,11 @@ final class getterArgumentNamedInvocation_ {
                 
                 final class $s$6 {
                     
-                    .java.lang.String getS() {
-                        return "s";
+                    private $s$6() {
                     }
                     
-                    private $s$6() {
+                    .java.lang.String getS() {
+                        return "s";
                     }
                 }
                 final $s$6 $s$6 = new $s$6();
@@ -66,14 +66,14 @@ final class getterArgumentNamedInvocation_ {
                 
                 final class $i$7 {
                     
+                    private $i$7() {
+                    }
+                    
                     long getI() {
                         if (num < 0L) {
                             return 0L;
                         }
                         return 1L;
-                    }
-                    
-                    private $i$7() {
                     }
                 }
                 final $i$7 $i$7 = new $i$7();
@@ -88,14 +88,14 @@ final class getterArgumentNamedInvocation_ {
                 
                 final class $i$9 {
                     
+                    private $i$9() {
+                    }
+                    
                     long getI() {
                         if (num < 0L) {
                             return 0L;
                         }
                         return 1L;
-                    }
-                    
-                    private $i$9() {
                     }
                 }
                 final $i$9 $i$9 = new $i$9();
@@ -103,11 +103,11 @@ final class getterArgumentNamedInvocation_ {
                 
                 final class $s$10 {
                     
-                    .java.lang.String getS() {
-                        return "s";
+                    private $s$10() {
                     }
                     
-                    private $s$10() {
+                    .java.lang.String getS() {
+                        return "s";
                     }
                 }
                 final $s$10 $s$10 = new $s$10();
@@ -123,11 +123,11 @@ final class getterArgumentNamedInvocation_ {
                 
                 final class $s$12 {
                     
-                    .java.lang.String getS() {
-                        return "s";
+                    private $s$12() {
                     }
                     
-                    private $s$12() {
+                    .java.lang.String getS() {
+                        return "s";
                     }
                 }
                 final $s$12 $s$12 = new $s$12();
@@ -144,14 +144,14 @@ final class getterArgumentNamedInvocation_ {
                 
                 final class $i$14 {
                     
+                    private $i$14() {
+                    }
+                    
                     long getI() {
                         if (num < 0L) {
                             return 0L;
                         }
                         return 1L;
-                    }
-                    
-                    private $i$14() {
                     }
                 }
                 final $i$14 $i$14 = new $i$14();

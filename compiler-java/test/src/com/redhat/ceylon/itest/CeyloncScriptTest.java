@@ -25,7 +25,7 @@ import org.junit.Test;
 public class CeyloncScriptTest extends AntBasedTest {
 
     public CeyloncScriptTest() throws Exception {
-        super("test-src/com/redhat/ceylon/itest/ceylonc-script.xml");
+        super("test/src/com/redhat/ceylon/itest/ceylonc-script.xml");
     }
     
     private void assertExecutedOk(AntResult result) {

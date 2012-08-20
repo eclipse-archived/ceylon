@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
 class MethodParamAccess {
     
-    private final boolean m(final boolean b) {
-        return b;
+    MethodParamAccess() {
     }
     
-    MethodParamAccess() {
+    private final boolean m(final boolean b) {
+        return b;
     }
     
     public static void main(.java.lang.String[] args) {

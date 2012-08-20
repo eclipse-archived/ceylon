@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class OuterClass {
     
+    OuterClass() {
+    }
+    
     class InnerClass {
         
         InnerClass() {
         }
-    }
-    
-    OuterClass() {
     }
     
     public static void main(.java.lang.String[] args) {

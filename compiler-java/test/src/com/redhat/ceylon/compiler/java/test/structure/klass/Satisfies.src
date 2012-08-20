@@ -3,18 +3,18 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 interface Satisfies {
 }
 final class Satisfies$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies $this;
     
     Satisfies$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies $this;
 }
 class SatisfiesClass implements .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
     
     SatisfiesClass() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl(this);
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Satisfies$this;
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);

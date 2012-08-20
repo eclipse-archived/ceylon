@@ -26,7 +26,7 @@ import org.junit.Test;
 public class CeylonAntTest extends AntBasedTest {
 
     public CeylonAntTest() throws Exception {
-        super("test-src/com/redhat/ceylon/itest/ceylon-ant.xml");
+        super("test/src/com/redhat/ceylon/itest/ceylon-ant.xml");
     }
     
     @Test

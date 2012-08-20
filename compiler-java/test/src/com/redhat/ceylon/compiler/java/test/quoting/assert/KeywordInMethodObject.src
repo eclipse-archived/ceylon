@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.quoting.$assert;
 
 class KeywordInMethodObject {
     
+    KeywordInMethodObject() {
+    }
+    
     private final void m() {
         
         final class assert_ {
@@ -11,9 +14,6 @@ class KeywordInMethodObject {
         }
         final assert_ assert = new assert_();
         final .java.lang.String s = assert.toString();
-    }
-    
-    KeywordInMethodObject() {
     }
     
     public static void main(.java.lang.String[] args) {

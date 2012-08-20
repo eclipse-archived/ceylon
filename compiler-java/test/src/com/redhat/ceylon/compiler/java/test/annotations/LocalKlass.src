@@ -4,31 +4,44 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalKlass {
     
+    public LocalKlass() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
     private final void m() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language.Sized"})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
         class Inner<T> implements .ceylon.language.Sized {
+            
+            Inner() {
+                this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
+                this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+                this.i1 = 1L;
+            }
             private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
             private final .ceylon.language.Container$impl $ceylon$language$Container$this;
             private final long i1;
             
+            @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
             public final long getI1() {
                 return i1;
             }
             
+            @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
             public final long getI2() {
                 return 1L;
             }
             
-            public final void setI2(final long i2) {
+            public final void setI2(@.com.redhat.ceylon.compiler.java.metadata.Name("i2")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+            final long i2) {
             }
             
-            public final void m2(final long arg1, final .ceylon.language.Iterable<? extends T> t) {
-            }
-            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public final void m2(final long arg1) {
                 (
                     let
@@ -40,29 +53,35 @@ public class LocalKlass {
                 );
             }
             
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public final .ceylon.language.Iterable<? extends T> m2$t(final long arg1) {
                 return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
             }
             
+            @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+            public final void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+            final long arg1, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+            @.com.redhat.ceylon.compiler.java.metadata.Sequenced
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Iterable<T>")
+            final .ceylon.language.Iterable<? extends T> t) {
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
             @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
             public final long getSize() {
                 return 0L;
             }
             
+            @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
             @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
             public final boolean getEmpty() {
                 return true;
             }
-            
-            Inner() {
-                this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
-                this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-                this.i1 = 1L;
-            }
         }
-    }
-    
-    public LocalKlass() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

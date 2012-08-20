@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class CE {
     
+    CE() {
+    }
+    
     private final long call() {
         return 1L;
     }
@@ -14,9 +17,6 @@ class CE {
                 return .ceylon.language.Integer.instance(call());
             }
         };
-    }
-    
-    CE() {
     }
     
     public static void main(.java.lang.String[] args) {

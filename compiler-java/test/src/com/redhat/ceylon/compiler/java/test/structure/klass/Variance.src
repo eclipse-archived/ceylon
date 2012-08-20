@@ -3,31 +3,35 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 interface VarianceTop {
 }
 final class VarianceTop$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop $this;
     
     VarianceTop$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop $this;
 }
 interface VarianceMiddle extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop {
 }
 final class VarianceMiddle$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle $this;
     
     VarianceMiddle$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle $this;
 }
 interface VarianceBottom extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle {
 }
 final class VarianceBottom$impl {
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom $this;
     
     VarianceBottom$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom $this) {
         this.$this = $this;
     }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom $this;
 }
 class VarianceClass {
+    
+    VarianceClass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle classParam) {
+        this.classAttr = classParam;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle classAttr;
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle getClassAttr() {
@@ -37,12 +41,13 @@ class VarianceClass {
     public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle m(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle param) {
         return param;
     }
-    
-    VarianceClass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle classParam) {
-        this.classAttr = classParam;
-    }
 }
 class VarianceSubClass extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceClass {
+    
+    VarianceSubClass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom classParam) {
+        super(classParam);
+        this.classAttr = classParam;
+    }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom classAttr;
     
     @.java.lang.Override
@@ -53,10 +58,5 @@ class VarianceSubClass extends .com.redhat.ceylon.compiler.java.test.structure.k
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom m(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle param) {
         return (.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom).ceylon.language.bottom_.getBottom();
-    }
-    
-    VarianceSubClass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom classParam) {
-        super(classParam);
-        this.classAttr = classParam;
     }
 }

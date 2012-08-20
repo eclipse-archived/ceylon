@@ -22,13 +22,13 @@ public interface Bug673_EventObserver<Evento extends .com.redhat.ceylon.compiler
     public void on(final Evento event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action);
 }
 public final class Bug673_EventObserver$impl<Evento extends .com.redhat.ceylon.compiler.java.test.issues.Bug673_Event> {
-    private final .com.redhat.ceylon.compiler.java.test.issues.Bug673_EventObserver<Evento> $this;
-    
-    public void on(final Evento event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
-    }
     
     public Bug673_EventObserver$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug673_EventObserver<Evento> $this) {
         this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.Bug673_EventObserver<Evento> $this;
+    
+    public void on(final Evento event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
     }
 }
 public interface Bug673_GridBehavior extends .com.redhat.ceylon.compiler.java.test.issues.Bug673_EventObserver<.com.redhat.ceylon.compiler.java.test.issues.Bug673_Event> {
@@ -37,17 +37,22 @@ public interface Bug673_GridBehavior extends .com.redhat.ceylon.compiler.java.te
     public void on(final .com.redhat.ceylon.compiler.java.test.issues.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action);
 }
 public final class Bug673_GridBehavior$impl {
+    
+    public Bug673_GridBehavior$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug673_GridBehavior $this) {
+        this.$this = $this;
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug673_GridBehavior $this;
     
     public void on(final .com.redhat.ceylon.compiler.java.test.issues.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
         throw new .ceylon.language.Exception(null, null);
     }
-    
-    public Bug673_GridBehavior$impl(.com.redhat.ceylon.compiler.java.test.issues.Bug673_GridBehavior $this) {
-        this.$this = $this;
-    }
 }
 public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.test.issues.Bug673_GridBehavior {
+    
+    public Bug673_PaisController() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug673_GridBehavior$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug673_GridBehavior$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$Bug673_EventObserver$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.Bug673_Event>(this);
+    }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug673_GridBehavior$impl $com$redhat$ceylon$compiler$java$test$issues$Bug673_GridBehavior$this;
     
     @.java.lang.Override
@@ -55,11 +60,6 @@ public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.t
         $com$redhat$ceylon$compiler$java$test$issues$Bug673_GridBehavior$this.on(event, action);
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.Bug673_Event> $com$redhat$ceylon$compiler$java$test$issues$Bug673_EventObserver$this;
-    
-    public Bug673_PaisController() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$Bug673_GridBehavior$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug673_GridBehavior$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$Bug673_EventObserver$this = new .com.redhat.ceylon.compiler.java.test.issues.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.Bug673_Event>(this);
-    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);

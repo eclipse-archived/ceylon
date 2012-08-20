@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 class FunctionInSetter {
     
+    FunctionInSetter() {
+    }
+    
     private final .java.lang.String getFoo() {
         return "";
     }
@@ -22,9 +25,6 @@ class FunctionInSetter {
             final bar_ bar = new bar_();
             bar.bar();
         }
-    }
-    
-    FunctionInSetter() {
     }
     
     public static void main(.java.lang.String[] args) {

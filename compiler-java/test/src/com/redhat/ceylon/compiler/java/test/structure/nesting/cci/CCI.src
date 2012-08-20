@@ -4,8 +4,7 @@ interface C$CC$CCI<T extends .ceylon.language.String, X extends .ceylon.language
 }
 class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
-    private final <U>T m1(final X b, final U u) {
-        throw new .ceylon.language.Exception(null, null);
+    C() {
     }
     
     private final <U>T m1(final X b) {
@@ -22,25 +21,26 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
         return null;
     }
     
+    private final <U>T m1(final X b, final U u) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
     class CC {
         
+        CC() {
+        }
+        
         final class CCI$impl {
+            
+            CCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI<? extends T, ? super X> $this) {
+                this.$this = $this;
+            }
             private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI<? extends T, ? super X> $this;
             
             private T m2() {
                 return m1(null);
             }
-            
-            CCI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cci.C$CC$CCI<? extends T, ? super X> $this) {
-                this.$this = $this;
-            }
         }
-        
-        CC() {
-        }
-    }
-    
-    C() {
     }
     
     public static void main(.java.lang.String[] args) {

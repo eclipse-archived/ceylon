@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 class SpreadMethodReference {
     
+    SpreadMethodReference() {
+    }
+    
     private final void m(final .ceylon.language.Iterable<? extends .ceylon.language.String> seq) {
         final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends .ceylon.language.String>>("ceylon.language.Callable<ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>,ceylon.language.Integer>"){
             
@@ -25,9 +28,6 @@ class SpreadMethodReference {
                 );
             }
         };
-    }
-    
-    SpreadMethodReference() {
     }
     
     public static void main(.java.lang.String[] args) {

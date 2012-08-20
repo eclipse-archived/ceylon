@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 abstract class ClassAttributeGetter {
     
+    ClassAttributeGetter() {
+    }
+    
     private final .java.lang.String getF() {
         return "";
     }
@@ -13,19 +16,16 @@ abstract class ClassAttributeGetter {
     public .java.lang.String getF3() {
         return "";
     }
-    
-    ClassAttributeGetter() {
-    }
 }
 class SubClassAttributeGetter extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetter {
+    
+    SubClassAttributeGetter() {
+        super();
+    }
     
     @.java.lang.Override
     public final .java.lang.String getF3() {
         return "";
-    }
-    
-    SubClassAttributeGetter() {
-        super();
     }
     
     public static void main(.java.lang.String[] args) {

@@ -10,11 +10,11 @@ final class methodSpecifyingUnaryTopLevel_f_ {
 }
 class MethodSpecifyingUnaryTopLevel {
     
-    private final void foo(final .java.lang.String s) {
-        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingUnaryTopLevel_f_.methodSpecifyingUnaryTopLevel_f(s);
+    MethodSpecifyingUnaryTopLevel() {
     }
     
-    MethodSpecifyingUnaryTopLevel() {
+    private final void foo(final .java.lang.String s) {
+        .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingUnaryTopLevel_f_.methodSpecifyingUnaryTopLevel_f(s);
     }
     
     public static void main(.java.lang.String[] args) {
