@@ -19,19 +19,16 @@
  */
 package com.redhat.ceylon.importjar;
 
-import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-public class ImportJarMessages {
+import com.redhat.ceylon.common.Messages;
+
+public class ImportJarMessages extends Messages {
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("com.redhat.ceylon.tools.resources.import-jar-messages");
 
     public static String msg(String msgKey, Object... msgArgs) {
-        String msg = RESOURCE_BUNDLE.getString(msgKey);
-        if (msgArgs != null) {
-            msg = MessageFormat.format(msg, msgArgs);
-        }
-        return msg;
+        return msg(RESOURCE_BUNDLE, msgKey, msgArgs);
     }
 
 }
