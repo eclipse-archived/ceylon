@@ -65,8 +65,9 @@ class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
             out.setIndent(7);
             break;
         }
-        
-        out.newline();
+        if (!(node.jjtGetParent() instanceof Document && Markdown.getIndexInParent(node) == 0)) {
+            out.newline();
+        }
         switch (node.getLevel()) {
         case 1:
             int col = out.getColumn();
