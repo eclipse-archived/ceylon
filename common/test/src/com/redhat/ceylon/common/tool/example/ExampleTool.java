@@ -1,17 +1,16 @@
-package com.redhat.ceylon.tools.example;
+package com.redhat.ceylon.common.tool.example;
 
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import com.redhat.ceylon.tools.Plugin;
-import com.redhat.ceylon.tools.annotation.OptionArgument;
-import com.redhat.ceylon.tools.annotation.Argument;
-import com.redhat.ceylon.tools.annotation.Description;
-import com.redhat.ceylon.tools.annotation.ExitCode;
-import com.redhat.ceylon.tools.annotation.ExitCodes;
-import com.redhat.ceylon.tools.annotation.Option;
-import com.redhat.ceylon.tools.annotation.Summary;
+import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Summary;
 
 /**
  * An example tool which demonstrates how to write a {@link Plugin}.
@@ -23,12 +22,16 @@ import com.redhat.ceylon.tools.annotation.Summary;
 	  "The name of the tool is derived from the name of the class, which must end with `Tool`")
 public class ExampleTool implements Plugin {
 
-    private boolean foo;
-    private String bar;
-    private List<String> bazes;
+    private boolean longName;
+    private String shortName;
+    private boolean pureOption;
+    private List<String> listOption;
+    private List<String> listArgument;
+    private File file;
+    private Thread.State threadState;
     private boolean inited;
     private boolean run;
-    private List<String> bars;
+    
 
     public boolean isInited() {
         return inited;
@@ -46,34 +49,34 @@ public class ExampleTool implements Plugin {
         this.run = run;
     }
 
-    public boolean isFoo() {
-        return foo;
+    public boolean isLongName() {
+        return longName;
     }
 
-    public String getBar() {
-        return bar;
+    public String getShortName() {
+        return shortName;
     }
 
-    public List<String> getBars() {
-        return bars;
+    public List<String> getListOption() {
+        return listOption;
     }
 
-    public List<String> getBazes() {
-        return bazes;
+    public List<String> getListArgument() {
+        return listArgument;
     }
 
     public ExampleTool() {
         
     }
-    @Option(longName="foo", shortName='F')
+    @Option(longName="long-name", shortName='F')
     @Description("An example of a plain option. " +
     		"Options are setters annotated with `@Option`. " +
     		"If no name is given then a name is derived from the name of the setter. " +
     		"If no `@Option.shortName` is given the option has no short name. " +
     		"The type of a pure option must be boolean (it will be called " +
     		"with a true argument if the option is present on the command line)")
-    public void setFoo(boolean foo) {
-        this.foo = foo;
+    public void setLongName(boolean foo) {
+        this.longName = foo;
     }
     
     @OptionArgument(shortName='b')
@@ -85,17 +88,11 @@ public class ExampleTool implements Plugin {
           "If no `@Option.shortName` is given the option has no short name. " +
           "An error will be generated when parsing the command line if the " +
           "option argument appears more than once. ")
-    public void setBar(String bar) {
-        this.bar = bar;
+    public void setShortName(String bar) {
+        this.shortName = bar;
     }
     
-    /**
-     * An option with multiple values is a setter annotated with @Option
-     * and @ArgumentList.
-     * The same naming rules apply as for pure options.
-     * The type of the list element must be given explicitly
-     */
-    @OptionArgument()
+    @OptionArgument(argumentName="bars")
     @Description("An example of a multivalued option argument. " +
           "Multivalued option arguments are setters annotated with `@Option` " +
           "which take a java.util.List argument. " +
@@ -105,16 +102,43 @@ public class ExampleTool implements Plugin {
           "If no `@Option.shortName` is given the option has no short name. " +
           "The setter may throw `IllegalArgumentException` with a suitable message " +
           "if, for example, the list has too many or too few elements.")
-    public void setBars(List<String> bars) {
-        this.bars = bars;
+    public void setListOption(List<String> bars) {
+        this.listOption = bars;
     }
     
+    @Option()
+    public void setPureOption(boolean pureOption) {
+        this.pureOption = pureOption;
+    }
+
+    public boolean isPureOption() {
+        return pureOption;
+    }
+
     @Argument(argumentName="args", multiplicity="*", order=0)
     @Description("An example of an argument")
-    public void setBazes(List<String> bazes) {
-        this.bazes = bazes;
+    public void setListArgument(List<String> bazes) {
+        this.listArgument = bazes;
     }
     
+    public File getFile() {
+        return file;
+    }
+
+    @OptionArgument
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public Thread.State getThreadState() {
+        return threadState;
+    }
+
+    @OptionArgument
+    public void setThreadState(Thread.State threadState) {
+        this.threadState = threadState;
+    }
+
     /**
      * Tools can have zero or more public no-arg @PostConstruct-annotated
      * methods which will be called before {@link #run()}.
@@ -128,12 +152,8 @@ public class ExampleTool implements Plugin {
      * The run method runs the tool.
      */
     @Override
-    @ExitCodes({
-            @ExitCode(value=3, doc="")
-    })
-    public int run() {
+    public void run() {
         this.run = true;
-        return 0;
     }
 
 }
