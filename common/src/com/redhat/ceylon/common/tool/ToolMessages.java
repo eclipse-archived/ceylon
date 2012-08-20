@@ -19,19 +19,16 @@
  */
 package com.redhat.ceylon.common.tool;
 
-import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-class ToolMessages {
+import com.redhat.ceylon.common.Messages;
+
+class ToolMessages extends Messages {
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("com.redhat.ceylon.common.tool.tools");
 
     public static String msg(String msgKey, Object... msgArgs) {
-        String msg = RESOURCE_BUNDLE.getString(msgKey);
-        if (msgArgs != null) {
-            msg = MessageFormat.format(msg, msgArgs);
-        }
-        return msg;
+        return msg(RESOURCE_BUNDLE, msgKey, msgArgs);
     }
 
 }
