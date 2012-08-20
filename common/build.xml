@@ -46,7 +46,20 @@
                 debug="true"
                 classpathref="classpath">
             <include name="**/*.java"/>
+        	<exclude name="com/redhat/ceylon/common/tool/Java7Checker.java"/>
+        	<exclude name="com/redhat/ceylon/common/tool/Tool.java"/>
         </javac>
+    	<!-- some things are compiled with Java 1.5 -->
+    	<javac
+    		srcdir="${src}"
+            destdir="${build.classes}"
+            debug="true"
+            classpathref="classpath"
+	        target="1.5"
+	        source="1.5">
+              <include name="com/redhat/ceylon/common/tool/Java7Checker.java"/>
+              <include name="com/redhat/ceylon/common/tool/Tool.java"/>
+    	</javac>
     	<copy todir="${build.classes}">
     		<fileset dir="${src}">
     			<include name="**/*"/>
