@@ -1,6 +1,6 @@
 package ceylon.language;
 
-import static ceylon.language.parseInteger.parseInteger;
+import static ceylon.language.parseInteger_.parseInteger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;

@@ -1,6 +1,6 @@
 package ceylon.language;
 
-import static ceylon.language.parseFloat.parseFloat;
+import static ceylon.language.parseFloat_.parseFloat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
