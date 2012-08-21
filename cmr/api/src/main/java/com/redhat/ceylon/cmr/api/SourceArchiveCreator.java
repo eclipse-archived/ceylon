@@ -11,9 +11,9 @@ import java.util.Set;
 public interface SourceArchiveCreator {
 
     /** Copy the specified source files into the .src archive, avoiding duplicate entries. */
-    public abstract Set<String> copySourceFiles(Set<String> sources) throws IOException;
+    public Set<String> copySourceFiles(Set<String> sources) throws IOException;
 
     /** Return the root directories that can contain source files. */
-    public abstract Iterable<? extends File> getSourcePaths();
+    public Iterable<? extends File> getSourcePaths();
 
 }
