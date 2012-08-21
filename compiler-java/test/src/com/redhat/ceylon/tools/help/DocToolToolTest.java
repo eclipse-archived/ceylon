@@ -70,18 +70,6 @@ public class DocToolToolTest {
     }
     
     @Test
-    public void testExample() throws Exception {
-        runDocTool("example");
-        assertHtmlFiles("example");
-    }
-    
-    @Test
-    public void testExampleTxt() throws Exception {
-        runDocTool("example", "--format=txt");
-        assertTxtFiles("example");
-    }
-    
-    @Test
     public void testHelp() throws Exception {
         runDocTool("help");
         assertHtmlFiles("help");
