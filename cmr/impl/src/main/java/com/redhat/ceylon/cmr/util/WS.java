@@ -15,6 +15,11 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+/**
+ * WS REST client for XML
+ *
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
 public class WS {
     
     public static class Parser {
