@@ -29,5 +29,5 @@ java \
     -enableassertions \
     -classpath "$JAVA_CP" \
     "-Dceylon.home=$CEYLON_HOME" \
-    com.redhat.ceylon.tools.importjar.ImportJarMain5 \
+    com.redhat.ceylon.tools.importjar.ImportJarMain \
     $ARGS
