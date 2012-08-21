@@ -162,7 +162,7 @@ abstract class InvocationBuilder {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
             if (Strategy.generateInstantiator(type.getDeclaration())) {
                 resultExpr = gen.make().Apply(null, 
-                        gen.naming.makeUnquotedIdent(gen.naming.getInstantiatorMethodName((Class)type.getDeclaration())), 
+                        gen.naming.makeInstantiatorMethodName(null, (Class)type.getDeclaration()), 
                         argExprs);
                 if (Decl.isAncestorLocal(primaryDeclaration)) {
                     // $new method declared to return Object, so needs typecast
@@ -189,10 +189,16 @@ abstract class InvocationBuilder {
                     actualPrimExpr = gen.make().TypeCast(gen.makeJavaType(qualifyingInterface.getType(), JT_COMPANION), actualPrimExpr);
                 }
             }
-            // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
-            // is qualified relative to it
-            ProducedType classType = (ProducedType)qte.getTarget();
-            resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), argExprs, null);
+            if (Strategy.generateInstantiator(qte.getDeclaration())) {
+                resultExpr = gen.make().Apply(null, 
+                        gen.naming.makeInstantiatorMethodName(actualPrimExpr, (Class)qte.getDeclaration()), 
+                        argExprs);
+            } else {
+                // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
+                // is qualified relative to it
+                ProducedType classType = (ProducedType)qte.getTarget();
+                resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), argExprs, null);
+            }
         } else {
             if (this instanceof IndirectInvocationBuilder
                     && (primaryDeclaration instanceof Getter
