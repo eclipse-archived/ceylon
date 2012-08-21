@@ -161,8 +161,14 @@ abstract class InvocationBuilder {
         if (primary instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
             if (Strategy.generateInstantiator(type.getDeclaration())) {
+                JCExpression qual;
+                if (Decl.withinInterface(type.getDeclaration())) {
+                    qual = gen.naming.makeQuotedThis();
+                } else { 
+                    qual = null;
+                }
                 resultExpr = gen.make().Apply(null, 
-                        gen.naming.makeInstantiatorMethodName(null, (Class)type.getDeclaration()), 
+                        gen.naming.makeInstantiatorMethodName(qual, (Class)type.getDeclaration()), 
                         argExprs);
                 if (Decl.isAncestorLocal(primaryDeclaration)) {
                     // $new method declared to return Object, so needs typecast
@@ -178,6 +184,7 @@ abstract class InvocationBuilder {
             // to get the companion.
             Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)primary;
             if (qte.getDeclaration().getContainer() instanceof Interface
+                    && !Strategy.generateInstantiator(qte.getDeclaration())
                     && !(qte.getPrimary() instanceof Tree.Outer)) {
                 Interface qualifyingInterface = (Interface)qte.getDeclaration().getContainer();
                 actualPrimExpr = gen.make().Apply(null, 
