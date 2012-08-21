@@ -382,7 +382,14 @@ public class Naming implements LocalId {
             return null;
         }
     }
-
+    
+    String getInstantiatorMethodName(Class model) {
+        return model.getName()+"$new";
+    }
+    
+    JCExpression makeInstantiatorMethodName(JCExpression qual, Class model) {
+        return makeQualIdent(qual, getInstantiatorMethodName(model));
+    }
     
     static String getAliasedParameterName(Parameter parameter) {
         MethodOrValue mov = CodegenUtil.findMethodOrValueForParam(parameter);
