@@ -147,10 +147,21 @@ public class ExpressionTest extends CompilerTest {
     public void testLitCharacterLiteral(){
         compareWithJavaSource("literal/CharacterLiteral");
     }
-    @Ignore("M2")
     @Test
     public void testLitQuotedLiteral(){
         compareWithJavaSource("literal/QuotedLiteral");
+        assertErrors("literal/QuotedLiteralErrors",
+                new CompilerError(24, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(25, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(26, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(27, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(28, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(30, "Invalid binary literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(31, "Invalid binary literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(32, "Invalid binary literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(33, "Invalid binary literal (must be unsigned and fit in 64 bits)"),
+                new CompilerError(34, "Invalid binary literal (must be unsigned and fit in 64 bits)")
+        );
     }
     @Test
     public void testLitNumericLiteral(){

@@ -18,16 +18,19 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class QuotedLiteral(){
+class QuotedLiteralErrors(){
     @error
     shared void m() {
-        Quoted s1 = '';
-        Quoted s2 = 'This is a test';
-        Integer x1 = hex('CAFEBABE');
-        Integer x2 = hex('cafebabe');
-        Integer x3 = hex('FFFFFFFFFFFFFFFF');
+        Integer ex1 = hex('-CAFEBABE');
+        Integer ex2 = hex('+2');
+        Integer ex3 = hex('-2');
+        Integer ex4 = hex('salut');
+        Integer ex5 = hex('CAFEBABECAFEBABE1');
 
-        Integer b1 = bin('1101');
-        Integer b2 = bin('1101110111011101110111011101110111011101110111011101110111011101');
+        Integer eb1 = bin('-1101');
+        Integer eb2 = bin('+1101');
+        Integer eb3 = bin('123');
+        Integer eb4 = bin('salut');
+        Integer eb5 = bin('11011101110111011101110111011101110111011101110111011101110111011');
     }
 }
