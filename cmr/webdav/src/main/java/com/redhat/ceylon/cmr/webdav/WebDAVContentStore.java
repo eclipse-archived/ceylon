@@ -315,6 +315,7 @@ public class WebDAVContentStore extends URLContentStore {
             try{
                 WS.getXML(herdCompleteVersionsURL,
                           WS.params(WS.param("module", lookup.getName()),
+                                    WS.param("version", lookup.getVersion()),
                                     WS.param("type", getHerdTypeParam(lookup.getType()))),
                           new XMLHandler(){
                     @Override
