@@ -16,6 +16,7 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import com.redhat.ceylon.cmr.spi.ContentFinder;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -25,7 +26,7 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Repository {
+public interface Repository extends ContentFinder {
 
     /**
      * Get root node.
@@ -68,8 +69,4 @@ public interface Repository {
     ArtifactResult getArtifactResult(RepositoryManager manager, Node node);
 
     String getDisplayString();
-
-    void complete(ArtifactLookup lookup, ArtifactLookupResultByName result);
-
-    void listVersions(ArtifactLookup lookup, ArtifactLookupResult result);
 }
