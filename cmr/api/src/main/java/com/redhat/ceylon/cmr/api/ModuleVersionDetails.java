@@ -1,16 +1,16 @@
 package com.redhat.ceylon.cmr.api;
 
-public class ArtifactLookupVersion {
+public class ModuleVersionDetails {
     private String version;
     private String license;
     private String[] by;
     private String doc;
 
-    public ArtifactLookupVersion(String version) {
+    public ModuleVersionDetails(String version) {
         this.version = version;
     }
 
-    public ArtifactLookupVersion(String version, String doc, String license, String... by) {
+    public ModuleVersionDetails(String version, String doc, String license, String... by) {
         this(version);
         this.doc = doc;
         this.license = license;

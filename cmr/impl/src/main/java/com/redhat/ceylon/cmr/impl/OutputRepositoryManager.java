@@ -91,12 +91,12 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     }
     
     @Override
-    public ArtifactLookupResultByName complete(ArtifactLookup lookup) {
-        return new ArtifactLookupResultByName();
+    public ModuleResult complete(ModuleQuery lookup) {
+        return new ModuleResult();
     }
     
     @Override
-    public ArtifactLookupResult listVersions(ArtifactLookup lookup) {
-        return new ArtifactLookupResult(lookup.getName());
+    public ModuleVersionResult listVersions(ModuleQuery lookup) {
+        return new ModuleVersionResult(lookup.getName());
     }
 }

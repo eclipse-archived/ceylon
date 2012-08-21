@@ -28,9 +28,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactLookup;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.ModuleResult;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -316,8 +316,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
     
     @Override
-    public ArtifactLookupResultByName complete(ArtifactLookup lookup) {
-        ArtifactLookupResultByName result = new ArtifactLookupResultByName();
+    public ModuleResult complete(ModuleQuery lookup) {
+        ModuleResult result = new ModuleResult();
         for(Repository root : roots){
             root.complete(lookup, result);
         }
@@ -325,8 +325,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
     
     @Override
-    public ArtifactLookupResult listVersions(ArtifactLookup lookup) {
-        ArtifactLookupResult result = new ArtifactLookupResult(lookup.getName());
+    public ModuleVersionResult listVersions(ModuleQuery lookup) {
+        ModuleVersionResult result = new ModuleVersionResult(lookup.getName());
         for(Repository root : roots){
             root.listVersions(lookup, result);
         }

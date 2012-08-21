@@ -28,10 +28,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactLookup;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
-import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.ModuleResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -273,13 +273,13 @@ public class SmokeTestCase {
     }
 
     private void testComplete(String query, String[] expected, RepositoryManager manager){
-        testComplete(query, expected, manager, ArtifactLookup.Type.JVM);
+        testComplete(query, expected, manager, ModuleQuery.Type.JVM);
     }
     
     private void testComplete(String query, String[] expected, RepositoryManager manager,
-            ArtifactLookup.Type type){
-        ArtifactLookup lookup = new ArtifactLookup(query, type);
-        ArtifactLookupResultByName result = manager.complete(lookup);
+            ModuleQuery.Type type){
+        ModuleQuery lookup = new ModuleQuery(query, type);
+        ModuleResult result = manager.complete(lookup);
         int i=0;
         Assert.assertEquals(expected.length, result.getResults().size());
         for(String name : result.getResults()){
@@ -306,7 +306,7 @@ public class SmokeTestCase {
         RepositoryManager manager = getRepositoryManager();
 
         String[] expected = new String[]{};
-        testComplete("", expected, manager, ArtifactLookup.Type.JS);
+        testComplete("", expected, manager, ModuleQuery.Type.JS);
     }
 
     @Test
@@ -347,14 +347,14 @@ public class SmokeTestCase {
         testComplete("org.jboss.acme.", expected, manager);
     }
 
-    private void testListVersions(String query, ArtifactLookupVersion[] expected, RepositoryManager manager){
-        ArtifactLookup lookup = new ArtifactLookup(query, ArtifactLookup.Type.JVM);
-        ArtifactLookupResult result = manager.listVersions(lookup);
+    private void testListVersions(String query, ModuleVersionDetails[] expected, RepositoryManager manager){
+        ModuleQuery lookup = new ModuleQuery(query, ModuleQuery.Type.JVM);
+        ModuleVersionResult result = manager.listVersions(lookup);
         int i=0;
         Assert.assertEquals(expected.length, result.getVersions().size());
-        for(Entry<String, ArtifactLookupVersion> entry : result.getVersions().entrySet()){
-            ArtifactLookupVersion expectedVersion = expected[i++];
-            ArtifactLookupVersion version = entry.getValue();
+        for(Entry<String, ModuleVersionDetails> entry : result.getVersions().entrySet()){
+            ModuleVersionDetails expectedVersion = expected[i++];
+            ModuleVersionDetails version = entry.getValue();
             Assert.assertEquals(expectedVersion.getVersion(), entry.getKey());
             Assert.assertEquals(expectedVersion.getVersion(), version.getVersion());
             Assert.assertEquals(expectedVersion.getDoc(), version.getDoc());
@@ -367,8 +367,8 @@ public class SmokeTestCase {
     public void testListVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        ArtifactLookupVersion[] expected = new ArtifactLookupVersion[]{
-            new ArtifactLookupVersion("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+            new ModuleVersionDetails("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
         };
         testListVersions("com.acme.helloworld", expected, manager);
     }
@@ -394,8 +394,8 @@ public class SmokeTestCase {
         Repository repo = new DefaultRepository(rcs.createRoot());
         RepositoryManager manager = builder.appendRepository(repo).buildRepository();
 
-        ArtifactLookupVersion[] expected = new ArtifactLookupVersion[]{
-                new ArtifactLookupVersion("0.3.0", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", "Stéphane Épardaud"),
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+                new ModuleVersionDetails("0.3.0", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", "Stéphane Épardaud"),
         };
         testListVersions("ceylon.collection", expected, manager);
     }

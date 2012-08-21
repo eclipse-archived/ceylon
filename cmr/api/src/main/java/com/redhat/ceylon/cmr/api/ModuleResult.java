@@ -3,7 +3,7 @@ package com.redhat.ceylon.cmr.api;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class ArtifactLookupResultByName {
+public class ModuleResult {
     private SortedSet<String> results = new TreeSet<String>();
 
     public SortedSet<String> getResults() {

@@ -3,11 +3,11 @@ package com.redhat.ceylon.cmr.api;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class ArtifactLookupResult {
+public class ModuleVersionResult {
     private String name;
-    private SortedMap<String, ArtifactLookupVersion> versions = new TreeMap<String, ArtifactLookupVersion>();
+    private SortedMap<String, ModuleVersionDetails> versions = new TreeMap<String, ModuleVersionDetails>();
 
-    public ArtifactLookupResult(String name) {
+    public ModuleVersionResult(String name) {
         this.name = name;
     }
 
@@ -15,15 +15,15 @@ public class ArtifactLookupResult {
         return name;
     }
 
-    public ArtifactLookupVersion addVersion(String version) {
+    public ModuleVersionDetails addVersion(String version) {
         if(versions.containsKey(version))
             return null;
-        ArtifactLookupVersion newVersion = new ArtifactLookupVersion(version);
+        ModuleVersionDetails newVersion = new ModuleVersionDetails(version);
         versions.put(version, newVersion);
         return newVersion;
     }
 
-    public SortedMap<String, ArtifactLookupVersion> getVersions() {
+    public SortedMap<String, ModuleVersionDetails> getVersions() {
         return versions;
     }
 

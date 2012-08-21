@@ -17,11 +17,11 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactLookup;
-import com.redhat.ceylon.cmr.api.ArtifactLookup.Type;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
-import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.ModuleResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -137,7 +137,7 @@ public abstract class AbstractRepository implements Repository {
     }
     
     @Override
-    public void complete(ArtifactLookup lookup, ArtifactLookupResultByName result) {
+    public void complete(ModuleQuery lookup, ModuleResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);
         if(delegate != null){
@@ -244,7 +244,7 @@ public abstract class AbstractRepository implements Repository {
     }
     
     @Override
-    public void listVersions(ArtifactLookup lookup, ArtifactLookupResult result) {
+    public void listVersions(ModuleQuery lookup, ModuleVersionResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);
         if(delegate != null){
@@ -277,7 +277,7 @@ public abstract class AbstractRepository implements Repository {
                 if(artifact == null)
                     continue;
                 // we found the artifact: let's notify
-                ArtifactLookupVersion newVersion = result.addVersion(version);
+                ModuleVersionDetails newVersion = result.addVersion(version);
                 if(newVersion != null){
                     try {
                         File file = artifact.getContent(File.class);

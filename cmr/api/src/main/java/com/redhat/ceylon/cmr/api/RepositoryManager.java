@@ -76,6 +76,6 @@ public interface RepositoryManager {
      */
     List<String> getRepositoriesDisplayString();
     
-    ArtifactLookupResultByName complete(ArtifactLookup lookup);
-    ArtifactLookupResult listVersions(ArtifactLookup lookup);
+    ModuleResult complete(ModuleQuery lookup);
+    ModuleVersionResult listVersions(ModuleQuery lookup);
 }

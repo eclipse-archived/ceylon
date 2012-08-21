@@ -18,7 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import org.jboss.jandex.*;
 
-import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -105,7 +105,7 @@ public final class BytecodeUtils {
         return moduleClass;
     }
 
-    public static void readModuleInfo(String moduleName, File moduleArchive, ArtifactLookupVersion version){
+    public static void readModuleInfo(String moduleName, File moduleArchive, ModuleVersionDetails version){
         final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
         if(moduleClass == null)
             return;

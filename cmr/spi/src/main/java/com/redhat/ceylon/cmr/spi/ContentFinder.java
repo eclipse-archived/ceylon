@@ -17,9 +17,9 @@
 
 package com.redhat.ceylon.cmr.spi;
 
-import com.redhat.ceylon.cmr.api.ArtifactLookup;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.ModuleResult;
 
 /**
  * Content finder.
@@ -27,7 +27,7 @@ import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
  * @author Stef Epardaud
  */
 public interface ContentFinder {
-    void complete(ArtifactLookup lookup, ArtifactLookupResultByName result);
+    void complete(ModuleQuery lookup, ModuleResult result);
 
-    void listVersions(ArtifactLookup lookup, ArtifactLookupResult result);
+    void listVersions(ModuleQuery lookup, ModuleVersionResult result);
 }

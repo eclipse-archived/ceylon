@@ -1,6 +1,6 @@
 package com.redhat.ceylon.cmr.api;
 
-public class ArtifactLookup {
+public class ModuleQuery {
     private String name;
     private Type type;
 
@@ -20,7 +20,7 @@ public class ArtifactLookup {
         }
     }
     
-    public ArtifactLookup(String name, Type type){
+    public ModuleQuery(String name, Type type){
         this.name = name;
         this.type = type;
     }

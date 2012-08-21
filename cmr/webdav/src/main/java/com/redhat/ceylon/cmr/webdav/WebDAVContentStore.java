@@ -20,11 +20,11 @@ import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 import com.googlecode.sardine.impl.SardineException;
-import com.redhat.ceylon.cmr.api.ArtifactLookup;
-import com.redhat.ceylon.cmr.api.ArtifactLookup.Type;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
-import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
-import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.ModuleResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
@@ -266,7 +266,7 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     @Override
-    public void complete(ArtifactLookup lookup, final ArtifactLookupResultByName result) {
+    public void complete(ModuleQuery lookup, final ModuleResult result) {
         if(isHerd() && herdCompleteModulesURL != null){
             // let's try Herd
             try{
@@ -285,7 +285,7 @@ public class WebDAVContentStore extends URLContentStore {
         }
     }
 
-    protected void parseCompleteModulesResponse(Parser p, ArtifactLookupResultByName result) {
+    protected void parseCompleteModulesResponse(Parser p, ModuleResult result) {
         p.moveToOpenTag("results");
         while(p.moveToOptionalOpenTag("module")){
             String module = p.contents();
@@ -308,7 +308,7 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     @Override
-    public void listVersions(ArtifactLookup lookup, final ArtifactLookupResult result) {
+    public void listVersions(ModuleQuery lookup, final ModuleVersionResult result) {
         if(isHerd() && herdCompleteVersionsURL != null){
             // let's try Herd
             try{
@@ -327,7 +327,7 @@ public class WebDAVContentStore extends URLContentStore {
         }
     }
 
-    protected void parseCompleteVersionsResponse(Parser p, ArtifactLookupResult result) {
+    protected void parseCompleteVersionsResponse(Parser p, ModuleVersionResult result) {
         List<String> authors = new LinkedList<String>();
         p.moveToOpenTag("results");
         
@@ -353,7 +353,7 @@ public class WebDAVContentStore extends URLContentStore {
             }
             if(version == null || version.isEmpty())
                 throw new RuntimeException("Missing required version");
-            ArtifactLookupVersion newVersion = result.addVersion(version);
+            ModuleVersionDetails newVersion = result.addVersion(version);
             if(newVersion != null){
                 if(doc != null && !doc.isEmpty())
                     newVersion.setDoc(doc);
