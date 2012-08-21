@@ -268,6 +268,9 @@ public abstract class AbstractRepository implements Repository {
                 continue;
             // now make sure we can find the artifact we're looking for in there
             String version = child.getLabel();
+            // optional filter on version
+            if(lookup.getVersion() != null && !version.startsWith(lookup.getVersion()))
+                continue;
             // avoid duplicates
             if(result.hasVersion(version))
                 continue;
