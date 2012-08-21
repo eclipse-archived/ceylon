@@ -5,11 +5,17 @@ import org.antlr.runtime.RecognitionException;
 public class ParseError extends RecognitionError {
 	
 	private CeylonParser parser;
+	private int code;
 	
 	public ParseError(CeylonParser parser, RecognitionException re, String[] tn) {
-		super(re, tn);
-		this.parser = parser;
+		this(parser, re, tn, -1);
 	}
+	
+    public ParseError(CeylonParser parser, RecognitionException re, String[] tn, int code) {
+        super(re, tn);
+        this.parser = parser;
+        this.code = code;
+    }
 
 	public String getToken() {
 		return recognitionException.token.getText();
@@ -21,7 +27,7 @@ public class ParseError extends RecognitionError {
 	
     @Override
     public int getCode() {
-        return -1;
+        return code;
     }
     
 	@Override 

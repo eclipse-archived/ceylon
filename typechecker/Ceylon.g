@@ -16,6 +16,9 @@ options {
             RecognitionException re) {
         errors.add(new ParseError(this, re, tn));
     }
+    public void displayRecognitionError(String[] tn, RecognitionException re, int code) {
+        errors.add(new ParseError(this, re, tn, code));
+    }
     public java.util.List<ParseError> getErrors() {
         return errors;
     }
