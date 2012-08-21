@@ -25,6 +25,7 @@ import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.spi.ContentFinder;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
@@ -137,6 +138,12 @@ public abstract class AbstractRepository implements Repository {
     
     @Override
     public void complete(ArtifactLookup lookup, ArtifactLookupResultByName result) {
+        // check for delegate
+        ContentFinder delegate = root.getService(ContentFinder.class);
+        if(delegate != null){
+            delegate.complete(lookup, result);
+            return;
+        }
         // we NEED the -1 limit here to get empty tokens
         String[] paths = lookup.getName().split("\\.", -1);
         // find the right parent
@@ -238,6 +245,12 @@ public abstract class AbstractRepository implements Repository {
     
     @Override
     public void listVersions(ArtifactLookup lookup, ArtifactLookupResult result) {
+        // check for delegate
+        ContentFinder delegate = root.getService(ContentFinder.class);
+        if(delegate != null){
+            delegate.listVersions(lookup, result);
+            return;
+        }
         // FIXME: handle default module
         // FIXME: we should really get this splitting done somewhere in common
         String name = lookup.getName();
