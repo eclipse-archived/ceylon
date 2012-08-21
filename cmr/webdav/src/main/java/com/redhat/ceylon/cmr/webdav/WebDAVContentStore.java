@@ -265,6 +265,108 @@ public class WebDAVContentStore extends URLContentStore {
         return "WebDAV content store: " + root;
     }
 
+    @Override
+    public void complete(ArtifactLookup lookup, final ArtifactLookupResultByName result) {
+        if(isHerd() && herdCompleteModulesURL != null){
+            // let's try Herd
+            try{
+                WS.getXML(herdCompleteModulesURL,
+                          WS.params(WS.param("module", lookup.getName()),
+                                    WS.param("type", getHerdTypeParam(lookup.getType()))),
+                          new XMLHandler(){
+                    @Override
+                    public void onOK(Parser p) {
+                        parseCompleteModulesResponse(p, result);
+                    }
+                });
+            }catch(Exception x){
+                log.info("Failed to get completion of modules from Herd: "+x.getMessage());
+            }
+        }
+    }
+
+    protected void parseCompleteModulesResponse(Parser p, ArtifactLookupResultByName result) {
+        p.moveToOpenTag("results");
+        while(p.moveToOptionalOpenTag("module")){
+            String module = p.contents();
+            result.addResult(module);
+        }
+        p.checkCloseTag();
+    }
+
+    private String getHerdTypeParam(Type type) {
+        switch(type){
+        case JS:
+            return "javascript";
+        case JVM:
+            return "jvm";
+        case SRC:
+            return "source";
+        default:
+            throw new RuntimeException("Missing enum case handling");
+        }
+    }
+
+    @Override
+    public void listVersions(ArtifactLookup lookup, final ArtifactLookupResult result) {
+        if(isHerd() && herdCompleteVersionsURL != null){
+            // let's try Herd
+            try{
+                WS.getXML(herdCompleteVersionsURL,
+                          WS.params(WS.param("module", lookup.getName()),
+                                    WS.param("type", getHerdTypeParam(lookup.getType()))),
+                          new XMLHandler(){
+                    @Override
+                    public void onOK(Parser p) {
+                        parseCompleteVersionsResponse(p, result);
+                    }
+                });
+            }catch(Exception x){
+                log.info("Failed to get completion of versions from Herd: "+x.getMessage());
+            }
+        }
+    }
+
+    protected void parseCompleteVersionsResponse(Parser p, ArtifactLookupResult result) {
+        List<String> authors = new LinkedList<String>();
+        p.moveToOpenTag("results");
+        
+        while(p.moveToOptionalOpenTag("module-version")){
+            String module = null, version = null, doc = null, license = null;
+            authors.clear();
+            
+            while(p.moveToOptionalOpenTag()){
+                if(p.isOpenTag("module")){
+                    // ignored
+                    module = p.contents();
+                }else if(p.isOpenTag("version")){
+                    version = p.contents();
+                }else if(p.isOpenTag("doc")){
+                    doc = p.contents();
+                }else if(p.isOpenTag("license")){
+                    license = p.contents();
+                }else if(p.isOpenTag("authors")){
+                    authors.add(p.contents());
+                }else{
+                    throw new RuntimeException("Unknown tag: "+p.tagName());
+                }
+            }
+            if(version == null || version.isEmpty())
+                throw new RuntimeException("Missing required version");
+            ArtifactLookupVersion newVersion = result.addVersion(version);
+            if(newVersion != null){
+                if(doc != null && !doc.isEmpty())
+                    newVersion.setDoc(doc);
+                if(license != null && !license.isEmpty())
+                    newVersion.setLicense(license);
+                if(!authors.isEmpty())
+                    newVersion.setBy(authors.toArray(new String[authors.size()]));
+            }
+            p.checkCloseTag();
+        }
+        p.checkCloseTag();
+    }
+
     private class WebDAVContentHandle implements ContentHandle {
 
         private final String url;
