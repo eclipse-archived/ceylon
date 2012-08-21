@@ -3235,7 +3235,9 @@ public class ExpressionVisitor extends Visitor {
         setLiteralType(that, unit.getQuotedDeclaration());
         String fn = that.getUnit().getFilename();
         if (!"package.ceylon".equals(fn) && !"module.ceylon".equals(fn)) {
-            that.addWarning("single-quoted literals are not yet supported");
+            // temporarily disable this to get support for hex/binary literals
+            // see https://github.com/ceylon/ceylon-spec/issues/382
+            that.addUsageWarning("single-quoted literals are not yet supported");
         }
     }
     
