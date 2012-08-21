@@ -19,59 +19,29 @@ package com.redhat.ceylon.test.smoke.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Map.Entry;
 
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.ModuleResult;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
-import com.redhat.ceylon.cmr.impl.RootRepositoryManager;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
-import com.redhat.ceylon.cmr.util.WS;
-import com.redhat.ceylon.cmr.util.WS.Parser;
-import com.redhat.ceylon.cmr.util.WS.XMLHandler;
-import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class SmokeTestCase {
-
-    private Logger log = new JULLogger();
-
-    protected File getRepositoryRoot() throws URISyntaxException {
-        URL url = getClass().getResource("/repo");
-        Assert.assertNotNull("RepositoryManager root '/repo' not found", url);
-        return new File(url.toURI());
-    }
-
-    protected File getFolders() throws URISyntaxException {
-        URL url = getClass().getResource("/folders");
-        Assert.assertNotNull("RepositoryManager folder '/folders' not found", url);
-        return new File(url.toURI());
-    }
-
-    protected RepositoryManager getRepositoryManager() throws URISyntaxException {
-        File root = getRepositoryRoot();
-        return new RootRepositoryManager(root, log);
-    }
+public class SmokeTestCase extends AbstractTestCase {
 
     @Test
     public void testNavigation() throws Exception {
@@ -272,27 +242,12 @@ public class SmokeTestCase {
         Assert.assertNotNull(result);
     }
 
-    private void testComplete(String query, String[] expected, RepositoryManager manager){
-        testComplete(query, expected, manager, ModuleQuery.Type.JVM);
-    }
-    
-    private void testComplete(String query, String[] expected, RepositoryManager manager,
-            ModuleQuery.Type type){
-        ModuleQuery lookup = new ModuleQuery(query, type);
-        ModuleResult result = manager.completeModules(lookup);
-        int i=0;
-        Assert.assertEquals(expected.length, result.getResults().size());
-        for(String name : result.getResults()){
-            Assert.assertEquals(expected[i++], name);
-        }
-    }
-    
     @Test
     public void testCompleteEmpty() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
         String[] expected = new String[]{
-            "com",
+            "com.acme.helloworld",
             "hello",
             "moduletest",
             "org.jboss.acme",
@@ -347,22 +302,6 @@ public class SmokeTestCase {
         testComplete("org.jboss.acme.", expected, manager);
     }
 
-    private void testListVersions(String query, ModuleVersionDetails[] expected, RepositoryManager manager){
-        ModuleQuery lookup = new ModuleQuery(query, ModuleQuery.Type.JVM);
-        ModuleVersionResult result = manager.completeVersions(lookup);
-        int i=0;
-        Assert.assertEquals(expected.length, result.getVersions().size());
-        for(Entry<String, ModuleVersionDetails> entry : result.getVersions().entrySet()){
-            ModuleVersionDetails expectedVersion = expected[i++];
-            ModuleVersionDetails version = entry.getValue();
-            Assert.assertEquals(expectedVersion.getVersion(), entry.getKey());
-            Assert.assertEquals(expectedVersion.getVersion(), version.getVersion());
-            Assert.assertEquals(expectedVersion.getDoc(), version.getDoc());
-            Assert.assertEquals(expectedVersion.getLicense(), version.getLicense());
-            Assert.assertArrayEquals(expectedVersion.getBy(), version.getBy());
-        }
-    }
-
     @Test
     public void testListVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager();
@@ -370,33 +309,15 @@ public class SmokeTestCase {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
             new ModuleVersionDetails("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
         };
-        testListVersions("com.acme.helloworld", expected, manager);
-    }
-    
-    @Test
-    public void testHerdCompleteModules() throws URISyntaxException{
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
-        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
-        Repository repo = new DefaultRepository(rcs.createRoot());
-        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
-
-        String[] expected = new String[]{
-                "ceylon.collection",
-                "ceylon.language",
-        };
-        testComplete("ceylon", expected, manager);
+        testListVersions("com.acme.helloworld", null, expected, manager);
     }
 
     @Test
-    public void testHerdCompleteVersions() throws URISyntaxException{
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
-        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
-        Repository repo = new DefaultRepository(rcs.createRoot());
-        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
+    public void testListVersionFiltered() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
 
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("0.3.0", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", "Stéphane Épardaud"),
         };
-        testListVersions("ceylon.collection", expected, manager);
+        testListVersions("com.acme.helloworld", "9", expected, manager);
     }
 }
