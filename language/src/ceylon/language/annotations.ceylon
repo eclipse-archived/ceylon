@@ -45,3 +45,9 @@ shared Nothing license(Quoted url) { return null; }
 shared Nothing export() { return null; }
 
 shared Nothing optional() { return null; }
+
+doc "Annotation to specify a hexadecimal literal." 
+shared Integer hex(Quoted number) { return 0; }
+
+doc "Annotation to specify a binary literal." 
+shared Integer bin(Quoted number) { return 0; }
