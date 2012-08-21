@@ -20,16 +20,12 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
-import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.loader.model.LazyMethod;
-import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -58,6 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
@@ -78,6 +75,7 @@ import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -523,6 +521,27 @@ public class ExpressionTransformer extends AbstractTransformer {
     JCExpression ceylonLiteral(String s) {
         JCLiteral lit = make().Literal(s);
         return lit;
+    }
+
+    private JCExpression transformHexLiteral(Tree.QuotedLiteral literal) {
+        return transformRadixLiteral(literal, 16, "Invalid hexadecimal literal (must be unsigned and fit in 64 bits)");
+    }
+    
+    private JCExpression transformBinaryLiteral(Tree.QuotedLiteral literal) {
+        return transformRadixLiteral(literal, 2, "Invalid binary literal (must be unsigned and fit in 64 bits)");
+    }
+
+    private JCExpression transformRadixLiteral(Tree.QuotedLiteral literal, int radix, String error){
+        String value = literal
+                .getText()
+                .substring(1, literal.getText().length() - 1);
+        at(literal);
+        try{
+            long l = Convert.string2long(value, radix);
+            return make().Literal(l);
+        }catch(NumberFormatException x){
+            return makeErroneous(literal, error);
+        }
     }
 
     public JCExpression transform(Tree.StringLiteral string) {
@@ -1280,6 +1299,26 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Invocations
     
     public JCExpression transform(Tree.InvocationExpression ce) {
+        // FIXME: temporary hack for hex/bin literals
+        if(ce.getPrimary() instanceof Tree.BaseMemberExpression
+                && ce.getPositionalArgumentList() != null){
+            java.util.List<PositionalArgument> positionalArguments = ce.getPositionalArgumentList().getPositionalArguments();
+            if(positionalArguments.size() == 1
+                && positionalArguments.get(0).getExpression() != null){
+                Term term = positionalArguments.get(0).getExpression().getTerm();
+                if(term instanceof Tree.QuotedLiteral){
+                    Declaration decl = ((Tree.BaseMemberExpression)ce.getPrimary()).getDeclaration();
+                    if(decl instanceof Method){
+                        String name = decl.getQualifiedNameString();
+                        if(name.equals("ceylon.language.hex")){
+                            return transformHexLiteral((Tree.QuotedLiteral)term);
+                        }else if(name.equals("ceylon.language.bin")){
+                            return transformBinaryLiteral((Tree.QuotedLiteral)term);
+                        }
+                    }
+                }
+            }
+        }
         final boolean prevInv = withinInvocation(false);
         try {
             return InvocationBuilder.forInvocation(this, ce).build();
