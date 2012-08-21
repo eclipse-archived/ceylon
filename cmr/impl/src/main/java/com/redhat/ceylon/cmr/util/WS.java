@@ -223,6 +223,8 @@ public class WS {
     }
 
     private static String encodeURLQueryParam(String name) {
+        if(name == null)
+            return "";
         // this encoding is good enough for query param parts
         try {
             return URLEncoder.encode(name, "UTF-8");
