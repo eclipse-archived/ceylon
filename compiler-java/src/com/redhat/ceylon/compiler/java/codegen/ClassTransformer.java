@@ -117,25 +117,71 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             javaClassName = def.getIdentifier().getText();
         }
+        ClassDefinitionBuilder instantiatorImplCb;
+        ClassDefinitionBuilder instantiatorDeclCb;
+        if (Decl.withinInterface(model)) {
+            instantiatorImplCb = gen().current().getCompanionBuilder((Interface)model.getContainer());
+            instantiatorDeclCb = gen().current();
+        } else {
+            instantiatorImplCb = gen().current();
+            instantiatorDeclCb = null;
+        }
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
                 .klass(this, javaClassName, ceylonClassName);
 
         if (def instanceof Tree.AnyClass) {
             if(def instanceof Tree.ClassDefinition){
-                Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
-                for (Tree.Parameter param : paramList.getParameters()) {
-                    at(param);
-                    classBuilder.parameter(param.getDeclarationModel());
-                    DefaultArgument defaultArgument = param.getDefaultArgument();
-                    if (defaultArgument != null
-                            || param.getDeclarationModel().isSequenced()) {
-                        MethodDefinitionBuilder m = makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param);
-                        if (Strategy.defaultParameterMethodStatic(model)) {
-                            classBuilder.method(m);
-                        } else {
-                            classBuilder.getCompanionBuilder(model).method(m);
-                        }
-                        
+            Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
+            Class cls = ((Tree.AnyClass)def).getDeclarationModel();
+            // Member classes need a instantiator method
+            boolean generateInstantiator = Strategy.generateInstantiator(cls);
+            // TODO Instantiators on companion classes
+            if (generateInstantiator) {
+                classBuilder.constructorModifiers(PROTECTED);
+                if (Decl.withinInterface(cls)) {
+                    MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+                    makeOverloadsForDefaultedParameter(0,
+                            instBuilder,
+                            model, paramList, null);
+                    instantiatorDeclCb.method(instBuilder);
+                }
+                if (!Decl.withinInterface(cls)
+                        || !model.isFormal()) {
+                    MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+                    makeOverloadsForDefaultedParameter(!cls.isFormal() ? OL_BODY : 0,
+                            instBuilder,
+                            model, paramList, null);
+                    instantiatorImplCb.method(instBuilder);
+                }
+                
+            }
+            for (Tree.Parameter param : paramList.getParameters()) {
+                Parameter paramModel = param.getDeclarationModel();
+                Parameter refinedParam = (Parameter)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel());
+                at(param);
+                classBuilder.parameter(paramModel);
+                if (paramModel.isDefaulted()
+                        || paramModel.isSequenced()
+                        || (generateInstantiator
+                                && (refinedParam.isDefaulted()
+                                    || refinedParam.isSequenced()))) {
+                    ClassDefinitionBuilder cbForDevaultValues;
+                    if (Strategy.defaultParameterMethodStatic(model)) {
+                        cbForDevaultValues = classBuilder;
+                    } else {
+                        cbForDevaultValues = classBuilder.getCompanionBuilder(model);
+                    }
+                    if (generateInstantiator && refinedParam != paramModel) {}
+                    else {
+                        cbForDevaultValues.method(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param));
+                    }
+                    if (generateInstantiator) {
+                        MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+                        makeOverloadsForDefaultedParameter(OL_BODY,
+                                instBuilder,
+                                model, paramList, param);
+                        instantiatorImplCb.method(instBuilder);
+                    } else {
                         // Add overloaded constructors for defaulted parameter
                         MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
                         makeOverloadsForDefaultedParameter(OL_BODY,
@@ -143,8 +189,9 @@ public class ClassTransformer extends AbstractTransformer {
                                 model, paramList, param);
                     }
                 }
-                satisfaction((Class)model, classBuilder);
-                at(def);
+            }
+            satisfaction((Class)model, classBuilder);
+            at(def);
             }else{
                 // class alias
                 classBuilder.constructorModifiers(PRIVATE);
@@ -720,7 +767,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isShared(cdecl) ? PUBLIC : 0;
-        result |= cdecl.isAbstract() && (cdecl instanceof Class) ? ABSTRACT : 0;
+        result |= (cdecl.isAbstract() || cdecl.isFormal()) && (cdecl instanceof Class) ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         result |= cdecl.isAlias() && (cdecl instanceof Class) ? FINAL : 0;
 
@@ -1211,7 +1258,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         return makeOverloadsForDefaultedParameter(flags,
                 overloadBuilder, model,
-                parameters, currentParam.getDeclarationModel());
+                parameters, currentParam != null ? currentParam.getDeclarationModel() : null);
     }
     
     /**
@@ -1247,15 +1294,27 @@ public class ClassTransformer extends AbstractTransformer {
             methName = naming.makeQualifiedName(qualifier, (Method)model, Naming.NA_MEMBER);
             overloadBuilder.resultType((Method)model, 0);
         } else if (model instanceof Class) {
-            overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
-            methName = naming.makeThis();
+            if (Strategy.generateInstantiator(model)) {
+                overloadBuilder.ignoreAnnotations();
+                if (Strategy.generateInstantiator(((Class)model).getExtendedTypeDeclaration())){
+                        //&& ((Class)model).getExtendedTypeDeclaration().getContainer() instanceof Class) {
+                    overloadBuilder.isOverride(true);
+                }
+                overloadBuilder.modifiers(transformClassDeclFlags((Class)model));
+                methName = naming.makeInstantiatorMethodName(null, (Class)model);
+                overloadBuilder.resultType(null, makeJavaType(((Class)model).getType()));
+            } else {   
+                overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
+                methName = naming.makeThis();
+            }
         } else {
             throw new RuntimeException();
         }
         
         // TODO MPL
-        if (model instanceof Method) {
-            copyTypeParameters((Method)model, overloadBuilder);
+        if (model instanceof Method
+                || Strategy.generateInstantiator(model)) {
+            copyTypeParameters((Functional)model, overloadBuilder);
         }
 
         // TODO Some simple default expressions (e.g. literals, null and 
@@ -1268,7 +1327,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         final Naming.SyntheticName companionInstanceName = naming.temp("$impl$");
         if (model instanceof Class
-                && !Strategy.defaultParameterMethodStatic(model)) {
+                && !Strategy.defaultParameterMethodStatic(model)
+                && currentParam != null) {
             Class classModel = (Class)model;
             vars.append(makeVar(companionInstanceName, 
                     makeJavaType(classModel.getType(), AbstractTransformer.JT_COMPANION),
@@ -1323,15 +1383,26 @@ public class ClassTransformer extends AbstractTransformer {
         
         // TODO Type args on method call
         if ((flags & OL_BODY) != 0) {
-            JCExpression invocation = make().Apply(List.<JCExpression>nil(),
+            JCExpression invocation;
+            if (Strategy.generateInstantiator(model)) {
+                invocation = make().NewClass(null, 
+                        null, 
+                        makeJavaType(((Class)model).getType(), JT_CLASS_NEW | JT_NON_QUALIFIED),
+                        args.toList(),
+                        null);
+            } else {
+                invocation = make().Apply(List.<JCExpression>nil(),
                     methName, args.toList());
+            }
                
-            if (isVoid(model)) {
+            if (isVoid(model) && !Strategy.generateInstantiator(model)) {
                 vars.append(make().Exec(invocation));
                 invocation = make().LetExpr(vars.toList(), makeNull());
                 overloadBuilder.body(make().Exec(invocation));
             } else {
-                invocation = make().LetExpr(vars.toList(), invocation);
+                if (!vars.isEmpty()) {
+                    invocation = make().LetExpr(vars.toList(), invocation);
+                }
                 overloadBuilder.body(make().Return(invocation));
             }
         } else {
@@ -1340,8 +1411,6 @@ public class ClassTransformer extends AbstractTransformer {
         
         return overloadBuilder;
     }
-
-
 
     /**
      * Creates a (possibly abstract) method for retrieving the value for a 
