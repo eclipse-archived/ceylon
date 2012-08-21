@@ -20,14 +20,25 @@ import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 import com.googlecode.sardine.impl.SardineException;
+import com.redhat.ceylon.cmr.api.ArtifactLookup;
+import com.redhat.ceylon.cmr.api.ArtifactLookup.Type;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
+import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
+import com.redhat.ceylon.cmr.spi.ContentFinder;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.util.WS;
+import com.redhat.ceylon.cmr.util.WS.Link;
+import com.redhat.ceylon.cmr.util.WS.Parser;
+import com.redhat.ceylon.cmr.util.WS.XMLHandler;
+
 import org.apache.http.ProtocolException;
 import org.apache.http.client.ClientProtocolException;
 
@@ -39,18 +50,25 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * WebDAV content store.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
+ * @author Stef Epardaud
  */
 public class WebDAVContentStore extends URLContentStore {
+
+    public final static String HERD_COMPLETE_MODULES_REL = "http://modules.ceylon-lang.org/rel/complete-modules";
+    public final static String HERD_COMPLETE_VERSIONS_REL = "http://modules.ceylon-lang.org/rel/complete-versions";
 
     private volatile Sardine sardine;
     private boolean _isHerd;
     private boolean forcedAuthenticationForPutOnHerd = false;
+    private String herdCompleteModulesURL;
+    private String herdCompleteVersionsURL;
 
     public WebDAVContentStore(String root, Logger log) {
         super(root, log);
@@ -84,13 +102,30 @@ public class WebDAVContentStore extends URLContentStore {
                     return false;
                 String herdVersion = con.getHeaderField("X-Herd-Version");
                 log.debug("Herd version: "+herdVersion);
-                return herdVersion != null && !herdVersion.isEmpty();
+                boolean ret = herdVersion != null && !herdVersion.isEmpty();
+                if(ret){
+                    collectHerdLinks(con);
+                }
+                return ret;
             }finally{
                 con.disconnect();
             }
         }catch(Exception x){
             log.debug("Failed to determine if remote host is a Herd repo: "+x.getMessage());
             return false;
+        }
+    }
+
+    private void collectHerdLinks(HttpURLConnection con) {
+        // collect the links
+        try{
+            List<Link> links = WS.collectLinks(con);
+            herdCompleteModulesURL = WS.getLink(links, HERD_COMPLETE_MODULES_REL);
+            herdCompleteVersionsURL = WS.getLink(links, HERD_COMPLETE_VERSIONS_REL);
+            log.info("Got complete-modules link: " + herdCompleteModulesURL);
+            log.info("Got complete-versions link: " + herdCompleteVersionsURL);
+        }catch(Exception x){
+            log.debug("Failed to read links from Herd repo: "+x.getMessage());
         }
     }
 
