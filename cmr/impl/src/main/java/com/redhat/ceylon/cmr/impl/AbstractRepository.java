@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.ModuleResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -137,11 +138,11 @@ public abstract class AbstractRepository implements Repository {
     }
     
     @Override
-    public void complete(ModuleQuery lookup, ModuleResult result) {
+    public void completeModules(ModuleQuery lookup, ModuleResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);
         if(delegate != null){
-            delegate.complete(lookup, result);
+            delegate.completeModules(lookup, result);
             return;
         }
         // we NEED the -1 limit here to get empty tokens
@@ -244,11 +245,11 @@ public abstract class AbstractRepository implements Repository {
     }
     
     @Override
-    public void listVersions(ModuleQuery lookup, ModuleVersionResult result) {
+    public void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);
         if(delegate != null){
-            delegate.listVersions(lookup, result);
+            delegate.completeVersions(lookup, result);
             return;
         }
         // FIXME: handle default module

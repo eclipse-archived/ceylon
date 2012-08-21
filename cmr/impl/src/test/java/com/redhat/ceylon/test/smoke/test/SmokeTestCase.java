@@ -279,7 +279,7 @@ public class SmokeTestCase {
     private void testComplete(String query, String[] expected, RepositoryManager manager,
             ModuleQuery.Type type){
         ModuleQuery lookup = new ModuleQuery(query, type);
-        ModuleResult result = manager.complete(lookup);
+        ModuleResult result = manager.completeModules(lookup);
         int i=0;
         Assert.assertEquals(expected.length, result.getResults().size());
         for(String name : result.getResults()){
@@ -349,7 +349,7 @@ public class SmokeTestCase {
 
     private void testListVersions(String query, ModuleVersionDetails[] expected, RepositoryManager manager){
         ModuleQuery lookup = new ModuleQuery(query, ModuleQuery.Type.JVM);
-        ModuleVersionResult result = manager.listVersions(lookup);
+        ModuleVersionResult result = manager.completeVersions(lookup);
         int i=0;
         Assert.assertEquals(expected.length, result.getVersions().size());
         for(Entry<String, ModuleVersionDetails> entry : result.getVersions().entrySet()){

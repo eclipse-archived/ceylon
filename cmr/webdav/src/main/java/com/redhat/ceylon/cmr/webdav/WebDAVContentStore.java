@@ -22,6 +22,7 @@ import com.googlecode.sardine.SardineFactory;
 import com.googlecode.sardine.impl.SardineException;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.ModuleResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -266,7 +267,7 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     @Override
-    public void complete(ModuleQuery lookup, final ModuleResult result) {
+    public void completeModules(ModuleQuery lookup, final ModuleResult result) {
         if(isHerd() && herdCompleteModulesURL != null){
             // let's try Herd
             try{
@@ -308,7 +309,7 @@ public class WebDAVContentStore extends URLContentStore {
     }
 
     @Override
-    public void listVersions(ModuleQuery lookup, final ModuleVersionResult result) {
+    public void completeVersions(ModuleVersionQuery lookup, final ModuleVersionResult result) {
         if(isHerd() && herdCompleteVersionsURL != null){
             // let's try Herd
             try{

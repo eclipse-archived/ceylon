@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.ModuleResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -55,12 +56,12 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
 
 
     @Override
-    public void complete(ModuleQuery lookup, ModuleResult result) {
+    public void completeModules(ModuleQuery lookup, ModuleResult result) {
         // remote content stores do not participate in completion for speed reasons
     }
 
     @Override
-    public void listVersions(ModuleQuery lookup, ModuleVersionResult result) {
+    public void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result) {
         // remote content stores do not participate in completion for speed reasons
     }
 

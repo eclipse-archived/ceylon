@@ -18,6 +18,7 @@
 package com.redhat.ceylon.cmr.spi;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.ModuleResult;
 
@@ -27,7 +28,7 @@ import com.redhat.ceylon.cmr.api.ModuleResult;
  * @author Stef Epardaud
  */
 public interface ContentFinder {
-    void complete(ModuleQuery lookup, ModuleResult result);
+    void completeModules(ModuleQuery lookup, ModuleResult result);
 
-    void listVersions(ModuleQuery lookup, ModuleVersionResult result);
+    void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result);
 }

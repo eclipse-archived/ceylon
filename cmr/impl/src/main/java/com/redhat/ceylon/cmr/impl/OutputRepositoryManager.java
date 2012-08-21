@@ -91,12 +91,12 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     }
     
     @Override
-    public ModuleResult complete(ModuleQuery lookup) {
+    public ModuleResult completeModules(ModuleQuery lookup) {
         return new ModuleResult();
     }
     
     @Override
-    public ModuleVersionResult listVersions(ModuleQuery lookup) {
+    public ModuleVersionResult completeVersions(ModuleVersionQuery lookup) {
         return new ModuleVersionResult(lookup.getName());
     }
 }
