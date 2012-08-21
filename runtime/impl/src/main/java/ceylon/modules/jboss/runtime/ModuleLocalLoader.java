@@ -72,7 +72,6 @@ class ModuleLocalLoader implements LocalLoader {
         }
     }
 
-    @SuppressWarnings({"unchecked"})
     public List<Resource> loadResourceLocal(final String name) {
         final Enumeration<URL> urls = module.getExportedResources(name);
         final List<Resource> list = new ArrayList<Resource>();

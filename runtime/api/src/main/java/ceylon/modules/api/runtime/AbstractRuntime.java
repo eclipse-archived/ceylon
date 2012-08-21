@@ -35,7 +35,7 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
  */
 public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runtime {
 
-    public static final String MODULE_INFO_CLASS = ".module";
+    public static final String MODULE_INFO_CLASS = ".module_";
     public static final String RUN_INFO_CLASS = "run";
 
     /**
@@ -67,7 +67,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
     protected static void invokeRun(ClassLoader cl, String runClassName, final String[] args) throws Exception {
         final Class<?> runClass;
         try {
-            runClass = cl.loadClass(runClassName);
+            runClass = cl.loadClass(runClassName+"_");
         } catch (ClassNotFoundException ignored) {
             Logger.getLogger("ceylon.runtime").severe("Could not find class or method '" + runClassName + "'");
             return; // looks like no such run class is available
