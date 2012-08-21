@@ -17,19 +17,37 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
-import com.redhat.ceylon.cmr.api.*;
-import com.redhat.ceylon.cmr.impl.*;
-import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
-
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map.Entry;
+
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactLookup;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
+import com.redhat.ceylon.cmr.api.ArtifactLookupVersion;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.impl.DefaultRepository;
+import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
+import com.redhat.ceylon.cmr.impl.RemoteContentStore;
+import com.redhat.ceylon.cmr.impl.RootRepositoryManager;
+import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
+import com.redhat.ceylon.cmr.util.WS;
+import com.redhat.ceylon.cmr.util.WS.Parser;
+import com.redhat.ceylon.cmr.util.WS.XMLHandler;
+import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
+import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -353,5 +371,32 @@ public class SmokeTestCase {
             new ArtifactLookupVersion("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
         };
         testListVersions("com.acme.helloworld", expected, manager);
+    }
+    
+    @Test
+    public void testHerdCompleteModules() throws URISyntaxException{
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
+        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
+        Repository repo = new DefaultRepository(rcs.createRoot());
+        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
+
+        String[] expected = new String[]{
+                "ceylon.collection",
+                "ceylon.language",
+        };
+        testComplete("ceylon", expected, manager);
+    }
+
+    @Test
+    public void testHerdCompleteVersions() throws URISyntaxException{
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
+        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
+        Repository repo = new DefaultRepository(rcs.createRoot());
+        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
+
+        ArtifactLookupVersion[] expected = new ArtifactLookupVersion[]{
+                new ArtifactLookupVersion("0.3.0", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", "Stéphane Épardaud"),
+        };
+        testListVersions("ceylon.collection", expected, manager);
     }
 }
