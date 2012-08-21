@@ -25,7 +25,7 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Repository {
+public interface Repository extends ContentFinder {
 
     /**
      * Get root node.
@@ -68,8 +68,4 @@ public interface Repository {
     ArtifactResult getArtifactResult(RepositoryManager manager, Node node);
 
     String getDisplayString();
-
-    void completeModules(ModuleQuery lookup, ModuleResult result);
-
-    void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result);
 }

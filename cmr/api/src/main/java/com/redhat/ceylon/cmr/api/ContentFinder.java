@@ -15,12 +15,8 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.spi;
+package com.redhat.ceylon.cmr.api;
 
-import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.ModuleResult;
 
 /**
  * Content finder.
