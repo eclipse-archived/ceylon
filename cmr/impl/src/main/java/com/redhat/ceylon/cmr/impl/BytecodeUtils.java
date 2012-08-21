@@ -100,7 +100,7 @@ public final class BytecodeUtils {
             throw new RuntimeException("Failed to read index for zip file "+jarFile.getPath(), e);
         }
 
-        final DotName moduleClassName = DotName.createSimple(moduleName + ".module");
+        final DotName moduleClassName = DotName.createSimple(moduleName + ".module_");
         final ClassInfo moduleClass = index.getClassByName(moduleClassName);
         return moduleClass;
     }
