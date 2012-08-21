@@ -67,7 +67,12 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
     protected static void invokeRun(ClassLoader cl, String runClassName, final String[] args) throws Exception {
         final Class<?> runClass;
         try {
-            runClass = cl.loadClass(Character.isLowerCase(runClassName.charAt(0)) ? runClassName+"_" : runClassName);
+            char firstChar = runClassName.charAt(0);
+            int lastDot = runClassName.lastIndexOf('.');
+            if (lastDot > 0) {
+                firstChar = runClassName.charAt(lastDot+1);
+            }
+            runClass = cl.loadClass(Character.isLowerCase(firstChar) ? runClassName+"_" : runClassName);
         } catch (ClassNotFoundException ignored) {
             Logger.getLogger("ceylon.runtime").severe("Could not find class or method '" + runClassName + "'");
             return; // looks like no such run class is available
