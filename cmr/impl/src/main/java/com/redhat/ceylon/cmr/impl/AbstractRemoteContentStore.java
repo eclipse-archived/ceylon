@@ -16,7 +16,11 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.ArtifactLookup;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResult;
+import com.redhat.ceylon.cmr.api.ArtifactLookupResultByName;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.spi.ContentFinder;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
@@ -26,7 +30,7 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractRemoteContentStore extends AbstractContentStore {
+public abstract class AbstractRemoteContentStore extends AbstractContentStore implements ContentFinder {
 
     protected AbstractRemoteContentStore(Logger log) {
         super(log);
@@ -40,12 +44,24 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore {
         final RemoteNode node = new RemoteRootNode();
         node.addService(ContentStore.class, this);
         node.addService(StructureBuilder.class, this);
+        node.addService(ContentFinder.class, this);
         node.setHandle(DefaultNode.HANDLE_MARKER);
         return node;
     }
 
     protected RemoteNode createNode(String label) {
         return new RemoteNode(label);
+    }
+
+
+    @Override
+    public void complete(ArtifactLookup lookup, ArtifactLookupResultByName result) {
+        // remote content stores do not participate in completion for speed reasons
+    }
+
+    @Override
+    public void listVersions(ArtifactLookup lookup, ArtifactLookupResult result) {
+        // remote content stores do not participate in completion for speed reasons
     }
 
     protected static class RemoteNode extends DefaultNode {
