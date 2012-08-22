@@ -159,8 +159,15 @@ abstract class InvocationBuilder {
         JCExpression actualPrimExpr = transformInvocationPrimary(primaryExpr, selector);
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
-            ProducedType classType = (ProducedType)((Tree.MemberOrTypeExpression)primary).getTarget();
-            resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW), argExprs, null);
+            Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
+            if (Strategy.generateInstantiator(type.getDeclaration())) {
+                resultExpr = gen.make().Apply(null, 
+                        gen.naming.makeUnquotedIdent(gen.naming.getInstantiatorMethodName((Class)type.getDeclaration())), 
+                        argExprs);
+            } else {
+                ProducedType classType = (ProducedType)type.getTarget();
+                resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW), argExprs, null);
+            }
         } else if (primary instanceof Tree.QualifiedTypeExpression) {
             // When doing qualified invocation through an interface we need
             // to get the companion.
