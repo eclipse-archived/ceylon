@@ -16,6 +16,9 @@ options {
             RecognitionException re) {
         errors.add(new ParseError(this, re, tn));
     }
+    public void displayRecognitionError(String[] tn, RecognitionException re, int code) {
+        errors.add(new ParseError(this, re, tn, code));
+    }
     public java.util.List<ParseError> getErrors() {
         return errors;
     }
@@ -228,12 +231,16 @@ packagePath returns [ImportPath importPath]
         )
       )*
     ;
-    
 
 packageName returns [Identifier identifier]
     : LIDENTIFIER
-      { $identifier = new Identifier($LIDENTIFIER); 
+      { $identifier = new Identifier($LIDENTIFIER);
         $LIDENTIFIER.setType(PIDENTIFIER);}
+    | { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(LIDENTIFIER, input), 5001); }
+      UIDENTIFIER
+      { $identifier = new Identifier($UIDENTIFIER);
+        $UIDENTIFIER.setType(PIDENTIFIER);}
     ;
 
 typeName returns [Identifier identifier]
@@ -255,7 +262,7 @@ memberName returns [Identifier identifier]
 memberNameDeclaration returns [Identifier identifier]
     : memberName { $identifier = $memberName.identifier; }
     | { displayRecognitionError(getTokenNames(), 
-              new MismatchedTokenException(LIDENTIFIER, input)); }
+              new MismatchedTokenException(LIDENTIFIER, input), 5001); }
       typeName { $identifier = $typeName.identifier; }
       
     ;
@@ -263,7 +270,7 @@ memberNameDeclaration returns [Identifier identifier]
 typeNameDeclaration returns [Identifier identifier]
     : typeName { $identifier = $typeName.identifier; }
     | { displayRecognitionError(getTokenNames(), 
-              new MismatchedTokenException(UIDENTIFIER, input)); }
+              new MismatchedTokenException(UIDENTIFIER, input), 5002); }
       memberName { $identifier = $memberName.identifier; }
       
     ;
