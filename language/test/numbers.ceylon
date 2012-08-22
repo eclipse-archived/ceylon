@@ -417,4 +417,37 @@ shared void numbers() {
 
     //Ordinals
     assert(10.distanceFrom(2) == 10-2, "Integer.distanceFrom");
+
+    // Bitwise operators
+    assert(hex('ff') == 255, "xff value");
+    assert(bin('1111111111111111') == 255, "b1111111111111111 value");
+    
+    assert(hex('ff').not == 0, "~xff == 0");
+    assert(0.not == hex('ff'), "~0 == xff");
+    assert(bin('1010101010101010').not == hex('0101010101010101'), "~b1010101010101010 == b0101010101010101");
+    
+    assert(1.leftLogicalShift(2) == bin('100'), "1<<2 == b100");
+    
+    assert(bin('1100').rightLogicalShift(2) == bin('11'), "b1100>>2 == b11");
+    assert(bin('1010101010101010').rightLogicalShift(1) == bin('0101010101010101'), "b1010101010101010>>1 == b0101010101010101");
+    
+    assert(bin('1100').rightArithmeticShift(2) == bin('11'), "b1100>>>2 == b11");
+    assert(bin('1010101010101010').rightArithmeticShift(1) == bin('1101010101010101'), "b1010101010101010>>>1 == b1101010101010101");
+    
+    assert(bin('1001').or(bin('0101')) == bin('1101'), "b1001&b0101 == b1101");    
+    assert(bin('1001').xor(bin('0101')) == bin('1100'), "b1001^b0101 == b1100");    
+    assert(bin('1001').and(bin('1000')) == bin('1000'), "b1001&b1000 == b1000");   
+
+    assert(0.set(2) == bin('100'), "0.set(2) == b100");
+    assert(0.set(2, true) == bin('100'), "0.set(2, true) == b100");
+    assert(bin('110').set(2, false) == bin('010'), "b110.set(2, false) == b010");
+    assert(bin('110').clear(2) == bin('010'), "b110.clear(2) == b010");
+    assert(0.flip(2) == bin('100'), "0.flip(2) == b100");
+    assert(bin('100').flip(2) == 0, "b100.flip(2) == 0");
+    
+    assert(bin('10').get(0) == false, "b10.get(0) == false");
+    assert(bin('10').get(1) == true, "b10.get(1) == true");
+    assert(bin('10').get(2) == false, "b10.get(2) == false");
+
+    assert(0.size == 64, "0.size == 64");
 }
