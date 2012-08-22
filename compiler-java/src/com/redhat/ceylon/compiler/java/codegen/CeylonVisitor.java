@@ -194,7 +194,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ExtendedType extendedType) {
-        classBuilder.extending(extendedType);
+        if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
+            InvocationBuilder builder = InvocationBuilder.forSuperInvocation(gen, extendedType.getInvocationExpression());
+            classBuilder.superCall(gen.at(extendedType).Exec(builder.build()));
+        }
+        classBuilder.extending(extendedType.getType().getTypeModel());
     }
 
     // FIXME: implement

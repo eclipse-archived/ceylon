@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -336,14 +337,6 @@ public class ClassDefinitionBuilder {
         annotations(gen.makeAtClass(extendingType));
         return this;
     }
-
-    public ClassDefinitionBuilder extending(Tree.ExtendedType extendedType) {
-        if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
-            InvocationBuilder builder = InvocationBuilder.forSuperInvocation(gen, extendedType.getInvocationExpression());
-            superCall = gen.at(extendedType).Exec(builder.build());
-        }
-        return extending(extendedType.getType().getTypeModel());
-    }
     
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
         this.satisfies.addAll(transformTypesList(satisfies));
@@ -573,6 +566,12 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder isAlias(boolean isAlias){
         this.isAlias = isAlias;
+        return this;
+    }
+
+    /** Set the expression used to invoke {@code super()} */
+    public ClassDefinitionBuilder superCall(JCExpressionStatement superCall) {
+        this.superCall = superCall;
         return this;
     }
 }
