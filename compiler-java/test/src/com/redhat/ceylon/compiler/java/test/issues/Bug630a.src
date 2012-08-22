@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 interface Bug630 {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("default"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})

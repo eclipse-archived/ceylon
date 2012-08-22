@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug510;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
 interface Bug510$Bug510inner {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 interface Bug510 {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -24,7 +24,7 @@ final class Bug510$impl {
         private final .com.redhat.ceylon.compiler.java.test.issues.bug510.Bug510$Bug510inner $this;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class assert_ {
     
@@ -41,7 +41,7 @@ final class assert_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug510.assert_.$assert();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 final class volatile_ {
     
@@ -61,7 +61,7 @@ final class volatile_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 2)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Name("synchronized")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class synchronized_ {

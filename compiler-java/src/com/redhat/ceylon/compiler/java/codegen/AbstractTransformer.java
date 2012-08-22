@@ -100,8 +100,9 @@ public abstract class AbstractTransformer implements Transformation {
      * M1 and M2 are 0.0 since they were not tagged at the time
      * M3 is 1.0 as the first version with binary version information
      * M3.1 is 2.0
+     * M4 is 3.0
      */
-    public static final int BINARY_MAJOR_VERSION = 2;
+    public static final int BINARY_MAJOR_VERSION = 3;
     public static final int BINARY_MINOR_VERSION = 0;
     
     private Context context;
