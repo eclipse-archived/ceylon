@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
@@ -242,21 +243,44 @@ class Util {
     }
     
     private static boolean hasError(Node node) {
+        // we use an exception to get out of the visitor as fast as possible
+        // when an error is found
+        @SuppressWarnings("serial")
+        class ErrorFoundException extends RuntimeException{}
         class ErrorVisitor extends Visitor {
-            boolean found = false;
+            @Override
+            public void handleException(Exception e, Node that) {
+                if(e instanceof ErrorFoundException){
+                    // rethrow
+                    throw (RuntimeException)e;
+                }
+                super.handleException(e, that);
+            }
             @Override
             public void visitAny(Node that) {
                 if (that.getErrors().isEmpty()) {
                     super.visitAny(that);
                 }
                 else {
-                    found = true;
+                    // UsageWarning don't count as errors
+                    for(Message error : that.getErrors()){
+                        if(!(error instanceof UsageWarning)){
+                            // get out fast
+                            throw new ErrorFoundException();
+                        }
+                    }
+                    // no real error, proceed
+                    super.visitAny(that);
                 }
             }
         }
         ErrorVisitor ev = new ErrorVisitor();
-        node.visit(ev);
-        return ev.found;
+        try{
+            node.visit(ev);
+            return false;
+        }catch(ErrorFoundException x){
+            return true;
+        }
     }
 
     private static void addTypeUnknownError(Node node, String message) {
