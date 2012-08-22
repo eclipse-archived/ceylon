@@ -75,31 +75,40 @@ public class Operators {
     public enum OperatorTranslation {
         
         // Unary operators
-        UNARY_POSITIVE(Tree.PositiveOp.class, "positiveValue", JCTree.POS, IntegerFloat),
-        UNARY_NEGATIVE(Tree.NegativeOp.class, "negativeValue", JCTree.NEG, IntegerFloat),
+        UNARY_POSITIVE(Tree.PositiveOp.class, 1, "positiveValue", JCTree.POS, IntegerFloat),
+        UNARY_NEGATIVE(Tree.NegativeOp.class, 1, "negativeValue", JCTree.NEG, IntegerFloat),
         
-        UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, "getSuccessor", JCTree.POSTINC, IntegerCharacter),
-        UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, "getPredecessor", JCTree.POSTDEC, IntegerCharacter),
-        UNARY_PREFIX_INCREMENT(Tree.IncrementOp.class, "getSuccessor", JCTree.PREINC, IntegerCharacter),
-        UNARY_PREFIX_DECREMENT(Tree.DecrementOp.class, "getPredecessor", JCTree.PREDEC, IntegerCharacter),
+        UNARY_BITWISE_NOT("ceylon.language.Integer", 1, "not", JCTree.COMPL, PrimitiveType.INTEGER),
+
+        UNARY_POSTFIX_INCREMENT(Tree.PostfixIncrementOp.class, 1, "getSuccessor", JCTree.POSTINC, IntegerCharacter),
+        UNARY_POSTFIX_DECREMENT(Tree.PostfixDecrementOp.class, 1, "getPredecessor", JCTree.POSTDEC, IntegerCharacter),
+        UNARY_PREFIX_INCREMENT(Tree.IncrementOp.class, 1, "getSuccessor", JCTree.PREINC, IntegerCharacter),
+        UNARY_PREFIX_DECREMENT(Tree.DecrementOp.class, 1, "getPredecessor", JCTree.PREDEC, IntegerCharacter),
 
         // Binary operators
-        BINARY_SUM(Tree.SumOp.class, "plus", JCTree.PLUS, IntegerFloatString),
-        BINARY_DIFFERENCE(Tree.DifferenceOp.class, "minus", JCTree.MINUS, IntegerFloat),
-        BINARY_PRODUCT(Tree.ProductOp.class, "times", JCTree.MUL, IntegerFloat),
-        BINARY_QUOTIENT(Tree.QuotientOp.class, "divided", JCTree.DIV, IntegerFloat),
-        BINARY_POWER(Tree.PowerOp.class, "power"),
-        BINARY_REMAINDER(Tree.RemainderOp.class, "remainder", JCTree.MOD, PrimitiveType.INTEGER),
+        BINARY_SUM(Tree.SumOp.class, 2, "plus", JCTree.PLUS, IntegerFloatString),
+        BINARY_DIFFERENCE(Tree.DifferenceOp.class, 2, "minus", JCTree.MINUS, IntegerFloat),
+        BINARY_PRODUCT(Tree.ProductOp.class, 2, "times", JCTree.MUL, IntegerFloat),
+        BINARY_QUOTIENT(Tree.QuotientOp.class, 2, "divided", JCTree.DIV, IntegerFloat),
+        BINARY_POWER(Tree.PowerOp.class, 2, "power"),
+        BINARY_REMAINDER(Tree.RemainderOp.class, 2, "remainder", JCTree.MOD, PrimitiveType.INTEGER),
 
-        BINARY_AND(Tree.AndOp.class, "<not-used>", JCTree.AND, PrimitiveType.BOOLEAN),
-        BINARY_OR(Tree.OrOp.class, "<not-used>", JCTree.OR, PrimitiveType.BOOLEAN),
+        BINARY_BITWISE_AND("ceylon.language.Integer", 2, "and", JCTree.BITAND, PrimitiveType.INTEGER),
+        BINARY_BITWISE_OR("ceylon.language.Integer", 2, "or", JCTree.BITOR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_XOR("ceylon.language.Integer", 2, "xor", JCTree.BITXOR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_LOG_LEFT_SHIFT("ceylon.language.Integer", 2, "leftLogicalShift", JCTree.SL, PrimitiveType.INTEGER),
+        BINARY_BITWISE_LOG_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightLogicalShift", JCTree.USR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_ARI_RIGHT_SHIFT("ceylon.language.Integer", 2, "rightArithmeticShift", JCTree.SR, PrimitiveType.INTEGER),
 
-        BINARY_UNION(Tree.UnionOp.class, "union"),
-        BINARY_INTERSECTION(Tree.IntersectionOp.class, "intersection"),
-        BINARY_XOR(Tree.XorOp.class, "exclusiveUnion"),
-        BINARY_COMPLEMENT(Tree.ComplementOp.class, "complement"), 
+        BINARY_AND(Tree.AndOp.class, 2, "<not-used>", JCTree.AND, PrimitiveType.BOOLEAN),
+        BINARY_OR(Tree.OrOp.class, 2, "<not-used>", JCTree.OR, PrimitiveType.BOOLEAN),
+
+        BINARY_UNION(Tree.UnionOp.class, 2, "union"),
+        BINARY_INTERSECTION(Tree.IntersectionOp.class, 2, "intersection"),
+        BINARY_XOR(Tree.XorOp.class, 2, "exclusiveUnion"),
+        BINARY_COMPLEMENT(Tree.ComplementOp.class, 2, "complement"), 
         
-        BINARY_EQUAL(Tree.EqualOp.class, "equals", JCTree.EQ, All){
+        BINARY_EQUAL(Tree.EqualOp.class, 2, "equals", JCTree.EQ, All){
             @Override
             public OptimisationStrategy getOptimisationStrategy(BinaryOperatorExpression t, AbstractTransformer gen) {
                 // no optimised operator returns a boxed type 
@@ -126,43 +135,68 @@ public class Operators {
                 return lessPermissive(left, right);
             }
         },
-        BINARY_COMPARE(Tree.CompareOp.class, "compare"),
+        BINARY_COMPARE(Tree.CompareOp.class, 2, "compare"),
 
         // Binary operators that act on intermediary Comparison objects
-        BINARY_LARGER(Tree.LargerOp.class, "largerThan", JCTree.GT, IntegerFloatCharacter),
-        BINARY_SMALLER(Tree.SmallerOp.class, "smallerThan", JCTree.LT, IntegerFloatCharacter),
-        BINARY_LARGE_AS(Tree.LargeAsOp.class, "asLargeAs", JCTree.GE, IntegerFloatCharacter),
-        BINARY_SMALL_AS(Tree.SmallAsOp.class, "asSmallAs", JCTree.LE, IntegerFloatCharacter),
+        BINARY_LARGER(Tree.LargerOp.class, 2, "largerThan", JCTree.GT, IntegerFloatCharacter),
+        BINARY_SMALLER(Tree.SmallerOp.class, 2, "smallerThan", JCTree.LT, IntegerFloatCharacter),
+        BINARY_LARGE_AS(Tree.LargeAsOp.class, 2, "asLargeAs", JCTree.GE, IntegerFloatCharacter),
+        BINARY_SMALL_AS(Tree.SmallAsOp.class, 2, "asSmallAs", JCTree.LE, IntegerFloatCharacter),
         ;
 
+        // we can have either a mapping from Tree operator class
         Class<? extends Tree.OperatorExpression> operatorClass;
+        // or from a FQN Type.method signature
+        String optimisedMethod;
+        
+        int arity;
         String ceylonMethod;
         int javacOperator;
         PrimitiveType[] optimisableTypes;
         
-        OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, String ceylonMethod, 
+        OperatorTranslation(int arity, String ceylonMethod, 
                 int javacOperator, PrimitiveType... optimisableTypes) {
-            this.operatorClass = operatorClass;
             this.ceylonMethod = ceylonMethod;
             this.javacOperator = javacOperator;
             this.optimisableTypes = optimisableTypes;
+            this.arity = arity;
         }
-        OperatorTranslation(Class<? extends Tree.BinaryOperatorExpression> operatorClass, String ceylonMethod) {
-            this(operatorClass, ceylonMethod, -1);
+        OperatorTranslation(String typeSignature, int arity, String ceylonMethod, 
+                int javacOperator, PrimitiveType... optimisableTypes) {
+            this(arity, ceylonMethod, javacOperator, optimisableTypes);
+            this.optimisedMethod = typeSignature + "." + ceylonMethod;
+        }
+        OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, 
+                int arity, String ceylonMethod, 
+                int javacOperator, PrimitiveType... optimisableTypes) {
+            this(arity, ceylonMethod, javacOperator, optimisableTypes);
+            this.operatorClass = operatorClass;
+        }
+        OperatorTranslation(Class<? extends Tree.BinaryOperatorExpression> operatorClass, 
+                int arity, String ceylonMethod) {
+            this(operatorClass, arity, ceylonMethod, -1);
         }
         
         public OptimisationStrategy getOptimisationStrategy(Tree.UnaryOperatorExpression t, AbstractTransformer gen){
-            // no optimised operator returns a boxed type 
-            if(!t.getUnboxed())
-                return OptimisationStrategy.NONE;
-            return isTermOptimisable(t.getTerm(), gen);
+            return getOptimisationStrategy(t, t.getTerm(), gen);
         }
-        public OptimisationStrategy getOptimisationStrategy(Tree.BinaryOperatorExpression t, AbstractTransformer gen){
+        public OptimisationStrategy getOptimisationStrategy(Tree.Term expression, Tree.Term term, AbstractTransformer gen){
             // no optimised operator returns a boxed type 
-            if(!t.getUnboxed())
+            if(!expression.getUnboxed())
                 return OptimisationStrategy.NONE;
-            OptimisationStrategy left = isTermOptimisable(t.getLeftTerm(), gen);
-            OptimisationStrategy right = isTermOptimisable(t.getRightTerm(), gen);
+            return isTermOptimisable(term, gen);
+        }
+        
+        public OptimisationStrategy getOptimisationStrategy(Tree.BinaryOperatorExpression t, AbstractTransformer gen){
+            return getOptimisationStrategy(t, t.getLeftTerm(), t.getRightTerm(), gen);
+        }
+        
+        public OptimisationStrategy getOptimisationStrategy(Tree.Term expression, Tree.Term leftTerm, Tree.Term rightTerm, AbstractTransformer gen){
+            // no optimised operator returns a boxed type 
+            if(!expression.getUnboxed())
+                return OptimisationStrategy.NONE;
+            OptimisationStrategy left = isTermOptimisable(leftTerm, gen);
+            OptimisationStrategy right = isTermOptimisable(rightTerm, gen);
             return lessPermissive(left, right);
         }
         
@@ -206,6 +240,10 @@ public class Operators {
                 }
             }
             return OptimisationStrategy.NONE;
+        }
+        
+        public int getArity(){
+            return arity;
         }
     }
     
@@ -251,14 +289,22 @@ public class Operators {
     // Public API
     
     private static final Map<Class<? extends Tree.OperatorExpression>, OperatorTranslation> operators;
+    private static final Map<String, OperatorTranslation> methodsAsOperators;
     private static final Map<Class<? extends Tree.AssignmentOp>, AssignmentOperatorTranslation> assignmentOperators;
 
     static {
         operators = new HashMap<Class<? extends Tree.OperatorExpression>, OperatorTranslation>();
+        methodsAsOperators = new HashMap<String, OperatorTranslation>();
         assignmentOperators = new HashMap<Class<? extends Tree.AssignmentOp>, AssignmentOperatorTranslation>();
         
-        for(OperatorTranslation operator : OperatorTranslation.values())
-            operators.put(operator.operatorClass, operator);
+        for(OperatorTranslation operator : OperatorTranslation.values()){
+            // some operators are virtual translations from method calls to java operators and so don't have
+            // a Tree class
+            if(operator.operatorClass != null)
+                operators.put(operator.operatorClass, operator);
+            if(operator.optimisedMethod != null)
+                methodsAsOperators.put(operator.optimisedMethod, operator);
+        }
 
         for(AssignmentOperatorTranslation operator : AssignmentOperatorTranslation.values())
             assignmentOperators.put(operator.operatorClass, operator);
@@ -266,6 +312,10 @@ public class Operators {
 
     public static OperatorTranslation getOperator(Class<? extends Tree.OperatorExpression> operatorClass) {
         return operators.get(operatorClass);
+    }
+
+    public static OperatorTranslation getOperator(String signature) {
+        return methodsAsOperators.get(signature);
     }
 
     public static AssignmentOperatorTranslation getAssignmentOperator(Class<? extends Tree.AssignmentOp> operatorClass) {
