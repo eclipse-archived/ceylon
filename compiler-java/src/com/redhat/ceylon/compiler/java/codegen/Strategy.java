@@ -121,4 +121,10 @@ class Strategy {
                 && !Decl.isShared(model);
     }
     
+    static boolean generateInstantiator(Declaration model) {
+        return model instanceof Class 
+                && model.isMember()
+                && !model.isAnonymous();
+    }
+    
 }
