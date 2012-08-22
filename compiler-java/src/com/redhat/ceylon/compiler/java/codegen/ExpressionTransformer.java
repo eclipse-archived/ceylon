@@ -56,6 +56,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
@@ -1304,6 +1305,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = checkForRadixLiterals(ce);
         if(ret != null)
             return ret;
+        ret = checkForBitwiseOperators(ce);
+        if(ret != null)
+            return ret;
         final boolean prevInv = withinInvocation(false);
         try {
             return InvocationBuilder.forInvocation(this, ce).build();
@@ -1312,6 +1316,61 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
+    private JCExpression checkForBitwiseOperators(InvocationExpression ce) {
+        if(!(ce.getPrimary() instanceof Tree.QualifiedMemberExpression))
+            return null;
+        Tree.QualifiedMemberExpression qme = (QualifiedMemberExpression) ce.getPrimary();
+        // must be a positional arg (FIXME: why?)
+        if(ce.getPositionalArgumentList() == null
+                || ce.getPositionalArgumentList().getPositionalArguments() == null
+                || ce.getPositionalArgumentList().getPositionalArguments().size() != 1)
+            return null;
+        Tree.Expression right = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
+        return checkForBitwiseOperators(ce, qme, right);
+    }
+    
+    private JCExpression checkForBitwiseOperators(Tree.Term node, Tree.QualifiedMemberExpression qme, Tree.Term right) {
+        // must be a call on Integer
+        Tree.Term left = qme.getPrimary();
+        if(left == null || !isCeylonInteger(left.getTypeModel()))
+            return null;
+        // must be a supported method/attribute
+        ProducedType integerType = typeFact().getIntegerDeclaration().getType();
+        String name = qme.getIdentifier().getText();
+        String signature = "ceylon.language.Integer."+name;
+        
+        // see if we have an operator for it
+        OperatorTranslation operator = Operators.getOperator(signature);
+        if(operator != null){
+            if(operator.getArity() == 2){
+                if(right == null)
+                    return null;
+                OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(node, left, right, this);
+                // check that we can optimise it
+                if(!optimisationStrategy.useJavaOperator())
+                    return null;
+                
+                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), integerType);
+                JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), integerType);
+
+                return make().Binary(operator.javacOperator, leftExpr, rightExpr);
+            }else{
+                // must be unary
+                if(right != null)
+                    return null;
+                OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(node, left, this);
+                // check that we can optimise it
+                if(!optimisationStrategy.useJavaOperator())
+                    return null;
+                
+                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), integerType);
+
+                return make().Unary(operator.javacOperator, leftExpr);
+            }
+        }
+        return null;
+    }
+
     private JCExpression checkForRadixLiterals(InvocationExpression ce) {
         if(ce.getPrimary() instanceof Tree.BaseMemberExpression
                 && ce.getPositionalArgumentList() != null){
@@ -1350,6 +1409,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Qualified members
     
     public JCExpression transform(Tree.QualifiedMemberExpression expr) {
+        // check for an optim
+        JCExpression ret = checkForBitwiseOperators(expr, expr, null);
+        if(ret != null)
+            return ret;
         return transform(expr, null);
     }
     
