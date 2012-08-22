@@ -14,14 +14,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberOrTypeExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
