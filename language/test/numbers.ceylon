@@ -308,89 +308,101 @@ shared void numbers() {
     assert(parseInteger("-123")?0==-123, "parse integer");
     
     assert(1_000==parseInteger("1_000")?"", "parseInteger(1_000)");
-	assert(1000==parseInteger("1000")?"", "parseInteger(1000)");
-	assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
-	assert(+1_000==parseInteger("+1_000")?"", "parseInteger(+1_000)");
-	assert(+1000==parseInteger("+1000")?"", "parseInteger(+1000)");
-	assert(+1k==parseInteger("+1k")?"", "parseInteger(+1k)");
-	assert(-1_000==parseInteger("-1_000")?"", "parseInteger(-1_000)");
-	assert(-1000==parseInteger("-1000")?"", "parseInteger(-1000)");
-	assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
-	
-	assert(0==parseInteger("0")?"", "parseInteger(0)");
-	assert(00==parseInteger("00")?"", "parseInteger(00)");
-	assert(0_000==parseInteger("0_000")?"", "parseInteger(0_000)");
-	assert(-00==parseInteger("-00")?"", "parseInteger(-00)");
-	assert(+00==parseInteger("+00")?"", "parseInteger(+00)");
-	assert(0k==parseInteger("0k")?"", "parseInteger(0k)");
-	
-	assert(1==parseInteger("1")?"", "parseInteger(1)");
-	assert(01==parseInteger("01")?"", "parseInteger(01)");
-	assert(0_001==parseInteger("0_001")?"", "parseInteger(0_001)");
-	assert(+1==parseInteger("+1")?"", "parseInteger(+1)");
-	assert(+01==parseInteger("+01")?"", "parseInteger(+01)");
-	assert(+0_001==parseInteger("+0_001")?"", "parseInteger(+0_001)");
-	
-	assert(-1==parseInteger("-1")?"", "parseInteger(-1)");
-	assert(-01==parseInteger("-01")?"", "parseInteger(-01)");
-	assert(-0_001==parseInteger("-0_001")?"", "parseInteger(-0_001)");
-	
-	assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
-	assert(1M==parseInteger("1M")?"", "parseInteger(1M)");
-	assert(1G==parseInteger("1G")?"", "parseInteger(1G)");
-	assert(1T==parseInteger("1T")?"", "parseInteger(1T)");
-	assert(1P==parseInteger("1P")?"", "parseInteger(1P)");
-	assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
-	assert(-1M==parseInteger("-1M")?"", "parseInteger(-1M)");
-	assert(-1G==parseInteger("-1G")?"", "parseInteger(-1G)");
-	assert(-1T==parseInteger("-1T")?"", "parseInteger(-1T)");
-	assert(-1P==parseInteger("-1P")?"", "parseInteger(-1P)");
-	
-	assert(9223372036854775807==parseInteger("9223372036854775807")?"", "parseInteger(9223372036854775807)");
-	assert(9_223_372_036_854_775_807==parseInteger("9_223_372_036_854_775_807")?"", "parseInteger(9_223_372_036_854_775_807)");
-	assert(-9223372036854775808==parseInteger("-9223372036854775808")?"", "parseInteger(-9223372036854775808)");
-	assert(-9_223_372_036_854_775_808==parseInteger("-9_223_372_036_854_775_808")?"", "parseInteger(-9_223_372_036_854_775_808)");
-	
-	assert(!exists parseInteger(""), "parseInteger()");
-	assert(!exists parseInteger("+"), "parseInteger(+)");
-	assert(!exists parseInteger("-"), "parseInteger(-)");
-	assert(!exists parseInteger("foo"), "parseInteger(foo)");
-	assert(!exists parseInteger(" 0"), "parseInteger( 0)");
-	assert(!exists parseInteger("0 "), "parseInteger(0 )");
-	assert(!exists parseInteger("0+0"), "parseInteger(0+0)");
-	assert(!exists parseInteger("0-0"), "parseInteger(0-0)");
-	assert(!exists parseInteger("0+"), "parseInteger(0+)");
-	assert(!exists parseInteger("0-"), "parseInteger(0-)");
-	assert(!exists parseInteger("k"), "parseInteger(k)");
-	assert(!exists parseInteger("k1"), "parseInteger(k1)");
-	assert(!exists parseInteger("+k"), "parseInteger(+k)");
-	assert(!exists parseInteger("-k"), "parseInteger(-k)");
-	assert(!exists parseInteger("1kk"), "parseInteger(1kk)");
-	assert(!exists parseInteger("0_"), "parseInteger(0_)");
-	assert(!exists parseInteger("_0"), "parseInteger(_0)");
-	assert(!exists parseInteger("0_0"), "parseInteger(0_0)");
-	assert(!exists parseInteger("0_00"), "parseInteger(0_00)");
-	assert(!exists parseInteger("0_0000"), "parseInteger(0_0000)");
-	assert(!exists parseInteger("0_000_0"), "parseInteger(0_000_0)");
-	assert(!exists parseInteger("0000_000"), "parseInteger(0000_000)");
-	assert(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
-	assert(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
-	
-	// parseFloat
-	assert(parseFloat("12.34e3")?0.0==12.34e3, "parseFloat(12.34e3)");
-	assert(parseFloat("12.340e3")?0.0==12.34e3, "parseFloat(12.340e3)");
-	assert(parseFloat("123.4e2")?0.0==12.34e3, "parseFloat(123.4e2)");
-	assert(parseFloat("1234.0e1")?0.0==12.34e3, "parseFloat(1234.0e1)");
-	assert(parseFloat("1234.0e+1")?0.0==12.34e3, "parseFloat(1234.0e+1)");
-	assert(parseFloat("12340.0e0")?0.0==12.34e3, "parseFloat(12340.0e0)");
-	assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
-	assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
-	assert(parseFloat("123400.0e-1")?0.0==12.34e3, "parseFloat(123400.0e-1)");
-	
-	assert(parseFloat("012340.0")?0.0==12.34e3, "parseFloat(012340.0)");
-	assert(parseFloat("+12340.0")?0.0==12.34e3, "parseFloat(+12340.0)");
-	
-	assert(parseFloat("-12340.0")?0.0==-12.34e3, "parseFloat(-12340.0)");
+    assert(1000==parseInteger("1000")?"", "parseInteger(1000)");
+    assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
+    assert(+1_000==parseInteger("+1_000")?"", "parseInteger(+1_000)");
+    assert(+1000==parseInteger("+1000")?"", "parseInteger(+1000)");
+    assert(+1k==parseInteger("+1k")?"", "parseInteger(+1k)");
+    assert(-1_000==parseInteger("-1_000")?"", "parseInteger(-1_000)");
+    assert(-1000==parseInteger("-1000")?"", "parseInteger(-1000)");
+    assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+    
+    assert(0==parseInteger("0")?"", "parseInteger(0)");
+    assert(00==parseInteger("00")?"", "parseInteger(00)");
+    assert(0_000==parseInteger("0_000")?"", "parseInteger(0_000)");
+    assert(-00==parseInteger("-00")?"", "parseInteger(-00)");
+    assert(+00==parseInteger("+00")?"", "parseInteger(+00)");
+    assert(0k==parseInteger("0k")?"", "parseInteger(0k)");
+    
+    assert(1==parseInteger("1")?"", "parseInteger(1)");
+    assert(01==parseInteger("01")?"", "parseInteger(01)");
+    assert(0_001==parseInteger("0_001")?"", "parseInteger(0_001)");
+    assert(+1==parseInteger("+1")?"", "parseInteger(+1)");
+    assert(+01==parseInteger("+01")?"", "parseInteger(+01)");
+    assert(+0_001==parseInteger("+0_001")?"", "parseInteger(+0_001)");
+    
+    assert(-1==parseInteger("-1")?"", "parseInteger(-1)");
+    assert(-01==parseInteger("-01")?"", "parseInteger(-01)");
+    assert(-0_001==parseInteger("-0_001")?"", "parseInteger(-0_001)");
+    
+    assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
+    assert(1M==parseInteger("1M")?"", "parseInteger(1M)");
+    assert(1G==parseInteger("1G")?"", "parseInteger(1G)");
+    assert(1T==parseInteger("1T")?"", "parseInteger(1T)");
+    assert(1P==parseInteger("1P")?"", "parseInteger(1P)");
+    assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+    assert(-1M==parseInteger("-1M")?"", "parseInteger(-1M)");
+    assert(-1G==parseInteger("-1G")?"", "parseInteger(-1G)");
+    assert(-1T==parseInteger("-1T")?"", "parseInteger(-1T)");
+    assert(-1P==parseInteger("-1P")?"", "parseInteger(-1P)");
+
+    print("Testing " 0.size "-bit integers");
+    if (0.size == 64) {
+        assert(9223372036854775807==parseInteger("9223372036854775807")?"", "parseInteger(9223372036854775807)");
+        assert(9_223_372_036_854_775_807==parseInteger("9_223_372_036_854_775_807")?"", "parseInteger(9_223_372_036_854_775_807)");
+        assert(-9223372036854775808==parseInteger("-9223372036854775808")?"", "parseInteger(-9223372036854775808)");
+        assert(-9_223_372_036_854_775_808==parseInteger("-9_223_372_036_854_775_808")?"", "parseInteger(-9_223_372_036_854_775_808)");
+        assert(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
+        assert(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
+    } else if (0.size == 53) {
+        assert(9007199254740992==parseInteger("9007199254740992")?"", "parseInteger(9007199254740992)");
+        assert(9_007_199_254_740_992==parseInteger("9_007_199_254_740_992")?"", "parseInteger(9_007_199_254_740_992)");
+        assert(-9007199254740992==parseInteger("-9007199254740992")?"", "parseInteger(-9007199254740992)");
+        assert(-9_007_199_254_740_992==parseInteger("-9_007_199_254_740_992")?"", "parseInteger(-9_007_199_254_740_992)");
+        assert(!exists parseInteger("9007199254740993"), "parseInteger(9007199254740993)");
+        assert(!exists parseInteger("-9007199254740993"), "parseInteger(-9007199254740993)");
+    } else {
+        fail("UNKNOWN INTEGER SIZE " 0.size " - please add number tests for this platform");
+    }
+
+    assert(!exists parseInteger(""), "parseInteger()");
+    assert(!exists parseInteger("+"), "parseInteger(+)");
+    assert(!exists parseInteger("-"), "parseInteger(-)");
+    assert(!exists parseInteger("foo"), "parseInteger(foo)");
+    assert(!exists parseInteger(" 0"), "parseInteger( 0)");
+    assert(!exists parseInteger("0 "), "parseInteger(0 )");
+    assert(!exists parseInteger("0+0"), "parseInteger(0+0)");
+    assert(!exists parseInteger("0-0"), "parseInteger(0-0)");
+    assert(!exists parseInteger("0+"), "parseInteger(0+)");
+    assert(!exists parseInteger("0-"), "parseInteger(0-)");
+    assert(!exists parseInteger("k"), "parseInteger(k)");
+    assert(!exists parseInteger("k1"), "parseInteger(k1)");
+    assert(!exists parseInteger("+k"), "parseInteger(+k)");
+    assert(!exists parseInteger("-k"), "parseInteger(-k)");
+    assert(!exists parseInteger("1kk"), "parseInteger(1kk)");
+    assert(!exists parseInteger("0_"), "parseInteger(0_)");
+    assert(!exists parseInteger("_0"), "parseInteger(_0)");
+    assert(!exists parseInteger("0_0"), "parseInteger(0_0)");
+    assert(!exists parseInteger("0_00"), "parseInteger(0_00)");
+    assert(!exists parseInteger("0_0000"), "parseInteger(0_0000)");
+    assert(!exists parseInteger("0_000_0"), "parseInteger(0_000_0)");
+    assert(!exists parseInteger("0000_000"), "parseInteger(0000_000)");
+    
+    // parseFloat
+    assert(parseFloat("12.34e3")?0.0==12.34e3, "parseFloat(12.34e3)");
+    assert(parseFloat("12.340e3")?0.0==12.34e3, "parseFloat(12.340e3)");
+    assert(parseFloat("123.4e2")?0.0==12.34e3, "parseFloat(123.4e2)");
+    assert(parseFloat("1234.0e1")?0.0==12.34e3, "parseFloat(1234.0e1)");
+    assert(parseFloat("1234.0e+1")?0.0==12.34e3, "parseFloat(1234.0e+1)");
+    assert(parseFloat("12340.0e0")?0.0==12.34e3, "parseFloat(12340.0e0)");
+    assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
+    assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
+    assert(parseFloat("123400.0e-1")?0.0==12.34e3, "parseFloat(123400.0e-1)");
+    
+    assert(parseFloat("012340.0")?0.0==12.34e3, "parseFloat(012340.0)");
+    assert(parseFloat("+12340.0")?0.0==12.34e3, "parseFloat(+12340.0)");
+    
+    assert(parseFloat("-12340.0")?0.0==-12.34e3, "parseFloat(-12340.0)");
 
     //type safety
     assert(is Integer obj(1+1), "int+int Integer");
@@ -424,16 +436,40 @@ shared void numbers() {
     }
     assert(hex('ff') == 255, "xff value");
     assert(bin('11111111') == 255, "b11111111 value");
-    
-    assert(hex('ff').not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00");
-    assert(box(hex('ff')).not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00 boxed");
-    assert(0.not == hex('ffffffffffffffff'), "~0 == xffffffffffffffff");
-    assert(box(0).not == hex('ffffffffffffffff'), "~0 == xffffffffffffffff boxed");
-    assert(bin('1010101010101010101010101010101010101010101010101010101010101010').not == bin('0101010101010101010101010101010101010101010101010101010101010101'), 
-        "~b1010101010101010101010101010101010101010101010101010101010101010 == b0101010101010101010101010101010101010101010101010101010101010101");
-    assert(box(bin('1010101010101010101010101010101010101010101010101010101010101010')).not == bin('0101010101010101010101010101010101010101010101010101010101010101'), 
-        "~b1010101010101010101010101010101010101010101010101010101010101010 == b0101010101010101010101010101010101010101010101010101010101010101 boxed");
-    
+
+    if (0.size == 64) {
+        assert(hex('ff').not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00");
+        assert(box(hex('ff')).not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00 boxed");
+        assert(0.not == hex('ffffffffffffffff'), "~0 == xffffffffffffffff");
+        assert(box(0).not == hex('ffffffffffffffff'), "~0 == xffffffffffffffff boxed");
+        assert(bin('1010101010101010101010101010101010101010101010101010101010101010').not == bin('0101010101010101010101010101010101010101010101010101010101010101'), 
+            "~b1010101010101010101010101010101010101010101010101010101010101010 == b0101010101010101010101010101010101010101010101010101010101010101");
+        assert(box(bin('1010101010101010101010101010101010101010101010101010101010101010')).not == bin('0101010101010101010101010101010101010101010101010101010101010101'), 
+            "~b1010101010101010101010101010101010101010101010101010101010101010 == b0101010101010101010101010101010101010101010101010101010101010101 boxed");
+        assert(bin('1010101010101010101010101010101010101010101010101010101010101010').rightArithmeticShift(1) 
+                == bin('1101010101010101010101010101010101010101010101010101010101010101'), 
+                "b1010101010101010101010101010101010101010101010101010101010101010 >>> 1 == b1101010101010101010101010101010101010101010101010101010101010101");
+        assert(box(bin('1010101010101010101010101010101010101010101010101010101010101010')).rightArithmeticShift(1) 
+                == bin('1101010101010101010101010101010101010101010101010101010101010101'), 
+                "b1010101010101010101010101010101010101010101010101010101010101010 >>> 1 == b1101010101010101010101010101010101010101010101010101010101010101 boxed");
+    } else if (0.size == 53) {
+        assert(hex('ff').not == -256, "~xff == -256");
+        assert(box(hex('ff')).not == -256, "~xff == -256 boxed");
+        assert(0.not == -1, "~0 == -1");
+        assert(box(0).not == -1, "~0 == -1 boxed");
+        assert(bin('10101010101010101010101010101010101010101010101010101').not == -1431655766,
+            "~b10101010101010101010101010101010101010101010101010101 == b10101010101010101010101010101010");
+        assert(box(bin('10101010101010101010101010101010101010101010101010101')).not == -1431655766,
+            "~b10101010101010101010101010101010101010101010101010101 == b10101010101010101010101010101010 boxed");
+        assert(bin('10101010101010101010101010101010101010101010101010101').rightArithmeticShift(1) 
+                == bin('00101010101010101010101010101010'),
+                "b10101010101010101010101010101010101010101010101010101 >>> 1 == b00101010101010101010101010101010");
+        assert(box(bin('10101010101010101010101010101010101010101010101010101')).rightArithmeticShift(1) 
+                == bin('00101010101010101010101010101010'),
+                "b10101010101010101010101010101010101010101010101010101 >>> 1 == b00101010101010101010101010101010 boxed");
+    } else {
+        fail("UNKNOWN INTEGER SIZE " 0.size " - please add number tests for this platform");
+    }
     assert(1.leftLogicalShift(2) == bin('100'), "1<<2 == b100");
     assert(box(1).leftLogicalShift(2) == bin('100'), "1<<2 == b100 boxed");
     
@@ -444,12 +480,6 @@ shared void numbers() {
     
     assert(bin('1100').rightArithmeticShift(2) == bin('11'), "b1100>>>2 == b11");
     assert(box(bin('1100')).rightArithmeticShift(2) == bin('11'), "b1100>>>2 == b11 boxed");
-    assert(bin('1010101010101010101010101010101010101010101010101010101010101010').rightArithmeticShift(1) 
-            == bin('1101010101010101010101010101010101010101010101010101010101010101'), 
-            "b1010101010101010101010101010101010101010101010101010101010101010 >>> 1 == b1101010101010101010101010101010101010101010101010101010101010101");
-    assert(box(bin('1010101010101010101010101010101010101010101010101010101010101010')).rightArithmeticShift(1) 
-            == bin('1101010101010101010101010101010101010101010101010101010101010101'), 
-            "b1010101010101010101010101010101010101010101010101010101010101010 >>> 1 == b1101010101010101010101010101010101010101010101010101010101010101 boxed");
     
     assert(bin('1001').or(bin('0101')) == bin('1101'), "b1001&b0101 == b1101");
     assert(box(bin('1001')).or(bin('0101')) == bin('1101'), "b1001&b0101 == b1101 boxed");
@@ -466,9 +496,7 @@ shared void numbers() {
     assert(0.flip(2) == bin('100'), "0.flip(2) == b100");
     assert(bin('100').flip(2) == 0, "b100.flip(2) == 0");
     
-    assert(bin('10').get(0) == false, "b10.get(0) == false");
-    assert(bin('10').get(1) == true, "b10.get(1) == true");
-    assert(bin('10').get(2) == false, "b10.get(2) == false");
-
-    assert(0.size == 64, "0.size == 64");
+    assert(!bin('10').get(0), "b10.get(0) == false");
+    assert(bin('10').get(1), "b10.get(1) == true");
+    assert(!bin('10').get(2), "b10.get(2) == false");
 }
