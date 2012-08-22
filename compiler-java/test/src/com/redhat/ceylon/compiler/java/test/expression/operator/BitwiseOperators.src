@@ -1,0 +1,466 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+abstract class BWMyInteger extends .java.lang.Object implements .ceylon.language.Castable<.java.lang.Object>, .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> {
+    
+    BWMyInteger() {
+        super();
+        this.$ceylon$language$Castable$this = new .ceylon.language.Castable$impl<.java.lang.Object>(this);
+        this.$ceylon$language$Binary$this = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+        this.$ceylon$language$Integral$this = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+        this.$ceylon$language$Numeric$this = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+        this.$ceylon$language$Summable$this = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+        this.$ceylon$language$Invertable$this = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+        this.$ceylon$language$Ordinal$this = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+        this.$ceylon$language$Exponentiable$this = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(this);
+    }
+    private final .ceylon.language.Castable$impl<.java.lang.Object> $ceylon$language$Castable$this;
+    private final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$this;
+    
+    @.java.lang.Override
+    public final boolean set$bit(final long index) {
+        return $ceylon$language$Binary$this.set$bit(index);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger set(final long index) {
+        return $ceylon$language$Binary$this.set(index);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger clear(final long index) {
+        return $ceylon$language$Binary$this.clear(index);
+    }
+    private final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$this;
+    private final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Numeric$this;
+    private final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$this;
+    private final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$this;
+    private final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Ordinal$this;
+    private final .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Exponentiable$this;
+}
+final class bwToplevelN1_ {
+    
+    private bwToplevelN1_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getBwToplevelN1() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    static void setBwToplevelN1(final long bwToplevelN1) {
+        value[0] = bwToplevelN1;
+    }
+}
+final class bwToplevelN2_ {
+    
+    private bwToplevelN2_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getBwToplevelN2() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    static void setBwToplevelN2(final long bwToplevelN2) {
+        value[0] = bwToplevelN2;
+    }
+}
+final class bwToplevelI1_ {
+    
+    private bwToplevelI1_() {
+    }
+    private static long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    static long getBwToplevelI1() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+    
+    static void setBwToplevelI1(final long bwToplevelI1) {
+        value[0] = bwToplevelI1;
+    }
+}
+class BitwiseOperators {
+    
+    BitwiseOperators(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
+        this.initN = initN;
+        this.initI = initI;
+        this.n1 = 0L;
+        this.n2 = 0L;
+        this.i1 = 0L;
+        this.boxedN1 = initN;
+        this.boxedN2 = initN;
+        this.boxedI1 = initI;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN;
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI;
+    private long n1;
+    
+    private final long getN1() {
+        return n1;
+    }
+    
+    private final void setN1(final long n1) {
+        this.n1 = n1;
+    }
+    private long n2;
+    
+    private final long getN2() {
+        return n2;
+    }
+    
+    private final void setN2(final long n2) {
+        this.n2 = n2;
+    }
+    private long i1;
+    
+    private final long getI1() {
+        return i1;
+    }
+    
+    private final void setI1(final long i1) {
+        this.i1 = i1;
+    }
+    
+    private final long getGetterN1() {
+        return getN1();
+    }
+    
+    private final void setGetterN1(final long getterN1) {
+        setN1(getterN1);
+    }
+    
+    private final long getGetterN2() {
+        return getN2();
+    }
+    
+    private final void setGetterN2(final long getterN2) {
+        setN2(getterN2);
+    }
+    
+    private final long getGetterI1() {
+        return getI1();
+    }
+    
+    private final void setGetterI1(final long getterI1) {
+        setI1(getterI1);
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN1;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedN1() {
+        return boxedN1;
+    }
+    
+    private final void setBoxedN1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN1) {
+        this.boxedN1 = boxedN1;
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN2;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedN2() {
+        return boxedN2;
+    }
+    
+    private final void setBoxedN2(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN2) {
+        this.boxedN2 = boxedN2;
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedI1;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedI1() {
+        return boxedI1;
+    }
+    
+    private final void setBoxedI1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedI1) {
+        this.boxedI1 = boxedI1;
+    }
+    
+    private final void unboxedAttributes() {
+        setI1(~getN1());
+        setN1(getN1() & getN2());
+        setI1(getN1() | getN2());
+        setN1(getN1() ^ getN2());
+        setN1(getN1() << getN2());
+        setN1(getN1() >>> getN2());
+        setN1(getN1() >> getN2());
+    }
+    
+    private final void unboxedGetterAttributes() {
+        setGetterI1(~getGetterN1());
+        setGetterN1(getGetterN1() & getGetterN2());
+        setGetterI1(getGetterN1() | getGetterN2());
+        setGetterN1(getGetterN1() ^ getGetterN2());
+        setGetterN1(getGetterN1() << getGetterN2());
+        setGetterN1(getGetterN1() >>> getGetterN2());
+        setGetterN1(getGetterN1() >> getGetterN2());
+    }
+    
+    private final void unboxedQualifiedAttributes() {
+        this.setI1(~this.getN1());
+        this.setN1(this.getN1() & this.getN2());
+        this.setI1(this.getN1() | this.getN2());
+        this.setN1(this.getN1() ^ this.getN2());
+        this.setN1(this.getN1() << this.getN2());
+        this.setN1(this.getN1() >>> this.getN2());
+        this.setN1(this.getN1() >> this.getN2());
+    }
+    
+    private final void unboxedQualifiedGetterAttributes() {
+        this.setGetterI1(~this.getGetterN1());
+        this.setGetterN1(this.getGetterN1() & this.getGetterN2());
+        this.setGetterI1(this.getGetterN1() | this.getGetterN2());
+        this.setGetterN1(this.getGetterN1() ^ this.getGetterN2());
+        this.setGetterN1(this.getGetterN1() << this.getGetterN2());
+        this.setGetterN1(this.getGetterN1() >>> this.getGetterN2());
+        this.setGetterN1(this.getGetterN1() >> this.getGetterN2());
+    }
+    
+    private final void boxedQualifiedAttributes() {
+        this.setBoxedI1(this.getBoxedN1().getNot());
+        this.setBoxedN1(this.getBoxedN1().and(this.getBoxedN2()));
+        this.setBoxedI1(this.getBoxedN1().or(this.getBoxedN2()));
+        this.setBoxedN1(this.getBoxedN1().xor(this.getBoxedN2()));
+        this.setBoxedN1(this.getBoxedN1().leftLogicalShift(1L));
+        this.setBoxedN1(this.getBoxedN1().rightLogicalShift(1L));
+        this.setBoxedN1(this.getBoxedN1().rightArithmeticShift(1L));
+    }
+    
+    private final void unboxedLocals() {
+        long n1 = 0L;
+        long n2 = 0L;
+        long i1 = 0L;
+        i1 = ~n1;
+        n1 = n1 & n2;
+        i1 = n1 | n2;
+        n1 = n1 ^ n2;
+        n1 = n1 << n2;
+        n1 = n1 >>> n2;
+        n1 = n1 >> n2;
+    }
+    
+    private final void unboxedLocalGetters() {
+        
+        final class n1_ {
+            
+            private n1_() {
+            }
+            private long value;
+            {
+                value = 0L;
+            }
+            
+            long getN1() {
+                return value;
+            }
+            
+            void setN1(final long n1) {
+                value = n1;
+            }
+        }
+        final n1_ n1_ = new n1_();
+        
+        final class n2_ {
+            
+            private n2_() {
+            }
+            private long value;
+            {
+                value = 0L;
+            }
+            
+            long getN2() {
+                return value;
+            }
+            
+            void setN2(final long n2) {
+                value = n2;
+            }
+        }
+        final n2_ n2_ = new n2_();
+        
+        final class i1_ {
+            
+            private i1_() {
+            }
+            private long value;
+            {
+                value = 0L;
+            }
+            
+            long getI1() {
+                return value;
+            }
+            
+            void setI1(final long i1) {
+                value = i1;
+            }
+        }
+        final i1_ i1_ = new i1_();
+        
+        final class getterN1$getter_ {
+            
+            private getterN1$getter_() {
+            }
+            
+            long getGetterN1() {
+                return n1_.getN1();
+            }
+        }
+        final getterN1$getter_ getterN1$getter_ = new getterN1$getter_();
+        
+        final class getterN1$setter_ {
+            
+            private getterN1$setter_() {
+            }
+            private long value;
+            
+            void setGetterN1(final long getterN1) {
+                n1_.setN1(getterN1);
+            }
+        }
+        final getterN1$setter_ getterN1$setter_ = new getterN1$setter_();
+        
+        final class getterN2$getter_ {
+            
+            private getterN2$getter_() {
+            }
+            
+            long getGetterN2() {
+                return n2_.getN2();
+            }
+        }
+        final getterN2$getter_ getterN2$getter_ = new getterN2$getter_();
+        
+        final class getterN2$setter_ {
+            
+            private getterN2$setter_() {
+            }
+            private long value;
+            
+            void setGetterN2(final long getterN2) {
+                n2_.setN2(getterN2);
+            }
+        }
+        final getterN2$setter_ getterN2$setter_ = new getterN2$setter_();
+        
+        final class getterI1$getter_ {
+            
+            private getterI1$getter_() {
+            }
+            
+            long getGetterI1() {
+                return i1_.getI1();
+            }
+        }
+        final getterI1$getter_ getterI1$getter_ = new getterI1$getter_();
+        
+        final class getterI1$setter_ {
+            
+            private getterI1$setter_() {
+            }
+            private long value;
+            
+            void setGetterI1(final long getterI1) {
+                i1_.setI1(getterI1);
+            }
+        }
+        final getterI1$setter_ getterI1$setter_ = new getterI1$setter_();
+        getterI1$setter_.setGetterI1(~getterN1$getter_.getGetterN1());
+        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() & getterN2$getter_.getGetterN2());
+        getterI1$setter_.setGetterI1(getterN1$getter_.getGetterN1() | getterN2$getter_.getGetterN2());
+        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() ^ getterN2$getter_.getGetterN2());
+        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() << getterN2$getter_.getGetterN2());
+        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() >>> getterN2$getter_.getGetterN2());
+        getterN1$setter_.setGetterN1(getterN1$getter_.getGetterN1() >> getterN2$getter_.getGetterN2());
+    }
+    
+    private final void boxedLocals() {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n1 = initN;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n2 = initN;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger i1 = initI;
+        i1 = n1.getNot();
+        n1 = n1.and(n2);
+        i1 = n1.or(n2);
+        n1 = n1.xor(n2);
+        n1 = n1.leftLogicalShift(1L);
+        n1 = n1.rightLogicalShift(1L);
+        n1 = n1.rightArithmeticShift(1L);
+    }
+    
+    private final void unboxedToplevel() {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2());
+    }
+    
+    private final void unboxedToplevelGetter() {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.setBwToplevelGetterI1(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.setBwToplevelGetterI1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
+    }
+}
+final class bwToplevelGetterN1_ {
+    
+    private bwToplevelGetterN1_() {
+    }
+    
+    static long getBwToplevelGetterN1() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.getBwToplevelN1();
+    }
+    
+    static void setBwToplevelGetterN1(final long bwToplevelGetterN1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.setBwToplevelN1(bwToplevelGetterN1);
+    }
+}
+final class bwToplevelGetterN2_ {
+    
+    private bwToplevelGetterN2_() {
+    }
+    
+    static long getBwToplevelGetterN2() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.getBwToplevelN2();
+    }
+    
+    static void setBwToplevelGetterN2(final long bwToplevelGetterN2) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.setBwToplevelN2(bwToplevelGetterN2);
+    }
+}
+final class bwToplevelGetterI1_ {
+    
+    private bwToplevelGetterI1_() {
+    }
+    
+    static long getBwToplevelGetterI1() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.getBwToplevelI1();
+    }
+    
+    static void setBwToplevelGetterI1(final long bwToplevelGetterI1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.setBwToplevelI1(bwToplevelGetterI1);
+    }
+}

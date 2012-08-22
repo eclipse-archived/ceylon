@@ -292,6 +292,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/ArithmeticOperators");
     }
     @Test
+    public void testOprBitwiseOperators(){
+        compareWithJavaSource("operator/BitwiseOperators");
+    }
+    @Test
     public void testOprOptionalTypeParamAssign(){
         compareWithJavaSource("operator/OptionalTypeParamAssign");
     }
