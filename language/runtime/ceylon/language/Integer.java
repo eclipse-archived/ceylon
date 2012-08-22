@@ -4,6 +4,7 @@ import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -14,6 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 @SatisfiedTypes({
     "ceylon.language.Scalar<ceylon.language.Integer>",
     "ceylon.language.Integral<ceylon.language.Integer>",
+    "ceylon.language.Binary<ceylon.language.Integer>",
     "ceylon.language.Exponentiable<ceylon.language.Integer,ceylon.language.Integer>",
     "ceylon.language.Castable<ceylon.language.Integer|ceylon.language.Float>"
 })
@@ -21,6 +23,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 @ValueType
 public final class Integer
     implements Scalar<Integer>, Integral<Integer>,
+               Binary<Integer>,
                Exponentiable<Integer,Integer>,
                Castable<Numeric> {
 
@@ -489,4 +492,150 @@ public final class Integer
         return (CastValue)instance(value);
     }
 
+    @Override
+    public Integer getNot() {
+        return instance(~value);
+    }
+    
+    @Ignore
+    public static long getNot(long value){
+        return ~value;
+    }
+
+    @Override
+    public Integer getSize() {
+        return instance(Long.SIZE);
+    }
+    
+    @Ignore
+    public static long getSize(long value){
+        return Long.SIZE;
+    }
+
+    @Override
+    public Integer leftLogicalShift(@Name("shift") long shift) {
+        return instance(value << shift);
+    }
+    
+    @Ignore
+    public static long leftLogicalShift(long value, long shift){
+        return value << shift;
+    }
+
+    @Override
+    public Integer rightLogicalShift(@Name("shift") long shift) {
+        return instance(value >>> shift);
+    }
+    
+    @Ignore
+    public static long rightLogicalShift(long value, long shift){
+        return value >>> shift;
+    }
+
+    @Override
+    public Integer rightArithmeticShift(@Name("shift") long shift) {
+        return instance(value >> shift);
+    }
+    
+    @Ignore
+    public static long rightArithmeticShift(long value, long shift){
+        return value >> shift;
+    }
+
+    @Override
+    public Integer and(@Name("other") Integer other) {
+        return instance(value & other.value);
+    }
+    
+    @Ignore
+    public static long and(long value, long other){
+        return value & other;
+    }
+
+    @Override
+    public Integer or(@Name("other") Integer other) {
+        return instance(value | other.value);
+    }
+    
+    @Ignore
+    public static long or(long value, long other){
+        return value | other;
+    }
+
+    @Override
+    public Integer xor(@Name("other") Integer other) {
+        return instance(value ^ other.value);
+    }
+    
+    @Ignore
+    public static long xor(long value, long other){
+        return value ^ other;
+    }
+
+    @Override
+    public boolean get(@Name("index") long index) {
+        long mask = 1 << index;
+        return (value & mask) != 0;
+    }
+
+    @Ignore
+    public static boolean get(long value, long index){
+        long mask = 1 << index;
+        return (value & mask) != 0;
+    }
+    
+    @Override
+    @Ignore
+    public Integer set(long index) {
+        long mask = 1 << index;
+        return instance(value | mask);
+    }
+
+    @Override
+    public Integer set(@Name("index") long index, @Name("bit") @Defaulted boolean bit) {
+        long mask = 1 << index;
+        return bit ? instance(value | mask) : instance(value & ~mask);
+    }
+
+    @Override
+    @Ignore
+    public boolean set$bit(long index) {
+        return true;
+    }
+
+    @Ignore
+    public static long set(long value, long index) {
+        long mask = 1 << index;
+        return value | mask;
+    }
+
+    @Ignore
+    public static long set(long value, long index, boolean bit) {
+        long mask = 1 << index;
+        return bit ? value | mask : value & ~mask;
+    }
+
+    @Override
+    public Integer clear(@Name("index") long index) {
+        long mask = 1 << index;
+        return instance(value & ~mask);
+    }
+
+    @Ignore
+    public static long clear(long value, long index) {
+        long mask = 1 << index;
+        return value & ~mask;
+    }
+
+    @Override
+    public Integer flip(@Name("index") long index) {
+        long mask = 1 << index;
+        return instance(value ^ mask);
+    }
+
+    @Ignore
+    public static long flip(long value, long index) {
+        long mask = 1 << index;
+        return value ^ mask;
+    }
 }
