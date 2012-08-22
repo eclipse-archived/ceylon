@@ -5,6 +5,16 @@ function inheritProto(a,b,c,d,e,f,g);//IGNORE
 function Exception$(x){};//IGNORE
 var Object$,Castable,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,exports;//IGNORE
 
+//New Binary interface
+function Binary(wat) {
+    return wat;
+}
+initTypeProtoI(Binary, 'ceylon.language.Binary');
+Binary.$$.prototype.clear = function(index) {
+    return this.set(index, false);
+}
+exports.Binary=Binary;
+
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language.JSNumber');
 var origNumToString = Number.prototype.toString;
@@ -12,7 +22,7 @@ inheritProtoI(JSNumber, Object$, Scalar, Castable, Integral, Exponentiable);
 
 function Integer(value) { return Number(value); }
 initTypeProto(Integer, 'ceylon.language.Integer', Object$, Scalar, Castable,
-        Integral, Exponentiable);
+        Integral, Exponentiable, Binary);
 
 function Float(value) {
     var that = new Number(value);
@@ -87,19 +97,51 @@ JSNum$proto.getHash = function() {
 JSNum$proto.distanceFrom = function(other) {
     return (this.$float ? this.getWholePart() : this) - other;
 }
+//Binary interface
+JSNum$proto.getNot = function() { return ~this; }
+JSNum$proto.leftLogicalShift = function(i) { return this << i; }
+JSNum$proto.rightLogicalShift = function(i) { return this >> i; }
+JSNum$proto.rightArithmeticShift = function(i) { return this >>> i; }
+JSNum$proto.and = function(x) { return this & x; }
+JSNum$proto.or = function(x) { return this | x; }
+JSNum$proto.xor = function(x) { return this ^ x; }
+JSNum$proto.get = function(idx) {
+    var mask = 1 << idx;
+    return (this & mask) != 0 ? $true : $false;
+}
+JSNum$proto.set = function(idx,bit) {
+    if (bit === undefined) { bit = $true; }
+        var mask = idx > 1 ? 1 << idx : 1;
+    return (bit === $true) ? this | mask : this & ~mask;
+}
+JSNum$proto.flip = function(idx) {
+    var mask = 1 << idx;
+    return this ^ mask;
+}
+JSNum$proto.clear = function(index) {
+    return this.set(index, false);
+}
+JSNum$proto.getSize = function() { return 53; }
 
 function $parseInteger(s) {
     //xkcd.com/208/
-    if ((s.indexOf('_') >= 0 ? s.match(/^[+-]?\d{1,3}(_\d{3})+[kMGPT]?$/g) : s.match(/^[+-]?\d+[kMGPT]?$/g)) === null) {
+    if (s.match(/^[+-]?\d+(_\d+)*[kMGPT]?$/g) === null) {
         return null;
     }
-    s = s.replace("_", "");
+    s = s.replace(/_/g, "");
     var mag = null;
     if (s.match(/[kMGTP]$/g) !== null) {
         mag = s[s.length-1];
         s = s.slice(0,-1);
     }
     var i = parseInt(s);
+    if (s[0]=='+') s = s.substring(1);
+    if (s[0]=='-') {
+        while (s[1]=='0') s='-'+s.substring(2);
+    } else {
+        while (s[0]=='0') s=s.substring(1);
+    }
+    if (i.toString()!==s) return null;
     var factor=1;
     switch(mag) {
         case 'P':factor*=1000;
