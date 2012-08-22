@@ -602,8 +602,15 @@ public class Naming implements LocalId {
     /**
      * Makes an ident for @{code super}.
      */
-    JCIdent makeSuper() {
-        return maker.Ident(names._super);
+    JCExpression makeQualifiedSuper(JCExpression qualifier) {
+        if (qualifier == null) {
+            return maker.Ident(names._super);
+        } else {
+            return maker.Select(qualifier, names._super);
+        }
+    }
+    JCExpression makeSuper() {
+        return makeQualifiedSuper(null);
     }
     
     JCExpression makeName(TypedDeclaration decl, int namingOptions) {
