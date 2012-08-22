@@ -254,6 +254,11 @@ public class StructureTest2 extends CompilerTest {
     public void testNstInterfaceWithinFunction(){
         compareWithJavaSource("nesting/InterfaceWithinFunction");
     }
+    
+    @Test
+    public void testNstMethodReturningInner_fail(){
+        compareWithJavaSource("nesting/MethodReturningInner");
+    }
 
     // Tests for concrete members of interfaces
     @Test
