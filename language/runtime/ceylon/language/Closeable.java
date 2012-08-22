@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 public interface Closeable {
 
     @Annotations(@Annotation("formal"))

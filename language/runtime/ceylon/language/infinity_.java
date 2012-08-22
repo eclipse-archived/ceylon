@@ -3,7 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 
-@Ceylon(major = 2) @Attribute
+@Ceylon(major = 3) @Attribute
 public class infinity_ {
     
     public static double getInfinity(){

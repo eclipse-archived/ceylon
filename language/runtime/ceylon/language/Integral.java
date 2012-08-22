@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value="Other",
         satisfies="ceylon.language.Integral<Other>"))
 @SatisfiedTypes({"ceylon.language.Numeric<Other>",

@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 @TypeParameters({
 	@TypeParameter(value="Return", variance=Variance.OUT),
 	@TypeParameter(value="CallableArgument", variance=Variance.IN)

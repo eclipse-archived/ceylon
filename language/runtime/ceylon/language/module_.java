@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 @Attribute
 @com.redhat.ceylon.compiler.java.metadata.Module(name = "ceylon.language", version = "0.4", dependencies = {})
 final class module_ {

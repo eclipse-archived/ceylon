@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon(major = 2) @Object
+@Ceylon(major = 3) @Object
 public final class process_ {
 	
     java.lang.String newline = System.lineSeparator();

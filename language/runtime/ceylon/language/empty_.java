@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
-@Ceylon(major = 2) @Attribute
+@Ceylon(major = 3) @Attribute
 public class empty_ {
     private final static Empty value = new Empty() {
 

@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
     @Ignore

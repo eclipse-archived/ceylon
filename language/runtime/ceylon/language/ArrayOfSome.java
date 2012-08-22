@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
 
     public ArrayOfSome(java.lang.Object array) {

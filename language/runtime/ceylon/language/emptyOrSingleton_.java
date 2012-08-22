@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 @Method
 public class emptyOrSingleton_ {
 

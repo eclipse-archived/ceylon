@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({
     "ceylon.language.Scalar<ceylon.language.Float>",

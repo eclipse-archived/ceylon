@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
-@Ceylon(major = 2)
+@Ceylon(major = 3)
 @Class(extendsType="ceylon.language.IdentifiableObject")
 @TypeParameters({@TypeParameter("Element"), @TypeParameter("Other")})
 public class ChainedIterator<Element,Other> implements Iterator {

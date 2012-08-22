@@ -3,7 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon(major = 2) @Object
+@Ceylon(major = 3) @Object
 public class exhausted_ extends Finished {
     
     private final static exhausted_ exhausted = new exhausted_();
