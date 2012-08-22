@@ -11,10 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
