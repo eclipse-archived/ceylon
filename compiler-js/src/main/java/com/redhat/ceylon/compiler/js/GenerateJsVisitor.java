@@ -1462,6 +1462,33 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InvocationExpression that) {
+        if (that.getPrimary() instanceof BaseMemberExpression && that.getPositionalArgumentList() != null) {
+            List<PositionalArgument> args = that.getPositionalArgumentList().getPositionalArguments();
+            if (args.size() == 1 && args.get(0).getExpression() != null) {
+                Term term = args.get(0).getExpression().getTerm();
+                if (term instanceof QuotedLiteral) {
+                    Declaration decl = ((BaseMemberExpression)that.getPrimary()).getDeclaration();
+                    if (decl instanceof Method) {
+                        String name = decl.getQualifiedNameString();
+                        int radix=0;
+                        if ("ceylon.language.hex".equals(name)) {
+                            radix = 16;
+                        } else if ("ceylon.language.bin".equals(name)) {
+                            radix = 2;
+                        }
+                        if (radix > 0) {
+                            String lit = term.getText().substring(1, term.getText().length()-1);
+                            try {
+                                out("(", new java.math.BigInteger(lit, radix).toString(), ")");
+                            } catch (NumberFormatException ex) {
+                                that.addError("Invalid numeric literal " + lit);
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+        }
         if (that.getNamedArgumentList()!=null) {
             NamedArgumentList argList = that.getNamedArgumentList();
             out("(");
