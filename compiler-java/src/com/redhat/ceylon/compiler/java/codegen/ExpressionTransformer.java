@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionC
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
@@ -1300,6 +1301,18 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public JCExpression transform(Tree.InvocationExpression ce) {
         // FIXME: temporary hack for hex/bin literals
+        JCExpression ret = checkForRadixLiterals(ce);
+        if(ret != null)
+            return ret;
+        final boolean prevInv = withinInvocation(false);
+        try {
+            return InvocationBuilder.forInvocation(this, ce).build();
+        } finally {
+            withinInvocation(prevInv);
+        }
+    }
+    
+    private JCExpression checkForRadixLiterals(InvocationExpression ce) {
         if(ce.getPrimary() instanceof Tree.BaseMemberExpression
                 && ce.getPositionalArgumentList() != null){
             java.util.List<PositionalArgument> positionalArguments = ce.getPositionalArgumentList().getPositionalArguments();
@@ -1319,14 +1332,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
         }
-        final boolean prevInv = withinInvocation(false);
-        try {
-            return InvocationBuilder.forInvocation(this, ce).build();
-        } finally {
-            withinInvocation(prevInv);
-        }
+        return null;
     }
-    
+
     public JCExpression transformFunctional(Tree.Term expr,
             Functional functional) {
         return CallableBuilder.methodReference(gen(), expr, functional.getParameterLists().get(0)).build();
