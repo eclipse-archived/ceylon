@@ -128,11 +128,12 @@ public class Tool implements Plugin {
     private int exit(int sc, String toolName, Exception t) throws Exception {
         if (t != null) {
             String msg = t.getLocalizedMessage();
-            if (msg != null) {
-                System.err.print(Tools.progName() + 
-                        (toolName != null ? " " + toolName : "") +
-                        ": " + msg);
+            if (msg == null) {
+                msg = ToolMessages.msg("fatal.error");
             }
+            System.err.println(Tools.progName() + 
+                    (toolName != null ? " " + toolName : "") +
+                    ": " + msg);
             if (stacktraces) {
                 t.printStackTrace(System.err);
             }
