@@ -1,0 +1,48 @@
+<project name="ceylon Ant Task test" >
+  <target name="-init">
+      <echo message="ant.home: ${ant.home}"/>
+      <echo message="ant.file: ${ant.file}"/>
+      <echo message="src: ${arg.src}"/>
+      <echo message="out: ${arg.out}"/>
+    </target>
+  
+  <target name="ant-tasks" depends="-init">
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.ant.Ceylonc" />
+    <taskdef name="ceylond" classname="com.redhat.ceylon.ant.Ceylond" />
+    <taskdef name="ceylon" classname="com.redhat.ceylon.ant.Ceylon" />
+  	<taskdef name="ceylonmd" classname="com.redhat.ceylon.ant.CeylonModuleDescriptorTask" />
+  </target>
+      
+  <target name="foo" depends="ant-tasks">
+    <ceylonmd module="com.example.foo" src="${arg.src}"
+  	    versionProperty="module.version"
+    	nameProperty="module.name"/>
+  	<echo message="RESULT version: ${module.version}"/>
+  	<echo message="RESULT name: ${module.name}"/>
+  </target>
+	
+  <target name="bar" depends="ant-tasks">
+	<ceylonmd module="com.example.bar" src="${arg.src}"
+          versionProperty="module.version"
+          nameProperty="module.name"/>
+    <echo message="RESULT version: ${module.version}"/>
+    <echo message="RESULT name: ${module.name}"/>
+  </target>
+	
+  <target name="bad" depends="ant-tasks">
+    <ceylonmd module="com.example.bad" src="${arg.src}"
+          versionProperty="module.version"
+          nameProperty="module.name"/>
+    <echo message="RESULT version: ${module.version}"/>
+    <echo message="RESULT name: ${module.name}"/>
+  </target>
+	
+  <target name="sdk-test" depends="ant-tasks">
+    <ceylonmd module="com.redhat.ceylon.sdk.test" src="../ceylon-sdk/sdk-test/source"
+          versionProperty="module.version"
+          nameProperty="module.name"/>
+    <echo message="RESULT version: ${module.version}"/>
+    <echo message="RESULT name: ${module.name}"/>
+  </target>	
+
+</project>
