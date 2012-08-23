@@ -320,7 +320,7 @@ public class CeylonDocToolTest {
     public void ceylonLanguage() throws IOException {
         String pathname = "../ceylon.language/src";
         String moduleName = "ceylon.language";
-        DocTool tool = tool(pathname, moduleName, false);
+        DocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -331,9 +331,13 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, "index.html");
     }
 
-    @Ignore("Disabled unless you have the sdk checked out")
     @Test
-    public void ceylonMath() throws IOException {
+    public void ceylonSdk() throws IOException {
+        File sdkDir = new File("../ceylon-sdk");
+        if (!sdkDir.exists()
+                || !sdkDir.isDirectory()) {
+            Assert.fail("You don't have ceylon-sdk checked out at " + sdkDir.getAbsolutePath() + " so this test doesn't apply");
+        }
         String[] moduleNames = {"file", "collection", "net", "json", "process", "math"};
         List<String> fullModuleNames = new ArrayList<String>(moduleNames.length);
         List<File> path = new ArrayList<File>(moduleNames.length);
@@ -341,7 +345,7 @@ public class CeylonDocToolTest {
             path.add(new File("../ceylon-sdk/"+moduleName+"/source"));
             fullModuleNames.add("ceylon." + moduleName);
         }
-        DocTool tool = tool(path, fullModuleNames, false);
+        DocTool tool = tool(path, fullModuleNames, true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
