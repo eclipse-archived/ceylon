@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.redhat.ceylon.ant.AntToolTests;
 import com.redhat.ceylon.ceylondoc.test.CeylonDocToolTest;
 import com.redhat.ceylon.compiler.java.codegen.NamingTest;
 import com.redhat.ceylon.compiler.java.test.annotations.AnnotationsTest;
@@ -75,7 +76,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     BcTests.class,
     ExpressionTest3.class,
     CompilerToolsTests.class,
-    CeylonDocToolTest.class
+    CeylonDocToolTest.class,
+    AntToolTests.class
 })
 public class ConcurrentTests {
 }
