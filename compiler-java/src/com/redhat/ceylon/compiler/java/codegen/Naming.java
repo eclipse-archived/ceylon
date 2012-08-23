@@ -151,16 +151,6 @@ public class Naming implements LocalId {
         return "set"+capitalize(stripLeadingDollar(property));
     }
     
-    /**
-     * Generates a Java type name for the given declaration
-     * @param gen Something which knows about local declarations
-     * @param decl The declaration
-     * @param options Option flags
-     */
-    JCExpression makeDeclName(final TypeDeclaration decl, DeclNameFlag... options) {
-        return makeDeclName(null, decl, options);
-    }
-    
     /** 
      * Helper class for {@link #makeDeclName(JCExpression, TypeDeclaration, DeclNameFlag...)}
      */
@@ -300,7 +290,7 @@ public class Naming implements LocalId {
     }
 
     JCExpression makeDeclarationName(TypeDeclaration decl, DeclNameFlag... flags) {
-        return makeDeclName(decl, flags);
+        return makeDeclName(null, decl, flags);
     }
     
     String getCompanionClassName(TypeDeclaration decl) {
@@ -308,7 +298,7 @@ public class Naming implements LocalId {
     }
     
     JCExpression makeCompanionClassName(TypeDeclaration decl) {
-        return makeDeclName(decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
+        return makeDeclName(null, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
     String quoteMethodNameIfProperty(Method method) {
