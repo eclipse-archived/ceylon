@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.redhat.ceylon.ceylondoc.test.CeylonDocToolTest;
 import com.redhat.ceylon.compiler.java.codegen.NamingTest;
 import com.redhat.ceylon.compiler.java.test.annotations.AnnotationsTest;
 import com.redhat.ceylon.compiler.java.test.bc.BcTests;
@@ -71,7 +72,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
 	LanguageSatisfactionSuite.class,
 	LanguageSuite.class,
 	BcTests.class,
-    CompilerToolsTests.class
+    CompilerToolsTests.class,
+    CeylonDocToolTest.class
 })
 public class AllTests {
 }
