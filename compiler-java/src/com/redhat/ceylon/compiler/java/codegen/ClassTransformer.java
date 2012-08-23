@@ -29,6 +29,7 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -40,9 +41,11 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -1319,9 +1322,12 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // TODO MPL
-        if (model instanceof Method
-                || Strategy.generateInstantiator(model)) {
+        if (model instanceof Method) {
             copyTypeParameters((Functional)model, overloadBuilder);
+        } else if (Strategy.generateInstantiator(model)) {
+            for (TypeParameter tp : typeParametersForInstantiator((Class)model)) {
+                overloadBuilder.typeParameter(tp);
+            }
         }
 
         // TODO Some simple default expressions (e.g. literals, null and 
@@ -1417,6 +1423,40 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         return overloadBuilder;
+    }
+
+    /**
+     * When generating an instantiator method if the inner class has a type 
+     * parameter with the same name as a type parameter of an outer type, then the 
+     * instantiator method shouldn't declare its own type parameter of that 
+     * name -- it should use the captured one. This method filters out the
+     * type parameters of the inner class which are the same as type parameters 
+     * of the outer class so that they can be captured.
+     */
+    private java.util.List<TypeParameter> typeParametersForInstantiator(final Class model) {
+        Assert.that(Strategy.generateInstantiator(model));
+        java.util.List<TypeParameter> filtered = new ArrayList<TypeParameter>();
+        java.util.List<TypeParameter> tps = model.getTypeParameters();
+        if (tps != null) {
+            for (TypeParameter tp : tps) {
+                boolean omit = false;
+                Scope s = model.getContainer();
+                while (!(s instanceof Package)) {
+                    if (s instanceof Generic) {
+                        for (TypeParameter outerTp : ((Generic)s).getTypeParameters()) {
+                            if (tp.getName().equals(outerTp.getName())) {
+                                omit = true;
+                            }
+                        }
+                    }
+                    s = s.getContainer();
+                }
+                if (!omit) {
+                    filtered.add(tp);
+                }
+            }
+        }
+        return filtered;
     }
 
     /**
