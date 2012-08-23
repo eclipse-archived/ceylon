@@ -1648,19 +1648,11 @@ public class ClassTransformer extends AbstractTransformer {
         return methbuilder;
     }
     
-    void copyTypeParameters(Tree.AnyMethod def, MethodDefinitionBuilder methodBuilder) {
-        copyTypeParameters(def.getDeclarationModel(), methodBuilder);
-    }
-    
     void copyTypeParameters(Functional def, MethodDefinitionBuilder methodBuilder) {
         if (def.getTypeParameters() != null) {
             for (TypeParameter t : def.getTypeParameters()) {
                 methodBuilder.typeParameter(t);
             }
         }
-    }
-    
-    void copyTypeParameters(Tree.AnyClass def, MethodDefinitionBuilder methodBuilder) {
-        copyTypeParameters(def.getDeclarationModel(), methodBuilder);
     }
 }
