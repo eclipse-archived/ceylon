@@ -1302,7 +1302,14 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 overloadBuilder.modifiers(transformClassDeclFlags((Class)model));
                 methName = naming.makeInstantiatorMethodName(null, (Class)model);
-                overloadBuilder.resultType(null, makeJavaType(((Class)model).getType()));
+                JCExpression resultType;
+                if (Decl.isAncestorLocal(model)) {
+                    // We can't expose a local type name to a place it's not visible
+                    resultType = make().Type(syms().objectType);
+                } else {
+                    resultType = makeJavaType(((Class)model).getType());
+                }
+                overloadBuilder.resultType(null, resultType);
             } else {   
                 overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
                 methName = naming.makeThis();
