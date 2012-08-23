@@ -81,13 +81,17 @@ class ModuleDescriptorReader {
             if (ann.getName().equals("license")) {
                 List<String> args = ann.getPositionalArguments();
                 if (args != null && !args.isEmpty()) {
-                    return args.get(0);
+                    return removeQuotes(args.get(0));
                 }
             }
         }
         return null;
     }
     
+    private String removeQuotes(String string) {
+        return string.replaceAll("^[\\\"]", "").replaceAll("[\\\"]$", "");
+    }
+
     /**
      * Gets the module authors
      * @return The list of module authors, or empty list of no authors could be found
@@ -96,7 +100,9 @@ class ModuleDescriptorReader {
         ArrayList<String> authors = new ArrayList<String>();
         for (Annotation ann : moduleDescriptor.getAnnotations()) {
             if (ann.getName().equals("by")) {
-                authors.addAll(ann.getPositionalArguments());
+                for (String author : ann.getPositionalArguments()) {
+                    authors.add(removeQuotes(author));
+                }
             }
         }
         return authors;
