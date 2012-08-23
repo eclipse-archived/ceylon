@@ -183,6 +183,10 @@ public class ValueVisitor extends Visitor {
             final Term term = expr.getTerm();
             if (term instanceof Tree.Primary) {
                 capture((Tree.Primary)term, true);
+            } 
+            if (term instanceof Tree.QualifiedTypeExpression) {
+                Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)term;
+                capture(qte.getPrimary(), true);
             }
         }   
         
