@@ -40,7 +40,7 @@ doc "Annotation to categorize the API by tag."
 shared Nothing tagged(String... tags) { return null; }
 
 doc "Annotation to specify the URL of the license of a module or package." 
-shared Nothing license(Quoted url) { return null; }
+shared Nothing license(String url) { return null; }
 
 shared Nothing export() { return null; }
 
