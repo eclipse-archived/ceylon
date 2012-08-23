@@ -124,7 +124,8 @@ class Strategy {
     static boolean generateInstantiator(Declaration model) {
         return model instanceof Class 
                 && model.isMember()
-                && !model.isAnonymous();
+                && !model.isAnonymous()
+                && Decl.isCeylon((Class)model);
     }
     
 }
