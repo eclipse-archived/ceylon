@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+interface MethodReturningInner$CI<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI<T> $com$redhat$ceylon$compiler$java$test$structure$nesting$MethodReturningInner$CI$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC m3();
+}
+class MethodReturningInner<T> {
+    
+    MethodReturningInner() {
+    }
+    
+    final class CI$impl {
+        
+        CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI<T> $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI<T> $this;
+        
+        public class CIC {
+            
+            public CIC() {
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner();
+    }
+}
