@@ -164,6 +164,11 @@ abstract class InvocationBuilder {
                 resultExpr = gen.make().Apply(null, 
                         gen.naming.makeUnquotedIdent(gen.naming.getInstantiatorMethodName((Class)type.getDeclaration())), 
                         argExprs);
+                if (Decl.isAncestorLocal(primaryDeclaration)) {
+                    // $new method declared to return Object, so needs typecast
+                    resultExpr = gen.make().TypeCast(gen.makeJavaType(
+                            ((TypeDeclaration)type.getDeclaration()).getType()), resultExpr);
+                }
             } else {
                 ProducedType classType = (ProducedType)type.getTarget();
                 resultExpr = gen.make().NewClass(null, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW), argExprs, null);
