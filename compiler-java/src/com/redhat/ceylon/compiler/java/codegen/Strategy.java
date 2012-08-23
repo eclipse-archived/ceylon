@@ -125,6 +125,7 @@ class Strategy {
         return model instanceof Class 
                 && model.isMember()
                 && !model.isAnonymous()
+                && !((Class)model).isAbstract()
                 && Decl.isCeylon((Class)model);
     }
     
