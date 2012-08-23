@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.java.test.runtime.RuntimeSuite;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTest2;
+import com.redhat.ceylon.compiler.java.test.structure.StructureTest3;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
 @RunWith(ConcurrentSuite.class) 
@@ -55,6 +56,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     ExpressionTest2.class,
     StructureTest.class,
     StructureTest2.class,
+    StructureTest3.class,
     CMRTestHTTP.class,
     
     // those can run in any order
