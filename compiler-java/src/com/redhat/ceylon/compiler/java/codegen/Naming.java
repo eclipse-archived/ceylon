@@ -231,11 +231,12 @@ public class Naming implements LocalId {
         return helper.result();
     }
 
-    void appendDeclName2(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, DeclName helper, Scope scope, final boolean last) {
+    private void appendDeclName2(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, DeclName helper, Scope scope, final boolean last) {
         if (scope instanceof Class) {
             Class klass = (Class)scope;
             helper.append(klass.getName());
-            if (flags.contains(DeclNameFlag.COMPANION)
+            if (Decl.isCeylon(klass)
+                    && flags.contains(DeclNameFlag.COMPANION)
                     && last) {
                 helper.append("$impl");
             }
@@ -243,9 +244,8 @@ public class Naming implements LocalId {
             Interface iface = (Interface)scope;
             helper.append(iface.getName());
             if (Decl.isCeylon(iface)
-                &&
-                 (decl instanceof Class) 
-                 || flags.contains(DeclNameFlag.COMPANION)) {
+                && ((decl instanceof Class) 
+                        || flags.contains(DeclNameFlag.COMPANION))) {
                 helper.append("$impl");
             }
         } else if (Decl.isLocalScope(scope)) {
