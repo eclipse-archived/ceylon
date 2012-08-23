@@ -53,6 +53,7 @@ shared void run() {
 
 shared void runAndAssert() {
     run();
+    print("There were " failureCount " failures (out of " assertionCount " assertions)");
     if (failureCount!=0) {
         throw Exception("There were " failureCount " failures (out of " assertionCount " assertions)");
     }
