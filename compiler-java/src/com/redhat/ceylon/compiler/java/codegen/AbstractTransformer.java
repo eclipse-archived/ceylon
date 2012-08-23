@@ -998,7 +998,10 @@ public abstract class AbstractTransformer implements Transformation {
             }
             
         } else {
-            baseType = naming.makeDeclName(qualifyingExpression, tdecl);
+            baseType = naming.makeDeclName(qualifyingExpression, tdecl, 
+                    jtFlagsToDeclNameOpts(flags 
+                            | JT_NON_QUALIFIED 
+                            | (type.getDeclaration() instanceof Interface ? JT_COMPANION : 0)));
         }
 
         if (typeArgs != null && typeArgs.size() > 0) {
