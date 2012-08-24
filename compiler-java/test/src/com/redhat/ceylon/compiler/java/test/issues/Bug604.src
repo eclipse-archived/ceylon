@@ -5,9 +5,11 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.Bug
     Bug604() {
     }
     
-    public class Edge {
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.Bug604<N, E>.Edge Edge$new(final N n1, final N n2);
+    
+    public abstract class Edge {
         
-        public Edge(N n1, N n2) {
+        protected Edge(N n1, N n2) {
             this.n1 = n1;
             this.n2 = n2;
         }
@@ -27,9 +29,11 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.Bug
         }
     }
     
-    public class Node {
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.Bug604<N, E>.Node Node$new();
+    
+    public abstract class Node {
         
-        public Node() {
+        protected Node() {
         }
         
         public boolean touches(final E edge) {

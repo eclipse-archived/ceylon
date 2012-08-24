@@ -5,9 +5,13 @@ class CallableArgumentReturningQualifiedClass {
     CallableArgumentReturningQualifiedClass() {
     }
     
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D D$new() {
+        return new D();
+    }
+    
     public class D {
         
-        public D() {
+        protected D() {
         }
     }
     
@@ -19,7 +23,7 @@ class CallableArgumentReturningQualifiedClass {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D $call() {
-                return CallableArgumentReturningQualifiedClass.this.new D();
+                return CallableArgumentReturningQualifiedClass.this.D$new();
             }
         });
     }

@@ -23,14 +23,22 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
         throw new .ceylon.language.Exception(null, null);
     }
     
+    .com.redhat.ceylon.compiler.java.test.structure.nesting.ccc.C<? extends T, ? super X>.CC CC$new() {
+        return new CC();
+    }
+    
     class CC {
         
-        CC() {
+        protected CC() {
+        }
+        
+        .com.redhat.ceylon.compiler.java.test.structure.nesting.ccc.C<? extends T, ? super X>.CC.CCC CCC$new() {
+            return new CCC();
         }
         
         class CCC {
             
-            CCC() {
+            protected CCC() {
             }
             
             private final T m2() {

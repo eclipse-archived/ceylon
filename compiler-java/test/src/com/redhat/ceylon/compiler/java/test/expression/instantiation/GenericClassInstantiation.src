@@ -55,14 +55,18 @@ class KlassTypeParamsInstantiationT<T> {
     KlassTypeParamsInstantiationT() {
     }
     
+    <G>.com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT<T>.Inner<G> Inner$new() {
+        return new Inner<G>();
+    }
+    
     class Inner<G> {
         
-        Inner() {
+        protected Inner() {
         }
     }
     
     private final void m() {
-        new .com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiationT<T>.Inner<.ceylon.language.String>();
+        Inner$new();
     }
     
     public static void main(.java.lang.String[] args) {

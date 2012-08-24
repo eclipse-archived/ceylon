@@ -5,9 +5,13 @@ final class transient_ {
     private transient_() {
     }
     
+    public .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_.InnerClass_0 InnerClass_0$new() {
+        return new InnerClass_0();
+    }
+    
     public class InnerClass_0 {
         
-        public InnerClass_0() {
+        protected InnerClass_0() {
         }
     }
     
@@ -50,7 +54,7 @@ final class m_ {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_.getTransient().new InnerClass_0();
+        .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_.getTransient().InnerClass_0$new();
         final long int = .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_.getTransient().getAssert();
         .com.redhat.ceylon.compiler.java.test.quoting.$assert.transient_.getTransient().$strictfp();
     }

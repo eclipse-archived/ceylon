@@ -5,9 +5,13 @@ class OuterClass {
     OuterClass() {
     }
     
+    public .com.redhat.ceylon.compiler.java.test.issues.OuterClass.InnerClass InnerClass$new() {
+        return new InnerClass();
+    }
+    
     public class InnerClass {
         
-        public InnerClass() {
+        protected InnerClass() {
         }
     }
     
@@ -23,7 +27,7 @@ final class m_ {
     
     static void m() {
         final .com.redhat.ceylon.compiler.java.test.issues.OuterClass o = new .com.redhat.ceylon.compiler.java.test.issues.OuterClass();
-        final .com.redhat.ceylon.compiler.java.test.issues.OuterClass.InnerClass i = o.new InnerClass();
+        final .com.redhat.ceylon.compiler.java.test.issues.OuterClass.InnerClass i = o.InnerClass$new();
     }
     
     public static void main(.java.lang.String[] args) {

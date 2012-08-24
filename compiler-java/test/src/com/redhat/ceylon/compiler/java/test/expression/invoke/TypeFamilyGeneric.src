@@ -5,9 +5,11 @@ abstract class TypeFamilyGeneric<N extends .com.redhat.ceylon.compiler.java.test
     TypeFamilyGeneric() {
     }
     
-    public class Node {
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<N>.Node Node$new();
+    
+    public abstract class Node {
         
-        public Node() {
+        protected Node() {
         }
     }
 }

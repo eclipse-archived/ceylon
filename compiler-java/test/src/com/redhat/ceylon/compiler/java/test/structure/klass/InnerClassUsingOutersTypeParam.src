@@ -9,9 +9,13 @@ public class InnerClassUsingOutersTypeParam<T> {
         return cell.getCar();
     }
     
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell Cell$new(final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
+        return new Cell(car, cdr);
+    }
+    
     public class Cell {
         
-        public Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
+        protected Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
             this.car = car;
             this.cdr = cdr;
         }

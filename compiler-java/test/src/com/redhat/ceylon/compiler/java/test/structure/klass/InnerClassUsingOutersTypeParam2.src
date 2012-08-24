@@ -9,9 +9,13 @@ public class MutableList<T> {
         return cell.getCar();
     }
     
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> Cell$new(final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
+        return new Cell<T>(car, cdr);
+    }
+    
     public class Cell<T> {
         
-        public Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
+        protected Cell(T car, .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
             this.car = car;
             this.cdr = cdr;
         }

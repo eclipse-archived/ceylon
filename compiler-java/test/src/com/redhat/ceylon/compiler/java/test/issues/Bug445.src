@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.java.test.issues;
 interface Bug445<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.Bug445$impl<T> $com$redhat$ceylon$compiler$java$test$issues$Bug445$impl();
+    
+    .com.redhat.ceylon.compiler.java.test.issues.Bug445$impl<T>.Inner Inner$new();
 }
 final class Bug445$impl<T> {
     
@@ -11,9 +13,13 @@ final class Bug445$impl<T> {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.Bug445<T> $this;
     
+    .com.redhat.ceylon.compiler.java.test.issues.Bug445$impl<T>.Inner Inner$new() {
+        return new Inner();
+    }
+    
     class Inner {
         
-        Inner() {
+        protected Inner() {
         }
         
         private final void t(final T t) {
