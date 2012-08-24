@@ -227,6 +227,10 @@ public class PluginLoader {
         }
     }
 
+    private boolean hasDescription(Method setter) {
+        return setter.getAnnotation(Description.class) != null;
+    }
+    
     private boolean isSetter(Method method) {
         return method.getName().matches("set[A-Z0-9].*")
                 && Modifier.isPublic(method.getModifiers())
@@ -316,6 +320,11 @@ public class PluginLoader {
         }
         if (!isSetter(setter)) {
             throw new ModelException("Method " + setter + " is annotated with @Argument but is not a setter");
+        }
+        if (hasDescription(setter)) {
+            throw new ModelException(
+                    "Method " + setter + " is annotated with @Argument and @Description: " +
+            		"Arguments should be documented in the class-level @Description");
         }
         ArgumentModel<A> argumentModel = new ArgumentModel<A>();
         argumentModel.setMultiplicity(Multiplicity.fromString(argument.multiplicity()));
