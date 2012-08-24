@@ -117,14 +117,15 @@ public class PluginFactory {
     
     <T extends Plugin> T bindArguments(PluginModel<T> toolModel, T tool, Iterable<String> args) {
         try {
-            List<String> rest = new ArrayList<String>();
+            List<String> unrecognised = new ArrayList<String>(1);
+            List<String> rest = new ArrayList<String>(1);
             setToolLoader(toolModel, tool);
             Map<ArgumentModel<?>, List<Binding<?>>> bindings = new HashMap<ArgumentModel<?>, List<Binding<?>>>(1);
             boolean eoo = false;
             int argumentModelIndex = 0;
             int argumentsBoundThisIndex = 0;
             Iterator<String> iter = args.iterator();
-            while (iter.hasNext()) {
+            argloop: while (iter.hasNext()) {
                 final String arg = iter.next();
                 OptionModel<?> option;
                 String argument;
@@ -152,8 +153,8 @@ public class PluginFactory {
                         char shortName = arg.charAt(idx);
                         option = toolModel.getOptionByShort(shortName);
                         if (option == null) {
-                            rest.add(arg);
-                            continue;
+                            unrecognised.add("-"+shortName);
+                            continue argloop;
                         } 
                         if (option.isPureOption()) {
                             argument = "true";
@@ -206,10 +207,10 @@ public class PluginFactory {
                     throw new OptionArgumentException(e);
                 }
             } else {
-                if (rest.size() >= 1) {
-                    throw new OptionArgumentException("option.unknown", rest);
-                }
+                unrecognised.addAll(rest);
             }
+            
+            assertAllRecognised(unrecognised);
             
             for (Method m : toolModel.getPostConstruct()) {
                 try {
@@ -223,6 +224,17 @@ public class PluginFactory {
         } catch (IllegalAccessException e) {
             // Programming error 
             throw new PluginException(e);
+        }
+    }
+
+    private void assertAllRecognised(List<String> unrecognised) {
+        if (!unrecognised.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (String s : unrecognised) {
+                sb.append(s).append(", ");
+            }
+            sb.setLength(sb.length()-2);// remove last ,
+            throw new OptionArgumentException("option.unknown", sb.toString());
         }
     }
     
