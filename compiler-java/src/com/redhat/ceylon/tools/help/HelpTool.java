@@ -18,8 +18,8 @@ import com.redhat.ceylon.tools.help.Output.Synopsis;
  */
 @Summary("Display help information about other ceylon tools")
 @Description(
-"If a `<command>` is given, displays help about that ceylon tool on the standard output.\n\n" +
-"If no `<command>` is given, displays the synopsis of the top level `ceylon` command. "
+"If a `<tool>` is given, displays help about that ceylon tool on the standard output.\n\n" +
+"If no `<tool>` is given, displays the synopsis of the top level `ceylon` command. "
 )
 @RemainingSections(
 "## SEE ALSO\n\n" +
@@ -30,7 +30,6 @@ public class HelpTool extends AbstractDoc implements Plugin {
     private String tool;
 
     @Argument(argumentName="tool", multiplicity="?")
-    @Description("The tool to get help about")
     public void setTool(String tool) {
         this.tool = tool;
     }

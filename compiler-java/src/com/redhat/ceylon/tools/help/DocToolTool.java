@@ -26,9 +26,16 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
 
+
 @Summary("Generates documentation about a tool")
-@Description("Extracts tool metadata and generates documentation in the directory " +
-		"named by the `--output` option.")
+@Description(
+"Generates documentation about the named `<tool>`s in the directory " +
+"named by the `--output` option." +
+"\n\n" +
+"If `<tool>` has the special value `" + DocToolTool.PORCELAIN_TOOLS + "` " +
+"documentation about all known high level tools will be generated. " +
+"If `<tool>` has the special value `" + DocToolTool.PLUMBING_TOOLS + "` " +
+"documentation about all known low level tools will be generated.")
 @RemainingSections(
 "## See Also\n\n" +
 "* `ceylon help` For generating help about ceylon tools at the command line\n" +
@@ -77,9 +84,6 @@ public class DocToolTool extends AbstractDoc implements Plugin {
     private boolean index = false;
 
     @Argument(argumentName="tool", multiplicity="+")
-    @Description("The tool(s) to generate the documentation for. " +
-    		"The special value `" + PORCELAIN_TOOLS + "` generates documentation about all known high level tools, " +
-            "and the special value `" + PLUMBING_TOOLS + "` generates documentation about all known low level tools.")
     public void setTool(List<String> tools) {
         this.tools = tools;
     }

@@ -21,11 +21,21 @@ import com.redhat.ceylon.common.tool.Summary;
 		"http://modules.ceylon-lang.org, and the default source directory is `source`. " +
 		"The default output module repository is `modules`." +
 		"\n\n" +
-		"The compiler searches for compilation units belonging to the specified " +
+		"The `<moduleOrFile>` arguments can be either module names (without versions) " +
+		"or file paths specifying the Ceylon or Java source code to compile." +
+		"\n\n" +
+		"When `<moduleOrFile>` specifies a module the compiler searches for compilation units " +
+		"belonging to the specified " +
 		"modules in the specified source directories. " +
 		"For each specified module, the compiler generates a module archive, " +
 		"source archive, and their checksum files in the specified output module " +
 		"repository." +
+		"\n\n"+
+		"When `<moduleOrFile>` specifies a source file just that file is compiled and " +
+		"the module archive is created or updated with the .class files produced." +
+		"The source file is " +
+		"treated as relative to the current directory (so any `--source` " +
+		"options are ignored)."+
 		"\n\n"+
         "All program elements imported by a compilation unit must belong to the " +
         "same module as the compilation unit, or must belong to a module that " +
@@ -105,9 +115,7 @@ public class CompileTool implements Plugin{
         this.pass = pass;
     }
 
-    @Argument(argumentName="modules", multiplicity="+")
-    @Description("A list of module names (without versions) or file paths " +
-    		"specifying the source code to compile.")
+    @Argument(argumentName="moduleOrFile", multiplicity="+")
     public void setModule(List<String> moduleOrFile) {
         this.module = moduleOrFile;
     }
@@ -124,6 +132,11 @@ public class CompileTool implements Plugin{
      */
     @Rest
     public void setRest(List<String> rest) {
+        for (String opt : rest) {
+            if (!opt.startsWith("--javac=")) {
+                throw new IllegalArgumentException("Unsupported option " + opt);
+            }
+        }
         this.rest = rest;
     }
 

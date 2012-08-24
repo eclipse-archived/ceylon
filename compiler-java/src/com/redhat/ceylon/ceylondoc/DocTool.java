@@ -87,6 +87,9 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
         "http://modules.ceylon-lang.org, and the default source directory is `source`. " +
         "The default output module repository is `modules`." +
         "\n\n"+
+        "The `<modules>` are the names (with an optional version) of the modules " +
+        "to compile the documentation of." +
+        "\n\n"+
         "The documentation compiler searches for compilation units belonging " +
         "to the specified modules in the specified source directories and in " +
         "source archives in the specified module repositories. For each " +
@@ -174,7 +177,6 @@ public class DocTool implements Plugin {
     }
 
     @Argument(argumentName="modules", multiplicity="+")
-    @Description("The modules (with optional version) to compile the documentation of")
     public void setModuleSpecs(List<String> moduleSpecs) {
         this.moduleSpecs = moduleSpecs;
     }
