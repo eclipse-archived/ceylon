@@ -126,7 +126,6 @@ public class Repositories {
                 return new Repository(REPO_NAME_USER, userRepoDir.getAbsolutePath(), null);
             } else if (REPO_NAME_REMOTE.equals(repoName)) {
                 // http://modules.ceylon-lang.org
-                Proxies.Proxy proxy = Proxies.get().getProxy();
                 return new Repository(REPO_NAME_REMOTE, REPO_URL_CEYLON, null);
             }
             return null;
