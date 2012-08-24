@@ -149,6 +149,9 @@ public class PluginLoader {
             if (!isSetter(method)) {
                 throw new ModelException("Method " + method + " is annotated @Rest but is not a setter");
             }
+            if (model.getRest() != null) {
+                throw new ModelException("Only one method may be annotated @Rest: " + model.getRest() + " and " + method);
+            }
             model.setRest(method);
         }
         
