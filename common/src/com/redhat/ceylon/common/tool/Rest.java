@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotates a setter which gets a list of all the command line 
- * options which are not bound using @Option, @Argument or @ArgumentList
+ * long options which are not bound using @Option or @OptionArgument
  * @author tom
  */
 @Retention(RetentionPolicy.RUNTIME)
