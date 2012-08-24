@@ -2,14 +2,11 @@ package com.redhat.ceylon.common.tool;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.Collections;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.common.tool.OptionArgumentException;
-import com.redhat.ceylon.common.tool.PluginModel;
 import com.redhat.ceylon.common.tool.example.ExampleTool;
 import com.redhat.ceylon.common.tool.example.MinimumsTool;
 
@@ -163,5 +160,50 @@ public class PluginFactoryTest {
         }
         pluginFactory.bindArguments(model, Arrays.asList("true", "false", "3"));
         
+    }
+    
+    @Test
+    public void testUnknownShortOption() {
+        PluginModel<ExampleTool> model = pluginLoader.loadToolModel("example");
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("-l"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unrecognised option(s): -l", e.getMessage());
+        }
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("-Fl"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unrecognised option(s): l (in -Fl)", e.getMessage());
+        }
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("-lalala"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unrecognised option(s): l (in -lalala)", e.getMessage());
+        }        
+    }
+    
+    @Test
+    public void testUnknownLongOption() {
+        PluginModel<ExampleTool> model = pluginLoader.loadToolModel("example");
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--lalala"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unrecognised option(s): --lalala", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testUnknownLongOptionArgument() {
+        PluginModel<ExampleTool> model = pluginLoader.loadToolModel("example");
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--lalala=f"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unrecognised option(s): --lalala=f", e.getMessage());
+        }
     }
 }
