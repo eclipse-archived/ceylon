@@ -13,7 +13,10 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("Executes a Ceylon program")
-@Description("Executes the ceylon program specified as the argument")
+@Description(
+"Executes the ceylon program specified as the `<module>` argument. "+
+"The `<module>` may optionally include a version."
+)
 @RemainingSections(
 "##EXAMPLE\n" +
 "\n" +
@@ -32,7 +35,6 @@ public class RunTool implements Plugin {
     private boolean disableDefault;
     
     @Argument(argumentName="module", multiplicity="1")
-    @Description("The name of the module to execute with an optional version")
     public void setModule(String moduleNameOptVersion) {
         this.moduleNameOptVersion = moduleNameOptVersion;
     }
