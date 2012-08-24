@@ -157,8 +157,8 @@ public class PluginLoader {
             model.setRest(method);
         }
         
-        OptionModel optionModel = buildOption(method);
-        OptionModel optionArgumentModel = buildOptionArgument(method);
+        OptionModel<Boolean> optionModel = buildOption(method);
+        OptionModel<A> optionArgumentModel = buildOptionArgument(method);
         ArgumentModel<A> argumentModel = buildArgument(method, argumentModels);
         if (optionModel!= null) {
             if (argumentModel != null) {
@@ -182,7 +182,7 @@ public class PluginLoader {
     }
 
     private <T extends Plugin> void checkDuplicateOption(Class<T> cls,
-            PluginModel<T> model, OptionModel optionModel) {
+            PluginModel<T> model, OptionModel<?> optionModel) {
         if (model.getOption(optionModel.getLongName()) != null) {
             throw new ModelException(cls + " has more than one binding for option " + optionModel.getLongName());
         }
@@ -268,7 +268,7 @@ public class PluginLoader {
         return name;
     }
 
-    private OptionModel buildOption(final Method setter) {
+    private OptionModel<Boolean> buildOption(final Method setter) {
         Option option = setter.getAnnotation(Option.class);
         if (option == null) {
             return null;
@@ -276,7 +276,7 @@ public class PluginLoader {
         if (!isSetter(setter)) {
             throw new ModelException("Method" + setter + " is annotated with @Option but is not a setter");
         }
-        OptionModel optionModel = new OptionModel();
+        OptionModel<Boolean> optionModel = new OptionModel<Boolean>();
         optionModel.setLongName(getOptionName(option.longName(), setter));
         char shortName = option.shortName();
         if (shortName != Option.NO_SHORT) {
@@ -288,7 +288,7 @@ public class PluginLoader {
         return optionModel;
     }
 
-    private <A> OptionModel buildOptionArgument(final Method setter) {
+    private <A> OptionModel<A> buildOptionArgument(final Method setter) {
         OptionArgument option = setter.getAnnotation(OptionArgument.class);
         if (option == null) {
             return null;
@@ -296,7 +296,7 @@ public class PluginLoader {
         if (!isSetter(setter)) {
             throw new ModelException("Method " + setter + " is annotated with @OptionArgument but is not a setter");
         }
-        OptionModel optionModel = new OptionModel();
+        OptionModel<A> optionModel = new OptionModel<A>();
         optionModel.setLongName(getOptionName(option.longName(), setter));
         char shortName = option.shortName();
         if (shortName != OptionArgument.NO_SHORT) {
