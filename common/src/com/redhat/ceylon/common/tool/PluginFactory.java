@@ -153,7 +153,13 @@ public class PluginFactory {
                         char shortName = arg.charAt(idx);
                         option = toolModel.getOptionByShort(shortName);
                         if (option == null) {
-                            unrecognised.add("-"+shortName);
+                            String msg;
+                            if (arg.equals("-"+shortName)) {
+                                msg = arg;
+                            } else {
+                                msg = ToolMessages.msg("option.unknown.short", shortName, arg);
+                            }
+                            unrecognised.add(msg);
                             continue argloop;
                         } 
                         if (option.isPureOption()) {
