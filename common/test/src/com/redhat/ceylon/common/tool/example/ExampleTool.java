@@ -116,7 +116,6 @@ public class ExampleTool implements Plugin {
     }
 
     @Argument(argumentName="args", multiplicity="*", order=0)
-    @Description("An example of an argument")
     public void setListArgument(List<String> bazes) {
         this.listArgument = bazes;
     }

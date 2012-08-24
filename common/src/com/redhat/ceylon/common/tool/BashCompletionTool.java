@@ -12,7 +12,7 @@ import java.util.TreeSet;
 value="A tool which provides completion suggestions for the Bash shell.")
 @Description("The `<arguments>` are the elements of the `${COMP_WORDS}` bash array variable.\n" +
 		"\n" +
-		"The tool inspects the arguments and writes it completions to standard output." +
+		"The tool inspects the <arguments> and writes it completions to standard output." +
 		"Currently the tool can complete\n" +
 		"\n" +
 		"* tool names (except tools names which are arguments to another tool),\n" +
@@ -78,7 +78,6 @@ public class BashCompletionTool implements Plugin {
     }
     
     @Argument(argumentName="arguments", multiplicity="*")
-    @Description("The value of ${COMP_WORDS}; the command line arguments being completed.")
     public void setArguments(List<String> arguments) {
         this.arguments = arguments;
     }
