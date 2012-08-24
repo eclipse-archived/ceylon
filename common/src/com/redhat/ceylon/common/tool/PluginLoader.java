@@ -95,8 +95,10 @@ public class PluginLoader {
             final PluginModel<T> toolModel;
             try {
                 toolModel = loadModel(toolClass);
+            } catch (ModelException e) {
+                throw e;
             } catch (RuntimeException e) {
-                throw new RuntimeException("Failed to load model for tool " + toolName +"(" + toolClass + ")", e);
+                throw new ModelException("Failed to load model for tool " + toolName +"(" + toolClass + ")", e);
             }
             toolModel.setToolLoader(this);
             return toolModel;
