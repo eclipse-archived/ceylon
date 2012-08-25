@@ -50,6 +50,7 @@ fi
 
 # MINIMAL_CP are classes required by the tools to run
 MINIMAL_CP="$CEYLON_REPO/com/redhat/ceylon/compiler/java/$CEYLON_VERSION/com.redhat.ceylon.compiler.java-$CEYLON_VERSION.jar"
+MINIMAL_CP="$MINIMAL_CP:$CEYLON_REPO/ceylon/language/$CEYLON_VERSION/ceylon.language-$CEYLON_VERSION.car"
 MINIMAL_CP="$MINIMAL_CP:$CEYLON_REPO/com/redhat/ceylon/compiler/js/$CEYLON_VERSION/com.redhat.ceylon.compiler.js-$CEYLON_VERSION.jar"
 MINIMAL_CP="$MINIMAL_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com.redhat.ceylon.typechecker-$CEYLON_VERSION.jar"
 MINIMAL_CP="$MINIMAL_CP:$CEYLON_REPO/com/redhat/ceylon/common/$CEYLON_VERSION/com.redhat.ceylon.common-$CEYLON_VERSION.jar"
