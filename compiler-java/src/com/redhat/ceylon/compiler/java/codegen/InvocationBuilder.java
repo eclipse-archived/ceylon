@@ -217,7 +217,11 @@ abstract class InvocationBuilder {
                 selector = "$call";
             } else if (primaryDeclaration instanceof FunctionalParameter
                     || (this instanceof IndirectInvocationBuilder)) {
-                actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
+                if (selector != null) {
+                    actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
+                } else {
+                    actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)primaryDeclaration, Naming.NA_MEMBER);
+                }
                 if (!gen.isCeylonCallable(primary.getTypeModel())) {                    
                     actualPrimExpr = gen.make().Apply(null, actualPrimExpr, List.<JCExpression>nil());
                 }
