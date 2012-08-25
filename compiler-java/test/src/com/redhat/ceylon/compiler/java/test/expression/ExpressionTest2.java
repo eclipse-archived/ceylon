@@ -448,5 +448,10 @@ public class ExpressionTest2 extends CompilerTest {
     public void testInvSelfTypeInstantiation(){
         compareWithJavaSource("invoke/SelfTypeInstantiation");
     }
+    
+    @Test
+    public void testInvOptionalCallable(){
+        compareWithJavaSource("invoke/OptionalCallable");
+    }
 
 }
