@@ -13,6 +13,6 @@ public class LanguageLoader implements TestLoader {
     @Override
     public Map<String, List<String>> loadTestMethods(
             CeylonModuleRunner moduleRunner, File srcDir) {
-        return Collections.singletonMap("runAndAssert", Collections.singletonList("runAndAssert"));
+        return Collections.singletonMap("runAndAssert_", Collections.singletonList("runAndAssert"));
     }
 }
