@@ -1288,8 +1288,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             SpecifierExpression spec = defaultArgument.getSpecifierExpression();
             expr = expressionGen().transformExpression(spec.getExpression(), CodegenUtil.getBoxingStrategy(param.getDeclarationModel()), param.getDeclarationModel().getType());
         } else if (param.getDeclarationModel().isSequenced()) {
-            boolean isParamRaw = param.getType().getTypeModel().isRaw();
-            expr = makeEmptyAsIterable(!isParamRaw);
+            expr = makeEmptyAsIterable(true);
         } else {
             expr = makeErroneous(param, "No default and not sequenced");
         }
