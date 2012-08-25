@@ -329,4 +329,14 @@ public class StructureTest2 extends CompilerTest {
     public void testCncConcreteGetter(){
         compareWithJavaSource("concrete/ConcreteGetter");
     }
+    
+    @Test
+    public void testCncAbstractSatisfier_fail(){
+        compareWithJavaSource("concrete/AbstractSatisfier");
+    }
+    
+    @Test
+    public void testCncIntersectionSatisfier_fail(){
+        compareWithJavaSource("concrete/IntersectionSatisfier");
+    }
 }
