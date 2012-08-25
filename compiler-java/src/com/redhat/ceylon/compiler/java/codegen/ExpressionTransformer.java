@@ -1703,7 +1703,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (result == null) {
             boolean useGetter = !(decl instanceof Method) && !Decl.isJavaField(decl) && !isWithinSuperInvocation();
             if (qualExpr == null && selector == null) {
-                useGetter = decl.isClassOrInterfaceMember() && CodegenUtil.isErasedAttribute(decl.getName());
+                useGetter = Decl.isClassAttribute(decl) && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
                     selector = naming.selector((TypedDeclaration)decl);
                 } else {
