@@ -23,5 +23,16 @@ public abstract class Boolean {
     public static java.lang.String toString(boolean value) {
         return (value) ? true_.getTrue().toString() : false_.getFalse().toString();
     }
+    
+    @Ignore
+    public static boolean equals(boolean value, java.lang.Object that) {
+        if (that instanceof Boolean) {
+            Boolean s = (Boolean)that;
+            return value = s.booleanValue();
+        }
+        else {
+            return false;
+        }
+    }
 
 }
