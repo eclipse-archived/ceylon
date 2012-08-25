@@ -195,7 +195,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             if (testClass == null) {
                 // Create a fake (failing) test for classes we couldn't load
                 // presumably because they had compile errors
-                //createFailingTest(className, new CompilationException("Test class " + className + " didn't compile"));
+                createFailingTest(className, new CompilationException("Test class " + className + " didn't compile"));
             } else {
                 final Runner runner;
                 final Description description;
