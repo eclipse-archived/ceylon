@@ -41,7 +41,7 @@ class Bug687 {
     }
     
     public final .ceylon.language.Iterable sort2$elements() {
-        return .ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
     public final void sort2(final .ceylon.language.Iterable elements) {
