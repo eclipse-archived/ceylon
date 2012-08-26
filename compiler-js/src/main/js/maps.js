@@ -12,114 +12,6 @@ function ArraySequence(x){}//IGNORE
 var exports,Container,$finished,Cloneable,smaller,larger,Correspondence,Object$,IdentifiableObject;//IGNORE
 var Iterable,Iterator;//IGNORE
 
-function Map(wat) {
-    return wat;
-}
-initTypeProtoI(Map, 'ceylon.language.Map', Collection, Correspondence, Cloneable);
-var Map$proto = Map.$$.prototype;
-Map$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language.Map') && other.getSize().equals(this.getSize())) {
-        var iter = this.getIterator();
-        var entry; while ((entry = iter.next()) !== $finished) {
-            var oi = other.item(entry.getKey());
-            if (oi === null || !entry.getItem().equals(oi.getItem())) {
-                return false;
-            }
-        }
-        return true;
-    }
-    return false;
-}
-Map$proto.getHash = function() {
-    var hc=1;
-    var iter=this.getIterator();
-    var elem; while((elem=iter.next())!=$finished) {
-        hc*=31;
-        hc += elem.getHash();
-    }
-    return hc;
-}
-Map$proto.getValues = function() {
-    function $map$values(outer) {
-        var mv = new $map$values.$$;
-        mv.outer=outer;
-        IdentifiableObject(mv);
-        Collection(mv);
-        mv.clone=function() { return this; }
-        mv.equals=function() { return false; }
-        mv.getHash=function() { return outer.getHash(); }
-        mv.getIterator=function() { return getBottom(); }
-        mv.getSize=function() { return outer.getSize(); }
-        mv.getString=function() { return String$('',0); }
-        return mv;
-    }
-    initTypeProto($map$values, 'ceylon.language.MapValues', IdentifiableObject, Collection);
-    return $map$values(this);
-}
-Map$proto.getKeys = function() {
-    function $map$keys(outer) {
-        var mk = new $map$keys.$$;
-        mk.outer=outer;
-        IdentifiableObject(mk);
-        Set(mk);
-        mk.clone=function() { return this; }
-        mk.equals=function() { return false; }
-        mk.getHash=function() { return outer.getHash(); }
-        mk.getIterator=function() { return getBottom(); }
-        mk.getSize=function() { return outer.getSize(); }
-        mk.getString=function() { return String$('',0); }
-        return mk;
-    }
-    initTypeProto($map$keys, 'ceylon.language.MapKeys', IdentifiableObject, Set);
-    return $map$keys(this);
-}
-Map$proto.getInverse = function() {
-    function $map$inv(outer) {
-        var inv = new $map$inv.$$;
-        inv.outer=outer;
-        IdentifiableObject(inv);
-        Map(inv);
-        inv.clone=function() { return this; }
-        inv.equals=function() { return false; }
-        inv.getHash=function() { return outer.getHash(); }
-        inv.getItem=function() { return getBottom(); }
-        inv.getIterator=function() { return getBottom(); }
-        inv.getSize=function() { return outer.getSize(); }
-        inv.getString=function() { return String$('',0); }
-        return inv;
-    }
-    initTypeProto($map$inv, 'ceylon.language.InverseMap', IdentifiableObject, Map);
-    return $map$inv(this);
-}
-Map$proto.mapItems = function(mapping) {
-    function EmptyMap(orig) {
-        var em = new EmptyMap.$$;
-        IdentifiableObject(em);
-        em.orig=orig;
-        em.clone=function() { return this; }
-        em.getItem=function() { return null; }
-        em.getIterator=function() {
-            function miter(iter) {
-                var $i = new miter.$$;
-                $i.iter = iter;
-                $i.next = function() {
-                    var e = this.iter.next();
-                    return e===$finished ? e : Entry(e.getKey(), mapping(e.getKey(), e.getItem()));
-                };
-                return $i;
-            }
-            initTypeProto(miter, 'ceylon.language.MappedIterator', IdentifiableObject, Iterator);
-            return miter(orig.getIterator());
-        }
-        em.getSize=function() { return this.orig.getSize(); }
-        em.getString=function() { return String$('',0); }
-        return em;
-    }
-    initTypeProto(EmptyMap, 'ceylon.language.EmptyMap', IdentifiableObject, Map);
-    return EmptyMap(this);
-}
-exports.Map=Map;
-
 function Set(wat) {
     return wat;
 }
@@ -167,6 +59,156 @@ Set$proto.getHash = function() {
     return hc;
 }
 exports.Set=Set;
+
+function Map(wat) {
+    return wat;
+}
+initTypeProtoI(Map, 'ceylon.language.Map', Collection, Correspondence, Cloneable);
+var Map$proto = Map.$$.prototype;
+Map$proto.equals = function(other) {
+    if (isOfType(other, 'ceylon.language.Map') && other.getSize().equals(this.getSize())) {
+        var iter = this.getIterator();
+        var entry; while ((entry = iter.next()) !== $finished) {
+            var oi = other.item(entry.getKey());
+            if (oi === null || !entry.getItem().equals(oi)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+Map$proto.getHash = function() {
+    var hc=1;
+    var iter=this.getIterator();
+    var elem; while((elem=iter.next())!=$finished) {
+        hc*=31;
+        hc += elem.getHash();
+    }
+    return hc;
+}
+Map$proto.getValues = function() {
+    function $map$values(outer) {
+        var mv = new $map$values.$$;
+        mv.outer=outer;
+        IdentifiableObject(mv);
+        Collection(mv);
+        mv.clone=function() { return this; }
+        mv.equals=function() { return false; }
+        mv.getHash=function() { return outer.getHash(); }
+        mv.getIterator=function() { return getBottom(); }
+        mv.getSize=function() { return outer.getSize(); }
+        mv.getString=function() { return String$('',0); }
+        return mv;
+    }
+    initTypeProto($map$values, 'ceylon.language.MapValues', IdentifiableObject, Collection);
+    return $map$values(this);
+}
+
+Map$proto.getKeys = function() { return KeySet(this); }
+function KeySet(map) {
+    var set = new KeySet.$$;
+    set.map = map;
+    return set;
+}
+initTypeProto(KeySet, 'ceylon.language.KeySet', IdentifiableObject, Set);
+var KeySet$proto = KeySet.$$.prototype;
+KeySet$proto.getSize = function() { return this.map.getSize(); }
+KeySet$proto.getEmpty = function() { return this.map.getEmpty(); }
+KeySet$proto.contains = function(elem) { return this.map.defines(elem); }
+KeySet$proto.getClone = function() { return this; }
+KeySet$proto.getIterator = function() { return KeySetIterator(this.map); }
+function KeySetIterator(map) {
+    var it = new KeySetIterator.$$;
+    it.map = map;
+    return it;
+}
+initTypeProto(KeySetIterator, 'ceylon.language.KeySetIterator', IdentifiableObject, Iterator);
+KeySetIterator.$$.prototype.next = function() {
+    var entry = this.map.next();
+    return (entry!==$finished) ? entry.getKey() : $finished;
+}
+KeySet$proto.union = function(other) {
+    var set = hashSetFromMap(this.map);
+    set.addAll(other);
+    return set;
+}
+KeySet$proto.intersection = function(other) {
+    var set = HashSet();
+    var it = this.map.getIterator();
+    var entry;
+    while ((entry=it.next()) !== $finished) {
+        var key = entry.getKey();
+        if (other.contains(key)) { set.add(key); }
+    }
+    return set;
+}
+KeySet$proto.exclusiveUnion = function(other) {
+    var set = this.complement(other);
+    var it = other.getIterator();
+    var elem;
+    while ((elem=it.next()) !== $finished) {
+        if (!this.map.defines(elem)) { set.add(elem); }
+    }
+    return set;
+}
+KeySet$proto.complement = function(other) {
+    var set = HashSet();
+    var it = this.map.getIterator();
+    var entry;
+    while ((entry=it.next()) !== $finished) {
+        var key = entry.getKey();
+        if (!other.contains(key)) { set.add(key); }
+    }
+    return set;
+}
+
+Map$proto.getInverse = function() {
+    function $map$inv(outer) {
+        var inv = new $map$inv.$$;
+        inv.outer=outer;
+        IdentifiableObject(inv);
+        Map(inv);
+        inv.clone=function() { return this; }
+        inv.equals=function() { return false; }
+        inv.getHash=function() { return outer.getHash(); }
+        inv.getItem=function() { return getBottom(); }
+        inv.getIterator=function() { return getBottom(); }
+        inv.getSize=function() { return outer.getSize(); }
+        inv.getString=function() { return String$('',0); }
+        return inv;
+    }
+    initTypeProto($map$inv, 'ceylon.language.InverseMap', IdentifiableObject, Map);
+    return $map$inv(this);
+}
+Map$proto.mapItems = function(mapping) {
+    function EmptyMap(orig) {
+        var em = new EmptyMap.$$;
+        IdentifiableObject(em);
+        em.orig=orig;
+        em.clone=function() { return this; }
+        em.getItem=function() { return null; }
+        em.getIterator=function() {
+            function miter(iter) {
+                var $i = new miter.$$;
+                $i.iter = iter;
+                $i.next = function() {
+                    var e = this.iter.next();
+                    return e===$finished ? e : Entry(e.getKey(), mapping(e.getKey(), e.getItem()));
+                };
+                return $i;
+            }
+            initTypeProto(miter, 'ceylon.language.MappedIterator', IdentifiableObject, Iterator);
+            return miter(orig.getIterator());
+        }
+        em.getSize=function() { return this.orig.getSize(); }
+        em.getString=function() { return String$('',0); }
+        return em;
+    }
+    initTypeProto(EmptyMap, 'ceylon.language.EmptyMap', IdentifiableObject, Map);
+    return EmptyMap(this);
+}
+exports.Map=Map;
 
 function HashMap(entries, map) {
     if (map===undefined) { map = new HashMap.$$; }
@@ -239,7 +281,6 @@ HashMap$proto.contains = function(elem) {
     return false;
 }
 HashMap$proto.defines = function(key) { return this.item(key) !== null; }
-HashMap$proto.getKeys = function() { return hashSetFromMap(this); }
 HashMap$proto.getValues = function() {
     //TODO: return a view instead of a copy
     if (this.size === 0) { return $empty; }
