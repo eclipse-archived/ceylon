@@ -170,22 +170,20 @@ KeySet$proto.complement = function(other) {
 }
 
 Map$proto.getInverse = function() {
-    function $map$inv(outer) {
-        var inv = new $map$inv.$$;
-        inv.outer=outer;
-        IdentifiableObject(inv);
-        Map(inv);
-        inv.clone=function() { return this; }
-        inv.equals=function() { return false; }
-        inv.getHash=function() { return outer.getHash(); }
-        inv.getItem=function() { return getBottom(); }
-        inv.getIterator=function() { return getBottom(); }
-        inv.getSize=function() { return outer.getSize(); }
-        inv.getString=function() { return String$('',0); }
-        return inv;
+    var inv = HashMap();
+    var it = this.getIterator();
+    var entry;
+    var newSet = HashSet();
+    while ((entry=it.next()) !== $finished) {
+        var item = entry.getItem();
+        var set = inv.put(Entry(item, newSet), true);
+        if (set === null) {
+            set = newSet;
+            newSet = HashSet();
+        }
+        set.add(entry.getKey());
     }
-    initTypeProto($map$inv, 'ceylon.language.InverseMap', IdentifiableObject, Map);
-    return $map$inv(this);
+    return inv;
 }
 Map$proto.mapItems = function(mapping) {
     function EmptyMap(orig) {
