@@ -48,8 +48,8 @@ void testMaps() {
     for (e in m1) {
         assert(e.key in m1.keys, "Map.keys.contains(" e.key ") should be true");
     }
-    /*assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
-    assert(m1.size == m1.inverse.size, "Map.inverse 1");*/
+    assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
+    assert(m1.inverse.size==3, "Map.inverse 1");
     value m2 = m1.mapItems((Integer k, String v) k*100);
     assert(1->100 in m2, "Map.mapItems");
     for (k->v in m2) {
