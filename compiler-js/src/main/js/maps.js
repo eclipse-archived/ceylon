@@ -87,22 +87,28 @@ Map$proto.getHash = function() {
     }
     return hc;
 }
-Map$proto.getValues = function() {
-    function $map$values(outer) {
-        var mv = new $map$values.$$;
-        mv.outer=outer;
-        IdentifiableObject(mv);
-        Collection(mv);
-        mv.clone=function() { return this; }
-        mv.equals=function() { return false; }
-        mv.getHash=function() { return outer.getHash(); }
-        mv.getIterator=function() { return getBottom(); }
-        mv.getSize=function() { return outer.getSize(); }
-        mv.getString=function() { return String$('',0); }
-        return mv;
-    }
-    initTypeProto($map$values, 'ceylon.language.MapValues', IdentifiableObject, Collection);
-    return $map$values(this);
+
+Map$proto.getValues = function() { return MapValues(this); }
+function MapValues(map) {
+    var val = new MapValues.$$;
+    val.map = map;
+    return val;
+}
+initTypeProto(MapValues, 'ceylon.language.MapValues', IdentifiableObject, Collection);
+var MapValues$proto = MapValues.$$.prototype;
+MapValues$proto.getSize = function() { return this.map.getSize(); }
+MapValues$proto.getEmpty = function() { return this.map.getEmpty(); }
+MapValues$proto.getClone = function() { return this; }
+MapValues$proto.getIterator = function() { return MapValuesIterator(this.map); }
+function MapValuesIterator(map) {
+    var iter = new MapValuesIterator.$$;
+    iter.it = map.getIterator();
+    return iter;
+}
+initTypeProto(MapValuesIterator, 'ceylon.language.MapValuesIterator', IdentifiableObject, Iterator);
+MapValuesIterator.$$.prototype.next = function() {
+    var entry = this.it.next();
+    return (entry!==$finished) ? entry.getItem() : $finished;
 }
 
 Map$proto.getKeys = function() { return KeySet(this); }
@@ -119,13 +125,13 @@ KeySet$proto.contains = function(elem) { return this.map.defines(elem); }
 KeySet$proto.getClone = function() { return this; }
 KeySet$proto.getIterator = function() { return KeySetIterator(this.map); }
 function KeySetIterator(map) {
-    var it = new KeySetIterator.$$;
-    it.map = map;
-    return it;
+    var iter = new KeySetIterator.$$;
+    iter.it = map.getIterator();
+    return iter;
 }
 initTypeProto(KeySetIterator, 'ceylon.language.KeySetIterator', IdentifiableObject, Iterator);
 KeySetIterator.$$.prototype.next = function() {
-    var entry = this.map.next();
+    var entry = this.it.next();
     return (entry!==$finished) ? entry.getKey() : $finished;
 }
 KeySet$proto.union = function(other) {
@@ -281,16 +287,6 @@ HashMap$proto.contains = function(elem) {
     return false;
 }
 HashMap$proto.defines = function(key) { return this.item(key) !== null; }
-HashMap$proto.getValues = function() {
-    //TODO: return a view instead of a copy
-    if (this.size === 0) { return $empty; }
-    var items = Array(this.size);
-    var it = getIterator();
-    var entry;
-    var index = 0;
-    while ((entry=it.next()) !== $finished) { items[index++] = entry; }
-    return ArraySequence(items);
-}
 
 function HashSet(elems, set) {
     if (set===undefined) { set = new HashSet.$$; }
