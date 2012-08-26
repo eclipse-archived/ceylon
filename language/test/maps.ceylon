@@ -1,7 +1,4 @@
 // tests for Map interface
-// Not much functionality to test here, as concrete interface members are not
-// supported yet. But we can test if all members can be implemented, everything
-// compiles, types are correct, etc.
 
 interface MapTestBase<out Key, out Item> satisfies Map<Key, Item>
             given Key satisfies Object
@@ -10,18 +7,11 @@ interface MapTestBase<out Key, out Item> satisfies Map<Key, Item>
 }
 
 class MapTest<Key, Item>(Key->Item... entry)
+            extends Object()
             satisfies MapTestBase<Key, Item>
             given Key satisfies Object
             given Item satisfies Object {
     shared actual Entry<Key, Item>[] entries = entry.sequence;
-    //REMOVE as soon as interfaces can have concrete members
-    shared actual Boolean equals(Object other) {
-        if (is MapTestBase<Object, Object> other) {
-            return other.entries == entries;
-        }
-        return false;
-    }
-    shared actual Integer hash { return entries.hash; }
     shared actual Integer size { return entries.size; }
     shared actual Boolean empty { return entries.empty; }
     shared actual MapTest<Key, Item> clone { return this; }
@@ -54,12 +44,12 @@ void testMaps() {
     /* M4
     for (e in m1) {
         assert(e.item in m1.values, "Map.values 2");
-    }
+    }*/
     assert(m1.keys.size==m1.size, "Map.keys 1");
     for (e in m1) {
         assert(e.key in m1.keys, "Map.keys.contains(" e.key ") should be true");
     }
-    assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
+    /*assert("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
     assert(m1.size == m1.inverse.size, "Map.inverse 1");*/
     value m2 = m1.mapItems((Integer k, String v) k*100);
     assert(1->100 in m2, "Map.mapItems");
