@@ -41,10 +41,9 @@ void testMaps() {
     assert(!exists m1["hi"], "Map.item 3");
     assert(!(is Finished m1.iterator.next()), "Map.iterator");
     assert(m1.values.size==m1.size, "Map.values 1");
-    /* M4
     for (e in m1) {
         assert(e.item in m1.values, "Map.values 2");
-    }*/
+    }
     assert(m1.keys.size==m1.size, "Map.keys 1");
     for (e in m1) {
         assert(e.key in m1.keys, "Map.keys.contains(" e.key ") should be true");
