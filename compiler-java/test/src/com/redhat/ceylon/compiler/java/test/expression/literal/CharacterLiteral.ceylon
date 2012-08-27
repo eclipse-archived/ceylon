@@ -26,5 +26,6 @@ class CharacterLiteral(){
         Character c4 = `\\`;
         Character c5 = `\t`;
         Character c6 = `\n`;
+        Character c7 = `\{0001d11e}`;
     }
 }
