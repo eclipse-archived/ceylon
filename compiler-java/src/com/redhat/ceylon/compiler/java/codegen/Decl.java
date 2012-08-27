@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 
@@ -275,7 +276,11 @@ public class Decl {
     }
         
     public static boolean isClassAttribute(Declaration decl) {
-        return (withinClassOrInterface(decl)) && (decl.isCaptured() || decl.isShared());
+        return (withinClassOrInterface(decl)) && 
+                (decl instanceof Getter 
+                        || decl instanceof Setter 
+                        || decl instanceof Value) && 
+                (decl.isCaptured() || decl.isShared());
     }
 
     public static boolean isOverloaded(Declaration decl) {
