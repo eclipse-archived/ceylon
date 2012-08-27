@@ -13,6 +13,7 @@ class CharacterLiteral {
         final int c5 = 9;
         final int c6 = 10;
         final int c7 = 119070;
+        final int c8 = 119070;
     }
     
     public static void main(.java.lang.String[] args) {

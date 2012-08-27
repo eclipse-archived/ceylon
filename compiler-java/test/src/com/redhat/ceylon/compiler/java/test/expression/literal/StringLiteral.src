@@ -10,6 +10,7 @@ class StringLiteral {
         final .java.lang.String s2 = "This is a test";
         final .java.lang.String s3 = "This\nis\nanother\ntest";
         final .java.lang.String s4 = "\\\b\t\n\f\r\'\"`\\b";
+        final .java.lang.String s5 = "\ud834\udd1e\ud834\udd1e";
     }
     
     public static void main(.java.lang.String[] args) {
