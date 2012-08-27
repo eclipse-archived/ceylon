@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -127,6 +128,21 @@ class Strategy {
                 && !model.isAnonymous()
                 && !((Class)model).isAbstract()
                 && Decl.isCeylon((Class)model);
+    }
+    
+    /** 
+     * Determines whether a {@code void} Ceylon method should be declared to 
+     * return {@code void} or {@code java.lang.Object} (the erasure of 
+     * {@code ceylon.language.Void}) in Java. 
+     * If the method can be refined, 
+     * (but was not itself refined from a Java {@code void} method), or is 
+     * {@code actual} then {@code java.lang.Object} should be used.
+     */
+    static boolean useBoxedVoid(Method m) {
+        return m.isMember() &&
+            (m.isDefault() || m.isFormal() || m.isActual()) &&
+            m.getUnit().getVoidDeclaration().equals(m.getType().getDeclaration()) &&
+            Decl.isCeylon((TypeDeclaration)m.getRefinedDeclaration().getContainer());
     }
     
 }
