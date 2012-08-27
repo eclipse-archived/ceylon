@@ -18,12 +18,32 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Bug731(String string) {
+class Bug731_0(String string) {
     shared Integer capacity = string.size;
-    shared Character get() {
-        if(is Character c = string[0]){
-            return c;
-        }
-        throw;
+}
+
+@nomodel
+class Bug731_1(String string) {
+    shared Integer capacity = string.size;
+    shared void capture() {
+        print(string);
+    }
+}
+
+@nomodel
+class Bug731_2(str) {
+    variable String str;
+    shared Integer capacity = str.size;
+    shared void capture() {
+        print(str);
+    }
+}
+
+@nomodel
+class Bug731_3(str) {
+    String str;
+    shared Integer capacity = str.size;
+    shared void capture() {
+        print(str);
     }
 }
