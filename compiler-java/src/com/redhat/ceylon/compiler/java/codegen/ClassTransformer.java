@@ -1148,29 +1148,35 @@ public class ClassTransformer extends AbstractTransformer {
             Scope container = model.getContainer();
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
             if(!isInterface){
-                boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
-                try {
-                    statementGen().noExpressionlessReturn = Decl.isMpl(model);
-                
-                    final Block block = ((Tree.MethodDefinition) def).getBlock();
-                    body = statementGen().transform(block).getStatements();
-                    // We void methods need to have their Callables return null
-                    // so adjust here.
-                    if (Decl.isMpl(model) &&
-                            !block.getDefinitelyReturns()) {
-                        if (Decl.isUnboxedVoid(model)) {
-                            body = body.append(make().Return(makeNull()));
-                        } else {
-                            body = body.append(make().Return(makeErroneous(block, "non-void method doesn't definitely return")));
-                        }
-                    }
-                } finally {
-                    statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
-                }
-            }
+                final Block block = ((Tree.MethodDefinition) def).getBlock();
+                body = transformMethodBlock(model, block);
+            } 
         } else if (def instanceof MethodDeclaration
                 && ((MethodDeclaration) def).getSpecifierExpression() != null) {
             body = transformSpecifiedMethodBody((MethodDeclaration)def, ((MethodDeclaration) def).getSpecifierExpression());
+        }
+        return body;
+    }
+
+    private List<JCStatement> transformMethodBlock(final Method model,
+            final Block block) {
+        List<JCStatement> body;
+        boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
+        try {
+            statementGen().noExpressionlessReturn = Decl.isMpl(model);
+            body = statementGen().transform(block).getStatements();    
+        } finally {
+            statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
+        }
+        // We void methods need to have their Callables return null
+        // so adjust here.
+        if (Decl.isMpl(model)
+                && !block.getDefinitelyReturns()) {
+            if (Decl.isUnboxedVoid(model)) {
+                body = body.append(make().Return(makeNull()));
+            } else {
+                body = body.append(make().Return(makeErroneous(block, "non-void method doesn't definitely return")));
+            }
         }
         return body;
     }
