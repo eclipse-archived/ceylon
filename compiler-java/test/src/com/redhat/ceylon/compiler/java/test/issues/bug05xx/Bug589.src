@@ -5,14 +5,13 @@ public abstract class Bug589 {
     public Bug589() {
     }
     
-    public final void inc() {
-        (
+    public final .java.lang.Object inc() {
+        return (
             let
             {
                 long $ceylontmp$i$1 = inc$i();
-                inc($ceylontmp$i$1);
             }
-            returning null;
+            returning inc($ceylontmp$i$1);
         );
     }
     
@@ -20,5 +19,5 @@ public abstract class Bug589 {
         return 1L;
     }
     
-    public abstract void inc(final long i);
+    public abstract .java.lang.Object inc(final long i);
 }

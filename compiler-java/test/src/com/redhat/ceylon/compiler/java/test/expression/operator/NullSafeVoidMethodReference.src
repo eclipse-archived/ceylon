@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 interface NullSafeVoidMethodReference {
     
-    public abstract void invoke();
+    public abstract .java.lang.Object invoke();
 }
 final class NullSafeVoidMethodReference$impl {
     
@@ -22,13 +22,7 @@ final class test_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeVoidMethodReference $safe$0 = handler;
             }
-            returning $safe$0 != null ? (
-                let
-                {
-                    $safe$0.invoke();
-                }
-                returning null;
-            ) : null;
+            returning $safe$0 != null ? $safe$0.invoke() : null;
         );
     }
 }

@@ -82,7 +82,7 @@ class GenCon<T> {
 }
 interface ISats {
     
-    public abstract void z();
+    public abstract .java.lang.Object z();
 }
 final class ISats$impl {
     
@@ -113,7 +113,8 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
     private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this;
     
     @.java.lang.Override
-    public final void z() {
+    public final .java.lang.Object z() {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {

@@ -26,23 +26,23 @@ abstract class OptimSuperclass<I, F, C, S, B> {
     OptimSuperclass() {
     }
     
-    public abstract void boxedIntegerArithmetic(final I n2);
+    public abstract .java.lang.Object boxedIntegerArithmetic(final I n2);
     
-    public abstract void boxedFloatArithmetic(final F n2);
+    public abstract .java.lang.Object boxedFloatArithmetic(final F n2);
     
-    public abstract void boxedStringOperators(final S s2);
+    public abstract .java.lang.Object boxedStringOperators(final S s2);
     
-    public abstract void boxedBooleanLogical(final B b2);
+    public abstract .java.lang.Object boxedBooleanLogical(final B b2);
     
-    public abstract void boxedIntegerComparison(final I n2);
+    public abstract .java.lang.Object boxedIntegerComparison(final I n2);
     
-    public abstract void boxedFloatComparison(final F n2);
+    public abstract .java.lang.Object boxedFloatComparison(final F n2);
     
-    public abstract void boxedStringComparison(final S s2);
+    public abstract .java.lang.Object boxedStringComparison(final S s2);
     
-    public abstract void boxedCharacterComparison(final C c2);
+    public abstract .java.lang.Object boxedCharacterComparison(final C c2);
     
-    public abstract void boxedBooleanComparison(final B b2);
+    public abstract .java.lang.Object boxedBooleanComparison(final B b2);
 }
 class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.OptimSuperclass<.ceylon.language.Integer, .ceylon.language.Float, .ceylon.language.Character, .ceylon.language.String, .ceylon.language.Boolean> {
     
@@ -90,7 +90,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedIntegerArithmetic(final .ceylon.language.Integer n2) {
+    public final .java.lang.Object boxedIntegerArithmetic(final .ceylon.language.Integer n2) {
         long n1 = 0L;
         long n3 = 0L;
         n1++;
@@ -141,6 +141,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop3;
         ).longValue();
+        return null;
     }
     
     private final void unboxedFloatArithmetic() {
@@ -164,7 +165,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedFloatArithmetic(final .ceylon.language.Float n2) {
+    public final .java.lang.Object boxedFloatArithmetic(final .ceylon.language.Float n2) {
         double n1 = 0.0;
         double n3 = 0.0;
         n1 = n2.getPositiveValue().doubleValue();
@@ -202,6 +203,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop6;
         ).doubleValue();
+        return null;
     }
     
     private final void unboxedCharacterArithmetic() {
@@ -227,7 +229,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedBooleanLogical(final .ceylon.language.Boolean b2) {
+    public final .java.lang.Object boxedBooleanLogical(final .ceylon.language.Boolean b2) {
         boolean b1 = false;
         boolean b3 = false;
         b1 = b2.booleanValue();
@@ -236,6 +238,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         b1 = b2.booleanValue() || b3;
         b1 = b3 |= b2.booleanValue();
         b1 = b3 &= b2.booleanValue();
+        return null;
     }
     
     private final void unboxedStringOperators() {
@@ -247,7 +250,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedStringOperators(final .ceylon.language.String s2) {
+    public final .java.lang.Object boxedStringOperators(final .ceylon.language.String s2) {
         .java.lang.String s1 = "";
         .java.lang.String s3 = "";
         s1 = s2.plus(.ceylon.language.String.instance(s3)).toString();
@@ -259,6 +262,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmpop7;
         ).toString();
+        return null;
     }
     private long fieldInteger;
     
@@ -439,7 +443,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedIntegerComparison(final .ceylon.language.Integer n2) {
+    public final .java.lang.Object boxedIntegerComparison(final .ceylon.language.Integer n2) {
         long n1 = 0L;
         boolean sync;
         sync = .ceylon.language.Integer.instance(n1).equals(n2);
@@ -449,6 +453,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.Integer.instance(n1).compare(n2).largerThan();
         sync = .ceylon.language.Integer.instance(n1).compare(n2).asSmallAs();
         sync = .ceylon.language.Integer.instance(n1).compare(n2).asLargeAs();
+        return null;
     }
     
     private final void unboxedFloatComparison() {
@@ -465,7 +470,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedFloatComparison(final .ceylon.language.Float n2) {
+    public final .java.lang.Object boxedFloatComparison(final .ceylon.language.Float n2) {
         double n1 = 0.0;
         boolean sync;
         sync = .ceylon.language.Float.instance(n1).equals(n2);
@@ -475,6 +480,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.Float.instance(n1).compare(n2).largerThan();
         sync = .ceylon.language.Float.instance(n1).compare(n2).asSmallAs();
         sync = .ceylon.language.Float.instance(n1).compare(n2).asLargeAs();
+        return null;
     }
     
     private final void unboxedCharacterComparison() {
@@ -491,7 +497,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedCharacterComparison(final .ceylon.language.Character n2) {
+    public final .java.lang.Object boxedCharacterComparison(final .ceylon.language.Character n2) {
         int n1 = 97;
         boolean sync;
         sync = .ceylon.language.Character.instance(n1).equals(n2);
@@ -501,6 +507,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.Character.instance(n1).compare(n2).largerThan();
         sync = .ceylon.language.Character.instance(n1).compare(n2).asSmallAs();
         sync = .ceylon.language.Character.instance(n1).compare(n2).asLargeAs();
+        return null;
     }
     
     private final void unboxedBooleanComparison() {
@@ -513,12 +520,13 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedBooleanComparison(final .ceylon.language.Boolean b2) {
+    public final .java.lang.Object boxedBooleanComparison(final .ceylon.language.Boolean b2) {
         boolean b1 = false;
         boolean sync;
         sync = .ceylon.language.Boolean.instance(b1) == b2;
         sync = .ceylon.language.Boolean.instance(b1).equals(b2);
         sync = !.ceylon.language.Boolean.instance(b1).equals(b2);
+        return null;
     }
     
     private final void unboxedStringComparison() {
@@ -535,7 +543,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     @.java.lang.Override
-    public final void boxedStringComparison(final .ceylon.language.String s2) {
+    public final .java.lang.Object boxedStringComparison(final .ceylon.language.String s2) {
         .java.lang.String s1 = "";
         boolean sync;
         sync = .ceylon.language.String.instance(s1).equals(s2);
@@ -545,6 +553,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.String.instance(s1).compare(s2).largerThan();
         sync = .ceylon.language.String.instance(s1).compare(s2).asSmallAs();
         sync = .ceylon.language.String.instance(s1).compare(s2).asLargeAs();
+        return null;
     }
     
     private final void nonOptimisableComparison(final .java.lang.Object o) {

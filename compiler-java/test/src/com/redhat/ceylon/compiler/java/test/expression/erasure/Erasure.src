@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.erasure;
 
 interface Top {
     
-    public abstract void top();
+    public abstract .java.lang.Object top();
     
     public abstract long getTopAttribute();
     
@@ -27,7 +27,7 @@ final class Top$impl {
 }
 interface Left extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top {
     
-    public abstract void left();
+    public abstract .java.lang.Object left();
     
     public abstract long getLeftAttribute();
 }
@@ -44,7 +44,7 @@ final class Left$impl {
 }
 interface Right extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top {
     
-    public abstract void right();
+    public abstract .java.lang.Object right();
     
     public abstract long getRightAttribute();
 }
@@ -75,15 +75,18 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasur
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Right$this;
     
     @.java.lang.Override
-    public final void left() {
+    public final .java.lang.Object left() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void top() {
+    public final .java.lang.Object top() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void right() {
+    public final .java.lang.Object right() {
+        return null;
     }
     private final long topAttribute;
     
@@ -133,11 +136,13 @@ class CLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this;
     
     @.java.lang.Override
-    public final void left() {
+    public final .java.lang.Object left() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void top() {
+    public final .java.lang.Object top() {
+        return null;
     }
     private final long topAttribute;
     

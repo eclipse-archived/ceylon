@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.erasure;
 
 interface TPETop {
     
-    public abstract void top();
+    public abstract .java.lang.Object top();
     
     public abstract long getTopAttribute();
 }
@@ -19,7 +19,7 @@ final class TPETop$impl {
 }
 interface TPELeft extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop {
     
-    public abstract void left();
+    public abstract .java.lang.Object left();
     
     public abstract long getLeftAttribute();
 }
@@ -36,7 +36,7 @@ final class TPELeft$impl {
 }
 interface TPERight extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop {
     
-    public abstract void right();
+    public abstract .java.lang.Object right();
     
     public abstract long getRightAttribute();
 }
@@ -63,11 +63,13 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasu
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPETop$this;
     
     @.java.lang.Override
-    public final void left() {
+    public final .java.lang.Object left() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void top() {
+    public final .java.lang.Object top() {
+        return null;
     }
     private final long topAttribute;
     
@@ -102,15 +104,18 @@ class TPECMiddle implements .com.redhat.ceylon.compiler.java.test.expression.era
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$TPERight$this;
     
     @.java.lang.Override
-    public final void left() {
+    public final .java.lang.Object left() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void top() {
+    public final .java.lang.Object top() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void right() {
+    public final .java.lang.Object right() {
+        return null;
     }
     private final long topAttribute;
     

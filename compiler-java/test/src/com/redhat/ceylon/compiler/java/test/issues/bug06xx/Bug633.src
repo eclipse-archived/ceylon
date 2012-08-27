@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 interface Bug633Ranged<Index, Span> {
     
-    public abstract void span(final Index from);
+    public abstract .java.lang.Object span(final Index from);
 }
 final class Bug633Ranged$impl<Index, Span> {
     
@@ -30,7 +30,8 @@ class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.test.issues.bu
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
     
     @.java.lang.Override
-    public final void span(final .ceylon.language.Integer from) {
+    public final .java.lang.Object span(final .ceylon.language.Integer from) {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {

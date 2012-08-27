@@ -12,18 +12,18 @@ abstract class AbstractFormal {
         test4();
     }
     
-    public abstract void test();
+    public abstract .java.lang.Object test();
     
-    public void test2() {
-        return;
+    public .java.lang.Object test2() {
+        return null;
     }
     
-    public void test3() {
-        return;
+    public .java.lang.Object test3() {
+        return null;
     }
     
-    public void test4() {
-        return;
+    public .java.lang.Object test4() {
+        return null;
     }
 }
 class ActualKlass extends .com.redhat.ceylon.compiler.java.test.structure.klass.AbstractFormal {
@@ -33,18 +33,18 @@ class ActualKlass extends .com.redhat.ceylon.compiler.java.test.structure.klass.
     }
     
     @.java.lang.Override
-    public final void test() {
-        return;
+    public final .java.lang.Object test() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void test3() {
-        return;
+    public final .java.lang.Object test3() {
+        return null;
     }
     
     @.java.lang.Override
-    public void test4() {
-        return;
+    public .java.lang.Object test4() {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -59,8 +59,8 @@ class ActualSubKlass extends .com.redhat.ceylon.compiler.java.test.structure.kla
     }
     
     @.java.lang.Override
-    public final void test4() {
-        return;
+    public final .java.lang.Object test4() {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {

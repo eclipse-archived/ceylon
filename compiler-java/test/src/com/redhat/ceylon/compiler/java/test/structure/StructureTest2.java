@@ -331,7 +331,7 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
-    public void testCncAbstractSatisfier_fail(){
+    public void testCncAbstractSatisfier(){
         compareWithJavaSource("concrete/AbstractSatisfier");
     }
     

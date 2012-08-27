@@ -119,17 +119,17 @@ class RawInvImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.s
 }
 interface RawIn<T, U> {
     
-    public abstract void m(final T t);
+    public abstract .java.lang.Object m(final T t);
     
-    public void mDefault(final T t);
+    public .java.lang.Object mDefault(final T t);
     
-    public abstract void mDefaulted();
+    public abstract .java.lang.Object mDefaulted();
     
     public abstract T mDefaulted$t();
     
-    public abstract void mDefaulted(final T t);
+    public abstract .java.lang.Object mDefaulted(final T t);
     
-    public abstract void m2(final U u);
+    public abstract .java.lang.Object m2(final U u);
 }
 final class RawIn$impl<T, U> {
     
@@ -138,17 +138,17 @@ final class RawIn$impl<T, U> {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn<? super T, U> $this;
     
-    public void mDefault(final T t) {
+    public .java.lang.Object mDefault(final T t) {
+        return null;
     }
     
-    public final void mDefaulted() {
-        (
+    public final .java.lang.Object mDefaulted() {
+        return (
             let
             {
                 T $ceylontmp$t$5 = mDefaulted$t();
-                $this.mDefaulted($ceylontmp$t$5);
             }
-            returning null;
+            returning $this.mDefaulted($ceylontmp$t$5);
         );
     }
     
@@ -164,8 +164,8 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.st
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this;
     
     @.java.lang.Override
-    public void mDefault(final .java.lang.Object t) {
-        $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this.mDefault(t);
+    public .java.lang.Object mDefault(final .java.lang.Object t) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this.mDefault(t);
     }
     
     @.java.lang.Override
@@ -174,20 +174,23 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.st
     }
     
     @.java.lang.Override
-    public final void mDefaulted() {
-        $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this.mDefaulted();
+    public final .java.lang.Object mDefaulted() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this.mDefaulted();
     }
     
     @.java.lang.Override
-    public final void m2(final .java.lang.Object u) {
+    public final .java.lang.Object m2(final .java.lang.Object u) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void m(final .java.lang.Object t) {
+    public final .java.lang.Object m(final .java.lang.Object t) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void mDefaulted(final .java.lang.Object t) {
+    public final .java.lang.Object mDefaulted(final .java.lang.Object t) {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {

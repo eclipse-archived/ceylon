@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
 interface Common {
     
-    public abstract void common();
+    public abstract .java.lang.Object common();
 }
 final class Common$impl {
     
@@ -13,7 +13,7 @@ final class Common$impl {
 }
 interface FooInterface {
     
-    public abstract void foo();
+    public abstract .java.lang.Object foo();
 }
 final class FooInterface$impl {
     
@@ -32,11 +32,13 @@ class Foo implements .com.redhat.ceylon.compiler.java.test.statement.conditional
     private final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooInterface$impl $com$redhat$ceylon$compiler$java$test$statement$conditional$FooInterface$this;
     
     @.java.lang.Override
-    public final void common() {
+    public final .java.lang.Object common() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void foo() {
+    public final .java.lang.Object foo() {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -60,7 +62,7 @@ class FooSub extends .com.redhat.ceylon.compiler.java.test.statement.conditional
 }
 interface BarInterface {
     
-    public abstract void bar();
+    public abstract .java.lang.Object bar();
 }
 final class BarInterface$impl {
     
@@ -79,11 +81,13 @@ class Bar implements .com.redhat.ceylon.compiler.java.test.statement.conditional
     private final .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface$impl $com$redhat$ceylon$compiler$java$test$statement$conditional$BarInterface$this;
     
     @.java.lang.Override
-    public final void common() {
+    public final .java.lang.Object common() {
+        return null;
     }
     
     @.java.lang.Override
-    public final void bar() {
+    public final .java.lang.Object bar() {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {

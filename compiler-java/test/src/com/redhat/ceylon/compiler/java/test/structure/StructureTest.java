@@ -307,6 +307,11 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/OverrideDefaultedInitParam");
     }
     
+    @Test
+    public void testKlsRefiningVoidMembers(){
+        compareWithJavaSource("klass/RefiningVoidMembers");
+    }
+    
     //
     // Methods
     

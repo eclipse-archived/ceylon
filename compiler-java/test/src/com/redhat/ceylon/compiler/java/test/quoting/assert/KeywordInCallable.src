@@ -14,13 +14,14 @@ class KeywordInCallable {
             }
             
             .java.lang.Object $enum() {
-                return (
+                (
                     let
                     {
                         $assert();
                     }
                     returning null;
                 );
+                return null;
             }
         }
         final enum_ enum = new enum_();

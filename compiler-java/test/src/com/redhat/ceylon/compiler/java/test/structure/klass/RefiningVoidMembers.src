@@ -1,0 +1,310 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+abstract class RefiningVoidMembersClass<T> {
+    
+    RefiningVoidMembersClass(T t) {
+        this.t = t;
+    }
+    private final T t;
+    
+    public final void notRefinable() {
+    }
+    
+    public .java.lang.Object getDefaultGetterVoid() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public T getDefaultGetterT() {
+        return t;
+    }
+    
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return null;
+    }
+    
+    public .java.lang.Object defaultReturnsvoidExplicit() {
+        return null;
+    }
+    
+    public .java.lang.Object defaultReturnsVoidImplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public .java.lang.Object defaultReturnsVoidExplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public T defaultReturnsT() {
+        return t;
+    }
+    
+    public abstract .java.lang.Object getFormalGetterVoid();
+    
+    public abstract T getFormalGetterT();
+    
+    public abstract .java.lang.Object formalReturnsvoid();
+    
+    public abstract .java.lang.Object formalReturnsVoid();
+    
+    public abstract T formalReturnsT();
+}
+abstract class RefiningVoidMembersClass_Boxed extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersClass<.java.lang.Object> {
+    
+    RefiningVoidMembersClass_Boxed() {
+        super(.ceylon.language.Integer.instance(1L));
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getDefaultGetterT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsvoidExplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getFormalGetterT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsvoid() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+}
+abstract class RefiningVoidMembersClass_Unboxed extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersClass<.java.lang.Object> {
+    
+    RefiningVoidMembersClass_Unboxed() {
+        super(.ceylon.language.Integer.instance(1L));
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsVoidExplicit() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsVoidImplicit() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsT() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsVoid() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsT() {
+        return null;
+    }
+}
+interface RefiningVoidMembersInterface<T> {
+    
+    public void notRefinable();
+    
+    public .java.lang.Object getDefaultGetterVoid();
+    
+    public T getDefaultGetterT();
+    
+    public .java.lang.Object defaultReturnsvoidImplicit();
+    
+    public .java.lang.Object defaultReturnsvoidExplicit();
+    
+    public .java.lang.Object defaultReturnsVoidImplicit();
+    
+    public .java.lang.Object defaultReturnsVoidExplicit();
+    
+    public T defaultReturnsT();
+    
+    public abstract .java.lang.Object getFormalGetterVoid();
+    
+    public abstract T getFormalGetterT();
+    
+    public abstract .java.lang.Object formalReturnsvoid();
+    
+    public abstract .java.lang.Object formalReturnsVoid();
+    
+    public abstract T formalReturnsT();
+}
+final class RefiningVoidMembersInterface$impl<T> {
+    
+    RefiningVoidMembersInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface<T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface<T> $this;
+    
+    public void notRefinable() {
+    }
+    
+    public final .java.lang.Object getDefaultGetterVoid() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public final T getDefaultGetterT() {
+        return $this.defaultReturnsT();
+    }
+    
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return null;
+    }
+    
+    public .java.lang.Object defaultReturnsvoidExplicit() {
+        return null;
+    }
+    
+    public .java.lang.Object defaultReturnsVoidImplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public .java.lang.Object defaultReturnsVoidExplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public T defaultReturnsT() {
+        return $this.getDefaultGetterT();
+    }
+    
+    public final .java.lang.Object getFormalGetterVoid() {
+        return $this.getFormalGetterVoid();
+    }
+    
+    public final T getFormalGetterT() {
+        return $this.getFormalGetterT();
+    }
+}
+abstract class RefiningVoidMembersInterface_Boxed implements .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface<.java.lang.Object> {
+    
+    RefiningVoidMembersInterface_Boxed() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object>(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this;
+    
+    @.java.lang.Override
+    public void notRefinable() {
+        $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.notRefinable();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getDefaultGetterVoid() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.getDefaultGetterVoid();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.defaultReturnsvoidImplicit();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsVoidImplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.defaultReturnsVoidImplicit();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsVoidExplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.defaultReturnsVoidExplicit();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getDefaultGetterT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsvoidExplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getFormalGetterT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsvoid() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+}
+abstract class RefiningVoidMembersInterface_Unboxed implements .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface<.java.lang.Object> {
+    
+    RefiningVoidMembersInterface_Unboxed() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object>(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningVoidMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this;
+    
+    @.java.lang.Override
+    public void notRefinable() {
+        $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.notRefinable();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getDefaultGetterVoid() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.getDefaultGetterVoid();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getDefaultGetterT() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.getDefaultGetterT();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.defaultReturnsvoidImplicit();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsvoidExplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningVoidMembersInterface$this.defaultReturnsvoidExplicit();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsVoidExplicit() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsVoidImplicit() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsT() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsVoid() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsT() {
+        return null;
+    }
+}

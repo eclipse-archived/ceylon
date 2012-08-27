@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface I<T> {
     
-    public abstract void m();
+    public abstract .java.lang.Object m();
     
     public abstract long m$i();
     
-    public abstract void m(final long i);
+    public abstract .java.lang.Object m(final long i);
     
     public abstract long m2();
     
@@ -47,14 +47,13 @@ final class I$impl<T> {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this;
     
-    public final void m() {
-        (
+    public final .java.lang.Object m() {
+        return (
             let
             {
                 long $ceylontmp$i$1 = m$i();
-                $this.m($ceylontmp$i$1);
             }
-            returning null;
+            returning $this.m($ceylontmp$i$1);
         );
     }
     
@@ -271,8 +270,8 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
     }
     
     @.java.lang.Override
-    public final void m() {
-        $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m();
+    public final .java.lang.Object m() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this.m();
     }
     
     @.java.lang.Override
@@ -336,7 +335,8 @@ class C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.I
     }
     
     @.java.lang.Override
-    public final void m(final long i) {
+    public final .java.lang.Object m(final long i) {
+        return null;
     }
     
     @.java.lang.Override

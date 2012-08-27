@@ -5,12 +5,13 @@ class SuperReference {
     SuperReference() {
     }
     
-    public void m(final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild x) {
+    public .java.lang.Object m(final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild x) {
         x.test();
+        return null;
     }
     
-    public void test() {
-        return;
+    public .java.lang.Object test() {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -25,8 +26,9 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
     }
     
     @.java.lang.Override
-    public final void test() {
+    public final .java.lang.Object test() {
         super.test();
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {

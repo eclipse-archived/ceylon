@@ -23,14 +23,13 @@ class Fookls {
         return init;
     }
     
-    public final void f1() {
-        (
+    public final .java.lang.Object f1() {
+        return (
             let
             {
                 long $ceylontmp$n$1 = f1$n();
-                f1($ceylontmp$n$1);
             }
-            returning null;
+            returning f1($ceylontmp$n$1);
         );
     }
     
@@ -38,17 +37,17 @@ class Fookls {
         return 5L;
     }
     
-    public void f1(final long n) {
+    public .java.lang.Object f1(final long n) {
+        return null;
     }
     
-    public final void f2(final long n) {
-        (
+    public final .java.lang.Object f2(final long n) {
+        return (
             let
             {
                 .java.lang.String $ceylontmp$s$3 = f2$s(n);
-                f2(n, $ceylontmp$s$3);
             }
-            returning null;
+            returning f2(n, $ceylontmp$s$3);
         );
     }
     
@@ -56,18 +55,18 @@ class Fookls {
         return "test";
     }
     
-    public void f2(final long n, final .java.lang.String s) {
+    public .java.lang.Object f2(final long n, final .java.lang.String s) {
+        return null;
     }
     
-    public final void f3() {
-        (
+    public final .java.lang.Object f3() {
+        return (
             let
             {
                 long $ceylontmp$n$5 = f3$n();
                 long $ceylontmp$m$6 = f3$m($ceylontmp$n$5);
-                f3($ceylontmp$n$5, $ceylontmp$m$6);
             }
-            returning null;
+            returning f3($ceylontmp$n$5, $ceylontmp$m$6);
         );
     }
     
@@ -75,14 +74,13 @@ class Fookls {
         return 5L;
     }
     
-    public final void f3(final long n) {
-        (
+    public final .java.lang.Object f3(final long n) {
+        return (
             let
             {
                 long $ceylontmp$m$8 = f3$m(n);
-                f3(n, $ceylontmp$m$8);
             }
-            returning null;
+            returning f3(n, $ceylontmp$m$8);
         );
     }
     
@@ -90,18 +88,18 @@ class Fookls {
         return n;
     }
     
-    public void f3(final long n, final long m) {
+    public .java.lang.Object f3(final long n, final long m) {
+        return null;
     }
     
-    public final void f4() {
-        (
+    public final .java.lang.Object f4() {
+        return (
             let
             {
                 long $ceylontmp$n$10 = f4$n();
                 long $ceylontmp$m$11 = f4$m($ceylontmp$n$10);
-                f4($ceylontmp$n$10, $ceylontmp$m$11);
             }
-            returning null;
+            returning f4($ceylontmp$n$10, $ceylontmp$m$11);
         );
     }
     
@@ -109,14 +107,13 @@ class Fookls {
         return 5L;
     }
     
-    public final void f4(final long n) {
-        (
+    public final .java.lang.Object f4(final long n) {
+        return (
             let
             {
                 long $ceylontmp$m$13 = f4$m(n);
-                f4(n, $ceylontmp$m$13);
             }
-            returning null;
+            returning f4(n, $ceylontmp$m$13);
         );
     }
     
@@ -124,17 +121,17 @@ class Fookls {
         return n + 1L;
     }
     
-    public void f4(final long n, final long m) {
+    public .java.lang.Object f4(final long n, final long m) {
+        return null;
     }
     
-    public final void f5() {
-        (
+    public final .java.lang.Object f5() {
+        return (
             let
             {
                 long $ceylontmp$n$15 = f5$n();
-                f5($ceylontmp$n$15);
             }
-            returning null;
+            returning f5($ceylontmp$n$15);
         );
     }
     
@@ -142,17 +139,17 @@ class Fookls {
         return getProp();
     }
     
-    public void f5(final long n) {
+    public .java.lang.Object f5(final long n) {
+        return null;
     }
     
-    public final void f6() {
-        (
+    public final .java.lang.Object f6() {
+        return (
             let
             {
                 long $ceylontmp$n$17 = f6$n();
-                f6($ceylontmp$n$17);
             }
-            returning null;
+            returning f6($ceylontmp$n$17);
         );
     }
     
@@ -160,17 +157,17 @@ class Fookls {
         return getPrivProp();
     }
     
-    public void f6(final long n) {
+    public .java.lang.Object f6(final long n) {
+        return null;
     }
     
-    public final void f7() {
-        (
+    public final .java.lang.Object f7() {
+        return (
             let
             {
                 long $ceylontmp$n$19 = f7$n();
-                f7($ceylontmp$n$19);
             }
-            returning null;
+            returning f7($ceylontmp$n$19);
         );
     }
     
@@ -178,17 +175,17 @@ class Fookls {
         return this.getProp();
     }
     
-    public void f7(final long n) {
+    public .java.lang.Object f7(final long n) {
+        return null;
     }
     
-    public final void f8() {
-        (
+    public final .java.lang.Object f8() {
+        return (
             let
             {
                 long $ceylontmp$n$21 = f8$n();
-                f8($ceylontmp$n$21);
             }
-            returning null;
+            returning f8($ceylontmp$n$21);
         );
     }
     
@@ -196,17 +193,17 @@ class Fookls {
         return getInit();
     }
     
-    public void f8(final long n) {
+    public .java.lang.Object f8(final long n) {
+        return null;
     }
     
-    public final void f9() {
-        (
+    public final .java.lang.Object f9() {
+        return (
             let
             {
                 long $ceylontmp$n$23 = f9$n();
-                f9($ceylontmp$n$23);
             }
-            returning null;
+            returning f9($ceylontmp$n$23);
         );
     }
     
@@ -214,18 +211,18 @@ class Fookls {
         return .ceylon.language.Integer.getSuccessor(getProp());
     }
     
-    public void f9(final long n) {
+    public .java.lang.Object f9(final long n) {
+        return null;
     }
     
-    public final void fa() {
-        (
+    public final .java.lang.Object fa() {
+        return (
             let
             {
                 long $ceylontmp$n$25 = fa$n();
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$26 = fa$seq($ceylontmp$n$25);
-                fa($ceylontmp$n$25, $ceylontmp$seq$26);
             }
-            returning null;
+            returning fa($ceylontmp$n$25, $ceylontmp$seq$26);
         );
     }
     
@@ -233,14 +230,13 @@ class Fookls {
         return 5L;
     }
     
-    public final void fa(final long n) {
-        (
+    public final .java.lang.Object fa(final long n) {
+        return (
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$28 = fa$seq(n);
-                fa(n, $ceylontmp$seq$28);
             }
-            returning null;
+            returning fa(n, $ceylontmp$seq$28);
         );
     }
     
@@ -248,7 +244,8 @@ class Fookls {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    public void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    public .java.lang.Object fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+        return null;
     }
 }
 class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls {
@@ -258,108 +255,118 @@ class Foosubkls extends .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f1(final long n) {
+    public final .java.lang.Object f1(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f2(final long n, final .java.lang.String s) {
+    public final .java.lang.Object f2(final long n, final .java.lang.String s) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f3(final long n, final long m) {
+    public final .java.lang.Object f3(final long n, final long m) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f4(final long n, final long m) {
+    public final .java.lang.Object f4(final long n, final long m) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f5(final long n) {
+    public final .java.lang.Object f5(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f6(final long n) {
+    public final .java.lang.Object f6(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f7(final long n) {
+    public final .java.lang.Object f7(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f8(final long n) {
+    public final .java.lang.Object f8(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f9(final long n) {
+    public final .java.lang.Object f9(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    public final .java.lang.Object fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+        return null;
     }
 }
 interface Barface {
     
     public abstract long getProp();
     
-    public abstract void f1();
+    public abstract .java.lang.Object f1();
     
     public abstract long f1$n();
     
-    public abstract void f1(final long n);
+    public abstract .java.lang.Object f1(final long n);
     
-    public abstract void f2(final long n);
+    public abstract .java.lang.Object f2(final long n);
     
     public abstract .java.lang.String f2$s(final long n);
     
-    public abstract void f2(final long n, final .java.lang.String s);
+    public abstract .java.lang.Object f2(final long n, final .java.lang.String s);
     
-    public abstract void f3();
+    public abstract .java.lang.Object f3();
     
     public abstract long f3$n();
     
-    public abstract void f3(final long n);
+    public abstract .java.lang.Object f3(final long n);
     
     public abstract long f3$m(final long n);
     
-    public abstract void f3(final long n, final long m);
+    public abstract .java.lang.Object f3(final long n, final long m);
     
-    public abstract void f4();
+    public abstract .java.lang.Object f4();
     
     public abstract long f4$n();
     
-    public abstract void f4(final long n);
+    public abstract .java.lang.Object f4(final long n);
     
     public abstract long f4$m(final long n);
     
-    public abstract void f4(final long n, final long m);
+    public abstract .java.lang.Object f4(final long n, final long m);
     
-    public abstract void f5();
+    public abstract .java.lang.Object f5();
     
     public abstract long f5$n();
     
-    public abstract void f5(final long n);
+    public abstract .java.lang.Object f5(final long n);
     
-    public abstract void f7();
+    public abstract .java.lang.Object f7();
     
     public abstract long f7$n();
     
-    public abstract void f7(final long n);
+    public abstract .java.lang.Object f7(final long n);
     
-    public abstract void f9();
+    public abstract .java.lang.Object f9();
     
     public abstract long f9$n();
     
-    public abstract void f9(final long n);
+    public abstract .java.lang.Object f9(final long n);
     
-    public abstract void fa();
+    public abstract .java.lang.Object fa();
     
     public abstract long fa$n();
     
-    public abstract void fa(final long n);
+    public abstract .java.lang.Object fa(final long n);
     
     public abstract .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n);
     
-    public abstract void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq);
+    public abstract .java.lang.Object fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq);
 }
 final class Barface$impl {
     
@@ -372,14 +379,13 @@ final class Barface$impl {
         return $this.getProp();
     }
     
-    public final void f1() {
-        (
+    public final .java.lang.Object f1() {
+        return (
             let
             {
                 long $ceylontmp$n$30 = f1$n();
-                $this.f1($ceylontmp$n$30);
             }
-            returning null;
+            returning $this.f1($ceylontmp$n$30);
         );
     }
     
@@ -387,14 +393,13 @@ final class Barface$impl {
         return 5L;
     }
     
-    public final void f2(final long n) {
-        (
+    public final .java.lang.Object f2(final long n) {
+        return (
             let
             {
                 .java.lang.String $ceylontmp$s$34 = f2$s(n);
-                $this.f2(n, $ceylontmp$s$34);
             }
-            returning null;
+            returning $this.f2(n, $ceylontmp$s$34);
         );
     }
     
@@ -402,15 +407,14 @@ final class Barface$impl {
         return "test";
     }
     
-    public final void f3() {
-        (
+    public final .java.lang.Object f3() {
+        return (
             let
             {
                 long $ceylontmp$n$38 = f3$n();
                 long $ceylontmp$m$39 = f3$m($ceylontmp$n$38);
-                $this.f3($ceylontmp$n$38, $ceylontmp$m$39);
             }
-            returning null;
+            returning $this.f3($ceylontmp$n$38, $ceylontmp$m$39);
         );
     }
     
@@ -418,14 +422,13 @@ final class Barface$impl {
         return 5L;
     }
     
-    public final void f3(final long n) {
-        (
+    public final .java.lang.Object f3(final long n) {
+        return (
             let
             {
                 long $ceylontmp$m$41 = f3$m(n);
-                $this.f3(n, $ceylontmp$m$41);
             }
-            returning null;
+            returning $this.f3(n, $ceylontmp$m$41);
         );
     }
     
@@ -433,15 +436,14 @@ final class Barface$impl {
         return n;
     }
     
-    public final void f4() {
-        (
+    public final .java.lang.Object f4() {
+        return (
             let
             {
                 long $ceylontmp$n$48 = f4$n();
                 long $ceylontmp$m$49 = f4$m($ceylontmp$n$48);
-                $this.f4($ceylontmp$n$48, $ceylontmp$m$49);
             }
-            returning null;
+            returning $this.f4($ceylontmp$n$48, $ceylontmp$m$49);
         );
     }
     
@@ -449,14 +451,13 @@ final class Barface$impl {
         return 5L;
     }
     
-    public final void f4(final long n) {
-        (
+    public final .java.lang.Object f4(final long n) {
+        return (
             let
             {
                 long $ceylontmp$m$51 = f4$m(n);
-                $this.f4(n, $ceylontmp$m$51);
             }
-            returning null;
+            returning $this.f4(n, $ceylontmp$m$51);
         );
     }
     
@@ -464,14 +465,13 @@ final class Barface$impl {
         return n + 1L;
     }
     
-    public final void f5() {
-        (
+    public final .java.lang.Object f5() {
+        return (
             let
             {
                 long $ceylontmp$n$58 = f5$n();
-                $this.f5($ceylontmp$n$58);
             }
-            returning null;
+            returning $this.f5($ceylontmp$n$58);
         );
     }
     
@@ -479,14 +479,13 @@ final class Barface$impl {
         return $this.getProp();
     }
     
-    public final void f7() {
-        (
+    public final .java.lang.Object f7() {
+        return (
             let
             {
                 long $ceylontmp$n$62 = f7$n();
-                $this.f7($ceylontmp$n$62);
             }
-            returning null;
+            returning $this.f7($ceylontmp$n$62);
         );
     }
     
@@ -494,14 +493,13 @@ final class Barface$impl {
         return $this.getProp();
     }
     
-    public final void f9() {
-        (
+    public final .java.lang.Object f9() {
+        return (
             let
             {
                 long $ceylontmp$n$66 = f9$n();
-                $this.f9($ceylontmp$n$66);
             }
-            returning null;
+            returning $this.f9($ceylontmp$n$66);
         );
     }
     
@@ -509,15 +507,14 @@ final class Barface$impl {
         return .ceylon.language.Integer.getSuccessor($this.getProp());
     }
     
-    public final void fa() {
-        (
+    public final .java.lang.Object fa() {
+        return (
             let
             {
                 long $ceylontmp$n$70 = fa$n();
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$71 = fa$seq($ceylontmp$n$70);
-                $this.fa($ceylontmp$n$70, $ceylontmp$seq$71);
             }
-            returning null;
+            returning $this.fa($ceylontmp$n$70, $ceylontmp$seq$71);
         );
     }
     
@@ -525,14 +522,13 @@ final class Barface$impl {
         return 5L;
     }
     
-    public final void fa(final long n) {
-        (
+    public final .java.lang.Object fa(final long n) {
+        return (
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$73 = fa$seq(n);
-                $this.fa(n, $ceylontmp$seq$73);
             }
-            returning null;
+            returning $this.fa(n, $ceylontmp$seq$73);
         );
     }
     
@@ -554,8 +550,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f1() {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f1();
+    public final .java.lang.Object f1() {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f1();
     }
     
     @.java.lang.Override
@@ -564,8 +560,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f2(final long n) {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f2(n);
+    public final .java.lang.Object f2(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f2(n);
     }
     
     @.java.lang.Override
@@ -574,8 +570,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f3() {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f3();
+    public final .java.lang.Object f3() {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f3();
     }
     
     @.java.lang.Override
@@ -584,8 +580,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f3(final long n) {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f3(n);
+    public final .java.lang.Object f3(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f3(n);
     }
     
     @.java.lang.Override
@@ -594,8 +590,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f4() {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f4();
+    public final .java.lang.Object f4() {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f4();
     }
     
     @.java.lang.Override
@@ -604,8 +600,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f4(final long n) {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f4(n);
+    public final .java.lang.Object f4(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f4(n);
     }
     
     @.java.lang.Override
@@ -614,8 +610,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f5() {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f5();
+    public final .java.lang.Object f5() {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f5();
     }
     
     @.java.lang.Override
@@ -624,8 +620,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f7() {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f7();
+    public final .java.lang.Object f7() {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f7();
     }
     
     @.java.lang.Override
@@ -634,8 +630,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f9() {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f9();
+    public final .java.lang.Object f9() {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.f9();
     }
     
     @.java.lang.Override
@@ -644,8 +640,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void fa() {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.fa();
+    public final .java.lang.Object fa() {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.fa();
     }
     
     @.java.lang.Override
@@ -654,8 +650,8 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void fa(final long n) {
-        $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.fa(n);
+    public final .java.lang.Object fa(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this.fa(n);
     }
     private final long prop;
     
@@ -665,35 +661,43 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     @.java.lang.Override
-    public final void f1(final long n) {
+    public final .java.lang.Object f1(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f2(final long n, final .java.lang.String s) {
+    public final .java.lang.Object f2(final long n, final .java.lang.String s) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f3(final long n, final long m) {
+    public final .java.lang.Object f3(final long n, final long m) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f4(final long n, final long m) {
+    public final .java.lang.Object f4(final long n, final long m) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f5(final long n) {
+    public final .java.lang.Object f5(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f7(final long n) {
+    public final .java.lang.Object f7(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void f9(final long n) {
+    public final .java.lang.Object f9(final long n) {
+        return null;
     }
     
     @.java.lang.Override
-    public final void fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+    public final .java.lang.Object fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {

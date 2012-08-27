@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface IntersectionSatisfier_X<T, N> {
+    
+    public abstract .java.lang.Object getX();
+}
+final class IntersectionSatisfier_X$impl<T, N> {
+    
+    IntersectionSatisfier_X$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<? extends T, ? extends N> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<? extends T, ? extends N> $this;
+    
+    public final .java.lang.Object getX() {
+        return $this.getX();
+    }
+}
+interface IntersectionSatisfier_I1<T> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<T, .java.lang.Object> {
+    
+    @.java.lang.Override
+    public T getX();
+}
+final class IntersectionSatisfier_I1$impl<T> {
+    
+    IntersectionSatisfier_I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<? extends T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<? extends T> $this;
+    
+    public final T getX() {
+        return null;
+    }
+}
+interface IntersectionSatisfier_I2 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<.java.lang.Object> {
+}
+final class IntersectionSatisfier_I2$impl {
+    
+    IntersectionSatisfier_I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2 $this;
+}
+class IntersectionSatisfier_C<T> implements .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<T> {
+    
+    IntersectionSatisfier_C() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I2$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<.java.lang.Object>((.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1)this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<.java.lang.Object, .java.lang.Object>((.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<.java.lang.Object, .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X)this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I2$this;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this;
+    
+    @.java.lang.Override
+    public .java.lang.Object getX() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this.getX();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$this;
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_C();
+    }
+}

@@ -176,53 +176,53 @@ interface MethodWithDefaultParams2 {
     
     public abstract long getProp();
     
-    public abstract void f1();
+    public abstract .java.lang.Object f1();
     
     public abstract long f1$n();
     
-    public abstract void f1(final long n);
+    public abstract .java.lang.Object f1(final long n);
     
-    public abstract void f2(final long n);
+    public abstract .java.lang.Object f2(final long n);
     
     public abstract .java.lang.String f2$s(final long n);
     
-    public abstract void f2(final long n, final .java.lang.String s);
+    public abstract .java.lang.Object f2(final long n, final .java.lang.String s);
     
-    public abstract void f3();
+    public abstract .java.lang.Object f3();
     
     public abstract long f3$n();
     
-    public abstract void f3(final long n);
+    public abstract .java.lang.Object f3(final long n);
     
     public abstract long f3$m(final long n);
     
-    public abstract void f3(final long n, final long m);
+    public abstract .java.lang.Object f3(final long n, final long m);
     
-    public abstract void f4();
+    public abstract .java.lang.Object f4();
     
     public abstract long f4$n();
     
-    public abstract void f4(final long n);
+    public abstract .java.lang.Object f4(final long n);
     
     public abstract long f4$m(final long n);
     
-    public abstract void f4(final long n, final long m);
+    public abstract .java.lang.Object f4(final long n, final long m);
     
-    public abstract void f5();
+    public abstract .java.lang.Object f5();
     
     public abstract long f5$n();
     
-    public abstract void f5(final long n);
+    public abstract .java.lang.Object f5(final long n);
     
-    public abstract void f6();
+    public abstract .java.lang.Object f6();
     
     public abstract long f6$n();
     
-    public abstract void f6(final long n);
+    public abstract .java.lang.Object f6(final long n);
     
     public abstract .ceylon.language.Iterable<? extends .ceylon.language.Integer> f6$seq(final long n);
     
-    public abstract void f6(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq);
+    public abstract .java.lang.Object f6(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq);
 }
 final class MethodWithDefaultParams2$impl {
     
@@ -235,14 +235,13 @@ final class MethodWithDefaultParams2$impl {
         return $this.getProp();
     }
     
-    public final void f1() {
-        (
+    public final .java.lang.Object f1() {
+        return (
             let
             {
                 long $ceylontmp$n$22 = f1$n();
-                $this.f1($ceylontmp$n$22);
             }
-            returning null;
+            returning $this.f1($ceylontmp$n$22);
         );
     }
     
@@ -250,14 +249,13 @@ final class MethodWithDefaultParams2$impl {
         return 5L;
     }
     
-    public final void f2(final long n) {
-        (
+    public final .java.lang.Object f2(final long n) {
+        return (
             let
             {
                 .java.lang.String $ceylontmp$s$26 = f2$s(n);
-                $this.f2(n, $ceylontmp$s$26);
             }
-            returning null;
+            returning $this.f2(n, $ceylontmp$s$26);
         );
     }
     
@@ -265,15 +263,14 @@ final class MethodWithDefaultParams2$impl {
         return "test";
     }
     
-    public final void f3() {
-        (
+    public final .java.lang.Object f3() {
+        return (
             let
             {
                 long $ceylontmp$n$30 = f3$n();
                 long $ceylontmp$m$31 = f3$m($ceylontmp$n$30);
-                $this.f3($ceylontmp$n$30, $ceylontmp$m$31);
             }
-            returning null;
+            returning $this.f3($ceylontmp$n$30, $ceylontmp$m$31);
         );
     }
     
@@ -281,14 +278,13 @@ final class MethodWithDefaultParams2$impl {
         return 5L;
     }
     
-    public final void f3(final long n) {
-        (
+    public final .java.lang.Object f3(final long n) {
+        return (
             let
             {
                 long $ceylontmp$m$33 = f3$m(n);
-                $this.f3(n, $ceylontmp$m$33);
             }
-            returning null;
+            returning $this.f3(n, $ceylontmp$m$33);
         );
     }
     
@@ -296,15 +292,14 @@ final class MethodWithDefaultParams2$impl {
         return n;
     }
     
-    public final void f4() {
-        (
+    public final .java.lang.Object f4() {
+        return (
             let
             {
                 long $ceylontmp$n$40 = f4$n();
                 long $ceylontmp$m$41 = f4$m($ceylontmp$n$40);
-                $this.f4($ceylontmp$n$40, $ceylontmp$m$41);
             }
-            returning null;
+            returning $this.f4($ceylontmp$n$40, $ceylontmp$m$41);
         );
     }
     
@@ -312,14 +307,13 @@ final class MethodWithDefaultParams2$impl {
         return 5L;
     }
     
-    public final void f4(final long n) {
-        (
+    public final .java.lang.Object f4(final long n) {
+        return (
             let
             {
                 long $ceylontmp$m$43 = f4$m(n);
-                $this.f4(n, $ceylontmp$m$43);
             }
-            returning null;
+            returning $this.f4(n, $ceylontmp$m$43);
         );
     }
     
@@ -327,14 +321,13 @@ final class MethodWithDefaultParams2$impl {
         return n + 1L;
     }
     
-    public final void f5() {
-        (
+    public final .java.lang.Object f5() {
+        return (
             let
             {
                 long $ceylontmp$n$50 = f5$n();
-                $this.f5($ceylontmp$n$50);
             }
-            returning null;
+            returning $this.f5($ceylontmp$n$50);
         );
     }
     
@@ -342,15 +335,14 @@ final class MethodWithDefaultParams2$impl {
         return $this.getProp();
     }
     
-    public final void f6() {
-        (
+    public final .java.lang.Object f6() {
+        return (
             let
             {
                 long $ceylontmp$n$54 = f6$n();
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$55 = f6$seq($ceylontmp$n$54);
-                $this.f6($ceylontmp$n$54, $ceylontmp$seq$55);
             }
-            returning null;
+            returning $this.f6($ceylontmp$n$54, $ceylontmp$seq$55);
         );
     }
     
@@ -358,14 +350,13 @@ final class MethodWithDefaultParams2$impl {
         return $this.getProp();
     }
     
-    public final void f6(final long n) {
-        (
+    public final .java.lang.Object f6(final long n) {
+        return (
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$seq$57 = f6$seq(n);
-                $this.f6(n, $ceylontmp$seq$57);
             }
-            returning null;
+            returning $this.f6(n, $ceylontmp$seq$57);
         );
     }
     

@@ -8,7 +8,7 @@ interface InterfaceWithMembers {
     
     public abstract void setB2(final boolean b2);
     
-    public abstract void m();
+    public abstract .java.lang.Object m();
 }
 final class InterfaceWithMembers$impl {
     

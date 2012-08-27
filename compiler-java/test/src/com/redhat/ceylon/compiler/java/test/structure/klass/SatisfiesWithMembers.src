@@ -8,7 +8,7 @@ interface SatisfiesWithMembers {
     
     public abstract void setB2(final boolean b2);
     
-    public abstract void m();
+    public abstract .java.lang.Object m();
 }
 final class SatisfiesWithMembers$impl {
     
@@ -56,8 +56,8 @@ class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.test
     }
     
     @.java.lang.Override
-    public final void m() {
-        return;
+    public final .java.lang.Object m() {
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {

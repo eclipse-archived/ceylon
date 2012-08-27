@@ -5,11 +5,11 @@ abstract class ActualMethodShortcut {
     ActualMethodShortcut() {
     }
     
-    public abstract void print1();
+    public abstract .java.lang.Object print1();
     
-    public abstract void print2(final .java.lang.String s);
+    public abstract .java.lang.Object print2(final .java.lang.String s);
     
-    public abstract void foo(final .java.lang.String s);
+    public abstract .java.lang.Object foo(final .java.lang.String s);
     
     public abstract .java.lang.String foo2(final .java.lang.String s);
 }
@@ -20,18 +20,27 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     }
     
     @.java.lang.Override
-    public final void print1() {
+    public final .java.lang.Object print1() {
         .ceylon.language.process_.getProcess().writeLine("hello");
+        return null;
     }
     
     @.java.lang.Override
-    public final void print2(final .java.lang.String s) {
-        .ceylon.language.process_.getProcess().writeLine(s);
+    public final .java.lang.Object print2(final .java.lang.String s) {
+        (
+            let
+            {
+                .ceylon.language.process_.getProcess().writeLine(s);
+            }
+            returning null;
+        );
+        return null;
     }
     
     @.java.lang.Override
-    public final void foo(final .java.lang.String s) {
+    public final .java.lang.Object foo(final .java.lang.String s) {
         .ceylon.language.print_.print(.ceylon.language.String.instance(s));
+        return null;
     }
     
     @.java.lang.Override
