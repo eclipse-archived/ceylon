@@ -8,7 +8,7 @@ interface SetTestBase<out Element> satisfies Set<Element>
     shared formal Element[] elements;
 }
 
-class SetTest<Element>(Element... element)
+class SetTest<Element>(Element... element) extends Object()
             satisfies SetTestBase<Element>
             given Element satisfies Object {
     shared actual Element[] elements = element.sequence;
@@ -16,20 +16,6 @@ class SetTest<Element>(Element... element)
     shared actual Boolean empty { return elements.empty; }
     shared actual SetTest<Element> clone { return this; }
     shared actual Iterator<Element> iterator { return elements.iterator; }
-    shared actual Integer hash { return elements.hash; }
-    shared actual Boolean equals(Object other) {
-        if (is Set<Object> other) {
-            if (other.size == this.size) {
-                for (e in this) {
-                  if (!e in other) {
-                    return false;
-                  }
-                }
-                return true;
-            }
-        }
-        return false;
-    }
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
         value sb = SequenceBuilder<Element|Other>();
