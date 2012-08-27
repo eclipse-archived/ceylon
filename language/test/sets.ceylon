@@ -18,8 +18,15 @@ class SetTest<Element>(Element... element)
     shared actual Iterator<Element> iterator { return elements.iterator; }
     shared actual Integer hash { return elements.hash; }
     shared actual Boolean equals(Object other) {
-        if (is SetTestBase<Object> other) {
-            return other.elements == elements;
+        if (is Set<Object> other) {
+            if (other.size == this.size) {
+                for (e in this) {
+                  if (!e in other) {
+                    return false;
+                  }
+                }
+                return true;
+            }
         }
         return false;
     }
