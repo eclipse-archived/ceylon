@@ -626,7 +626,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug731_fail() {
+    public void testBug731() {
         compile("Bug731.ceylon");
     }
 }
