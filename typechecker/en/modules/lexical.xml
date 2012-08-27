@@ -119,11 +119,7 @@
         is just a lowercase identifier named <literal>person</literal> and
         <literal>\Iperson</literal> is an <emphasis>uppercase</emphasis> identifier 
         named <literal>person</literal>.</para>
-        
-        <para>Package and module names are built from all-lowercase identifier names.</para>
-        
-        <programlisting>PIdentifier: LIdentifierPrefix? LowercaseChar+</programlisting>
-        
+                        
         <para>The following reserved words are not legal identifier names unless they 
         appear escaped using <literal>\i</literal> or <literal>\I</literal>:</para>
         

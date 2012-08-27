@@ -166,9 +166,9 @@
         <para>The Ceylon compiler enforces identifier naming conventions. Types must
         be named with an initial uppercase. Members, parameters and locals must be 
         named with an initial lowercase or underscore. A package name element is an
-        all-lowercase identifier.</para>
+        initial lowercase identifier.</para>
         
-        <programlisting>PackageName: PIdentifier</programlisting>
+        <programlisting>PackageName: LIdentifier</programlisting>
         <programlisting>TypeName: UIdentifier</programlisting>
         <programlisting>MemberName: LIdentifier</programlisting>
         
