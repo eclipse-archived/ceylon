@@ -2888,8 +2888,14 @@ QMARK
     )
     ;
 
+/*
+ Stef: we must take 32-bit code points into account here because AntLR considers each
+ character to be 16-bit like in Java, which means that it will consider a high/low surrogate
+ pair as two characters and refuse it in a character literal. So we match either a code point
+ pair, or a normal 16-bit code point.
+*/
 CHAR_LITERAL
-    :   '`' ( ~ ('`' | '\\') | EscapeSequence ) '`'
+    :   '`' (( HighSurrogate LowSurrogate ) | ( ~ ('`' | '\\') | EscapeSequence )) '`'
     ;
 
 QUOTED_LITERAL
@@ -2908,6 +2914,14 @@ STRING_LITERAL
     :   '"' StringPart '"'?
     ;
 
+/*
+ Stef: AntLR considers each character to be 16-bit like in Java, which means that it will consider a 
+ high/low surrogate pair as two characters, BUT because the special characters we care about, such
+ as termination quotes or backslash escapes (including unicode escapes) all fall outside the range
+ of both the high and low surrogate parts of 32-bit code points character pairs, so we don't care
+ because 32-bit code points, even taked as two chars, cannot match any of our special characters,
+ so we can just process them as-is.
+*/
 fragment
 StringPart
     : ( ~ ('\\' | '"') | EscapeSequence) *
@@ -2938,6 +2952,16 @@ HexDigits
 fragment
 HexDigit
     : '0'..'9' | 'A'..'F' | 'a'..'f'
+    ;
+
+fragment
+HighSurrogate
+    : '\uD800'..'\uDBFF'
+    ;
+
+fragment
+LowSurrogate
+    : '\uDC00'..'\uDFFF'
     ;
 
 WS  
