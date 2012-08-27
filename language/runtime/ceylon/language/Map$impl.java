@@ -1,8 +1,13 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
+import com.redhat.ceylon.compiler.java.metadata.Annotation;
+import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 public final class Map$impl<Key,Item> {
@@ -74,7 +79,17 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public Iterator<? extends Key> getIterator() {
-                return bottom_.getBottom();
+                return new Iterator<Key>() {
+                    final Iterator<? extends Entry<? extends Key, ? extends Item>> orig = $this.getIterator();
+                    @SuppressWarnings("unchecked")
+                    public java.lang.Object next() {
+                        java.lang.Object tmp = orig.next();
+                        if (tmp instanceof Finished) {
+                            return tmp;
+                        }
+                        return ((Entry<? extends Key, ? extends Item>)tmp).getKey();
+                    }
+                };
             }
 
             @Override
@@ -292,7 +307,17 @@ public final class Map$impl<Key,Item> {
 
             @Override
             public Iterator<? extends Item> getIterator() {
-                return bottom_.getBottom();
+                final Iterator<? extends Entry<? extends Key, ? extends Item>> orig = $this.getIterator();
+                return new Iterator<Item>() {
+                    @SuppressWarnings("unchecked")
+                    public java.lang.Object next() {
+                        java.lang.Object tmp = orig.next();
+                        if (tmp instanceof Finished) {
+                            return tmp;
+                        }
+                        return ((Entry<? extends Key, ? extends Item>)tmp).getItem();
+                    }
+                };
             }
 
             @Override
@@ -460,16 +485,16 @@ public final class Map$impl<Key,Item> {
         return _getInverse($this);
     }
     static <Key,Item> Map<? extends Item, ? extends Set<? extends Key>> _getInverse(final Map<Key,Item> $this){
-        class inverse implements Map<Item, Set<Key>>{
+        class inverse implements Map<Item, Set<? extends Key>>{
 
             @Override
-            public Collection<? extends Entry<? extends Item, ? extends Set<Key>>> getClone() {
+            public Collection<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getClone() {
                 return this;
             }
 
             @Override
             public boolean equals(java.lang.Object obj) {
-                return false;
+                return _equals(this, obj);
             }
 
             @Override
@@ -478,13 +503,42 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Set<Key> item(java.lang.Object key) {
-                return bottom_.getBottom();
+            public Set<? extends Key> item(final java.lang.Object key) {
+                return new LazySet<Key>(new AbstractIterable<Key>(){
+                    public Iterator<? extends Key> getIterator() {
+                        return new Iterator<Key>(){
+                            final Iterator<? extends Entry<? extends Key, ? extends Item>> orig = $this.getIterator();
+                            public java.lang.Object next() {
+                                java.lang.Object tmp = orig.next();
+                                while (!(tmp instanceof Finished)) {
+                                    @SuppressWarnings("unchecked")
+                                    Entry<? extends Key, ? extends Item> e = (Entry<? extends Key, ? extends Item>)tmp;
+                                    if (e.getItem().equals(key)) {
+                                        return e.getKey();
+                                    }
+                                    tmp = orig.next();
+                                }
+                                return tmp;
+                            }
+                        };
+                    }
+                });
             }
 
             @Override
-            public Iterator<? extends Entry<? extends Item, ? extends Set<Key>>> getIterator() {
-                return bottom_.getBottom();
+            public Iterator<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getIterator() {
+                return new Iterator<Entry<? extends Item, ? extends Set<Key>>>(){
+                    private final Iterator<? extends Entry<? extends Key, ? extends Item>> orig = $this.getIterator();
+                    @SuppressWarnings("unchecked")
+                    public java.lang.Object next() {
+                        java.lang.Object tmp = orig.next();
+                        if (tmp instanceof Finished) {
+                            return tmp;
+                        }
+                        final Item item = ((Entry<? extends Key, ? extends Item>)tmp).getItem();
+                        return new Entry<Item, Set<? extends Key>>(item, item(item));
+                    }
+                };
             }
 
             @Override
@@ -543,13 +597,13 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<? extends Set<Key>> items(Iterable<? extends java.lang.Object> keys) {
+            public Iterable<? extends Set<? extends Key>> items(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._items(this, keys);
             }
 
             @Override
             @Ignore
-            public Iterable<? extends Set<Key>> items() {
+            public Iterable<? extends Set<? extends Key>> items() {
                 return Correspondence$impl._items(this, empty_.getEmpty());
             }
 
@@ -615,65 +669,65 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Collection<? extends Set<Key>> getValues() {
+            public Collection<? extends Set<? extends Key>> getValues() {
                 return Map$impl._getValues(this);
             }
 
             @Override
             @Ignore
-            public Map<? extends Set<Key>, ? extends Set<? extends Item>> getInverse() {
+            public Map<? extends Set<? extends Key>, ? extends Set<? extends Item>> getInverse() {
                 return Map$impl._getInverse(this);
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getSequence() {
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getSequence() {
                     return Iterable$impl._getSequence(this);
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getRest() {
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getRest() {
                 return Iterable$impl._getRest(this);
             }
             @Override
             @Ignore
-            public Entry<? extends Item, ? extends Set<Key>> getFirst() {
+            public Entry<? extends Item, ? extends Set<? extends Key>> getFirst() {
                 return Iterable$impl._getFirst(this);
             }
             @Override @Ignore
-            public Entry<? extends Item, ? extends Set<Key>> getLast() {
+            public Entry<? extends Item, ? extends Set<? extends Key>> getLast() {
                 return Iterable$impl._getLast(this);
             }
             @Override @Ignore
-            public Entry<? extends Item, ? extends Set<Key>> find(Callable<? extends Boolean> f) {
+            public Entry<? extends Item, ? extends Set<? extends Key>> find(Callable<? extends Boolean> f) {
                 return Iterable$impl._find(this, f);
             }
             @Override @Ignore
-            public Entry<? extends Item, ? extends Set<Key>> findLast(Callable<? extends Boolean> f) {
+            public Entry<? extends Item, ? extends Set<? extends Key>> findLast(Callable<? extends Boolean> f) {
                 return Iterable$impl._findLast(this, f);
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> sort(Callable<? extends Comparison> f) {
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> sort(Callable<? extends Comparison> f) {
                 return Iterable$impl._sort(this, f);
             }
             @Override
             @Ignore
             public <Result> Iterable<? extends Result> map(Callable<? extends Result> f) {
-                return new MapIterable<Entry<? extends Item, ? extends Set<Key>>, Result>(this, f);
+                return new MapIterable<Entry<? extends Item, ? extends Set<? extends Key>>, Result>(this, f);
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> filter(Callable<? extends Boolean> f) {
-                return new FilterIterable<Entry<? extends Item, ? extends Set<Key>>>(this, f);
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> filter(Callable<? extends Boolean> f) {
+                return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>>(this, f);
             }
             @Override @Ignore
             public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
-                return new MapIterable<Entry<? extends Item, ? extends Set<Key>>, Result>(this, f).getSequence();
+                return new MapIterable<Entry<? extends Item, ? extends Set<? extends Key>>, Result>(this, f).getSequence();
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> select(Callable<? extends Boolean> f) {
-                return new FilterIterable<Entry<? extends Item, ? extends Set<Key>>>(this, f).getSequence();
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> select(Callable<? extends Boolean> f) {
+                return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>>(this, f).getSequence();
             }
             @Override
             @Ignore
@@ -689,17 +743,17 @@ public final class Map$impl<Key,Item> {
                 return Iterable$impl._every(this, f);
             }
 			@Override @Ignore
-			public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> skipping(long skip) {
+			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> skipping(long skip) {
 				return Iterable$impl._skipping(this, skip);
 			}
 
 			@Override @Ignore
-			public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> taking(long take) {
+			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> taking(long take) {
 				return Iterable$impl._taking(this, take);
 			}
 
 			@Override @Ignore
-			public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> by(long step) {
+			public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> by(long step) {
 				return Iterable$impl._by(this, step);
 			}
             @Override @Ignore
@@ -707,18 +761,18 @@ public final class Map$impl<Key,Item> {
                 return Iterable$impl._count(this, f);
             }
             @Override @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<Key>>> getCoalesced() {
+            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getCoalesced() {
                 return Iterable$impl._getCoalesced(this);
             }
             @Override @Ignore
-            public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Item, ? extends Set<Key>>>> getIndexed() {
+            public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Item, ? extends Set<? extends Key>>>> getIndexed() {
                 return Iterable$impl._getIndexed(this);
             }
             @Override @Ignore public <Other>Iterable chain(Iterable<? extends Other> other) {
                 return Iterable$impl._chain(this, other);
             }
             @Override @Ignore
-            public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Item, ? extends Set<Key>>>> group(Callable<? extends Key2> grouping) {
+            public <Key2> Map<? extends Key2, ? extends Sequence<? extends Entry<? extends Item, ? extends Set<? extends Key>>>> group(Callable<? extends Key2> grouping) {
                 return Iterable$impl._group(this, grouping);
             }
 
