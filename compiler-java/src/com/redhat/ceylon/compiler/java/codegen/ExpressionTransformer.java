@@ -563,10 +563,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.CharLiteral lit) {
-        JCExpression expr = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
-        // XXX make().Literal(lit.value) doesn't work here... something
-        // broken in javac?
-        return expr;
+        // codePoint is at index 1 because the text is `X` (including quotation marks, so we skip them)
+        int codePoint = lit.getText().codePointAt(1);
+        return make().Literal(TypeTags.INT, codePoint);
     }
 
     public JCExpression transform(Tree.FloatLiteral lit) {
