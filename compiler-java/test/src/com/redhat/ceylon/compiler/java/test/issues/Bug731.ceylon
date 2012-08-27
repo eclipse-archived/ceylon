@@ -20,4 +20,10 @@
 @nomodel
 class Bug731(String string) {
     shared Integer capacity = string.size;
+    shared Character get() {
+        if(is Character c = string[0]){
+            return c;
+        }
+        throw;
+    }
 }
