@@ -234,7 +234,7 @@ public final class Character
         return codePoint-other;
     }
     @Ignore
-    public static long distanceFrom(char a, char b) {
+    public static long distanceFrom(int a, int b) {
         return a-b;
     }
 
