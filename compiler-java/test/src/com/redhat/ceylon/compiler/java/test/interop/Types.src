@@ -167,8 +167,8 @@ final class characterTypes_ {
         final int c1 = java.return_char();
         final .ceylon.language.Character c2 = .ceylon.language.Character.instance(java.return_char());
         final int c3 = java.return_Character().charValue();
-        java.charParams((char)'a', new .java.lang.Character((char)'a'), .ceylon.language.Character.instance('a'));
-        java.charParams((char).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')).intValue(), new .java.lang.Character((char).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')).intValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance('a')));
+        java.charParams((char)97, new .java.lang.Character((char)97), .ceylon.language.Character.instance(97));
+        java.charParams((char).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance(97)).intValue(), new .java.lang.Character((char).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance(97)).intValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.instance(97)));
         java.charParams(java.return_char(), new .java.lang.Character(java.return_char()), .ceylon.language.Character.instance(java.return_char()));
         java.charParams(java.return_Character().charValue(), java.return_Character(), .ceylon.language.Character.instance(java.return_Character().charValue()));
     }

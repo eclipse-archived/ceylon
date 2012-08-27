@@ -164,7 +164,7 @@ public final class globalAttrCharacter_ {
     }
     private static final int[] value;
     static {
-        value = new int[]{'a'};
+        value = new int[]{97};
     }
     
     public static int getGlobalAttrCharacter() {
@@ -277,7 +277,7 @@ class BasicTypes {
         this.privateAttrFloat = 1.0;
         this.privateAttrString = "a";
         this.privateAttrBoolean = true;
-        this.privateAttrCharacter = 'a';
+        this.privateAttrCharacter = 97;
         this.privateAttrOptionalInteger = null;
         this.privateAttrOptionalFloat = null;
         this.privateAttrOptionalString = null;
@@ -287,7 +287,7 @@ class BasicTypes {
         this.sharedAttrFloat = 1.0;
         this.sharedAttrString = "a";
         this.sharedAttrBoolean = true;
-        this.sharedAttrCharacter = 'a';
+        this.sharedAttrCharacter = 97;
         this.sharedAttrOptionalInteger = null;
         this.sharedAttrOptionalFloat = null;
         this.sharedAttrOptionalString = null;

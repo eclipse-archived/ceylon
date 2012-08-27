@@ -205,9 +205,9 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     private final void unboxedCharacterArithmetic() {
-        int n1 = 'a';
-        int n2 = 'a';
-        int n3 = 'a';
+        int n1 = 97;
+        int n2 = 97;
+        int n3 = 97;
         n1++;
         ++n1;
         n1--;
@@ -478,8 +478,8 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     private final void unboxedCharacterComparison() {
-        int n1 = 'a';
-        int n2 = 'a';
+        int n1 = 97;
+        int n2 = 97;
         boolean sync;
         sync = n1 == n2;
         sync = !(n1 == n2);
@@ -492,7 +492,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     
     @.java.lang.Override
     public final void boxedCharacterComparison(final .ceylon.language.Character n2) {
-        int n1 = 'a';
+        int n1 = 97;
         boolean sync;
         sync = .ceylon.language.Character.instance(n1).equals(n2);
         sync = !.ceylon.language.Character.instance(n1).equals(n2);

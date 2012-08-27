@@ -51,7 +51,7 @@ class Bug689<X, Y> {
             }
             returning $ceylontmpopV5;
         )).getFirst();
-        final int c = ((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.String.<.ceylon.language.Character>withLeading("abc", .ceylon.language.Character.instance('d'))).getFirst().intValue();
+        final int c = ((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.String.<.ceylon.language.Character>withLeading("abc", .ceylon.language.Character.instance(100))).getFirst().intValue();
     }
     
     private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithUnion(final X x, final Y y) {

@@ -438,8 +438,8 @@ final class test_chars_ {
             .ceylon.language.print_.print(.ceylon.language.Character.instance(c2));
         }
         java.take_chars((char[])items.toArray());
-        java.take_chars((char[]).ceylon.language.array_.<.ceylon.language.Character>array(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'), .ceylon.language.Character.instance('c'))).toArray());
-        java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.arrayOfSome_.<.ceylon.language.Character>arrayOfSome(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance('a'), .ceylon.language.Character.instance('b'), .ceylon.language.Character.instance('c')))).toArray());
+        java.take_chars((char[]).ceylon.language.array_.<.ceylon.language.Character>array(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance(97), .ceylon.language.Character.instance(98), .ceylon.language.Character.instance(99))).toArray());
+        java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.arrayOfSome_.<.ceylon.language.Character>arrayOfSome(int.class, new .ceylon.language.ArraySequence<.ceylon.language.Character>(.ceylon.language.Character.instance(97), .ceylon.language.Character.instance(98), .ceylon.language.Character.instance(99)))).toArray());
         java.take_chars((char[])((.ceylon.language.Array<.ceylon.language.Character>).ceylon.language.arrayOfNone_.<.ceylon.language.Character>arrayOfNone(int.class)).toArray());
     }
     

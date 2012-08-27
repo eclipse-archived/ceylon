@@ -6,10 +6,10 @@ class CharacterBoxing {
     }
     
     private final void m() {
-        final int b1 = 'A';
+        final int b1 = 65;
         final int b2 = .ceylon.language.Character.getLowercased(b1);
-        final int b3 = .ceylon.language.Character.getUppercased('a');
-        final .ceylon.language.Character b4 = .ceylon.language.Character.instance(.ceylon.language.Character.getSuccessor('a'));
+        final int b3 = .ceylon.language.Character.getUppercased(97);
+        final .ceylon.language.Character b4 = .ceylon.language.Character.instance(.ceylon.language.Character.getSuccessor(97));
         final int b5 = successor(b3);
         final .ceylon.language.Character b6 = successor2(b4);
         final int b7 = successor3(b4);
@@ -35,7 +35,7 @@ class CharacterBoxing {
             final int $c$3 = $c$2.intValue();
             return .ceylon.language.Character.getSuccessor($c$3);
         } else {
-            return ' ';
+            return 32;
         }
     }
     
