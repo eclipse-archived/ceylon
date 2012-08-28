@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+final class bug708_ {
+    
+    private bug708_() {
+    }
+    
+    static <T>.java.lang.Object bug708() {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug708_.bug708();
+    }
+}
+final class s_ {
+    
+    private s_() {
+    }
+    private static final .ceylon.language.String[] value;
+    static {
+        value = new .ceylon.language.String[]{(.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug708_.<.ceylon.language.String>bug708()};
+    }
+    
+    static .ceylon.language.String getS() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
