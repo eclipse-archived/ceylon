@@ -611,7 +611,7 @@ public class ExpressionVisitor extends Visitor {
         v.setType(getRefinedMember(sv, c).getType());
         v.setShared(true);
         v.setActual(true);
-        v.setRefinedDeclaration(sv);
+        v.setRefinedDeclaration(sv.getRefinedDeclaration());
         v.setUnit(unit);
         v.setContainer(c);
         v.setShortcutRefinement(true);
@@ -662,7 +662,7 @@ public class ExpressionVisitor extends Visitor {
         }
         m.setShared(true);
         m.setActual(true);
-        m.setRefinedDeclaration(sm);
+        m.setRefinedDeclaration(sm.getRefinedDeclaration());
         m.setUnit(unit);
         m.setContainer(c);
         m.setShortcutRefinement(true);
