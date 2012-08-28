@@ -1,0 +1,84 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
+interface Bug510$Bug510inner {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+interface Bug510 {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+final class Bug510$impl {
+    
+    Bug510$impl(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510 $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final class Bug510inner$impl {
+        
+        Bug510inner$impl(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner $this;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class assert_ {
+    
+    private assert_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    static void $assert() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.assert_.$assert();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+final class volatile_ {
+    
+    private volatile_() {
+    }
+    private static final long[] value;
+    static {
+        value = new long[]{5L};
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    static long getVolatile() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Name("synchronized")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+final class synchronized_ {
+    
+    private synchronized_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_()};
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized")
+    static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_ getSynchronized() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}

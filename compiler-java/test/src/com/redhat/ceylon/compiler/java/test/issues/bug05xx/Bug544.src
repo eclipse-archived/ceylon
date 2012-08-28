@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+class Bug544 {
+    
+    Bug544(.java.lang.String s) {
+    }
+}
+class Bug544sub extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    Bug544sub(.java.lang.String s) {
+        super(s);
+        this.s = s;
+    }
+    private final .java.lang.String s;
+    
+    public final .java.lang.String getS() {
+        return s;
+    }
+}

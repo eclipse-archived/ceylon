@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+interface Bug633Ranged<Index, Span> {
+    
+    public abstract void span(final Index from);
+}
+final class Bug633Ranged$impl<Index, Span> {
+    
+    Bug633Ranged$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this;
+}
+interface Bug633Empty extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<.ceylon.language.Integer, .java.lang.Object> {
+}
+final class Bug633Empty$impl {
+    
+    Bug633Empty$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty $this;
+}
+class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty {
+    
+    Bug633EmptyImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object>(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this;
+    
+    @.java.lang.Override
+    public final void span(final .ceylon.language.Integer from) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
+    }
+}
+final class bug633_ {
+    
+    private bug633_() {
+    }
+    
+    static void bug633() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl a = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty b = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer> c = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug633_.bug633();
+    }
+}

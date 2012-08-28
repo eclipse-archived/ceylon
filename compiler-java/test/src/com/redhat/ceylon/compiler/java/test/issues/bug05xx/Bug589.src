@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+public abstract class Bug589 {
+    
+    public Bug589() {
+    }
+    
+    public final void inc() {
+        (
+            let
+            {
+                long $ceylontmp$i$1 = inc$i();
+                inc($ceylontmp$i$1);
+            }
+            returning null;
+        );
+    }
+    
+    public final long inc$i() {
+        return 1L;
+    }
+    
+    public abstract void inc(final long i);
+}

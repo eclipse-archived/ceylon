@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+public final class bug671_ {
+    
+    private bug671_() {
+    }
+    
+    public static void bug671() {
+        final .ceylon.language.Array<.ceylon.language.Integer> a6 = .ceylon.language.array_.<.ceylon.language.Integer>array(.ceylon.language.Integer.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)));
+        a6.setItem(0L, null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug671_.bug671();
+    }
+}

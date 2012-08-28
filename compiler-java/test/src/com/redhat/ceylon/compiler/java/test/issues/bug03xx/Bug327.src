@@ -1,0 +1,65 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
+
+abstract class Bug327 {
+    
+    Bug327() {
+    }
+}
+final class bug327_foo_ extends .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug327 {
+    
+    private bug327_foo_() {
+        super();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_ getBug327_foo() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+final class bug327_bar_ extends .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug327 {
+    
+    private bug327_bar_() {
+        super();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_ getBug327_bar() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+final class bug327_test_ {
+    
+    private bug327_test_() {
+    }
+    
+    static void bug327_test() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug327 fb = .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.getBug327_foo();
+        {
+            .java.lang.Object $sel$0 = fb;
+            if ($sel$0 == .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.getBug327_foo()) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
+            } else if ($sel$0 == .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.getBug327_bar()) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("bar"));
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_test_.bug327_test();
+    }
+}

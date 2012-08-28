@@ -1,0 +1,9 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug04xx.bug493;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Module(name = "default", version = "unversioned", dependencies = {})
+final class module_ {
+    
+    private module_() {
+    }
+}

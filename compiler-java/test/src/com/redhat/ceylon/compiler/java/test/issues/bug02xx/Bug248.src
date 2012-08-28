@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+final class bug248_ {
+    
+    private bug248_() {
+    }
+    
+    static void bug248() {
+        while ((
+            let
+            {
+                boolean $ceylontmp0 = false;
+            }
+            returning $ceylontmp0;
+        )) {
+            throw new .ceylon.language.Exception(null, null);
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug248_.bug248();
+    }
+}

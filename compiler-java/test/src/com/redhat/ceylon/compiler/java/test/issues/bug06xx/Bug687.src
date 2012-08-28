@@ -1,0 +1,97 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+class Bug687 {
+    
+    Bug687() {
+    }
+    
+    private final <T>void method(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+    
+    public final <T extends .ceylon.language.Number>void sort() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends T> $ceylontmp$elements$1 = sort$elements();
+                sort($ceylontmp$elements$1);
+            }
+            returning null;
+        );
+    }
+    
+    public final <T extends .ceylon.language.Number>.ceylon.language.Iterable<? extends T> sort$elements() {
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
+    public final <T extends .ceylon.language.Number>void sort(final .ceylon.language.Iterable<? extends T> elements) {
+    }
+    
+    public final <T extends .ceylon.language.Number>void sort3(final .ceylon.language.Iterable<? extends T> elements) {
+    }
+    
+    public final void sort2() {
+        (
+            let
+            {
+                .ceylon.language.Iterable $ceylontmp$elements$3 = sort2$elements();
+                sort2($ceylontmp$elements$3);
+            }
+            returning null;
+        );
+    }
+    
+    public final .ceylon.language.Iterable sort2$elements() {
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
+    public final void sort2(final .ceylon.language.Iterable elements) {
+    }
+    
+    private final void foo(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
+        sort((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty());
+        (
+            let
+            {
+                .ceylon.language.Iterable $arg$4$0 = .ceylon.language.empty_.getEmpty();
+                sort($arg$4$0);
+            }
+            returning null;
+        );
+        sort2(.ceylon.language.empty_.getEmpty());
+        (
+            let
+            {
+                .ceylon.language.Iterable $arg$5$0 = .ceylon.language.empty_.getEmpty();
+                sort2($arg$5$0);
+            }
+            returning null;
+        );
+        p.$call(.ceylon.language.empty_.getEmpty());
+        (
+            let
+            {
+                .ceylon.language.Iterable $arg$6$0 = .ceylon.language.empty_.getEmpty();
+            }
+            returning p.$call($arg$6$0);
+        );
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void,ceylon.language.Iterable<ceylon.language.Bottom>>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                return (
+                    let
+                    {
+                        sort3((.ceylon.language.Iterable)$param$0);
+                    }
+                    returning null;
+                );
+            }
+        };
+        f.$call(.ceylon.language.empty_.getEmpty());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687();
+    }
+}

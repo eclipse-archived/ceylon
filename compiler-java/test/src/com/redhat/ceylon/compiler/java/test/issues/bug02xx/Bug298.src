@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+class OuterClass {
+    
+    OuterClass() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass InnerClass$new() {
+        return new InnerClass();
+    }
+    
+    public class InnerClass {
+        
+        protected InnerClass() {
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass();
+    }
+}
+final class m_ {
+    
+    private m_() {
+    }
+    
+    static void m() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass o = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass i = o.InnerClass$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.m_.m();
+    }
+}

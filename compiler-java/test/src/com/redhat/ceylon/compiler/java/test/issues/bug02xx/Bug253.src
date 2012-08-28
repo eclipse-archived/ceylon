@@ -1,0 +1,96 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+interface Boxer<T> {
+    
+    public abstract T getOne();
+    
+    public abstract void setOne(final T one);
+    
+    public abstract T getTwo();
+    
+    public abstract void setTwo(final T two);
+}
+final class Boxer$impl<T> {
+    
+    Boxer$impl(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this;
+    
+    public final T getOne() {
+        return $this.getOne();
+    }
+    
+    public final void setOne(final T one) {
+        $this.setOne(one);
+    }
+    
+    public final T getTwo() {
+        return $this.getTwo();
+    }
+    
+    public final void setTwo(final T two) {
+        $this.setTwo(two);
+    }
+}
+class IntBoxer implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<.ceylon.language.Integer> {
+    
+    IntBoxer() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer>(this);
+        this.one = .ceylon.language.Integer.instance(1L);
+        this.two = .ceylon.language.Integer.instance(2L);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this;
+    private .ceylon.language.Integer one;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getOne() {
+        return one;
+    }
+    
+    @.java.lang.Override
+    public final void setOne(final .ceylon.language.Integer one) {
+        this.one = one;
+    }
+    private .ceylon.language.Integer two;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getTwo() {
+        return two;
+    }
+    
+    @.java.lang.Override
+    public final void setTwo(final .ceylon.language.Integer two) {
+        this.two = two;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer();
+    }
+}
+final class bug253_ {
+    
+    private bug253_() {
+    }
+    
+    static void bug253() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer boxer = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer();
+        boxer.setOne(.ceylon.language.Integer.instance(1L));
+        boxer.setTwo(.ceylon.language.Integer.instance(2L));
+        boxer.setOne((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.IntBoxer $ceylontmpopE0 = boxer;
+                .ceylon.language.Integer $ceylontmpopV1 = .ceylon.language.Integer.instance(3L);
+                $ceylontmpopE0.setTwo($ceylontmpopV1);
+            }
+            returning $ceylontmpopV1;
+        ));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug253_.bug253();
+    }
+}

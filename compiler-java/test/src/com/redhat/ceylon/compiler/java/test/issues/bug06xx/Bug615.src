@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+interface I {
+    
+    public abstract .ceylon.language.Integer getX();
+}
+final class I$impl {
+    
+    I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this;
+    
+    public final .ceylon.language.Integer getX() {
+        return $this.getX();
+    }
+}
+class C implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
+    
+    C(.ceylon.language.Integer x) {
+        this.x = x;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this;
+    private final .ceylon.language.Integer x;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getX() {
+        return x;
+    }
+}

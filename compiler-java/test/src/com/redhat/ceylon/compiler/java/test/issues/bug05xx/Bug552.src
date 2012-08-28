@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+class C<T> {
+    
+    C() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C();
+    }
+}
+class A {
+    
+    A() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.A();
+    }
+}
+final class test_ {
+    
+    private test_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A>[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A>()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A> getTest() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}

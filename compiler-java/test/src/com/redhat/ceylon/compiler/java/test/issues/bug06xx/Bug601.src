@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+final class bug601_ {
+    
+    private bug601_() {
+    }
+    
+    static void bug601() {
+        .ceylon.language.first_.<.ceylon.language.Sequence<? extends .ceylon.language.String>>first(new .ceylon.language.ArraySequence<.ceylon.language.Sequence<? extends .ceylon.language.String>>(new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+        .ceylon.language.first_.first(new .ceylon.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String>>(.ceylon.language.String.split("hello world").getSequence(), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+        .ceylon.language.first_.first(new .ceylon.language.ArraySequence<.ceylon.language.Iterable<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = .ceylon.language.String.split("hello world").getIterator();
+                    private .ceylon.language.String str;
+                    private boolean str$exhausted;
+                    
+                    private final boolean str() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted();
+                        if (str$exhausted) {
+                            return false;
+                        } else {
+                            str = (.ceylon.language.String)$ceylontmpitem0;
+                        }
+                        return true;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.str() ? str : .ceylon.language.exhausted_.getExhausted();
+                    }
+                };
+            }
+        }.getSequence(), new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""))));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug601_.bug601();
+    }
+}

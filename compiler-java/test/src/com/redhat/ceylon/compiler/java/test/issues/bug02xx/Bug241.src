@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+class Bug241<T> {
+    
+    Bug241() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241();
+    }
+}
+final class bug241_ {
+    
+    private bug241_() {
+    }
+    
+    static <Key extends .ceylon.language.Sized, Item extends .ceylon.language.Sized>void bug241() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241<.ceylon.language.Entry<? extends Key, ? extends Item>> builder = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug241<.ceylon.language.Entry<? extends Key, ? extends Item>>();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug241_.bug241();
+    }
+}

@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+final class bug586_ {
+    
+    private bug586_() {
+    }
+    
+    static void bug586() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        final .ceylon.language.String s = ((.ceylon.language.Iterable<? extends .ceylon.language.String>)(
+            let
+            {
+                .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)seq;
+            }
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$0.getEmpty() ? (
+                let
+                {
+                    .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$0;
+                    int $spread$1$2 = (int)$spread$1$0.getSize();
+                    .ceylon.language.String[] $spread$1$4 = new .ceylon.language.String[$spread$1$2];
+                    for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.String.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).toString());
+                }
+                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$1$4);
+            ) : .ceylon.language.empty_.getEmpty());
+        )).getFirst();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug586_.bug586();
+    }
+}
