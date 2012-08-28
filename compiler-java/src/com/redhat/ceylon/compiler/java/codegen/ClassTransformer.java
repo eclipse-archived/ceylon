@@ -1419,15 +1419,17 @@ public class ClassTransformer extends AbstractTransformer {
                     methName, args.toList());
             }
                
-            if (isVoid(model) && !Strategy.generateInstantiator(model)) {
-                vars.append(make().Exec(invocation));
-                invocation = make().LetExpr(vars.toList(), makeNull());
-                overloadBuilder.body(make().Exec(invocation));
-            } else {
+            if (!isVoid(model)
+                    || (model instanceof Method && Strategy.useBoxedVoid((Method)model)) 
+                    || Strategy.generateInstantiator(model)) {
                 if (!vars.isEmpty()) {
                     invocation = make().LetExpr(vars.toList(), invocation);
                 }
                 overloadBuilder.body(make().Return(invocation));
+            } else {
+                vars.append(make().Exec(invocation));
+                invocation = make().LetExpr(vars.toList(), makeNull());
+                overloadBuilder.body(make().Exec(invocation));
             }
         } else {
             overloadBuilder.noBody();
