@@ -595,7 +595,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug708() {
+    public void testBug708_fail() {
         compareWithJavaSource("bug07xx/Bug708");
     }
     
@@ -611,7 +611,7 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
-    public void testBug712() {
+    public void testBug712_fail() {
         compile("bug07xx/Bug712.ceylon");
     }
     
@@ -621,7 +621,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug722() {
+    public void testBug722_fail() {
         compile("bug07xx/Bug722.ceylon");
     }
     
