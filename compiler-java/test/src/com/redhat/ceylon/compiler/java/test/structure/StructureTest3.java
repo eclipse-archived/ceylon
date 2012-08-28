@@ -36,8 +36,7 @@ public class StructureTest3 extends CompilerTest {
     }
     
     @Test
-    public void testMcrClassDefaultMemberClassWithTypeParams_fail(){
-        // Need one which passes the typechecker
+    public void testMcrClassDefaultMemberClassWithTypeParams(){
         compareWithJavaSource("mcr/ClassDefaultMemberClassWithTypeParams");
     }
     

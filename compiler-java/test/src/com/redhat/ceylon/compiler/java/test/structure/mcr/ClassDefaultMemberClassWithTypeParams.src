@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+class ClassDefaultMemberClassWithTypeParams<T> {
+    
+    ClassDefaultMemberClassWithTypeParams(T tt) {
+        this.tt = tt;
+    }
+    private final T tt;
+    
+    public <U>.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<T>.Member<U> Member$new(final T t, final U u) {
+        return new Member<U>(t, u);
+    }
+    
+    public class Member<U> {
+        
+        protected Member(T t, U u) {
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<T>.Member<.ceylon.language.Integer> m1() {
+        (
+            let
+            {
+                .ceylon.language.Integer $arg$1$1 = .ceylon.language.Integer.instance(1L);
+                T $arg$1$0 = tt;
+            }
+            returning Member$new($arg$1$0, $arg$1$1);
+        );
+        return Member$new(tt, .ceylon.language.Integer.instance(1L));
+    }
+}
+class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<X> {
+    
+    ClassDefaultMemberClassWithTypeParams_sub(X xx) {
+        super(xx);
+        this.xx = xx;
+    }
+    private final X xx;
+    
+    @.java.lang.Override
+    public <Y>.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub<X>.Member<Y> Member$new(final X x, final Y y) {
+        return new Member<Y>(x, y);
+    }
+    
+    public class Member<Y> extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<X>.Member<Y> {
+        
+        protected Member(X x, Y y) {
+            super(x, y);
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub<X>.Member<.ceylon.language.String> m2() {
+        (
+            let
+            {
+                .ceylon.language.String $arg$3$1 = .ceylon.language.String.instance("");
+                X $arg$3$0 = xx;
+            }
+            returning Member$new($arg$3$0, $arg$3$1);
+        );
+        return Member$new(xx, .ceylon.language.String.instance(""));
+    }
+}
