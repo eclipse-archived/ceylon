@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class CallableArgumentVoid {
+    
+    CallableArgumentVoid() {
+    }
+    
+    private final void f(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        g.$call();
+    }
+    
+    private final void m() {
+    }
+    
+    public .java.lang.Object m2() {
+        return null;
+    }
+    
+    public .java.lang.Object m3() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    private final void callsite() {
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return (
+                    let
+                    {
+                        m();
+                    }
+                    returning null;
+                );
+            }
+        });
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return m2();
+            }
+        });
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return m3();
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentVoid();
+    }
+}

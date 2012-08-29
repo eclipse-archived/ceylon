@@ -226,6 +226,11 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
+    public void testCallableArgumentVoid(){
+        compareWithJavaSource("invoke/CallableArgumentVoid");
+    }
+    
+    @Test
     public void testCallableArgumentNullary(){
         compareWithJavaSource("invoke/CallableArgumentNullary");
     }
