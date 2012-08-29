@@ -190,7 +190,8 @@ public class MethodDefinitionBuilder {
                 || (!(typedDeclaration instanceof FunctionalParameter)
                         && gen.isVoid(type))) {
             if ((typedDeclaration instanceof Method)
-                    && ((Method)typedDeclaration).isDeclaredVoid()) {
+                    && ((Method)typedDeclaration).isDeclaredVoid()
+                    && !Strategy.useBoxedVoid((Method)typedDeclaration)) {
                 return makeVoidType();
             } else {
                 return gen.makeJavaType(typedDeclaration, gen.typeFact().getVoidDeclaration().getType(), flags);
