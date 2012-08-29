@@ -1190,6 +1190,7 @@ public class ClassTransformer extends AbstractTransformer {
         final Method model = def.getDeclarationModel();
         List<JCStatement> body;
         MethodDeclaration methodDecl = (MethodDeclaration)def;
+        boolean returnNull = false;
         JCExpression bodyExpr;
         Tree.Term term = null;
         if (specifierExpression != null
@@ -1201,6 +1202,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
             ProducedType resultType = model.getType();
+            returnNull = isVoid(resultType) && fa.getExpression().getUnboxed();
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
             for (int ii = 0; ii < lambdaParams.size(); ii++) {
@@ -1217,13 +1219,18 @@ public class ClassTransformer extends AbstractTransformer {
                         null);
             }
         } else {
+            returnNull = isVoid(getReturnTypeOfCallable(term.getTypeModel())) && term.getUnboxed();
             InvocationBuilder specifierBuilder = InvocationBuilder.forSpecifierInvocation(gen(), specifierExpression, methodDecl.getDeclarationModel());
             bodyExpr = specifierBuilder.build();
         }
-        if (Decl.isUnboxedVoid(model)) {
-            body = List.<JCStatement>of(make().Exec(bodyExpr));
+        if (!Decl.isUnboxedVoid(model) || Strategy.useBoxedVoid(model)) {
+            if (returnNull) {
+                body = List.<JCStatement>of(make().Exec(bodyExpr), make().Return(makeNull()));
+            } else {
+                body = List.<JCStatement>of(make().Return(bodyExpr));
+            }
         } else {
-            body = List.<JCStatement>of(make().Return(bodyExpr));
+            body = List.<JCStatement>of(make().Exec(bodyExpr));
         }
         return body;
     }
