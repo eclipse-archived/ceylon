@@ -306,7 +306,7 @@ public abstract class CompilerTest {
         //    writeFile(expectedSrcFile, compiledSrc);
         //}
         
-        //Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
+        Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
 
     private String readFile(File file) {
