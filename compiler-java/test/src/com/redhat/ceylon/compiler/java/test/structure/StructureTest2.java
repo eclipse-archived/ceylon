@@ -156,7 +156,7 @@ public class StructureTest2 extends CompilerTest {
     public void testImpImportWildcardSinglePass(){
         List<String> options = new LinkedList<String>();
         options.add("-src");
-        options.add(path+"/import_/src");
+        options.add(getPackagePath()+"/import_/src");
         CeyloncTaskImpl task = getCompilerTask(options, "import_/src/pkg/File.ceylon", "import_/src/pkg/sub/ConcreteDirectory.ceylon");
         Assert.assertTrue(task.call());
         task = getCompilerTask(options, "import_/src/pkg/File.ceylon", "import_/src/pkg/sub/ConcreteDirectory.ceylon");

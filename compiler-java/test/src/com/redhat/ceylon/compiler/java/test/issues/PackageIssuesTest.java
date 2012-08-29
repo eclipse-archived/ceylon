@@ -19,6 +19,10 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -29,18 +33,26 @@ import com.redhat.ceylon.compiler.java.test.CompilerTest;
  */
 public class PackageIssuesTest extends CompilerTest {
     
+    private String testDir;
+    
     @Override
     protected String getSourcePath() {
-        return path;
+        return super.getPackagePath() + testDir + File.separator;
+    }
+    
+    @Override
+    protected String getPackagePath() {
+        return super.getPackagePath() + testDir + File.separator;
     }
 	
     @Override
     protected String transformDestDir(String name) {
         return name + "-package-issues";
     }
-
+    
     @Test
     public void testBug148(){
+        testDir = "bug01xx";
         compareWithJavaSource("bug148/Bug148.src", "bug148/Bug148.ceylon");
         compareWithJavaSource("bug148_2/Bug148_2.src", "bug148_2/Bug148_2.ceylon");
         compareWithJavaSource("bug148_3/Bug148_3.src", "bug148_3/Bug148_3.ceylon");
@@ -48,17 +60,20 @@ public class PackageIssuesTest extends CompilerTest {
     
     @Test
     public void testBug187(){
+        testDir = "bug01xx";
         compile("bug187/Main.ceylon");
         compareWithJavaSource("bug187/Bug187");
     }
 	
     @Test
     public void testBug214(){
+        testDir = "bug02xx";
         compareWithJavaSource("Bug214.src", "Bug214.ceylon");
     }
     
     @Test
     public void testBug542(){
+        testDir = "bug05xx";
         compareWithJavaSource("Bug542");
     }
     

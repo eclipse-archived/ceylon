@@ -69,14 +69,12 @@ public abstract class CompilerTest {
     protected final String moduleName;
     protected final List<String> defaultOptions;
 
-    protected final String path;
-
     public CompilerTest() {
         // for comparing with java source
         Package pakage = getClass().getPackage();
         moduleName = pakage.getName();
-        String pkg = pakage == null ? "" : moduleName.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
-        path = dir + File.separator + pkg + File.separator;
+        
+        
         int lastDot = moduleName.lastIndexOf('.');
         if(lastDot == -1){
             destDir = destDirGeneral + File.separator + transformDestDir(moduleName);
@@ -100,6 +98,12 @@ public abstract class CompilerTest {
         }
     }
 
+    protected String getPackagePath() {
+        Package pakage = getClass().getPackage();
+        String pkg = pakage == null ? "" : moduleName.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+        return dir + File.separator + pkg + File.separator;
+    }
+    
     protected CeyloncFileManager makeFileManager(CeyloncTool compiler, DiagnosticListener<? super FileObject> diagnosticListener){
         return (CeyloncFileManager)compiler.getStandardFileManager(diagnosticListener, null, null);
 	}
@@ -209,7 +213,7 @@ public abstract class CompilerTest {
         Assert.assertTrue("Compilation failed", success);
 
         // now look at what we expected
-        String expectedSrc = normalizeLineEndings(readFile(new File(path, name+".src"))).trim();
+        String expectedSrc = normalizeLineEndings(readFile(new File(getPackagePath(), name+".src"))).trim();
         String compiledSrc = listener.compilerSrc.trim();
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
@@ -252,7 +256,7 @@ public abstract class CompilerTest {
         Assert.assertTrue("Compilation failed", success);
 
         // now look at what we expected
-        String expectedSrc = normalizeLineEndings(readFile(new File(path, name+".src"))).trim();
+        String expectedSrc = normalizeLineEndings(readFile(new File(getPackagePath(), name+".src"))).trim();
         String compiledSrc = listener.compilerSrc.trim();
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
@@ -291,7 +295,7 @@ public abstract class CompilerTest {
         Assert.assertTrue("Compilation failed", success);
 
         // now look at what we expected
-        File expectedSrcFile = new File(path, java);
+        File expectedSrcFile = new File(getPackagePath(), java);
         String expectedSrc = normalizeLineEndings(readFile(expectedSrcFile)).trim();
         String compiledSrc = listener.compilerSrc.trim();
         
@@ -457,7 +461,7 @@ public abstract class CompilerTest {
         ZipFileIndexCache.getSharedInstance().clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
         for(String file : sourcePaths){
-            sourceFiles.add(new File(path, file));
+            sourceFiles.add(new File(getPackagePath(), file));
         }
 
         CeyloncTool runCompiler = makeCompiler();

@@ -72,7 +72,7 @@ public class CMRTest extends CompilerTest {
     public void testMdlByName() throws IOException{
         List<String> options = new LinkedList<String>();
         options.add("-src");
-        options.add(path+"/modules/byName");
+        options.add(getPackagePath()+"/modules/byName");
         options.addAll(defaultOptions);
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
@@ -187,7 +187,7 @@ public class CMRTest extends CompilerTest {
     private void compileModuleFromSourceFolder(String module, String srcFolder, String outFolder) {
         List<String> options = new LinkedList<String>();
         options.add("-src");
-        options.add(path+"/modules/"+srcFolder);
+        options.add(getPackagePath()+"/modules/"+srcFolder);
         if(outFolder != null){
             options.add("-out");
             options.add(outFolder);
@@ -370,9 +370,9 @@ public class CMRTest extends CompilerTest {
     
     @Test
     public void testMdlSuppressObsoleteClasses() throws IOException{
-        File sourceFile = new File(path, "modules/single/SuppressClass.ceylon");
+        File sourceFile = new File(getPackagePath(), "modules/single/SuppressClass.ceylon");
 
-        copy(new File(path, "modules/single/SuppressClass_1.ceylon"), sourceFile);
+        copy(new File(getPackagePath(), "modules/single/SuppressClass_1.ceylon"), sourceFile);
         CeyloncTaskImpl compilerTask = getCompilerTask("modules/single/module.ceylon", "modules/single/SuppressClass.ceylon");
         Boolean success = compilerTask.call();
         assertTrue(success);
@@ -386,7 +386,7 @@ public class CMRTest extends CompilerTest {
         assertNotNull(twoClass);
         car.close();
 
-        copy(new File(path, "modules/single/SuppressClass_2.ceylon"), sourceFile);
+        copy(new File(getPackagePath(), "modules/single/SuppressClass_2.ceylon"), sourceFile);
         compilerTask = getCompilerTask("modules/single/module.ceylon", "modules/single/SuppressClass.ceylon");
         success = compilerTask.call();
         assertTrue(success);
@@ -455,7 +455,7 @@ public class CMRTest extends CompilerTest {
         
         JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
-        File javaFile = new File(path+"/modules/jarDependency/java/JavaDependency.java");
+        File javaFile = new File(getPackagePath()+"/modules/jarDependency/java/JavaDependency.java");
         Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjects(javaFile);
         CompilationTask task = javaCompiler.getTask(null, null, null, Arrays.asList("-d", "build/java-jar", "-sourcepath", "test-src"), null, compilationUnits);
         assertEquals(Boolean.TRUE, task.call());
@@ -524,13 +524,13 @@ public class CMRTest extends CompilerTest {
     @Test
     public void testMdlMultipleVersions(){
         // Compile module A/1
-        Boolean result = getCompilerTask(Arrays.asList("-src", path+"/modules/multiversion/a1"),
+        Boolean result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a1"),
                 "modules/multiversion/a1/a/module.ceylon", "modules/multiversion/a1/a/package.ceylon", "modules/multiversion/a1/a/A.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
         
         ErrorCollector collector = new ErrorCollector();
         // Compile module A/2 with B importing A/1
-        result = getCompilerTask(Arrays.asList("-src", path+"/modules/multiversion/a2:"+path+"/modules/multiversion/b"),
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a2:"+getPackagePath()+"/modules/multiversion/b"),
                 collector,
                 "modules/multiversion/a2/a/module.ceylon", "modules/multiversion/a2/a/package.ceylon", "modules/multiversion/a2/a/A.ceylon",
                 "modules/multiversion/b/b/module.ceylon", "modules/multiversion/b/b/B.ceylon").call();
