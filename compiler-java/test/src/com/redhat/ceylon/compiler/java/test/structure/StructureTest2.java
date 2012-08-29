@@ -336,7 +336,7 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
-    public void testCncIntersectionSatisfier_fail(){
+    public void testCncIntersectionSatisfier(){
         compareWithJavaSource("concrete/IntersectionSatisfier");
     }
 }
