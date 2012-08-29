@@ -17,7 +17,7 @@ void test_foreach() {
     for (Integer i in list) {
         sum += i;
     }
-    assert(sum==15, "simple foreach");
+    check(sum==15, "simple foreach");
     Boolean hasEvens(Sequence<Integer> l) {
         variable Boolean found := false;
         for (i in l) {
@@ -31,10 +31,10 @@ void test_foreach() {
         return found;
     }
     value odds = { 1, 3, 5 };
-    assert(hasEvens(list), "for/else 1");
-    assert(!hasEvens(odds), "for/else 2");
-    assert(hasEvens({1,3,5,2}),"for/else 3");
-    assert(hasEvens({1,3,2,5}),"for/else 4");
+    check(hasEvens(list), "for/else 1");
+    check(!hasEvens(odds), "for/else 2");
+    check(hasEvens({1,3,5,2}),"for/else 3");
+    check(hasEvens({1,3,2,5}),"for/else 4");
     //nested
     sum := 0;
     for (i in odds) {
@@ -43,7 +43,7 @@ void test_foreach() {
         sum += j;
       }
     }
-    assert(sum==45, "nested foreach");
+    check(sum==45, "nested foreach");
     //key-value
     sum := 0;
     value _entries = { 1->10, 2->20, 3->30 };
@@ -51,7 +51,7 @@ void test_foreach() {
       sum += idx;
       sum += elem;
     }
-    assert(sum==66, "key-value foreach");
+    check(sum==66, "key-value foreach");
     //with iterator
     sum := 0;
     variable Boolean did_else := false;
@@ -60,24 +60,24 @@ void test_foreach() {
     } else {
         did_else := true;
     }
-    assert(sum==15, "foreach with iterator");
-    assert(did_else, "for/else with iterator");
+    check(sum==15, "foreach with iterator");
+    check(did_else, "for/else with iterator");
     for (idx -> elem in entries(2,4,6)) {
         if (idx == 0) { break; }
     } else {
         sum := 0;
     }
-    assert(sum==15, "for/else with iterator");
+    check(sum==15, "for/else with iterator");
 }
 
 void iterators() {
     variable value i:=0;
     for (s in Pair("hello", "world")) {
-        if (i==0) { assert(s=="hello", "iterator iteration"); }
-        if (i==1) { assert(s=="world", "iterator iteration"); }
+        if (i==0) { check(s=="hello", "iterator iteration"); }
+        if (i==1) { check(s=="world", "iterator iteration"); }
         i++;
     }
-    assert(i==2, "iterator iteration");
+    check(i==2, "iterator iteration");
 
     //more tests, from ceylon-js
     value seq = { 1, 2, 3, 4, 5 };
@@ -86,19 +86,19 @@ void iterators() {
     value iter1 = seq.iterator;
     value iter2 = range.iterator;
     value iter3 = sing.iterator;
-    assert(iter1.next()==1, "seq.iter");
+    check(iter1.next()==1, "seq.iter");
     iter1.next(); iter1.next(); iter1.next();
-    assert(iter1.next()==5, "seq.iter");
-    assert(iter1.next()==exhausted, "seq.iter");
-    assert(iter1.next()==exhausted, "seq.iter");
-    assert(iter2.next()==95, "range.iter");
+    check(iter1.next()==5, "seq.iter");
+    check(iter1.next()==exhausted, "seq.iter");
+    check(iter1.next()==exhausted, "seq.iter");
+    check(iter2.next()==95, "range.iter");
     iter2.next(); iter2.next(); iter2.next(); iter2.next();
-    assert(iter2.next()==100, "range.iter");
-    assert(iter2.next()==exhausted, "range.iter");
-    assert(iter2.next()==exhausted, "range.iter");
-    assert(iter3.next()==10, "singleton.iter");
-    assert(iter3.next()==exhausted, "singleton.iter");
-    assert(iter3.next()==exhausted, "singleton.iter");
+    check(iter2.next()==100, "range.iter");
+    check(iter2.next()==exhausted, "range.iter");
+    check(iter2.next()==exhausted, "range.iter");
+    check(iter3.next()==10, "singleton.iter");
+    check(iter3.next()==exhausted, "singleton.iter");
+    check(iter3.next()==exhausted, "singleton.iter");
 
     print("Testing for/else loops");
     test_foreach();
@@ -106,10 +106,10 @@ void iterators() {
     //Test ChainedIterator
     value chained = ChainedIterator({1},{2});
     if (is Integer ii=chained.next()) {
-        assert(ii==1, "ChainedIterator [1]");
+        check(ii==1, "ChainedIterator [1]");
     } else { fail("ChainedIterator [1]");}
     if (is Integer ii=chained.next()) {
-        assert(ii==2, "ChainedIterator [2]");
+        check(ii==2, "ChainedIterator [2]");
     } else { fail("ChainedIterator [2]");}
-    assert(is Finished chained.next(), "ChainedIterator [3]");
+    check(is Finished chained.next(), "ChainedIterator [3]");
 }

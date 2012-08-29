@@ -10,23 +10,23 @@ class TestCallable(String what) {
 
 void callables() {
   value seq = {"Hello", "World"};
-  assert(testCallable("Hello".initial)=="H", "higher-class 1");
+  check(testCallable("Hello".initial)=="H", "higher-class 1");
   value ini1 = "Hello".initial;
-  assert(testCallable(ini1)=="H", "higher-class 2");
+  check(testCallable(ini1)=="H", "higher-class 2");
   /*
   value ini2 = seq[].initial;
   function ini3(Integer i) = ini2;
   String[] ini4(Integer i) = seq[].initial;
-  assert(ini3(1) == {"H", "W"}, "higher-class 3 (ceylon-js #53)");
-  assert(ini4(1) == {"H", "W"}, "higher-class 4 (ceylon-js #53)");
-  assert("Callable" in className(ini2), "Spread Callable className");
+  check(ini3(1) == {"H", "W"}, "higher-class 3 (ceylon-js #53)");
+  check(ini4(1) == {"H", "W"}, "higher-class 4 (ceylon-js #53)");
+  check("Callable" in className(ini2), "Spread Callable className");
   */
   function ini5(Integer i) = TestCallable("Some string").something;
-  assert(ini5(4) == "Some", "higher-class 5");
-  assert(testCallable(TestCallable("Moar").something) == "M", "higher-class 6");
+  check(ini5(4) == "Some", "higher-class 5");
+  check(testCallable(TestCallable("Moar").something) == "M", "higher-class 6");
   value tc = TestCallable("Less").something;
-  assert("callable" in className(tc).lowercased, "Callable classname");
-  assert(testCallable(tc) == "L", "higher-class 7");
+  check("callable" in className(tc).lowercased, "Callable classname");
+  check(testCallable(tc) == "L", "higher-class 7");
   
   TestCallable(String) clazz = TestCallable;
   TestCallable inst = clazz("hello");
@@ -35,12 +35,12 @@ void callables() {
   Void(Bottom) methSuper = inst.something;
   function noop(Object x, Object y) { return x; }
   Object(String,Integer) noopRef = noop;
-  assert("hello"==noopRef("hello",2), "Callable contravariance");
+  check("hello"==noopRef("hello",2), "Callable contravariance");
 
   //From #56
   void resolve(Integer g()) {
     value which=g();
-    assert(which==2, "closures: callable returns " which " instead of 2");
+    check(which==2, "closures: callable returns " which " instead of 2");
   }
   variable Callable<Integer>? f := null;
   for (i in 1..2) {

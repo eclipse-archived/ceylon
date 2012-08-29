@@ -8,34 +8,34 @@ void misc() {
         return sb.string;
     }
     
-    assert(stringify("hello".characters...)=="hello", "args");
-    assert(stringify( `h`, `i` )=="hi", "sequenced args");
-    assert(stringify { chars="hello".characters; }=="hello", "named args");
-    assert(stringify { `h`, `i` }=="hi", "named sequenced args");
-    assert(stringify()=="", "no args");
-    assert(stringify{}=="", "no named args");
+    check(stringify("hello".characters...)=="hello", "args");
+    check(stringify( `h`, `i` )=="hi", "sequenced args");
+    check(stringify { chars="hello".characters; }=="hello", "named args");
+    check(stringify { `h`, `i` }=="hi", "named sequenced args");
+    check(stringify()=="", "no args");
+    check(stringify{}=="", "no named args");
             
     variable Integer? x := 0;
     while (exists y = x) { 
         x := null; 
     }
-    assert(!exists x, "while exists");
+    check(!exists x, "while exists");
     
     variable value s := "hello";
     while (nonempty chars = s.characters) { 
         s:=""; 
     }
-    assert(s=="", "while nonempty");
+    check(s=="", "while nonempty");
     
     value bs = SequenceBuilder<Integer>();
     for (i in 0..10) {
-        assert(bs.size==i, "builder size");
+        check(bs.size==i, "builder size");
         bs.append(i);
     }
-    assert(bs.size==11, "builder size");
+    check(bs.size==11, "builder size");
     
     for (n->e in entries(bs.sequence...)) {
-        assert(n==e, "entry iteration");
+        check(n==e, "entry iteration");
     }
 
     //Test empty varargs

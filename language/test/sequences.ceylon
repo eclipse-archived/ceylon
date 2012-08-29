@@ -1,16 +1,16 @@
 void test_singleton() {
     String[] singleton = Singleton("hello");
-    assert(singleton.size==1, "singleton size");
-    assert(!singleton.empty, "singleton empty");
-    assert(singleton.defines(0), "singleton defines");
-    assert(!singleton.defines(1), "singleton defines");
-    assert(singleton.string=="{ hello }", "singleton string");
-    assert(singleton.reversed==singleton, "singleton reversed");
-    assert(nonempty singleton, "singleton nonempty");
+    check(singleton.size==1, "singleton size");
+    check(!singleton.empty, "singleton empty");
+    check(singleton.defines(0), "singleton defines");
+    check(!singleton.defines(1), "singleton defines");
+    check(singleton.string=="{ hello }", "singleton string");
+    check(singleton.reversed==singleton, "singleton reversed");
+    check(nonempty singleton, "singleton nonempty");
     if (nonempty singleton) {
-        assert(singleton.first=="hello", "singleton first");
-        assert(singleton.lastIndex==0, "sequence last index");
-        assert(!nonempty singleton.rest, "singleton rest empty");
+        check(singleton.first=="hello", "singleton first");
+        check(singleton.lastIndex==0, "sequence last index");
+        check(!nonempty singleton.rest, "singleton rest empty");
         if (nonempty rest = singleton.rest) {
             fail("singleton rest empty");
         }
@@ -20,18 +20,18 @@ void test_singleton() {
     }
     variable value j:=0;
     for (x in singleton) {
-        assert(x=="hello", "singleton iteration");
+        check(x=="hello", "singleton iteration");
         j:=j+1;
     }
-    assert(j==1, "singleton iteration");
+    check(j==1, "singleton iteration");
     if (exists str=singleton[0]) {
-        assert(str=="hello", "singleton item");
+        check(str=="hello", "singleton item");
     }
     else {
         fail("singleton item");
     }
     if (exists str=singleton.item(0)) {
-        assert(str=="hello", "singleton item");
+        check(str=="hello", "singleton item");
     }
     else {
         fail("singleton item");
@@ -43,23 +43,23 @@ void test_singleton() {
         fail("singleton item");
     }
 
-    assert(nonempty singleton.span(0, 1), "nonempty singleton span(0,1)");
-    assert(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
-    assert(nonempty singleton.span(0, null), "nonempty singleton span(0, null)");
-    assert(nonempty singleton.segment(0, 1), "nonempty singleton segment(0,1)");
-    assert(singleton.span(0, 3).string=="{ hello }", "singleton span(0,3).string");
-    assert(singleton.segment(0, 3).string=="{ hello }", "singleton segment(0,3).string");
-    assert(!nonempty singleton.span(1, 1), "!nonempty singleton span(1,1)");
-    assert(!nonempty singleton.span(1, null), "!nonempty singleton span(1,null)");
-    assert(!nonempty singleton.segment(1, 1), "!nonempty singleton segment(1,1)");
-    assert(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
-    assert(nonempty singleton.span(0, 10), "nonempty singleton span(0,10)");
-    assert(!nonempty singleton.segment(0, 0), "!nonempty singleton segment(0,0)");
-    assert(!nonempty singleton.segment(0, -1), "!nonempty singleton segment(0,-1)");
+    check(nonempty singleton.span(0, 1), "nonempty singleton span(0,1)");
+    check(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
+    check(nonempty singleton.span(0, null), "nonempty singleton span(0, null)");
+    check(nonempty singleton.segment(0, 1), "nonempty singleton segment(0,1)");
+    check(singleton.span(0, 3).string=="{ hello }", "singleton span(0,3).string");
+    check(singleton.segment(0, 3).string=="{ hello }", "singleton segment(0,3).string");
+    check(!nonempty singleton.span(1, 1), "!nonempty singleton span(1,1)");
+    check(!nonempty singleton.span(1, null), "!nonempty singleton span(1,null)");
+    check(!nonempty singleton.segment(1, 1), "!nonempty singleton segment(1,1)");
+    check(nonempty singleton.span(0, 0), "nonempty singleton span(0,0)");
+    check(nonempty singleton.span(0, 10), "nonempty singleton span(0,10)");
+    check(!nonempty singleton.segment(0, 0), "!nonempty singleton segment(0,0)");
+    check(!nonempty singleton.segment(0, -1), "!nonempty singleton segment(0,-1)");
 
-    assert(singleton.keys.contains(0), "singleton keys.contains(0)");
-    assert(!singleton.keys.contains(1), "!singleton keys.contains(1)");
-    assert(!singleton.keys.contains(2), "!singleton keys.contains(2)");
+    check(singleton.keys.contains(0), "singleton keys.contains(0)");
+    check(!singleton.keys.contains(1), "!singleton keys.contains(1)");
+    check(!singleton.keys.contains(2), "!singleton keys.contains(2)");
     
     // Disabled: does not pass typechecker on M3.1
     //value ss = Singleton("Trompon").span(0, 0);
@@ -75,8 +75,8 @@ void test_join() {
     value l2 = { 4,5,6 };
     value l3 = {7,8,9};
     value joint = join(l1, l2, l3);
-    assert(joint.size==l1.size+l2.size+l3.size, "join [1]");
-    assert(join("aa", "bb", "cc").sequence=={`a`, `a`, `b`, `b`, `c`, `c`}, "join [2]");
+    check(joint.size==l1.size+l2.size+l3.size, "join [1]");
+    check(join("aa", "bb", "cc").sequence=={`a`, `a`, `b`, `b`, `c`, `c`}, "join [2]");
 }
 
 void test_zip() {
@@ -84,8 +84,8 @@ void test_zip() {
     value items = { "one", "two", "three", "four", "five" };
     value z1 = zip(keys, items);
     value z2 = zip(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
-    assert(z1.size==5, "zip");
-    assert(z2.size==6, "zip");
+    check(z1.size==5, "zip");
+    check(z2.size==6, "zip");
 }
 
 //This is actually a test for the compiler. "exists" doesn't work yet.
@@ -94,100 +94,100 @@ void test_exists_nonempty() {
     String? no = null;
     variable Integer[]? empties := Singleton(1);
     value t1 = exists yes then "yes exists" else "WTF";
-    assert(t1 == "yes exists", "exists 1");
+    check(t1 == "yes exists", "exists 1");
     value t2 = exists no then "WTF" else "no doesn't exist";
-    assert(t2 == "no doesn't exist", "exists 2");
+    check(t2 == "no doesn't exist", "exists 2");
     value t3 = nonempty empties then "nonempty works" else "nonempty broken";
-    assert(t3 == "nonempty works", "nonempty 1");
+    check(t3 == "nonempty works", "nonempty 1");
     Integer[] _t4 = {};
     value t4 = nonempty _t4 then "nonempty is broken" else "works";
-    assert(t4 == "works", "nonempty 2");
+    check(t4 == "works", "nonempty 2");
 }
 
 void test_max_min() {
     Integer mx1 = max({1, 2, 3});
-    assert(mx1==3, "max nonempty seq");
+    check(mx1==3, "max nonempty seq");
     Nothing mx2 = max({});
     Integer? mx3 = max(join({},{1, 2, 3}));
-    assert((mx3 else 10)==3, "max joined seq");
+    check((mx3 else 10)==3, "max joined seq");
     Integer? mx4 = max({1, 2, 3}.filter((Integer i) i>0));
-    assert((mx4 else 10)==3, "max filtered seq");
+    check((mx4 else 10)==3, "max filtered seq");
     
     Integer mn1 = min({1, 2, 3});
-    assert(mn1==1, "min nonempty seq");
+    check(mn1==1, "min nonempty seq");
     Nothing mn2 = min({});
     Integer? mn3 = min(join({},{1, 2, 3}));
-    assert((mn3 else 10)==1, "min joined seq");
+    check((mn3 else 10)==1, "min joined seq");
     Integer? mn4 = min({1, 2, 3}.filter((Integer i) i>0));
-    assert((mn4 else 10)==1, "min filtered seq");
+    check((mn4 else 10)==1, "min filtered seq");
 }
 
 shared void sequences() {
     value builder = SequenceBuilder<String>();
     value empty = builder.sequence;
-    assert(empty.size==0, "empty sequence");
-    assert(!nonempty empty, "empty sequence");
+    check(empty.size==0, "empty sequence");
+    check(!nonempty empty, "empty sequence");
     if (nonempty empty) {
         fail("empty sequence");
     }
-    assert(!nonempty empty.span(1, 2), "empty.span(1,2)");
-    assert(!nonempty empty.span(1, null), "empty.span(1,null)");
-    assert(!nonempty empty.segment(1, 2), "empty sequence segment");
-    assert(empty.string=="{}", "empty.string");
-    assert(empty.reversed==empty, "empty reversed");
-    assert(empty.sequence==empty, "empty.sequence");
+    check(!nonempty empty.span(1, 2), "empty.span(1,2)");
+    check(!nonempty empty.span(1, null), "empty.span(1,null)");
+    check(!nonempty empty.segment(1, 2), "empty sequence segment");
+    check(empty.string=="{}", "empty.string");
+    check(empty.reversed==empty, "empty reversed");
+    check(empty.sequence==empty, "empty.sequence");
 
     builder.append("hello");
     builder.append("world");
     value result = builder.sequence;
-    assert(result.size==2, "sequence size");
-    assert(nonempty result, "nonempty sequence");
+    check(result.size==2, "sequence size");
+    check(nonempty result, "nonempty sequence");
     if (nonempty result) {
-        assert(result.lastIndex==1, "sequence last index");
+        check(result.lastIndex==1, "sequence last index");
     }
     else {
         fail("sequence nonempty");
     }
     if (exists first = result.first) {
-        assert(first=="hello", "sequence first");
+        check(first=="hello", "sequence first");
     }
     else {
         fail("sequence first");
     }
-    assert(result.sequence==result, "sequence.sequence");
+    check(result.sequence==result, "sequence.sequence");
     if (exists last = result.last) {
-        assert(last=="world", "sequence last");
+        check(last=="world", "sequence last");
     }
     else {
         fail("sequence last");
     }
-    assert(result.string=="{ hello, world }", "sequence.string 1");
+    check(result.string=="{ hello, world }", "sequence.string 1");
 
     //span
-    assert(result.span(1,1).string=="{ world }", "sequence.span(1,1).string");
-    assert(result.span(1,null).string=="{ world }", "sequence.span(1,null).string");
-    assert(result.span(0,3).string=="{ hello, world }", "sequence.span(0,3).string");
-    //assert(result.span(1,0).string=="{ world, hello }", "sequence reverse span.string");
-    assert(nonempty result.span(1,1), "nonempty sequence.span(1,1)");
-    assert(nonempty result.span(0,0), "nonempty sequence.span(0,0)");
+    check(result.span(1,1).string=="{ world }", "sequence.span(1,1).string");
+    check(result.span(1,null).string=="{ world }", "sequence.span(1,null).string");
+    check(result.span(0,3).string=="{ hello, world }", "sequence.span(0,3).string");
+    //check(result.span(1,0).string=="{ world, hello }", "sequence reverse span.string");
+    check(nonempty result.span(1,1), "nonempty sequence.span(1,1)");
+    check(nonempty result.span(0,0), "nonempty sequence.span(0,0)");
 
     //segment
-    assert(result.segment(1,1).string=="{ world }", "sequence.segment(1,1).string");
-    assert(result.segment(0,3).string=="{ hello, world }", "sequence.segment(0,3).string");
-    assert(nonempty result.segment(1,1), "nonempty sequence.segment(1,1)");
-    assert(!nonempty result.segment(0,0), "!nonempty sequence.segment(0,0)");
-    //assert(!nonempty result.segment(1,-1), "!nonempty sequence.segment(1,-1)");
+    check(result.segment(1,1).string=="{ world }", "sequence.segment(1,1).string");
+    check(result.segment(0,3).string=="{ hello, world }", "sequence.segment(0,3).string");
+    check(nonempty result.segment(1,1), "nonempty sequence.segment(1,1)");
+    check(!nonempty result.segment(0,0), "!nonempty sequence.segment(0,0)");
+    //check(!nonempty result.segment(1,-1), "!nonempty sequence.segment(1,-1)");
     
-    assert (result.reversed=={"world", "hello"}, "sequence.reversed");
+    check(result.reversed=={"world", "hello"}, "sequence.reversed");
 
     if (exists str = result[0]) {
-        assert(str=="hello", "sequence item");
+        check(str=="hello", "sequence item");
     }
     else {
         fail("sequence item");
     }
     if (exists str = result[1]) {
-        assert(str=="world", "sequence item");
+        check(str=="world", "sequence item");
     }
     else {
         fail("sequence item");
@@ -196,26 +196,26 @@ shared void sequences() {
         fail("sequence item");
     }
 
-    assert(result.keys.contains(0), "sequence keys 0");
-    assert(result.keys.contains(1), "sequence keys 1");
-    assert(!result.keys.contains(2), "sequence keys 2");
-    assert(result.defines(0)&&result.defines(1)&&!result.defines(2),
+    check(result.keys.contains(0), "sequence keys 0");
+    check(result.keys.contains(1), "sequence keys 1");
+    check(!result.keys.contains(2), "sequence keys 2");
+    check(result.defines(0)&&result.defines(1)&&!result.defines(2),
            "sequence defines");
-    assert(result.definesEvery(0,1), "sequence definesEvery 0,1");
-    assert(!result.definesEvery(1,2), "sequence definesEvery 1,2");
-    assert(result.definesAny(1,2), "sequence definesAny 1,2");
-    assert(!result.definesAny(2,3), "sequence definesAny 2,3");
-    assert(result.items(0,1,2,3).string=="{ hello, world, null, null }", "sequence.items 1");
-    assert(result.items(1,0).string=="{ world, hello }", "sequence.items 2");
-    assert(result.items(5,6,7).string=="{ null, null, null }", "sequence.items 3");
+    check(result.definesEvery(0,1), "sequence definesEvery 0,1");
+    check(!result.definesEvery(1,2), "sequence definesEvery 1,2");
+    check(result.definesAny(1,2), "sequence definesAny 1,2");
+    check(!result.definesAny(2,3), "sequence definesAny 2,3");
+    check(result.items(0,1,2,3).string=="{ hello, world, null, null }", "sequence.items 1");
+    check(result.items(1,0).string=="{ world, hello }", "sequence.items 2");
+    check(result.items(5,6,7).string=="{ null, null, null }", "sequence.items 3");
 
     if (nonempty result) {
         value rest = result.rest;
-        assert(rest.size==1, "rest size");
-        assert(rest.keys.contains(0), "rest keys 1");
-        assert(!rest.keys.contains(1), "rest keys 2");
+        check(rest.size==1, "rest size");
+        check(rest.keys.contains(0), "rest keys 1");
+        check(!rest.keys.contains(1), "rest keys 2");
         if (exists str = rest[0]) {
-            assert(str=="world", "rest item");
+            check(str=="world", "rest item");
         }
         else {
             fail("rest item");
@@ -223,13 +223,13 @@ shared void sequences() {
         if (exists str = rest[1]) {
             fail("rest item");
         }
-        assert(nonempty rest, "empty rest");
+        check(nonempty rest, "empty rest");
         if (nonempty rest) {
-            assert(rest.first=="world", "rest first");
+            check(rest.first=="world", "rest first");
             if (nonempty rr = rest.rest) {
                 fail("rest rest");
             }
-            assert(!nonempty rest.rest, "empty rest");
+            check(!nonempty rest.rest, "empty rest");
         }
         else {
             fail("rest nonempty");
@@ -240,43 +240,43 @@ shared void sequences() {
         value appender = SequenceAppender(result);
         appender.append("goodbye");
         value more = appender.sequence;
-        assert(more.size==3, "sequence size");
-        assert(more.first=="hello", "sequence first");
-        assert(more.string=="{ hello, world, goodbye }", "sequence.string 2");
+        check(more.size==3, "sequence size");
+        check(more.first=="hello", "sequence first");
+        check(more.string=="{ hello, world, goodbye }", "sequence.string 2");
         appender.appendAll();
         appender.appendAll("everyone", "good luck!");
         //appender.append("everyone");
         //appender.append("good luck!");
         value evenMore = appender.sequence;
-        assert(evenMore.size==5, "sequence size");
-        assert(evenMore.string=="{ hello, world, goodbye, everyone, good luck! }", "sequence.string 3");
+        check(evenMore.size==5, "sequence size");
+        check(evenMore.string=="{ hello, world, goodbye, everyone, good luck! }", "sequence.string 3");
     }
 
     value seq = { 1, 2, 3, 4 };
-    assert(seq.size==4, "sequence size");
-    assert(seq.string=="{ 1, 2, 3, 4 }", "sequence.string 4");
-    assert(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
-    assert(seq.first==1, "sequence first");
-    assert(seq.rest.string=="{ 2, 3, 4 }", "sequence.rest.string");
+    check(seq.size==4, "sequence size");
+    check(seq.string=="{ 1, 2, 3, 4 }", "sequence.string 4");
+    check(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
+    check(seq.first==1, "sequence first");
+    check(seq.rest.string=="{ 2, 3, 4 }", "sequence.rest.string");
     variable value i:=0;
     for (s in seq) {
         if (exists it=seq[i]) {
-            assert(it==s, "sequence iteration");
+            check(it==s, "sequence iteration");
         }
         else {
             fail("sequence iteration");
         }
         i:=i+1;
     }
-    assert(i==4, "sequence iteration");
+    check(i==4, "sequence iteration");
 
     value union = SequenceBuilder<String|Float>();
     union.append("x");
     union.append(5.1);
     union.appendAll("y", -1.2);
     value useq = union.sequence;
-    assert(useq.size==4, "union sequence builder");
-    assert(useq.string=="{ x, 5.1, y, -1.2 }", "union sequence builder.string");
+    check(useq.size==4, "union sequence builder");
+    check(useq.string=="{ x, 5.1, y, -1.2 }", "union sequence builder.string");
     variable value s:=0;
     variable value f:=0;
     for (e in useq) {
@@ -287,61 +287,61 @@ shared void sequences() {
             f:=f+1;
         }
     }
-    assert(s==2&&f==2, "union sequence iteration");
+    check(s==2&&f==2, "union sequence iteration");
 
     test_singleton();
 
     value nulls = { null, "hello", null, "world" };
     if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
     if (exists n1 = nulls[1]) {} else { fail("sequence with nulls"); }
-    assert(nulls.string=="{ null, hello, null, world }", "sequence with nulls.string");
+    check(nulls.string=="{ null, hello, null, world }", "sequence with nulls.string");
     variable value nonnull:=0;
     for (o in nulls) {
         if (exists o) { nonnull++; }
     }
-    assert(nonnull==2, "iterate sequence with nulls");
+    check(nonnull==2, "iterate sequence with nulls");
 
     value coalesced = coalesce(nulls...).sequence;
-    assert(coalesced.size==2, "coalesce size");
-    assert(coalesced.string=="{ hello, world }", "coalesce.string");
-    assert(coalesced.keys.contains(0), "coalesced keys");
-    assert(coalesced.keys.contains(1), "coalesced keys");
-    assert(!coalesced.keys.contains(2), "coalesced keys");
-    assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
+    check(coalesced.size==2, "coalesce size");
+    check(coalesced.string=="{ hello, world }", "coalesce.string");
+    check(coalesced.keys.contains(0), "coalesced keys");
+    check(coalesced.keys.contains(1), "coalesced keys");
+    check(!coalesced.keys.contains(2), "coalesced keys");
+    check(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
-    assert(nonempty coalesced, "nonempty coalesced");
+    check(nonempty coalesced, "nonempty coalesced");
     value coal2 = coalesce(for (c in "hElLo") null).sequence;
-    assert(!nonempty coal2, "nonempty coalesced2");
-    assert(coal2.size == 0, "coalesced2.size");
-    assert(!`h` in coal2, "coalesced2.contains");
+    check(!nonempty coal2, "nonempty coalesced2");
+    check(coal2.size == 0, "coalesced2.size");
+    check(!`h` in coal2, "coalesced2.contains");
     value entriesBuilder = SequenceBuilder<Integer->String>();
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
     value entrySequence = entriesBuilder.sequence;
-    assert(entrySequence.string=="{ 1->hello, 2->world }", "entries sequence.string");
+    check(entrySequence.string=="{ 1->hello, 2->world }", "entries sequence.string");
     variable value cntr:=0;
     for (nat->str in entrySequence) {
         cntr++;
-        assert(nat==1||nat==2, "entry key iteration");
-        assert(str=="hello"||str=="world", "entry key iteration");
+        check(nat==1||nat==2, "entry key iteration");
+        check(str=="hello"||str=="world", "entry key iteration");
     }
-    assert(cntr==2, "entry iteration");
+    check(cntr==2, "entry iteration");
 
     for (name->initial in { "Gavin"->`G`, "Tom"->`T` }) {
-        assert(name.initial(1)==initial.string, "entry iteration");
+        check(name.initial(1)==initial.string, "entry iteration");
     }
 
     value sequenceEntries = entries("X1", "X2", "X3");
-    assert(sequenceEntries.sequence.size==3, "entries size");
-    assert(nonempty sequenceEntries.sequence, "nonempty entries");
+    check(sequenceEntries.sequence.size==3, "entries size");
+    check(nonempty sequenceEntries.sequence, "nonempty entries");
     if (exists primero=sequenceEntries.first) {
-        assert(primero==Entry(0, "X1"), "entries first");
+        check(primero==Entry(0, "X1"), "entries first");
     }
     else {
         fail("entries first");
     }
     for (nat->str in sequenceEntries) {
-        assert("X"+(nat+1).string==str, "entries iteration");
+        check("X"+(nat+1).string==str, "entries iteration");
     }
 
     //More sequence-related functions
@@ -349,9 +349,9 @@ shared void sequences() {
     test_zip();
     test_exists_nonempty();
     test_max_min();
-    assert(nonempty emptyOrSingleton(1), "emptyOrSingleton [1]");
-    assert(!nonempty emptyOrSingleton(null), "emptyOrSingleton [2]");
+    check(nonempty emptyOrSingleton(1), "emptyOrSingleton [1]");
+    check(!nonempty emptyOrSingleton(null), "emptyOrSingleton [2]");
     
-    assert({"hello"}.withTrailing("world").first=="hello", "sequence with trailing");
-    assert({"world"}.withLeading("hello").first=="hello", "sequence with trailing");
+    check({"hello"}.withTrailing("world").first=="hello", "sequence with trailing");
+    check({"world"}.withLeading("hello").first=="hello", "sequence with trailing");
 }

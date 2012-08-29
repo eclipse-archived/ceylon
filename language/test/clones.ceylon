@@ -11,8 +11,8 @@ class Proto2<out Element>(element)
 
 void clones() {
     value prot = Prototype("hello");
-    assert(prot===prot.clone, "clone");
+    check(prot===prot.clone, "clone");
     value p2 = Proto2(5);
-    assert(!(p2===p2.clone), "clone");
-    assert(p2.element==p2.clone.element, "clone");
+    check(!(p2===p2.clone), "clone");
+    check(p2.element==p2.clone.element, "clone");
 }

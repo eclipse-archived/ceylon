@@ -11,10 +11,10 @@ void exceptions() {
     }
     catch (MyException me) {
         caught:=true;
-        assert(me.message=="my exception", "exception message");
-        assert(!exists me.cause, "exception cause");
+        check(me.message=="my exception", "exception message");
+        check(!exists me.cause, "exception cause");
     }
-    assert(caught, "caught");
+    check(caught, "caught");
 
     caught:=false;
     try {
@@ -25,10 +25,10 @@ void exceptions() {
     }
     catch (Exception me) {
         caught:=true;
-        assert(me.message=="my exception", "exception message");
-        assert(!exists me.cause, "exception cause");
+        check(me.message=="my exception", "exception message");
+        check(!exists me.cause, "exception cause");
     }
-    assert(caught, "caught");
+    check(caught, "caught");
     
     caught:=false;
     try {
@@ -36,13 +36,13 @@ void exceptions() {
     }
     catch (OtherException|MyException e) {
         caught:=true;
-        assert(e.message=="my exception", "exception message");
-        assert(!exists e.cause, "exception cause");
+        check(e.message=="my exception", "exception message");
+        check(!exists e.cause, "exception cause");
     }
     catch (Exception me) {
         fail("any exception");
     }
-    assert(caught, "caught");
+    check(caught, "caught");
     
     caught:=false;
     try {
@@ -54,7 +54,7 @@ void exceptions() {
     catch (Exception me) {
         caught:=true;
     }
-    assert(caught, "caught");
+    check(caught, "caught");
     
     caught:=false;
     try {
@@ -62,11 +62,11 @@ void exceptions() {
     }
     catch (Exception e) {
         caught:=true;
-        assert(e.message=="hello", "exception message");
-        assert(exists e.cause, "exception cause");
-        assert(is MyException e.cause, "exception cause");
+        check(e.message=="hello", "exception message");
+        check(exists e.cause, "exception cause");
+        check(is MyException e.cause, "exception cause");
     }
-    assert(caught, "caught");
+    check(caught, "caught");
     
     caught:=false;
     try {
@@ -78,6 +78,6 @@ void exceptions() {
         }
     }
     catch (Exception e) {}
-    assert(!caught, "caught");
+    check(!caught, "caught");
     
 }

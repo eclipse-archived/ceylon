@@ -28,7 +28,7 @@ class Complex(Float re, Float im)
 }
 
 void complex() {
-    assert(Complex(0.0,1.0)+Complex(1.0,0.0)==Complex(1.0,1.0), "");
-    assert(Complex(0.0,1.0)+Complex(1.0,0.0)!=Complex(0.0,0.0), "");
-    assert(Complex(0.0,1.0)==OrderedPair(0.0,1.0), "");
+    check(Complex(0.0,1.0)+Complex(1.0,0.0)==Complex(1.0,1.0), "");
+    check(Complex(0.0,1.0)+Complex(1.0,0.0)!=Complex(0.0,0.0), "");
+    check(Complex(0.0,1.0)==OrderedPair(0.0,1.0), "");
 }

@@ -1,81 +1,81 @@
 shared void numbers() {
-    assert(1==1, "natural equals");
-    assert(1!=2, "natural not equals");
-    assert(+1==+1, "integer equals");
-    assert(+1!=+2, "integer not equals");
-    assert(1.0==1.0, "float equals");
-    assert(0.0==-0.0 && 0.0.hash==(-0.0).hash, "float equals consistent with hash");
-    assert(1.0!=2.0, "float not equals");
-    assert(1==+1, "natural equals integer");
-    assert(1==1.0, "natural equals float");
-    assert(+1==1.0, "integer equals float");
-    assert(+1==1, "natural equals integer");
-    assert(1.0==1, "natural equals float");
-    assert(1.0==+1, "integer equals float");
-    assert(1<2, "natural comparison");
-    assert(-1<+2, "integer comparison");
-    assert(-0.5<0.0, "float comparison");
-    assert(1+1==2, "natural addition");
-    assert(1-1==+0, "natural subtraction");
-    assert(2*2==4, "natural multiplication");
-    assert(2**3==8, "natural exponentiation");
-    assert(+1 + -1==+0, "integer addition");
-    assert(+1 - -1==+2, "integer subtraction");
-    assert(-2*+2==-4, "integer multiplication");
-    assert(-2**(+3)==-8, "integer exponentiation");
-    assert(1.0+0.5==1.5, "float addition");
-    assert(1.5-0.5==1.0, "float subtraction");
-    assert(2.0*2.0==4.0, "float multiplication");
-    assert(2.0**3.0==8.0, "float exponentiation");
-    assert(2*2.5==5.0, "natural times float");
-    assert(2.5*3==7.5, "natural times float");
-    assert(-1*3==-3, "natural times integer");
-    assert(2*-3==-6, "natural times integer");
-    assert(-1*1.5==-1.5, "integer times float");
-    assert(-1.5*+2==-3.0, "integer times float");
+    check(1==1, "natural equals");
+    check(1!=2, "natural not equals");
+    check(+1==+1, "integer equals");
+    check(+1!=+2, "integer not equals");
+    check(1.0==1.0, "float equals");
+    check(0.0==-0.0 && 0.0.hash==(-0.0).hash, "float equals consistent with hash");
+    check(1.0!=2.0, "float not equals");
+    check(1==+1, "natural equals integer");
+    check(1==1.0, "natural equals float");
+    check(+1==1.0, "integer equals float");
+    check(+1==1, "natural equals integer");
+    check(1.0==1, "natural equals float");
+    check(1.0==+1, "integer equals float");
+    check(1<2, "natural comparison");
+    check(-1<+2, "integer comparison");
+    check(-0.5<0.0, "float comparison");
+    check(1+1==2, "natural addition");
+    check(1-1==+0, "natural subtraction");
+    check(2*2==4, "natural multiplication");
+    check(2**3==8, "natural exponentiation");
+    check(+1 + -1==+0, "integer addition");
+    check(+1 - -1==+2, "integer subtraction");
+    check(-2*+2==-4, "integer multiplication");
+    check(-2**(+3)==-8, "integer exponentiation");
+    check(1.0+0.5==1.5, "float addition");
+    check(1.5-0.5==1.0, "float subtraction");
+    check(2.0*2.0==4.0, "float multiplication");
+    check(2.0**3.0==8.0, "float exponentiation");
+    check(2*2.5==5.0, "natural times float");
+    check(2.5*3==7.5, "natural times float");
+    check(-1*3==-3, "natural times integer");
+    check(2*-3==-6, "natural times integer");
+    check(-1*1.5==-1.5, "integer times float");
+    check(-1.5*+2==-3.0, "integer times float");
     
     Object? obj(Object? x) { return x; }
-    assert(is Integer obj(1+1), "natural addition");
-    assert(is Integer obj(1-2), "natural subtraction");
-    assert(is Integer obj(+1+1), "integer addition");
-    assert(is Integer obj(+1-2), "integer subtraction");
+    check(is Integer obj(1+1), "natural addition");
+    check(is Integer obj(1-2), "natural subtraction");
+    check(is Integer obj(+1+1), "integer addition");
+    check(is Integer obj(+1-2), "integer subtraction");
     
-    assert(1.negativeValue==-1, "natural negative");
-    assert(-1.negativeValue==+1, "integer negative");
-    assert(1.0.negativeValue==-1.0, "float negative");
-    assert(1.positiveValue==1, "natural positive");
-    assert(-1.positiveValue==-1, "integer positive");
-    assert(1.0.positiveValue==1.0, "float positive");
+    check(1.negativeValue==-1, "natural negative");
+    check(-1.negativeValue==+1, "integer negative");
+    check(1.0.negativeValue==-1.0, "float negative");
+    check(1.positiveValue==1, "natural positive");
+    check(-1.positiveValue==-1, "integer positive");
+    check(1.0.positiveValue==1.0, "float positive");
     
-    assert(12.string=="12", "natural string 12");
-    assert((-12).string=="-12", "integer string -12");
-    assert((-5.5).string=="-5.5", "float string -5.5");
-    assert((1.0).string in {"1", "1.0"}, "float string 1.0");
+    check(12.string=="12", "natural string 12");
+    check((-12).string=="-12", "integer string -12");
+    check((-5.5).string=="-5.5", "float string -5.5");
+    check((1.0).string in {"1", "1.0"}, "float string 1.0");
     
-    assert(1.unit, "natural unit");
-    assert(!2.unit, "natural unit");
-    assert(0.zero, "natural zero");
-    assert(!1.zero, "natural zero");
-    assert(2.successor==3, "natural successor");
-    assert(2.predecessor==1, "natural predecessor");
-    assert((+1).unit, "integer unit");
-    assert(!(-1).unit, "integer unit");
-    assert((+0).zero, "integer zero");
-    assert(!(+1).zero, "integer zero");
-    assert((-2).successor==-1, "integer successor");
-    assert((-2).predecessor==-3, "integer predecessor");
+    check(1.unit, "natural unit");
+    check(!2.unit, "natural unit");
+    check(0.zero, "natural zero");
+    check(!1.zero, "natural zero");
+    check(2.successor==3, "natural successor");
+    check(2.predecessor==1, "natural predecessor");
+    check((+1).unit, "integer unit");
+    check(!(-1).unit, "integer unit");
+    check((+0).zero, "integer zero");
+    check(!(+1).zero, "integer zero");
+    check((-2).successor==-1, "integer successor");
+    check((-2).predecessor==-3, "integer predecessor");
     
-    assert(2.fractionalPart==0, "natural fractional");
-    assert((-1).fractionalPart==0, "integer fractional");
-    assert(1.5.fractionalPart==0.5, "float fractional");
-    assert(2.wholePart==2, "natural fractional");
-    assert((-1).wholePart==-1, "integer fractional");
-    assert(1.5.wholePart==1.0, "float fractional");
+    check(2.fractionalPart==0, "natural fractional");
+    check((-1).fractionalPart==0, "integer fractional");
+    check(1.5.fractionalPart==0.5, "float fractional");
+    check(2.wholePart==2, "natural fractional");
+    check((-1).wholePart==-1, "integer fractional");
+    check(1.5.wholePart==1.0, "float fractional");
     
-    assert((+2).sign==+1, "integer sign");
-    assert((-3).sign==-1, "integer sign");
-    assert(2.0.sign==+1, "integer sign");
-    assert((-3.0).sign==-1, "integer sign");
+    check((+2).sign==+1, "integer sign");
+    check((-3).sign==-1, "integer sign");
+    check(2.0.sign==+1, "integer sign");
+    check((-3.0).sign==-1, "integer sign");
     
     function add<T>(T x, T y) 
             given T satisfies Numeric<T> {
@@ -102,37 +102,37 @@ shared void numbers() {
         return x*y;
     }
         
-    assert(add(1,2)==3, "add(1,2)==3");
-    assert(add(-1,+2)==+1, "add(-1,+2)==+1");
-    assert(add(1.5,-2.5)==-1.0, "add(1.5,-2.5)==-1.0");
+    check(add(1,2)==3, "add(1,2)==3");
+    check(add(-1,+2)==+1, "add(-1,+2)==+1");
+    check(add(1.5,-2.5)==-1.0, "add(1.5,-2.5)==-1.0");
     
-    assert(exp(2,2)==4, "exp(2,2)==4");
-    assert(exp(1,2)==1, "exp(1,2)==1");
-    assert(exp(0,2)==0, "exp(0,2)==0");
-    assert(exp(-1,2)==1, "exp(-1,2)==1");
-    assert(exp(-2,2)==4, "exp(-2,2)==4");
+    check(exp(2,2)==4, "exp(2,2)==4");
+    check(exp(1,2)==1, "exp(1,2)==1");
+    check(exp(0,2)==0, "exp(0,2)==0");
+    check(exp(-1,2)==1, "exp(-1,2)==1");
+    check(exp(-2,2)==4, "exp(-2,2)==4");
     
-    assert(exp(2,1)==2, "exp(2,1)==2");
-    assert(exp(1,1)==1, "exp(1,1)==1");
-    assert(exp(0,1)==0, "exp(0,1)==0");
-    assert(exp(-1,1)==-1, "exp(-1,1)==-1");
-    assert(exp(-2,1)==-2, "exp(-2,1)==-2");
+    check(exp(2,1)==2, "exp(2,1)==2");
+    check(exp(1,1)==1, "exp(1,1)==1");
+    check(exp(0,1)==0, "exp(0,1)==0");
+    check(exp(-1,1)==-1, "exp(-1,1)==-1");
+    check(exp(-2,1)==-2, "exp(-2,1)==-2");
     
-    assert(exp(2,0)==1, "exp(2,0)==2");
-    assert(exp(1,0)==1, "exp(1,0)==1");
-    assert(exp(0,0)==1, "exp(0,0)==0");
-    assert(exp(-1,0)==1, "exp(-1,0)==-1");
-    assert(exp(-2,0)==1, "exp(-2,0)==-2");
+    check(exp(2,0)==1, "exp(2,0)==2");
+    check(exp(1,0)==1, "exp(1,0)==1");
+    check(exp(0,0)==1, "exp(0,0)==0");
+    check(exp(-1,0)==1, "exp(-1,0)==-1");
+    check(exp(-2,0)==1, "exp(-2,0)==-2");
     try { 
         exp(2,-1);
         fail("exp(2,-1) should throw");
     } catch (Exception e) {}
-    assert(exp(1,-1)==1, "exp(1,-1)==1");
+    check(exp(1,-1)==1, "exp(1,-1)==1");
     try {
         exp(0,-1);
         fail("exp(0,-1) should throw");
     } catch (Exception e) {}
-    assert(exp(-1,-1)==-1, "exp(-1,-1)==-1");
+    check(exp(-1,-1)==-1, "exp(-1,-1)==-1");
     try {
         exp(-2,-1);
         fail("exp(-2,-1) should throw");
@@ -142,87 +142,87 @@ shared void numbers() {
         exp(2,-2);
         fail("exp(2,-2)==2 should throw");
     } catch (Exception e) {}
-    assert(exp(1,-2)==1, "exp(1,-2)==1");
+    check(exp(1,-2)==1, "exp(1,-2)==1");
     try {
         exp(0,-2);
         fail("exp(2,-1) should throw");
     } catch (Exception e) {}
-    assert(exp(-1,-2)==1, "exp(-1,-2)==1");
+    check(exp(-1,-2)==1, "exp(-1,-2)==1");
     try {
         exp(-2,-2);
         fail("exp(-2,-2) should throw");
     } catch (Exception e) {}
     
     Integer twoToPowerTen = 2*2*2*2*2*2*2*2*2*2;
-    assert(exp(2,10)==twoToPowerTen, "exp(2,10)==twoToPowerTen");
-    assert(exp(2,20)==twoToPowerTen*twoToPowerTen, "exp(2,30)==twoToPowerTen*twoToPowerTen");
-    assert(exp(2,30)==twoToPowerTen*twoToPowerTen*twoToPowerTen, "exp(2,30)==twoToPowerTen*twoToPowerTen*twoToPowerTen");
+    check(exp(2,10)==twoToPowerTen, "exp(2,10)==twoToPowerTen");
+    check(exp(2,20)==twoToPowerTen*twoToPowerTen, "exp(2,30)==twoToPowerTen*twoToPowerTen");
+    check(exp(2,30)==twoToPowerTen*twoToPowerTen*twoToPowerTen, "exp(2,30)==twoToPowerTen*twoToPowerTen*twoToPowerTen");
     
-    assert(exp(2.0,2.0)==4.0, "exp(2.0,2.0)==4.0");
+    check(exp(2.0,2.0)==4.0, "exp(2.0,2.0)==4.0");
     
-    assert(addIntegers(2, 4)==6, "addIntegers(2, 4)==6");
-    assert(addIntegers(-2, -4)==-6, "addIntegers(-2, -4)==-6");
-    assert(addFloats(-1.0, 1.0)==0.0, "addFloats(-1.0, 1.0)==0.0");
+    check(addIntegers(2, 4)==6, "addIntegers(2, 4)==6");
+    check(addIntegers(-2, -4)==-6, "addIntegers(-2, -4)==-6");
+    check(addFloats(-1.0, 1.0)==0.0, "addFloats(-1.0, 1.0)==0.0");
     
-    assert(multiplyIntegerByFloat(3, 1.5)==4.5, "multiplyIntegerByFloat(3, 1.5)==4.5");
-    assert(multiplyFloatByInteger(1.5, -1)==-1.5, "multiplyFloatByInteger(1.5, -1)==-1.5");
-    assert(multiplyIntegerByInteger(1, -1)==-1, "multiplyIntegerByInteger(1, -1)==-1");
+    check(multiplyIntegerByFloat(3, 1.5)==4.5, "multiplyIntegerByFloat(3, 1.5)==4.5");
+    check(multiplyFloatByInteger(1.5, -1)==-1.5, "multiplyFloatByInteger(1.5, -1)==-1.5");
+    check(multiplyIntegerByInteger(1, -1)==-1, "multiplyIntegerByInteger(1, -1)==-1");
     
-    assert(1.hash==(3-1)/2.hash, "natural hash");
-    assert(1.hash!=(-1).hash, "natural hash inverted not same");
-    assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
-    assert((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
+    check(1.hash==(3-1)/2.hash, "natural hash");
+    check(1.hash!=(-1).hash, "natural hash inverted not same");
+    check((+0).hash==(-1+(+1))*+100.hash, "integer hash");
+    check((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
     
-    assert(1.6.integer==1, "1.6.integer is " 1.6.integer " instead of 1");
-    assert(1.1.integer==1, "1.1.integer is " 1.1.integer " instead of 1");
-    assert((-1.6).integer==-1, "(-1.6).integer is " (-1.6).integer " instead of -2");
-    assert((-1.1).integer==-1, "(-1.1).integer is " (-1.1).integer " instead of -1");
-    assert(2.float==2.0, "natural float");
-    assert((-3).float==-3.0, "integer float");
-    assert(4.integer==+4, "natural integer");
+    check(1.6.integer==1, "1.6.integer is " 1.6.integer " instead of 1");
+    check(1.1.integer==1, "1.1.integer is " 1.1.integer " instead of 1");
+    check((-1.6).integer==-1, "(-1.6).integer is " (-1.6).integer " instead of -2");
+    check((-1.1).integer==-1, "(-1.1).integer is " (-1.1).integer " instead of -1");
+    check(2.float==2.0, "natural float");
+    check((-3).float==-3.0, "integer float");
+    check(4.integer==+4, "natural integer");
     
-    assert(1.plus { other=2; }.equals { that=3; }, "natural named args");
+    check(1.plus { other=2; }.equals { that=3; }, "natural named args");
                 
     variable value i:=0;
     for (x in 1..10) {
         i:=i+1;
-        assert(x>=1&&x<=10, "natural range");
+        check(x>=1&&x<=10, "natural range");
     }
-    assert(i==10, "natural range");
+    check(i==10, "natural range");
 
     i:=0;
     for (x in -5..+5) {
         i:=i+1;
-        assert(x>=-5&&x<=+5, "integer range");
+        check(x>=-5&&x<=+5, "integer range");
     }
-    assert(i==11, "integer range");
+    check(i==11, "integer range");
     
-    assert(min({1, 5})==1, "min naturals");
-    assert(min({-1, +5})==-1, "min integers");
-    assert(min({-1.5, 5.2})==-1.5, "min floats");
-    assert(max({1, 5})==5, "max naturals");
-    assert(max({-1, +5})==+5, "max integers");
-    assert(max({-1.5, 5.2})==5.2, "max floats");
+    check(min({1, 5})==1, "min naturals");
+    check(min({-1, +5})==-1, "min integers");
+    check(min({-1.5, 5.2})==-1.5, "min floats");
+    check(max({1, 5})==5, "max naturals");
+    check(max({-1, +5})==+5, "max integers");
+    check(max({-1.5, 5.2})==5.2, "max floats");
     //eZL
-    assert(max({ 2, 4, 6, 8, 7, 250, 5, 3, 1 })==250, "max");
-    assert(min({ 200, 400, 600, 800, 700, 500, 300, 150 })==150, "min");
+    check(max({ 2, 4, 6, 8, 7, 250, 5, 3, 1 })==250, "max");
+    check(min({ 200, 400, 600, 800, 700, 500, 300, 150 })==150, "min");
 
     //eZL
-    assert(smallest(1,2)==1,          "smallest naturals");
-    assert(smallest(-100, 100)==-100, "smallest integers");
-    assert(smallest(-1.5, 5.2)==-1.5, "smallest floats");
-    assert(largest(1,2)==2,           "largest naturals");
-    assert(largest(-100, 100)==100,   "largest integers");
-    assert(largest(-1.5, 5.2)==5.2,   "largest floats");
+    check(smallest(1,2)==1,          "smallest naturals");
+    check(smallest(-100, 100)==-100, "smallest integers");
+    check(smallest(-1.5, 5.2)==-1.5, "smallest floats");
+    check(largest(1,2)==2,           "largest naturals");
+    check(largest(-100, 100)==100,   "largest integers");
+    check(largest(-1.5, 5.2)==5.2,   "largest floats");
 
     variable value count := 0;
     count++;
     ++count;
     count+=2;
     count*=3;
-    assert(count==12, "natural increment");
-    assert(--count==11, "natural decrement");
-    assert(count--==11, "natural decrement");
+    check(count==12, "natural increment");
+    check(--count==11, "natural decrement");
+    check(count--==11, "natural decrement");
     
     variable value intcount := +0;
     intcount++;
@@ -230,23 +230,23 @@ shared void numbers() {
     intcount+=2;
     intcount*=-3;
     intcount--;
-    assert(intcount==-13, "integer increment");
-    assert(--intcount==-14, "integer decrement");
-    assert(intcount--==-14, "integer decrement");
+    check(intcount==-13, "integer increment");
+    check(--intcount==-14, "integer decrement");
+    check(intcount--==-14, "integer decrement");
     
     variable value floatcount := 0.0;
     floatcount+=2.0;
     floatcount*=3.0;
     floatcount/=1.5;
-    assert(floatcount==4.0, "float increment");
-    assert((floatcount*=2.5)==10.0, "float scale");
-    assert((floatcount/=2.0)==5.0, "float scale");
-    assert((floatcount:=-2.0)==-2.0, "float assign");
+    check(floatcount==4.0, "float increment");
+    check((floatcount*=2.5)==10.0, "float scale");
+    check((floatcount/=2.0)==5.0, "float scale");
+    check((floatcount:=-2.0)==-2.0, "float assign");
     
     variable Integer vi;
     variable Integer vj;
     vi:=vj:=2;
-    assert(vi==2&&vj==2, "multi assign");
+    check(vi==2&&vj==2, "multi assign");
     vi+=1;
     vj*=2;
     
@@ -259,244 +259,244 @@ shared void numbers() {
     inner.vi+=1;
     inner.vj*=2;
     
-    assert(1_000==1k, "integer literal 1");
-    assert(1_000_000==1M, "integer literal 2");
-    assert(1_000_000_000==1G, "integer literal 3");
-    assert(1_000_000_000_000==1T, "integer literal 4");
-    assert(1_000_000_000_000_000==1P, "integer literal 5");
+    check(1_000==1k, "integer literal 1");
+    check(1_000_000==1M, "integer literal 2");
+    check(1_000_000_000==1G, "integer literal 3");
+    check(1_000_000_000_000==1T, "integer literal 4");
+    check(1_000_000_000_000_000==1P, "integer literal 5");
     
-    assert(1_000.0==1.0k && 1.0k==1.0e+3, "float literal 6");
-    assert(1_000_000.0==1.0M && 1.0M==1.0e6, "float literal 7");
-    assert(1_000_000_000.0==1.0G && 1.0G==1.0e+9, "float literal 8");
-    assert(1_000_000_000_000.0==1.0T && 1.0T==1.0e+12, "float literal 9");
-    assert(1_000_000_000_000_000.0==1.0P && 1.0P==1.0e+15, "float literal 10");
+    check(1_000.0==1.0k && 1.0k==1.0e+3, "float literal 6");
+    check(1_000_000.0==1.0M && 1.0M==1.0e6, "float literal 7");
+    check(1_000_000_000.0==1.0G && 1.0G==1.0e+9, "float literal 8");
+    check(1_000_000_000_000.0==1.0T && 1.0T==1.0e+12, "float literal 9");
+    check(1_000_000_000_000_000.0==1.0P && 1.0P==1.0e+15, "float literal 10");
 
-    assert(0.001==1.0m && 1.0m==1.0e-3, "float literal 1");
-    assert(0.000_001==1.0u && 1.0u==1.0e-6, "float literal 2");
-    assert(0.000_000_001==1.0n && 1.0n==1.0e-9, "float literal 3");
-    assert(0.000_000_000_001==1.0p && 1.0p==1.0e-12, "float literal 4");
-    assert(0.000_000_000_000_001==1.0f && 1.0f==1.0e-15, "float literal 5");
+    check(0.001==1.0m && 1.0m==1.0e-3, "float literal 1");
+    check(0.000_001==1.0u && 1.0u==1.0e-6, "float literal 2");
+    check(0.000_000_001==1.0n && 1.0n==1.0e-9, "float literal 3");
+    check(0.000_000_000_001==1.0p && 1.0p==1.0e-12, "float literal 4");
+    check(0.000_000_000_000_001==1.0f && 1.0f==1.0e-15, "float literal 5");
     
     // infinity and .undefined
-    assert(1.0/0.0==infinity, "infinity == infinity");
-    assert(1.0!=infinity, "1 != infinity");
-    assert(-1.0/0.0==-infinity, "-infinity == -infinity");
-    assert(1.0!=-infinity, "1 != -infinity");
+    check(1.0/0.0==infinity, "infinity == infinity");
+    check(1.0!=infinity, "1 != infinity");
+    check(-1.0/0.0==-infinity, "-infinity == -infinity");
+    check(1.0!=-infinity, "1 != -infinity");
     
-    assert((0.0/0.0).undefined, "NaN undefined");
-    assert(!(1.0).undefined, "1 not undefined");
-    assert(!infinity.undefined, "infinity not undefined");
+    check((0.0/0.0).undefined, "NaN undefined");
+    check(!(1.0).undefined, "1 not undefined");
+    check(!infinity.undefined, "infinity not undefined");
     
-    assert(1.0.finite, "1 finite");
-    assert(!infinity.finite, "infinity is not finite");
-    assert(!(-infinity).finite, "-infinity is not finite");
-    assert(!(0.0/0.0).finite, "NaN not finite");
+    check(1.0.finite, "1 finite");
+    check(!infinity.finite, "infinity is not finite");
+    check(!(-infinity).finite, "-infinity is not finite");
+    check(!(0.0/0.0).finite, "NaN not finite");
     
-    assert(!1.0.infinite, "1 not infinite");
-    assert(infinity.infinite, "infinity is infinite");
-    assert((-infinity).infinite, "-infinity is infinite");
-    assert(!(0.0/0.0).infinite, "NaN not infinite");
+    check(!1.0.infinite, "1 not infinite");
+    check(infinity.infinite, "infinity is infinite");
+    check((-infinity).infinite, "-infinity is infinite");
+    check(!(0.0/0.0).infinite, "NaN not infinite");
 
     //ArithmeticException
     try {
         print(0/0);
         fail("0/0 should throw");
     } catch (Exception ex) {
-        assert(true, "ArithmeticException");
+        check(true, "ArithmeticException");
     }    
     // parseInteger()
-    assert(parseInteger("-123")?0==-123, "parse integer");
+    check(parseInteger("-123")?0==-123, "parse integer");
     
-    assert(1_000==parseInteger("1_000")?"", "parseInteger(1_000)");
-    assert(1000==parseInteger("1000")?"", "parseInteger(1000)");
-    assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
-    assert(+1_000==parseInteger("+1_000")?"", "parseInteger(+1_000)");
-    assert(+1000==parseInteger("+1000")?"", "parseInteger(+1000)");
-    assert(+1k==parseInteger("+1k")?"", "parseInteger(+1k)");
-    assert(-1_000==parseInteger("-1_000")?"", "parseInteger(-1_000)");
-    assert(-1000==parseInteger("-1000")?"", "parseInteger(-1000)");
-    assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+    check(1_000==parseInteger("1_000")?"", "parseInteger(1_000)");
+    check(1000==parseInteger("1000")?"", "parseInteger(1000)");
+    check(1k==parseInteger("1k")?"", "parseInteger(1k)");
+    check(+1_000==parseInteger("+1_000")?"", "parseInteger(+1_000)");
+    check(+1000==parseInteger("+1000")?"", "parseInteger(+1000)");
+    check(+1k==parseInteger("+1k")?"", "parseInteger(+1k)");
+    check(-1_000==parseInteger("-1_000")?"", "parseInteger(-1_000)");
+    check(-1000==parseInteger("-1000")?"", "parseInteger(-1000)");
+    check(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
     
-    assert(0==parseInteger("0")?"", "parseInteger(0)");
-    assert(00==parseInteger("00")?"", "parseInteger(00)");
-    assert(0_000==parseInteger("0_000")?"", "parseInteger(0_000)");
-    assert(-00==parseInteger("-00")?"", "parseInteger(-00)");
-    assert(+00==parseInteger("+00")?"", "parseInteger(+00)");
-    assert(0k==parseInteger("0k")?"", "parseInteger(0k)");
+    check(0==parseInteger("0")?"", "parseInteger(0)");
+    check(00==parseInteger("00")?"", "parseInteger(00)");
+    check(0_000==parseInteger("0_000")?"", "parseInteger(0_000)");
+    check(-00==parseInteger("-00")?"", "parseInteger(-00)");
+    check(+00==parseInteger("+00")?"", "parseInteger(+00)");
+    check(0k==parseInteger("0k")?"", "parseInteger(0k)");
     
-    assert(1==parseInteger("1")?"", "parseInteger(1)");
-    assert(01==parseInteger("01")?"", "parseInteger(01)");
-    assert(0_001==parseInteger("0_001")?"", "parseInteger(0_001)");
-    assert(+1==parseInteger("+1")?"", "parseInteger(+1)");
-    assert(+01==parseInteger("+01")?"", "parseInteger(+01)");
-    assert(+0_001==parseInteger("+0_001")?"", "parseInteger(+0_001)");
+    check(1==parseInteger("1")?"", "parseInteger(1)");
+    check(01==parseInteger("01")?"", "parseInteger(01)");
+    check(0_001==parseInteger("0_001")?"", "parseInteger(0_001)");
+    check(+1==parseInteger("+1")?"", "parseInteger(+1)");
+    check(+01==parseInteger("+01")?"", "parseInteger(+01)");
+    check(+0_001==parseInteger("+0_001")?"", "parseInteger(+0_001)");
     
-    assert(-1==parseInteger("-1")?"", "parseInteger(-1)");
-    assert(-01==parseInteger("-01")?"", "parseInteger(-01)");
-    assert(-0_001==parseInteger("-0_001")?"", "parseInteger(-0_001)");
+    check(-1==parseInteger("-1")?"", "parseInteger(-1)");
+    check(-01==parseInteger("-01")?"", "parseInteger(-01)");
+    check(-0_001==parseInteger("-0_001")?"", "parseInteger(-0_001)");
     
-    assert(1k==parseInteger("1k")?"", "parseInteger(1k)");
-    assert(1M==parseInteger("1M")?"", "parseInteger(1M)");
-    assert(1G==parseInteger("1G")?"", "parseInteger(1G)");
-    assert(1T==parseInteger("1T")?"", "parseInteger(1T)");
-    assert(1P==parseInteger("1P")?"", "parseInteger(1P)");
-    assert(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
-    assert(-1M==parseInteger("-1M")?"", "parseInteger(-1M)");
-    assert(-1G==parseInteger("-1G")?"", "parseInteger(-1G)");
-    assert(-1T==parseInteger("-1T")?"", "parseInteger(-1T)");
-    assert(-1P==parseInteger("-1P")?"", "parseInteger(-1P)");
+    check(1k==parseInteger("1k")?"", "parseInteger(1k)");
+    check(1M==parseInteger("1M")?"", "parseInteger(1M)");
+    check(1G==parseInteger("1G")?"", "parseInteger(1G)");
+    check(1T==parseInteger("1T")?"", "parseInteger(1T)");
+    check(1P==parseInteger("1P")?"", "parseInteger(1P)");
+    check(-1k==parseInteger("-1k")?"", "parseInteger(-1k)");
+    check(-1M==parseInteger("-1M")?"", "parseInteger(-1M)");
+    check(-1G==parseInteger("-1G")?"", "parseInteger(-1G)");
+    check(-1T==parseInteger("-1T")?"", "parseInteger(-1T)");
+    check(-1P==parseInteger("-1P")?"", "parseInteger(-1P)");
 
     print("Testing " 0.size "-bit integers");
     if (0.size == 64) {
-        assert(9223372036854775807==parseInteger("9223372036854775807")?"", "parseInteger(9223372036854775807)");
-        assert(9_223_372_036_854_775_807==parseInteger("9_223_372_036_854_775_807")?"", "parseInteger(9_223_372_036_854_775_807)");
-        assert(-9223372036854775808==parseInteger("-9223372036854775808")?"", "parseInteger(-9223372036854775808)");
-        assert(-9_223_372_036_854_775_808==parseInteger("-9_223_372_036_854_775_808")?"", "parseInteger(-9_223_372_036_854_775_808)");
-        assert(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
-        assert(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
+        check(9223372036854775807==parseInteger("9223372036854775807")?"", "parseInteger(9223372036854775807)");
+        check(9_223_372_036_854_775_807==parseInteger("9_223_372_036_854_775_807")?"", "parseInteger(9_223_372_036_854_775_807)");
+        check(-9223372036854775808==parseInteger("-9223372036854775808")?"", "parseInteger(-9223372036854775808)");
+        check(-9_223_372_036_854_775_808==parseInteger("-9_223_372_036_854_775_808")?"", "parseInteger(-9_223_372_036_854_775_808)");
+        check(!exists parseInteger("9223372036854775808"), "parseInteger(9223372036854775808)");
+        check(!exists parseInteger("-9223372036854775809"), "parseInteger(-9223372036854775809)");
     } else if (0.size == 53) {
-        assert(9007199254740992==parseInteger("9007199254740992")?"", "parseInteger(9007199254740992)");
-        assert(9_007_199_254_740_992==parseInteger("9_007_199_254_740_992")?"", "parseInteger(9_007_199_254_740_992)");
-        assert(-9007199254740992==parseInteger("-9007199254740992")?"", "parseInteger(-9007199254740992)");
-        assert(-9_007_199_254_740_992==parseInteger("-9_007_199_254_740_992")?"", "parseInteger(-9_007_199_254_740_992)");
-        assert(!exists parseInteger("9007199254740993"), "parseInteger(9007199254740993)");
-        assert(!exists parseInteger("-9007199254740993"), "parseInteger(-9007199254740993)");
+        check(9007199254740992==parseInteger("9007199254740992")?"", "parseInteger(9007199254740992)");
+        check(9_007_199_254_740_992==parseInteger("9_007_199_254_740_992")?"", "parseInteger(9_007_199_254_740_992)");
+        check(-9007199254740992==parseInteger("-9007199254740992")?"", "parseInteger(-9007199254740992)");
+        check(-9_007_199_254_740_992==parseInteger("-9_007_199_254_740_992")?"", "parseInteger(-9_007_199_254_740_992)");
+        check(!exists parseInteger("9007199254740993"), "parseInteger(9007199254740993)");
+        check(!exists parseInteger("-9007199254740993"), "parseInteger(-9007199254740993)");
     } else {
         fail("UNKNOWN INTEGER SIZE " 0.size " - please add number tests for this platform");
     }
 
-    assert(!exists parseInteger(""), "parseInteger()");
-    assert(!exists parseInteger("+"), "parseInteger(+)");
-    assert(!exists parseInteger("-"), "parseInteger(-)");
-    assert(!exists parseInteger("foo"), "parseInteger(foo)");
-    assert(!exists parseInteger(" 0"), "parseInteger( 0)");
-    assert(!exists parseInteger("0 "), "parseInteger(0 )");
-    assert(!exists parseInteger("0+0"), "parseInteger(0+0)");
-    assert(!exists parseInteger("0-0"), "parseInteger(0-0)");
-    assert(!exists parseInteger("0+"), "parseInteger(0+)");
-    assert(!exists parseInteger("0-"), "parseInteger(0-)");
-    assert(!exists parseInteger("k"), "parseInteger(k)");
-    assert(!exists parseInteger("k1"), "parseInteger(k1)");
-    assert(!exists parseInteger("+k"), "parseInteger(+k)");
-    assert(!exists parseInteger("-k"), "parseInteger(-k)");
-    assert(!exists parseInteger("1kk"), "parseInteger(1kk)");
-    assert(!exists parseInteger("0_"), "parseInteger(0_)");
-    assert(!exists parseInteger("_0"), "parseInteger(_0)");
-    assert(!exists parseInteger("0_0"), "parseInteger(0_0)");
-    assert(!exists parseInteger("0_00"), "parseInteger(0_00)");
-    assert(!exists parseInteger("0_0000"), "parseInteger(0_0000)");
-    assert(!exists parseInteger("0_000_0"), "parseInteger(0_000_0)");
-    assert(!exists parseInteger("0000_000"), "parseInteger(0000_000)");
+    check(!exists parseInteger(""), "parseInteger()");
+    check(!exists parseInteger("+"), "parseInteger(+)");
+    check(!exists parseInteger("-"), "parseInteger(-)");
+    check(!exists parseInteger("foo"), "parseInteger(foo)");
+    check(!exists parseInteger(" 0"), "parseInteger( 0)");
+    check(!exists parseInteger("0 "), "parseInteger(0 )");
+    check(!exists parseInteger("0+0"), "parseInteger(0+0)");
+    check(!exists parseInteger("0-0"), "parseInteger(0-0)");
+    check(!exists parseInteger("0+"), "parseInteger(0+)");
+    check(!exists parseInteger("0-"), "parseInteger(0-)");
+    check(!exists parseInteger("k"), "parseInteger(k)");
+    check(!exists parseInteger("k1"), "parseInteger(k1)");
+    check(!exists parseInteger("+k"), "parseInteger(+k)");
+    check(!exists parseInteger("-k"), "parseInteger(-k)");
+    check(!exists parseInteger("1kk"), "parseInteger(1kk)");
+    check(!exists parseInteger("0_"), "parseInteger(0_)");
+    check(!exists parseInteger("_0"), "parseInteger(_0)");
+    check(!exists parseInteger("0_0"), "parseInteger(0_0)");
+    check(!exists parseInteger("0_00"), "parseInteger(0_00)");
+    check(!exists parseInteger("0_0000"), "parseInteger(0_0000)");
+    check(!exists parseInteger("0_000_0"), "parseInteger(0_000_0)");
+    check(!exists parseInteger("0000_000"), "parseInteger(0000_000)");
     
     // parseFloat
-    assert(parseFloat("12.34e3")?0.0==12.34e3, "parseFloat(12.34e3)");
-    assert(parseFloat("12.340e3")?0.0==12.34e3, "parseFloat(12.340e3)");
-    assert(parseFloat("123.4e2")?0.0==12.34e3, "parseFloat(123.4e2)");
-    assert(parseFloat("1234.0e1")?0.0==12.34e3, "parseFloat(1234.0e1)");
-    assert(parseFloat("1234.0e+1")?0.0==12.34e3, "parseFloat(1234.0e+1)");
-    assert(parseFloat("12340.0e0")?0.0==12.34e3, "parseFloat(12340.0e0)");
-    assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
-    assert(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
-    assert(parseFloat("123400.0e-1")?0.0==12.34e3, "parseFloat(123400.0e-1)");
+    check(parseFloat("12.34e3")?0.0==12.34e3, "parseFloat(12.34e3)");
+    check(parseFloat("12.340e3")?0.0==12.34e3, "parseFloat(12.340e3)");
+    check(parseFloat("123.4e2")?0.0==12.34e3, "parseFloat(123.4e2)");
+    check(parseFloat("1234.0e1")?0.0==12.34e3, "parseFloat(1234.0e1)");
+    check(parseFloat("1234.0e+1")?0.0==12.34e3, "parseFloat(1234.0e+1)");
+    check(parseFloat("12340.0e0")?0.0==12.34e3, "parseFloat(12340.0e0)");
+    check(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
+    check(parseFloat("12340.0")?0.0==12.34e3, "parseFloat(12340.0)");
+    check(parseFloat("123400.0e-1")?0.0==12.34e3, "parseFloat(123400.0e-1)");
     
-    assert(parseFloat("012340.0")?0.0==12.34e3, "parseFloat(012340.0)");
-    assert(parseFloat("+12340.0")?0.0==12.34e3, "parseFloat(+12340.0)");
+    check(parseFloat("012340.0")?0.0==12.34e3, "parseFloat(012340.0)");
+    check(parseFloat("+12340.0")?0.0==12.34e3, "parseFloat(+12340.0)");
     
-    assert(parseFloat("-12340.0")?0.0==-12.34e3, "parseFloat(-12340.0)");
+    check(parseFloat("-12340.0")?0.0==-12.34e3, "parseFloat(-12340.0)");
 
     //type safety
-    assert(is Integer obj(1+1), "int+int Integer");
-    assert(is Float   obj(1+1.0), "int+float Float");
-    assert(is Integer obj(1-1), "int-int Integer");
-    assert(is Float   obj(1-1.0), "int-float Float");
-    assert(is Integer obj(1*1), "int*int Integer");
-    assert(is Float   obj(1*1.0), "int*float Float");
-    assert(is Integer obj(1/1), "int/int Integer");
-    assert(is Float   obj(1/1.0), "int/float Float");
-    assert(is Integer obj(2**2), "2**2 Integer");
-    //assert(is Float   obj(2**2.0), "2**2.0 Float");
-    assert(is Float   obj(2.0**2), "2.0**2 Float");
+    check(is Integer obj(1+1), "int+int Integer");
+    check(is Float   obj(1+1.0), "int+float Float");
+    check(is Integer obj(1-1), "int-int Integer");
+    check(is Float   obj(1-1.0), "int-float Float");
+    check(is Integer obj(1*1), "int*int Integer");
+    check(is Float   obj(1*1.0), "int*float Float");
+    check(is Integer obj(1/1), "int/int Integer");
+    check(is Float   obj(1/1.0), "int/float Float");
+    check(is Integer obj(2**2), "2**2 Integer");
+    //check(is Float   obj(2**2.0), "2**2.0 Float");
+    check(is Float   obj(2.0**2), "2.0**2 Float");
     
-    assert(0.0.strictlyPositive, "positive zero strictly positive");
-    assert(!(-0.0).strictlyPositive, "negative zero not strictly positive");
-    assert(1.0.strictlyPositive, "positive one strictly positive");
-    assert(!(-1.0).strictlyPositive, "negative one not strictly positive");
+    check(0.0.strictlyPositive, "positive zero strictly positive");
+    check(!(-0.0).strictlyPositive, "negative zero not strictly positive");
+    check(1.0.strictlyPositive, "positive one strictly positive");
+    check(!(-1.0).strictlyPositive, "negative one not strictly positive");
 
     //number-related functions
-    assert(sum({1,2,3})==6, "sum()");
-    assert(max({1,3,2})==3, "max()");
-    assert(min({3,1,2})==1, "min()");
+    check(sum({1,2,3})==6, "sum()");
+    check(max({1,3,2})==3, "max()");
+    check(min({3,1,2})==1, "min()");
 
     //Ordinals
-    assert(10.distanceFrom(2) == 10-2, "Integer.distanceFrom");
+    check(10.distanceFrom(2) == 10-2, "Integer.distanceFrom");
 
     // Bitwise operators, we need to test their boxed versions as well
     Binary<Integer> box(Integer i){
         return i;
     }
-    assert(hex('ff') == 255, "xff value");
-    assert(bin('11111111') == 255, "b11111111 value");
+    check(hex('ff') == 255, "xff value");
+    check(bin('11111111') == 255, "b11111111 value");
 
     if (0.size == 64) {
-        assert(hex('ff').not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00");
-        assert(box(hex('ff')).not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00 boxed");
-        assert(0.not == hex('ffffffffffffffff'), "~0 == xffffffffffffffff");
-        assert(box(0).not == hex('ffffffffffffffff'), "~0 == xffffffffffffffff boxed");
-        assert(bin('1010101010101010101010101010101010101010101010101010101010101010').not == bin('0101010101010101010101010101010101010101010101010101010101010101'), 
+        check(hex('ff').not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00");
+        check(box(hex('ff')).not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00 boxed");
+        check(0.not == hex('ffffffffffffffff'), "~0 == xffffffffffffffff");
+        check(box(0).not == hex('ffffffffffffffff'), "~0 == xffffffffffffffff boxed");
+        check(bin('1010101010101010101010101010101010101010101010101010101010101010').not == bin('0101010101010101010101010101010101010101010101010101010101010101'), 
             "~b1010101010101010101010101010101010101010101010101010101010101010 == b0101010101010101010101010101010101010101010101010101010101010101");
-        assert(box(bin('1010101010101010101010101010101010101010101010101010101010101010')).not == bin('0101010101010101010101010101010101010101010101010101010101010101'), 
+        check(box(bin('1010101010101010101010101010101010101010101010101010101010101010')).not == bin('0101010101010101010101010101010101010101010101010101010101010101'), 
             "~b1010101010101010101010101010101010101010101010101010101010101010 == b0101010101010101010101010101010101010101010101010101010101010101 boxed");
-        assert(bin('1010101010101010101010101010101010101010101010101010101010101010').rightArithmeticShift(1) 
+        check(bin('1010101010101010101010101010101010101010101010101010101010101010').rightArithmeticShift(1) 
                 == bin('1101010101010101010101010101010101010101010101010101010101010101'), 
                 "b1010101010101010101010101010101010101010101010101010101010101010 >>> 1 == b1101010101010101010101010101010101010101010101010101010101010101");
-        assert(box(bin('1010101010101010101010101010101010101010101010101010101010101010')).rightArithmeticShift(1) 
+        check(box(bin('1010101010101010101010101010101010101010101010101010101010101010')).rightArithmeticShift(1) 
                 == bin('1101010101010101010101010101010101010101010101010101010101010101'), 
                 "b1010101010101010101010101010101010101010101010101010101010101010 >>> 1 == b1101010101010101010101010101010101010101010101010101010101010101 boxed");
     } else if (0.size == 53) {
-        assert(hex('ff').not == -256, "~xff == -256");
-        assert(box(hex('ff')).not == -256, "~xff == -256 boxed");
-        assert(0.not == -1, "~0 == -1");
-        assert(box(0).not == -1, "~0 == -1 boxed");
-        assert(bin('10101010101010101010101010101010101010101010101010101').not == -1431655766,
+        check(hex('ff').not == -256, "~xff == -256");
+        check(box(hex('ff')).not == -256, "~xff == -256 boxed");
+        check(0.not == -1, "~0 == -1");
+        check(box(0).not == -1, "~0 == -1 boxed");
+        check(bin('10101010101010101010101010101010101010101010101010101').not == -1431655766,
             "~b10101010101010101010101010101010101010101010101010101 == b10101010101010101010101010101010");
-        assert(box(bin('10101010101010101010101010101010101010101010101010101')).not == -1431655766,
+        check(box(bin('10101010101010101010101010101010101010101010101010101')).not == -1431655766,
             "~b10101010101010101010101010101010101010101010101010101 == b10101010101010101010101010101010 boxed");
-        assert(bin('10101010101010101010101010101010101010101010101010101').rightArithmeticShift(1) 
+        check(bin('10101010101010101010101010101010101010101010101010101').rightArithmeticShift(1) 
                 == bin('00101010101010101010101010101010'),
                 "b10101010101010101010101010101010101010101010101010101 >>> 1 == b00101010101010101010101010101010");
-        assert(box(bin('10101010101010101010101010101010101010101010101010101')).rightArithmeticShift(1) 
+        check(box(bin('10101010101010101010101010101010101010101010101010101')).rightArithmeticShift(1) 
                 == bin('00101010101010101010101010101010'),
                 "b10101010101010101010101010101010101010101010101010101 >>> 1 == b00101010101010101010101010101010 boxed");
     } else {
         fail("UNKNOWN INTEGER SIZE " 0.size " - please add number tests for this platform");
     }
-    assert(1.leftLogicalShift(2) == bin('100'), "1<<2 == b100");
-    assert(box(1).leftLogicalShift(2) == bin('100'), "1<<2 == b100 boxed");
+    check(1.leftLogicalShift(2) == bin('100'), "1<<2 == b100");
+    check(box(1).leftLogicalShift(2) == bin('100'), "1<<2 == b100 boxed");
     
-    assert(bin('1100').rightLogicalShift(2) == bin('11'), "b1100>>2 == b11");
-    assert(box(bin('1100')).rightLogicalShift(2) == bin('11'), "b1100>>2 == b11 boxed");
-    assert(bin('1010101010101010').rightLogicalShift(1) == bin('0101010101010101'), "b1010101010101010>>1 == b0101010101010101");
-    assert(box(bin('1010101010101010')).rightLogicalShift(1) == bin('0101010101010101'), "b1010101010101010>>1 == b0101010101010101 boxed");
+    check(bin('1100').rightLogicalShift(2) == bin('11'), "b1100>>2 == b11");
+    check(box(bin('1100')).rightLogicalShift(2) == bin('11'), "b1100>>2 == b11 boxed");
+    check(bin('1010101010101010').rightLogicalShift(1) == bin('0101010101010101'), "b1010101010101010>>1 == b0101010101010101");
+    check(box(bin('1010101010101010')).rightLogicalShift(1) == bin('0101010101010101'), "b1010101010101010>>1 == b0101010101010101 boxed");
     
-    assert(bin('1100').rightArithmeticShift(2) == bin('11'), "b1100>>>2 == b11");
-    assert(box(bin('1100')).rightArithmeticShift(2) == bin('11'), "b1100>>>2 == b11 boxed");
+    check(bin('1100').rightArithmeticShift(2) == bin('11'), "b1100>>>2 == b11");
+    check(box(bin('1100')).rightArithmeticShift(2) == bin('11'), "b1100>>>2 == b11 boxed");
     
-    assert(bin('1001').or(bin('0101')) == bin('1101'), "b1001&b0101 == b1101");
-    assert(box(bin('1001')).or(bin('0101')) == bin('1101'), "b1001&b0101 == b1101 boxed");
-    assert(bin('1001').xor(bin('0101')) == bin('1100'), "b1001^b0101 == b1100");
-    assert(box(bin('1001')).xor(bin('0101')) == bin('1100'), "b1001^b0101 == b1100 boxed");
-    assert(bin('1001').and(bin('1000')) == bin('1000'), "b1001&b1000 == b1000");
-    assert(box(bin('1001')).and(bin('1000')) == bin('1000'), "b1001&b1000 == b1000 boxed");
+    check(bin('1001').or(bin('0101')) == bin('1101'), "b1001&b0101 == b1101");
+    check(box(bin('1001')).or(bin('0101')) == bin('1101'), "b1001&b0101 == b1101 boxed");
+    check(bin('1001').xor(bin('0101')) == bin('1100'), "b1001^b0101 == b1100");
+    check(box(bin('1001')).xor(bin('0101')) == bin('1100'), "b1001^b0101 == b1100 boxed");
+    check(bin('1001').and(bin('1000')) == bin('1000'), "b1001&b1000 == b1000");
+    check(box(bin('1001')).and(bin('1000')) == bin('1000'), "b1001&b1000 == b1000 boxed");
 
-    assert(0.set(2) == bin('100'), "0.set(2) == b100");
-    assert(0.set(2) == bin('100'), "0.set(2) == b100");
-    assert(0.set(2, true) == bin('100'), "0.set(2, true) == b100");
-    assert(bin('110').set(2, false) == bin('010'), "b110.set(2, false) == b010");
-    assert(bin('110').clear(2) == bin('010'), "b110.clear(2) == b010");
-    assert(0.flip(2) == bin('100'), "0.flip(2) == b100");
-    assert(bin('100').flip(2) == 0, "b100.flip(2) == 0");
+    check(0.set(2) == bin('100'), "0.set(2) == b100");
+    check(0.set(2) == bin('100'), "0.set(2) == b100");
+    check(0.set(2, true) == bin('100'), "0.set(2, true) == b100");
+    check(bin('110').set(2, false) == bin('010'), "b110.set(2, false) == b010");
+    check(bin('110').clear(2) == bin('010'), "b110.clear(2) == b010");
+    check(0.flip(2) == bin('100'), "0.flip(2) == b100");
+    check(bin('100').flip(2) == 0, "b100.flip(2) == 0");
     
-    assert(!bin('10').get(0), "b10.get(0) == false");
-    assert(bin('10').get(1), "b10.get(1) == true");
-    assert(!bin('10').get(2), "b10.get(2) == false");
+    check(!bin('10').get(0), "b10.get(0) == false");
+    check(bin('10').get(1), "b10.get(1) == true");
+    check(!bin('10').get(2), "b10.get(2) == false");
 }

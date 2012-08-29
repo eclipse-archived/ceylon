@@ -10,10 +10,10 @@ class Foo<out T>(T t) given T satisfies Object {
 }
 
 void equality() {
-    assert(Foo(1)==Foo(1), "Foo(1)==Foo(1)");
-    assert(Foo("hi")==Foo("hi"), "Foo(hi)==Foo(hi)");
-    assert(Foo(1)!=Foo(2), "Foo(1)!=Foo(2)");
-    assert(Foo(1)!=Foo("hello"), "Foo(1)!=Foo(hello)");
-    assert(Foo(0)!=0, "Foo(0)!=0");
-    assert(Foo("hello")!="hello", "Foo(hello)!=hello");
+    check(Foo(1)==Foo(1), "Foo(1)==Foo(1)");
+    check(Foo("hi")==Foo("hi"), "Foo(hi)==Foo(hi)");
+    check(Foo(1)!=Foo(2), "Foo(1)!=Foo(2)");
+    check(Foo(1)!=Foo("hello"), "Foo(1)!=Foo(hello)");
+    check(Foo(0)!=0, "Foo(0)!=0");
+    check(Foo("hello")!="hello", "Foo(hello)!=hello");
 }

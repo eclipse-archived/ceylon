@@ -1,16 +1,16 @@
 shared void booleans() {
-    assert(true==true, "boolean equals");
-    assert(true===true, "boolean identical");
-    assert(false!=true, "boolean not equals");
-    assert(!false===true, "boolean not identical");
-    assert(true.string=="true", "true string");
-    assert(false.string=="false", "false string");
-    assert((1==1)==true, "boolean equals");
-    assert((1==2)==false, "boolean equals");
-    assert(true!="true", "boolean equals");
+    check(true==true, "boolean equals");
+    check(true===true, "boolean identical");
+    check(false!=true, "boolean not equals");
+    check(!false===true, "boolean not identical");
+    check(true.string=="true", "true string");
+    check(false.string=="false", "false string");
+    check((1==1)==true, "boolean equals");
+    check((1==2)==false, "boolean equals");
+    check(true!="true", "boolean equals");
     
-    assert(true.equals(true), "boolean equals");
-    assert(!true.equals("true"), "boolean equals");
+    check(true.equals(true), "boolean equals");
+    check(!true.equals("true"), "boolean equals");
     
     if (true) {}
     

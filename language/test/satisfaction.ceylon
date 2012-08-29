@@ -130,75 +130,75 @@ class MyCorrespondence() satisfies Correspondence<Integer, Character> {
 
 void testSatisfaction() {
     value category = MyCategory();
-    assert(5 in category, "Category.contains [1]");
-    assert(!20 in category, "Category.contains [2]");
-    assert(category.containsEvery(1,2,3,4,5), "Category.containsEvery [1]");
-    assert(!category.containsEvery(0,1,2,3), "Category.containsEvery [2]");
-    assert(category.containsAny(0,1,2,3), "Category.containsAny [1]");
-    assert(!category.containsAny(0,11,12,13), "Category.containsAny [2]");
+    check(5 in category, "Category.contains [1]");
+    check(!20 in category, "Category.contains [2]");
+    check(category.containsEvery(1,2,3,4,5), "Category.containsEvery [1]");
+    check(!category.containsEvery(0,1,2,3), "Category.containsEvery [2]");
+    check(category.containsAny(0,1,2,3), "Category.containsAny [1]");
+    check(!category.containsAny(0,11,12,13), "Category.containsAny [2]");
     value collection = MyCollection();
-    assert(!collection.empty, "Collection.empty");
-    assert(`l` in collection, "Collection.contains");
-    assert(collection.string == "{ h, e, l, l, o }", "Collection.string");
-    assert(MyComparable() <= MyComparable(), "Comparable.compare");
+    check(!collection.empty, "Collection.empty");
+    check(`l` in collection, "Collection.contains");
+    check(collection.string == "{ h, e, l, l, o }", "Collection.string");
+    check(MyComparable() <= MyComparable(), "Comparable.compare");
     variable ContainerWithFirstElement<Integer,Nothing> cwfe := MyContainerWithLastElement();
-    assert(exists cwfe.first, "ContainerWithFirstElement.first [1]");
-    assert(exists cwfe.last,  "ContainerWithFirstElement.last  [1]");
+    check(exists cwfe.first, "ContainerWithFirstElement.first [1]");
+    check(exists cwfe.last,  "ContainerWithFirstElement.last  [1]");
     cwfe := MyContainerWithoutFirstElement();
-    assert(!exists cwfe.first, "ContainerWithFirstElement.first [2]");
-    assert(exists cwfe.last, "ContainerWithFirstElement.last [2]");
+    check(!exists cwfe.first, "ContainerWithFirstElement.first [2]");
+    check(exists cwfe.last, "ContainerWithFirstElement.last [2]");
     cwfe := MyContainerWithoutLastElement();
-    assert(exists cwfe.first, "ContainerWithFirstElement.first [1]");
-    assert(!exists cwfe.last, "ContainerWithFirstElement.first [2]");
+    check(exists cwfe.first, "ContainerWithFirstElement.first [1]");
+    check(!exists cwfe.last, "ContainerWithFirstElement.first [2]");
     value clsbl = MyCloseable();
-    assert(!clsbl.opened, "Closeable [1]");
+    check(!clsbl.opened, "Closeable [1]");
     clsbl.open();
-    assert(clsbl.opened, "Closeable [2]");
+    check(clsbl.opened, "Closeable [2]");
     clsbl.close(null);
-    assert(!clsbl.opened, "Closeable [3]");
-    assert(MyContainer().empty, "Container");
-    assert(MySized(0).empty, "Sized [1]");
-    assert(!MySized(1).empty, "Sized [2]");
+    check(!clsbl.opened, "Closeable [3]");
+    check(MyContainer().empty, "Container");
+    check(MySized(0).empty, "Sized [1]");
+    check(!MySized(1).empty, "Sized [2]");
     variable FixedSized<Integer> myfixed := {};//MyNone();
-    assert(!nonempty myfixed, "None");
+    check(!nonempty myfixed, "None");
     myfixed := MySome();
-    assert(nonempty myfixed, "Some");
+    check(nonempty myfixed, "Some");
     value myiter = MyIterator();
     if (is Integer ii=myiter.next()) {
-        assert(ii==1, "Iterator [1]");
+        check(ii==1, "Iterator [1]");
     } else { fail("Iterator [1]"); }
     if (!is Finished myiter.next()) {
         fail("Iterator [2]");
     }
-    /*assert(MySequence().last==MySequence().first, "Sequence[1]");
-    assert(!nonempty MySequence().rest, "Sequence[2]");
-    assert(MySequence().reversed==MySequence(), "Sequence[3]");*/
-    assert(MyRanged().span(1,null).sequence=={1}, "Ranged[1]");
-    assert(MyRanged().span(1,3).sequence=={1,2,3}, "Ranged[2]");
-    assert(MyRanged().segment(10,1).sequence=={10}, "Ranged[3]");
+    /*check(MySequence().last==MySequence().first, "Sequence[1]");
+    check(!nonempty MySequence().rest, "Sequence[2]");
+    check(MySequence().reversed==MySequence(), "Sequence[3]");*/
+    check(MyRanged().span(1,null).sequence=={1}, "Ranged[1]");
+    check(MyRanged().span(1,3).sequence=={1,2,3}, "Ranged[2]");
+    check(MyRanged().segment(10,1).sequence=={10}, "Ranged[3]");
 
     variable value ord1 := MyOrdinal(null,null);
     variable value ord2 := MyOrdinal(ord1, null);
     variable value ord3 := MyOrdinal(ord2, ord1);
     ord1.next := ord2;
     ord2.next := ord3;
-    assert(++ord1==ord2, "Ordinal [1]");
-    assert(--ord3==ord2, "Ordinal [2]");
+    check(++ord1==ord2, "Ordinal [1]");
+    check(--ord3==ord2, "Ordinal [2]");
     ord3++;
-    assert(++ord3==--ord1, "Ordinal [3]");
+    check(++ord3==--ord1, "Ordinal [3]");
 
-    assert(MyNumeric(1)+MyNumeric(1)==MyNumeric(2), "Numeric[1]");
-    assert(MyNumeric(2)-MyNumeric(1)==MyNumeric(1), "Numeric[2]");
-    assert(MyNumeric(2)*MyNumeric(2)==MyNumeric(4), "Numeric[3]");
-    assert(MyNumeric(6)/MyNumeric(3)==MyNumeric(2), "Numeric[4]");
-    assert(MyNumeric(1)*MyNumeric(-1)==-MyNumeric(1), "Numeric[5]");
-    assert(MyNumeric(2)**3==MyNumeric(8), "Numeric[6]");
+    check(MyNumeric(1)+MyNumeric(1)==MyNumeric(2), "Numeric[1]");
+    check(MyNumeric(2)-MyNumeric(1)==MyNumeric(1), "Numeric[2]");
+    check(MyNumeric(2)*MyNumeric(2)==MyNumeric(4), "Numeric[3]");
+    check(MyNumeric(6)/MyNumeric(3)==MyNumeric(2), "Numeric[4]");
+    check(MyNumeric(1)*MyNumeric(-1)==-MyNumeric(1), "Numeric[5]");
+    check(MyNumeric(2)**3==MyNumeric(8), "Numeric[6]");
 
-    assert(MyInvertable(-1)==-MyInvertable(1), "Invertable");
+    check(MyInvertable(-1)==-MyInvertable(1), "Invertable");
 
     value corr = MyCorrespondence();
-    assert(exists corr[0], "Correspondence[1]");
-    assert(!exists corr[100], "Correspondence[2]");
-    assert(corr.defines(3), "Correspondence[3]");
-    assert(is Character corr[4], "Correspondence[4]");
+    check(exists corr[0], "Correspondence[1]");
+    check(!exists corr[100], "Correspondence[2]");
+    check(corr.defines(3), "Correspondence[3]");
+    check(is Character corr[4], "Correspondence[4]");
 }

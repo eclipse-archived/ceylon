@@ -1,11 +1,11 @@
 shared void testSort() {
-    assert(!nonempty sort(), "sort()");
-    assert(!nonempty sort({}...), "sort({}...)");
-    assert(sort(3, 2, 1) == {1, 2, 3}, "Sort integers");
-    assert(sort(3.3, 2.2, 1.1) == {1.1, 2.2, 3.3}, "Sort floats");
-    assert(sort(`c`, `b`, `a`) == {`a`, `b`, `c`}, "Sort characters");
-    assert(sort("c", "b", "a") == {"a", "b", "c"}, "Sort strings");
-    assert(sort(StubComparable(3), StubComparable(2), StubComparable(1)) == {StubComparable(1), StubComparable(2), StubComparable(3)}, "Sort custom comparable");
+    check(!nonempty sort(), "sort()");
+    check(!nonempty sort({}...), "sort({}...)");
+    check(sort(3, 2, 1) == {1, 2, 3}, "Sort integers");
+    check(sort(3.3, 2.2, 1.1) == {1.1, 2.2, 3.3}, "Sort floats");
+    check(sort(`c`, `b`, `a`) == {`a`, `b`, `c`}, "Sort characters");
+    check(sort("c", "b", "a") == {"a", "b", "c"}, "Sort strings");
+    check(sort(StubComparable(3), StubComparable(2), StubComparable(1)) == {StubComparable(1), StubComparable(2), StubComparable(3)}, "Sort custom comparable");
 }
 
 class StubComparable(Integer n) satisfies Comparable<StubComparable> {
