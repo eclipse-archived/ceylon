@@ -459,4 +459,8 @@ public class ExpressionTest2 extends CompilerTest {
         compareWithJavaSource("invoke/OptionalCallable");
     }
 
+    @Test
+    public void testInvMultipleParameterLists(){
+        compareWithJavaSource("invoke/MultipleParameterLists");
+    }
 }
