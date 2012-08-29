@@ -17,6 +17,9 @@ public final class Map$impl<Key,Item> {
         this.$this = $this;
     }
 
+    public java.lang.String toString() {
+        return Collection$impl._toString($this);
+    }
     public boolean equals(java.lang.Object that) {
         return _equals($this, that);
     }
