@@ -465,7 +465,12 @@ public class ClassTransformer extends AbstractTransformer {
                 concreteWrapper.typeParameter(tp);
             }
         }
-        if (!isVoid(methodType)) {
+        boolean explicitReturn = false;
+        TypedDeclaration member = typedMember.getDeclaration();
+        if (!isVoid(methodType) 
+                || ((member instanceof Method || member instanceof Getter || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
+                || (member instanceof Method && Strategy.useBoxedVoid((Method)member))) {
+            explicitReturn = true;
             concreteWrapper.resultTypeNonWidening(typedMember, typedMember.getType(),
                     rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
         }
@@ -480,7 +485,7 @@ public class ClassTransformer extends AbstractTransformer {
                 null,  // TODO Type args
                 makeSelect(getCompanionFieldName(iface), methodName),
                 arguments.toList());
-        if (isVoid(methodType)) {
+        if (!explicitReturn) {
             concreteWrapper.body(gen().make().Exec(expr));
         } else {
             concreteWrapper.body(gen().make().Return(expr));
