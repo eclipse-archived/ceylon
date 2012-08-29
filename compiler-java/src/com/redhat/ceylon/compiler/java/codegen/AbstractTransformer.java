@@ -411,7 +411,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     public boolean isVoid(ProducedType type) {
-        return typeFact.getVoidDeclaration().getType().isExactly(type);
+        return CodegenUtil.isVoid(type);
     }
 
     private boolean isObject(ProducedType type) {
