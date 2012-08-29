@@ -957,7 +957,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean transformMethod = specifier != null || block != null;
             boolean actualAndAnnotations = def instanceof MethodDeclaration;
             List<JCStatement> cbody = specifier != null ? transformMplBody(model, body) 
-                    : block != null ? statementGen().transform(block).getStatements() 
+                    : block != null ? transformMethodBlock(model, block) 
                     : null;
                     
             boolean transformOverloads = def instanceof MethodDeclaration || block != null;
@@ -1163,14 +1163,14 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
         try {
-            statementGen().noExpressionlessReturn = Decl.isMpl(model);
+            statementGen().noExpressionlessReturn = Decl.isMpl(model) || Strategy.useBoxedVoid(model);
             body = statementGen().transform(block).getStatements();    
         } finally {
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
         // We void methods need to have their Callables return null
         // so adjust here.
-        if (Decl.isMpl(model)
+        if ((Decl.isMpl(model) || Strategy.useBoxedVoid(model))
                 && !block.getDefinitelyReturns()) {
             if (Decl.isUnboxedVoid(model)) {
                 body = body.append(make().Return(makeNull()));
