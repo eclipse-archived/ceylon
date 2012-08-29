@@ -207,13 +207,21 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 setBoxingState(refinedDeclaration, refinedDeclaration);
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
-        }else if((isCeylonBasicType(type) || Decl.isUnboxedVoid(declaration))
+        } else if (declaration instanceof Method
+                && CodegenUtil.isVoid(declaration.getType())
+                && Strategy.useBoxedVoid((Method)declaration)
+                && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
+                && !(refinedDeclaration.getContainer() instanceof FunctionalParameter)
+                && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
+            declaration.setUnboxed(false);
+        } else if((isCeylonBasicType(type) || Decl.isUnboxedVoid(declaration))
            && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
            && !(refinedDeclaration.getContainer() instanceof FunctionalParameter)
            && !(refinedDeclaration instanceof Functional && Decl.isMpl((Functional)refinedDeclaration))){
             declaration.setUnboxed(true);
-        }else
+        } else {
             declaration.setUnboxed(false);
+        }
     }
 
     private void boxAttribute(TypedDeclaration declaration) {
