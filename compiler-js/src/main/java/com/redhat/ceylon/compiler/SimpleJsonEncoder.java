@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
@@ -11,65 +13,63 @@ import java.util.Map;
  */
 public class SimpleJsonEncoder {
 
-    public String encode(Map<String, Object> map) {
-        StringBuilder sb = new StringBuilder();
-        encodeMap(map, sb);
-        return sb.toString();
+    public void encode(Map<String, Object> map, Writer out) throws IOException {
+        encodeMap(map, out);
     }
 
-    public void encodeString(String s, StringBuilder sb) {
-        sb.append('"');
-        sb.append(s.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\"").replaceAll("\n", "\\\\n"));
-        sb.append('"');
+    public void encodeString(String s, Writer out) throws IOException {
+        out.write('"');
+        out.write(s.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\"").replaceAll("\n", "\\\\n"));
+        out.write('"');
     }
-    public void encodeNumber(Number n, StringBuilder sb) {
-        sb.append(n.toString());
+    public void encodeNumber(Number n, Writer out) throws IOException {
+        out.write(n.toString());
     }
 
     @SuppressWarnings("unchecked")
-    public void encodeList(List<Object> list, StringBuilder sb) {
-        sb.append('[');
+    public void encodeList(List<Object> list, Writer out) throws IOException {
+        out.write('[');
         boolean first = true;
         for (Object item : list) {
             if (!first) {
-                sb.append(',');
+                out.write(',');
             }
             if (item instanceof List) {
-                encodeList((List<Object>)item, sb);
+                encodeList((List<Object>)item, out);
             } else if (item instanceof Map) {
-                encodeMap((Map<String, Object>)item, sb);
+                encodeMap((Map<String, Object>)item, out);
             } else if (item instanceof Number) {
-                encodeNumber((Number)item, sb);
+                encodeNumber((Number)item, out);
             } else {
-                encodeString(item.toString(), sb);
+                encodeString(item.toString(), out);
             }
             first=false;
         }
-        sb.append(']');
+        out.write(']');
     }
 
     @SuppressWarnings("unchecked")
-    public void encodeMap(Map<String, Object> map, StringBuilder sb) {
-        sb.append('{');
+    public void encodeMap(Map<String, Object> map, Writer out) throws IOException {
+        out.write('{');
         boolean first = true;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (!first) {
-                sb.append(',');
+                out.write(',');
             }
-            encodeString(entry.getKey(), sb);
-            sb.append(':');
+            encodeString(entry.getKey(), out);
+            out.write(':');
             if (entry.getValue() instanceof List) {
-                encodeList((List<Object>)entry.getValue(), sb);
+                encodeList((List<Object>)entry.getValue(), out);
             } else if (entry.getValue() instanceof Map) {
-                encodeMap((Map<String, Object>)entry.getValue(), sb);
+                encodeMap((Map<String, Object>)entry.getValue(), out);
             } else if (entry.getValue() instanceof Number) {
-                encodeNumber((Number)entry.getValue(), sb);
+                encodeNumber((Number)entry.getValue(), out);
             } else {
-                encodeString(entry.getValue().toString(), sb);
+                encodeString(entry.getValue().toString(), out);
             }
             first = false;
         }
-        sb.append('}');
+        out.write('}');
     }
 
 }
