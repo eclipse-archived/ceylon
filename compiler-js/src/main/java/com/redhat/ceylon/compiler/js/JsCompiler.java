@@ -51,8 +51,11 @@ public class JsCompiler {
     private final class JsOutput {
         private final File f = File.createTempFile("jsout", ".tmp");
         private final Writer w = new FileWriter(f);
-        private Set<String> s = new HashSet<String>();
-        private JsOutput() throws IOException {}
+        private final Set<String> s = new HashSet<String>();
+        private final MetamodelGenerator mmg;
+        private JsOutput(Module m) throws IOException {
+            mmg = new MetamodelGenerator(m);
+        }
         Writer getWriter() { return w; }
         File close() throws IOException {
             w.close();
@@ -128,12 +131,13 @@ public class JsCompiler {
             if (opts.isVerbose()) {
                 System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
             }
+            pu.getCompilationUnit().visit(unitVisitor);
+            pu.getCompilationUnit().visit(getOutput(pu).mmg);
             GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), opts.isOptimize(), names);
             jsv.setAddComments(opts.isComment());
             jsv.setIndent(opts.isIndent());
             jsv.setVerbose(opts.isVerbose());
             pu.getCompilationUnit().visit(jsv);
-            pu.getCompilationUnit().visit(unitVisitor);
         }
         return unitErrors;
     }
@@ -194,11 +198,13 @@ public class JsCompiler {
         Module mod = pu.getPackage().getModule();
         JsOutput jsout = output.get(mod);
         if (jsout==null) {
-            jsout = new JsOutput();
+            jsout = new JsOutput(mod);
             output.put(mod, jsout);
             if (opts.isModulify()) {
                 beginWrapper(jsout.getWriter());
             }
+            //TODO we could put the metamodel info at the beginning to make it available to
+            //all objects in the module, but it requires two passes instead of one
         }
         return jsout;
     }
@@ -211,6 +217,8 @@ public class JsCompiler {
     protected void finish() throws IOException {
         for (Map.Entry<Module,JsOutput> entry: output.entrySet()) {
             JsOutput jsout = entry.getValue();
+            //TODO should this be done always, or just when wrapping in commonJS module?
+            jsout.mmg.writeModel(jsout.getWriter());
             if (opts.isModulify()) {
                 endWrapper(jsout.getWriter());
             }
