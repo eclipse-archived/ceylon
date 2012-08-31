@@ -13,13 +13,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 /** Generates the metamodel for all objects in a module.
@@ -58,12 +58,23 @@ public class MetamodelGenerator extends Visitor {
     /** Create a map for the specified ProducedType.
      * Includes name, package, module and type parameters. */
     private Map<String, Object> typeMap(ProducedType pt) {
+        TypeDeclaration d = pt.getDeclaration();
         Map<String, Object> m = new HashMap<String, Object>();
-        m.put("name", pt.getDeclaration().getName());
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = pt.getDeclaration().getUnit().getPackage();
+        if (d instanceof UnionType || d instanceof IntersectionType) {
+            List<ProducedType> subtipos = d instanceof UnionType ? d.getCaseTypes() : d.getSatisfiedTypes();
+            List<Map<String,Object>> subs = new ArrayList<Map<String,Object>>(subtipos.size());
+            for (ProducedType sub : subtipos) {
+                subs.add(typeMap(sub));
+            }
+            m.put("comp", d instanceof UnionType ? "u" : "i");
+            m.put("types", subs);
+            return m;
+        }
+        m.put("name", d.getName());
+        com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
         m.put("pkg", pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
-            m.put("mod", pt.getDeclaration().getUnit().getPackage().getModule().getNameAsString());
+            m.put("mod", d.getUnit().getPackage().getModule().getNameAsString());
         }
         putTypeParameters(m, pt);
         return m;
@@ -83,12 +94,23 @@ public class MetamodelGenerator extends Visitor {
      * Includes name, package, module and type parameters. */
     private Map<String, Object> typeParameterMap(ProducedType pt) {
         Map<String, Object> m = new HashMap<String, Object>();
-        m.put("name", pt.getDeclaration().getName());
+        TypeDeclaration d = pt.getDeclaration();
         m.put("mt", "tparam");
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = pt.getDeclaration().getUnit().getPackage();
+        if (d instanceof UnionType || d instanceof IntersectionType) {
+            List<ProducedType> subtipos = d instanceof UnionType ? d.getCaseTypes() : d.getSatisfiedTypes();
+            List<Map<String,Object>> subs = new ArrayList<Map<String,Object>>(subtipos.size());
+            for (ProducedType sub : subtipos) {
+                subs.add(typeMap(sub));
+            }
+            m.put("comp", d instanceof UnionType ? "u" : "i");
+            m.put("types", subs);
+            return m;
+        }
+        m.put("name", d.getName());
+        com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
         m.put("pkg", pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
-            m.put("mod", pt.getDeclaration().getUnit().getPackage().getModule().getNameAsString());
+            m.put("mod", d.getUnit().getPackage().getModule().getNameAsString());
         }
         putTypeParameters(m, pt);
         return m;
