@@ -64,4 +64,20 @@ public class TestModelClasses {
         Map<String,Object> cls = (Map<String,Object>)model.get("Nested1");
         System.out.println(cls);
     }
+
+    @Test @SuppressWarnings("unchecked")
+    public void testAlgebraics() {
+        Map<String,Object> cls = (Map<String,Object>)model.get("Algebraic1");
+        System.out.println(cls);
+        cls = (Map<String, Object>)model.get("AlgOne");
+        System.out.println(cls);
+        cls = (Map<String, Object>)model.get("AlgTwo");
+        System.out.println(cls);
+        cls = (Map<String, Object>)model.get("AlgThree");
+        System.out.println(cls);
+
+        cls = (Map<String, Object>)model.get("Algebraic2");
+        System.out.println(cls);
+    }
+
 }
