@@ -1,6 +1,6 @@
 //Test classes for metamodel generation
 class SimpleClass1() {}
-shared class SimpleClass2(String name) {}
+shared abstract class SimpleClass2(String name) {}
 class SimpleClass3() extends Object() {
     shared actual Boolean equals(Object other) { return false; }
     shared actual Integer hash { return 0; }
@@ -34,3 +34,18 @@ shared class Nested1() {
     void innerMethod1(){}
   }
 }
+
+shared abstract class Algebraic1(name)
+        of AlgOne | AlgTwo | AlgThree {
+    shared String name;
+}
+shared class AlgOne() extends Algebraic1("one") {}
+shared class AlgTwo() extends Algebraic1("one") {}
+shared class AlgThree() extends Algebraic1("one") {}
+
+shared abstract class Algebraic2(name)
+        of algobj1 | algobj2 {
+    shared String name;
+}
+shared object algobj1 extends Algebraic2("one") {}
+shared object algobj2 extends Algebraic2("two") {}
