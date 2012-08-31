@@ -27,4 +27,6 @@ public interface ContentFinder {
     void completeModules(ModuleQuery lookup, ModuleResult result);
 
     void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result);
+    
+    void searchModules(ModuleQuery query, ModuleSearchResult result);
 }

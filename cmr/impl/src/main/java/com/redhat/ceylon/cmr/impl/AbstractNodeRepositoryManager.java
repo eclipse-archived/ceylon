@@ -29,6 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.ModuleResult;
@@ -333,4 +334,13 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         }
         return result;
     }
+
+    @Override
+    public ModuleSearchResult searchModules(ModuleQuery query) {
+        ModuleSearchResult result = new ModuleSearchResult();
+        for(Repository root : roots){
+            root.searchModules(query, result);
+        }
+        return result;
+    }    
 }

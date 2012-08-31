@@ -20,6 +20,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ContentFinder;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.ModuleResult;
@@ -34,6 +35,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -43,6 +46,13 @@ import java.util.List;
  */
 public abstract class AbstractRepository implements Repository {
 
+    private static final Comparator<? super Node> AlphabeticalNodeComparator = new Comparator<Node>(){
+        @Override
+        public int compare(Node a, Node b) {
+            return a.getLabel().compareToIgnoreCase(b.getLabel());
+        }
+    };
+    
     private OpenNode root;
 
     public AbstractRepository(OpenNode root) {
@@ -236,6 +246,107 @@ public abstract class AbstractRepository implements Repository {
         return false;
     }
 
+    /*
+     * This method is almost like hasChildrenContainingArtifact but it scans for any type of artifact and records
+     * the specific one we want in an out param
+     */
+    private boolean hasChildrenContainingAnyArtifact(Node node, ModuleQuery query, Ret ret) {
+        // We don't look directly at our children, we want the children's children, because if there's
+        // nothing in those children it means either this is an empty folder, or its children contain
+        // artifacts (in which case we don't want to match it since its name must be a version component),
+        // or we could only find artifacts of the wrong type.
+        
+        // This allows us to never match the default module, since it's at "/default/default.car" which
+        // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
+        for(Node child : node.getChildren()){
+            String name = child.getLabel();
+            // Winner of the less aptly-named method
+            boolean isFolder = !child.hasBinaries();
+            if(isFolder && !name.equals(ArtifactContext.DOCS) && containsAnyArtifact(child, query, ret))
+                return true;
+        }
+        // could not find any
+        return false;
+    }
+
+    /*
+     * This method is almost like containsArtifact but it scans for any type of artifact and records
+     * the specific one we want in an out param. It's also not recursive so it only scans the current children.
+     */
+    private boolean containsAnyArtifact(Node node, ModuleQuery query, Ret ret) {
+        boolean foundArtifact = false;
+        for(Node child : node.getChildren()){
+            String name = child.getLabel();
+            // Winner of the less aptly-named method
+            boolean isFolder = !child.hasBinaries();
+            if(isFolder){
+                // we don't recurse
+            }else if(isArtifactOfType(name, query.getType())
+                     && matchesSearch(name, child, node, query)){
+                // we found what we were looking for
+                ret.foundRightType = true;
+                return true;
+            }else if(isArtifact(name)){
+                // we found something, but not the type we wanted
+                foundArtifact = true;
+            }
+        }
+        return foundArtifact;
+    }
+
+    private boolean matchesSearch(String name, Node artifact, Node versionNode, ModuleQuery query) {
+        // match on the module name first
+        Node moduleNode = NodeUtils.firstParent(versionNode);
+        // can't happen but hey
+        if(moduleNode == null)
+            return false;
+        String moduleName = toModuleName(moduleNode);
+        if(moduleName.toLowerCase().contains(query.getName()))
+            return true;
+        // now search on the metadata
+        // this is easy for cars
+        if(query.getType() == Type.JVM){
+            return matchFromCar(artifact, moduleName, query.getName());
+        }
+        // for now, for SRC and JS we will fall back to the JVM archive if present, though in the
+        // future we might try to load the metadata from the SRC or JS archives
+        String carName;
+        switch(query.getType()){
+        case JS:
+            carName = name.substring(0, name.length() - ArtifactContext.JS.length()) + ArtifactContext.CAR;
+            break;
+        case SRC:
+            carName = name.substring(0, name.length() - ArtifactContext.SRC.length()) + ArtifactContext.CAR;
+            break;
+        default:
+            // shouldn't happen
+            return false;
+        }
+        Node carArtifact = versionNode.getChild(carName);
+        // did we find it?
+        if(carArtifact == null)
+            return false;
+        // try to match from the car
+        return matchFromCar(carArtifact, moduleName, query.getName());
+    }
+
+    private boolean matchFromCar(Node artifact, String moduleName, String query) {
+        try {
+            File file = artifact.getContent(File.class);
+            return file != null && BytecodeUtils.matchesModuleInfo(moduleName, file, query); 
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // FIXME: this is weak, we should check the full artifact name
+    private boolean isArtifact(String name) {
+        return name.endsWith(ArtifactContext.JS)
+                || name.endsWith(ArtifactContext.CAR)
+                || name.endsWith(ArtifactContext.JAR)
+                || name.endsWith(ArtifactContext.SRC);
+    }
+
     private String toModuleName(Node node) {
         String path = NodeUtils.getFullPath(node, ".");
         // That's sort of an invariant, but let's be safe
@@ -287,11 +398,67 @@ public abstract class AbstractRepository implements Repository {
                         File file = artifact.getContent(File.class);
                         if(file != null)
                             BytecodeUtils.readModuleInfo(name, file, newVersion);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         // bah
                     }
                 }
                 break;
+            }
+        }
+    }
+
+    private static class Ret {
+        public boolean foundRightType;
+        public long found;
+    }
+    private static class GetOut extends Exception {}
+
+    @Override
+    public void searchModules(ModuleQuery query, ModuleSearchResult result) {
+        // check for delegate
+        ContentFinder delegate = root.getService(ContentFinder.class);
+        if(delegate != null){
+            delegate.searchModules(query, result);
+            return;
+        }
+        // do the searching the hard way
+        try {
+            searchModules(root, query, result, new Ret());
+        } catch (GetOut e) {
+            // easy out
+        }
+    }
+
+    private void searchModules(Node parent, ModuleQuery query, ModuleSearchResult result, Ret ret) throws GetOut {
+        List<Node> sortedChildren = new ArrayList<Node>();
+        for(Node child : parent.getChildren())
+            sortedChildren.add(child);
+        Collections.sort(sortedChildren, AlphabeticalNodeComparator);
+        for(Node child : sortedChildren){
+            // Winner of the less aptly-named method
+            boolean isFolder = !child.hasBinaries();
+            // ignore non-folders
+            if(!isFolder)
+                continue;
+            // is it a module? does it contains artifacts?
+            ret.foundRightType = false;
+            if(hasChildrenContainingAnyArtifact(child, query, ret)){
+                // does it contain an artifact of the type we're looking for?
+                if(ret.foundRightType){
+                    if(ret.found++ >= query.getStart()){
+                        // are we interested in this result or did we need to skip it?
+                        String moduleName = toModuleName(child);
+                        result.addResult(moduleName);
+                        // stop if we're done searching
+                        if(ret.found >= query.getStart() + query.getCount())
+                            throw new GetOut();
+                    }
+                }
+            }else{
+                // it doesn't contain artifacts, it's probably leading to modules
+                if(!child.getLabel().equals(ArtifactContext.DOCS)){ // safety check
+                    searchModules(child, query, result, ret);
+                }
             }
         }
     }

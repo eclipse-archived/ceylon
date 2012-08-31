@@ -99,4 +99,9 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     public ModuleVersionResult completeVersions(ModuleVersionQuery lookup) {
         return new ModuleVersionResult(lookup.getName());
     }
+    
+    @Override
+    public ModuleSearchResult searchModules(ModuleQuery query) {
+        return new ModuleSearchResult();
+    }
 }

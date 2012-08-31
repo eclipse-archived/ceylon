@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.ModuleResult;
@@ -65,6 +66,11 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
         // remote content stores do not participate in completion for speed reasons
     }
 
+    @Override
+    public void searchModules(ModuleQuery query, ModuleSearchResult result) {
+        // remote content stores do not participate in search for speed reasons
+    }
+    
     protected static class RemoteNode extends DefaultNode {
         private String cachedString;
 

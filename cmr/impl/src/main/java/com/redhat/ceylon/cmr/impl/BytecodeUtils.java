@@ -125,7 +125,37 @@ public final class BytecodeUtils {
         if(by != null)
             version.setBy(by.asStringArray());
     }
-    
+
+    public static boolean matchesModuleInfo(String moduleName, File moduleArchive, String query){
+        final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
+        if(moduleClass == null)
+            return false;
+        
+        List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
+        if (annotations == null || annotations.isEmpty())
+            return false;
+
+        final AnnotationInstance moduleAnnotation = annotations.get(0);
+        AnnotationValue doc = moduleAnnotation.value("doc");
+        if(doc != null && matches(doc.asString(), query))
+            return true;
+        AnnotationValue license = moduleAnnotation.value("license");
+        if(license != null && matches(license.asString(), query))
+            return true;
+        AnnotationValue by = moduleAnnotation.value("by");
+        if(by != null){
+            for(String author : by.asStringArray()){
+                if(matches(author, query))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean matches(String string, String query) {
+        return string.toLowerCase().contains(query);
+    }
+
     private static String asString(AnnotationInstance ai, String name) {
         final AnnotationValue av = ai.value(name);
         if (av == null)
