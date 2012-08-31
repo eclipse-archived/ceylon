@@ -23,7 +23,7 @@ public class ModuleQuery {
     }
     
     public ModuleQuery(String name, Type type){
-        this.name = name;
+        this.name = name.toLowerCase();
         this.type = type;
     }
     
@@ -32,7 +32,7 @@ public class ModuleQuery {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
     }
 
     public Type getType() {
