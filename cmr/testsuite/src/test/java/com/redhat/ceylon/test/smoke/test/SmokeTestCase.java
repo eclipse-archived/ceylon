@@ -28,6 +28,8 @@ import org.junit.Test;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -304,20 +306,84 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testListVersion() throws Exception {
-        RepositoryManager manager = getRepositoryManager();
-
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
             new ModuleVersionDetails("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
         };
-        testListVersions("com.acme.helloworld", null, expected, manager);
+        testListVersions("com.acme.helloworld", null, expected);
     }
 
     @Test
     public void testListVersionFiltered() throws Exception {
-        RepositoryManager manager = getRepositoryManager();
-
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
-        testListVersions("com.acme.helloworld", "9", expected, manager);
+        testListVersions("com.acme.helloworld", "9", expected);
+    }
+
+    @Test
+    public void testSearchModules() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("com.acme.helloworld"),
+                new ModuleDetails("hello"),
+                new ModuleDetails("moduletest"),
+                new ModuleDetails("org.jboss.acme"),
+                new ModuleDetails("org.jboss.jboss-vfs"),
+                new ModuleDetails("test-jar"),
+        };
+        
+        testSearchResults("", Type.JVM, expected);
+    }
+
+    @Test
+    public void testSearchModulesPaged() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("moduletest"),
+                new ModuleDetails("org.jboss.acme"),
+        };
+        
+        testSearchResults("", Type.JVM, expected, 2, 2);
+    }
+
+    @Test
+    public void testSearchModulesFilteredByName() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("com.acme.helloworld"),
+                new ModuleDetails("hello"),
+        };
+        
+        testSearchResults("hello", Type.JVM, expected);
+    }
+    
+    // com.acme.helloworld: ("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud")
+
+    @Test
+    public void testSearchModulesFilteredByDocLicenseAndAuthor() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("com.acme.helloworld"),
+        };
+        
+        testSearchResults("classic", Type.JVM, expected);
+        testSearchResults("domain", Type.JVM, expected);
+        testSearchResults("epardaud", Type.JVM, expected);
+    }
+
+    @Test
+    public void testSearchModulesFilteredByDocLicenseAndAuthorSrc() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("com.acme.helloworld"),
+        };
+        
+        testSearchResults("classic", Type.SRC, expected);
+        testSearchResults("domain", Type.SRC, expected);
+        testSearchResults("epardaud", Type.SRC, expected);
+    }
+
+    @Test
+    public void testSearchModulesFilteredByDocLicenseAndAuthorJs() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+        };
+        
+        testSearchResults("classic", Type.JS, expected);
+        testSearchResults("domain", Type.JS, expected);
+        testSearchResults("epardaud", Type.JS, expected);
     }
 }

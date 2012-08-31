@@ -17,6 +17,13 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import java.net.URISyntaxException;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -37,30 +44,35 @@ public class HerdTestCase extends AbstractTest {
     public void testDummy() {
     }
 
-    @Test
-    @Ignore("Required Herd running locally")
-    public void testHerdCompleteVersions() throws URISyntaxException{
+    protected RepositoryManager getRepositoryManager() throws URISyntaxException {
         RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
         WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
         Repository repo = new DefaultRepository(rcs.createRoot());
-        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
-
+        return builder.appendRepository(repo).buildRepository();
+    }
+    
+    @Test
+    //@Ignore("Required Herd running locally")
+    public void testHerdCompleteVersions() throws Exception{
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("0.3.0", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", "Stéphane Épardaud"),
         };
-        testListVersions("ceylon.collection", null, expected, manager);
+        testListVersions("ceylon.collection", null, expected);
     }
 
     @Test
-    @Ignore("Required Herd running locally")
-    public void testHerdCompleteVersionsFiltered() throws URISyntaxException{
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
-        WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
-        Repository repo = new DefaultRepository(rcs.createRoot());
-        RepositoryManager manager = builder.appendRepository(repo).buildRepository();
-
+    //@Ignore("Required Herd running locally")
+    public void testHerdCompleteVersionsFiltered() throws Exception{
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
-        testListVersions("ceylon.collection", "1.0", expected, manager);
+        testListVersions("ceylon.collection", "1.0", expected);
+    }
+
+    @Test
+    //@Ignore("Required Herd running locally")
+    public void testHerdSearch() throws Exception{
+        ModuleSearchResult.ModuleDetails[] expected = new ModuleSearchResult.ModuleDetails[]{
+        };
+        testSearchResults("ceylon.collection", Type.JVM, expected);
     }
 }

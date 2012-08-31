@@ -19,6 +19,7 @@ package com.redhat.ceylon.test.smoke.test;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Map.Entry;
 
 import org.junit.Assert;
@@ -26,10 +27,13 @@ import org.junit.Assert;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.RootRepositoryManager;
 
@@ -72,7 +76,8 @@ public class AbstractTest {
         }
     }
 
-    protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected, RepositoryManager manager){
+    protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected) throws Exception{
+        RepositoryManager manager = getRepositoryManager();
         ModuleVersionQuery lookup = new ModuleVersionQuery(query, versionQuery, ModuleQuery.Type.JVM);
         ModuleVersionResult result = manager.completeVersions(lookup);
         int i=0;
@@ -85,6 +90,27 @@ public class AbstractTest {
             Assert.assertEquals(expectedVersion.getDoc(), version.getDoc());
             Assert.assertEquals(expectedVersion.getLicense(), version.getLicense());
             Assert.assertArrayEquals(expectedVersion.getBy(), version.getBy());
+        }
+    }
+
+    protected void testSearchResults(String q, Type type, ModuleDetails[] expected) throws Exception{
+        testSearchResults(q, type, expected, 0, 20);
+    }
+    
+    protected void testSearchResults(String q, Type type, ModuleDetails[] expected, int start, int count) throws Exception{
+        RepositoryManager manager = getRepositoryManager();
+        
+        ModuleQuery query = new ModuleQuery(q, type);
+        query.setStart(start);
+        query.setCount(count);
+        ModuleSearchResult results = manager.searchModules(query);
+        
+        int i=0;
+        Collection<ModuleDetails> resultsList = results.getResults();
+        Assert.assertEquals(expected.length, resultsList.size());
+        for(ModuleDetails result : resultsList){
+            ModuleDetails expectedResult = expected[i++];
+            Assert.assertEquals(expectedResult.getName(), result.getName());
         }
     }
 }
