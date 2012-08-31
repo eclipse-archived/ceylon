@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -51,8 +52,34 @@ public class MetamodelGenerator extends Visitor {
         return Collections.unmodifiableMap(model);
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Object> findParent(Declaration d) {
-        return model;
+        if (d.isToplevel()) {
+            return model;
+        }
+        ArrayList<String> names = new ArrayList<String>();
+        Scope sc = d.getContainer();
+        while (sc.getContainer() != null) {
+            if (sc instanceof TypeDeclaration) {
+                names.add(0, ((TypeDeclaration) sc).getName());
+            }
+            sc = sc.getContainer();
+        }
+        Map<String, Object> last = model;
+        for (String name : names) {
+            if (last == model) {
+                last = (Map<String, Object>)last.get(name);
+            } else if (last.containsKey("methods") && ((Map<String,Object>)last.get("methods")).containsKey(name)) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get("methods")).get(name);
+            } else if (last.containsKey("attrs") && ((Map<String,Object>)last.get("attrs")).containsKey(name)) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get("attrs")).get(name);
+            } else if (last.containsKey("classes") && ((Map<String,Object>)last.get("classes")).containsKey(name)) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get("classes")).get(name);
+            } else if (last.containsKey("ifaces") && ((Map<String,Object>)last.get("ifaces")).containsKey(name)) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get("ifaces")).get(name);
+            }
+        }
+        return last;
     }
 
     /** Create a map for the specified ProducedType.
@@ -166,6 +193,7 @@ public class MetamodelGenerator extends Visitor {
     }
 
     /** Create and store the model of a method definition. */
+    @SuppressWarnings("unchecked")
     @Override public void visit(Tree.MethodDefinition that) {
         Method d = that.getDeclarationModel();
         Map<String, Object> parent;
@@ -173,6 +201,11 @@ public class MetamodelGenerator extends Visitor {
             parent = model;
         } else if (d.isMember()) {
             parent = findParent(that.getDeclarationModel());
+            if (parent == null) {
+                System.out.println("orphaned method - How the hell did this happen?");
+                return;
+            }
+            parent = (Map<String, Object>)parent.get("methods");
         } else {
             return;
         }
@@ -248,6 +281,7 @@ public class MetamodelGenerator extends Visitor {
     }
 
     /** Create and store the metamodel info for an attribute. */
+    @SuppressWarnings("unchecked")
     @Override public void visit(AttributeDeclaration that) {
         Map<String, Object> m = new HashMap<String, Object>();
         Value d = that.getDeclarationModel();
@@ -256,6 +290,11 @@ public class MetamodelGenerator extends Visitor {
             parent = model;
         } else if (d.isMember()) {
             parent = findParent(d);
+            if (parent == null) {
+                System.out.println("orphaned attribute - How the hell did this happen?");
+                return;
+            }
+            parent = (Map<String,Object>)parent.get("attrs");
         } else {
             System.out.println("WTF? how did we get here? we're inside a " + that.getScope());
             return; //how the fuck did we get here in the first place?
@@ -273,4 +312,22 @@ public class MetamodelGenerator extends Visitor {
         super.visit(that);
     }
 
+    public void visit(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition that) {
+        Map<String, Object> m = new HashMap<String, Object>();
+        com.redhat.ceylon.compiler.typechecker.model.Class d = that.getDeclarationModel();
+        Map<String, Object> parent = findParent(d);
+        if (parent == null) {
+            System.out.println("orphaned class - how the hell did this happen?");
+        } else if (!d.isToplevel()) {
+            parent = (Map<String,Object>)parent.get("classes");
+        }
+        m.put("mt", "class");
+        m.put("name", d.getName());
+        m.put("methods", new HashMap<String, Object>());
+        m.put("classes", new HashMap<String, Object>());
+        m.put("attrs", new HashMap<String, Object>());
+        m.put("ifaces", new HashMap<String, Object>());
+        parent.put(d.getName(), m);
+        super.visit(that);
+    }
 }
