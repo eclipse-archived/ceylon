@@ -9,11 +9,11 @@ shared Integer mpl1(String a)(String b) {
   return a.size + b.size;
 }
 String mpl2(Integer a)(Object b)(Float c) {
-  return a.string + ":" + b + ":" + c.string;
+  return a.string + ":" + b.string + ":" + c.string;
 }
 doc "A nested function. Should the doc be in the metamodel as well?"
 shared Integer nested(String s) {
-  shared String f() {
+  String f() { //we should skip this
     return s + "!";
   }
   return f().size;
