@@ -11,10 +11,8 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.SimpleJsonEncoder;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -217,14 +215,14 @@ public class MetamodelGenerator extends Visitor {
     /** Create and store the model of a method definition. */
     @SuppressWarnings("unchecked")
     @Override public void visit(Tree.MethodDefinition that) {
-        Method d = that.getDeclarationModel();
+        com.redhat.ceylon.compiler.typechecker.model.Method d = that.getDeclarationModel();
         Map<String, Object> parent;
         if (d.isToplevel()) {
             parent = model;
         } else if (d.isMember()) {
             parent = findParent(that.getDeclarationModel());
             if (parent == null) {
-                System.out.println("orphaned method - How the hell did this happen?");
+                System.out.println("orphaned method - How the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
             parent = (Map<String, Object>)parent.get("methods");
@@ -289,7 +287,7 @@ public class MetamodelGenerator extends Visitor {
 
     /** Create and store the metamodel info for an attribute. */
     @SuppressWarnings("unchecked")
-    @Override public void visit(AttributeDeclaration that) {
+    @Override public void visit(Tree.AttributeDeclaration that) {
         Map<String, Object> m = new HashMap<String, Object>();
         Value d = that.getDeclarationModel();
         Map<String, Object> parent;
@@ -298,13 +296,13 @@ public class MetamodelGenerator extends Visitor {
         } else if (d.isMember()) {
             parent = findParent(d);
             if (parent == null) {
-                System.out.println("orphaned attribute - How the hell did this happen?");
+                System.out.println("orphaned attribute - How the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
             parent = (Map<String,Object>)parent.get("attrs");
         } else {
-            System.out.println("WTF? how did we get here? we're inside a " + that.getScope());
-            return; //how the fuck did we get here in the first place?
+            //Ignore attributes inside control blocks, methods, etc.
+            return;
         }
         m.put("name", d.getName());
         m.put("mt", "attr");
@@ -319,16 +317,16 @@ public class MetamodelGenerator extends Visitor {
         super.visit(that);
     }
 
-    @SuppressWarnings("unchecked")
-    public void visit(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition that) {
-        Map<String, Object> m = new HashMap<String, Object>();
+    @Override @SuppressWarnings("unchecked")
+    public void visit(Tree.ClassDefinition that) {
         com.redhat.ceylon.compiler.typechecker.model.Class d = that.getDeclarationModel();
         Map<String, Object> parent = findParent(d);
         if (parent == null) {
-            System.out.println("orphaned class - how the hell did this happen?");
+            System.out.println("orphaned class - how the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
         } else if (!d.isToplevel()) {
             parent = (Map<String,Object>)parent.get("classes");
         }
+        Map<String, Object> m = new HashMap<String, Object>();
         m.put("mt", "class");
         m.put("name", d.getName());
         //Extends
@@ -377,9 +375,6 @@ public class MetamodelGenerator extends Visitor {
         if (d.isShared()) {
             m.put("shared", "1");
         }
-        if (d.isActual()) {
-            m.put("actual", "1");
-        }
         if (d.isAbstract()) {
             m.put("abstract", "1");
         }
@@ -387,7 +382,61 @@ public class MetamodelGenerator extends Visitor {
         m.put("classes", new HashMap<String, Object>());
         m.put("attrs", new HashMap<String, Object>());
         m.put("ifaces", new HashMap<String, Object>());
+        m.put("objects", new HashMap<String, Object>());
         parent.put(d.getName(), m);
         super.visit(that);
     }
+
+    @Override @SuppressWarnings("unchecked")
+    public void visit(Tree.InterfaceDefinition that) {
+        com.redhat.ceylon.compiler.typechecker.model.Interface d = that.getDeclarationModel();
+        Map<String, Object> parent = findParent(d);
+        if (parent == null) {
+            System.out.println("orphaned interface - how the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
+        } else if (!d.isToplevel()) {
+            parent = (Map<String,Object>)parent.get("ifaces");
+        }
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("mt", "iface");
+        m.put("name", d.getName());
+
+        //Certain annotations
+        if (d.isShared()) {
+            m.put("shared", "1");
+        }
+        m.put("methods", new HashMap<String, Object>());
+        m.put("classes", new HashMap<String, Object>());
+        m.put("attrs", new HashMap<String, Object>());
+        m.put("ifaces", new HashMap<String, Object>());
+        m.put("objects", new HashMap<String, Object>());
+        parent.put(d.getName(), m);
+        super.visit(that);
+    }
+
+    @Override @SuppressWarnings("unchecked")
+    public void visit(Tree.ObjectDefinition that) {
+        com.redhat.ceylon.compiler.typechecker.model.Value d = that.getDeclarationModel();
+        Map<String, Object> parent = findParent(d);
+        if (parent == null) {
+            System.out.println("orphaned object - how the hell did this happen? " + that);
+        } else if (!d.isToplevel()) {
+            parent = (Map<String,Object>)parent.get("objects");
+        }
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("mt", "object");
+        m.put("name", d.getName());
+
+        //Certain annotations
+        if (d.isShared()) {
+            m.put("shared", "1");
+        }
+        m.put("methods", new HashMap<String, Object>());
+        m.put("classes", new HashMap<String, Object>());
+        m.put("attrs", new HashMap<String, Object>());
+        m.put("ifaces", new HashMap<String, Object>());
+        m.put("objects", new HashMap<String, Object>());
+        parent.put(d.getName(), m);
+        super.visit(that);
+    }
+
 }
