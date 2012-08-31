@@ -84,7 +84,7 @@ public class MetamodelGenerator extends Visitor {
     private Map<String, Object> typeParameterMap(ProducedType pt) {
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("name", pt.getDeclaration().getName());
-        m.put("mt", "typeparam");
+        m.put("mt", "tparam");
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = pt.getDeclaration().getUnit().getPackage();
         m.put("pkg", pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
@@ -100,7 +100,7 @@ public class MetamodelGenerator extends Visitor {
             for (ProducedType tparm : pt.getTypeArgumentList()) {
                 list.add(typeParameterMap(tparm));
             }
-            container.put("paramtypes", list);
+            container.put("tparams", list);
         }
     }
 
@@ -171,14 +171,14 @@ public class MetamodelGenerator extends Visitor {
                 returnType.put("name", "Callable");
                 returnType.put("pkg", "ceylon.language");
                 returnType.put("mod", "ceylon.language");
-                returnType.put("paramtypes", paramtypes);
+                returnType.put("tparams", paramtypes);
             }
         }
         m.put("type", returnType);
         //Now the type parameters, if any
         List<Map<String, Object>> tpl = typeParameters(that.getTypeParameterList());
         if (tpl != null) {
-            m.put("paramtypes", tpl);
+            m.put("tparams", tpl);
         }
 
         //Type constraints, if any
@@ -221,7 +221,8 @@ public class MetamodelGenerator extends Visitor {
             m.put("def", "1");
         }
         parent.put(that.getDeclarationModel().getName(), m);
-        super.visit(that);
+        //We really don't need to go inside a method's body
+        //super.visit(that);
     }
 
     /** Create and store the metamodel info for an attribute. */
@@ -231,9 +232,13 @@ public class MetamodelGenerator extends Visitor {
         Map<String, Object> parent;
         if (d.isToplevel()) {
             parent = model;
-        } else {
+        } else if (d.isMember()) {
             parent = findParent(d);
+        } else {
+            System.out.println("WTF? how did we get here? we're inside a " + that.getScope());
+            return; //how the fuck did we get here in the first place?
         }
+        m.put("name", d.getName());
         m.put("mt", "attr");
         m.put("type", typeMap(that.getType().getTypeModel()));
         if (d.isShared()) {
