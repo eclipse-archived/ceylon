@@ -104,6 +104,8 @@ public class MetamodelGenerator extends Visitor {
         }
     }
 
+    /** Create a list of maps from the list of type parameters.
+     * @see #typeParameterMap(TypeParameter) */
     private List<Map<String, Object>> typeParameters(Tree.TypeParameterList tpl) {
         if (tpl != null && !tpl.getTypeParameterDeclarations().isEmpty()) {
             List<Map<String, Object>> l = new ArrayList<Map<String,Object>>(tpl.getTypeParameterDeclarations().size());
@@ -114,6 +116,7 @@ public class MetamodelGenerator extends Visitor {
         }
         return null;
     }
+    /** Create a list of maps from the list of type constraints. */
     private List<Map<String, Object>> typeConstraints(Tree.TypeConstraintList tcl) {
         if (tcl != null && !tcl.getTypeConstraints().isEmpty()) {
             List<Map<String, Object>> l = new ArrayList<Map<String,Object>>(tcl.getTypeConstraints().size());
@@ -143,6 +146,14 @@ public class MetamodelGenerator extends Visitor {
     /** Create and store the model of a method definition. */
     @Override public void visit(Tree.MethodDefinition that) {
         Method d = that.getDeclarationModel();
+        Map<String, Object> parent;
+        if (d.isToplevel()) {
+            parent = model;
+        } else if (d.isMember()) {
+            parent = findParent(that.getDeclarationModel());
+        } else {
+            return;
+        }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("mt", "method");
         m.put("name", d.getName());
@@ -208,12 +219,6 @@ public class MetamodelGenerator extends Visitor {
         }
         if (d.isDefault()) {
             m.put("def", "1");
-        }
-        Map<String, Object> parent;
-        if (that.getDeclarationModel().isToplevel()) {
-            parent = model;
-        } else {
-            parent = findParent(that.getDeclarationModel());
         }
         parent.put(that.getDeclarationModel().getName(), m);
         super.visit(that);
