@@ -3,6 +3,8 @@ package com.redhat.ceylon.cmr.api;
 public class ModuleQuery {
     private String name;
     private Type type;
+    private long start;
+    private long count;
 
     public enum Type {
         SRC(ArtifactContext.SRC), 
@@ -39,6 +41,22 @@ public class ModuleQuery {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public void setStart(long start) {
+        this.start = start;
+    }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
     }
 
 }
