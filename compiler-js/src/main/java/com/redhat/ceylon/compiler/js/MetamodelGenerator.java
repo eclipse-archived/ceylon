@@ -192,6 +192,28 @@ public class MetamodelGenerator extends Visitor {
         return null;
     }
 
+    private List<Map<String,Object>> parameterListMap(Tree.ParameterList plist) {
+        List<Tree.Parameter> parms = plist.getParameters();
+        if (parms.size() > 0) {
+            List<Map<String,Object>> p = new ArrayList<Map<String,Object>>(parms.size());
+            for (Tree.Parameter parm : parms) {
+                Map<String, Object> pm = new HashMap<String, Object>();
+                pm.put("name", parm.getDeclarationModel().getName());
+                if (parm.getDeclarationModel().isSequenced()) {
+                    pm.put("seq", "1");
+                }
+                pm.put("type", typeMap(parm.getType().getTypeModel()));
+                pm.put("mt", "param");
+                //TODO do these guys need anything else?
+                if (parm.getDefaultArgument() != null) {
+                    pm.put("def", parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
+                }
+                p.add(pm);
+            }
+            return p;
+        }
+        return null;
+    }
     /** Create and store the model of a method definition. */
     @SuppressWarnings("unchecked")
     @Override public void visit(Tree.MethodDefinition that) {
@@ -243,24 +265,9 @@ public class MetamodelGenerator extends Visitor {
         }
 
         //Now the parameters
-        List<Tree.Parameter> parms = that.getParameterLists().get(0).getParameters();
-        if (parms.size() > 0) {
-            List<Map<String,Object>> p = new ArrayList<Map<String,Object>>(parms.size());
-            for (Tree.Parameter parm : parms) {
-                Map<String, Object> pm = new HashMap<String, Object>();
-                pm.put("name", parm.getDeclarationModel().getName());
-                if (parm.getDeclarationModel().isSequenced()) {
-                    pm.put("seq", "1");
-                }
-                pm.put("type", typeMap(parm.getType().getTypeModel()));
-                pm.put("mt", "param");
-                //TODO do these guys need anything else?
-                if (parm.getDefaultArgument() != null) {
-                    pm.put("def", parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
-                }
-                p.add(pm);
-            }
-            m.put("params", p);
+        List<Map<String,Object>> parms = parameterListMap(that.getParameterLists().get(0));
+        if (parms != null && parms.size() > 0) {
+            m.put("params", parms);
         }
         //Certain annotations
         if (d.isShared()) {
@@ -312,6 +319,7 @@ public class MetamodelGenerator extends Visitor {
         super.visit(that);
     }
 
+    @SuppressWarnings("unchecked")
     public void visit(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition that) {
         Map<String, Object> m = new HashMap<String, Object>();
         com.redhat.ceylon.compiler.typechecker.model.Class d = that.getDeclarationModel();
@@ -323,6 +331,58 @@ public class MetamodelGenerator extends Visitor {
         }
         m.put("mt", "class");
         m.put("name", d.getName());
+        //Extends
+        m.put("super", typeMap(d.getExtendedType()));
+        //Satisfies
+        if (d.getSatisfiedTypes() != null && !d.getSatisfiedTypes().isEmpty()) {
+            List<Map<String,Object>> sats = new ArrayList<Map<String,Object>>(d.getSatisfiedTypes().size());
+            for (ProducedType sat : d.getSatisfiedTypes()) {
+                sats.add(typeMap(sat));
+            }
+            m.put("satisfies", sats);
+        }
+        //Type parameters
+        List<Map<String, Object>> tpl = typeParameters(that.getTypeParameterList());
+        if (tpl != null) {
+            m.put("tparams", tpl);
+        }
+        //Type constraints
+        tpl = typeConstraints(that.getTypeConstraintList());
+        if (tpl != null) {
+            m.put("constraints", tpl);
+        }
+        //Initializer parameters
+        List<Map<String,Object>> inits = parameterListMap(that.getParameterList());
+        if (inits != null && !inits.isEmpty()) {
+            m.put("params", inits);
+        }
+        //Case types
+        if (that.getCaseTypes() != null) {
+            List<Map<String,Object>> cases = new ArrayList<Map<String,Object>>();
+            if (that.getCaseTypes().getTypes().isEmpty()) {
+                for (Tree.BaseMemberExpression bme : that.getCaseTypes().getBaseMemberExpressions()) {
+                    Map<String,Object> obj = new HashMap<String, Object>();
+                    obj.put("name", bme.getIdentifier().getText());
+                    obj.put("obj", "y");
+                    cases.add(obj);
+                }
+            } else {
+                for (Tree.SimpleType ct : that.getCaseTypes().getTypes()) {
+                    cases.add(typeMap(ct.getTypeModel()));
+                }
+            }
+            m.put("of", cases);
+        }
+        //Certain annotations
+        if (d.isShared()) {
+            m.put("shared", "1");
+        }
+        if (d.isActual()) {
+            m.put("actual", "1");
+        }
+        if (d.isAbstract()) {
+            m.put("abstract", "1");
+        }
         m.put("methods", new HashMap<String, Object>());
         m.put("classes", new HashMap<String, Object>());
         m.put("attrs", new HashMap<String, Object>());
