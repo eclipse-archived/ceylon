@@ -17,6 +17,8 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 public class TestModelGenerator {
 
     private static TypeChecker tc;
+    private static MetamodelGenerator mmg;
+    private static Map<String, Object> model;
 
     @BeforeClass
     public static void initTypechecker() {
@@ -24,6 +26,15 @@ public class TestModelGenerator {
         builder.addSrcDirectory(new File("src/test/resources/modeltests"));
         tc = builder.getTypeChecker();
         tc.process();
+        for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
+            if (pu.getPackage().getModule().getNameAsString().equals("t1")) {
+                if (mmg == null) {
+                    mmg = new MetamodelGenerator(pu.getPackage().getModule());
+                }
+                pu.getCompilationUnit().visit(mmg);
+            }
+        }
+        model = mmg.getModel();
     }
 
     private Map<String, Object> makeMap(String... keysValues) {
@@ -35,18 +46,7 @@ public class TestModelGenerator {
     }
 
     @Test @SuppressWarnings("unchecked")
-    public void testMethodsAndAttributes() {
-        MetamodelGenerator mmg = null;
-        for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
-            if (pu.getPackage().getModule().getNameAsString().equals("t1")) {
-                if (mmg == null) {
-                    mmg = new MetamodelGenerator(pu.getPackage().getModule());
-                }
-                pu.getCompilationUnit().visit(mmg);
-            }
-        }
-        Assert.assertNotNull(mmg);
-        Map<String, Object> model = mmg.getModel();
+    public void testSimpleMethods() {
         System.out.println("top-level elements:" + model.keySet());
         //simple1
         Map<String, Object> method = (Map<String, Object>)model.get("simple1");
@@ -63,8 +63,11 @@ public class TestModelGenerator {
         ModelUtils.checkType(method, "ceylon.language.Void", null);
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language.Integer", null, false);
         ModelUtils.checkParam(method, 1, "p2", "ceylon.language.String", null, false);
+    }
 
-        method = (Map<String, Object>)model.get("defaulted1");
+    @Test @SuppressWarnings("unchecked")
+    public void testDefaultedAndSequencedMethods() {
+        Map<String, Object> method = (Map<String, Object>)model.get("defaulted1");
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language.Integer", null, false);
         ModelUtils.checkParam(method, 1, "p2", "ceylon.language.Integer", "5", false);
 
@@ -76,17 +79,23 @@ public class TestModelGenerator {
         method = (Map<String, Object>)model.get("sequencedDefaulted");
         ModelUtils.checkParam(method, 0, "s", "ceylon.language.String", "\"x\"", false);
         ModelUtils.checkParam(method, 1, "ints", "ceylon.language.Integer", null, true);
+    }
 
-        method = (Map<String, Object>)model.get("mpl1");
+    @Test @SuppressWarnings("unchecked")
+    public void testMultipleParameterLists() {
+        Map<String, Object> method = (Map<String, Object>)model.get("mpl1");
         ModelUtils.checkParam(method, 0, "a", "ceylon.language.String", null, false);
         ModelUtils.checkType(method, "ceylon.language.Callable", null); //TODO check inner types
 
         method = (Map<String, Object>)model.get("mpl2");
         ModelUtils.checkParam(method, 0, "a", "ceylon.language.Integer", null, false);
         ModelUtils.checkType(method, "ceylon.language.Callable", null); //TODO check inner types
+    }
 
-        method = (Map<String, Object>)model.get("parmtypes1");
-        tmap = ModelUtils.checkParam(method, 0, "x", "ceylon.language.Sequence", null, false); //TODO check inner types
+    @Test @SuppressWarnings("unchecked")
+    public void testParameterTypes() {
+        Map<String, Object> method = (Map<String, Object>)model.get("parmtypes1");
+        Map<String, Object> tmap = ModelUtils.checkParam(method, 0, "x", "ceylon.language.Sequence", null, false); //TODO check inner types
 
         method = (Map<String, Object>)model.get("parmtypes2");
         tmap = ModelUtils.checkParam(method, 0, "xx", "ceylon.language.Sequence", null, false);//TODO check inner types
