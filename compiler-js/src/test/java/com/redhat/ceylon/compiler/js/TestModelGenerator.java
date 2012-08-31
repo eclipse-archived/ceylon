@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -104,10 +105,20 @@ public class TestModelGenerator {
 
         method = (Map<String, Object>)model.get("parmtypes4");
         ModelUtils.checkType(method, "t1.SomethingElse");
+        List<Map<String, Object>> cons = (List<Map<String, Object>>)method.get("constraints");
+        Assert.assertNotNull("parmtypes4 should have constraints", cons);
+        ModelUtils.checkTypeParameters((List<Map<String,Object>>)cons.get(0).get("satisfies"),
+                "ceylon.language.Comparable<t1.Something>");
+        ModelUtils.checkTypeParameters((List<Map<String,Object>>)cons.get(1).get("satisfies"), "t1.Something");
+        //TODO check satisfied types
 
         method = (Map<String, Object>)model.get("parmtypes5");
-        System.out.println(method);
         ModelUtils.checkParam(method, 0, "x", "t1.Value", null, false);
+        cons = (List<Map<String, Object>>)method.get("constraints");
+        Assert.assertNotNull("parmtypes5 should have constraints", cons);
+        Assert.assertNotNull("parmtypes5 should have case types", cons.get(0).get("of"));
+        ModelUtils.checkTypeParameters((List<Map<String,Object>>)cons.get(0).get("of"),
+                "ceylon.language.Integer,ceylon.language.Float");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -122,7 +133,6 @@ public class TestModelGenerator {
         ModelUtils.checkType(attrib, "ceylon.language.Float");
         Assert.assertEquals("pi should be variable", "1", attrib.get("var"));
         attrib = (Map<String, Object>)model.get("seq");
-        System.out.println("attrib: " + attrib);
         ModelUtils.checkType(attrib, "ceylon.language.Sequence<ceylon.language.Integer>");
         Assert.assertEquals("seq should be shared", "1", attrib.get("shared"));
         Assert.assertEquals("seq should be variable", "1", attrib.get("var"));
