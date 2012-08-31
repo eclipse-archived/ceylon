@@ -6,9 +6,11 @@ shared void defaulted1(Integer p1, Integer p2=5) {}
 void sequenced1(Integer p1, String... p2) {}
 void sequencedDefaulted(String s="x", Integer... ints) {}
 shared Integer mpl1(String a)(String b) {
+  value insideMpl1 = "skip me";
   return a.size + b.size;
 }
 String mpl2(Integer a)(Object b)(Float c) {
+  variable value insideMpl2 := 5;
   return a.string + ":" + b.string + ":" + c.string;
 }
 doc "A nested function. Should the doc be in the metamodel as well?"
