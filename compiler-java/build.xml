@@ -542,4 +542,11 @@
       <module name="ceylon.language"/>
     </ceylond>
   </target>
+
+  <target name="gavin" depends="dist">
+      <copy 
+          overwrite="true"
+          file="${build.dist}/${ceylon.compiler.jar}"
+          tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}-ide.jar"/>
+  </target>
 </project>
