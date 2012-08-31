@@ -96,6 +96,13 @@
         <delete dir="${cmr-impl-test.resources}/repo/com"/>
     </target>
 
+    <target name="ide" depends="dist">
+        <copy 
+            overwrite="true"
+            file="${build.dist}/${ceylon.module-resolver.jar}"
+            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.module-resolver-0.4-ide.jar"/>
+    </target>
+	
     <target name="dist"
             depends="build"
             description="Create Ceylon module-resolver distribution">
