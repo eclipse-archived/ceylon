@@ -52,15 +52,15 @@ public class TestModelGenerator {
         Map<String, Object> method = (Map<String, Object>)model.get("simple1");
         Assert.assertNotNull(method);
         ModelUtils.checkMap(method, "name", "simple1", "mt", "method");
-        ModelUtils.checkType(method, "ceylon.language.Void", null);
+        ModelUtils.checkType(method, "ceylon.language.Void");
 
         method = (Map<String, Object>)model.get("simple2");
         ModelUtils.checkMap(method, "name", "simple2", "mt", "method", "shared", "1");
-        ModelUtils.checkType(method, "ceylon.language.Integer", null);
+        ModelUtils.checkType(method, "ceylon.language.Integer");
 
         method = (Map<String, Object>)model.get("simple3");
         ModelUtils.checkMap(method, "name", "simple3", "mt", "method");
-        ModelUtils.checkType(method, "ceylon.language.Void", null);
+        ModelUtils.checkType(method, "ceylon.language.Void");
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language.Integer", null, false);
         ModelUtils.checkParam(method, 1, "p2", "ceylon.language.String", null, false);
     }
@@ -73,8 +73,7 @@ public class TestModelGenerator {
 
         method = (Map<String, Object>)model.get("sequenced1");
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language.Integer", null, false);
-        Map<String, Object> tmap = ModelUtils.checkParam(method, 1, "p2", "ceylon.language.String", null, true);
-        ModelUtils.checkType(tmap, "ceylon.language.String", null);
+        ModelUtils.checkParam(method, 1, "p2", "ceylon.language.String", null, true);
 
         method = (Map<String, Object>)model.get("sequencedDefaulted");
         ModelUtils.checkParam(method, 0, "s", "ceylon.language.String", "\"x\"", false);
@@ -85,30 +84,48 @@ public class TestModelGenerator {
     public void testMultipleParameterLists() {
         Map<String, Object> method = (Map<String, Object>)model.get("mpl1");
         ModelUtils.checkParam(method, 0, "a", "ceylon.language.String", null, false);
-        ModelUtils.checkType(method, "ceylon.language.Callable", null); //TODO check inner types
+        ModelUtils.checkType(method, "ceylon.language.Callable<ceylon.language.Integer,ceylon.language.String>");
 
         method = (Map<String, Object>)model.get("mpl2");
         ModelUtils.checkParam(method, 0, "a", "ceylon.language.Integer", null, false);
-        ModelUtils.checkType(method, "ceylon.language.Callable", null); //TODO check inner types
+        ModelUtils.checkType(method, "ceylon.language.Callable<ceylon.language.Callable<ceylon.language.String,ceylon.language.Float>,ceylon.language.Object>");
     }
 
     @Test @SuppressWarnings("unchecked")
     public void testParameterTypes() {
         Map<String, Object> method = (Map<String, Object>)model.get("parmtypes1");
-        Map<String, Object> tmap = ModelUtils.checkParam(method, 0, "x", "ceylon.language.Sequence", null, false); //TODO check inner types
+        ModelUtils.checkParam(method, 0, "x", "ceylon.language.Sequence<ceylon.language.Integer>", null, false);
 
         method = (Map<String, Object>)model.get("parmtypes2");
-        tmap = ModelUtils.checkParam(method, 0, "xx", "ceylon.language.Sequence", null, false);//TODO check inner types
+        ModelUtils.checkParam(method, 0, "xx", "ceylon.language.Sequence<ceylon.language.Iterable<ceylon.language.String>>", null, false);
 
         method = (Map<String, Object>)model.get("parmtypes3");
-        ModelUtils.checkType(method, "ceylon.language.Sequence", null);//TODO check inner types
+        ModelUtils.checkType(method, "ceylon.language.Sequence<ceylon.language.String>");
 
         method = (Map<String, Object>)model.get("parmtypes4");
-        ModelUtils.checkType(method, "t1.SomethingElse", null);//TODO check inner types
+        ModelUtils.checkType(method, "t1.SomethingElse");
 
         method = (Map<String, Object>)model.get("parmtypes5");
         System.out.println(method);
         ModelUtils.checkParam(method, 0, "x", "t1.Value", null, false);
-}
+    }
+
+    @Test @SuppressWarnings("unchecked")
+    public void testAttributes() {
+        Map<String, Object> attrib = (Map<String, Object>)model.get("i1");
+        ModelUtils.checkType(attrib, "ceylon.language.Integer");
+        Assert.assertEquals("Wrong model type for i1", "attr", attrib.get("mt"));
+        attrib = (Map<String, Object>)model.get("s1");
+        ModelUtils.checkType(attrib, "ceylon.language.String");
+        Assert.assertEquals("s1 should be shared", "1", attrib.get("shared"));
+        attrib = (Map<String, Object>)model.get("pi");
+        ModelUtils.checkType(attrib, "ceylon.language.Float");
+        Assert.assertEquals("pi should be variable", "1", attrib.get("var"));
+        attrib = (Map<String, Object>)model.get("seq");
+        System.out.println("attrib: " + attrib);
+        ModelUtils.checkType(attrib, "ceylon.language.Sequence<ceylon.language.Integer>");
+        Assert.assertEquals("seq should be shared", "1", attrib.get("shared"));
+        Assert.assertEquals("seq should be variable", "1", attrib.get("var"));
+    }
 
 }
