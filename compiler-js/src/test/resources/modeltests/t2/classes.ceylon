@@ -23,9 +23,14 @@ class ParmTypes3<Type1,Type2>(Type1 a1, Type2 a2)
 		given Type1 satisfies Number
 		given Type2 of String|Singleton<String> {
 }
-class ParamTypes4<out Element>(Element... elems) satisfies Iterable<Element> {
+class ParmTypes4<out Element>(Element... elems) satisfies Iterable<Element> {
 	shared Element? primero = elems.first;
 	shared actual Iterator<Element> iterator {
 		return elems.iterator;
 	}
+}
+shared class Nested1() {
+  shared class Nested2() {
+    void innerMethod1(){}
+  }
 }
