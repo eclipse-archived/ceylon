@@ -15,27 +15,29 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 
-public class TestModelGenerator {
+public class TestModelMethodsAndAttributes {
 
-    private static TypeChecker tc;
-    private static MetamodelGenerator mmg;
+    static TypeChecker tc;
     private static Map<String, Object> model;
 
     @BeforeClass
     public static void initTypechecker() {
-        TypeCheckerBuilder builder = new TypeCheckerBuilder();
-        builder.addSrcDirectory(new File("src/test/resources/modeltests"));
-        tc = builder.getTypeChecker();
-        tc.process();
-        for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
-            if (pu.getPackage().getModule().getNameAsString().equals("t1")) {
-                if (mmg == null) {
-                    mmg = new MetamodelGenerator(pu.getPackage().getModule());
+        if (model == null) {
+            TypeCheckerBuilder builder = new TypeCheckerBuilder();
+            builder.addSrcDirectory(new File("src/test/resources/modeltests"));
+            tc = builder.getTypeChecker();
+            tc.process();
+            MetamodelGenerator mmg = null;
+            for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
+                if (pu.getPackage().getModule().getNameAsString().equals("t1")) {
+                    if (mmg == null) {
+                        mmg = new MetamodelGenerator(pu.getPackage().getModule());
+                    }
+                    pu.getCompilationUnit().visit(mmg);
                 }
-                pu.getCompilationUnit().visit(mmg);
             }
+            model = mmg.getModel();
         }
-        model = mmg.getModel();
     }
 
     private Map<String, Object> makeMap(String... keysValues) {
@@ -107,18 +109,26 @@ public class TestModelGenerator {
         ModelUtils.checkType(method, "t1.SomethingElse");
         List<Map<String, Object>> cons = (List<Map<String, Object>>)method.get("constraints");
         Assert.assertNotNull("parmtypes4 should have constraints", cons);
-        ModelUtils.checkTypeParameters((List<Map<String,Object>>)cons.get(0).get("satisfies"),
+        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get("satisfies"),
                 "ceylon.language.Comparable<t1.Something>");
-        ModelUtils.checkTypeParameters((List<Map<String,Object>>)cons.get(1).get("satisfies"), "t1.Something");
-        //TODO check satisfied types
+        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(1).get("satisfies"), "t1.Something");
 
         method = (Map<String, Object>)model.get("parmtypes5");
         ModelUtils.checkParam(method, 0, "x", "t1.Value", null, false);
         cons = (List<Map<String, Object>>)method.get("constraints");
         Assert.assertNotNull("parmtypes5 should have constraints", cons);
         Assert.assertNotNull("parmtypes5 should have case types", cons.get(0).get("of"));
-        ModelUtils.checkTypeParameters((List<Map<String,Object>>)cons.get(0).get("of"),
+        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get("of"),
                 "ceylon.language.Integer,ceylon.language.Float");
+    }
+
+    @Test @SuppressWarnings("unchecked")
+    public void testIntersectionTypes() {
+        Map<String, Object> method = (Map<String, Object>)model.get("intersector1");
+        ModelUtils.checkParam(method, 0, "inters", "ceylon.language.Category&ceylon.language.Container", null, false);
+        method = (Map<String,Object>)model.get("intersector2");
+        ModelUtils.checkParam(method, 0, "beast",
+                "ceylon.language.Category&ceylon.language.Iterable<ceylon.language.Container>", null, false);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -136,6 +146,12 @@ public class TestModelGenerator {
         ModelUtils.checkType(attrib, "ceylon.language.Sequence<ceylon.language.Integer>");
         Assert.assertEquals("seq should be shared", "1", attrib.get("shared"));
         Assert.assertEquals("seq should be variable", "1", attrib.get("var"));
+        attrib = (Map<String, Object>)model.get("union");
+        ModelUtils.checkType(attrib, "ceylon.language.Integer|ceylon.language.String");
+        attrib = (Map<String, Object>)model.get("useq");
+        System.out.println(attrib);
+        System.out.println("\n\n\n\n\n\n\n\n");
+        ModelUtils.checkType(attrib, "ceylon.language.ContainerWithFirstElement<ceylon.language.Singleton<ceylon.language.Integer>|ceylon.language.String,ceylon.language.Nothing>");
     }
 
 }

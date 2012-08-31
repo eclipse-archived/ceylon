@@ -38,7 +38,7 @@ public class ModelUtils {
             Assert.assertEquals("Sequenced parameter should be last", params.size()-1, pos);
             Assert.assertEquals("ceylon.language.Iterable", String.format("%s.%s", tmap.get("pkg"), tmap.get("name")));
             List<Map<String, Object>> pts = (List<Map<String, Object>>)tmap.get("tparams");
-            checkTypeParameters(pts, type);
+            checkTypeParameters(0, pts, type);
         } else {
             Assert.assertNull("Param " + name + " of method " + method.get("name") + " should not be sequenced",
                     parm.get("seq"));
@@ -56,6 +56,30 @@ public class ModelUtils {
         if (tmap == null) {
             tmap = map;
         }
+        int join = name.indexOf('&');
+        if (join > 0) {
+            while (join > 0 && !pointyBracketsEven(name.substring(0, join))) {
+                join = name.indexOf('&', join+1);
+            }
+            if (join > 0) {
+                Assert.assertEquals("not an intersection type", "i", tmap.get("comp"));
+                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get("types"), name.substring(0, join));
+                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get("types"), name.substring(join+1));
+                return;
+            }
+        }
+        join = name.indexOf('|');
+        if (join > 0) {
+            while (join > 0 && !pointyBracketsEven(name.substring(0, join))) {
+                join = name.indexOf('|', join+1);
+            }
+            if (join > 0) {
+                Assert.assertEquals("not a union type", "u", tmap.get("comp"));
+                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get("types"), name.substring(0, join));
+                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get("types"), name.substring(join+1));
+                return;
+            }
+        }
         int sep = name.indexOf('<');
         String typeParams = null;
         if (sep > 0) {
@@ -66,12 +90,12 @@ public class ModelUtils {
         if (typeParams != null) {
             List<Map<String, Object>> tparms = (List<Map<String, Object>>)tmap.get("tparams");
             Assert.assertFalse("Type parameters shouldn't be empty", tparms.isEmpty());
-            checkTypeParameters(tparms, typeParams);
+            checkTypeParameters(0, tparms, typeParams);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public static void checkTypeParameters(List<Map<String, Object>> map, String name) {
+    public static void checkTypeParameters(int pos, List<Map<String, Object>> map, String name) {
         int comma = name.indexOf(',');
         if (comma > 0) {
             while (comma > 0 && !pointyBracketsEven(name.substring(0, comma))) {
@@ -79,33 +103,43 @@ public class ModelUtils {
             }
             if (comma > 0) {
                 String left = name.substring(0, comma);
-                checkTypeParameters(map, left);
+                checkTypeParameters(pos, map, left);
                 left = name.substring(comma+1);
-                checkTypeParameters(map, left);
+                checkTypeParameters(pos+1, map, left);
                 return;
             }
             
         }
         int lt = name.indexOf('<');
         if (lt > 0) {
-            String plain = name.substring(0, lt);
-            String parms = name.substring(lt+1, name.length()-1);
             //Type with parameters
-            for (Map<String, Object> tp : map) {
-                if (plain.equals(String.format("%s.%s", tp.get("pkg"), tp.get("name")))) {
-                    checkTypeParameters((List<Map<String, Object>>)tp.get("tparams"), parms);
-                    return;
+            if (pos >= 0) {
+                Map<String, Object> tp = map.get(pos);
+                checkType(tp, name);
+            } else {
+                String plain = name.substring(0, lt);
+                for (Map<String, Object> tp : map) {
+                    if (plain.equals(String.format("%s.%s", tp.get("pkg"), tp.get("name")))) {
+                        checkType(tp, name);
+                        return;
+                    }
                 }
+                Assert.assertTrue("Missing parameter type " + name, false);
             }
-            Assert.assertTrue("Missing parameter type " + name, false);
         } else {
             //Simple type
-            for (Map<String, Object> tp : map) {
-                if (name.equals(String.format("%s.%s", tp.get("pkg"), tp.get("name")))) {
-                    return;
+            if (pos >= 0) {
+                Map<String, Object> tp = map.get(pos);
+                checkType(tp, name);
+            } else {
+                for (Map<String, Object> tp : map) {
+                    if (name.equals(String.format("%s.%s", tp.get("pkg"), tp.get("name")))) {
+                        checkType(tp,name);
+                        return;
+                    }
                 }
+                Assert.assertTrue("Missing parameter type " + name, false);
             }
-            Assert.assertTrue("Missing parameter type " + name, false);
         }
     }
 

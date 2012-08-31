@@ -36,8 +36,13 @@ shared void parmtypes5<Value>(Value x)
     given Value of Integer|Float {
 }
 
+void intersector1(Container&Category inters) {}
+void intersector2(Iterable<Container>&Category beast){}
+
 //attributes
 Integer i1 = 5;
 shared String s1 = "hey";
 variable Float pi := 3.14;
 shared variable Sequence<Integer> seq := { 5 };
+variable Integer|String union := "five";
+ContainerWithFirstElement<String|Singleton<Integer>,Nothing> useq = { "a", Singleton(2) };
