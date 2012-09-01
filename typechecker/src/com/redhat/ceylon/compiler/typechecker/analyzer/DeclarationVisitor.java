@@ -262,15 +262,16 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in class declaration: " + 
-                    name(that.getIdentifier()), 1000 );
+                    name(that.getIdentifier()), 1000);
         }
+        //TODO: is this still necessary??
         if (c.isClassOrInterfaceMember() && 
                 c.getContainer() instanceof TypedDeclaration) {
             that.addWarning("nested classes of inner classes are not yet supported");
         }
-        if (c.isActual()) {
+        /*if (c.isActual()) {
         	that.addWarning("member class refinement not yet supported");
-        }
+        }*/
     }
 
     @Override
