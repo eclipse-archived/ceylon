@@ -73,7 +73,7 @@ public class ModuleVisitor extends Visitor {
             }
             else {
                 mainModule = moduleManager.getOrCreateModule(name, version);
-                that.getImportPath().setModuleModel(mainModule);
+                that.getImportPath().setModel(mainModule);
                 mainModule.setUnit(unit.getUnit());
                 mainModule.setVersion(version);
                 if ( !mainModule.getNameAsString().equals(formatPath(that.getImportPath().getIdentifiers())) ) {
@@ -99,7 +99,7 @@ public class ModuleVisitor extends Visitor {
                 that.getImportPath().addError("default is a reserved module name");
             }
             else {
-                that.getImportPath().setPackageModel(pkg);
+                that.getImportPath().setModel(pkg);
                 pkg.setUnit(unit.getUnit());
                 if ( !pkg.getNameAsString().equals(formatPath(that.getImportPath().getIdentifiers())) ) {
                     that.getImportPath()
@@ -127,7 +127,7 @@ public class ModuleVisitor extends Visitor {
             }
             else {
                 Module importedModule = moduleManager.getOrCreateModule(name,version);
-                that.getImportPath().setModuleModel(importedModule);
+                that.getImportPath().setModel(importedModule);
                 if (mainModule != null) {
                     if (importedModule.getVersion() == null) {
                         importedModule.setVersion(version);

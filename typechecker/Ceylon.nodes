@@ -33,8 +33,7 @@
 
 ^(IMPORT_PATH 
     IDENTIFIER*
-    Package packageModel;
-    Module moduleModel;)
+    Referenceable model;)
 
 ^(IMPORT_MEMBER_OR_TYPE_LIST
     IMPORT_MEMBER_OR_TYPE*
