@@ -13,7 +13,9 @@ import java.util.List;
  *
  * @author Gavin King
  */
-public abstract class Declaration extends Element {
+public abstract class Declaration 
+        extends Element 
+        implements Referenceable {
 
 	private String name;
 	private boolean shared;
@@ -255,5 +257,10 @@ public abstract class Declaration extends Element {
     }
     
     public abstract DeclarationKind getDeclarationKind();
+    
+    @Override
+    public String getNameAsString() {
+    	return getName();
+    }
 
 }

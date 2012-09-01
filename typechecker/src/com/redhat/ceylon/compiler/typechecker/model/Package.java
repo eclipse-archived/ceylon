@@ -11,13 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Package implements ImportableScope {
+public class Package 
+        implements ImportableScope, Referenceable {
 
     private List<String> name;
     private Module module;
     private List<Unit> units = new ArrayList<Unit>();
     private boolean shared = false;
     private List<Annotation> annotations = new ArrayList<Annotation>();
+    private Unit unit;
     
     public Module getModule() {
         return module;
@@ -221,5 +223,14 @@ public class Package implements ImportableScope {
             return false;
         }
     }
+    
+    @Override
+    public Unit getUnit() {
+    	return unit;
+    }
+    
+    public void setUnit(Unit unit) {
+		this.unit = unit;
+	}
     
 }

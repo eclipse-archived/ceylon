@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Module {
+public class Module 
+        implements Referenceable {
 
     public static final String DEFAULT_MODULE_NAME = "default";
 
@@ -21,6 +22,7 @@ public class Module {
     private boolean available;
     private boolean isDefault;
     private List<Annotation> annotations = new ArrayList<Annotation>();
+    private Unit unit;
 
     /**
      * Whether or not the module is available in the
@@ -155,6 +157,10 @@ public class Module {
         return null;
     }
     
+    public Package getRootPackage() {
+    	return getPackage(getNameAsString());
+    }
+    
     public String getNameAsString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.size(); i++) {
@@ -189,5 +195,14 @@ public class Module {
     public boolean isJava() {
         return false;
     }
+    
+    @Override
+    public Unit getUnit() {
+    	return unit;
+    }
+    
+    public void setUnit(Unit unit) {
+		this.unit = unit;
+	}
     
 }
