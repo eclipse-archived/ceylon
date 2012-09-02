@@ -617,6 +617,10 @@ public class TypeVisitor extends Visitor {
             if (et==null) {
                 that.addError("malformed aliased class");
             }
+            else if (et instanceof Tree.QualifiedType) {
+            	that.getTypeSpecifier()
+            	        .addError("aliased class may not be a qualified type");
+        	}
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
