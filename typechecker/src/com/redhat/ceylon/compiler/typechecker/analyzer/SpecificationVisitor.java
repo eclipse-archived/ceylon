@@ -622,6 +622,12 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.IfStatement that) {
         
+        if (that.getIfClause()!=null) {
+        	if (that.getIfClause().getCondition()!=null) {
+        		that.getIfClause().getCondition().visit(this);
+        	}
+        }
+        
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
         if (that.getIfClause()!=null) {
@@ -738,6 +744,12 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.WhileStatement that) {
+    	if (that.getWhileClause()!=null) {
+    		if (that.getWhileClause().getCondition()!=null) {
+    			that.getWhileClause().getCondition().visit(this);
+    		}
+    	}
+    	
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
         if (isVariable()) {

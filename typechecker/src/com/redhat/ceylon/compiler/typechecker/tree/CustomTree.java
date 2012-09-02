@@ -56,6 +56,38 @@ public class CustomTree extends Tree {
         }
     }
     
+    public static class Variable 
+            extends Tree.Variable {
+        public Variable(Token token) {
+            super(token);
+        }
+        @Override
+        public void visit(Visitor visitor) {
+            if (visitor instanceof NaturalVisitor) {
+                super.visit(visitor);
+            }
+            else {
+                if (getSpecifierExpression()!=null)
+                    getSpecifierExpression().visit(visitor);
+                super.visit(visitor);
+            }
+        }
+        @Override
+        public void visitChildren(Visitor visitor) {
+            if (visitor instanceof NaturalVisitor) {
+                super.visitChildren(visitor);
+            }
+            else {
+                Walker.walkTypedDeclaration(visitor, this);
+                for (Tree.ParameterList subnode: getParameterLists())
+                    subnode.visit(visitor);
+            }
+        }
+        @Override public String getNodeType() {
+            return AttributeDeclaration.class.getSimpleName();
+        }
+    }
+
     public static class MethodDeclaration
             extends Tree.MethodDeclaration {
         public MethodDeclaration(Token token) {
@@ -378,16 +410,16 @@ public class CustomTree extends Tree {
     
     public static class IsCase
             extends Tree.IsCase {
-        private Variable variable;
+        private Tree.Variable variable;
         public IsCase(Token token) {
             super(token);
         }
         @Override
-        public void setVariable(Variable node) {
+        public void setVariable(Tree.Variable node) {
             variable = node;
         }
         @Override
-        public Variable getVariable() {
+        public Tree.Variable getVariable() {
             return variable;
         }
     }
