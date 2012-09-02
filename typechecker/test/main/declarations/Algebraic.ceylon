@@ -97,7 +97,7 @@ void switchit(XXX<String> x) {
         print("zzz"); 
     }
     
-    @error switch (x) 
+    switch (x) 
     case (is YYY<Object>) { 
         print("yyy"); 
     }
@@ -348,4 +348,18 @@ void use() {
         case (is Dir) {}
     }
     
+}
+
+shared abstract class Status<out Failure>()
+        of Failed<Failure> | Succeeded<Failure> {}
+
+shared class Failed<out Failure>() 
+        extends Status<Failure>() {}
+shared class Succeeded<out Failure>() 
+        extends Status<Failure>() {}
+
+shared void case2(Status<String> arg) {
+    switch (arg)
+    case (is Failed<Void>) {  }
+    case (is Succeeded<Void>) {  }
 }

@@ -384,7 +384,8 @@ public class Util {
             //i.e. the intersection of disjoint types is
             //empty
             for (ProducedType supertype: pt.getSupertypes()) {
-                List<TypeDeclaration> ctds = supertype.getDeclaration().getCaseTypeDeclarations();
+                List<TypeDeclaration> ctds = supertype.getDeclaration()
+                        .getCaseTypeDeclarations();
                 if (ctds!=null) {
                     TypeDeclaration ctd=null;
                     for (TypeDeclaration ct: ctds) {
@@ -491,11 +492,14 @@ public class Util {
                             pt.getDeclaration() instanceof Class &&
                                 pt.getDeclaration().equals(nd)) {
                                 //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing")) {
-                            //the meet of two classes unrelated by inheritance, or
-                            //of Nothing with an interface type is empty
-                            list.clear();
-                            list.add( unit.getBottomDeclaration().getType() );
-                            return;
+                            if (t.getSupertype(pt.getDeclaration())==null &&
+                            		pt.getSupertype(t.getDeclaration())==null) {
+                            	//the meet of two classes unrelated by inheritance, or
+                            	//of Nothing with an interface type is empty
+                            	list.clear();
+                            	list.add( unit.getBottomDeclaration().getType() );
+                            	return;
+                            }
                         }
                     }
                 }
