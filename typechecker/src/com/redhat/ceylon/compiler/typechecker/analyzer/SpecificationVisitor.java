@@ -529,7 +529,7 @@ public class SpecificationVisitor extends Visitor {
             declarationSection = false;
             lastExecutableStatement = null;
             if (isSharedDeclarationUninitialized()) {
-                d.addError("must be definitely specified by class initializer");
+                d.addError("must be definitely specified by class initializer", 1401);
             }
         }
         else {
