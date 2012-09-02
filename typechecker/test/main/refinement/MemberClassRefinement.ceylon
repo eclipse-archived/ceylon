@@ -43,10 +43,13 @@ class Singleton(String s)
             return s;
         }
     }
+    shared class Alias() = Iterator;
 }
 
 void testSin() {
     print(Singleton("hello").Iterator().next());
+    @type["Singleton.Iterator"] Singleton("hello").Iterator();
+    @type["Singleton.Iterator"] Singleton("goodbye").Alias();
 }
 
 @error class SingletonAlias() = Singleton.Iterator;

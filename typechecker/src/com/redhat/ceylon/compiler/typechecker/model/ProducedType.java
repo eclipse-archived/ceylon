@@ -401,13 +401,14 @@ public class ProducedType extends ProducedReference {
     public ProducedType getTypeMember(TypeDeclaration member, 
             List<ProducedType> typeArguments) {
         ProducedType declaringType = getSupertype((TypeDeclaration) member.getContainer());
-        ProducedType pt = new ProducedType();
+    	return member.getProducedType(declaringType, typeArguments);
+        /*ProducedType pt = new ProducedType();
         pt.setDeclaration(member);
         pt.setQualifyingType(declaringType);
         Map<TypeParameter, ProducedType> map = arguments(member, declaringType, typeArguments);
         //map.putAll(sub(map));
         pt.setTypeArguments(map);
-        return pt;
+        return pt;*/
     }
 
     /**
