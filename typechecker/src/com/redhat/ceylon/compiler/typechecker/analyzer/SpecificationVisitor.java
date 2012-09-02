@@ -212,6 +212,21 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.LogicalOp that) {
+        that.getLeftTerm().visit(this);
+    	SpecificationState ss = beginSpecificationScope();
+        that.getRightTerm().visit(this);
+    	endSpecificationScope(ss);
+    }
+    
+    @Override
+    public void visit(Tree.FunctionArgument that) {
+    	SpecificationState ss = beginSpecificationScope();
+    	super.visit(that);
+    	endSpecificationScope(ss);
+    }
+    
+    @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
         assign(lt);
