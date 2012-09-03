@@ -9,7 +9,7 @@ class ClassDefaultMemberClassWithParams() {
 }
 @nomodel
 class ClassDefaultMemberClassWithParams_sub() extends ClassDefaultMemberClassWithParams() {
-    shared actual class Member(Integer i) extends ClassDefaultMemberClassWithParams.Member(i) {
+    shared actual class Member(Integer i) extends super.Member(i) {
     }
     shared Member m2() {
         Member{i=2;};

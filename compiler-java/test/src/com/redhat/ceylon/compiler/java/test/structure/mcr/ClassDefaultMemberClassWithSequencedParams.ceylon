@@ -11,7 +11,7 @@ class ClassDefaultMemberClassWithSequencedParams() {
 }
 @nomodel
 class ClassDefaultMemberClassWithSequencedParams_sub() extends ClassDefaultMemberClassWithSequencedParams() {
-    shared actual class Member(Integer... i) extends ClassDefaultMemberClassWithSequencedParams.Member(i...) {
+    shared actual class Member(Integer... i) extends super.Member(i...) {
     }
     shared Member m2() {
         Member{i={2, 3, 4};};

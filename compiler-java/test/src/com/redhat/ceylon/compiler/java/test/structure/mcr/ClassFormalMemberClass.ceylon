@@ -11,7 +11,7 @@ abstract class ClassFormalMemberClass() {
 }
 @nomodel
 class ClassFormalMemberClass_sub() extends ClassFormalMemberClass() {
-    shared actual class Member() extends ClassFormalMemberClass.Member() {
+    shared actual class Member() extends super.Member() {
     }
     shared void m2(ClassFormalMemberClass_sub qual) {
         Member{};
