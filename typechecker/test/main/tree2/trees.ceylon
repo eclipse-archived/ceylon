@@ -43,10 +43,10 @@ class BrokenTree()
         satisfies Tree<String> {}
 
 void testTree() {
-    ConcreteBranch tree { 
+    value tree = ConcreteBranch { 
         left = ConcreteLeaf("hello");
         right = ConcreteLeaf("world"); 
-    }
+    };
     printTree(tree);
     printTree(tree.left);
     printTree(tree.right);

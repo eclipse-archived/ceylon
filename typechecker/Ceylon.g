@@ -439,8 +439,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         )?
         ( 
           { $declaration = mdef; }
-          mb=methodBody[$type.type] 
-         { mdef.setBlock($mb.block); }
+          b1=block
+         { mdef.setBlock($b1.block); }
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | 
           (
@@ -464,13 +464,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
       | 
         { $declaration = adef; }
-        ab=attributeBody[$type.type]
-        { if ($ab.result instanceof Block)
-              adef.setBlock((Block)$ab.result); 
-          else {
-              $declaration = adec;
-              adec.setSpecifierOrInitializerExpression((SpecifierExpression)$ab.result);
-          } }
+        b2=block
+        { adef.setBlock($b2.block); }
       //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
       )
     ;
@@ -625,62 +620,6 @@ classBody returns [ClassBody classBody]
       RBRACE
       { $classBody.setEndToken($RBRACE); }
     //-> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
-    ;
-
-//This rule accounts for the problem that we
-//can't tell whether a member body is a block
-//or a named argument list until after we
-//finish parsing it
-attributeBody[StaticType type] returns [Node result]
-      //options { memoize=true; }
-    : 
-      (namedArguments)
-      => namedArguments //first try to match with no directives or control structures
-      { SpecifierExpression specifier = new SyntheticSpecifierExpression(null);
-        SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
-        Expression e = new Expression(null);
-        InvocationExpression ie = new SyntheticInvocationExpression(null);
-        BaseTypeExpression bme = new BaseTypeExpression(null);
-        if (t!=null) bme.setIdentifier(t.getIdentifier());
-        bme.setTypeArguments(new InferredTypeArguments(null));
-        if (t!=null && t.getTypeArgumentList()!=null)
-            bme.setTypeArguments(t.getTypeArgumentList());
-        ie.setPrimary(bme);
-        ie.setNamedArgumentList($namedArguments.namedArgumentList);
-        e.setTerm(ie);
-        specifier.setExpression(e);
-        $result=specifier; }
-    | block //if there is a "return" directive or control structure, it must be a block
-      { $result=$block.block; } 
-    ;
-
-//This rule accounts for the problem that we
-//can't tell whether a member body is a block
-//or a named argument list until after we
-//finish parsing it
-methodBody[StaticType type] returns [Block block]
-      //options { memoize=true; }
-    : 
-      (namedArguments)
-      => namedArguments //first try to match with no directives or control structures
-      { $block = new SyntheticBlock(null);
-        SimpleType t = $type instanceof SimpleType ? (SimpleType) $type : null;
-        Return r = new Return(null);
-        Expression e = new Expression(null);
-        InvocationExpression ie = new SyntheticInvocationExpression(null);
-        BaseTypeExpression bme = new BaseTypeExpression(null);
-        if (t!=null) bme.setIdentifier(t.getIdentifier());
-        bme.setTypeArguments(new InferredTypeArguments(null));
-        if (t!=null && t.getTypeArgumentList()!=null)
-            bme.setTypeArguments(t.getTypeArgumentList());
-        ie.setPrimary(bme);
-        ie.setNamedArgumentList($namedArguments.namedArgumentList);
-        e.setTerm(ie);
-        r.setExpression(e);
-        $block.addStatement(r); }
-    //-> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
-    | block //if there is a "return" directive or control structure, it must be a block
-      { $block=$block.block; } 
     ;
 
 extendedType returns [ExtendedType extendedType]
@@ -1517,9 +1456,9 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
           { marg.addParameterList($parameters.parameterList); }
         )+
       )?
-      methodBody[$type.type]
-      { marg.setBlock($methodBody.block); 
-        aarg.setBlock($methodBody.block); }
+      block
+      { marg.setBlock($block.block); 
+        aarg.setBlock($block.block); }
       //-> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
       //-> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
     ;

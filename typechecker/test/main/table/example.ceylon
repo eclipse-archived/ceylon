@@ -1,10 +1,10 @@
-Table table {
+Table table = Table {
     title = "Proyecto Ceylon";
-    Row header {
+    header = Row {
         Cell { "Persona" },
         Cell { "Proyecto" },
         Cell { "Ciudad" }
-    }
+    };
     Row {
         Cell { "Gavin" },
         Cell { "ceylon-spec" },
@@ -20,4 +20,4 @@ Table table {
         Cell { "ceylon-compiler" },
         Cell { "Madrid" }
     }
-}
+};

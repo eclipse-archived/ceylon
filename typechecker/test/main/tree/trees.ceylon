@@ -15,10 +15,10 @@ void printTree<T>(Tree<T> tree)
 @error class Extra<T>() extends Tree<T>() {}
 
 void testTree() {
-    Branch<String> tree { 
+    value tree = Branch<String> { 
         left = Leaf("hello");
         right = Leaf("world"); 
-    }
+    };
     printTree(tree);
     printTree(tree.left);
     printTree(tree.right);
