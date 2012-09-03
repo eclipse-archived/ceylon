@@ -322,12 +322,11 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModules() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld"),
-                new ModuleDetails("hello"),
-                new ModuleDetails("moduletest"),
-                new ModuleDetails("org.jboss.acme"),
-                new ModuleDetails("org.jboss.jboss-vfs"),
-                new ModuleDetails("test-jar"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
+                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
+                new ModuleDetails("moduletest", null, null, set(), set("0.1")),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
         
         testSearchResults("", Type.JVM, expected);
@@ -336,29 +335,27 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesPaged() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("moduletest"),
-                new ModuleDetails("org.jboss.acme"),
+                new ModuleDetails("moduletest", null, null, set(), set("0.1")),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
         };
         
-        testSearchResults("", Type.JVM, expected, 2, 2);
+        testSearchResults("", Type.JVM, expected, 2l, 2l);
     }
 
     @Test
     public void testSearchModulesFilteredByName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld"),
-                new ModuleDetails("hello"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
+                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
         };
         
         testSearchResults("hello", Type.JVM, expected);
     }
     
-    // com.acme.helloworld: ("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud")
-
     @Test
     public void testSearchModulesFilteredByDocLicenseAndAuthor() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
         };
         
         testSearchResults("classic", Type.JVM, expected);
@@ -369,7 +366,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesFilteredByDocLicenseAndAuthorSrc() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("com.acme.helloworld"),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
         };
         
         testSearchResults("classic", Type.SRC, expected);

@@ -20,6 +20,8 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.junit.Assert;
@@ -110,7 +112,21 @@ public class AbstractTest {
         Assert.assertEquals(expected.length, resultsList.size());
         for(ModuleDetails result : resultsList){
             ModuleDetails expectedResult = expected[i++];
+            System.err.println("Testing " + result.getName());
             Assert.assertEquals(expectedResult.getName(), result.getName());
+            Assert.assertEquals(expectedResult.getDoc(), result.getDoc());
+            Assert.assertEquals(expectedResult.getLicense(), result.getLicense());
+            Assert.assertEquals(expectedResult.getAuthors(), result.getAuthors());
+            Assert.assertEquals(expectedResult.getVersions(), result.getVersions());
         }
     }
+
+    protected SortedSet<String> set(String... values){
+        SortedSet<String> ret = new TreeSet<String>();
+        for(String v : values){
+            ret.add(v);
+        }
+        return ret;
+    }
+    
 }

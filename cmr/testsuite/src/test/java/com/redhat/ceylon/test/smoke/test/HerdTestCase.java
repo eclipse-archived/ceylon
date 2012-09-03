@@ -18,12 +18,15 @@
 package com.redhat.ceylon.test.smoke.test;
 
 import java.net.URISyntaxException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -71,8 +74,35 @@ public class HerdTestCase extends AbstractTest {
     @Test
     //@Ignore("Required Herd running locally")
     public void testHerdSearch() throws Exception{
-        ModuleSearchResult.ModuleDetails[] expected = new ModuleSearchResult.ModuleDetails[]{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+                new ModuleDetails("com.acme.helloworld", null, null, set(), set("1.0.0", "1.0.2")),
+                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2")),
+                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1")),
+                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1")),
+                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2")),
+                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1")),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
         };
-        testSearchResults("ceylon.collection", Type.JVM, expected);
+        testSearchResults("", Type.JVM, expected);
+    }
+
+    @Test
+    public void testHerdSearchFiltered() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+        };
+        testSearchResults("cey", Type.JVM, expected);
+    }
+
+    @Test
+    public void testHerdSearchPaged() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+                new ModuleDetails("com.acme.helloworld", null, null, set(), set("1.0.0", "1.0.2")),
+        };
+        testSearchResults("", Type.JVM, expected, 1l, 2l);
     }
 }
