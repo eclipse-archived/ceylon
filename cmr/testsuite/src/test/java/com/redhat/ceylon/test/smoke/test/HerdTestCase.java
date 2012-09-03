@@ -48,7 +48,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     protected RepositoryManager getRepositoryManager() throws URISyntaxException {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getFolders(), log);
         WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
         Repository repo = new DefaultRepository(rcs.createRoot());
         return builder.appendRepository(repo).buildRepository();
