@@ -462,7 +462,7 @@ public abstract class AbstractRepository implements Repository {
                     if(query.getStart() == null || ret.found++ >= query.getStart()){
                         // are we interested in this result or did we need to skip it?
                         String moduleName = toModuleName(child);
-                        result.addResult(moduleName);
+                        addSearchResult(result, moduleName, child, query.getType());
                         // stop if we're done searching
                         if(query.getStart() != null
                                 && query.getCount() != null
@@ -477,5 +477,65 @@ public abstract class AbstractRepository implements Repository {
                 }
             }
         }
+    }
+
+    private void addSearchResult(ModuleSearchResult result, String moduleName, Node namePart, Type type) {
+        SortedSet<String> versions = new TreeSet<String>();
+        String[] suffixes = type.getSuffixes();
+        for(Node child : namePart.getChildren()){
+            // Winner of the less aptly-named method
+            boolean isFolder = !child.hasBinaries();
+            // ignore non-folders
+            if(!isFolder)
+                continue;
+            // now make sure we can find the artifact we're looking for in there
+            String version = child.getLabel();
+            // try every known suffix
+            for(String suffix : suffixes){
+                String artifactName = getArtifactName(moduleName, version, suffix);
+                Node artifact = child.getChild(artifactName);
+                if(artifact == null)
+                    continue;
+                // we found the artifact: store it
+                versions.add(version);
+                break;
+            }
+        }
+        // sanity check
+        if(versions.isEmpty())
+            throw new RuntimeException("Assertion failed: we didn't find any version of the proper type for " + moduleName);
+        // find the latest version
+        String latestVersion = versions.last();
+        Node versionChild = namePart.getChild(latestVersion);
+        if(versionChild == null)
+            throw new RuntimeException("Assertion failed: we didn't find the version child for " + moduleName + "/" + latestVersion);
+        String artifactName = getArtifactName(moduleName, latestVersion, ArtifactContext.CAR);
+        Node artifact = versionChild.getChild(artifactName);
+        
+        // we don't really have mutable captures yet :(
+        final String[] doc = new String[1];
+        final String[] license = new String[1];
+        final SortedSet<String> authors = new TreeSet<String>();
+        
+        if(artifact != null){
+            try {
+                File file = artifact.getContent(File.class);
+                if(file != null){
+                    BytecodeUtils.readModuleInfo(moduleName, file, new ModuleInfoCallback() {
+                        @Override
+                        public void storeInfo(String doc2, String license2, String[] authors2) {
+                            doc[0] = doc2;
+                            license[0] = license2;
+                            if(authors2 != null)
+                                authors.addAll(Arrays.asList(authors2));
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                // bah
+            }
+        }
+
+        result.addResult(moduleName, doc[0], license[0], authors, versions);
     }
 }
