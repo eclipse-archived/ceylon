@@ -148,6 +148,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/InterfaceWithMembers");
     }
     @Test
+    public void testKlsInterfaceWithObjectMember_fail(){
+        compareWithJavaSource("klass/InterfaceWithObjectMember");
+    }
+    @Test
     public void testKlsClass(){
         compareWithJavaSource("klass/Klass");
     }
