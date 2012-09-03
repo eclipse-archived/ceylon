@@ -22,6 +22,7 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.SimpleJsonEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
@@ -217,9 +218,12 @@ public class JsCompiler {
     protected void finish() throws IOException {
         for (Map.Entry<Module,JsOutput> entry: output.entrySet()) {
             JsOutput jsout = entry.getValue();
-            //TODO should this be done always, or just when wrapping in commonJS module?
-            jsout.mmg.writeModel(jsout.getWriter());
+            jsout.getWriter().write("$$metamodel$$=");
+            new SimpleJsonEncoder().encode(jsout.mmg.getModel(), jsout.getWriter());
+            jsout.getWriter().write(";\n");
+
             if (opts.isModulify()) {
+                jsout.getWriter().write("exports.$$metamodel$$=$$metamodel$$;\n");
                 endWrapper(jsout.getWriter());
             }
             String moduleName = entry.getKey().getNameAsString();
