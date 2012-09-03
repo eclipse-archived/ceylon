@@ -5,15 +5,16 @@ class SimpleClass3() extends Object() {
     shared actual Boolean equals(Object other) { return false; }
     shared actual Integer hash { return 0; }
 }
-shared class SimpleClass4(Integer x) extends SimpleClass2("simple4") {
+shared class SimpleClass4(Integer x=1) extends SimpleClass2("simple4") {
 }
 shared class Satisfy1() satisfies Comparable<Satisfy1> {
     shared actual Comparison compare(Satisfy1 other) { return equal; }
 }
-shared class Satisfy2() satisfies Iterable<Integer> {
+shared class Satisfy2() satisfies Iterable<Integer> & Cloneable<Satisfy2> {
 	shared actual Iterator<Integer> iterator {
 		return {1}.iterator;
 	}
+	shared actual Satisfy2 clone { return this; }
 }
 class ParmTypes1<Element>(Element x) {}
 class ParmTypes2<out Element>(Element... x)

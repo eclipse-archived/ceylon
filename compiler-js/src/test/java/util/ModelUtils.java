@@ -7,7 +7,7 @@ import org.junit.Assert;
 
 public class ModelUtils {
 
-    /** Asserts that very specified key is in the map and that it equals the corresponding value. */
+    /** Asserts that every specified key is in the map and that it equals the corresponding value. */
     public static void checkMap(Map<String, Object> map, String... keysValues) {
         for (int i = 0; i < keysValues.length; i+=2) {
             Assert.assertEquals(keysValues[i+1], (String)map.get(keysValues[i]));
