@@ -143,4 +143,34 @@ public class QuotingTest extends CompilerTest {
             Assert.assertTrue(e.getCause().getCause().getMessage().contains("i am the method"));
         }
     }
+    
+    @Test
+    public void testCaseLowerClass(){
+        compareWithJavaSource("lettercase/LowerClass");
+        compile("lettercase/LowerClassUsage.ceylon");
+    }
+    
+    @Test
+    public void testCaseLowerInterface_fail(){
+        compareWithJavaSource("lettercase/LowerInterface");
+        compile("lettercase/LowerInterfaceUsage.ceylon");
+    }
+    
+    @Test
+    public void testCaseUpperAttribute(){
+        compareWithJavaSource("lettercase/UpperAttribute");
+        compile("lettercase/UpperAttributeUsage.ceylon");
+    }
+    
+    @Test
+    public void testCaseUpperMethod(){
+        compareWithJavaSource("lettercase/UpperMethod");
+        compile("lettercase/UpperMethodUsage.ceylon");
+    }
+    
+    @Test
+    public void testCaseUpperObject(){
+        compareWithJavaSource("lettercase/UpperObject");
+        compile("lettercase/UpperObjectUsage.ceylon");
+    }
 }

@@ -1,0 +1,50 @@
+package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Name("ii")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public interface i$ii_ {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Name("mi")
+interface i$m$0$mi_ {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public interface i_ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    public void m();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class i$impl_ {
+    
+    public i$impl_(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_ $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_ $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final class ii$impl_ {
+        
+        public ii$impl_(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$ii_ $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$ii_ $this;
+    }
+    
+    public void m() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final class mi$impl_ {
+            
+            mi$impl_(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_ $this) {
+                this.$this = $this;
+            }
+            private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_ $this;
+        }
+        final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_ a = (.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$0$mi_).ceylon.language.bottom_.getBottom();
+    }
+}

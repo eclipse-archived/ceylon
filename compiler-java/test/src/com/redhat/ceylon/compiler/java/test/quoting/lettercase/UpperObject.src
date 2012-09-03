@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public final class Object {
+    
+    private Object() {
+        this.InnerObject = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject InnerObject;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Object
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public final class InnerObject {
+        
+        private InnerObject() {
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+        public final void m() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject")
+    public final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject getInnerObject() {
+        return InnerObject;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    public final void m() {
+        getInnerObject().m();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object[]{new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object()};
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object")
+    public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object getObject() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
