@@ -91,7 +91,7 @@ public class AbstractTest {
             Assert.assertEquals(expectedVersion.getVersion(), version.getVersion());
             Assert.assertEquals(expectedVersion.getDoc(), version.getDoc());
             Assert.assertEquals(expectedVersion.getLicense(), version.getLicense());
-            Assert.assertArrayEquals(expectedVersion.getBy(), version.getBy());
+            Assert.assertEquals(expectedVersion.getAuthors(), version.getAuthors());
         }
     }
 

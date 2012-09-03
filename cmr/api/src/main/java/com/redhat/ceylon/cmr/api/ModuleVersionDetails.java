@@ -1,9 +1,13 @@
 package com.redhat.ceylon.cmr.api;
 
+import java.util.Arrays;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 public class ModuleVersionDetails {
     private String version;
     private String license;
-    private String[] by;
+    private SortedSet<String> authors = new TreeSet<String>();
     private String doc;
 
     public ModuleVersionDetails(String version) {
@@ -14,15 +18,16 @@ public class ModuleVersionDetails {
         this(version);
         this.doc = doc;
         this.license = license;
-        this.by = by;
+        this.authors.addAll(Arrays.asList(by));
     }
 
     public void setDoc(String doc) {
         this.doc = doc;
     }
 
-    public void setBy(String[] by) {
-        this.by = by;
+    public void setAuthors(SortedSet<String> authors) {
+        this.authors.clear();
+        this.authors.addAll(authors);
     }
 
     public void setLicense(String license) {
@@ -37,8 +42,8 @@ public class ModuleVersionDetails {
         return license;
     }
 
-    public String[] getBy() {
-        return by;
+    public SortedSet<String> getAuthors() {
+        return authors;
     }
 
     public String getDoc() {
