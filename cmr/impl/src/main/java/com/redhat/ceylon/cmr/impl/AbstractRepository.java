@@ -16,28 +16,30 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
-import com.redhat.ceylon.cmr.api.ContentFinder;
-import com.redhat.ceylon.cmr.api.ModuleSearchResult;
-import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.ModuleResult;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ContentFinder;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.BytecodeUtils.ModuleInfoCallback;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
  * Abstract repository.
@@ -209,39 +211,40 @@ public abstract class AbstractRepository implements Repository {
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
-            if(isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(child, type))
+            if(isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, type))
                 return true;
         }
         // could not find any
         return false;
     }
 
-    private boolean containsArtifact(Node node, Type type) {
-        for(Node child : node.getChildren()){
+    private boolean containsArtifact(Node moduleNode, Node versionNode, Type type) {
+        String module = toModuleName(moduleNode);
+        String version = versionNode.getLabel();
+        for(Node child : versionNode.getChildren()){
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
             if(isFolder){
                 // recurse
-                if(!name.equals(ArtifactContext.DOCS) && containsArtifact(child, type))
+                if(!name.equals(ArtifactContext.DOCS) && containsArtifact(versionNode, child, type))
                     return true;
-            }else if(isArtifactOfType(name, type)){
+            }else if(isArtifactOfType(name, module, version, type)){
                 return true;
             }
         }
         return false;
     }
 
-    // FIXME: this is weak, we should check the full artifact name
-    private boolean isArtifactOfType(String name, Type type) {
+    private boolean isArtifactOfType(String name, String module, String version, Type type) {
         switch(type){
         case JS:
-            return name.endsWith(ArtifactContext.JS);
+            return getArtifactName(module, version, ArtifactContext.JS).equals(name);
         case JVM:
-            return name.endsWith(ArtifactContext.CAR)
-                    || name.endsWith(ArtifactContext.JAR);
+            return getArtifactName(module, version, ArtifactContext.CAR).equals(name)
+                    || getArtifactName(module, version, ArtifactContext.JAR).equals(name);
         case SRC:
-            return name.endsWith(ArtifactContext.SRC);
+            return getArtifactName(module, version, ArtifactContext.SRC).equals(name);
         }
         return false;
     }
@@ -250,7 +253,7 @@ public abstract class AbstractRepository implements Repository {
      * This method is almost like hasChildrenContainingArtifact but it scans for any type of artifact and records
      * the specific one we want in an out param
      */
-    private boolean hasChildrenContainingAnyArtifact(Node node, ModuleQuery query, Ret ret) {
+    private boolean hasChildrenContainingAnyArtifact(Node moduleNode, ModuleQuery query, Ret ret) {
         // We don't look directly at our children, we want the children's children, because if there's
         // nothing in those children it means either this is an empty folder, or its children contain
         // artifacts (in which case we don't want to match it since its name must be a version component),
@@ -258,11 +261,13 @@ public abstract class AbstractRepository implements Repository {
         
         // This allows us to never match the default module, since it's at "/default/default.car" which
         // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
-        for(Node child : node.getChildren()){
-            String name = child.getLabel();
+        for(Node versionNode : moduleNode.getChildren()){
+            String name = versionNode.getLabel();
             // Winner of the less aptly-named method
-            boolean isFolder = !child.hasBinaries();
-            if(isFolder && !name.equals(ArtifactContext.DOCS) && containsAnyArtifact(child, query, ret))
+            boolean isFolder = !versionNode.hasBinaries();
+            if(isFolder 
+                    && !name.equals(ArtifactContext.DOCS) 
+                    && containsAnyArtifact(moduleNode, versionNode, query, ret))
                 return true;
         }
         // could not find any
@@ -273,20 +278,22 @@ public abstract class AbstractRepository implements Repository {
      * This method is almost like containsArtifact but it scans for any type of artifact and records
      * the specific one we want in an out param. It's also not recursive so it only scans the current children.
      */
-    private boolean containsAnyArtifact(Node node, ModuleQuery query, Ret ret) {
+    private boolean containsAnyArtifact(Node moduleNode, Node versionNode, ModuleQuery query, Ret ret) {
         boolean foundArtifact = false;
-        for(Node child : node.getChildren()){
+        String version = versionNode.getLabel();
+        String module = toModuleName(moduleNode);
+        for(Node child : versionNode.getChildren()){
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
             if(isFolder){
                 // we don't recurse
-            }else if(isArtifactOfType(name, query.getType())
-                     && matchesSearch(name, child, node, query)){
+            }else if(isArtifactOfType(name, module, version, query.getType())
+                     && matchesSearch(name, child, versionNode, query)){
                 // we found what we were looking for
                 ret.foundRightType = true;
                 return true;
-            }else if(isArtifact(name)){
+            }else if(isArtifact(name, module, version)){
                 // we found something, but not the type we wanted
                 foundArtifact = true;
             }
@@ -339,12 +346,11 @@ public abstract class AbstractRepository implements Repository {
         }
     }
 
-    // FIXME: this is weak, we should check the full artifact name
-    private boolean isArtifact(String name) {
-        return name.endsWith(ArtifactContext.JS)
-                || name.endsWith(ArtifactContext.CAR)
-                || name.endsWith(ArtifactContext.JAR)
-                || name.endsWith(ArtifactContext.SRC);
+    private boolean isArtifact(String name, String module, String version) {
+        return getArtifactName(module, version, ArtifactContext.JS).equals(name)
+                || getArtifactName(module, version, ArtifactContext.CAR).equals(name)
+                || getArtifactName(module, version, ArtifactContext.JAR).equals(name)
+                || getArtifactName(module, version, ArtifactContext.SRC).equals(name);
     }
 
     private String toModuleName(Node node) {
