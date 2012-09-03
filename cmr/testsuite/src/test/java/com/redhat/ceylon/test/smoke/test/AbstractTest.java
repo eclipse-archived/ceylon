@@ -94,10 +94,10 @@ public class AbstractTest {
     }
 
     protected void testSearchResults(String q, Type type, ModuleDetails[] expected) throws Exception{
-        testSearchResults(q, type, expected, 0, 20);
+        testSearchResults(q, type, expected, null, null);
     }
     
-    protected void testSearchResults(String q, Type type, ModuleDetails[] expected, int start, int count) throws Exception{
+    protected void testSearchResults(String q, Type type, ModuleDetails[] expected, Long start, Long count) throws Exception{
         RepositoryManager manager = getRepositoryManager();
         
         ModuleQuery query = new ModuleQuery(q, type);

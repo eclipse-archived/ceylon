@@ -445,12 +445,14 @@ public abstract class AbstractRepository implements Repository {
             if(hasChildrenContainingAnyArtifact(child, query, ret)){
                 // does it contain an artifact of the type we're looking for?
                 if(ret.foundRightType){
-                    if(ret.found++ >= query.getStart()){
+                    if(query.getStart() == null || ret.found++ >= query.getStart()){
                         // are we interested in this result or did we need to skip it?
                         String moduleName = toModuleName(child);
                         result.addResult(moduleName);
                         // stop if we're done searching
-                        if(ret.found >= query.getStart() + query.getCount())
+                        if(query.getStart() != null
+                                && query.getCount() != null
+                                && ret.found >= query.getStart() + query.getCount())
                             throw new GetOut();
                     }
                 }
