@@ -1666,7 +1666,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <para>A <emphasis>method</emphasis> is a callable block of code. Methods may 
         have parameters and may return a value.</para>
         
-        <programlisting>Method: Annotation* MethodHeader (Block | NamedArguments | Specifier? ";")</programlisting>
+        <programlisting>Method: Annotation* MethodHeader (Block | Specifier? ";")</programlisting>
         
         <para>All method declarations specify the method name, one or more parameter 
         lists, and, optionally, a list of type parameters. A method declaration may 
@@ -1688,13 +1688,10 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         
         <itemizedlist>
             <listitem>
-                <para>a block of code,</para>
+                <para>a block of code, or</para>
             </listitem>
             <listitem>
-                <para>a reference to another method, or</para>
-            </listitem>
-            <listitem>
-                <para>a named argument list.</para>
+                <para>a reference to another method.</para>
             </listitem>
         </itemizedlist>
         
@@ -1895,53 +1892,6 @@ else {
         
             <para>A toplevel method may not be forward-declared. A method of an interface
             may not be forward-declared.</para>
-            
-        </section>
-        
-        <section id="methodswithnamedarguments">
-            <title>Methods with named argument lists</title>
-            
-            <para>The final possibility is that a method implementation may be a named
-            argument list. A method with a named argument list must explicitly declare 
-            an invocable type (a non-<literal>abstract</literal> class, or any other
-            type with a callable metatype) as the return type. The method simply 
-            invokes the return type with the specified named arguments and returns the 
-            resulting value.</para>
-            
-            <para>The following declarations are equivalent:</para>
-            
-            <programlisting>Html login(HttpRequest request) {
-    head = Head { title="Hello" };
-    body = Body { 
-        Div { "Hello World" } 
-    };
-}</programlisting>
-            
-            <programlisting>Html login(HttpRequest request) {
-    return Html {
-        head = Head { title="Hello" };
-        body = Body { 
-            Div { "Hello World" } 
-        };
-    };
-}</programlisting>
-            
-            <comment><para>TODO: we could add a keyword or punctuation to help 
-            disambiguate the two forms of method implementation, for example:</para>
-            <programlisting>Html login(HttpRequest request) with {
-    Head head with { ... }
-    Body body with { ... }
-}</programlisting>
-            <para>The following option is especially interesting because it 
-            would unify nicely with the sequence enumeration syntax we already 
-            have:</para>
-            <programlisting>Html login(HttpRequest request) = {
-    Head head = { ... }
-    Body body = { ... }
-}</programlisting>
-            <para>However, <literal>=</literal> already means specification of 
-            an immutable value, which is not what is happening here!</para>
-            </comment>
             
         </section>
                 
@@ -2321,7 +2271,7 @@ else {
         may be specified or initialized as part of the declaration, via a later 
         specification statement or assignment, or via a parameter that references it.</para>
         
-        <programlisting>SimpleAttribute: AttributeHeader ( (Specifier | Initializer)? ";" | NamedArguments )</programlisting>
+        <programlisting>SimpleAttribute: AttributeHeader (Specifier | Initializer)? ";"</programlisting>
         
         <para>A simple attribute or local annotated <literal>variable</literal> represents a
         value that can be assigned multiple times. A simple attribute or local not annotated
@@ -2424,37 +2374,7 @@ print(greeting);</programlisting>
             
         </section>
         
-        <section id="attributeswithnamedarguments">
-            <title>Attributes with named argument lists</title>
-            
-            <para>Alternatively, a non-<literal>variable</literal> simple attribute may 
-            specify a named argument list. An attribute with a named argument list must 
-            explicitly declare an invocable type (a non-<literal>abstract</literal> 
-            class, or any other type with a callable metatype) as the attribute type. 
-            The attribute value is determined by simply invoking the return type with 
-            the specified named arguments.</para>
-            
-            <para>The following declarations are equivalent:</para>
-            
-            <programlisting>Module module {
-    name = 'org.hibernate';
-    version = '3.0.0';
-}</programlisting>
-            
-            <programlisting>Module module = Module {
-    name = 'org.hibernate';
-    version = '3.0.0';
-}</programlisting>
-            
-            <!--
-            <comment><para>TODO: should this syntax build a new object each time the attribute 
-            is evaluated, or should it construct the object once and return the same object
-            each time?</para></comment>
-            -->
-             
-        </section>
-        
-         <section id="attributegetters">
+        <section id="attributegetters">
             <title>Attribute getters</title>
             
             <para>An attribute getter is a callable block of code with no parameters,
