@@ -18,13 +18,12 @@ package com.redhat.ceylon.cmr.impl;
 
 import org.jboss.jandex.*;
 
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +33,11 @@ import java.util.List;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public final class BytecodeUtils {
+    
+    public static interface ModuleInfoCallback {
+        public void storeInfo(String doc, String license, String[] authors);
+    }
+    
     private BytecodeUtils() {
     }
 
@@ -105,7 +109,7 @@ public final class BytecodeUtils {
         return moduleClass;
     }
 
-    public static void readModuleInfo(String moduleName, File moduleArchive, ModuleVersionDetails version){
+    public static void readModuleInfo(String moduleName, File moduleArchive, ModuleInfoCallback callback){
         final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
         if(moduleClass == null)
             return;
@@ -116,14 +120,12 @@ public final class BytecodeUtils {
 
         final AnnotationInstance moduleAnnotation = annotations.get(0);
         AnnotationValue doc = moduleAnnotation.value("doc");
-        if(doc != null)
-            version.setDoc(doc.asString());
         AnnotationValue license = moduleAnnotation.value("license");
-        if(license != null)
-            version.setLicense(license.asString());
         AnnotationValue by = moduleAnnotation.value("by");
-        if(by != null)
-            version.setBy(by.asStringArray());
+        
+        callback.storeInfo(doc != null ? doc.asString() : null, 
+                           license != null ? license.asString() : null,
+                           by != null ? by.asStringArray() : null);
     }
 
     public static boolean matchesModuleInfo(String moduleName, File moduleArchive, String query){

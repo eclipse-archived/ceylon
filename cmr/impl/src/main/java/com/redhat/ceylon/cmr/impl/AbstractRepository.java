@@ -398,12 +398,20 @@ public abstract class AbstractRepository implements Repository {
                 if(artifact == null)
                     continue;
                 // we found the artifact: let's notify
-                ModuleVersionDetails newVersion = result.addVersion(version);
+                final ModuleVersionDetails newVersion = result.addVersion(version);
                 if(newVersion != null){
                     try {
                         File file = artifact.getContent(File.class);
                         if(file != null)
-                            BytecodeUtils.readModuleInfo(name, file, newVersion);
+                            BytecodeUtils.readModuleInfo(name, file, new ModuleInfoCallback() {
+                                @Override
+                                public void storeInfo(String doc, String license, String[] authors) {
+                                    newVersion.setDoc(doc);
+                                    newVersion.setLicense(license);
+                                    if(authors != null)
+                                        newVersion.getAuthors().addAll(Arrays.asList(authors));
+                                }
+                            });
                     } catch (Exception e) {
                         // bah
                     }
