@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.SimpleJsonEncoder;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -28,20 +28,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 public class MetamodelGenerator extends Visitor {
 
     private final Map<String, Object> model = new HashMap<String, Object>();
-    private final SimpleJsonEncoder json = new SimpleJsonEncoder();
     private final Module module;
 
     public MetamodelGenerator(Module module) {
         this.module = module;
         model.put("module-name", module.getNameAsString());
         model.put("module-version", module.getVersion());
-    }
-
-    /** Writes a JSON description of the metamodel to the specified output. */
-    public void writeModel(Writer out) throws IOException {
-        out.write("exports.$$metamodel$$=");
-        json.encode(model, out);
-        out.write(";\n");
     }
 
     /** Returns the in-memory model as a collection of maps.
@@ -75,13 +67,17 @@ public class MetamodelGenerator extends Visitor {
                 last = (Map<String,Object>)((Map<String,Object>)last.get("classes")).get(name);
             } else if (last.containsKey("ifaces") && ((Map<String,Object>)last.get("ifaces")).containsKey(name)) {
                 last = (Map<String,Object>)((Map<String,Object>)last.get("ifaces")).get(name);
+            } else if (last.containsKey("objs") && ((Map<String,Object>)last.get("objs")).containsKey(name)) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get("ifaces")).get(name);
             }
         }
         return last;
     }
 
     /** Create a map for the specified ProducedType.
-     * Includes name, package, module and type parameters. */
+     * Includes name, package, module and type parameters, unless it's a union or intersection
+     * type, in which case it contains a "comp" key with an "i" or "u" and a key "types" with
+     * the list of types that compose it. */
     private Map<String, Object> typeMap(ProducedType pt) {
         TypeDeclaration d = pt.getDeclaration();
         Map<String, Object> m = new HashMap<String, Object>();
@@ -105,6 +101,8 @@ public class MetamodelGenerator extends Visitor {
         return m;
     }
 
+    /** Returns a map with the same info as {@link #typeParameterMap(ProducedType)} but with
+     * an additional key "variance" if it's covariant ("out") or contravariant ("in"). */
     private Map<String, Object> typeParameterMap(TypeParameter tp) {
         Map<String, Object> map = typeParameterMap(tp.getType());
         if (tp.isCovariant()) {
@@ -116,7 +114,9 @@ public class MetamodelGenerator extends Visitor {
     }
 
     /** Create a map for the ProducedType, as a type parameter.
-     * Includes name, package, module and type parameters. */
+     * Includes name, package, module and type parameters, unless it's a union or intersection
+     * type, in which case it will contain a "comp" key with an "i" or "u", and a list of the types
+     * that compose it. */
     private Map<String, Object> typeParameterMap(ProducedType pt) {
         Map<String, Object> m = new HashMap<String, Object>();
         TypeDeclaration d = pt.getDeclaration();
@@ -163,7 +163,9 @@ public class MetamodelGenerator extends Visitor {
         }
         return null;
     }
-    /** Create a list of maps from the list of type constraints. */
+    /** Create a list of maps from the list of type constraints. Each map includes
+     * the satisfies or "of" rules (satisfied types or case types), which are in turn
+     * maps generated with {@link #typeMap(ProducedType)}. */
     private List<Map<String, Object>> typeConstraints(Tree.TypeConstraintList tcl) {
         if (tcl != null && !tcl.getTypeConstraints().isEmpty()) {
             List<Map<String, Object>> l = new ArrayList<Map<String,Object>>(tcl.getTypeConstraints().size());
@@ -190,6 +192,8 @@ public class MetamodelGenerator extends Visitor {
         return null;
     }
 
+    /** Create a list of maps for the parameter list. Each map will be a parameter, including
+     * name, type, default value (if any), and whether it's sequenced. */
     private List<Map<String,Object>> parameterListMap(Tree.ParameterList plist) {
         List<Tree.Parameter> parms = plist.getParameters();
         if (parms.size() > 0) {
@@ -204,6 +208,7 @@ public class MetamodelGenerator extends Visitor {
                 pm.put("mt", "param");
                 //TODO do these guys need anything else?
                 if (parm.getDefaultArgument() != null) {
+                    //This could be compiled to JS...
                     pm.put("def", parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
                 }
                 p.add(pm);
@@ -301,6 +306,9 @@ public class MetamodelGenerator extends Visitor {
             }
             parent = (Map<String,Object>)parent.get("attrs");
         } else {
+            //if (d.getName().equals("hash")) {
+                System.out.println("ATTRIB! " + that);
+            //}
             //Ignore attributes inside control blocks, methods, etc.
             return;
         }
@@ -312,6 +320,9 @@ public class MetamodelGenerator extends Visitor {
         }
         if (d.isVariable()) {
             m.put("var", "1");
+        }
+        if (d.isFormal()) {
+            m.put("formal", "1");
         }
         parent.put(d.getName(), m);
         super.visit(that);
@@ -382,7 +393,7 @@ public class MetamodelGenerator extends Visitor {
         m.put("classes", new HashMap<String, Object>());
         m.put("attrs", new HashMap<String, Object>());
         m.put("ifaces", new HashMap<String, Object>());
-        m.put("objects", new HashMap<String, Object>());
+        m.put("objs", new HashMap<String, Object>());
         parent.put(d.getName(), m);
         super.visit(that);
     }
@@ -408,7 +419,7 @@ public class MetamodelGenerator extends Visitor {
         m.put("classes", new HashMap<String, Object>());
         m.put("attrs", new HashMap<String, Object>());
         m.put("ifaces", new HashMap<String, Object>());
-        m.put("objects", new HashMap<String, Object>());
+        m.put("objs", new HashMap<String, Object>());
         parent.put(d.getName(), m);
         super.visit(that);
     }
@@ -434,7 +445,41 @@ public class MetamodelGenerator extends Visitor {
         m.put("classes", new HashMap<String, Object>());
         m.put("attrs", new HashMap<String, Object>());
         m.put("ifaces", new HashMap<String, Object>());
-        m.put("objects", new HashMap<String, Object>());
+        m.put("objs", new HashMap<String, Object>());
+        parent.put(d.getName(), m);
+        super.visit(that);
+    }
+
+    @Override @SuppressWarnings("unchecked")
+    public void visit(Tree.AttributeGetterDefinition that) {
+        Map<String, Object> m = new HashMap<String, Object>();
+        Getter d = that.getDeclarationModel();
+        Map<String, Object> parent;
+        if (d.isToplevel()) {
+            parent = model;
+        } else if (d.isMember()) {
+            parent = findParent(d);
+            if (parent == null) {
+                System.out.println("orphaned getter WTF!!! " + that.getLocation() + " @ " + that.getUnit().getFilename());
+                return;
+            }
+            parent = (Map<String,Object>)parent.get("attrs");
+        } else {
+            //Ignore attributes inside control blocks, methods, etc.
+            return;
+        }
+        m.put("name", d.getName());
+        m.put("mt", "attr");
+        m.put("type", typeMap(that.getType().getTypeModel()));
+        if (d.isShared()) {
+            m.put("shared", "1");
+        }
+        if (d.isActual()) {
+            m.put("actual", "1");
+        }
+        if (d.isFormal()) {
+            m.put("formal", "1");
+        }
         parent.put(d.getName(), m);
         super.visit(that);
     }
