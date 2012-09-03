@@ -16,18 +16,34 @@
 
 package com.redhat.ceylon.cmr.webdav;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import org.apache.http.ProtocolException;
+import org.apache.http.client.ClientProtocolException;
+
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 import com.googlecode.sardine.impl.SardineException;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
-import com.redhat.ceylon.cmr.api.ContentFinder;
+import com.redhat.ceylon.cmr.api.ModuleResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.ModuleResult;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
@@ -40,20 +56,6 @@ import com.redhat.ceylon.cmr.util.WS.Link;
 import com.redhat.ceylon.cmr.util.WS.Parser;
 import com.redhat.ceylon.cmr.util.WS.XMLHandler;
 
-import org.apache.http.ProtocolException;
-import org.apache.http.client.ClientProtocolException;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * WebDAV content store.
  *
@@ -64,12 +66,14 @@ public class WebDAVContentStore extends URLContentStore {
 
     public final static String HERD_COMPLETE_MODULES_REL = "http://modules.ceylon-lang.org/rel/complete-modules";
     public final static String HERD_COMPLETE_VERSIONS_REL = "http://modules.ceylon-lang.org/rel/complete-versions";
+    public final static String HERD_SEARCH_MODULES_REL = "http://modules.ceylon-lang.org/rel/search-modules";
 
     private volatile Sardine sardine;
     private boolean _isHerd;
     private boolean forcedAuthenticationForPutOnHerd = false;
     private String herdCompleteModulesURL;
     private String herdCompleteVersionsURL;
+    private String herdSearchModulesURL;
 
     public WebDAVContentStore(String root, Logger log) {
         super(root, log);
@@ -123,8 +127,10 @@ public class WebDAVContentStore extends URLContentStore {
             List<Link> links = WS.collectLinks(con);
             herdCompleteModulesURL = WS.getLink(links, HERD_COMPLETE_MODULES_REL);
             herdCompleteVersionsURL = WS.getLink(links, HERD_COMPLETE_VERSIONS_REL);
+            herdSearchModulesURL = WS.getLink(links, HERD_SEARCH_MODULES_REL);
             log.info("Got complete-modules link: " + herdCompleteModulesURL);
             log.info("Got complete-versions link: " + herdCompleteVersionsURL);
+            log.info("Got search-modules link: " + herdSearchModulesURL);
         }catch(Exception x){
             log.debug("Failed to read links from Herd repo: "+x.getMessage());
         }
@@ -362,7 +368,67 @@ public class WebDAVContentStore extends URLContentStore {
                 if(license != null && !license.isEmpty())
                     newVersion.setLicense(license);
                 if(!authors.isEmpty())
-                    newVersion.setBy(authors.toArray(new String[authors.size()]));
+                    newVersion.getAuthors().addAll(authors);
+            }
+            p.checkCloseTag();
+        }
+        p.checkCloseTag();
+    }
+
+    @Override
+    public void searchModules(ModuleQuery query, final ModuleSearchResult result) {
+        if(isHerd() && herdSearchModulesURL != null){
+            // let's try Herd
+            try{
+                WS.getXML(herdSearchModulesURL,
+                          WS.params(WS.param("query", query.getName()),
+                                    WS.param("type", getHerdTypeParam(query.getType())),
+                                    WS.param("start", query.getStart()),
+                                    WS.param("count", query.getCount())),
+                          new XMLHandler(){
+                    @Override
+                    public void onOK(Parser p) {
+                        parseSearchModulesResponse(p, result);
+                    }
+                });
+            }catch(Exception x){
+                log.info("Failed to search modules from Herd: "+x.getMessage());
+            }
+        }
+    }
+
+    protected void parseSearchModulesResponse(Parser p, ModuleSearchResult result) {
+        SortedSet<String> authors = new TreeSet<String>();
+        // FIXME: version comparator
+        SortedSet<String> versions = new TreeSet<String>();
+
+        p.moveToOpenTag("results");
+        while(p.moveToOptionalOpenTag("module")){
+            String module = null, doc = null, license = null;
+            authors.clear();
+            versions.clear();
+            
+            while(p.moveToOptionalOpenTag()){
+                if(p.isOpenTag("name")){
+                    module = p.contents();
+                }else if(p.isOpenTag("versions")){
+                    versions.add(p.contents());
+                }else if(p.isOpenTag("doc")){
+                    doc = p.contents();
+                }else if(p.isOpenTag("license")){
+                    license = p.contents();
+                }else if(p.isOpenTag("authors")){
+                    authors.add(p.contents());
+                }else{
+                    throw new RuntimeException("Unknown tag: "+p.tagName());
+                }
+            }
+            if(module == null || module.isEmpty())
+                throw new RuntimeException("Missing required module name");
+            if(versions.isEmpty()){
+                log.debug("Ignoring result for " + module + " because it doesn't have a single version");
+            }else{
+                result.addResult(module, doc, license, authors, versions);
             }
             p.checkCloseTag();
         }
