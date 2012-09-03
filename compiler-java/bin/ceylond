@@ -19,7 +19,7 @@ DIR=$(dirname "$PRG")
 # JAVA_CP are classes required by the tool to run
 JAVA_CP="$MINIMAL_CP"
 JAVA_CP="$JAVA_CP:$CEYLON_REPO/ceylon/language/$CEYLON_VERSION/ceylon.language-$CEYLON_VERSION.car"
-JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/txtmark-0.7.jar"
+JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/txtmark-0.8-f17d7e2193.jar"
 
 if test -n "$USER_CP"
 then

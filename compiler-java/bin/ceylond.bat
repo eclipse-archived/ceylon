@@ -10,7 +10,7 @@ if "%exit%" == "true" (
 rem JAVA_CP are classes required by the tool to run
 set "JAVA_CP=%MINIMAL_CP%;
 set "JAVA_CP=%JAVA_CP%;%CEYLON_REPO%\ceylon\language\%CEYLON_VERSION%\ceylon.language-%CEYLON_VERSION%.car"
-set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\txtmark-0.7.jar"
+set "JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\txtmark-0.8-f17d7e2193.jar"
 
 if "%USER_CP%" NEQ "" (
     set "JAVA_CP=%JAVA_CP%;%USER_CP%"
