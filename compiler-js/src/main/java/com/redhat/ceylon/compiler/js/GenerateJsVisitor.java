@@ -634,12 +634,18 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         };
-        typeInitialization(extendedType, satisfiedTypes, isInterface, type.getDeclarationModel(), decl, callback);
+        typeInitialization(extendedType, satisfiedTypes, isInterface, decl, callback);
     }
 
-    /** This is now the main method to generate the type initialization code. */
+    /** This is now the main method to generate the type initialization code.
+     * @param extendedType The type that is being extended.
+     * @param satisfiedTypes The types satisfied by the type being initialized.
+     * @param isInterface Tells whether the type being initialized is an interface
+     * @param d The declaration for the type being initialized
+     * @param callback A callback to add something more to the type initializer in prototype style.
+     */
     private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface,
-            Declaration type, ClassOrInterface d, PrototypeInitCallback callback) {
+            ClassOrInterface d, PrototypeInitCallback callback) {
 
         boolean inheritProto = prototypeStyle || (extendedType == null)
                 || !declaredInThisPackage(extendedType.getType().getDeclarationModel());
@@ -661,7 +667,7 @@ public class GenerateJsVisitor extends Visitor
         out("if (", names.classname(d), ".$$===undefined)");
         beginBlock();
         out(clAlias, ".", initFuncName, "(", names.classname(d), ",'",
-            type.getQualifiedNameString(), "'");
+            d.getQualifiedNameString(), "'");
 
         if (extendedType != null) {
             out(",", typeFunctionName(extendedType.getType(), false));
@@ -690,7 +696,7 @@ public class GenerateJsVisitor extends Visitor
         out(");");
         
         //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
-        if (prototypeStyle && (d instanceof ClassOrInterface)) {
+        if (prototypeStyle) {
             endLine();
             callback.addToPrototypeCallback();
         }
@@ -1692,7 +1698,7 @@ public class GenerateJsVisitor extends Visitor
         out("}");
         endLine();
         
-        typeInitialization(xt, sts, false, that.getDeclarationModel(), c, new PrototypeInitCallback() {
+        typeInitialization(xt, sts, false, c, new PrototypeInitCallback() {
             @Override
             public void addToPrototypeCallback() {
                 addToPrototype(c, body.getStatements());
