@@ -19,7 +19,7 @@ public class ClassAlias extends Class {
     @Override
     public boolean isAbstract() {
         Class etd = getExtendedTypeDeclaration();
-        return etd!=null && etd.isAbstract();
+        return etd!=null && etd!=this && etd.isAbstract();
     }
     
 }
