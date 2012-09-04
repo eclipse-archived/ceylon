@@ -133,7 +133,6 @@ public class JsCompiler {
                 System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
             }
             pu.getCompilationUnit().visit(unitVisitor);
-            pu.getCompilationUnit().visit(getOutput(pu).mmg);
             GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), opts.isOptimize(), names);
             jsv.setAddComments(opts.isComment());
             jsv.setIndent(opts.isIndent());
@@ -161,6 +160,31 @@ public class JsCompiler {
         errors.clear();
         output.clear();
         try {
+            if (opts.isVerbose()) {
+                System.out.println("Generating metamodel...");
+            }
+            //First generate the metamodel
+            for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
+                String pathFromVFS = pu.getUnitFile().getPath();
+                // VFS talks in terms of URLs while files are platform-dependent, so make it 
+                // platform-dependent too
+                String path = pathFromVFS.replace('/', File.separatorChar);
+                if (files == null || files.contains(path)) {
+                    String name = pu.getUnitFile().getName();
+                    if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
+                        pu.getCompilationUnit().visit(getOutput(pu).mmg);
+                    }
+                }
+            }
+            //Then write it out
+            final SimpleJsonEncoder json = new SimpleJsonEncoder();
+            for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
+                e.getValue().getWriter().write("$$metamodel$$=");
+                json.encode(e.getValue().mmg.getModel(), e.getValue().getWriter());
+                e.getValue().getWriter().write(";\n");
+            }
+
+            //Then generate the JS code
             JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
             	String pathFromVFS = pu.getUnitFile().getPath();
@@ -168,7 +192,6 @@ public class JsCompiler {
             	// platform-dependent too
             	String path = pathFromVFS.replace('/', File.separatorChar);
                 if (files == null || files.contains(path)) {
-                    JsOutput modsrc = getOutput(pu);
                     String name = pu.getUnitFile().getName();
                     if (!"module.ceylon".equals(name) && !"package.ceylon".equals(name)) {
                         compileUnit(pu, names);
@@ -177,7 +200,7 @@ public class JsCompiler {
                             break;
                         }
                     }
-                    modsrc.addSource(pu.getUnit().getFullPath());
+                    getOutput(pu).addSource(pu.getUnit().getFullPath());
                 } else {
                     if (opts.isVerbose()) {
                     	System.err.println("Files does not contain "+path);
@@ -204,8 +227,6 @@ public class JsCompiler {
             if (opts.isModulify()) {
                 beginWrapper(jsout.getWriter());
             }
-            //TODO we could put the metamodel info at the beginning to make it available to
-            //all objects in the module, but it requires two passes instead of one
         }
         return jsout;
     }
@@ -218,9 +239,6 @@ public class JsCompiler {
     protected void finish() throws IOException {
         for (Map.Entry<Module,JsOutput> entry: output.entrySet()) {
             JsOutput jsout = entry.getValue();
-            jsout.getWriter().write("$$metamodel$$=");
-            new SimpleJsonEncoder().encode(jsout.mmg.getModel(), jsout.getWriter());
-            jsout.getWriter().write(";\n");
 
             if (opts.isModulify()) {
                 jsout.getWriter().write("exports.$$metamodel$$=$$metamodel$$;\n");
