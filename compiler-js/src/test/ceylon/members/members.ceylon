@@ -59,6 +59,7 @@ void testIssue10() {
     assert(obj.f7()==12, "Issue #10 (shared method)");
     assert(obj.f10()==14, "Issue #10 (shared method)");
     assert(obj.f9()==14, "Issue #10 (shared method)");
+    assert(nonempty obj.string, "Issue #113 (inheritance)");
 }
 
 class AssignTest() {
