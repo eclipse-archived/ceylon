@@ -59,18 +59,6 @@ public class Repositories {
             return url;
         }
         
-        /** Use {@link #getCredentials()} */
-        @Deprecated
-        public String getUser() {
-            return credentials != null ? credentials.getUser() : null;
-        }
-        
-        /** Use {@link #getCredentials()} */
-        @Deprecated
-        public String getPassword() {
-            return credentials != null ? credentials.getPassword() : null;
-        }
-        
         public Credentials getCredentials() {
             return credentials;
         }
