@@ -138,25 +138,61 @@ public class TestModelClasses {
 
     @Test @SuppressWarnings("unchecked")
     public void testNested() {
-        System.out.println("NESTED");
         Map<String,Object> cls = (Map<String,Object>)model.get("Nested1");
-        System.out.println(cls);
+        ModelUtils.checkMap(cls, "name", "Nested1", "shared", "1", "mt", "class");
+        cls = ((Map<String,Map<String,Object>>)cls.get("classes")).get("Nested2");
+        ModelUtils.checkMap(cls, "name", "Nested2", "shared", "1", "mt", "class");
+        cls = ((Map<String,Map<String,Object>>)cls.get("methods")).get("innerMethod1");
+        ModelUtils.checkMap(cls, "name", "innerMethod1", "mt", "method");
+        ModelUtils.checkType(cls, "ceylon.language.Void");
     }
 
     @Test @SuppressWarnings("unchecked")
     public void testAlgebraics() {
-        System.out.println("ALGEBRAIC");
         Map<String,Object> cls = (Map<String,Object>)model.get("Algebraic1");
-        System.out.println(cls);
-        cls = (Map<String, Object>)model.get("AlgOne");
-        System.out.println(cls);
-        cls = (Map<String, Object>)model.get("AlgTwo");
-        System.out.println(cls);
-        cls = (Map<String, Object>)model.get("AlgThree");
-        System.out.println(cls);
+        ModelUtils.checkMap(cls, "name", "Algebraic1", "mt", "class", "abstract", "1", "shared", "1");
+        //"name" is an initializer parameter...
+        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", null, false);
+        //and also a shared attribute
+        Map<String, Map<String, Object>> m2 = (Map<String, Map<String, Object>>)cls.get("attrs");
+        ModelUtils.checkMap(m2.get("name"), "name", "name", "mt", "attr", "shared", "1");
+        ModelUtils.checkType(m2.get("name"), "ceylon.language.String");
+        List<Map<String, Object>> types = (List<Map<String, Object>>)cls.get("of");
+        Assert.assertNotNull("Algebraic1 should have case types", types);
+        Assert.assertEquals("Algebraic1 should have 3 case types", 3, types.size());
+        ModelUtils.checkType(types.get(0), "t2.AlgOne");
+        ModelUtils.checkType(types.get(1), "t2.AlgTwo");
+        ModelUtils.checkType(types.get(2), "t2.AlgThree");
+        for (Map<String, Object> m3 : types) {
+            cls = (Map<String, Object>)model.get((String)m3.get("name"));
+            Assert.assertNotNull("Missing top-level class " + m3.get("name"), cls);
+            ModelUtils.checkMap(cls, "name", (String)m3.get("name"), "mt", "class", "shared", "1");
+            cls = (Map<String,Object>)cls.get("super");
+            ModelUtils.checkType(cls, "t2.Algebraic1");
+        }
 
         cls = (Map<String, Object>)model.get("Algebraic2");
-        System.out.println(cls);
+        //"name" is an initializer parameter...
+        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", null, false);
+        //and also a shared attribute
+        m2 = (Map<String, Map<String, Object>>)cls.get("attrs");
+        ModelUtils.checkMap(m2.get("name"), "name", "name", "mt", "attr", "shared", "1");
+        ModelUtils.checkType(m2.get("name"), "ceylon.language.String");
+        types = (List<Map<String, Object>>)cls.get("of");
+        Assert.assertNotNull("Algebraic2 should have case types", types);
+        Assert.assertEquals("Algebraic2 should have 2 case types", 2, types.size());
+        for (Map<String,Object> m3 : types) {
+            //Get the object
+            cls = (Map<String, Object>)model.get((String)m3.get("name"));
+            Assert.assertNotNull("Missing top-level object " + m3.get("name"), cls);
+            ModelUtils.checkMap(cls, "name", (String)m3.get("name"), "mt", "object", "shared", "1");
+            types = (List<Map<String,Object>>)cls.get("satisfies");
+            ModelUtils.checkType(types.get(0), "ceylon.language.Iterable<ceylon.language.Integer>");
+            ModelUtils.checkType((Map<String,Object>)cls.get("super"), "t2.Algebraic2");
+            m2 = (Map<String, Map<String, Object>>)cls.get("attrs");
+            ModelUtils.checkMap(m2.get("iterator"), "name", "iterator", "mt", "attr", "shared", "1", "actual", "1");
+            ModelUtils.checkType(m2.get("iterator"), "ceylon.language.Iterator<ceylon.language.Integer>");
+        }
     }
 
 }
