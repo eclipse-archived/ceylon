@@ -17,16 +17,16 @@
 
 package org.jboss.ceylon.test.modules.defaultx.test;
 
-import biz.wiz.quiz.module;
-import biz.wiz.quiz.run;
+import java.io.File;
+
+import biz.wiz.quiz.module_;
+import biz.wiz.quiz.run_;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.io.File;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -36,7 +36,7 @@ public class DefaultTestCase extends ModulesTest {
     @Test
     public void testVisibility() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "biz.wiz.quiz-1.0.0.GA.car");
-        module.addClasses(module.class, run.class);
+        module.addClasses(module_.class, run_.class);
 
         File defaultFile = new File(getRepo(), "default/default.car");
         Assert.assertTrue(defaultFile.exists());
@@ -51,9 +51,9 @@ public class DefaultTestCase extends ModulesTest {
     @Test
     public void testDefaultRun() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "default.car");
-        module.addClasses(org.jboss.acme.run.class);
+        module.addClasses(org.jboss.acme.run_.class);
 
-        testArchive(module, org.jboss.acme.run.class.getName());
+        testArchive(module, "org.jboss.acme.run");
     }
 
 }

@@ -69,6 +69,7 @@
     <!-- module archives -->
     <property name="ceylon.runtime.dir" value="runtime-repo/${module.runtime.dir}/main"/>
     <property name="ceylon.runtime.jar" value="${ceylon.runtime.dir}/${module.runtime.name}.jar"/>
+    <property name="ceylon.runtime.module" value="${ceylon.runtime.dir}/${module.runtime.name}-main.jar"/>
     <property name="ceylon.runtime.dist" value="${build.dist}/${ceylon.runtime.dir}"/>
 
     <path id="compiler.classpath">
@@ -109,7 +110,7 @@
     <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
-    	<delete dir="${dist.dir}/lib"/>
+        <delete dir="${dist.dir}/lib"/>
     </target>
 
     <target name="dist"
@@ -128,12 +129,11 @@
         <copy file="${bootstrap.lib}" tofile="${build.dist.lib}/${bootstrap.jar}"/>
         <copy file="${jboss-modules.lib}" tofile="${build.dist.lib}/${jboss-modules.jar}"/>
         <!-- Copy the Ceylon runtime dependencies -->
-        <copy file="${jboss-modules.lib}" tofile="${build.dist.repo}/${jboss-modules.dir}/main/${jboss-modules.jar}"/>
-        <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.jar}"/>
+        <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.dir}/main/${jboss-jandex.module}"/>
         <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
-        <copy file="${runtime.lib}" tofile="${build.dist}/${ceylon.runtime.jar}"/>
+        <copy file="${runtime.lib}" tofile="${build.dist}/${ceylon.runtime.module}"/>
     </target>
 
     <!-- Tasks related to building the runtime -->
@@ -175,24 +175,24 @@
                destdir="${build.bootstrap}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
-    	<!-- Need an extra pass for Java 7 testing -->
-    	<delete dir="${build.bootstrap}">
+        <!-- Need an extra pass for Java 7 testing -->
+        <delete dir="${build.bootstrap}">
             <include name="**/*Main5.class"/>
             <include name="**/Java7Checker.class"/>
-    	</delete>
+        </delete>
         <javac debug="true"
                srcdir="${runtime-bootstrap.src}"
                destdir="${build.bootstrap}"
                classpathref="compiler.classpath"
-        	   source="1.5"
-        	   target="1.5"
+               source="1.5"
+               target="1.5"
                includeantruntime="false">
-        	<include name="**/*Main5.java"/>
+            <include name="**/*Main5.java"/>
             <include name="**/Java7Checker.java"/>
-    	</javac>
-    	<copy todir="${build.bootstrap}">
-    		<fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
-    	</copy>
+        </javac>
+        <copy todir="${build.bootstrap}">
+            <fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
+        </copy>
     </target>
 
     <!-- Rule to build runtime jar -->

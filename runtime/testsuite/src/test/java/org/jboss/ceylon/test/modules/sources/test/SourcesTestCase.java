@@ -17,23 +17,22 @@
 
 package org.jboss.ceylon.test.modules.sources.test;
 
+import java.io.File;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.File;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Test module usage from sources.
+ * Test module_ usage from sources.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Ignore // TODO -- enable sources repo
 public class SourcesTestCase extends ModulesTest {
     protected String getTestsuiteDir() throws Throwable {
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -44,6 +43,12 @@ public class SourcesTestCase extends ModulesTest {
     }
 
     @Test
+    public void testDummy() {
+        // ignore atm
+    }
+
+    @Test
+    @Ignore // TODO -- enable sources repo
     public void testSimpleUsage() throws Throwable {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.SOURCE.toString(), "src/test/java");
@@ -52,6 +57,7 @@ public class SourcesTestCase extends ModulesTest {
     }
 
     @Test
+    @Ignore // TODO -- enable sources repo
     public void testDependencyUsage() throws Throwable {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.SOURCE.toString(), "src/test/java");

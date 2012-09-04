@@ -15,31 +15,18 @@
  * limitations under the License.
  */
 
-package eu.cloud.clazz;
+package org.jboss.filtered;
+
+import com.redhat.ceylon.compiler.java.metadata.Module;
+
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class run {
-    public static void main(String[] args) {
-        ClassLoader cl = run.class.getClassLoader();
-        try {
-            cl.loadClass("org.jboss.filtered.spi.SomeSPI");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-/*
-        try {
-            cl.loadClass("org.jboss.filtered.api.SomeAPI");
-            throw new RuntimeException("Fail, should not be here!");
-        } catch (ClassNotFoundException ignored) {
-        }
-        try {
-            cl.loadClass("org.jboss.filtered.impl.SomeImpl");
-            throw new RuntimeException("Fail, should not be here!");
-        } catch (ClassNotFoundException ignored) {
-        }
-*/
+@Module(name = "org.jboss.filtered",
+        version = "1.0.0.Alpha1")
+public class module_ {
+    public static ceylon.language.descriptor.Module getModule() {
+        return null;
     }
 }
-

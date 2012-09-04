@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.something.xyz;
+package com.foobar.qwert;
 
 import com.redhat.ceylon.compiler.java.metadata.Import;
 import com.redhat.ceylon.compiler.java.metadata.Module;
@@ -23,17 +23,13 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "net.something.xyz",
-        version = "1.0.0.Final",
+@Module(name = "com.foobar.qwert",
+        version = "1.0.0.GA",
         dependencies = {
-        @Import(name = "org.jboss.acme",
-                version = "1.0.0.CR1",
-                optional = true),
-        @Import(name = "si.alesj.ceylon",
-                version = "1.0.0.GA",
-                optional = true)
-})
-public class module {
+                @Import(name = "org.jboss.acme",
+                        version = "1.0.0.CR1")
+        })
+public class module_ {
     public static ceylon.language.descriptor.Module getModule() {
         return null;
     }

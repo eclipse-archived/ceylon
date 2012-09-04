@@ -24,7 +24,7 @@
 
 <module xmlns="urn:jboss:module:1.0" name="ceylon.runtime">
     <resources>
-        <resource-root path="ceylon.runtime.jar"/>
+        <resource-root path="ceylon.runtime-main.jar"/>
     </resources>
 
     <main-class name="ceylon.modules.Main"/>

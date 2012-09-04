@@ -20,6 +20,8 @@ import java.util.List;
 
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
+import io.xov.yalp.module_;
+import io.xov.yalp.run_;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -33,13 +35,13 @@ import org.junit.Test;
  */
 public class AetherInteropTestCase extends ModulesTest {
     // Note: for this test to work, you need JBoss VFS and its dependencies in your Maven repository
-    // See: io.xov.yalp.module.java for more details
+    // See: io.xov.yalp.module_.java for more details
 
     @Test
     @Ignore // TODO -- add all Aether CMR deps as modules
     public void testMultiJarUsage() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "io.xov.yalp-11.0.2.Final.car");
-        module.addClasses(io.xov.yalp.module.class, io.xov.yalp.run.class);
+        module.addClasses(module_.class, run_.class);
         testArchive(module);
     }
 

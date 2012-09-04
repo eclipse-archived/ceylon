@@ -15,18 +15,13 @@
  * limitations under the License.
  */
 
-package si.alesj.ceylon;
-
-import com.redhat.ceylon.compiler.java.metadata.Module;
-
+package biz.wiz.quiz;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "si.alesj.ceylon",
-        version = "1.0.0.GA")
-public class module {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
+public class run_ {
+    public static void main(String[] args) throws Exception {
+        run_.class.getClassLoader().loadClass("helloworld");
     }
 }

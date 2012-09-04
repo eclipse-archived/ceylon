@@ -1,6 +1,7 @@
 /*
- * Copyright 2012 Red Hat inc. and third party contributors as noted
+ * Copyright 2011 Red Hat inc. and third party contributors as noted 
  * by the author tags.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +15,13 @@
  * limitations under the License.
  */
 
-package io.xov.yalp;
+package org.jboss.acme;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class run {
-    public static void main(String[] args) throws Exception {
-        System.err.println(run.class.getClassLoader().loadClass("org.jboss.logging.Logger"));
+public class run_ {
+    public static void main(String[] args) {
+        System.out.println(run_.class.getName() + ": run_ ...");
     }
 }

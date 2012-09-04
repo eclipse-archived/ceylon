@@ -15,19 +15,13 @@
  * limitations under the License.
  */
 
-package biz.wiz.quiz;
-
-import com.redhat.ceylon.compiler.java.metadata.Import;
-import com.redhat.ceylon.compiler.java.metadata.Module;
+package com.foobar.qwert;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "biz.wiz.quiz",
-        version = "1.0.0.GA",
-        dependencies = {@Import(name = "default", version = "**NO_VERSION**")})
-public class module {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
+public class run_ {
+    public static void main(String[] args) {
+        org.jboss.acme.module_.run();
     }
 }

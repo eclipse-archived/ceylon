@@ -1,7 +1,6 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2012 Red Hat inc. and third party contributors as noted
  * by the author tags.
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,18 +14,13 @@
  * limitations under the License.
  */
 
-package org.jboss.filtered;
-
-import com.redhat.ceylon.compiler.java.metadata.Module;
-
+package io.xov.yalp;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "org.jboss.filtered",
-        version = "1.0.0.Alpha1")
-public class module {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
+public class run_ {
+    public static void main(String[] args) throws Exception {
+        System.err.println(run_.class.getClassLoader().loadClass("org.jboss.logging.Logger"));
     }
 }

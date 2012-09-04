@@ -40,7 +40,7 @@
 
 <module xmlns="urn:jboss:module:1.1" name="org.jboss.jandex">
     <resources>
-        <resource-root path="jboss-jandex.jar"/>
+        <resource-root path="org.jboss.jandex-main.jar"/>
     </resources>
 
     <dependencies>

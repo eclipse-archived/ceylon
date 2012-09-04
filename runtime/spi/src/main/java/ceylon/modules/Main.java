@@ -45,6 +45,7 @@ public class Main {
         try {
             execute(args);
         } catch (CeylonRuntimeException cre) {
+            cre.printStackTrace();
             System.err.println("Error: " + cre.getMessage() + (cre.getCause() != null ? " [" + cre.getCause().getMessage() + "]" : ""));
         } catch (Throwable t) {
             // Get rid of unwanted stack elements
@@ -86,7 +87,7 @@ public class Main {
         } catch (Throwable ex) {
             System.err.println("Warning: log configuration failed: " + ex.getMessage());
         }
-        
+
         Executable executable = createInstance(Executable.class, exe);
         executable.execute(conf);
     }

@@ -17,14 +17,6 @@
 
 package org.jboss.ceylon.test.modules;
 
-import ceylon.modules.spi.Argument;
-import ceylon.modules.spi.Constants;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import org.jboss.modules.Main;
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.exporter.ZipExporter;
-import org.junit.Assert;
-
 import java.io.File;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -33,6 +25,14 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import ceylon.modules.spi.Argument;
+import ceylon.modules.spi.Constants;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import org.jboss.modules.Main;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+import org.junit.Assert;
 
 /**
  * Modules test helper.
@@ -190,7 +190,7 @@ public abstract class ModulesTest {
         args.add(RUNTIME_IMPL);
         // extra args
         args.addAll(extra);
-        // module args
+        // module_ args
         args.add(module);
         // run JBoss Modules
         System.err.print("Command line: ");

@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package eu.cloud.clazz;
+package org.jboss.acme;
 
 import com.redhat.ceylon.compiler.java.metadata.Module;
-import com.redhat.ceylon.compiler.java.metadata.Import;
+
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "eu.cloud.clazz",
-        version = "1.0.0.GA",
-        dependencies = {
-        @Import(name = "org.jboss.filtered",
-                version = "1.0.0.Alpha1")
-})
-public class module {
+@Module(name = "org.jboss.acme",
+        version = "1.0.0.CR1")
+public class module_ {
     public static ceylon.language.descriptor.Module getModule() {
         return null;
+    }
+
+    public static void run() {
+        System.out.println("run ...");
     }
 }

@@ -17,8 +17,8 @@
 
 package org.jboss.ceylon.test.modules.smoke.test;
 
-import org.jboss.acme.module;
-import org.jboss.acme.run;
+import org.jboss.acme.module_;
+import org.jboss.acme.run_;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.filtered.api.SomeAPI;
 import org.jboss.filtered.impl.SomeImpl;
@@ -34,17 +34,17 @@ public class SmokeTestCase extends ModulesTest {
     @Test
     public void singleModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-        module.addClasses(module.class, run.class);
+        module.addClasses(module_.class, run_.class);
         testArchive(module);
     }
 
     @Test
     public void transitiveModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "com.foobar.qwert-1.0.0.GA.car");
-        module.addClasses(com.foobar.qwert.module.class, com.foobar.qwert.run.class);
+        module.addClasses(com.foobar.qwert.module_.class, com.foobar.qwert.run_.class);
 
         JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-        lib.addClasses(module.class, run.class);
+        lib.addClasses(module_.class, run_.class);
 
         testArchive(module, lib);
     }
@@ -52,10 +52,10 @@ public class SmokeTestCase extends ModulesTest {
     @Test
     public void filteredModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "eu.cloud.clazz-1.0.0.GA.car");
-        module.addClasses(eu.cloud.clazz.module.class, eu.cloud.clazz.run.class);
+        module.addClasses(eu.cloud.clazz.module_.class, eu.cloud.clazz.run_.class);
 
         JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.filtered-1.0.0.Alpha1.car");
-        lib.addClass(org.jboss.filtered.module.class);
+        lib.addClass(org.jboss.filtered.module_.class);
         lib.addClass(SomeSPI.class);
         lib.addClass(SomeAPI.class);
         lib.addClass(SomeImpl.class);

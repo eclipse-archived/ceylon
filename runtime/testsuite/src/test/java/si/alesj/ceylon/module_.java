@@ -1,6 +1,7 @@
 /*
- * Copyright 2012 Red Hat inc. and third party contributors as noted
+ * Copyright 2011 Red Hat inc. and third party contributors as noted 
  * by the author tags.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,15 +15,18 @@
  * limitations under the License.
  */
 
-package edu.fri.summer;
+package si.alesj.ceylon;
 
-import org.jboss.modules.Module;
+import com.redhat.ceylon.compiler.java.metadata.Module;
+
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class run {
-    public static void main(String[] args) {
-        System.err.println("Here: " + Module.class.getName());
+@Module(name = "si.alesj.ceylon",
+        version = "1.0.0.GA")
+public class module_ {
+    public static ceylon.language.descriptor.Module getModule() {
+        return null;
     }
 }

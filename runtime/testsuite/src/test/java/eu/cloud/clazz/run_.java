@@ -15,22 +15,31 @@
  * limitations under the License.
  */
 
-package org.jboss.acme;
-
-import com.redhat.ceylon.compiler.java.metadata.Module;
-
+package eu.cloud.clazz;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Module(name = "org.jboss.acme",
-        version = "1.0.0.CR1")
-public class module {
-    public static ceylon.language.descriptor.Module getModule() {
-        return null;
-    }
-
-    public static void run() {
-        System.out.println("run ...");
+public class run_ {
+    public static void main(String[] args) {
+        ClassLoader cl = run_.class.getClassLoader();
+        try {
+            cl.loadClass("org.jboss.filtered.spi.SomeSPI");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+/*
+        try {
+            cl.loadClass("org.jboss.filtered.api.SomeAPI");
+            throw new RuntimeException("Fail, should not be here!");
+        } catch (ClassNotFoundException ignored) {
+        }
+        try {
+            cl.loadClass("org.jboss.filtered.impl.SomeImpl");
+            throw new RuntimeException("Fail, should not be here!");
+        } catch (ClassNotFoundException ignored) {
+        }
+*/
     }
 }
+
