@@ -647,17 +647,8 @@ public class GenerateJsVisitor extends Visitor
     private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface,
             ClassOrInterface d, PrototypeInitCallback callback) {
 
-        boolean inheritProto = prototypeStyle || (extendedType == null)
-                || !declaredInThisPackage(extendedType.getType().getDeclarationModel());
-        if (!inheritProto && (satisfiedTypes != null)) {
-            for (SimpleType st : satisfiedTypes.getTypes()) {
-                if (!declaredInThisPackage(st.getDeclarationModel())) {
-                    inheritProto = true;
-                    break;
-                }
-            }
-        }
-        String initFuncName = inheritProto ? "initTypeProto" : "initType";
+        //Let's always use initTypeProto to avoid #113
+        String initFuncName = "initTypeProto";
         if (isInterface) {
             initFuncName += 'I';
         }
@@ -2212,10 +2203,6 @@ public class GenerateJsVisitor extends Visitor
     private boolean declaredInCL(Declaration decl) {
         return decl.getUnit().getPackage().getQualifiedNameString()
                 .startsWith("ceylon.language");
-    }
-
-    private boolean declaredInThisPackage(Declaration decl) {
-        return decl.getUnit().getPackage().equals(root.getUnit().getPackage());
     }
 
     @Override
