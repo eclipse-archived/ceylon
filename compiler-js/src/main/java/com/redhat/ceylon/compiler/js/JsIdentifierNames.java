@@ -15,13 +15,13 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 /**
  * Manages the identifier names in the JavaScript code generated for a Ceylon
  * compilation unit.
- * 
+ *
  * @author Ivo Kasiuk
  */
 public class JsIdentifierNames {
 
     private boolean prototypeStyle = false;
-    
+
     private static long uniqueID = 0;
     private static long nextUID() {
         if (++uniqueID <= 0) {
@@ -29,10 +29,10 @@ public class JsIdentifierNames {
         }
         return uniqueID;
     }
-    
-    private static Set<String> reservedWords = new HashSet<String>(); 
+
+    private static Set<String> reservedWords = new HashSet<String>();
     private static Set<String> substitutedMemberNames = new HashSet<String>();
-    
+
     static {
         //reservedWords.add("abstract");
         reservedWords.add("boolean");
@@ -93,7 +93,7 @@ public class JsIdentifierNames {
         reservedWords.add("volatile");
         //reservedWords.add("while");
         reservedWords.add("with");
-        
+
         substitutedMemberNames.add("ceylon.language.String.split");
         substitutedMemberNames.add("ceylon.language.String.replace");
         substitutedMemberNames.add("ceylon.language.Iterable.filter");
@@ -101,11 +101,11 @@ public class JsIdentifierNames {
         substitutedMemberNames.add("ceylon.language.Iterable.map");
         substitutedMemberNames.add("ceylon.language.Iterable.sort");
     }
-    
+
     public JsIdentifierNames(boolean prototypeStyle) {
         this.prototypeStyle = prototypeStyle;
     }
-    
+
     /**
      * Determine the identifier name to be used in the generated JavaScript code
      * to represent the given declaration.
@@ -113,7 +113,7 @@ public class JsIdentifierNames {
     public String name(Declaration decl) {
         return getName(decl, false);
     }
-    
+
     /**
      * Determine the function name to be used in the generated JavaScript code
      * for the getter of the given declaration.
@@ -124,7 +124,7 @@ public class JsIdentifierNames {
         return String.format("get%c%s", Character.toUpperCase(name.charAt(0)),
                 name.substring(1));
     }
-    
+
     /**
      * Determine the function name to be used in the generated JavaScript code
      * for the setter of the given declaration.
@@ -134,7 +134,7 @@ public class JsIdentifierNames {
         return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
                 name.substring(1));
     }
-    
+
     /**
      * Determine the identifier to be used in the generated JavaScript code as
      * an alias for the given package.
@@ -147,21 +147,21 @@ public class JsIdentifierNames {
         sb.append(getUID(pkg));
         return sb.toString();
     }
-    
+
     /**
      * Creates a new unique identifier.
      */
     public String createTempVariable(String baseName) {
         return String.format("%s$%d", baseName, nextUID());
     }
-    
+
     /**
      * Creates a new unique identifier.
      */
     public String createTempVariable() {
         return createTempVariable("tmpvar");
     }
-    
+
     /**
      * Determine identifier to be used for the self variable of the given type.
      */
@@ -175,7 +175,7 @@ public class JsIdentifierNames {
         return String.format("$$%c%s", Character.toLowerCase(name.charAt(0)),
                     name.substring(1));
     }
-    
+
     /**
      * Returns a disambiguation suffix for the given type. It is guaranteed that
      * the suffixes generated for two different types are different.
@@ -183,7 +183,7 @@ public class JsIdentifierNames {
     public String typeSuffix(TypeDeclaration typeDecl) {
         return String.format("$$%s$", typeDecl.getQualifiedNameString().replace('.', '$'));
     }
-    
+
     private String nestingSuffix(Declaration decl) {
         String suffix = "";
         if (decl instanceof TypeDeclaration) {
@@ -198,16 +198,16 @@ public class JsIdentifierNames {
         }
         return suffix;
     }
-    
+
     public void forceName(Declaration decl, String name) {
         uniqueVarNames.put(decl, name);
     }
-    
+
     private Map<Module, Long> moduleUIDs = new HashMap<Module, Long>();
     private Map<Declaration, Long> uniqueVarIDs = new HashMap<Declaration, Long>();
     private Map<Declaration, String> uniqueVarNames =
             new HashMap<Declaration, String>();
-    
+
     private String getName(Declaration decl, boolean forGetterSetter) {
         if (decl == null) { return null; }
         String name = decl.getName();
@@ -222,6 +222,10 @@ public class JsIdentifierNames {
         } else {
             String suffix = nestingSuffix(decl);
             if (suffix.length() > 0) {
+                int last = suffix.lastIndexOf('$');
+                if (last >= 0) {
+                    suffix = suffix.substring(0, last) + "$$";
+                }
                 name += suffix;
             } else if (!forGetterSetter && reservedWords.contains(name)) {
                 name = '$' + name;
@@ -239,7 +243,37 @@ public class JsIdentifierNames {
         }
         return name;
     }
-    
+
+    public String classname(ClassOrInterface decl) {
+        if (decl == null) { return null; }
+        String name = decl.getName();
+        if (!(decl.isShared() || decl.isToplevel())) {
+            name = uniqueVarNames.get(decl);
+            if (name == null) {
+                String format = (prototypeStyle && decl.isMember()) ? "%s$%d$" : "%s$%d";
+                name = String.format(format, decl.getName(), getUID(decl));
+            }
+        } else {
+            String suffix = nestingSuffix(decl);
+            if (suffix.length() > 0) {
+                name += suffix;
+            } else if (reservedWords.contains(name)) {
+                name = '$' + name;
+            } else {
+                Declaration refinedDecl = decl;
+                while (true) {
+                    Declaration d = refinedDecl.getRefinedDeclaration();
+                    if ((d == null) || (d == refinedDecl)) { break; }
+                    refinedDecl = d;
+                }
+                if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
+                    name = '$' + name;
+                }
+            }
+        }
+        return name;
+    }
+
     private long getUID(Declaration decl) {
         Long id = uniqueVarIDs.get(decl);
         if (id == null) {
@@ -248,7 +282,7 @@ public class JsIdentifierNames {
         }
         return id;
     }
-    
+
     private long getUID(Module pkg) {
         Long id = moduleUIDs.get(pkg);
         if (id == null) {
@@ -257,5 +291,5 @@ public class JsIdentifierNames {
         }
         return id;
     }
-    
+
 }
