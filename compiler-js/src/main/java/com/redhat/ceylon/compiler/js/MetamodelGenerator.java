@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.SimpleJsonEncoder;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -68,7 +66,7 @@ public class MetamodelGenerator extends Visitor {
             } else if (last.containsKey("ifaces") && ((Map<String,Object>)last.get("ifaces")).containsKey(name)) {
                 last = (Map<String,Object>)((Map<String,Object>)last.get("ifaces")).get(name);
             } else if (last.containsKey("objs") && ((Map<String,Object>)last.get("objs")).containsKey(name)) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get("ifaces")).get(name);
+                last = (Map<String,Object>)((Map<String,Object>)last.get("objs")).get(name);
             }
         }
         return last;
@@ -230,6 +228,9 @@ public class MetamodelGenerator extends Visitor {
                 System.out.println("orphaned method - How the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
+            if (!parent.containsKey("methods")) {
+                parent.put("methods", new HashMap<String,Object>());
+            }
             parent = (Map<String, Object>)parent.get("methods");
         } else {
             return;
@@ -304,11 +305,11 @@ public class MetamodelGenerator extends Visitor {
                 System.out.println("orphaned attribute - How the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
+            if (!parent.containsKey("attrs")) {
+                parent.put("attrs", new HashMap<String,Object>());
+            }
             parent = (Map<String,Object>)parent.get("attrs");
         } else {
-            //if (d.getName().equals("hash")) {
-                System.out.println("ATTRIB! " + that);
-            //}
             //Ignore attributes inside control blocks, methods, etc.
             return;
         }
@@ -335,6 +336,9 @@ public class MetamodelGenerator extends Visitor {
         if (parent == null) {
             System.out.println("orphaned class - how the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
         } else if (!d.isToplevel()) {
+            if (!parent.containsKey("classes")) {
+                parent.put("classes", new HashMap<String,Object>());
+            }
             parent = (Map<String,Object>)parent.get("classes");
         }
         Map<String, Object> m = new HashMap<String, Object>();
@@ -389,11 +393,6 @@ public class MetamodelGenerator extends Visitor {
         if (d.isAbstract()) {
             m.put("abstract", "1");
         }
-        m.put("methods", new HashMap<String, Object>());
-        m.put("classes", new HashMap<String, Object>());
-        m.put("attrs", new HashMap<String, Object>());
-        m.put("ifaces", new HashMap<String, Object>());
-        m.put("objs", new HashMap<String, Object>());
         parent.put(d.getName(), m);
         super.visit(that);
     }
@@ -405,6 +404,9 @@ public class MetamodelGenerator extends Visitor {
         if (parent == null) {
             System.out.println("orphaned interface - how the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
         } else if (!d.isToplevel()) {
+            if (!parent.containsKey("ifaces")) {
+                parent.put("ifaces", new HashMap<String,Object>());
+            }
             parent = (Map<String,Object>)parent.get("ifaces");
         }
         Map<String, Object> m = new HashMap<String, Object>();
@@ -415,11 +417,6 @@ public class MetamodelGenerator extends Visitor {
         if (d.isShared()) {
             m.put("shared", "1");
         }
-        m.put("methods", new HashMap<String, Object>());
-        m.put("classes", new HashMap<String, Object>());
-        m.put("attrs", new HashMap<String, Object>());
-        m.put("ifaces", new HashMap<String, Object>());
-        m.put("objs", new HashMap<String, Object>());
         parent.put(d.getName(), m);
         super.visit(that);
     }
@@ -431,7 +428,10 @@ public class MetamodelGenerator extends Visitor {
         if (parent == null) {
             System.out.println("orphaned object - how the hell did this happen? " + that);
         } else if (!d.isToplevel()) {
-            parent = (Map<String,Object>)parent.get("objects");
+            if (!parent.containsKey("objs")) {
+                parent.put("objs", new HashMap<String, Object>());
+            }
+            parent = (Map<String,Object>)parent.get("objs");
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("mt", "object");
@@ -451,11 +451,6 @@ public class MetamodelGenerator extends Visitor {
         if (d.isShared()) {
             m.put("shared", "1");
         }
-        m.put("methods", new HashMap<String, Object>());
-        m.put("classes", new HashMap<String, Object>());
-        m.put("attrs", new HashMap<String, Object>());
-        m.put("ifaces", new HashMap<String, Object>());
-        m.put("objs", new HashMap<String, Object>());
         parent.put(d.getName(), m);
         super.visit(that);
     }
@@ -472,6 +467,9 @@ public class MetamodelGenerator extends Visitor {
             if (parent == null) {
                 System.out.println("orphaned getter WTF!!! " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
+            }
+            if (!parent.containsKey("attrs")) {
+                parent.put("attrs", new HashMap<String, Object>());
             }
             parent = (Map<String,Object>)parent.get("attrs");
         } else {
