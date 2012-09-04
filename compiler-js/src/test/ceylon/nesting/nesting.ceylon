@@ -247,5 +247,6 @@ shared void test() {
     assert(nameTest.f()=="1234", "Nested object with same name");
     assert(C1().C3().f()=="1-11-11-13-13", "Several nested classes with same name (1)");
     assert(C2().C2().f()=="2-11-22-11-13-222-2-11-11-222-13-2-11-11-13-13", "Several nested classes with same name (2)");
+    testRefinement();
     results();
 }

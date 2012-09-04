@@ -14,6 +14,18 @@ class TestCategory() satisfies Category {
   }
 }
 
+abstract class IndirectionTestParent() {
+    shared String x() {
+        return "x+"+y();
+    }
+    shared formal String y();
+}
+class IndirectionTestChild() extends IndirectionTestParent() {
+    shared actual String y() {
+        return "y";
+    }
+}
+
 void testMisc() {
   assert(TestSized(0).empty, "Sized.empty");
   assert(!TestSized(1).empty, "!Sized.empty");
@@ -24,4 +36,5 @@ void testMisc() {
   assert(!testcat.containsEvery(2,4,6,8,10,11), "!Category.containsEvery");
   assert(testcat.containsAny(30,20,10,50), "Category.containsAny");
   assert(!testcat.containsAny(0,20,30,40,50), "!Category.containsAny");
+  assert(IndirectionTestChild().x()=="x+y", "Inheritance");
 }
