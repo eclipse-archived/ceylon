@@ -21,6 +21,7 @@
         <module>impl</module>
         <module>webdav</module>
         <module>maven</module>
+        <module>ceylon</module>
         <module>testsuite</module>
     </modules>
 
