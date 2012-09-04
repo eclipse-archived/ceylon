@@ -21,9 +21,11 @@
         <module>impl</module>
         <module>webdav</module>
         <module>maven</module>
+        <module>testsuite</module>
     </modules>
 
     <properties>
+        <version.ceylon.common>0.4</version.ceylon.common>
         <version.jboss.jandex>1.0.3.Final</version.jboss.jandex>
         <version.sardine.webdav>314</version.sardine.webdav>
         <version.shrinkwrap.resolver>1.1.0-alpha-2</version.shrinkwrap.resolver>
@@ -143,6 +145,26 @@
                 <groupId>com.redhat.ceylon.cmr</groupId>
                 <artifactId>cmr-impl</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-maven</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-webdav</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Common -->
+
+            <dependency>
+                <groupId>com.redhat.ceylon</groupId>
+                <artifactId>ceylon-common</artifactId>
+                <version>${version.ceylon.common}</version>
             </dependency>
 
             <!-- Jandex -->

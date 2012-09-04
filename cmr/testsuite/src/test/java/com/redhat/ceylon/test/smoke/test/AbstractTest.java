@@ -1,7 +1,6 @@
 /*
  * Copyright 2011 Red Hat inc. and third party contributors as noted 
  * by the author tags.
- * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,7 +36,7 @@ import com.redhat.ceylon.cmr.impl.RootRepositoryManager;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class AbstractTestCase {
+public class AbstractTest {
 
     protected Logger log = new JULLogger();
 

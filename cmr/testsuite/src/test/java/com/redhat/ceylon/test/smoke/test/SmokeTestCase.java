@@ -41,7 +41,7 @@ import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class SmokeTestCase extends AbstractTestCase {
+public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testNavigation() throws Exception {
@@ -212,7 +212,7 @@ public class SmokeTestCase extends AbstractTestCase {
         try {
             file = manager.getArtifact(ac);
             Assert.assertNotNull(file);
-            Assert.assertEquals("org.jboss.jboss-vfs-3.0.1.GA.jar", file.getName());
+            Assert.assertEquals("jboss-vfs-3.0.1.GA.jar", file.getName());
         } finally {
             // delete the jar, not the car
             ac.setSuffix(ArtifactContext.JAR);

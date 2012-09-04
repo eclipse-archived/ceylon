@@ -19,8 +19,8 @@
     <!-- jar generated -->
     <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
 
-    <property name="cmr-impl-test.src" location="${basedir}/impl/src/test/java"/>
-    <property name="cmr-impl-test.resources" location="${basedir}/impl/src/test/resources"/>
+    <property name="cmr-testsuite-test.src" location="${basedir}/testsuite/src/test/java"/>
+    <property name="cmr-testsuite-test.resources" location="${basedir}/testsuite/src/test/resources"/>
 
     <tstamp/>
 
@@ -93,7 +93,7 @@
     <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
-        <delete dir="${cmr-impl-test.resources}/repo/com"/>
+        <delete dir="${cmr-testsuite-test.src}/repo/com"/>
     </target>
 
     <target name="ide" depends="dist">
@@ -198,7 +198,7 @@
     <target name="compile.tests" depends="build">
         <mkdir dir="${build.test}"/>
         <javac debug="true"
-               srcdir="${cmr-impl-test.src}"
+               srcdir="${cmr-testsuite-test.src}"
                destdir="${build.test}"
                classpathref="test.build.classpath"
                includeantruntime="false"/>
@@ -210,7 +210,7 @@
             <classpath refid="test.run.classpath"/>
             <formatter type="xml"/>
             <batchtest fork="yes" todir="${test.reports}">
-                <fileset dir="${cmr-impl-test.src}">
+                <fileset dir="${cmr-testsuite-test.src}">
                     <include name="**/*TestCase.java"/>
                 </fileset>
             </batchtest>
