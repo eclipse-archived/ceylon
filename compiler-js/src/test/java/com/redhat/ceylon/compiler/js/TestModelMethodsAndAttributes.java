@@ -54,15 +54,18 @@ public class TestModelMethodsAndAttributes {
         //simple1
         Map<String, Object> method = (Map<String, Object>)model.get("simple1");
         Assert.assertNotNull(method);
-        ModelUtils.checkMap(method, "name", "simple1", MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
+        ModelUtils.checkMap(method, MetamodelGenerator.KEY_NAME, "simple1",
+                MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
         ModelUtils.checkType(method, "ceylon.language.Void");
 
         method = (Map<String, Object>)model.get("simple2");
-        ModelUtils.checkMap(method, "name", "simple2", MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD, "shared", "1");
+        ModelUtils.checkMap(method, MetamodelGenerator.KEY_NAME, "simple2",
+                MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD, "shared", "1");
         ModelUtils.checkType(method, "ceylon.language.Integer");
 
         method = (Map<String, Object>)model.get("simple3");
-        ModelUtils.checkMap(method, "name", "simple3", MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
+        ModelUtils.checkMap(method, MetamodelGenerator.KEY_NAME, "simple3",
+                MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
         ModelUtils.checkType(method, "ceylon.language.Void");
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language.Integer", null, false);
         ModelUtils.checkParam(method, 1, "p2", "ceylon.language.String", null, false);
@@ -100,14 +103,15 @@ public class TestModelMethodsAndAttributes {
         ModelUtils.checkParam(method, 0, "x", "ceylon.language.Sequence<ceylon.language.Integer>", null, false);
 
         method = (Map<String, Object>)model.get("parmtypes2");
-        ModelUtils.checkParam(method, 0, "xx", "ceylon.language.Sequence<ceylon.language.Iterable<ceylon.language.String>>", null, false);
+        ModelUtils.checkParam(method, 0, "xx",
+                "ceylon.language.Sequence<ceylon.language.Iterable<ceylon.language.String>>", null, false);
 
         method = (Map<String, Object>)model.get("parmtypes3");
         ModelUtils.checkType(method, "ceylon.language.Sequence<ceylon.language.String>");
 
         method = (Map<String, Object>)model.get("parmtypes4");
         ModelUtils.checkType(method, "t1.SomethingElse");
-        List<Map<String, Object>> cons = (List<Map<String, Object>>)method.get("constraints");
+        List<Map<String, Object>> cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_CONSTR);
         Assert.assertNotNull("parmtypes4 should have constraints", cons);
         ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get("satisfies"),
                 "ceylon.language.Comparable<t1.Something>");
@@ -115,7 +119,7 @@ public class TestModelMethodsAndAttributes {
 
         method = (Map<String, Object>)model.get("parmtypes5");
         ModelUtils.checkParam(method, 0, "x", "t1.Value", null, false);
-        cons = (List<Map<String, Object>>)method.get("constraints");
+        cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_CONSTR);
         Assert.assertNotNull("parmtypes5 should have constraints", cons);
         Assert.assertNotNull("parmtypes5 should have case types", cons.get(0).get("of"));
         ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get("of"),
@@ -135,7 +139,8 @@ public class TestModelMethodsAndAttributes {
     public void testAttributes() {
         Map<String, Object> attrib = (Map<String, Object>)model.get("i1");
         ModelUtils.checkType(attrib, "ceylon.language.Integer");
-        Assert.assertEquals("Wrong model type for i1", MetamodelGenerator.METATYPE_ATTRIBUTE, attrib.get(MetamodelGenerator.KEY_METATYPE));
+        Assert.assertEquals("Wrong model type for i1", MetamodelGenerator.METATYPE_ATTRIBUTE,
+                attrib.get(MetamodelGenerator.KEY_METATYPE));
         attrib = (Map<String, Object>)model.get("s1");
         ModelUtils.checkType(attrib, "ceylon.language.String");
         Assert.assertEquals("s1 should be shared", "1", attrib.get("shared"));

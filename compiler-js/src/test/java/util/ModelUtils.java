@@ -19,30 +19,35 @@ public class ModelUtils {
     /** Asserts that a method contains the expected parameter at the expected position with optional default value.
      * @return The type map of the parameter. */
     @SuppressWarnings("unchecked")
-    public static Map<String, Object> checkParam(Map<String, Object> method, int pos, String name, String type, String defValue, boolean sequenced) {
-        List<Map<String, Object>> params = (List<Map<String, Object>>)method.get("params");
+    public static Map<String, Object> checkParam(Map<String, Object> method, int pos, String name, String type,
+            String defValue, boolean sequenced) {
+        List<Map<String, Object>> params = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_PARAMS);
         Assert.assertNotNull(params);
         Assert.assertTrue(params.size() > pos);
         Map<String, Object> parm = params.get(pos);
-        checkMap(parm, MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_PARAMETER, "name", name);
+        checkMap(parm, MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_PARAMETER,
+                MetamodelGenerator.KEY_NAME, name);
         if (defValue == null) {
-            Assert.assertNull("Param " + name + " of method " + method.get("name") + " shouldn't have default value",
-                    parm.get("def"));
+            Assert.assertNull(String.format("Param %s of method %s has default value",
+                    name, method.get(MetamodelGenerator.KEY_NAME)), parm.get("def"));
         } else {
-            Assert.assertEquals("Default value of param " + name + " of method name " + method.get("name"),
+            Assert.assertEquals(String.format("Default value of param %s of method %s",
+                    name, method.get(MetamodelGenerator.KEY_NAME)),
                     defValue, parm.get("def"));
         }
-        Map<String, Object> tmap = (Map<String, Object>)parm.get("type");
+        Map<String, Object> tmap = (Map<String, Object>)parm.get(MetamodelGenerator.KEY_TYPE);
         Assert.assertNotNull(tmap);
         if (sequenced) {
-            Assert.assertEquals("Param " + name + " of method " + method.get("name") + " should be sequenced",
+            Assert.assertEquals(String.format("Param %s of method %s is not sequenced",
+                    name, method.get(MetamodelGenerator.KEY_NAME)),
                     "1", parm.get("seq"));
             Assert.assertEquals("Sequenced parameter should be last", params.size()-1, pos);
-            Assert.assertEquals("ceylon.language.Iterable", String.format("%s.%s", tmap.get("pkg"), tmap.get("name")));
-            List<Map<String, Object>> pts = (List<Map<String, Object>>)tmap.get("tparams");
+            Assert.assertEquals("ceylon.language.Iterable", String.format("%s.%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
+                    tmap.get(MetamodelGenerator.KEY_NAME)));
+            List<Map<String, Object>> pts = (List<Map<String, Object>>)tmap.get(MetamodelGenerator.KEY_TYPE_PARAMS);
             checkTypeParameters(0, pts, type);
         } else {
-            Assert.assertNull("Param " + name + " of method " + method.get("name") + " should not be sequenced",
+            Assert.assertNull("Param " + name + " of method " + method.get(MetamodelGenerator.KEY_NAME) + " should not be sequenced",
                     parm.get("seq"));
             checkType(parm, type);
         }
@@ -54,7 +59,7 @@ public class ModelUtils {
      * when it's parameterized, the type parameters are checked as well. */
     @SuppressWarnings("unchecked")
     public static void checkType(Map<String, Object> map, String name) {
-        Map<String, Object> tmap = (Map<String, Object>)map.get("type");
+        Map<String, Object> tmap = (Map<String, Object>)map.get(MetamodelGenerator.KEY_TYPE);
         if (tmap == null) {
             tmap = map;
         }
@@ -65,8 +70,8 @@ public class ModelUtils {
             }
             if (join > 0) {
                 Assert.assertEquals("not an intersection type", "i", tmap.get("comp"));
-                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get("types"), name.substring(0, join));
-                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get("types"), name.substring(join+1));
+                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get(MetamodelGenerator.KEY_TYPES), name.substring(0, join));
+                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get(MetamodelGenerator.KEY_TYPES), name.substring(join+1));
                 return;
             }
         }
@@ -77,8 +82,8 @@ public class ModelUtils {
             }
             if (join > 0) {
                 Assert.assertEquals("not a union type", "u", tmap.get("comp"));
-                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get("types"), name.substring(0, join));
-                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get("types"), name.substring(join+1));
+                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get(MetamodelGenerator.KEY_TYPES), name.substring(0, join));
+                checkTypeParameters(-1, (List<Map<String,Object>>)tmap.get(MetamodelGenerator.KEY_TYPES), name.substring(join+1));
                 return;
             }
         }
@@ -88,15 +93,15 @@ public class ModelUtils {
             typeParams = name.substring(sep+1, name.length()-1);
             name = name.substring(0, sep);
         }
-        Assert.assertEquals(name, String.format("%s.%s", tmap.get("pkg"), tmap.get("name")));
+        Assert.assertEquals(name, String.format("%s.%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
+                tmap.get(MetamodelGenerator.KEY_NAME)));
         if (typeParams != null) {
-            List<Map<String, Object>> tparms = (List<Map<String, Object>>)tmap.get("tparams");
+            List<Map<String, Object>> tparms = (List<Map<String, Object>>)tmap.get(MetamodelGenerator.KEY_TYPE_PARAMS);
             Assert.assertFalse("Type parameters shouldn't be empty", tparms.isEmpty());
             checkTypeParameters(0, tparms, typeParams);
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void checkTypeParameters(int pos, List<Map<String, Object>> map, String name) {
         int comma = name.indexOf(',');
         if (comma > 0) {
@@ -121,7 +126,8 @@ public class ModelUtils {
             } else {
                 String plain = name.substring(0, lt);
                 for (Map<String, Object> tp : map) {
-                    if (plain.equals(String.format("%s.%s", tp.get("pkg"), tp.get("name")))) {
+                    if (plain.equals(String.format("%s.%s", tp.get(MetamodelGenerator.KEY_PACKAGE),
+                            tp.get(MetamodelGenerator.KEY_NAME)))) {
                         checkType(tp, name);
                         return;
                     }
@@ -135,7 +141,8 @@ public class ModelUtils {
                 checkType(tp, name);
             } else {
                 for (Map<String, Object> tp : map) {
-                    if (name.equals(String.format("%s.%s", tp.get("pkg"), tp.get("name")))) {
+                    if (name.equals(String.format("%s.%s", tp.get(MetamodelGenerator.KEY_PACKAGE),
+                            tp.get(MetamodelGenerator.KEY_NAME)))) {
                         checkType(tp,name);
                         return;
                     }
