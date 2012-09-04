@@ -54,15 +54,15 @@ public class TestModelMethodsAndAttributes {
         //simple1
         Map<String, Object> method = (Map<String, Object>)model.get("simple1");
         Assert.assertNotNull(method);
-        ModelUtils.checkMap(method, "name", "simple1", "mt", "method");
+        ModelUtils.checkMap(method, "name", "simple1", MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
         ModelUtils.checkType(method, "ceylon.language.Void");
 
         method = (Map<String, Object>)model.get("simple2");
-        ModelUtils.checkMap(method, "name", "simple2", "mt", "method", "shared", "1");
+        ModelUtils.checkMap(method, "name", "simple2", MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD, "shared", "1");
         ModelUtils.checkType(method, "ceylon.language.Integer");
 
         method = (Map<String, Object>)model.get("simple3");
-        ModelUtils.checkMap(method, "name", "simple3", "mt", "method");
+        ModelUtils.checkMap(method, "name", "simple3", MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD);
         ModelUtils.checkType(method, "ceylon.language.Void");
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language.Integer", null, false);
         ModelUtils.checkParam(method, 1, "p2", "ceylon.language.String", null, false);
@@ -135,7 +135,7 @@ public class TestModelMethodsAndAttributes {
     public void testAttributes() {
         Map<String, Object> attrib = (Map<String, Object>)model.get("i1");
         ModelUtils.checkType(attrib, "ceylon.language.Integer");
-        Assert.assertEquals("Wrong model type for i1", "attr", attrib.get("mt"));
+        Assert.assertEquals("Wrong model type for i1", MetamodelGenerator.METATYPE_ATTRIBUTE, attrib.get(MetamodelGenerator.KEY_METATYPE));
         attrib = (Map<String, Object>)model.get("s1");
         ModelUtils.checkType(attrib, "ceylon.language.String");
         Assert.assertEquals("s1 should be shared", "1", attrib.get("shared"));

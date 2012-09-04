@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.junit.Assert;
 
+import com.redhat.ceylon.compiler.js.MetamodelGenerator;
+
 public class ModelUtils {
 
     /** Asserts that every specified key is in the map and that it equals the corresponding value. */
@@ -22,7 +24,7 @@ public class ModelUtils {
         Assert.assertNotNull(params);
         Assert.assertTrue(params.size() > pos);
         Map<String, Object> parm = params.get(pos);
-        checkMap(parm, "mt", "param", "name", name);
+        checkMap(parm, MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_PARAMETER, "name", name);
         if (defValue == null) {
             Assert.assertNull("Param " + name + " of method " + method.get("name") + " shouldn't have default value",
                     parm.get("def"));
