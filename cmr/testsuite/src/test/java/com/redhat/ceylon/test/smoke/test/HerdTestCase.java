@@ -112,8 +112,83 @@ public class HerdTestCase extends AbstractTest {
     public void testHerdSearchPaged() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
-                new ModuleDetails("com.acme.helloworld", null, null, set(), set("1.0.0", "1.0.2")),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3")),
         };
         testSearchResults("", Type.JVM, expected, 1l, 2l);
+    }
+    
+    @Test
+    public void testHerdAndRepoSearch() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3")),
+                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2")),
+                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1")),
+                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1")),
+                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2")),
+                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1")),
+                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
+                new ModuleDetails("moduletest", null, null, set(), set("0.1")),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1")),
+        };
+        testSearchResults("", Type.JVM, expected, getDualRepositoryManager());
+    }
+
+    @Test
+    public void testHerdAndRepoSearchPaged1() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3")),
+        };
+        testSearchResults("", Type.JVM, expected, 0L, 3L, getDualRepositoryManager());
+    }
+
+    @Test
+    public void testHerdAndRepoSearchPaged2() throws Exception{
+        // first page
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+        };
+        ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0L, 2L, getDualRepositoryManager());
+        
+        // check end indices
+        long[] pagingInfo = results.getPagingInfo();
+        Assert.assertNotNull(pagingInfo);
+        Assert.assertEquals(2, pagingInfo.length);
+        Assert.assertEquals(0, pagingInfo[0]);
+        Assert.assertEquals(2, pagingInfo[1]);
+        
+        // second page
+        expected = new ModuleDetails[]{
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3")),
+                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2")),
+                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1")),
+                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1")),
+                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2")),
+                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1")),
+        };
+        results = testSearchResults("", Type.JVM, expected, 2L, 6L, getDualRepositoryManager(), pagingInfo);
+
+        // check end indices
+        pagingInfo = results.getPagingInfo();
+        Assert.assertNotNull(pagingInfo);
+        Assert.assertEquals(2, pagingInfo.length);
+        Assert.assertEquals(1, pagingInfo[0]);
+        Assert.assertEquals(8, pagingInfo[1]);
+
+        // third page
+        expected = new ModuleDetails[]{
+                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
+                new ModuleDetails("moduletest", null, null, set(), set("0.1")),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1")),
+        };
+        testSearchResults("", Type.JVM, expected, 8L, null, getDualRepositoryManager(), pagingInfo);
     }
 }
