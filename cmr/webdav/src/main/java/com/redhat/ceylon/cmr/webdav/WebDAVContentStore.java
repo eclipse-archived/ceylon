@@ -399,7 +399,6 @@ public class WebDAVContentStore extends URLContentStore {
 
     protected void parseSearchModulesResponse(Parser p, ModuleSearchResult result) {
         SortedSet<String> authors = new TreeSet<String>();
-        // FIXME: version comparator
         SortedSet<String> versions = new TreeSet<String>();
 
         p.moveToOpenTag("results");
