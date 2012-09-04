@@ -86,7 +86,7 @@ public class HerdTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
-                new ModuleDetails("com.acme.helloworld", null, null, set(), set("1.0.0", "1.0.2")),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3")),
                 new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2")),
                 new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1")),
                 new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1")),
