@@ -17,11 +17,10 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import java.io.File;
 import java.net.URISyntaxException;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
@@ -47,13 +46,23 @@ public class HerdTestCase extends AbstractTest {
     public void testDummy() {
     }
 
-    protected RepositoryManager getRepositoryManager() throws URISyntaxException {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getFolders(), log);
+    private RepositoryManager getRepositoryManager(File root) {
+        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log);
         WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
         Repository repo = new DefaultRepository(rcs.createRoot());
         return builder.appendRepository(repo).buildRepository();
     }
-    
+
+    protected RepositoryManager getRepositoryManager() throws URISyntaxException {
+        // only Herd
+        return getRepositoryManager(getFolders());
+    }
+
+    protected RepositoryManager getDualRepositoryManager() throws URISyntaxException {
+        // Herd + /repo
+        return getRepositoryManager(getRepositoryRoot());
+    }
+
     @Test
     //@Ignore("Required Herd running locally")
     public void testHerdCompleteVersions() throws Exception{
@@ -89,6 +98,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
+    //@Ignore("Required Herd running locally")
     public void testHerdSearchFiltered() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
@@ -98,6 +108,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
+    //@Ignore("Required Herd running locally")
     public void testHerdSearchPaged() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
