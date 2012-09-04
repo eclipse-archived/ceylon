@@ -8,4 +8,5 @@ api/target/
 impl/target/
 webdav/target/
 maven/target/
+testsuite/target/
 build/
