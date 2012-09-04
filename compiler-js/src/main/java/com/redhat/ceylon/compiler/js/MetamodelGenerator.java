@@ -436,6 +436,16 @@ public class MetamodelGenerator extends Visitor {
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("mt", "object");
         m.put("name", d.getName());
+        //Extends
+        m.put("super", typeMap(d.getTypeDeclaration().getExtendedType()));
+        //Satisfies
+        if (d.getTypeDeclaration().getSatisfiedTypes() != null && !d.getTypeDeclaration().getSatisfiedTypes().isEmpty()) {
+            List<Map<String,Object>> sats = new ArrayList<Map<String,Object>>(d.getTypeDeclaration().getSatisfiedTypes().size());
+            for (ProducedType sat : d.getTypeDeclaration().getSatisfiedTypes()) {
+                sats.add(typeMap(sat));
+            }
+            m.put("satisfies", sats);
+        }
 
         //Certain annotations
         if (d.isShared()) {
