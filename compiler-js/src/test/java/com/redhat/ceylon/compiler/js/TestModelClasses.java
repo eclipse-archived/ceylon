@@ -82,7 +82,7 @@ public class TestModelClasses {
         ModelUtils.checkType(ps.get(0), "ceylon.language.Iterable<ceylon.language.Integer>");
         ModelUtils.checkType(ps.get(1), "ceylon.language.Cloneable<t2.Satisfy2>");
         m2 = (Map<String,Map<String,Object>>)cls.get("methods");
-        Assert.assertEquals("Satisfy2 should have no methods", 0, m2.size());
+        Assert.assertNull("Satisfy2 should have no methods", m2);
         m2 = (Map<String,Map<String,Object>>)cls.get("attrs");
         Assert.assertEquals("Satisfy2 should have 2 attributes", 2, m2.size());
         ModelUtils.checkType(m2.get("iterator"), "ceylon.language.Iterator<ceylon.language.Integer>");
