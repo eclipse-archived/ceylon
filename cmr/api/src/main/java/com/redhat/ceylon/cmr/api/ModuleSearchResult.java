@@ -54,7 +54,7 @@ public class ModuleSearchResult {
     }
 
     private Map<String,ModuleDetails> results = new TreeMap<String,ModuleDetails>();
-    private long[] pagingInfo;
+    private long[] nextPagingInfo;
 
     public void addResult(String moduleName, String doc, String license, SortedSet<String> authors, SortedSet<String> versions) {
         if(versions.isEmpty())
@@ -89,11 +89,11 @@ public class ModuleSearchResult {
         return results.get(module);
     }
 
-    public long[] getPagingInfo() {
-        return pagingInfo;
+    public long[] getNextPagingInfo() {
+        return nextPagingInfo;
     }
 
-    public void setPagingInfo(long[] pagingInfo) {
-        this.pagingInfo = pagingInfo;
+    public void setNextPagingInfo(long[] nextPagingInfo) {
+        this.nextPagingInfo = nextPagingInfo;
     }
 }

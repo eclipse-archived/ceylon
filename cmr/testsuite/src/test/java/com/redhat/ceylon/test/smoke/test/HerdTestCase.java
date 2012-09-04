@@ -157,7 +157,7 @@ public class HerdTestCase extends AbstractTest {
         ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0L, 2L, getDualRepositoryManager());
         
         // check end indices
-        long[] pagingInfo = results.getPagingInfo();
+        long[] pagingInfo = results.getNextPagingInfo();
         Assert.assertNotNull(pagingInfo);
         Assert.assertEquals(2, pagingInfo.length);
         Assert.assertEquals(0, pagingInfo[0]);
@@ -175,7 +175,7 @@ public class HerdTestCase extends AbstractTest {
         results = testSearchResults("", Type.JVM, expected, 2L, 6L, getDualRepositoryManager(), pagingInfo);
 
         // check end indices
-        pagingInfo = results.getPagingInfo();
+        pagingInfo = results.getNextPagingInfo();
         Assert.assertNotNull(pagingInfo);
         Assert.assertEquals(2, pagingInfo.length);
         Assert.assertEquals(1, pagingInfo[0]);

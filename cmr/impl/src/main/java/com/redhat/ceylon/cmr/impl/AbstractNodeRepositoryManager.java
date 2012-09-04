@@ -375,7 +375,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             if(pagingInfo != null)
                 System.arraycopy(pagingInfo, 0, resultPagingInfo, 0, resultPagingInfo.length);
             
-            result.setPagingInfo(resultPagingInfo);
+            result.setNextPagingInfo(resultPagingInfo);
             i = 0;
             for(String module : names){
                 // stop if we exceeded the count
