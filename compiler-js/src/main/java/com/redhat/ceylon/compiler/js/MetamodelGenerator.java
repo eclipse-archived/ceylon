@@ -25,22 +25,30 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  */
 public class MetamodelGenerator extends Visitor {
 
-    public static final String KEY_CLASSES = "clss";
-    public static final String KEY_INTERFACES = "ifaces";
-    public static final String KEY_OBJECTS = "objs";
-    public static final String KEY_METHODS = "mtds";
-    public static final String KEY_ATTRIBUTES = "attrs";
-    public static final String KEY_TYPES = "types";
-    public static final String KEY_METATYPE = "mt";
+    public static final String KEY_CLASSES      = "$c";
+    public static final String KEY_INTERFACES   = "$i";
+    public static final String KEY_OBJECTS      = "$o";
+    public static final String KEY_METHODS      = "$m";
+    public static final String KEY_ATTRIBUTES   = "$at";
+    public static final String KEY_ANNOTATIONS  = "$an";
+    public static final String KEY_TYPE         = "$t";
+    public static final String KEY_TYPES        = "$ts";
+    public static final String KEY_TYPE_CONSTR  = "$tc";
+    public static final String KEY_TYPE_PARAMS  = "$tp";
+    public static final String KEY_METATYPE     = "$mt";
+    public static final String KEY_MODULE       = "$md";
+    public static final String KEY_NAME         = "$nm";
+    public static final String KEY_PACKAGE      = "$pk";
+    public static final String KEY_PARAMS       = "$ps";
 
-    public static final String METATYPE_CLASS = "cls";
-    public static final String METATYPE_INTERFACE = "ifc";
-    public static final String METATYPE_OBJECT = "obj";
-    public static final String METATYPE_METHOD = "mthd";
-    public static final String METATYPE_ATTRIBUTE = "attr";
-    public static final String METATYPE_TYPE_PARAMETER = "tpm";
-    public static final String METATYPE_PARAMETER = "prm";
-    public static final String METATYPE_TYPE_CONSTRAINT = "tcnst";
+    public static final String METATYPE_CLASS           = "cls";
+    public static final String METATYPE_INTERFACE       = "ifc";
+    public static final String METATYPE_OBJECT          = "obj";
+    public static final String METATYPE_METHOD          = "mthd";
+    public static final String METATYPE_ATTRIBUTE       = "attr";
+    public static final String METATYPE_TYPE_PARAMETER  = "tpm";
+    public static final String METATYPE_PARAMETER       = "prm";
+    public static final String METATYPE_TYPE_CONSTRAINT = "tc";
 
     private final Map<String, Object> model = new HashMap<String, Object>();
     private final Module module;
@@ -106,11 +114,11 @@ public class MetamodelGenerator extends Visitor {
             m.put(KEY_TYPES, subs);
             return m;
         }
-        m.put("name", d.getName());
+        m.put(KEY_NAME, d.getName());
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
-        m.put("pkg", pkg.getNameAsString());
+        m.put(KEY_PACKAGE, pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
-            m.put("mod", d.getUnit().getPackage().getModule().getNameAsString());
+            m.put(KEY_MODULE, d.getUnit().getPackage().getModule().getNameAsString());
         }
         putTypeParameters(m, pt);
         return m;
@@ -146,11 +154,11 @@ public class MetamodelGenerator extends Visitor {
             m.put(KEY_TYPES, subs);
             return m;
         }
-        m.put("name", d.getName());
+        m.put(KEY_NAME, d.getName());
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
-        m.put("pkg", pkg.getNameAsString());
+        m.put(KEY_PACKAGE, pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
-            m.put("mod", d.getUnit().getPackage().getModule().getNameAsString());
+            m.put(KEY_MODULE, d.getUnit().getPackage().getModule().getNameAsString());
         }
         putTypeParameters(m, pt);
         return m;
@@ -162,7 +170,7 @@ public class MetamodelGenerator extends Visitor {
             for (ProducedType tparm : pt.getTypeArgumentList()) {
                 list.add(typeParameterMap(tparm));
             }
-            container.put("tparams", list);
+            container.put(KEY_TYPE_PARAMS, list);
         }
     }
 
@@ -215,11 +223,11 @@ public class MetamodelGenerator extends Visitor {
             List<Map<String,Object>> p = new ArrayList<Map<String,Object>>(parms.size());
             for (Tree.Parameter parm : parms) {
                 Map<String, Object> pm = new HashMap<String, Object>();
-                pm.put("name", parm.getDeclarationModel().getName());
+                pm.put(KEY_NAME, parm.getDeclarationModel().getName());
                 if (parm.getDeclarationModel().isSequenced()) {
                     pm.put("seq", "1");
                 }
-                pm.put("type", typeMap(parm.getType().getTypeModel()));
+                pm.put(KEY_TYPE, typeMap(parm.getType().getTypeModel()));
                 pm.put(KEY_METATYPE, METATYPE_PARAMETER);
                 //TODO do these guys need anything else?
                 if (parm.getDefaultArgument() != null) {
@@ -254,7 +262,7 @@ public class MetamodelGenerator extends Visitor {
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_METHOD);
-        m.put("name", d.getName());
+        m.put(KEY_NAME, d.getName());
         Map<String, Object> returnType = typeMap(that.getType().getTypeModel());
         if (that.getParameterLists().size() > 1) {
             //Calculate return type for nested functions
@@ -266,29 +274,29 @@ public class MetamodelGenerator extends Visitor {
                     paramtypes.add(typeMap(p.getType().getTypeModel()));
                 }
                 returnType = new HashMap<String, Object>();
-                returnType.put("name", "Callable");
-                returnType.put("pkg", "ceylon.language");
-                returnType.put("mod", "ceylon.language");
-                returnType.put("tparams", paramtypes);
+                returnType.put(KEY_NAME, "Callable");
+                returnType.put(KEY_PACKAGE, "ceylon.language");
+                returnType.put(KEY_MODULE, "ceylon.language");
+                returnType.put(KEY_TYPE_PARAMS, paramtypes);
             }
         }
-        m.put("type", returnType);
+        m.put(KEY_TYPE, returnType);
         //Now the type parameters, if any
         List<Map<String, Object>> tpl = typeParameters(that.getTypeParameterList());
         if (tpl != null) {
-            m.put("tparams", tpl);
+            m.put(KEY_TYPE_PARAMS, tpl);
         }
 
         //Type constraints, if any
         tpl = typeConstraints(that.getTypeConstraintList());
         if (tpl != null) {
-            m.put("constraints", tpl);
+            m.put(KEY_TYPE_CONSTR, tpl);
         }
 
         //Now the parameters
         List<Map<String,Object>> parms = parameterListMap(that.getParameterLists().get(0));
         if (parms != null && parms.size() > 0) {
-            m.put("params", parms);
+            m.put(KEY_PARAMS, parms);
         }
         //Certain annotations
         if (d.isShared()) {
@@ -330,9 +338,9 @@ public class MetamodelGenerator extends Visitor {
             //Ignore attributes inside control blocks, methods, etc.
             return;
         }
-        m.put("name", d.getName());
+        m.put(KEY_NAME, d.getName());
         m.put(KEY_METATYPE, METATYPE_ATTRIBUTE);
-        m.put("type", typeMap(that.getType().getTypeModel()));
+        m.put(KEY_TYPE, typeMap(that.getType().getTypeModel()));
         if (d.isShared()) {
             m.put("shared", "1");
         }
@@ -360,7 +368,7 @@ public class MetamodelGenerator extends Visitor {
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_CLASS);
-        m.put("name", d.getName());
+        m.put(KEY_NAME, d.getName());
         //Extends
         m.put("super", typeMap(d.getExtendedType()));
         //Satisfies
@@ -374,17 +382,17 @@ public class MetamodelGenerator extends Visitor {
         //Type parameters
         List<Map<String, Object>> tpl = typeParameters(that.getTypeParameterList());
         if (tpl != null) {
-            m.put("tparams", tpl);
+            m.put(KEY_TYPE_PARAMS, tpl);
         }
         //Type constraints
         tpl = typeConstraints(that.getTypeConstraintList());
         if (tpl != null) {
-            m.put("constraints", tpl);
+            m.put(KEY_TYPE_CONSTR, tpl);
         }
         //Initializer parameters
         List<Map<String,Object>> inits = parameterListMap(that.getParameterList());
         if (inits != null && !inits.isEmpty()) {
-            m.put("params", inits);
+            m.put(KEY_PARAMS, inits);
         }
         //Case types
         if (that.getCaseTypes() != null) {
@@ -392,7 +400,7 @@ public class MetamodelGenerator extends Visitor {
             if (that.getCaseTypes().getTypes().isEmpty()) {
                 for (Tree.BaseMemberExpression bme : that.getCaseTypes().getBaseMemberExpressions()) {
                     Map<String,Object> obj = new HashMap<String, Object>();
-                    obj.put("name", bme.getIdentifier().getText());
+                    obj.put(KEY_NAME, bme.getIdentifier().getText());
                     obj.put(METATYPE_OBJECT, "y");
                     cases.add(obj);
                 }
@@ -428,7 +436,7 @@ public class MetamodelGenerator extends Visitor {
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_INTERFACE);
-        m.put("name", d.getName());
+        m.put(KEY_NAME, d.getName());
 
         //Certain annotations
         if (d.isShared()) {
@@ -452,7 +460,7 @@ public class MetamodelGenerator extends Visitor {
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_OBJECT);
-        m.put("name", d.getName());
+        m.put(KEY_NAME, d.getName());
         //Extends
         m.put("super", typeMap(d.getTypeDeclaration().getExtendedType()));
         //Satisfies
@@ -493,9 +501,9 @@ public class MetamodelGenerator extends Visitor {
             //Ignore attributes inside control blocks, methods, etc.
             return;
         }
-        m.put("name", d.getName());
+        m.put(KEY_NAME, d.getName());
         m.put(KEY_METATYPE, METATYPE_ATTRIBUTE);
-        m.put("type", typeMap(that.getType().getTypeModel()));
+        m.put(KEY_TYPE, typeMap(that.getType().getTypeModel()));
         if (d.isShared()) {
             m.put("shared", "1");
         }
