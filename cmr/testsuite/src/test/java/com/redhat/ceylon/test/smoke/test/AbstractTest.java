@@ -16,6 +16,8 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -25,6 +27,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
@@ -36,6 +39,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
+import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.RootRepositoryManager;
 
@@ -95,16 +99,31 @@ public class AbstractTest {
         }
     }
 
-    protected void testSearchResults(String q, Type type, ModuleDetails[] expected) throws Exception{
-        testSearchResults(q, type, expected, null, null);
+    protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected) throws Exception{
+        return testSearchResults(q, type, expected, null, null);
     }
-    
-    protected void testSearchResults(String q, Type type, ModuleDetails[] expected, Long start, Long count) throws Exception{
+
+    protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, RepositoryManager manager) throws Exception{
+        return testSearchResults(q, type, expected, null, null, manager);
+    }
+
+    protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, Long start, Long count) throws Exception{
         RepositoryManager manager = getRepositoryManager();
+        return testSearchResults(q, type, expected, start, count, manager);
+    }
+
+    protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, 
+            Long start, Long count, RepositoryManager manager) throws Exception{
+        return testSearchResults(q, type, expected, start, count, manager, null);
+    }
+
+    protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, 
+            Long start, Long count, RepositoryManager manager, long[] pagingInfo) throws Exception{
         
         ModuleQuery query = new ModuleQuery(q, type);
         query.setStart(start);
         query.setCount(count);
+        query.setPagingInfo(pagingInfo);
         ModuleSearchResult results = manager.searchModules(query);
         
         int i=0;
@@ -119,6 +138,7 @@ public class AbstractTest {
             Assert.assertEquals(expectedResult.getAuthors(), result.getAuthors());
             Assert.assertEquals(expectedResult.getVersions(), result.getVersions());
         }
+        return results;
     }
 
     protected SortedSet<String> set(String... values){
