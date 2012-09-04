@@ -12,7 +12,8 @@ public class Repositories {
     private static final String REPO_TYPE_BOOTSTRAP = "bootstrap";
     private static final String REPO_TYPE_OUTPUT = "output";
     private static final String REPO_TYPE_CACHE = "cache";
-    private static final String REPO_TYPE_LOOKUP = "lookup";
+    private static final String REPO_TYPE_LOCAL_LOOKUP = "lookup";
+    private static final String REPO_TYPE_GLOBAL_LOOKUP = "global";
     
     private static final String REPO_NAME_INSTALL = "INSTALL";
     private static final String REPO_NAME_LOCAL = "LOCAL";
@@ -203,16 +204,24 @@ public class Repositories {
         return repo;
     }
     
-    public Repository[] getLookupRepositories() {
-        Repository[] repos = getRepositoriesByType(REPO_TYPE_LOOKUP);
+    public Repository[] getLocalLookupRepositories() {
+        Repository[] repos = getRepositoriesByType(REPO_TYPE_LOCAL_LOOKUP);
         if (repos == null) {
-            repos = new Repository[3];
+            repos = new Repository[1];
             // By default "./modules"
             repos[0] = getRepository(REPO_NAME_LOCAL);
+        }
+        return repos;
+    }
+    
+    public Repository[] getGlobalLookupRepositories() {
+        Repository[] repos = getRepositoriesByType(REPO_TYPE_GLOBAL_LOOKUP);
+        if (repos == null) {
+            repos = new Repository[2];
             // By default "$HOME/.ceylon/repo"
-            repos[1] = getRepository(REPO_NAME_USER);
+            repos[0] = getRepository(REPO_NAME_USER);
             // By default "http://modules.ceylon-lang.org"
-            repos[2] = getRepository(REPO_NAME_REMOTE);
+            repos[1] = getRepository(REPO_NAME_REMOTE);
         }
         return repos;
     }

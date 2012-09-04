@@ -12,7 +12,6 @@ import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.ConfigParser;
 import com.redhat.ceylon.common.config.Credentials;
 import com.redhat.ceylon.common.config.Repositories;
-import com.redhat.ceylon.common.config.Authentication.PasswordPrompt;
 import com.redhat.ceylon.common.config.Repositories.Repository;
 
 public class RepositoriesTest {
@@ -92,8 +91,8 @@ public class RepositoriesTest {
     }
     
     @Test
-    public void testGetLookupRepositories() {
-        Repository[] lookup = repos.getLookupRepositories();
+    public void testGetLocalLookupRepositories() {
+        Repository[] lookup = repos.getLocalLookupRepositories();
         Assert.assertTrue(lookup.length == 4);
         assertRepository(lookup[0], "Two", "foobar", "pietjepluk", "noencryptionfornow!");
         assertRepository(lookup[1], "Three", "foobar", null, null);
@@ -102,22 +101,34 @@ public class RepositoriesTest {
     }
     
     @Test
-    public void testGetDefaultLookupRepositories() {
-        Repository[] lookup = defaultRepos.getLookupRepositories();
-        Assert.assertTrue(lookup.length == 3);
+    public void testGetDefaultLocalLookupRepositories() {
+        Repository[] lookup = defaultRepos.getLocalLookupRepositories();
+        Assert.assertTrue(lookup.length == 1);
         assertRepository(lookup[0], "LOCAL", "./modules", null, null);
-        File userDir = defaultRepos.getUserRepoDir();
-        assertRepository(lookup[1], "USER", userDir.getAbsolutePath(), null, null);
-        assertRepository(lookup[2], "REMOTE", Repositories.REPO_URL_CEYLON, null, null);
     }
     
     @Test
-    public void testGetOverriddenLookupRepositories() {
-        Repository[] lookup = overriddenRepos.getLookupRepositories();
-        Assert.assertTrue(lookup.length == 3);
+    public void testGetDefaultGlobalLookupRepositories() {
+        Repository[] lookup = defaultRepos.getGlobalLookupRepositories();
+        Assert.assertTrue(lookup.length == 2);
+        File userDir = defaultRepos.getUserRepoDir();
+        assertRepository(lookup[0], "USER", userDir.getAbsolutePath(), null, null);
+        assertRepository(lookup[1], "REMOTE", Repositories.REPO_URL_CEYLON, null, null);
+    }
+    
+    @Test
+    public void testGetOverriddenLocalLookupRepositories() {
+        Repository[] lookup = overriddenRepos.getLocalLookupRepositories();
+        Assert.assertTrue(lookup.length == 1);
         assertRepository(lookup[0], "LOCAL", "local", null, null);
-        assertRepository(lookup[1], "USER", "user", null, null);
-        assertRepository(lookup[2], "REMOTE", "http://remote", null, null);
+    }
+    
+    @Test
+    public void testGetOverriddenGlobalLookupRepositories() {
+        Repository[] lookup = overriddenRepos.getGlobalLookupRepositories();
+        Assert.assertTrue(lookup.length == 2);
+        assertRepository(lookup[0], "USER", "user", null, null);
+        assertRepository(lookup[1], "REMOTE", "http://remote", null, null);
     }
     
     private void assertRepository(Repository repo, String name, String url, String user, String password) {
