@@ -128,9 +128,9 @@ public class WebDAVContentStore extends URLContentStore {
             herdCompleteModulesURL = WS.getLink(links, HERD_COMPLETE_MODULES_REL);
             herdCompleteVersionsURL = WS.getLink(links, HERD_COMPLETE_VERSIONS_REL);
             herdSearchModulesURL = WS.getLink(links, HERD_SEARCH_MODULES_REL);
-            log.info("Got complete-modules link: " + herdCompleteModulesURL);
-            log.info("Got complete-versions link: " + herdCompleteVersionsURL);
-            log.info("Got search-modules link: " + herdSearchModulesURL);
+            log.debug("Got complete-modules link: " + herdCompleteModulesURL);
+            log.debug("Got complete-versions link: " + herdCompleteVersionsURL);
+            log.debug("Got search-modules link: " + herdSearchModulesURL);
         }catch(Exception x){
             log.debug("Failed to read links from Herd repo: "+x.getMessage());
         }
