@@ -28,8 +28,16 @@
             <artifactId>ceylon-language</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.redhat.ceylon</groupId>
+            <artifactId>ceylon-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.redhat.ceylon.cmr</groupId>
             <artifactId>cmr-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat.ceylon.cmr</groupId>
+            <artifactId>cmr-utils</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.modules</groupId>

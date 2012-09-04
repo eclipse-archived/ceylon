@@ -18,6 +18,10 @@
             <groupId>org.jboss.modules</groupId>
             <artifactId>jboss-modules</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.redhat.ceylon</groupId>
+            <artifactId>ceylon-common</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

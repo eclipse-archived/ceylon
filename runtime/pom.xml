@@ -31,8 +31,9 @@
 
     <properties>
         <version.com.redhat.ceylon.language>0.4</version.com.redhat.ceylon.language>
+        <version.com.redhat.ceylon.common>0.4</version.com.redhat.ceylon.common>
         <version.com.redhat.ceylon.cmr>1.0.0-SNAPSHOT</version.com.redhat.ceylon.cmr>
-        <version.org.jboss.modules>1.1.1.GA</version.org.jboss.modules>
+        <version.org.jboss.modules>1.1.3.GA</version.org.jboss.modules>
         <version.org.jboss.shrinkwrap>1.0.0-cr-1</version.org.jboss.shrinkwrap>
         <version.junit>4.8.1</version.junit>
     </properties>
@@ -186,8 +187,18 @@
                 <version>${version.com.redhat.ceylon.language}</version>
             </dependency>
             <dependency>
+                <groupId>com.redhat.ceylon</groupId>
+                <artifactId>ceylon-common</artifactId>
+                <version>${version.com.redhat.ceylon.common}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.redhat.ceylon.cmr</groupId>
                 <artifactId>cmr-impl</artifactId>
+                <version>${version.com.redhat.ceylon.cmr}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-utils</artifactId>
                 <version>${version.com.redhat.ceylon.cmr}</version>
             </dependency>
 
