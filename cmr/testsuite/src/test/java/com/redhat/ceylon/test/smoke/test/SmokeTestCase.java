@@ -17,6 +17,8 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URL;
@@ -34,6 +36,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
@@ -382,5 +385,40 @@ public class SmokeTestCase extends AbstractTest {
         testSearchResults("classic", Type.JS, expected);
         testSearchResults("domain", Type.JS, expected);
         testSearchResults("epardaud", Type.JS, expected);
+    }
+
+    @Test
+    public void versionComparisonTests() {
+        assertEquals(0, VersionComparator.compareVersions("", ""));
+        
+        assertEquals(-1, VersionComparator.compareVersions("", "a"));
+        assertEquals(1, VersionComparator.compareVersions("a", ""));
+        assertEquals(0, VersionComparator.compareVersions("a", "a"));
+        
+        assertEquals(-1, VersionComparator.compareVersions("a", "b"));
+        assertEquals(1, VersionComparator.compareVersions("b", "a"));
+        assertEquals(-1, VersionComparator.compareVersions("a", "-"));
+        assertEquals(1, VersionComparator.compareVersions("-", "a"));
+
+        assertEquals(-1, VersionComparator.compareVersions("a", "aa"));
+        assertEquals(1, VersionComparator.compareVersions("aa", "a"));
+
+        assertEquals(0, VersionComparator.compareVersions("a1", "a1"));
+        assertEquals(-1, VersionComparator.compareVersions("a1", "a2"));
+        assertEquals(0, VersionComparator.compareVersions("a001", "a1"));
+
+        assertEquals(0, VersionComparator.compareVersions("1.0.2", "1.0.2"));
+        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.0.2.4"));
+        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.0.2b"));
+        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.0.2RC"));
+        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.0.2-RC"));
+
+        assertEquals(-1, VersionComparator.compareVersions("0.3", "2.2.4"));
+
+        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.2"));
+        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "2"));
+        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "2.2.4"));
+        
+        assertEquals(-1, VersionComparator.compareVersions("1.0", "1.0.2"));
     }
 }
