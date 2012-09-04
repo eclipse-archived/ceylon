@@ -10,9 +10,9 @@ import java.util.TreeSet;
 public class ModuleSearchResult {
     
     public static class ModuleDetails {
-        private String name, license, doc, lastVersion;
-        private Set<String> authors = new TreeSet<String>();
-        private Set<String> versions = new TreeSet<String>();
+        private String name, license, doc;
+        private SortedSet<String> authors = new TreeSet<String>();
+        private SortedSet<String> versions = new TreeSet<String>(VersionComparator.INSTANCE);
 
         public ModuleDetails(String name, String doc, String license, SortedSet<String> authors, SortedSet<String> versions) {
             this.name = name;
