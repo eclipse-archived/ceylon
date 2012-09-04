@@ -5,6 +5,7 @@ public class ModuleQuery {
     private Type type;
     private Long start;
     private Long count;
+    private long[] pagingInfo;
 
     public enum Type {
         SRC(ArtifactContext.SRC), 
@@ -57,6 +58,18 @@ public class ModuleQuery {
 
     public void setCount(Long count) {
         this.count = count;
+    }
+
+    public boolean isPaging() {
+        return count != null || start != null;
+    }
+
+    public void setPagingInfo(long[] pagingInfo) {
+        this.pagingInfo = pagingInfo;
+    }
+
+    public long[] getPagingInfo() {
+        return pagingInfo;
     }
 
 }

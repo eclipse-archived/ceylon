@@ -41,25 +41,59 @@ public class ModuleSearchResult {
         }
 
         public String getLastVersion() {
-            return lastVersion;
+            return versions.last();
         }
 
-        public Set<String> getAuthors() {
+        public SortedSet<String> getAuthors() {
             return authors;
         }
 
-        public Set<String> getVersions() {
+        public SortedSet<String> getVersions() {
             return versions;
         }
     }
 
     private Map<String,ModuleDetails> results = new TreeMap<String,ModuleDetails>();
+    private long[] pagingInfo;
 
     public void addResult(String moduleName, String doc, String license, SortedSet<String> authors, SortedSet<String> versions) {
-        results.put(moduleName, new ModuleDetails(moduleName, doc, license, authors, versions));
+        if(versions.isEmpty())
+            throw new RuntimeException("Empty versions");
+        if(results.containsKey(moduleName)){
+            // needs merge
+            ModuleDetails details = results.get(moduleName);
+            String newLastVersion = versions.last();
+            String oldLastVersion = details.getLastVersion();
+            // only update doc/license if the newest version is newer than the previous newest
+            if(VersionComparator.compareVersions(oldLastVersion, newLastVersion) == -1){
+                details.doc = doc;
+                details.license = license;
+            }
+            details.authors.addAll(authors);
+            details.versions.addAll(versions);
+        }else{
+            // new module
+            results.put(moduleName, new ModuleDetails(moduleName, doc, license, authors, versions));
+        }
     }
 
     public Collection<ModuleDetails> getResults() {
         return results.values();
+    }
+
+    public Set<String> getModuleNames() {
+        return results.keySet();
+    }
+
+    public ModuleDetails getResult(String module) {
+        return results.get(module);
+    }
+
+    public long[] getPagingInfo() {
+        return pagingInfo;
+    }
+
+    public void setPagingInfo(long[] pagingInfo) {
+        this.pagingInfo = pagingInfo;
     }
 }

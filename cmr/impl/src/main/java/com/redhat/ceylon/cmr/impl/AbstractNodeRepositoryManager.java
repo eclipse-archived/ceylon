@@ -24,12 +24,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.redhat.ceylon.cmr.api.AbstractRepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.ModuleResult;
@@ -337,10 +340,65 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
     @Override
     public ModuleSearchResult searchModules(ModuleQuery query) {
-        ModuleSearchResult result = new ModuleSearchResult();
-        for(Repository root : roots){
-            root.searchModules(query, result);
+        if(!query.isPaging()){
+            // that's pretty simple
+            ModuleSearchResult result = new ModuleSearchResult();
+            for(Repository root : roots){
+                root.searchModules(query, result);
+            }
+            return result;
+        }else{
+            // we need to merge manually
+            ModuleSearchResult[] results = new ModuleSearchResult[roots.size()];
+            // keep an overall module name ordering
+            SortedSet<String> names = new TreeSet<String>();
+            int i=0;
+            long[] pagingInfo = query.getPagingInfo();
+            if(pagingInfo != null){
+                // check its length
+                if(pagingInfo.length != roots.size())
+                    throw new IllegalArgumentException("Paging info is not the same size as roots, it must have come from a different RepositoryManager");
+            }
+            for(Repository root : roots){
+                ModuleSearchResult result = new ModuleSearchResult();
+                // adapt the start index if required
+                if(pagingInfo != null)
+                    query.setStart(pagingInfo[i]);
+                root.searchModules(query, result);
+                results[i++] = result;
+                names.addAll(result.getModuleNames());
+            }
+            // now merge results
+            ModuleSearchResult result = new ModuleSearchResult();
+            long[] resultPagingInfo = new long[roots.size()];
+            // initialise it if we need to
+            if(pagingInfo != null)
+                System.arraycopy(pagingInfo, 0, resultPagingInfo, 0, resultPagingInfo.length);
+            
+            result.setPagingInfo(resultPagingInfo);
+            i = 0;
+            for(String module : names){
+                // stop if we exceeded the count
+                if(query.getCount() != null && i++ == query.getCount())
+                    break;
+                // collect every module result for that name from the results
+                int repo = 0;
+                for(ModuleSearchResult resultPart : results){
+                    ModuleDetails details = resultPart.getResult(module);
+                    // did we find anything in that repo?
+                    if(details == null){
+                        repo++;
+                        continue;
+                    }else{
+                        // count one result for this repo
+                        resultPagingInfo[repo++]++;
+                    }
+                    // merge it
+                    result.addResult(module, details.getDoc(), details.getLicense(), details.getAuthors(), details.getVersions());
+                }
+            }
+            // all done
+            return result;
         }
-        return result;
     }    
 }
