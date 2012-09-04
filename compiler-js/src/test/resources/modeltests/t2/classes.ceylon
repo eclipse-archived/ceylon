@@ -41,12 +41,20 @@ shared abstract class Algebraic1(name)
     shared String name;
 }
 shared class AlgOne() extends Algebraic1("one") {}
-shared class AlgTwo() extends Algebraic1("one") {}
-shared class AlgThree() extends Algebraic1("one") {}
+shared class AlgTwo() extends Algebraic1("two") {}
+shared class AlgThree() extends Algebraic1("Three") {}
 
 shared abstract class Algebraic2(name)
         of algobj1 | algobj2 {
     shared String name;
 }
-shared object algobj1 extends Algebraic2("one") {}
-shared object algobj2 extends Algebraic2("two") {}
+shared object algobj1 extends Algebraic2("one") satisfies Iterable<Integer> {
+    shared actual Iterator<Integer> iterator {
+        return {1,2,3}.iterator;
+    }
+}
+shared object algobj2 extends Algebraic2("two") satisfies Iterable<Integer> {
+    shared actual Iterator<Integer> iterator {
+        return {4,5,6}.iterator;
+    }
+}
