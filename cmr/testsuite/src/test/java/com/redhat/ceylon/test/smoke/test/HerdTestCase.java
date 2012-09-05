@@ -64,7 +64,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersions() throws Exception{
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("0.3.0", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", "Stéphane Épardaud"),
@@ -73,7 +73,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsFiltered() throws Exception{
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
@@ -81,7 +81,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearch() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
@@ -98,7 +98,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchFiltered() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
@@ -108,7 +108,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdSearchPaged() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -118,7 +118,7 @@ public class HerdTestCase extends AbstractTest {
     }
     
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearch() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
@@ -139,7 +139,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearchPaged1() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
@@ -150,7 +150,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Required Herd running locally")
+    @Ignore("Required Herd running locally")
     public void testHerdAndRepoSearchPaged2() throws Exception{
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
