@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
@@ -123,7 +123,7 @@ public class TypeCheckerBuilder {
     
     public TypeChecker getTypeChecker() {
         if (repositoryManager == null) {
-            repositoryManager = new RepositoryManagerBuilder( new LeakingLogger() ).buildRepository();
+            repositoryManager = CeylonUtils.makeRepositoryManager(null, null, new LeakingLogger());
         }
         return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose, statistics, moduleFilters);
     }
