@@ -33,7 +33,8 @@ void testAliasing() {
     class InnerSubalias() = AliasingSubclass;
     assert(InnerSubalias().aliasingSubclass(), "Aliased top-level class");
     //TODO should this line even be valid?
-    //interface AliasedIface = AliasingClass.AliasingIface;
-    assert(AliasingSub2().iface.aliasingIface(), "Aliased member interface");
+    interface AliasedIface = AliasingClass.AliasingIface;
+    Boolean use(AliasedIface aif) { return aif.aliasingIface(); }
+    assert(use(AliasingSub2().iface), "Aliased member interface");
     
 }
