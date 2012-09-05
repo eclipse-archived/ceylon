@@ -25,26 +25,41 @@ public class CeylonUtils {
     public static RepositoryManagerBuilder makeRepositoryManagerBuilder(List<String> userRepos, String outRepo, Logger log) {
         final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(log);
 
-        log.debug("Repository lookup order:");
+        // The first two we add in reverse order because they get PREpended to the root
         
-        appendRepo(builder, Repositories.get().getBootstrapRepository(), log);
-
         if (outRepo == null) {
-            appendRepo(builder, Repositories.get().getOutputRepository(), log);
+            addRepo(builder, Repositories.get().getOutputRepository(), log, true);
         } else {
-            appendRepo(builder, outRepo, log);
+            addRepo(builder, outRepo, log, true);
         }
         
-        if (userRepos.isEmpty()) {
-            Repositories.Repository[] lookups = Repositories.get().getLookupRepositories();
-            for (Repositories.Repository lookup : lookups) {
-                appendRepo(builder, lookup, log);
-            }
-        } else {
+        addRepo(builder, Repositories.get().getBootstrapRepository(), log, true);
+
+        // The rest we add in the normal order becuase they get APpended to the root
+        
+        if (userRepos != null && !userRepos.isEmpty()) {
+            // Add user defined repos
             for (int i=0; i<userRepos.size(); i++) {
                 String repo = userRepos.get(i);
-                appendRepo(builder, repo, log);
+                addRepo(builder, repo, log, false);
             }
+        } else {
+            // We add local lookup repos only when no user defined repois have been passed
+            Repositories.Repository[] lookups = Repositories.get().getLocalLookupRepositories();
+            for (Repositories.Repository lookup : lookups) {
+                addRepo(builder, lookup, log, false);
+            }
+        }
+        
+        // Add globally defined repos (like the user repo and the default remote Herd repo)
+        Repositories.Repository[] lookups = Repositories.get().getGlobalLookupRepositories();
+        for (Repositories.Repository lookup : lookups) {
+            addRepo(builder, lookup, log, false);
+        }
+        
+        log.debug("Repository lookup order:");
+        for (String r : builder.getRepositoriesDisplayString()) {
+            log.debug(" - " + r);
         }
         
         return builder;
@@ -58,11 +73,11 @@ public class CeylonUtils {
         if (outRepo == null) {
             Repositories.Repository repo = Repositories.get().getOutputRepository();
             outRepo = repo.getUrl();
-            if (user == null) {
-                user = repo.getUser();
+            if (user == null && repo.getCredentials() != null) {
+                user = repo.getCredentials().getUser();
             }
-            if (password == null) {
-                password = repo.getPassword();
+            if (password == null && repo.getCredentials() != null) {
+                password = repo.getCredentials().getPassword();
             }
         } else {
             if (outRepo.startsWith("+")) {
@@ -116,31 +131,37 @@ public class CeylonUtils {
         }
     }
 
-    private static void appendRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo, Logger log) {
+    private static void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo, Logger log, boolean prepend) {
         if (repoInfo != null) {
             try {
-                log.debug(" - " + repoInfo.getName() + " = " + repoInfo.getUrl());
                 Repository repo = builder.repositoryBuilder().buildRepository(repoInfo.getUrl());
-                builder.appendRepository(repo);
+                if (prepend) {
+                    builder.prependRepository(repo);                
+                } else {
+                    builder.appendRepository(repo);
+                }
             } catch(Exception e) {
                 log.debug("Failed to add repository as input repository: " + repoInfo.getUrl() + ": "+e.getMessage());
             }
         }
     }
 
-    private static void appendRepo(RepositoryManagerBuilder builder, String repoUrl, Logger log) {
+    private static void addRepo(RepositoryManagerBuilder builder, String repoUrl, Logger log, boolean prepend) {
         try {
             if (repoUrl.startsWith("+")) {
                 // The token is the name of a repository defined in the Ceylon configuration file
                 Repositories.Repository repo = Repositories.get().getRepository(repoUrl.substring(1));
                 if (repo != null) {
-                    appendRepo(builder, repo, log);
+                    addRepo(builder, repo, log, prepend);
                     return;
                 }
             }
             Repository repo = builder.repositoryBuilder().buildRepository(repoUrl);
-            log.debug(" - " + repoUrl);
-            builder.appendRepository(repo);
+            if (prepend) {
+                builder.prependRepository(repo);                
+            } else {
+                builder.appendRepository(repo);
+            }
         } catch(Exception e) {
             log.debug("Failed to add repository as input repository: " + repoUrl + ": "+e.getMessage());
         }
