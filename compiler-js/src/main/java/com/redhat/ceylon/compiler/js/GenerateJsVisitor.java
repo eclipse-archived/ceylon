@@ -430,7 +430,7 @@ public class GenerateJsVisitor extends Visitor
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
         Interface d = interfaceDef.getDeclarationModel();
-        out(names.self(type), ".", names.name(d), "=", names.name(d), ";");
+        out(names.self(type), ".", names.name(d), "=", names.classname(d), ";");
         endLine();
     }
 
@@ -490,7 +490,7 @@ public class GenerateJsVisitor extends Visitor
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
         Class d = classDef.getDeclarationModel();
-        out(names.self(type), ".", names.name(d), "=", names.name(d), ";");
+        out(names.self(type), ".", names.name(d), "=", names.classname(d), ";");
         endLine();
     }
 
@@ -805,7 +805,7 @@ public class GenerateJsVisitor extends Visitor
         objectDefinition(objDef);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
-        out(names.self(type), ".", names.name(c), "=", names.name(c), ";");
+        out(names.self(type), ".", names.name(c), "=", names.classname(c), ";");
         endLine();
     }
 
