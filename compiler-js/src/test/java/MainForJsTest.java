@@ -39,7 +39,8 @@ public class MainForJsTest {
         final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(Collections.<String>emptyList(), opts.getOutDir(), new JULLogger());
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
             .addSrcDirectory(new File("src/test/ceylon"))
-            .addSrcDirectory(new File("../ceylon.language/test"));
+            .addSrcDirectory(new File("../ceylon.language/test"))
+            .usageWarnings(false);
         tcb.setRepositoryManager(repoman);
         TypeChecker typeChecker = tcb.getTypeChecker();
         typeChecker.process();
@@ -67,24 +68,29 @@ public class MainForJsTest {
                 if (test.exists()) {
                     BufferedReader reader = new BufferedReader(new FileReader(test));
                     BufferedReader outputReader = new BufferedReader(new FileReader(generated));
-                    int i=0;
-                    while (reader.ready() && outputReader.ready()) {
-                        i++;
-                        String actual = outputReader.readLine();
-                        String expected = reader.readLine();
-                        if (!expected.equals(actual) && !expected.trim().startsWith("//")) {
-                            System.err.println("error at " + test.getPath() + ":" + i); 
-                            System.err.println("expected: " + expected);
-                            System.err.println("  actual: " + actual);
-                            break;
+                    try {
+                        int i=0;
+                        while (reader.ready() && outputReader.ready()) {
+                            i++;
+                            String actual = outputReader.readLine();
+                            String expected = reader.readLine();
+                            if (!expected.equals(actual) && !expected.trim().startsWith("//")) {
+                                System.err.println("error at " + test.getPath() + ":" + i); 
+                                System.err.println("expected: " + expected);
+                                System.err.println("  actual: " + actual);
+                                break;
+                            }
                         }
+                        count++;
+                    } finally {
+                        reader.close();
+                        outputReader.close();
                     }
-                    count++;
                 }
                 tested.add(mod);
             }
         }
-        System.out.printf("ran %d tests%n", count);
+        System.out.printf("Ran %d tests%n", count);
     }
 
     private static String toOutputPath(Module mod) {
