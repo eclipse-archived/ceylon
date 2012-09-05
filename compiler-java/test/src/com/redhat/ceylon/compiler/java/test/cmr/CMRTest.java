@@ -57,6 +57,8 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -141,30 +143,30 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
-    public void testMdlModuleOnlyInOutputRepo(){
+    public void testMdlModuleOnlyInOutputRepo() throws IOException {
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6");
         assertFalse(carFile.exists());
 
-        File carFileInHomeRepo = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6",
-                Util.getHomeRepository());
-        if(carFileInHomeRepo.exists())
-            carFileInHomeRepo.delete();
+        String cacheDir = Repositories.get().getCacheRepository().getUrl();
+        File carFileInCache = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6", cacheDir);
+        if(carFileInCache.exists())
+            carFileInCache.delete();
         
         compile("modules/single/module.ceylon");
 
         // make sure it was created in the output repo
         assertTrue(carFile.exists());
         // make sure it wasn't created in the home repo
-        assertFalse(carFileInHomeRepo.exists());
+        assertFalse(carFileInCache.exists());
     }
 
     @Test
-    public void testMdlModuleNotLoadedFromHomeRepo(){
+    public void testMdlModuleNotLoadedFromHomeRepo() throws IOException {
         File carFile = getModuleArchive("a", "1.0");
         assertFalse(carFile.exists());
 
         // clean up the home repo if required
-        String homeRepo = Util.getHomeRepository();
+        String homeRepo = CeylonConfig.getUserDir().getCanonicalPath();
         File carFileInHomeRepo = getModuleArchive("a", "1.0", homeRepo);
         if(carFileInHomeRepo.exists())
             carFileInHomeRepo.delete();

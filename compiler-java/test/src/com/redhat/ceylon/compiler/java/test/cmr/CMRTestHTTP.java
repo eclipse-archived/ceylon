@@ -20,8 +20,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.sun.net.httpserver.HttpServer;
 
 public class CMRTestHTTP extends CompilerTest {
@@ -74,14 +74,15 @@ public class CMRTestHTTP extends CompilerTest {
     }
 
     @Test
-    public void testMdlHTTPRepos() throws IOException{
+    public void testMdlHTTPRepos() throws IOException {
         RequestCounter rq = new RequestCounter();
         String moduleA = "com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a";
         
         // Clean up any cached version
-        File carFileInHomeRepo = getModuleArchive(moduleA, "6.6.6", Util.getHomeRepository());
-        if(carFileInHomeRepo.exists())
-            carFileInHomeRepo.delete();
+        String cacheDir = Repositories.get().getCacheRepository().getUrl();
+        File carFileInCache = getModuleArchive(moduleA, "6.6.6", cacheDir);
+        if(carFileInCache.exists())
+            carFileInCache.delete();
 
         // Compile the first module in its own repo 
         File repo = makeRepo();
@@ -112,20 +113,20 @@ public class CMRTestHTTP extends CompilerTest {
         assertTrue(carFile.exists());
         
         // make sure it cached the module in the home repo
-        assertTrue(carFileInHomeRepo.exists());
+        assertTrue(carFileInCache.exists());
         
         // make sure it didn't cache it in the output repo
         carFile = getModuleArchive(moduleA, "6.6.6");
         assertFalse(carFile.exists());
         
-        rq.check(4);
+        rq.check(5);
     }
 
     
     @Test
     public void testMdlHTTPOutputRepo() throws IOException{
-        testMdlHTTPOutputRepo(true, 9);
-        testMdlHTTPOutputRepo(false, 70);
+        testMdlHTTPOutputRepo(true, 10);
+        testMdlHTTPOutputRepo(false, 71);
     }
     
     private void testMdlHTTPOutputRepo(boolean herd, int requests) throws IOException{
@@ -168,8 +169,8 @@ public class CMRTestHTTP extends CompilerTest {
 
     @Test
     public void testMdlHTTPMixedCompilation() throws IOException{
-        testMdlHTTPMixedCompilation(false, 133);
-        testMdlHTTPMixedCompilation(true, 20);
+        testMdlHTTPMixedCompilation(false, 135);
+        testMdlHTTPMixedCompilation(true, 22);
     }
     
     private void testMdlHTTPMixedCompilation(boolean herd, int requests) throws IOException{

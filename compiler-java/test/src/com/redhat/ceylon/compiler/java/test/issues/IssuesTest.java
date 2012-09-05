@@ -29,15 +29,16 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 
 public class IssuesTest extends CompilerTest {
     
     @Test
-    public void testBug41(){
+    public void testBug41() throws IOException {
         compile("bug00xx/Bug41.ceylon");
         List<String> options = new ArrayList<String>();
         options.addAll(defaultOptions);
@@ -45,7 +46,8 @@ public class IssuesTest extends CompilerTest {
         options.add("-cp");
         // If this test is failing, make sure you have done "ant publish"
         // of ceylon.language
-        options.add(dir+File.pathSeparator+getModuleArchive("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, Util.getHomeRepository()));
+        String repoDir = Repositories.get().getUserRepoDir().getCanonicalPath();
+        options.add(dir+File.pathSeparator+getModuleArchive("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, repoDir));
         Boolean result = getCompilerTask(options, "bug00xx/Bug41_2.ceylon").call();
         Assert.assertEquals("Compilation worked", Boolean.TRUE, result);
     }
