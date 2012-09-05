@@ -156,7 +156,7 @@ public class CMRTest extends CompilerTest {
 
         // make sure it was created in the output repo
         assertTrue(carFile.exists());
-        // make sure it wasn't created in the home repo
+        // make sure it wasn't created in the cache repo
         assertFalse(carFileInCache.exists());
     }
 

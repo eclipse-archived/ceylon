@@ -112,7 +112,7 @@ public class CMRTestHTTP extends CompilerTest {
         carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b", "6.6.6");
         assertTrue(carFile.exists());
         
-        // make sure it cached the module in the home repo
+        // make sure it cached the module in the cache repo
         assertTrue(carFileInCache.exists());
         
         // make sure it didn't cache it in the output repo
