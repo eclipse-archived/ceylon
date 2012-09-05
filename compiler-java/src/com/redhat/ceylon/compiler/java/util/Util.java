@@ -157,11 +157,6 @@ public class Util {
         return new File(outputDir, modulePath);
     }
 
-    public static String getHomeRepository() {
-        return System.getProperty("user.home")+File.separator
-                +".ceylon"+File.separator+"repo";
-    }
-
     // Used by the IDE
     public static String getName(List<String> parts){
         StringBuilder sb = new StringBuilder();
