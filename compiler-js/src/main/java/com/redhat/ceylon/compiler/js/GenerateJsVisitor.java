@@ -390,8 +390,10 @@ public class GenerateJsVisitor extends Visitor
         if (path.length() > 0) {
             path += '.';
         }
+        out(names.self(outer), ".", names.classname(that.getDeclarationModel()), "=",
+                path, names.name(dec), ";"); //For direct ref
         out(names.self(outer), ".", names.name(that.getDeclarationModel()), "=",
-                path, names.name(dec), ";");
+                path, names.name(dec), ";"); //For inheritance
         endLine();
     }
 
@@ -422,15 +424,18 @@ public class GenerateJsVisitor extends Visitor
         if (path.length() > 0) {
             path += '.';
         }
+        out(names.self(outer), ".", names.classname(that.getDeclarationModel()), "=",
+                path, names.name(dec), ";"); //For direct ref
         out(names.self(outer), ".", names.name(that.getDeclarationModel()), "=",
-                path, names.name(dec), ";");
+                path, names.name(dec), ";"); //For inheritance
         endLine();
     }
 
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
         Interface d = interfaceDef.getDeclarationModel();
-        out(names.self(type), ".", names.name(d), "=", names.classname(d), ";");
+        out(names.self(type), ".", names.classname(d), "=", names.classname(d), ";");//for direct ref
+        out(names.self(type), ".", names.name(d), "=", names.classname(d), ";");//for inheritance
         endLine();
     }
 
@@ -490,7 +495,8 @@ public class GenerateJsVisitor extends Visitor
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
         Class d = classDef.getDeclarationModel();
-        out(names.self(type), ".", names.name(d), "=", names.classname(d), ";");
+        out(names.self(type), ".", names.classname(d), "=", names.classname(d), ";");//for direct ref
+        out(names.self(type), ".", names.name(d), "=", names.classname(d), ";");//for inheritance
         endLine();
     }
 
@@ -772,9 +778,10 @@ public class GenerateJsVisitor extends Visitor
         self(d);
         out("=new ");
         if (prototypeStyle && d.isClassOrInterfaceMember()) {
-            out("this.");
+            out("this.", names.name(d), ".$$;");
+        } else {
+            out(names.classname(d), ".$$;");
         }
-        out(names.classname(d), ".$$;");
         endLine();
         /*out("var ");
         self(d);
@@ -789,9 +796,10 @@ public class GenerateJsVisitor extends Visitor
         self(d);
         out("=new ");
         if (prototypeStyle && d.isClassOrInterfaceMember()) {
-            out("this.");
+            out("this.", names.name(d), ".$$;");
+        } else {
+            out(names.classname(d), ".$$;");
         }
-        out(names.classname(d), ".$$;");
         endLine();
     }
 
