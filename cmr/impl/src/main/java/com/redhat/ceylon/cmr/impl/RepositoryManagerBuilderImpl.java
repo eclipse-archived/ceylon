@@ -23,6 +23,7 @@ import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Root repository builder.
@@ -92,6 +93,10 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     public RepositoryManagerBuilderImpl appendRepository(Repository externalRoot) {
         repository.appendRepository(externalRoot);
         return this;
+    }
+
+    public List<String> getRepositoriesDisplayString() {
+        return repository.getRepositoriesDisplayString();
     }
 
     public RepositoryManager buildRepository() {

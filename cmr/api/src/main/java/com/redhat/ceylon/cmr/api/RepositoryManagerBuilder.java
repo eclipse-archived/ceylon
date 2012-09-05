@@ -21,6 +21,7 @@ import com.redhat.ceylon.cmr.spi.MergeStrategy;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * RepositoryManager builder API.
@@ -94,6 +95,10 @@ public class RepositoryManagerBuilder {
     public RepositoryManagerBuilder appendRepository(Repository external) {
         getDelegate().appendRepository(external);
         return this;
+    }
+
+    public List<String> getRepositoriesDisplayString() {
+        return getDelegate().getRepositoriesDisplayString();
     }
 
     public RepositoryManager buildRepository() {
