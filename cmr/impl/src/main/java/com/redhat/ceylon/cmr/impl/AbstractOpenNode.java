@@ -210,7 +210,7 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
 
     @Override
     public Iterable<? extends Node> getChildren() {
-        if (children.isEmpty()) {
+        if (!children.containsKey(NODE_MARKER)) {
             children.put(NODE_MARKER, new MarkerNode()); // add marker
 
             ConcurrentMap<String, OpenNode> tmp = new ConcurrentHashMap<String, OpenNode>();
