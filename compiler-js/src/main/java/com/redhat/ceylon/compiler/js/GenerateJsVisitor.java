@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -398,12 +399,18 @@ public class GenerateJsVisitor extends Visitor
     public void visit(InterfaceDeclaration that) {
         Interface d = that.getDeclarationModel();
         if (prototypeStyle && d.isClassOrInterfaceMember()) return;
+        //It's pointless declaring interface aliases outside of clases/interfaces
+        Scope scope = that.getScope();
+        if (scope instanceof InterfaceAlias) {
+            scope = scope.getContainer();
+            if (!(scope instanceof ClassOrInterface)) return;
+        }
         comment(that);
         var(d);
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
                 .getDeclaration();
         qualify(that,dec);
-        out(names.name(dec), ";");
+        out(names.classname((Interface)dec), ";");
         endLine();
         share(d);
     }
