@@ -1,4 +1,4 @@
-import assert { ... }
+import check { ... }
 
 shared class AliasingClass() {
     shared interface AliasingIface {
@@ -29,11 +29,11 @@ class AliasingSub2() extends AliasingSubclass() {
 
 void testAliasing() {
     print("testing type aliases");
-    assert(AliasingSubclass().aliasingSubclass(), "Aliased member class");
+    check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
     class InnerSubalias() = AliasingSubclass;
-    assert(InnerSubalias().aliasingSubclass(), "Aliased top-level class");
+    check(InnerSubalias().aliasingSubclass(), "Aliased top-level class");
     interface AliasedIface2 = AliasingClass.AliasingIface;
     Boolean use(AliasedIface2 aif) { return aif.aliasingIface(); }
-    assert(use(AliasingSub2().iface), "Aliased member interface");
+    check(use(AliasingSub2().iface), "Aliased member interface");
     
 }

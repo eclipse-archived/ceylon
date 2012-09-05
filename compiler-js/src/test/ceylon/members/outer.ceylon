@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 void test_outer_inner_safety() {
   class Outer() {
@@ -10,7 +10,7 @@ void test_outer_inner_safety() {
   if (exists i1) {
     fail("i1 should be null");
   }
-  assert(className(cons)=="ceylon.language.JsCallable", "cons is Callable");
+  check(className(cons)=="ceylon.language.JsCallable", "cons is Callable");
   Outer.Inner|Nothing i2 = cons();
   if (exists i2) {
     fail("i2 should not exist");

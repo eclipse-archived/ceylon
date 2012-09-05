@@ -1,4 +1,4 @@
-import assert { ... }
+import check { ... }
 
 shared void helloWorld() {
     print("hello world");
@@ -47,8 +47,8 @@ void testMethodReference() {
     Boolean tst(Boolean x(Integer i)) {
         return x(0);
     }
-    assert(tst(obj1.f), "Reference to method");
-    assert(tst(obj2.defines), "Reference to method from ceylon.language");
+    check(tst(obj1.f), "Reference to method");
+    check(tst(obj2.defines), "Reference to method from ceylon.language");
 }
 
 String defParamTest(Integer i1, Integer i2=i1+1, Integer i3=i1+i2) {
@@ -66,34 +66,34 @@ class DefParamTest3() {
     }
 }
 void testDefaultedParams() {
-    assert(defParamTest(1)=="1,2,3", "defaulted parameters 1");
-    assert(defParamTest(1, 3)=="1,3,4", "defaulted parameters 2");
-    assert(defParamTest(1, 3, 0)=="1,3,0", "defaulted parameters 3");
-    assert(defParamTest{i1=1;}=="1,2,3", "defaulted parameters named 1");
-    assert(defParamTest{i1=1;i2=3;}=="1,3,4", "defaulted parameters named 2");
-    assert(defParamTest{i1=1;i3=0;}=="1,2,0", "defaulted parameters named 3");
+    check(defParamTest(1)=="1,2,3", "defaulted parameters 1");
+    check(defParamTest(1, 3)=="1,3,4", "defaulted parameters 2");
+    check(defParamTest(1, 3, 0)=="1,3,0", "defaulted parameters 3");
+    check(defParamTest{i1=1;}=="1,2,3", "defaulted parameters named 1");
+    check(defParamTest{i1=1;i2=3;}=="1,3,4", "defaulted parameters named 2");
+    check(defParamTest{i1=1;i3=0;}=="1,2,0", "defaulted parameters named 3");
 
-    assert(DefParamTest1(1).s=="1,2,3", "defaulted parameters class 1");
-    assert(DefParamTest1(1, 3).s=="1,3,4", "defaulted parameters class 2");    
-    assert(DefParamTest1(1, 3, 0).s=="1,3,0", "defaulted parameters class 3");    
-    assert(DefParamTest1{i1=1;}.s=="1,2,3", "defaulted parameters class named 1");
-    assert(DefParamTest1{i1=1;i2=3;}.s=="1,3,4", "defaulted parameters class named 2");    
-    assert(DefParamTest1{i1=1;i3=0;}.s=="1,2,0", "defaulted parameters class named 3");    
+    check(DefParamTest1(1).s=="1,2,3", "defaulted parameters class 1");
+    check(DefParamTest1(1, 3).s=="1,3,4", "defaulted parameters class 2");    
+    check(DefParamTest1(1, 3, 0).s=="1,3,0", "defaulted parameters class 3");    
+    check(DefParamTest1{i1=1;}.s=="1,2,3", "defaulted parameters class named 1");
+    check(DefParamTest1{i1=1;i2=3;}.s=="1,3,4", "defaulted parameters class named 2");    
+    check(DefParamTest1{i1=1;i3=0;}.s=="1,2,0", "defaulted parameters class named 3");    
 
-    assert(DefParamTest2(1).f()=="1,2,3", "defaulted parameters class2 1");
-    assert(DefParamTest2(1, 3).f()=="1,3,4", "defaulted parameters class2 2");    
-    assert(DefParamTest2(1, 3, 0).f()=="1,3,0", "defaulted parameters class2 3");    
-    assert(DefParamTest2{i1=1;}.f()=="1,2,3", "defaulted parameters class2 named 1");
-    assert(DefParamTest2{i1=1;i2=3;}.f()=="1,3,4", "defaulted parameters class2 named 2");    
-    assert(DefParamTest2{i1=1;i3=0;}.f()=="1,2,0", "defaulted parameters class2 named 3");   
+    check(DefParamTest2(1).f()=="1,2,3", "defaulted parameters class2 1");
+    check(DefParamTest2(1, 3).f()=="1,3,4", "defaulted parameters class2 2");    
+    check(DefParamTest2(1, 3, 0).f()=="1,3,0", "defaulted parameters class2 3");    
+    check(DefParamTest2{i1=1;}.f()=="1,2,3", "defaulted parameters class2 named 1");
+    check(DefParamTest2{i1=1;i2=3;}.f()=="1,3,4", "defaulted parameters class2 named 2");    
+    check(DefParamTest2{i1=1;i3=0;}.f()=="1,2,0", "defaulted parameters class2 named 3");   
     
     value tst = DefParamTest3();
-    assert(tst.f(1)=="1,2,3", "defaulted method parameters 1");
-    assert(tst.f(1, 3)=="1,3,4", "defaulted method parameters 2");
-    assert(tst.f(1, 3, 0)=="1,3,0", "defaulted method parameters 3");
-    assert(tst.f{i1=1;}=="1,2,3", "defaulted method parameters named 1");
-    assert(tst.f{i1=1;i2=3;}=="1,3,4", "defaulted method parameters named 2");
-    assert(tst.f{i1=1;i3=0;}=="1,2,0", "defaulted method parameters named 3");
+    check(tst.f(1)=="1,2,3", "defaulted method parameters 1");
+    check(tst.f(1, 3)=="1,3,4", "defaulted method parameters 2");
+    check(tst.f(1, 3, 0)=="1,3,0", "defaulted method parameters 3");
+    check(tst.f{i1=1;}=="1,2,3", "defaulted method parameters named 1");
+    check(tst.f{i1=1;i2=3;}=="1,3,4", "defaulted method parameters named 2");
+    check(tst.f{i1=1;i3=0;}=="1,2,0", "defaulted method parameters named 3");
 }
 
 shared void testGetterMethodDefinitions() {
@@ -102,9 +102,9 @@ shared void testGetterMethodDefinitions() {
     shared Integer x { return ++i; }
   }
   value gt = GetterTest();
-  assert(gt.x==1, "getter defined as method 1");
-  assert(gt.x==2, "getter defined as method 2");
-  assert(gt.x==3, "getter defined as method 3");
+  check(gt.x==1, "getter defined as method 1");
+  check(gt.x==2, "getter defined as method 2");
+  check(gt.x==3, "getter defined as method 3");
 }
 
 String namedArgFunc(String x="x", String y=x+"y", String... z) {
@@ -118,29 +118,29 @@ class Issue105(i, Issue105... more) {
 }
 
 void testNamedArguments() {
-    assert(namedArgFunc{}=="x,xy", "named arguments 1");
-    assert(namedArgFunc{x="a";}=="a,ay", "named arguments 2");
-    assert(namedArgFunc{y="b";}=="x,b", "named arguments 3");
-    assert(namedArgFunc{"c"}=="x,xy,c", "named arguments 4");
-    assert(namedArgFunc{x="a";y="b";"c"}=="a,b,c", "named arguments 5");
-    assert(namedArgFunc{y="b";x="a";"c","d"}=="a,b,c,d", "named arguments 6");
-    assert(namedArgFunc{x="a";"c"}=="a,ay,c", "named arguments 7");
-    assert(namedArgFunc{y="b";"c"}=="x,b,c", "named arguments 8");
-    assert(namedArgFunc{y="b";x="a";}=="a,b", "named arguments 9");
-    assert(namedArgFunc{z={};}=="x,xy", "named arguments 10");
-    assert(namedArgFunc{z={"c", "d"};}=="x,xy,c,d", "named arguments 11");
-    assert(namedArgFunc{y="b";z={"c"};x="a";}=="a,b,c", "named arguments 12");
+    check(namedArgFunc{}=="x,xy", "named arguments 1");
+    check(namedArgFunc{x="a";}=="a,ay", "named arguments 2");
+    check(namedArgFunc{y="b";}=="x,b", "named arguments 3");
+    check(namedArgFunc{"c"}=="x,xy,c", "named arguments 4");
+    check(namedArgFunc{x="a";y="b";"c"}=="a,b,c", "named arguments 5");
+    check(namedArgFunc{y="b";x="a";"c","d"}=="a,b,c,d", "named arguments 6");
+    check(namedArgFunc{x="a";"c"}=="a,ay,c", "named arguments 7");
+    check(namedArgFunc{y="b";"c"}=="x,b,c", "named arguments 8");
+    check(namedArgFunc{y="b";x="a";}=="a,b", "named arguments 9");
+    check(namedArgFunc{z={};}=="x,xy", "named arguments 10");
+    check(namedArgFunc{z={"c", "d"};}=="x,xy,c,d", "named arguments 11");
+    check(namedArgFunc{y="b";z={"c"};x="a";}=="a,b,c", "named arguments 12");
     
     value issue105 = Issue105 { i=1; Issue105 { i=2; } };
-    assert(issue105.i==1, "issue #105");
+    check(issue105.i==1, "issue #105");
 }
 
 shared void test() {
     helloWorld();
     hello("test");
     helloAll("Gavin", "Enrique", "Ivo");
-    assert(toString(5)=="5", "toString(obj)");
-    assert(add(1.5, 2.5)==4.0,"add(Float,Float)");
+    check(toString(5)=="5", "toString(obj)");
+    check(add(1.5, 2.5)==4.0,"add(Float,Float)");
     //repeat(5, void p(Integer x) { print(x); });
     testMethodReference();
     testDefaultedParams();

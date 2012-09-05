@@ -1,4 +1,4 @@
-import assert { ... }
+import check { ... }
 
 Element? find<Element>(Array<Element> a, Boolean f(Element x)) {
   for (Element e in a) {
@@ -29,7 +29,7 @@ void testAnonymous() {
   //Test positional argument call
   variable value found := find(nums, (Integer i) i%2==0);
   if (exists i=found) {
-    assert(i == 2, "anonfunc positional");
+    check(i == 2, "anonfunc positional");
   } else { fail("anonfunc positional"); }
   //Named argument call
   found := find{
@@ -39,12 +39,12 @@ void testAnonymous() {
     a=nums;
   };
   if (exists i=found) {
-    assert(i == 2, "anonfunc named");
+    check(i == 2, "anonfunc named");
   } else { fail("anonfunc named"); }
 
   //Gavin's test
   void callFunction(String f(Integer i), String expect) {
-    assert(f(0)==expect, "anon func returns " f(0) " instead of " expect "");
+    check(f(0)==expect, "anon func returns " f(0) " instead of " expect "");
   }
 
   function f(Integer i) {
@@ -67,10 +67,10 @@ void testAnonymous() {
   //As defaulted param
   found := find2(nums, (Integer i) i>2);
   if (exists i=found) {
-    assert(i==3, "anonfunc i>2 [1]");
+    check(i==3, "anonfunc i>2 [1]");
   } else { fail("anonfunc i>2 [2]"); }
   found := find2(nums);
   if (exists i=found) {
-    assert(i==1, "anonfunc defaulted param [1]");
+    check(i==1, "anonfunc defaulted param [1]");
   } else { fail("anonfunc defaulted param [2]"); }
 }

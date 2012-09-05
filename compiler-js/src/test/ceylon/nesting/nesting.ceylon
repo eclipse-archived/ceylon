@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 shared class Outer(String name) {
     value int = 10;
@@ -222,31 +222,31 @@ shared class C2() extends C1() {
 
 shared void test() {
     outr("Hello");
-    assert(Holder("ok").get().string=="ok","holder(ok)");
-    assert(Holder("ok").string=="ok","holder.string");
-    assert(Wrapper().get().string=="100","wrapper 1");
-    assert(Wrapper().string=="100","wrapper 2");
-    assert(Unwrapper().get().string=="23.56","unwrapper 1");
-    assert(Unwrapper().o.string=="23.56","unwrapper 2");
-    assert(Unwrapper().string=="23.56","unwrapper 3");
-    assert(is Callable<Integer> producer(), "function 1");
-    assert(is Integer producer()(), "function 2");
-    assert(123==producer()(), "function 3");
-    assert("something"==returner("something")(), "function 4");
-    assert(A().B().C().foobar()=="foo", "foobar");
-    assert(A().B().C().quxx()=="qux", "quxx");
-    assert(A().baz()=="foo", "baz");
-    assert(O().test1()=="hello", "method instantiating inner class");
-    assert(O().test2()=="hello", "method accessing inner object");
-    assert(O().test3()=="hello", "method deriving inner interface");
-    assert(OuterC1().tst()=="OuterC1.A.tst()", "");
-    assert(outerf()=="outerf.A.tst()", "");
-    assert(OuterC2().tst()=="OuterC2.A.tst()", "");
+    check(Holder("ok").get().string=="ok","holder(ok)");
+    check(Holder("ok").string=="ok","holder.string");
+    check(Wrapper().get().string=="100","wrapper 1");
+    check(Wrapper().string=="100","wrapper 2");
+    check(Unwrapper().get().string=="23.56","unwrapper 1");
+    check(Unwrapper().o.string=="23.56","unwrapper 2");
+    check(Unwrapper().string=="23.56","unwrapper 3");
+    check(is Callable<Integer> producer(), "function 1");
+    check(is Integer producer()(), "function 2");
+    check(123==producer()(), "function 3");
+    check("something"==returner("something")(), "function 4");
+    check(A().B().C().foobar()=="foo", "foobar");
+    check(A().B().C().quxx()=="qux", "quxx");
+    check(A().baz()=="foo", "baz");
+    check(O().test1()=="hello", "method instantiating inner class");
+    check(O().test2()=="hello", "method accessing inner object");
+    check(O().test3()=="hello", "method deriving inner interface");
+    check(OuterC1().tst()=="OuterC1.A.tst()", "");
+    check(outerf()=="outerf.A.tst()", "");
+    check(OuterC2().tst()=="OuterC2.A.tst()", "");
     Outer("Hello");
-    assert(NameTest().f()=="1234", "Nested class with same name");
-    assert(nameTest.f()=="1234", "Nested object with same name");
-    assert(C1().C3().f()=="1-11-11-13-13", "Several nested classes with same name (1)");
-    assert(C2().C2().f()=="2-11-22-11-13-222-2-11-11-222-13-2-11-11-13-13", "Several nested classes with same name (2)");
+    check(NameTest().f()=="1234", "Nested class with same name");
+    check(nameTest.f()=="1234", "Nested object with same name");
+    check(C1().C3().f()=="1-11-11-13-13", "Several nested classes with same name (1)");
+    check(C2().C2().f()=="2-11-22-11-13-222-2-11-11-222-13-2-11-11-13-13", "Several nested classes with same name (2)");
     testRefinement();
     results();
 }

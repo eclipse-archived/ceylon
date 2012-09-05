@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 shared class Counter(Integer initCount=0) {
     variable value currentCount:=initCount;
@@ -45,21 +45,21 @@ class Issue10C2(Integer arg1) extends Issue10C1(1) {
 
 void testIssue10() {
     value obj = Issue10C2(2);
-    assert(obj.f1()==1, "Issue #10 (parameter)");
-    assert(obj.f11()==2, "Issue #10 (parameter)");
-    assert(obj.f2()==3, "Issue #10 (non-shared attribute)");
-    assert(obj.f12()==4, "Issue #10 (non-shared attribute)");
-    assert(obj.f3()==5, "Issue #10 (non-shared attribute)");
-    assert(obj.i2==6, "Issue #10 (shared attribute)");
-    assert(obj.f4()==8, "Issue #10 (shared attribute)");
-    assert(obj.i3==8, "Issue #10 (shared attribute)");
-    assert(obj.f6()==9, "Issue #10 (non-shared method)");
-    assert(obj.f13()==10, "Issue #10 (non-shared method)");
-    assert(obj.f8()==11, "Issue #10 (non-shared method)");
-    assert(obj.f7()==12, "Issue #10 (shared method)");
-    assert(obj.f10()==14, "Issue #10 (shared method)");
-    assert(obj.f9()==14, "Issue #10 (shared method)");
-    assert(nonempty obj.string, "Issue #113 (inheritance)");
+    check(obj.f1()==1, "Issue #10 (parameter)");
+    check(obj.f11()==2, "Issue #10 (parameter)");
+    check(obj.f2()==3, "Issue #10 (non-shared attribute)");
+    check(obj.f12()==4, "Issue #10 (non-shared attribute)");
+    check(obj.f3()==5, "Issue #10 (non-shared attribute)");
+    check(obj.i2==6, "Issue #10 (shared attribute)");
+    check(obj.f4()==8, "Issue #10 (shared attribute)");
+    check(obj.i3==8, "Issue #10 (shared attribute)");
+    check(obj.f6()==9, "Issue #10 (non-shared method)");
+    check(obj.f13()==10, "Issue #10 (non-shared method)");
+    check(obj.f8()==11, "Issue #10 (non-shared method)");
+    check(obj.f7()==12, "Issue #10 (shared method)");
+    check(obj.f10()==14, "Issue #10 (shared method)");
+    check(obj.f9()==14, "Issue #10 (shared method)");
+    check(nonempty obj.string, "Issue #113 (inheritance)");
 }
 
 class AssignTest() {
@@ -93,24 +93,24 @@ class AliasMemberTest() {
 
 shared void test() {
     value c = Counter(0);
-    assert(c.count==0,"counter 1");
+    check(c.count==0,"counter 1");
     c.inc(); c.inc();
-    assert(c.count==2, "counter 2");
-    assert(c.string=="Counter[2]", "counter.string");
+    check(c.count==2, "counter 2");
+    check(c.string=="Counter[2]", "counter.string");
     
     testIssue10();
     
     value at = AssignTest();
     at.x := 5;
-    assert(at.x==5, "assign to member");
+    check(at.x==5, "assign to member");
     at.y := 2;
-    assert(at.y==2, "assign using setter");
-    assert(Issue50().z=="ok", "Issue #50");
+    check(at.y==2, "assign using setter");
+    check(Issue50().z=="ok", "Issue #50");
     test_outer_inner_safety();
     
-    assert(AliasMemberTest().AliasA().s=="A", "shared inner alias class");
-    assert(AliasMemberTest().b()=="B", "non-shared inner alias class");
-    assert(AliasMemberTest().f1().s=="123", "alias method member 1");
-    assert(AliasMemberTest().f2().s=="A", "alias method member 2");
+    check(AliasMemberTest().AliasA().s=="A", "shared inner alias class");
+    check(AliasMemberTest().b()=="B", "non-shared inner alias class");
+    check(AliasMemberTest().f1().s=="123", "alias method member 1");
+    check(AliasMemberTest().f2().s=="A", "alias method member 2");
     results();
 }

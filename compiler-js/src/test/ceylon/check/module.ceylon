@@ -4,4 +4,4 @@ doc "Basic assertion functions copied from language module tests.
 by "Gavin King"
 by "Enrique Zamudio"
 by "Ivo Kasiuk"
-module assert '0.1' {}
+module check '0.1' {}

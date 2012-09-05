@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 interface Concrete {
   shared String hi() {
@@ -15,8 +15,8 @@ class Dude() satisfies Concrete {
 
 void test_concrete_members() {
   value dude = Dude();
-  assert(dude.hi()=="hi", "concrete interface member");
-  assert(dude.bye()=="bye", "formal interface member");
+  check(dude.hi()=="hi", "concrete interface member");
+  check(dude.bye()=="bye", "formal interface member");
 }
 
 interface Multi1 {
@@ -50,21 +50,21 @@ void testMultipleInheritance() {
   Object m2 = Multimpl2();
   Object m3 = Multimpl3();
   Object m4 = Multimpl4();
-  assert(is Multi1 m1, "multinheritance 1");
-  assert(is Multi2 m1, "multinheritance 2");
-  assert(!is Multi3 m1, "multinheritance 3");
-  assert(is Multi1 m2, "multinheritance 4");
-  assert(is Multi2 m2, "multinheritance 5");
-  assert(is Multi3 m2, "multinheritance 6");
-  assert(is Multi1 m3, "multinheritance 7");
-  assert(!is Multi2 m3, "multinheritance 8");
-  assert(is Multi3 m3, "multinheritance 9");
-  assert(is Multi1 m4, "multinheritance 10");
-  assert(is Multi2 m4, "multinheritance 11");
-  assert(is Multi3 m4, "multinheritance 12");
-  assert(is Multimpl1 m4, "multinheritance 13");
-  assert(Multimpl1().multi()=="MULTI1", "multinheritance 14");
-  assert(Multimpl2().multi()=="multi3", "multinheritance 15");
-  assert(Multimpl3().multi()=="multi3", "multinheritance 16");
-  assert(Multimpl4().multi()=="MULTI4", "multinheritance 17");
+  check(is Multi1 m1, "multinheritance 1");
+  check(is Multi2 m1, "multinheritance 2");
+  check(!is Multi3 m1, "multinheritance 3");
+  check(is Multi1 m2, "multinheritance 4");
+  check(is Multi2 m2, "multinheritance 5");
+  check(is Multi3 m2, "multinheritance 6");
+  check(is Multi1 m3, "multinheritance 7");
+  check(!is Multi2 m3, "multinheritance 8");
+  check(is Multi3 m3, "multinheritance 9");
+  check(is Multi1 m4, "multinheritance 10");
+  check(is Multi2 m4, "multinheritance 11");
+  check(is Multi3 m4, "multinheritance 12");
+  check(is Multimpl1 m4, "multinheritance 13");
+  check(Multimpl1().multi()=="MULTI1", "multinheritance 14");
+  check(Multimpl2().multi()=="multi3", "multinheritance 15");
+  check(Multimpl3().multi()=="multi3", "multinheritance 16");
+  check(Multimpl4().multi()=="MULTI4", "multinheritance 17");
 }

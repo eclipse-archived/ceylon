@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 class TestObjects(Integer a, Integer b, Integer c) satisfies Iterable<Integer> {
   shared actual Iterator<Integer> iterator {
@@ -21,22 +21,22 @@ void test_objects() {
   value t1 = TestObjects(1,2,3).iterator;
   value t2 = TestObjects(1,2,3).iterator;
   if (is Integer i=t1.next()) {
-    assert(i==1, "objects 1");
+    check(i==1, "objects 1");
   }
   if (is Integer i=t1.next()) {
-    assert(i==2, "objects 2");
+    check(i==2, "objects 2");
   }
   if (is Integer i=t2.next()) {
-    assert(i==1, "objects 3");
+    check(i==1, "objects 3");
   }
   if (is Integer i=t1.next()) {
-    assert(i==3, "objects 4");
+    check(i==3, "objects 4");
   }
-  assert(is Finished t1.next(), "objects 5");
+  check(is Finished t1.next(), "objects 5");
   if (is Integer i=t2.next()) {
-    assert(i==2, "objects 6");
+    check(i==2, "objects 6");
   }
   if (is Integer i=t2.next()) {
-    assert(i==3, "objects 7");
+    check(i==3, "objects 7");
   }
 }

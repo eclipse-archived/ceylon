@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 class TestNone() satisfies None<Integer> {
   shared actual TestNone clone { return this; }
@@ -36,34 +36,34 @@ class TestSome(Integer i, Integer... items) satisfies Some<Integer> {
 
 void testFixedSized() {
   value some = TestSome(1,2,3);
-  assert(some.first == 1, "Some.first");
+  check(some.first == 1, "Some.first");
   //Now for inherited
-  assert(!some.empty, "Some.empty");
-  assert(some.size == 3, "Some.size");
-  assert(3 in some, "Some.contains");
-  assert(some.containsAny(5,3,0), "Some.containsAny");
-  assert(some.containsEvery(2,3,1), "Some.containsEvery");
-  assert(some.count(equalTo(1)) == 1, "Some.count");
+  check(!some.empty, "Some.empty");
+  check(some.size == 3, "Some.size");
+  check(3 in some, "Some.contains");
+  check(some.containsAny(5,3,0), "Some.containsAny");
+  check(some.containsEvery(2,3,1), "Some.containsEvery");
+  check(some.count(equalTo(1)) == 1, "Some.count");
   variable FixedSized<Integer> s2 := some.rest;
-  assert(!s2.empty, "Some.empty 2");
-  assert(s2.size == 2, "Some.size 2");
+  check(!s2.empty, "Some.empty 2");
+  check(s2.size == 2, "Some.size 2");
   if (is Some<Integer> s3 = s2) {
     s2 := s3.rest;
   } else {
     fail("s2.rest 1");
   }
-  assert(nonempty s2, "nonempty Some.rest");
-  assert(!s2.empty, "Some.empty 3");
-  assert(s2.size == 1, "Some.size 3");
-  assert(is Integer s2.first, "Some.first 2");
+  check(nonempty s2, "nonempty Some.rest");
+  check(!s2.empty, "Some.empty 3");
+  check(s2.size == 1, "Some.size 3");
+  check(is Integer s2.first, "Some.first 2");
   if (is Some<Integer> s3 = s2) {
     s2 := s3.rest;
-    assert(s3.first == 3, "Some.first 3");
+    check(s3.first == 3, "Some.first 3");
   } else {
     fail("s2.rest 2");
   }
-  assert(is TestNone s2, "Some.rest -> empty");
-  assert(!nonempty s2, "!nonempty TestNone");
-  assert(s2.size == 0, "None.size");
-  assert(!exists s2.first, "None.first");
+  check(is TestNone s2, "Some.rest -> empty");
+  check(!nonempty s2, "!nonempty TestNone");
+  check(s2.size == 0, "None.size");
+  check(!exists s2.first, "None.first");
 }

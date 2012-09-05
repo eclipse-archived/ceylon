@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 shared void test() {
   testIdentifiable();

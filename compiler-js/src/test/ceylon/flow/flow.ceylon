@@ -1,9 +1,9 @@
-import assert { ... }
+import check { ... }
 
 void test_if() {
     //True, with else
     if (true) {
-        assert(true,"if(true)");
+        check(true,"if(true)");
     } else {
         fail("Never happen");
     }
@@ -11,11 +11,11 @@ void test_if() {
     if (false) {
         fail("Never happen");
     } else {
-        assert(true,"if(false)");
+        check(true,"if(false)");
     }
     //without else
     if (2+2 == 4) {
-        assert(true,"if without else");
+        check(true,"if without else");
     }
     //chained if's
     if (1+2 == 4) {
@@ -23,20 +23,20 @@ void test_if() {
     } else if (2+2 == 5) {
         fail("No way");
     } else {
-        assert(true,"Chained if's with else");
+        check(true,"Chained if's with else");
     }
     //chained if's without else
     if (1+2 == 4) {
         fail("can't happen");
     } else if (2+2 == 4) {
-        assert(true,"Chained if's without else");
+        check(true,"Chained if's without else");
     }
     //More complex conditions
     if (2>1 && 1<2) {
-        assert(true,"if &&");
+        check(true,"if &&");
     } else { fail("if &&"); }
     if ((1>2 || 1>0) && 1<2) {
-        assert(true,"if (||)&&");
+        check(true,"if (||)&&");
     } else { fail("if (||)&&"); }
 }
 
@@ -45,11 +45,11 @@ void test_while() {
     while (i < 2) {
         i := i+1;
     }
-    assert(i==2, "while");
+    check(i==2, "while");
     while (i >= 2 && i < 4) {
         i := i+1;
     }
-    assert(i==4,"while");
+    check(i==4,"while");
 }
 
 void testIfExists() {
@@ -67,14 +67,14 @@ void testIfExists() {
     }
     String? s4 = "hi";
     if (exists s3 = s4) {
-        assert(s3=="hi", "if (exists x=y)");
+        check(s3=="hi", "if (exists x=y)");
     } else {
         fail("if (exists x=y)");
     }
     if (exists s3 = s2) {
         if (exists s5 = s4) {
-            assert(s3=="", "if (exists x=y) nested");
-            assert(s5=="hi", "if (exists x=y) nested");
+            check(s3=="", "if (exists x=y) nested");
+            check(s5=="hi", "if (exists x=y) nested");
         } else {
             fail("if (exists x=y) nested");
         }
@@ -82,18 +82,18 @@ void testIfExists() {
         fail("if (exists x=y) nested");
     }
     if (exists len = s4?.size) {
-        assert(len==2, "if (exists x=expr)");
+        check(len==2, "if (exists x=expr)");
     } else {
         fail("if (exists x=expr)");
     }
     variable Integer cnt := 0;
     String? s5 { ++cnt; return "ok"; }
     if (exists x = s5) {
-        assert(x=="ok", "if (exists x=y) with getter [value: " x "]");
+        check(x=="ok", "if (exists x=y) with getter [value: " x "]");
     } else {
         fail("if (exists x=y) with getter [exists]");
     }
-    assert(cnt==1, "if (exists x=y) with getter [calls: " cnt "]");
+    check(cnt==1, "if (exists x=y) with getter [calls: " cnt "]");
 }
 
 void testWhileExists() {
@@ -104,27 +104,27 @@ void testWhileExists() {
         ++i1;
         break;
     }
-    assert(i1==0, "while (exists x)");
+    check(i1==0, "while (exists x)");
     i1 := 0;
     while (exists s2) {
         if (++i1 >= 2) {
             break;
         }
     }
-    assert(i1==2, "while (exists x)");
+    check(i1==2, "while (exists x)");
     i1 := 0;
     while (exists s3 = s1) {
         ++i1;
         break;
     }
-    assert(i1==0, "while (exists x=y)");
+    check(i1==0, "while (exists x=y)");
     variable String? s4 := "hi";
     i1 := 0;
     while (exists s3 = s4) {
         ++i1;
         s4 := null;
     }
-    assert(i1==1, "while (exists x=y)");
+    check(i1==1, "while (exists x=y)");
     i1 := 0;
     while (exists s3 = s2) {
         s4 := "hi";
@@ -139,15 +139,15 @@ void testWhileExists() {
             break;
         }
     } 
-    assert(i1==4, "while (exists x=y) nested");
+    check(i1==4, "while (exists x=y) nested");
     s4 := "hi";
     i1 := 0;
     while (exists len = s4?.size) {
-        assert(len==2, "while (exists x=expr)");
+        check(len==2, "while (exists x=expr)");
         s4 := null;
         ++i1;
     }
-    assert(i1==1, "while (exists x=expr)");
+    check(i1==1, "while (exists x=expr)");
 }
 
 class MySequence<out Element>(Sequence<Element> seq)
@@ -180,14 +180,14 @@ void testIfNonempty() {
     }
     String[] s4 = { "hi" };
     if (nonempty s3 = s4) {
-        assert(s3.first=="hi", "if (nonempty x=y)");
+        check(s3.first=="hi", "if (nonempty x=y)");
     } else {
         fail("if (nonempty x=y)");
     }
     if (nonempty s3 = s2) {
         if (nonempty s5 = s4) {
-            assert(s3.first=="abc", "if (nonempty x=y) nested");
-            assert(s5.first=="hi", "if (nonempty x=y) nested");
+            check(s3.first=="abc", "if (nonempty x=y) nested");
+            check(s5.first=="hi", "if (nonempty x=y) nested");
         } else {
             fail("if (nonempty x=y) nested");
         }
@@ -195,7 +195,7 @@ void testIfNonempty() {
         fail("if (nonempty x=y) nested");
     }
     if (nonempty s6 = s4.segment(0, 1)) {
-        assert(s6.first=="hi", "if (nonempty x=expr)");
+        check(s6.first=="hi", "if (nonempty x=expr)");
     } else {
         fail("if (nonempty x=expr)");
     }
@@ -214,6 +214,6 @@ shared void test() {
     testIfNonempty();
     value assertsBefore=assertionCount();
     testBlocks();
-    assert(assertionCount()==assertsBefore+6, "block assertions skipped: " (assertsBefore+6-assertionCount()) "");
+    check(assertionCount()==assertsBefore+6, "block assertions skipped: " (assertsBefore+6-assertionCount()) "");
     results();
 }

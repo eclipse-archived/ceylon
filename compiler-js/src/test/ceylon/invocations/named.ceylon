@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 //Tests for named argument invocations with objects, methods, and getter arguments.
 String namedFunc(Iterable<Integer> iter, String desc, Boolean match(Integer i)) {
@@ -11,7 +11,7 @@ String namedFunc(Iterable<Integer> iter, String desc, Boolean match(Integer i)) 
 }
 
 void testNamedArguments() {
-  assert(namedFunc {
+  check(namedFunc {
     object iter satisfies Iterable<Integer> {
       shared actual Iterator<Integer> iterator {
         return { 1, 3, 5, 8, 9 }.iterator;
@@ -24,7 +24,7 @@ void testNamedArguments() {
       return i%2==0;
     }
   } == "Even: 8", "named arguments 1");
-  assert(namedFunc {
+  check(namedFunc {
     object iter satisfies Iterable<Integer> {
       shared actual Iterator<Integer> iterator {
         return { 2, 4, 6, 8, 9, 10 }.iterator;

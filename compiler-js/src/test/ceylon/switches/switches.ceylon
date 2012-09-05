@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 abstract class SwitchTest1() of testcase1|testcase2|testcase3 {}
 object testcase1 extends SwitchTest1(){}
@@ -63,24 +63,24 @@ shared void test() {
         case (is Float) {
             continue;
         }
-        assert(result=="int", "is/continue");
+        check(result=="int", "is/continue");
     }
 
     //matches
-    assert(testMatch1(testcase1)=="case1", "match1");
-    assert(testMatch1(testcase2)=="case2", "match 2");
-    assert(testMatch1(testcase3)=="case3", "match 3");
-    assert(testMatch2(testcase1)=="case 1|2", "match 4");
-    assert(testMatch2(testcase2)=="case 1|2", "match 5");
-    assert(testMatch2(testcase3)=="case 3", "match 6");
+    check(testMatch1(testcase1)=="case1", "match1");
+    check(testMatch1(testcase2)=="case2", "match 2");
+    check(testMatch1(testcase3)=="case3", "match 3");
+    check(testMatch2(testcase1)=="case 1|2", "match 4");
+    check(testMatch2(testcase2)=="case 1|2", "match 5");
+    check(testMatch2(testcase3)=="case 3", "match 6");
 
     //is
-    assert(testIs1(1) == 2, "is1");
-    assert(testIs1(1.5) == 2.5, "is2");
-    assert(TestIs2(1).z == "2", "is3");
-    assert(TestIs2("ab").z == "AB", "is3");
-    assert(TestIs2(1).f() == "2", "is3");
-    assert(TestIs2("ab").f() == "AB", "is3");
+    check(testIs1(1) == 2, "is1");
+    check(testIs1(1.5) == 2.5, "is2");
+    check(TestIs2(1).z == "2", "is3");
+    check(TestIs2("ab").z == "AB", "is3");
+    check(TestIs2(1).f() == "2", "is3");
+    check(TestIs2("ab").f() == "AB", "is3");
 
     //TODO satisfies
 

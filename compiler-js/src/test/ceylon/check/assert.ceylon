@@ -6,7 +6,7 @@ shared void initAssert() {
   failures:=0;
 }
 
-shared void assert(Boolean assertion, String message="") {
+shared void check(Boolean assertion, String message="") {
     assertions++;
     if (!assertion) {
         failures++;
@@ -14,7 +14,7 @@ shared void assert(Boolean assertion, String message="") {
     }
 }
 
-shared void assertEqual(Object actual, Object expected, String message="") {
+shared void checkEqual(Object actual, Object expected, String message="") {
     assertions++;
     if (actual != expected) {
         failures++;
@@ -23,7 +23,7 @@ shared void assertEqual(Object actual, Object expected, String message="") {
 }
 
 shared void fail(String message) {
-    assert(false, message);
+    check(false, message);
 }
 
 shared void results() {

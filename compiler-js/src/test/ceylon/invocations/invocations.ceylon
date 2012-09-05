@@ -1,5 +1,5 @@
 import functions { ... }
-import assert { results }
+import check { results }
 
 shared void test() {
     helloWorld();

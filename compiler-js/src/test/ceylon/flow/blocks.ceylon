@@ -1,4 +1,4 @@
-import assert { ... }
+import check { ... }
 
 void testBlocks() {
   value x=1;
@@ -14,7 +14,7 @@ void testBlocks() {
       ran:=i; //this should never run
     }
   }
-  assert(ran==-1,"Block test 1");
+  check(ran==-1,"Block test 1");
 
   //Case 2: "if"block enclosed, with regular break
   ran:=-1;
@@ -27,10 +27,10 @@ void testBlocks() {
       }
       ran:= i;
     }
-    assert(ran==1, "Block test 2");
+    check(ran==1, "Block test 2");
     ran:=100;
   }
-  assert(ran==100, "Block test 3");
+  check(ran==100, "Block test 3");
   //Case 3: "if"block enclosed, with translated continue
   ran:=-1;
   if (x == 1) {
@@ -43,7 +43,7 @@ void testBlocks() {
       ran:=i;
     }
   }
-  assert(ran==9, "Block test 4");
+  check(ran==9, "Block test 4");
 
   //Case 4: "if"block enclosed, with regular continue
   ran:=-1;
@@ -56,8 +56,8 @@ void testBlocks() {
       }
       ran:=i;
     }
-    assert(ran==9, "Block test 5");
+    check(ran==9, "Block test 5");
     ran:=100;
   }
-  assert(ran==100, "Block test 6");
+  check(ran==100, "Block test 6");
 }

@@ -1,4 +1,4 @@
-import assert {...}
+import check {...}
 
 String firstName = "Gavin";
 
@@ -13,15 +13,15 @@ assign lastName {
 }
 
 shared void test() {
-    assertEqual(lastName, "King", "toplevel getter");
+    checkEqual(lastName, "King", "toplevel getter");
     lastName := "Duke";
-    assertEqual(flag, 1, "toplevel setter");
+    checkEqual(flag, 1, "toplevel setter");
     
     Integer x { return 5; }
     assign x { flag := 2; }
-    assertEqual(x, 5, "local getter");
+    checkEqual(x, 5, "local getter");
     x := 7;
-    assertEqual(flag, 2, "local setter");
+    checkEqual(flag, 2, "local setter");
 
     testNewSyntax();    
     results();

@@ -1,4 +1,4 @@
-import assert { check=assert }
+import check { check }
 
 //subclasses must refine this
 abstract shared class RefineTest1() {
