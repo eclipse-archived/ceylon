@@ -22,9 +22,12 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.impl.JULLogger;
 
 public class Main {
     private static final String CEYLOND_VERSION = "0.4 'Ratatouille'";
@@ -47,7 +50,7 @@ public class Main {
             if ("-h".equals(arg)
                     || "-help".equals(arg)
                     || "--help".equals(arg)) {
-                printUsage(SC_OK);
+                printUsage(SC_OK, repositories, destDir);
             } else if ("-v".equals(arg)
                         || "-version".equals(arg)
                         || "--version".equals(arg)) {
@@ -95,7 +98,7 @@ public class Main {
         
         if(modules.isEmpty()){
             System.err.println(CeylondMessages.msg("error.noModulesSpecified"));
-            printUsage(SC_ARGS);
+            printUsage(SC_ARGS, repositories, destDir);
         }
         if (destDir == null) {
             destDir = "modules";
@@ -170,8 +173,8 @@ public class Main {
         exit(SC_OK);
     }
 
-    private static void printUsage(int statusCode) {
-        List<String> defaultRepositories = addDefaultRepositories(Collections.<String>emptyList());
+    private static void printUsage(int statusCode, List<String> userRepos, String outputRepo) {
+        List<String> defaultRepositories = addDefaultRepositories(userRepos, null);
         System.err.print(CeylondMessages.msg("info.usage1"));
         for(String repo : defaultRepositories) {
             System.err.println("                        "+repo);
@@ -180,21 +183,8 @@ public class Main {
         exit(statusCode);
     }
     
-    private static List<String> addDefaultRepositories(List<String> userRepos){
-        List<String> defaultRepositories = new LinkedList<String>();
-        // DIST first
-        String ceylonHome = System.getProperty("ceylon.home");
-        // if it's not set, let's not use it
-        if(ceylonHome != null && !ceylonHome.isEmpty()){
-            defaultRepositories.add(ceylonHome+File.separator+"repo");
-        }
-        // then USER repos with default
-        if(userRepos.isEmpty())
-            defaultRepositories.add("modules");
-        else
-            defaultRepositories.addAll(userRepos);
-        // then HOME repo
-        defaultRepositories.add(com.redhat.ceylon.compiler.java.util.Util.getHomeRepository());
-        return defaultRepositories;
+    private static List<String> addDefaultRepositories(List<String> userRepos, String outputRepo){
+        RepositoryManagerBuilder builder = CeylonUtils.makeRepositoryManagerBuilder(userRepos, outputRepo, new JULLogger());
+        return builder.getRepositoriesDisplayString();
     }
 }
