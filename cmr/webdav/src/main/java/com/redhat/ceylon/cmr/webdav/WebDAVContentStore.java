@@ -19,15 +19,11 @@ package com.redhat.ceylon.cmr.webdav;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.http.ProtocolException;
 import org.apache.http.client.ClientProtocolException;
@@ -37,13 +33,6 @@ import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 import com.googlecode.sardine.impl.SardineException;
 import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
-import com.redhat.ceylon.cmr.api.ModuleResult;
-import com.redhat.ceylon.cmr.api.ModuleSearchResult;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
@@ -51,10 +40,6 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
-import com.redhat.ceylon.cmr.util.WS;
-import com.redhat.ceylon.cmr.util.WS.Link;
-import com.redhat.ceylon.cmr.util.WS.Parser;
-import com.redhat.ceylon.cmr.util.WS.XMLHandler;
 
 /**
  * WebDAV content store.
@@ -64,16 +49,8 @@ import com.redhat.ceylon.cmr.util.WS.XMLHandler;
  */
 public class WebDAVContentStore extends URLContentStore {
 
-    public final static String HERD_COMPLETE_MODULES_REL = "http://modules.ceylon-lang.org/rel/complete-modules";
-    public final static String HERD_COMPLETE_VERSIONS_REL = "http://modules.ceylon-lang.org/rel/complete-versions";
-    public final static String HERD_SEARCH_MODULES_REL = "http://modules.ceylon-lang.org/rel/search-modules";
-
     private volatile Sardine sardine;
-    private boolean _isHerd;
     private boolean forcedAuthenticationForPutOnHerd = false;
-    private String herdCompleteModulesURL;
-    private String herdCompleteVersionsURL;
-    private String herdSearchModulesURL;
 
     public WebDAVContentStore(String root, Logger log) {
         super(root, log);
@@ -84,56 +61,10 @@ public class WebDAVContentStore extends URLContentStore {
             synchronized (this) {
                 if (sardine == null) {
                     sardine = (username == null || password == null) ? SardineFactory.begin() : SardineFactory.begin(username, password);
-                    _isHerd = testHerd();
                 }
             }
         }
         return sardine;
-    }
-
-    @Override
-    public boolean isHerd(){
-        getSardine();
-        return _isHerd;
-    }
-    
-    private boolean testHerd() {
-        try{
-            URL rootURL = getURL("");
-            HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
-            try{
-                con.setRequestMethod("OPTIONS");
-                if(con.getResponseCode() != HttpURLConnection.HTTP_OK)
-                    return false;
-                String herdVersion = con.getHeaderField("X-Herd-Version");
-                log.debug("Herd version: "+herdVersion);
-                boolean ret = herdVersion != null && !herdVersion.isEmpty();
-                if(ret){
-                    collectHerdLinks(con);
-                }
-                return ret;
-            }finally{
-                con.disconnect();
-            }
-        }catch(Exception x){
-            log.debug("Failed to determine if remote host is a Herd repo: "+x.getMessage());
-            return false;
-        }
-    }
-
-    private void collectHerdLinks(HttpURLConnection con) {
-        // collect the links
-        try{
-            List<Link> links = WS.collectLinks(con);
-            herdCompleteModulesURL = WS.getLink(links, HERD_COMPLETE_MODULES_REL);
-            herdCompleteVersionsURL = WS.getLink(links, HERD_COMPLETE_VERSIONS_REL);
-            herdSearchModulesURL = WS.getLink(links, HERD_SEARCH_MODULES_REL);
-            log.debug("Got complete-modules link: " + herdCompleteModulesURL);
-            log.debug("Got complete-versions link: " + herdCompleteVersionsURL);
-            log.debug("Got search-modules link: " + herdSearchModulesURL);
-        }catch(Exception x){
-            log.debug("Failed to read links from Herd repo: "+x.getMessage());
-        }
     }
 
     public OpenNode create(Node parent, String child) {
@@ -270,168 +201,6 @@ public class WebDAVContentStore extends URLContentStore {
     @Override
     public String toString() {
         return "WebDAV content store: " + root;
-    }
-
-    @Override
-    public void completeModules(ModuleQuery lookup, final ModuleResult result) {
-        if(isHerd() && herdCompleteModulesURL != null){
-            // let's try Herd
-            try{
-                WS.getXML(herdCompleteModulesURL,
-                          WS.params(WS.param("module", lookup.getName()),
-                                    WS.param("type", getHerdTypeParam(lookup.getType()))),
-                          new XMLHandler(){
-                    @Override
-                    public void onOK(Parser p) {
-                        parseCompleteModulesResponse(p, result);
-                    }
-                });
-            }catch(Exception x){
-                log.info("Failed to get completion of modules from Herd: "+x.getMessage());
-            }
-        }
-    }
-
-    protected void parseCompleteModulesResponse(Parser p, ModuleResult result) {
-        p.moveToOpenTag("results");
-        while(p.moveToOptionalOpenTag("module")){
-            String module = p.contents();
-            result.addResult(module);
-        }
-        p.checkCloseTag();
-    }
-
-    private String getHerdTypeParam(Type type) {
-        switch(type){
-        case JS:
-            return "javascript";
-        case JVM:
-            return "jvm";
-        case SRC:
-            return "source";
-        default:
-            throw new RuntimeException("Missing enum case handling");
-        }
-    }
-
-    @Override
-    public void completeVersions(ModuleVersionQuery lookup, final ModuleVersionResult result) {
-        if(isHerd() && herdCompleteVersionsURL != null){
-            // let's try Herd
-            try{
-                WS.getXML(herdCompleteVersionsURL,
-                          WS.params(WS.param("module", lookup.getName()),
-                                    WS.param("version", lookup.getVersion()),
-                                    WS.param("type", getHerdTypeParam(lookup.getType()))),
-                          new XMLHandler(){
-                    @Override
-                    public void onOK(Parser p) {
-                        parseCompleteVersionsResponse(p, result);
-                    }
-                });
-            }catch(Exception x){
-                log.info("Failed to get completion of versions from Herd: "+x.getMessage());
-            }
-        }
-    }
-
-    protected void parseCompleteVersionsResponse(Parser p, ModuleVersionResult result) {
-        List<String> authors = new LinkedList<String>();
-        p.moveToOpenTag("results");
-        
-        while(p.moveToOptionalOpenTag("module-version")){
-            String module = null, version = null, doc = null, license = null;
-            authors.clear();
-            
-            while(p.moveToOptionalOpenTag()){
-                if(p.isOpenTag("module")){
-                    // ignored
-                    module = p.contents();
-                }else if(p.isOpenTag("version")){
-                    version = p.contents();
-                }else if(p.isOpenTag("doc")){
-                    doc = p.contents();
-                }else if(p.isOpenTag("license")){
-                    license = p.contents();
-                }else if(p.isOpenTag("authors")){
-                    authors.add(p.contents());
-                }else{
-                    throw new RuntimeException("Unknown tag: "+p.tagName());
-                }
-            }
-            if(version == null || version.isEmpty())
-                throw new RuntimeException("Missing required version");
-            ModuleVersionDetails newVersion = result.addVersion(version);
-            if(newVersion != null){
-                if(doc != null && !doc.isEmpty())
-                    newVersion.setDoc(doc);
-                if(license != null && !license.isEmpty())
-                    newVersion.setLicense(license);
-                if(!authors.isEmpty())
-                    newVersion.getAuthors().addAll(authors);
-            }
-            p.checkCloseTag();
-        }
-        p.checkCloseTag();
-    }
-
-    @Override
-    public void searchModules(ModuleQuery query, final ModuleSearchResult result) {
-        if(isHerd() && herdSearchModulesURL != null){
-            // let's try Herd
-            try{
-                WS.getXML(herdSearchModulesURL,
-                          WS.params(WS.param("query", query.getName()),
-                                    WS.param("type", getHerdTypeParam(query.getType())),
-                                    WS.param("start", query.getStart()),
-                                    WS.param("count", query.getCount())),
-                          new XMLHandler(){
-                    @Override
-                    public void onOK(Parser p) {
-                        parseSearchModulesResponse(p, result);
-                    }
-                });
-            }catch(Exception x){
-                log.info("Failed to search modules from Herd: "+x.getMessage());
-            }
-        }
-    }
-
-    protected void parseSearchModulesResponse(Parser p, ModuleSearchResult result) {
-        SortedSet<String> authors = new TreeSet<String>();
-        SortedSet<String> versions = new TreeSet<String>();
-
-        p.moveToOpenTag("results");
-        while(p.moveToOptionalOpenTag("module")){
-            String module = null, doc = null, license = null;
-            authors.clear();
-            versions.clear();
-            
-            while(p.moveToOptionalOpenTag()){
-                if(p.isOpenTag("name")){
-                    module = p.contents();
-                }else if(p.isOpenTag("versions")){
-                    versions.add(p.contents());
-                }else if(p.isOpenTag("doc")){
-                    doc = p.contents();
-                }else if(p.isOpenTag("license")){
-                    license = p.contents();
-                }else if(p.isOpenTag("authors")){
-                    authors.add(p.contents());
-                }else{
-                    throw new RuntimeException("Unknown tag: "+p.tagName());
-                }
-            }
-            if(module == null || module.isEmpty())
-                throw new RuntimeException("Missing required module name");
-            if(versions.isEmpty()){
-                log.debug("Ignoring result for " + module + " because it doesn't have a single version");
-            }else{
-                result.addResult(module, doc, license, authors, versions);
-            }
-            p.checkCloseTag();
-        }
-        p.checkCloseTag();
     }
 
     private class WebDAVContentHandle implements ContentHandle {

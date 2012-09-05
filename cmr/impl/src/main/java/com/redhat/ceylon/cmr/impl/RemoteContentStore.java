@@ -158,9 +158,4 @@ public class RemoteContentStore extends URLContentStore {
             return null; // cannot add content
         }
     }
-
-    @Override
-    public boolean isHerd() {
-        return false;
-    }
 }
