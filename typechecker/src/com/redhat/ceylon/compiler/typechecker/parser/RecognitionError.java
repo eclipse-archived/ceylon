@@ -14,9 +14,11 @@ public abstract class RecognitionError implements Message {
 	
 	public RecognitionError(RecognitionException re, String[] tn) {
 		recognitionException = re;
-		tokenNames = new String[tn.length]; 
-		for (int i=0; i<tn.length; i++) {
-			tokenNames[i] = tokens.get(tn[i]);
+		if (tn!=null) {
+			tokenNames = new String[tn.length];
+			for (int i=0; i<tn.length; i++) {
+				tokenNames[i] = tokens.get(tn[i]);
+			}
 		}
 	}
 	
