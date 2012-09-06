@@ -11,7 +11,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -29,9 +28,9 @@ import javax.annotation.PostConstruct;
  */
 public abstract class ToolLoader {
 
-    private final ClassLoader loader;
+    protected final ClassLoader loader;
     
-    private final ArgumentParserFactory argParserFactory;
+    protected final ArgumentParserFactory argParserFactory;
     
     public ToolLoader(ArgumentParserFactory argParserFactory) {
         this(argParserFactory, ToolLoader.class.getClassLoader());
@@ -57,32 +56,26 @@ public abstract class ToolLoader {
 
     protected String getToolClassName(final String toolName) {
         String className = null;
-        //if (toolName.isEmpty()) {
-        //    className = getTopLevelToolClassName();
-        //} else {
-            List<String> classNames = iterateToolNames(new Handler<String>() {
-                @Override
-                public String handle(String cls) {
-                    if (toolName.equals(getToolName(cls))) {
-                        return cls;
-                    }
-                    return null;
+        List<String> classNames = iterateToolNames(new Handler<String>() {
+            @Override
+            public String handle(String cls) {
+                if (toolName.equals(getToolName(cls))) {
+                    return cls;
                 }
-            });
-               
-            if (new HashSet<String>(classNames).size() > 1) {
-                // TODO Allow fully qualified tool names to avoid ambiguities?
-                throw new ToolException("Ambiguous tool name " + toolName + ", classes: " + classNames);
-            }
-            if (classNames.isEmpty()) {
                 return null;
             }
-            className = classNames.get(0);
-        //}
+        });
+           
+        if (new HashSet<String>(classNames).size() > 1) {
+            // TODO Allow fully qualified tool names to avoid ambiguities?
+            throw new ToolException("Ambiguous tool name " + toolName + ", classes: " + classNames);
+        }
+        if (classNames.isEmpty()) {
+            return null;
+        }
+        className = classNames.get(0);
         return className;
     }
-    
-    protected abstract String getTopLevelToolClassName();
 
     /**
      * Returns a ToolModel given the name of the tool, or null if no such tool is 
@@ -399,6 +392,14 @@ public abstract class ToolLoader {
     
     private <T> List<T> iterateToolNames(Handler<T> handler) {
         List<T> result = new ArrayList<T>();
+        Enumeration<URL> resources = getServiceMeta();
+        while (resources.hasMoreElements()) {
+            parseServiceInfo(handler, result, resources);
+        }
+        return result;
+    }
+
+    protected Enumeration<URL> getServiceMeta() {
         /* Use the same conventions as java.util.ServiceLoader but without 
          * requiring us to load the Service classes
          */
@@ -408,20 +409,7 @@ public abstract class ToolLoader {
         } catch (IOException e) {
             throw new ToolException(e);
         }
-        while (resources.hasMoreElements()) {
-            parseServiceInfo(handler, result, resources);
-        }
-        // Nasty hack to work around the Eclipse putting all the generated 
-        // classes and resources in the same place: 
-        try {
-            resources = loader.getResources("META-INF/services/"+Tool.class.getName()+"-test");
-        } catch (IOException e) {
-            throw new ToolException(e);
-        }
-        while (resources.hasMoreElements()) {
-            parseServiceInfo(handler, result, resources);
-        }
-        return result;
+        return resources;
     }
 
     private <T> void parseServiceInfo(Handler<T> handler, List<T> result,
