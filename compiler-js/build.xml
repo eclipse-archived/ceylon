@@ -70,6 +70,7 @@
                 <pathelement path="${ceylon.typechecker.lib}" />
                 <pathelement path="${ceylon.module-resolver.lib}" />
                 <pathelement path="${ceylon.compiler.lib}" />
+                <pathelement path="lib/json-smart-1.1.1.jar" />
             </classpath>
             <include name="**/*.java" />
         </javac>
@@ -158,7 +159,7 @@
         </java>
     </target>
 
-    <target name="compileopttest" depends="build">
+    <target name="compileopttest" depends="test-compile">
         <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
             <arg value="optimize" />
             <sysproperty key="file.encoding" value="UTF-8" />
