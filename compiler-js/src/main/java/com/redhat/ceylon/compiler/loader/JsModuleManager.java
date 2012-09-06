@@ -69,7 +69,7 @@ public class JsModuleManager extends ModuleManager {
                                     depname = s;
                                 }
                                 //This will cause the dependency to be loaded later
-                                JsonModule dep = new JsonModule();
+                                JsonModule dep = new JsonModule(this);
                                 dep.setVersion(depv);
                                 dep.setName(splitModuleName(depname));
                                 ModuleImport imp = new ModuleImport(dep, false, false);
@@ -102,7 +102,7 @@ public class JsModuleManager extends ModuleManager {
 
     @Override
     protected Module createModule(List<String> moduleName) {
-        Module module = new JsonModule();
+        Module module = new JsonModule(this);
         module.setName(moduleName);
         return module;
     }
