@@ -173,9 +173,12 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // - class AliasedType<T>(T x){}
         // - class Alias(Integer x) = AliasedType<Integer>;
         // where Alias's x parameter is not really unboxed
-        if(klass.isAlias())
+        if(klass.isAlias()){
+            // error handling
+            if(klass.getExtendedTypeDeclaration() == null)
+                return;
             refinedParameterLists = klass.getExtendedTypeDeclaration().getParameterLists();
-        else
+        }else
             refinedParameterLists = parameterLists;
         
         boxAndRawParameterLists(parameterLists, refinedParameterLists);
