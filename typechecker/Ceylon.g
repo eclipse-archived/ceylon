@@ -22,7 +22,7 @@ options {
     public java.util.List<ParseError> getErrors() {
         return errors;
     }
-    
+    int expecting=-1;
 }
 
 @lexer::members {
@@ -104,9 +104,11 @@ packageDescriptor returns [PackageDescriptor packageDescriptor]
         $packageDescriptor.setAnnotationList($annotations.annotationList); 
         $packageDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       packagePath
-      { $packageDescriptor.setImportPath($packagePath.importPath); }
+      { $packageDescriptor.setImportPath($packagePath.importPath); 
+        expecting=SEMICOLON; }
       SEMICOLON
-      { $packageDescriptor.setEndToken($SEMICOLON); }
+      { $packageDescriptor.setEndToken($SEMICOLON); 
+        expecting=-1; }
     ;
 
 importModule returns [ImportModule importModule]
@@ -115,9 +117,11 @@ importModule returns [ImportModule importModule]
       packagePath
       { $importModule.setImportPath($packagePath.importPath); }
       QUOTED_LITERAL
-      { $importModule.setVersion(new QuotedLiteral($QUOTED_LITERAL)); }
+      { $importModule.setVersion(new QuotedLiteral($QUOTED_LITERAL)); 
+        expecting=SEMICOLON; }
       SEMICOLON
-      { $importModule.setEndToken($SEMICOLON); }
+      { $importModule.setEndToken($SEMICOLON); 
+        expecting=-1; }
     ;
 
 importList returns [ImportList importList]
@@ -348,7 +352,9 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
           specifier
           { dec.setSpecifierExpression($specifier.specifierExpression); }
         )?
+        { expecting=SEMICOLON; }
         SEMICOLON
+        { expecting=-1; }
         { $declaration.setEndToken($SEMICOLON); }
       //-> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
       )
@@ -392,8 +398,10 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
           initializer
           { dec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
+        { expecting=SEMICOLON; }
         SEMICOLON
-        { $declaration.setEndToken($SEMICOLON); }
+        { $declaration.setEndToken($SEMICOLON); 
+          expecting=-1; }
         //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
       | 
         { $declaration = def; }
@@ -447,8 +455,10 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             ms=specifier
            { mdec.setSpecifierExpression($ms.specifierExpression); }
           )?
+          { expecting=SEMICOLON; }
           s1=SEMICOLON
-          { $declaration.setEndToken($s1); }
+          { $declaration.setEndToken($s1);
+            expecting=-1; }
         //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
         )
       | 
@@ -459,8 +469,10 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
           initializer
           { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
+        { expecting=SEMICOLON; }
         s2=SEMICOLON
-        { $declaration.setEndToken($s2); }
+        { $declaration.setEndToken($s2); 
+        expecting=-1; }
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
       | 
         { $declaration = adef; }
@@ -1033,6 +1045,7 @@ expressionOrSpecificationStatement returns [Statement statement]
           ss.setBaseMemberExpression($expression.expression.getTerm()); 
           $statement = ss; }
       )?
+      { expecting=SEMICOLON; }
       (
         SEMICOLON
         { $statement.setEndToken($SEMICOLON); }
@@ -1040,14 +1053,17 @@ expressionOrSpecificationStatement returns [Statement statement]
               new MismatchedTokenException(SEMICOLON, input)); }
         COMMA
         { $statement.setEndToken($COMMA); }
-    )
+      )
+      { expecting=-1; }
     ;
 
 directiveStatement returns [Directive directive]
     : d=directive 
       { $directive=$d.directive; } 
+      { expecting=SEMICOLON; }
       SEMICOLON
       { $directive.setEndToken($SEMICOLON); }
+      { expecting=-1; }
     ;
 
 directive returns [Directive directive]

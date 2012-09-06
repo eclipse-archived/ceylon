@@ -6,9 +6,12 @@ public class ParseError extends RecognitionError {
 	
 	private CeylonParser parser;
 	private int code;
+	private int expecting;
 	
 	public ParseError(CeylonParser parser, RecognitionException re, String[] tn) {
 		this(parser, re, tn, -1);
+		expecting = parser.expecting;
+		parser.expecting=-1;
 	}
 	
     public ParseError(CeylonParser parser, RecognitionException re, String[] tn, int code) {
@@ -32,7 +35,11 @@ public class ParseError extends RecognitionError {
     
 	@Override 
 	public String getMessage() {
-		return "incorrect syntax: " + parser.getErrorMessage(recognitionException, tokenNames);
+		String result = "incorrect syntax: " + parser.getErrorMessage(recognitionException, tokenNames);
+		if (expecting!=-1) {
+			result += " expecting " + tokenNames[expecting];
+		}
+		return result;
 	}
 	
 	@Override
