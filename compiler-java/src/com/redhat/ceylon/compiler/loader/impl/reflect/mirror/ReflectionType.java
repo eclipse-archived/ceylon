@@ -71,9 +71,9 @@ public class ReflectionType implements TypeMirror {
             }
             sb.append(unquoteLastPart(outers.pop().getName()));
             for (Class<?> o : outers) {
-                sb.append('.').append(unquote(o.getSimpleName()));
+                sb.append('$').append(unquote(o.getSimpleName()));
             }
-            sb.append('.').append(unquote(klass.getSimpleName()));
+            sb.append('$').append(unquote(klass.getSimpleName()));
         }
         return sb.toString();
     }
