@@ -56,7 +56,7 @@ public class PluginLoader {
     private <T extends Plugin> Class<T> loadToolClass(final String toolName) {
         String className = null;
         if (toolName.isEmpty()) {
-            className = Tool.class.getName();
+            className = CeylonTool.class.getName();
         } else {
             List<String> classNames = iterateToolNames(new Handler<String>() {
                 @Override
@@ -380,7 +380,7 @@ public class PluginLoader {
     }
     
     private String getToolName(String className) {
-        String toolName = className.replaceAll("Tool$", "").replaceAll("^.*\\.", "");
+        String toolName = className.replaceAll("^.*\\.", "").replaceAll("^Ceylon(.*)Tool$", "$1");
         return camelCaseToDashes(toolName);
     }
     

@@ -9,21 +9,21 @@ import com.redhat.ceylon.common.tool.ArgumentParserFactory;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.PluginLoader;
 import com.redhat.ceylon.common.tool.PluginModel;
-import com.redhat.ceylon.common.tool.example.ExampleTool;
+import com.redhat.ceylon.common.tool.example.CeylonExampleTool;
 
 public class PluginLoaderTest {
 
     @Test
     public void testExampleTool() throws Exception {
-        final PluginModel<ExampleTool> model = new PluginLoader(new ArgumentParserFactory()).loadToolModel("example");
+        final PluginModel<CeylonExampleTool> model = new PluginLoader(new ArgumentParserFactory()).loadToolModel("example");
         Assert.assertNotNull(model);
         Assert.assertEquals("example", model.getName());
         Assert.assertEquals(1, model.getPostConstruct().size());
-        Assert.assertEquals(ExampleTool.class.getMethod("init"), model.getPostConstruct().get(0));
+        Assert.assertEquals(CeylonExampleTool.class.getMethod("init"), model.getPostConstruct().get(0));
         
         final OptionModel longOptionModel = model.getOption("long-name");
         Assert.assertEquals("long-name", longOptionModel.getLongName());
-        Assert.assertEquals(ExampleTool.class.getMethod("setLongName", boolean.class), longOptionModel.getArgument().getSetter());
+        Assert.assertEquals(CeylonExampleTool.class.getMethod("setLongName", boolean.class), longOptionModel.getArgument().getSetter());
         Assert.assertEquals(longOptionModel, model.getOptionByShort('F'));
         Assert.assertEquals(null, longOptionModel.getArgument().getName());
         Assert.assertEquals(true, longOptionModel.isPureOption());
@@ -32,7 +32,7 @@ public class PluginLoaderTest {
         
         final OptionModel shortOptionModel = model.getOption("short-name");
         Assert.assertEquals("short-name", shortOptionModel.getLongName());
-        Assert.assertEquals(ExampleTool.class.getMethod("setShortName", String.class), shortOptionModel.getArgument().getSetter());
+        Assert.assertEquals(CeylonExampleTool.class.getMethod("setShortName", String.class), shortOptionModel.getArgument().getSetter());
         Assert.assertEquals(shortOptionModel, model.getOptionByShort('b'));
         Assert.assertEquals("value", shortOptionModel.getArgument().getName());
         Assert.assertEquals(false, shortOptionModel.isPureOption());

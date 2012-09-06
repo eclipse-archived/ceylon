@@ -19,8 +19,9 @@ import com.redhat.ceylon.common.tool.Summary;
 @Summary("An example tool which demonstrates how to write a Tool.")
 @Description("A tool must implement the `Plugin` interface, and it has annotated " +
 	  "setters for each option/argument it recieves from the command line arguments." +
-	  "The name of the tool is derived from the name of the class, which must end with `Tool`")
-public class ExampleTool implements Plugin {
+	  "The name of the tool is derived from the name of the class, which must " +
+	  "begin with `Ceylon` and end with `Tool`")
+public class CeylonExampleTool implements Plugin {
 
     private boolean longName;
     private String shortName;
@@ -65,7 +66,7 @@ public class ExampleTool implements Plugin {
         return listArgument;
     }
 
-    public ExampleTool() {
+    public CeylonExampleTool() {
         
     }
     @Option(longName="long-name", shortName='F')

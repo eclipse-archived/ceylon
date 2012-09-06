@@ -16,7 +16,7 @@ import java.util.List;
         "Otherwise `<tool-arguments>` should begin with the name of a ceylon tool. " +
 		"The named tool is loaded and configured with the remaining command " +
         "line arguments and control passes to that tool.")
-public class Tool implements Plugin {
+public class CeylonTool implements Plugin {
 
     public static final String VERSION = "0.4 (Supercalifragilisticexpialidocious)";
     private static final String ARG_VERSION = "--version";
@@ -34,7 +34,7 @@ public class Tool implements Plugin {
     private PluginFactory pluginFactory;
     private boolean version;
     
-    public Tool() {
+    public CeylonTool() {
         this.argParserFactory = new ArgumentParserFactory();
     }
     
@@ -147,7 +147,7 @@ public class Tool implements Plugin {
             System.exit(SC_OK);
         } else {
             Java7Checker.check();
-            System.exit(new Tool().bootstrap(args));
+            System.exit(new CeylonTool().bootstrap(args));
         }
     }
 
@@ -165,7 +165,7 @@ public class Tool implements Plugin {
      */
     public int bootstrap(String[] args) throws Exception {
         try {
-            PluginModel<Tool> model = getToolModel("");
+            PluginModel<CeylonTool> model = getToolModel("");
             List<String> myArgs = rearrangeArgs(args);
             getPluginFactory().bindArguments(model, this, myArgs);
             run();

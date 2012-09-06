@@ -7,7 +7,7 @@ import com.redhat.ceylon.common.tool.Plugin;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("")
-public class MinimumsTool implements Plugin {
+public class CeylonMinimumsTool implements Plugin {
 
     private List<String> arguments;
     

@@ -9,14 +9,15 @@ package com.redhat.ceylon.common.tool;
  * <ul>
  * <li>The class must be concrete.</li>
  * <li>The class must have a public no argument constructor</li> 
- * <li>The class's name must end with {@code Tool}. The tool name is derived from 
- *     the class name by:
+ * <li>The class's name must begin with {@code Ceylon} end with {@code Tool}. 
+ *     The tool name is derived from the class name by:
  *   <ol>
+ *     <li>Removing the initial {@code Ceylon} trailing {@code Tool},</li>
  *     <li>Lowercasing the initial character</li>
  *     <li>Replacing every subsequent upper case character in the name with a 
  *     dash followed by the lowercased character</li>
  *   </ol>
- *     So, for example the class name {@code FooBarTool} implies the 
+ *     So, for example the class name {@code CeylonFooBarTool} implies the 
  *     tool name {@code foo-bar}
  * </li> 
  * </ol>

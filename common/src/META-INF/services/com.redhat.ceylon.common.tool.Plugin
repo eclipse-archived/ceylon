@@ -1,4 +1,4 @@
 # The top level tool
-com.redhat.ceylon.common.tool.Tool
+com.redhat.ceylon.common.tool.CeylonTool
 # The bash completion tool
-com.redhat.ceylon.common.tool.BashCompletionTool
+com.redhat.ceylon.common.tool.CeylonBashCompletionTool

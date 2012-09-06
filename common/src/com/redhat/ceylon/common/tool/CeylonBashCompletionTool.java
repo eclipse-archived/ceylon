@@ -19,7 +19,7 @@ value="A tool which provides completion suggestions for the Bash shell.")
 		"* long option names," +
 		"* long option values **if** the setter type is a `java.lang.File` or a subclass" +
 		"  of `java.lang.Enum`.")
-public class BashCompletionTool implements Plugin {
+public class CeylonBashCompletionTool implements Plugin {
 
     public static class CompletionResults {
         
@@ -96,7 +96,7 @@ public class BashCompletionTool implements Plugin {
             results = completeToolNames(arguments.isEmpty() ? "" : arguments.get(cword));
         } else if (cword < arguments.size()) {
             String argument = arguments.get(cword);
-            Tool main = new Tool();
+            CeylonTool main = new CeylonTool();
             main.setArgs(arguments);
             PluginModel<?> tool = main.getToolModel();
             if (!afterEoo()) {
