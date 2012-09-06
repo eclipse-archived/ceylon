@@ -11,7 +11,6 @@ import java.util.Map;
 
 import net.minidev.json.JSONValue;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -35,7 +34,11 @@ public class JsModuleManager extends ModuleManager {
             List<PhasedUnits> phasedUnitsOfDependencies) {
         //Create a similar artifact but with .js extension
         File js = artifact.artifact();
-        if (!artifact.name().equals("ceylon.language") && js.getName().endsWith(".js")) {
+        if (module instanceof JsonModule && !artifact.name().equals("ceylon.language") && js.getName().endsWith(".js")) {
+            if (((JsonModule)module).getModel() != null) {
+                System.out.println("skipping already loaded module " + module);
+                return;
+            }
             if (js.exists() && js.isFile() && js.canRead()) {
                 BufferedReader reader = null;
                 try {
@@ -50,7 +53,7 @@ public class JsModuleManager extends ModuleManager {
                         }
                     }
                     if (model != null) {
-                        System.out.println("Loading metamodel for " + model.get("$mod-name") + "/" + model.get("$mod-version"));
+                        ((JsonModule)module).setModel(model);
                         @SuppressWarnings("unchecked")
                         List<String> deps = (List<String>)model.get("$mod-deps");
                         if (deps != null) {
@@ -66,10 +69,9 @@ public class JsModuleManager extends ModuleManager {
                                     depname = s;
                                 }
                                 //This will cause the dependency to be loaded later
-                                Module dep = new Module();
+                                JsonModule dep = new JsonModule();
                                 dep.setVersion(depv);
-                                dep.setName(Arrays.asList(depname.split("\\.")));
-                                findModule(dep, dependencyTree, true);
+                                dep.setName(splitModuleName(depname));
                                 ModuleImport imp = new ModuleImport(dep, false, false);
                                 module.getImports().add(imp);
                             }
@@ -97,4 +99,12 @@ public class JsModuleManager extends ModuleManager {
     public Iterable<String> getSearchedArtifactExtensions() {
         return Arrays.asList("js", "src");
     }
+
+    @Override
+    protected Module createModule(List<String> moduleName) {
+        Module module = new JsonModule();
+        module.setName(moduleName);
+        return module;
+    }
+
 }
