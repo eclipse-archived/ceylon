@@ -434,6 +434,15 @@ public class MetamodelGenerator extends Visitor {
         if (d.isAbstract()) {
             m.put("abstract", "1");
         }
+        if (d.isActual()) {
+            m.put("actual", "1");
+        }
+        if (d.isAnonymous()) {
+            m.put("$anon", "1");
+        }
+        if (d.isDefault()) {
+            m.put("$def", "1");
+        }
         parent.put(d.getName(), m);
         super.visit(that);
     }
