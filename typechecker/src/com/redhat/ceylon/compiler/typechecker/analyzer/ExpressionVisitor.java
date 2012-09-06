@@ -1942,8 +1942,9 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         for (int i=params.size(); i<args.size(); i++) {
-            args.get(i).addError("no matching parameter for argument declared by " +
-                     pr.getDeclaration().getName(), 2000);
+            args.get(i).addError("no matching parameter declared by " +
+                    pr.getDeclaration().getName() + ": " + 
+            		pr.getDeclaration().getName() + " has " + args.size() + " parameters", 2000);
         }
 
         Tree.Comprehension ch = pal.getComprehension();
