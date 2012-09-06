@@ -78,6 +78,9 @@ public class MetamodelGenerator extends Visitor {
         Map<String,Object> pkgmap = (Map<String,Object>)model.get(d.getUnit().getPackage().getNameAsString());
         if (pkgmap == null) {
             pkgmap = new HashMap<String, Object>();
+            if (d.getUnit().getPackage().isShared()) {
+                pkgmap.put("$pkg-shared", "1");
+            }
             model.put(d.getUnit().getPackage().getNameAsString(), pkgmap);
         }
         if (d.isToplevel()) {
