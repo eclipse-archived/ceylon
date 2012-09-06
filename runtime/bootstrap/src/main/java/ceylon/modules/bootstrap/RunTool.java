@@ -79,7 +79,7 @@ public class RunTool implements Plugin {
         ArrayList<String> argList = new ArrayList<String>();
         argList.addAll(Arrays.asList(new String[]{
                 "-mp", System.getProperty("celon.runtime.repo"), 
-                "ceylon.runtime",
+                "ceylon.runtime:0.4",
                 "+executable", "ceylon.modules.jboss.runtime.JBossRuntime"}));
         
         if (run != null) {

@@ -8,13 +8,12 @@ if "%exit%" == "true" (
 )
 
 set "LIB=%CEYLON_HOME%\lib"
-set "RUNTIME_REPO=%CEYLON_HOME%\runtime-repo"
 
 "%JAVA%" ^
     -cp "%LIB%\jboss-modules.jar;%LIB%\ceylon-runtime-bootstrap.jar" ^
     "-Dceylon.home=%CEYLON_HOME%" ^
     ceylon.modules.bootstrap.Main5 ^
-    -mp "%RUNTIME_REPO%" ceylon.runtime ^
+    -mp "%CEYLON_REPO%" ceylon.runtime:%CEYLON_VERSION% ^
     +executable ceylon.modules.jboss.runtime.JBossRuntime ^
     %ARGS%
 

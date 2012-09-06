@@ -22,9 +22,9 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.runtime">
+<module xmlns="urn:jboss:module:1.0" name="ceylon.runtime" slot="0.4">
     <resources>
-        <resource-root path="ceylon.runtime-main.jar"/>
+        <resource-root path="ceylon.runtime-0.4.jar"/>
     </resources>
 
     <main-class name="ceylon.modules.Main"/>
