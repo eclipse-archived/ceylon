@@ -338,7 +338,7 @@ public class CeylonDocToolTest {
                 || !sdkDir.isDirectory()) {
             Assert.fail("You don't have ceylon-sdk checked out at " + sdkDir.getAbsolutePath() + " so this test doesn't apply");
         }
-        String[] moduleNames = {"file", "collection", "net", "json", "process", "math"};
+        String[] moduleNames = {"file", "collection", "dbc", "io", "net", "json", "process", "math"};
         List<String> fullModuleNames = new ArrayList<String>(moduleNames.length);
         List<File> path = new ArrayList<File>(moduleNames.length);
         for(String moduleName : moduleNames){
