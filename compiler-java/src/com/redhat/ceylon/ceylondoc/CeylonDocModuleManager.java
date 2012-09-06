@@ -118,6 +118,8 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     
     @Override
     public void modulesVisited() {
+        // this is very important!
+        super.modulesVisited();
         for(Module module : getContext().getModules().getListOfModules()){
             if(isModuleLoadedFromSource(module.getNameAsString())){
                 addOutputModuleToClassPath(module);
