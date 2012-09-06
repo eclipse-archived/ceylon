@@ -26,7 +26,7 @@ public class LexError extends RecognitionError {
     
     @Override
 	public String getMessage() {
-		return lexer.getErrorMessage(recognitionException, tokenNames);
+		return "incorrect syntax: " + lexer.getErrorMessage(recognitionException, tokenNames);
 	}
 	
 	@Override

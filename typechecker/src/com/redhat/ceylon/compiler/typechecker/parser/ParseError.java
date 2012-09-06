@@ -32,7 +32,7 @@ public class ParseError extends RecognitionError {
     
 	@Override 
 	public String getMessage() {
-		return parser.getErrorMessage(recognitionException, tokenNames);
+		return "incorrect syntax: " + parser.getErrorMessage(recognitionException, tokenNames);
 	}
 	
 	@Override
