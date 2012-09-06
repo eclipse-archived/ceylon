@@ -1,5 +1,12 @@
 # Ceylon specification and type analyzer
 
+This project contains:
+
+* The Ceylon Language Specification, in docbook format.
+* A parser for the language, implemented using ANTLR.
+* A syntax tree for the language.
+* A type analyzer, implemented in Java. 
+
 ## Specification
 
 To build the PDF and HTML specifications, in the root 
