@@ -5,7 +5,12 @@ This project contains:
 * The Ceylon Language Specification, in docbook format.
 * A parser for the language, implemented using ANTLR.
 * A syntax tree for the language.
-* A type analyzer, implemented in Java. 
+* A type analyzer, implemented in Java.
+
+For more information about the Ceylon, go to the community 
+website:
+
+<http://ceylon-lang.org> 
 
 ## Specification
 
@@ -20,8 +25,8 @@ To build just the PDF, type:
 
     ant pdf
 
-The PDF specification is compiled then copied into the 
-root directory.
+The PDF specification is compiled then copied into the root 
+directory.
 
 Directory structure:
 
@@ -31,7 +36,8 @@ Directory structure:
 
 ## Type analyzer
 
-The type checker project depends on two projects that you need to build locally:
+The type checker project depends on two projects that you need 
+to build locally:
 
 * [ceylon.language](https://github.com/ceylon/ceylon.language)
 * [ceylon-module-resolver](https://github.com/ceylon/ceylon-module-resolver)
@@ -95,5 +101,6 @@ Other commands:
 The content of this repository is released under the ASL v2.0
 as provided in the LICENSE file that accompanied this code.
 
-By submitting a "pull request" or otherwise contributing to this repository, you
-agree to license your contribution under the license mentioned above.
+By submitting a "pull request" or otherwise contributing to 
+this repository, you agree to license your contribution under 
+the license mentioned above.
