@@ -33,10 +33,10 @@ public class CeyloncAntTest extends AntBasedTest {
     
     @Test
     public void testCompileModuleFooBadExecutable() throws Exception {
-        System.setProperty("script.ceylonc", "some/nonsense/path");
+        System.setProperty("script.cey", "some/nonsense/path");
         AntResult result = ant("foo-alone");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "Failed to find 'ceylonc' executable in some/nonsense/path");
+        assertContains(result.getStdout(), "Failed to find 'cey' executable in some/nonsense/path");
     }
     
     @Test
@@ -168,7 +168,7 @@ public class CeyloncAntTest extends AntBasedTest {
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src").exists());
         Assert.assertTrue(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.src.sha1").exists());
         assertZipEntryNewer(new File(result.getOut(), "com/example/bar/1.0/com.example.bar-1.0.car"),
-                "com/example/bar/b/m.class",
+                "com/example/bar/b/m_.class",
                 "com/example/bar/b/C.class");
     }
     

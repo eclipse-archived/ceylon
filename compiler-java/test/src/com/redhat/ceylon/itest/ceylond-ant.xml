@@ -14,7 +14,7 @@
       
   <target name="foo-alone" depends="ant-tasks">
     <ceylond
-      executable="${script.ceylond}"
+      executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
         <module name="com.example.foo"/>
@@ -24,7 +24,7 @@
   <target name="foo-file" depends="ant-tasks,foo-alone">
     <echo message="Hello, world"/>
     <ceylond
-      executable="${script.ceylond}"
+      executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
         <include name="com/example/foo/a/foo.ceylon"/>
@@ -33,7 +33,7 @@
 
   <target name="bar-alone" depends="ant-tasks">
     <ceylond
-      executable="${script.ceylond}"
+      executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.bar"/>
@@ -42,7 +42,7 @@
 
   <target name="foo-and-bar" depends="ant-tasks">
     <ceylond
-      executable="${script.ceylond}"
+      executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.foo"/>

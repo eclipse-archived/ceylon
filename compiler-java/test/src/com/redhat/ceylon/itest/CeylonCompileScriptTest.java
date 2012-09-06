@@ -22,6 +22,8 @@ package com.redhat.ceylon.itest;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.tools.CeylonTool;
+
 public class CeylonCompileScriptTest extends AntBasedTest {
 
     public CeylonCompileScriptTest() throws Exception {
@@ -35,35 +37,39 @@ public class CeylonCompileScriptTest extends AntBasedTest {
     @Test
     public void testVersion() throws Exception {
         AntResult result = ant("version");
-        Assert.assertEquals(0, result.getStatusCode());
-        assertContainsMatch(result.getStdout(), "\\[exec\\] Version: ceylonc [0-9.]+");
+        Assert.assertEquals(1, result.getStatusCode());
+        assertContains(result.getStdout(), "[exec] cey compile: ");
+        assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     
     @Test
     public void testHelp() throws Exception {
         AntResult result = ant("help");
-        Assert.assertEquals(0, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] Usage: ceylonc <options> <source files> <module names>");
+        Assert.assertEquals(CeylonTool.SC_OK, result.getStatusCode());
+        assertContains(result.getStdout(), "[exec] DESCRIPTION");
     }
     
     @Test
     public void testH() throws Exception {
         AntResult result = ant("h");
-        assertContains(result.getStdout(), "[exec] Usage: ceylonc <options> <source files> <module names>");
-        assertContains(result.getStdout(), "[exec] use -help for a list of possible options");
+        Assert.assertEquals(1, result.getStatusCode());
+        assertContains(result.getStdout(), "[exec] cey compile: ");
+        assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
+        
     }
     
     @Test
     public void testJhelp() throws Exception {
         AntResult result = ant("jhelp");
-        Assert.assertEquals(0, result.getStatusCode());
-        assertExecutedOk(result);
+        Assert.assertEquals(1, result.getStatusCode());
+        assertContains(result.getStdout(), "[exec] cey compile: ");
+        assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     
     @Test
     public void testFoo() throws Exception {
         AntResult result = ant("foo");
-        Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertEquals(CeylonTool.SC_OK, result.getStatusCode());
         assertExecutedOk(result);
         assertNotContains(result.getStdout(), "[exec] Model tree for");
     }
@@ -71,7 +77,7 @@ public class CeylonCompileScriptTest extends AntBasedTest {
     @Test
     public void testFooVerbose() throws Exception {
         AntResult result = ant("foo-verbose");
-        Assert.assertEquals(0, result.getStatusCode());
+        Assert.assertEquals(CeylonTool.SC_OK, result.getStatusCode());
         assertExecutedOk(result);
         assertContains(result.getStdout(), "[exec] Model tree for");
     }

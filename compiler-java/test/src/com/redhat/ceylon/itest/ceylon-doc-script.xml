@@ -16,7 +16,7 @@
   <target name="help" depends="-init">
     <exec executable="${script.cey}" failonerror="true">
       <arg value="doc"/>
-      <arg value="-help"/>
+      <arg value="--help"/>
     </exec>
   </target>
         
@@ -30,15 +30,15 @@
   <target name="jhelp" depends="-init">
     <exec executable="${script.cey}" failonerror="true">
       <arg value="doc"/>
-      <arg value="-jhelp"/>
+      <arg value="--jhelp"/>
     </exec>
   </target>
   
   <target name="foo" depends="-init">
     <exec executable="${script.cey}" failonerror="true">
       <arg value="doc"/>
-      <arg value="-src"/><arg value="${arg.src}"/>
-      <arg value="-out"/><arg value="${arg.out}"/>
+      <arg value="--src=${arg.src}"/>
+      <arg value="--out=${arg.out}"/>
       <arg value="com.example.foo"/>
     </exec>
   </target>
@@ -46,9 +46,9 @@
   <target name="foo-non-shared" depends="-init">
     <exec executable="${script.cey}" failonerror="true">
       <arg value="doc"/>
-      <arg value="-src"/><arg value="${arg.src}"/>
-      <arg value="-out"/><arg value="${arg.out}"/>
-      <arg value="-non-shared"/>
+      <arg value="--src=${arg.src}"/>
+      <arg value="--out=${arg.out}"/>
+      <arg value="--non-shared"/>
       <arg value="com.example.foo"/>
     </exec>
   </target>
@@ -56,9 +56,9 @@
   <target name="foo-source-code" depends="-init">
     <exec executable="${script.cey}" failonerror="true">
       <arg value="doc"/>
-      <arg value="-src"/><arg value="${arg.src}"/>
-      <arg value="-out"/><arg value="${arg.out}"/>
-      <arg value="-source-code"/>
+      <arg value="--src=${arg.src}"/>
+      <arg value="--out=${arg.out}"/>
+      <arg value="--source-code"/>
       <arg value="com.example.foo"/>
     </exec>
   </target>

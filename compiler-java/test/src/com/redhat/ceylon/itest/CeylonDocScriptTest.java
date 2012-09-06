@@ -22,6 +22,8 @@ package com.redhat.ceylon.itest;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.tools.CeylonTool;
+
 public class CeylonDocScriptTest extends AntBasedTest {
 
     public CeylonDocScriptTest() throws Exception {
@@ -36,22 +38,24 @@ public class CeylonDocScriptTest extends AntBasedTest {
     @Test
     public void testVersion() throws Exception {
         AntResult result = ant("version");
-        assertExecutedOk(result);
-        assertContainsMatch(result.getStdout(), "\\[exec\\] Version: ceylond [0-9.]+");
+        Assert.assertEquals(1, result.getStatusCode());
+        assertContains(result.getStdout(), "[exec] cey doc: ");
+        assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     
     @Test
     public void testHelp() throws Exception {
         AntResult result = ant("help");
-        assertExecutedOk(result);
-        assertContains(result.getStdout(), "[exec] Usage: ceylond [options...] moduleName[/version]...");
+        Assert.assertEquals(CeylonTool.SC_OK, result.getStatusCode());
+        assertContains(result.getStdout(), "[exec] DESCRIPTION");
     }
     
     @Test
     public void testH() throws Exception {
         AntResult result = ant("h");
-        assertExecutedOk(result);
-        assertContains(result.getStdout(), "[exec] Usage: ceylond [options...] moduleName[/version]...");
+        Assert.assertEquals(1, result.getStatusCode());
+        assertContains(result.getStdout(), "[exec] cey doc: ");
+        assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     
     @Test

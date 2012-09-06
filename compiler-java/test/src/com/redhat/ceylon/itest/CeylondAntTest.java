@@ -32,10 +32,10 @@ public class CeylondAntTest extends AntBasedTest {
     
     @Test
     public void testDocumentModuleFooBadExecutable() throws Exception {
-        System.setProperty("script.ceylond", "some/nonsense/path");
+        System.setProperty("script.cey", "some/nonsense/path");
         AntResult result = ant("foo-alone");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "Failed to find 'ceylond' executable in some/nonsense/path");
+        assertContains(result.getStdout(), "Failed to find 'cey' executable in some/nonsense/path");
     }
     
     @Test

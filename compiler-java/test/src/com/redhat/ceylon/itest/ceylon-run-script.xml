@@ -29,7 +29,7 @@
   
   <target name="compile-foo" depends="-init">
     <exec executable="${script.cey}" failonerror="true">
-      <arg value="run"/>
+      <arg value="compile"/>
       <arg value="--src=${arg.src}"/>
       <arg value="--out=${arg.out}"/>
       <arg value="com.example.foo"/>

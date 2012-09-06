@@ -14,7 +14,7 @@
   
   <target name="no-module-or-files" depends="ant-tasks">
     <ceylonc
-      executable="${script.ceylonc}"
+      executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}">
@@ -23,7 +23,7 @@
   
   <target name="foo-alone" depends="ant-tasks">
     <ceylonc
-      executable="${script.ceylonc}"
+    	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}">
@@ -33,7 +33,7 @@
 
   <target name="foo-file" depends="ant-tasks,foo-alone">
     <ceylonc
-      executable="${script.ceylonc}"
+    	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}"
       nomtimecheck="true"
@@ -46,7 +46,7 @@
   
   <target name="foo-file-mtime" depends="ant-tasks,foo-alone">
       <ceylonc
-        executable="${script.ceylonc}"
+      	executable="${script.cey}"
         src="${arg.src}"
         out="${arg.out}"
         verbose="${arg.verbose}">
@@ -58,7 +58,7 @@
 
   <target name="bar-alone" depends="ant-tasks">
     <ceylonc
-      executable="${script.ceylonc}"
+    	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.bar"/>
@@ -67,7 +67,7 @@
   
   <target name="foo-and-file-from-bar" depends="ant-tasks">
       <ceylonc
-        executable="${script.ceylonc}"
+      	executable="${script.cey}"
         src="${arg.src}"
         out="${arg.out}"
         nomtimecheck="true"
@@ -81,7 +81,7 @@
 
   <target name="foo-and-bar" depends="ant-tasks">
     <ceylonc
-      executable="${script.ceylonc}"
+    	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}">
        <module name="com.example.foo"/>
@@ -91,7 +91,7 @@
   
   <target name="bad-fail-on-error" depends="ant-tasks">
     <ceylonc
-      executable="${script.ceylonc}"
+    	executable="${script.cey}"
       src="${arg.src}"
       out="${arg.out}"
       verbose="${arg.verbose}"
