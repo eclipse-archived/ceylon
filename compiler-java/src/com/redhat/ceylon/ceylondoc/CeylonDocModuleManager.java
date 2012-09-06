@@ -89,6 +89,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     @Override
     protected Package createPackage(String pkgName, Module module) {
+        // never create a lazy package for ceylon.language when we're documenting it
         if((pkgName.equals(AbstractModelLoader.CEYLON_LANGUAGE)
                 || pkgName.startsWith(AbstractModelLoader.CEYLON_LANGUAGE+"."))
             && isModuleLoadedFromSource(AbstractModelLoader.CEYLON_LANGUAGE))
@@ -106,7 +107,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     @Override
     protected Module createModule(List<String> moduleName) {
         String name = Util.getName(moduleName);
-        // only exception we make is for ceylon.language
+        // never create a reflection module for ceylon.language when we're documenting it
         Module module;
         if(name.equals(AbstractModelLoader.CEYLON_LANGUAGE) 
                 && isModuleLoadedFromSource(AbstractModelLoader.CEYLON_LANGUAGE))
