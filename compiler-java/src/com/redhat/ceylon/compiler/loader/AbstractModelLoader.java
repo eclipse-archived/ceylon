@@ -269,7 +269,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             loadPackage("ceylon.language.descriptor", true);
         }
     }
-    
+
+    /**
+     * This is meant to be called if your subclass doesn't call loadStandardModules for whatever reason
+     */
+    public void setupWithNoStandardModules() {
+        Module languageModule = modules.getLanguageModule();
+        if(languageModule == null)
+            throw new RuntimeException("Assertion failed: language module is null");
+        Package languagePackage = languageModule.getPackage("ceylon.language");
+        if(languagePackage == null)
+            throw new RuntimeException("Assertion failed: language package is null");
+        typeFactory.setPackage(languagePackage);
+    }
+
     enum ClassType {
         ATTRIBUTE, METHOD, OBJECT, CLASS, INTERFACE;
     }
