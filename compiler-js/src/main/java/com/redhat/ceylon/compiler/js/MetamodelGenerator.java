@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -55,8 +56,15 @@ public class MetamodelGenerator extends Visitor {
 
     public MetamodelGenerator(Module module) {
         this.module = module;
-        model.put("module-name", module.getNameAsString());
-        model.put("module-version", module.getVersion());
+        model.put("$mod-name", module.getNameAsString());
+        model.put("$mod-version", module.getVersion());
+        if (!module.getImports().isEmpty()) {
+            ArrayList<String> imps = new ArrayList<String>(module.getImports().size());
+            for (ModuleImport mi : module.getImports()) {
+                imps.add(String.format("%s/%s", mi.getModule().getNameAsString(), mi.getModule().getVersion()));
+            }
+            model.put("$mod-deps", imps);
+        }
     }
 
     /** Returns the in-memory model as a collection of maps.
@@ -67,8 +75,13 @@ public class MetamodelGenerator extends Visitor {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> findParent(Declaration d) {
+        Map<String,Object> pkgmap = (Map<String,Object>)model.get(d.getUnit().getPackage().getNameAsString());
+        if (pkgmap == null) {
+            pkgmap = new HashMap<String, Object>();
+            model.put(d.getUnit().getPackage().getNameAsString(), pkgmap);
+        }
         if (d.isToplevel()) {
-            return model;
+            return pkgmap;
         }
         ArrayList<String> names = new ArrayList<String>();
         Scope sc = d.getContainer();
@@ -78,9 +91,9 @@ public class MetamodelGenerator extends Visitor {
             }
             sc = sc.getContainer();
         }
-        Map<String, Object> last = model;
+        Map<String, Object> last = pkgmap;
         for (String name : names) {
-            if (last == model) {
+            if (last == pkgmap) {
                 last = (Map<String, Object>)last.get(name);
             } else if (last.containsKey(KEY_METHODS) && ((Map<String,Object>)last.get(KEY_METHODS)).containsKey(name)) {
                 last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_METHODS)).get(name);
@@ -245,18 +258,18 @@ public class MetamodelGenerator extends Visitor {
     @Override public void visit(Tree.MethodDefinition that) {
         com.redhat.ceylon.compiler.typechecker.model.Method d = that.getDeclarationModel();
         Map<String, Object> parent;
-        if (d.isToplevel()) {
-            parent = model;
-        } else if (d.isMember()) {
+        if (d.isToplevel() || d.isMember()) {
             parent = findParent(that.getDeclarationModel());
             if (parent == null) {
                 System.out.println("orphaned method - How the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
-            if (!parent.containsKey(KEY_METHODS)) {
-                parent.put(KEY_METHODS, new HashMap<String,Object>());
+            if (!d.isToplevel()) {
+                if (!parent.containsKey(KEY_METHODS)) {
+                    parent.put(KEY_METHODS, new HashMap<String,Object>());
+                }
+                parent = (Map<String, Object>)parent.get(KEY_METHODS);
             }
-            parent = (Map<String, Object>)parent.get(KEY_METHODS);
         } else {
             return;
         }
@@ -322,18 +335,18 @@ public class MetamodelGenerator extends Visitor {
         Map<String, Object> m = new HashMap<String, Object>();
         Value d = that.getDeclarationModel();
         Map<String, Object> parent;
-        if (d.isToplevel()) {
-            parent = model;
-        } else if (d.isMember()) {
+        if (d.isToplevel() || d.isMember()) {
             parent = findParent(d);
             if (parent == null) {
                 System.out.println("orphaned attribute - How the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
-            if (!parent.containsKey(KEY_ATTRIBUTES)) {
-                parent.put(KEY_ATTRIBUTES, new HashMap<String,Object>());
+            if (!d.isToplevel()) {
+                if (!parent.containsKey(KEY_ATTRIBUTES)) {
+                    parent.put(KEY_ATTRIBUTES, new HashMap<String,Object>());
+                }
+                parent = (Map<String,Object>)parent.get(KEY_ATTRIBUTES);
             }
-            parent = (Map<String,Object>)parent.get(KEY_ATTRIBUTES);
         } else {
             //Ignore attributes inside control blocks, methods, etc.
             return;
@@ -485,18 +498,18 @@ public class MetamodelGenerator extends Visitor {
         Map<String, Object> m = new HashMap<String, Object>();
         Getter d = that.getDeclarationModel();
         Map<String, Object> parent;
-        if (d.isToplevel()) {
-            parent = model;
-        } else if (d.isMember()) {
+        if (d.isToplevel() || d.isMember()) {
             parent = findParent(d);
             if (parent == null) {
                 System.out.println("orphaned getter WTF!!! " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
-            if (!parent.containsKey(KEY_ATTRIBUTES)) {
-                parent.put(KEY_ATTRIBUTES, new HashMap<String, Object>());
+            if (!d.isToplevel()) {
+                if (!parent.containsKey(KEY_ATTRIBUTES)) {
+                    parent.put(KEY_ATTRIBUTES, new HashMap<String, Object>());
+                }
+                parent = (Map<String,Object>)parent.get(KEY_ATTRIBUTES);
             }
-            parent = (Map<String,Object>)parent.get(KEY_ATTRIBUTES);
         } else {
             //Ignore attributes inside control blocks, methods, etc.
             return;

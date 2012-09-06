@@ -13,8 +13,10 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 
 public class TestModelClasses {
 
+    private static Map<String, Object> topLevelModel;
     private static Map<String, Object> model;
 
+    @SuppressWarnings("unchecked")
     @BeforeClass
     public static void initTests() {
         TestModelMethodsAndAttributes.initTypechecker();
@@ -27,11 +29,13 @@ public class TestModelClasses {
                 pu.getCompilationUnit().visit(mmg);
             }
         }
-        model = mmg.getModel();
+        topLevelModel = mmg.getModel();
+        model = (Map<String, Object>)topLevelModel.get("t2");
     }
 
     @Test
     public void testTopLevelElements() {
+        Assert.assertNotNull("Missing package t2", model);
         String[] tops = { "Algebraic1", "Algebraic2", "algobj1", "algobj2", "AlgOne", "AlgTwo", "AlgThree",
                 "ParmTypes1", "ParmTypes2", "ParmTypes3", "ParmTypes4",
                 "SimpleClass1", "SimpleClass2", "SimpleClass3", "SimpleClass4",

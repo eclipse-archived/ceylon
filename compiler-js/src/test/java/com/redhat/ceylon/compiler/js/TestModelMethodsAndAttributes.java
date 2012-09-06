@@ -18,39 +18,47 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 public class TestModelMethodsAndAttributes {
 
     static TypeChecker tc;
+    private static Map<String, Object> topLevelModel;
     private static Map<String, Object> model;
 
-    @BeforeClass
     public static void initTypechecker() {
         if (model == null) {
             TypeCheckerBuilder builder = new TypeCheckerBuilder();
             builder.addSrcDirectory(new File("src/test/resources/modeltests"));
             tc = builder.getTypeChecker();
             tc.process();
-            MetamodelGenerator mmg = null;
-            for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
-                if (pu.getPackage().getModule().getNameAsString().equals("t1")) {
-                    if (mmg == null) {
-                        mmg = new MetamodelGenerator(pu.getPackage().getModule());
-                    }
-                    pu.getCompilationUnit().visit(mmg);
-                }
-            }
-            model = mmg.getModel();
         }
     }
-
-    private Map<String, Object> makeMap(String... keysValues) {
-        HashMap<String, Object> m = new HashMap<String, Object>();
-        for (int i = 0; i < keysValues.length; i+=2) {
-            m.put(keysValues[i], keysValues[i+1]);
+    @SuppressWarnings("unchecked")
+    @BeforeClass
+    public static void initModel() {
+        initTypechecker();
+        MetamodelGenerator mmg = null;
+        for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
+            if (pu.getPackage().getModule().getNameAsString().equals("t1")) {
+                if (mmg == null) {
+                    mmg = new MetamodelGenerator(pu.getPackage().getModule());
+                }
+                pu.getCompilationUnit().visit(mmg);
+            }
         }
-        return m;
+        topLevelModel = mmg.getModel();
+        model = (Map<String,Object>)topLevelModel.get("t1");
+    }
+
+    @Test
+    public void testTopLevelElements() {
+        Assert.assertNotNull("Missing package t1", model);
+        String[] tops = { "simple1", "simple2", "simple3", "defaulted1", "sequenced1", "sequencedDefaulted",
+                "mpl1", "mpl2", "nested", "parmtypes1", "parmtypes2", "parmtypes3", "parmtypes4",
+                "parmtypes5", "intersector1", "intersector2", "i1", "s1", "pi", "seq", "union", "useq" };
+        for (String tle : tops) {
+            Assert.assertNotNull("Missing top-level element " + tle, model.get(tle));
+        }
     }
 
     @Test @SuppressWarnings("unchecked")
     public void testSimpleMethods() {
-        System.out.println("top-level elements:" + model.keySet());
         //simple1
         Map<String, Object> method = (Map<String, Object>)model.get("simple1");
         Assert.assertNotNull(method);
