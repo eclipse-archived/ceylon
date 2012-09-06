@@ -141,21 +141,19 @@ public class Ceylon extends Task {
     private void run() {
         Commandline cmd = new Commandline();
         cmd.setExecutable(getCeylon());
+        cmd.createArgument().setValue("run");
         if(run != null){
-            cmd.createArgument().setValue("-run");
-            cmd.createArgument().setValue(run);
+            cmd.createArgument().setValue("--run=" + run);
         }
         if(src != null){
-            cmd.createArgument().setValue("-src");
-            cmd.createArgument().setValue(src.toString());
+            cmd.createArgument().setValue("--src="+src.toString());
         }
         if(repositories != null){
             for(Rep rep : repositories){
                 // skip empty entries
                 if(rep.url == null || rep.url.isEmpty())
                     continue;
-                cmd.createArgument().setValue("-rep");
-                cmd.createArgument().setValue(Util.quoteParameter(rep.url));
+                cmd.createArgument().setValue("--rep="+Util.quoteParameter(rep.url));
             }
         }
         cmd.createArgument().setValue(module);
@@ -179,6 +177,6 @@ public class Ceylon extends Task {
      * Tries to find a ceylon runner either user-specified or detected
      */
     private String getCeylon() {
-        return Util.findCeylonScript(this.executable, "ceylon", getProject());
+        return Util.findCeylonScript(this.executable, getProject());
     }
 }

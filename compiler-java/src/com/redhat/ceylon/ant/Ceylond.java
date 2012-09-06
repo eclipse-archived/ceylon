@@ -162,35 +162,31 @@ public class Ceylond extends LazyTask {
         
         Commandline cmd = new Commandline();
         cmd.setExecutable(getCeylond());
+        cmd.createArgument().setValue("doc");
         if(user != null){
-            cmd.createArgument().setValue("-user");
-            cmd.createArgument().setValue(user);
+            cmd.createArgument().setValue("--user=" + user);
         }
         if(pass != null){
-            cmd.createArgument().setValue("-pass");
-            cmd.createArgument().setValue(pass);
+            cmd.createArgument().setValue("--pass=" + pass);
         }
         
-        cmd.createArgument().setValue("-out");
-        cmd.createArgument().setValue(getOut());
+        cmd.createArgument().setValue("--out=" + getOut());
         
         for (File src : getSrc()) {
-            cmd.createArgument().setValue("-src");
-            cmd.createArgument().setValue(src.getAbsolutePath());
+            cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
         }
         
         for(Rep rep : getRepositories()){
             // skip empty entries
             if(rep.url == null || rep.url.isEmpty())
                 continue;
-            cmd.createArgument().setValue("-rep");
-            cmd.createArgument().setValue(Util.quoteParameter(rep.url));
+            cmd.createArgument().setValue("--rep=" + Util.quoteParameter(rep.url));
         }
         
         if(includeSourceCode)
-            cmd.createArgument().setValue("-source-code");
+            cmd.createArgument().setValue("--source-code");
         if(includeNonShared)
-            cmd.createArgument().setValue("-non-shared");
+            cmd.createArgument().setValue("--non-shared");
         // modules to document
         for (Module module : modules) {
             log("Adding module: "+module, Project.MSG_VERBOSE);
@@ -218,6 +214,6 @@ public class Ceylond extends LazyTask {
      * Tries to find a ceylonc compiler either user-specified or detected
      */
     private String getCeylond() {
-        return Util.findCeylonScript(this.executable, "ceylond", getProject());
+        return Util.findCeylonScript(this.executable, getProject());
     }
 }

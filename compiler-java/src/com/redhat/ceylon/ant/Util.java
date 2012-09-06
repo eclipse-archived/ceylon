@@ -43,7 +43,8 @@ public class Util {
     /**
      * Tries to find the given script either user-specified or detected
      */
-    public static String findCeylonScript(File defaultValue, String scriptName, Project project) {
+    public static String findCeylonScript(File defaultValue, Project project) {
+        String scriptName = "cey";
         if(defaultValue != null){
             if(!defaultValue.exists())
                 throw new BuildException("Failed to find '"+scriptName+"' executable in "+defaultValue.getPath());

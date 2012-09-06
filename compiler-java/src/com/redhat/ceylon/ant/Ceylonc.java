@@ -236,25 +236,22 @@ public class Ceylonc extends LazyTask {
         
         Commandline cmd = new Commandline();
         cmd.setExecutable(getCompiler());
+        cmd.createArgument().setValue("compile");
         if(verbose != null && verbose.booleanValue()){
-            cmd.createArgument().setValue("-verbose");
+            cmd.createArgument().setValue("--verbose");
         }
         if(user != null){
-            cmd.createArgument().setValue("-user");
-            cmd.createArgument().setValue(user);
+            cmd.createArgument().setValue("--user=" + user);
         }
         if(pass != null){
-            cmd.createArgument().setValue("-pass");
-            cmd.createArgument().setValue(pass);
+            cmd.createArgument().setValue("--pass=" + pass);
         }
         
-        cmd.createArgument().setValue("-out");
-        cmd.createArgument().setValue(getOut());
+        cmd.createArgument().setValue("--out=" + getOut());
         
         
         for (File src : getSrc()) {
-            cmd.createArgument().setValue("-src");
-            cmd.createArgument().setValue(src.getAbsolutePath());
+            cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
         }
         
         for(Rep rep : getRepositories()){
@@ -262,13 +259,13 @@ public class Ceylonc extends LazyTask {
             if(rep.url == null || rep.url.isEmpty())
                 continue;
             log("Adding repository: "+rep, Project.MSG_VERBOSE);
-            cmd.createArgument().setValue("-rep");
-            cmd.createArgument().setValue(Util.quoteParameter(rep.url));
+            cmd.createArgument().setValue("--rep=" + Util.quoteParameter(rep.url));
         }
         if(classpath != null){
-        	String path = classpath.toString();
+            throw new RuntimeException("-classpath not longer supported");
+        	/*String path = classpath.toString();
             cmd.createArgument().setValue("-classpath");
-            cmd.createArgument().setValue(Util.quoteParameter(path));
+            cmd.createArgument().setValue(Util.quoteParameter(path));*/
         }
         // files to compile
         for (File file : compileList) {
@@ -302,6 +299,6 @@ public class Ceylonc extends LazyTask {
      * Tries to find a ceylonc compiler either user-specified or detected
      */
     private String getCompiler() {
-        return Util.findCeylonScript(this.executable, "ceylonc", getProject());
+        return Util.findCeylonScript(this.executable, getProject());
     }
 }
