@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class MemberClassAlias_Foo {
+    
+    public MemberClassAlias_Foo() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member Member$new() {
+        return new Member();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public class Member {
+        
+        protected Member() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public final class MemberClassAlias {
+        
+        private MemberClassAlias() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    private final void test() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member m = Member$new();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo();
+    }
+}
+final class memberClassAliasMethod_ {
+    
+    private memberClassAliasMethod_() {
+    }
+    
+    static void memberClassAliasMethod() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo().Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasMethod_.memberClassAliasMethod();
+    }
+}

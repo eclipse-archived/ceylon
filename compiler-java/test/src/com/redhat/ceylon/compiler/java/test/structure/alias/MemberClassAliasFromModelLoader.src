@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+final class memberClassAliasFromModelLoader_ {
+    
+    private memberClassAliasFromModelLoader_() {
+    }
+    
+    static void memberClassAliasFromModelLoader() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member a = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo().Member$new();
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member b = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo().Member$new(1L, "a");
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).Member$new(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> d = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).Member$new(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> e = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).Member$new(.ceylon.language.Integer.instance(1L));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasFromModelLoader_.memberClassAliasFromModelLoader();
+    }
+}

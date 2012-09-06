@@ -492,7 +492,6 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("alias/LocalInterfaceAlias");
     }
 
-    @Ignore("Type checker bug? https://github.com/ceylon/ceylon-spec/issues/380")
     @Test
     public void testAlsMemberClassAlias() {
         compareWithJavaSource("alias/MemberClassAlias");
@@ -504,8 +503,18 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testAlsMemberClassAliasWithParameters() {
+        compareWithJavaSource("alias/MemberClassAliasWithParameters");
+    }
+
+    @Test
     public void testAlsClassAliasWithTypeParameters() {
         compareWithJavaSource("alias/ClassAliasWithTypeParameters");
+    }
+
+    @Test
+    public void testAlsMemberClassAliasWithTypeParameters() {
+        compareWithJavaSource("alias/MemberClassAliasWithTypeParameters");
     }
 
     @Test
@@ -519,6 +528,14 @@ public class StructureTest extends CompilerTest {
                 "alias/ClassAliasWithParameters.ceylon",
                 "alias/ClassAliasWithTypeParameters.ceylon");
         compareWithJavaSource("alias/ClassAliasFromModelLoader");
+    }
+
+    @Test
+    public void testAlsMemberClassAliasFromModelLoader() {
+        compile("alias/MemberClassAlias.ceylon", 
+                "alias/MemberClassAliasWithParameters.ceylon",
+                "alias/MemberClassAliasWithTypeParameters.ceylon");
+        compareWithJavaSource("alias/MemberClassAliasFromModelLoader");
     }
 
     @Test
