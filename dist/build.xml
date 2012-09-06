@@ -164,6 +164,11 @@ Used with another target such as 'package'">
                 <include name="args.sh"/>
                 <include name="args.bat"/>
                 <include name="java.bat"/>
+            	<include name="cey"/>
+            	<include name="cey.bat"/>
+            	<include name="cey-cp"/>
+                <include name="cey-cp.bat"/>
+            	<include name="cey-completion.bash"/>
                 <include name="ceylonc"/>
                 <include name="ceylonc.bat"/>
                 <include name="ceylond"/>
@@ -182,6 +187,7 @@ Used with another target such as 'package'">
         </copy>
         <chmod perm="0755">
             <fileset dir="${dist.dir}/bin">
+            	<include name="cey"/>
                 <include name="ceylonc"/>
                 <include name="ceylond"/>
                 <include name="ceylon-import-jar"/>
@@ -248,15 +254,6 @@ Used with another target such as 'package'">
         <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
-    	<copy todir="${dist.dir}/bin">
-            <fileset dir="${ceylon-common.dir}/build/bin">
-            </fileset>
-        </copy>
-        <chmod perm="0755">
-            <fileset dir="${dist.dir}/bin">
-                <include name="cey"/>
-            </fileset>
-        </chmod>
     </target>
 
     <target name="install-cmr" depends="install-common">
