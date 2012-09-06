@@ -1,0 +1,63 @@
+rem User HOME
+
+set CEYLON_VERSION=@VERSION@
+
+if "%HOME" == "" ( 
+    set "HOME=%USERPROFILE%" 
+)
+
+rem Find CEYLON_HOME
+if not "%CEYLON_HOME%" == "" goto ceylon_home_set
+rem Get absolute value for CEYLON_HOME
+pushd "%~dp0.."
+set "CEYLON_HOME=%CD%"
+popd
+:ceylon_home_set
+
+rem Set CEYLON_REPO if not already set
+if "%CEYLON_REPO%" == "" (
+    rem Try the destribution repo
+    set "CEYLON_REPO=%CEYLON_HOME%\repo"
+)
+
+rem If it does not exist let's use the user repo
+if not exist "%CEYLON_REPO%" (
+    @echo "Could not find distribution repo, using %HOME%\.ceylon\repo"
+    set "CEYLON_REPO=%HOME%\.ceylon\repo"
+)
+
+rem Find Java
+call %~dp0\java.bat
+
+if "%JAVA_HOME%" == "" (
+    set "exit=true"
+    exit /b 1
+)
+
+set "JAVA=%JAVA_HOME%\bin\java.exe"
+
+rem Check that Java executable actually exists
+if not exist "%JAVA%" (
+    @echo "Cannot find java.exe at %JAVA%, check that your JAVA_HOME variable is pointing to the right place"
+    set "exit=true"
+    exit /b 1
+)
+
+rem MINIMAL_CP are classes required by the tools to run
+set "MINIMAL_CP=%CEYLON_REPO%\com\redhat\ceylon\compiler\java\%CEYLON_VERSION%\com.redhat.ceylon.compiler.java-%CEYLON_VERSION%.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\ceylon\language\%CEYLON_VERSION%\ceylon.language-%CEYLON_VERSION%.car"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\compiler\js\%CEYLON_VERSION%\com.redhat.ceylon.compiler.js-%CEYLON_VERSION%.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\typechecker\%CEYLON_VERSION%\com.redhat.ceylon.typechecker-%CEYLON_VERSION%.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\common\%CEYLON_VERSION%\com.redhat.ceylon.common-%CEYLON_VERSION%.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_REPO%\com\redhat\ceylon\module-resolver\%CEYLON_VERSION%\com.redhat.ceylon.module-resolver-%CEYLON_VERSION%.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\antlr-3.4-complete.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\sardine-314.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\slf4j-api-1.6.1.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\slf4j-simple-1.6.1.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\httpclient-4.1.1.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\httpcore-4.1.1.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\commons-logging-1.1.1.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\commons-codec-1.4.jar"
+set "MINIMAL_CP=%MINIMAL_CP%;%CEYLON_HOME%\lib\jandex-1.0.3.Final.jar"
+set "MINIMAL_CP=%MINIMAL_CP%:%CEYLON_HOME%\lib\txtmark-0.7.jar"
+set "MINIMAL_CP=%MINIMAL_CP%:%CEYLON_HOME%\lib\markdownpapers-core-1.2.7.jar"

@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# resolve links - $0 may be a softlink
+PRG="$0"
+while [ -h "$PRG" ]; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`/"$link"
+    fi
+done
+
+DIR=$(dirname "$PRG")
+
+# Only set CEYLON_HOME if not already set
+if test -z "$CEYLON_HOME"
+then
+    CEYLON_HOME="$DIR/.."
+fi
+
+# Make sure we have java installed
+if hash java 2>&-
+then
+    true #nothing
+else
+    echo "Java not found, you must install Java in order to compiler and run Ceylon programs"
+    echo "Go to http://www.java.com/getjava/ to download the latest version of Java"
+fi
+
+LIB="$CEYLON_HOME/lib"
+RUNTIME_REPO="$CEYLON_HOME/runtime-repo"
+BOOTSTRAP_REPO="$CEYLON_HOME/repo"
+
+JAVA_CP="$LIB/jboss-modules.jar"
+JAVA_CP="$JAVA_CP:$LIB/ceylon-runtime-bootstrap.jar"
+
+# source classpath to set the MINIMAL_CP
+. "$DIR/cey-cp.sh"
+
+# BOOTSTRAP_CP are classes required by the compiler to run. 
+# They have to go to the boot class path on Mac OS X
+# so just put it there for all (Linux) OSes for consistency.
+# We need them here simply to support `cey compile` 
+BOOTSTRAP_CP="$MINIMAL_CP"
+
+java \
+ -Xbootclasspath/p:"$BOOTSTRAP_CP" \
+ -cp $JAVA_CP \
+ "-Dcelon.home=$CEYLON_HOME" \
+ "-Dcelon.runtime.repo=$CEYLON_REPO" \
+ "-Dcom.redhat.ceylon.common.tool.terminal.width=$(tput cols)" \
+ "-Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)" \
+ com.redhat.ceylon.tools.CeylonTool \
+ "$@"
