@@ -13,7 +13,7 @@ agree to license your contribution under the license mentioned above.
 Directory structure:
 --------------------
 
-* `languagesrc/` - the Ceylon implementation of the 
+* `src/`          - the Ceylon implementation of the 
                    language module
 * `runtime/`      - the Java implementation
 * `test/`         - the tests
