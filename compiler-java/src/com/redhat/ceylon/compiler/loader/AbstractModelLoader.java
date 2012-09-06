@@ -64,7 +64,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
@@ -96,6 +95,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
  */
 public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader {
 
+    public static final String CEYLON_LANGUAGE = "ceylon.language";
+    
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     public static final String ORACLE_JDK_MODULE = "oracle";
     public static final String JDK_MODULE = "java";
@@ -251,9 +252,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     public void loadStandardModules(){
         // set up the type factory
-        Module languageModule = findOrCreateModule("ceylon.language");
+        Module languageModule = findOrCreateModule(CEYLON_LANGUAGE);
         addModuleToClassPath(languageModule, null);
-        Package languagePackage = findOrCreatePackage(languageModule, "ceylon.language");
+        Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
         typeFactory.setPackage(languagePackage);
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
@@ -265,7 +266,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
          * We do not load the ceylon.language module from class files if we're bootstrapping it
          */
         if(!isBootstrap){
-            loadPackage("ceylon.language", true);
+            loadPackage(CEYLON_LANGUAGE, true);
             loadPackage("ceylon.language.descriptor", true);
         }
     }
@@ -277,7 +278,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Module languageModule = modules.getLanguageModule();
         if(languageModule == null)
             throw new RuntimeException("Assertion failed: language module is null");
-        Package languagePackage = languageModule.getPackage("ceylon.language");
+        Package languagePackage = languageModule.getPackage(CEYLON_LANGUAGE);
         if(languagePackage == null)
             throw new RuntimeException("Assertion failed: language package is null");
         typeFactory.setPackage(languagePackage);
@@ -763,7 +764,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             pkgName = ORACLE_JDK_MODULE;
             isJava = true;
         } else if(pkgName.startsWith("ceylon.language.")){
-            pkgName = "ceylon.language";
+            pkgName = CEYLON_LANGUAGE;
         }
         
         java.util.List<String> moduleName = Arrays.asList(pkgName.split("\\."));
@@ -1938,7 +1939,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(typeParameter != null)
                 return typeParameter.getType();
         }
-        if(!isBootstrap || !name.startsWith("ceylon.language")) {
+        if(!isBootstrap || !name.startsWith(CEYLON_LANGUAGE)) {
             if(scope != null && pkgName != null){
                 Package containingPackage = Decl.getPackageContainer(scope);
                 Package pkg = containingPackage.getModule().getPackage(pkgName);

@@ -76,14 +76,14 @@ public class ReflectionModuleManager extends LazyModuleManager {
 
     @Override
     public void prepareForTypeChecking() {
-        if(!isModuleLoadedFromSource("ceylon.language"))
+        if(!isModuleLoadedFromSource(AbstractModelLoader.CEYLON_LANGUAGE))
             getModelLoader().loadStandardModules();
         getModelLoader().loadPackageDescriptors();
     }
     
     @Override
     public void modulesVisited() {
-        if(isModuleLoadedFromSource("ceylon.language")){
+        if(isModuleLoadedFromSource(AbstractModelLoader.CEYLON_LANGUAGE)){
             getModelLoader().setupWithNoStandardModules();
         }
     }
