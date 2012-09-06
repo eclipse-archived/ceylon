@@ -57,10 +57,10 @@ public class CeylonHelpTool extends AbstractDoc implements Tool {
         printToolSummary(out, docModel);
         
         Synopsis synopsis = out.startSynopsis(bundle.getString("section.SYNOPSIS"));
-        synopsis.appendSynopsis(Tools.progName());
+        synopsis.appendSynopsis(Tools.progName() + " ");
         synopsis.longOptionSynopsis("--version");
         synopsis.nextSynopsis();
-        synopsis.appendSynopsis(Tools.progName());
+        synopsis.appendSynopsis(Tools.progName() + " ");
         synopsis.argumentSynopsis("[<cey-options>]");
         synopsis.appendSynopsis(" ");
         synopsis.argumentSynopsis("<command>");
