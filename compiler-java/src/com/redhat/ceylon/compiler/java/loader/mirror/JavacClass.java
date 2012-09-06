@@ -53,6 +53,9 @@ public class JavacClass implements ClassMirror {
     private Map<String, AnnotationMirror> annotations;
     private List<TypeParameterMirror> typeParams;
 
+    private ClassMirror enclosingClass;
+    private boolean enclosingClassSet;
+    
     private List<FieldMirror> fields;
 
     private LinkedList<ClassMirror> innerClasses;
@@ -214,5 +217,17 @@ public class JavacClass implements ClassMirror {
     @Override
     public boolean isJavaSource() {
         return Util.isJavaSource(classSymbol);
+    }
+
+    @Override
+    public ClassMirror getEnclosingClass() {
+        if (!enclosingClassSet) {
+            Symbol encl = classSymbol.getEnclosingElement();
+            if (encl != null && encl instanceof ClassSymbol) {
+                enclosingClass = new JavacClass((ClassSymbol)encl);
+            }
+            enclosingClassSet = true;
+        }
+        return enclosingClass;
     }
 }

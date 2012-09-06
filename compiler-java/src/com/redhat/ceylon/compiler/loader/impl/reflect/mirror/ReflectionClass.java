@@ -47,6 +47,8 @@ public class ReflectionClass implements ClassMirror {
     private ReflectionPackage pkg;
     private boolean superClassSet;
     private ReflectionType superClass;
+    private boolean enclosingClassSet;
+    private ClassMirror enclosingClass;
     private LinkedList<ClassMirror> innerClasses;
 
     public ReflectionClass(Class<?> klass) {
@@ -204,5 +206,16 @@ public class ReflectionClass implements ClassMirror {
     @Override
     public boolean isJavaSource() {
         return false;
+    }
+
+    @Override
+    public ClassMirror getEnclosingClass() {
+        if(enclosingClassSet)
+            return enclosingClass;
+        Class<?> encl = klass.getEnclosingClass();
+        if(encl != null)
+            enclosingClass = new ReflectionClass(encl);
+        enclosingClassSet = true;
+        return enclosingClass;
     }
 }

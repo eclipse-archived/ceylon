@@ -94,7 +94,12 @@ public interface ClassMirror extends AnnotatedMirror {
      * Returns this class's superclass, or null if it doesn't have any
      */
     TypeMirror getSuperclass();
-    
+
+    /**
+     * Returns this class's containing class, if any
+     */
+    ClassMirror getEnclosingClass();
+
     /**
      * Returns the list of interfaces implemented by this class
      */
@@ -125,4 +130,5 @@ public interface ClassMirror extends AnnotatedMirror {
      * source file or from a class file
      */
     boolean isJavaSource();
+
 }
