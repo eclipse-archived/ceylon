@@ -5,13 +5,11 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.dist" value="${build.dir}/dist"/>
     <property name="build.classes" location="${build.dir}/classes"/>
-	<property name="build.bin" value="${build.dir}/bin"/>
-
+	
     <property name="src" location="src"/>
     <property name="test.src" location="test/src"/>
     <property name="test.reports" location="${build.dir}/test-reports"/>
-	<property name="bin" location="bin"/>
-
+	
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
@@ -92,26 +90,6 @@
         <delete dir="${ceylon.common.repo}"/>
     </target>
 	
-	<target name="dist.bin">
-    	<mkdir dir="${build.bin}"/>
-		<copy todir="${build.bin}">
-            <fileset dir="${bin}">
-            	<exclude name="**/*.in"/>
-            </fileset>
-        </copy>
-		<filter token="VERSION" value="${module.com.redhat.ceylon.common.version}"/>
-        <copy todir="${build.bin}" filtering="yes">
-            <fileset dir="${bin}">
-                <include name="**/*.in"/>
-            </fileset>
-            <globmapper from="*.in" to="*"/>
-        </copy>
-        <chmod perm="0755">
-            <fileset dir="${build.bin}">
-                <include name="cey"/>
-            </fileset>
-        </chmod>
-	</target>
 
     <target name="ide" depends="dist">
         <copy 
@@ -120,7 +98,7 @@
             tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.common-0.4-ide.jar"/>
     </target>
 	
-    <target name="dist" depends="compile, dist.bin">
+    <target name="dist" depends="compile">
         <mkdir dir="${build.dist}"/>
     	
         <zip destfile="${build.dist}/${ceylon.common.jar}">
