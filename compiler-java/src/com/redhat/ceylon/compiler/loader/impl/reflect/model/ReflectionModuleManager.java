@@ -80,4 +80,11 @@ public class ReflectionModuleManager extends LazyModuleManager {
             getModelLoader().loadStandardModules();
         getModelLoader().loadPackageDescriptors();
     }
+    
+    @Override
+    public void modulesVisited() {
+        if(isModuleLoadedFromSource("ceylon.language")){
+            getModelLoader().setupWithNoStandardModules();
+        }
+    }
 }
