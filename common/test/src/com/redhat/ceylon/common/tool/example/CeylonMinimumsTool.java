@@ -3,11 +3,11 @@ package com.redhat.ceylon.common.tool.example;
 import java.util.List;
 
 import com.redhat.ceylon.common.tool.Argument;
-import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("")
-public class CeylonMinimumsTool implements Plugin {
+public class CeylonMinimumsTool implements Tool {
 
     private List<String> arguments;
     

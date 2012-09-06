@@ -25,25 +25,25 @@ import javax.annotation.PostConstruct;
 
 /**
  * Responsible for locating a Class for a given tool name and constucting a 
- * {@link PluginModel} by reflection on that class. 
+ * {@link ToolModel} by reflection on that class. 
  * @author tom
  */
-public class PluginLoader {
+public class ToolLoader {
 
     private final ClassLoader loader;
     
     private final ArgumentParserFactory argParserFactory;
     
-    public PluginLoader(ArgumentParserFactory argParserFactory) {
-        this(argParserFactory, PluginLoader.class.getClassLoader());
+    public ToolLoader(ArgumentParserFactory argParserFactory) {
+        this(argParserFactory, ToolLoader.class.getClassLoader());
     }
     
-    public PluginLoader(ArgumentParserFactory argParserFactory, ClassLoader loader) {
+    public ToolLoader(ArgumentParserFactory argParserFactory, ClassLoader loader) {
         this.argParserFactory = argParserFactory;
         this.loader = loader == null ? ClassLoader.getSystemClassLoader() : loader;
     }
     
-    public PluginLoader(ArgumentParserFactory argParserFactory, File[] path) {
+    public ToolLoader(ArgumentParserFactory argParserFactory, File[] path) {
         this.argParserFactory = argParserFactory;
         if (path != null) {
             loader = new URLClassLoader(makeClasspath(path), 
@@ -53,7 +53,7 @@ public class PluginLoader {
         }
     }
     
-    private <T extends Plugin> Class<T> loadToolClass(final String toolName) {
+    private <T extends Tool> Class<T> loadToolClass(final String toolName) {
         String className = null;
         if (toolName.isEmpty()) {
             className = CeylonTool.class.getName();
@@ -70,7 +70,7 @@ public class PluginLoader {
                
             if (new HashSet<String>(classNames).size() > 1) {
                 // TODO Allow fully qualified tool names to avoid ambiguities?
-                throw new PluginException("Ambiguous tool name " + toolName + ", classes: " + classNames);
+                throw new ToolException("Ambiguous tool name " + toolName + ", classes: " + classNames);
             }
             if (classNames.isEmpty()) {
                 return null;
@@ -89,10 +89,10 @@ public class PluginLoader {
      * Returns a ToolModel given the name of the tool, or null if no such tool is 
      * know to this tool loader.
      */
-    public <T extends Plugin> PluginModel<T> loadToolModel(String toolName) {
+    public <T extends Tool> ToolModel<T> loadToolModel(String toolName) {
         Class<T> toolClass = loadToolClass(toolName);
         if (toolClass != null) {
-            final PluginModel<T> toolModel;
+            final ToolModel<T> toolModel;
             try {
                 toolModel = loadModel(toolClass);
             } catch (ModelException e) {
@@ -112,15 +112,15 @@ public class PluginLoader {
             try {
                 urls[ii] = jars[ii].toURI().toURL();
             } catch (MalformedURLException e) {
-                throw new PluginException(e);
+                throw new ToolException(e);
             }
         }
         return urls;
     }
     
-    private <T extends Plugin> PluginModel<T> loadModel(Class<T> cls) {
+    private <T extends Tool> ToolModel<T> loadModel(Class<T> cls) {
         checkClass(cls);
-        PluginModel<T> model = new PluginModel<T>();
+        ToolModel<T> model = new ToolModel<T>();
         model.setToolClass(cls);
         
         String name = getToolName(cls);
@@ -139,7 +139,7 @@ public class PluginLoader {
         return model;
     }
 
-    private <T extends Plugin, A> void addMethod(Class<T> cls, PluginModel<T> model,
+    private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,
             Method method, Map<Integer, ArgumentModel<?>> argumentModels) {
         final PostConstruct postConstructAnno = method.getAnnotation(PostConstruct.class);
         if (postConstructAnno != null) {
@@ -181,8 +181,8 @@ public class PluginLoader {
         } 
     }
 
-    private <T extends Plugin> void checkDuplicateOption(Class<T> cls,
-            PluginModel<T> model, OptionModel<?> optionModel) {
+    private <T extends Tool> void checkDuplicateOption(Class<T> cls,
+            ToolModel<T> model, OptionModel<?> optionModel) {
         if (model.getOption(optionModel.getLongName()) != null) {
             throw new ModelException(cls + " has more than one binding for option " + optionModel.getLongName());
         }
@@ -211,7 +211,7 @@ public class PluginLoader {
         }
     }
 
-    private void checkClass(Class<? extends Plugin> cls) throws ModelException {
+    private void checkClass(Class<? extends Tool> cls) throws ModelException {
         final int classModifiers = cls.getModifiers();
         if (Modifier.isAbstract(classModifiers)) {
             throw new ModelException("Tool " + cls + " is not concrete");            
@@ -240,7 +240,7 @@ public class PluginLoader {
                 && method.getParameterTypes().length == 1;
     }
 
-    private String getToolName(Class<? extends Plugin> toolClass) {
+    private String getToolName(Class<? extends Tool> toolClass) {
         String name = toolClass.getSimpleName();
         return getToolName(name);
     }
@@ -408,9 +408,9 @@ public class PluginLoader {
          */
         Enumeration<URL> resources;
         try {
-            resources = loader.getResources("META-INF/services/"+Plugin.class.getName());
+            resources = loader.getResources("META-INF/services/"+Tool.class.getName());
         } catch (IOException e) {
-            throw new PluginException(e);
+            throw new ToolException(e);
         }
         while (resources.hasMoreElements()) {
             parseServiceInfo(handler, result, resources);
@@ -418,9 +418,9 @@ public class PluginLoader {
         // Nasty hack to work around the Eclipse putting all the generated 
         // classes and resources in the same place: 
         try {
-            resources = loader.getResources("META-INF/services/"+Plugin.class.getName()+"-test");
+            resources = loader.getResources("META-INF/services/"+Tool.class.getName()+"-test");
         } catch (IOException e) {
-            throw new PluginException(e);
+            throw new ToolException(e);
         }
         while (resources.hasMoreElements()) {
             parseServiceInfo(handler, result, resources);
@@ -449,7 +449,7 @@ public class PluginLoader {
                 reader.close();
             }
         } catch (IOException e) {
-            throw new PluginException("Error reading service file " + url, e);
+            throw new ToolException("Error reading service file " + url, e);
         }
     }
 

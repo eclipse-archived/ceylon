@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Exception for problems parsing options and arguments.
  */
-public class OptionArgumentException extends PluginException {
+public class OptionArgumentException extends ToolException {
 
     public OptionArgumentException(String msgKey, Object...msgArgs) {
         super(ToolMessages.msg(msgKey, msgArgs));

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.common.tool;
 
-public class NoSuchToolException extends PluginException {
+public class NoSuchToolException extends ToolException {
 
     private String toolName;
     

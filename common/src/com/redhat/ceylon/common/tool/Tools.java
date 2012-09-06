@@ -10,7 +10,7 @@ public class Tools {
 
     private Tools() {}
     
-    public static void printToolSuggestions(PluginLoader toolLoader, WordWrap wrap, String toolName) {
+    public static void printToolSuggestions(ToolLoader toolLoader, WordWrap wrap, String toolName) {
         wrap.append(Tools.progName() + ": " + toolName + " is not a ceylon command. See 'ceylon --help'.").newline();
         final List<String> suggestions = toolLoader.typo(toolName);
         if (suggestions != null 

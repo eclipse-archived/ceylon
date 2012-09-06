@@ -8,8 +8,8 @@ import org.junit.Test;
 public class TopLevelToolTest {
 
     protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final PluginFactory pluginFactory = new PluginFactory(apf);
-    protected final PluginLoader pluginLoader = new PluginLoader(apf);
+    protected final ToolFactory pluginFactory = new ToolFactory(apf);
+    protected final ToolLoader pluginLoader = new ToolLoader(apf);
     
     private CeylonTool tool;
     

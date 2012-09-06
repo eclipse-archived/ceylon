@@ -16,7 +16,7 @@ import java.util.List;
         "Otherwise `<tool-arguments>` should begin with the name of a ceylon tool. " +
 		"The named tool is loaded and configured with the remaining command " +
         "line arguments and control passes to that tool.")
-public class CeylonTool implements Plugin {
+public class CeylonTool implements Tool {
 
     public static final String VERSION = "0.4 (Supercalifragilisticexpialidocious)";
     private static final String ARG_VERSION = "--version";
@@ -30,8 +30,8 @@ public class CeylonTool implements Plugin {
     private List<String> toolArgs;
     private boolean stacktraces = false;
     private final ArgumentParserFactory argParserFactory;
-    private PluginLoader pluginLoader;
-    private PluginFactory pluginFactory;
+    private ToolLoader pluginLoader;
+    private ToolFactory pluginFactory;
     private boolean version;
     
     public CeylonTool() {
@@ -165,7 +165,7 @@ public class CeylonTool implements Plugin {
      */
     public int bootstrap(String[] args) throws Exception {
         try {
-            PluginModel<CeylonTool> model = getToolModel("");
+            ToolModel<CeylonTool> model = getToolModel("");
             List<String> myArgs = rearrangeArgs(args);
             getPluginFactory().bindArguments(model, this, myArgs);
             run();
@@ -188,19 +188,19 @@ public class CeylonTool implements Plugin {
             // --version with a Java <7 JVM, but also do it here for consistency
             version(System.out);
         } else {   
-            Plugin tool = getTool();
+            Tool tool = getTool();
             // Run the tool
             tool.run();
         }
     }
 
-    Plugin getTool() {
-        Plugin tool = null;
+    Tool getTool() {
+        Tool tool = null;
         
         // TODO Need to sort out how we load tools -- We need to be clear 
         // on where external tools should be put, and should it be 
         // possible to replace the standard tools?
-        final PluginModel<?> model = getToolModel(getToolName());
+        final ToolModel<?> model = getToolModel(getToolName());
         if (model == null) {
             Tools.printToolSuggestions(getPluginLoader(), new WordWrap(), getToolName());
             throw new NoSuchToolException();
@@ -209,25 +209,25 @@ public class CeylonTool implements Plugin {
         return tool;
     }
 
-    <T extends Plugin> PluginModel<T> getToolModel(String toolName) {
-        final PluginModel<T> model = getPluginLoader().loadToolModel(toolName);
+    <T extends Tool> ToolModel<T> getToolModel(String toolName) {
+        final ToolModel<T> model = getPluginLoader().loadToolModel(toolName);
         return model;
     }
     
-    <T extends Plugin> PluginModel<T> getToolModel() {
+    <T extends Tool> ToolModel<T> getToolModel() {
         return getToolModel(getToolName());
     }
 
-    PluginFactory getPluginFactory() {
+    ToolFactory getPluginFactory() {
         if (pluginFactory == null) {
-            pluginFactory =new PluginFactory(getArgumentParserFactory());
+            pluginFactory =new ToolFactory(getArgumentParserFactory());
         }
         return pluginFactory;
     }
 
-    PluginLoader getPluginLoader() {
+    ToolLoader getPluginLoader() {
         if (pluginLoader == null) {
-            pluginLoader = new PluginLoader(getArgumentParserFactory(), ClassLoader.getSystemClassLoader());
+            pluginLoader = new ToolLoader(getArgumentParserFactory(), ClassLoader.getSystemClassLoader());
         }
         return pluginLoader;
     }

@@ -7,9 +7,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
-    PluginLoaderTest.class,
-    PluginLoaderTest.class,
-    PluginFactoryTest.class,
+    ToolLoaderTest.class,
+    ToolLoaderTest.class,
+    ToolFactoryTest.class,
     MultiplicityTest.class,
     TopLevelToolTest.class,
     WordWrapTest.class,

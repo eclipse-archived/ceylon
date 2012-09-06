@@ -7,15 +7,15 @@ import org.junit.Test;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.ArgumentParserFactory;
 import com.redhat.ceylon.common.tool.OptionModel;
-import com.redhat.ceylon.common.tool.PluginLoader;
-import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.example.CeylonExampleTool;
 
-public class PluginLoaderTest {
+public class ToolLoaderTest {
 
     @Test
     public void testExampleTool() throws Exception {
-        final PluginModel<CeylonExampleTool> model = new PluginLoader(new ArgumentParserFactory()).loadToolModel("example");
+        final ToolModel<CeylonExampleTool> model = new ToolLoader(new ArgumentParserFactory()).loadToolModel("example");
         Assert.assertNotNull(model);
         Assert.assertEquals("example", model.getName());
         Assert.assertEquals(1, model.getPostConstruct().size());

@@ -48,7 +48,7 @@
  *   </dd>
  * 
  * <h3>Tools</h3>
- * <p>A <em>tool</em> is a class which implements {@link Plugin} and adheres 
+ * <p>A <em>tool</em> is a class which implements {@link Tool} and adheres 
  * to the conventions it requires.</p>  
  */
 package com.redhat.ceylon.common.tool;

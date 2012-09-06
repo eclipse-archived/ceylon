@@ -15,9 +15,9 @@ import java.util.Map;
  * @author tom
  * @param <T>
  */
-public class PluginModel<T extends Plugin> {
+public class ToolModel<T extends Tool> {
     private String name;
-    private PluginLoader loader;
+    private ToolLoader loader;
     private Map<String, OptionModel<?>> optionsByName = new LinkedHashMap<>(1);
     private Map<Character, OptionModel<?>> optionsByShort = new HashMap<>(1);
     private List<ArgumentModel<?>> arguments = new ArrayList<>(1);
@@ -25,11 +25,11 @@ public class PluginModel<T extends Plugin> {
     private Class<T> toolClass;
     private Method rest;
     
-    public PluginLoader getToolLoader() {
+    public ToolLoader getToolLoader() {
         return loader;
     }
     
-    public void setToolLoader(PluginLoader toolLoader) {
+    public void setToolLoader(ToolLoader toolLoader) {
         this.loader = toolLoader;
     }
     

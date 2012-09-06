@@ -10,11 +10,11 @@ import java.util.Map;
 
 
 /**
- * Responsible for instantiating and configuring a {@link Plugin} according to
- * some command line arguments and a {@link PluginModel}.
+ * Responsible for instantiating and configuring a {@link Tool} according to
+ * some command line arguments and a {@link ToolModel}.
  * @author tom
  */
-public class PluginFactory {
+public class ToolFactory {
     
     private static final String SHORT_PREFIX = "-";
     private static final char LONG_SEP = '=';
@@ -22,29 +22,29 @@ public class PluginFactory {
     
     private final ArgumentParserFactory argParserFactory;
     
-    public PluginFactory(ArgumentParserFactory argParserFactory) {
+    public ToolFactory(ArgumentParserFactory argParserFactory) {
         this.argParserFactory = argParserFactory;
     }
     
-    public <T extends Plugin> T newInstance(PluginModel<T> toolModel) {
+    public <T extends Tool> T newInstance(ToolModel<T> toolModel) {
         T tool;
         try {
             tool = toolModel.getToolClass().newInstance();
         } catch (ReflectiveOperationException e) {
-            throw new PluginException("Could not instantitate tool " + toolModel.getToolClass(), e);
+            throw new ToolException("Could not instantitate tool " + toolModel.getToolClass(), e);
         }
         
         return tool;
     }
 
-    private <T extends Plugin> void setToolLoader(PluginModel<T> toolModel,
+    private <T extends Tool> void setToolLoader(ToolModel<T> toolModel,
             T tool) {
         try {
-            toolModel.getToolClass().getMethod("setToolLoader", PluginLoader.class).invoke(tool, toolModel.getToolLoader());
+            toolModel.getToolClass().getMethod("setToolLoader", ToolLoader.class).invoke(tool, toolModel.getToolLoader());
         } catch (NoSuchMethodException e) {
             // Ignore
         } catch (ReflectiveOperationException e) {
-            throw new PluginException("Could not instantitate tool " + toolModel.getToolClass(), e);
+            throw new ToolException("Could not instantitate tool " + toolModel.getToolClass(), e);
         }
     }
     
@@ -90,7 +90,7 @@ public class PluginFactory {
                     givenOption = binding.givenOption;
                 } else if (om != binding.optionModel
                         || am != binding.argumentModel) {
-                    throw new PluginException();
+                    throw new ToolException();
                 }
             }
             return new Binding<List<A>>(givenOption, 
@@ -110,12 +110,12 @@ public class PluginFactory {
     /**
      * Parses the given arguments binding them to the tool.
      */
-    public <T extends Plugin> T bindArguments(PluginModel<T> toolModel, Iterable<String> args) {
+    public <T extends Tool> T bindArguments(ToolModel<T> toolModel, Iterable<String> args) {
         T tool = newInstance(toolModel);
         return bindArguments(toolModel, tool, args);
     }
     
-    <T extends Plugin> T bindArguments(PluginModel<T> toolModel, T tool, Iterable<String> args) {
+    <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, Iterable<String> args) {
         try {
             List<String> unrecognised = new ArrayList<String>(1);
             List<String> rest = new ArrayList<String>(1);
@@ -229,7 +229,7 @@ public class PluginFactory {
             return tool;
         } catch (IllegalAccessException e) {
             // Programming error 
-            throw new PluginException(e);
+            throw new ToolException(e);
         }
     }
 
@@ -280,8 +280,8 @@ public class PluginFactory {
         return true;
     }
 
-    private <T extends Plugin> void checkMultiplicities(
-            PluginModel<T> toolModel,
+    private <T extends Tool> void checkMultiplicities(
+            ToolModel<T> toolModel,
             Map<ArgumentModel<?>, List<Binding<?>>> bindings) {
         for (Map.Entry<ArgumentModel<?>, List<Binding<?>>> entry : bindings.entrySet()) {
             final ArgumentModel<?> argument = entry.getKey();
@@ -325,7 +325,7 @@ public class PluginFactory {
         }
     }
 
-    private <T extends Plugin, A> void processArgument(T tool,
+    private <T extends Tool, A> void processArgument(T tool,
             Map<ArgumentModel<?>, List<Binding<?>>> bindings,
             Binding<A> binding) {
         List<Binding<?>> values = bindings.get(binding.argumentModel);
@@ -341,7 +341,7 @@ public class PluginFactory {
         values.add(binding);
     }
 
-    private <T extends Plugin, A> void parseAndSetValue(T tool,
+    private <T extends Tool, A> void parseAndSetValue(T tool,
             Binding<A> binding) {
         binding.value = parseArgument(binding);
         setValue(tool, binding);
@@ -358,11 +358,11 @@ public class PluginFactory {
         }
     }
     
-    private <A> void setValue(Plugin tool, Binding<A> binding) {
+    private <A> void setValue(Tool tool, Binding<A> binding) {
         try {
             binding.argumentModel.getSetter().invoke(tool, binding.value);
         } catch (IllegalAccessException e) {
-            throw new PluginException(e);
+            throw new ToolException(e);
         } catch (InvocationTargetException e) {
             throw binding.invalid(e.getCause());
         }

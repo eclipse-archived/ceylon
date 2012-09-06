@@ -19,7 +19,7 @@ value="A tool which provides completion suggestions for the Bash shell.")
 		"* long option names," +
 		"* long option values **if** the setter type is a `java.lang.File` or a subclass" +
 		"  of `java.lang.Enum`.")
-public class CeylonBashCompletionTool implements Plugin {
+public class CeylonBashCompletionTool implements Tool {
 
     public static class CompletionResults {
         
@@ -68,7 +68,7 @@ public class CeylonBashCompletionTool implements Plugin {
     
     private int cword = -1;
     private List<String> arguments;
-    private PluginLoader toolLoader;
+    private ToolLoader toolLoader;
     
     @OptionArgument
     @Description("The index in the `<arguments>` of the argument being " +
@@ -82,7 +82,7 @@ public class CeylonBashCompletionTool implements Plugin {
         this.arguments = arguments;
     }
     
-    public final void setToolLoader(PluginLoader toolLoader) {
+    public final void setToolLoader(ToolLoader toolLoader) {
         this.toolLoader = toolLoader;
     }
     
@@ -98,7 +98,7 @@ public class CeylonBashCompletionTool implements Plugin {
             String argument = arguments.get(cword);
             CeylonTool main = new CeylonTool();
             main.setArgs(arguments);
-            PluginModel<?> tool = main.getToolModel();
+            ToolModel<?> tool = main.getToolModel();
             if (!afterEoo()) {
                 if (argument.startsWith("--")) {
                     if (argument.contains("=")) {
@@ -132,7 +132,7 @@ public class CeylonBashCompletionTool implements Plugin {
         results.emitCompletions();
     }
 
-    private CompletionResults completeLongOptionArgument(PluginModel<?> tool, final String argument) {
+    private CompletionResults completeLongOptionArgument(ToolModel<?> tool, final String argument) {
         int index = argument.indexOf('=');
         String optionName = argument.substring(2, argument.charAt(index-1) == '\\' ? index-1 : index);
         String partialValue = argument.substring(index+1);
@@ -215,7 +215,7 @@ public class CeylonBashCompletionTool implements Plugin {
         return results;
     }
 
-    private CompletionResults completeLongOption(PluginModel<?> tool, String argument) {
+    private CompletionResults completeLongOption(ToolModel<?> tool, String argument) {
         Comparator<OptionModel<?>> comparator = new Comparator<OptionModel<?>>() {
             @Override
             public int compare(OptionModel<?> o1, OptionModel<?> o2) {

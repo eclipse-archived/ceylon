@@ -9,11 +9,11 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
 
 /**
- * An example tool which demonstrates how to write a {@link Plugin}.
+ * An example tool which demonstrates how to write a {@link Tool}.
  * @author tom
  */
 @Summary("An example tool which demonstrates how to write a Tool.")
@@ -21,7 +21,7 @@ import com.redhat.ceylon.common.tool.Summary;
 	  "setters for each option/argument it recieves from the command line arguments." +
 	  "The name of the tool is derived from the name of the class, which must " +
 	  "begin with `Ceylon` and end with `Tool`")
-public class CeylonExampleTool implements Plugin {
+public class CeylonExampleTool implements Tool {
 
     private boolean longName;
     private String shortName;

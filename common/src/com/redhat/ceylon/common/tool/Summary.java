@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * Annotates a {@link Plugin Tool} with a Markdown-formatted summary.
+ * Annotates a {@link Tool Tool} with a Markdown-formatted summary.
  * 
  * @see Description
  */
