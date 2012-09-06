@@ -89,6 +89,10 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     @Override
     protected Package createPackage(String pkgName, Module module) {
+        if((pkgName.equals("ceylon.language")
+                || pkgName.startsWith("ceylon.language."))
+            && isModuleLoadedFromSource("ceylon.language"))
+            return super.createPackage(pkgName, module);
         final Package pkg = new LazyPackage(getModelLoader());
         List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
         pkg.setName(name);
@@ -101,7 +105,13 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     @Override
     protected Module createModule(List<String> moduleName) {
-        Module module = new ReflectionModule(this);
+        String name = Util.getName(moduleName);
+        // only exception we make is for ceylon.language
+        Module module;
+        if(name.equals("ceylon.language") && isModuleLoadedFromSource("ceylon.language"))
+            module = new Module();
+        else
+            module = new ReflectionModule(this);
         module.setName(moduleName);
         return module;
     }
