@@ -329,10 +329,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
     
     @Override
-    public ModuleVersionResult completeVersions(ModuleVersionQuery lookup) {
-        ModuleVersionResult result = new ModuleVersionResult(lookup.getName());
+    public ModuleVersionResult completeVersions(ModuleVersionQuery query) {
+        ModuleVersionResult result = new ModuleVersionResult(query.getName());
         for(Repository root : roots){
-            root.completeVersions(lookup, result);
+            root.completeVersions(query, result);
         }
         return result;
     }

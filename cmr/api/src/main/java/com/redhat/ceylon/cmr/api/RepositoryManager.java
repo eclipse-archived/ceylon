@@ -78,7 +78,7 @@ public interface RepositoryManager {
     
     ModuleSearchResult completeModules(ModuleQuery query);
     
-    ModuleVersionResult completeVersions(ModuleVersionQuery lookup);
+    ModuleVersionResult completeVersions(ModuleVersionQuery query);
     
     ModuleSearchResult searchModules(ModuleQuery query);
 }

@@ -26,7 +26,7 @@ package com.redhat.ceylon.cmr.api;
 public interface ContentFinder {
     void completeModules(ModuleQuery query, ModuleSearchResult result);
 
-    void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result);
+    void completeVersions(ModuleVersionQuery query, ModuleVersionResult result);
     
     void searchModules(ModuleQuery query, ModuleSearchResult result);
 }
