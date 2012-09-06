@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
+import org.antlr.runtime.Token;
+
 public class AnalysisMessage implements Message {
 	
     private Node treeNode;
@@ -28,6 +30,12 @@ public class AnalysisMessage implements Message {
     @Override
     public int getCode() {
         return code;
+    }
+    
+    @Override
+    public int getLine() {
+    	Token token = treeNode.getToken();
+		return token==null ? -1 : token.getLine();
     }
     
     @Override

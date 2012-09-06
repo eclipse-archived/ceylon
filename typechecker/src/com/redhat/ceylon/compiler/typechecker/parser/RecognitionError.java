@@ -30,6 +30,7 @@ public abstract class RecognitionError implements Message {
 		return recognitionException;
 	}
 	
+	@Override
 	public int getLine() {
 		return recognitionException.line;
 	}
