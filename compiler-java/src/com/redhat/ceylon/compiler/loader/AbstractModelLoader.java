@@ -391,7 +391,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // now resolve the extended type
         AnnotationMirror aliasAnnotation = mirror.getAnnotation(CEYLON_ALIAS_ANNOTATION);
         String extendedTypeString = (String) aliasAnnotation.getValue();
-        // FIXME: the scope is not fully set up at this time
+        
+        // we must make sure the container is set
+        // FIXME: this may conflict with eager loading of inner classes, we need more tests
+        ClassMirror enclosingClass = mirror.getEnclosingClass();
+        if(enclosingClass != null)
+            alias.setContainer((ClassOrInterface)convertToDeclaration(enclosingClass, DeclarationType.TYPE));
+        
         ProducedType extendedType = decodeType(extendedTypeString, alias);
         alias.setExtendedType(extendedType);
     }
