@@ -67,7 +67,7 @@
 
     <path id="test.run.classpath">
         <path refid="test.build.classpath"/>
-        <pathelement path="${cmr-impl-test.resources}"/>
+        <pathelement path="${cmr-testsuite-test.resources}"/>
         <pathelement path="${build.test}"/>
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
