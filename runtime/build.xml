@@ -39,7 +39,7 @@
     <property name="build.classes" location="${build.dir}/classes"/>
     <property name="build.dist" location="${build.dir}/dist"/>
     <property name="build.dist.lib" location="${build.dist}/lib"/>
-    <property name="build.dist.repo" location="${build.dist}/runtime-repo"/>
+    <property name="build.dist.repo" location="${build.dist}/repo"/>
     <property name="build.lib" location="${build.dir}/lib"/>
     <property name="build.bootstrap" location="${build.dir}/test"/>
     <property name="build.test" location="${build.dir}/test"/>
@@ -56,7 +56,6 @@
     <!-- jar generated -->
     <property name="bootstrap.jar" value="ceylon-runtime-bootstrap.jar"/>
     <property name="bootstrap.lib" location="${build.lib}/${bootstrap.jar}"/>
-    <property name="runtime.lib" location="${build.lib}/runtime.jar"/>
 
     <property name="runtime-test.src" location="${basedir}/testsuite/src/test/java"/>
 
@@ -67,10 +66,10 @@
     <property name="module.runtime.name" value="ceylon.runtime"/>
 
     <!-- module archives -->
-    <property name="ceylon.runtime.dir" value="runtime-repo/${module.runtime.dir}/main"/>
-    <property name="ceylon.runtime.jar" value="${ceylon.runtime.dir}/${module.runtime.name}.jar"/>
-    <property name="ceylon.runtime.module" value="${ceylon.runtime.dir}/${module.runtime.name}-main.jar"/>
-    <property name="ceylon.runtime.dist" value="${build.dist}/${ceylon.runtime.dir}"/>
+    <property name="ceylon.runtime.dir" value="${module.runtime.dir}/${module.ceylon.runtime.version}"/>
+    <property name="ceylon.runtime.jar" value="${ceylon.runtime.dir}/${module.runtime.name}-${module.ceylon.runtime.version}.jar"/>
+    <property name="ceylon.runtime.repo" value="${ceylon.repo.dir}/${ceylon.runtime.dir}"/>
+    <property name="ceylon.runtime.dist" value="${build.dist.repo}/${ceylon.runtime.dir}"/>
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}"/>
@@ -133,7 +132,23 @@
         <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
-        <copy file="${runtime.lib}" tofile="${build.dist}/${ceylon.runtime.module}"/>
+    </target>
+
+    <target name="publish" depends="dist,clean.repo,init.repo">
+        <copy todir="${ceylon.runtime.repo}">
+            <fileset dir="${ceylon.runtime.dist}"/>
+        </copy>
+    </target>
+
+    <!-- Repository targets -->
+    <target name="init.repo"
+            description="Init local ceylon repository">
+        <mkdir dir="${ceylon.runtime.repo}"/>
+    </target>
+
+    <target name="clean.repo"
+            description="Clean local ceylon repository">
+        <delete dir="${ceylon.runtime.repo}"/>
     </target>
 
     <!-- Tasks related to building the runtime -->
@@ -160,7 +175,7 @@
     <!-- Rule to build runtime jar -->
     <target name="runtime.jar" depends="runtime.classes">
         <mkdir dir="${build.lib}"/>
-        <jar destfile="${runtime.lib}">
+        <jar destfile="${build.dist.repo}/${ceylon.runtime.jar}">
             <fileset dir="${build.classes}">
             </fileset>
         </jar>
