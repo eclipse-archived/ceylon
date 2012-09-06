@@ -21,6 +21,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
@@ -32,10 +33,6 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import java.net.URISyntaxException;
 
 /**
  * @author Stef Epardaud
@@ -61,6 +58,70 @@ public class HerdTestCase extends AbstractTest {
     protected RepositoryManager getDualRepositoryManager() throws URISyntaxException {
         // Herd + /repo
         return getRepositoryManager(getRepositoryRoot());
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdCompleteEmpty() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3")),
+                new ModuleDetails("fr.epardaud.collections", null, null, set(), set("0.1", "0.2")),
+                new ModuleDetails("fr.epardaud.iop", null, null, set(), set("0.1")),
+                new ModuleDetails("fr.epardaud.json", null, null, set(), set("0.1")),
+                new ModuleDetails("fr.epardaud.net", null, null, set(), set("0.2")),
+                new ModuleDetails("fr.epardaud.test", null, null, set(), set("0.1")),
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
+        };
+        testComplete("", expected, getRepositoryManager());
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdCompleteCeyl() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+        };
+        testComplete("ceyl", expected, getRepositoryManager());
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdCompleteCeylon() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+        };
+        testComplete("ceylon", expected, getRepositoryManager());
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdCompleteCompleteName() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+        };
+        testComplete("ceylon.collection", expected, getRepositoryManager());
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdCompleteStopsAfterCompleteName() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+        };
+        testComplete("ceylon.collection.", expected, getRepositoryManager());
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdCompleteCeylonDot() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
+                new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
+        };
+        testComplete("ceylon.", expected, getRepositoryManager());
     }
 
     @Test
