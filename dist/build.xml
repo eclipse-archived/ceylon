@@ -131,7 +131,6 @@ Used with another target such as 'package'">
                 <include name="doc/**" />
                 <include name="lib/**" />
                 <include name="repo/**" />
-                <include name="runtime-repo/**" />
                 <include name="samples/**" />
             </zipfileset>
             <zipfileset dir="${basedir}" prefix="${dist.name}">
@@ -265,7 +264,7 @@ Used with another target such as 'package'">
     </target>
 
     <target name="install-runtime" depends="install-cmr">
-        <ant antfile="${ceylon-runtime.dir}/build.xml" target="dist" dir="${ceylon-runtime.dir}" inheritall="false">
+        <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
           <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
         <copy todir="${dist.dir}">
