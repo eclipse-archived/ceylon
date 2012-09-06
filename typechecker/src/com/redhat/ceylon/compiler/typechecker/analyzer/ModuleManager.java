@@ -125,8 +125,7 @@ public class ModuleManager {
         final Set<Module> moduleList = context.getModules().getListOfModules();
         for (Module current : moduleList) {
             final List<String> names = current.getName();
-            if ( names.size() == moduleName.size()
-                    && moduleName.containsAll(names)
+            if (moduleName.equals(names)
                     && compareVersions(version, current.getVersion())) {
                 module = current;
                 break;
