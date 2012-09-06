@@ -30,7 +30,6 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
-import com.redhat.ceylon.cmr.api.ModuleResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
@@ -150,15 +149,15 @@ public abstract class AbstractRepository implements Repository {
     }
     
     @Override
-    public void completeModules(ModuleQuery lookup, ModuleResult result) {
+    public void completeModules(ModuleQuery query, ModuleSearchResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);
         if(delegate != null){
-            delegate.completeModules(lookup, result);
+            delegate.completeModules(query, result);
             return;
         }
         // we NEED the -1 limit here to get empty tokens
-        String[] paths = lookup.getName().split("\\.", -1);
+        String[] paths = query.getName().split("\\.", -1);
         // find the right parent
         Node parent = root;
         for(int i=0;i<paths.length-1;i++){
@@ -170,36 +169,40 @@ public abstract class AbstractRepository implements Repository {
         String lastPart = paths[paths.length-1];
         // now find a matching child
         for(Node child : parent.getChildren()){
-            if(child.getLabel().startsWith(lastPart)
-                    && hasChildrenContainingArtifact(child, lookup.getType())){
-                Node deepestNode = findDeepestUnambiguousNode(child, lookup.getType());
-                String path = toModuleName(deepestNode);
-                result.addResult(path);
+            if(child.getLabel().startsWith(lastPart)){
+                collectArtifacts(child, query, result);
             }
         }
     }
 
-    private Node findDeepestUnambiguousNode(Node node, Type type) {
-        Node childWithArtifacts = null;
-        for(Node child : node.getChildren()){
-            if(hasChildrenContainingArtifact(child, type)){
-                if(childWithArtifacts == null)
-                    childWithArtifacts = child;
-                else{
-                    // we have two children with artifacts so it's ambiguous
-                    return node;
+    private void collectArtifacts(Node node, ModuleQuery lookup, ModuleSearchResult result) {
+        // Winner of the less aptly-named method
+        boolean isFolder = !node.hasBinaries();
+        if(isFolder){
+            if(node.getLabel().equals(ArtifactContext.DOCS))
+                return;
+            Ret ret = new Ret();
+            if(hasChildrenContainingArtifact(node, lookup.getType(), ret)){
+                // we have artifact children, are they of the right type?
+                if(ret.foundRightType){
+                    // collect them
+                    String moduleName = toModuleName(node);
+                    addSearchResult(result, moduleName, node, lookup.getType());
+                }
+            }else{
+                // collect in the children
+                List<Node> sortedChildren = new ArrayList<Node>();
+                for(Node child : node.getChildren())
+                    sortedChildren.add(child);
+                Collections.sort(sortedChildren, AlphabeticalNodeComparator);
+                for(Node child : sortedChildren){
+                    collectArtifacts(child, lookup, result);
                 }
             }
-            // ignore the child if it has no artifacts
         }
-        // if we have only one, find its deepest node
-        // FIXME: this is very unefficient and should be done in one pass
-        if(childWithArtifacts != null)
-            return findDeepestUnambiguousNode(childWithArtifacts, type);
-        return node;
     }
 
-    private boolean hasChildrenContainingArtifact(Node node, Type type) {
+    private boolean hasChildrenContainingArtifact(Node node, Type type, Ret ret) {
         // We don't look directly at our children, we want the children's children, because if there's
         // nothing in those children it means either this is an empty folder, or its children contain
         // artifacts (in which case we don't want to match it since its name must be a version component),
@@ -211,29 +214,33 @@ public abstract class AbstractRepository implements Repository {
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
-            if(isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, type))
+            if(isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, type, ret))
                 return true;
         }
         // could not find any
         return false;
     }
 
-    private boolean containsArtifact(Node moduleNode, Node versionNode, Type type) {
+    private boolean containsArtifact(Node moduleNode, Node versionNode, Type type, Ret ret) {
         String module = toModuleName(moduleNode);
         String version = versionNode.getLabel();
+        boolean foundArtifact = false;
         for(Node child : versionNode.getChildren()){
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
             if(isFolder){
-                // recurse
-                if(!name.equals(ArtifactContext.DOCS) && containsArtifact(versionNode, child, type))
-                    return true;
+                // do not recurse
             }else if(isArtifactOfType(name, module, version, type)){
+                // we found what we were looking for
+                ret.foundRightType = true;
                 return true;
+            }else if(isArtifact(name, module, version)){
+                // we found something, but not the type we wanted
+                foundArtifact = true;
             }
         }
-        return false;
+        return foundArtifact;
     }
 
     private boolean isArtifactOfType(String name, String module, String version, Type type) {

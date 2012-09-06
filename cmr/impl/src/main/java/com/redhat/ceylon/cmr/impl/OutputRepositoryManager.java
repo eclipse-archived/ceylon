@@ -91,8 +91,8 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     }
     
     @Override
-    public ModuleResult completeModules(ModuleQuery lookup) {
-        return new ModuleResult();
+    public ModuleSearchResult completeModules(ModuleQuery query) {
+        return new ModuleSearchResult();
     }
     
     @Override

@@ -251,12 +251,12 @@ public class SmokeTestCase extends AbstractTest {
     public void testCompleteEmpty() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        String[] expected = new String[]{
-            "com.acme.helloworld",
-            "hello",
-            "moduletest",
-            "org.jboss.acme",
-            "test-jar",
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
+                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
+                new ModuleDetails("moduletest", null, null, set(), set("0.1")),
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
         testComplete("", expected, manager);
     }
@@ -265,7 +265,8 @@ public class SmokeTestCase extends AbstractTest {
     public void testCompleteEmptyJS() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        String[] expected = new String[]{};
+        ModuleDetails[] expected = new ModuleDetails[]{
+        };
         testComplete("", expected, manager, ModuleQuery.Type.JS);
     }
 
@@ -273,8 +274,8 @@ public class SmokeTestCase extends AbstractTest {
     public void testCompleteHe() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        String[] expected = new String[]{
-            "hello",
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
         };
         testComplete("he", expected, manager);
     }
@@ -283,8 +284,8 @@ public class SmokeTestCase extends AbstractTest {
     public void testCompleteOrg() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        String[] expected = new String[]{
-            "org.jboss.acme",
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
         };
         testComplete("org", expected, manager);
     }
@@ -293,8 +294,8 @@ public class SmokeTestCase extends AbstractTest {
     public void testCompleteOrgDot() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        String[] expected = new String[]{
-            "org.jboss.acme",
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
         };
         testComplete("org.", expected, manager);
     }
@@ -303,7 +304,8 @@ public class SmokeTestCase extends AbstractTest {
     public void testCompleteStopAtVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        String[] expected = new String[]{};
+        ModuleDetails[] expected = new ModuleDetails[]{
+        };
         testComplete("org.jboss.acme.", expected, manager);
     }
 

@@ -76,7 +76,8 @@ public interface RepositoryManager {
      */
     List<String> getRepositoriesDisplayString();
     
-    ModuleResult completeModules(ModuleQuery lookup);
+    ModuleSearchResult completeModules(ModuleQuery query);
+    
     ModuleVersionResult completeVersions(ModuleVersionQuery lookup);
     
     ModuleSearchResult searchModules(ModuleQuery query);

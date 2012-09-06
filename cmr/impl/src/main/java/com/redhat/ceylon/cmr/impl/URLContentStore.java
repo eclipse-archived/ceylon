@@ -16,22 +16,6 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleResult;
-import com.redhat.ceylon.cmr.api.ModuleSearchResult;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
-import com.redhat.ceylon.cmr.spi.ContentHandle;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
-import com.redhat.ceylon.cmr.util.WS;
-import com.redhat.ceylon.cmr.util.WS.Link;
-import com.redhat.ceylon.cmr.util.WS.Parser;
-import com.redhat.ceylon.cmr.util.WS.XMLHandler;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -42,6 +26,21 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.xml.bind.DatatypeConverter;
+
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.util.WS;
+import com.redhat.ceylon.cmr.util.WS.Link;
+import com.redhat.ceylon.cmr.util.WS.Parser;
+import com.redhat.ceylon.cmr.util.WS.XMLHandler;
 
 /**
  * URL based content store.
@@ -219,32 +218,23 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
-    public void completeModules(ModuleQuery lookup, final ModuleResult result) {
+    public void completeModules(ModuleQuery query, final ModuleSearchResult result) {
         if(isHerd() && herdCompleteModulesURL != null){
             // let's try Herd
             try{
                 WS.getXML(herdCompleteModulesURL,
-                          WS.params(WS.param("module", lookup.getName()),
-                                    WS.param("type", getHerdTypeParam(lookup.getType()))),
+                          WS.params(WS.param("module", query.getName()),
+                                    WS.param("type", getHerdTypeParam(query.getType()))),
                           new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
-                        parseCompleteModulesResponse(p, result);
+                        parseSearchModulesResponse(p, result);
                     }
                 });
             }catch(Exception x){
                 log.info("Failed to get completion of modules from Herd: "+x.getMessage());
             }
         }
-    }
-
-    protected void parseCompleteModulesResponse(Parser p, ModuleResult result) {
-        p.moveToOpenTag("results");
-        while(p.moveToOptionalOpenTag("module")){
-            String module = p.contents();
-            result.addResult(module);
-        }
-        p.checkCloseTag();
     }
 
     private String getHerdTypeParam(Type type) {

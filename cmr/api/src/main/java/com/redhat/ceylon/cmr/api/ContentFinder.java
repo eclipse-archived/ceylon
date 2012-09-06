@@ -24,7 +24,7 @@ package com.redhat.ceylon.cmr.api;
  * @author Stef Epardaud
  */
 public interface ContentFinder {
-    void completeModules(ModuleQuery lookup, ModuleResult result);
+    void completeModules(ModuleQuery query, ModuleSearchResult result);
 
     void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result);
     

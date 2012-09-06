@@ -17,12 +17,11 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ContentFinder;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.ModuleResult;
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
@@ -57,7 +56,7 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
 
 
     @Override
-    public void completeModules(ModuleQuery lookup, ModuleResult result) {
+    public void completeModules(ModuleQuery lookup, ModuleSearchResult result) {
         // remote content stores do not participate in completion for speed reasons
     }
 

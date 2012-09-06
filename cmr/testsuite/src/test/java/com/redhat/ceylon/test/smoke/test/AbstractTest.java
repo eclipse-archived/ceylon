@@ -16,30 +16,25 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 import org.junit.Assert;
-import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleResult;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
-import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
-import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.RootRepositoryManager;
 
@@ -67,19 +62,15 @@ public class AbstractTest {
         return new RootRepositoryManager(root, log);
     }
 
-    protected void testComplete(String query, String[] expected, RepositoryManager manager){
+    protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager){
         testComplete(query, expected, manager, ModuleQuery.Type.JVM);
     }
     
-    protected void testComplete(String query, String[] expected, RepositoryManager manager,
+    protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
             ModuleQuery.Type type){
         ModuleQuery lookup = new ModuleQuery(query, type);
-        ModuleResult result = manager.completeModules(lookup);
-        int i=0;
-        Assert.assertEquals(expected.length, result.getResults().size());
-        for(String name : result.getResults()){
-            Assert.assertEquals(expected[i++], name);
-        }
+        ModuleSearchResult result = manager.completeModules(lookup);
+        compareSearchResults(expected, result);
     }
 
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected) throws Exception{
@@ -126,6 +117,11 @@ public class AbstractTest {
         query.setPagingInfo(pagingInfo);
         ModuleSearchResult results = manager.searchModules(query);
         
+        compareSearchResults(expected, results);
+        return results;
+    }
+
+    private void compareSearchResults(ModuleDetails[] expected, ModuleSearchResult results) {
         int i=0;
         Collection<ModuleDetails> resultsList = results.getResults();
         Assert.assertEquals(expected.length, resultsList.size());
@@ -138,7 +134,6 @@ public class AbstractTest {
             Assert.assertEquals(expectedResult.getAuthors(), result.getAuthors());
             Assert.assertEquals(expectedResult.getVersions(), result.getVersions());
         }
-        return results;
     }
 
     protected SortedSet<String> set(String... values){
