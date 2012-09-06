@@ -108,14 +108,21 @@ public class ToolFactory {
     }
     
     /**
-     * Parses the given arguments binding them to the tool.
+     * Parses the given arguments binding them to a new instance of the 
+     * tool model.
      */
     public <T extends Tool> T bindArguments(ToolModel<T> toolModel, Iterable<String> args) {
         T tool = newInstance(toolModel);
         return bindArguments(toolModel, tool, args);
     }
     
-    <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, Iterable<String> args) {
+    /**
+     * Parses the given arguments binding them to an existing instanceo of the 
+     * the tool model.
+     * You should probably be using {@link #bindArguments(ToolModel, Iterable)}, 
+     * there are few tools which need to call this method directly.
+     */
+    public <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, Iterable<String> args) {
         try {
             List<String> unrecognised = new ArrayList<String>(1);
             List<String> rest = new ArrayList<String>(1);

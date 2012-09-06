@@ -7,7 +7,7 @@ import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("")
-public class CeylonMinimumsTool implements Tool {
+public class TestMinimumsTool implements Tool {
 
     private List<String> arguments;
     

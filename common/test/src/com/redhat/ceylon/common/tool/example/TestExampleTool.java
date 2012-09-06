@@ -21,7 +21,7 @@ import com.redhat.ceylon.common.tool.Summary;
 	  "setters for each option/argument it recieves from the command line arguments." +
 	  "The name of the tool is derived from the name of the class, which must " +
 	  "begin with `Ceylon` and end with `Tool`")
-public class CeylonExampleTool implements Tool {
+public class TestExampleTool implements Tool {
 
     private boolean longName;
     private String shortName;
@@ -66,7 +66,7 @@ public class CeylonExampleTool implements Tool {
         return listArgument;
     }
 
-    public CeylonExampleTool() {
+    public TestExampleTool() {
         
     }
     @Option(longName="long-name", shortName='F')

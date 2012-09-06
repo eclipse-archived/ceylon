@@ -11,9 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ToolLoaderTest.class,
     ToolFactoryTest.class,
     MultiplicityTest.class,
-    TopLevelToolTest.class,
-    WordWrapTest.class,
-    BashCompletionToolTest.class
+    WordWrapTest.class
 })
 public class ToolsSuite {
 

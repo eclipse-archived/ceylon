@@ -7,19 +7,19 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.common.tool.example.CeylonExampleTool;
-import com.redhat.ceylon.common.tool.example.CeylonMinimumsTool;
+import com.redhat.ceylon.common.tool.example.TestExampleTool;
+import com.redhat.ceylon.common.tool.example.TestMinimumsTool;
 
 public class ToolFactoryTest {
     
     protected final ArgumentParserFactory apf = new ArgumentParserFactory();
     protected final ToolFactory pluginFactory = new ToolFactory(apf);
-    protected final ToolLoader pluginLoader = new ToolLoader(apf);
+    protected final ToolLoader pluginLoader = new TestingToolLoader(apf);
     
     @Test
     public void testLongOptionArgument() throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
-        CeylonExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--long-name=true"));
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--long-name=true"));
         Assert.assertTrue(tool.isLongName());
         Assert.assertNull(tool.getShortName());
         Assert.assertTrue(tool.getListArgument() == null);
@@ -33,7 +33,7 @@ public class ToolFactoryTest {
     }
     @Test
     public void testLongOptionArgumentMissing() throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
             pluginFactory.bindArguments(model, Arrays.asList("--short-name"));
             Assert.fail();
@@ -44,8 +44,8 @@ public class ToolFactoryTest {
      
     @Test
     public void testShortOptionArgumentApart() throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
-        CeylonExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("-b", "true"));
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("-b", "true"));
         Assert.assertEquals("true", tool.getShortName());
         Assert.assertTrue(tool.getListArgument() == null);
         Assert.assertTrue(tool.isInited());
@@ -57,14 +57,14 @@ public class ToolFactoryTest {
     }
     @Test
     public void testShortOptionArgumentTogether() throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
-        CeylonExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("-btrue"));
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("-btrue"));
         Assert.assertEquals("true", tool.getShortName());
         Assert.assertTrue(tool.isInited());
     }
     @Test
     public void testShortOptionArgumentMissing() throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
             pluginFactory.bindArguments(model, Arrays.asList("-b"));
             Assert.fail();
@@ -74,7 +74,7 @@ public class ToolFactoryTest {
     }
     @Test
     public void testOptionArgumentTooMany() throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
             pluginFactory.bindArguments(model, Arrays.asList("-b1", "-b2"));
             Assert.fail();
@@ -97,8 +97,8 @@ public class ToolFactoryTest {
     
     @Test
     public void testLongOptionList()  throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
-        CeylonExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--list-option=true", "--list-option=false"));
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--list-option=true", "--list-option=false"));
         Assert.assertFalse(tool.isLongName());
         Assert.assertNull(tool.getShortName());
         Assert.assertEquals(Arrays.asList("true", "false"), tool.getListOption());
@@ -107,24 +107,24 @@ public class ToolFactoryTest {
     
     @Test
     public void testFileOption() throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
-        CeylonExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--file=foo"));
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--file=foo"));
         Assert.assertEquals("foo", tool.getFile().getName());
         Assert.assertTrue(tool.isInited());
     }
     
     @Test
     public void testEnumOption() throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
-        CeylonExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--thread-state=NEW"));
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--thread-state=NEW"));
         Assert.assertEquals(Thread.State.NEW, tool.getThreadState());
         Assert.assertTrue(tool.isInited());
     }
     
     @Test
     public void testArgumentList()  throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
-        CeylonExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("true", "false"));
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("true", "false"));
         Assert.assertFalse(tool.isLongName());
         Assert.assertNull(tool.getShortName());
         Assert.assertTrue(tool.getListOption() == null);
@@ -134,8 +134,8 @@ public class ToolFactoryTest {
     
     @Test
     public void testEoo()  throws InvocationTargetException {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
-        CeylonExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--", "--list-option=true", "--", "-b", "true", "-btrue"));
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        TestExampleTool tool = pluginFactory.bindArguments(model, Arrays.asList("--", "--list-option=true", "--", "-b", "true", "-btrue"));
         Assert.assertFalse(tool.isLongName());
         Assert.assertNull(tool.getShortName());
         Assert.assertTrue(tool.getListOption() == null);
@@ -145,7 +145,7 @@ public class ToolFactoryTest {
     
     @Test
     public void testMiniumums()  throws InvocationTargetException {
-        ToolModel<CeylonMinimumsTool> model = pluginLoader.loadToolModel("minimums");
+        ToolModel<TestMinimumsTool> model = pluginLoader.loadToolModel("minimums");
         try {
             pluginFactory.bindArguments(model, Arrays.<String>asList());
             Assert.fail();
@@ -164,7 +164,7 @@ public class ToolFactoryTest {
     
     @Test
     public void testUnknownShortOption() {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
             pluginFactory.bindArguments(model, Arrays.asList("-l"));
             Assert.fail();
@@ -187,7 +187,7 @@ public class ToolFactoryTest {
     
     @Test
     public void testUnknownLongOption() {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
             pluginFactory.bindArguments(model, Arrays.asList("--lalala"));
             Assert.fail();
@@ -198,7 +198,7 @@ public class ToolFactoryTest {
     
     @Test
     public void testUnknownLongOptionArgument() {
-        ToolModel<CeylonExampleTool> model = pluginLoader.loadToolModel("example");
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
         try {
             pluginFactory.bindArguments(model, Arrays.asList("--lalala=f"));
             Assert.fail();

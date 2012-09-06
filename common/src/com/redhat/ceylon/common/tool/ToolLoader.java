@@ -22,13 +22,12 @@ import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 
-
 /**
  * Responsible for locating a Class for a given tool name and constucting a 
  * {@link ToolModel} by reflection on that class. 
  * @author tom
  */
-public class ToolLoader {
+public abstract class ToolLoader {
 
     private final ClassLoader loader;
     
@@ -43,21 +42,24 @@ public class ToolLoader {
         this.loader = loader == null ? ClassLoader.getSystemClassLoader() : loader;
     }
     
-    public ToolLoader(ArgumentParserFactory argParserFactory, File[] path) {
-        this.argParserFactory = argParserFactory;
-        if (path != null) {
-            loader = new URLClassLoader(makeClasspath(path), 
-                    getClass().getClassLoader());   
-        } else {
-            loader = getClass().getClassLoader();
+    private <T extends Tool> Class<T> loadToolClass(final String toolName) {
+        String className = getToolClassName(toolName);
+        if (className == null) {
+            return null;
+        }
+        try {
+            Class<T> toolClass = (Class<T>)loader.loadClass(className);
+            return toolClass;
+        } catch (ClassNotFoundException e) {
+            return null;
         }
     }
-    
-    private <T extends Tool> Class<T> loadToolClass(final String toolName) {
+
+    protected String getToolClassName(final String toolName) {
         String className = null;
-        if (toolName.isEmpty()) {
-            className = CeylonTool.class.getName();
-        } else {
+        //if (toolName.isEmpty()) {
+        //    className = getTopLevelToolClassName();
+        //} else {
             List<String> classNames = iterateToolNames(new Handler<String>() {
                 @Override
                 public String handle(String cls) {
@@ -76,15 +78,12 @@ public class ToolLoader {
                 return null;
             }
             className = classNames.get(0);
-        }
-        try {
-            Class<T> toolClass = (Class<T>)loader.loadClass(className);
-            return toolClass;
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
+        //}
+        return className;
     }
     
+    protected abstract String getTopLevelToolClassName();
+
     /**
      * Returns a ToolModel given the name of the tool, or null if no such tool is 
      * know to this tool loader.
@@ -245,7 +244,7 @@ public class ToolLoader {
         return getToolName(name);
     }
 
-    private String camelCaseToDashes(String name) {
+    protected String camelCaseToDashes(String name) {
         StringBuilder sb = new StringBuilder();
         for (char ch : name.toCharArray()) {
             if (Character.isUpperCase(ch)) {
@@ -379,10 +378,7 @@ public class ToolLoader {
         return argumentType;
     }
     
-    private String getToolName(String className) {
-        String toolName = className.replaceAll("^.*\\.", "").replaceAll("^Ceylon(.*)Tool$", "$1");
-        return camelCaseToDashes(toolName);
-    }
+    protected abstract String getToolName(String className);
     
     /**
      * Returns an iterable of all the tools names known to this tool loader.

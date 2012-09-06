@@ -1,2 +1,2 @@
-com.redhat.ceylon.common.tool.example.CeylonExampleTool
-com.redhat.ceylon.common.tool.example.CeylonMinimumsTool
+com.redhat.ceylon.common.tool.example.TestExampleTool
+com.redhat.ceylon.common.tool.example.TestMinimumsTool
