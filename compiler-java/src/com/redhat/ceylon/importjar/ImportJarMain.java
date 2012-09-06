@@ -93,7 +93,7 @@ public class ImportJarMain {
         }
 
         try{
-            ImportJarTool importJar = new ImportJarTool(moduleSpec, destDir, user, pass, jarFile, verbose);
+            CeylonImportJarTool importJar = new CeylonImportJarTool(moduleSpec, destDir, user, pass, jarFile, verbose);
             importJar.publish();
         }catch(ImportJarException x){
             System.err.println(ImportJarMessages.msg("error", x.getLocalizedMessage()));

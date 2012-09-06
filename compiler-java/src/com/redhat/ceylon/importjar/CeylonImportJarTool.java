@@ -32,7 +32,7 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("Imports a jar file into a Ceylon module repository")
@@ -44,7 +44,7 @@ import com.redhat.ceylon.common.tool.Summary;
 		"`com.example.foobar/1.2.0`.\n" +
 		"\n" +
 		"`<jar-file>` is the name of the Jar file to import.")
-public class ImportJarTool implements Plugin {
+public class CeylonImportJarTool implements Tool {
 
     private String module;
     private String version;
@@ -55,10 +55,10 @@ public class ImportJarTool implements Plugin {
     private boolean verbose;
     private Logger log = new CMRLogger();
 
-    public ImportJarTool() {
+    public CeylonImportJarTool() {
     }
     
-    ImportJarTool(String moduleSpec, String out, String user, String pass, String jarFile, boolean verbose){
+    CeylonImportJarTool(String moduleSpec, String out, String user, String pass, String jarFile, boolean verbose){
         parseModuleSpec(moduleSpec);
         this.out = out;
         this.user = user;

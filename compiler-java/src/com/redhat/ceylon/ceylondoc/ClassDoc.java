@@ -156,7 +156,7 @@ public class ClassDoc extends ClassOrPackageDoc {
      * that satisfy the key
      * @throws IOException
      */
-    public ClassDoc(DocTool tool, Writer writer,
+    public ClassDoc(CeylonDocTool tool, Writer writer,
             ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
         super(tool.getModule(klass), tool, writer);
         if (subclasses != null) {

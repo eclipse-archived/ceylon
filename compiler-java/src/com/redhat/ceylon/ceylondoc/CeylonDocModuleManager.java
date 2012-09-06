@@ -42,9 +42,9 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     private List<ModuleSpec> modulesSpecs;
     private Logger log;
-    private DocTool tool;
+    private CeylonDocTool tool;
 
-    public CeylonDocModuleManager(DocTool tool, Context context, List<ModuleSpec> modules, Logger log) {
+    public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, Logger log) {
         super(context);
         this.modulesSpecs = modules;
         this.log = log;

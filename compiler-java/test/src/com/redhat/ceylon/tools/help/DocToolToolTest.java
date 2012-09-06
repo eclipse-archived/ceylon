@@ -18,25 +18,26 @@ import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.ArgumentParserFactory;
-import com.redhat.ceylon.common.tool.PluginFactory;
-import com.redhat.ceylon.common.tool.PluginLoader;
-import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.ToolFactory;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.tools.CeylonToolLoader;
 
 public class DocToolToolTest {
 
     protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final PluginFactory pluginFactory = new PluginFactory(apf);
-    protected final PluginLoader pluginLoader = new PluginLoader(apf);
+    protected final ToolFactory pluginFactory = new ToolFactory(apf);
+    protected final ToolLoader pluginLoader = new CeylonToolLoader(apf, null);
     private File dir = FileUtil.makeTempDir("DocToolToolTest");
     
     private void runDocTool(String toolName, String... otherArgs) throws IOException {
-        PluginModel<DocToolTool> model = pluginLoader.loadToolModel("doc-tool");
+        ToolModel<CeylonDocToolTool> model = pluginLoader.loadToolModel("doc-tool");
         Assert.assertTrue(model.isPorcelain());
         Assert.assertNotNull(model);
         List<String> toolArgs = new ArrayList<>();
         toolArgs.addAll(Arrays.asList(toolName, "--output=" + dir.getAbsolutePath()));
         toolArgs.addAll(Arrays.asList(otherArgs));
-        DocToolTool tool = pluginFactory.bindArguments(model, toolArgs);
+        CeylonDocToolTool tool = pluginFactory.bindArguments(model, toolArgs);
         Assert.assertEquals(0, dir.listFiles().length);
         tool.run();
     }
@@ -131,7 +132,7 @@ public class DocToolToolTest {
     
     @Test
     public void testAll() throws Exception {
-        runDocTool(DocToolTool.PORCELAIN_TOOLS, "--index");
+        runDocTool(CeylonDocToolTool.PORCELAIN_TOOLS, "--index");
         assertHtmlFiles("compile");
         assertHtmlFiles("doc");
         assertHtmlFiles("import-jar");
@@ -142,7 +143,7 @@ public class DocToolToolTest {
     
     @Test
     public void testAllTxt() throws Exception {
-        runDocTool(DocToolTool.PORCELAIN_TOOLS, "--format=txt");
+        runDocTool(CeylonDocToolTool.PORCELAIN_TOOLS, "--format=txt");
         assertTxtFiles("compile");
         assertTxtFiles("doc");
         assertTxtFiles("import-jar");

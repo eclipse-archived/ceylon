@@ -19,8 +19,8 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.NoSuchToolException;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Plugin;
-import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tools;
@@ -32,16 +32,16 @@ import com.redhat.ceylon.common.tool.WordWrap;
 "Generates documentation about the named `<tool>`s in the directory " +
 "named by the `--output` option." +
 "\n\n" +
-"If `<tool>` has the special value `" + DocToolTool.PORCELAIN_TOOLS + "` " +
+"If `<tool>` has the special value `" + CeylonDocToolTool.PORCELAIN_TOOLS + "` " +
 "documentation about all known high level tools will be generated. " +
-"If `<tool>` has the special value `" + DocToolTool.PLUMBING_TOOLS + "` " +
+"If `<tool>` has the special value `" + CeylonDocToolTool.PLUMBING_TOOLS + "` " +
 "documentation about all known low level tools will be generated.")
 @RemainingSections(
 "## See Also\n\n" +
 "* `ceylon help` For generating help about ceylon tools at the command line\n" +
 "* `ceylon doc` For generating API documentation about ceylon modules\n"
 )
-public class DocToolTool extends AbstractDoc implements Plugin {
+public class CeylonDocToolTool extends AbstractDoc implements Tool {
 
     static final String PLUMBING_TOOLS = "+plumbing";
     static final String PORCELAIN_TOOLS = "+porcelain";
@@ -49,7 +49,7 @@ public class DocToolTool extends AbstractDoc implements Plugin {
     public static enum Format {
         html(".html") {
             @Override
-            HtmlOutput newOutput(DocToolTool tool, Writer writer) {
+            HtmlOutput newOutput(CeylonDocToolTool tool, Writer writer) {
                 return new HtmlOutput(new Html(writer));
             }
 
@@ -60,7 +60,7 @@ public class DocToolTool extends AbstractDoc implements Plugin {
         }, 
         txt(".txt") {
             @Override
-            PlainOutput newOutput(DocToolTool tool, Writer writer) {
+            PlainOutput newOutput(CeylonDocToolTool tool, Writer writer) {
                 return new PlainOutput(new WordWrap(writer, tool.width));
             }
 
@@ -73,7 +73,7 @@ public class DocToolTool extends AbstractDoc implements Plugin {
         private Format(String extension) {
             this.extension = extension;
         }
-        abstract Output newOutput(DocToolTool tool, Writer file);
+        abstract Output newOutput(CeylonDocToolTool tool, Writer file);
         abstract URL[] supportingResources();
     }
     
@@ -163,7 +163,7 @@ public class DocToolTool extends AbstractDoc implements Plugin {
     }
 
     private ToolDocumentation<?> loadModel(String toolName) {
-        final PluginModel<?> model = toolLoader.loadToolModel(toolName);
+        final ToolModel<?> model = toolLoader.loadToolModel(toolName);
         if (model != null) {
             return new ToolDocumentation<>(model);
         } 

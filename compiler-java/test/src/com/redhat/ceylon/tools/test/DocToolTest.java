@@ -6,22 +6,23 @@ import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.ceylondoc.DocTool;
+import com.redhat.ceylon.ceylondoc.CeylonDocTool;
 import com.redhat.ceylon.common.tool.ArgumentParserFactory;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
-import com.redhat.ceylon.common.tool.PluginFactory;
-import com.redhat.ceylon.common.tool.PluginLoader;
-import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.ToolFactory;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.tools.CeylonToolLoader;
 
 public class DocToolTest {
     
     protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final PluginFactory pluginFactory = new PluginFactory(apf);
-    protected final PluginLoader pluginLoader = new PluginLoader(apf);
+    protected final ToolFactory pluginFactory = new ToolFactory(apf);
+    protected final ToolLoader pluginLoader = new CeylonToolLoader(apf, null);
     
     @Test
     public void testNoModules()  throws Exception {
-        PluginModel<DocTool> model = pluginLoader.loadToolModel("doc");
+        ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
         try {
             pluginFactory.bindArguments(model, Collections.<String>emptyList());
@@ -33,27 +34,27 @@ public class DocToolTest {
     
     @Test
     public void testDoc()  throws Exception {
-        PluginModel<DocTool> model = pluginLoader.loadToolModel("doc");
+        ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
-        DocTool tool = pluginFactory.bindArguments(model, 
+        CeylonDocTool tool = pluginFactory.bindArguments(model, 
                 Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
     
     @Test
     public void testDocNonShared()  throws Exception {
-        PluginModel<DocTool> model = pluginLoader.loadToolModel("doc");
+        ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
-        DocTool tool = pluginFactory.bindArguments(model, 
+        CeylonDocTool tool = pluginFactory.bindArguments(model, 
                 Arrays.asList("--non-shared", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
     
     @Test
     public void testDocSourceCode()  throws Exception {
-        PluginModel<DocTool> model = pluginLoader.loadToolModel("doc");
+        ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
-        DocTool tool = pluginFactory.bindArguments(model, 
+        CeylonDocTool tool = pluginFactory.bindArguments(model, 
                 Arrays.asList("--source-code", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }

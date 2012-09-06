@@ -3,13 +3,13 @@ package com.redhat.ceylon.tools.help;
 
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
-import com.redhat.ceylon.common.tool.Plugin;
-import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
+import com.redhat.ceylon.tools.CeylonTool;
 import com.redhat.ceylon.tools.help.Output.Synopsis;
 
 /**
@@ -25,7 +25,7 @@ import com.redhat.ceylon.tools.help.Output.Synopsis;
 "## SEE ALSO\n\n" +
 "* `ceylon doc-tool` for generating documentation about ceylon tools\n"
 )
-public class HelpTool extends AbstractDoc implements Plugin {
+public class CeylonHelpTool extends AbstractDoc implements Tool {
 
     private String tool;
 
@@ -41,7 +41,7 @@ public class HelpTool extends AbstractDoc implements Plugin {
         if (tool == null) {
             printTopLevelHelp(plain, wrap, toolLoader.getToolNames());
         } else {
-            final PluginModel<?> model = toolLoader.loadToolModel(tool);
+            final ToolModel<?> model = toolLoader.loadToolModel(tool);
             if (model != null) {
                 printToolHelp(plain, new ToolDocumentation<>(model));
             } else {
@@ -52,8 +52,8 @@ public class HelpTool extends AbstractDoc implements Plugin {
     }
     
     protected final void printTopLevelHelp(Output out, WordWrap wrap, Iterable<String> toolNames) {
-        final PluginModel<Tool> root = toolLoader.loadToolModel("");
-        final ToolDocumentation<Tool> docModel = new ToolDocumentation<Tool>(root);
+        final ToolModel<CeylonTool> root = toolLoader.loadToolModel("");
+        final ToolDocumentation<CeylonTool> docModel = new ToolDocumentation<CeylonTool>(root);
         printToolSummary(out, docModel);
         
         Synopsis synopsis = out.startSynopsis(bundle.getString("section.SYNOPSIS"));
@@ -80,14 +80,14 @@ public class HelpTool extends AbstractDoc implements Plugin {
         wrap.addTabStop(max + 12);
         wrap.setIndentRestLines(max + 12);
         for (String toolName : toolNames) {
-            final PluginModel<Plugin> model = toolLoader.loadToolModel(toolName);
+            final ToolModel<Tool> model = toolLoader.loadToolModel(toolName);
             if (model == null) {
                 throw new RuntimeException(toolName);
             }
             if (!model.isPorcelain()) {
                 continue;
             }
-            final Class<Plugin> toolClass = model.getToolClass();
+            final Class<Tool> toolClass = model.getToolClass();
             final Summary summary = toolClass.getAnnotation(Summary.class);
             wrap.append(toolName);
             if (summary != null) {

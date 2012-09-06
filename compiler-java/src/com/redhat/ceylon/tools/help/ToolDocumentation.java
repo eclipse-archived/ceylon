@@ -5,8 +5,8 @@ import java.util.ResourceBundle;
 
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionModel;
-import com.redhat.ceylon.common.tool.Plugin;
-import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tools;
@@ -15,13 +15,13 @@ import com.redhat.ceylon.common.tool.Tools;
  * Provides access to (possible localized) the tool documentation.
  * @param <T>
  */
-class ToolDocumentation<T extends Plugin> {
+class ToolDocumentation<T extends Tool> {
 
-    private PluginModel<T> model;
+    private ToolModel<T> model;
     
     private ResourceBundle bundle;
 
-    public ToolDocumentation(PluginModel<T> model) {
+    public ToolDocumentation(ToolModel<T> model) {
         this.model = model;
         try {
             bundle = ResourceBundle.getBundle(model.getClass().getName());
@@ -30,7 +30,7 @@ class ToolDocumentation<T extends Plugin> {
         }
     }
     
-    public PluginModel<T> getPlugin() {
+    public ToolModel<T> getPlugin() {
         return model;
     }
     

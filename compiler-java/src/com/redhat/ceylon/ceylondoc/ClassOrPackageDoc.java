@@ -42,7 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
-	public ClassOrPackageDoc(Module module, DocTool tool, Writer writer) {
+	public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
 		super(module, tool, writer);
 	}
 

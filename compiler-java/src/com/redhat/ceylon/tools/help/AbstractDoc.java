@@ -10,20 +10,20 @@ import org.tautua.markdownpapers.ast.Document;
 
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.OptionModel;
-import com.redhat.ceylon.common.tool.PluginLoader;
+import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.tools.help.Output.Options;
 import com.redhat.ceylon.tools.help.Output.Synopsis;
 
 public class AbstractDoc {
 
     protected ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
-    protected PluginLoader toolLoader;
+    protected ToolLoader toolLoader;
     
     public AbstractDoc() {
         super();
     }
     
-    public final void setToolLoader(PluginLoader toolLoader) {
+    public final void setToolLoader(ToolLoader toolLoader) {
         this.toolLoader = toolLoader;
     }
     

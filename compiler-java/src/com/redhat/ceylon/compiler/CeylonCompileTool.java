@@ -10,7 +10,7 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
@@ -59,7 +59,7 @@ import com.redhat.ceylon.common.tool.Summary;
 "**Important note**: There is no guarantee that any particular `javac` " +
 "option or combination of options will work, or continue to work in " +
 "future releases.")
-public class CompileTool implements Plugin{
+public class CeylonCompileTool implements Tool{
 
     private List<File> source = Collections.singletonList(new File("source"));
     private File out = new File("modules");
@@ -71,7 +71,7 @@ public class CompileTool implements Plugin{
     private String pass;
     private boolean verbose = false;
 
-    public CompileTool() {
+    public CeylonCompileTool() {
     }
     
     @OptionArgument(longName="src", argumentName="dir")

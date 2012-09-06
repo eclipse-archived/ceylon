@@ -121,7 +121,7 @@ public class Main {
         }
 
         try{
-            DocTool ceylonDocTool = new DocTool();
+            CeylonDocTool ceylonDocTool = new CeylonDocTool();
             ceylonDocTool.setSourceFolders(sourceFolders);
             ceylonDocTool.setRepositories(repositories);
             ceylonDocTool.setModuleSpecs(modules);

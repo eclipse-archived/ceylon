@@ -38,10 +38,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
 public abstract class CeylonDoc extends Markup {
 
-    protected final DocTool tool;
+    protected final CeylonDocTool tool;
     protected final Module module;
 
-    public CeylonDoc(Module module, DocTool tool, Writer writer) {
+    public CeylonDoc(Module module, CeylonDocTool tool, Writer writer) {
         super(writer);
         this.module = module;
         this.tool = tool;

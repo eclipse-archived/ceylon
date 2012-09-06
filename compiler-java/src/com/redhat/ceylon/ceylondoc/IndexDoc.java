@@ -44,7 +44,7 @@ public class IndexDoc extends CeylonDoc {
     private Module module;
     private Set<String> tagIndex = new TreeSet<String>();
 
-    public IndexDoc(DocTool tool, Writer writer, Module module) throws IOException {
+    public IndexDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
         super(module, tool, writer);
         this.module = module;
     }

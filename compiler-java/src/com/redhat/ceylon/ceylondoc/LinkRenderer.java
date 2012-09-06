@@ -24,13 +24,13 @@ public class LinkRenderer {
     private StringBuffer buffer = new StringBuffer();
     private Object to;
     private Object from;
-    private DocTool ceylonDocTool;
+    private CeylonDocTool ceylonDocTool;
     private Writer writer;
     private String customText;
     private Scope scope;
     private boolean skipTypeArguments;
     
-    public LinkRenderer(DocTool ceylonDocTool, Writer writer, Object from) {
+    public LinkRenderer(CeylonDocTool ceylonDocTool, Writer writer, Object from) {
         this.ceylonDocTool = ceylonDocTool;
         this.writer = writer;
         this.from = from;
