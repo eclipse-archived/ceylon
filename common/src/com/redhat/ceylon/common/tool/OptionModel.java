@@ -4,10 +4,15 @@ package com.redhat.ceylon.common.tool;
  * A command line option or option argument accepted by a plugin
  */
 public class OptionModel<A> {
+    public static enum ArgumentType {
+        NOT_ALLOWED,
+        OPTIONAL,
+        REQUIRED
+    }
     private String longName;
     private Character shortName;
     private ArgumentModel<A> argument;
-    private boolean pureOption;
+    private ArgumentType argumentType;
     public String getLongName() {
         return longName;
     }
@@ -26,20 +31,11 @@ public class OptionModel<A> {
     public void setArgument(ArgumentModel<A> argument) {
         this.argument = argument;
     }
-    /**
-     * Whether this option is a <em>pure</em> option (that is, an option 
-     * which doesn't have any associated command line argument, 
-     * like {@code grep}'s {@code -i}).
-     *  
-     * Such options do have an {@linkplain #getArgument() argument model} 
-     * with a {@code boolean} {@linkplain ArgumentModel#getType() type}.
-     * @return
-     */
-    public boolean isPureOption() {
-        return pureOption;
+    public void setArgumentType(ArgumentType argumentType) {
+        this.argumentType = argumentType;
     }
-    public void setPureOption(boolean pureOption) {
-        this.pureOption = pureOption;
+    public ArgumentType getArgumentType() {
+        return this.argumentType;
     }
     public String toString() {
         StringBuilder sb = new StringBuilder();

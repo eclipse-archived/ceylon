@@ -21,6 +21,8 @@ import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 
+import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
+
 /**
  * Responsible for locating a Class for a given tool name and constucting a 
  * {@link ToolModel} by reflection on that class. 
@@ -262,11 +264,14 @@ public abstract class ToolLoader {
 
     private OptionModel<Boolean> buildOption(final Method setter) {
         Option option = setter.getAnnotation(Option.class);
-        if (option == null) {
+        if (option == null || setter.getAnnotation(OptionArgument.class) != null) {
             return null;
         }
         if (!isSetter(setter)) {
-            throw new ModelException("Method" + setter + " is annotated with @Option but is not a setter");
+            throw new ModelException("Method " + setter + " is annotated with @Option but is not a setter");
+        }
+        if (!setter.getParameterTypes()[0].equals(Boolean.TYPE)) {
+            throw new ModelException("Method " + setter + " is annotated with @Option but has a non-boolean parameter");
         }
         OptionModel<Boolean> optionModel = new OptionModel<Boolean>();
         optionModel.setLongName(getOptionName(option.longName(), setter));
@@ -274,24 +279,41 @@ public abstract class ToolLoader {
         if (shortName != Option.NO_SHORT) {
             optionModel.setShortName(shortName);
         }
-        optionModel.setPureOption(true);
+        optionModel.setArgumentType(OptionModel.ArgumentType.NOT_ALLOWED);
         optionModel.setArgument(buildPureOption(setter));
         optionModel.getArgument().setOption(optionModel);
         return optionModel;
     }
 
     private <A> OptionModel<A> buildOptionArgument(final Method setter) {
-        OptionArgument option = setter.getAnnotation(OptionArgument.class);
-        if (option == null) {
+        OptionArgument optionArgument = setter.getAnnotation(OptionArgument.class);
+        if (optionArgument == null) {
             return null;
         }
         if (!isSetter(setter)) {
             throw new ModelException("Method " + setter + " is annotated with @OptionArgument but is not a setter");
         }
+        Option option = setter.getAnnotation(Option.class);
+        boolean argumentOptional = option != null;
+        if (argumentOptional) {
+            if (setter.getParameterTypes()[0].isPrimitive()) {
+                throw new ModelException("Method " + setter + " is annotated with @OptionArgument and @Option has primitive parameter type");
+            }
+            if (optionArgument.shortName() != option.shortName()) {
+                throw new ModelException("Method " + setter + " is annotated with @OptionArgument and @Option, but their shortName()s differ");
+            }
+            if (!optionArgument.longName().equals(option.longName())) {
+                throw new ModelException("Method " + setter + " is annotated with @OptionArgument and @Option, but their longName()s differ");
+            }
+        }
         OptionModel<A> optionModel = new OptionModel<A>();
-        optionModel.setLongName(getOptionName(option.longName(), setter));
-        char shortName = option.shortName();
+        
+        optionModel.setLongName(getOptionName(optionArgument.longName(), setter));
+        char shortName = optionArgument.shortName();
         if (shortName != OptionArgument.NO_SHORT) {
+            if (argumentOptional) {
+                throw new ModelException("Method " + setter + " is annotated with @OptionArgument and @Option, but has a shortName");
+            }
             optionModel.setShortName(shortName);
         }
         ArgumentModel<A> argumentModel = new ArgumentModel<A>();
@@ -299,9 +321,9 @@ public abstract class ToolLoader {
         Class<A> argumentType = (Class<A>)getSimpleTypeOrCollectionType(setter, OptionArgument.class);
         argumentModel.setType(argumentType);
         argumentModel.setMultiplicity(isSimpleType(setter) ? Multiplicity._0_OR_1 : Multiplicity._0_OR_MORE);
-        argumentModel.setName(option.argumentName());
+        argumentModel.setName(optionArgument.argumentName());
         argumentModel.setSetter(setter);
-        optionModel.setPureOption(false);
+        optionModel.setArgumentType(argumentOptional ? ArgumentType.OPTIONAL : ArgumentType.REQUIRED);
         optionModel.setArgument(argumentModel);
         optionModel.getArgument().setOption(optionModel);
         return optionModel;

@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
+
 
 /**
  * Responsible for instantiating and configuring a {@link Tool} according to
@@ -145,13 +147,19 @@ public class ToolFactory {
                     if (option == null) {
                         rest.add(arg);
                     } else {
-                        if (option.isPureOption()) {
-                            argument = "true";
-                        } else {
+                        switch (option.getArgumentType()) {
+                        case NOT_ALLOWED:
+                            argument = "true"; 
+                            break;
+                        case OPTIONAL:
+                        case REQUIRED:
                             argument = getLongFormArgument(arg, iter);
-                            if (argument == null) {
+                            if (argument == null && option.getArgumentType() == ArgumentType.REQUIRED) {
                                 throw new OptionArgumentException("option.without.argument", arg);
                             }
+                            break;
+                        default:
+                            throw new RuntimeException("Assertion failed");
                         }
                         processArgument(tool, bindings, new Binding(longName, option, argument));    
                     }
@@ -169,9 +177,11 @@ public class ToolFactory {
                             unrecognised.add(msg);
                             continue argloop;
                         } 
-                        if (option.isPureOption()) {
+                        switch (option.getArgumentType()) {
+                        case NOT_ALLOWED:
                             argument = "true";
-                        } else {
+                            break;
+                        case REQUIRED:
                             if (idx == arg.length() -1) {// argument is next arg
                                 if (!iter.hasNext()) {
                                     throw new OptionArgumentException("option.without.argument", arg);
@@ -181,6 +191,10 @@ public class ToolFactory {
                                 argument = arg.substring(idx+1);
                                 idx = arg.length()-1;
                             }
+                            break;
+                        case OPTIONAL:
+                        default:
+                            throw new RuntimeException("Assertion failed");
                         }
                         processArgument(tool, bindings, new Binding(String.valueOf(shortName), option, argument));
                     }
