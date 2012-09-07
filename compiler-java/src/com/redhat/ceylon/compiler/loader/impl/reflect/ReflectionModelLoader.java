@@ -94,6 +94,19 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     }
 
     @Override
+    protected String assembleJavaClass(String javaClass, String packageName) {
+        // strip the java class name of its package part
+        if(!packageName.isEmpty())
+            javaClass = javaClass.substring(packageName.length()+1); // pkg + dot
+        // now replace every dot in the name part with $
+        javaClass = javaClass.replace('.', '$');
+        // assemble back
+        if(packageName.isEmpty())
+            return javaClass;
+        return packageName + "." + javaClass;
+    }
+    
+    @Override
     protected boolean isOverridingMethod(MethodMirror methodSymbol) {
         return ((ReflectionMethod)methodSymbol).isOverridingMethod();
     }
