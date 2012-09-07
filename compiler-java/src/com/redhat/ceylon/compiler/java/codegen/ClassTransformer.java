@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -68,6 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -221,6 +223,21 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), false));
                 // Build the companion class
                 buildCompanion(def, (Interface)model, classBuilder);
+                
+                // Generate the inner members list for model loading
+                List<JCExpression> members = List.nil();
+                for(Declaration member : model.getMembers()){
+                    if(member instanceof ClassOrInterface == false){
+                        continue;
+                    }
+                    ClassOrInterface innerType = (ClassOrInterface) member;
+                    // figure out its java name
+                    String javaClass = naming.declName(innerType, DeclNameFlag.QUALIFIED);
+                    String ceylonName = member.getName();
+                    JCAnnotation atMember = makeAtMember(ceylonName, javaClass);
+                    members = members.prepend(atMember);
+                }
+                classBuilder.annotations(makeAtMembers(members));
             }else{
                 // interface alias
                 classBuilder.annotations(makeAtAlias(model.getExtendedType()));
