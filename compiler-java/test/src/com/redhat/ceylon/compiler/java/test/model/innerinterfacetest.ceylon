@@ -17,9 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-void innerInterfaceMethod (InnerInterfaceContainer i) {
-    i.m();
-    InnerInterfaceContainer().ClassMemberWithSatisfies();
+void innerInterfaceMethod (InnerInterfaceContainer.InnerClass ic,
+                           InnerInterfaceContainer.InnerInterface ii,
+                           InnerInterfaceContainer.InnerClass.InnerClass icic,
+                           InnerInterfaceContainer.InnerClass.InnerInterface icii,
+                           InnerInterfaceContainer.InnerInterface.InnerClass iiic,
+                           InnerInterfaceContainer.InnerInterface.InnerInterface iiii) {
 }
 
 

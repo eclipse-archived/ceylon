@@ -20,8 +20,13 @@
 shared interface InnerInterfaceInterface{} 
 
 shared interface InnerInterfaceContainer {
-    shared interface InnerInterface{}
-    shared class ClassMemberWithSatisfies() satisfies InnerInterfaceInterface&InnerInterface {}
-    shared void m(Integer i = 2){} 
+    shared interface InnerInterface{
+        shared interface InnerInterface{}
+        shared class InnerClass(){}
+    }
+    shared class InnerClass() {
+        shared interface InnerInterface{}
+        shared class InnerClass(){}
+    }
 }
 
