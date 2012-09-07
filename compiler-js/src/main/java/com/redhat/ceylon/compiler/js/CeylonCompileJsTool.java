@@ -7,12 +7,12 @@ import java.util.List;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
 
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
         "module and source archives in a module repository")
-public class CompileJsTool implements Plugin {
+public class CeylonCompileJsTool implements Tool {
 
     private boolean profile = false;
     

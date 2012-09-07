@@ -8,15 +8,21 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.tool.ArgumentParserFactory;
-import com.redhat.ceylon.common.tool.PluginFactory;
-import com.redhat.ceylon.common.tool.PluginLoader;
-import com.redhat.ceylon.common.tool.PluginModel;
+import com.redhat.ceylon.common.tool.ToolFactory;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tool.ToolModel;
 
 public class CompileJsToolTest {
 
     protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final PluginFactory pluginFactory = new PluginFactory(apf);
-    protected final PluginLoader pluginLoader = new PluginLoader(apf);
+    protected final ToolFactory pluginFactory = new ToolFactory(apf);
+    protected final ToolLoader pluginLoader = new ToolLoader(apf){
+
+        @Override
+        protected String getToolName(String className) {
+            return camelCaseToDashes(className.replaceAll("^(.*\\.)?Ceylon(.*)Tool$", "$2"));    
+        }
+    };
 
     private List<String> args(String... args) {
         return Arrays.asList(args);
@@ -24,7 +30,7 @@ public class CompileJsToolTest {
     
     @Test
     public void testLoad() {
-        PluginModel<CompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
+        ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
         pluginFactory.bindArguments(tool, args());
     }
     
