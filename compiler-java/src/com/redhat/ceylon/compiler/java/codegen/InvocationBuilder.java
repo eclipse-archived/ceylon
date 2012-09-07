@@ -160,20 +160,21 @@ abstract class InvocationBuilder {
         JCExpression resultExpr;
         if (primary instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)primary;
-            if (Strategy.generateInstantiator(type.getDeclaration())) {
+            Declaration declaration = Decl.unalias(type.getDeclaration());
+            if (Strategy.generateInstantiator(declaration)) {
                 JCExpression qual;
-                if (Decl.withinInterface(type.getDeclaration())) {
+                if (Decl.withinInterface(declaration)) {
                     qual = gen.naming.makeQuotedThis();
                 } else { 
                     qual = null;
                 }
                 resultExpr = gen.make().Apply(null, 
-                        gen.naming.makeInstantiatorMethodName(qual, (Class)type.getDeclaration()), 
+                        gen.naming.makeInstantiatorMethodName(qual, (Class)declaration), 
                         argExprs);
                 if (Decl.isAncestorLocal(primaryDeclaration)) {
                     // $new method declared to return Object, so needs typecast
                     resultExpr = gen.make().TypeCast(gen.makeJavaType(
-                            ((TypeDeclaration)type.getDeclaration()).getType()), resultExpr);
+                            ((TypeDeclaration)declaration).getType()), resultExpr);
                 }
             } else {
                 ProducedType classType = (ProducedType)type.getTarget();
@@ -183,28 +184,38 @@ abstract class InvocationBuilder {
             // When doing qualified invocation through an interface we need
             // to get the companion.
             Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)primary;
-            if (qte.getDeclaration().getContainer() instanceof Interface
-                    && !Strategy.generateInstantiator(qte.getDeclaration())
+            Declaration declaration = Decl.unalias(qte.getDeclaration());
+            if (declaration.getContainer() instanceof Interface
+                    && !Strategy.generateInstantiator(declaration)
                     && !(qte.getPrimary() instanceof Tree.Outer)) {
-                Interface qualifyingInterface = (Interface)qte.getDeclaration().getContainer();
+                Interface qualifyingInterface = (Interface)declaration.getContainer();
                 actualPrimExpr = gen.make().Apply(null, 
                         gen.makeSelect(actualPrimExpr, gen.getCompanionAccessorName(qualifyingInterface)), 
                         List.<JCExpression>nil());
                 // But when the interface is local the accessor returns Object
                 // so we need to cast it to the type of the companion
-                if (Decl.isAncestorLocal(qte.getDeclaration())) {
+                if (Decl.isAncestorLocal(declaration)) {
                     actualPrimExpr = gen.make().TypeCast(gen.makeJavaType(qualifyingInterface.getType(), JT_COMPANION), actualPrimExpr);
                 }
             }
-            if (Strategy.generateInstantiator(qte.getDeclaration())) {
+            if (Strategy.generateInstantiator(declaration)) {
                 resultExpr = gen.make().Apply(null, 
-                        gen.naming.makeInstantiatorMethodName(actualPrimExpr, (Class)qte.getDeclaration()), 
+                        gen.naming.makeInstantiatorMethodName(actualPrimExpr, (Class)declaration), 
                         argExprs);
             } else {
-                // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
-                // is qualified relative to it
                 ProducedType classType = (ProducedType)qte.getTarget();
-                resultExpr = gen.make().NewClass(actualPrimExpr, null, gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED), argExprs, null);
+                // since member type aliases can alias toplevel types, we may have to just drop the actualPrimExpr in some cases
+                if(Decl.isToplevel(declaration) && actualPrimExpr != null){
+                    // qualify it
+                    JCExpression type = gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
+                    JCExpression objectType = gen.makeJavaType(gen.typeFact().getObjectDeclaration().getType());
+                    resultExpr = gen.makeLetExpr(objectType, actualPrimExpr, gen.make().NewClass(null, null, type, argExprs, null));
+                }else{
+                    // Note: here we're not fully qualifying the class name because the JLS says that if "new" is qualified the class name
+                    // is qualified relative to it
+                    JCExpression type = gen.makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED);
+                    resultExpr = gen.make().NewClass(actualPrimExpr, null, type, argExprs, null);
+                }
             }
         } else {
             if (this instanceof IndirectInvocationBuilder
