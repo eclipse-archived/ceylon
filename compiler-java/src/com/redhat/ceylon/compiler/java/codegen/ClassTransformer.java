@@ -197,6 +197,8 @@ public class ClassTransformer extends AbstractTransformer {
             }
             satisfaction((Class)model, classBuilder);
             at(def);
+                // Generate the inner members list for model loading
+                addAtMembers(classBuilder, model);
             }else{
                 // class alias
                 classBuilder.constructorModifiers(PRIVATE);
@@ -225,19 +227,7 @@ public class ClassTransformer extends AbstractTransformer {
                 buildCompanion(def, (Interface)model, classBuilder);
                 
                 // Generate the inner members list for model loading
-                List<JCExpression> members = List.nil();
-                for(Declaration member : model.getMembers()){
-                    if(member instanceof ClassOrInterface == false){
-                        continue;
-                    }
-                    ClassOrInterface innerType = (ClassOrInterface) member;
-                    // figure out its java name (strip the leading dot)
-                    String javaClass = naming.declName(innerType, DeclNameFlag.QUALIFIED).substring(1);
-                    String ceylonName = member.getName();
-                    JCAnnotation atMember = makeAtMember(ceylonName, javaClass);
-                    members = members.prepend(atMember);
-                }
-                classBuilder.annotations(makeAtMembers(members));
+                addAtMembers(classBuilder, model);
             }else{
                 // interface alias
                 classBuilder.annotations(makeAtAlias(model.getExtendedType()));
@@ -278,6 +268,22 @@ public class ClassTransformer extends AbstractTransformer {
             .of(model.getSelfType())
             .init(childDefs)
             .build();
+    }
+
+    private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
+        List<JCExpression> members = List.nil();
+        for(Declaration member : model.getMembers()){
+            if(member instanceof ClassOrInterface == false){
+                continue;
+            }
+            ClassOrInterface innerType = (ClassOrInterface) member;
+            // figure out its java name (strip the leading dot)
+            String javaClass = naming.declName(innerType, DeclNameFlag.QUALIFIED).substring(1);
+            String ceylonName = member.getName();
+            JCAnnotation atMember = makeAtMember(ceylonName, javaClass);
+            members = members.prepend(atMember);
+        }
+        classBuilder.annotations(makeAtMembers(members));
     }
 
     private void satisfaction(final Class model, ClassDefinitionBuilder classBuilder) {
