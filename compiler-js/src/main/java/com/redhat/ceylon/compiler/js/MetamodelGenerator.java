@@ -8,7 +8,10 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
+import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -19,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 /** Generates the metamodel for all objects in a module.
  * 
@@ -131,10 +135,14 @@ public class MetamodelGenerator extends Visitor {
             return m;
         }
         m.put(KEY_NAME, d.getName());
+        if (d.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
+            //For types that reference type parameters, we're done
+            return m;
+        }
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
         m.put(KEY_PACKAGE, pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
-            m.put(KEY_MODULE, d.getUnit().getPackage().getModule().getNameAsString());
+            m.put(KEY_MODULE, pkg.getModule().getNameAsString());
         }
         putTypeParameters(m, pt);
         return m;
@@ -143,11 +151,15 @@ public class MetamodelGenerator extends Visitor {
     /** Returns a map with the same info as {@link #typeParameterMap(ProducedType)} but with
      * an additional key "variance" if it's covariant ("out") or contravariant ("in"). */
     private Map<String, Object> typeParameterMap(TypeParameter tp) {
-        Map<String, Object> map = typeParameterMap(tp.getType());
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(MetamodelGenerator.KEY_NAME, tp.getName());
         if (tp.isCovariant()) {
             map.put("variance", "out");
         } else if (tp.isContravariant()) {
             map.put("variance", "in");
+        }
+        if (tp.isSequenced()) {
+            map.put("seq", "1");
         }
         return map;
     }
@@ -171,6 +183,10 @@ public class MetamodelGenerator extends Visitor {
             return m;
         }
         m.put(KEY_NAME, d.getName());
+        if (d.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
+            //Don't add package, etc
+            return m;
+        }
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
         m.put(KEY_PACKAGE, pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
@@ -240,11 +256,22 @@ public class MetamodelGenerator extends Visitor {
             for (Tree.Parameter parm : parms) {
                 Map<String, Object> pm = new HashMap<String, Object>();
                 pm.put(KEY_NAME, parm.getDeclarationModel().getName());
+                pm.put(KEY_METATYPE, METATYPE_PARAMETER);
                 if (parm.getDeclarationModel().isSequenced()) {
                     pm.put("seq", "1");
                 }
-                pm.put(KEY_TYPE, typeMap(parm.getType().getTypeModel()));
-                pm.put(KEY_METATYPE, METATYPE_PARAMETER);
+                if (parm.getDeclarationModel().getTypeDeclaration().getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
+                    pm.put(KEY_TYPE, parm.getDeclarationModel().getTypeDeclaration().getName());
+                } else {
+                    pm.put(KEY_TYPE, typeMap(parm.getType().getTypeModel()));
+                }
+                if (parm.getDeclarationModel() instanceof ValueParameter) {
+                    pm.put("$pt", "v");
+                } else if (parm.getDeclarationModel() instanceof FunctionalParameter) {
+                    pm.put("$pt", "f");
+                } else {
+                    throw new IllegalStateException("Unknown parameter type " + parm.getDeclarationModel().getClass().getName());
+                }
                 //TODO do these guys need anything else?
                 if (parm.getDefaultArgument() != null) {
                     //This could be compiled to JS...
@@ -279,6 +306,10 @@ public class MetamodelGenerator extends Visitor {
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_METHOD);
         m.put(KEY_NAME, d.getName());
+        List<Map<String, Object>> tpl = typeParameters(that.getTypeParameterList());
+        if (tpl != null) {
+            m.put(KEY_TYPE_PARAMS, tpl);
+        }
         Map<String, Object> returnType = typeMap(that.getType().getTypeModel());
         if (that.getParameterLists().size() > 1) {
             //Calculate return type for nested functions
@@ -297,11 +328,6 @@ public class MetamodelGenerator extends Visitor {
             }
         }
         m.put(KEY_TYPE, returnType);
-        //Now the type parameters, if any
-        List<Map<String, Object>> tpl = typeParameters(that.getTypeParameterList());
-        if (tpl != null) {
-            m.put(KEY_TYPE_PARAMS, tpl);
-        }
 
         //Type constraints, if any
         tpl = typeConstraints(that.getTypeConstraintList());
@@ -386,7 +412,9 @@ public class MetamodelGenerator extends Visitor {
         m.put(KEY_METATYPE, METATYPE_CLASS);
         m.put(KEY_NAME, d.getName());
         //Extends
-        m.put("super", typeMap(d.getExtendedType()));
+        if (d.getExtendedType() != null) {
+            m.put("super", typeMap(d.getExtendedType()));
+        }
         //Satisfies
         if (d.getSatisfiedTypes() != null && !d.getSatisfiedTypes().isEmpty()) {
             List<Map<String,Object>> sats = new ArrayList<Map<String,Object>>(d.getSatisfiedTypes().size());
@@ -411,19 +439,10 @@ public class MetamodelGenerator extends Visitor {
             m.put(KEY_PARAMS, inits);
         }
         //Case types
-        if (that.getCaseTypes() != null) {
-            List<Map<String,Object>> cases = new ArrayList<Map<String,Object>>();
-            if (that.getCaseTypes().getTypes().isEmpty()) {
-                for (Tree.BaseMemberExpression bme : that.getCaseTypes().getBaseMemberExpressions()) {
-                    Map<String,Object> obj = new HashMap<String, Object>();
-                    obj.put(KEY_NAME, bme.getIdentifier().getText());
-                    obj.put(METATYPE_OBJECT, "y");
-                    cases.add(obj);
-                }
-            } else {
-                for (Tree.SimpleType ct : that.getCaseTypes().getTypes()) {
-                    cases.add(typeMap(ct.getTypeModel()));
-                }
+        if (d.getCaseTypes() != null && !d.getCaseTypes().isEmpty()) {
+            List<Map<String,Object>> cases = new ArrayList<Map<String,Object>>(d.getCaseTypes().size());
+            for (ProducedType pt : d.getCaseTypes()) {
+                cases.add(typeMap(pt));
             }
             m.put("of", cases);
         }
