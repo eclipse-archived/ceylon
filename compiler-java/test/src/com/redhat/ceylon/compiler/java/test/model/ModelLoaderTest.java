@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -197,6 +198,8 @@ public class ModelLoaderTest extends CompilerTest {
             return;
         }
         compareAnnotations(validDeclaration, modelDeclaration);
+        // check containers
+        compareContainers(validDeclaration, modelDeclaration);
         // full check
         if(validDeclaration instanceof ClassOrInterface){
             Assert.assertTrue(name+" [ClassOrInterface]", modelDeclaration instanceof ClassOrInterface);
@@ -213,6 +216,18 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
     
+    private void compareContainers(Declaration validDeclaration, Declaration modelDeclaration) {
+        String name = validDeclaration.getQualifiedNameString();
+        Scope validContainer = validDeclaration.getContainer();
+        Scope modelContainer = modelDeclaration.getContainer();
+        if(validContainer instanceof Declaration){
+            Assert.assertTrue(name+" [Container is Declaration]", modelContainer instanceof Declaration);
+            compareDeclarations((Declaration)validContainer, (Declaration)modelContainer);
+        }else{
+            Assert.assertTrue(name+" [Container is not Declaration]", modelContainer instanceof Declaration == false);
+        }
+    }
+
     private void compareAnnotations(Declaration validDeclaration, Declaration modelDeclaration) {
         // let's not compare setter annotations
         if(validDeclaration instanceof Setter)
