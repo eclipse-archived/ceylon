@@ -231,8 +231,8 @@ public class ClassTransformer extends AbstractTransformer {
                         continue;
                     }
                     ClassOrInterface innerType = (ClassOrInterface) member;
-                    // figure out its java name
-                    String javaClass = naming.declName(innerType, DeclNameFlag.QUALIFIED);
+                    // figure out its java name (strip the leading dot)
+                    String javaClass = naming.declName(innerType, DeclNameFlag.QUALIFIED).substring(1);
                     String ceylonName = member.getName();
                     JCAnnotation atMember = makeAtMember(ceylonName, javaClass);
                     members = members.prepend(atMember);
