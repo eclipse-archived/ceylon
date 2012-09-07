@@ -24,7 +24,7 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Plugin;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 
@@ -40,7 +40,7 @@ import com.redhat.ceylon.common.tool.Summary;
 "\n" +
 "    ceylon run com.example.foobar/1.0.0"
 )
-public class RunTool implements Plugin {
+public class CeylonRunTool implements Tool {
     
     private String moduleNameOptVersion;
     
