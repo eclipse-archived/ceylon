@@ -93,6 +93,10 @@ public abstract class BoxingVisitor extends Visitor {
         // handle errors gracefully
         if(that.getDeclaration() == null)
             return;
+        if(that.getMemberOperator() instanceof Tree.SafeMemberOp){
+            // must be boxed, since safe member op "?." returns an optional type
+            return;
+        }
         if (Decl.isValueTypeDecl(that.getPrimary())) {
             CodegenUtil.markUnBoxed(that);
             if(CodegenUtil.isRaw((TypedDeclaration) that.getDeclaration()))

@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -1424,7 +1425,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (isFunctionalResult(expr.getTypeModel())) {
                 return transExpr;
             }
-            transExpr = boxUnboxIfNecessary(transExpr, expr, expr.getTarget().getType(), BoxingStrategy.BOXED);
+            // the marker we get for boxing on a QME with a SafeMemberOp is always unboxed
+            // since it returns an optional type, but that doesn't tell us if the underlying
+            // expr is or not boxed
+            boolean isBoxed = !CodegenUtil.isUnBoxed((TypedDeclaration)expr.getDeclaration());
+            transExpr = boxUnboxIfNecessary(transExpr, isBoxed, expr.getTarget().getType(), BoxingStrategy.BOXED);
             JCExpression testExpr = make().Binary(JCTree.NE, tmpVarName.makeIdent(), makeNull());
             JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
             result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
