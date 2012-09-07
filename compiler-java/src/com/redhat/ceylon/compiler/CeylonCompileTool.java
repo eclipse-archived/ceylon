@@ -81,9 +81,9 @@ public class CeylonCompileTool implements Tool{
         this.source = source;
     }
     
-    @OptionArgument(longName="repo", argumentName="url")
+    @OptionArgument(longName="rep", argumentName="url")
     @Description("Specifies a module repository containing dependencies. " +
-    		"(default: `modules` http://modules.ceylon-lang.org)")
+    		"(default: `modules`, http://modules.ceylon-lang.org)")
     public void setRepository(List<URI> repo) {
         this.repo = repo;
     }
