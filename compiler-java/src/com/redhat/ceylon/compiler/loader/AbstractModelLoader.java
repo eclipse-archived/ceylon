@@ -945,9 +945,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void complete(ClassOrInterface klass, ClassMirror classMirror) {
         Map<MethodMirror, List<MethodMirror>> variables = new HashMap<MethodMirror, List<MethodMirror>>();
-        String qualifiedName = classMirror.getQualifiedName();
-        String pkgName = classMirror.getPackage().getQualifiedName();
-        boolean isFromJDK = JDKPackageList.isJDKPackage(pkgName) || JDKPackageList.isOracleJDKPackage(pkgName);
+        boolean isFromJDK = isFromJDK(classMirror);
         boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
         
         // Java classes with multiple constructors get turned into multiple Ceylon classes
@@ -1080,6 +1078,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setCaseTypes(klass, classMirror);
         fillRefinedDeclarations(klass);
         setAnnotations(klass, classMirror);
+    }
+
+    private boolean isFromJDK(ClassMirror classMirror) {
+        String pkgName = classMirror.getPackage().getQualifiedName();
+        return JDKPackageList.isJDKPackage(pkgName) || JDKPackageList.isOracleJDKPackage(pkgName);
     }
 
     private void setAnnotations(Declaration decl, AnnotatedMirror classMirror) {
