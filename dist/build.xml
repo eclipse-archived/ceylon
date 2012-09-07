@@ -19,6 +19,8 @@
 
     <target name="help">
         <echo>Options for building a Ceylon distribution package:
+    ant setup              - Sets up a new clean environment for development
+
     ant release            - Does a clean, get-code, local, package
                              using the sources tagged with the name as
                              defined by ceylon.version in build.properties
@@ -56,6 +58,10 @@ Some more basic ant tasks:
                              and deletes all local projects</echo>
     </target>
 
+    <target name="setup" depends="siblings,git-clone"
+            description="Sets up a new clean environment for development">
+    </target>
+
     <target name="release"
             description="Does a clean, get-code, local, package using the 
 sources tagged with the name as defined by ceylon.version in 
@@ -72,7 +78,7 @@ Use this when NOT doing a release!">
         <antcall target="bootstrap" />
     </target>
 
-    <target name="bootstrap" depends="clean,get-code,local,package">
+    <target name="bootstrap" depends="clean,local,get-code-internal,package">
     </target>
 
     <target name="local"
@@ -314,7 +320,7 @@ Used with another target such as 'package'">
         </exec>	
     </target>
 
-    <target name="get-code" depends="git-clone-or-pull,checkout-tagged"
+    <target name="get-code" depends="local,get-code-internal"
             description="Downloads latest code for all projects">
         <echo>
 If you are building a distribution package for a specific tagged release
@@ -327,29 +333,33 @@ or you can go straight to the package building:
     ant local package      - Builds the distribution package
 </echo>
     </target>
+    <target name="get-code-internal" depends="git-clone-or-pull,checkout-tagged">
+    </target>
 
     <target name="git-clone-or-pull">
-        <mkdir dir="${projects.dir}"/>
+        <fail unless="projects.base.dir" />
+        <mkdir dir="${projects.base.dir}"/>
         <foreach list="${modules}"
                  target="git-clone-or-pull-item"
                  param="project.item.name"
                  inheritall="true" />
     </target>
     <target name="git-clone-or-pull-item">
+        <fail unless="projects.base.dir" />
         <fail unless="project.item.name" />
         <if>
-            <available file="${projects.dir}/${project.item.name}" type="dir" />
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
             <then>
                 <antcall target="checkout-internal-item">
                     <param name="tag-internal" value="master" />
                 </antcall>
-                <exec executable="git" dir="${projects.dir}/${project.item.name}" failonerror="yes">
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
                     <arg value="pull"/>
                     <arg value="--ff-only"/>
                 </exec>
             </then>
             <else>
-                <exec executable="git" dir="${projects.dir}" failonerror="yes">
+                <exec executable="git" dir="${projects.base.dir}" failonerror="yes">
                     <arg value="clone"/>
                     <arg value="git@github.com:ceylon/${project.item.name}.git"/>
                 </exec>
@@ -357,7 +367,29 @@ or you can go straight to the package building:
         </if>
     </target>
 
-    <target name="checkout">
+    <target name="git-clone">
+        <fail unless="projects.base.dir" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${modules}"
+                 target="git-clone-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-clone-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <else>
+                <exec executable="git" dir="${projects.base.dir}" failonerror="yes">
+                    <arg value="clone"/>
+                    <arg value="git@github.com:ceylon/${project.item.name}.git"/>
+                </exec>
+            </else>
+        </if>
+    </target>
+
+    <target name="checkout" depends="local">
         <fail unless="tag" />
         <antcall target="checkout-internal">
             <param name="tag-internal" value="${tag}" />
@@ -377,22 +409,23 @@ You can now build the package by executing:
                  inheritall="true" />
     </target>
     <target name="checkout-internal-item">
+        <fail unless="projects.base.dir" />
         <fail unless="project.item.name" />
         <fail unless="tag-internal" />
-        <exec executable="git" dir="${projects.dir}/${project.item.name}" failonerror="yes">
+        <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
             <arg value="checkout"/>
             <arg value="-q"/>
             <arg value="${tag-internal}"/>
         </exec>
     </target>
 
-    <target name="checkout-master">
+    <target name="checkout-master" depends="local">
         <antcall target="checkout-internal">
             <param name="tag-internal" value="master" />
         </antcall>
     </target>
 
-    <target name="checkout-tagged" if="tag">
+    <target name="checkout-tagged" if="tag" depends="local">
         <echo message="Checking out tag '${tag}'" />
         <antcall target="checkout-internal">
             <param name="tag-internal" value="${tag}" />
