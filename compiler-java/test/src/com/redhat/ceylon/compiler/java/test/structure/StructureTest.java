@@ -498,6 +498,11 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testAlsMemberClassAliasTricks_fail() {
+        compareWithJavaSource("alias/MemberClassAliasTricks");
+    }
+
+    @Test
     public void testAlsClassAliasWithParameters() {
         compareWithJavaSource("alias/ClassAliasWithParameters");
     }
