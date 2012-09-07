@@ -452,7 +452,7 @@ public class ModelLoaderTest extends CompilerTest {
     }
     
     @Test
-    public void loadInnerInterface_fail(){
+    public void loadInnerInterface(){
         verifyClassLoading("InnerInterface.ceylon");
     }
 
