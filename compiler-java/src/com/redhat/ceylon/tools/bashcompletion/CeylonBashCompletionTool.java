@@ -16,6 +16,7 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.tools.CeylonTool;
 
 @Summary(plumbing = true, 
@@ -238,7 +239,7 @@ public class CeylonBashCompletionTool implements Tool {
         TreeSet<OptionModel<?>> sorted = new TreeSet<OptionModel<?>>(comparator);
         sorted.addAll(tool.getOptions());
         for (OptionModel<?> option : sorted) {
-            results.addResult("--" + option.getLongName() + (option.isPureOption() ? "" : "\\="));
+            results.addResult("--" + option.getLongName() + (option.getArgumentType() == ArgumentType.NOT_ALLOWED ? "" : "\\="));
         }
         return results;
     }

@@ -10,6 +10,7 @@ import org.tautua.markdownpapers.ast.Document;
 
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.OptionModel;
+import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.tools.help.Output.Options;
 import com.redhat.ceylon.tools.help.Output.Synopsis;
@@ -60,7 +61,7 @@ public class AbstractDoc {
         for (OptionModel<?> opt : sortedOptions(model.getPlugin().getOptions())) {
             String shortName = opt.getShortName() != null ? "-" + opt.getShortName() : null;
             String longName = opt.getLongName() != null ? "--" + opt.getLongName() : null;
-            String argumentName = opt.isPureOption() ? null : opt.getArgument().getName();
+            String argumentName = opt.getArgumentType() != ArgumentType.NOT_ALLOWED ? null : opt.getArgument().getName();
             String descriptionMd = model.getOptionDescription(opt);
             if (descriptionMd == null || descriptionMd.isEmpty()) {
                 descriptionMd = bundle.getString("option.undocumented");
@@ -94,13 +95,17 @@ public class AbstractDoc {
                 }
                 if (option.getLongName() != null) {
                     synopsis.longOptionSynopsis("--" + option.getLongName());
-                    if (!option.isPureOption()) {
+                    if (option.getArgumentType() == ArgumentType.REQUIRED) {
                         synopsis.appendSynopsis("=");
                         synopsis.appendSynopsis(multiplicity(argument, argument.getName()));
+                    } else if (option.getArgumentType() == ArgumentType.OPTIONAL) {
+                        synopsis.appendSynopsis("[=");
+                        synopsis.appendSynopsis(multiplicity(argument, argument.getName()));
+                        synopsis.appendSynopsis("]");
                     }
                 } else {
                     synopsis.shortOptionSynopsis("-" + option.getShortName());
-                    if (!option.isPureOption()) {
+                    if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
                         synopsis.appendSynopsis(" ");
                         synopsis.appendSynopsis(multiplicity(argument, argument.getName()));
                     }
