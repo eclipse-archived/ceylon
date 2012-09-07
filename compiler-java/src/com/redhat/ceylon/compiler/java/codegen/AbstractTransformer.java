@@ -1729,6 +1729,13 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxArray(expr, typeFact.getArrayElementType(exprType));
         } else if (isVoid(exprType)) {
             expr = make().LetExpr(List.<JCStatement>of(make().Exec(expr)), makeNull());
+        } else if (isOptional(exprType)) {
+            // sometimes, due to interop we will get an unboxed java.lang.String whose Ceylon type
+            // is String? or passes for a boxed thing, and if we need to box it well we do
+            exprType = typeFact().getDefiniteType(exprType);
+            if (isCeylonString(exprType)){
+                expr = boxOptionalJavaString(expr);
+            }
         }
         return expr;
     }
@@ -1795,7 +1802,16 @@ public abstract class AbstractTransformer implements Transformation {
                 makeNull());
         return makeLetExpr(name, null, type, value, expr);
     }
-    
+
+    private JCExpression boxOptionalJavaString(JCExpression value){
+        Naming.SyntheticName name = naming.temp();
+        JCExpression type = makeJavaType(typeFact().getStringDeclaration().getType());
+        JCExpression expr = make().Conditional(make().Binary(JCTree.NE, name.makeIdent(), makeNull()), 
+                boxString(name.makeIdent()),
+                makeNull());
+        return makeLetExpr(name, null, type, value, expr);
+    }
+
     private JCTree.JCMethodInvocation unboxCharacter(JCExpression value, boolean isJava) {
         return makeUnboxType(value, isJava ? "charValue" : "intValue");
     }
