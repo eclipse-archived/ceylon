@@ -46,11 +46,17 @@ public class MetamodelGenerator extends Visitor {
     public static final String KEY_PACKAGE      = "$pk";
     public static final String KEY_PARAMS       = "$ps";
 
+    public static final String ANN_DEFAULT      = "$def";
+    public static final String ANN_SHARED       = "$shr";
+    public static final String ANN_ACTUAL       = "$act";
+    public static final String ANN_FORMAL       = "$fml";
+
     public static final String METATYPE_CLASS           = "cls";
     public static final String METATYPE_INTERFACE       = "ifc";
     public static final String METATYPE_OBJECT          = "obj";
     public static final String METATYPE_METHOD          = "mthd";
     public static final String METATYPE_ATTRIBUTE       = "attr";
+    public static final String METATYPE_GETTER          = "gttr";
     public static final String METATYPE_TYPE_PARAMETER  = "tpm";
     public static final String METATYPE_PARAMETER       = "prm";
     public static final String METATYPE_TYPE_CONSTRAINT = "tc";
@@ -227,18 +233,20 @@ public class MetamodelGenerator extends Visitor {
             for (Tree.TypeConstraint tcon : tcl.getTypeConstraints()) {
                 Map<String, Object> c = typeMap(tcon.getDeclarationModel().getType());
                 c.put(KEY_METATYPE, METATYPE_TYPE_CONSTRAINT);
-                if (tcon.getSatisfiedTypes() != null && !tcon.getSatisfiedTypes().getTypes().isEmpty()) {
-                    List<Map<String, Object>> sats = new ArrayList<Map<String,Object>>(tcon.getSatisfiedTypes().getTypes().size());
+                if (tcon.getSatisfiedTypes() != null) {
+                    encodeTypes(tcon.getDeclarationModel().getSatisfiedTypes(), c, "satisfies");
+                    /*List<Map<String, Object>> sats = new ArrayList<Map<String,Object>>(tcon.getSatisfiedTypes().getTypes().size());
                     for (Tree.SimpleType st : tcon.getSatisfiedTypes().getTypes()) {
                         sats.add(typeMap(st.getTypeModel()));
                     }
-                    c.put("satisfies", sats);
-                } else if (tcon.getCaseTypes() != null && !tcon.getCaseTypes().getTypes().isEmpty()) {
-                    List<Map<String, Object>> ofs = new ArrayList<Map<String,Object>>(tcon.getCaseTypes().getTypes().size());
+                    c.put("satisfies", sats);*/
+                } else if (tcon.getCaseTypes() != null) {
+                    encodeTypes(tcon.getDeclarationModel().getCaseTypes(), c, "of");
+                    /*List<Map<String, Object>> ofs = new ArrayList<Map<String,Object>>(tcon.getCaseTypes().getTypes().size());
                     for (Tree.SimpleType st : tcon.getCaseTypes().getTypes()) {
                         ofs.add(typeMap(st.getTypeModel()));
                     }
-                    c.put("of", ofs);
+                    c.put("of", ofs);*/
                 }
                 l.add(c);
             }
@@ -275,7 +283,7 @@ public class MetamodelGenerator extends Visitor {
                 //TODO do these guys need anything else?
                 if (parm.getDefaultArgument() != null) {
                     //This could be compiled to JS...
-                    pm.put("def", parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
+                    pm.put(ANN_DEFAULT, parm.getDefaultArgument().getSpecifierExpression().getExpression().getTerm().getText());
                 }
                 p.add(pm);
             }
@@ -342,16 +350,16 @@ public class MetamodelGenerator extends Visitor {
         }
         //Certain annotations
         if (d.isShared()) {
-            m.put("shared", "1");
+            m.put(ANN_SHARED, "1");
         }
         if (d.isActual()) {
-            m.put("actual", "1");
+            m.put(ANN_ACTUAL, "1");
         }
         if (d.isFormal()) {
-            m.put("formal", "1");
+            m.put(ANN_FORMAL, "1");
         }
         if (d.isDefault()) {
-            m.put("def", "1");
+            m.put(ANN_DEFAULT, "1");
         }
         parent.put(that.getDeclarationModel().getName(), m);
         //We really don't need to go inside a method's body
@@ -384,13 +392,16 @@ public class MetamodelGenerator extends Visitor {
         m.put(KEY_METATYPE, METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(that.getType().getTypeModel()));
         if (d.isShared()) {
-            m.put("shared", "1");
+            m.put(ANN_SHARED, "1");
         }
         if (d.isVariable()) {
             m.put("var", "1");
         }
         if (d.isFormal()) {
-            m.put("formal", "1");
+            m.put(ANN_FORMAL, "1");
+        }
+        if (d.isDefault()) {
+            m.put(ANN_DEFAULT, "1");
         }
         parent.put(d.getName(), m);
         super.visit(that);
@@ -411,18 +422,7 @@ public class MetamodelGenerator extends Visitor {
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_CLASS);
         m.put(KEY_NAME, d.getName());
-        //Extends
-        if (d.getExtendedType() != null) {
-            m.put("super", typeMap(d.getExtendedType()));
-        }
-        //Satisfies
-        if (d.getSatisfiedTypes() != null && !d.getSatisfiedTypes().isEmpty()) {
-            List<Map<String,Object>> sats = new ArrayList<Map<String,Object>>(d.getSatisfiedTypes().size());
-            for (ProducedType sat : d.getSatisfiedTypes()) {
-                sats.add(typeMap(sat));
-            }
-            m.put("satisfies", sats);
-        }
+
         //Type parameters
         List<Map<String, Object>> tpl = typeParameters(that.getTypeParameterList());
         if (tpl != null) {
@@ -433,34 +433,37 @@ public class MetamodelGenerator extends Visitor {
         if (tpl != null) {
             m.put(KEY_TYPE_CONSTR, tpl);
         }
+
+        //Extends
+        if (d.getExtendedType() != null) {
+            m.put("super", typeMap(d.getExtendedType()));
+        }
+        //Satisfies
+        encodeTypes(d.getSatisfiedTypes(), m, "satisfies");
+
         //Initializer parameters
         List<Map<String,Object>> inits = parameterListMap(that.getParameterList());
         if (inits != null && !inits.isEmpty()) {
             m.put(KEY_PARAMS, inits);
         }
         //Case types
-        if (d.getCaseTypes() != null && !d.getCaseTypes().isEmpty()) {
-            List<Map<String,Object>> cases = new ArrayList<Map<String,Object>>(d.getCaseTypes().size());
-            for (ProducedType pt : d.getCaseTypes()) {
-                cases.add(typeMap(pt));
-            }
-            m.put("of", cases);
-        }
+        encodeTypes(d.getCaseTypes(), m, "of");
+
         //Certain annotations
         if (d.isShared()) {
-            m.put("shared", "1");
+            m.put(ANN_SHARED, "1");
         }
         if (d.isAbstract()) {
             m.put("abstract", "1");
         }
         if (d.isActual()) {
-            m.put("actual", "1");
+            m.put(ANN_ACTUAL, "1");
         }
         if (d.isAnonymous()) {
             m.put("$anon", "1");
         }
         if (d.isDefault()) {
-            m.put("$def", "1");
+            m.put(ANN_DEFAULT, "1");
         }
         parent.put(d.getName(), m);
         super.visit(that);
@@ -482,9 +485,23 @@ public class MetamodelGenerator extends Visitor {
         m.put(KEY_METATYPE, METATYPE_INTERFACE);
         m.put(KEY_NAME, d.getName());
 
+        //Type parameters
+        List<Map<String, Object>> tpl = typeParameters(that.getTypeParameterList());
+        if (tpl != null) {
+            m.put(KEY_TYPE_PARAMS, tpl);
+        }
+        //Type constraints
+        tpl = typeConstraints(that.getTypeConstraintList());
+        if (tpl != null) {
+            m.put(KEY_TYPE_CONSTR, tpl);
+        }
+        //satisfies
+        encodeTypes(d.getSatisfiedTypes(), m, "satisfies");
+        //Case types
+        encodeTypes(d.getCaseTypes(), m, "of");
         //Certain annotations
         if (d.isShared()) {
-            m.put("shared", "1");
+            m.put(ANN_SHARED, "1");
         }
         parent.put(d.getName(), m);
         super.visit(that);
@@ -508,17 +525,11 @@ public class MetamodelGenerator extends Visitor {
         //Extends
         m.put("super", typeMap(d.getTypeDeclaration().getExtendedType()));
         //Satisfies
-        if (d.getTypeDeclaration().getSatisfiedTypes() != null && !d.getTypeDeclaration().getSatisfiedTypes().isEmpty()) {
-            List<Map<String,Object>> sats = new ArrayList<Map<String,Object>>(d.getTypeDeclaration().getSatisfiedTypes().size());
-            for (ProducedType sat : d.getTypeDeclaration().getSatisfiedTypes()) {
-                sats.add(typeMap(sat));
-            }
-            m.put("satisfies", sats);
-        }
+        encodeTypes(d.getTypeDeclaration().getSatisfiedTypes(), m, "satisfies");
 
         //Certain annotations
         if (d.isShared()) {
-            m.put("shared", "1");
+            m.put(ANN_SHARED, "1");
         }
         parent.put(d.getName(), m);
         super.visit(that);
@@ -546,19 +557,32 @@ public class MetamodelGenerator extends Visitor {
             return;
         }
         m.put(KEY_NAME, d.getName());
-        m.put(KEY_METATYPE, METATYPE_ATTRIBUTE);
+        m.put(KEY_METATYPE, METATYPE_GETTER);
         m.put(KEY_TYPE, typeMap(that.getType().getTypeModel()));
         if (d.isShared()) {
-            m.put("shared", "1");
+            m.put(ANN_SHARED, "1");
         }
         if (d.isActual()) {
-            m.put("actual", "1");
+            m.put(ANN_ACTUAL, "1");
         }
         if (d.isFormal()) {
-            m.put("formal", "1");
+            m.put(ANN_FORMAL, "1");
+        }
+        if (d.isDefault()) {
+            m.put(ANN_DEFAULT, "1");
         }
         parent.put(d.getName(), m);
         super.visit(that);
+    }
+
+    /** Encodes the list of types and puts them under the specified key in the map. */
+    private void encodeTypes(List<ProducedType> types, Map<String,Object> m, String key) {
+        if (types == null || types.isEmpty()) return;
+        List<Map<String, Object>> sats = new ArrayList<Map<String,Object>>(types.size());
+        for (ProducedType st : types) {
+            sats.add(typeMap(st));
+        }
+        m.put(key, sats);
     }
 
 }
