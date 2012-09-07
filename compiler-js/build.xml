@@ -99,7 +99,7 @@
             <include name="**/Java7Checker.java"/>
         </javac>
         <!-- generate the ceylon.language.js file -->
-        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpath="${build.classes}">
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath">
             <arg value="${js-src}/${jslangfile}" />
             <arg value="${runtime}/${jslangpath}" />
             <arg value="${module.com.redhat.ceylon.compiler.js.version}" />
