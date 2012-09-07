@@ -2850,7 +2850,12 @@ QMARK
  pair, or a normal 16-bit code point.
 */
 CHAR_LITERAL
-    :   '`' (( HighSurrogate LowSurrogate ) | ( ~ ('`' | '\\') | EscapeSequence )) '`'
+    :   '`' CharPart '`'
+    ;
+
+fragment
+CharPart
+    : ( ~ ('`' | '\\' | '\n' | '\f' | '\t' | '\r') | EscapeSequence )*
     ;
 
 QUOTED_LITERAL
@@ -2879,24 +2884,13 @@ STRING_LITERAL
 */
 fragment
 StringPart
-    : ( ~ ('\\' | '"') | EscapeSequence) *
+    : ( ~ ('\\' | '"') | EscapeSequence )*
     ;
     
 fragment
 EscapeSequence 
     :   '\\' 
-        (
-            'b'
-        |   't'
-        |   'n'
-        |   'f'
-        |   'r'
-        |   '\\'
-        |   '"'
-        |   '\''
-        |   '`'
-        |   '{' HexDigits HexDigits? '}'
-        )
+        ( ~'{' | '{' HexDigits HexDigits? '}' )
     ;
 
 fragment
@@ -2907,16 +2901,6 @@ HexDigits
 fragment
 HexDigit
     : '0'..'9' | 'A'..'F' | 'a'..'f'
-    ;
-
-fragment
-HighSurrogate
-    : '\uD800'..'\uDBFF'
-    ;
-
-fragment
-LowSurrogate
-    : '\uDC00'..'\uDFFF'
     ;
 
 WS  
@@ -3253,10 +3237,6 @@ POWER_OP
     :    '**'
     ;
 
-/*APPLY_OP
-    :   '.='
-    ;*/
-
 ADD_ASSIGN_OP
     :   '+='
     ;
@@ -3292,10 +3272,6 @@ COMPLEMENT_ASSIGN_OP
 REMAINDER_ASSIGN_OP
     :   '%='
     ;
-
-/*DEFAULT_ASSIGN_OP
-    :   '?='
-    ;*/
 
 AND_ASSIGN_OP
     :   '&&='

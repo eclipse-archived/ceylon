@@ -3229,6 +3229,10 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.CharLiteral that) {
+    	String result = that.getText();
+        if (result.codePointCount(1, result.length()-1)!=1) {
+        	that.addError("character literal must contain exactly one character");
+        }
         setLiteralType(that, unit.getCharacterDeclaration());
     }
     
