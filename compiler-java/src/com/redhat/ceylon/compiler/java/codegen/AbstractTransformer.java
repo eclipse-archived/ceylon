@@ -74,6 +74,7 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -1582,6 +1583,23 @@ public abstract class AbstractTransformer implements Transformation {
             attributes = List.of(valueAttribute);
 
         return make().Annotation(makeIdent(syms().ceylonAtAnnotationType), attributes);
+    }
+
+    JCAnnotation makeAtMember(String ceylonName, String javaClass) {
+        JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("name"), 
+                                                   make().Literal(ceylonName));
+        JCExpression javaClassAttribute = make().Assign(naming.makeUnquotedIdent("javaClass"), 
+                                                        make().Literal(javaClass));
+        List<JCExpression> attributes = List.of(nameAttribute, javaClassAttribute);
+
+        return make().Annotation(makeIdent(syms().ceylonAtMemberType), attributes);
+    }
+
+    List<JCAnnotation> makeAtMembers(List<JCExpression> members) {
+        JCExpression attr = make().Assign(naming.makeUnquotedIdent("value"), 
+                                          make().NewArray(null, null, members));
+
+        return makeModelAnnotation(syms().ceylonAtMembersType, List.of(attr));
     }
 
     /** Determine whether the given declaration requires a 
