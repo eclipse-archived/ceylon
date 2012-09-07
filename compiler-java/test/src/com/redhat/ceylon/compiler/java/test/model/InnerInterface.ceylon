@@ -29,4 +29,3 @@ shared interface InnerInterfaceContainer {
         shared class InnerClass(){}
     }
 }
-
