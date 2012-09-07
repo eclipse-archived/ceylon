@@ -5,12 +5,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import net.minidev.json.JSONValue;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -24,6 +26,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
  */
 public class JsModuleManager extends ModuleManager {
 
+    /** Tells whether the language module has been loaded yet. */
+    private boolean clLoaded;
+
     public JsModuleManager(Context context) {
         super(context);
     }
@@ -32,9 +37,17 @@ public class JsModuleManager extends ModuleManager {
     public void resolveModule(ArtifactResult artifact, Module module,
             ModuleImport moduleImport, LinkedList<Module> dependencyTree,
             List<PhasedUnits> phasedUnitsOfDependencies) {
+        if (!clLoaded) {
+            clLoaded = true;
+            ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion());
+            ac.setSuffix(".js");
+            ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
+            resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
+                    phasedUnitsOfDependencies);
+        }
         //Create a similar artifact but with .js extension
         File js = artifact.artifact();
-        if (module instanceof JsonModule && !artifact.name().equals("ceylon.language") && js.getName().endsWith(".js")) {
+        if (module instanceof JsonModule && js.getName().endsWith(".js")) {
             if (((JsonModule)module).getModel() != null) {
                 System.out.println("skipping already loaded module " + module);
                 return;
@@ -53,7 +66,6 @@ public class JsModuleManager extends ModuleManager {
                         }
                     }
                     if (model != null) {
-                        ((JsonModule)module).setModel(model);
                         @SuppressWarnings("unchecked")
                         List<String> deps = (List<String>)model.get("$mod-deps");
                         if (deps != null) {
@@ -69,13 +81,24 @@ public class JsModuleManager extends ModuleManager {
                                     depname = s;
                                 }
                                 //This will cause the dependency to be loaded later
-                                JsonModule dep = new JsonModule(this);
-                                dep.setVersion(depv);
-                                dep.setName(splitModuleName(depname));
+                                JsonModule dep = (JsonModule)getOrCreateModule(splitModuleName(depname), depv);
                                 ModuleImport imp = new ModuleImport(dep, false, false);
                                 module.getImports().add(imp);
                             }
                         }
+                        ((JsonModule)module).setModel(model);
+                        for (ModuleImport imp : module.getImports()) {
+                            if (!imp.getModule().getNameAsString().equals("ceylon.language")) {
+                                ArtifactContext ac = new ArtifactContext(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+                                ac.setSuffix(".js");
+                                artifact = getContext().getRepositoryManager().getArtifactResult(ac);
+                                if (artifact != null) {
+                                    resolveModule(artifact, imp.getModule(), imp, dependencyTree, phasedUnitsOfDependencies);
+                                }
+                            }
+                        }
+                        ((JsonModule)module).loadDeclarations();
+                        //module.setAvailable(true);
                         return;
                     }
                 } catch (IOException ex) {
@@ -105,6 +128,21 @@ public class JsModuleManager extends ModuleManager {
         Module module = new JsonModule(this);
         module.setName(moduleName);
         return module;
+    }
+
+    @Override
+    protected JsonPackage createPackage(String pkgName, Module module) {
+        final JsonPackage pkg = new JsonPackage(pkgName);
+        List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
+        pkg.setName(name);
+        if (module != null) {
+            module.getPackages().add(pkg);
+            pkg.setModule(module);
+            if (module instanceof JsonModule) {
+                pkg.setModel(((JsonModule)module).getModelForPackage(pkgName));
+            }
+        }
+        return pkg;
     }
 
 }

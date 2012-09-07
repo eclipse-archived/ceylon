@@ -13,6 +13,7 @@ public class JsonModule extends Module {
         modman = manager;
     }
 
+    @SuppressWarnings("unchecked")
     public void setModel(Map<String, Object> value) {
         if (model != null) {
             throw new IllegalStateException("JsonModule should only receive model once");
@@ -21,15 +22,42 @@ public class JsonModule extends Module {
         for (Map.Entry<String, Object> e : model.entrySet()) {
             String k = e.getKey();
             if (!k.startsWith("$mod-")) {
-                @SuppressWarnings("unchecked")
-                JsonPackage pkg = new JsonPackage(modman, k, (Map<String,Object>)e.getValue());
-                pkg.setModule(this);
-                getPackages().add(pkg);
+                com.redhat.ceylon.compiler.typechecker.model.Package pkg = getDirectPackage(k);
+                if (pkg == null) {
+                    pkg = modman.createPackage(k, this);
+                }
+                if (pkg instanceof JsonPackage) {
+                    ((JsonPackage) pkg).setModel((Map<String,Object>)e.getValue());
+                }
             }
         }
     }
     public Map<String, Object> getModel() {
         return model;
+    }
+
+    void loadDeclarations() {
+        if (model != null) {
+            for (com.redhat.ceylon.compiler.typechecker.model.Package pkg : getPackages()) {
+                if (pkg instanceof JsonPackage) {
+                    ((JsonPackage) pkg).loadDeclarations();
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String,Object> getModelForPackage(String name) {
+        return model == null ? null : (Map<String,Object>)model.get(name);
+    }
+
+    @Override
+    public com.redhat.ceylon.compiler.typechecker.model.Package getPackage(String name) {
+        com.redhat.ceylon.compiler.typechecker.model.Package p = super.getPackage(name);
+        if (p == null) {
+            System.out.println(this +" no tengo aun " + name);
+        }
+        return p;
     }
 
 }
