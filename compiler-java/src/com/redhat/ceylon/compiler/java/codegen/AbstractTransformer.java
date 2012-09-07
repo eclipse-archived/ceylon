@@ -1596,6 +1596,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     List<JCAnnotation> makeAtMembers(List<JCExpression> members) {
+        if(members.isEmpty())
+            return List.nil();
         JCExpression attr = make().Assign(naming.makeUnquotedIdent("value"), 
                                           make().NewArray(null, null, members));
 
