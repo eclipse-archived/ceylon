@@ -1125,7 +1125,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(AnnotationMirror member : members){
             String name = (String) member.getValue("name");
             String javaClass = (String) member.getValue("javaClass");
-            Declaration innerDecl = convertToDeclaration(javaClass, DeclarationType.TYPE);
+            String packageName = (String) member.getValue("packageName");
+            String javaClassName = assembleJavaClass(javaClass, packageName);
+            Declaration innerDecl = convertToDeclaration(javaClassName, DeclarationType.TYPE);
             if(innerDecl == null)
                 throw new ModelResolutionException("Failed to load inner type " + name 
                         + " for outer type " + klass.getQualifiedNameString() 
@@ -1134,6 +1136,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // let's not trigger lazy-loading
             ((LazyContainer)klass).addMember(innerDecl);
         }
+    }
+
+    /**
+     * Allows subclasses to do something to the class name
+     */
+    protected String assembleJavaClass(String javaClass, String packageName) {
+        return javaClass;
     }
 
     private void addInnerClassesFromMirror(ClassOrInterface klass, ClassMirror classMirror) {
