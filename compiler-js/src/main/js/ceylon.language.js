@@ -2,6 +2,7 @@
     define(function(require, exports, module) {
 
 //the Ceylon language module
+//#METAMODEL
 
 function exists(x){}//IGNORE
 function String$(x,y){}//IGNORE
