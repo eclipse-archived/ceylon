@@ -1149,12 +1149,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void addInnerClassesFromMirror(ClassOrInterface klass, ClassMirror classMirror) {
+        boolean isJDK = isFromJDK(classMirror);
         for(ClassMirror innerClass : classMirror.getDirectInnerClasses()){
             // We skip members marked with @Ignore
             if(innerClass.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
             // We skip anonymous inner classes
             if(innerClass.isAnonymous())
+                continue;
+            // We skip private classes, otherwise the JDK has a ton of unresolved things
+            if(isJDK && !innerClass.isPublic())
                 continue;
             Declaration innerDecl = convertToDeclaration(innerClass, DeclarationType.TYPE);
             innerDecl.setContainer(klass);
