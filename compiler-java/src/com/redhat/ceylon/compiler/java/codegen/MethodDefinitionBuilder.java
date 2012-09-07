@@ -141,6 +141,14 @@ public class MethodDefinitionBuilder {
                     result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
                 }
             }
+        }else{
+            // only those two are preserved
+            if (isOverride) {
+                result.appendList(gen.makeAtOverride());
+            }
+            if (ignoreAnnotations) {
+                result.appendList(gen.makeAtIgnore());
+            }
         }
         return result;
     }
