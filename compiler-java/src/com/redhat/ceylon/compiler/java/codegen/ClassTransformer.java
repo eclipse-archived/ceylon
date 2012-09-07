@@ -272,6 +272,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
         List<JCExpression> members = List.nil();
+        Package pkg = Decl.getPackageContainer(model);
         for(Declaration member : model.getMembers()){
             if(member instanceof ClassOrInterface == false){
                 continue;
@@ -280,7 +281,7 @@ public class ClassTransformer extends AbstractTransformer {
             // figure out its java name (strip the leading dot)
             String javaClass = naming.declName(innerType, DeclNameFlag.QUALIFIED).substring(1);
             String ceylonName = member.getName();
-            JCAnnotation atMember = makeAtMember(ceylonName, javaClass);
+            JCAnnotation atMember = makeAtMember(ceylonName, javaClass, pkg.getQualifiedNameString());
             members = members.prepend(atMember);
         }
         classBuilder.annotations(makeAtMembers(members));

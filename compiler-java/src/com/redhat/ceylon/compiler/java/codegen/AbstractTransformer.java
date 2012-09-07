@@ -1585,12 +1585,14 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Annotation(makeIdent(syms().ceylonAtAnnotationType), attributes);
     }
 
-    JCAnnotation makeAtMember(String ceylonName, String javaClass) {
+    JCAnnotation makeAtMember(String ceylonName, String javaClass, String pkg) {
         JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("name"), 
                                                    make().Literal(ceylonName));
         JCExpression javaClassAttribute = make().Assign(naming.makeUnquotedIdent("javaClass"), 
                                                         make().Literal(javaClass));
-        List<JCExpression> attributes = List.of(nameAttribute, javaClassAttribute);
+        JCExpression packageAttribute = make().Assign(naming.makeUnquotedIdent("packageName"), 
+                                                      make().Literal(pkg));
+        List<JCExpression> attributes = List.of(nameAttribute, javaClassAttribute, packageAttribute);
 
         return make().Annotation(makeIdent(syms().ceylonAtMemberType), attributes);
     }
