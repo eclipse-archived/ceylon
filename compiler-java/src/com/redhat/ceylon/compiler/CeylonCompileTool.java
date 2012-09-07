@@ -70,6 +70,7 @@ public class CeylonCompileTool implements Tool{
     private String user;
     private String pass;
     private boolean verbose = false;
+    private String verboseFlags = "";
 
     public CeylonCompileTool() {
     }
@@ -121,9 +122,14 @@ public class CeylonCompileTool implements Tool{
     }
     
     @Option
-    @Description("Produce verbose output.")
-    public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
+    @OptionArgument(argumentName="flags")
+    @Description("Produce verbose output. " +
+    		"If no `flags` are given then be verbose about everything, " +
+    		"otherwise just be vebose about the flags which are present. " +
+    		"Allowed flags include: `loader`, `ast`, `code`, `cmr`.")
+    public void setVerbose(String verboseFlags) {
+        this.verbose = true;
+        this.verboseFlags = verboseFlags;
     }
     
     /** 
@@ -153,7 +159,11 @@ public class CeylonCompileTool implements Tool{
         }
         
         if (verbose) {
-            arguments.add("-verbose");
+            if (verboseFlags == null || verboseFlags.isEmpty()) {
+                arguments.add("-verbose");
+            } else {
+                arguments.add("-verbose:" + verboseFlags);
+            }
         }
         
         arguments.add("-out");
