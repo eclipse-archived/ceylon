@@ -119,8 +119,8 @@ public class TestModelClasses {
         Map<String,Object> cls = (Map<String,Object>)model.get("ParmTypes1");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("ParmTypes1 must have 1 parameter type", 1, ps.size());
-        ModelUtils.checkType(ps.get(0), "t2.Element");
-        ModelUtils.checkParam(cls, 0, "x", "t2.Element", null, false);
+        ModelUtils.checkType(ps.get(0), "Element");
+        ModelUtils.checkParam(cls, 0, "x", "Element", null, false);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -128,9 +128,9 @@ public class TestModelClasses {
         Map<String,Object> cls = (Map<String, Object>)model.get("ParmTypes2");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("ParmTypes2 must have 1 parameter type", 1, ps.size());
-        ModelUtils.checkType(ps.get(0), "t2.Element");
+        ModelUtils.checkType(ps.get(0), "Element");
         ModelUtils.checkMap(ps.get(0), "variance", "out");
-        ModelUtils.checkParam(cls, 0, "x", "t2.Element", null, true);
+        ModelUtils.checkParam(cls, 0, "x", "Element", null, true);
         ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_CONSTR);
         Assert.assertEquals("ParmTypes2 must have 1 type constraint", 1, ps.size());
         ModelUtils.checkMap(ps.get(0), MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_TYPE_CONSTRAINT);
@@ -142,10 +142,10 @@ public class TestModelClasses {
         Map<String,Object> cls = (Map<String, Object>)model.get("ParmTypes3");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("ParmTypes3 must have 2 parameter types", 2, ps.size());
-        ModelUtils.checkType(ps.get(0), "t2.Type1");
-        ModelUtils.checkType(ps.get(1), "t2.Type2");
-        ModelUtils.checkParam(cls, 0, "a1", "t2.Type1", null, false);
-        ModelUtils.checkParam(cls, 1, "a2", "t2.Type2", null, false);
+        ModelUtils.checkType(ps.get(0), "Type1");
+        ModelUtils.checkType(ps.get(1), "Type2");
+        ModelUtils.checkParam(cls, 0, "a1", "Type1", null, false);
+        ModelUtils.checkParam(cls, 1, "a2", "Type2", null, false);
         ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_CONSTR);
         Assert.assertEquals("ParmTypes3 must have 2 type constraints", 2, ps.size());
         ModelUtils.checkType(((List<Map<String, Object>>)ps.get(0).get("satisfies")).get(0), "ceylon.language.Number");
@@ -160,14 +160,14 @@ public class TestModelClasses {
         Map<String,Object> cls = (Map<String, Object>)model.get("ParmTypes4");
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("ParmTypes4 must have 1 parameter type", 1, ps.size());
-        ModelUtils.checkType(ps.get(0), "t2.Element");
+        ModelUtils.checkType(ps.get(0), "Element");
         ModelUtils.checkMap(ps.get(0), "variance", "out");
-        ModelUtils.checkParam(cls, 0, "elems", "t2.Element", null, true);
+        ModelUtils.checkParam(cls, 0, "elems", "Element", null, true);
         ps = (List<Map<String, Object>>)cls.get("satisfies");
         Assert.assertEquals("ParmTypes4 should satisfy 1 interface", 1, ps.size());
-        ModelUtils.checkType(ps.get(0), "ceylon.language.Iterable<t2.Element>");
+        ModelUtils.checkType(ps.get(0), "ceylon.language.Iterable<Element>");
         Map<String,Map<String,Object>> m2 = (Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
-        ModelUtils.checkType(m2.get("primero"), "ceylon.language.Nothing|t2.Element");
+        ModelUtils.checkType(m2.get("primero"), "ceylon.language.Nothing|Element");
     }
 
     @Test @SuppressWarnings("unchecked")

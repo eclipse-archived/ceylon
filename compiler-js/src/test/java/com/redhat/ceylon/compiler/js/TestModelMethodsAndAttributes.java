@@ -118,15 +118,15 @@ public class TestModelMethodsAndAttributes {
         ModelUtils.checkType(method, "ceylon.language.Sequence<ceylon.language.String>");
 
         method = (Map<String, Object>)model.get("parmtypes4");
-        ModelUtils.checkType(method, "t1.SomethingElse");
+        ModelUtils.checkType(method, "SomethingElse");
         List<Map<String, Object>> cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_CONSTR);
         Assert.assertNotNull("parmtypes4 should have constraints", cons);
         ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get("satisfies"),
-                "ceylon.language.Comparable<t1.Something>");
-        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(1).get("satisfies"), "t1.Something");
+                "ceylon.language.Comparable<Something>");
+        ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(1).get("satisfies"), "Something");
 
         method = (Map<String, Object>)model.get("parmtypes5");
-        ModelUtils.checkParam(method, 0, "x", "t1.Value", null, false);
+        ModelUtils.checkParam(method, 0, "x", "Value", null, false);
         cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_CONSTR);
         Assert.assertNotNull("parmtypes5 should have constraints", cons);
         Assert.assertNotNull("parmtypes5 should have case types", cons.get(0).get("of"));

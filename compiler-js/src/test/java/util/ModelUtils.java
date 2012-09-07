@@ -1,5 +1,6 @@
 package util;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +36,14 @@ public class ModelUtils {
                     name, method.get(MetamodelGenerator.KEY_NAME)),
                     defValue, parm.get("def"));
         }
-        Map<String, Object> tmap = (Map<String, Object>)parm.get(MetamodelGenerator.KEY_TYPE);
-        Assert.assertNotNull(tmap);
+        Map<String, Object> tmap;
+        if (parm.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
+            tmap = (Map<String, Object>)parm.get(MetamodelGenerator.KEY_TYPE);
+            Assert.assertNotNull(tmap);
+        } else {
+            tmap = new HashMap<String, Object>();
+            tmap.put(MetamodelGenerator.KEY_NAME, parm.get(MetamodelGenerator.KEY_TYPE));
+        }
         if (sequenced) {
             Assert.assertEquals(String.format("Param %s of method %s is not sequenced",
                     name, method.get(MetamodelGenerator.KEY_NAME)),
@@ -59,8 +66,13 @@ public class ModelUtils {
      * when it's parameterized, the type parameters are checked as well. */
     @SuppressWarnings("unchecked")
     public static void checkType(Map<String, Object> map, String name) {
-        Map<String, Object> tmap = (Map<String, Object>)map.get(MetamodelGenerator.KEY_TYPE);
-        if (tmap == null) {
+        Map<String, Object> tmap;
+        if (map.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
+            tmap = (Map<String, Object>)map.get(MetamodelGenerator.KEY_TYPE);
+        } else if (map.get(MetamodelGenerator.KEY_TYPE) instanceof String) {
+            tmap = new HashMap<String, Object>();
+            tmap.put(MetamodelGenerator.KEY_NAME, map.get(MetamodelGenerator.KEY_TYPE));
+        } else {
             tmap = map;
         }
         int join = name.indexOf('&');
@@ -93,8 +105,12 @@ public class ModelUtils {
             typeParams = name.substring(sep+1, name.length()-1);
             name = name.substring(0, sep);
         }
-        Assert.assertEquals(name, String.format("%s.%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
-                tmap.get(MetamodelGenerator.KEY_NAME)));
+        if (tmap.containsKey(MetamodelGenerator.KEY_PACKAGE)) {
+            Assert.assertEquals(name, String.format("%s.%s", tmap.get(MetamodelGenerator.KEY_PACKAGE),
+                    tmap.get(MetamodelGenerator.KEY_NAME)));
+        } else {
+            Assert.assertEquals(name, tmap.get(MetamodelGenerator.KEY_NAME));
+        }
         if (typeParams != null) {
             List<Map<String, Object>> tparms = (List<Map<String, Object>>)tmap.get(MetamodelGenerator.KEY_TYPE_PARAMS);
             Assert.assertFalse("Type parameters shouldn't be empty", tparms.isEmpty());
@@ -141,8 +157,10 @@ public class ModelUtils {
                 checkType(tp, name);
             } else {
                 for (Map<String, Object> tp : map) {
-                    if (name.equals(String.format("%s.%s", tp.get(MetamodelGenerator.KEY_PACKAGE),
-                            tp.get(MetamodelGenerator.KEY_NAME)))) {
+                    String expectedName = tp.containsKey(MetamodelGenerator.KEY_PACKAGE) ?
+                            String.format("%s.%s", tp.get(MetamodelGenerator.KEY_PACKAGE),
+                                    tp.get(MetamodelGenerator.KEY_NAME)) : (String)tp.get(MetamodelGenerator.KEY_NAME);
+                    if (name.equals(expectedName)) {
                         checkType(tp,name);
                         return;
                     }
