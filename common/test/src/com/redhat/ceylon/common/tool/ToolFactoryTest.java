@@ -2,6 +2,7 @@ package com.redhat.ceylon.common.tool;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collections;
 
 import junit.framework.Assert;
 
@@ -205,5 +206,36 @@ public class ToolFactoryTest {
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unrecognised option(s): --lalala=f", e.getMessage());
         }
+    }
+    
+    @Test
+    public void testVerbose() {
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        
+        TestExampleTool ex = pluginFactory.bindArguments(model, Arrays.asList("--verbose=foo"));
+        Assert.assertEquals("foo", ex.getVerbose());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbose="));
+        Assert.assertEquals("", ex.getVerbose());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbose"));
+        Assert.assertEquals("it was null", ex.getVerbose());   
+    }
+    
+    @Test
+    public void testVerbosities() {
+        ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
+        
+        TestExampleTool ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities=1"));
+        Assert.assertEquals(Arrays.asList("1"), ex.getVerbosities());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities="));
+        Assert.assertEquals(Collections.singletonList(""), ex.getVerbosities());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities"));
+        Assert.assertEquals(Collections.<String>singletonList(null), ex.getVerbosities());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities=1", "--verbosities=2", "--verbosities"));
+        Assert.assertEquals(Arrays.asList("1", "2", null), ex.getVerbosities());
     }
 }

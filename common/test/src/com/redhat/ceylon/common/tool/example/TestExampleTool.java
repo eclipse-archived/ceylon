@@ -32,6 +32,8 @@ public class TestExampleTool implements Tool {
     private Thread.State threadState;
     private boolean inited;
     private boolean run;
+    private String verbose;
+    private List<String> verbosities;
     
 
     public boolean isInited() {
@@ -114,6 +116,30 @@ public class TestExampleTool implements Tool {
 
     public boolean isPureOption() {
         return pureOption;
+    }
+    
+    @Option
+    @OptionArgument(argumentName="keys")
+    public void setVerbose(String v) {
+        if (v == null) {
+            this.verbose = "it was null";
+        } else {
+            this.verbose = v;
+        }
+    }
+    
+    public String getVerbose() {
+        return verbose;
+    }
+    
+    @Option
+    @OptionArgument
+    public void setVerbosities(List<String> verbosities) {
+        this.verbosities = verbosities;
+    }
+    
+    public List<String> getVerbosities() {
+        return verbosities;
     }
 
     @Argument(argumentName="args", multiplicity="*", order=0)
