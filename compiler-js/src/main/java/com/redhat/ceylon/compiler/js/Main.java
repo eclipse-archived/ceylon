@@ -12,6 +12,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -80,6 +81,9 @@ public class Main {
         }
 
         final TypeChecker typeChecker;
+        if (opts.isVerbose()) {
+            System.out.printf("Using repositories: %s%n", opts.getRepos());
+        }
         final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
                 opts.getRepos(), opts.getOutDir(), new JULLogger());
         final Set<String> onlyFiles = new HashSet<String>();
@@ -245,6 +249,7 @@ public class Main {
                 tcb.setModuleFilters(_modfilters);
             }
             tcb.statistics(opts.isProfile());
+            //tcb.moduleManagerFactory(new JsModuleManagerFactory());
             typeChecker = tcb.getTypeChecker();
             t1=System.nanoTime();
         }

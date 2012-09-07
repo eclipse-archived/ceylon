@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import com.redhat.ceylon.compiler.SimpleJsonEncoder;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+
 /** A simple program that takes the main JS module file and replaces #include markers with the contents of other files.
  * 
  * @author Enrique Zamudio
@@ -27,6 +32,23 @@ public class Stitcher {
                         } else {
                             throw new IllegalArgumentException("Invalid included file " + auxfile);
                         }
+                    } else if (line.equals("//#METAMODEL")) {
+                        System.out.println("Generating language module metamodel in JSON...");
+                        TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
+                        tcb.addSrcDirectory(new File("../ceylon.language/src"));
+                        TypeChecker tc = tcb.getTypeChecker();
+                        tc.process();
+                        MetamodelGenerator mmg = null;
+                        for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
+                            if (mmg == null) {
+                                mmg = new MetamodelGenerator(pu.getPackage().getModule());
+                            }
+                            pu.getCompilationUnit().visit(mmg);
+                        }
+                        writer.print("$$metamodel$$=");
+                        new SimpleJsonEncoder().encode(mmg.getModel(), writer);
+                        writer.println(";");
+                        writer.println("exports.$$metamodel$$=$$metamodel$$;");
                     } else if (!line.endsWith("//IGNORE")) {
                         writer.println(line);
                     }
