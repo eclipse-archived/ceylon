@@ -9,6 +9,14 @@
     <property name="projects.dir" value="${basedir}/projects"/>
     <property name="dist.dir" value="${basedir}/dist"/>
 
+    <property name="modules" value="ceylon-common,ceylon-compiler,ceylon-spec,ceylon.language,ceylon-module-resolver,ceylon-runtime,ceylon-js" />
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="${basedir}/lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+
     <target name="help">
         <echo>Options for building a Ceylon distribution package:
     ant release            - Does a clean, get-code, local, package
@@ -265,7 +273,7 @@ Used with another target such as 'package'">
 
     <target name="install-runtime" depends="install-cmr">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
-          <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         </ant>
         <copy todir="${dist.dir}">
             <fileset dir="${ceylon-runtime.dir}/build/dist">
@@ -295,18 +303,18 @@ Used with another target such as 'package'">
             <arg value="ceylon.language"/>
         </exec>
     </target>
-	
-	<target name="generate-tooldoc">
+
+    <target name="generate-tooldoc">
         <exec executable="${dist.dir}/bin/cey" failonerror="yes">
-        	<arg value="doc-tool"/>
+            <arg value="doc-tool"/>
             <arg value="--output=${dist.dir}/doc/en/toolset"/>
             <arg value="--index"/>
             <arg value="+plumbing"/>
-        	<arg value="+porcelain"/>
+            <arg value="+porcelain"/>
         </exec>	
-	</target>
+    </target>
 
-    <target name="get-code" depends="use-git-pull,use-git-clone,checkout-tagged"
+    <target name="get-code" depends="git-clone-or-pull,checkout-tagged"
             description="Downloads latest code for all projects">
         <echo>
 If you are building a distribution package for a specific tagged release
@@ -320,77 +328,33 @@ or you can go straight to the package building:
 </echo>
     </target>
 
-    <target name="check-exists-projects-dir">
-        <available property="projects.dir.exists" file="${projects.dir}" type="dir" />
-    </target>
-
-    <target name="use-git-clone" depends="check-exists-projects-dir" unless="${projects.dir.exists}">
-        <antcall target="git-clone" />
-    </target>
-    <target name="git-clone">
+    <target name="git-clone-or-pull">
         <mkdir dir="${projects.dir}"/>
-        <exec executable="git" dir="${projects.dir}" failonerror="yes">
-            <arg value="clone"/>
-            <arg value="git@github.com:ceylon/ceylon-common.git"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}" failonerror="yes">
-            <arg value="clone"/>
-            <arg value="git@github.com:ceylon/ceylon-compiler.git"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}" failonerror="yes">
-            <arg value="clone"/>
-            <arg value="git@github.com:ceylon/ceylon-spec.git"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}" failonerror="yes">
-            <arg value="clone"/>
-            <arg value="git@github.com:ceylon/ceylon.language.git"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}" failonerror="yes">
-            <arg value="clone"/>
-            <arg value="git@github.com:ceylon/ceylon-module-resolver.git"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}" failonerror="yes">
-            <arg value="clone"/>
-            <arg value="git@github.com:ceylon/ceylon-runtime.git"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}" failonerror="yes">
-            <arg value="clone"/>
-            <arg value="git@github.com:ceylon/ceylon-js.git"/>
-        </exec>
+        <foreach list="${modules}"
+                 target="git-clone-or-pull-item"
+                 param="project.item.name"
+                 inheritall="true" />
     </target>
-
-    <target name="use-git-pull" depends="check-exists-projects-dir" if="${projects.dir.exists}">
-        <antcall target="git-pull" />
-    </target>
-    <target name="git-pull" depends="checkout-master">
-        <exec executable="git" dir="${projects.dir}/ceylon-common" failonerror="yes">
-            <arg value="pull"/>
-            <arg value="--ff-only"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-compiler" failonerror="yes">
-            <arg value="pull"/>
-            <arg value="--ff-only"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-spec" failonerror="yes">
-            <arg value="pull"/>
-            <arg value="--ff-only"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon.language" failonerror="yes">
-            <arg value="pull"/>
-            <arg value="--ff-only"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-module-resolver" failonerror="yes">
-            <arg value="pull"/>
-            <arg value="--ff-only"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-runtime" failonerror="yes">
-            <arg value="pull"/>
-            <arg value="--ff-only"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-js" failonerror="yes">
-            <arg value="pull"/>
-            <arg value="--ff-only"/>
-        </exec>
+    <target name="git-clone-or-pull-item">
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.dir}/${project.item.name}" type="dir" />
+            <then>
+                <antcall target="checkout-internal-item">
+                    <param name="tag-internal" value="master" />
+                </antcall>
+                <exec executable="git" dir="${projects.dir}/${project.item.name}" failonerror="yes">
+                    <arg value="pull"/>
+                    <arg value="--ff-only"/>
+                </exec>
+            </then>
+            <else>
+                <exec executable="git" dir="${projects.dir}" failonerror="yes">
+                    <arg value="clone"/>
+                    <arg value="git@github.com:ceylon/${project.item.name}.git"/>
+                </exec>
+            </else>
+        </if>
     </target>
 
     <target name="checkout">
@@ -407,37 +371,15 @@ You can now build the package by executing:
 
     <target name="checkout-internal">
         <fail unless="tag-internal" />
-        <exec executable="git" dir="${projects.dir}/ceylon-common" failonerror="yes">
-            <arg value="checkout"/>
-            <arg value="-q"/>
-            <arg value="${tag-internal}"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-compiler" failonerror="yes">
-            <arg value="checkout"/>
-            <arg value="-q"/>
-            <arg value="${tag-internal}"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-spec" failonerror="yes">
-            <arg value="checkout"/>
-            <arg value="-q"/>
-            <arg value="${tag-internal}"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon.language" failonerror="yes">
-            <arg value="checkout"/>
-            <arg value="-q"/>
-            <arg value="${tag-internal}"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-module-resolver" failonerror="yes">
-            <arg value="checkout"/>
-            <arg value="-q"/>
-            <arg value="${tag-internal}"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-runtime" failonerror="yes">
-            <arg value="checkout"/>
-            <arg value="-q"/>
-            <arg value="${tag-internal}"/>
-        </exec>
-        <exec executable="git" dir="${projects.dir}/ceylon-js" failonerror="yes">
+        <foreach list="${modules}"
+                 target="checkout-internal-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="checkout-internal-item">
+        <fail unless="project.item.name" />
+        <fail unless="tag-internal" />
+        <exec executable="git" dir="${projects.dir}/${project.item.name}" failonerror="yes">
             <arg value="checkout"/>
             <arg value="-q"/>
             <arg value="${tag-internal}"/>
