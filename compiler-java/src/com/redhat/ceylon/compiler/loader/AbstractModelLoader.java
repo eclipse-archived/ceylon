@@ -116,6 +116,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_ATTRIBUTE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Attribute";
     public static final String CEYLON_OBJECT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Object";
     public static final String CEYLON_METHOD_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Method";
+    private static final String CEYLON_MEMBERS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Members";
     private static final String CEYLON_ANNOTATIONS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Annotations";
     public static final String CEYLON_VALUETYPE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ValueType";
     public static final String CEYLON_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Alias";
@@ -154,7 +155,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleObjectType("ceylon.language.Character");
     
     private static final TypeMirror CEYLON_ARRAY_TYPE = simpleObjectType("ceylon.language.Array");
-    
+
     private static TypeMirror simpleObjectType(String name) {
         return new SimpleReflType(name, TypeKind.DECLARED);
     }
@@ -1112,6 +1113,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void addInnerClasses(ClassOrInterface klass, ClassMirror classMirror) {
+        AnnotationMirror membersAnnotation = classMirror.getAnnotation(CEYLON_MEMBERS_ANNOTATION);
+        if(membersAnnotation == null)
+            addInnerClassesFromMirror(klass, classMirror);
+        else
+            addInnerClassesFromAnnotation(klass, membersAnnotation);
+    }
+
+    private void addInnerClassesFromAnnotation(ClassOrInterface klass, AnnotationMirror membersAnnotation) {
+        List<AnnotationMirror> members = (List<AnnotationMirror>) membersAnnotation.getValue();
+        for(AnnotationMirror member : members){
+            String name = (String) member.getValue("name");
+            String javaClass = (String) member.getValue("javaClass");
+            Declaration innerDecl = convertToDeclaration(javaClass, DeclarationType.TYPE);
+            if(innerDecl == null)
+                throw new ModelResolutionException("Failed to load inner type " + name 
+                        + " for outer type " + klass.getQualifiedNameString() 
+                        + ", java class: " + javaClass);
+            innerDecl.setContainer(klass);
+            // let's not trigger lazy-loading
+            ((LazyContainer)klass).addMember(innerDecl);
+        }
+    }
+
+    private void addInnerClassesFromMirror(ClassOrInterface klass, ClassMirror classMirror) {
         for(ClassMirror innerClass : classMirror.getDirectInnerClasses()){
             // We skip members marked with @Ignore
             if(innerClass.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
