@@ -370,7 +370,7 @@ public class ExpressionVisitor extends Visitor {
             //v.getType().visit(this);
             defaultTypeToVoid(v);
             Tree.SpecifierExpression se = v.getSpecifierExpression();
-            if (se!=null) {
+            if (se!=null && se.getExpression()!=null) {
                 se.visit(this);
                 if (that instanceof Tree.ExistsCondition) {
                     inferDefiniteType(v, se);
@@ -1016,38 +1016,44 @@ public class ExpressionVisitor extends Visitor {
     
     private void setTypeFromOptionalType(Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
-        ProducedType expressionType = se.getExpression().getTypeModel();
-        if (expressionType!=null) {
-            ProducedType t;
-            if (unit.isOptionalType(expressionType)) {
-                t = unit.getDefiniteType(expressionType);
-            }
-            else {
-                t=expressionType;
-            }
-            local.setTypeModel(t);
-            that.getDeclarationModel().setType(t);
+        Expression e = se.getExpression();
+        if (e!=null) {
+        	ProducedType expressionType = e.getTypeModel();
+        	if (expressionType!=null) {
+        		ProducedType t;
+        		if (unit.isOptionalType(expressionType)) {
+        			t = unit.getDefiniteType(expressionType);
+        		}
+        		else {
+        			t=expressionType;
+        		}
+        		local.setTypeModel(t);
+        		that.getDeclarationModel().setType(t);
+        	}
+        	//        local.addError("could not infer type of: " + 
+        	//                name(that.getIdentifier()));
         }
-//        local.addError("could not infer type of: " + 
-//                name(that.getIdentifier()));
     }
     
     private void setTypeFromEmptyType(Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
-        ProducedType expressionType = se.getExpression().getTypeModel();
-        if (expressionType!=null) {
-            ProducedType t;
-            if (unit.isEmptyType(expressionType)) {
-                t = unit.getNonemptyDefiniteType(expressionType);
-            }
-            else {
-                t = expressionType;
-            }
-            local.setTypeModel(t);
-            that.getDeclarationModel().setType(t);
+        Expression e = se.getExpression();
+        if (e!=null) {
+        	ProducedType expressionType = e.getTypeModel();
+        	if (expressionType!=null) {
+        		ProducedType t;
+        		if (unit.isEmptyType(expressionType)) {
+        			t = unit.getNonemptyDefiniteType(expressionType);
+        		}
+        		else {
+        			t = expressionType;
+        		}
+        		local.setTypeModel(t);
+        		that.getDeclarationModel().setType(t);
+        	}
+        	//        local.addError("could not infer type of: " + 
+        	//                name(that.getIdentifier()));
         }
-//        local.addError("could not infer type of: " + 
-//                name(that.getIdentifier()));
     }
     
     private void setTypeFromIterableType(Tree.LocalModifier local, 
@@ -1069,8 +1075,9 @@ public class ExpressionVisitor extends Visitor {
     
     private void setTypeFromKeyType(Tree.LocalModifier local,
             Tree.SpecifierExpression se, Tree.Variable that) {
-        if (se.getExpression()!=null) {
-            ProducedType expressionType = se.getExpression().getTypeModel();
+        Expression e = se.getExpression();
+		if (e!=null) {
+            ProducedType expressionType = e.getTypeModel();
             if (expressionType!=null) {
                 if (unit.isIterableType(expressionType)) {
                     ProducedType entryType = unit.getIteratedType(expressionType);
@@ -1091,8 +1098,9 @@ public class ExpressionVisitor extends Visitor {
     
     private void setTypeFromValueType(Tree.LocalModifier local,
             Tree.SpecifierExpression se, Tree.Variable that) {
-        if (se.getExpression()!=null) {
-            ProducedType expressionType = se.getExpression().getTypeModel();
+        Expression e = se.getExpression();
+		if (e!=null) {
+            ProducedType expressionType = e.getTypeModel();
             if (expressionType!=null) {
                 if (unit.isIterableType(expressionType)) {
                     ProducedType entryType = unit.getIteratedType(expressionType);
@@ -1114,10 +1122,14 @@ public class ExpressionVisitor extends Visitor {
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
             Tree.TypedDeclaration that) {
-        if (s.getExpression()!=null) {
-            ProducedType t = unit.denotableType(s.getExpression().getTypeModel());
-            local.setTypeModel(t);
-            that.getDeclarationModel().setType(t);
+        Expression e = s.getExpression();
+		if (e!=null) {
+			ProducedType type = e.getTypeModel();
+			if (type!=null) {
+				ProducedType t = unit.denotableType(type);
+				local.setTypeModel(t);
+				that.getDeclarationModel().setType(t);
+			}
         }
     }
         
@@ -1130,10 +1142,10 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.Throw that) {
         super.visit(that);
-        if (that.getExpression()!=null) {
-            checkAssignable(that.getExpression().getTypeModel(),
-                    unit.getExceptionDeclaration().getType(), 
-                    that.getExpression(),
+        Expression e = that.getExpression();
+		if (e!=null) {
+            checkAssignable(e.getTypeModel(),
+                    unit.getExceptionDeclaration().getType(), e,
                     "thrown expression must be an exception");
         }
     }
