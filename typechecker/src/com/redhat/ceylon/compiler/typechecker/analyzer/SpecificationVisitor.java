@@ -623,8 +623,8 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.IfStatement that) {
         
         if (that.getIfClause()!=null) {
-        	if (that.getIfClause().getCondition()!=null) {
-        		that.getIfClause().getCondition().visit(this);
+        	if (that.getIfClause().getConditionList()!=null) {
+        		that.getIfClause().getConditionList().visit(this);
         	}
         }
         
@@ -745,8 +745,8 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.WhileStatement that) {
     	if (that.getWhileClause()!=null) {
-    		if (that.getWhileClause().getCondition()!=null) {
-    			that.getWhileClause().getCondition().visit(this);
+    		if (that.getWhileClause().getConditionList()!=null) {
+    			that.getWhileClause().getConditionList().visit(this);
     		}
     	}
     	

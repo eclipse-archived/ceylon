@@ -230,6 +230,13 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+    
+    @Override public void visit(Tree.ConditionList that) {
+    	if (that.getConditions().isEmpty()) {
+    		that.addError("empty condition list");
+    	}
+    	super.visit(that);
+    }
 
     private void initOriginalDeclaration(Tree.Variable that) {
         if (that.getType() instanceof Tree.SyntheticVariable) {
