@@ -1217,12 +1217,6 @@ primary returns [Primary primary]
         if ($qualifiedReference.typeArgumentList!=null)
             qe.setTypeArguments($qualifiedReference.typeArgumentList);
         $primary=qe; }
-      | indexExpression
-        { IndexExpression xe = new IndexExpression(null);
-          xe.setPrimary($primary);
-          xe.setIndexOperator($indexExpression.operator); 
-          xe.setElementOrRange($indexExpression.elementOrRange);
-          $primary=xe; }
       | arguments
         { InvocationExpression ie = new InvocationExpression(null);
           ie.setPrimary($primary);
@@ -1231,6 +1225,9 @@ primary returns [Primary primary]
           if ($arguments.argumentList instanceof NamedArgumentList)
               ie.setNamedArgumentList((NamedArgumentList)$arguments.argumentList);
           $primary=ie; }
+      | indexOrIndexRange 
+        { $indexOrIndexRange.indexExpression.setPrimary($primary);
+          $primary = $indexOrIndexRange.indexExpression; }
     )*
     ;
 
@@ -1253,14 +1250,6 @@ qualifiedReference returns [Identifier identifier, MemberOperator operator,
         { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); }
       )
-    ;
-
-indexExpression returns [IndexOperator operator, ElementOrRange elementOrRange]
-    : elementSelectionOperator 
-      { $operator=$elementSelectionOperator.operator; }
-      indexOrIndexRange 
-      { $elementOrRange=$indexOrIndexRange.elementOrRange; }
-      RBRACKET
     ;
 
 memberSelectionOperator returns [MemberOperator operator]
@@ -1344,27 +1333,41 @@ typeArgumentsStart
     )
     ;
 
-indexOrIndexRange returns [ElementOrRange elementOrRange]
-    : l=index
-    (
+indexOrIndexRange returns [IndexExpression indexExpression]
+    //TODO: move indexOperator to ElementOrRange and
+    //      make this rule return ElementOrRange instead
+    //      of IndexExpression, instantiating IndexExpression
+    //      from the calling primary rule
+    : elementSelectionOperator
+      { $indexExpression = new IndexExpression(null);
+        $indexExpression.setIndexOperator($elementSelectionOperator.operator); }
+      l=index
       { Element e = new Element(null);
-        $elementOrRange = e;
+        $indexExpression.setElementOrRange(e);
         e.setExpression($l.expression); }
-      | '...' 
+      (
+        ELLIPSIS
+        { $indexExpression.setEndToken($ELLIPSIS); }
       { ElementRange er1 = new ElementRange(null);
-        $elementOrRange = er1;
+        $indexExpression.setElementOrRange(er1);
         er1.setLowerBound($l.expression); }
-      | '..' u=index 
+      | RANGE_OP 
+        { $indexExpression.setEndToken($RANGE_OP); }
+        u=index 
       { ElementRange er2 = new ElementRange(null);
-        $elementOrRange = er2;
+        $indexExpression.setElementOrRange(er2);
         er2.setLowerBound($l.expression); 
         er2.setUpperBound($u.expression); }
-      | ':' s=index 
+      | SEGMENT_OP
+        { $indexExpression.setEndToken($SEGMENT_OP); }
+        s=index 
       { ElementRange er3 = new ElementRange(null);
-        $elementOrRange = er3;
+        $indexExpression.setElementOrRange(er3);
         er3.setLowerBound($l.expression); 
         er3.setLength($s.expression); }
-    )
+      )?
+      RBRACKET
+      { $indexExpression.setEndToken($RBRACKET); }
     ;
 
 index returns [Expression expression]
