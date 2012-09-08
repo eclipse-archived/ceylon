@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
@@ -174,7 +175,10 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 	}
 
 	private String file(Node that) {
-		return that.getUnit().getRelativePath();
+		Unit unit = that.getUnit();
+		return !unit.getRelativePath().isEmpty() ?
+				unit.getRelativePath() : 
+				unit.getFilename();
 	}
 
     private void checkErrors(Node that) {
