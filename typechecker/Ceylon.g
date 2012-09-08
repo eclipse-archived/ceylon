@@ -595,8 +595,10 @@ classDeclaration returns [AnyClass declaration]
     ;
 
 assertion returns [Assertion assertion]
-    : ASSERT
-      { $assertion = new Assertion($ASSERT); }
+    : annotations
+      ASSERT
+      { $assertion = new Assertion($ASSERT); 
+        $assertion.setAnnotationList($annotations.annotationList); }
       condition
       { $assertion.setCondition($condition.condition); }
       { expecting=SEMICOLON; }
@@ -981,6 +983,9 @@ declarationOrStatement returns [Statement statement]
       ( 
         (annotatedDeclarationStart) => declaration
         { $statement=$declaration.declaration; }
+      | (annotatedAssertionStart) =>
+        assertion
+        { $statement = $assertion.assertion; }
       | s=statement
         { $statement=$s.statement; }
       )
@@ -1032,6 +1037,10 @@ annotatedDeclarationStart
     : annotation* declarationStart
     ;
 
+annotatedAssertionStart
+    : annotation* ASSERT
+    ;
+
 //special rule for syntactic predicates
 //that distinguish declarations from
 //expressions
@@ -1057,8 +1066,6 @@ statement returns [Statement statement]
       { $statement = $controlStatement.controlStatement; }
     | expressionOrSpecificationStatement
       { $statement = $expressionOrSpecificationStatement.statement; }
-    | assertion
-      { $statement = $assertion.assertion; }
     ;
 
 expressionOrSpecificationStatement returns [Statement statement]
