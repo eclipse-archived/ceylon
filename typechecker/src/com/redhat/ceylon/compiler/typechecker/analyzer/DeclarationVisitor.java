@@ -716,7 +716,9 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.Variable that) {
         if (that.getSpecifierExpression()!=null) {
             Scope s = scope;
-            scope = scope.getContainer();
+            if (scope instanceof ControlBlock) {
+            	scope = scope.getContainer();
+            }
             that.getSpecifierExpression().visit(this);
             scope = s;
         }

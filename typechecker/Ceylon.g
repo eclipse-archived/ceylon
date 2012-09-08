@@ -527,8 +527,10 @@ interfaceDeclaration returns [AnyInterface declaration]
           typeSpecifier
           { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
         )? 
+        { expecting=SEMICOLON; }
         SEMICOLON
-        { $declaration.setEndToken($SEMICOLON); }
+        { $declaration.setEndToken($SEMICOLON); 
+          expecting=-1; }
       //-> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
       )
     ;
@@ -584,13 +586,39 @@ classDeclaration returns [AnyClass declaration]
           typeSpecifier
           { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
         )?
+        { expecting=SEMICOLON; }
         SEMICOLON
-        { $declaration.setEndToken($SEMICOLON); }
+        { $declaration.setEndToken($SEMICOLON); 
+          expecting=-1; }
       //-> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
       )
     ;
 
-    
+assertion returns [Assertion assertion]
+    : ASSERT
+      { $assertion = new Assertion($ASSERT); }
+      condition
+      { $assertion.setCondition($condition.condition); }
+      { expecting=SEMICOLON; }
+      SEMICOLON
+      { $assertion.setEndToken($SEMICOLON); 
+        expecting=-1; }
+      /*{ ValueModifier fm = new ValueModifier($ASSERT);
+        dec = new AttributeDeclaration($ASSERT);
+        dec.setType(fm);
+        $declaration = dec; }
+      memberNameDeclaration
+      { dec.setIdentifier($memberNameDeclaration.identifier); 
+        def.setIdentifier($memberNameDeclaration.identifier); }
+          specifier 
+          { dec.setSpecifierOrInitializerExpression($specifier.specifierExpression); }
+        { expecting=SEMICOLON; }
+        SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); 
+          expecting=-1; }
+        //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)*/
+    ;
+
 block returns [Block block]
     : LBRACE 
       { $block = new Block($LBRACE); }
@@ -1029,6 +1057,8 @@ statement returns [Statement statement]
       { $statement = $controlStatement.controlStatement; }
     | expressionOrSpecificationStatement
       { $statement = $expressionOrSpecificationStatement.statement; }
+    | assertion
+      { $statement = $assertion.assertion; }
     ;
 
 expressionOrSpecificationStatement returns [Statement statement]
@@ -2269,7 +2299,6 @@ compilerAnnotation returns [CompilerAnnotation annotation]
       )?
     ;
 
-
 condition returns [Condition condition]
     : (LPAREN EXISTS)=>existsCondition
       { $condition=$existsCondition.condition; }
@@ -2937,6 +2966,10 @@ MULTI_COMMENT
             $channel = HIDDEN;
         }
         ;
+
+ASSERT
+    : 'assert'
+    ;
 
 ABSTRACTED_TYPE
     :   'abstracts'

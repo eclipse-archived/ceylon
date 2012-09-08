@@ -279,6 +279,11 @@
 "An expression statement, specification statement, or control structure."
 ^(abstract EXECUTABLE_STATEMENT:STATEMENT)
 
+"An assertion."
+^(ASSERTION:EXECUTABLE_STATEMENT
+    CONDITION)
+
+"A specification statement"
 ^(SPECIFIER_STATEMENT:EXECUTABLE_STATEMENT 
     TERM baseMemberExpression
     SPECIFIER_EXPRESSION
@@ -287,6 +292,7 @@
 ^(EXPRESSION_STATEMENT:EXECUTABLE_STATEMENT 
     EXPRESSION)
 
+"A control structure."
 ^(CONTROL_STATEMENT:EXECUTABLE_STATEMENT)
 ^(CONTROL_CLAUSE
     ControlBlock controlBlock;)
