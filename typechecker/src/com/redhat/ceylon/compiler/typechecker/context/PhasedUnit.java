@@ -7,6 +7,7 @@ import org.antlr.runtime.CommonToken;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
@@ -178,6 +179,7 @@ public class PhasedUnit {
         //System.out.println("Validating tree for " + fileName);
         if (!treeValidated) {
             compilationUnit.visit(new Validator());
+            compilationUnit.visit(new LiteralVisitor());
             treeValidated = true;
         }
     }

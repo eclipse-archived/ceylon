@@ -2929,17 +2929,7 @@ StringPart
 fragment
 EscapeSequence 
     :   '\\' 
-        ( ~'{' | '{' HexDigits HexDigits? '}' )
-    ;
-
-fragment
-HexDigits
-    : HexDigit HexDigit HexDigit HexDigit
-    ;
-
-fragment
-HexDigit
-    : '0'..'9' | 'A'..'F' | 'a'..'f'
+        ( ~'{' | '{' (~'}')* '}' )
     ;
 
 WS  
