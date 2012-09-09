@@ -9,13 +9,13 @@ public class Repositories {
     private static final String SECTION_REPOSITORY = "repository";
     private static final String SECTION_REPOSITORIES = "repositories";
 
-    private static final String REPO_TYPE_BOOTSTRAP = "bootstrap";
+    private static final String REPO_TYPE_SYSTEM = "system";
     private static final String REPO_TYPE_OUTPUT = "output";
     private static final String REPO_TYPE_CACHE = "cache";
     private static final String REPO_TYPE_LOCAL_LOOKUP = "lookup";
     private static final String REPO_TYPE_GLOBAL_LOOKUP = "global";
     
-    private static final String REPO_NAME_INSTALL = "INSTALL";
+    private static final String REPO_NAME_SYSTEM = "SYSTEM";
     private static final String REPO_NAME_LOCAL = "LOCAL";
     private static final String REPO_NAME_CACHE = "CACHE";
     private static final String REPO_NAME_USER = "USER";
@@ -94,12 +94,11 @@ public class Repositories {
             Credentials credentials = Credentials.create(user, password, keystore, alias, prompt);
             return new Repository(repoName, url, credentials);
         } else {
-            if (REPO_NAME_INSTALL.equals(repoName)) {
-                File installDir = CeylonConfig.getInstallDir();
-                if (installDir != null) {
+            if (REPO_NAME_SYSTEM.equals(repoName)) {
+                File dir = getSystemRepoDir();
+                if (dir != null) {
                     // $INSTALLDIR/repo
-                    File dir = new File(installDir, "repo");
-                    return new Repository(REPO_NAME_INSTALL, dir.getAbsolutePath(), null);
+                    return new Repository(REPO_NAME_SYSTEM, dir.getAbsolutePath(), null);
                 }
             } else if (REPO_NAME_LOCAL.equals(repoName)) {
                 // ./modules
@@ -160,6 +159,19 @@ public class Repositories {
         }
     }
     
+    public File getSystemRepoDir() {
+        String ceylonSystemRepo = System.getProperty("ceylon.system.repo");
+        if (ceylonSystemRepo != null) {
+            return new File(ceylonSystemRepo);
+        } else {
+            File userDir = CeylonConfig.getInstallDir();
+            if (userDir != null) {
+                return new File(userDir, "repo");
+            }
+        }
+        return null;
+    }
+    
     public File getUserRepoDir() {
         String ceylonUserRepo = System.getProperty("ceylon.user.repo");
         if (ceylonUserRepo != null) {
@@ -180,10 +192,10 @@ public class Repositories {
         }
     }
     
-    public Repository getBootstrapRepository() {
-        Repository repo = getRepositoryByType(REPO_TYPE_BOOTSTRAP);
+    public Repository getSystemRepository() {
+        Repository repo = getRepositoryByType(REPO_TYPE_SYSTEM);
         if (repo == null) {
-            repo = getRepository(REPO_NAME_INSTALL);
+            repo = getRepository(REPO_NAME_SYSTEM);
         }
         return repo;
     }

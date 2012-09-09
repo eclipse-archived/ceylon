@@ -44,19 +44,19 @@ public class RepositoriesTest {
     }
     
     @Test
-    public void testGetBootstrapRepository() {
-        assertRepository(repos.getBootstrapRepository(), "One", "foobar", null, null);
+    public void testGetSystemRepository() {
+        assertRepository(repos.getSystemRepository(), "One", "foobar", null, null);
     }
     
     @Test
-    public void testGetDeafultBootstrapRepository() {
+    public void testGetDeafultSystemRepository() {
         File dir = new File(CeylonConfig.getInstallDir(), "repo");
-        assertRepository(defaultRepos.getBootstrapRepository(), "INSTALL", dir.getAbsolutePath(), null, null);
+        assertRepository(defaultRepos.getSystemRepository(), "SYSTEM", dir.getAbsolutePath(), null, null);
     }
     
     @Test
-    public void testGetOverriddenBootstrapRepository() {
-        assertRepository(overriddenRepos.getBootstrapRepository(), "INSTALL", "install", null, null);
+    public void testGetOverriddenSystemRepository() {
+        assertRepository(overriddenRepos.getSystemRepository(), "SYSTEM", "system", null, null);
     }
     
     @Test
