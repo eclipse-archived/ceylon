@@ -33,7 +33,7 @@ public class CeylonUtils {
             addRepo(builder, outRepo, log, true);
         }
         
-        addRepo(builder, Repositories.get().getBootstrapRepository(), log, true);
+        addRepo(builder, Repositories.get().getSystemRepository(), log, true);
 
         // The rest we add in the normal order becuase they get APpended to the root
         
