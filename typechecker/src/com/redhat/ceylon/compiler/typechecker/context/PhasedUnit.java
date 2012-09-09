@@ -179,7 +179,6 @@ public class PhasedUnit {
         //System.out.println("Validating tree for " + fileName);
         if (!treeValidated) {
             compilationUnit.visit(new Validator());
-            compilationUnit.visit(new LiteralVisitor());
             treeValidated = true;
         }
     }
@@ -187,6 +186,7 @@ public class PhasedUnit {
     public void scanDeclarations() {
         if (!declarationsScanned) {
             scanningDeclarations = true;
+            compilationUnit.visit(new LiteralVisitor());
             //System.out.println("Scan declarations for " + fileName);
             DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName,
             		unitFile.getPath(), pathRelativeToSrcDir);
