@@ -17,7 +17,7 @@ JAVA_CP="%JAVA_CP%;%MINIMAL_CP%"
 "%JAVA%" ^
     -cp $JAVA_CP ^
     "-Dceylon.home=%CEYLON_HOME%" ^
-    "-Dcelon.runtime.repo=%CEYLON_REPO%" ^
+    "-Dceylon.system.repo=%CEYLON_REPO%" ^
     com.redhat.ceylon.tools.CeylonTool ^
     %*
 

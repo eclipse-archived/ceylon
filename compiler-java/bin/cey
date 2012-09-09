@@ -48,8 +48,8 @@ BOOTSTRAP_CP="$MINIMAL_CP"
 java \
  -Xbootclasspath/p:"$BOOTSTRAP_CP" \
  -cp $JAVA_CP \
- "-Dcelon.home=$CEYLON_HOME" \
- "-Dcelon.runtime.repo=$CEYLON_REPO" \
+ "-Dceylon.home=$CEYLON_HOME" \
+ "-Dceylon.system.repo=$CEYLON_REPO" \
  "-Dcom.redhat.ceylon.common.tool.terminal.width=$(tput cols)" \
  "-Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)" \
  com.redhat.ceylon.tools.CeylonTool \
