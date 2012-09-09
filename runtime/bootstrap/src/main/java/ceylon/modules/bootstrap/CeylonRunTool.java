@@ -78,7 +78,7 @@ public class CeylonRunTool implements Tool {
         // TODO Auto-generated method stub
         ArrayList<String> argList = new ArrayList<String>();
         argList.addAll(Arrays.asList(new String[]{
-                "-mp", System.getProperty("celon.runtime.repo"), 
+                "-mp", System.getProperty("ceylon.system.repo"), 
                 "ceylon.runtime:0.4",
                 "+executable", "ceylon.modules.jboss.runtime.JBossRuntime"}));
         
