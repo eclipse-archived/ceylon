@@ -155,8 +155,8 @@ Used with another target such as 'package'">
                 <include name="README-ANT.md" />
             </zipfileset>
         </zip>        
-	</target>
-	
+    </target>
+    
     <target name="copy-compiler-binaries">
         <mkdir dir="${dist.dir}/bin"/>
         <copy todir="${dist.dir}/bin">
@@ -164,11 +164,11 @@ Used with another target such as 'package'">
                 <include name="args.sh"/>
                 <include name="args.bat"/>
                 <include name="java.bat"/>
-            	<include name="cey"/>
-            	<include name="cey.bat"/>
-            	<include name="cey-cp"/>
+                <include name="cey"/>
+                <include name="cey.bat"/>
+                <include name="cey-cp"/>
                 <include name="cey-cp.bat"/>
-            	<include name="cey-completion.bash"/>
+                <include name="cey-completion.bash"/>
                 <include name="ceylonc"/>
                 <include name="ceylonc.bat"/>
                 <include name="ceylond"/>
@@ -187,7 +187,7 @@ Used with another target such as 'package'">
         </copy>
         <chmod perm="0755">
             <fileset dir="${dist.dir}/bin">
-            	<include name="cey"/>
+                <include name="cey"/>
                 <include name="ceylonc"/>
                 <include name="ceylond"/>
                 <include name="ceylon-import-jar"/>
@@ -204,7 +204,7 @@ Used with another target such as 'package'">
                 <include name="antlr-*-complete.jar"/>
                 <include name="markdownj-*.jar"/>
                 <include name="txtmark-*.jar"/>
-            	<include name="markdownpapers-core-*.jar"/>
+                <include name="markdownpapers-core-*.jar"/>
             </fileset>
         </copy>
     </target>
@@ -292,7 +292,7 @@ Used with another target such as 'package'">
     <target name="generate-spec">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false"/>
         <copy todir="${dist.dir}/doc/en/spec">
-            <fileset dir="${ceylon-spec.dir}/build/en"/>        	
+            <fileset dir="${ceylon-spec.dir}/build/en"/>            
         </copy>
     </target>
 
@@ -314,7 +314,7 @@ Used with another target such as 'package'">
             <arg value="--index"/>
             <arg value="+plumbing"/>
             <arg value="+porcelain"/>
-        </exec>	
+        </exec>
     </target>
 
     <target name="get-code" depends="local,get-code-internal"
