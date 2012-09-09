@@ -60,8 +60,20 @@ public class GenerateJsVisitor extends Visitor
             super.visit(qe);
         }
 
+        @Override
+        public void visit(QualifiedType that) {
+            if (that.getOuterType() instanceof SuperType) {
+                decs.add(that.getDeclarationModel());
+            }
+            super.visit(that);
+        }
+        
         public void visit(Tree.ClassOrInterface qe) {
             //don't recurse
+            if (qe instanceof ClassDefinition) {
+                ExtendedType extType = ((ClassDefinition) qe).getExtendedType();
+                if (extType != null) { super.visit(extType); }
+            }
         }
     }
 
@@ -336,11 +348,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void var(Declaration d) {
-        if (d instanceof ClassOrInterface) {
-            out("var ", names.classname((ClassOrInterface)d), "=");
-        } else {
-            out("var ", names.name(d), "=");
-        }
+        out("var ", names.name(d), "=");
     }
 
     private boolean share(Declaration d) {
@@ -353,16 +361,7 @@ public class GenerateJsVisitor extends Visitor
                 && isCaptured(d)) {
             beginNewLine();
             outerSelf(d);
-            if (d instanceof ClassOrInterface) {
-                out(".", names.classname((ClassOrInterface)d), "=", names.classname((ClassOrInterface)d), ";");
-                if (!d.isToplevel()) {
-                    endLine();
-                    outerSelf(d);
-                    out(".", names.name(d), "=", names.classname((ClassOrInterface)d), ";");
-                }
-            } else {
-                out(".", names.name(d), "=", names.name(d), ";");
-            }
+            out(".", names.name(d), "=", names.name(d), ";");
             endLine();
             shared = true;
         }
@@ -390,10 +389,8 @@ public class GenerateJsVisitor extends Visitor
         if (path.length() > 0) {
             path += '.';
         }
-        out(names.self(outer), ".", names.classname(that.getDeclarationModel()), "=",
-                path, names.name(dec), ";"); //For direct ref
         out(names.self(outer), ".", names.name(that.getDeclarationModel()), "=",
-                path, names.name(dec), ";"); //For inheritance
+                path, names.name(dec), ";");
         endLine();
     }
 
@@ -401,7 +398,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(InterfaceDeclaration that) {
         Interface d = that.getDeclarationModel();
         if (prototypeStyle && d.isClassOrInterfaceMember()) return;
-        //It's pointless declaring interface aliases outside of clases/interfaces
+        //It's pointless declaring interface aliases outside of classes/interfaces
         Scope scope = that.getScope();
         if (scope instanceof InterfaceAlias) {
             scope = scope.getContainer();
@@ -412,7 +409,7 @@ public class GenerateJsVisitor extends Visitor
         TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
                 .getDeclaration();
         qualify(that,dec);
-        out(names.classname((Interface)dec), ";");
+        out(names.name(dec), ";");
         endLine();
         share(d);
     }
@@ -424,18 +421,15 @@ public class GenerateJsVisitor extends Visitor
         if (path.length() > 0) {
             path += '.';
         }
-        out(names.self(outer), ".", names.classname(that.getDeclarationModel()), "=",
-                path, names.name(dec), ";"); //For direct ref
         out(names.self(outer), ".", names.name(that.getDeclarationModel()), "=",
-                path, names.name(dec), ";"); //For inheritance
+                path, names.name(dec), ";");
         endLine();
     }
 
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
         Interface d = interfaceDef.getDeclarationModel();
-        out(names.self(type), ".", names.classname(d), "=", names.classname(d), ";");//for direct ref
-        out(names.self(type), ".", names.name(d), "=", names.classname(d), ";");//for inheritance
+        out(names.self(type), ".", names.name(d), "=", names.name(d), ";");
         endLine();
     }
 
@@ -450,7 +444,7 @@ public class GenerateJsVisitor extends Visitor
         Interface d = that.getDeclarationModel();
         comment(that);
 
-        out(function, names.classname(d), "(");
+        out(function, names.name(d), "(");
         self(d);
         out(")");
         beginBlock();
@@ -495,8 +489,7 @@ public class GenerateJsVisitor extends Visitor
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
         Class d = classDef.getDeclarationModel();
-        out(names.self(type), ".", names.classname(d), "=", names.classname(d), ";");//for direct ref
-        out(names.self(type), ".", names.name(d), "=", names.classname(d), ";");//for inheritance
+        out(names.self(type), ".", names.name(d), "=", names.name(d), ";");
         endLine();
     }
 
@@ -511,7 +504,7 @@ public class GenerateJsVisitor extends Visitor
         Class d = that.getDeclarationModel();
         comment(that);
 
-        out(function, names.classname(d), "(");
+        out(function, names.name(d), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
             p.visit(this);
             out(", ");
@@ -530,7 +523,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
         //This takes care of top-level attributes defined before the class definition
-        out("$init$", names.classname(d), "();");
+        out("$init$", names.name(d), "();");
         endLine();
         declareSelf(d);
         referenceOuter(d);
@@ -591,8 +584,9 @@ public class GenerateJsVisitor extends Visitor
 
     private void callSuperclass(ExtendedType extendedType, Class d, Node that) {
         if (extendedType!=null) {
+            String suffix = typeReferenceSuffix(extendedType.getType(), d.getContainer());
             qualify(that, extendedType.getType().getDeclarationModel());
-            out(names.classname((ClassOrInterface)extendedType.getType().getDeclarationModel()), "(");
+            out(names.name(extendedType.getType().getDeclarationModel()), suffix, "(");
             for (PositionalArgument arg: extendedType.getInvocationExpression()
                     .getPositionalArgumentList().getPositionalArguments()) {
                 arg.visit(this);
@@ -604,11 +598,24 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    private String typeReferenceSuffix(StaticType type, Scope scope) {
+        String suffix = "";
+        if ((scope instanceof ClassOrInterface) && (type instanceof QualifiedType)) {
+            if (((QualifiedType) type).getOuterType() instanceof SuperType) {
+                ClassOrInterface parentType = ((ClassOrInterface) scope).getExtendedTypeDeclaration();
+                if (parentType != null) {
+                    suffix = names.typeSuffix(parentType);
+                }                    
+            }
+        }
+        return suffix;
+    }
+    
     private void callInterfaces(SatisfiedTypes satisfiedTypes, Class d, Node that) {
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
                 qualify(that, st.getDeclarationModel());
-                out(names.classname((ClassOrInterface)st.getDeclarationModel()), "(");
+                out(names.name((ClassOrInterface)st.getDeclarationModel()), "(");
                 self(d);
                 out(");");
                 endLine();
@@ -666,15 +673,16 @@ public class GenerateJsVisitor extends Visitor
             initFuncName += 'I';
         }
 
-        out("function $init$", names.classname(d), "()");
+        out("function $init$", names.name(d), "()");
         beginBlock();
-        out("if (", names.classname(d), ".$$===undefined)");
+        out("if (", names.name(d), ".$$===undefined)");
         beginBlock();
-        out(clAlias, ".", initFuncName, "(", names.classname(d), ",'",
+        out(clAlias, ".", initFuncName, "(", names.name(d), ",'",
             d.getQualifiedNameString(), "'");
 
         if (extendedType != null) {
-            out(",", typeFunctionName(extendedType.getType(), false));
+            String suffix = typeReferenceSuffix(extendedType.getType(), d.getContainer());
+            out(",", typeFunctionName(extendedType.getType(), false), suffix);
         } else if (!isInterface) {
             out(",", clAlias, ".IdentifiableObject");
         }
@@ -705,14 +713,14 @@ public class GenerateJsVisitor extends Visitor
             callback.addToPrototypeCallback();
         }
         endBlockNewLine();
-        out("return ", names.classname(d), ";");
+        out("return ", names.name(d), ";");
         endBlockNewLine();
         //If it's nested, share the init function
         if (outerSelf(d)) {
-            out(".$init$", names.classname(d), "=$init$", names.classname(d), ";");
+            out(".$init$", names.name(d), "=$init$", names.name(d), ";");
             endLine();
         }
-        out("$init$", names.classname(d), "();");
+        out("$init$", names.name(d), "();");
         endLine();
     }
 
@@ -727,7 +735,7 @@ public class GenerateJsVisitor extends Visitor
         if (constr.length() > 0) {
             constr += '.';
         }
-        constr += names.classname((ClassOrInterface)d);
+        constr += names.name(d);
         return constr;
     }
 
@@ -739,7 +747,7 @@ public class GenerateJsVisitor extends Visitor
                 addToPrototype(d, s);
             }
             endBlock();
-            out(")(", names.classname(d), ".$$.prototype);");
+            out(")(", names.name(d), ".$$.prototype);");
             endLine();
         }
     }
@@ -780,7 +788,7 @@ public class GenerateJsVisitor extends Visitor
         if (prototypeStyle && d.isClassOrInterfaceMember()) {
             out("this.", names.name(d), ".$$;");
         } else {
-            out(names.classname(d), ".$$;");
+            out(names.name(d), ".$$;");
         }
         endLine();
         /*out("var ");
@@ -798,7 +806,7 @@ public class GenerateJsVisitor extends Visitor
         if (prototypeStyle && d.isClassOrInterfaceMember()) {
             out("this.", names.name(d), ".$$;");
         } else {
-            out(names.classname(d), ".$$;");
+            out(names.name(d), ".$$;");
         }
         endLine();
     }
@@ -813,7 +821,7 @@ public class GenerateJsVisitor extends Visitor
         objectDefinition(objDef);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
-        out(names.self(type), ".", names.name(c), "=", names.classname(c), ";");
+        out(names.self(type), ".", names.name(c), "=", names.name(c), ";");
         endLine();
     }
 
@@ -839,7 +847,7 @@ public class GenerateJsVisitor extends Visitor
         Class c = (Class) d.getTypeDeclaration();
         comment(that);
 
-        out(function, names.classname(c), "()");
+        out(function, names.name(c), "()");
         beginBlock();
         instantiateSelf(c);
         referenceOuter(c);
@@ -859,7 +867,7 @@ public class GenerateJsVisitor extends Visitor
 
         if (!addToPrototype) {
             out("var ", names.name(d), "=",
-                    names.classname(c), "(new ", names.classname(c), ".$$);");
+                    names.name(c), "(new ", names.name(c), ".$$);");
             endLine();
         }
 
@@ -1359,7 +1367,6 @@ public class GenerateJsVisitor extends Visitor
         //Big TODO: make sure the member is actually
         //          refined by the current class!
         if (that.getMemberOperator() instanceof SafeMemberOp) {
-
             generateSafeOp(that);
         } else if (that.getMemberOperator() instanceof SpreadOp) {
             generateSpread(that);

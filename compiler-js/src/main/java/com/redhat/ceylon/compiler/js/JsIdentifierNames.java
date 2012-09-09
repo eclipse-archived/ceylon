@@ -188,7 +188,7 @@ public class JsIdentifierNames {
         String suffix = "";
         if (decl instanceof TypeDeclaration) {
             StringBuilder sb = new StringBuilder();
-            Scope scope = decl.getContainer();
+            Scope scope = originalDeclaration(decl).getContainer();
             while (scope instanceof TypeDeclaration) {
                 sb.append('$');
                 sb.append(((TypeDeclaration) scope).getName());
@@ -222,20 +222,11 @@ public class JsIdentifierNames {
         } else {
             String suffix = nestingSuffix(decl);
             if (suffix.length() > 0) {
-                int last = suffix.lastIndexOf('$');
-                if (last >= 0) {
-                    suffix = suffix.substring(0, last) + "$$";
-                }
                 name += suffix;
             } else if (!forGetterSetter && reservedWords.contains(name)) {
                 name = '$' + name;
             } else {
-                Declaration refinedDecl = decl;
-                while (true) {
-                    Declaration d = refinedDecl.getRefinedDeclaration();
-                    if ((d == null) || (d == refinedDecl)) { break; }
-                    refinedDecl = d;
-                }
+                Declaration refinedDecl = originalDeclaration(decl);
                 if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
                     name = '$' + name;
                 }
@@ -243,35 +234,15 @@ public class JsIdentifierNames {
         }
         return name;
     }
-
-    public String classname(ClassOrInterface decl) {
-        if (decl == null) { return null; }
-        String name = decl.getName();
-        if (!(decl.isShared() || decl.isToplevel())) {
-            name = uniqueVarNames.get(decl);
-            if (name == null) {
-                String format = (prototypeStyle && decl.isMember()) ? "%s$%d$" : "%s$%d";
-                name = String.format(format, decl.getName(), getUID(decl));
-            }
-        } else {
-            String suffix = nestingSuffix(decl);
-            if (suffix.length() > 0) {
-                name += suffix;
-            } else if (reservedWords.contains(name)) {
-                name = '$' + name;
-            } else {
-                Declaration refinedDecl = decl;
-                while (true) {
-                    Declaration d = refinedDecl.getRefinedDeclaration();
-                    if ((d == null) || (d == refinedDecl)) { break; }
-                    refinedDecl = d;
-                }
-                if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
-                    name = '$' + name;
-                }
-            }
+    
+    private Declaration originalDeclaration(Declaration decl) {
+        Declaration refinedDecl = decl;
+        while (true) {
+            Declaration d = refinedDecl.getRefinedDeclaration();
+            if ((d == null) || (d == refinedDecl)) { break; }
+            refinedDecl = d;
         }
-        return name;
+        return refinedDecl;
     }
 
     private long getUID(Declaration decl) {
