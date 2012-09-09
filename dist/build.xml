@@ -166,7 +166,7 @@ Used with another target such as 'package'">
                 <include name="java.bat"/>
                 <include name="cey"/>
                 <include name="cey.bat"/>
-                <include name="cey-cp"/>
+                <include name="cey-cp.sh"/>
                 <include name="cey-cp.bat"/>
                 <include name="cey-completion.bash"/>
                 <include name="ceylonc"/>
@@ -188,6 +188,7 @@ Used with another target such as 'package'">
         <chmod perm="0755">
             <fileset dir="${dist.dir}/bin">
                 <include name="cey"/>
+                <include name="ceylon"/>
                 <include name="ceylonc"/>
                 <include name="ceylond"/>
                 <include name="ceylon-import-jar"/>
