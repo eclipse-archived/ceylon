@@ -663,6 +663,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return packagesByName.get(pkgName);
     }
 
+    public LazyPackage findExistingPackage(Module module, String pkgName){
+        String quotedPkgName = Util.quoteJavaKeywords(pkgName);
+        LazyPackage pkg = packagesByName.get(quotedPkgName);
+        if(pkg != null)
+            return pkg;
+        // special case for the jdk module
+        if(module.getNameAsString().equals(JDK_MODULE)){
+            if(JDKPackageList.isJDKPackage(pkgName) || JDKPackageList.isOracleJDKPackage(pkgName)){
+                return findOrCreatePackage(module, pkgName);
+            }
+            return null;
+        }
+        // only create it if it exists
+        if(loadPackage(pkgName, false)){
+            return findOrCreatePackage(module, pkgName);
+        }
+        return null;
+    }
+    
     public LazyPackage findOrCreatePackage(Module module, final String pkgName) {
         String quotedPkgName = Util.quoteJavaKeywords(pkgName);
         LazyPackage pkg = packagesByName.get(quotedPkgName);

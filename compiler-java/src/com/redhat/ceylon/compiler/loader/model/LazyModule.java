@@ -75,7 +75,7 @@ public abstract class LazyModule extends Module {
         }
         // do the lookup of the default module last
         if(defaultModule)
-            pkg = getModelLoader().findOrCreatePackage(this, name);
+            pkg = getModelLoader().findExistingPackage(this, name);
         return pkg;
     }
 
@@ -96,7 +96,7 @@ public abstract class LazyModule extends Module {
                     return pkg;
             }
             // create/load a new one
-            return getModelLoader().findOrCreatePackage(module, name);
+            return getModelLoader().findExistingPackage(module, name);
         }
         return null;
     }
