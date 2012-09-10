@@ -22,7 +22,6 @@ import java.beans { PropertyChangeListener }
 import javax.accessibility { Accessible, AccessibleContext }
 
 @nomodel
-class Bug712() extends Container() satisfies Accessible {
-    shared actual AccessibleContext accessibleContext = bottom;
+class Bug712() extends Container() {
     shared actual void addPropertyChangeListener(PropertyChangeListener? propertyChangeListener) {}
 }
