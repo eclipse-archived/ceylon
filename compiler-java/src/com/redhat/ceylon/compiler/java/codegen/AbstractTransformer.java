@@ -64,6 +64,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -817,7 +818,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     JCExpression makeJavaType(ProducedType type, final int flags) {
-        if(type == null)
+        if(type == null
+                || type.getDeclaration() instanceof UnknownType)
             return make().Erroneous();
         
         if ((flags & __JT_RAW_TP_BOUND) != 0
