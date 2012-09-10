@@ -10,31 +10,53 @@ import com.redhat.ceylon.compiler.js.Runner;
  */
 public class NodeTest {
 
+    final static String nodePath = Runner.findNode(); //if not found, prints error and exits
+
+    /** Gets a JavaScript file from a directory under the modules dir. */
+    private static File getJavaScript(final File subdir) {
+        return subdir.getName().equals("default") ? new File(subdir, "default.js") :
+            new File(subdir, "0.1/" + subdir.getName() + "-0.1.js");
+    }
+
+    private static void run(final File subdir) throws IOException, InterruptedException {
+        final File root = subdir.getParentFile();
+        final File jsf = getJavaScript(subdir);
+        final String path = jsf.getPath();
+        final String subpath = path.substring(root.getPath().length()+1);
+        System.out.printf("RUNNING %s/%s%n", root.getName(), subdir.getName());
+        final String eval = String.format("setTimeout(function(){}, 50);require('%s').test();", subpath);
+        Process proc = new ProcessBuilder(nodePath, "-e", eval).directory(root.getParentFile()).start();
+        new Runner.ReadStream(proc.getInputStream(), System.out).start();
+        new Runner.ReadStream(proc.getErrorStream(), System.err).start();
+        int xv = proc.waitFor();
+        proc.getInputStream().close();
+        proc.getErrorStream().close();
+        if (xv != 0) {
+            System.out.printf("ERROR abnormal termination of node: %s%n", xv);
+        }
+        System.out.println("------------------------------------------------------");
+    }
+
     public static void main(String[] args) throws IOException, InterruptedException {
-        File root = new File(args[0]);
-        if (!(root.exists() && root.isDirectory() && root.canRead())) {
-            System.out.printf("%s is not a readable directory%n", root);
+        if (args.length < 2) {
+            System.out.println("You must specify the two directories containing the compiled JS (normal and optimized)");
+        }
+        File root1 = new File(args[0]);
+        File root2 = new File(args[1]);
+        if (!(root1.exists() && root1.isDirectory() && root1.canRead())) {
+            System.out.printf("%s is not a readable directory%n", root1);
             System.exit(1);
         }
-        for (File subdir : root.listFiles()) {
-            if (subdir.isDirectory() && !(subdir.getName().equals("ceylon"))) {
-                File jsf = subdir.getName().equals("default") ? new File(subdir, "default.js") :
-                    new File(subdir, "0.1/" + subdir.getName() + "-0.1.js");
-                System.out.printf("RUNNING %s%n", jsf.getName());
-                String nodePath = Runner.findNode(); //if not found, prints error and exits
-                String path = jsf.getPath();
-                String eval = String.format("setTimeout(function(){}, 50);require('%s').test();",
-                        path.substring(path.indexOf(args[0])));
-                Process proc = new ProcessBuilder(nodePath, "-e", eval).directory(root.getParentFile()).start();
-                new Runner.ReadStream(proc.getInputStream(), System.out).start();
-                new Runner.ReadStream(proc.getErrorStream(), System.err).start();
-                int xv = proc.waitFor();
-                proc.getInputStream().close();
-                proc.getErrorStream().close();
-                if (xv != 0) {
-                    System.out.printf("ERROR abnormal termination of node: %s%n", xv);
-                }
-                System.out.println("------------------------------------------------------");
+        if (!(root2.exists() && root2.isDirectory() && root2.canRead())) {
+            System.out.printf("%s is not a readable directory%n", root2);
+            System.exit(1);
+        }
+        for (File subdir1 : root1.listFiles()) {
+            final String modname = subdir1.getName();
+            if (subdir1.isDirectory() && !(modname.equals("ceylon"))) { //skip language module
+                File subdir2 = new File(root2, modname);
+                run(subdir1);
+                run(subdir2);
             }
         }
     }
