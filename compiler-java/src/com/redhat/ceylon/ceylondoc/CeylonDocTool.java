@@ -34,6 +34,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -358,7 +359,20 @@ public class CeylonDocTool implements Tool {
             dir.mkdirs();
         return dir;
     }
-    
+
+    private File getFolder(Module module) {
+        List<String> unprefixedName;
+        if(module.isDefault())
+            unprefixedName = Arrays.asList("");
+        else{
+            unprefixedName = module.getName();
+        }
+        File dir = new File(getOutputFolder(module), join("/", unprefixedName));
+        if(shouldInclude(module))
+            dir.mkdirs();
+        return dir;
+    }
+
     public File getOutputFolder(Module module) {
         File folder = new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(tempDestDir, module),
                 "module-doc");
@@ -852,29 +866,24 @@ public class CeylonDocTool implements Tool {
     protected String getSrcUrl(Object from, Object modPkgOrDecl) throws IOException {
         URI fromUrl = getAbsoluteObjectUrl(from);
         Module module = getModule(from);
-        Package pkg;
         String filename;
+        File folder;
         if (modPkgOrDecl instanceof Element) {
             Unit unit = ((Element)modPkgOrDecl).getUnit();
-            pkg = unit.getPackage();
             filename = unit.getFilename();
+            folder = getFolder(unit.getPackage());
         } else if (modPkgOrDecl instanceof Package) {
-            pkg = (Package)modPkgOrDecl;
             filename = "package.ceylon";
+            folder = getFolder((Package)modPkgOrDecl);
         } else if (modPkgOrDecl instanceof Module) {
             Module moduleDecl = (Module)modPkgOrDecl;
-            String pkgName;
-            if(moduleDecl.isDefault())
-                pkgName = "";
-            else
-                pkgName = moduleDecl.getNameAsString();
-            pkg = moduleDecl.getPackage(pkgName);
+            folder = getFolder(moduleDecl);
             filename = "module.ceylon";
         } else {
             throw new RuntimeException(CeylondMessages.msg("error.unexpected", modPkgOrDecl));
         }
 
-        File srcFile = new File(getFolder(pkg), filename + ".html").getCanonicalFile();
+        File srcFile = new File(folder, filename + ".html").getCanonicalFile();
         String result;
         if (srcFile.exists()) {
             URI url = srcFile.toURI();
