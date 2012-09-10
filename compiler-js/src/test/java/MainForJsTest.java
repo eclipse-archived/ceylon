@@ -25,18 +25,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
  */
 public class MainForJsTest {
     
-    static boolean opt = false;
-
     public static void main(String[] args) throws Exception {
-        for (String arg: args) { 
-            if (arg.equals("optimize")) {
-                System.out.println("performance optimized code");
-                opt=true; 
-            }
-        }
-
-        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(opt ? "-optimize" : "", "-out", "build/test/node_modules", "-module")));
-        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(Collections.<String>emptyList(), opts.getOutDir(), new JULLogger());
+        Options opts = Options.parse(new ArrayList<String>(Arrays.asList("-out", "build/test/node_modules", "-module")));
+        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(Collections.<String>emptyList(),
+                opts.getOutDir(), new JULLogger());
+        System.out.println("Typechecking Ceylon test code...");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
             .addSrcDirectory(new File("src/test/ceylon"))
             .addSrcDirectory(new File("../ceylon.language/test"))
@@ -47,24 +40,36 @@ public class MainForJsTest {
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
+        System.out.println("Compiling without optimization");
         JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(false);
         if (jsc.generate()) {
-            validateOutput(typeChecker);
+            validateOutput(typeChecker, opts);
+        } else {
+            jsc.printErrors(System.out);
+            System.out.println("Skipping output validation.");
+        }
+        System.out.println("Compiling with optimization");
+        opts = Options.parse(new ArrayList<String>(Arrays.asList("-optimize", "-out",
+                "build/test/nodeopt_modules", "-module")));
+        jsc = new JsCompiler(typeChecker, opts).stopOnErrors(false);
+        if (jsc.generate()) {
+            validateOutput(typeChecker, opts);
         } else {
             jsc.printErrors(System.out);
             System.out.println("Skipping output validation.");
         }
     }
 
-    static void validateOutput(TypeChecker typeChecker)
+    static void validateOutput(TypeChecker typeChecker, Options opts)
             throws FileNotFoundException, IOException {
         int count=0;
         HashSet<Module> tested = new HashSet<Module>();
         for (PhasedUnit pu: typeChecker.getPhasedUnits().getPhasedUnits()) {
             Module mod = pu.getPackage().getModule();
             if (!tested.contains(mod)) {
-                File generated = new File("build/test/node_modules/" + toOutputPath(mod));
-                File test = new File("src/test/ceylon/"+ toTestPath(mod));
+                File generated = new File(String.format("%s/%s",
+                        opts.getOutDir(), toOutputPath(mod)));
+                File test = new File(String.format("src/test/ceylon/%s", toTestPath(mod, opts.isOptimize())));
                 if (test.exists()) {
                     BufferedReader reader = new BufferedReader(new FileReader(test));
                     BufferedReader outputReader = new BufferedReader(new FileReader(generated));
@@ -75,7 +80,7 @@ public class MainForJsTest {
                             String actual = outputReader.readLine();
                             String expected = reader.readLine();
                             if (!expected.equals(actual) && !expected.trim().startsWith("//")) {
-                                System.err.println("error at " + test.getPath() + ":" + i); 
+                                System.err.printf("error at %s: %d%n", test.getPath(), i); 
                                 System.err.println("expected: " + expected);
                                 System.err.println("  actual: " + actual);
                                 break;
@@ -94,15 +99,15 @@ public class MainForJsTest {
     }
 
     private static String toOutputPath(Module mod) {
-        String modname = mod.isDefault() ? "default" : mod.getNameAsString();
-        return modname.replace('.', '/') +
-                (mod.isDefault() ? "/" : "/" + mod.getVersion() ) + "/" +
-                modname + (mod.isDefault() ? "" : "-" + mod.getVersion() ) +
-                ".js";
+        String modname = mod.isDefault() ? "default" :
+            mod.getNameAsString().replace('.', '/');
+        return mod.isDefault() ? "default/default.js" :
+            String.format("%1$s/%2$s/%1$s-%2$s.js", modname, mod.getVersion());
     }
 
-    private static String toTestPath(Module mod) {
-        String modname = mod.isDefault() ? "default" : mod.getNameAsString();
-        return modname.replace('.', '/') + "/" + modname + (opt? ".jsopt" : "") + ".js";
+    private static String toTestPath(Module mod, boolean opt) {
+        String modname = mod.isDefault() ? "default" :
+            mod.getNameAsString().replace('.', '/');
+        return String.format("%1$s/%1$s%2$s.js", modname, opt? ".jsopt" : "");
     }
 }
