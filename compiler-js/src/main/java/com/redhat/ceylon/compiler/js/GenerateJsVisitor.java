@@ -44,6 +44,7 @@ public class GenerateJsVisitor extends Visitor
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
     private final RetainedVars retainedVars = new RetainedVars();
     private final Set<Module> importedModules = new HashSet<Module>();
+    final ConditionGenerator conds;
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -120,6 +121,7 @@ public class GenerateJsVisitor extends Visitor
         this.out = out;
         this.prototypeStyle=prototypeStyle;
         this.names = names;
+        conds = new ConditionGenerator(this, names, directAccess);
     }
 
     /** Tells the receiver whether to add comments to certain declarations. Default is true. */
@@ -2542,108 +2544,12 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(IfStatement that) {
-
-       IfClause ifClause = that.getIfClause();
-       Block ifBlock = ifClause.getBlock();
-       Condition condition = ifClause.getCondition();
-       if ((condition instanceof ExistsOrNonemptyCondition)
-               || (condition instanceof IsCondition)) {
-           // if (is/exists/nonempty ...)
-           specialConditionAndBlock(condition, ifBlock, "if");
-       } else {
-           out("if (");
-           condition.visit(this);
-           out(")");
-           if (ifBlock != null) {
-               encloseBlockInFunction(ifBlock);
-           }
-       }
-
-       if (that.getElseClause() != null) {
-           out("else ");
-           encloseBlockInFunction(that.getElseClause().getBlock());
-       }
+       conds.generateIf(that);
    }
 
    @Override public void visit(WhileStatement that) {
-       WhileClause whileClause = that.getWhileClause();
-       Condition condition = whileClause.getCondition();
-       if ((condition instanceof ExistsOrNonemptyCondition)
-               || (condition instanceof IsCondition)) {
-           // while (is/exists/nonempty...)
-           specialConditionAndBlock(condition, whileClause.getBlock(), "while");
-       } else {
-           out("while (");
-           condition.visit(this);
-           out(")");
-           encloseBlockInFunction(whileClause.getBlock());
-       }
+       conds.generateWhile(that);
    }
-
-    /** Handles the "is", "exists" and "nonempty" conditions */
-    private void specialConditionAndBlock(Condition condition,
-            Block block, String keyword) {
-        Variable variable = null;
-        if (condition instanceof ExistsOrNonemptyCondition) {
-            variable = ((ExistsOrNonemptyCondition) condition).getVariable();
-        } else if (condition instanceof IsCondition) {
-            variable = ((IsCondition) condition).getVariable();
-        } else {
-            condition.addUnexpectedError("No support for conditions of type " + condition.getClass().getSimpleName());
-            return;
-        }
-        Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
-
-        String varName = names.name(variable.getDeclarationModel());
-        out("var ", varName, ";");
-        endLine();
-
-        out(keyword);
-        out("(");
-        specialConditionCheck(condition, variableRHS, varName);
-        out(")");
-        directAccess.add(variable.getDeclarationModel());
-        if (block != null) {
-            encloseBlockInFunction(block);
-        }
-    }
-
-    void specialConditionCheck(Condition condition, Term variableRHS, String varName) {
-        if (condition instanceof ExistsOrNonemptyCondition) {
-            if (condition instanceof NonemptyCondition) {
-                out(clAlias, ".nonempty(");
-                specialConditionRHS(variableRHS, varName);
-                out(")");
-            } else {
-                specialConditionRHS(variableRHS, varName);
-                out("!==null");
-            }
-
-        } else {
-            Type type = ((IsCondition) condition).getType();
-            generateIsOfType(variableRHS, null, type, varName);
-        }
-    }
-
-    private void specialConditionRHS(Term variableRHS, String varName) {
-        if (varName == null) {
-            variableRHS.visit(this);
-        } else {
-            out("(", varName, "=");
-            variableRHS.visit(this);
-            out(")");
-        }
-    }
-
-    private void specialConditionRHS(String variableRHS, String varName) {
-        if (varName == null) {
-            out(variableRHS);
-        } else {
-            out("(", varName, "=");
-            out(variableRHS);
-            out(")");
-        }
-    }
 
     /** Appends an object with the type's type and list of union/intersection types. */
     private void getTypeList(StaticType type) {
@@ -2693,16 +2599,16 @@ public class GenerateJsVisitor extends Visitor
      * @param type The type to check against
      * @param tmpvar (optional) a variable to which the term is assigned
      */
-    private void generateIsOfType(Term term, String termString, Type type, String tmpvar) {
+    void generateIsOfType(Term term, String termString, Type type, String tmpvar) {
         if ((type instanceof SimpleType) || (type instanceof EntryType))  {
             out(clAlias, ".isOfType(");
         } else {
             out(clAlias, ".Boolean(", clAlias, ".isOfTypes(");
         }
         if (term != null) {
-            specialConditionRHS(term, tmpvar);
+            conds.specialConditionRHS(term, tmpvar);
         } else {
-            specialConditionRHS(termString, tmpvar);
+            conds.specialConditionRHS(termString, tmpvar);
         }
         out(",");
 
@@ -3027,7 +2933,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Encloses the block in a function, IF NEEDED. */
-    private void encloseBlockInFunction(Block block) {
+    void encloseBlockInFunction(Block block) {
         boolean wrap=encloser.encloseBlock(block);
         if (wrap) {
             beginBlock();

@@ -146,7 +146,7 @@ class ComprehensionGenerator {
                     Variable condVar = loop.conditionVars.get(i);
                     gen.out("if(");
                     if (condVar != null) {
-                        gen.specialConditionCheck(cond,
+                        gen.conds.specialConditionCheck(cond,
                                 condVar.getSpecifierExpression().getExpression().getTerm(),
                                 names.name(condVar.getDeclarationModel()));
                     } else {
