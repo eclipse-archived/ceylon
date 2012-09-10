@@ -42,7 +42,7 @@ public class GenerateJsVisitor extends Visitor
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<Declaration>();
-    private List<String> retainedVars = new ArrayList<String>();
+    private final RetainedVars retainedVars = new RetainedVars();
     private final Set<Module> importedModules = new HashSet<Module>();
 
     private final class SuperVisitor extends Visitor {
@@ -98,7 +98,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private final Writer out;
-    private boolean prototypeStyle;
+    private final boolean prototypeStyle;
     private CompilationUnit root;
     private static String clAlias="";
     private static final String function="function ";
@@ -108,6 +108,8 @@ public class GenerateJsVisitor extends Visitor
     private static void setCLAlias(String alias) {
         clAlias = alias;
     }
+    /** Returns the module name for the language module. */
+    static String getClAlias() { return clAlias; }
 
     @Override
     public void handleException(Exception e, Node that) {
@@ -131,7 +133,7 @@ public class GenerateJsVisitor extends Visitor
      * Automatically prints indentation first if necessary.
      * @param code The main code
      * @param codez Optional additional strings to print after the main code. */
-    private void out(String code, String... codez) {
+    void out(String code, String... codez) {
         try {
             if (indent && needIndent) {
                 for (int i=0;i<indentLevel;i++) {
@@ -157,27 +159,27 @@ public class GenerateJsVisitor extends Visitor
 
     /** Prints a newline. Indentation will automatically be printed by <code>out</code>
      * when the next line is started. */
-    private void endLine() {
+    void endLine() {
         endLine(false);
     }
     /** Prints a newline. Indentation will automatically be printed by <code>out</code>
      * when the next line is started.
      * @param semicolon  if <code>true</code> then a semicolon is printed at the end
      *                  of the previous line*/
-    private void endLine(boolean semicolon) {
+    void endLine(boolean semicolon) {
         if (semicolon) { out(";"); }
         out("\n");
         needIndent = true;
     }
     /** Calls <code>endLine</code> if the current position is not already the beginning
      * of a line. */
-    private void beginNewLine() {
+    void beginNewLine() {
         if (!needIndent) { endLine(); }
     }
 
     /** Increases indentation level, prints opening brace and newline. Indentation will
      * automatically be printed by <code>out</code>* when the next line is started. */
-    private void beginBlock() {
+    void beginBlock() {
         indentLevel++;
         out("{");
         endLine();
@@ -185,25 +187,25 @@ public class GenerateJsVisitor extends Visitor
 
     /** Decreases indentation level, prints a closing brace in new line (using
      * <code>beginNewLine</code>) and calls <code>endLine</code>. */
-    private void endBlockNewLine() {
+    void endBlockNewLine() {
         endBlock(false, true);
     }
     /** Decreases indentation level, prints a closing brace in new line (using
      * <code>beginNewLine</code>) and calls <code>endLine</code>.
      * @param semicolon  if <code>true</code> then prints a semicolon after the brace*/
-    private void endBlockNewLine(boolean semicolon) {
+    void endBlockNewLine(boolean semicolon) {
         endBlock(semicolon, true);
     }
     /** Decreases indentation level and prints a closing brace in new line (using
      * <code>beginNewLine</code>). */
-    private void endBlock() {
+    void endBlock() {
         endBlock(false, false);
     }
     /** Decreases indentation level and prints a closing brace in new line (using
      * <code>beginNewLine</code>).
      * @param semicolon  if <code>true</code> then prints a semicolon after the brace
      * @param newline  if <code>true</code> then additionally calls <code>endLine</code> */
-    private void endBlock(boolean semicolon, boolean newline) {
+    void endBlock(boolean semicolon, boolean newline) {
         indentLevel--;
         beginNewLine();
         out(semicolon ? "};" : "}");
@@ -211,7 +213,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Prints source code location in the form "at [filename] ([location])" */
-    private void location(Node node) {
+    void location(Node node) {
         out(" at ", node.getUnit().getFilename(), " (", node.getLocation(), ")");
     }
 
@@ -281,32 +283,17 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void visitStatements(List<? extends Statement> statements) {
-        List<String> oldRetainedVars = retainedVars;
-        retainedVars = new ArrayList<String>();
+        List<String> oldRetainedVars = retainedVars.reset(null);
         
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             s.visit(this);
             beginNewLine();
-            emitRetainedVars();
+            retainedVars.emitRetainedVars(this);
         }
-        retainedVars = oldRetainedVars;
+        retainedVars.reset(oldRetainedVars);
     }
-    
-    private void emitRetainedVars() {
-        if (!retainedVars.isEmpty()) {
-            out("var ");
-            boolean first = true;
-            for (String varName : retainedVars) {
-                if (!first) { out(","); }
-                first = false;
-                out(varName);
-            }
-            endLine(true);
-            retainedVars.clear();
-        }
-    }
-    
+
     @Override
     public void visit(Body that) {
         visitStatements(that.getStatements());
@@ -1771,222 +1758,12 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    /** Represents one of the for loops of a comprehension including the associated conditions */
-    private class ComprehensionLoopInfo {
-        public final ForIterator forIterator;
-        public final List<Condition> conditions = new ArrayList<Condition>();
-        public final List<Variable> conditionVars = new ArrayList<Variable>();
-        public final String itVarName;
-        public String valueVarName;
-        public String keyVarName = null;
-        
-        public ComprehensionLoopInfo(Comprehension that, ForIterator forIterator) {
-            this.forIterator = forIterator;
-            itVarName = names.createTempVariable("it");
-            Variable valueVar = null;
-            if (forIterator instanceof ValueIterator) {
-                valueVar = ((ValueIterator) forIterator).getVariable();
-            } else if (forIterator instanceof KeyValueIterator) {
-                KeyValueIterator kvit = (KeyValueIterator) forIterator;
-                valueVar = kvit.getValueVariable();
-                Variable keyVar = kvit.getKeyVariable();
-                keyVarName = names.name(keyVar.getDeclarationModel());
-                directAccess.add(keyVar.getDeclarationModel());
-            } else {
-                that.addError("No support yet for iterators of type "
-                              + forIterator.getClass().getName());
-                return;
-            }
-            this.valueVarName = names.name(valueVar.getDeclarationModel());
-            directAccess.add(valueVar.getDeclarationModel());
-        }
-    }
     
     @Override
     public void visit(Comprehension that) {
-        List<String> oldRetainedVars = retainedVars;
-        retainedVars = new ArrayList<String>();
-        generateComprehension(that);
-        retainedVars = oldRetainedVars;
+        new ComprehensionGenerator(this, names, directAccess).generateComprehension(that);
     }
-    
-    private void generateComprehension(Comprehension that) {
-        out(clAlias, ".Comprehension(function()");
-        beginBlock();
-        out("//Comprehension"); location(that); endLine();
-        
-        // gather information about all loops and conditions in the comprehension
-        List<ComprehensionLoopInfo> loops = new ArrayList<ComprehensionLoopInfo>();
-        Expression expression = null;
-        ForComprehensionClause forClause = that.getForComprehensionClause();
-        while (forClause != null) {
-            ComprehensionLoopInfo loop = new ComprehensionLoopInfo(that, forClause.getForIterator());
-            ComprehensionClause clause = forClause.getComprehensionClause();
-            while ((clause != null) && !(clause instanceof ForComprehensionClause)) {
-                if (clause instanceof IfComprehensionClause) {
-                    IfComprehensionClause ifClause = ((IfComprehensionClause) clause);
-                    Condition cond = ifClause.getCondition();
-                    loop.conditions.add(cond);
-                    clause = ifClause.getComprehensionClause();
-                    
-                    Variable condVar = null;
-                    if (cond instanceof IsCondition) {
-                        condVar = ((IsCondition) cond).getVariable();
-                    } else if (cond instanceof ExistsOrNonemptyCondition) {
-                        condVar = ((ExistsOrNonemptyCondition) cond).getVariable();
-                    }
-                    loop.conditionVars.add(condVar);
-                    
-                } else if (clause instanceof ExpressionComprehensionClause) {
-                    expression = ((ExpressionComprehensionClause) clause).getExpression();
-                    clause = null;
-                } else {
-                    that.addError("No support for comprehension clause of type "
-                                  + clause.getClass().getName());
-                    return;
-                }
-            }
-            loops.add(loop);
-            forClause = (ForComprehensionClause) clause;
-        }
-        
-        // generate variables and "next" function for each for loop
-        for (int loopIndex=0; loopIndex<loops.size(); loopIndex++) {
-            ComprehensionLoopInfo loop = loops.get(loopIndex);
-            
-            // iterator variable
-            out("var ", loop.itVarName);
-            if (loopIndex == 0) {
-                out("=");
-                loop.forIterator.getSpecifierExpression().visit(this);
-                out(".getIterator()");
-            }
-            out(";"); endLine();
-            
-            // value or key/value variables
-            if (loop.keyVarName == null) {
-                out("var ", loop.valueVarName, "=", clAlias, ".getExhausted();"); endLine();
-            } else {
-                out("var ", loop.keyVarName, ",", loop.valueVarName, ";"); endLine();
-            }
-            
-            // variables for is/exists/nonempty conditions
-            for (Variable condVar : loop.conditionVars) {
-                if (condVar != null) {
-                    String condVarName = names.name(condVar.getDeclarationModel());
-                    out("var ", condVarName, ";"); endLine();
-                    directAccess.add(condVar.getDeclarationModel());
-                }
-            }
-            
-            // generate the "next" function for this loop
-            boolean isLastLoop = (loopIndex == (loops.size()-1));
-            if (isLastLoop && loop.conditions.isEmpty() && (loop.keyVarName == null)) {
-                // simple case: innermost loop without conditions, no key/value iterator
-                out("var next$", loop.valueVarName, "=function(){return ",
-                        loop.valueVarName, "=", loop.itVarName, ".next();}");
-                endLine();
-            }
-            else {
-                out("var next$", loop.valueVarName, "=function()");
-                beginBlock();
-                
-                // extra entry variable for key/value iterators
-                String elemVarName = loop.valueVarName;
-                if (loop.keyVarName != null) {
-                    elemVarName = names.createTempVariable("entry");
-                    out("var ", elemVarName, ";"); endLine();
-                }
-                
-                // if/while ((elemVar=it.next()!==$finished)
-                out(loop.conditions.isEmpty()?"if":"while", "((", elemVarName, "=",
-                        loop.itVarName, ".next())!==", clAlias, ".getExhausted())");
-                beginBlock();
-                
-                // get key/value if necessary
-                if (loop.keyVarName != null) {
-                    out(loop.keyVarName, "=", elemVarName, ".getKey();"); endLine();
-                    out(loop.valueVarName, "=", elemVarName, ".getItem();"); endLine();
-                }
-                
-                // generate conditions as nested ifs
-                for (int i=0; i<loop.conditions.size(); i++) {
-                    Condition cond = loop.conditions.get(i);
-                    Variable condVar = loop.conditionVars.get(i);
-                    out("if(");
-                    if (condVar != null) {
-                        specialConditionCheck(cond,
-                                condVar.getSpecifierExpression().getExpression().getTerm(),
-                                names.name(condVar.getDeclarationModel()));
-                    } else {
-                        cond.visit(this);
-                    }
-                    out(")");
-                    beginBlock();
-                }
-                
-                // initialize iterator of next loop and get its first element
-                if (!isLastLoop) {
-                    ComprehensionLoopInfo nextLoop = loops.get(loopIndex+1);
-                    out(nextLoop.itVarName, "=");
-                    nextLoop.forIterator.getSpecifierExpression().visit(this);
-                    out(".getIterator();"); endLine();
-                    out("next$", nextLoop.valueVarName, "();"); endLine();
-                }
-                
-                out("return ", elemVarName, ";"); endLine();
-                for (int i=0; i<=loop.conditions.size(); i++) { endBlockNewLine(); }
-                emitRetainedVars();
-                
-                // for key/value iterators, value==undefined indicates that the iterator is finished
-                if (loop.keyVarName != null) {
-                    out(loop.valueVarName, "=undefined;"); endLine();
-                }
-                
-                out("return ", clAlias, ".getExhausted();");                
-                endBlockNewLine();
-            }
-        }
-        
-        // get the first element
-        out("next$", loops.get(0).valueVarName, "();"); endLine();
-        
-        // generate the "next" function for the comprehension
-        out("return function()");
-        beginBlock();
-        
-        // start a do-while block for all except the innermost loop
-        for (int i=1; i<loops.size(); i++) {
-            out("do"); beginBlock();
-        }
-        
-        // Check if another element is available on the innermost loop.
-        // If yes, evaluate the expression, advance the iterator and return the result.
-        ComprehensionLoopInfo lastLoop = loops.get(loops.size()-1);
-        out("if(", lastLoop.valueVarName, "!==", (lastLoop.keyVarName==null)
-                ? (clAlias+".getExhausted()") : "undefined", ")");
-        beginBlock();
-        String tempVarName = names.createTempVariable();
-        out("var ", tempVarName, "=");
-        expression.visit(this);
-        out(";"); endLine();
-        emitRetainedVars();
-        out("next$", lastLoop.valueVarName, "();"); endLine();
-        out("return ", tempVarName, ";");
-        endBlockNewLine();
-        
-        // "while" part of the do-while loops
-        for (int i=loops.size()-2; i>=0; i--) {
-            endBlock();
-            out("while(next$", loops.get(i).valueVarName, "()!==",
-                    clAlias, ".getExhausted());");
-            endLine();
-        }
-        
-        out("return ", clAlias, ".getExhausted();");
-        endBlockNewLine();
-        endBlock(); out(")");
-    }
+
     
     @Override
     public void visit(SpecifierStatement that) {
@@ -2803,35 +2580,35 @@ public class GenerateJsVisitor extends Visitor
        }
    }
 
-   /** Handles the "is", "exists" and "nonempty" conditions */
-   private void specialConditionAndBlock(Condition condition,
-               Block block, String keyword) {
-       Variable variable = null;
-       if (condition instanceof ExistsOrNonemptyCondition) {
-           variable = ((ExistsOrNonemptyCondition) condition).getVariable();
-       } else if (condition instanceof IsCondition) {
-           variable = ((IsCondition) condition).getVariable();
-       } else {
-           condition.addUnexpectedError("No support for conditions of type " + condition.getClass().getSimpleName());
-           return;
-       }
-       Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
+    /** Handles the "is", "exists" and "nonempty" conditions */
+    private void specialConditionAndBlock(Condition condition,
+            Block block, String keyword) {
+        Variable variable = null;
+        if (condition instanceof ExistsOrNonemptyCondition) {
+            variable = ((ExistsOrNonemptyCondition) condition).getVariable();
+        } else if (condition instanceof IsCondition) {
+            variable = ((IsCondition) condition).getVariable();
+        } else {
+            condition.addUnexpectedError("No support for conditions of type " + condition.getClass().getSimpleName());
+            return;
+        }
+        Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
 
-       String varName = names.name(variable.getDeclarationModel());
-       out("var ", varName, ";");
-       endLine();
+        String varName = names.name(variable.getDeclarationModel());
+        out("var ", varName, ";");
+        endLine();
 
-       out(keyword);
-       out("(");
-       specialConditionCheck(condition, variableRHS, varName);
-       out(")");
-       directAccess.add(variable.getDeclarationModel());
-       if (block != null) {
-           encloseBlockInFunction(block);
-       }
-   }
+        out(keyword);
+        out("(");
+        specialConditionCheck(condition, variableRHS, varName);
+        out(")");
+        directAccess.add(variable.getDeclarationModel());
+        if (block != null) {
+            encloseBlockInFunction(block);
+        }
+    }
 
-    private void specialConditionCheck(Condition condition, Term variableRHS, String varName) {
+    void specialConditionCheck(Condition condition, Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (condition instanceof NonemptyCondition) {
                 out(clAlias, ".nonempty(");
