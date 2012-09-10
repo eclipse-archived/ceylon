@@ -16,6 +16,8 @@ public class Module
 
     private List<String> name;
     private String version;
+    private int major;
+    private int minor;
     private List<Package> packages = new ArrayList<Package>();
     private List<ModuleImport> imports = new ArrayList<ModuleImport>();
     private Module languageModule;
@@ -204,5 +206,21 @@ public class Module
     public void setUnit(Unit unit) {
 		this.unit = unit;
 	}
+
+    public int getMajor() {
+        return major;
+    }
+
+    public void setMajor(int major) {
+        this.major = major;
+    }
+
+    public int getMinor() {
+        return minor;
+    }
+
+    public void setMinor(int minor) {
+        this.minor = minor;
+    }
     
 }
