@@ -647,5 +647,10 @@ public class IssuesTest extends CompilerTest {
         compile("bug07xx/Bug747Java.java");
         compareWithJavaSource("bug07xx/Bug747");
     }
+
+    @Test
+    public void testBug751() {
+        assertErrors("bug07xx/Bug751", new CompilerError(20, "package not found in dependent modules: laknsd.askduyasjd"));
+    }
 }
 
