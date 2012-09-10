@@ -902,6 +902,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return (Boolean) getAnnotationValue(mirror, type, field);
     }
 
+    private int getAnnotationIntegerValue(AnnotatedMirror mirror, String type, String field, int defaultValue) {
+        Integer val = (Integer) getAnnotationValue(mirror, type, field);
+        return val != null ? val : defaultValue;
+    }
+
     private Object getAnnotationValue(AnnotatedMirror mirror, String type) {
         return getAnnotationValue(mirror, type, "value");
     }
