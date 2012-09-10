@@ -1185,11 +1185,9 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    @Override
-    public void visit(StringLiteral that) {
-
-        StringBuilder text = new StringBuilder(that.getText());
-        final int slen = text.codePointCount(1, text.length()-1);
+    /** Escapes a StringLiteral (needs to be quoted). */
+    String escapeStringLiteral(String s) {
+        StringBuilder text = new StringBuilder(s);
         //Escape special chars
         for (int i=1; i < text.length()-1;i++) {
             switch(text.charAt(i)) {
@@ -1203,8 +1201,13 @@ public class GenerateJsVisitor extends Visitor
             case 92:text.replace(i, i+1, "\\\\"); i++; break;
             }
         }
+        return text.toString();
+    }
 
-        out(clAlias, ".String(", text.toString(), ",", Integer.toString(slen), ")");
+    @Override
+    public void visit(StringLiteral that) {
+        final int slen = that.getText().codePointCount(1, that.getText().length()-1);
+        out(clAlias, ".String(", escapeStringLiteral(that.getText()), ",", Integer.toString(slen), ")");
     }
 
     @Override
@@ -2991,16 +2994,32 @@ public class GenerateJsVisitor extends Visitor
     public void visit(Assertion that) {
         out("//assert");
         location(that);
+        String custom = "Assertion failed";
+        //Scan for a "doc" annotation with custom message
+        for (Annotation ann : that.getAnnotationList().getAnnotations()) {
+            BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
+            if ("doc".equals(bme.getDeclaration().getName())) {
+                custom = ann.getPositionalArgumentList().getPositionalArguments().get(0).getExpression().getTerm().getText();
+                //escape
+                custom = escapeStringLiteral(custom);
+                //unquote
+                custom = custom.substring(1, custom.length() - 1);
+            }
+        }
         endLine();
         Condition cond = that.getCondition();
+        StringBuilder sb = new StringBuilder(custom);//.append(": ");
         if (cond instanceof ExistsOrNonemptyCondition || cond instanceof IsCondition) {
             conds.specialConditionAndBlock(cond, null, "if (!(");
-        } else {
+        } else if (cond instanceof BooleanCondition) {
             out("if (!(");
-            that.getCondition().visit(this);
+            cond.visit(this);
         }
-        out(")) { throw Exception('fail!!!'); }");
+        //sb.append(cond.getMainToken().getInputStream().substring(cond.getMainToken().getChannel(), cond.getMainEndToken().getChannel()));
+        sb.append(" at ").append(that.getUnit().getFilename()).append(" (").append(cond.getLocation()).append(")");
+        out(")) { throw ", clAlias, ".Exception('", sb.toString(), "'); }");
         endLine();
     }
+
 }
 
