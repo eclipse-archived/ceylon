@@ -33,4 +33,17 @@ shared void results() {
 
 shared Integer assertionCount() { return assertions; }
 
-shared void test() {}
+shared void test() {
+    //This is as good a place as any to test new 'assert' keyword
+    String? ms = "x";
+    assert(exists ds = ms);
+    check(ds.uppercased=="X", "assert exists");
+    assert(2+2==4);
+    Integer[] mseq = { 1, 2, 3 };
+    assert(nonempty dseq = mseq);
+    check(dseq.size == 3, "assert nonempty");
+    String|Integer mt = 5;
+    assert(is Integer dt=mt);
+    check(dt+1 == 6, "assert is");
+    results();
+}
