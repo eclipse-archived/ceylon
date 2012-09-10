@@ -24,6 +24,7 @@ import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacMethod;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
@@ -115,7 +116,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
             }
             final CeylonCompilationUnit tree = (CeylonCompilationUnit)treeHolder;
             CompilationUnit ceylonTree = tree.ceylonTree;
-            final String pkgName = tree.getPackageName() != null ? tree.getPackageName().toString() : "";
+            final String pkgName = tree.getPackageName() != null ? Util.quoteJavaKeywords(tree.getPackageName().toString()) : "";
             ceylonTree.visit(new SourceDeclarationVisitor(){
                 @Override
                 public void loadFromSource(Declaration decl) {
