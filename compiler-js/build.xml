@@ -159,31 +159,21 @@
         </java>
     </target>
 
-    <target name="compileopttest" depends="test-compile">
-        <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
-            <arg value="optimize" />
-            <sysproperty key="file.encoding" value="UTF-8" />
+    <target name="test" depends="compiletest" description="Run generated source comparison tests" />
+
+    <target name="noderun">
+        <echo message="Running tests on node.js (node must be installed)" />
+        <mkdir dir="${build.test}/node_modules/${jslangpath}" />
+        <mkdir dir="${build.test}/nodeopt_modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/node_modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/nodeopt_modules/${jslangpath}" />
+        <java classname="NodeTest" classpathref="test.run.classpath">
+            <arg value="${build.test}/node_modules" />
+            <arg value="${build.test}/nodeopt_modules" />
         </java>
     </target>
 
-    <target name="test" depends="compiletest,compileopttest" description="Run generated source comparison tests" />
-
-    <target name="nodetest" depends="compiletest" description="Run tests on node.js (requires node)">
-        <echo message="Running tests on node.js (node must be installed)" />
-        <mkdir dir="${build.test}/node_modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/node_modules/${jslangpath}" />
-        <java classname="NodeTest" classpathref="test.run.classpath">
-            <arg value="${build.test}/node_modules" />
-        </java>
-    </target>
-
-    <target name="nodeopttest" depends="compileopttest" description="Run tests on node.js (requires node)">
-        <echo message="Running tests on node.js (node must be installed)" />
-        <mkdir dir="${build.test}/node_modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/node_modules/${jslangpath}" />
-        <java classname="NodeTest" classpathref="test.run.classpath">
-            <arg value="${build.test}/node_modules" />
-        </java>
+    <target name="nodetest" depends="compiletest,noderun" description="Run tests on node.js (requires node)">
     </target>
 
     <!-- Repository targets -->
