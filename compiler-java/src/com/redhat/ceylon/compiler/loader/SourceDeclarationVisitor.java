@@ -23,12 +23,7 @@ public abstract class SourceDeclarationVisitor extends Visitor{
     }
 
     @Override
-    public void visit(Tree.MethodDefinition that) {
-        loadFromSource(that);
-    }
-
-    @Override
-    public void visit(Tree.MethodDeclaration that) {
+    public void visit(Tree.AnyMethod that) {
         loadFromSource(that);
     }
 
