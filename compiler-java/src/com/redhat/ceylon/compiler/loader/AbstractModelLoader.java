@@ -182,8 +182,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * 
      * @param packageName the package name to load
      * @param loadDeclarations true to load all the declarations in this package.
+     * @return 
      */
-    public abstract void loadPackage(String packageName, boolean loadDeclarations);
+    public abstract boolean loadPackage(String packageName, boolean loadDeclarations);
     
     /**
      * Looks up a ClassMirror by name. Uses cached results, and caches the result of calling lookupNewClassMirror

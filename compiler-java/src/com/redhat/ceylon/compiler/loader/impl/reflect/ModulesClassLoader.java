@@ -40,7 +40,10 @@ class ModulesClassLoader extends ClassLoader {
      */
     static class CachedTOCJar {
         File jar;
+        // stores class file names with slashes
         Set<String> contents = new HashSet<String>();
+        // stores package paths with slashes but not last one
+        Set<String> packages = new HashSet<String>();
         
         CachedTOCJar(File jar){
             this.jar = jar;
@@ -51,8 +54,10 @@ class ModulesClassLoader extends ClassLoader {
                     while(entries.hasMoreElements()){
                         ZipEntry entry = entries.nextElement();
                         // only cache class files
-                        if(!entry.isDirectory())
+                        if(!entry.isDirectory()){
+                            packages.add(getPackageName(entry.getName()));
                             contents.add(entry.getName());
+                        }
                     }
                 }finally{
                     zf.close();
@@ -62,10 +67,21 @@ class ModulesClassLoader extends ClassLoader {
             }
         }
         
+        private String getPackageName(String name) {
+            int lastSlash = name.lastIndexOf('/');
+            if(lastSlash == -1)
+                return "";
+            return name.substring(0, lastSlash);
+        }
+
         boolean containsFile(String path){
             return contents.contains(path);
         }
-        
+
+        boolean containsPackage(String path) {
+            return packages.contains(path);
+        }
+
         byte[] getContents(String path){
             try {
                 ZipFile zf = new ZipFile(jar);
@@ -113,6 +129,16 @@ class ModulesClassLoader extends ClassLoader {
 
     public void addJar(File file) {
         jars.add(new CachedTOCJar(file));
+    }
+
+    public boolean packageExists(String name) {
+        String path = name.replace('.', '/');
+        for(CachedTOCJar jar : jars){
+            if(jar.containsPackage(path)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

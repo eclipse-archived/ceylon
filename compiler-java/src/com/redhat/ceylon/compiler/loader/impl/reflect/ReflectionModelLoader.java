@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.loader.impl.reflect;
 import java.io.File;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
@@ -60,8 +61,9 @@ public class ReflectionModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public void loadPackage(String packageName, boolean loadDeclarations) {
-        // nothing to do
+    public boolean loadPackage(String packageName, boolean loadDeclarations) {
+        String quotedPackage = Util.quoteJavaKeywords(packageName);
+        return classLoader.packageExists(quotedPackage);
     }
 
     @Override

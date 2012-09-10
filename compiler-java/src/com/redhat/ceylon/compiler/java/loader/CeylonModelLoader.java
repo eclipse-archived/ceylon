@@ -141,13 +141,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public void loadPackage(String packageName, boolean loadDeclarations) {
+    public boolean loadPackage(String packageName, boolean loadDeclarations) {
         // abort if we already loaded it, but only record that we loaded it if we want
         // to load the declarations, because merely calling complete() on the package
         // is OK
         packageName = Util.quoteJavaKeywords(packageName);
         if(loadDeclarations && !loadedPackages.add(packageName)){
-            return;
+            return true;
         }
         PackageSymbol ceylonPkg = packageName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(packageName));
         ceylonPkg.complete();
@@ -158,7 +158,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
              */
             for(Symbol m : ceylonPkg.members().getElements()){
                 if(!(m instanceof ClassSymbol))
-                    return;
+                    return true;
                 ClassSymbol enclosingClass = getEnclosing((ClassSymbol) m);
                 if(enclosingClass.classfile.getKind() != Kind.SOURCE){
                     m.complete();
@@ -169,6 +169,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 }
             }
         }
+        // a bit complicated, but couldn't find better. PackageSymbol.exists() seems to be set only by Enter which
+        // might be too late
+        return ceylonPkg.members().getElements().iterator().hasNext();
     }
 
     private boolean isAnonymousOrLocal(ClassSymbol m) {
