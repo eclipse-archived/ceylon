@@ -2987,5 +2987,20 @@ public class GenerateJsVisitor extends Visitor
         void addToPrototypeCallback();
     }
 
+    @Override
+    public void visit(Assertion that) {
+        out("//assert");
+        location(that);
+        endLine();
+        Condition cond = that.getCondition();
+        if (cond instanceof ExistsOrNonemptyCondition || cond instanceof IsCondition) {
+            conds.specialConditionAndBlock(cond, null, "if (!(");
+        } else {
+            out("if (!(");
+            that.getCondition().visit(this);
+        }
+        out(")) { throw Exception('fail!!!'); }");
+        endLine();
+    }
 }
 
