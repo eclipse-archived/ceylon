@@ -34,7 +34,7 @@ public class ModelUtils {
         } else {
             Assert.assertEquals(String.format("Default value of param %s of method %s",
                     name, method.get(MetamodelGenerator.KEY_NAME)),
-                    defValue, parm.get("def"));
+                    defValue, parm.get(MetamodelGenerator.ANN_DEFAULT));
         }
         Map<String, Object> tmap;
         if (parm.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
