@@ -836,24 +836,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         module.setMinor(minor);
 
         List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
-        for (AnnotationMirror importAttribute : imports) {
-            String dependencyName = (String) importAttribute.getValue("name");
-            if (dependencyName != null) {
-                if (! dependencyName.equals(JDK_MODULE)) {
-                    String dependencyVersion = (String) importAttribute.getValue("version");
-                    
-                    Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
-                    
-                    Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
-                    
-                    Boolean exportVal = (Boolean) importAttribute.getValue("export");
-                    
-                    ModuleImport moduleImport = moduleManager.findImport(module, dependency);
-                    if (moduleImport == null) {
-                        boolean optional = optionalVal != null && optionalVal;
-                        boolean export = exportVal != null && exportVal;
-                        moduleImport = new ModuleImport(dependency, optional, export);
-                        module.getImports().add(moduleImport);
+        if(imports != null){
+            for (AnnotationMirror importAttribute : imports) {
+                String dependencyName = (String) importAttribute.getValue("name");
+                if (dependencyName != null) {
+                    if (! dependencyName.equals(JDK_MODULE)) {
+                        String dependencyVersion = (String) importAttribute.getValue("version");
+
+                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
+
+                        Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
+
+                        Boolean exportVal = (Boolean) importAttribute.getValue("export");
+
+                        ModuleImport moduleImport = moduleManager.findImport(module, dependency);
+                        if (moduleImport == null) {
+                            boolean optional = optionalVal != null && optionalVal;
+                            boolean export = exportVal != null && exportVal;
+                            moduleImport = new ModuleImport(dependency, optional, export);
+                            module.getImports().add(moduleImport);
+                        }
                     }
                 }
             }
