@@ -2380,8 +2380,8 @@ public class ExpressionVisitor extends Visitor {
         if ( rhst!=null && lhst!=null ) {
             checkOptional(lhst, that.getLeftTerm(), that.getLeftTerm());
             List<ProducedType> list = new ArrayList<ProducedType>();
-            addToUnion(list, rhst);
-            addToUnion(list, unit.getDefiniteType(lhst));
+            addToUnion(list, unit.denotableType(rhst));
+            addToUnion(list, unit.getDefiniteType(unit.denotableType(lhst)));
             if (list.size()==1) {
                 that.setTypeModel(list.get(0));
             }
@@ -2415,7 +2415,7 @@ public class ExpressionVisitor extends Visitor {
         if ( rhst!=null ) {
             checkAssignable(rhst, unit.getObjectDeclaration().getType(), that.getRightTerm(),
                     "operand expression may not be an optional type");
-            that.setTypeModel(unit.getOptionalType(rhst));
+            that.setTypeModel(unit.getOptionalType(unit.denotableType(rhst)));
         }
     }
 
