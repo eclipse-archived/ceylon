@@ -99,7 +99,48 @@ public class MiscTest extends CompilerTest {
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
     }
-    
+
+    @Test
+    public void compileSDK(){
+        String[] modules = {
+                "collection", 
+                "dbc",
+                "file",
+                "interop.java",
+                "io",
+                "json",
+                "math",
+                "net",
+                "process",
+        };
+        String sourcePrefix = "../ceylon-sdk/";
+        // don't run this if the SDK is not checked out
+        File sdkFile = new File(sourcePrefix);
+        if(!sdkFile.exists())
+            return;
+        StringBuilder sourcePath = new StringBuilder();
+        java.util.List<String> moduleNames = new ArrayList<String>(modules.length);
+        for(String module : modules){
+            moduleNames.add("ceylon." + module);
+            if(sourcePath.length() > 0)
+                sourcePath.append(File.pathSeparator);
+            sourcePath.append(sourcePrefix).append(module).append(File.separator).append("source");
+        }
+        CeyloncTool compiler;
+        try {
+            compiler = new CeyloncTool();
+        } catch (VerifyError e) {
+            System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
+            throw e;
+        }
+        CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
+        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
+                Arrays.asList("-sourcepath", sourcePath.toString(), "-d", "build/classes-sdk"), 
+                moduleNames, null);
+        Boolean result = task.call();
+        Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
+    }
+
     //
     // Java keyword avoidance
     // Note class names and generic type arguments are not a problem because
