@@ -120,8 +120,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
             ceylonTree.visit(new SourceDeclarationVisitor(){
                 @Override
                 public void loadFromSource(Declaration decl) {
-                    String name = Util.quoteIfJavaKeyword(decl.getIdentifier().getText());
-                    String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
+                    String fqn = Naming.toplevelClassName(pkgName, decl);
                     try{
                         reader.enterClass(names.fromString(fqn), tree.getSourceFile());
                     }catch(AssertionError error){
