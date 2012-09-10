@@ -830,6 +830,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return null;
         }
         Module module = moduleManager.getOrCreateModule(Arrays.asList(name.split("\\.")), version);
+        int major = getAnnotationIntegerValue(moduleClass, CEYLON_CEYLON_ANNOTATION, "major", 0);
+        int minor = getAnnotationIntegerValue(moduleClass, CEYLON_CEYLON_ANNOTATION, "minor", 0);
+        module.setMajor(major);
+        module.setMinor(minor);
 
         List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
         for (AnnotationMirror importAttribute : imports) {
