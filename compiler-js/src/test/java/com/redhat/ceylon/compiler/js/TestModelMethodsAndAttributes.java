@@ -68,7 +68,7 @@ public class TestModelMethodsAndAttributes {
 
         method = (Map<String, Object>)model.get("simple2");
         ModelUtils.checkMap(method, MetamodelGenerator.KEY_NAME, "simple2",
-                MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD, "shared", "1");
+                MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_METHOD, MetamodelGenerator.ANN_SHARED, "1");
         ModelUtils.checkType(method, "ceylon.language.Integer");
 
         method = (Map<String, Object>)model.get("simple3");
@@ -151,13 +151,13 @@ public class TestModelMethodsAndAttributes {
                 attrib.get(MetamodelGenerator.KEY_METATYPE));
         attrib = (Map<String, Object>)model.get("s1");
         ModelUtils.checkType(attrib, "ceylon.language.String");
-        Assert.assertEquals("s1 should be shared", "1", attrib.get("shared"));
+        Assert.assertEquals("s1 should be shared", "1", attrib.get(MetamodelGenerator.ANN_SHARED));
         attrib = (Map<String, Object>)model.get("pi");
         ModelUtils.checkType(attrib, "ceylon.language.Float");
         Assert.assertEquals("pi should be variable", "1", attrib.get("var"));
         attrib = (Map<String, Object>)model.get("seq");
         ModelUtils.checkType(attrib, "ceylon.language.Sequence<ceylon.language.Integer>");
-        Assert.assertEquals("seq should be shared", "1", attrib.get("shared"));
+        Assert.assertEquals("seq should be shared", "1", attrib.get(MetamodelGenerator.ANN_SHARED));
         Assert.assertEquals("seq should be variable", "1", attrib.get("var"));
         attrib = (Map<String, Object>)model.get("union");
         ModelUtils.checkType(attrib, "ceylon.language.Integer|ceylon.language.String");
