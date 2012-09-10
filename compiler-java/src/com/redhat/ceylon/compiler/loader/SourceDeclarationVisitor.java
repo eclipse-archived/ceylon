@@ -8,12 +8,12 @@ public abstract class SourceDeclarationVisitor extends Visitor{
     abstract public void loadFromSource(Tree.Declaration decl);
     
     @Override
-    public void visit(Tree.ClassDefinition that) {
+    public void visit(Tree.AnyClass that) {
         loadFromSource(that);
     }
     
     @Override
-    public void visit(Tree.InterfaceDefinition that) {
+    public void visit(Tree.AnyInterface that) {
         loadFromSource(that);
     }
     
