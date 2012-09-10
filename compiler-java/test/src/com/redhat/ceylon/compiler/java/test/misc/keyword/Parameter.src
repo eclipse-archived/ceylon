@@ -8,9 +8,6 @@ class Parameter {
     private final void m1(final boolean abstract) {
     }
     
-    private final void m2(final boolean assert) {
-    }
-    
     private final void m3(final boolean boolean) {
     }
     

@@ -20,7 +20,6 @@
 @nomodel
 class Method() {
     void abstract() {}
-    void assert() {}
     void boolean() {}
     void byte() {}
     void char() {}

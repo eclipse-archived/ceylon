@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInSetterObject {
+    
+    KeywordInSetterObject() {
+    }
+    
+    private final long getI() {
+        return 0L;
+    }
+    
+    private final void setI(final long i) {
+        
+        final class goto_ {
+            
+            private goto_() {
+            }
+        }
+        final goto_ goto = new goto_();
+        final .java.lang.String s = goto.toString();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInSetterObject();
+    }
+}

@@ -1,26 +1,26 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert;
 
-public final class assert_ {
+public final class volatile_ {
     
-    private assert_() {
+    private volatile_() {
     }
     
-    public static final void $assert(final boolean assertion) {
+    public static final void $volatile(final boolean assertion) {
         (
             let
             {
-                .java.lang.String $ceylontmp$message$1 = .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.assert_.assert$message(assertion);
-                $assert(assertion, $ceylontmp$message$1);
+                .java.lang.String $ceylontmp$message$1 = .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.volatile_.volatile$message(assertion);
+                $volatile(assertion, $ceylontmp$message$1);
             }
             returning null;
         );
     }
     
-    public static final .java.lang.String assert$message(final boolean assertion) {
+    public static final .java.lang.String volatile$message(final boolean assertion) {
         return "";
     }
     
-    public static void $assert(final boolean assertion, final .java.lang.String message) {
+    public static void $volatile(final boolean assertion, final .java.lang.String message) {
     }
 }
 final class m_ {
@@ -29,7 +29,7 @@ final class m_ {
     }
     
     static void m() {
-        .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.assert_.$assert(true);
+        .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.volatile_.$volatile(true);
     }
     
     public static void main(.java.lang.String[] args) {

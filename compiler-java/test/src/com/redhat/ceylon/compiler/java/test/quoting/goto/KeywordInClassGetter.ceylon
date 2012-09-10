@@ -17,23 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class JavaKeywords(Integer int) {
-    shared Integer char = int;
-    shared Integer byte(Integer int){
-        Integer goto = int;
-        return int;
-    }
+@nomodel
+class KeywordInClassGetter() {
+    String goto { return "";}
+    assign goto {}
 }
-
-shared Integer int (Integer int) {
-    return int;
-}
-
-shared Integer pkg = 1;
-
-shared Integer char {
-    return 1;
-}
-assign char {}
-
-shared object byte {}

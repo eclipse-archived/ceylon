@@ -21,7 +21,7 @@ interface Bug510 {
     interface Bug510inner {
     }
 }
-void assert() {
+void goto() {
 }
 Integer volatile = 5;
 object synchronized {

@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+public final class mangledToplevelMethod_ {
+    
+    private mangledToplevelMethod_() {
+    }
+    
+    public static void mangledToplevelMethod() {
+        final .ceylon.language.Array<?> arr = .ceylon.language.array_.array(.java.lang.Object.class);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.mangledToplevelMethod_.mangledToplevelMethod();
+    }
+}

@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+public final class strictfp_ {
+    
+    private strictfp_() {
+    }
+    
+    public static long getStrictfp() {
+        return 0L;
+    }
+    
+    public static void setStrictfp(final long strictfp) {
+    }
+}

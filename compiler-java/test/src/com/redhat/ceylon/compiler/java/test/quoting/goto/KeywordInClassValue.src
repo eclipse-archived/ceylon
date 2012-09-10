@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInClassValue {
+    
+    KeywordInClassValue() {
+        this.goto = "";
+    }
+    private final .java.lang.String goto;
+    
+    public final .java.lang.String getGoto() {
+        return goto;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassValue();
+    }
+}

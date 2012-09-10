@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInCallable {
+    
+    KeywordInCallable() {
+    }
+    
+    private final void m(final .ceylon.language.Callable<? extends .java.lang.Object> do) {
+        do.$call();
+        
+        final class enum_ {
+            
+            private enum_() {
+            }
+            
+            .java.lang.Object $enum() {
+                (
+                    let
+                    {
+                        $goto();
+                    }
+                    returning null;
+                );
+                return null;
+            }
+        }
+        final enum_ enum = new enum_();
+        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return (
+                    let
+                    {
+                        $goto();
+                    }
+                    returning null;
+                );
+            }
+        });
+        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call() {
+                return enum.$enum();
+            }
+        });
+    }
+    
+    private final void $goto() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInCallable();
+    }
+}

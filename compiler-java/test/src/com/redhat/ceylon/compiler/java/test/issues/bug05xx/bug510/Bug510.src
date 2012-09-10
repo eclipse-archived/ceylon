@@ -27,19 +27,19 @@ final class Bug510$impl {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-final class assert_ {
+final class goto_ {
     
-    private assert_() {
+    private goto_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
-    static void $assert() {
+    static void $goto() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.assert_.$assert();
+        .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.goto_.$goto();
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)

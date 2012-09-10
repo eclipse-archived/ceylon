@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInMethodObject {
+    
+    KeywordInMethodObject() {
+    }
+    
+    private final void m() {
+        
+        final class goto_ {
+            
+            private goto_() {
+            }
+        }
+        final goto_ goto = new goto_();
+        final .java.lang.String s = goto.toString();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInMethodObject();
+    }
+}

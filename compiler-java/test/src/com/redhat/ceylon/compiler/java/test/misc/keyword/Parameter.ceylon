@@ -20,7 +20,6 @@
 @nomodel
 class Parameter() {
     void m1(Boolean abstract) {}
-    void m2(Boolean assert) { }
     void m3(Boolean boolean) { }
     void m4(Boolean byte) { }
     void m5(Boolean char) { }

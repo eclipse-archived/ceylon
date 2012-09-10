@@ -18,9 +18,9 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared void assert(Boolean assertion, String message="") {}
+shared void volatile(Boolean assertion, String message="") {}
 
 @nomodel
 void m() {
-    assert(true);
+    volatile(true);
 }

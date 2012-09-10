@@ -8,9 +8,6 @@ class Method {
     private final void $abstract() {
     }
     
-    private final void $assert() {
-    }
-    
     private final void $boolean() {
     }
     

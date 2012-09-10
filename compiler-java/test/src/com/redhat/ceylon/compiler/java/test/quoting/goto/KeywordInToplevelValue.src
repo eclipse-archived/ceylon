@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+public final class goto_ {
+    
+    private goto_() {
+    }
+    private static final long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    public static long getGoto() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}

@@ -4,7 +4,6 @@ class Attribute {
     
     Attribute() {
         this.abstract = false;
-        this.assert = false;
         this.boolean = false;
         this.byte = false;
         this.char = false;
@@ -37,11 +36,6 @@ class Attribute {
     
     public final boolean getAbstract() {
         return abstract;
-    }
-    private final boolean assert;
-    
-    public final boolean getAssert() {
-        return assert;
     }
     private final boolean boolean;
     

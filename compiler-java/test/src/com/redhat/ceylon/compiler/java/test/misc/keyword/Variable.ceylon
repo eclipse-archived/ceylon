@@ -21,7 +21,6 @@
 class Variable() {
     void m() {
         Boolean abstract = false;
-        Boolean assert = false;
         Boolean boolean = false;
         Boolean byte = false;
         Boolean char = false;

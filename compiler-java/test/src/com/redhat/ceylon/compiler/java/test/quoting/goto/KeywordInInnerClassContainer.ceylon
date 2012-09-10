@@ -17,23 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class JavaKeywords(Integer int) {
-    shared Integer char = int;
-    shared Integer byte(Integer int){
-        Integer goto = int;
-        return int;
+@nomodel
+object transient {
+
+    shared class InnerClass_0() {
+    }
+
+    shared Integer goto {
+        class InnerClass_1() {
+        }
+        InnerClass_1 x = InnerClass_1();
+        return 0;
+    }
+
+    shared void strictfp() {
+        class InnerClass_2() {
+        }
+        InnerClass_2 x = InnerClass_2();
     }
 }
 
-shared Integer int (Integer int) {
-    return int;
+@nomodel
+void m() {
+    transient.InnerClass_0();
+    Integer int = transient.goto;
+    transient.strictfp();
 }
-
-shared Integer pkg = 1;
-
-shared Integer char {
-    return 1;
-}
-assign char {}
-
-shared object byte {}

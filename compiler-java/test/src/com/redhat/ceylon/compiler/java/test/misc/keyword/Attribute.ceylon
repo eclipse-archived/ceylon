@@ -20,7 +20,6 @@
 @nomodel
 class Attribute() {
     shared Boolean abstract = false;
-    shared Boolean assert = false;
     shared Boolean boolean = false;
     shared Boolean byte = false;
     shared Boolean char = false;

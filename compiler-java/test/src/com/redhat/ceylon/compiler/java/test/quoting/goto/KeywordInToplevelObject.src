@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+public final class transient_ {
+    
+    private transient_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_()};
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ getTransient() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}

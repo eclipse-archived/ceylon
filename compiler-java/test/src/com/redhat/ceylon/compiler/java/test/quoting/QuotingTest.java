@@ -31,114 +31,114 @@ public class QuotingTest extends CompilerTest {
     
     @Test
     public void testKeywordInPackage(){
-        compareWithJavaSource("assert/KeywordInPackage");
+        compareWithJavaSource("goto/KeywordInPackage");
     }
     
     @Test
     public void testTwoKeywordsInPackage(){
-        compareWithJavaSource("assert/transient/TwoKeywordsInPackage");
+        compareWithJavaSource("goto/transient/TwoKeywordsInPackage");
     }
     
     @Test
     public void testKeywordInClassValue(){
-        compareWithJavaSource("assert/KeywordInClassValue");
+        compareWithJavaSource("goto/KeywordInClassValue");
     }
     
     @Test
     public void testKeywordInToplevelValue(){
-        compareWithJavaSource("assert/KeywordInToplevelValue");
+        compareWithJavaSource("goto/KeywordInToplevelValue");
     }
     
     @Test
     public void testKeywordInClassGetter(){
-        compareWithJavaSource("assert/KeywordInClassGetter");
+        compareWithJavaSource("goto/KeywordInClassGetter");
     }
     
     @Test
     public void testKeywordInToplevelGetter(){
-        compareWithJavaSource("assert/KeywordInToplevelGetter");
+        compareWithJavaSource("goto/KeywordInToplevelGetter");
     }
     
     @Test
     public void testKeywordInClassMethod(){
-        compareWithJavaSource("assert/KeywordInClassMethod");
+        compareWithJavaSource("goto/KeywordInClassMethod");
     }
     
     @Test
     public void testKeywordInToplevelMethod(){
-        compareWithJavaSource("assert/KeywordInToplevelMethod");
+        compareWithJavaSource("goto/KeywordInToplevelMethod");
     }
     
     @Test
     public void testKeywordInToplevelObject(){
-        compareWithJavaSource("assert/KeywordInToplevelObject");
+        compareWithJavaSource("goto/KeywordInToplevelObject");
     }
     
     @Test
     public void testKeywordInClassObject(){
-        compareWithJavaSource("assert/KeywordInClassObject");
+        compareWithJavaSource("goto/KeywordInClassObject");
     }
     
     @Test
     public void testKeywordInMethodObject(){
-        compareWithJavaSource("assert/KeywordInMethodObject");
+        compareWithJavaSource("goto/KeywordInMethodObject");
     }
     
     @Test
     public void testKeywordInGetterObject(){
-        compareWithJavaSource("assert/KeywordInGetterObject");
+        compareWithJavaSource("goto/KeywordInGetterObject");
     }
     
     @Test
     public void testKeywordInSetterObject(){
-        compareWithJavaSource("assert/KeywordInSetterObject");
+        compareWithJavaSource("goto/KeywordInSetterObject");
     }
     
     @Test
     public void testKeywordInImport(){
-        compareWithJavaSource("assert/KeywordInImport.src", "assert/KeywordInImport.ceylon", "assert/transient/TwoKeywordsInPackage.ceylon");
+        compareWithJavaSource("goto/KeywordInImport.src", "goto/KeywordInImport.ceylon", "goto/transient/TwoKeywordsInPackage.ceylon");
     }
     
     @Test
     public void testKeywordInInnerClassContainer(){
-        compareWithJavaSource("assert/KeywordInInnerClassContainer");
+        compareWithJavaSource("goto/KeywordInInnerClassContainer");
     }
     
     @Test
     public void testKeywordInToplevelAssignment(){
-        compareWithJavaSource("assert/KeywordInToplevelAssignment");
+        compareWithJavaSource("goto/KeywordInToplevelAssignment");
     }
     
     @Test
     public void testMangledToplevelAttribute(){
-        compareWithJavaSource("assert/MangledToplevelAttribute");
+        compareWithJavaSource("goto/MangledToplevelAttribute");
     }
     
     @Test
     public void testMangledToplevelMethod(){
-        compareWithJavaSource("assert/MangledToplevelMethod");
+        compareWithJavaSource("goto/MangledToplevelMethod");
     }
     
     @Test
     public void testKeywordInCallable(){
-        compareWithJavaSource("assert/KeywordInCallable");
+        compareWithJavaSource("goto/KeywordInCallable");
     }
     
     @Test
     public void testKeywordInInnerClass(){
-        compareWithJavaSource("assert/KeywordInInnerClass");
+        compareWithJavaSource("goto/KeywordInInnerClass");
     }
     
     @Test
     public void testCaseCollision(){
         try {
-            compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$assert.CaseCollision", "assert/CaseCollision.ceylon");
+            compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$goto.CaseCollision", "goto/CaseCollision.ceylon");
             Assert.fail();
         } catch (RuntimeException e) {
             Assert.assertTrue(e.getCause().getCause().getMessage().contains("i am the class"));
         }
         try {
-            compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$assert.caseCollision", "assert/CaseCollision.ceylon");
+            compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$goto.caseCollision", "goto/CaseCollision.ceylon");
         } catch (Exception e) {
             Assert.assertTrue(e.getCause().getCause().getMessage().contains("i am the method"));
         }
