@@ -157,6 +157,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
              * for now the typechecker requires at least ceylon.language to be loaded 
              */
             for(Symbol m : ceylonPkg.members().getElements()){
+                // FIXME: that's just plain weird, why do we return rather than throw?
                 if(!(m instanceof ClassSymbol))
                     return true;
                 ClassSymbol enclosingClass = getEnclosing((ClassSymbol) m);
