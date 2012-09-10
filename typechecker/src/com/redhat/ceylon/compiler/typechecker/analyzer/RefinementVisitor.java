@@ -500,7 +500,7 @@ public class RefinementVisitor extends Visitor {
             pl = ((Tree.AnyMethod) that).getParameterLists().get(i);
         }
         else {
-            pl = ((Tree.ClassDefinition) that).getParameterList();
+            pl = ((Tree.AnyClass) that).getParameterList();
         }
         return pl;
     }
