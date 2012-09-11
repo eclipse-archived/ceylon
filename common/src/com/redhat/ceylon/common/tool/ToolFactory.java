@@ -155,7 +155,11 @@ public class ToolFactory {
                         case REQUIRED:
                             argument = getLongFormArgument(arg, iter);
                             if (argument == null && option.getArgumentType() == ArgumentType.REQUIRED) {
-                                throw new OptionArgumentException("option.without.argument", arg);
+                                if (iter.hasNext()) {
+                                    argument = iter.next();
+                                } else {
+                                    throw new OptionArgumentException("option.without.argument", arg);
+                                }
                             }
                             break;
                         default:
