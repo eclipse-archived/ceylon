@@ -142,9 +142,9 @@ public class CeylonTool implements Tool {
     
     private int exit(int sc, String toolName, Exception t) throws Exception {
         if (t != null) {
-            String msg = t.getLocalizedMessage();
-            if (msg == null) {
-                msg = CeylonToolMessages.msg("fatal.error");
+            String msg = CeylonToolMessages.msg("fatal.error");
+            if (t.getLocalizedMessage() != null) {
+                msg += ": " + t.getLocalizedMessage();
             }
             System.err.println(Tools.progName() + 
                     (toolName != null ? " " + toolName : "") +
