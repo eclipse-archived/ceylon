@@ -83,14 +83,14 @@ public class TestModelMethodsAndAttributes {
     public void testDefaultedAndSequencedMethods() {
         Map<String, Object> method = (Map<String, Object>)model.get("defaulted1");
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language.Integer", null, false);
-        ModelUtils.checkParam(method, 1, "p2", "ceylon.language.Integer", "5", false);
+        ModelUtils.checkParam(method, 1, "p2", "ceylon.language.Integer", null/*"5"*/, false);
 
         method = (Map<String, Object>)model.get("sequenced1");
         ModelUtils.checkParam(method, 0, "p1", "ceylon.language.Integer", null, false);
         ModelUtils.checkParam(method, 1, "p2", "ceylon.language.String", null, true);
 
         method = (Map<String, Object>)model.get("sequencedDefaulted");
-        ModelUtils.checkParam(method, 0, "s", "ceylon.language.String", "\"x\"", false);
+        ModelUtils.checkParam(method, 0, "s", "ceylon.language.String", null/*"\"x\""*/, false);
         ModelUtils.checkParam(method, 1, "ints", "ceylon.language.Integer", null, true);
     }
 
@@ -119,16 +119,15 @@ public class TestModelMethodsAndAttributes {
 
         method = (Map<String, Object>)model.get("parmtypes4");
         ModelUtils.checkType(method, "SomethingElse");
-        List<Map<String, Object>> cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_CONSTR);
-        Assert.assertNotNull("parmtypes4 should have constraints", cons);
+        List<Map<String, Object>> cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get("satisfies"),
                 "ceylon.language.Comparable<Something>");
         ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(1).get("satisfies"), "Something");
 
         method = (Map<String, Object>)model.get("parmtypes5");
         ModelUtils.checkParam(method, 0, "x", "Value", null, false);
-        cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_CONSTR);
-        Assert.assertNotNull("parmtypes5 should have constraints", cons);
+        cons = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_TYPE_PARAMS);
+        Assert.assertNotNull("parmtypes5 should have parameters", cons);
         Assert.assertNotNull("parmtypes5 should have case types", cons.get(0).get("of"));
         ModelUtils.checkTypeParameters(0, (List<Map<String,Object>>)cons.get(0).get("of"),
                 "ceylon.language.Integer,ceylon.language.Float");

@@ -63,7 +63,7 @@ public class TestModelClasses {
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass4",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS, MetamodelGenerator.ANN_SHARED, "1");
         ModelUtils.checkType((Map<String,Object>)cls.get("super"), "t2.SimpleClass2");
-        ModelUtils.checkParam(cls, 0, "x", "ceylon.language.Integer", "1", false);
+        ModelUtils.checkParam(cls, 0, "x", "ceylon.language.Integer", null/*"1"*/, false);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -133,10 +133,8 @@ public class TestModelClasses {
         ModelUtils.checkType(ps.get(0), "Element");
         ModelUtils.checkMap(ps.get(0), "variance", "out");
         ModelUtils.checkParam(cls, 0, "x", "Element", null, true);
-        ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_CONSTR);
-        Assert.assertEquals("ParmTypes2 must have 1 type constraint", 1, ps.size());
-        ModelUtils.checkMap(ps.get(0), MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_TYPE_CONSTRAINT);
-        ModelUtils.checkType(((List<Map<String, Object>>)ps.get(0).get("satisfies")).get(0), "ceylon.language.Object");
+        ps = (List<Map<String, Object>>)ps.get(0).get("satisfies");
+        ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language.Object");
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -148,13 +146,11 @@ public class TestModelClasses {
         ModelUtils.checkType(ps.get(1), "Type2");
         ModelUtils.checkParam(cls, 0, "a1", "Type1", null, false);
         ModelUtils.checkParam(cls, 1, "a2", "Type2", null, false);
-        ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_CONSTR);
-        Assert.assertEquals("ParmTypes3 must have 2 type constraints", 2, ps.size());
-        ModelUtils.checkType(((List<Map<String, Object>>)ps.get(0).get("satisfies")).get(0), "ceylon.language.Number");
-        ModelUtils.checkType(((List<Map<String, Object>>)ps.get(1).get("of")).get(0),
-                "ceylon.language.String");
-        ModelUtils.checkType(((List<Map<String, Object>>)ps.get(1).get("of")).get(1),
-                "ceylon.language.Singleton<ceylon.language.String>");
+        List<Map<String, Object>> ptc = (List<Map<String, Object>>)ps.get(0).get("satisfies");
+        ModelUtils.checkType(ptc.get(0), "ceylon.language.Number");
+        ptc = (List<Map<String,Object>>)ps.get(1).get("of");
+        ModelUtils.checkType(ptc.get(0), "ceylon.language.String");
+        ModelUtils.checkType(ptc.get(1), "ceylon.language.Singleton<ceylon.language.String>");
     }
 
     @Test @SuppressWarnings("unchecked")
