@@ -19,9 +19,5 @@ public @interface Summary {
      * describing what the tool does. 
      */
     String value();
-    /**
-     * Whether the tool is considered 'plumbing' (low-level) or 
-     * porcelain (high-level).
-     */
-    boolean plumbing() default false;
+    
 }

@@ -342,6 +342,11 @@ public abstract class ToolLoader {
                     "Method " + setter + " is annotated with @Argument and @Description: " +
             		"Arguments should be documented in the class-level @Description");
         }
+        if (isHidden(setter)) {
+            throw new ModelException(
+                    "Method " + setter + " is annotated with @Argument and @Hidden: " +
+                    "You can't have @Hidden arguments");
+        }
         ArgumentModel<A> argumentModel = new ArgumentModel<A>();
         argumentModel.setMultiplicity(Multiplicity.fromString(argument.multiplicity()));
         argumentModel.setName(argument.argumentName());
@@ -360,6 +365,10 @@ public abstract class ToolLoader {
             throw new ModelException("Two setters annotated with @Argument with the same order");
         }
         return argumentModel;
+    }
+
+    private boolean isHidden(final Method setter) {
+        return setter.getAnnotation(Hidden.class) != null;
     }
 
     private boolean isSimpleType(final Method setter) {

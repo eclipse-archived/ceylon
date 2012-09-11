@@ -108,14 +108,24 @@ public class ToolModel<T extends Tool> {
         return getName().isEmpty();
     }
     
+    /**
+     * Determines whether the tool is high level.
+     * @return
+     */
     public boolean isPorcelain() {
-        Summary summary = toolClass.getAnnotation(Summary.class);
-        return !isTopLevel() && summary != null && !summary.plumbing();
+        return !isTopLevel()  
+                && toolClass.getAnnotation(Hidden.class) == null;
     }
 
+    /**
+     * Determines whether the tool is low level.
+     * @return
+     */
     public boolean isPlumbing() {
-        Summary summary = toolClass.getAnnotation(Summary.class);
-        return !isTopLevel() && summary != null && summary.plumbing();
+        // Note we have both this and isPorcelain() because the CeylonTool
+        // is currently considered neither, which is a fudge for the CeylonDocToolTool
+        return !isTopLevel()  
+                && toolClass.getAnnotation(Hidden.class) != null;
     }
     
 }
