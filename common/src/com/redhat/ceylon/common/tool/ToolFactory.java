@@ -207,6 +207,9 @@ public class ToolFactory {
                     argument = arg;
                     if (isArgument(arg)) {
                         final List<ArgumentModel<?>> argumentModels = toolModel.getArguments();
+                        if (argumentModelIndex >= argumentModels.size()) {
+                            throw new OptionArgumentException("argument.unexpected", arg);
+                        }
                         final ArgumentModel<?> argumentModel = argumentModels.get(argumentModelIndex);
                         processArgument(tool, bindings, new Binding(argumentModel, argument));
                         argumentsBoundThisIndex++;
