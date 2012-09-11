@@ -88,7 +88,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
                     loadMethod(k, m, this, null);
                 } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
-                    loadObject(k, m, this);
+                    loadObject(k, m, this, null);
                 }
             }
         }
@@ -101,7 +101,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
 
     @SuppressWarnings("unchecked")
     private com.redhat.ceylon.compiler.typechecker.model.Class loadClass(String name, Map<String, Object> m,
-            Scope parent, List<TypeParameter> existing) {
+            Scope parent, final List<TypeParameter> existing) {
         Declaration maybe = parent.getDirectMember(name, null);
         if (maybe instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
             return (com.redhat.ceylon.compiler.typechecker.model.Class)maybe;
@@ -117,29 +117,46 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         //Type parameters are about the first thing we need to load
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), cls, existing);
-        if (m.containsKey("super")) {
-            cls.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("super"), tparms));
-        } else if (!(getModule().getLanguageModule()==getModule() && ("Bottom".equals(name) || "Void".equals(name)))) {
-            cls.setExtendedType(getTypeFromJson(idobj, tparms));
-        }
         if (tparms != null) {
             cls.setTypeParameters(tparms);
         }
+        final List<TypeParameter> allparms = JsonPackage.merge(existing, tparms);
+        if (m.containsKey("super")) {
+            cls.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("super"), allparms));
+        } else if (!(getModule().getLanguageModule()==getModule() && ("Bottom".equals(name) || "Void".equals(name)))) {
+            cls.setExtendedType(getTypeFromJson(idobj, allparms));
+        }
         if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
-            cls.setSelfType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_SELF_TYPE), tparms));
+            cls.setSelfType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_SELF_TYPE), allparms));
+            cls.getSelfType().getDeclaration().setContainer(cls);
+            for (TypeParameter tp : tparms) {
+                if (tp.getName().equals(cls.getSelfType().getDeclaration().getName())) {
+                    tp.setSelfTypedDeclaration(cls.getSelfType().getDeclaration());
+                    tp.setSelfType(cls.getSelfType());
+                }
+            }
         }
 
         ParameterList plist = parseParameters((List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_PARAMS),
-                cls, tparms);
+                cls, allparms);
         plist.setNamedParametersSupported(true);
         cls.setParameterList(plist);
         if (m.containsKey("of")) {
-            cls.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.get("of"), tparms));
+            cls.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.get("of"), allparms));
         }
         if (m.containsKey("satisfies")) {
-            cls.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), tparms));
+            cls.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), allparms));
         }
-        addAttributesAndMethods(m, cls, tparms);
+        if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
+            System.out.println("clase " + name + " tiene interfaces");
+        }
+        if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
+            System.out.println("clase " + name + " tiene clases: " + m.get(MetamodelGenerator.KEY_CLASSES));
+        }
+        if (m.containsKey(MetamodelGenerator.KEY_OBJECTS)) {
+            System.out.println("clase " + name + " tiene objetos: " + m.get(MetamodelGenerator.KEY_OBJECTS));
+        }
+        addAttributesAndMethods(m, cls, allparms);
         return cls;
     }
 
@@ -266,7 +283,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     }
 
     @SuppressWarnings("unchecked")
-    private Method loadMethod(String name, Map<String, Object> m, Scope parent, List<TypeParameter> tparams) {
+    private Method loadMethod(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
         Method md = new Method();
         md.setName(name);
         md.setContainer(parent);
@@ -276,22 +293,15 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             //Top-level declarations are directly added to the unit
             unit.addDeclaration(md);
         }
-        List<TypeParameter> methodtyparms = parseTypeParameters(
-                (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), md, tparams);
-        if (methodtyparms == null) {
-            methodtyparms = tparams;
-        } else {
-            md.setTypeParameters(methodtyparms);
-            if (tparams != null) {
-                List<TypeParameter> allparms = new ArrayList<TypeParameter>(methodtyparms.size() + tparams.size());
-                allparms.addAll(tparams);
-                allparms.addAll(methodtyparms);
-                methodtyparms = allparms;
-            }
+        final List<TypeParameter> tparms = parseTypeParameters(
+                (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), md, existing);
+        if (tparms != null) {
+            md.setTypeParameters(tparms);
         }
-        md.setType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE), methodtyparms));
+        final List<TypeParameter> allparms = JsonPackage.merge(existing, tparms);
+        md.setType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE), allparms));
         md.addParameterList(parseParameters((List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_PARAMS),
-                md, methodtyparms));
+                md, allparms));
         return md;
     }
 
@@ -314,7 +324,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     }
 
     @SuppressWarnings("unchecked")
-    private Interface loadInterface(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
+    private Interface loadInterface(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
         Declaration maybe = parent.getDirectMember(name, null);
         if (maybe instanceof Interface) {
             return (Interface)maybe;
@@ -333,8 +343,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (tparms != null) {
             t.setTypeParameters(tparms);
         }
+        final List<TypeParameter> allparms = JsonPackage.merge(existing, tparms);
         if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
-            t.setSelfType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_SELF_TYPE), tparms));
+            t.setSelfType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_SELF_TYPE), allparms));
             t.getSelfType().getDeclaration().setContainer(t);
             for (TypeParameter tp : tparms) {
                 if (tp.getName().equals(t.getSelfType().getDeclaration().getName())) {
@@ -344,16 +355,32 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
         }
         if (m.containsKey("of")) {
-            t.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.get("of"), tparms));
+            t.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.get("of"), allparms));
         }
         if (m.containsKey("satisfies")) {
-            t.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), tparms));
+            t.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), allparms));
         }
-        addAttributesAndMethods(m, t, tparms);
+        if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
+            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_OBJECTS)).entrySet()) {
+                loadInterface(inner.getKey(), inner.getValue(), t, allparms);
+            }
+        }
+        if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
+            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_CLASSES)).entrySet()) {
+                loadClass(inner.getKey(), inner.getValue(), t, allparms);
+            }
+        }
+        if (m.containsKey(MetamodelGenerator.KEY_OBJECTS)) {
+            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_OBJECTS)).entrySet()) {
+                loadObject(inner.getKey(), inner.getValue(), t, allparms);
+            }
+        }
+        addAttributesAndMethods(m, t, allparms);
         return t;
     }
 
-    private TypeDeclaration loadObject(String name, Map<String, Object> m, Scope parent) {
+    @SuppressWarnings("unchecked")
+    private TypeDeclaration loadObject(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
         Declaration maybe = parent.getDirectMember(name, null);
         if (maybe instanceof Value) {
             return ((Value) maybe).getTypeDeclaration();
@@ -363,13 +390,25 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         obj.setContainer(parent);
         setDefaultSharedActualFormal(obj, m);
         unit.addDeclaration(obj);
+        com.redhat.ceylon.compiler.typechecker.model.Class type = new com.redhat.ceylon.compiler.typechecker.model.Class();
+        type.setName(name);
+        setDefaultSharedActualFormal(type, m);
+        type.setAnonymous(true);
+        type.setUnit(unit);
+        type.setContainer(parent);
         if (m.containsKey("super")) {
-            ProducedType father = getTypeFromJson((Map<String,Object>)m.get("super"), null);
-            obj.setType(father);
+            type.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("super"), existing));
+        } else {
+            type.setExtendedType(getTypeFromJson(idobj, existing));
         }
+        if (m.containsKey("satisfies")) {
+            type.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), existing));
+        }
+        obj.setType(type.getType());
         return obj.getTypeDeclaration();
     }
 
+    /** Looks up a type from model data. */
     private ProducedType getTypeFromJson(Map<String, Object> m, List<TypeParameter> typeParams) {
         if (m.containsKey("comp")) {
             @SuppressWarnings("unchecked")
@@ -411,6 +450,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             for (Declaration d : rp.getMembers()) {
                 if (d instanceof TypeDeclaration && tname.equals(d.getName())) {
                     if (((TypeDeclaration)d).getTypeParameters().isEmpty() && m.containsKey(MetamodelGenerator.KEY_TYPE_PARAMS)) {
+                        @SuppressWarnings("unchecked")
                         List<TypeParameter> tttparms = parseTypeParameters(
                                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), d, typeParams);
                         ((TypeDeclaration)d).setTypeParameters(tttparms);
@@ -447,7 +487,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
             return loadMethod(name, map, this, existing);
         } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
-            return loadObject(name, map, this);
+            return loadObject(name, map, this, existing);
         }
         System.out.println("WTF is this shit " + map);
         return null;
@@ -458,6 +498,19 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         d.setActual(m.containsKey(MetamodelGenerator.ANN_ACTUAL));
         d.setDefault(m.containsKey(MetamodelGenerator.ANN_DEFAULT));
         d.setShared(m.containsKey(MetamodelGenerator.ANN_SHARED));
+    }
+
+    /** Create a new list that contains the items in both lists. */
+    public static <T> List<T> merge(List<T> l1, List<T> l2) {
+        int size = (l1 == null ? 0 : l1.size()) + (l2 == null ? 0 : l2.size());
+        ArrayList<T> merged = new ArrayList<T>(size);
+        if (l1 != null) {
+            merged.addAll(l1);
+        }
+        if (l2 != null) {
+            merged.addAll(l2);
+        }
+        return merged;
     }
 
 }
