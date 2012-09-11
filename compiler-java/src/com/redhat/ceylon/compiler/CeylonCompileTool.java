@@ -62,7 +62,7 @@ import com.redhat.ceylon.common.tool.Summary;
 public class CeylonCompileTool implements Tool{
 
     private List<File> source = Collections.singletonList(new File("source"));
-    private File out = new File("modules");
+    private String out = "modules";
     private List<URI> repo = Collections.emptyList();
     private List<String> module = Collections.emptyList();
     private boolean d;
@@ -98,7 +98,7 @@ public class CeylonCompileTool implements Tool{
     @OptionArgument(argumentName="url")
     @Description("Specifies the output module repository (which must be publishable). " +
     		"(default: `./modules`)")
-    public void setOut(File out) {
+    public void setOut(String out) {
         this.out = out;
     }
     
@@ -167,7 +167,7 @@ public class CeylonCompileTool implements Tool{
         }
         
         arguments.add("-out");
-        arguments.add(out.getPath());
+        arguments.add(out);
         
         if (user != null) {
             arguments.add("-user");
@@ -189,8 +189,10 @@ public class CeylonCompileTool implements Tool{
             arguments.add(moduleSpec);
         }
         
-        System.out.println(arguments);
-        System.out.flush();
+        if (verbose) {
+            System.out.println(arguments);
+            System.out.flush();
+        }
         com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylon compile");
         int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
         if (result != 0) {
