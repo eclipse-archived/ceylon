@@ -698,7 +698,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private boolean sameType(Type t1, ProducedType t2) {
-        return toPType(t1).isExactly(t2);
+        return t2 != null && toPType(t1).isExactly(t2);
     }
     
     // Determines if a type will be erased to java.lang.Object once converted to Java

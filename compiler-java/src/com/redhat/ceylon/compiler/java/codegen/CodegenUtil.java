@@ -148,6 +148,7 @@ class CodegenUtil {
     }
 
     static boolean isVoid(ProducedType type) {
-        return type.getDeclaration().getUnit().getVoidDeclaration().getType().isExactly(type);    
+        return type != null && type.getDeclaration() != null
+                && type.getDeclaration().getUnit().getVoidDeclaration().getType().isExactly(type);    
     }
 }

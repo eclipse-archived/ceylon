@@ -191,6 +191,9 @@ public class Naming implements LocalId {
     }
     
     JCExpression makeDeclName(JCExpression qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options) {
+        // be more resilient to errors
+        if(decl == null)
+            return make().Erroneous();
         // TODO This should probably be generating a JCExpression, not
         // a String (which will inevitable end up being split up to produce a
         // JCExpression by the caller
