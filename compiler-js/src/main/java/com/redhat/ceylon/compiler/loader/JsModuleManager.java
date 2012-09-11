@@ -49,7 +49,6 @@ public class JsModuleManager extends ModuleManager {
         File js = artifact.artifact();
         if (module instanceof JsonModule && js.getName().endsWith(".js")) {
             if (((JsonModule)module).getModel() != null) {
-                System.out.println("skipping already loaded module " + module);
                 return;
             }
             if (js.exists() && js.isFile() && js.canRead()) {
