@@ -3,6 +3,8 @@ package com.redhat.ceylon.tools.help;
 
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.RemainingSections;
@@ -28,7 +30,12 @@ import com.redhat.ceylon.tools.help.Output.Synopsis;
 public class CeylonHelpTool extends AbstractDoc implements Tool {
 
     private String tool;
-
+    
+    @Option
+    public void setIncludeHidden(boolean includeHidden) {
+        this.includeHidden = includeHidden;
+    }
+    
     @Argument(argumentName="tool", multiplicity="?")
     public void setTool(String tool) {
         this.tool = tool;

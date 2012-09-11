@@ -9,16 +9,18 @@ import java.util.ResourceBundle;
 import org.tautua.markdownpapers.ast.Document;
 
 import com.redhat.ceylon.common.tool.ArgumentModel;
+import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.tools.help.Output.Options;
 import com.redhat.ceylon.tools.help.Output.Synopsis;
 
-public class AbstractDoc {
+public abstract class AbstractDoc {
 
     protected ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
     protected ToolLoader toolLoader;
+    protected boolean includeHidden = false;
     
     public AbstractDoc() {
         super();
@@ -59,6 +61,9 @@ public class AbstractDoc {
     private void printToolOptions(Output out, ToolDocumentation<?> model) {
         Options options = out.startOptions(bundle.getString("section.OPTIONS"));
         for (OptionModel<?> opt : sortedOptions(model.getPlugin().getOptions())) {
+            if (skipHiddenOption(opt)) {
+                continue;
+            }
             String shortName = opt.getShortName() != null ? "-" + opt.getShortName() : null;
             String longName = opt.getLongName() != null ? "--" + opt.getLongName() : null;
             String argumentName = opt.getArgumentType() != ArgumentType.NOT_ALLOWED ? null : opt.getArgument().getName();
@@ -88,6 +93,9 @@ public class AbstractDoc {
         ArrayList<OptionModel<?>> options = sortedOptions(model.getPlugin().getOptions());
         if (!options.isEmpty()) {
             for (OptionModel<?> option : options) {
+                if (skipHiddenOption(option)) {
+                    continue;
+                }
                 synopsis.appendSynopsis(" ");
                 final ArgumentModel<?> argument = option.getArgument();
                 if (!argument.getMultiplicity().isRequired()) {
@@ -135,6 +143,11 @@ public class AbstractDoc {
             }
         }
         synopsis.endSynopsis();
+    }
+
+    private boolean skipHiddenOption(OptionModel<?> option) {
+        return option.getArgument().getSetter().getAnnotation(Hidden.class) != null 
+                && !includeHidden;
     }
 
     private ArrayList<OptionModel<?>> sortedOptions(final Collection<OptionModel<?>> options2) {

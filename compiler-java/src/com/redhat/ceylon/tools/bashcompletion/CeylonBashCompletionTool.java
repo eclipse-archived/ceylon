@@ -10,6 +10,7 @@ import java.util.TreeSet;
 
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.Summary;
@@ -19,7 +20,8 @@ import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.tools.CeylonTool;
 
-@Summary(plumbing = true, 
+@Hidden
+@Summary( 
 value="A tool which provides completion suggestions for the Bash shell.")
 @Description("The `<arguments>` are the elements of the `${COMP_WORDS}` bash array variable.\n" +
 		"\n" +
