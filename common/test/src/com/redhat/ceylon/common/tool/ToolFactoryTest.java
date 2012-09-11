@@ -31,7 +31,17 @@ public class ToolFactoryTest {
         Assert.assertEquals("false", tool.getShortName());
         Assert.assertTrue(tool.getListArgument() == null);
         Assert.assertTrue(tool.isInited());
+
+        // If a long option argument has a not optional argument then the
+        // argument may come from the next argument
+        tool = pluginFactory.bindArguments(model, Arrays.asList("--short-name", "foo"));
+        Assert.assertFalse(tool.isLongName());
+        Assert.assertEquals("foo", tool.getShortName());
+        Assert.assertTrue(tool.getListArgument() == null);
+        Assert.assertTrue(tool.isInited());
+        
     }
+    
     @Test
     public void testLongOptionArgumentMissing() throws InvocationTargetException {
         ToolModel<TestExampleTool> model = pluginLoader.loadToolModel("example");
