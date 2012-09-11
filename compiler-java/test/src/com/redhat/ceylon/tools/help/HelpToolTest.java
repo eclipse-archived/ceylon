@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.tool.ArgumentParserFactory;
+import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
@@ -51,6 +52,13 @@ public class HelpToolTest {
         CeylonHelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("compile"));
         tool.setToolLoader(pluginLoader);
         tool.run();
+        
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("--", "compile", "--javac="));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unexpected argument --javac=", e.getMessage());
+        }
     }
     
     @Test
