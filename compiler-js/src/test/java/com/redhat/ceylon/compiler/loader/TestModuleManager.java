@@ -47,9 +47,9 @@ public class TestModuleManager {
         repoman = CeylonUtils.makeRepositoryManager(
                 options.getRepos(), options.getOutDir(), new JULLogger());
         //Create a typechecker to compile the test module
-        System.out.println("Compiling pass 1");
+        System.out.println("Compiling pass 1 (with js model loader now)");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
-        //tcb.moduleManagerFactory(new JsModuleManagerFactory());
+        tcb.moduleManagerFactory(new JsModuleManagerFactory());
         tcb.addSrcDirectory(new java.io.File("src/test/resources/loader/pass1"));
         tcb.setRepositoryManager(repoman);
         tc = tcb.getTypeChecker();
