@@ -68,7 +68,7 @@ public class Main {
         List<String> args = new ArrayList<String>(Arrays.asList(_args));
         final Options opts = Options.parse(args);
         if (opts.isVersion()) {
-            System.err.println("Version: ceylonc-js 0.4 'Ratatouille'");
+            System.err.printf("Version: ceylonc-js %s 'Ratatouille'%n", JsCompiler.VERSION);
             return;
         }
         if (opts.isHelp()) {

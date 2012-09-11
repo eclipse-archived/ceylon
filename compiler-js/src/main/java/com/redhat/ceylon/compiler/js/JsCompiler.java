@@ -35,7 +35,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class JsCompiler {
-    
+
+    public static final String VERSION = "0.4";
+
     protected final TypeChecker tc;
     protected final Options opts;
     protected final RepositoryManager outRepo;
@@ -166,7 +168,7 @@ public class JsCompiler {
             //First generate the metamodel
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
                 String pathFromVFS = pu.getUnitFile().getPath();
-                // VFS talks in terms of URLs while files are platform-dependent, so make it 
+                // VFS talks in terms of URLs while files are platform-dependent, so make it
                 // platform-dependent too
                 String path = pathFromVFS.replace('/', File.separatorChar);
                 if (files == null || files.contains(path)) {
@@ -188,7 +190,7 @@ public class JsCompiler {
             JsIdentifierNames names = new JsIdentifierNames(opts.isOptimize());
             for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
             	String pathFromVFS = pu.getUnitFile().getPath();
-            	// VFS talks in terms of URLs while files are platform-dependent, so make it 
+            	// VFS talks in terms of URLs while files are platform-dependent, so make it
             	// platform-dependent too
             	String path = pathFromVFS.replace('/', File.separatorChar);
                 if (files == null || files.contains(path)) {
