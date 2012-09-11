@@ -134,7 +134,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (m.containsKey("satisfies")) {
             cls.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), tparms));
         }
-        //addTypeConstraints((List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_CONSTR), tparms);
         addAttributesAndMethods(m, cls, tparms);
         return cls;
     }
@@ -158,23 +157,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
     }
 
-    /** Parses the list of type constraints to add them to the type parameters. */
-    @SuppressWarnings("unchecked")
-    private void addTypeConstraints(List<Map<String,Object>> typeConstraints, List<TypeParameter> typeParams) {
-        if (typeConstraints == null) return;
-        for (Map<String,Object> tc : typeConstraints) {
-            for (TypeParameter tp : typeParams) {
-                if (tp.getName().equals(tc.get(MetamodelGenerator.KEY_NAME))) {
-                    if (tc.containsKey("satisfies")) {
-                        tp.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)tc.get("satisfies"), typeParams));
-                    } else if (tc.containsKey("of")) {
-                        tp.setCaseTypes(parseTypeList((List<Map<String,Object>>)tc.get("of"), typeParams));
-                        System.out.println("TC casetypes para " + tp + ": " + tc.get("of") + " que tiene " + tp.getCaseTypes());
-                    }
-                }
-            }
-        }
-    }
     /** Creates a list of ProducedType from the references in the maps.
      * @param types A list of maps where each map is a reference to a type or type parameter.
      * @param typeParams The type parameters that can be referenced from the list of maps. */
@@ -329,7 +311,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (m.containsKey("satisfies")) {
             t.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), tparms));
         }
-        //addTypeConstraints((List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_CONSTR), tparms);
         addAttributesAndMethods(m, t, tparms);
         return t;
     }
