@@ -375,14 +375,15 @@ public class MetamodelGenerator extends Visitor {
     public void visit(Tree.ClassDefinition that) {
         com.redhat.ceylon.compiler.typechecker.model.Class d = that.getDeclarationModel();
         Map<String, Object> parent = findParent(d);
-        if (parent == null) {
-            System.out.println("orphaned class - how the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
-            return;
-        } else if (!d.isToplevel()) {
-            if (!parent.containsKey(KEY_CLASSES)) {
-                parent.put(KEY_CLASSES, new HashMap<String,Object>());
+        if (d.isToplevel() || d.isMember()) {
+            if (!d.isToplevel()) {
+                if (!parent.containsKey(KEY_CLASSES)) {
+                    parent.put(KEY_CLASSES, new HashMap<String,Object>());
+                }
+                parent = (Map<String,Object>)parent.get(KEY_CLASSES);
             }
-            parent = (Map<String,Object>)parent.get(KEY_CLASSES);
+        } else {
+            return;
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_CLASS);
@@ -429,14 +430,15 @@ public class MetamodelGenerator extends Visitor {
     public void visit(Tree.InterfaceDefinition that) {
         com.redhat.ceylon.compiler.typechecker.model.Interface d = that.getDeclarationModel();
         Map<String, Object> parent = findParent(d);
-        if (parent == null) {
-            System.out.println("orphaned interface - how the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
-            return;
-        } else if (!d.isToplevel()) {
-            if (!parent.containsKey(KEY_INTERFACES)) {
-                parent.put(KEY_INTERFACES, new HashMap<String,Object>());
+        if (d.isToplevel() || d.isMember()) {
+            if (!d.isToplevel()) {
+                if (!parent.containsKey(KEY_INTERFACES)) {
+                    parent.put(KEY_INTERFACES, new HashMap<String,Object>());
+                }
+                parent = (Map<String,Object>)parent.get(KEY_INTERFACES);
             }
-            parent = (Map<String,Object>)parent.get(KEY_INTERFACES);
+        } else {
+            return;
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_INTERFACE);
@@ -467,13 +469,15 @@ public class MetamodelGenerator extends Visitor {
     public void visit(Tree.ObjectDefinition that) {
         com.redhat.ceylon.compiler.typechecker.model.Value d = that.getDeclarationModel();
         Map<String, Object> parent = findParent(d);
-        if (parent == null) {
-            System.out.println("orphaned object - how the hell did this happen? " + that);
-        } else if (!d.isToplevel()) {
-            if (!parent.containsKey(KEY_OBJECTS)) {
-                parent.put(KEY_OBJECTS, new HashMap<String, Object>());
+        if (d.isToplevel() || d.isMember()) {
+            if (!d.isToplevel()) {
+                if (!parent.containsKey(KEY_OBJECTS)) {
+                    parent.put(KEY_OBJECTS, new HashMap<String, Object>());
+                }
+                parent = (Map<String,Object>)parent.get(KEY_OBJECTS);
             }
-            parent = (Map<String,Object>)parent.get(KEY_OBJECTS);
+        } else {
+            return;
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put(KEY_METATYPE, METATYPE_OBJECT);
