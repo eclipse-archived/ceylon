@@ -39,8 +39,10 @@ import com.sun.tools.javac.processing.JavacProcessingEnvironment;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -352,11 +354,20 @@ public class RecognizedOptions {
         },
         new COption(CEYLONUSER,             "opt.arg.value",     "opt.ceylonuser"),
         new COption(CEYLONPASS,             "opt.arg.value",     "opt.ceylonpass"),
-        new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"),
+        new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                if(options != null)
+                    options.addMulti(SOURCEPATH, arg);
+                return false;
+            }
+        },
         new COption(CEYLONSOURCEPATH,       "opt.arg.directory", "opt.ceylonsourcepath"){
             @Override
             public boolean process(Options options, String option, String arg) {
-                return super.process(options, "-sourcepath", arg);
+                if(options != null)
+                    options.addMulti(SOURCEPATH, arg);
+                return false;
             }
         },
         new Option(BOOTCLASSPATH,          "opt.arg.path",      "opt.bootclasspath") {
@@ -694,17 +705,20 @@ public class RecognizedOptions {
                     if (!f.exists()) {
                         // -sourcepath not -src because the COption for 
                         // CEYLONSOURCEPATH puts it in the options map as -sourcepath
-                        String path = options.get("-sourcepath");
-                        if(path == null)
-                            path = "source";// default value
-                        // split the path
-                        for(String part : path.split("\\"+File.pathSeparator)){
-                            // try to see if it's a module folder
-                            File moduleFolder = new File(part, s.replace(".", File.separator));
-                            if (moduleFolder.isDirectory()) {
-                                // A Ceylon module name that ends with .ceylon or .java
-                                helper.addClassName(s);
-                                return false;
+                        List<String> sourcePaths = options.getMulti("-sourcepath");
+                        if(sourcePaths.isEmpty())
+                            sourcePaths = Arrays.asList("source");// default value
+                        // walk every path arg
+                        for(String sourcePath : sourcePaths){
+                            // split the path
+                            for(String part : sourcePath.split("\\"+File.pathSeparator)){
+                                // try to see if it's a module folder
+                                File moduleFolder = new File(part, s.replace(".", File.separator));
+                                if (moduleFolder.isDirectory()) {
+                                    // A Ceylon module name that ends with .ceylon or .java
+                                    helper.addClassName(s);
+                                    return false;
+                                }
                             }
                         }
 

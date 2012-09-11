@@ -29,8 +29,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Collection;
@@ -431,12 +433,16 @@ public class Paths {
     }
 
     private Path computeSourcePath() {
-        String sourcePathArg = options.get(SOURCEPATH);
+        List<String> sourcePathArgs = options.getMulti(SOURCEPATH);
         // Ceylon: default source path
-        if (sourcePathArg == null)
-            sourcePathArg = "source";
+        if (sourcePathArgs.isEmpty())
+            sourcePathArgs = Arrays.asList("source");
 
-        return new Path().addFiles(sourcePathArg);
+        Path path = new Path();
+        for(String pathArg : sourcePathArgs){
+            path.addFiles(pathArg);
+        }
+        return path;
     }
 
     private Path computeAnnotationProcessorPath() {
