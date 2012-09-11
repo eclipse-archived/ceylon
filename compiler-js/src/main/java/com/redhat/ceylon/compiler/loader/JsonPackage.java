@@ -27,9 +27,10 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Package {
 
-    //Ugly hack to have a ref to IdentifiableObject at hand
+    //Ugly hack to have a ref to IdentifiableObject at hand, to use as implicit supertype of classes
     private final static Map<String,Object> idobj = new HashMap<String, Object>();
-    private final static Map<String,Object> idifc = new HashMap<String, Object>();
+    //This is to use as the implicit supertype of interfaces
+    private final static Map<String,Object> objclass = new HashMap<String, Object>();
     private Map<String,Object> model;
     private final Unit unit = new Unit();
     private final String pkgname;
@@ -39,9 +40,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         idobj.put(MetamodelGenerator.KEY_NAME, "IdentifiableObject");
         idobj.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
         idobj.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
-        idifc.put(MetamodelGenerator.KEY_NAME, "Identifiable");
-        idifc.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
-        idifc.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
+        objclass.put(MetamodelGenerator.KEY_NAME, "Object");
+        objclass.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
+        objclass.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
     }
     public JsonPackage(String pkgname) {
         this.pkgname = pkgname;
@@ -334,9 +335,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         t.setName(name);
         t.setUnit(unit);
         setDefaultSharedActualFormal(t, m);
-        if (!(pkgname.equals("ceylon.language") && name.equals("Identifiable"))) {
-            t.setExtendedType(getTypeFromJson(idifc, null));
-        }
+        t.setExtendedType(getTypeFromJson(objclass, null));
         unit.addDeclaration(t);
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), t, existing);
