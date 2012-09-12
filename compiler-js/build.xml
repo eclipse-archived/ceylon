@@ -45,6 +45,7 @@
 
     <path id="test.run.classpath">
         <pathelement path="${antlr.lib}"/>
+        <pathelement path="${json.lib}" />
         <pathelement path="${ceylon.common.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
@@ -70,7 +71,7 @@
                 <pathelement path="${ceylon.typechecker.lib}" />
                 <pathelement path="${ceylon.module-resolver.lib}" />
                 <pathelement path="${ceylon.compiler.lib}" />
-                <pathelement path="lib/json-smart-1.1.1.jar" />
+                <pathelement path="${json.lib}" />
             </classpath>
             <include name="**/*.java" />
         </javac>
