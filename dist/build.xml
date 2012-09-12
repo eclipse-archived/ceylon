@@ -431,13 +431,18 @@ or you can go straight to the package building:
         <fail unless="projects.base.dir" />
         <fail unless="project.item.name" />
         <if>
-            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <available file="${projects.base.dir}/${project.item.name}/.git/ceylon-update" type="file" />
             <then>
+                <exec executable="${projects.base.dir}/${project.item.name}/.git/ceylon-update"
+                      dir="${projects.base.dir}/${project.item.name}" failonerror="no">
+                </exec>
+            </then>
+            <else>
                 <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="no">
                     <arg value="pull"/>
                     <arg value="--rebase"/>
                 </exec>
-            </then>
+            </else>
         </if>
     </target>
 
