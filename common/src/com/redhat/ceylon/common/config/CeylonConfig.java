@@ -10,20 +10,24 @@ public class CeylonConfig {
     private HashMap<String, HashSet<String>> sectionNames;
     private HashMap<String, HashSet<String>> optionNames;
     
-    private static CeylonConfig instance;
+    private volatile static CeylonConfig instance;
     
     public static CeylonConfig get() {
         if (instance == null) {
-            try {
-                instance = ConfigParser.loadUserConfig();
-                try {
-                    CeylonConfig local = ConfigParser.loadLocalConfig(new File("."));
-                    instance.merge(local);
-                } catch (IOException e) {
-                    // Just ignore any errors
+            synchronized (CeylonConfig.class) {
+                if (instance == null) {
+                    try {
+                        instance = ConfigParser.loadUserConfig();
+                        try {
+                            CeylonConfig local = ConfigParser.loadLocalConfig(new File("."));
+                            instance.merge(local);
+                        } catch (IOException e) {
+                            // Just ignore any errors
+                        }
+                    } catch (IOException e) {
+                        instance = new CeylonConfig();
+                    }
                 }
-            } catch (IOException e) {
-                instance = new CeylonConfig();
             }
         }
         return instance;
