@@ -38,10 +38,10 @@ public class Stitcher {
                         tcb.addSrcDirectory(new File("../ceylon.language/src"));
                         TypeChecker tc = tcb.getTypeChecker();
                         tc.process();
-                        MetamodelGenerator mmg = null;
+                        MetamodelVisitor mmg = null;
                         for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
                             if (mmg == null) {
-                                mmg = new MetamodelGenerator(pu.getPackage().getModule());
+                                mmg = new MetamodelVisitor(pu.getPackage().getModule());
                             }
                             pu.getCompilationUnit().visit(mmg);
                         }

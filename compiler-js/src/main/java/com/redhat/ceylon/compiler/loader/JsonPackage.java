@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.js.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -114,7 +113,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         cls.setContainer(parent);
         cls.setName(name);
         cls.setUnit(unit);
-        unit.addDeclaration(cls);
+        if (parent == this) {
+            unit.addDeclaration(cls);
+        }
         //Type parameters are about the first thing we need to load
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), cls, existing);
@@ -129,13 +130,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
         if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
             cls.setSelfType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_SELF_TYPE), allparms));
-            cls.getSelfType().getDeclaration().setContainer(cls);
-            for (TypeParameter tp : tparms) {
-                if (tp.getName().equals(cls.getSelfType().getDeclaration().getName())) {
-                    tp.setSelfTypedDeclaration(cls.getSelfType().getDeclaration());
-                    tp.setSelfType(cls.getSelfType());
-                }
-            }
         }
 
         ParameterList plist = parseParameters((List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_PARAMS),
@@ -336,7 +330,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         t.setUnit(unit);
         setDefaultSharedActualFormal(t, m);
         t.setExtendedType(getTypeFromJson(objclass, null));
-        unit.addDeclaration(t);
+        if (parent == this) {
+            unit.addDeclaration(t);
+        }
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), t, existing);
         if (tparms != null) {
@@ -345,13 +341,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         final List<TypeParameter> allparms = JsonPackage.merge(existing, tparms);
         if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
             t.setSelfType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_SELF_TYPE), allparms));
-            t.getSelfType().getDeclaration().setContainer(t);
-            for (TypeParameter tp : tparms) {
-                if (tp.getName().equals(t.getSelfType().getDeclaration().getName())) {
-                    tp.setSelfTypedDeclaration(t.getSelfType().getDeclaration());
-                    tp.setSelfType(t.getSelfType());
-                }
-            }
         }
         if (m.containsKey("of")) {
             t.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.get("of"), allparms));
@@ -404,7 +393,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             type.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), existing));
         }
         obj.setType(type.getType());
-        return obj.getTypeDeclaration();
+        return type;//obj.getTypeDeclaration();
     }
 
     /** Looks up a type from model data. */

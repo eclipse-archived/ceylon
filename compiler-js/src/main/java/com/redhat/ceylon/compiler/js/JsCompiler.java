@@ -55,9 +55,9 @@ public class JsCompiler {
         private final File f = File.createTempFile("jsout", ".tmp");
         private final Writer w = new FileWriter(f);
         private final Set<String> s = new HashSet<String>();
-        private final MetamodelGenerator mmg;
+        private final MetamodelVisitor mmg;
         private JsOutput(Module m) throws IOException {
-            mmg = new MetamodelGenerator(m);
+            mmg = new MetamodelVisitor(m);
         }
         Writer getWriter() { return w; }
         File close() throws IOException {

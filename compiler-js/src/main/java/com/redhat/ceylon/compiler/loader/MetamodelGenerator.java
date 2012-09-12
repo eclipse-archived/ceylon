@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.js;
+package com.redhat.ceylon.compiler.loader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,13 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -31,7 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
  * 
  * @author Enrique Zamudio
  */
-public class MetamodelGenerator extends Visitor {
+public class MetamodelGenerator {
 
     public static final String KEY_CLASSES      = "$c";
     public static final String KEY_INTERFACES   = "$i";
@@ -273,17 +271,8 @@ public class MetamodelGenerator extends Visitor {
         return null;
     }
 
-    @Override public void visit(Tree.MethodDeclaration that) {
-        encodeMethod(that.getDeclarationModel());
-    }
-
-    /** Create and store the model of a method definition. */
-    @Override public void visit(Tree.MethodDefinition that) {
-        encodeMethod(that.getDeclarationModel());
-    }
-
     @SuppressWarnings("unchecked")
-    private void encodeMethod(Method d) {
+    public void encodeMethod(Method d) {
         Map<String, Object> parent;
         if (d.isToplevel() || d.isMember()) {
             parent = findParent(d);
@@ -340,14 +329,12 @@ public class MetamodelGenerator extends Visitor {
 
     /** Create and store the metamodel info for an attribute. */
     @SuppressWarnings("unchecked")
-    @Override public void visit(Tree.AttributeDeclaration that) {
+    public void encodeAttribute(Value d) {
         Map<String, Object> m = new HashMap<String, Object>();
-        Value d = that.getDeclarationModel();
         Map<String, Object> parent;
         if (d.isToplevel() || d.isMember()) {
             parent = findParent(d);
             if (parent == null) {
-                System.out.println("orphaned attribute - How the hell did this happen? " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
             if (!d.isToplevel()) {
@@ -362,18 +349,16 @@ public class MetamodelGenerator extends Visitor {
         }
         m.put(KEY_NAME, d.getName());
         m.put(KEY_METATYPE, METATYPE_ATTRIBUTE);
-        m.put(KEY_TYPE, typeMap(that.getType().getTypeModel()));
+        m.put(KEY_TYPE, typeMap(d.getType()));
         encodeSharedActualFormalDefault(d, m);
         if (d.isVariable()) {
             m.put("var", "1");
         }
         parent.put(d.getName(), m);
-        super.visit(that);
     }
 
-    @Override @SuppressWarnings("unchecked")
-    public void visit(Tree.ClassDefinition that) {
-        com.redhat.ceylon.compiler.typechecker.model.Class d = that.getDeclarationModel();
+    @SuppressWarnings("unchecked")
+    public void encodeClass(com.redhat.ceylon.compiler.typechecker.model.Class d) {
         Map<String, Object> parent = findParent(d);
         if (d.isToplevel() || d.isMember()) {
             if (!d.isToplevel()) {
@@ -423,12 +408,10 @@ public class MetamodelGenerator extends Visitor {
             m.put("$anon", "1");
         }
         parent.put(d.getName(), m);
-        super.visit(that);
     }
 
-    @Override @SuppressWarnings("unchecked")
-    public void visit(Tree.InterfaceDefinition that) {
-        com.redhat.ceylon.compiler.typechecker.model.Interface d = that.getDeclarationModel();
+    @SuppressWarnings("unchecked")
+    public void encodeInterface(Interface d) {
         Map<String, Object> parent = findParent(d);
         if (d.isToplevel() || d.isMember()) {
             if (!d.isToplevel()) {
@@ -462,12 +445,10 @@ public class MetamodelGenerator extends Visitor {
             m.put(ANN_SHARED, "1");
         }
         parent.put(d.getName(), m);
-        super.visit(that);
     }
 
-    @Override @SuppressWarnings("unchecked")
-    public void visit(Tree.ObjectDefinition that) {
-        com.redhat.ceylon.compiler.typechecker.model.Value d = that.getDeclarationModel();
+    @SuppressWarnings("unchecked")
+    public void encodeObject(Value d) {
         Map<String, Object> parent = findParent(d);
         if (d.isToplevel() || d.isMember()) {
             if (!d.isToplevel()) {
@@ -492,18 +473,15 @@ public class MetamodelGenerator extends Visitor {
             m.put(ANN_SHARED, "1");
         }
         parent.put(d.getName(), m);
-        super.visit(that);
     }
 
-    @Override @SuppressWarnings("unchecked")
-    public void visit(Tree.AttributeGetterDefinition that) {
+    @SuppressWarnings("unchecked")
+    public void encodeGetter(Getter d) {
         Map<String, Object> m = new HashMap<String, Object>();
-        Getter d = that.getDeclarationModel();
         Map<String, Object> parent;
         if (d.isToplevel() || d.isMember()) {
             parent = findParent(d);
             if (parent == null) {
-                System.out.println("orphaned getter WTF!!! " + that.getLocation() + " @ " + that.getUnit().getFilename());
                 return;
             }
             if (!d.isToplevel()) {
@@ -518,10 +496,9 @@ public class MetamodelGenerator extends Visitor {
         }
         m.put(KEY_NAME, d.getName());
         m.put(KEY_METATYPE, METATYPE_GETTER);
-        m.put(KEY_TYPE, typeMap(that.getType().getTypeModel()));
+        m.put(KEY_TYPE, typeMap(d.getType()));
         encodeSharedActualFormalDefault(d, m);
         parent.put(d.getName(), m);
-        super.visit(that);
     }
 
     /** Encodes the list of types and puts them under the specified key in the map. */
