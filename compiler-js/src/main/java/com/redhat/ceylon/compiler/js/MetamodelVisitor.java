@@ -42,16 +42,19 @@ public class MetamodelVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassDefinition that) {
         gen.encodeClass(that.getDeclarationModel());
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.InterfaceDefinition that) {
         gen.encodeInterface(that.getDeclarationModel());
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.ObjectDefinition that) {
         gen.encodeObject(that.getDeclarationModel());
+        super.visit(that);
     }
 
     @Override
