@@ -34,6 +34,10 @@ public class JsIdentifierNames {
     private static Set<String> substitutedMemberNames = new HashSet<String>();
 
     static {
+        // Identifiers that have to be escaped because they are keywords in
+        // JavaScript. We don't have to include identifiers that are also
+        // keywords in Ceylon because no such identifiers can occur in Ceylon
+        // source code anyway.
         //reservedWords.add("abstract");
         reservedWords.add("boolean");
         //reservedWords.add("break");
@@ -94,6 +98,9 @@ public class JsIdentifierNames {
         //reservedWords.add("while");
         reservedWords.add("with");
 
+        // The names of the following members also have to be escaped to avoid
+        // collisions with members of native JavaScript classes in the
+        // implementation of the language module.
         substitutedMemberNames.add("ceylon.language.String.split");
         substitutedMemberNames.add("ceylon.language.String.replace");
         substitutedMemberNames.add("ceylon.language.Iterable.filter");
@@ -163,11 +170,13 @@ public class JsIdentifierNames {
     }
 
     /**
-     * Determine identifier to be used for the self variable of the given type.
+     * Determine the identifier to be used for the self variable of the given type.
      */
     public String self(TypeDeclaration decl) {
         String name = decl.getName();
         if (!(decl.isShared() || decl.isToplevel())) {
+            // The identifier will not be used outside the generated .js file,
+            // so we can simply disambiguate it with a numeric ID.
             name = String.format("%s$%d", name, getUID(decl));
         } else {
             name += nestingSuffix(decl);
@@ -184,10 +193,19 @@ public class JsIdentifierNames {
         return String.format("$$%s$", typeDecl.getQualifiedNameString().replace('.', '$'));
     }
 
+    /**
+     * Generates a disambiguation suffix if the given declaration is a nested
+     * declaration whose name may collide with other declarations.
+     * Currently this is required only for types which are nested inside other
+     * types.
+     */
     private String nestingSuffix(Declaration decl) {
         String suffix = "";
         if (decl instanceof TypeDeclaration) {
+            // The generated suffix consists of the names of the enclosing types.
             StringBuilder sb = new StringBuilder();
+            // Use the original declaration if it's an overriden class: an overriding
+            // member must have the same name as the member it overrides.
             Scope scope = originalDeclaration(decl).getContainer();
             while (scope instanceof TypeDeclaration) {
                 sb.append('$');
@@ -214,20 +232,34 @@ public class JsIdentifierNames {
         if (!((decl.isShared() || decl.isToplevel())
                 && (forGetterSetter || (decl instanceof Method)
                         || (decl instanceof ClassOrInterface)))) {
+            // The identifier will not be used outside the generated .js file,
+            // so we can simply disambiguate it with a numeric ID.
             name = uniqueVarNames.get(decl);
             if (name == null) {
+                // Add a "$" for member in prototype style, marking it as private:
+                // this will keep refining classes from unnecessarily creating a
+                // parent reference for that member (the refining class can't access
+                // it anyway).
                 String format = (prototypeStyle && decl.isMember()) ? "%s$%d$" : "%s$%d";
                 name = String.format(format, decl.getName(), getUID(decl));
             }
         } else {
+            // The identifier might be accessed from other .js files, so it must
+            // be reliably reproducible. In most cases simply using the orignal
+            // name is ok because otherwise it would result in a name collision in
+            // Ceylon too. We just have to take care of a few exceptions:
             String suffix = nestingSuffix(decl);
             if (suffix.length() > 0) {
+                // nested type
                 name += suffix;
             } else if (!forGetterSetter && reservedWords.contains(name)) {
+                // JavaScript keyword
                 name = '$' + name;
             } else {
                 Declaration refinedDecl = originalDeclaration(decl);
                 if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
+                    // member name that could collide with the name of a native
+                    // JavaScript class
                     name = '$' + name;
                 }
             }
