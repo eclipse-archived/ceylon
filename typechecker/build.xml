@@ -370,16 +370,14 @@
         </antcall>
     </target>
 
-    <target name="publish.typechecker" depends="dist,clean.repo,init.repo">
+    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal"
+            description="Publish type checker module to default repo">
+    </target>
+
+    <target name="publish-internal">
         <copy todir="${ceylon.typechecker.repo}">
             <fileset dir="${ceylon.typechecker.dist}"/>
         </copy>
-    </target>
-
-    <target name="publish"
-            depends="publish.typechecker"
-            description="Publish both type checker and ceylon.language template module">
-
     </target>
 
     <target name="test"
