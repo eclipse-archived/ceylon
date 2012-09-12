@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
@@ -31,10 +32,13 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     private final static Map<String,Object> idobj = new HashMap<String, Object>();
     //This is to use as the implicit supertype of interfaces
     private final static Map<String,Object> objclass = new HashMap<String, Object>();
+    //This is for type parameters
+    private final static Map<String,Object> voidclass = new HashMap<String, Object>();
     private Map<String,Object> model;
     private final Unit unit = new Unit();
     private final String pkgname;
     private boolean loaded = false;
+    private BottomType bottom;
 
     static {
         idobj.put(MetamodelGenerator.KEY_NAME, "IdentifiableObject");
@@ -43,6 +47,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         objclass.put(MetamodelGenerator.KEY_NAME, "Object");
         objclass.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
         objclass.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
+        voidclass.put(MetamodelGenerator.KEY_NAME, "Void");
+        voidclass.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
+        voidclass.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
     }
     public JsonPackage(String pkgname) {
         this.pkgname = pkgname;
@@ -62,11 +69,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             //Mark the language module as immediately available to bypass certain validations
             getModule().setAvailable(true);
             //Ugly ass hack - add Bottom to the model
-            Map<String,Object> bottom = new HashMap<String, Object>();
-            bottom.put(MetamodelGenerator.KEY_NAME, "Bottom");
-            bottom.put(MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS);
-            bottom.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
-            loadClass("Bottom", bottom, this, null);
+            bottom = new BottomType(unit);
+            bottom.setContainer(this);
+            bottom.setUnit(unit);
             System.out.println("marking langmod available - SHOULD HAPPEN ONLY ONCE");
         }
         setShared(model.get("$pkg-shared") != null);
@@ -206,13 +211,14 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 if (tp.containsKey(MetamodelGenerator.KEY_PACKAGE)) {
                     ProducedType subtype = getTypeFromJson(tp, allparms);
                     tparm.setExtendedType(subtype);
+                } else {
+                    tparm.setExtendedType(getTypeFromJson(voidclass, null));
                 }
-            } else if (tp.containsKey("comp")) {
-                //Es tipo union o interseccion
-                ProducedType subtype = getTypeFromJson(tp, allparms);
+            } else if (tp.containsKey(MetamodelGenerator.KEY_TYPES)) {
                 if (!("u".equals(tp.get("comp")) || "i".equals(tp.get("comp")))) {
                     throw new IllegalArgumentException("Only union or intersection types are allowed as 'comp'");
                 }
+                ProducedType subtype = getTypeFromJson(tp, allparms);
                 tparm.setName(subtype.getProducedTypeName());
                 tparm.setExtendedType(subtype);
             } else {
@@ -262,6 +268,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 param.setName((String)p.get(MetamodelGenerator.KEY_NAME));
                 param.setUnit(unit);
                 param.setDeclaration(owner);
+                owner.getMembers().add(param);
                 if (p.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
                     param.setType(getTypeFromJson((Map<String,Object>)p.get(MetamodelGenerator.KEY_TYPE), typeParameters));
                 } else {
@@ -298,6 +305,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         md.setType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE), allparms));
         md.addParameterList(parseParameters((List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_PARAMS),
                 md, allparms));
+        if (name.equals("setItem")) {
+            System.out.println(md.getQualifiedNameString() + " con " + md.getMembers());
+        } else if (name.equals("coalesce")) {
+            System.out.println("coalesce tipo " + md.getType());
+        }
         return md;
     }
 
@@ -371,6 +383,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         return t;
     }
 
+    /** Loads an object declaration, creating it if necessary, and returns its type declaration. */
     @SuppressWarnings("unchecked")
     private TypeDeclaration loadObject(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
         Declaration maybe = parent.getDirectMember(name, null);
@@ -381,13 +394,16 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         obj.setName(name);
         obj.setContainer(parent);
         setDefaultSharedActualFormal(obj, m);
-        unit.addDeclaration(obj);
         com.redhat.ceylon.compiler.typechecker.model.Class type = new com.redhat.ceylon.compiler.typechecker.model.Class();
         type.setName(name);
         setDefaultSharedActualFormal(type, m);
         type.setAnonymous(true);
         type.setUnit(unit);
         type.setContainer(parent);
+        if (parent == this) {
+            unit.addDeclaration(obj);
+            unit.addDeclaration(type);
+        }
         if (m.containsKey("super")) {
             type.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("super"), existing));
         } else {
@@ -397,7 +413,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             type.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), existing));
         }
         obj.setType(type.getType());
-        return type;//obj.getTypeDeclaration();
+        return type;
     }
 
     /** Looks up a type from model data, creating it if necessary. The returned type will have its
@@ -417,14 +433,14 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 rval = ut.getType();
             } else {
                 IntersectionType it = new IntersectionType(unit);
-                it.setCaseTypes(types);
+                it.setSatisfiedTypes(types);
                 rval = it.getType();
             }
         } else {
             String tname = (String)m.get(MetamodelGenerator.KEY_NAME);
             String pname = (String)m.get(MetamodelGenerator.KEY_PACKAGE);
             if (pname == null) {
-                //It's a ref to a type parameter
+                //Maybe it's a ref to a type parameter
                 for (TypeParameter typeParam : typeParams) {
                     if (typeParam.getName().equals(tname)) {
                         return typeParam.getType();
@@ -496,6 +512,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         @SuppressWarnings("unchecked")
         Map<String,Object> map = (Map<String,Object>)model.get(name);
         if (map == null) {
+            if ("Bottom".equals(name) && "ceylon.language".equals(pkgname)) {
+                return bottom;
+            }
             throw new IllegalStateException("Cannot find " + name + " in " + model.keySet());
         }
         String metatype = (String)map.get(MetamodelGenerator.KEY_METATYPE);
