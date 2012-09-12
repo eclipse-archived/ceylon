@@ -16,16 +16,24 @@ public class CeylonConfig {
         if (instance == null) {
             synchronized (CeylonConfig.class) {
                 if (instance == null) {
+                    instance = new CeylonConfig();
                     try {
-                        instance = ConfigParser.loadUserConfig();
-                        try {
-                            CeylonConfig local = ConfigParser.loadLocalConfig(new File("."));
-                            instance.merge(local);
-                        } catch (IOException e) {
-                            // Just ignore any errors
-                        }
+                        CeylonConfig system = ConfigParser.loadSystemConfig();
+                        instance.merge(system);
                     } catch (IOException e) {
-                        instance = new CeylonConfig();
+                        // Just ignore any errors
+                    }
+                    try {
+                        CeylonConfig user = ConfigParser.loadUserConfig();
+                        instance.merge(user);
+                    } catch (IOException e) {
+                        // Just ignore any errors
+                    }
+                    try {
+                        CeylonConfig local = ConfigParser.loadLocalConfig(new File("."));
+                        instance.merge(local);
+                    } catch (IOException e) {
+                        // Just ignore any errors
                     }
                 }
             }

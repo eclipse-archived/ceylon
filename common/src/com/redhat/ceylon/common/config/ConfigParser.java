@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import com.redhat.ceylon.common.FileUtil;
+
 public class ConfigParser {
     private File configFile;
     private File currentDir;
@@ -14,6 +16,20 @@ public class ConfigParser {
     private InputStream in;
     
     public static final String PROP_CEYLON_CONFIG_FILE = "ceylon.config";
+    
+    public static File findSystemConfig() throws IOException {
+        File configDir = FileUtil.getSystemConfigDir();
+        if (configDir != null) {
+            return new File(configDir, "config");
+        } else {
+            return null;
+        }
+    }
+    
+    public static CeylonConfig loadSystemConfig() throws IOException {
+        File configFile = findSystemConfig();
+        return (new ConfigParser(configFile)).parse(true);
+    }
     
     public static File findUserConfig() throws IOException {
         File configFile;
