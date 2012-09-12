@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class LinkRenderer {
     
@@ -264,7 +265,8 @@ public class LinkRenderer {
             }
         }
     
-        if (currentDecl != null) {
+        // we can't link to parameters yet
+        if (currentDecl != null && currentDecl instanceof Value == false) {
             if (currentDecl instanceof ClassOrInterface) {
                 processClassOrInterface((ClassOrInterface) currentDecl);
             } else {
