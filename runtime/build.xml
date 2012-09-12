@@ -134,7 +134,10 @@
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
     </target>
 
-    <target name="publish" depends="dist,clean.repo,init.repo">
+    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal">
+    </target>
+
+    <target name="publish-internal">
         <copy todir="${ceylon.runtime.repo}">
             <fileset dir="${ceylon.runtime.dist}"/>
         </copy>
