@@ -83,6 +83,10 @@ Some more basic ant tasks:
              inheritall="false"/>
     </target>
 
+    <target name="update-all" depends="siblings,git-update"
+            description="Updates sibling projects with latest code from git">
+    </target>
+
     <target name="release"
             description="Does a clean, get-code, local, package using the 
 sources tagged with the name as defined by ceylon.version in 
@@ -412,6 +416,28 @@ or you can go straight to the package building:
                     <arg value="git@github.com:ceylon/${project.item.name}.git"/>
                 </exec>
             </else>
+        </if>
+    </target>
+
+    <target name="git-update">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${modules}"
+                 target="git-update-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-update-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="no">
+                    <arg value="pull"/>
+                    <arg value="--rebase"/>
+                </exec>
+            </then>
         </if>
     </target>
 
