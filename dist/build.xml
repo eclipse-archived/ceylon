@@ -20,6 +20,7 @@
     <target name="help">
         <echo>Options for building a Ceylon distribution package:
     ant setup              - Sets up a new clean environment for development
+    ant publish-all        - Performs "ant clean publish" on all sibling projects
 
     ant release            - Does a clean, get-code, local, package
                              using the sources tagged with the name as
@@ -62,6 +63,15 @@ Some more basic ant tasks:
             description="Sets up a new clean environment for development">
     </target>
 
+    <target name="publish-all"
+            description="Publishes all sibling projects">
+        <property name="ceylon.repo.dir" value="${user.home}/.ceylon/repo"/>
+        <antcall target="publish-all-internal" />
+    </target>
+
+    <target name="publish-all-internal" depends="siblings,clean-projects,install-all">
+    </target>
+
     <target name="release"
             description="Does a clean, get-code, local, package using the 
 sources tagged with the name as defined by ceylon.version in 
@@ -84,6 +94,7 @@ Use this when NOT doing a release!">
     <target name="local"
             description="Builds using dependent projects in the ${projects.dir} directory.
 Used with another target such as 'package'.">
+        <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         <property name="projects.base.dir" value="${projects.dir}"/>
         <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
@@ -98,6 +109,7 @@ Used with another target such as 'package'.">
     <target name="siblings"
             description="Builds using dependent projects in existing sibling project folders.
 Used with another target such as 'package'">
+        <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
         <property name="projects.base.dir" value="${basedir}/.." />
         <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
         <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
@@ -224,20 +236,20 @@ Used with another target such as 'package'">
     <target name="install-compiler" 
           depends="install-typechecker, install-language">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
     </target>
 
     <target name="install-js" depends="install-compiler">
         <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
     </target>
 
     <target name="install-typechecker" 
             depends="install-cmr, install-language">
         <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
         <!--<copy todir="${dist.dir}/repo">
             <fileset dir="${ceylon-spec.dir}/build/dist">
@@ -247,19 +259,19 @@ Used with another target such as 'package'">
 
     <target name="install-language">
         <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
     </target>
 
     <target name="install-common">
         <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
     </target>
 
     <target name="install-cmr" depends="install-common">
         <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
 
         <copy todir="${dist.dir}/lib">
@@ -277,7 +289,7 @@ Used with another target such as 'package'">
 
     <target name="install-runtime" depends="install-cmr">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${dist.dir}/repo"/>
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
         <copy todir="${dist.dir}">
             <fileset dir="${ceylon-runtime.dir}/build/dist">
