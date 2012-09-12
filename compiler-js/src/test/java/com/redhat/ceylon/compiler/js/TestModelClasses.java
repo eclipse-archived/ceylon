@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import util.ModelUtils;
 
+import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 
 public class TestModelClasses {
@@ -20,11 +21,11 @@ public class TestModelClasses {
     @BeforeClass
     public static void initTests() {
         TestModelMethodsAndAttributes.initTypechecker();
-        MetamodelGenerator mmg = null;
+        MetamodelVisitor mmg = null;
         for (PhasedUnit pu : TestModelMethodsAndAttributes.tc.getPhasedUnits().getPhasedUnits()) {
             if (pu.getPackage().getModule().getNameAsString().equals("t2")) {
                 if (mmg == null) {
-                    mmg = new MetamodelGenerator(pu.getPackage().getModule());
+                    mmg = new MetamodelVisitor(pu.getPackage().getModule());
                 }
                 pu.getCompilationUnit().visit(mmg);
             }

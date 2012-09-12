@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -13,6 +12,7 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.js.JsCompiler;
+import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -26,13 +26,16 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 public class MainForJsTest {
     
     public static void main(String[] args) throws Exception {
-        Options opts = Options.parse(new ArrayList<String>(Arrays.asList("-out", "build/test/node_modules", "-module")));
-        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(Collections.<String>emptyList(),
+        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
+                "-rep", "build/runtime",
+                "-out", "build/test/node_modules", "-module")));
+        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(opts.getRepos(),
                 opts.getOutDir(), new JULLogger());
         System.out.println("Typechecking Ceylon test code...");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
-            .addSrcDirectory(new File("src/test/ceylon"))
-            .addSrcDirectory(new File("../ceylon.language/test"))
+            .addSrcDirectory(new File("src/test/ceylon/check/check.ceylon"))
+            //.addSrcDirectory(new File("../ceylon.language/test"))
+            .moduleManagerFactory(new JsModuleManagerFactory())
             .usageWarnings(false);
         tcb.setRepositoryManager(repoman);
         TypeChecker typeChecker = tcb.getTypeChecker();

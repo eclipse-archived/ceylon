@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +10,7 @@ import org.junit.Test;
 
 import util.ModelUtils;
 
+import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -33,11 +33,11 @@ public class TestModelMethodsAndAttributes {
     @BeforeClass
     public static void initModel() {
         initTypechecker();
-        MetamodelGenerator mmg = null;
+        MetamodelVisitor mmg = null;
         for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
             if (pu.getPackage().getModule().getNameAsString().equals("t1")) {
                 if (mmg == null) {
-                    mmg = new MetamodelGenerator(pu.getPackage().getModule());
+                    mmg = new MetamodelVisitor(pu.getPackage().getModule());
                 }
                 pu.getCompilationUnit().visit(mmg);
             }
