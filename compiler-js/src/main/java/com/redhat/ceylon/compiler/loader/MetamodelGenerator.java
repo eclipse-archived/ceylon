@@ -420,16 +420,14 @@ public class MetamodelGenerator {
         }
         //self type
         if (d.getSelfType() != null) {
-            m.put(KEY_SELF_TYPE, typeMap(d.getSelfType()));
+            m.put(KEY_SELF_TYPE, d.getSelfType().getDeclaration().getName());
         }
         //satisfies
         encodeTypes(d.getSatisfiedTypes(), m, "satisfies");
         //Case types
         encodeTypes(d.getCaseTypes(), m, "of");
         //Certain annotations
-        if (d.isShared()) {
-            m.put(ANN_SHARED, "1");
-        }
+        encodeSharedActualFormalDefault(d, m);
         parent.put(d.getName(), m);
     }
 
