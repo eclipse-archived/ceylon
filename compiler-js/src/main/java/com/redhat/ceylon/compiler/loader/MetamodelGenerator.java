@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -247,6 +248,9 @@ public class MetamodelGenerator {
                 if (parm.isSequenced()) {
                     pm.put("seq", "1");
                 }
+                if (parm.isDefaulted()) {
+                    pm.put(ANN_DEFAULT, "1");
+                }
                 if (parm.getTypeDeclaration().getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
                     pm.put(KEY_TYPE, parm.getTypeDeclaration().getName());
                 } else {
@@ -254,8 +258,23 @@ public class MetamodelGenerator {
                 }
                 if (parm instanceof ValueParameter) {
                     pm.put("$pt", "v");
+                    if (((ValueParameter) parm).isHidden()) {
+                        pm.put("$hdn", "1");
+                    }
                 } else if (parm instanceof FunctionalParameter) {
                     pm.put("$pt", "f");
+                    List<List<Map<String, Object>>> _paramLists = new ArrayList<List<Map<String,Object>>>(
+                            ((FunctionalParameter)parm).getParameterLists().size());
+                    for (ParameterList subplist : ((FunctionalParameter)parm).getParameterLists()) {
+                        List<Map<String,Object>> params = parameterListMap(subplist);
+                        if (params == null) {
+                            params = Collections.emptyList();
+                        }
+                        _paramLists.add(params);
+                    }
+                    if (_paramLists.size() > 1 || !_paramLists.get(0).isEmpty()) {
+                        pm.put(KEY_PARAMS, _paramLists);
+                    }
                 } else {
                     throw new IllegalStateException("Unknown parameter type " + parm.getClass().getName());
                 }
@@ -296,30 +315,19 @@ public class MetamodelGenerator {
         if (tpl != null) {
             m.put(KEY_TYPE_PARAMS, tpl);
         }
-        Map<String, Object> returnType = typeMap(d.getType());
-        if (d.getParameterLists().size() > 1) {
-            //Calculate return type for nested functions
-            for (int i = d.getParameterLists().size()-1; i>0; i--) {
-                ParameterList plist = d.getParameterLists().get(i);
-                List<Map<String, Object>> paramtypes = new ArrayList<Map<String,Object>>(plist.getParameters().size()+1);
-                paramtypes.add(returnType);
-                for (Parameter p : plist.getParameters()) {
-                    paramtypes.add(typeMap(p.getType()));
-                }
-                returnType = new HashMap<String, Object>();
-                returnType.put(KEY_NAME, "Callable");
-                returnType.put(KEY_PACKAGE, "ceylon.language");
-                returnType.put(KEY_MODULE, "ceylon.language");
-                returnType.put(KEY_TYPE_PARAMS, paramtypes);
+        m.put(KEY_TYPE, typeMap(d.getType()));
+        List<List<Map<String, Object>>> paramLists = new ArrayList<List<Map<String,Object>>>(d.getParameterLists().size());
+        for (ParameterList plist : d.getParameterLists()) {
+            List<Map<String,Object>> params = parameterListMap(plist);
+            if (params == null) {
+                params = Collections.emptyList();
             }
+            paramLists.add(params);
         }
-        m.put(KEY_TYPE, returnType);
+        if (paramLists.size() > 1 || !paramLists.get(0).isEmpty()) {
+            m.put(KEY_PARAMS, paramLists);
+        }
 
-        //Now the parameters
-        List<Map<String,Object>> parms = parameterListMap(d.getParameterLists().get(0));
-        if (parms != null && parms.size() > 0) {
-            m.put(KEY_PARAMS, parms);
-        }
         //Certain annotations
         encodeSharedActualFormalDefault(d, m);
         parent.put(d.getName(), m);
@@ -328,33 +336,11 @@ public class MetamodelGenerator {
     }
 
     /** Create and store the metamodel info for an attribute. */
-    @SuppressWarnings("unchecked")
     public void encodeAttribute(Value d) {
-        Map<String, Object> m = new HashMap<String, Object>();
-        Map<String, Object> parent;
-        if (d.isToplevel() || d.isMember()) {
-            parent = findParent(d);
-            if (parent == null) {
-                return;
-            }
-            if (!d.isToplevel()) {
-                if (!parent.containsKey(KEY_ATTRIBUTES)) {
-                    parent.put(KEY_ATTRIBUTES, new HashMap<String,Object>());
-                }
-                parent = (Map<String,Object>)parent.get(KEY_ATTRIBUTES);
-            }
-        } else {
-            //Ignore attributes inside control blocks, methods, etc.
-            return;
-        }
-        m.put(KEY_NAME, d.getName());
-        m.put(KEY_METATYPE, METATYPE_ATTRIBUTE);
-        m.put(KEY_TYPE, typeMap(d.getType()));
-        encodeSharedActualFormalDefault(d, m);
-        if (d.isVariable()) {
+        Map<String, Object> m = encodeAttributeOrGetter(d);
+        if (m != null && d.isVariable()) {
             m.put("var", "1");
         }
-        parent.put(d.getName(), m);
     }
 
     @SuppressWarnings("unchecked")
@@ -476,13 +462,13 @@ public class MetamodelGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    public void encodeGetter(Getter d) {
+    private Map<String, Object> encodeAttributeOrGetter(MethodOrValue d) {
         Map<String, Object> m = new HashMap<String, Object>();
         Map<String, Object> parent;
         if (d.isToplevel() || d.isMember()) {
             parent = findParent(d);
             if (parent == null) {
-                return;
+                return null;
             }
             if (!d.isToplevel()) {
                 if (!parent.containsKey(KEY_ATTRIBUTES)) {
@@ -492,13 +478,18 @@ public class MetamodelGenerator {
             }
         } else {
             //Ignore attributes inside control blocks, methods, etc.
-            return;
+            return null;
         }
         m.put(KEY_NAME, d.getName());
-        m.put(KEY_METATYPE, METATYPE_GETTER);
+        m.put(KEY_METATYPE, d instanceof Getter ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(d.getType()));
         encodeSharedActualFormalDefault(d, m);
         parent.put(d.getName(), m);
+        return m;
+    }
+
+    public void encodeGetter(Getter d) {
+        encodeAttributeOrGetter(d);
     }
 
     /** Encodes the list of types and puts them under the specified key in the map. */
