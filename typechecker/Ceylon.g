@@ -1187,8 +1187,13 @@ base returns [Primary primary]
         if ($typeReference.typeArgumentList!=null)
             bte.setTypeArguments($typeReference.typeArgumentList);
         $primary=bte; }
-    | memberReference
+    | (typeName SUPER_OP)? memberReference
       { BaseMemberExpression bme = new BaseMemberExpression(null);
+        if ($typeName.identifier!=null) {
+            SupertypeQualifier s = new SupertypeQualifier($SUPER_OP);
+            s.setIdentifier($typeName.identifier);
+            bme.setSupertypeQualifier(s);
+        }
         bme.setIdentifier($memberReference.identifier);
         bme.setTypeArguments( new InferredTypeArguments(null) );
         if ($memberReference.typeArgumentList!=null)
@@ -3312,6 +3317,10 @@ AND_ASSIGN_OP
 
 OR_ASSIGN_OP
     :   '||='
+    ;
+
+SUPER_OP
+    :   '::'
     ;
 
 COMPILER_ANNOTATION

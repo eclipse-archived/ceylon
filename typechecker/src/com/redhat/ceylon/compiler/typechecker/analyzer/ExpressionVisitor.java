@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -2709,7 +2710,31 @@ public class ExpressionVisitor extends Visitor {
         /*if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
-        TypedDeclaration member = getBaseDeclaration(that, that.getSignature());
+        TypedDeclaration member;
+        SupertypeQualifier sq = that.getSupertypeQualifier();
+		if (sq==null) {
+        	member = getBaseDeclaration(that, that.getSignature());
+        }
+        else {
+        	String typeName = name(sq.getIdentifier());
+			Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null);
+			if (dec instanceof TypeDeclaration) {
+				ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+				if (ci.getType().getSupertype((TypeDeclaration) dec)==null) {
+					sq.addError("not a supertype of containing class or interface: " +
+							ci.getName() + " does not inherit " + dec.getName());
+				}
+				member = (TypedDeclaration) dec.getMember(name(that.getIdentifier()), that.getSignature());
+				if (member.isFormal()) {
+					sq.addError("supertype member is declared formal: " + 
+							typeName + "::" + member.getName());
+				}
+			}
+			else {
+				sq.addError("qualifying supertype does not exist: " + typeName);
+				member = null;
+			}
+        }
         if (member==null) {
             that.addError("method or attribute does not exist or is ambiguous: " +
                     name(that.getIdentifier()), 100);
