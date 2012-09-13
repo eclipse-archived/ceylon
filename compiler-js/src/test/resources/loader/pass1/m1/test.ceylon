@@ -4,4 +4,3 @@ shared interface TestInterface1 {}
 
 shared class TestClass1() satisfies TestInterface1 {
 }
-
