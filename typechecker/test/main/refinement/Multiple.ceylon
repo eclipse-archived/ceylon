@@ -2,11 +2,13 @@ interface Multiple {
     interface Top {
         shared formal String name;
         shared default class Inner() {}
+        shared default String getName() { return name; }
     }
     interface X satisfies Top {
         shared actual default String name { return "X"; }
         shared actual default class Inner() 
                 extends Top::Inner() {}
+        shared actual String getName() { return "X"; }
     }
     interface Y satisfies Top {
         shared actual default String name { return "Y"; }
@@ -29,6 +31,11 @@ interface Multiple {
     }
     interface Silly { shared String name { return "Gavin"; }  }
     class Broken() satisfies X & Y {
+        void method() {
+            X::getName();
+            @error Y::getName();
+            @error Top::getName();
+        }
         shared actual String name {
             @error return Top::name;
         }
@@ -42,6 +49,28 @@ interface Multiple {
             @error print(Y::name);
             @error print(Top::name);
             @error print(Silly::name);
+        }
+    }
+    abstract class MyList() satisfies List<Integer> {
+        shared actual String string {
+            return List::string;
+        }
+        shared actual Integer hash {
+            return List::hash;
+        }
+        shared actual Boolean equals(Object that) {
+            return List::equals(that);
+        }
+    }
+    abstract class MyAltList() satisfies List<Integer> {
+        shared actual String string {
+            @error return IdentifiableObject::string;
+        }
+        shared actual Integer hash {
+            @error return Object::hash;
+        }
+        shared actual Boolean equals(Object that) {
+            return Identifiable::equals(that);
         }
     }
 }

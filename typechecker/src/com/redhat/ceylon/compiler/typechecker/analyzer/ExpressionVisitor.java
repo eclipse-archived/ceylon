@@ -2718,8 +2718,25 @@ public class ExpressionVisitor extends Visitor {
 			}
 			Declaration member = dec.getMember(name(that.getIdentifier()), that.getSignature());
 			if (member!=null && member.isFormal()) {
-				sq.addError("supertype member is declared formal: " + 
+				that.addError("supertype member is declared formal: " + 
 						typeName + "::" + member.getName());
+			}
+			Declaration etm = ci.getExtendedTypeDeclaration()
+					.getMember(member.getName(), that.getSignature());
+			if (etm!=null && !etm.equals(member) && etm.refines(member)) {
+				that.addError("inherited member is refined by intervening superclass: " + 
+						((TypeDeclaration) etm.getContainer()).getName() + 
+						" refines " + member.getName() + " declared by " + 
+						((TypeDeclaration) member.getContainer()).getName());
+			}
+			for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
+				Declaration stm = td.getMember(member.getName(), that.getSignature());
+				if (stm!=null && !stm.equals(member) && stm.refines(member)) {
+					that.addError("inherited member is refined by intervening superinterface: " + 
+							((TypeDeclaration) stm.getContainer()).getName() + 
+							" refines " + member.getName() + " declared by " + 
+							((TypeDeclaration) member.getContainer()).getName());
+				}
 			}
 			return member;
 		}
