@@ -71,19 +71,21 @@ public class ConfigParser {
     }
     
     public static File findLocalConfig(File dir) throws IOException {
-        File userConfig1 = (new File(FileUtil.getDefaultUserDir(), "config")).getCanonicalFile();
-        File userConfig2 = (new File(FileUtil.getUserDir(), "config")).getCanonicalFile();
-        dir = dir.getCanonicalFile();
-        while (dir != null) {
-            File configFile = new File(dir, ".ceylon/config");
-            if (configFile.equals(userConfig1) || configFile.equals(userConfig2)) {
-                // We stop if we reach $HOME/.ceylon/config or whatever is defined by -Dceylon.user.config
-                break;
+        if (dir != null) {
+            File userConfig1 = (new File(FileUtil.getDefaultUserDir(), "config")).getCanonicalFile();
+            File userConfig2 = (new File(FileUtil.getUserDir(), "config")).getCanonicalFile();
+            dir = dir.getCanonicalFile();
+            while (dir != null) {
+                File configFile = new File(dir, ".ceylon/config");
+                if (configFile.equals(userConfig1) || configFile.equals(userConfig2)) {
+                    // We stop if we reach $HOME/.ceylon/config or whatever is defined by -Dceylon.user.config
+                    break;
+                }
+                if (configFile.isFile()) {
+                    return configFile;
+                }
+                dir = dir.getParentFile();
             }
-            if (configFile.isFile()) {
-                return configFile;
-            }
-            dir = dir.getParentFile();
         }
         // We didn't find any local config file
         return null;
@@ -92,7 +94,9 @@ public class ConfigParser {
     public static CeylonConfig loadLocalConfig(File dir) throws IOException {
         File configFile = findLocalConfig(dir);
         if (configFile != null) {
-            return (new ConfigParser(configFile)).parse(true);
+            CeylonConfig parentConfig = loadLocalConfig(dir.getCanonicalFile().getParentFile());
+            CeylonConfig localConfig = new ConfigParser(configFile).parse(true);
+            return parentConfig.merge(localConfig);
         } else {
             // No config file, just return an empty CeylonConfig
             return new CeylonConfig();
