@@ -122,15 +122,15 @@ public class CeylonConfig {
         }
     }
     
-    public boolean isOptionDefined(String key) {
+    public synchronized boolean isOptionDefined(String key) {
         return options.containsKey(key);
     }
     
-    public String[] getOptionValues(String key) {
+    public synchronized String[] getOptionValues(String key) {
         return options.get(key);
     }
     
-    public void setOptionValues(String key, String[] values) {
+    public synchronized void setOptionValues(String key, String[] values) {
         if (values != null && values.length > 0) {
             options.put(key, values);
             initLookupKey(key);
@@ -201,7 +201,7 @@ public class CeylonConfig {
         setOption(key, Boolean.toString(value));
     }
 
-    public void removeOption(String key) {
+    public synchronized void removeOption(String key) {
         options.remove(key);
         
         Key k = new Key(key);
@@ -211,7 +211,7 @@ public class CeylonConfig {
         }
     }
     
-    public boolean isSectionDefined(String section) {
+    public synchronized boolean isSectionDefined(String section) {
         return sectionNames.containsKey(section);
     }
     
@@ -224,7 +224,7 @@ public class CeylonConfig {
      * And will return all section names if being passed null.
      * @return An array of the requested section names
      */
-    public String[] getSectionNames(String section) {
+    public synchronized String[] getSectionNames(String section) {
         HashSet<String> sn;
         if (section != null) {
             sn = sectionNames.get(section);
@@ -236,7 +236,7 @@ public class CeylonConfig {
         return sn.toArray(res);
     }
     
-    public String[] getOptionNames(String section) {
+    public synchronized String[] getOptionNames(String section) {
         if (section == null) {
             String[] res = new String[options.keySet().size()];
             return options.keySet().toArray(res);
@@ -255,7 +255,7 @@ public class CeylonConfig {
         }
     }
     
-    public CeylonConfig merge(CeylonConfig local) {
+    public synchronized CeylonConfig merge(CeylonConfig local) {
         for (String key : local.getOptionNames(null)) {
             String[] values = local.getOptionValues(key);
             setOptionValues(key, values);
