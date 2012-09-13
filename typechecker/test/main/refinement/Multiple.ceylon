@@ -35,5 +35,13 @@ interface Multiple {
         shared actual String string {
             @error return Silly::name;
         }
+        @error shared actual class Inner() 
+                extends Top::Inner() {}
+        class My() {
+            @error X::Inner();
+            @error print(Y::name);
+            @error print(Top::name);
+            @error print(Silly::name);
+        }
     }
 }
