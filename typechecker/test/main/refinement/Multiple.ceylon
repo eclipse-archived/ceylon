@@ -5,14 +5,16 @@ interface Multiple {
     }
     interface X satisfies Top {
         shared actual default String name { return "X"; }
-        //shared actual default class Inner() extends Top::Inner() {}
+        shared actual default class Inner() 
+                extends Top::Inner() {}
     }
     interface Y satisfies Top {
         shared actual default String name { return "Y"; }
     }
     class C() satisfies X & Y {
-        void m() {
-            Inner inn = X::Inner();
+        X::Inner inner() {
+            X::Inner inn = X::Inner();
+            return inn;
         }
         shared actual String name {
             return X::name;
@@ -20,10 +22,10 @@ interface Multiple {
         shared actual String string {
             return Y::name;
         }
-        /*shared actual class Inner() 
+        shared actual class Inner() 
                 extends X::Inner() {
-            X::Inner();
-        }*/
+            //@type["Multiple.X.Inner"] X::Inner();
+        }
     }
     interface Silly { shared String name { return "Gavin"; }  }
     class Broken() satisfies X & Y {

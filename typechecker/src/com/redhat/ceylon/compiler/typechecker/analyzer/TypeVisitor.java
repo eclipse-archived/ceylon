@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -420,10 +421,46 @@ public class TypeVisitor extends Visitor {
                 .getProducedType(null, args));
     }
     
+    //TODO: copy/pasted from ExpressionVisitor
+	private static TypeDeclaration getSupertypeDeclaration(Tree.BaseType that, 
+			SupertypeQualifier sq) {
+		String typeName = name(sq.getIdentifier());
+		Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null);
+		if (dec instanceof TypeDeclaration) {
+			/*ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+			if (ci.getType().getSupertype((TypeDeclaration) dec)==null) {
+				sq.addError("not a supertype of containing class or interface: " +
+						ci.getName() + " does not inherit " + dec.getName());
+			}*/
+			Declaration member = dec.getMember(name(that.getIdentifier()), null);
+			if (member!=null && member.isFormal()) {
+				sq.addError("supertype member is declared formal: " + 
+						typeName + "::" + member.getName());
+			}
+			if (member instanceof TypeDeclaration) {
+				return (TypeDeclaration) member;
+			}
+			else{
+				return null;
+			}
+		}
+		else {
+			sq.addError("qualifying supertype does not exist: " + typeName);
+			return null;
+		}
+	}
+
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        TypeDeclaration type = getBaseDeclaration(that);
+        TypeDeclaration type;
+        SupertypeQualifier sq = that.getSupertypeQualifier();
+		if (sq==null) {
+        	type = getBaseDeclaration(that);
+        }
+        else {
+        	type = getSupertypeDeclaration(that, sq);
+        }
         if (type==null) {
             that.addError("type declaration does not exist or is ambiguous: " + 
                     name(that.getIdentifier()), 102);

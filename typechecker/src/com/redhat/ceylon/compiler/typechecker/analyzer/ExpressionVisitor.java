@@ -2911,7 +2911,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-	private static TypeDeclaration getSupertypeTypeDeclaration(
+	static TypeDeclaration getSupertypeTypeDeclaration(
 			Tree.BaseTypeExpression that, SupertypeQualifier sq) {
 		TypeDeclaration type;
 		Declaration dec = getSupertypeDeclaration(that, sq);

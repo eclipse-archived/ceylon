@@ -1201,10 +1201,9 @@ baseReference returns [Identifier identifier, SupertypeQualifier qualifier,
                        TypeArgumentList typeArgumentList, boolean isMember]
     : 
     (
-      typeName SUPER_OP
-      { $qualifier = new SupertypeQualifier($SUPER_OP);
-        $qualifier.setIdentifier($typeName.identifier); 
-        $identifier = new Identifier($SUPER_OP);
+      supertypeQualifier
+      { $qualifier = $supertypeQualifier.qualifier; 
+        $identifier = new Identifier($supertypeQualifier.qualifier.getToken());
         $identifier.setText("");
         $isMember=true; }
     )?
@@ -1218,6 +1217,12 @@ baseReference returns [Identifier identifier, SupertypeQualifier qualifier,
         $typeArgumentList = $typeReference.typeArgumentList;
         $isMember = false; }
     )
+    ;
+
+supertypeQualifier returns [SupertypeQualifier qualifier]
+    : typeName SUPER_OP
+      { $qualifier = new SupertypeQualifier($SUPER_OP);
+        $qualifier.setIdentifier($typeName.identifier); }
     ;
 
 primary returns [Primary primary]
@@ -2209,11 +2214,14 @@ abbreviatedType returns [StaticType type]
     ;
     
 qualifiedType returns [SimpleType type]
-    : ot=typeNameWithArguments
+    : supertypeQualifier?
+      ot=typeNameWithArguments
       { BaseType bt = new BaseType(null);
         bt.setIdentifier($ot.identifier);
         if ($ot.typeArgumentList!=null)
             bt.setTypeArgumentList($ot.typeArgumentList);
+        if ($supertypeQualifier.qualifier!=null)
+            bt.setSupertypeQualifier($supertypeQualifier.qualifier);
         $type=bt; }
       (
         MEMBER_OP 
