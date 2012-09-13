@@ -57,7 +57,7 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -166,7 +166,7 @@ public class CMRTest extends CompilerTest {
         assertFalse(carFile.exists());
 
         // clean up the home repo if required
-        String homeRepo = CeylonConfig.getUserDir().getCanonicalPath();
+        String homeRepo = FileUtil.getUserDir().getCanonicalPath();
         File carFileInHomeRepo = getModuleArchive("a", "1.0", homeRepo);
         if(carFileInHomeRepo.exists())
             carFileInHomeRepo.delete();
