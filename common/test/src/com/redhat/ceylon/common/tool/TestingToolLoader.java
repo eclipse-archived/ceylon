@@ -6,13 +6,12 @@ import java.util.Enumeration;
 
 public class TestingToolLoader extends ToolLoader {
 
-    public TestingToolLoader(ArgumentParserFactory argParserFactory,
-            ClassLoader loader) {
-        super(argParserFactory, loader);
+    public TestingToolLoader(ClassLoader loader) {
+        super(loader);
     }
 
-    public TestingToolLoader(ArgumentParserFactory argParserFactory) {
-        super(argParserFactory);
+    public TestingToolLoader() {
+        super();
     }
 
     @Override

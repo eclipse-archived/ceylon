@@ -8,12 +8,19 @@ import java.lang.reflect.Method;
  * @param <A>
  */
 public class ArgumentModel<A> {
+    private ToolModel<?> toolModel;
     private Method setter;
     private Class<A> type;
     private String argumentName;
     private Multiplicity multiplicity;
-    private OptionModel option;
+    private OptionModel<A> option;
     
+    public ToolModel<?> getToolModel() {
+        return toolModel;
+    }
+    public void setToolModel(ToolModel<?> toolModel) {
+        this.toolModel = toolModel;
+    }
     public Multiplicity getMultiplicity() {
         return multiplicity;
     }
@@ -40,10 +47,10 @@ public class ArgumentModel<A> {
     public void setName(String name) {
         this.argumentName = name;
     }
-    public OptionModel getOption() {
+    public OptionModel<A> getOption() {
         return option;
     }
-    public void setOption(OptionModel option) {
+    public void setOption(OptionModel<A> option) {
         this.option = option;
     }
     public String toString() {

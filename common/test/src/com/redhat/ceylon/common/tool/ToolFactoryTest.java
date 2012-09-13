@@ -14,8 +14,8 @@ import com.redhat.ceylon.common.tool.example.TestMinimumsTool;
 public class ToolFactoryTest {
     
     protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final ToolFactory pluginFactory = new ToolFactory(apf);
-    protected final ToolLoader pluginLoader = new TestingToolLoader(apf);
+    protected final ToolFactory pluginFactory = new ToolFactory();
+    protected final ToolLoader pluginLoader = new TestingToolLoader();
     
     @Test
     public void testLongOptionArgument() throws InvocationTargetException {

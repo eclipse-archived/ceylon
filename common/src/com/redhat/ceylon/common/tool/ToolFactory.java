@@ -22,12 +22,6 @@ public class ToolFactory {
     private static final char LONG_SEP = '=';
     private static final String LONG_PREFIX = "--";
     
-    private final ArgumentParserFactory argParserFactory;
-    
-    public ToolFactory(ArgumentParserFactory argParserFactory) {
-        this.argParserFactory = argParserFactory;
-    }
-    
     public <T extends Tool> T newInstance(ToolModel<T> toolModel) {
         T tool;
         try {
@@ -377,6 +371,7 @@ public class ToolFactory {
 
     private <A> A parseArgument(Binding<A> binding) {
         // Note parser won't be null, because the ModelBuilder checked
+        ArgumentParserFactory argParserFactory = binding.argumentModel.getToolModel().getArgumentParserFactory();
         final ArgumentParser<A> parser = argParserFactory.getParser(binding.argumentModel.getType());
         try {
             final A value = parser.parse(binding.unparsedArgumentValue);

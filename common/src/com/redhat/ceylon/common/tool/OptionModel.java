@@ -9,10 +9,18 @@ public class OptionModel<A> {
         OPTIONAL,
         REQUIRED
     }
+    private ToolModel<?> toolModel;
     private String longName;
     private Character shortName;
     private ArgumentModel<A> argument;
     private ArgumentType argumentType;
+    
+    public ToolModel<?> getToolModel() {
+        return toolModel;
+    }
+    public void setToolModel(ToolModel<?> toolModel) {
+        this.toolModel = toolModel;
+    }
     public String getLongName() {
         return longName;
     }

@@ -32,14 +32,11 @@ public abstract class ToolLoader {
 
     protected final ClassLoader loader;
     
-    protected final ArgumentParserFactory argParserFactory;
-    
-    public ToolLoader(ArgumentParserFactory argParserFactory) {
-        this(argParserFactory, ToolLoader.class.getClassLoader());
+    public ToolLoader() {
+        this(ToolLoader.class.getClassLoader());
     }
     
-    public ToolLoader(ArgumentParserFactory argParserFactory, ClassLoader loader) {
-        this.argParserFactory = argParserFactory;
+    public ToolLoader(ClassLoader loader) {
         this.loader = loader == null ? ClassLoader.getSystemClassLoader() : loader;
     }
     
@@ -116,9 +113,9 @@ public abstract class ToolLoader {
         checkClass(cls);
         ToolModel<T> model = new ToolModel<T>();
         model.setToolClass(cls);
-        
         String name = getToolName(cls);
         model.setName(name);
+        model.setArgumentParserFactory(getArgumentParserFactory(cls));
         
         // We use this Map because Java doesn't define the order that the 
         // declared methods will be returned in, but the order matters 
@@ -133,6 +130,20 @@ public abstract class ToolLoader {
         return model;
     }
 
+    protected <T extends Tool> ArgumentParserFactory getArgumentParserFactory(Class<T> cls) {
+        ParserFactory pf = cls.getAnnotation(ParserFactory.class);
+        if (pf != null) {
+            try {
+                return pf.value().newInstance();
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new ModelException("Error instantiating the given @ParserFactory", e);
+            }
+        }
+        return new ArgumentParserFactory();
+    }
+    
     private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,
             Method method, Map<Integer, ArgumentModel<?>> argumentModels) {
         final PostConstruct postConstructAnno = method.getAnnotation(PostConstruct.class);
@@ -151,9 +162,9 @@ public abstract class ToolLoader {
             model.setRest(method);
         }
         
-        OptionModel<Boolean> optionModel = buildOption(method);
-        OptionModel<A> optionArgumentModel = buildOptionArgument(method);
-        ArgumentModel<A> argumentModel = buildArgument(method, argumentModels);
+        OptionModel<Boolean> optionModel = buildOption(model, method);
+        OptionModel<A> optionArgumentModel = buildOptionArgument(model, method);
+        ArgumentModel<A> argumentModel = buildArgument(model.getArgumentParserFactory(), method, argumentModels);
         if (optionModel!= null) {
             if (argumentModel != null) {
                 throw new ModelException(method + " is annotated with both @Option and @Argument");
@@ -186,9 +197,10 @@ public abstract class ToolLoader {
         }
     }
 
-    private ArgumentModel<Boolean> buildPureOption(Method method) {
+    private ArgumentModel<Boolean> buildPureOption(ToolModel<?> toolModel, Method method) {
         ArgumentModel<Boolean> argumentModel;
         argumentModel = new ArgumentModel<Boolean>();
+        argumentModel.setToolModel(toolModel);
         argumentModel.setSetter(method);
         argumentModel.setType(boolean.class);
         argumentModel.setMultiplicity(Multiplicity._0_OR_1);
@@ -262,7 +274,7 @@ public abstract class ToolLoader {
         return name;
     }
 
-    private OptionModel<Boolean> buildOption(final Method setter) {
+    private OptionModel<Boolean> buildOption(ToolModel<?> toolModel, final Method setter) {
         Option option = setter.getAnnotation(Option.class);
         if (option == null || setter.getAnnotation(OptionArgument.class) != null) {
             return null;
@@ -280,12 +292,12 @@ public abstract class ToolLoader {
             optionModel.setShortName(shortName);
         }
         optionModel.setArgumentType(OptionModel.ArgumentType.NOT_ALLOWED);
-        optionModel.setArgument(buildPureOption(setter));
+        optionModel.setArgument(buildPureOption(toolModel, setter));
         optionModel.getArgument().setOption(optionModel);
         return optionModel;
     }
 
-    private <A> OptionModel<A> buildOptionArgument(final Method setter) {
+    private <A> OptionModel<A> buildOptionArgument(ToolModel<?> toolModel, final Method setter) {
         OptionArgument optionArgument = setter.getAnnotation(OptionArgument.class);
         if (optionArgument == null) {
             return null;
@@ -319,6 +331,7 @@ public abstract class ToolLoader {
         ArgumentModel<A> argumentModel = new ArgumentModel<A>();
         
         Class<A> argumentType = (Class<A>)getSimpleTypeOrCollectionType(setter, OptionArgument.class);
+        argumentModel.setToolModel(toolModel);
         argumentModel.setType(argumentType);
         argumentModel.setMultiplicity(isSimpleType(setter) ? Multiplicity._0_OR_1 : Multiplicity._0_OR_MORE);
         argumentModel.setName(optionArgument.argumentName());
@@ -329,7 +342,7 @@ public abstract class ToolLoader {
         return optionModel;
     }
     
-    private <A> ArgumentModel<A> buildArgument(final Method setter, Map<Integer, ArgumentModel<?>> argumentModels) {
+    private <T extends Tool, A> ArgumentModel<A> buildArgument(ArgumentParserFactory argumentParserFactory, final Method setter, Map<Integer, ArgumentModel<?>> argumentModels) {
         Argument argument = setter.getAnnotation(Argument.class);
         if (argument == null) {
             return null;
@@ -354,7 +367,7 @@ public abstract class ToolLoader {
         Class<A> argumentType = (Class<A>)getSimpleTypeOrCollectionType(setter, Argument.class);
         argumentModel.setType(argumentType);
                 
-        final ArgumentParser<?> parser = argParserFactory.getParser(argumentModel.getType());
+        final ArgumentParser<?> parser = argumentParserFactory.getParser(argumentModel.getType());
         if (parser == null) {
             throw new ModelException("Unable to parse arguments of " + argumentModel.getType());
         }

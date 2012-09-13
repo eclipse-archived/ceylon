@@ -24,6 +24,7 @@ public class ToolModel<T extends Tool> {
     private List<Method> postConstruct = new ArrayList<>(1);
     private Class<T> toolClass;
     private Method rest;
+    private ArgumentParserFactory argumentParserFactory;
     
     public ToolLoader getToolLoader() {
         return loader;
@@ -49,6 +50,7 @@ public class ToolModel<T extends Tool> {
     }
     
     public void addOption(OptionModel<?> option) {
+        option.setToolModel(this);
         optionsByName.put(option.getLongName(), option);
         if (option.getShortName() != null) {
             optionsByShort.put(option.getShortName(), option);
@@ -76,6 +78,7 @@ public class ToolModel<T extends Tool> {
                 && arguments.get(arguments.size()-1).getMultiplicity().isRange()) {
             throw new IllegalArgumentException("Arguments after variable-multiplicity arguments are not supported");
         }
+        argument.setToolModel(this);
         this.arguments.add(argument);
     }
     
@@ -126,6 +129,15 @@ public class ToolModel<T extends Tool> {
         // is currently considered neither, which is a fudge for the CeylonDocToolTool
         return !isTopLevel()  
                 && toolClass.getAnnotation(Hidden.class) != null;
+    }
+
+    public void setArgumentParserFactory(
+            ArgumentParserFactory argumentParserFactory) {
+        this.argumentParserFactory = argumentParserFactory;
+    }
+    
+    public ArgumentParserFactory getArgumentParserFactory() {
+        return this.argumentParserFactory;
     }
     
 }

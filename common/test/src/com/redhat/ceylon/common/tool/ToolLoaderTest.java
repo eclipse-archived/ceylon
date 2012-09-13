@@ -11,7 +11,7 @@ public class ToolLoaderTest {
 
     @Test
     public void testExampleTool() throws Exception {
-        final ToolModel<TestExampleTool> model = new TestingToolLoader(new ArgumentParserFactory()).loadToolModel("example");
+        final ToolModel<TestExampleTool> model = new TestingToolLoader().loadToolModel("example");
         Assert.assertNotNull(model);
         Assert.assertEquals("example", model.getName());
         Assert.assertEquals(1, model.getPostConstruct().size());
