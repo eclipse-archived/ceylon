@@ -55,7 +55,7 @@ public class TestModelClasses {
 
         cls = (Map<String, Object>)model.get("SimpleClass2");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass2", "abstract", "1");
-        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", null, false);
+        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", false, false);
         cls = (Map<String, Object>)cls.get("super");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "IdentifiableObject",
                 MetamodelGenerator.KEY_MODULE, "ceylon.language");
@@ -64,7 +64,7 @@ public class TestModelClasses {
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass4",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS, MetamodelGenerator.ANN_SHARED, "1");
         ModelUtils.checkType((Map<String,Object>)cls.get("super"), "t2.SimpleClass2");
-        ModelUtils.checkParam(cls, 0, "x", "ceylon.language.Integer", null/*"1"*/, false);
+        ModelUtils.checkParam(cls, 0, "x", "ceylon.language.Integer", true, false);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -98,7 +98,7 @@ public class TestModelClasses {
         Map<String,Map<String,Object>> m2 = (Map<String,Map<String,Object>>)cls.get(MetamodelGenerator.KEY_METHODS);
         Assert.assertEquals("Satisfy1 should implement 1 method", 1, m2.size());
         ModelUtils.checkType(m2.get("compare"), "ceylon.language.Comparison");
-        ModelUtils.checkParam(m2.get("compare"), 0, "other", "t2.Satisfy1", null, false);
+        ModelUtils.checkParam(m2.get("compare"), 0, "other", "t2.Satisfy1", false, false);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -123,7 +123,7 @@ public class TestModelClasses {
         List<Map<String, Object>> ps = (List<Map<String, Object>>)cls.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         Assert.assertEquals("ParmTypes1 must have 1 parameter type", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "Element");
-        ModelUtils.checkParam(cls, 0, "x", "Element", null, false);
+        ModelUtils.checkParam(cls, 0, "x", "Element", false, false);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -133,7 +133,7 @@ public class TestModelClasses {
         Assert.assertEquals("ParmTypes2 must have 1 parameter type", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "Element");
         ModelUtils.checkMap(ps.get(0), "variance", "out");
-        ModelUtils.checkParam(cls, 0, "x", "Element", null, true);
+        ModelUtils.checkParam(cls, 0, "x", "Element", false, true);
         ps = (List<Map<String, Object>>)ps.get(0).get("satisfies");
         ModelUtils.checkType(((List<Map<String, Object>>)ps).get(0), "ceylon.language.Object");
     }
@@ -145,8 +145,8 @@ public class TestModelClasses {
         Assert.assertEquals("ParmTypes3 must have 2 parameter types", 2, ps.size());
         ModelUtils.checkType(ps.get(0), "Type1");
         ModelUtils.checkType(ps.get(1), "Type2");
-        ModelUtils.checkParam(cls, 0, "a1", "Type1", null, false);
-        ModelUtils.checkParam(cls, 1, "a2", "Type2", null, false);
+        ModelUtils.checkParam(cls, 0, "a1", "Type1", false, false);
+        ModelUtils.checkParam(cls, 1, "a2", "Type2", false, false);
         List<Map<String, Object>> ptc = (List<Map<String, Object>>)ps.get(0).get("satisfies");
         ModelUtils.checkType(ptc.get(0), "ceylon.language.Number");
         ptc = (List<Map<String,Object>>)ps.get(1).get("of");
@@ -161,7 +161,7 @@ public class TestModelClasses {
         Assert.assertEquals("ParmTypes4 must have 1 parameter type", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "Element");
         ModelUtils.checkMap(ps.get(0), "variance", "out");
-        ModelUtils.checkParam(cls, 0, "elems", "Element", null, true);
+        ModelUtils.checkParam(cls, 0, "elems", "Element", false, true);
         ps = (List<Map<String, Object>>)cls.get("satisfies");
         Assert.assertEquals("ParmTypes4 should satisfy 1 interface", 1, ps.size());
         ModelUtils.checkType(ps.get(0), "ceylon.language.Iterable<Element>");
@@ -189,7 +189,7 @@ public class TestModelClasses {
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "Algebraic1",
                 MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_CLASS, "abstract", "1", MetamodelGenerator.ANN_SHARED, "1");
         //"name" is an initializer parameter...
-        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", null, false);
+        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", false, false);
         //and also a shared attribute
         Map<String, Map<String, Object>> m2 = (Map<String, Map<String, Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
         ModelUtils.checkMap(m2.get("name"), MetamodelGenerator.KEY_NAME, "name",
@@ -215,7 +215,7 @@ public class TestModelClasses {
     public void testAlgebraicObjects() {
         Map<String,Object> cls = (Map<String, Object>)model.get("Algebraic2");
         //"name" is an initializer parameter...
-        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", null, false);
+        ModelUtils.checkParam(cls, 0, "name", "ceylon.language.String", false, false);
         //and also a shared attribute
         Map<String, Map<String, Object>> m2 = (Map<String, Map<String, Object>>)cls.get(MetamodelGenerator.KEY_ATTRIBUTES);
         ModelUtils.checkMap(m2.get("name"), MetamodelGenerator.KEY_NAME, "name",
