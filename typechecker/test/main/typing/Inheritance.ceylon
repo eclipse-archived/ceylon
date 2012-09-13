@@ -182,3 +182,5 @@ class Inheritance() {
 
 interface MyIdentif satisfies Identifiable {}
 class MyClass() extends Object() satisfies MyIdentif {}
+
+@error class MyBottom() extends Bottom() {}
