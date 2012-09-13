@@ -17,6 +17,29 @@ public class ConfigParser {
     
     public static final String PROP_CEYLON_CONFIG_FILE = "ceylon.config";
     
+    public static CeylonConfig loadDefaultConfig(File localDir) {
+        CeylonConfig config = new CeylonConfig();
+        try {
+            CeylonConfig system = ConfigParser.loadSystemConfig();
+            config.merge(system);
+        } catch (IOException e) {
+            // Just ignore any errors
+        }
+        try {
+            CeylonConfig user = ConfigParser.loadUserConfig();
+            config.merge(user);
+        } catch (IOException e) {
+            // Just ignore any errors
+        }
+        try {
+            CeylonConfig local = ConfigParser.loadLocalConfig(localDir);
+            config.merge(local);
+        } catch (IOException e) {
+            // Just ignore any errors
+        }
+        return config;
+    }
+    
     public static File findSystemConfig() throws IOException {
         File configDir = FileUtil.getSystemConfigDir();
         if (configDir != null) {
@@ -54,7 +77,7 @@ public class ConfigParser {
         while (dir != null) {
             File configFile = new File(dir, ".ceylon/config");
             if (configFile.equals(userConfig1) || configFile.equals(userConfig2)) {
-                // We stop if we reach $HOME/.ceylon/config or whatever is defined by -Dceylon.config
+                // We stop if we reach $HOME/.ceylon/config or whatever is defined by -Dceylon.user.config
                 break;
             }
             if (configFile.isFile()) {

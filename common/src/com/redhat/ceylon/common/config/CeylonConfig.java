@@ -1,7 +1,6 @@
 package com.redhat.ceylon.common.config;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -17,25 +16,7 @@ public class CeylonConfig {
         if (instance == null) {
             synchronized (CeylonConfig.class) {
                 if (instance == null) {
-                    instance = new CeylonConfig();
-                    try {
-                        CeylonConfig system = ConfigParser.loadSystemConfig();
-                        instance.merge(system);
-                    } catch (IOException e) {
-                        // Just ignore any errors
-                    }
-                    try {
-                        CeylonConfig user = ConfigParser.loadUserConfig();
-                        instance.merge(user);
-                    } catch (IOException e) {
-                        // Just ignore any errors
-                    }
-                    try {
-                        CeylonConfig local = ConfigParser.loadLocalConfig(new File("."));
-                        instance.merge(local);
-                    } catch (IOException e) {
-                        // Just ignore any errors
-                    }
+                    instance = createFromLocalDir(new File("."));
                 }
             }
         }
@@ -52,6 +33,10 @@ public class CeylonConfig {
     
     public static String get(String key, String defaultValue) {
         return get().getOption(key, defaultValue);
+    }
+    
+    public static CeylonConfig createFromLocalDir(File localDir) {
+        return ConfigParser.loadDefaultConfig(localDir);
     }
     
     public CeylonConfig() {
