@@ -1180,27 +1180,44 @@ base returns [Primary primary]
       { $primary=$enumeration.sequenceEnumeration; }
     | selfReference
       { $primary=$selfReference.atom; }
-    | typeReference
-      { BaseTypeExpression bte = new BaseTypeExpression(null);
-        bte.setIdentifier($typeReference.identifier);
-        bte.setTypeArguments( new InferredTypeArguments(null) );
-        if ($typeReference.typeArgumentList!=null)
-            bte.setTypeArguments($typeReference.typeArgumentList);
-        $primary=bte; }
-    | (typeName SUPER_OP)? memberReference
-      { BaseMemberExpression bme = new BaseMemberExpression(null);
-        if ($typeName.identifier!=null) {
-            SupertypeQualifier s = new SupertypeQualifier($SUPER_OP);
-            s.setIdentifier($typeName.identifier);
-            bme.setSupertypeQualifier(s);
-        }
-        bme.setIdentifier($memberReference.identifier);
-        bme.setTypeArguments( new InferredTypeArguments(null) );
-        if ($memberReference.typeArgumentList!=null)
-            bme.setTypeArguments($memberReference.typeArgumentList);
-        $primary=bme; }
     | parExpression
       { $primary=$parExpression.expression; }
+    | baseReference
+      { BaseMemberOrTypeExpression be;
+        if ($baseReference.isMember)
+            be = new BaseMemberExpression(null);
+        else
+            be = new BaseTypeExpression(null);
+        if ($baseReference.qualifier!=null)
+            be.setSupertypeQualifier($baseReference.qualifier);
+        be.setIdentifier($baseReference.identifier);
+        be.setTypeArguments( new InferredTypeArguments(null) );
+        if ($baseReference.typeArgumentList!=null)
+            be.setTypeArguments($baseReference.typeArgumentList);
+        $primary=be; }
+    ;
+
+baseReference returns [Identifier identifier, SupertypeQualifier qualifier,
+                       TypeArgumentList typeArgumentList, boolean isMember]
+    : 
+    (
+      typeName SUPER_OP
+      { $qualifier = new SupertypeQualifier($SUPER_OP);
+        $qualifier.setIdentifier($typeName.identifier); 
+        $identifier = new Identifier($SUPER_OP);
+        $identifier.setText("");
+        $isMember=true; }
+    )?
+    (
+      memberReference
+      { $identifier = $memberReference.identifier;
+        $typeArgumentList = $memberReference.typeArgumentList;
+        $isMember = true; }
+    | typeReference
+      { $identifier = $typeReference.identifier;
+        $typeArgumentList = $typeReference.typeArgumentList;
+        $isMember = false; }
+    )
     ;
 
 primary returns [Primary primary]
