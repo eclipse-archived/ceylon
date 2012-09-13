@@ -21,20 +21,25 @@ public class ModelUtils {
      * @return The type map of the parameter. */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> checkParam(Map<String, Object> method, int pos, String name, String type,
-            String defValue, boolean sequenced) {
-        List<Map<String, Object>> params = (List<Map<String, Object>>)method.get(MetamodelGenerator.KEY_PARAMS);
+            boolean defaulted, boolean sequenced) {
+        List<?> plists = (List<?>)method.get(MetamodelGenerator.KEY_PARAMS);
+        List<Map<String, Object>> params;
+        if (plists.get(0) instanceof List) {
+            params = ((List<List<Map<String, Object>>>)plists).get(0);
+        } else {
+            params = (List<Map<String, Object>>)plists;
+        }
         Assert.assertNotNull(params);
-        Assert.assertTrue(params.size() > pos);
+        Assert.assertTrue(params.get(0).size() > pos);
         Map<String, Object> parm = params.get(pos);
         checkMap(parm, MetamodelGenerator.KEY_METATYPE, MetamodelGenerator.METATYPE_PARAMETER,
                 MetamodelGenerator.KEY_NAME, name);
-        if (defValue == null) {
-            Assert.assertNull(String.format("Param %s of method %s has default value",
-                    name, method.get(MetamodelGenerator.KEY_NAME)), parm.get("def"));
+        if (defaulted) {
+            Assert.assertNotNull(String.format("Param %s of method %s should be defaulted",
+                    name, method.get(MetamodelGenerator.KEY_NAME)), parm.get(MetamodelGenerator.ANN_DEFAULT));
         } else {
-            Assert.assertEquals(String.format("Default value of param %s of method %s",
-                    name, method.get(MetamodelGenerator.KEY_NAME)),
-                    defValue, parm.get(MetamodelGenerator.ANN_DEFAULT));
+            Assert.assertNull(String.format("Default value of param %s of method %s",
+                    name, method.get(MetamodelGenerator.KEY_NAME)), parm.get(MetamodelGenerator.ANN_DEFAULT));
         }
         Map<String, Object> tmap;
         if (parm.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
