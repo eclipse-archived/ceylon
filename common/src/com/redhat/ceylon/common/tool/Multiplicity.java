@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
  */
 public class Multiplicity {
 
+    public static final Multiplicity _1 = new Multiplicity(1, 1);
     public static final Multiplicity _0_OR_MORE = new Multiplicity(0, Integer.MAX_VALUE);
     public static final Multiplicity _0_OR_1 = new Multiplicity(0, 1);
     public static final Multiplicity _1_OR_MORE = new Multiplicity(1, Integer.MAX_VALUE);
@@ -61,6 +62,8 @@ public class Multiplicity {
     public static Multiplicity fromString(String str) {
         str = str.trim();
         switch (str) {
+        case "1":
+            return _1;
         case "*":
             return _0_OR_MORE;
         case "?":

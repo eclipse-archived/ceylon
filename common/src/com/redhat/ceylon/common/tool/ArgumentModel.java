@@ -14,6 +14,7 @@ public class ArgumentModel<A> {
     private String argumentName;
     private Multiplicity multiplicity;
     private OptionModel<A> option;
+    private ArgumentParser<A> parser;
     
     public ToolModel<?> getToolModel() {
         return toolModel;
@@ -34,6 +35,12 @@ public class ArgumentModel<A> {
         this.setter = setter;
     }
     
+    public ArgumentParser<A> getParser() {
+        return parser;
+    }
+    public void setParser(ArgumentParser<A> parser) {
+        this.parser = parser;
+    }
     public Class<A> getType() {
         return type;
     }

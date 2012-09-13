@@ -24,8 +24,8 @@ public class ToolModel<T extends Tool> {
     private List<Method> postConstruct = new ArrayList<>(1);
     private Class<T> toolClass;
     private Method rest;
-    private ArgumentParserFactory argumentParserFactory;
-    
+    private SubtoolModel<?> subtoolModel;
+
     public ToolLoader getToolLoader() {
         return loader;
     }
@@ -73,10 +73,21 @@ public class ToolModel<T extends Tool> {
         return arguments;
     }
     
+    public List<ArgumentModel<?>> getArgumentsAndSubtool() {
+        List<ArgumentModel<?>> result = new ArrayList<>(getArguments());
+        if (subtoolModel != null) {
+            result.add(subtoolModel);
+        }
+        return result;
+    }
+    
     public void addArgument(ArgumentModel<?> argument) {
         if (!arguments.isEmpty()
                 && arguments.get(arguments.size()-1).getMultiplicity().isRange()) {
             throw new IllegalArgumentException("Arguments after variable-multiplicity arguments are not supported");
+        }
+        if (argument instanceof SubtoolModel) {
+            throw new IllegalArgumentException();
         }
         argument.setToolModel(this);
         this.arguments.add(argument);
@@ -131,13 +142,13 @@ public class ToolModel<T extends Tool> {
                 && toolClass.getAnnotation(Hidden.class) != null;
     }
 
-    public void setArgumentParserFactory(
-            ArgumentParserFactory argumentParserFactory) {
-        this.argumentParserFactory = argumentParserFactory;
+    public SubtoolModel<?> setSubtoolModel() {
+        return this.subtoolModel;
     }
     
-    public ArgumentParserFactory getArgumentParserFactory() {
-        return this.argumentParserFactory;
+    public void setSubtoolModel(SubtoolModel<?> subtoolModel) {
+        subtoolModel.setToolModel(this);
+        this.subtoolModel = subtoolModel;
     }
     
 }

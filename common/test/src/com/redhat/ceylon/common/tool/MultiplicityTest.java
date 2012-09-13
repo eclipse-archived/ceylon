@@ -28,6 +28,7 @@ public class MultiplicityTest {
         Assert.assertEquals(Multiplicity._0_OR_MORE, Multiplicity.fromString("*"));
         Assert.assertEquals(Multiplicity._1_OR_MORE, Multiplicity.fromString("+"));
         Assert.assertEquals(Multiplicity._0_OR_1, Multiplicity.fromString("?"));
+        Assert.assertEquals(Multiplicity._1, Multiplicity.fromString("1"));
         
         Assert.assertEquals(new Multiplicity(1), Multiplicity.fromString("1"));
         Assert.assertEquals(new Multiplicity(3), Multiplicity.fromString("3"));

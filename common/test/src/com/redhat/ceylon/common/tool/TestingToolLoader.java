@@ -1,33 +1,16 @@
 package com.redhat.ceylon.common.tool;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
+import com.redhat.ceylon.common.tool.example.Workaround;
 
-public class TestingToolLoader extends ToolLoader {
-
-    public TestingToolLoader(ClassLoader loader) {
-        super(loader);
-    }
+public class TestingToolLoader extends ServiceToolLoader {
 
     public TestingToolLoader() {
-        super();
+        super(Workaround.class);
     }
 
     @Override
     protected String getToolName(String className) {
         return camelCaseToDashes(className.replaceAll("^(.*\\.)?Test(.*)Tool$", "$2"));
-    }
-    
-    @Override
-    protected Enumeration<URL> getServiceMeta() {
-        Enumeration<URL> resources;
-        try {
-            resources = loader.getResources("META-INF/services/"+Tool.class.getName()+"-test");
-        } catch (IOException e) {
-            throw new ToolException(e);
-        }
-        return resources;
     }
 
 }

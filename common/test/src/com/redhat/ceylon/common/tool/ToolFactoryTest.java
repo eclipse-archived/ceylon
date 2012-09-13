@@ -8,12 +8,13 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tool.example.TestEnumeratedSubtoolTool;
 import com.redhat.ceylon.common.tool.example.TestExampleTool;
 import com.redhat.ceylon.common.tool.example.TestMinimumsTool;
+import com.redhat.ceylon.common.tool.example.TestSubtoolTool;
 
 public class ToolFactoryTest {
     
-    protected final ArgumentParserFactory apf = new ArgumentParserFactory();
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new TestingToolLoader();
     
@@ -248,4 +249,82 @@ public class ToolFactoryTest {
         ex = pluginFactory.bindArguments(model, Arrays.asList("--verbosities=1", "--verbosities=2", "--verbosities"));
         Assert.assertEquals(Arrays.asList("1", "2", null), ex.getVerbosities());
     }
+    
+    @Test
+    public void testSubtool() {
+        ToolModel<TestSubtoolTool> model = pluginLoader.loadToolModel("subtool");
+        
+        TestSubtoolTool ex = pluginFactory.bindArguments(model, Arrays.asList("1"));
+        Assert.assertEquals(TestSubtoolTool.ArgumentTool1.class, ex.getAction().getClass());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("1", "--foo"));
+        Assert.assertEquals(TestSubtoolTool.ArgumentTool1.class, ex.getAction().getClass());
+        
+        try {
+            ex = pluginFactory.bindArguments(model, Arrays.asList("1", "--bar"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unrecognised option(s): --bar", e.getMessage());
+        }
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("2"));
+        Assert.assertEquals(TestSubtoolTool.ArgumentTool2.class, ex.getAction().getClass());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("2", "--bar"));
+        Assert.assertEquals(TestSubtoolTool.ArgumentTool2.class, ex.getAction().getClass());
+        
+        try {
+            ex = pluginFactory.bindArguments(model, Arrays.asList("2", "--foo"));
+        Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Unrecognised option(s): --foo", e.getMessage());
+        }
+        
+        try {
+            ex = pluginFactory.bindArguments(model, Arrays.asList("3"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Invalid value 3 given for argument action", e.getMessage());
+        }
+    }
+    
+    /*
+    @Test
+    public void testEnumeratedSubtool() {
+        ToolModel<TestEnumeratedSubtoolTool> model = pluginLoader.loadToolModel("enumerated-subtool");
+        
+        TestEnumeratedSubtoolTool ex = pluginFactory.bindArguments(model, Arrays.asList("foo"));
+        Assert.assertEquals(TestSubtoolTool.ArgumentTool1.class, ex.getAction().getClass());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("1", "--foo"));
+        Assert.assertEquals(TestSubtoolTool.ArgumentTool1.class, ex.getAction().getClass());
+        
+        try {
+            ex = pluginFactory.bindArguments(model, Arrays.asList("1", "--bar"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            //throw e;
+            //Assert.assertEquals("Invalid value 3 given for argument action", e.getMessage());
+        }
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("2"));
+        Assert.assertEquals(TestSubtoolTool.ArgumentTool2.class, ex.getAction().getClass());
+        
+        ex = pluginFactory.bindArguments(model, Arrays.asList("2", "--bar"));
+        Assert.assertEquals(TestSubtoolTool.ArgumentTool2.class, ex.getAction().getClass());
+        
+        try {
+            ex = pluginFactory.bindArguments(model, Arrays.asList("2", "--foo"));
+        Assert.fail();
+        } catch (OptionArgumentException e) {
+            //Assert.assertEquals("Invalid value 3 given for argument action", e.getMessage());
+        }
+        
+        try {
+            ex = pluginFactory.bindArguments(model, Arrays.asList("3"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertEquals("Invalid value 3 given for argument action", e.getMessage());
+        }
+    }*/
 }

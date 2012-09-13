@@ -1,22 +1,20 @@
 package com.redhat.ceylon.common.tool;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
@@ -40,7 +38,7 @@ public abstract class ToolLoader {
         this.loader = loader == null ? ClassLoader.getSystemClassLoader() : loader;
     }
     
-    private <T extends Tool> Class<T> loadToolClass(final String toolName) {
+    protected <T extends Tool> Class<T> loadToolClass(final String toolName) {
         String className = getToolClassName(toolName);
         if (className == null) {
             return null;
@@ -54,17 +52,13 @@ public abstract class ToolLoader {
     }
 
     protected String getToolClassName(final String toolName) {
+        List<String> classNames = new ArrayList<>();
         String className = null;
-        List<String> classNames = iterateToolNames(new Handler<String>() {
-            @Override
-            public String handle(String cls) {
-                if (toolName.equals(getToolName(cls))) {
-                    return cls;
-                }
-                return null;
+        for (String cls : toolClassNames()) {
+            if (toolName.equals(getToolName(cls))) {
+                classNames.add(cls);
             }
-        });
-           
+        }
         if (new HashSet<String>(classNames).size() > 1) {
             // TODO Allow fully qualified tool names to avoid ambiguities?
             throw new ToolException("Ambiguous tool name " + toolName + ", classes: " + classNames);
@@ -85,7 +79,7 @@ public abstract class ToolLoader {
         if (toolClass != null) {
             final ToolModel<T> toolModel;
             try {
-                toolModel = loadModel(toolClass);
+                toolModel = loadModel(toolClass, toolName);
             } catch (ModelException e) {
                 throw e;
             } catch (RuntimeException e) {
@@ -109,29 +103,37 @@ public abstract class ToolLoader {
         return urls;
     }
     
-    private <T extends Tool> ToolModel<T> loadModel(Class<T> cls) {
+    private <T extends Tool> ToolModel<T> loadModel(Class<T> cls, String toolName) {
         checkClass(cls);
         ToolModel<T> model = new ToolModel<T>();
         model.setToolClass(cls);
-        String name = getToolName(cls);
-        model.setName(name);
-        model.setArgumentParserFactory(getArgumentParserFactory(cls));
+        model.setName(toolName);
         
         // We use this Map because Java doesn't define the order that the 
         // declared methods will be returned in, but the order matters 
-        TreeMap<Integer, ArgumentModel<?>> argumentModels = new TreeMap<Integer, ArgumentModel<?>>();
+        TreeMap<Integer, ArgumentModel<?>> orderedArgumentModels = new TreeMap<Integer, ArgumentModel<?>>();
         for (Method method : cls.getDeclaredMethods()) {
-            addMethod(cls, model, method, argumentModels);
+            addMethod(cls, model, method, orderedArgumentModels);
         }
         
-        for (ArgumentModel<?> argumentModel : argumentModels.values()) {
+        Entry<Integer, ArgumentModel<?>> last = orderedArgumentModels.lastEntry();
+        if (last != null && last.getValue() instanceof SubtoolModel) {
+            model.setSubtoolModel((SubtoolModel<?>)last.getValue());
+            orderedArgumentModels.remove(last.getKey());
+        }
+        
+        for (ArgumentModel<?> argumentModel : orderedArgumentModels.values()) {
+            if (argumentModel instanceof SubtoolModel) {
+                throw new ModelException("A @Subtool's order() must be greater than all @Argument order()s");
+            }
             model.addArgument(argumentModel);
         }
+        
         return model;
     }
 
-    protected <T extends Tool> ArgumentParserFactory getArgumentParserFactory(Class<T> cls) {
-        ParserFactory pf = cls.getAnnotation(ParserFactory.class);
+    protected <T extends Tool> ArgumentParser<?> getArgumentParser(Method setter, Class<?> setterType) {
+        ParserFactory pf = setter.getAnnotation(ParserFactory.class);
         if (pf != null) {
             try {
                 return pf.value().newInstance();
@@ -141,11 +143,11 @@ public abstract class ToolLoader {
                 throw new ModelException("Error instantiating the given @ParserFactory", e);
             }
         }
-        return new ArgumentParserFactory();
+        return StandardArgumentParsers.forClass(setterType);
     }
     
     private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,
-            Method method, Map<Integer, ArgumentModel<?>> argumentModels) {
+            Method method, Map<Integer, ArgumentModel<?>> orderedArgumentModels) {
         final PostConstruct postConstructAnno = method.getAnnotation(PostConstruct.class);
         if (postConstructAnno != null) {
             checkPostConstructMethod(method);
@@ -164,10 +166,11 @@ public abstract class ToolLoader {
         
         OptionModel<Boolean> optionModel = buildOption(model, method);
         OptionModel<A> optionArgumentModel = buildOptionArgument(model, method);
-        ArgumentModel<A> argumentModel = buildArgument(model.getArgumentParserFactory(), method, argumentModels);
+        ArgumentModel<A> argumentModel = buildArgument(method, orderedArgumentModels);
+        SubtoolModel<Tool> subtoolModel = buildSubtool(method, orderedArgumentModels);
         if (optionModel!= null) {
-            if (argumentModel != null) {
-                throw new ModelException(method + " is annotated with both @Option and @Argument");
+            if (argumentModel != null || subtoolModel != null) {
+                throw new ModelException(method + " is annotated with both @Option and @Argument/@Subtool");
             } 
             if (optionArgumentModel != null) {
                 throw new ModelException(method + " is annotated with both @Option and @OptionArgument");
@@ -175,14 +178,16 @@ public abstract class ToolLoader {
             checkDuplicateOption(cls, model, optionModel);
             model.addOption(optionModel);
         } else if (optionArgumentModel != null) {
-            if (argumentModel != null) {
-                throw new ModelException(method + " is annotated with both @OptionArgument and @Argument");
+            if (argumentModel != null || subtoolModel != null) {
+                throw new ModelException(method + " is annotated with both @OptionArgument and @Argument/@Subtool");
             }
             checkDuplicateOption(cls, model, optionArgumentModel);
             model.addOption(optionArgumentModel);
         } else if (argumentModel != null) {
-            
-            // We don't add it to the model here
+            if (subtoolModel != null) {
+                throw new ModelException(method + " is annotated with both @Argument and @Subtool");
+            }
+            // We don't add it to the model here, it's in the orderedArgumentModels
         } 
     }
 
@@ -200,6 +205,7 @@ public abstract class ToolLoader {
     private ArgumentModel<Boolean> buildPureOption(ToolModel<?> toolModel, Method method) {
         ArgumentModel<Boolean> argumentModel;
         argumentModel = new ArgumentModel<Boolean>();
+        argumentModel.setParser((ArgumentParser<Boolean>)getArgumentParser(method, boolean.class));
         argumentModel.setToolModel(toolModel);
         argumentModel.setSetter(method);
         argumentModel.setType(boolean.class);
@@ -228,11 +234,21 @@ public abstract class ToolLoader {
         if (!Modifier.isPublic(classModifiers)) {
             throw new ModelException("Tool " + cls + " is not public");            
         }
-        try {
-            cls.getConstructor();
-        } catch (NoSuchMethodException e) {
-            throw new ModelException("Tool " + cls + " does not have a public 0 argument constructor");            
+        if (cls.getEnclosingClass() != null
+                && !Modifier.isStatic(cls.getModifiers())) {
+            try {
+                cls.getConstructor(cls.getEnclosingClass());
+            } catch (NoSuchMethodException e) {
+                throw new ModelException("Tool " + cls + " does not have a public 0 argument constructor");            
+            }
+        } else {
+            try {
+                cls.getConstructor();
+            } catch (NoSuchMethodException e) {
+                throw new ModelException("Tool " + cls + " does not have a public 0 argument constructor");            
+            }    
         }
+        
     }
 
     private boolean hasDescription(Method setter) {
@@ -244,11 +260,6 @@ public abstract class ToolLoader {
                 && Modifier.isPublic(method.getModifiers())
                 && method.getReturnType().equals(void.class)
                 && method.getParameterTypes().length == 1;
-    }
-
-    private String getToolName(Class<? extends Tool> toolClass) {
-        String name = toolClass.getSimpleName();
-        return getToolName(name);
     }
 
     protected String camelCaseToDashes(String name) {
@@ -331,6 +342,7 @@ public abstract class ToolLoader {
         ArgumentModel<A> argumentModel = new ArgumentModel<A>();
         
         Class<A> argumentType = (Class<A>)getSimpleTypeOrCollectionType(setter, OptionArgument.class);
+        argumentModel.setParser((ArgumentParser<A>)getArgumentParser(setter, argumentType));
         argumentModel.setToolModel(toolModel);
         argumentModel.setType(argumentType);
         argumentModel.setMultiplicity(isSimpleType(setter) ? Multiplicity._0_OR_1 : Multiplicity._0_OR_MORE);
@@ -342,7 +354,8 @@ public abstract class ToolLoader {
         return optionModel;
     }
     
-    private <T extends Tool, A> ArgumentModel<A> buildArgument(ArgumentParserFactory argumentParserFactory, final Method setter, Map<Integer, ArgumentModel<?>> argumentModels) {
+    private <T extends Tool, A> ArgumentModel<A> buildArgument(
+            final Method setter, Map<Integer, ArgumentModel<?>> orderedArgumentModels) {
         Argument argument = setter.getAnnotation(Argument.class);
         if (argument == null) {
             return null;
@@ -361,23 +374,65 @@ public abstract class ToolLoader {
                     "You can't have @Hidden arguments");
         }
         ArgumentModel<A> argumentModel = new ArgumentModel<A>();
-        argumentModel.setMultiplicity(Multiplicity.fromString(argument.multiplicity()));
-        argumentModel.setName(argument.argumentName());
-        
+        Multiplicity multiplicity = Multiplicity.fromString(argument.multiplicity());
+        String argumentName = argument.argumentName();
+        int order = argument.order();
         Class<A> argumentType = (Class<A>)getSimpleTypeOrCollectionType(setter, Argument.class);
+        
+        populateArgumentModel(setter, orderedArgumentModels, argumentModel,
+                argumentType, multiplicity, argumentName, order);
+        return argumentModel;
+    }
+    
+    private <T extends Tool, A, X extends Tool> SubtoolModel<X> buildSubtool(
+            final Method setter, Map<Integer, ArgumentModel<?>> orderedArgumentModels) {
+        Subtool argument = setter.getAnnotation(Subtool.class);
+        if (argument == null) {
+            return null;
+        }
+        if (!isSetter(setter)) {
+            throw new ModelException("Method " + setter + " is annotated with @Subtool but is not a setter");
+        }
+        if (hasDescription(setter)) {
+            throw new ModelException(
+                    "Method " + setter + " is annotated with @Subtool and @Description: " +
+                    "Subtools should be documented in the class-level @Description");
+        }
+        if (isHidden(setter)) {
+            throw new ModelException(
+                    "Method " + setter + " is annotated with @Subtool and @Hidden: " +
+                    "You can't have @Hidden arguments");
+        }
+        SubtoolModel<X> argumentModel = new SubtoolModel<X>();
+        Class<X> argumentType = (Class<X>)setter.getParameterTypes()[0];
+        Multiplicity multiplicity = Multiplicity._1;
+        String argumentName = argument.argumentName();
+        int order = argument.order();
+        
+        populateArgumentModel(setter, orderedArgumentModels, argumentModel,
+                argumentType, multiplicity, argumentName, order);
+        return argumentModel;
+    }
+
+    private <A> void populateArgumentModel(final Method setter,
+            Map<Integer, ArgumentModel<?>> orderedArgumentModels,
+            ArgumentModel<A> argumentModel, Class<A> argumentType,
+            Multiplicity multiplicity, String argumentName, int order) {
+        argumentModel.setMultiplicity(multiplicity);
+        argumentModel.setName(argumentName);
         argumentModel.setType(argumentType);
-                
-        final ArgumentParser<?> parser = argumentParserFactory.getParser(argumentModel.getType());
+        
+        final ArgumentParser<A> parser = (ArgumentParser<A>)getArgumentParser(setter, argumentType);
         if (parser == null) {
             throw new ModelException("Unable to parse arguments of " + argumentModel.getType());
         }
+        argumentModel.setParser(parser);
         argumentModel.setSetter(setter);
         
-        final ArgumentModel<?> clash = argumentModels.put(argument.order(), argumentModel);
+        final ArgumentModel<?> clash = orderedArgumentModels.put(order, argumentModel);
         if (clash != null) {
             throw new ModelException("Two setters annotated with @Argument with the same order");
         }
-        return argumentModel;
     }
 
     private boolean isHidden(final Method setter) {
@@ -421,12 +476,10 @@ public abstract class ToolLoader {
      * Returns an iterable of all the tools names known to this tool loader.
      */
     public Iterable<String> getToolNames() {
-        List<String> result = iterateToolNames(new Handler<String>() {
-            @Override
-            public String handle(String className) {
-                return getToolName(className);
-            }
-        });
+        List<String> result = new ArrayList<>();
+        for (String className : toolClassNames()) {
+            result.add(getToolName(className));
+        }
         Collections.sort(result);
         return result;
     }
@@ -434,52 +487,10 @@ public abstract class ToolLoader {
         public T handle(String className);
     }
     
-    private <T> List<T> iterateToolNames(Handler<T> handler) {
-        List<T> result = new ArrayList<T>();
-        Enumeration<URL> resources = getServiceMeta();
-        while (resources.hasMoreElements()) {
-            parseServiceInfo(handler, result, resources);
-        }
-        return result;
-    }
 
-    protected Enumeration<URL> getServiceMeta() {
-        /* Use the same conventions as java.util.ServiceLoader but without 
-         * requiring us to load the Service classes
-         */
-        Enumeration<URL> resources;
-        try {
-            resources = loader.getResources("META-INF/services/"+Tool.class.getName());
-        } catch (IOException e) {
-            throw new ToolException(e);
-        }
-        return resources;
-    }
 
-    private <T> void parseServiceInfo(Handler<T> handler, List<T> result,
-            final Enumeration<URL> resources) {
-        URL url = resources.nextElement();
-        try {
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            try {
-                String className = reader.readLine();
-                while (className != null) {
-                    className = className.trim().replaceAll("#.*", "");
-                    if (!className.isEmpty()) {
-                        final T value = handler.handle(className);
-                        if (value != null) {
-                            result.add(value);
-                        }
-                    }
-                    className = reader.readLine();
-                }
-            } finally {
-                reader.close();
-            }
-        } catch (IOException e) {
-            throw new ToolException("Error reading service file " + url, e);
-        }
-    }
+
+
 
     /**
      * Suggests tool names which are similar to something that was supposed 
@@ -489,20 +500,20 @@ public abstract class ToolLoader {
      * name. 
      */
     public List<String> typo(final String badlySpelledCommand) {
-        return iterateToolNames(new Handler<String>() {
-            @Override
-            public String handle(String className) {
-                String toolName = getToolName(className);
-                if (levenshteinDistance(toolName, badlySpelledCommand) < 3) {
-                    if (loadToolModel(toolName).isPorcelain()) {
-                        return toolName;
-                    }
+        List<String> result = new ArrayList<>();
+        for (String className : toolClassNames()) {
+            String toolName = getToolName(className);
+            if (levenshteinDistance(toolName, badlySpelledCommand) < 3) {
+                if (loadToolModel(toolName).isPorcelain()) {
+                    result.add(toolName);
                 }
-                return null;
             }
-        });
+        }
+        return result;
     }
     
+    protected abstract Iterable<String> toolClassNames();
+
     /* The following two methods taken from wikipedia */
     private static int minimum(int a, int b, int c) {
         return Math.min(Math.min(a, b), c);
@@ -527,6 +538,21 @@ public abstract class ToolLoader {
                                                                         : 1));
 
         return distance[str1.length()][str2.length()];
+    }
+
+    public <T extends Tool> T instance(String toolName) {
+        String toolClassName = getToolClassName(toolName);
+        if (toolClassName == null) {
+            return null;
+        }
+        try {
+            Class<T> toolClass = (Class<T>)Class.forName(toolClassName, false, loader);
+            return toolClass.newInstance();
+        } catch (RuntimeException e) {
+            throw new ToolException("Could not instantitate tool class " + toolClassName + " for tool " + toolName, e);
+        } catch (ReflectiveOperationException e) {
+            throw new ToolException("Could not instantitate tool class " + toolClassName + " for tool " + toolName, e);
+        }
     }
     
 }

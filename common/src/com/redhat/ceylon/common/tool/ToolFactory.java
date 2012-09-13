@@ -23,14 +23,7 @@ public class ToolFactory {
     private static final String LONG_PREFIX = "--";
     
     public <T extends Tool> T newInstance(ToolModel<T> toolModel) {
-        T tool;
-        try {
-            tool = toolModel.getToolClass().newInstance();
-        } catch (ReflectiveOperationException e) {
-            throw new ToolException("Could not instantitate tool " + toolModel.getToolClass(), e);
-        }
-        
-        return tool;
+        return toolModel.getToolLoader().instance(toolModel.getName());
     }
 
     private <T extends Tool> void setToolLoader(ToolModel<T> toolModel,
@@ -98,7 +91,7 @@ public class ToolFactory {
             if (optionModel != null) {
                 return new OptionArgumentException("option.invalid.value", givenOption, badValue);
             } else {
-                return new OptionArgumentException("option.invalid.value", argumentModel.getName(), badValue);
+                return new OptionArgumentException("argument.invalid.value", argumentModel.getName(), badValue);
             }
         }
     }
@@ -159,7 +152,7 @@ public class ToolFactory {
                         default:
                             throw new RuntimeException("Assertion failed");
                         }
-                        processArgument(tool, bindings, new Binding(longName, option, argument));    
+                        processArgument(iter, tool, bindings, new Binding(longName, option, argument));    
                     }
                 } else if (!eoo && isShortForm(arg)) {
                     for (int idx = 1; idx < arg.length(); idx++) {
@@ -194,18 +187,18 @@ public class ToolFactory {
                         default:
                             throw new RuntimeException("Assertion failed");
                         }
-                        processArgument(tool, bindings, new Binding(String.valueOf(shortName), option, argument));
+                        processArgument(iter, tool, bindings, new Binding(String.valueOf(shortName), option, argument));
                     }
                 } else {// an argument
                     option = null;
                     argument = arg;
                     if (isArgument(arg)) {
-                        final List<ArgumentModel<?>> argumentModels = toolModel.getArguments();
+                        final List<ArgumentModel<?>> argumentModels = toolModel.getArgumentsAndSubtool();
                         if (argumentModelIndex >= argumentModels.size()) {
                             throw new OptionArgumentException("argument.unexpected", arg);
                         }
                         final ArgumentModel<?> argumentModel = argumentModels.get(argumentModelIndex);
-                        processArgument(tool, bindings, new Binding(argumentModel, argument));
+                        processArgument(iter, tool, bindings, new Binding(argumentModel, argument));
                         argumentsBoundThisIndex++;
                         if (argumentsBoundThisIndex >= argumentModel.getMultiplicity().getMax()) {
                             argumentModelIndex++;
@@ -315,7 +308,7 @@ public class ToolFactory {
             checkMultiplicity(argument, bindings.get(argument));
             
         }
-        for (ArgumentModel argument : toolModel.getArguments()) {
+        for (ArgumentModel argument : toolModel.getArgumentsAndSubtool()) {
             argument.getMultiplicity().getMin();
             checkMultiplicity(argument, bindings.get(argument));
         }
@@ -347,7 +340,8 @@ public class ToolFactory {
         }
     }
 
-    private <T extends Tool, A> void processArgument(T tool,
+    private <T extends Tool, A> void processArgument(Iterator<String> iter,
+            T tool,
             Map<ArgumentModel<?>, List<Binding<?>>> bindings,
             Binding<A> binding) {
         List<Binding<?>> values = bindings.get(binding.argumentModel);
@@ -356,26 +350,66 @@ public class ToolFactory {
             bindings.put(binding.argumentModel, values);
         }
         if (binding.argumentModel.getMultiplicity().isMultivalued()) {
-            binding.value = parseArgument(binding);
+            binding.value = parseArgument(iter, binding);
         } else {
-            parseAndSetValue(tool, binding);
+            parseAndSetValue(iter, tool, binding);
         }
         values.add(binding);
     }
 
-    private <T extends Tool, A> void parseAndSetValue(T tool,
+    private <T extends Tool, A> void parseAndSetValue(Iterator<String> iter, T tool,
             Binding<A> binding) {
-        binding.value = parseArgument(binding);
+        binding.value = parseArgument(iter, binding);
         setValue(tool, binding);
     }
 
-    private <A> A parseArgument(Binding<A> binding) {
+    private <A, T extends Tool> A parseArgument(final Iterator<String> iter, Binding<A> binding) {
+        final ArgumentParser<A> parser = binding.argumentModel.getParser();
         // Note parser won't be null, because the ModelBuilder checked
-        ArgumentParserFactory argParserFactory = binding.argumentModel.getToolModel().getArgumentParserFactory();
-        final ArgumentParser<A> parser = argParserFactory.getParser(binding.argumentModel.getType());
         try {
             final A value = parser.parse(binding.unparsedArgumentValue);
+            if (value instanceof Tool) {
+                /* Special case for subtools: The ToolArgumentParser can 
+                 * instantiate the Tool instance given its name, but it cannot 
+                 * configure the Tool because it doesn't have access to the 
+                 * remaining arguments, so we have to handle that here.
+                 * 
+                 * I did think this could be made more beautiful if parse() took ToolFactory
+                 * I though we could just have a Tool-typed setter and let the parse do the heavy lifting
+                 * But that doesn't work  because then the parser also needs access to the Iterator 
+                 */
+                ToolLoader loader = ((ToolArgumentParser)parser).getToolLoader();
+                ToolModel<T> model = loader.loadToolModel(binding.unparsedArgumentValue);
+                
+                return (A)bindArguments(model, (T)value, new Iterable<String>() {
+                    @Override
+                    public Iterator<String> iterator() {
+                        return iter;
+                    }
+                });
+                // TODO Improve error messages to include legal options/argument values
+                // TODO Can I rewrite the CeylonTool to use @Subtool?
+                // TODO ToolLoader validation of Subtools 
+                // (that they're last)
+                // TODO Help support for subtools?
+                // TODO doc-tool support for subtools
+                // TODO Rewrite CeylonHelpTool to use a ToolModel setter.
+                // TODO Rewrite CeylonDocToolTool to use a ToolModel setter.
+                // TODO Rewrite BashCompletionTool to use a ToolModel setter.
+                // TODO BashCompletionSupport for ToolModels and Tools
+                // TODO If a Tool has consumed all the possible arguments it can
+                // from the given arguments, it should return ignoring the rest 
+                // of the argument in case it has a supertool
+                // TODO Write a proper fucking state machine for this shit.
+                //    i.e. Alternation, Sequence, Repetition on top of/part of the tool model
+                //      could write a visitor of that tree to generate synopses?
+                // TODO   Proper ToolModel support for subtools (getSubtoolModel())
+         
+                // instantiate, get the remaining arguments and call bindArguments recursively
+            }
             return value;
+        } catch (OptionArgumentException e) {
+            throw e;
         } catch (Exception e) {
             throw binding.invalid(e);
         }

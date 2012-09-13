@@ -5,10 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface ParserFactory {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Subtool {
 
-    Class<? extends ArgumentParser<?>> value();
+    String argumentName() default "subcommand";
+    int order() default 0;
     
 }
