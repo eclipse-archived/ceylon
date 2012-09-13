@@ -15,6 +15,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import com.redhat.ceylon.common.FileUtil;
+
 /**
  * Creates {@link Store}s based on {@code [keystore]} sections in the 
  * {@link CeylonConfig} 
@@ -134,7 +136,7 @@ public class Keystores {
         }
         
         private File getStoreFile() {
-            return getFilename() != null ? new File(CeylonConfig.getUserDir(), getFilename()) : null;   
+            return getFilename() != null ? new File(FileUtil.getUserDir(), getFilename()) : null;   
         }
         
         /**

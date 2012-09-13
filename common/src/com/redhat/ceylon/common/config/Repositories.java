@@ -3,6 +3,8 @@ package com.redhat.ceylon.common.config;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.redhat.ceylon.common.FileUtil;
+
 public class Repositories {
     private CeylonConfig config;
     
@@ -164,7 +166,7 @@ public class Repositories {
         if (ceylonSystemRepo != null) {
             return new File(ceylonSystemRepo);
         } else {
-            File userDir = CeylonConfig.getInstallDir();
+            File userDir = FileUtil.getInstallDir();
             if (userDir != null) {
                 return new File(userDir, "repo");
             }
@@ -177,7 +179,7 @@ public class Repositories {
         if (ceylonUserRepo != null) {
             return new File(ceylonUserRepo);
         } else {
-            File userDir = CeylonConfig.getUserDir();
+            File userDir = FileUtil.getUserDir();
             return new File(userDir, "repo");
         }
     }
@@ -187,7 +189,7 @@ public class Repositories {
         if (ceylonUserRepo != null) {
             return new File(ceylonUserRepo);
         } else {
-            File userDir = CeylonConfig.getUserDir();
+            File userDir = FileUtil.getUserDir();
             return new File(userDir, "cache");
         }
     }

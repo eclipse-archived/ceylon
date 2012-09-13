@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.ConfigParser;
 import com.redhat.ceylon.common.config.Credentials;
@@ -24,7 +25,7 @@ public class RepositoriesTest {
     @Before
     public void setup() throws IOException {
         testConfig = ConfigParser.loadConfigFromFile(new File("test/src/com/redhat/ceylon/common/test/repos.config"));
-        if (CeylonConfig.getInstallDir() == null) {
+        if (FileUtil.getInstallDir() == null) {
             // Set a fake installation folder
             System.setProperty("ceylon.home", "fake-install-dir");
         }
@@ -50,7 +51,7 @@ public class RepositoriesTest {
     
     @Test
     public void testGetDeafultSystemRepository() {
-        File dir = new File(CeylonConfig.getInstallDir(), "repo");
+        File dir = new File(FileUtil.getInstallDir(), "repo");
         assertRepository(defaultRepos.getSystemRepository(), "SYSTEM", dir.getAbsolutePath(), null, null);
     }
     

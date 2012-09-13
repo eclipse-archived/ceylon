@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
+
 public class CeylonConfig {
     private HashMap<String, String[]> options;
     private HashMap<String, HashSet<String>> sectionNames;
@@ -283,39 +284,4 @@ public class CeylonConfig {
         return cfg;
     }
 
-    // Some additional useful configuration options
-    
-    /**
-     * The installation directory. As given by the {@code ceylon.user.dir}
-     * system property
-     */
-    public static File getInstallDir() {
-        String ceylonHome = System.getProperty("ceylon.home");
-        if (ceylonHome != null) {
-            return new File(ceylonHome);
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-     * The default user directory, that is {@code ~/.ceylon}.
-     */
-    public static File getDefaultUserDir() {
-        String userHome = System.getProperty("user.home");
-        return new File(userHome, ".ceylon");
-    }
-    
-    /**
-     * The effective user directory, checking the {@code ceylon.user.dir}
-     * system property then defaulting to {@link #getDefaultUserDir()}.
-     */
-    public static File getUserDir() {
-        String ceylonUserDir = System.getProperty("ceylon.user.dir");
-        if (ceylonUserDir != null) {
-            return new File(ceylonUserDir);
-        } else {
-            return getDefaultUserDir();
-        }
-    }
 }

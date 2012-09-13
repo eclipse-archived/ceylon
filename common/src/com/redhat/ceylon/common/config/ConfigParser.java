@@ -48,8 +48,8 @@ public class ConfigParser {
     }
     
     public static File findLocalConfig(File dir) throws IOException {
-        File userConfig1 = (new File(CeylonConfig.getDefaultUserDir(), "config")).getCanonicalFile();
-        File userConfig2 = (new File(CeylonConfig.getUserDir(), "config")).getCanonicalFile();
+        File userConfig1 = (new File(FileUtil.getDefaultUserDir(), "config")).getCanonicalFile();
+        File userConfig2 = (new File(FileUtil.getUserDir(), "config")).getCanonicalFile();
         dir = dir.getCanonicalFile();
         while (dir != null) {
             File configFile = new File(dir, ".ceylon/config");
