@@ -35,16 +35,18 @@ import com.redhat.ceylon.common.tool.Tool;
 )
 public class CeylonConfigTool implements Tool {
     
-    private String action;
+    private ConfigAction action;
+    
+    public enum ConfigAction { list };
     
     @Argument(argumentName="action", multiplicity="1")
-    public void setAction(String action) {
+    public void setAction(ConfigAction action) {
         this.action = action;
     }
 
     @Override
     public void run() {
-        if ("list".equals(action)) {
+        if (action == ConfigAction.list) {
             CeylonConfig config = CeylonConfig.get();
             for (String sectionName : config.getSectionNames(null)) {
                 String[] names = config.getOptionNames(sectionName);
@@ -61,14 +63,12 @@ public class CeylonConfigTool implements Tool {
                     System.out.println();
                 }
             }
-        } else {
-            System.err.println("Unknown action '" + action + "'");
         }
     }
 
     public static void main(String[] args) {
         CeylonConfigTool x = new CeylonConfigTool();
-        x.action = "list";
+        x.action = ConfigAction.list;
         x.run();
     }
     
