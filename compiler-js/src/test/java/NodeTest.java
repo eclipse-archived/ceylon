@@ -25,7 +25,9 @@ public class NodeTest {
         final String subpath = path.substring(root.getPath().length()+1);
         System.out.printf("RUNNING %s/%s%n", root.getName(), subdir.getName());
         final String eval = String.format("setTimeout(function(){}, 50);require('%s').test();", subpath);
-        Process proc = new ProcessBuilder(nodePath, "-e", eval).directory(root.getParentFile()).start();
+        ProcessBuilder pb = new ProcessBuilder(nodePath, "-e", eval).directory(root.getParentFile());
+        pb.environment().put("NODE_PATH", root.getPath());
+        Process proc = pb.start();
         new Runner.ReadStream(proc.getInputStream(), System.out).start();
         new Runner.ReadStream(proc.getErrorStream(), System.err).start();
         int xv = proc.waitFor();

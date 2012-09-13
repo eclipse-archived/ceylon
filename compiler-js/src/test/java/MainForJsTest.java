@@ -28,13 +28,13 @@ public class MainForJsTest {
     public static void main(String[] args) throws Exception {
         Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
                 "-rep", "build/runtime",
-                "-out", "build/test/node_modules", "-module")));
+                "-out", "build/test/modules", "-module")));
         final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(opts.getRepos(),
                 opts.getOutDir(), new JULLogger());
         System.out.println("Typechecking Ceylon test code...");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
-            .addSrcDirectory(new File("src/test/ceylon/check/check.ceylon"))
-            //.addSrcDirectory(new File("../ceylon.language/test"))
+            .addSrcDirectory(new File("src/test/ceylon"))
+            .addSrcDirectory(new File("../ceylon.language/test"))
             .moduleManagerFactory(new JsModuleManagerFactory())
             .usageWarnings(false);
         tcb.setRepositoryManager(repoman);
@@ -53,7 +53,7 @@ public class MainForJsTest {
         }
         System.out.println("Compiling with optimization");
         opts = Options.parse(new ArrayList<String>(Arrays.asList("-optimize", "-out",
-                "build/test/nodeopt_modules", "-module")));
+                "build/test/opt_modules", "-module")));
         jsc = new JsCompiler(typeChecker, opts).stopOnErrors(false);
         if (jsc.generate()) {
             validateOutput(typeChecker, opts);
