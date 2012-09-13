@@ -14,6 +14,11 @@ public class BottomType extends TypeDeclaration {
         return "Bottom";
     }
     
+    @Override
+    public Scope getContainer() {
+    	return unit.getVoidDeclaration().getContainer();
+    }
+    
     @Override @Deprecated
     public List<String> getQualifiedName() {
         return Arrays.asList("ceylon","language","Bottom");

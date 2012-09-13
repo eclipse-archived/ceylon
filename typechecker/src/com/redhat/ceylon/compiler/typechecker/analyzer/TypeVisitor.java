@@ -771,10 +771,6 @@ public class TypeVisitor extends Visitor {
                     et.addError("directly extends itself: " + td.getName());
                     return;
                 }
-                if (!type.getDeclaration().isExtendable() && !inLanguageModule(that)) {
-                    et.addError("directly extends a special language type: " +
-                        type.getProducedTypeName());
-                }
                 if (et instanceof Tree.QualifiedType) {
                     if ( !(((Tree.QualifiedType) et).getOuterType() instanceof Tree.SuperType) ) {
                         checkTypeBelongsToContainingScope(type, td.getContainer(), et);
@@ -799,6 +795,11 @@ public class TypeVisitor extends Visitor {
                 else if (type.getDeclaration() instanceof Interface) {
                     et.addError("extends an interface: " + 
                             type.getProducedTypeName());
+                }
+                else if (!type.getDeclaration().isExtendable() && 
+                		!inLanguageModule(that)) {
+                    et.addError("directly extends a special language type: " +
+                        type.getProducedTypeName());
                 }
                 else {
                     td.setExtendedType(type);
