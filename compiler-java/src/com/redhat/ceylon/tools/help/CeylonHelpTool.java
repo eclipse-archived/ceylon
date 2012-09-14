@@ -4,11 +4,10 @@ package com.redhat.ceylon.tools.help;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
-import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Tool;
-import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.Tool;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
 import com.redhat.ceylon.tools.CeylonTool;
@@ -29,7 +28,7 @@ import com.redhat.ceylon.tools.help.Output.Synopsis;
 )
 public class CeylonHelpTool extends AbstractDoc implements Tool {
 
-    private String tool;
+    private ToolModel<?> tool;
     
     @Option
     public void setIncludeHidden(boolean includeHidden) {
@@ -37,7 +36,7 @@ public class CeylonHelpTool extends AbstractDoc implements Tool {
     }
     
     @Argument(argumentName="tool", multiplicity="?")
-    public void setTool(String tool) {
+    public void setTool(ToolModel<?> tool) {
         this.tool = tool;
     }
     
@@ -48,12 +47,12 @@ public class CeylonHelpTool extends AbstractDoc implements Tool {
         if (tool == null) {
             printTopLevelHelp(plain, wrap, toolLoader.getToolNames());
         } else {
-            final ToolModel<?> model = toolLoader.loadToolModel(tool);
+            final ToolModel<?> model = tool;
             if (model != null) {
                 printToolHelp(plain, new ToolDocumentation<>(model));
-            } else {
+            }/* else {
                 Tools.printToolSuggestions(toolLoader, wrap, tool);
-            }
+            }*/
         }
         wrap.flush();
     }
