@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.common.tool.Argument;
-import com.redhat.ceylon.common.tool.ArgumentParserFactory;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Java7Checker;
 import com.redhat.ceylon.common.tool.ModelException;
@@ -45,7 +44,6 @@ public class CeylonTool implements Tool {
     private String toolName;
     private List<String> toolArgs;
     private boolean stacktraces = false;
-    private ArgumentParserFactory argParserFactory;
     private ToolLoader pluginLoader;
     private ToolFactory pluginFactory;
     private boolean version;
@@ -235,7 +233,7 @@ public class CeylonTool implements Tool {
 
     ToolFactory getPluginFactory() {
         if (pluginFactory == null) {
-            pluginFactory =new ToolFactory(getArgumentParserFactory());
+            pluginFactory =new ToolFactory();
         }
         return pluginFactory;
     }
@@ -246,7 +244,7 @@ public class CeylonTool implements Tool {
 
     ToolLoader getPluginLoader() {
         if (pluginLoader == null) {
-            pluginLoader = new CeylonToolLoader(getArgumentParserFactory(), ClassLoader.getSystemClassLoader());
+            pluginLoader = new CeylonToolLoader(ClassLoader.getSystemClassLoader());
         }
         return pluginLoader;
     }
@@ -254,18 +252,4 @@ public class CeylonTool implements Tool {
     public void setToolLoader(ToolLoader toolLoader) {
         this.pluginLoader = toolLoader;
     }
-    
-    ArgumentParserFactory getArgumentParserFactory() {
-        if (this.argParserFactory == null) {
-            this.argParserFactory = new ArgumentParserFactory();   
-        }
-        return argParserFactory;
-    }
-    
-    public void setArgumentParserFactory(ArgumentParserFactory argumentParserFactory) {
-        this.argParserFactory = argumentParserFactory;
-    }
-    
-    
-    
 }
