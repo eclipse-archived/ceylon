@@ -12,7 +12,6 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
-import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -85,7 +84,7 @@ public class Main {
             System.out.printf("Using repositories: %s%n", opts.getRepos());
         }
         final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
-                opts.getRepos(), opts.getOutDir(), new JULLogger());
+                opts.getSystemRepo(), opts.getRepos(), opts.getOutDir(), new JULLogger());
         final Set<String> onlyFiles = new HashSet<String>();
         if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {

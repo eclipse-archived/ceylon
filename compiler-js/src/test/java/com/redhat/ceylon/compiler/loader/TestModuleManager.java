@@ -59,7 +59,8 @@ public class TestModuleManager {
                 "-src", "src/test/resources/loader/pass1"));
         options = Options.parse(args);
         repoman = CeylonUtils.makeRepositoryManager(
-                options.getRepos(), options.getOutDir(), new JULLogger());
+                options.getSystemRepo(), options.getRepos(),
+                options.getOutDir(), new JULLogger());
         //Create a typechecker to compile the test module
         System.out.println("Compiling pass 1 (with js model loader now)");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
@@ -80,7 +81,8 @@ public class TestModuleManager {
         if (jstc == null) {
             System.out.println("Pass 2: Loading model from JS");
             final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
-                    options.getRepos(), options.getOutDir(), new JULLogger());
+                    options.getSystemRepo(), options.getRepos(),
+                    options.getOutDir(), new JULLogger());
             TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);//.verbose(true);
             tcb.moduleManagerFactory(new JsModuleManagerFactory());
             tcb.addSrcDirectory(new java.io.File("src/test/resources/loader/pass2"));
