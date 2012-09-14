@@ -2,6 +2,7 @@ package com.redhat.ceylon.common.tool;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -133,7 +134,16 @@ public abstract class ToolLoader {
     }
 
     protected <T extends Tool> ArgumentParser<?> getArgumentParser(Method setter, Class<?> setterType) {
-        ParserFactory pf = setter.getAnnotation(ParserFactory.class);
+        Subtool subtool = setter.getAnnotation(Subtool.class);
+        ParsedBy pf = setter.getAnnotation(ParsedBy.class);
+        if (subtool != null) {
+            if (subtool.classes().length > 0) {
+                if (pf != null) {
+                    throw new ModelException(setter + " annotated with both @Subtool(classes=...) and @ParsedBy");
+                }
+                return new ToolArgumentParser(MapToolLoader.fromClassNames(subtool.classes()));
+            }
+        }
         if (pf != null) {
             try {
                 return pf.value().newInstance();
@@ -143,7 +153,7 @@ public abstract class ToolLoader {
                 throw new ModelException("Error instantiating the given @ParserFactory", e);
             }
         }
-        return StandardArgumentParsers.forClass(setterType);
+        return StandardArgumentParsers.forClass(setterType, this);
     }
     
     private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,
@@ -459,18 +469,24 @@ public abstract class ToolLoader {
         }
         ParameterizedType pt = (ParameterizedType)t;
         Type rt = pt.getRawType();// I.e. List
+        if (ToolModel.class.equals(rt)) {
+            return (Class)rt;
+        }
         if (!List.class.equals(rt)) {
             throw new ModelException("Method " + setter + " is annotated with " + annoType.getSimpleName() + " but the parameter type is not java.util.List");
         }
         Type ta = pt.getActualTypeArguments()[0];
+        if (ta instanceof ParameterizedType) {
+            ta = ((ParameterizedType)ta).getRawType();
+        }
         if (!(ta instanceof Class)) {
-            throw new ModelException("Method " + setter + " is annotated with " + annoType.getSimpleName() + " but the type parameter to the java.util.List parameter is not a class");
+            throw new ModelException("Method " + setter + " is annotated with " + annoType.getSimpleName() + " but the type parameter to the java.util.List parameter is not a class but a " + ta);
         }
         Class<?> argumentType = (Class<?>)ta;
         return argumentType;
     }
     
-    protected abstract String getToolName(String className);
+    public abstract String getToolName(String className);
     
     /**
      * Returns an iterable of all the tools names known to this tool loader.
@@ -540,14 +556,23 @@ public abstract class ToolLoader {
         return distance[str1.length()][str2.length()];
     }
 
-    public <T extends Tool> T instance(String toolName) {
+    public <T extends Tool> T instance(String toolName, Tool outer) {
         String toolClassName = getToolClassName(toolName);
         if (toolClassName == null) {
             return null;
         }
         try {
             Class<T> toolClass = (Class<T>)Class.forName(toolClassName, false, loader);
-            return toolClass.newInstance();
+            if (toolClass.getEnclosingClass() != null
+                    && !Modifier.isStatic(toolClass.getModifiers())) {
+                if (outer == null) {
+                    throw new ToolException("Cannot instantiate non-static innner class without a qualifier");
+                }
+                Constructor<T> ctor = toolClass.getConstructor(toolClass.getEnclosingClass());
+                return ctor.newInstance(outer);
+            } else {
+                return toolClass.newInstance();
+            }
         } catch (RuntimeException e) {
             throw new ToolException("Could not instantitate tool class " + toolClassName + " for tool " + toolName, e);
         } catch (ReflectiveOperationException e) {

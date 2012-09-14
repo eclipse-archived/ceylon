@@ -6,7 +6,7 @@ package com.redhat.ceylon.common.tool;
  * documentation generators. 
  * @author tom
  */
-public class ToolModelArgumentParser implements ArgumentParser<ToolModel<?>>{
+public class ToolModelArgumentParser implements EnumerableParser<ToolModel<?>>{
 
     private ToolLoader loader;
 
@@ -19,8 +19,17 @@ public class ToolModelArgumentParser implements ArgumentParser<ToolModel<?>>{
     }
 
     @Override
-    public ToolModel<?> parse(String argument) {
-        return loader.loadToolModel(argument);
+    public ToolModel<?> parse(String argument, Tool tool) {
+        ToolModel<Tool> model = loader.loadToolModel(argument);
+        if (model == null) {
+            throw new IllegalArgumentException(argument);
+        }
+        return model;
+    }
+
+    @Override
+    public Iterable<String> possibilities() {
+        return loader.getToolNames();
     }
     
 }

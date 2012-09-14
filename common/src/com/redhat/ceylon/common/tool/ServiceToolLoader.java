@@ -13,10 +13,16 @@ public abstract class ServiceToolLoader extends ToolLoader {
     private final Class<?> serviceClass;
     
     public ServiceToolLoader(Class<?> serviceClass) {
+        super();
+        this.serviceClass = serviceClass;
+    }
+    
+    public ServiceToolLoader(ClassLoader loader, Class<?> serviceClass) {
+        super(loader);
         this.serviceClass = serviceClass;
     }
 
-    private Enumeration<URL> getServiceMeta() {
+    protected Enumeration<URL> getServiceMeta() {
         /* Use the same conventions as java.util.ServiceLoader but without 
          * requiring us to load the Service classes
          */

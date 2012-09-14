@@ -5,26 +5,28 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandardArgumentParsers {
 
     private static final ArgumentParser<String> CHAR_SEQUENCE_PARSER = new ArgumentParser<String>() {
         @Override
-        public String parse(String argument) {
+        public String parse(String argument, Tool tool) {
             return argument != null ? argument : null;
         }
     };
     
     static final ArgumentParser<Boolean> BOOLEAN_PARSER = new ArgumentParser<Boolean>() {
         @Override
-        public Boolean parse(String argument) {
+        public Boolean parse(String argument, Tool tool) {
             return argument.matches("1|yes|true");
         }
     };
     
     static final ArgumentParser<Integer> INTEGER_PARSER = new ArgumentParser<Integer>() {
         @Override
-        public Integer parse(String argument) {
+        public Integer parse(String argument, Tool tool) {
             return Integer.valueOf(argument);
         }
     };
@@ -42,7 +44,7 @@ public class StandardArgumentParsers {
         }
 
         @Override
-        public T parse(String argument) {
+        public T parse(String argument, Tool tool) {
             try {
                 return ctor.newInstance(argument);
             } catch (InvocationTargetException e) {
@@ -65,7 +67,7 @@ public class StandardArgumentParsers {
         
     }
     
-    static class EnumArgumentParser<E extends Enum<E>> implements ArgumentParser<E> {
+    static class EnumArgumentParser<E extends Enum<E>> implements EnumerableParser<E> {
 
         private final boolean denormalize;
         private final Class<E> enumClass;
@@ -76,7 +78,7 @@ public class StandardArgumentParsers {
         }
         
         @Override
-        public E parse(String argument) {
+        public E parse(String argument, Tool tool) {
             if (denormalize) {
                 argument = denormalize(argument);
             }
@@ -85,10 +87,26 @@ public class StandardArgumentParsers {
         
         protected String denormalize(String argument) {
             return argument.replace('-', '_');
+        }
+
+        @Override
+        public Iterable<String> possibilities() {
+            E[] values;
+            try {
+                values = (E[]) enumClass.getMethod("values").invoke(null);
+            } catch (ReflectiveOperationException e) {
+                // Should never happen
+                throw new RuntimeException(e);
+            }
+            List<String> result = new ArrayList<>(values.length);
+            for (E value : values) {
+                result.add(value.toString());
+            }
+            return result;
         }        
     }
     
-    public static ArgumentParser<?> forClass(Class<?> setterType) {
+    public static ArgumentParser<?> forClass(Class<?> setterType, ToolLoader toolLoader) {
         if (CharSequence.class.isAssignableFrom(setterType)) {
             return CHAR_SEQUENCE_PARSER;
         } else if (Integer.class.isAssignableFrom(setterType)
@@ -105,10 +123,10 @@ public class StandardArgumentParsers {
             return new ConstructorArgumentParser<>(URL.class);
         } else if (Enum.class.isAssignableFrom(setterType)) {
             return new EnumArgumentParser(setterType, true);
-        }/* else if (ToolModel.class.isAssignableFrom(setterType)) {
-            return new ToolModelArgumentParser(this);
-        } else if (Tool.class.isAssignableFrom(setterType)) {
-            return new ToolArgumentParser(this);
+        } else if (ToolModel.class.isAssignableFrom(setterType)) {
+            return new ToolModelArgumentParser(toolLoader);
+        } /*else if (Tool.class.isAssignableFrom(setterType)) {
+            return new ToolArgumentParser(toolLoader);
         }*/
         return null;
     }

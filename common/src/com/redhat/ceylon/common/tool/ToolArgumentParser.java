@@ -5,7 +5,7 @@ package com.redhat.ceylon.common.tool;
  * An {@link ArgumentParser} for {@link Tool}s. This is used for subtools
  * @author tom
  */
-public class ToolArgumentParser implements ArgumentParser<Tool>{
+public class ToolArgumentParser implements EnumerableParser<Tool>{
 
     private ToolLoader loader;
 
@@ -18,12 +18,17 @@ public class ToolArgumentParser implements ArgumentParser<Tool>{
     }
 
     @Override
-    public Tool parse(final String argument) {
-        Tool instance = loader.instance(argument);
+    public Tool parse(final String argument, Tool tool) {
+        Tool instance = loader.instance(argument, tool);
         if (instance == null) {
             throw new IllegalArgumentException(argument);
         }
         return instance;
+    }
+
+    @Override
+    public Iterable<String> possibilities() {
+        return loader.getToolNames();
     }
     
 }

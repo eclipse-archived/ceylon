@@ -11,12 +11,13 @@ public class Tools {
     private Tools() {}
     
     public static void printToolSuggestions(ToolLoader toolLoader, WordWrap wrap, String toolName) {
-        wrap.append(Tools.progName() + ": " + toolName + " is not a ceylon command. See 'ceylon --help'.").newline();
+        
+        wrap.append(ToolMessages.msg("tool.unknown", Tools.progName(), toolName)).newline();
         final List<String> suggestions = toolLoader.typo(toolName);
         if (suggestions != null 
                 && !suggestions.isEmpty()) {
             wrap.newline();
-            wrap.append("Did you mean:");
+            wrap.append(ToolMessages.msg("tool.unknown.suggest"));
             wrap.setIndent(4);
             wrap.newline();
             for (String suggestion : suggestions) {

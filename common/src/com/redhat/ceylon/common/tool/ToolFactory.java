@@ -3,6 +3,7 @@ package com.redhat.ceylon.common.tool;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +24,9 @@ public class ToolFactory {
     private static final String LONG_PREFIX = "--";
     
     public <T extends Tool> T newInstance(ToolModel<T> toolModel) {
-        return toolModel.getToolLoader().instance(toolModel.getName());
+        // Since non-Subtools can't be inner classes, it's OK to pass a null
+        // outer.
+        return toolModel.getToolLoader().instance(toolModel.getName(), null);
     }
 
     private <T extends Tool> void setToolLoader(ToolModel<T> toolModel,
@@ -86,13 +89,39 @@ public class ToolFactory {
                     (OptionModel)om, (ArgumentModel)am, listValue);
         }
         
-        public OptionArgumentException invalid(Throwable throwable) {
+        public OptionArgumentException invalid(Throwable throwable, ArgumentParser<?> parser) {
+            
+            String key;
+            final Object[] args = new Object[3];
             final String badValue = unparsedArgumentValue != null ? unparsedArgumentValue : String.valueOf(value);
             if (optionModel != null) {
-                return new OptionArgumentException("option.invalid.value", givenOption, badValue);
+                key = "option.invalid.value";
+                args[0] = givenOption;
+                args[1] = badValue;
             } else {
-                return new OptionArgumentException("argument.invalid.value", argumentModel.getName(), badValue);
+                key = "argument.invalid.value";
+                args[0] = argumentModel.getName();
+                args[1] = badValue;
             }
+            if (parser instanceof EnumerableParser) {
+                EnumerableParser<?> enumerableParser = (EnumerableParser<?>)parser;
+                if (enumerableParser.possibilities().iterator().hasNext()) {
+                    List<String> l = new ArrayList<>();
+                    for (String valid : enumerableParser.possibilities()) {
+                        l.add(valid);
+                    }
+                    Collections.sort(l);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(System.getProperty("line.separator"));
+                    for (String valid : l) {
+                        sb.append(valid).append(System.getProperty("line.separator"));
+                    }
+                    key+= ".with.allowed";
+                    args[2] = sb.toString();
+                }
+            }
+            
+            return new OptionArgumentException(key, args);
         }
     }
     
@@ -245,7 +274,7 @@ public class ToolFactory {
             final ArgumentParser<A> parser = binding.argumentModel.getParser();
             // Note parser won't be null, because the ModelBuilder checked
             try {
-                final A value = parser.parse(binding.unparsedArgumentValue);
+                final A value = parser.parse(binding.unparsedArgumentValue, tool);
                 if (value instanceof Tool) {
                     /* Special case for subtools: The ToolArgumentParser can 
                      * instantiate the Tool instance given its name, but it cannot 
@@ -267,17 +296,13 @@ public class ToolFactory {
                     });
                     // TODO Improve error messages to include legal options/argument values
                     // TODO Can I rewrite the CeylonTool to use @Subtool?
-                    // TODO ToolLoader validation of Subtools 
-                    // (that they're last)
                     // TODO Help support for subtools?
                     // TODO doc-tool support for subtools
                     // TODO Rewrite CeylonHelpTool to use a ToolModel setter.
                     // TODO Rewrite CeylonDocToolTool to use a ToolModel setter.
                     // TODO Rewrite BashCompletionTool to use a ToolModel setter.
                     // TODO BashCompletionSupport for ToolModels and Tools
-                    // TODO If a Tool has consumed all the possible arguments it can
-                    // from the given arguments, it should return ignoring the rest 
-                    // of the argument in case it has a supertool
+
                     // TODO Write a proper fucking state machine for this shit.
                     //    i.e. Alternation, Sequence, Repetition on top of/part of the tool model
                     //      could write a visitor of that tree to generate synopses?
@@ -288,8 +313,10 @@ public class ToolFactory {
                 return value;
             } catch (OptionArgumentException e) {
                 throw e;
+            } catch (ToolException e) {
+                throw e;
             } catch (Exception e) {
-                throw binding.invalid(e);
+                throw binding.invalid(e, parser);
             }
         }
         
@@ -299,7 +326,7 @@ public class ToolFactory {
             } catch (IllegalAccessException e) {
                 throw new ToolException(e);
             } catch (InvocationTargetException e) {
-                throw binding.invalid(e.getCause());
+                throw binding.invalid(e.getCause(), null);
             }
         }
 
