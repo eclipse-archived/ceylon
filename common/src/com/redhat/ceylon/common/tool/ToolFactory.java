@@ -105,22 +105,23 @@ public class ToolFactory {
         return bindArguments(toolModel, tool, args);
     }
     
-    /**
-     * Parses the given arguments binding them to an existing instanceo of the 
-     * the tool model.
-     * You should probably be using {@link #bindArguments(ToolModel, Iterable)}, 
-     * there are few tools which need to call this method directly.
-     */
-    public <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, Iterable<String> args) {
-        try {
-            List<String> unrecognised = new ArrayList<String>(1);
-            List<String> rest = new ArrayList<String>(1);
-            setToolLoader(toolModel, tool);
-            Map<ArgumentModel<?>, List<Binding<?>>> bindings = new HashMap<ArgumentModel<?>, List<Binding<?>>>(1);
+    class ArgumentProcessor<T extends Tool> {
+        final List<String> unrecognised = new ArrayList<String>(1);
+        final List<String> rest = new ArrayList<String>(1);
+        final Map<ArgumentModel<?>, List<Binding<?>>> bindings = new HashMap<ArgumentModel<?>, List<Binding<?>>>(1);
+        final Iterator<String> iter;
+        final ToolModel<T> toolModel;
+        final T tool;
+        ArgumentProcessor(ToolModel<T> toolModel, T tool, Iterator<String> iter) {
+            this.toolModel = toolModel;
+            this.tool = tool;
+            this.iter = iter;
+        }
+        
+        void processArguments() {
             boolean eoo = false;
             int argumentModelIndex = 0;
             int argumentsBoundThisIndex = 0;
-            Iterator<String> iter = args.iterator();
             argloop: while (iter.hasNext()) {
                 final String arg = iter.next();
                 OptionModel<?> option;
@@ -152,7 +153,7 @@ public class ToolFactory {
                         default:
                             throw new RuntimeException("Assertion failed");
                         }
-                        processArgument(iter, tool, bindings, new Binding(longName, option, argument));    
+                        processArgument(new Binding(longName, option, argument));    
                     }
                 } else if (!eoo && isShortForm(arg)) {
                     for (int idx = 1; idx < arg.length(); idx++) {
@@ -187,7 +188,7 @@ public class ToolFactory {
                         default:
                             throw new RuntimeException("Assertion failed");
                         }
-                        processArgument(iter, tool, bindings, new Binding(String.valueOf(shortName), option, argument));
+                        processArgument(new Binding(String.valueOf(shortName), option, argument));
                     }
                 } else {// an argument
                     option = null;
@@ -198,7 +199,7 @@ public class ToolFactory {
                             throw new OptionArgumentException("argument.unexpected", arg);
                         }
                         final ArgumentModel<?> argumentModel = argumentModels.get(argumentModelIndex);
-                        processArgument(iter, tool, bindings, new Binding(argumentModel, argument));
+                        processArgument(new Binding(argumentModel, argument));
                         argumentsBoundThisIndex++;
                         if (argumentsBoundThisIndex >= argumentModel.getMultiplicity().getMax()) {
                             argumentModelIndex++;
@@ -209,18 +210,111 @@ public class ToolFactory {
                     }
                 }
             }
-            
-            checkMultiplicities(toolModel, bindings);
-            
+            try {
+                checkMultiplicities();
+                applyBindings();
+                handleRest();
+                assertAllRecognised();
+                invokePostConstructors();
+            } catch (IllegalAccessException e) {
+                // Programming error 
+                throw new ToolException(e);
+            }
+        }
+        
+        private <A> void processArgument(Binding<A> binding) {
+            List<Binding<?>> values = bindings.get(binding.argumentModel);
+            if (values == null) {
+                values = new ArrayList<Binding<?>>(1);
+                bindings.put(binding.argumentModel, values);
+            }
+            if (binding.argumentModel.getMultiplicity().isMultivalued()) {
+                binding.value = parseArgument(binding);
+            } else {
+                parseAndSetValue(binding);
+            }
+            values.add(binding);
+        }
+
+        private <A> void parseAndSetValue(Binding<A> binding) {
+            binding.value = parseArgument(binding);
+            setValue(binding);
+        }
+
+        private <A> A parseArgument(Binding<A> binding) {
+            final ArgumentParser<A> parser = binding.argumentModel.getParser();
+            // Note parser won't be null, because the ModelBuilder checked
+            try {
+                final A value = parser.parse(binding.unparsedArgumentValue);
+                if (value instanceof Tool) {
+                    /* Special case for subtools: The ToolArgumentParser can 
+                     * instantiate the Tool instance given its name, but it cannot 
+                     * configure the Tool because it doesn't have access to the 
+                     * remaining arguments, so we have to handle that here.
+                     * 
+                     * I did think this could be made more beautiful if parse() took ToolFactory
+                     * I though we could just have a Tool-typed setter and let the parse do the heavy lifting
+                     * But that doesn't work  because then the parser also needs access to the Iterator 
+                     */
+                    ToolLoader loader = ((ToolArgumentParser)parser).getToolLoader();
+                    ToolModel<T> model = loader.loadToolModel(binding.unparsedArgumentValue);
+                    
+                    return (A)bindArguments(model, (T)value, new Iterable<String>() {
+                        @Override
+                        public Iterator<String> iterator() {
+                            return iter;
+                        }
+                    });
+                    // TODO Improve error messages to include legal options/argument values
+                    // TODO Can I rewrite the CeylonTool to use @Subtool?
+                    // TODO ToolLoader validation of Subtools 
+                    // (that they're last)
+                    // TODO Help support for subtools?
+                    // TODO doc-tool support for subtools
+                    // TODO Rewrite CeylonHelpTool to use a ToolModel setter.
+                    // TODO Rewrite CeylonDocToolTool to use a ToolModel setter.
+                    // TODO Rewrite BashCompletionTool to use a ToolModel setter.
+                    // TODO BashCompletionSupport for ToolModels and Tools
+                    // TODO If a Tool has consumed all the possible arguments it can
+                    // from the given arguments, it should return ignoring the rest 
+                    // of the argument in case it has a supertool
+                    // TODO Write a proper fucking state machine for this shit.
+                    //    i.e. Alternation, Sequence, Repetition on top of/part of the tool model
+                    //      could write a visitor of that tree to generate synopses?
+                    // TODO   Proper ToolModel support for subtools (getSubtoolModel())
+             
+                    // instantiate, get the remaining arguments and call bindArguments recursively
+                }
+                return value;
+            } catch (OptionArgumentException e) {
+                throw e;
+            } catch (Exception e) {
+                throw binding.invalid(e);
+            }
+        }
+        
+        private <A> void setValue(Binding<A> binding) {
+            try {
+                binding.argumentModel.getSetter().invoke(tool, binding.value);
+            } catch (IllegalAccessException e) {
+                throw new ToolException(e);
+            } catch (InvocationTargetException e) {
+                throw binding.invalid(e.getCause());
+            }
+        }
+
+        private void applyBindings() {
             for (Map.Entry<ArgumentModel<?>, List<Binding<?>>> entry : bindings.entrySet()) {
                 final ArgumentModel<?> argument = entry.getKey();
                 List values = (List)entry.getValue();
                 if (argument.getMultiplicity().isMultivalued()) {
                     Binding<List<?>> mv = Binding.mv(values);
-                    setValue(tool, mv);    
+                    setValue(mv);    
                 }
             }
-            
+        }
+
+        private void handleRest() throws IllegalAccessException {
             if (toolModel.getRest() != null) {
                 try {
                     toolModel.getRest().invoke(tool, rest);
@@ -230,9 +324,9 @@ public class ToolFactory {
             } else {
                 unrecognised.addAll(rest);
             }
-            
-            assertAllRecognised(unrecognised);
-            
+        }
+
+        private void invokePostConstructors() throws IllegalAccessException {
             for (Method m : toolModel.getPostConstruct()) {
                 try {
                     m.invoke(tool);
@@ -240,23 +334,49 @@ public class ToolFactory {
                     throw new OptionArgumentException(e);
                 }
             }
-            
-            return tool;
-        } catch (IllegalAccessException e) {
-            // Programming error 
-            throw new ToolException(e);
+        }
+        
+        private void checkMultiplicities() {
+            for (Map.Entry<ArgumentModel<?>, List<Binding<?>>> entry : bindings.entrySet()) {
+                final ArgumentModel<?> argument = entry.getKey();
+                List values = (List)entry.getValue();
+                checkMultiplicity(argument, values);
+            }
+            for (OptionModel option : toolModel.getOptions()) {
+                ArgumentModel argument = option.getArgument();
+                checkMultiplicity(argument, bindings.get(argument));
+                
+            }
+            for (ArgumentModel argument : toolModel.getArgumentsAndSubtool()) {
+                argument.getMultiplicity().getMin();
+                checkMultiplicity(argument, bindings.get(argument));
+            }
+        }
+        
+        private void assertAllRecognised() {
+            if (!unrecognised.isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                for (String s : unrecognised) {
+                    sb.append(s).append(", ");
+                }
+                sb.setLength(sb.length()-2);// remove last ,
+                throw new OptionArgumentException("option.unknown", sb.toString());
+            }
         }
     }
-
-    private void assertAllRecognised(List<String> unrecognised) {
-        if (!unrecognised.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (String s : unrecognised) {
-                sb.append(s).append(", ");
-            }
-            sb.setLength(sb.length()-2);// remove last ,
-            throw new OptionArgumentException("option.unknown", sb.toString());
-        }
+    
+    /**
+     * Parses the given arguments binding them to an existing instanceo of the 
+     * the tool model.
+     * You should probably be using {@link #bindArguments(ToolModel, Iterable)}, 
+     * there are few tools which need to call this method directly.
+     */
+    public <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, Iterable<String> args) {
+            setToolLoader(toolModel, tool);
+            ArgumentProcessor<T> invocation = new ArgumentProcessor<>(toolModel, tool, args.iterator());
+            invocation.processArguments();
+            return tool;
+        
     }
     
     public  boolean isEoo(final String arg) {
@@ -295,25 +415,6 @@ public class ToolFactory {
         return true;
     }
 
-    private <T extends Tool> void checkMultiplicities(
-            ToolModel<T> toolModel,
-            Map<ArgumentModel<?>, List<Binding<?>>> bindings) {
-        for (Map.Entry<ArgumentModel<?>, List<Binding<?>>> entry : bindings.entrySet()) {
-            final ArgumentModel<?> argument = entry.getKey();
-            List values = (List)entry.getValue();
-            checkMultiplicity(argument, values);
-        }
-        for (OptionModel option : toolModel.getOptions()) {
-            ArgumentModel argument = option.getArgument();
-            checkMultiplicity(argument, bindings.get(argument));
-            
-        }
-        for (ArgumentModel argument : toolModel.getArgumentsAndSubtool()) {
-            argument.getMultiplicity().getMin();
-            checkMultiplicity(argument, bindings.get(argument));
-        }
-    }
-
     private void checkMultiplicity(final ArgumentModel<?> argument, List values) {
         OptionModel option = argument.getOption();
         Multiplicity multiplicity = argument.getMultiplicity();
@@ -340,89 +441,6 @@ public class ToolFactory {
         }
     }
 
-    private <T extends Tool, A> void processArgument(Iterator<String> iter,
-            T tool,
-            Map<ArgumentModel<?>, List<Binding<?>>> bindings,
-            Binding<A> binding) {
-        List<Binding<?>> values = bindings.get(binding.argumentModel);
-        if (values == null) {
-            values = new ArrayList<Binding<?>>(1);
-            bindings.put(binding.argumentModel, values);
-        }
-        if (binding.argumentModel.getMultiplicity().isMultivalued()) {
-            binding.value = parseArgument(iter, binding);
-        } else {
-            parseAndSetValue(iter, tool, binding);
-        }
-        values.add(binding);
-    }
-
-    private <T extends Tool, A> void parseAndSetValue(Iterator<String> iter, T tool,
-            Binding<A> binding) {
-        binding.value = parseArgument(iter, binding);
-        setValue(tool, binding);
-    }
-
-    private <A, T extends Tool> A parseArgument(final Iterator<String> iter, Binding<A> binding) {
-        final ArgumentParser<A> parser = binding.argumentModel.getParser();
-        // Note parser won't be null, because the ModelBuilder checked
-        try {
-            final A value = parser.parse(binding.unparsedArgumentValue);
-            if (value instanceof Tool) {
-                /* Special case for subtools: The ToolArgumentParser can 
-                 * instantiate the Tool instance given its name, but it cannot 
-                 * configure the Tool because it doesn't have access to the 
-                 * remaining arguments, so we have to handle that here.
-                 * 
-                 * I did think this could be made more beautiful if parse() took ToolFactory
-                 * I though we could just have a Tool-typed setter and let the parse do the heavy lifting
-                 * But that doesn't work  because then the parser also needs access to the Iterator 
-                 */
-                ToolLoader loader = ((ToolArgumentParser)parser).getToolLoader();
-                ToolModel<T> model = loader.loadToolModel(binding.unparsedArgumentValue);
-                
-                return (A)bindArguments(model, (T)value, new Iterable<String>() {
-                    @Override
-                    public Iterator<String> iterator() {
-                        return iter;
-                    }
-                });
-                // TODO Improve error messages to include legal options/argument values
-                // TODO Can I rewrite the CeylonTool to use @Subtool?
-                // TODO ToolLoader validation of Subtools 
-                // (that they're last)
-                // TODO Help support for subtools?
-                // TODO doc-tool support for subtools
-                // TODO Rewrite CeylonHelpTool to use a ToolModel setter.
-                // TODO Rewrite CeylonDocToolTool to use a ToolModel setter.
-                // TODO Rewrite BashCompletionTool to use a ToolModel setter.
-                // TODO BashCompletionSupport for ToolModels and Tools
-                // TODO If a Tool has consumed all the possible arguments it can
-                // from the given arguments, it should return ignoring the rest 
-                // of the argument in case it has a supertool
-                // TODO Write a proper fucking state machine for this shit.
-                //    i.e. Alternation, Sequence, Repetition on top of/part of the tool model
-                //      could write a visitor of that tree to generate synopses?
-                // TODO   Proper ToolModel support for subtools (getSubtoolModel())
-         
-                // instantiate, get the remaining arguments and call bindArguments recursively
-            }
-            return value;
-        } catch (OptionArgumentException e) {
-            throw e;
-        } catch (Exception e) {
-            throw binding.invalid(e);
-        }
-    }
     
-    private <A> void setValue(Tool tool, Binding<A> binding) {
-        try {
-            binding.argumentModel.getSetter().invoke(tool, binding.value);
-        } catch (IllegalAccessException e) {
-            throw new ToolException(e);
-        } catch (InvocationTargetException e) {
-            throw binding.invalid(e.getCause());
-        }
-    }
 
 }
