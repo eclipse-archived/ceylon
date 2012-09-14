@@ -10,10 +10,10 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Tool;
-import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.Tool;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")
@@ -62,8 +62,9 @@ import com.redhat.ceylon.common.tool.Summary;
 public class CeylonCompileTool implements Tool{
 
     private List<File> source = Collections.singletonList(new File("source"));
-    private String out = "modules";
+    private String out;
     private List<URI> repo = Collections.emptyList();
+    private String systemRepo;
     private List<String> module = Collections.emptyList();
     private boolean d;
     private List<String> rest = Collections.emptyList();
@@ -84,9 +85,16 @@ public class CeylonCompileTool implements Tool{
     
     @OptionArgument(longName="rep", argumentName="url")
     @Description("Specifies a module repository containing dependencies. " +
-    		"(default: `modules`, http://modules.ceylon-lang.org)")
+    		"(default: `modules`, `~/.ceylon/repo`, http://modules.ceylon-lang.org)")
     public void setRepository(List<URI> repo) {
         this.repo = repo;
+    }
+    
+    @OptionArgument(longName="sysrep", argumentName="url")
+    @Description("Specifies the system repository containing essential modules. " +
+            "(default: `$CEYLON_HOME/repo`)")
+    public void setSystemRepository(String systemRepo) {
+        this.systemRepo = systemRepo;
     }
     
     @Option(longName="d")
@@ -166,8 +174,10 @@ public class CeylonCompileTool implements Tool{
             }
         }
         
-        arguments.add("-out");
-        arguments.add(out);
+        if (out != null) {
+            arguments.add("-out");
+            arguments.add(out);
+        }
         
         if (user != null) {
             arguments.add("-user");
@@ -176,6 +186,11 @@ public class CeylonCompileTool implements Tool{
         if (pass != null) {
             arguments.add("-pass");
             arguments.add(pass);
+        }
+        
+        if (systemRepo != null) {
+            arguments.add("-sysrep");
+            arguments.add(systemRepo);
         }
         
         for (URI uri : this.repo) {

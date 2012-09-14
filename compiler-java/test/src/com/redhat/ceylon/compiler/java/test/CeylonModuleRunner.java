@@ -289,7 +289,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             // Find all the top level classes/functions annotated @test
             // Unfortunately doing it like this
             final Map<String, List<String>> testMethods = new TreeMap<String, List<String>>();
-            RepositoryManager repositoryManager = CeylonUtils.makeRepositoryManager(null, null, new JULLogger());
+            RepositoryManager repositoryManager = CeylonUtils.makeRepositoryManager(null, null, null, new JULLogger());
             TypeCheckerBuilder typeCheckerBuilder = new TypeCheckerBuilder();
             typeCheckerBuilder.addSrcDirectory(srcDir);
             typeCheckerBuilder.setRepositoryManager(repositoryManager);

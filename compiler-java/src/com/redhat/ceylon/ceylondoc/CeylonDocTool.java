@@ -139,6 +139,7 @@ public class CeylonDocTool implements Tool {
     private List<File> sourceFolders = Collections.singletonList(new File("source"));
     private boolean haltOnError;
     private List<String> repositories = new LinkedList<String>();
+    private String systemRepository;
     private List<String> moduleSpecs = new LinkedList<String>();
     private Module currentModule;
 
@@ -183,6 +184,16 @@ public class CeylonDocTool implements Tool {
         this.repositories = repositories;
     }
 
+    public String getSystemRepository() {
+        return systemRepository;
+    }
+
+    @OptionArgument(longName="sysrep", argumentName="dir-or-url")
+    @Description("The URL of the system repository containing essential modules")
+    public void setSystemRepository(String systemRepository) {
+        this.systemRepository = systemRepository;
+    }
+
     public List<String> getModuleSpecs() {
         return moduleSpecs;
     }
@@ -201,7 +212,7 @@ public class CeylonDocTool implements Tool {
         this.log = new CeylondLogger();
         
         // set up the artifact repository
-        RepositoryManager repository = CeylonUtils.makeRepositoryManager(repositories, null, log );
+        RepositoryManager repository = CeylonUtils.makeRepositoryManager(systemRepository, repositories, null, log );
         builder.setRepositoryManager(repository);
         
         // we need to plug in the module manager which can load from .cars

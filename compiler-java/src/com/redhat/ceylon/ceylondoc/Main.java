@@ -42,6 +42,7 @@ public class Main {
         boolean includeSourceCode = false;
         List<String> modules = new LinkedList<String>();
         List<String> repositories = new LinkedList<String>();
+        String systemRepo = null;
         String user = null,pass = null;
         
         for (int i = 0; i < args.length; i++) {
@@ -50,7 +51,7 @@ public class Main {
             if ("-h".equals(arg)
                     || "-help".equals(arg)
                     || "--help".equals(arg)) {
-                printUsage(SC_OK, repositories, destDir);
+                printUsage(SC_OK, systemRepo, repositories, destDir);
             } else if ("-v".equals(arg)
                         || "-version".equals(arg)
                         || "--version".equals(arg)) {
@@ -73,6 +74,11 @@ public class Main {
                     optionMissingArgument(arg);
                 }
                 repositories.add(args[++i]);
+            } else if ("-sysrep".equals(arg)) {
+                if (argsLeft <= 0) {
+                    optionMissingArgument(arg);
+                }
+                systemRepo = args[++i];
             } else if ("-non-shared".equals(arg)) {
                 includeNonShared = true;
             } else if ("-source-code".equals(arg)) {
@@ -98,7 +104,7 @@ public class Main {
         
         if(modules.isEmpty()){
             System.err.println(CeylondMessages.msg("error.noModulesSpecified"));
-            printUsage(SC_ARGS, repositories, destDir);
+            printUsage(SC_ARGS, systemRepo, repositories, destDir);
         }
         if (destDir == null) {
             destDir = "modules";
@@ -173,8 +179,8 @@ public class Main {
         exit(SC_OK);
     }
 
-    private static void printUsage(int statusCode, List<String> userRepos, String outputRepo) {
-        List<String> defaultRepositories = addDefaultRepositories(userRepos, null);
+    private static void printUsage(int statusCode, String systemRepo, List<String> userRepos, String outputRepo) {
+        List<String> defaultRepositories = addDefaultRepositories(systemRepo, userRepos, null);
         System.err.print(CeylondMessages.msg("info.usage1"));
         for(String repo : defaultRepositories) {
             System.err.println("                        "+repo);
@@ -183,8 +189,8 @@ public class Main {
         exit(statusCode);
     }
     
-    private static List<String> addDefaultRepositories(List<String> userRepos, String outputRepo){
-        RepositoryManagerBuilder builder = CeylonUtils.makeRepositoryManagerBuilder(userRepos, outputRepo, new JULLogger());
+    private static List<String> addDefaultRepositories(String systemRepo, List<String> userRepos, String outputRepo){
+        RepositoryManagerBuilder builder = CeylonUtils.makeRepositoryManagerBuilder(systemRepo, userRepos, outputRepo, new JULLogger());
         return builder.getRepositoriesDisplayString();
     }
 }

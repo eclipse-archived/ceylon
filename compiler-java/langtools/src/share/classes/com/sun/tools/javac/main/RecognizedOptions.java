@@ -138,6 +138,7 @@ public class RecognizedOptions {
         CLASSPATH,
         CP,
         CEYLONREPO,
+        CEYLONSYSTEMREPO,
         CEYLONUSER,
         CEYLONPASS,
         SOURCEPATH,
@@ -196,6 +197,7 @@ public class RecognizedOptions {
         CLASSPATH,
         CP,
         CEYLONREPO,
+        CEYLONSYSTEMREPO,
         CEYLONUSER,
         CEYLONPASS,
         SOURCEPATH,
@@ -352,6 +354,7 @@ public class RecognizedOptions {
                 return false;
             }
         },
+        new COption(CEYLONSYSTEMREPO,       "opt.arg.url",       "opt.ceylonsystemrepo"),
         new COption(CEYLONUSER,             "opt.arg.value",     "opt.ceylonuser"),
         new COption(CEYLONPASS,             "opt.arg.value",     "opt.ceylonpass"),
         new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"){
