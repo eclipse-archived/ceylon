@@ -4,7 +4,6 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.common.tool.ArgumentParserFactory;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
@@ -16,9 +15,8 @@ import junit.framework.Assert;
 
 public class ImportJarToolTest {
 
-    protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final ToolFactory pluginFactory = new ToolFactory(apf);
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(apf, null);
+    protected final ToolFactory pluginFactory = new ToolFactory();
+    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
     
     @Test
     public void testNoArgs() {

@@ -11,19 +11,16 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.common.tool.ArgumentParserFactory;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.tools.bashcompletion.CeylonBashCompletionTool;
 import com.redhat.ceylon.tools.CeylonToolLoader;
 
 public class BashCompletionToolTest {
-    protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final ToolFactory pluginFactory = new ToolFactory(apf);
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(apf, null) {
+    protected final ToolFactory pluginFactory = new ToolFactory();
+    protected final ToolLoader pluginLoader = new CeylonToolLoader(null) {
+        @Override
         protected Enumeration<URL> getServiceMeta() {
             Enumeration<URL> resources;
             try {

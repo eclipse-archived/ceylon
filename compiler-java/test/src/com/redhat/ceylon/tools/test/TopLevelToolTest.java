@@ -2,7 +2,6 @@ package com.redhat.ceylon.tools.test;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.common.tool.ArgumentParserFactory;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.tools.CeylonTool;
@@ -10,9 +9,8 @@ import com.redhat.ceylon.tools.CeylonToolLoader;
 
 public class TopLevelToolTest {
 
-    protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final ToolFactory pluginFactory = new ToolFactory(apf);
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(apf, null);
+    protected final ToolFactory pluginFactory = new ToolFactory();
+    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
     
     private String[] args(String...args) {
         return args;

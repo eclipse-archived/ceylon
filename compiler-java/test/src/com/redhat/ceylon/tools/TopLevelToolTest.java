@@ -5,16 +5,14 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.tool.ArgumentParserFactory;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.tools.CeylonTool;
 
 public class TopLevelToolTest {
 
-    protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final ToolFactory pluginFactory = new ToolFactory(apf);
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(apf, null);
+    protected final ToolFactory pluginFactory = new ToolFactory();
+    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
     
     private CeylonTool tool;
     

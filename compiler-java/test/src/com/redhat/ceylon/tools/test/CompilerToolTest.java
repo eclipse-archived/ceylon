@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
-import com.redhat.ceylon.common.tool.ArgumentParserFactory;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
@@ -17,9 +16,8 @@ import com.redhat.ceylon.tools.CeylonToolLoader;
 
 public class CompilerToolTest {
     
-    protected final ArgumentParserFactory apf = new ArgumentParserFactory();
-    protected final ToolFactory pluginFactory = new ToolFactory(apf);
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(apf, null);
+    protected final ToolFactory pluginFactory = new ToolFactory();
+    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
 
     @Test
     public void testNoModules()  throws Exception {
