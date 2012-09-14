@@ -48,6 +48,8 @@ public class CeylonRunTool implements Tool {
     
     private List<String> repo = new ArrayList<String>(1);
     
+    private String systemRepo;
+    
     private boolean disableDefault;
     
     @Argument(argumentName="module", multiplicity="1")
@@ -67,6 +69,12 @@ public class CeylonRunTool implements Tool {
         this.repo = repo;
     }
 
+    @OptionArgument(longName="sysrep", argumentName="url")
+    @Description("Specifies the system repository.")
+    public void setSytemRepo(String systemRepo) {
+        this.systemRepo = systemRepo;
+    }
+
     @Option(longName="d")
     @Description("Disables the default module repositories and source directory.")
     public void setDisableDefault(boolean disableDefault) {
@@ -75,10 +83,17 @@ public class CeylonRunTool implements Tool {
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
         ArrayList<String> argList = new ArrayList<String>();
+        
+        String sysRep;
+        if (systemRepo != null) {
+            sysRep = systemRepo;
+        } else {
+            sysRep = System.getProperty("ceylon.system.repo");
+        }
+        
         argList.addAll(Arrays.asList(new String[]{
-                "-mp", System.getProperty("ceylon.system.repo"), 
+                "-mp", sysRep, 
                 "ceylon.runtime:0.4",
                 "+executable", "ceylon.modules.jboss.runtime.JBossRuntime"}));
         
@@ -90,6 +105,9 @@ public class CeylonRunTool implements Tool {
         if (disableDefault) {
             argList.add("-d");
         }
+        
+        argList.add("-sysrep");
+        argList.add(sysRep);
         
         for (String repo : this.repo) {
             argList.add("-rep");

@@ -26,6 +26,7 @@ public enum Argument {
     IMPLEMENTATION("impl", ArgumentType.IMPL, 2),
     RUN("run", ArgumentType.CEYLON, 1),
     REPOSITORY("rep", ArgumentType.CEYLON, 1),
+    SYSTEM_REPOSITORY("sysrep", ArgumentType.CEYLON, 1),
     SOURCE("src", ArgumentType.CEYLON, 1),
     VERBOSE("verbose", ArgumentType.CEYLON, 0),
     HELP("help", ArgumentType.CEYLON, 0, "h", "-help"),

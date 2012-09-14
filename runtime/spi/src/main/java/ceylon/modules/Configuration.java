@@ -48,6 +48,11 @@ public class Configuration {
     public List<String> repositories = new LinkedList<String>();
 
     /**
+     * The path to the system repository (default = null)
+     */
+    public String systemRepository;
+
+    /**
      * Name of class or toplevel method to run
      */
     public String run;
@@ -103,6 +108,9 @@ public class Configuration {
                 break;
             case RUN:
                 run = values[arg];
+                break;
+            case SYSTEM_REPOSITORY:
+                systemRepository = values[arg];
                 break;
             case REPOSITORY:
                 repositories.add(values[arg]);

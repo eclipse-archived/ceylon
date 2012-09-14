@@ -82,7 +82,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      */
     protected RepositoryManager createRepository(Configuration conf) {
         Logger log = new JULLogger();
-        final RepositoryManagerBuilder builder = CeylonUtils.makeRepositoryManagerBuilder(conf.repositories, null, log);
+        final RepositoryManagerBuilder builder = CeylonUtils.makeRepositoryManagerBuilder(conf.systemRepository, conf.repositories, null, log);
 
         final MergeStrategy ms = getService(MergeStrategy.class, conf);
         if (ms != null)
