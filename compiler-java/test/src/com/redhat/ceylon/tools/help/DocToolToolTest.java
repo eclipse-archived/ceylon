@@ -14,6 +14,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
@@ -126,8 +127,21 @@ public class DocToolToolTest {
     }
     
     @Test
+    public void testWibbleTxt() throws Exception {
+        try {
+            runDocTool("wibble", "--format=txt");
+        } catch (OptionArgumentException e) {
+            String s = e.getMessage();
+            Assert.assertTrue(s, s.startsWith("Invalid value wibble given for argument tool, allowed values are:"));
+            Assert.assertTrue(s, s.contains("help"));
+            Assert.assertTrue(s, s.contains("doc-tool"));
+            Assert.assertTrue(s, s.contains("compile"));
+        }
+    }
+    
+    @Test
     public void testAll() throws Exception {
-        runDocTool(CeylonDocToolTool.PORCELAIN_TOOLS, "--index");
+        runDocTool("--all-porcelain", "--index");
         assertHtmlFiles("compile");
         assertHtmlFiles("doc");
         assertHtmlFiles("import-jar");
@@ -138,7 +152,7 @@ public class DocToolToolTest {
     
     @Test
     public void testAllTxt() throws Exception {
-        runDocTool(CeylonDocToolTool.PORCELAIN_TOOLS, "--format=txt");
+        runDocTool("--all-porcelain", "--format=txt");
         assertTxtFiles("compile");
         assertTxtFiles("doc");
         assertTxtFiles("import-jar");

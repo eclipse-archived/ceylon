@@ -1,36 +1,21 @@
 package com.redhat.ceylon.tools.bashcompletion;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.Enumeration;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.common.tool.ToolException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.tools.CeylonToolLoader;
+import com.redhat.ceylon.tools.TestingToolLoader;
 
 public class BashCompletionToolTest {
     protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null) {
-        @Override
-        protected Enumeration<URL> getServiceMeta() {
-            Enumeration<URL> resources;
-            try {
-                resources = loader.getResources(CeylonExampleTool.class.getName().replace(".", "/")+".properties");
-            } catch (IOException e) {
-                throw new ToolException(e);
-            }
-            return resources;
-        }
-    };
+    protected final ToolLoader pluginLoader = new TestingToolLoader(null, false);
     private PrintStream savedOut;
     private ByteArrayOutputStream out;
     

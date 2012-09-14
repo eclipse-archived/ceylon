@@ -1,4 +1,4 @@
-package com.redhat.ceylon.tools.bashcompletion;
+package com.redhat.ceylon.tools;
 
 import java.io.File;
 import java.util.List;
