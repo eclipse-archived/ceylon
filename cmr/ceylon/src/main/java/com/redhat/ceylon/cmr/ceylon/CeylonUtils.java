@@ -22,7 +22,7 @@ import com.redhat.ceylon.common.config.Repositories;
 
 public class CeylonUtils {
 
-    public static RepositoryManagerBuilder makeRepositoryManagerBuilder(List<String> userRepos, String outRepo, Logger log) {
+    public static RepositoryManagerBuilder makeRepositoryManagerBuilder(String systemRepo, List<String> userRepos, String outRepo, Logger log) {
         final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(log);
 
         // The first two we add in reverse order because they get PREpended to the root
@@ -33,7 +33,11 @@ public class CeylonUtils {
             addRepo(builder, outRepo, log, true);
         }
         
-        addRepo(builder, Repositories.get().getSystemRepository(), log, true);
+        if (systemRepo == null) {
+            addRepo(builder, Repositories.get().getSystemRepository(), log, true);
+        } else {
+            addRepo(builder, systemRepo, log, true);
+        }
 
         // The rest we add in the normal order becuase they get APpended to the root
         
@@ -65,8 +69,8 @@ public class CeylonUtils {
         return builder;
     }
 
-    public static RepositoryManager makeRepositoryManager(List<String> userRepos, String outRepo, Logger log) {
-        return makeRepositoryManagerBuilder(userRepos, outRepo, log).buildRepository();
+    public static RepositoryManager makeRepositoryManager(String systemRepo, List<String> userRepos, String outRepo, Logger log) {
+        return makeRepositoryManagerBuilder(systemRepo, userRepos, outRepo, log).buildRepository();
     }
 
     public static RepositoryManager makeOutputRepositoryManager(String outRepo, Logger log, String user, String password) {
