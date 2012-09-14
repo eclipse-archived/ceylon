@@ -30,12 +30,7 @@ import com.redhat.ceylon.common.tool.WordWrap;
 @Summary("Generates documentation about a tool")
 @Description(
 "Generates documentation about the named `<tool>`s in the directory " +
-"named by the `--output` option." +
-"\n\n" +
-"If `<tool>` has the special value `" + CeylonDocToolTool.PORCELAIN_TOOLS + "` " +
-"documentation about all known high level tools will be generated. " +
-"If `<tool>` has the special value `" + CeylonDocToolTool.PLUMBING_TOOLS + "` " +
-"documentation about all known low level tools will be generated.")
+"named by the `--output` option.")
 @RemainingSections(
 "## See Also\n\n" +
 "* `ceylon help` For generating help about ceylon tools at the command line\n" +
@@ -43,8 +38,6 @@ import com.redhat.ceylon.common.tool.WordWrap;
 )
 public class CeylonDocToolTool extends AbstractDoc implements Tool {
 
-    static final String PLUMBING_TOOLS = "+plumbing";
-    static final String PORCELAIN_TOOLS = "+porcelain";
     
     public static enum Format {
         html(".html") {
@@ -77,15 +70,31 @@ public class CeylonDocToolTool extends AbstractDoc implements Tool {
         abstract URL[] supportingResources();
     }
     
-    private List<String> tools;
+    private List<ToolModel<?>> tools;
     private File dir = new File(".");
     private Format format = Format.html;
     private int width = 80;
     private boolean index = false;
+    private boolean allPlumbing;
+    private boolean allPorcelain;
 
-    @Argument(argumentName="tool", multiplicity="+")
-    public void setTool(List<String> tools) {
+    @Argument(argumentName="tool", multiplicity="*")
+    public void setTool(List<ToolModel<?>> tools) {
         this.tools = tools;
+    }
+    
+    @Option
+    @Description("Generate documentation about all low level tools, in " +
+    		"addition to the tools named by the `<tool>` argument")
+    public void setAllPlumbing(boolean allPlumbing) {
+        this.allPlumbing = allPlumbing;
+    }
+    
+    @Option
+    @Description("Generate documentation about all high level tools, in " +
+            "addition to the tools named by the `<tool>` argument")
+    public void setAllPorcelain(boolean allPorcelain) {
+        this.allPorcelain = allPorcelain;
     }
     
     @Option
@@ -121,11 +130,16 @@ public class CeylonDocToolTool extends AbstractDoc implements Tool {
     
     @PostConstruct
     public void init() {
+        if (!allPlumbing && !allPorcelain && (tools == null || tools.isEmpty())) {
+            throw new IllegalStateException("No tools to process");
+        }
         if (index &&  format != Format.html) {
             throw new IllegalStateException("--index is only supported when --format=html");
         }
     }
 
+    
+    
     @Override
     public void run() throws IOException {
         List<ToolDocumentation<?>> models = loadModels();
@@ -135,9 +149,8 @@ public class CeylonDocToolTool extends AbstractDoc implements Tool {
     }
 
     private List<ToolDocumentation<?>> loadModels() {
-        List<ToolDocumentation<?>> models = new ArrayList<>(tools.size());
-        if (tools.contains(PLUMBING_TOOLS)) {
-            tools.remove(PLUMBING_TOOLS);
+        List<ToolDocumentation<?>> models = new ArrayList<>();
+        if (allPlumbing) {
             for (String toolName : toolLoader.getToolNames()) {
                 ToolDocumentation<?> loadModel = loadModel(toolName);
                 if (loadModel.getPlugin().isPlumbing()) {
@@ -145,8 +158,7 @@ public class CeylonDocToolTool extends AbstractDoc implements Tool {
                 }
             }
         }
-        if (tools.contains(PORCELAIN_TOOLS)) {
-            tools.remove(PORCELAIN_TOOLS);
+        if (allPorcelain) {
             for (String toolName : toolLoader.getToolNames()) {
                 ToolDocumentation<?> loadModel = loadModel(toolName);
                 if (loadModel.getPlugin().isPorcelain()) {
@@ -155,8 +167,10 @@ public class CeylonDocToolTool extends AbstractDoc implements Tool {
             }
         }
         
-        for (String toolName : tools) {
-            models.add(loadModel(toolName));
+        if (tools != null) {
+            for (ToolModel<?> toolModel : tools) {
+                models.add(new ToolDocumentation<>(toolModel));
+            }
         }
         
         return models;
@@ -166,10 +180,7 @@ public class CeylonDocToolTool extends AbstractDoc implements Tool {
         final ToolModel<?> model = toolLoader.loadToolModel(toolName);
         if (model != null) {
             return new ToolDocumentation<>(model);
-        } 
-        final WordWrap wrap = new WordWrap();
-        Tools.printToolSuggestions(toolLoader, wrap, toolName);
-        wrap.flush();
+        }
         throw new NoSuchToolException(toolName);
     }
 
