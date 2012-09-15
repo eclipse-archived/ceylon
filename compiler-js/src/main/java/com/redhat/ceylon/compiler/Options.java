@@ -12,6 +12,7 @@ import java.util.List;
 public class Options {
 
     private List<String> repos = new ArrayList<String>();
+    private String systemRepo;
     private String user;
     private String pass;
     private List<String> srcDirs = new ArrayList<String>();
@@ -59,6 +60,8 @@ public class Options {
                     iter.remove();
                     if ("-rep".equals(s)) {
                         opts.addRepo(v);
+                    } else if ("-sysrep".equals(s)) {
+                        opts.systemRepo=v;
                     } else if ("-user".equals(s)) {
                         opts.user=v;
                     } else if ("-pass".equals(s)) {
@@ -149,6 +152,11 @@ public class Options {
     }
     public void addRepo(String repo) {
         repos.add(repo);
+    }
+    
+    /** Returns the system repository (default = null) */
+    public String getSystemRepo() {
+        return systemRepo;
     }
 
     public String getUser() {

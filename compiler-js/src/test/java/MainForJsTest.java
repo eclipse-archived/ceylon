@@ -30,8 +30,7 @@ public class MainForJsTest {
                 "-rep", "build/runtime",
                 "-out", "build/test/modules", "-module")));
         final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
-                "build/runtime",
-                opts.getRepos(),
+                opts.getSystemRepo(), opts.getRepos(),
                 opts.getOutDir(), new JULLogger());
         System.out.println("Typechecking Ceylon test code...");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
