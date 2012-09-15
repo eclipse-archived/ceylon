@@ -167,7 +167,9 @@
         <mkdir dir="${build.test}/modules/${jslangpath}" />
         <mkdir dir="${build.test}/nodeopt_modules/${jslangpath}" />
         <copy file="${runtime}/${jslangmodule}" todir="${build.test}/modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/modules/${jslangpath}" />
         <copy file="${runtime}/${jslangmodule}" todir="${build.test}/opt_modules/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/opt_modules/${jslangpath}" />
         <java classname="NodeTest" classpathref="test.run.classpath">
             <arg value="${build.test}/modules" />
             <arg value="${build.test}/opt_modules" />

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.compiler.SimpleJsonEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -83,6 +85,7 @@ public class Stitcher {
                 PrintWriter writer = new PrintWriter(outfile, "UTF-8");
                 stitch(infile, writer);
                 writer.close();
+                ShaSigner.sign(outfile, new JULLogger(), true);
             } else {
                 System.err.println("Output directory is invalid: " + outdir);
                 System.exit(3);
