@@ -3,8 +3,6 @@ package com.redhat.ceylon.compiler.js;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import com.redhat.ceylon.common.tool.ArgumentParserFactory;
