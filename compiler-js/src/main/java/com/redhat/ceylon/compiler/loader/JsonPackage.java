@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
@@ -73,7 +74,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             bottom = new BottomType(unit);
             bottom.setContainer(this);
             bottom.setUnit(unit);
-            System.out.println("marking langmod available - SHOULD HAPPEN ONLY ONCE");
         }
         setShared(model.get("$pkg-shared") != null);
         for (Map.Entry<String,Object> e : model.entrySet()) {
@@ -84,19 +84,21 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof String) {
                     String metatype = (String)m.get(MetamodelGenerator.KEY_METATYPE);
                     if (MetamodelGenerator.METATYPE_CLASS.equals(metatype)) {
-                        loadClass(e.getKey(), m, this, null);
+                        refineMembers(loadClass(e.getKey(), m, this, null));
                     } else if (MetamodelGenerator.METATYPE_INTERFACE.equals(metatype)) {
-                        loadInterface(e.getKey(), m, this, null);
+                        refineMembers(loadInterface(e.getKey(), m, this, null));
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_ATTRIBUTE)
                             || metatype.equals(MetamodelGenerator.METATYPE_GETTER)) {
                         loadAttribute(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
                         loadMethod(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
-                        loadObject(k, m, this, null);
+                        refineMembers((com.redhat.ceylon.compiler.typechecker.model.Class)loadObject(k, m, this, null));
                     }
                 } else if (m.get(MetamodelGenerator.KEY_METATYPE) == null) {
                     throw new IllegalArgumentException("Missing metatype from entry " + m);
+                } else if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof ClassOrInterface) {
+                    refineMembers((ClassOrInterface)m.get(MetamodelGenerator.KEY_METATYPE));
                 }
             }
         }
@@ -174,6 +176,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             System.out.println("clase " + name + " tiene objetos: " + m.get(MetamodelGenerator.KEY_OBJECTS));
         }
         addAttributesAndMethods(m, cls, allparms);
+        m.put(MetamodelGenerator.KEY_METATYPE, cls);
         return cls;
     }
 
@@ -404,6 +407,20 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
         d.setType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE), typeParameters));
         return d;
+    }
+
+    /** Sets the refined declarations for the type's members. */
+    private void refineMembers(ClassOrInterface coi) {
+        //fill refined declarations
+        for (Declaration d : coi.getMembers()) {
+            if (d.isActual()) {
+                Declaration refined = coi.getRefinedMember(d.getName(), null);
+                d.setRefinedDeclaration(refined);
+            }
+            if (d instanceof ClassOrInterface) {
+                refineMembers((ClassOrInterface)d);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

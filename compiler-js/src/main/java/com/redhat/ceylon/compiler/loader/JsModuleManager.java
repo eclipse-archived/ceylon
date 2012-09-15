@@ -44,7 +44,6 @@ public class JsModuleManager extends ModuleManager {
             ac.setThrowErrorIfMissing(true);
             ac.setSuffix(".js");
             ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
-            System.out.println("Loading language module from " + lmar.artifact().getAbsolutePath());
             resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
                     phasedUnitsOfDependencies);
         }
