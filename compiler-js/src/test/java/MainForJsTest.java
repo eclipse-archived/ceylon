@@ -10,6 +10,7 @@ import java.util.HashSet;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
@@ -29,7 +30,9 @@ public class MainForJsTest {
         Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
                 "-rep", "build/runtime",
                 "-out", "build/test/modules", "-module")));
-        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(opts.getRepos(),
+        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
+                "build/runtime",
+                opts.getRepos(),
                 opts.getOutDir(), new JULLogger());
         System.out.println("Typechecking Ceylon test code...");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)

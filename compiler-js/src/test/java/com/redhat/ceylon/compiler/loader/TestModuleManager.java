@@ -13,17 +13,20 @@ import org.junit.Test;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.Options;
-import com.redhat.ceylon.compiler.SimpleJsonEncoder;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class TestModuleManager {
 
@@ -58,12 +61,12 @@ public class TestModuleManager {
                 "-rep", "build/test/test_modules", "-out", "build/test/test_modules",
                 "-src", "src/test/resources/loader/pass1"));
         options = Options.parse(args);
-        repoman = CeylonUtils.makeRepositoryManager(
+        repoman = CeylonUtils.makeRepositoryManager("build/runtime",
                 options.getRepos(), options.getOutDir(), new JULLogger());
         //Create a typechecker to compile the test module
-        System.out.println("Compiling pass 1 (with js model loader now)");
+        System.out.println("Compiling pass 1");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
-        tcb.moduleManagerFactory(new JsModuleManagerFactory());
+        //tcb.moduleManagerFactory(new JsModuleManagerFactory());
         tcb.addSrcDirectory(new java.io.File("src/test/resources/loader/pass1"));
         tcb.setRepositoryManager(repoman);
         tc = tcb.getTypeChecker();
@@ -74,12 +77,14 @@ public class TestModuleManager {
         loadJsModel();
         srcmod = tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getLanguageModule();
         jsmod = jstc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getLanguageModule();
+        srclang = srcmod.getDirectPackage("ceylon.language");
+        jslang = jsmod.getDirectPackage("ceylon.language");
     }
 
     private static void loadJsModel() {
         if (jstc == null) {
             System.out.println("Pass 2: Loading model from JS");
-            final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
+            final RepositoryManager repoman = CeylonUtils.makeRepositoryManager("build/runtime",
                     options.getRepos(), options.getOutDir(), new JULLogger());
             TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);//.verbose(true);
             tcb.moduleManagerFactory(new JsModuleManagerFactory());
@@ -90,34 +95,31 @@ public class TestModuleManager {
         }
     }
 
-    @Test
-    public void testSameModels() throws java.io.IOException {
-        MetamodelGenerator mmg = new MetamodelGenerator(jsmod);
-        mmg.encodeClass((com.redhat.ceylon.compiler.typechecker.model.Class)jslang.getDirectMember("Integer", null));
-        SimpleJsonEncoder json = new SimpleJsonEncoder();
-        java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(System.out);
-        writer.write("$$metamodel$$=");
-        json.encode(mmg.getModel(), writer);
-        writer.write(";\n");
-        writer.flush();
-    }
-
     private void compareMembers(Declaration m1, Declaration m2) {
-        if (m1.getMembers() == null) {
+        if (m1 instanceof MethodOrValue) {
+            return;
+        } else if (m1.getMembers() == null) {
             Assert.assertNull(m2.getMembers());
-        } else {
-            Assert.assertEquals(m1.getMembers().size(), m2.getMembers().size());
+            return;
         }
-        Iterator<Declaration> ds2 = m2.getMembers().iterator();
+        if (m1.getMembers().size() != m2.getMembers().size()) {
+            System.out.println(m1 + " (src) tiene " + m1.getMembers());
+            System.out.println(m2 + " (js)  tiene " + m2.getMembers());
+        }
+        Assert.assertEquals(m1 + " member count", m1.getMembers().size(), m2.getMembers().size());
         for (Declaration d0 : m1.getMembers()) {
             String n = d0.getQualifiedNameString();
             if (n.indexOf('.') < 0) {
                 n += "(" + d0.getContainer().getQualifiedNameString() + ")";
             }
-            Declaration d1 = ds2.next();
-            Assert.assertNotNull(n + " not found in js ", d1);
+            Declaration d1 = findMatchingDeclaration(d0, m2.getMembers());
+            Assert.assertNotNull(n + " not found in " + m2, d1);
             Assert.assertEquals(n + " declaration kinds differ", d0.getDeclarationKind(), d1.getDeclarationKind());
-            Assert.assertEquals(d0.getContainer().getQualifiedNameString(), d1.getContainer().getQualifiedNameString());
+            if (d0.getContainer() == null) {
+                Assert.assertNull(d1.getContainer());
+            } else {
+                Assert.assertEquals(d0.getContainer().getQualifiedNameString(), d1.getContainer().getQualifiedNameString());
+            }
             if (d0 instanceof TypeDeclaration) {
                 Assert.assertEquals(d0.getClass(), d1.getClass());
                 compareTypeDeclarations((TypeDeclaration)d0, (TypeDeclaration)d1);
@@ -140,8 +142,8 @@ public class TestModuleManager {
         Assert.assertEquals(a.isShared(), b.isShared());
         Assert.assertEquals(a.isClassMember(), b.isClassMember());
         Assert.assertEquals(a.isClassOrInterfaceMember(), b.isClassOrInterfaceMember());
-        compareTypes(a.getType(), b.getType());
-        compareTypes(a.getSelfType(), b.getSelfType());
+        compareTypes(a.getType(), b.getType(), null);
+        compareTypes(a.getSelfType(), b.getSelfType(), null);
         if (a.getSatisfiedTypes() != null) {
             Assert.assertNotNull(b.getSatisfiedTypes());
             Assert.assertEquals("satisfied types for " + n,
@@ -149,51 +151,59 @@ public class TestModuleManager {
             Iterator<ProducedType> bsats = b.getSatisfiedTypes().iterator();
             for (ProducedType satA : a.getSatisfiedTypes()) {
                 ProducedType satB = bsats.next();
-                compareTypes(satA, satB);
+                compareTypes(satA, satB, null);
             }
         }
+    }
+
+    private Declaration findMatchingDeclaration(Declaration src, java.util.List<Declaration> members) {
+        for (Declaration d : members) {
+            if (src.getName().equals(d.getName()) && src.getClass().isInstance(d)) {
+                return d;
+            }
+        }
+        return null;
     }
 
     @Test
     public void compareLanguageModules() {
         Assert.assertNotNull("langmod from source", srcmod);
         Assert.assertNotNull("langmod from js", jsmod);
-        srclang = srcmod.getDirectPackage("ceylon.language");
-        jslang = jsmod.getDirectPackage("ceylon.language");
         Assert.assertNotNull("clpack from source", srclang);
         Assert.assertNotNull("clpack from js", jslang);
+        Assert.assertEquals(srclang.getMembers().size(), jslang.getMembers().size());
         for (Declaration d0 : srclang.getMembers()) {
-            Declaration d1 = jslang.getDirectMember(d0.getName(), null);
+            Declaration d1 = findMatchingDeclaration(d0, jslang.getMembers());
             Assert.assertNotNull(d0.getName() + " not found in js", d1);
-            Assert.assertEquals("declaration kinds differ", d0.getDeclarationKind(), d1.getDeclarationKind());
+            if (d0 instanceof ClassOrInterface && d1 instanceof Value) {
+                d1 = ((Value)d1).getTypeDeclaration();
+            }
+            Assert.assertEquals(d0 + " wrong class!", d0.getClass(), d1.getClass());
+            Assert.assertEquals(d0 + " wrong kind " + d1, d0.getDeclarationKind(), d1.getDeclarationKind());
             compareMembers(d0, d1);
         }
     }
 
     @Test
-    public void testScalar() {
+    public void tmptest() {
         System.out.println("-----------------------");
-        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Ordinal", null);
+        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Sequence", null);
         Assert.assertNotNull("Scalar from srclang", d0);
-        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Ordinal", null);
+        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Sequence", null);
         Assert.assertNotNull("Scalar from jslang", d1);
-        compareTypes(d0.getType(), d1.getType());
-        compareTypes(d0.getSelfType(), d1.getSelfType());
-        Iterator<TypeParameter> parms1 = d1.getTypeParameters().iterator();
-        for (TypeParameter p0 : d0.getTypeParameters()) {
-            TypeParameter p1 = parms1.next();
-            Assert.assertEquals(p0.getQualifiedNameString(), p1.getQualifiedNameString());
-            compareTypes(p0.getSelfType(), p1.getSelfType());
-            Iterator<ProducedType> sats1 = p1.getSatisfiedTypes().iterator();
-            for (ProducedType sat0 : p0.getSatisfiedTypes()) {
-                ProducedType sat1 = sats1.next();
-                compareTypes(sat0, sat1);
-            }
-        }
+        System.out.println("src " + d0.getTypeParameters() + " vs " + d1.getTypeParameters());
         compareTypeDeclarations(d0, d1);
+        MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("sort", null);
+        MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("sort", null);
+        System.out.println("Sequence.sort " + m0 + " vs " + m1);
+        System.out.println("refined member " + d0.getRefinedMember("sort", null).getContainer() + " vs " + d1.getRefinedMember("sort", null).getContainer());
+        System.out.println("refined " + m0.getRefinedDeclaration().getContainer() + " vs " + m1.getRefinedDeclaration().getContainer());
     }
 
-    public void compareTypes(ProducedType t0, ProducedType t1) {
+    public void compareTypes(ProducedType t0, ProducedType t1, ArrayList<String> stack) {
+        if (stack == null) {
+            stack = new ArrayList<String>();
+        }
         if (t0 == null) {
             Assert.assertNull("not null " + t1, t1);
             return;
@@ -207,7 +217,9 @@ public class TestModuleManager {
         Assert.assertEquals(t0.isFunctional(), t1.isFunctional());
         Assert.assertEquals(t0.isRaw(), t1.isRaw());
         Assert.assertEquals(t0.isWellDefined(), t1.isWellDefined());
-        if ("ceylon.language.Void".equals(t0.getProducedTypeQualifiedName())) {
+        final String t0ptqn = t0.getProducedTypeQualifiedName();
+        stack.add(t0ptqn);
+        if ("ceylon.language.Void".equals(t0ptqn) || "ceylon.language.Bottom".equals(t0ptqn) || "ceylon.language.IdentifiableObject".equals(t0ptqn) || "ceylon.language.Nothing".equals(t0ptqn)) {
             return;
         }
         //Type arguments
@@ -218,30 +230,50 @@ public class TestModuleManager {
             for (Map.Entry<TypeParameter, ProducedType> e : t0.getTypeArguments().entrySet()) {
                 ProducedType tparm = parms1.get(e.getKey());
                 Assert.assertNotNull(tparm);
-                compareTypes(e.getValue(), tparm);
+                final String s0ppp = e.getValue().getProducedTypeQualifiedName();
+                if (stack.contains(s0ppp)) {
+                    Assert.assertEquals(s0ppp, tparm.getProducedTypeQualifiedName());
+                } else {
+                    compareTypes(e.getValue(), tparm, stack);
+                }
             }
         }
         //Case types
         if (t0.getCaseTypes() == null) {
             Assert.assertNull(t1.getCaseTypes());
-        } else if (!"ceylon.language.Nothing".equals(t0.getProducedTypeQualifiedName())) {
+        } else {
             Iterator<ProducedType> cases = t1.getCaseTypes().iterator();
             for (ProducedType c0 : t0.getCaseTypes()) {
                 ProducedType c1 = cases.next();
-                compareTypes(c0, c1);
+                compareTypes(c0, c1, stack);
             }
+        }
+        if (t0.getDeclaration().getSelfType() == null) {
+            Assert.assertNull(t1.getDeclaration().getSelfType());
+        } else {
+            compareTypes(t0.getDeclaration().getSelfType(), t1.getDeclaration().getSelfType(), stack);
         }
         if (t0.getSupertypes() == null) {
             Assert.assertNull(t1.getSupertypes());
         } else {
-            Assert.assertEquals("supertypes differ for " + t0, t0.getSupertypes().size(), t1.getSupertypes().size());
+            if (t0.getSupertypes().size() != t1.getSupertypes().size()) {
+                System.out.println("SRC " + t0.getDeclaration().getContainer().getQualifiedNameString() + "." + t0ptqn + " supers " + t0.getSupertypes());
+                System.out.println("JS  " + t1.getDeclaration().getContainer().getQualifiedNameString() + "." + t1.getProducedTypeName() + " supers " + t1.getSupertypes());
+            }
+            Assert.assertEquals("supertypes differ for " + t0 + ": " + t0.getSupertypes() + " vs " + t1.getSupertypes(),
+                    t0.getSupertypes().size(), t1.getSupertypes().size());
             Iterator<ProducedType> supers = t1.getSupertypes().iterator();
             for (ProducedType s0 : t0.getSupertypes()) {
                 ProducedType s1 = supers.next();
                 if (s0 == t0) {
                     Assert.assertTrue(s1 == t1);
                 } else {
-                    compareTypes(s0, s1);
+                    final String s0ppp = s0.getProducedTypeQualifiedName();
+                    if (stack.contains(s0ppp)) {
+                        Assert.assertEquals(s0ppp, s1.getProducedTypeQualifiedName());
+                    } else {
+                        compareTypes(s0, s1, stack);
+                    }
                 }
             }
         }
