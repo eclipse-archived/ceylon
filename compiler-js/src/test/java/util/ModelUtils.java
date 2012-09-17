@@ -36,10 +36,10 @@ public class ModelUtils {
                 MetamodelGenerator.KEY_NAME, name);
         if (defaulted) {
             Assert.assertNotNull(String.format("Param %s of method %s should be defaulted",
-                    name, method.get(MetamodelGenerator.KEY_NAME)), parm.get(MetamodelGenerator.ANN_DEFAULT));
+                    name, method.get(MetamodelGenerator.KEY_NAME)), parm.get(MetamodelGenerator.KEY_DEFAULT));
         } else {
             Assert.assertNull(String.format("Default value of param %s of method %s",
-                    name, method.get(MetamodelGenerator.KEY_NAME)), parm.get(MetamodelGenerator.ANN_DEFAULT));
+                    name, method.get(MetamodelGenerator.KEY_NAME)), parm.get(MetamodelGenerator.KEY_DEFAULT));
         }
         Map<String, Object> tmap;
         if (parm.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
@@ -171,6 +171,17 @@ public class ModelUtils {
                     }
                 }
                 Assert.assertTrue("Missing parameter type " + name, false);
+            }
+        }
+    }
+
+    public static void checkAnnotations(Map<String, Object> decl, String... names) {
+        if (names != null && names.length > 0) {
+            @SuppressWarnings("unchecked")
+            Map<String,List<String>> anns = (Map<String,List<String>>)decl.get(MetamodelGenerator.KEY_ANNOTATIONS);
+            Assert.assertNotNull("Missing annotations from " + decl, anns);
+            for (String n : names) {
+                Assert.assertNotNull("Missing annotation '" + n + "' from " + decl, anns.get(n));
             }
         }
     }
