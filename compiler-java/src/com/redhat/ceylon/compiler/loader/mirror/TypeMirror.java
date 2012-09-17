@@ -70,4 +70,9 @@ public interface TypeMirror {
      * Returns the lower bound of this wildcard type if this is a wildcard type with an lower bound. Returns null otherwise.
      */
     TypeMirror getLowerBound();
+
+    /**
+     * Returns the underlying class declaration of this type if it represents a class type
+     */
+    ClassMirror getDeclaredClass();
 }

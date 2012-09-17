@@ -25,7 +25,9 @@ import java.util.List;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
+import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ArrayType;
 import com.sun.tools.javac.code.Type.WildcardType;
@@ -40,6 +42,8 @@ public class JavacType implements TypeMirror {
     private JavacType upperBound;
     private boolean lowerBoundSet;
     private JavacType lowerBound;
+    private JavacClass declaredClass;
+    private boolean declaredClassSet;
 
     public JavacType(Type type) {
         this.type = type;
@@ -114,5 +118,16 @@ public class JavacType implements TypeMirror {
     @Override
     public boolean isRaw() {
         return type.isRaw();
+    }
+    
+    @Override
+    public ClassMirror getDeclaredClass(){
+        if(!declaredClassSet){
+            if(type.tsym instanceof ClassSymbol){
+                declaredClass = new JavacClass((ClassSymbol) type.tsym);
+            }
+            declaredClassSet = true;
+        }
+        return declaredClass;
     }
 }

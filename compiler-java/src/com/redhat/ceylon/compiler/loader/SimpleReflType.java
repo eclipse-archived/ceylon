@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 
 /**
@@ -79,6 +80,11 @@ public class SimpleReflType implements TypeMirror {
     @Override
     public boolean isRaw() {
         return false;
+    }
+
+    @Override
+    public ClassMirror getDeclaredClass() {
+        return null;
     }
 
 }

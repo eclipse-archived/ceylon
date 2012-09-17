@@ -34,8 +34,11 @@ import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
+import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
 public class ReflectionType implements TypeMirror {
 
@@ -46,6 +49,8 @@ public class ReflectionType implements TypeMirror {
     private ReflectionType lowerBound;
     private boolean lowerBoundSet;
     private boolean upperBoundSet;
+    private ReflectionClass declaredClass;
+    private boolean declaredClassSet;
 
     public ReflectionType(Type type) {
         this.type = type;
@@ -216,5 +221,16 @@ public class ReflectionType implements TypeMirror {
             return ((Class<?>)type).getTypeParameters().length != 0;
         }
         throw new RuntimeException("Unknown type: "+type);
+    }
+
+    @Override
+    public ClassMirror getDeclaredClass() {
+        if(!declaredClassSet){
+            if(type instanceof Class){
+                declaredClass = new ReflectionClass((Class<?>) type);
+            }
+            declaredClassSet = true;
+        }
+        return declaredClass;
     }
 }
