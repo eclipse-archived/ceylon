@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,10 +32,10 @@ public class JDKPackageList {
     private final static String JDK7 = "resources/package-list.jdk7";
     private final static String JDK7_ORACLE = "resources/package-list.oracle.jdk7";
     
-    private static Set<String> jdkPackages;
-    private static Set<String> jdkOraclePackages;
+    public static Set<String> jdkPackages;
+    public static Set<String> jdkOraclePackages;
     
-    private static void loadPackageList() {
+    private static synchronized void loadPackageList() {
         if(jdkPackages != null)
             return;
         jdkPackages = loadPackageList(JDK7);
@@ -43,7 +44,7 @@ public class JDKPackageList {
     
     private static Set<String> loadPackageList(String file) {
         try{
-            // not thread-safe, but that's OK
+            // not thread-safe, but that's OK because the caller is thread-safe
             Set<String> jdkPackages = new HashSet<String>();
             InputStream inputStream = JDKPackageList.class.getResourceAsStream(file);
             if(inputStream == null){
@@ -59,7 +60,7 @@ public class JDKPackageList {
             // sanity check
             if(jdkPackages.size() == 0)
                 throw new RuntimeException("Failed to read JDK package list file from "+file+"(empty package set): your compiler is broken.");
-            return jdkPackages;
+            return Collections.unmodifiableSet(jdkPackages);
         }catch(IOException x){
             throw new RuntimeException("Failed to read JDK package list file from "+file+": your compiler is broken.", x);
         }
