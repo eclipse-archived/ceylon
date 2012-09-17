@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -117,7 +118,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 //It's not there, so create it
                 cls = new com.redhat.ceylon.compiler.typechecker.model.Class();
                 cls.setAbstract(m.containsKey("abstract"));
-                setDefaultSharedActualFormal(cls, m);
+                setAnnotations(cls, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
                 cls.setAnonymous(m.containsKey("$anon"));
                 cls.setContainer(parent);
                 cls.setName(name);
@@ -333,7 +334,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 param.setName((String)p.get(MetamodelGenerator.KEY_NAME));
                 param.setUnit(unit);
                 param.setDeclaration(owner);
-                param.setDefaulted(p.containsKey(MetamodelGenerator.ANN_DEFAULT));
+                param.setDefaulted(p.containsKey(MetamodelGenerator.KEY_DEFAULT));
                 param.setSequenced(p.containsKey("seq"));
                 if (owner instanceof Scope) {
                     param.setContainer((Scope)owner);
@@ -360,7 +361,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         Method md = new Method();
         md.setName(name);
         md.setContainer(parent);
-        setDefaultSharedActualFormal(md, m);
+        setAnnotations(md, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
         md.setUnit(unit);
         if (parent == this) {
             //Top-level declarations are directly added to the unit
@@ -401,7 +402,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (parent == this) {
             unit.addDeclaration(d);
         }
-        setDefaultSharedActualFormal(d, m);
+        setAnnotations(d, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
         if (m.containsKey("var")) {
             ((Value)d).setVariable(true);
         }
@@ -438,7 +439,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 t.setContainer(parent);
                 t.setName(name);
                 t.setUnit(unit);
-                setDefaultSharedActualFormal(t, m);
+                setAnnotations(t, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
                 if (parent == this) {
                     unit.addDeclaration(t);
                 } else {
@@ -502,10 +503,10 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         obj.setName(name);
         obj.setContainer(parent);
         obj.setUnit(unit);
-        setDefaultSharedActualFormal(obj, m);
+        setAnnotations(obj, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
         com.redhat.ceylon.compiler.typechecker.model.Class type = new com.redhat.ceylon.compiler.typechecker.model.Class();
         type.setName(name);
-        setDefaultSharedActualFormal(type, m);
+        setAnnotations(type, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
         type.setAnonymous(true);
         type.setUnit(unit);
         type.setContainer(parent);
@@ -648,11 +649,27 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         return null;
     }
 
-    private void setDefaultSharedActualFormal(Declaration d, Map<String,Object> m) {
-        d.setFormal(m.containsKey(MetamodelGenerator.ANN_FORMAL));
-        d.setActual(m.containsKey(MetamodelGenerator.ANN_ACTUAL));
-        d.setDefault(m.containsKey(MetamodelGenerator.ANN_DEFAULT));
-        d.setShared(m.containsKey(MetamodelGenerator.ANN_SHARED));
+    private void setAnnotations(Declaration d, Map<String,List<String>> m) {
+        if (m == null) return;
+        for (Map.Entry<String, List<String>> e : m.entrySet()) {
+            String name = e.getKey();
+            if ("shared".equals(name)) {
+                d.setShared(true);
+            } else if ("formal".equals(name)) {
+                d.setFormal(true);
+            } else if ("actual".equals(name)) {
+                d.setActual(true);
+            } else if ("default".equals(name)) {
+                d.setDefault(true);
+            } else {
+                Annotation ann = new Annotation();
+                ann.setName(name);
+                for (String arg : e.getValue()) {
+                    ann.addPositionalArgment(arg);
+                }
+                d.getAnnotations().add(ann);
+            }
+        }
     }
 
     /** Create a new list that contains all the type parameters in the first list,

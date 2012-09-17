@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -48,10 +49,7 @@ public class MetamodelGenerator {
     public static final String KEY_PARAMS       = "$ps";
     public static final String KEY_SELF_TYPE    = "$st";
 
-    public static final String ANN_DEFAULT      = "$def";
-    public static final String ANN_SHARED       = "$shr";
-    public static final String ANN_ACTUAL       = "$act";
-    public static final String ANN_FORMAL       = "$fml";
+    public static final String KEY_DEFAULT      = "$def";
 
     public static final String METATYPE_CLASS           = "cls";
     public static final String METATYPE_INTERFACE       = "ifc";
@@ -249,7 +247,7 @@ public class MetamodelGenerator {
                     pm.put("seq", "1");
                 }
                 if (parm.isDefaulted()) {
-                    pm.put(ANN_DEFAULT, "1");
+                    pm.put(KEY_DEFAULT, "1");
                 }
                 if (parm.getTypeDeclaration().getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
                     pm.put(KEY_TYPE, parm.getTypeDeclaration().getName());
@@ -328,8 +326,8 @@ public class MetamodelGenerator {
             m.put(KEY_PARAMS, paramLists);
         }
 
-        //Certain annotations
-        encodeSharedActualFormalDefault(d, m);
+        //Annotations
+        encodeAnnotations(d, m);
         parent.put(d.getName(), m);
         //We really don't need to go inside a method's body
         //super.visit(that);
@@ -385,8 +383,8 @@ public class MetamodelGenerator {
         //Case types
         encodeTypes(d.getCaseTypes(), m, "of");
 
-        //Certain annotations
-        encodeSharedActualFormalDefault(d, m);
+        //Annotations
+        encodeAnnotations(d, m);
         if (d.isAbstract()) {
             m.put("abstract", "1");
         }
@@ -426,8 +424,8 @@ public class MetamodelGenerator {
         encodeTypes(d.getSatisfiedTypes(), m, "satisfies");
         //Case types
         encodeTypes(d.getCaseTypes(), m, "of");
-        //Certain annotations
-        encodeSharedActualFormalDefault(d, m);
+        //Annotations
+        encodeAnnotations(d, m);
         parent.put(d.getName(), m);
     }
 
@@ -453,9 +451,7 @@ public class MetamodelGenerator {
         encodeTypes(d.getTypeDeclaration().getSatisfiedTypes(), m, "satisfies");
 
         //Certain annotations
-        if (d.isShared()) {
-            m.put(ANN_SHARED, "1");
-        }
+        encodeAnnotations(d, m);
         parent.put(d.getName(), m);
     }
 
@@ -481,7 +477,7 @@ public class MetamodelGenerator {
         m.put(KEY_NAME, d.getName());
         m.put(KEY_METATYPE, d instanceof Getter ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(d.getType()));
-        encodeSharedActualFormalDefault(d, m);
+        encodeAnnotations(d, m);
         parent.put(d.getName(), m);
         return m;
     }
@@ -500,18 +496,20 @@ public class MetamodelGenerator {
         m.put(key, sats);
     }
 
-    private void encodeSharedActualFormalDefault(Declaration d, Map<String, Object> m) {
-        if (d.isShared()) {
-            m.put(ANN_SHARED, "1");
+    /** Encodes all annotations as a map which is then stored under the
+     * {@link #KEY_ANNOTATIONS} key in the specified map. */
+    private void encodeAnnotations(Declaration d, Map<String, Object> m) {
+        HashMap<String, List<String>> anns = new HashMap<String, List<String>>();
+        for (Annotation a : d.getAnnotations()) {
+            String name = a.getName();
+            List<String> args = a.getPositionalArguments();
+            if (args == null) {
+                args = Collections.emptyList();
+            }
+            anns.put(name, args);
         }
-        if (d.isActual()) {
-            m.put(ANN_ACTUAL, "1");
-        }
-        if (d.isFormal()) {
-            m.put(ANN_FORMAL, "1");
-        }
-        if (d.isDefault()) {
-            m.put(ANN_DEFAULT, "1");
+        if (!anns.isEmpty()) {
+            m.put(KEY_ANNOTATIONS, anns);
         }
     }
 
