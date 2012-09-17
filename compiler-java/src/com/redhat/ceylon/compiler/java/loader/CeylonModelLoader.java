@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
+import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -166,6 +167,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     m.complete();
                     // avoid anonymous and local classes
                     if(isAnonymousOrLocal((ClassSymbol) m))
+                        continue;
+                    // avoid member classes
+                    if(((ClassSymbol)m).getNestingKind() != NestingKind.TOP_LEVEL)
                         continue;
                     convertToDeclaration(lookupClassMirror(m.getQualifiedName().toString()), DeclarationType.VALUE);
                 }
