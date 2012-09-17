@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.JDKPackageList;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.loader.ModelLoaderFactory;
 import com.redhat.ceylon.compiler.loader.TypeParser;
@@ -228,7 +229,11 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     // try to complete it if that changes anything
                     classSymbol.complete();
                     if(classSymbol.classfile == null){
-                        log.error("ceylon", "Unable to find class file for "+name);
+                        PackageSymbol pkg = classSymbol.packge();
+                        // do not log an error for missing oracle jdk stuff
+                        if(pkg == null || !JDKPackageList.isOracleJDKPackage(pkg.getQualifiedName().toString())){
+                            log.error("ceylon", "Unable to find class file for "+name);
+                        }
                         return null;
                     }
                 }
