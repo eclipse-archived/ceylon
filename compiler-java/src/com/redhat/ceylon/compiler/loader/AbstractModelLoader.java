@@ -1703,7 +1703,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }else{
             for(TypeMirror iface : classMirror.getInterfaces()){
-                klass.getSatisfiedTypes().add(getType(iface, klass, VarianceLocation.INVARIANT));
+                try{
+                    klass.getSatisfiedTypes().add(getType(iface, klass, VarianceLocation.INVARIANT));
+                }catch(ModelResolutionException x){
+                    PackageMirror classPackage = classMirror.getPackage();
+                    if(JDKPackageList.isJDKPackage(classPackage.getQualifiedName())){
+                        if(iface.getKind() == TypeKind.DECLARED){
+                            // check if it's a JDK thing
+                            ClassMirror ifaceClass = iface.getDeclaredClass();
+                            PackageMirror ifacePackage = ifaceClass.getPackage();
+                            if(JDKPackageList.isOracleJDKPackage(ifacePackage.getQualifiedName())){
+                                // just log and ignore it
+                                logMissingOracleType(iface.getQualifiedName());
+                                continue;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
