@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.sun.tools.javac.code.Scope.Entry;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
+import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -270,36 +271,60 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     private MethodSymbol getOverriddenMethod(MethodSymbol method, Types types) {
-        MethodSymbol impl = null;
-        // interfaces have a different way to work
-        if(method.owner.isInterface())
-            return (MethodSymbol) method.implemented(method.owner.type.tsym, types);
-        for (Type superType = types.supertype(method.owner.type);
-                impl == null && superType.tsym != null;
-                superType = types.supertype(superType)) {
-            TypeSymbol i = superType.tsym;
-            // never go above this type since it has no supertype in Ceylon (does in Java though)
-            if(i.getQualifiedName().toString().equals("ceylon.language.Void"))
-                break;
-            for (Entry e = i.members().lookup(method.name);
-                    impl == null && e.scope != null;
-                    e = e.next()) {
-                if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
-                        // FIXME: I suspect the following requires a
-                        // subst() for a parametric return type.
-                        types.isSameType(method.type.getReturnType(),
-                                types.memberType(method.owner.type, e.sym).getReturnType())) {
-                    impl = (MethodSymbol) e.sym;
+        try{
+            MethodSymbol impl = null;
+            // interfaces have a different way to work
+            if(method.owner.isInterface())
+                return (MethodSymbol) method.implemented(method.owner.type.tsym, types);
+            for (Type superType = types.supertype(method.owner.type);
+                    impl == null && superType.tsym != null;
+                    superType = types.supertype(superType)) {
+                TypeSymbol i = superType.tsym;
+                // never go above this type since it has no supertype in Ceylon (does in Java though)
+                if(i.getQualifiedName().toString().equals("ceylon.language.Void"))
+                    break;
+                for (Entry e = i.members().lookup(method.name);
+                        impl == null && e.scope != null;
+                        e = e.next()) {
+                    if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
+                            // FIXME: I suspect the following requires a
+                            // subst() for a parametric return type.
+                            types.isSameType(method.type.getReturnType(),
+                                    types.memberType(method.owner.type, e.sym).getReturnType())) {
+                        impl = (MethodSymbol) e.sym;
+                    }
                 }
+                // try in the interfaces
+                if(impl == null)
+                    impl = (MethodSymbol) method.implemented(i, types);
             }
             // try in the interfaces
             if(impl == null)
-                impl = (MethodSymbol) method.implemented(i, types);
+                impl = (MethodSymbol) method.implemented(method.owner.type.tsym, types);
+            return impl;
+        }catch(CompletionFailure x){
+            if(method.owner != null){
+                PackageSymbol methodPackage = method.owner.packge();
+                if(methodPackage != null){
+                    String methodPackageName = methodPackage.getQualifiedName().toString();
+                    if(JDKPackageList.isJDKPackage(methodPackageName)){
+                        if(x.sym != null && x.sym instanceof ClassSymbol){
+                            PackageSymbol pkg = ((ClassSymbol)x.sym).packge();
+                            if(pkg != null){
+                                String pkgName = pkg.getQualifiedName().toString();
+                                if(JDKPackageList.isOracleJDKPackage(pkgName)){
+                                    // the JDK tried to use some Oracle JDK stuff, just log it
+                                    logMissingOracleType(x.getMessage());
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // in every other case, rethrow
+            throw x;
         }
-        // try in the interfaces
-        if(impl == null)
-            impl = (MethodSymbol) method.implemented(method.owner.type.tsym, types);
-        return impl;
     }
 
     public Symtab syms() {
