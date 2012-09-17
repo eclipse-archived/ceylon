@@ -474,7 +474,15 @@ public abstract class CompilerTest {
         options.addAll(initialOptions);
         if(!options.contains("-src"))
             options.addAll(Arrays.asList("-src", getSourcePath()));
-        options.add("-verbose:ast,code");
+        boolean hasVerbose = false;
+        for(String option : options){
+            if(option.startsWith("-verbose")){
+                hasVerbose = true;
+                break;
+            }
+        }
+        if(!hasVerbose)
+            options.add("-verbose:ast,code");
         Iterable<? extends JavaFileObject> compilationUnits1 =
                 runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, diagnosticListener, 
