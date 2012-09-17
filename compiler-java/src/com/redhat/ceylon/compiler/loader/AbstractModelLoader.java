@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.FieldMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.loader.mirror.PackageMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
@@ -360,6 +361,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(!classMirror.isInnerClass()){
                 pkg.addMember(d);
                 d.setContainer(pkg);
+            }else if(d instanceof ClassOrInterface){
+                // do overloads later, since their container is their abstract superclass's container and
+                // we have to set that one first
+                if(d instanceof Class == false || !((Class)d).isOverloaded()){
+                    ClassOrInterface container = (ClassOrInterface)convertToDeclaration(classMirror.getEnclosingClass(), DeclarationType.TYPE);
+                    d.setContainer(container);
+                    // let's not trigger lazy-loading
+                    ((LazyContainer)container).addMember(d);
+                    // now we can do overloads
+                    if(d instanceof Class && ((Class)d).getOverloads() != null){
+                        for(Declaration overload : ((Class)d).getOverloads()){
+                            overload.setContainer(container);
+                            // let's not trigger lazy-loading
+                            ((LazyContainer)container).addMember(d);
+                        }
+                    }
+                }
             }
             
             // aliases have their own completion routine
@@ -502,6 +520,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             declarationsByName.put(key, decl);
             decls.add(decl);
         }
+        
+        // now that we have added the decl to the cache, we can load its inner classes if required
+        if(decl instanceof ClassOrInterface && !((ClassOrInterface) decl).isAlias()){
+            // this will not load inner classes of overloads, but that's fine since we want them in the
+            // abstracted super class (the real one)
+            addInnerClasses((ClassOrInterface) decl, classMirror);
+        }
         return decl;
     }
 
@@ -577,13 +602,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
         LazyClass klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
         klass.setAnonymous(classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null);
-        addInnerClasses(klass, classMirror);
         return klass;
     }
 
     protected LazyInterface makeLazyInterface(ClassMirror classMirror) {
         LazyInterface iface = new LazyInterface(classMirror, this);
-        addInnerClasses(iface, classMirror);
         return iface;
     }
 
@@ -1166,9 +1189,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 throw new ModelResolutionException("Failed to load inner type " + name 
                         + " for outer type " + klass.getQualifiedNameString() 
                         + ", java class: " + javaClass);
-            innerDecl.setContainer(klass);
-            // let's not trigger lazy-loading
-            ((LazyContainer)klass).addMember(innerDecl);
         }
     }
 
@@ -1192,9 +1212,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(isJDK && !innerClass.isPublic())
                 continue;
             Declaration innerDecl = convertToDeclaration(innerClass, DeclarationType.TYPE);
-            innerDecl.setContainer(klass);
-            // let's not trigger lazy-loading
-            ((LazyContainer)klass).addMember(innerDecl);
+            // no need to set its container as that's now handled by convertToDeclaration
         }
     }
 
