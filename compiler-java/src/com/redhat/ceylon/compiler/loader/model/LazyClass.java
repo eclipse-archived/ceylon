@@ -259,7 +259,7 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public boolean isAlias() {
-        load();
+        // does not require lazy loading since it depends on class
         return super.isAlias();
     }
 
