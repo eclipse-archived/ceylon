@@ -489,6 +489,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         supercls.setAbstraction(true);
                         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
                         for (MethodMirror constructor : constructors) {
+                            // FIXME: tmp hack to skip constructors that have type params as we don't handle them yet
+                            if(!constructor.getTypeParameters().isEmpty())
+                                continue;
                             LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
                             subdecl.setOverloaded(true);
                             overloads.add(subdecl);
