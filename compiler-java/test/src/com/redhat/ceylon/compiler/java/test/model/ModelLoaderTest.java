@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.JDKPackageList;
 import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -50,6 +51,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -146,8 +149,12 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     protected void verifyClassLoading(String ceylon, final RunnableTest test){
+        verifyClassLoading(ceylon, test, defaultOptions);
+    }
+    
+    protected void verifyClassLoading(String ceylon, final RunnableTest test, List<String> options){
         // now compile the ceylon usage file
-        JavacTaskImpl task2 = getCompilerTask(ceylon);
+        JavacTaskImpl task2 = getCompilerTask(options, ceylon);
         // get the context to grab the declarations
         final Context context2 = task2.getContext();
         
@@ -559,5 +566,37 @@ public class ModelLoaderTest extends CompilerTest {
     public void testTypeParserUsingSourceModel(){
         compile("A.ceylon", "B.ceylon");
         compile("A.ceylon");
+    }
+
+    @Test
+    public void parallelLoader(){
+        // whatever test, doesn't matter
+        verifyClassLoading("ParameterNames.ceylon", new RunnableTest(){
+            @Override
+            public void test(ModelLoader loader) {
+                // get java.lang.Integer
+                Declaration klass = loader.getDeclaration("java.lang.Integer", DeclarationType.TYPE);
+                Assert.assertNotNull(klass);
+                // get its package java.lang
+                Scope container = klass.getContainer();
+                Assert.assertTrue(container instanceof Package);
+                Package pkg = (Package)container;
+                // get its module
+                Module mod = pkg.getModule();
+                Assert.assertNotNull(mod);
+                // now walk it
+                for(String pkgName : JDKPackageList.jdkPackages){
+                    Package p = mod.getDirectPackage(pkgName);
+                    Assert.assertNotNull(p);
+                    for(Declaration decl : p.getMembers()){
+                        decl.getQualifiedNameString();
+//                        System.err.println(decl.getQualifiedNameString() + decl.hashCode());
+                    }
+                }
+                if(loader instanceof AbstractModelLoader){
+                    ((AbstractModelLoader)loader).printStats();
+                }
+            }
+        }, Arrays.asList("-verbose:loader"));
     }
 }
