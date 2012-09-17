@@ -2161,6 +2161,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 module.getNameAsString()+" ("+module.getVersion()+" and "+loadedModule.getVersion()+")");
     }
     
+    protected void logMissingOracleType(String type) {
+        logVerbose("Hopefully harmless completion failure in model loader: "+type
+                +". This is most likely when the JDK depends on Oracle private classes that we can't find."
+                +" As a result some model information will be incomplete.");
+    }
+
     public void setupSourceFileObjects(List<?> treeHolders) {
     }
 }
