@@ -510,12 +510,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             decls.add(decl);
         }
         
-        // now that we have added the decl to the cache, we can load its inner classes if required
-        if(decl instanceof ClassOrInterface && !((ClassOrInterface) decl).isAlias()){
-            // this will not load inner classes of overloads, but that's fine since we want them in the
-            // abstracted super class (the real one)
-            addInnerClasses((ClassOrInterface) decl, classMirror);
-        }
         return decl;
     }
 
@@ -1038,6 +1032,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean isFromJDK = isFromJDK(classMirror);
         boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
         
+        // now that everything has containers, do the inner classes
+        if(klass instanceof Class == false || !((Class)klass).isOverloaded()){
+            // this will not load inner classes of overloads, but that's fine since we want them in the
+            // abstracted super class (the real one)
+            addInnerClasses(klass, classMirror);
+        }
+
         // Java classes with multiple constructors get turned into multiple Ceylon classes
         // Here we get the specific constructor that was assigned to us (if any)
         MethodMirror constructor = null;
