@@ -194,7 +194,7 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public boolean isInnerClass() {
-        return classSymbol.isInner();
+        return getAnnotation(AbstractModelLoader.CEYLON_CONTAINER_ANNOTATION) != null || classSymbol.owner instanceof ClassSymbol;
     }
 
     @Override
