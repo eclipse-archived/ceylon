@@ -224,7 +224,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * @param name the name of the Class to load
      * @return a ClassMirror for the specified class, or null if not found.
      */
-    public abstract ClassMirror lookupNewClassMirror(String name);
+    protected abstract ClassMirror lookupNewClassMirror(String name);
 
     /**
      * Adds the given module to the set of modules from which we can load classes.
@@ -408,7 +408,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    public Declaration getOrCreateDeclaration(ClassMirror classMirror,
+    protected Declaration getOrCreateDeclaration(ClassMirror classMirror,
             DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
         alreadyExists[0] = false;
         Declaration decl = null;
@@ -759,7 +759,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         pkg.setShared(shared);
     }
 
-    public Module lookupModuleInternal(String packageName) {
+    protected Module lookupModuleInternal(String packageName) {
         for(Module module : modules.getListOfModules()){
             if(module instanceof LazyModule){
                 if(((LazyModule)module).containsPackage(packageName))
