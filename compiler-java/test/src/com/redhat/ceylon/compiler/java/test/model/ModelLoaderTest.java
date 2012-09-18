@@ -19,13 +19,23 @@
  */
 package com.redhat.ceylon.compiler.java.test.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import junit.framework.Assert;
 
@@ -582,17 +592,48 @@ public class ModelLoaderTest extends CompilerTest {
                 Assert.assertTrue(container instanceof Package);
                 Package pkg = (Package)container;
                 // get its module
-                Module mod = pkg.getModule();
+                final Module mod = pkg.getModule();
                 Assert.assertNotNull(mod);
-                // now walk it
-                for(String pkgName : JDKPackageList.jdkPackages){
-                    Package p = mod.getDirectPackage(pkgName);
-                    Assert.assertNotNull(p);
-                    for(Declaration decl : p.getMembers()){
-                        decl.getQualifiedNameString();
-//                        System.err.println(decl.getQualifiedNameString() + decl.hashCode());
+                // now walk it in threads
+                List<Callable<Object>> tasks = new ArrayList<Callable<Object>>(10);
+                // make a runnable that walks the whole jdk model
+                Callable<Object> runnable = new Callable<Object>(){
+                    @Override
+                    public Object call() throws Exception {
+                        System.err.println("Starting work from thread " + Thread.currentThread().getName());
+                        // walk every jdk package
+                        for(String pkgName : JDKPackageList.jdkPackages){
+                            Package p = mod.getDirectPackage(pkgName);
+                            Assert.assertNotNull(p);
+                            for(Declaration decl : p.getMembers()){
+                                // that causes model loading
+                                decl.getQualifiedNameString();
+                            }
+                        }
+                        System.err.println("Done work from thread " + Thread.currentThread().getName());
+                        return null;
                     }
+                };
+                // make ten tasks with the same runnable
+                for(int i=0;i<10;i++){
+                    tasks.add(runnable);
                 }
+                // create an executor
+                ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10));
+                try {
+                    // run them all
+                    List<Future<Object>> futures = executor.invokeAll(tasks);
+                    // and wait for them all to be done
+                    for(Future<Object> f : futures){
+                        f.get();
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+                // [Model loader: 4488(loaded)/4945(total) declarations] is what we expect if it works out
+                // now print the stats
                 if(loader instanceof AbstractModelLoader){
                     ((AbstractModelLoader)loader).printStats();
                 }
