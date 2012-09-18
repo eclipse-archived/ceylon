@@ -35,17 +35,21 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
     }
 
     private void load() {
-        loadTypeParams();
-        if(!isLoaded){
-            isLoaded = true;
-            completer.complete(this);
+        synchronized(completer){
+            loadTypeParams();
+            if(!isLoaded){
+                isLoaded = true;
+                completer.complete(this);
+            }
         }
     }
 
     private void loadTypeParams() {
-        if(!isTypeParamsLoaded){
-            isTypeParamsLoaded = true;
-            completer.completeTypeParameters(this);
+        synchronized(completer){
+            if(!isTypeParamsLoaded){
+                isTypeParamsLoaded = true;
+                completer.completeTypeParameters(this);
+            }
         }
     }
     

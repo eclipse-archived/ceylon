@@ -68,35 +68,38 @@ public class LazyPackage extends Package {
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
     public Declaration getDirectMember(String name, List<ProducedType> signature) {
-        String pkgName = getQualifiedNameString();
+        synchronized(modelLoader){
 
-        // we need its package ready first
-        modelLoader.loadPackage(pkgName, false);
+            String pkgName = getQualifiedNameString();
 
-        // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
-        // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
-        Declaration d = lookupMember(copy(compiledDeclarations), name, signature, false);
-        if (d != null) {
-            return d;
-        }
-        
-        String className = getQualifiedName(pkgName, name);
-        ClassMirror classSymbol = modelLoader.lookupClassMirror(className);
-        
-        // only get it from the classpath if we're not compiling it, unless
-        // it happens to be a java source
-        if(classSymbol != null && (!classSymbol.isLoadedFromSource() || classSymbol.isJavaSource())) {
-            d = modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
-            if (d instanceof Class) {
-                if ( ((Class) d).isAbstraction()) {
-                    // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
-                    // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
-                    return lookupMember(copy(compiledDeclarations), name, signature, false);
-                }
+            // we need its package ready first
+            modelLoader.loadPackage(pkgName, false);
+
+            // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
+            // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
+            Declaration d = lookupMember(copy(compiledDeclarations), name, signature, false);
+            if (d != null) {
+                return d;
             }
-            return d;
+
+            String className = getQualifiedName(pkgName, name);
+            ClassMirror classSymbol = modelLoader.lookupClassMirror(className);
+
+            // only get it from the classpath if we're not compiling it, unless
+            // it happens to be a java source
+            if(classSymbol != null && (!classSymbol.isLoadedFromSource() || classSymbol.isJavaSource())) {
+                d = modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
+                if (d instanceof Class) {
+                    if ( ((Class) d).isAbstraction()) {
+                        // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
+                        // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
+                        return lookupMember(copy(compiledDeclarations), name, signature, false);
+                    }
+                }
+                return d;
+            }
+            return getDirectMemberFromSource(name);
         }
-        return getDirectMemberFromSource(name);
     }
 
     private List<Declaration> copy(List<Declaration> list) {
@@ -126,44 +129,52 @@ public class LazyPackage extends Package {
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
     public List<Declaration> getMembers() {
-        // make sure the package is loaded
-        modelLoader.loadPackage(getQualifiedNameString(), true);
-        List<Declaration> sourceDeclarations = super.getMembers();
-        LinkedList<Declaration> ret = new LinkedList<Declaration>();
-        ret.addAll(sourceDeclarations);
-        ret.addAll(compiledDeclarations);
-        return ret;
+        synchronized(modelLoader){
+            // make sure the package is loaded
+            modelLoader.loadPackage(getQualifiedNameString(), true);
+            List<Declaration> sourceDeclarations = super.getMembers();
+            LinkedList<Declaration> ret = new LinkedList<Declaration>();
+            ret.addAll(sourceDeclarations);
+            ret.addAll(compiledDeclarations);
+            return ret;
+        }
     }
 
     public void addMember(Declaration d) {
-        compiledDeclarations.add(d);
-        if (d instanceof LazyClass && d.getUnit().getFilename() != null) {
-            lazyUnits.add(d.getUnit());
+        synchronized(modelLoader){
+            compiledDeclarations.add(d);
+            if (d instanceof LazyClass && d.getUnit().getFilename() != null) {
+                lazyUnits.add(d.getUnit());
+            }
         }
     }
 
     
     @Override
     public Iterable<Unit> getUnits() {
-        Iterable<Unit> sourceUnits = super.getUnits();
-        LinkedList<Unit> ret = new LinkedList<Unit>();
-        for (Unit unit : sourceUnits) {
-            ret.add(unit);
+        synchronized(modelLoader){
+            Iterable<Unit> sourceUnits = super.getUnits();
+            LinkedList<Unit> ret = new LinkedList<Unit>();
+            for (Unit unit : sourceUnits) {
+                ret.add(unit);
+            }
+            ret.addAll(lazyUnits);
+            return ret;
         }
-        ret.addAll(lazyUnits);
-        return ret;
     }
 
     @Override
     public void removeUnit(Unit unit) {
-        if (lazyUnits.remove(unit)) {
-            for (Declaration d : unit.getDeclarations()) {
-                compiledDeclarations.remove(d);
-                // TODO : remove the declaration from the declaration map in AbstractModelLoader
+        synchronized(modelLoader){
+            if (lazyUnits.remove(unit)) {
+                for (Declaration d : unit.getDeclarations()) {
+                    compiledDeclarations.remove(d);
+                    // TODO : remove the declaration from the declaration map in AbstractModelLoader
+                }
+                modelLoader.removeDeclarations(unit.getDeclarations());
+            } else {
+                super.removeUnit(unit);
             }
-            modelLoader.removeDeclarations(unit.getDeclarations());
-        } else {
-            super.removeUnit(unit);
         }
     }
 }

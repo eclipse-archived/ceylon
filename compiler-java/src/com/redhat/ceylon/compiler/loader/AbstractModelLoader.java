@@ -195,7 +195,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * @param name the name of the Class to load
      * @return a ClassMirror for the specified class, or null if not found.
      */
-    public final ClassMirror lookupClassMirror(String name){
+    public synchronized final ClassMirror lookupClassMirror(String name){
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             // we use containsKey to be able to cache null results
@@ -593,7 +593,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return iface;
     }
 
-    public Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
+    public synchronized Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
         // FIXME: this needs to move to the type parser and report warnings
         //This should be done where the TypeInfo annotation is parsed
         //to avoid retarded errors because of a space after a comma
@@ -664,12 +664,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Packages
     
-    public Package findPackage(String pkgName) {
+    public synchronized Package findPackage(String pkgName) {
         pkgName = Util.quoteJavaKeywords(pkgName);
         return packagesByName.get(pkgName);
     }
 
-    public LazyPackage findExistingPackage(Module module, String pkgName){
+    public synchronized LazyPackage findExistingPackage(Module module, String pkgName){
         String quotedPkgName = Util.quoteJavaKeywords(pkgName);
         LazyPackage pkg = packagesByName.get(quotedPkgName);
         if(pkg != null)
@@ -688,7 +688,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return null;
     }
     
-    public LazyPackage findOrCreatePackage(Module module, final String pkgName) {
+    public synchronized LazyPackage findOrCreatePackage(Module module, final String pkgName) {
         String quotedPkgName = Util.quoteJavaKeywords(pkgName);
         LazyPackage pkg = packagesByName.get(quotedPkgName);
         if(pkg != null)
@@ -711,7 +711,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return pkg;
     }
 
-    public void loadPackageDescriptors() {
+    public synchronized void loadPackageDescriptors() {
         for(Package pkg : packagesByName.values()){
             loadPackageDescriptor(pkg);
         }
@@ -777,7 +777,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     //
     // Modules
-    public Module findOrCreateModule(String pkgName) {
+    
+    public synchronized Module findOrCreateModule(String pkgName) {
         boolean isJava = false;
         boolean defaultModule = false;
 
@@ -823,7 +824,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return module;
     }
 
-    public Module loadCompiledModule(String pkgName) {
+    public synchronized Module loadCompiledModule(String pkgName) {
         if(pkgName.isEmpty())
             return null;
         String moduleClassName = pkgName + ".module";
@@ -949,56 +950,56 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     // ModelCompleter
     
     @Override
-    public void complete(LazyInterface iface) {
+    public synchronized void complete(LazyInterface iface) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         complete(iface, iface.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
-    public void completeTypeParameters(LazyInterface iface) {
+    public synchronized void completeTypeParameters(LazyInterface iface) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeTypeParameters(iface, iface.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
-    public void complete(LazyClass klass) {
+    public synchronized void complete(LazyClass klass) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         complete(klass, klass.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
-    public void completeTypeParameters(LazyClass klass) {
+    public synchronized void completeTypeParameters(LazyClass klass) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeTypeParameters(klass, klass.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
-    public void completeTypeParameters(LazyClassAlias lazyClassAlias) {
+    public synchronized void completeTypeParameters(LazyClassAlias lazyClassAlias) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAliasTypeParameters(lazyClassAlias, lazyClassAlias.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
     
     @Override
-    public void completeTypeParameters(LazyInterfaceAlias lazyInterfaceAlias) {
+    public synchronized void completeTypeParameters(LazyInterfaceAlias lazyInterfaceAlias) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAliasTypeParameters(lazyInterfaceAlias, lazyInterfaceAlias.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
     
     @Override
-    public void complete(LazyInterfaceAlias alias) {
+    public synchronized void complete(LazyInterfaceAlias alias) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAlias(alias, alias.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
     
     @Override
-    public void complete(LazyClassAlias alias) {
+    public synchronized void complete(LazyClassAlias alias) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAlias(alias, alias.classMirror);
         // must be a class
@@ -1644,7 +1645,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public void complete(LazyValue value) {
+    public synchronized void complete(LazyValue value) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             MethodMirror meth = null;
@@ -1681,7 +1682,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public void complete(LazyMethod method) {
+    public synchronized void complete(LazyMethod method) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             MethodMirror meth = null;
@@ -2082,7 +2083,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public ProducedType getType(String pkgName, String name, Scope scope) {
+    public synchronized ProducedType getType(String pkgName, String name, Scope scope) {
         if(scope != null){
             TypeParameter typeParameter = lookupTypeParameter(scope, name);
             if(typeParameter != null)
@@ -2133,7 +2134,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         throw new ModelResolutionException("Failed to look up given type in language module while bootstrapping: "+name);
     }
 
-    public void removeDeclarations(List<Declaration> declarations) {
+    public synchronized void removeDeclarations(List<Declaration> declarations) {
         List<String> keysToRemove = new ArrayList<String>();
         for (String name : declarationsByName.keySet()) {
             String nameWithoutPrefix = name.substring(1);
@@ -2154,7 +2155,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    public void printStats(){
+    public synchronized void printStats(){
         int loaded = 0;
         class Stats {
             int loaded, total;
@@ -2190,7 +2191,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return getPackage(((Declaration)decl).getContainer());
     }
     
-    public void logDuplicateModuleError(Module module, Module loadedModule) {
+    public synchronized void logDuplicateModuleError(Module module, Module loadedModule) {
         logError("Trying to import or compile two different versions of the same module: "+
                 module.getNameAsString()+" ("+module.getVersion()+" and "+loadedModule.getVersion()+")");
     }

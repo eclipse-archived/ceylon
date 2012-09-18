@@ -63,9 +63,11 @@ public class LazyValue extends Value implements LazyElement {
     }
 
     private void load() {
-        if(!isLoaded){
-            isLoaded = true;
-            completer.complete(this);
+        synchronized(completer){
+            if(!isLoaded){
+                isLoaded = true;
+                completer.complete(this);
+            }
         }
     }
     

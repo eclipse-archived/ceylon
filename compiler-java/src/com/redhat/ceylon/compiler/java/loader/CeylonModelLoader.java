@@ -144,7 +144,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public boolean loadPackage(String packageName, boolean loadDeclarations) {
+    public synchronized boolean loadPackage(String packageName, boolean loadDeclarations) {
         // abort if we already loaded it, but only record that we loaded it if we want
         // to load the declarations, because merely calling complete() on the package
         // is OK
@@ -207,7 +207,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public ClassMirror lookupNewClassMirror(String name) {
+    public synchronized ClassMirror lookupNewClassMirror(String name) {
         ClassSymbol classSymbol = null;
 
         String outerName = name;
