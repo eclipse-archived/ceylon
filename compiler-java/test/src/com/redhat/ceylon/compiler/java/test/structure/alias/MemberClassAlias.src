@@ -14,6 +14,7 @@ public class MemberClassAlias_Foo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAlias_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public class Member {
         
@@ -23,6 +24,7 @@ public class MemberClassAlias_Foo {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAlias_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class MemberClassAlias {
         

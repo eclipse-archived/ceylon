@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
+@.com.redhat.ceylon.compiler.java.metadata.Container(name = "Bug510", javaClass = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510", packageName = "com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510")
 interface Bug510$Bug510inner {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)

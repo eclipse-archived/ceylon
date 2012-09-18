@@ -15,6 +15,7 @@ class c_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
     @.com.redhat.ceylon.compiler.java.metadata.Name("cc")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "c", javaClass = "com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_", packageName = "com.redhat.ceylon.compiler.java.test.quoting.lettercase")
     class cc_ {
         
         protected cc_() {
