@@ -351,6 +351,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // find/make its Unit
         Unit unit = getCompiledUnit(pkg, classMirror);
 
+        // set all the containers
         for(Declaration d : decls){
             d.setShared(classMirror.isPublic());
         
@@ -359,15 +360,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             unit.addDeclaration(d);
 
             setContainer(classMirror, d, pkg);
-            
-            // aliases have their own completion routine
-            if(d instanceof LazyClassAlias){
-                complete((LazyClassAlias)d);
-            }else if(d instanceof LazyInterfaceAlias){
-                complete((LazyInterfaceAlias)d);
-            }
         }
-        
+
         return decl;
     }
 
@@ -412,31 +406,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }else{
             return (ClassOrInterface) convertToDeclaration(classMirror.getEnclosingClass(), DeclarationType.TYPE);
         }
-    }
-
-    private void complete(LazyInterfaceAlias alias) {
-        completeLazyAlias(alias, alias.classMirror);
-    }
-    
-    private void complete(LazyClassAlias alias) {
-        completeLazyAlias(alias, alias.classMirror);
-        // must be a class
-        Class declaration = (Class) alias.getExtendedType().getDeclaration();
-        
-        // copy the parameters from the extended type
-        alias.setParameterList(declaration.getParameterList());
-    }
-
-    private void completeLazyAlias(ClassOrInterface alias, ClassMirror mirror) {
-        // type parameters
-        setTypeParameters(alias, mirror);
-        
-        // now resolve the extended type
-        AnnotationMirror aliasAnnotation = mirror.getAnnotation(CEYLON_ALIAS_ANNOTATION);
-        String extendedTypeString = (String) aliasAnnotation.getValue();
-        
-        ProducedType extendedType = decodeType(extendedTypeString, alias);
-        alias.setExtendedType(extendedType);
     }
 
     public Declaration getOrCreateDeclaration(ClassMirror classMirror,
@@ -553,13 +522,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private Declaration makeClassAlias(ClassMirror classMirror) {
         // we're going to make an eager ClassAlias, but that should be OK since it's impossible that the
         // aliased type refers to this alias, since aliases are not reified
-        return new LazyClassAlias(classMirror);
+        return new LazyClassAlias(classMirror, this);
     }
 
     private Declaration makeInterfaceAlias(ClassMirror classMirror) {
         // we're going to make an eager InterfaceAlias, but that should be OK since it's impossible that the
         // aliased type refers to this alias, since aliases are not reified
-        return new LazyInterfaceAlias(classMirror);
+        return new LazyInterfaceAlias(classMirror, this);
     }
 
     private void checkBinaryCompatibility(ClassMirror classMirror) {
@@ -1011,6 +980,53 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeTypeParameters(klass, klass.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+    }
+
+    @Override
+    public void completeTypeParameters(LazyClassAlias lazyClassAlias) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        completeLazyAliasTypeParameters(lazyClassAlias, lazyClassAlias.classMirror);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+    }
+    
+    @Override
+    public void completeTypeParameters(LazyInterfaceAlias lazyInterfaceAlias) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        completeLazyAliasTypeParameters(lazyInterfaceAlias, lazyInterfaceAlias.classMirror);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+    }
+    
+    @Override
+    public void complete(LazyInterfaceAlias alias) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        completeLazyAlias(alias, alias.classMirror);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+    }
+    
+    @Override
+    public void complete(LazyClassAlias alias) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        completeLazyAlias(alias, alias.classMirror);
+        // must be a class
+        Class declaration = (Class) alias.getExtendedType().getDeclaration();
+        
+        // copy the parameters from the extended type
+        alias.setParameterList(declaration.getParameterList());
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+    }
+
+    private void completeLazyAliasTypeParameters(ClassOrInterface alias, ClassMirror mirror) {
+        // type parameters
+        setTypeParameters(alias, mirror);
+    }
+    
+    private void completeLazyAlias(ClassOrInterface alias, ClassMirror mirror) {
+        // now resolve the extended type
+        AnnotationMirror aliasAnnotation = mirror.getAnnotation(CEYLON_ALIAS_ANNOTATION);
+        String extendedTypeString = (String) aliasAnnotation.getValue();
+        
+        ProducedType extendedType = decodeType(extendedTypeString, alias);
+        alias.setExtendedType(extendedType);
     }
 
     private void completeTypeParameters(ClassOrInterface klass, ClassMirror classMirror) {

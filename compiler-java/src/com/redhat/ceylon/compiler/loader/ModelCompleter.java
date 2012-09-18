@@ -21,7 +21,9 @@
 package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
+import com.redhat.ceylon.compiler.loader.model.LazyClassAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
+import com.redhat.ceylon.compiler.loader.model.LazyInterfaceAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 
@@ -62,4 +64,24 @@ public interface ModelCompleter {
      * Completes loading of a toplevel method
      */
     void complete(LazyMethod lazyMethod);
+
+    /**
+     * Completes loading of a lazy class alias
+     */
+    void complete(LazyClassAlias lazyClassAlias);
+
+    /**
+     * Completes loading of a lazy class alias's type parameters only
+     */
+    void completeTypeParameters(LazyClassAlias lazyClassAlias);
+
+    /**
+     * Completes loading of a lazy interface alias
+     */
+    void complete(LazyInterfaceAlias lazyInterfaceAlias);
+
+    /**
+     * Completes loading of a lazy interface alias's type parameters only
+     */
+    void completeTypeParameters(LazyInterfaceAlias lazyInterfaceAlias);
 }
