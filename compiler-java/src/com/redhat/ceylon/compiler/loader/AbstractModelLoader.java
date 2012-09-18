@@ -357,29 +357,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // add it to its Unit
             d.setUnit(unit);
             unit.addDeclaration(d);
-            
-            // add it to its package if it's not an inner class
-            if(!classMirror.isInnerClass()){
-                pkg.addMember(d);
-                d.setContainer(pkg);
-            }else if(d instanceof ClassOrInterface){
-                // do overloads later, since their container is their abstract superclass's container and
-                // we have to set that one first
-                if(d instanceof Class == false || !((Class)d).isOverloaded()){
-                    ClassOrInterface container = getContainer(classMirror);
-                    d.setContainer(container);
-                    // let's not trigger lazy-loading
-                    ((LazyContainer)container).addMember(d);
-                    // now we can do overloads
-                    if(d instanceof Class && ((Class)d).getOverloads() != null){
-                        for(Declaration overload : ((Class)d).getOverloads()){
-                            overload.setContainer(container);
-                            // let's not trigger lazy-loading
-                            ((LazyContainer)container).addMember(d);
-                        }
-                    }
-                }
-            }
+
+            setContainer(classMirror, d, pkg);
             
             // aliases have their own completion routine
             if(d instanceof LazyClassAlias){
@@ -390,6 +369,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         return decl;
+    }
+
+    private void setContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {
+        // add it to its package if it's not an inner class
+        if(!classMirror.isInnerClass()){
+            pkg.addMember(d);
+            d.setContainer(pkg);
+        }else if(d instanceof ClassOrInterface){
+            // do overloads later, since their container is their abstract superclass's container and
+            // we have to set that one first
+            if(d instanceof Class == false || !((Class)d).isOverloaded()){
+                ClassOrInterface container = getContainer(classMirror);
+                d.setContainer(container);
+                // let's not trigger lazy-loading
+                ((LazyContainer)container).addMember(d);
+                // now we can do overloads
+                if(d instanceof Class && ((Class)d).getOverloads() != null){
+                    for(Declaration overload : ((Class)d).getOverloads()){
+                        overload.setContainer(container);
+                        // let's not trigger lazy-loading
+                        ((LazyContainer)container).addMember(d);
+                    }
+                }
+            }
+        }
     }
 
     private ClassOrInterface getContainer(ClassMirror classMirror) {
