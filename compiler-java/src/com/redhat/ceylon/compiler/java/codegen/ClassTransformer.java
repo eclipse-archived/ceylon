@@ -234,6 +234,9 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.isAlias(true);
             }
         }
+
+        // make sure we set the container in case we move it out
+        addAtContainer(classBuilder, model);
         
         // Transform the class/interface members
         CeylonVisitor visitor = gen().visitor;
@@ -285,6 +288,19 @@ public class ClassTransformer extends AbstractTransformer {
             members = members.prepend(atMember);
         }
         classBuilder.annotations(makeAtMembers(members));
+    }
+
+    private void addAtContainer(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
+        Package pkg = Decl.getPackageContainer(model);
+        Scope scope = model.getContainer();
+        if(scope == null || scope instanceof ClassOrInterface == false)
+            return;
+        ClassOrInterface container = (ClassOrInterface) scope; 
+        // figure out its java name (strip the leading dot)
+        String javaClass = naming.declName(container, DeclNameFlag.QUALIFIED).substring(1);
+        String ceylonName = container.getName();
+        List<JCAnnotation> atContainer = makeAtContainer(ceylonName, javaClass, pkg.getQualifiedNameString());
+        classBuilder.annotations(atContainer);
     }
 
     private void satisfaction(final Class model, ClassDefinitionBuilder classBuilder) {
