@@ -366,7 +366,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // do overloads later, since their container is their abstract superclass's container and
                 // we have to set that one first
                 if(d instanceof Class == false || !((Class)d).isOverloaded()){
-                    ClassOrInterface container = (ClassOrInterface)convertToDeclaration(classMirror.getEnclosingClass(), DeclarationType.TYPE);
+                    ClassOrInterface container = getContainer(classMirror);
                     d.setContainer(container);
                     // let's not trigger lazy-loading
                     ((LazyContainer)container).addMember(d);
@@ -390,6 +390,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         return decl;
+    }
+
+    private ClassOrInterface getContainer(ClassMirror classMirror) {
+        AnnotationMirror containerAnnotation = classMirror.getAnnotation(CEYLON_CONTAINER_ANNOTATION);
+        if(containerAnnotation != null){
+            String name = (String) containerAnnotation.getValue("name");
+            String javaClass = (String) containerAnnotation.getValue("javaClass");
+            String packageName = (String) containerAnnotation.getValue("packageName");
+            String javaClassName = assembleJavaClass(javaClass, packageName);
+            Declaration containerDecl = convertToDeclaration(javaClassName, DeclarationType.TYPE);
+            if(containerDecl == null)
+                throw new ModelResolutionException("Failed to load outer type " + name 
+                        + " for inner type " + classMirror.getQualifiedName().toString()
+                        + ", java class: " + javaClass);
+            return (ClassOrInterface) containerDecl;
+        }else{
+            return (ClassOrInterface) convertToDeclaration(classMirror.getEnclosingClass(), DeclarationType.TYPE);
+        }
     }
 
     private void complete(LazyInterfaceAlias alias) {
