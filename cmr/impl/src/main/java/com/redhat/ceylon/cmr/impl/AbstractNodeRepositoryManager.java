@@ -358,6 +358,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
                 if(pagingInfo.length != roots.size())
                     throw new IllegalArgumentException("Paging info is not the same size as roots, it must have come from a different RepositoryManager");
             }
+            Long start = query.getStart();
             for(Repository root : roots){
                 ModuleSearchResult result = new ModuleSearchResult();
                 // adapt the start index if required
@@ -367,6 +368,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
                 results[i++] = result;
                 names.addAll(result.getModuleNames());
             }
+            // restore the query start
+            query.setStart(start);
             // now merge results
             ModuleSearchResult result = new ModuleSearchResult();
             long[] resultPagingInfo = new long[roots.size()];
