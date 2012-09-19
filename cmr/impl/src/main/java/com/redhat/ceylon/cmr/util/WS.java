@@ -40,6 +40,10 @@ public class WS {
             return isOpenTag();
         }
         
+        public String getAttribute(String name){
+            return reader.getAttributeValue(null, name);
+        }
+        
         public boolean isOpenTag() {
             int code = reader.getEventType();
             return code == XMLStreamReader.START_ELEMENT;

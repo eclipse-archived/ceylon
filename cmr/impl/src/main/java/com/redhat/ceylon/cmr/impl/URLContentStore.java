@@ -218,7 +218,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
-    public void completeModules(ModuleQuery query, final ModuleSearchResult result) {
+    public void completeModules(final ModuleQuery query, final ModuleSearchResult result) {
         if(isHerd() && herdCompleteModulesURL != null){
             // let's try Herd
             try{
@@ -228,7 +228,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                           new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
-                        parseSearchModulesResponse(p, result);
+                        parseSearchModulesResponse(p, result, query.getStart());
                     }
                 });
             }catch(Exception x){
@@ -312,7 +312,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
-    public void searchModules(ModuleQuery query, final ModuleSearchResult result) {
+    public void searchModules(final ModuleQuery query, final ModuleSearchResult result) {
         if(isHerd() && herdSearchModulesURL != null){
             // let's try Herd
             try{
@@ -324,7 +324,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                           new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
-                        parseSearchModulesResponse(p, result);
+                        parseSearchModulesResponse(p, result, query.getStart());
                     }
                 });
             }catch(Exception x){
@@ -333,15 +333,26 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         }
     }
 
-    protected void parseSearchModulesResponse(Parser p, ModuleSearchResult result) {
+    protected void parseSearchModulesResponse(Parser p, ModuleSearchResult result, Long start) {
         SortedSet<String> authors = new TreeSet<String>();
         SortedSet<String> versions = new TreeSet<String>();
 
         p.moveToOpenTag("results");
+        String total = p.getAttribute("total");
+        long totalResults;
+        try{
+            if(total == null)
+                throw new RuntimeException("Missing total from result");
+            totalResults = Long.parseLong(total);
+        }catch(NumberFormatException x){
+            throw new RuntimeException("Invalid total: "+total);
+        }
+        int resultCount = 0;
         while(p.moveToOptionalOpenTag("module")){
             String module = null, doc = null, license = null;
             authors.clear();
             versions.clear();
+            resultCount++;
             
             while(p.moveToOptionalOpenTag()){
                 if(p.isOpenTag("name")){
@@ -368,5 +379,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             p.checkCloseTag();
         }
         p.checkCloseTag();
+        
+        // see if we have more results
+        long realStart = start != null ? start : 0;
+        long resultsAfterThisPage = realStart + resultCount;
+        result.setHasMoreResults(resultsAfterThisPage < totalResults);
     }
 }
