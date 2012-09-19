@@ -431,6 +431,7 @@ public abstract class AbstractRepository implements Repository {
     private static class Ret {
         public boolean foundRightType;
         public long found;
+        public boolean stopSearching;
     }
     private static class GetOut extends Exception {}
 
@@ -466,6 +467,14 @@ public abstract class AbstractRepository implements Repository {
             if(hasChildrenContainingAnyArtifact(child, query, ret)){
                 // does it contain an artifact of the type we're looking for?
                 if(ret.foundRightType){
+                    // check if we were already done but were checking for a next results
+                    if(ret.stopSearching){
+                        // we already found enough results but were checking if there
+                        // were more results to be found for paging, so record that
+                        // and stop
+                        result.setHasMoreResults(true);
+                        throw new GetOut();
+                    }
                     if(query.getStart() == null || ret.found++ >= query.getStart()){
                         // are we interested in this result or did we need to skip it?
                         String moduleName = toModuleName(child);
@@ -473,8 +482,11 @@ public abstract class AbstractRepository implements Repository {
                         // stop if we're done searching
                         if(query.getStart() != null
                                 && query.getCount() != null
-                                && ret.found >= query.getStart() + query.getCount())
-                            throw new GetOut();
+                                && ret.found >= query.getStart() + query.getCount()){
+                            // we're done, but we want to see if there's at least one more result
+                            // to be found so we can tell clients there's a next page
+                            ret.stopSearching = true;
+                        }
                     }
                 }
             }else{
