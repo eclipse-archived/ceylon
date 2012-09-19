@@ -47,6 +47,7 @@ public class Ceylon extends Task {
     private Path src;   
     private String run;
     private String module;
+    private Rep systemRepository;
     private List<Rep> repositories = new LinkedList<Rep>();
     private File executable;
     private ExitHandler exitHandler = new ExitHandler();
@@ -147,6 +148,9 @@ public class Ceylon extends Task {
         }
         if(src != null){
             cmd.createArgument().setValue("--src="+src.toString());
+        }
+        if (systemRepository != null) {
+            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(systemRepository.url));
         }
         if(repositories != null){
             for(Rep rep : repositories){

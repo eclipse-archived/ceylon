@@ -254,6 +254,9 @@ public class Ceylonc extends LazyTask {
             cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
         }
         
+        if (getSystemRepository() != null) {
+            cmd.createArgument().setValue("--sysrep=" + Util.quoteParameter(getSystemRepository().url));
+        }
         for(Rep rep : getRepositories()){
             // skip empty entries
             if(rep.url == null || rep.url.isEmpty())

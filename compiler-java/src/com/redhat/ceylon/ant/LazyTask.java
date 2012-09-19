@@ -19,6 +19,7 @@ abstract class LazyTask extends Task {
     private Path src;
     private String out;
     private Boolean noMtimeCheck = false;
+    private Rep systemRepository;
     private List<Rep> repositories = new LinkedList<Rep>();
     private final Task task = this;
     
@@ -63,6 +64,18 @@ abstract class LazyTask extends Task {
      * @param rep the new module repository
      */
     public void addRep(Rep rep) {
+        systemRepository = rep;
+    }
+
+    protected Rep getSystemRepository() {
+        return systemRepository;
+    }
+
+    /**
+     * Sets the system repository
+     * @param rep the new system repository
+     */
+    public void setSysRep(Rep rep) {
         repositories.add(rep);
     }
 
