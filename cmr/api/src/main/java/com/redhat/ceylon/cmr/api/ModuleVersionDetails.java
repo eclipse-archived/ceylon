@@ -1,13 +1,14 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.util.Arrays;
+import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class ModuleVersionDetails {
     private String version;
     private String license;
-    private SortedSet<String> authors = new TreeSet<String>();
+    private NavigableSet<String> authors = new TreeSet<String>();
     private String doc;
 
     public ModuleVersionDetails(String version) {
@@ -42,7 +43,7 @@ public class ModuleVersionDetails {
         return license;
     }
 
-    public SortedSet<String> getAuthors() {
+    public NavigableSet<String> getAuthors() {
         return authors;
     }
 

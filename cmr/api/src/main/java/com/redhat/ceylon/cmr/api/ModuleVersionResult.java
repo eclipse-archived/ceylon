@@ -1,11 +1,12 @@
 package com.redhat.ceylon.cmr.api;
 
+import java.util.NavigableMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class ModuleVersionResult {
     private String name;
-    private SortedMap<String, ModuleVersionDetails> versions = new TreeMap<String, ModuleVersionDetails>();
+    private NavigableMap<String, ModuleVersionDetails> versions = new TreeMap<String, ModuleVersionDetails>();
 
     public ModuleVersionResult(String name) {
         this.name = name;
@@ -23,7 +24,7 @@ public class ModuleVersionResult {
         return newVersion;
     }
 
-    public SortedMap<String, ModuleVersionDetails> getVersions() {
+    public NavigableMap<String, ModuleVersionDetails> getVersions() {
         return versions;
     }
 

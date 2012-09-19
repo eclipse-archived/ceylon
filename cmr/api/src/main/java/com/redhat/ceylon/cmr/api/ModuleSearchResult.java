@@ -2,6 +2,8 @@ package com.redhat.ceylon.cmr.api;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -11,8 +13,8 @@ public class ModuleSearchResult {
     
     public static class ModuleDetails {
         private String name, license, doc;
-        private SortedSet<String> authors = new TreeSet<String>();
-        private SortedSet<String> versions = new TreeSet<String>(VersionComparator.INSTANCE);
+        private NavigableSet<String> authors = new TreeSet<String>();
+        private NavigableSet<String> versions = new TreeSet<String>(VersionComparator.INSTANCE);
 
         public ModuleDetails(String name, String doc, String license, SortedSet<String> authors, SortedSet<String> versions) {
             this.name = name;
@@ -44,16 +46,16 @@ public class ModuleSearchResult {
             return versions.last();
         }
 
-        public SortedSet<String> getAuthors() {
+        public NavigableSet<String> getAuthors() {
             return authors;
         }
 
-        public SortedSet<String> getVersions() {
+        public NavigableSet<String> getVersions() {
             return versions;
         }
     }
 
-    private Map<String,ModuleDetails> results = new TreeMap<String,ModuleDetails>();
+    private NavigableMap<String,ModuleDetails> results = new TreeMap<String,ModuleDetails>();
     private long[] nextPagingInfo;
     private long start;
     private boolean hasMoreResults;
@@ -83,8 +85,8 @@ public class ModuleSearchResult {
         return results.values();
     }
 
-    public Set<String> getModuleNames() {
-        return results.keySet();
+    public NavigableSet<String> getModuleNames() {
+        return results.navigableKeySet();
     }
 
     public ModuleDetails getResult(String module) {
