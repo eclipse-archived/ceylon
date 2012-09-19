@@ -448,5 +448,10 @@ public class SmokeTestCase extends AbstractTest {
         assertEquals(-1, VersionComparator.compareVersions("1.0.2", "2.2.4"));
         
         assertEquals(-1, VersionComparator.compareVersions("1.0", "1.0.2"));
-    }
+
+        assertEquals(-1, VersionComparator.compareVersions("0.3", "0.3.1"));
+        assertEquals(1, VersionComparator.compareVersions("0.3.1", "0.3"));
+        assertEquals(-1, VersionComparator.compareVersions("0.3.1", "0.3.2"));
+        assertEquals(1, VersionComparator.compareVersions("0.3.2", "0.3.1"));
+}
 }

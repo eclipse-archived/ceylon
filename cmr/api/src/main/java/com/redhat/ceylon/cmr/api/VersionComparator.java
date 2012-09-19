@@ -61,7 +61,7 @@ public class VersionComparator implements Comparator<String>{
             if(aEnd == versionA.length)
                 return -1;
             if(bEnd == versionB.length)
-                return -1;
+                return 1;
             // now collect all digits until non-digit or end
             int a = 0, b = 0;
             while(aEnd < versionA.length && Character.isDigit(versionA[aEnd])){
@@ -82,7 +82,7 @@ public class VersionComparator implements Comparator<String>{
             if(aEnd == versionA.length)
                 return -1;
             if(bEnd == versionB.length)
-                return -1;
+                return 1;
             // and on to the next part
         }
     }
