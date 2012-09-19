@@ -31,6 +31,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -339,12 +340,37 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testSearchModulesPaged() throws Exception {
+        RepositoryManager repoManager = getRepositoryManager();
+        
+        // first page
         ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
+                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
+        };
+        ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0l, 2l, repoManager);
+        Assert.assertEquals(2, results.getCount());
+        Assert.assertEquals(true, results.getHasMoreResults());
+        Assert.assertEquals(0, results.getStart());
+
+        // second page
+        expected = new ModuleDetails[]{
                 new ModuleDetails("moduletest", null, null, set(), set("0.1")),
                 new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
         };
         
-        testSearchResults("", Type.JVM, expected, 2l, 2l);
+        results = testSearchResults("", Type.JVM, expected, results.getStart()+results.getCount(), 2l, repoManager, results.getNextPagingInfo());
+        Assert.assertEquals(2, results.getCount());
+        Assert.assertEquals(true, results.getHasMoreResults());
+        Assert.assertEquals(2, results.getStart());
+
+        // third page
+        expected = new ModuleDetails[]{
+                new ModuleDetails("test-jar", null, null, set(), set("0.1")),
+        };
+        results = testSearchResults("", Type.JVM, expected, results.getStart()+results.getCount(), 2l, repoManager, results.getNextPagingInfo());
+        Assert.assertEquals(1, results.getCount());
+        Assert.assertEquals(false, results.getHasMoreResults());
+        Assert.assertEquals(4, results.getStart());
     }
 
     @Test
