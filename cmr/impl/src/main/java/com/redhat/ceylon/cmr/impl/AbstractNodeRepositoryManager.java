@@ -399,6 +399,32 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
                     result.addResult(module, details.getDoc(), details.getLicense(), details.getAuthors(), details.getVersions());
                 }
             }
+            // see if there are any records left in next pages
+            int repo = 0;
+            for(ModuleSearchResult resultPart : results){
+                // if we had more results in the first place then we must have another page
+                if(resultPart.getHasMoreResults()){
+                    result.setHasMoreResults(true);
+                    break;
+                }
+                // see how many results we added from this repo
+                long resultsAddedForThisRepo;
+                if(pagingInfo != null)
+                    resultsAddedForThisRepo = resultPagingInfo[repo] - pagingInfo[repo];
+                else
+                    resultsAddedForThisRepo = resultPagingInfo[repo];
+                // did we have more results than we put in?
+                if(resultPart.getCount() > resultsAddedForThisRepo){
+                    result.setHasMoreResults(true);
+                    break;
+                }
+                repo++;
+            }            
+            // record where we started (i is one greater than the number of modules added)
+            if(query.getStart() != null)
+                result.setStart(query.getStart());
+            else
+                result.setStart(0);
             // all done
             return result;
         }
