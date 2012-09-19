@@ -55,6 +55,8 @@ public class ModuleSearchResult {
 
     private Map<String,ModuleDetails> results = new TreeMap<String,ModuleDetails>();
     private long[] nextPagingInfo;
+    private long start;
+    private boolean hasMoreResults;
 
     public void addResult(String moduleName, String doc, String license, SortedSet<String> authors, SortedSet<String> versions) {
         if(versions.isEmpty())
@@ -95,5 +97,25 @@ public class ModuleSearchResult {
 
     public void setNextPagingInfo(long[] nextPagingInfo) {
         this.nextPagingInfo = nextPagingInfo;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public void setStart(long start) {
+        this.start = start;
+    }
+
+    public boolean getHasMoreResults() {
+        return hasMoreResults;
+    }
+
+    public void setHasMoreResults(boolean hasMoreResults) {
+        this.hasMoreResults = hasMoreResults;
+    }
+
+    public long getCount() {
+        return results.size();
     }
 }
