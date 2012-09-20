@@ -9,7 +9,6 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
 import com.redhat.ceylon.tools.CeylonTool;
 import com.redhat.ceylon.tools.help.model.Doc;
@@ -30,11 +29,11 @@ import com.redhat.ceylon.tools.help.model.Visitor;
 )
 public class CeylonHelpTool implements Tool {
 
-    private ToolModel<?> tool;
     private Appendable out = System.out;
     private boolean includeHidden;
     private ToolLoader toolLoader;
     private DocBuilder docBuilder;
+    private ToolModel<?> tool;
     
     public final void setToolLoader(ToolLoader toolLoader) {
         this.toolLoader = toolLoader;
@@ -57,26 +56,17 @@ public class CeylonHelpTool implements Tool {
     
     @Override
     public void run() {
+        docBuilder.setIncludeHidden(includeHidden);
+        Doc doc;
+        if (tool != null) {
+            doc = docBuilder.buildDoc(tool);
+        } else {
+            final ToolModel<CeylonTool> root = toolLoader.loadToolModel("");
+            doc = docBuilder.buildDoc(root, true);
+        }
         final WordWrap wrap = new WordWrap(out);
         Visitor plain = new PlainVisitor(wrap);
-        if (tool == null) {
-            printTopLevelHelp(plain, toolLoader.getToolNames());
-        } else {
-            if (tool != null) {
-                docBuilder.buildDoc(tool).accept(plain);
-            }/* else {
-                Tools.printToolSuggestions(toolLoader, wrap, tool);
-            }*/
-        }
+        doc.accept(plain);
         wrap.flush();
     }
-    
-    protected final void printTopLevelHelp(Visitor out, Iterable<String> toolNames) {
-        final ToolModel<CeylonTool> root = toolLoader.loadToolModel("");
-        final Doc docModel = docBuilder.buildDoc(root);
-        docModel.accept(out);
-    }
-
-    
-
 }

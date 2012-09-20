@@ -1,6 +1,7 @@
 package com.redhat.ceylon.tools.help.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.common.tool.ToolModel;
@@ -22,7 +23,7 @@ public class Doc implements Documentation {
     
     private OptionsSection options;
     
-    private List<DescribedSection> additionalSections;
+    private List<DescribedSection> additionalSections = Collections.emptyList();
 
     public ToolModel<?> getToolModel() {
         return toolModel;
@@ -53,8 +54,8 @@ public class Doc implements Documentation {
     }
 
 
-    public List<AbstractSection> getSections() {
-        ArrayList<AbstractSection> result = new ArrayList<AbstractSection>(additionalSections.size() + 4);
+    public List<Documentation> getSections() {
+        ArrayList<Documentation> result = new ArrayList<Documentation>(additionalSections.size() + 4);
         if (summary != null) {
             result.add(summary);
         }

@@ -11,14 +11,19 @@ import java.util.ResourceBundle;
 
 import org.tautua.markdownpapers.ast.Document;
 
+import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
+import com.redhat.ceylon.common.tool.Multiplicity;
 import com.redhat.ceylon.common.tool.OptionModel;
+import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.SubtoolModel;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
+import com.redhat.ceylon.tools.CeylonTool;
 import com.redhat.ceylon.tools.help.Markdown.Section;
 import com.redhat.ceylon.tools.help.model.DescribedSection;
 import com.redhat.ceylon.tools.help.model.DescribedSection.Role;
@@ -26,6 +31,7 @@ import com.redhat.ceylon.tools.help.model.Doc;
 import com.redhat.ceylon.tools.help.model.Option;
 import com.redhat.ceylon.tools.help.model.OptionsSection;
 import com.redhat.ceylon.tools.help.model.SynopsesSection;
+import com.redhat.ceylon.tools.help.model.Synopsis;
 
 public class DocBuilder {
 
@@ -33,23 +39,123 @@ public class DocBuilder {
     protected ToolLoader toolLoader;
     protected boolean includeHidden = false;
 
-    
     public DocBuilder(ToolLoader toolLoader) {
         super();
         this.toolLoader = toolLoader;
     }
     
-    public Doc buildDoc(ToolModel<?> model) {
+    public boolean isIncludeHidden() {
+        return includeHidden;
+    }
+
+    public void setIncludeHidden(boolean includeHidden) {
+        this.includeHidden = includeHidden;
+    }
+
+    public Doc buildDoc(ToolModel<?> model, boolean specialRoot) {
+        boolean rootHack = specialRoot && CeylonTool.class.isAssignableFrom(model.getToolClass());
         Doc doc = new Doc();
-        //TODO doc.setVersion(version);
+        doc.setVersion(CeylonTool.VERSION);
         doc.setToolModel(model);
         doc.setInvocation(getCeylonInvocation(model));
         doc.setSummary(buildSummary(model));
-        doc.setSynopses(buildSynopsis(model));
-        doc.setDescription(buildDescription(model));
-        doc.setOptions(buildOptions(model));
-        doc.setAdditionalSections(buildAdditionalSections(model));
+        doc.setSynopses(rootHack ? buildRootSynopsis(model) : buildSynopsis(model));
+        doc.setDescription(rootHack ? buildRootDescription(model) : buildDescription(model));
+        if (!rootHack) {
+            doc.setOptions(buildOptions(model));
+            doc.setAdditionalSections(buildAdditionalSections(model));
+        }
         return doc;
+    }
+    
+    private SynopsesSection buildRootSynopsis(ToolModel<?> model) {
+
+        SynopsesSection synopsis = new SynopsesSection();
+        synopsis.setTitle(sectionsBundle.getString("section.SYNOPSIS"));
+        List<Synopsis> synopsisList = new ArrayList<>();
+        {
+            Synopsis s1 = new Synopsis();
+            s1.setInvocation(Tools.progName());
+            OptionModel<Boolean> option = new OptionModel();
+            option.setLongName("version");
+            option.setArgumentType(ArgumentType.NOT_ALLOWED);
+            ArgumentModel<Boolean> argument = new ArgumentModel<>();
+            argument.setMultiplicity(Multiplicity._1);
+            argument.setType(Boolean.TYPE);
+            option.setArgument(argument);
+            s1.setOptionsAndArguments(Collections.singletonList(option));//model.getOption("version")));
+            synopsisList.add(s1);
+        }
+        {
+            Synopsis s2 = new Synopsis();
+            s2.setInvocation(Tools.progName());
+            
+            ArrayList args = new ArrayList(model.getOptions());
+            args.remove(model.getOption("version"));
+            /*ArgumentModel<?> options = new ArgumentModel();
+            options.setMultiplicity(Multiplicity._0_OR_MORE);
+            options.setName("cey\u2011options");
+            args.add(options);*/
+            
+            ArgumentModel<?> command = new ArgumentModel();
+            command.setMultiplicity(Multiplicity._1);
+            command.setName("command");
+            args.add(command);
+            
+            ArgumentModel<?> commandOptions = new ArgumentModel();
+            commandOptions.setMultiplicity(Multiplicity._0_OR_MORE);
+            commandOptions.setName("command\u2011options");
+            args.add(commandOptions);
+            
+            ArgumentModel<?> commandArgs = new ArgumentModel();
+            commandArgs.setMultiplicity(Multiplicity._0_OR_MORE);
+            commandArgs.setName("command\u2011args");
+            args.add(commandArgs);
+            
+            s2.setOptionsAndArguments(args);
+            synopsisList.add(s2);
+        }
+        synopsis.setSynopses(synopsisList);
+        
+        return synopsis;
+    }
+    
+    private DescribedSection buildRootDescription(
+            ToolModel<?> rootModel) {
+        
+        StringBuilder sb = new StringBuilder();
+        final String newline = "\n";
+        sb.append(newline);
+        sb.append(newline);
+        for (String toolName : toolLoader.getToolNames()) {
+            final ToolModel<?> model = toolLoader.loadToolModel(toolName);
+            if (model == null) {
+                throw new RuntimeException(toolName);
+             }
+            if (!model.isPorcelain() && !includeHidden) {
+                continue;
+            }
+            sb.append("* `").append(toolName).append("` ");
+            String summary = getSummaryValue(model);
+            if (summary != null) {
+                sb.append(summary);
+            }
+            sb.append(newline);
+            sb.append(newline);
+        }
+        sb.append(newline);
+        sb.append("See `" + Tools.progName() + " help <command>` for more information on a particular command");
+        sb.append(newline);
+        sb.append(newline);
+        
+        String both = getDescription(rootModel) + sb.toString();
+        
+        DescribedSection description = buildDescription(rootModel, both);
+        return description;
+    }
+
+    public Doc buildDoc(ToolModel<?> model) {
+        return buildDoc(model, false);
     }
 
     private List<DescribedSection> buildAdditionalSections(ToolModel<?> model) {
@@ -95,16 +201,17 @@ public class DocBuilder {
         return optionsSection;
     }
 
-    protected DescribedSection buildDescription(ToolModel<?> model) {
+    private DescribedSection buildDescription(ToolModel<?> model) {
+        return buildDescription(model, getDescription(model));
+    }
+    private DescribedSection buildDescription(ToolModel<?> model, String description) {
         DescribedSection section = null;
-        final String description = getDescription(model);
         if (!description.isEmpty()) {
             section = new DescribedSection();
             section.setRole(Role.DESCRIPTION);
             section.setDescription(Markdown.markdown(
                     "##" + sectionsBundle.getString("section.DESCRIPTION") + "\n\n" +
                     description));
-            
         }
         return section;
     }
@@ -115,13 +222,47 @@ public class DocBuilder {
         // form groups, or should we just have a @Synopses({@Synopsis(""), ...})
         SynopsesSection synopsesSection = new SynopsesSection();
         synopsesSection.setTitle(sectionsBundle.getString("section.SYNOPSIS"));
-        List<com.redhat.ceylon.tools.help.model.Synopsis> sy = new ArrayList<>();
-        com.redhat.ceylon.tools.help.model.Synopsis s = new com.redhat.ceylon.tools.help.model.Synopsis();
-        s.setInvocation(getCeylonInvocation(model));
-        s.setOptions(sortedOptions(model.getOptions()));
-        s.setArguments(model.getArguments());
-        synopsesSection.setSynopses(sy);
+        List<Synopsis> synopsisList = new ArrayList<>();
+        
+        if (model.getSubtoolModel() != null) {
+            for (List<?> optionsAndArguments : buildSubtoolSynopsis(model.getSubtoolModel())) {
+                Synopsis synopsis = new Synopsis();
+                synopsis.setInvocation(getCeylonInvocation(model));
+                synopsis.setOptionsAndArguments(optionsAndArguments);
+                synopsisList.add(synopsis);
+            }
+        } else {
+            Synopsis synopsis = new Synopsis();
+            synopsis.setInvocation(getCeylonInvocation(model));
+            synopsis.setOptionsAndArguments(optionsAndArguments(model));
+            synopsisList.add(synopsis);
+        }
+        synopsesSection.setSynopses(synopsisList);
         return synopsesSection;
+    }
+
+    private <E> List<E> optionsAndArguments(ToolModel<?> model) {
+        List<E> optionsAndArguments = (List)sortedOptions(model.getOptions());
+        optionsAndArguments.addAll((List)model.getArguments());
+        return optionsAndArguments;
+    }
+
+    private List<List<?>> buildSubtoolSynopsis(SubtoolModel<?> subtoolModel) {
+        List<List<?>> result = new ArrayList<List<?>>();
+        ToolLoader subtoolLoader = subtoolModel.getToolLoader();
+        for (String toolName : subtoolLoader.getToolNames()) {
+            ToolModel<?> model = subtoolLoader.loadToolModel(toolName);
+            if (model.getSubtoolModel() != null) {
+                for (List<?> subOptAndArgs : buildSubtoolSynopsis(model.getSubtoolModel())) {
+                    List<?> optionsAndArguments = optionsAndArguments(model);
+                    optionsAndArguments.addAll((List)subOptAndArgs);
+                    result.add(subOptAndArgs);
+                }
+            } else {
+                result.add(optionsAndArguments(model));
+            }
+        }
+        return result;
     }
 
     private boolean skipHiddenOption(OptionModel<?> option) {
@@ -146,7 +287,7 @@ public class DocBuilder {
         return options;
     }
 
-    protected DescribedSection buildSummary(ToolModel<?> model) {
+    private DescribedSection buildSummary(ToolModel<?> model) {
         // XXX The whole dash between ceylon and the tool name is a bit of a 
         // man(1)-ism which we probably don't want to follow
         DescribedSection summary = new DescribedSection();
@@ -163,7 +304,7 @@ public class DocBuilder {
     }
     
     private String msg(ResourceBundle toolBundle, String key) {
-        if (toolBundle != null) {
+        if (toolBundle != null && toolBundle.containsKey(key)) {
             String msg = toolBundle.getString(key);
             if (msg != null) {
                 return msg;

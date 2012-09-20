@@ -19,6 +19,8 @@ public class PlainVisitor implements Visitor {
     private final WordWrap out;
     private int numOptions;
     private String ceylonName;
+    boolean hadFirstArgument = false;
+    private boolean hadOptions;
 
     PlainVisitor(WordWrap wrap) {
         this.out = wrap;
@@ -101,18 +103,6 @@ public class PlainVisitor implements Visitor {
         out.setIndent(8);
     }
 
-    private void longOptionSynopsis(String string) {
-        out.append(string);
-    }
-
-    private void shortOptionSynopsis(String string) {
-        out.append(string);
-    }
-
-    private void argumentSynopsis(String name) {
-        out.append(name);
-    }
-
     private String multiplicity(ArgumentModel<?> argument, String name) {
         name = "<" + name + ">";
         if (argument.getMultiplicity().isMultivalued()) {
@@ -122,56 +112,70 @@ public class PlainVisitor implements Visitor {
     }
     
     @Override
-    public void visitSynopsis(Synopsis synopsis) {
-        if (!synopsis.getOptions().isEmpty()) {
-            for (OptionModel<?> option : synopsis.getOptions()) {
-                out.append(" ");
-                final ArgumentModel<?> argument = option.getArgument();
-                if (!argument.getMultiplicity().isRequired()) {
-                    out.append("[");
-                }
-                if (option.getLongName() != null) {
-                    longOptionSynopsis("--" + option.getLongName());
-                    if (option.getArgumentType() == ArgumentType.REQUIRED) {
-                        out.append("=");
-                        out.append(multiplicity(argument, argument.getName()));
-                    } else if (option.getArgumentType() == ArgumentType.OPTIONAL) {
-                        out.append("[=");
-                        out.append(multiplicity(argument, argument.getName()));
-                        out.append("]");
-                    }
-                } else {
-                    shortOptionSynopsis("-" + option.getShortName());
-                    if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
-                        out.append(" ");
-                        out.append(multiplicity(argument, argument.getName()));
-                    }
-                }
-                if (!argument.getMultiplicity().isRequired()) {
-                    out.append("]");
-                }
-            }
-        }
-        if (!synopsis.getArguments().isEmpty()) {
-            out.append(" [--]");
-            for (ArgumentModel<?> argument : synopsis.getArguments()) {
-                out.append(" ");
-                String name = argument.getName();
-                if (!argument.getMultiplicity().isRequired()) {
-                    out.append("[");
-                }
-                out.append("<");
-                argumentSynopsis(name);
-                if (argument.getMultiplicity().isMultivalued()) {
-                    out.append("...");
-                }
-                out.append(">");
-                if (!argument.getMultiplicity().isRequired()) {
-                    out.append("]");
-                }
-            }
-        }
+    public void startSynopsis(Synopsis synopsis) {
+        int indent = out.getIndentFirstLine();
+        String invocation = synopsis.getInvocation();
+        out.setIndentRestLines(indent + invocation.length() + 1);
+        out.append(invocation);
+        hadFirstArgument = false;
+        hadOptions = false;
+    }
+    
+    @Override
+    public void endSynopsis(Synopsis synopsis) {
         out.newline();
+    }
+
+    @Override
+    public void visitSynopsisArgument(ArgumentModel<?> argument) {
+        if (hadOptions && !hadFirstArgument) {
+            out.append(" [--]");
+            hadFirstArgument = true;
+        }
+        
+        out.append(" ");
+        String name = argument.getName();
+        if (!argument.getMultiplicity().isRequired()) {
+            out.append("[");
+        }
+        out.append("<" + name);
+        if (argument.getMultiplicity().isMultivalued()) {
+            out.append("...");
+        }
+        out.append(">");
+        if (!argument.getMultiplicity().isRequired()) {
+            out.append("]");
+        }
+    }
+
+    @Override
+    public void visitSynopsisOption(OptionModel<?> option) {
+        hadOptions = true;
+        out.append(" ");
+        final ArgumentModel<?> argument = option.getArgument();
+        if (!argument.getMultiplicity().isRequired()) {
+            out.append("[");
+        }
+        if (option.getLongName() != null) {
+            out.append("--" + option.getLongName());
+            if (option.getArgumentType() == ArgumentType.REQUIRED) {
+                out.append("=");
+                out.append(multiplicity(argument, argument.getName()));
+            } else if (option.getArgumentType() == ArgumentType.OPTIONAL) {
+                out.append("[=");
+                out.append(multiplicity(argument, argument.getName()));
+                out.append("]");
+            }
+        } else {
+            out.append("-" + option.getShortName());
+            if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
+                out.append(" ");
+                out.append(multiplicity(argument, argument.getName()));
+            }
+        }
+        if (!argument.getMultiplicity().isRequired()) {
+            out.append("]");
+        }
     }
 
     @Override

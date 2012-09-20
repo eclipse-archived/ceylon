@@ -3,7 +3,7 @@ package com.redhat.ceylon.tools.help.model;
 import java.util.Collections;
 import java.util.List;
 
-public class SynopsesSection extends AbstractSection {
+public class SynopsesSection implements Documentation {
     
     private String title;
     

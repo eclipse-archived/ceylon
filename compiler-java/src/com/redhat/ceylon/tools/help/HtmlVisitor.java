@@ -14,6 +14,8 @@ import com.redhat.ceylon.tools.help.model.Visitor;
 public class HtmlVisitor implements Visitor {
 
     private final Html html;
+    private boolean hadFirstArgument;
+    private boolean hadOptions;
     
     HtmlVisitor(Appendable out) {
         this.html = new Html(out);
@@ -121,58 +123,68 @@ public class HtmlVisitor implements Visitor {
     }
 
     @Override
-    public void visitSynopsis(Synopsis synopsis) {
+    public void startSynopsis(Synopsis synopsis) {
+        hadFirstArgument = false;
+        hadOptions = false;
         html.open("pre");
-        // TODO Not really <pre>, and need a hanging indent up to the level of the invocation
+    }
+
+    @Override
+    public void endSynopsis(Synopsis synopsis) {
+        html.close("pre").text("\n");   
+    }
+
+    @Override
+    public void visitSynopsisArgument(ArgumentModel<?> argument) {
+        if (!hadFirstArgument) {
+            html.text(" [--]");
+            hadFirstArgument = true;
+        }
         
-        for (OptionModel<?> option : synopsis.getOptions()) {
-            html.text(" ");
-            final ArgumentModel<?> argument = option.getArgument();
-            if (!argument.getMultiplicity().isRequired()) {
-                html.text("[");
-            }
-            if (option.getLongName() != null) {
-                longOptionSynopsis("--" + option.getLongName());
-                if (option.getArgumentType() == ArgumentType.REQUIRED) {
-                    html.text("=");
-                    html.text(multiplicity(argument, argument.getName()));
-                } else if (option.getArgumentType() == ArgumentType.OPTIONAL) {
-                    html.text("[=");
-                    html.text(multiplicity(argument, argument.getName()));
-                    html.text("]");
-                }
-            } else {
-                shortOptionSynopsis("-" + option.getShortName());
-                if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
-                    html.text(" ");
-                    html.text(multiplicity(argument, argument.getName()));
-                }
-            }
-            if (!argument.getMultiplicity().isRequired()) {
+        html.text(" ");
+        String name = argument.getName();
+        if (!argument.getMultiplicity().isRequired()) {
+            html.text("[");
+        }
+        html.text("<");
+        argumentSynopsis(name);
+        if (argument.getMultiplicity().isMultivalued()) {
+            html.text("...");
+        }
+        html.text(">");
+        if (!argument.getMultiplicity().isRequired()) {
+            html.text("]");
+        }
+    }
+
+    @Override
+    public void visitSynopsisOption(OptionModel<?> option) {
+        hadOptions = true;
+        html.text(" ");
+        final ArgumentModel<?> argument = option.getArgument();
+        if (!argument.getMultiplicity().isRequired()) {
+            html.text("[");
+        }
+        if (option.getLongName() != null) {
+            longOptionSynopsis("--" + option.getLongName());
+            if (option.getArgumentType() == ArgumentType.REQUIRED) {
+                html.text("=");
+                html.text(multiplicity(argument, argument.getName()));
+            } else if (option.getArgumentType() == ArgumentType.OPTIONAL) {
+                html.text("[=");
+                html.text(multiplicity(argument, argument.getName()));
                 html.text("]");
             }
-        }
-        if (!synopsis.getArguments().isEmpty()) {
-            html.text(" [--]");
-            for (ArgumentModel<?> argument : synopsis.getArguments()) {
+        } else {
+            shortOptionSynopsis("-" + option.getShortName());
+            if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
                 html.text(" ");
-                String name = argument.getName();
-                if (!argument.getMultiplicity().isRequired()) {
-                    html.text("[");
-                }
-                html.text("<");
-                argumentSynopsis(name);
-                if (argument.getMultiplicity().isMultivalued()) {
-                    html.text("...");
-                }
-                html.text(">");
-                if (!argument.getMultiplicity().isRequired()) {
-                    html.text("]");
-                }
+                html.text(multiplicity(argument, argument.getName()));
             }
         }
-
-        html.close("pre").text("\n");   
+        if (!argument.getMultiplicity().isRequired()) {
+            html.text("]");
+        }
     }
 
     @Override

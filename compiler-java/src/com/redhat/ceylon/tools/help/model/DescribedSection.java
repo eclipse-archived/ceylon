@@ -2,7 +2,7 @@ package com.redhat.ceylon.tools.help.model;
 
 import org.tautua.markdownpapers.ast.Node;
 
-public class DescribedSection extends AbstractSection {
+public class DescribedSection implements Documentation {
 
     public static enum Role {
         SUMMARY,
