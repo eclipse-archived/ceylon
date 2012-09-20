@@ -299,4 +299,15 @@ public class StatementTest extends CompilerTest {
     public void testReturnAnonFunction(){
         compareWithJavaSource("retrn/ReturnAnonFunction");
     }
+
+    @Test
+    public void testAssertSimple() {
+        compareWithJavaSource("conditional/AssertionSimple");
+    }
+
+    @Test
+    public void testAssertSpecial() {
+        compareWithJavaSource("conditional/AssertionSpecial");
+    }
+
 }
