@@ -2,6 +2,9 @@ package com.redhat.ceylon.tools.help;
 
 import java.io.IOException;
 
+import org.tautua.markdownpapers.HtmlEmitter;
+import org.tautua.markdownpapers.ast.Node;
+
 class Html {
 
     private final Appendable out;
@@ -74,6 +77,12 @@ class Html {
 
     public Html unescaped(String html) {
         return append(html);
+    }
+    
+    public Html markdown(Node doc) {
+        HtmlEmitter markdownVisitor = new HtmlEmitter(out);
+        doc.accept(markdownVisitor);
+        return this;
     }
 
     public Html tag(String tag) {
