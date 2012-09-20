@@ -22,14 +22,13 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
@@ -59,7 +58,6 @@ import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
-import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -141,11 +139,17 @@ public class StatementTransformer extends AbstractTransformer {
         return res;
     }
 
-    private List<JCStatement> transformCondition(Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
+    /** Transforms just the specified condition, optionally transforming a block if specified.
+     * @param cond The condition to transform
+     * @param thenPart An optional block (usually the one to execute if the condition is true)
+     * @return A list with up to 3 elements: one element means it's just the condition; two elements
+     * means it's the condition and a block; three elements means it's
+     * a two declarations and the condition, or a declaration, the condition and a block. */
+    private List<JCTree> transformCondition(Tree.Condition cond, Tree.Block thenPart) {
         JCExpression test;
         JCVariableDecl decl = null;
+        JCVariableDecl decl2 = null;
         JCBlock thenBlock = null;
-        JCBlock elseBlock = null;
         if ((cond instanceof Tree.IsCondition) || (cond instanceof Tree.NonemptyCondition) || (cond instanceof Tree.ExistsCondition)) {
             String name;
             ProducedType toType;
@@ -179,8 +183,6 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression toTypeExpr = makeJavaType(toType);
     
                 Naming.SyntheticName tmpVarName = naming.alias(name);
-                final String origVarName = name;
-                Name substVarName = naming.aliasName(name);
     
                 ProducedType tmpVarType = specifierExpr.getTypeModel();
                 JCExpression tmpVarTypeExpr;
@@ -206,20 +208,25 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // Temporary variable holding the result of the expression/variable to test
                 decl = makeVar(tmpVarName, tmpVarTypeExpr, null);
-    
-                // The variable holding the result for the code inside the code block
-                JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
-                
-                // Prepare for variable substitution in the following code block
-                String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
-                
-                thenBlock = transform(thenPart);
-                List<JCStatement> stats = List.<JCStatement> of(decl2);
-                stats = stats.appendList(thenBlock.getStatements());
-                thenBlock = at(cond).Block(0, stats);
-                
-                // Deactivate the above variable substitution
-                naming.removeVariableSubst(origVarName, prevSubst);
+
+                if (thenPart == null) {
+                    // The variable holding the result for the code inside the code block
+                    decl2 = at(cond).VarDef(make().Modifiers(FINAL), names().fromString(name), toTypeExpr, tmpVarExpr);
+                } else {
+                    Name substVarName = naming.aliasName(name);
+                    // The variable holding the result for the code inside the code block
+                    decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
+                    // Prepare for variable substitution in the following code block
+                    final String origVarName = name;
+                    String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
+                    thenBlock = transform(thenPart);
+                    List<JCStatement> stats = List.<JCStatement> of(decl2);
+                    stats = stats.appendList(thenBlock.getStatements());
+                    thenBlock = at(cond).Block(0, stats);
+                    // Deactivate the above variable substitution
+                    naming.removeVariableSubst(origVarName, prevSubst);
+                    decl2 = null;
+                }
                 
                 at(cond);
                 // Assign the expression to test to the temporary variable
@@ -248,6 +255,47 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         at(cond);
+
+        ListBuffer<JCTree> parts = new ListBuffer<JCTree>();
+        if (decl != null) {
+            parts.add(decl);
+        }
+        if (decl2 != null) {
+            parts.add(decl2);
+        }
+        parts.add(test);
+        if (thenBlock != null) {
+            parts.add(thenBlock);
+        }
+        return parts.toList();
+    }
+
+    private List<JCStatement> transformCondition(Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
+        JCVariableDecl decl = null;
+        JCBlock thenBlock = null;
+        JCBlock elseBlock = null;
+
+        final List<JCTree> parts = transformCondition(cond, thenPart);
+        final JCExpression test;
+        if (parts.size() == 1) {
+            test = (JCExpression)parts.get(0);
+        } else if (parts.size() == 3) {
+            decl = (JCVariableDecl)parts.get(0);
+            if (thenPart == null) {
+                test = (JCExpression)parts.get(2);
+            } else {
+                test = (JCExpression)parts.get(1);
+                thenBlock = (JCBlock)parts.get(2);
+            }
+        } else {
+            if (parts.get(0) instanceof JCVariableDecl) {
+                decl = (JCVariableDecl)parts.get(0);
+                test = (JCExpression)parts.get(1);
+            } else {
+                test = (JCExpression)parts.get(0);
+                thenBlock = (JCBlock)parts.get(1);
+            }
+        }
         // Convert the code blocks (if not already done so above)
         if (thenPart != null && thenBlock == null) {
             thenBlock = transform(thenPart);
@@ -255,7 +303,7 @@ public class StatementTransformer extends AbstractTransformer {
         if (elsePart != null && elseBlock == null) {
             elseBlock = transform(elsePart);
         }
-        
+
         JCStatement cond1;
         switch (tag) {
         case JCTree.IF:
@@ -267,12 +315,44 @@ public class StatementTransformer extends AbstractTransformer {
         default:
             throw new RuntimeException();
         }
-        
+
         if (decl != null) {
             return List.<JCStatement> of(decl, cond1);
         } else {
             return List.<JCStatement> of(cond1);
         }
+    }
+
+    public List<JCStatement> transformAssertion(Tree.Assertion ass) {
+        final List<JCTree> parts = transformCondition(ass.getCondition(), null);
+        final JCExpression test;
+        ListBuffer<JCStatement> rval = new ListBuffer<JCStatement>();
+        if (parts.size() == 1) {
+            test = (JCExpression)parts.get(0);
+        } else {
+            rval.add((JCStatement)parts.get(0));
+            test = (JCExpression)parts.get(2);
+        }
+        //Get the custom message
+        String custom = "Assertion failed";
+        for (Tree.Annotation ann : ass.getAnnotationList().getAnnotations()) {
+            BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
+            if ("doc".equals(bme.getDeclaration().getName())) {
+                custom = ann.getPositionalArgumentList().getPositionalArguments().get(0).getExpression().getTerm().getText();
+                //unquote
+                custom = custom.substring(1, custom.length() - 1);
+            }
+        }
+        //TODO proper exception type, include expression, etc
+        JCExpression t = make().NewClass(null, null,
+                makeIdent(syms().ceylonExceptionType),
+                List.<JCExpression>of(boxType(make().Literal(custom), typeFact().getStringDeclaration().getType()), makeNull()),
+                null);
+        rval.add(make().If(make().Unary(JCTree.NOT, test), make().Throw(t), null));
+        if (parts.size() == 3) {
+            rval.add((JCStatement)parts.get(1));
+        }
+        return rval.toList();
     }
 
     private ProducedType actualType(Tree.TypedDeclaration decl) {
