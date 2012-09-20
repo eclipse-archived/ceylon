@@ -488,6 +488,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         appendList(gen.transformPackageDescriptor(that));
     }
 
+    public void visit(Tree.Assertion that) {
+        appendList(gen.statementGen().transformAssertion(that));
+    }
     /**
      * Gets all the results which were appended during the visit
      * @return The results
