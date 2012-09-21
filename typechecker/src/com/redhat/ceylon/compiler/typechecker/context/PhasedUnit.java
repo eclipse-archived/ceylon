@@ -58,6 +58,7 @@ public class PhasedUnit {
     private boolean refinementValidated = false;
     private boolean flowAnalyzed = false;
     private boolean fullyTyped = false;
+    private boolean literalsProcessed = false;
 
     public VirtualFile getSrcDir() {
         return srcDir;
@@ -113,6 +114,7 @@ public class PhasedUnit {
     public Module visitSrcModulePhase() {
         if ( ModuleManager.MODULE_FILE.equals(fileName) ||
                 ModuleManager.PACKAGE_FILE.equals(fileName) ) {
+            processLiterals();
             moduleVisitor = new ModuleVisitor(moduleManager, pkg);
             compilationUnit.visit(moduleVisitor);
             return moduleVisitor.getMainModule();
@@ -185,8 +187,8 @@ public class PhasedUnit {
 
     public void scanDeclarations() {
         if (!declarationsScanned) {
+            processLiterals();
             scanningDeclarations = true;
-            compilationUnit.visit(new LiteralVisitor());
             //System.out.println("Scan declarations for " + fileName);
             DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName,
             		unitFile.getPath(), pathRelativeToSrcDir);
@@ -196,6 +198,13 @@ public class PhasedUnit {
             scanningDeclarations = false;
         }
     }
+
+	private void processLiterals() {
+		if (!literalsProcessed) {
+			compilationUnit.visit(new LiteralVisitor());
+			literalsProcessed = true;
+		}
+	}
 
     public void scanTypeDeclarations() {
         if (!typeDeclarationsScanned) {

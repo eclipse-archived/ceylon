@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 
 /**
  * Bucket for some helper methods used by various
@@ -305,13 +306,16 @@ class Util {
                 if (a.getNamedArgumentList()!=null) {
                     for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
                         if (na instanceof Tree.SpecifiedArgument) {
-                            Tree.Term t = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression().getTerm();
-                            String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
-                            if (t instanceof Tree.Literal) {
-                                ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
-                            }
-                            else if (t instanceof Tree.BaseMemberOrTypeExpression) {
-                                ann.addNamedArgument( param, ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                            Expression e = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression();
+                            if (e!=null) {
+                                Tree.Term t = e.getTerm();
+                                String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
+                                if (t instanceof Tree.Literal) {
+                                    ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
+                                }
+                                else if (t instanceof Tree.BaseMemberOrTypeExpression) {
+                                    ann.addNamedArgument( param, ( (Tree.BaseMemberOrTypeExpression) t ).getIdentifier().getText() );
+                                }
                             }
                         }                    
                     }
