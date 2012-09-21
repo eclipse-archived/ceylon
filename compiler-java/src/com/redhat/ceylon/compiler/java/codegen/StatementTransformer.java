@@ -156,22 +156,26 @@ public class StatementTransformer extends AbstractTransformer {
             String name;
             ProducedType toType;
             Expression specifierExpr;
+            boolean omit = false;
             if (cond instanceof Tree.IsCondition) {
                 Tree.IsCondition isdecl = (Tree.IsCondition) cond;
                 name = isdecl.getVariable().getIdentifier().getText();
                 // use the type of the variable, which is more precise than the type we test for
                 toType = isdecl.getVariable().getType().getTypeModel();
                 specifierExpr = isdecl.getVariable().getSpecifierExpression().getExpression();
+                omit = isdecl.getVariable().getType() instanceof Tree.SyntheticVariable;
             } else if (cond instanceof Tree.NonemptyCondition) {
                 Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition) cond;
                 name = nonempty.getVariable().getIdentifier().getText();
                 toType = nonempty.getVariable().getType().getTypeModel();
                 specifierExpr = nonempty.getVariable().getSpecifierExpression().getExpression();
+                omit = nonempty.getVariable().getType() instanceof Tree.SyntheticVariable;
             } else {
                 Tree.ExistsCondition exists = (Tree.ExistsCondition) cond;
                 name = exists.getVariable().getIdentifier().getText();
                 toType = simplifyType(exists.getVariable().getType().getTypeModel());
                 specifierExpr = exists.getVariable().getSpecifierExpression().getExpression();
+                omit = exists.getVariable().getType() instanceof Tree.SyntheticVariable;
             }
             
             // no need to cast for erasure here
@@ -190,7 +194,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression tmpVarTypeExpr;
                 // Want raw type for instanceof since it can't be used with generic types
                 JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
-    
+
                 // Substitute variable with the correct type to use in the rest of the code block
                 JCExpression tmpVarExpr = tmpVarName.makeIdent();
                 if (cond instanceof Tree.ExistsCondition) {
@@ -213,7 +217,9 @@ public class StatementTransformer extends AbstractTransformer {
 
                 if (thenPart == null) {
                     // The variable holding the result for the code inside the code block
-                    decl2 = at(cond).VarDef(make().Modifiers(FINAL), names().fromString(name), toTypeExpr, tmpVarExpr);
+                    if (!omit) {
+                        decl2 = at(cond).VarDef(make().Modifiers(FINAL), names().fromString(name), toTypeExpr, tmpVarExpr);
+                    }
                 } else {
                     Name substVarName = naming.aliasName(name);
                     // The variable holding the result for the code inside the code block
@@ -333,7 +339,7 @@ public class StatementTransformer extends AbstractTransformer {
             test = (JCExpression)parts.get(0);
         } else {
             rval.add((JCStatement)parts.get(0));
-            test = (JCExpression)parts.get(2);
+            test = (JCExpression)parts.get(parts.size()-1);
         }
         //Get the custom message
         String message = buildAssertionMessage(ass);
