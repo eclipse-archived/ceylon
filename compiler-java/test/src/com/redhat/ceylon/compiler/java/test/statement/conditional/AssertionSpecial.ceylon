@@ -1,4 +1,4 @@
-void run() {
+void assertionSpecial() {
     String|Integer v1 = 5;
     assert(is Integer a1 = v1);
     print(-a1);
