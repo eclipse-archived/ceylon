@@ -20,13 +20,14 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -1963,6 +1964,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         //Iterator fields
         ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
         HashSet<String> fieldNames = new HashSet<String>();
+        HashMap<String,String> fieldSubst = new HashMap<String,String>();
         while (clause != null) {
             final Naming.SyntheticName iterVar = naming.synthetic("iter$"+idx);
             Naming.SyntheticName itemVar = null;
@@ -2100,17 +2102,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Condition cond = ((IfComprehensionClause)clause).getCondition();
                 //The context of an if is an iteration through the parent, checking each element against the condition
                 Variable var = null;
-                boolean reassign = false;
+                Name varname = null;
+                JCExpression varType = null;
+                boolean reassign = cond instanceof IsCondition || cond instanceof NonemptyCondition;
                 if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
                     var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable()
                             : ((ExistsOrNonemptyCondition)cond).getVariable();
+                    varname = naming.aliasName(var.getDeclarationModel().getName());
+                    varType = makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES | JT_RAW);
                     //Initialize the condition's attribute to finished so that this is returned
                     //in case the condition is not met and the iterator is exhausted
-                    if (!fieldNames.contains(var.getDeclarationModel().getName())) {
-                        fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE),
-                                names().fromString(var.getDeclarationModel().getName()),
-                                makeJavaType(var.getDeclarationModel().getType(),JT_NO_PRIMITIVES), null));
-                        reassign = true;
+                    if (reassign) {
+                        fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), varname, varType, null));
                     }
                 }
                 //Filter contexts need to check if the previous context applies and then check the condition
@@ -2118,24 +2121,21 @@ public class ExpressionTransformer extends AbstractTransformer {
                     ctxtName.makeIdentWithThis(), List.<JCExpression>nil());
                 //_AND_ the previous iterator condition with the comprehension's
                 final JCExpression otherCondition;
+
                 if (cond instanceof IsCondition) {
                     JCExpression _expr = transformExpression(var.getSpecifierExpression().getExpression());
                     Naming.SyntheticName _varName = naming.temp("compr");
                     JCExpression test = makeTypeTest(null, _varName, ((IsCondition) cond).getType().getTypeModel());
                     test = makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test);
-                    if (reassign) {
-                        _expr = make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()),
-                                make().Conditional(test, make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES), _expr), makeNull()));
-                        otherCondition = make().Binary(JCTree.EQ, _expr, makeNull());
-                    } else {
-                        otherCondition = make().Unary(JCTree.NOT, test);
-                    }
+                    _expr = make().Assign(makeUnquotedIdent(varname.toString()),
+                            make().Conditional(test, make().TypeCast(varType, _expr), makeNull()));
+                    otherCondition = make().Binary(JCTree.EQ, _expr, makeNull());
 
                 } else if (cond instanceof ExistsCondition) {
                     JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
                     if (reassign) {
                         //Assign the expression, check it's not null
-                        expression = make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()), expression);
+                        expression = make().Assign(makeUnquotedIdent(varname.toString()), expression);
                     }
                     otherCondition =  make().Binary(JCTree.EQ, expression, makeNull());
 
@@ -2144,14 +2144,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Naming.SyntheticName varName = naming.temp("compr");
                     JCExpression test = makeNonEmptyTest(null, varName);
                     test = makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
-                    if (reassign) {
-                        //Assign the expression if it's nonempty
-                        expression = make().Assign(makeUnquotedIdent(var.getDeclarationModel().getName()),
-                                make().Conditional(test, make().TypeCast(makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES), expression), makeNull()));
-                        otherCondition = make().Binary(JCTree.EQ, expression, makeNull());
-                    } else {
-                        otherCondition = make().Unary(JCTree.NOT, test);
-                    }
+                    //Assign the expression if it's nonempty
+                    expression = make().Assign(makeUnquotedIdent(varname.toString()),
+                            make().Conditional(test, make().TypeCast(varType, expression), makeNull()));
+                    otherCondition = make().Binary(JCTree.EQ, expression, makeNull());
 
                 } else if (cond instanceof BooleanCondition) {
                     otherCondition = make().Unary(JCTree.NOT, transformExpression(((BooleanCondition) cond).getExpression(),
@@ -2171,6 +2167,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 )), null));
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
                 itemVar = prevItemVar;
+                if (reassign) {
+                    fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), varname.toString()),
+                            var.getDeclarationModel().getName());
+                }
 
             } else if (clause instanceof ExpressionComprehensionClause) {
 
@@ -2211,6 +2211,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
                     make().Block(0, List.<JCStatement>of(make().Return(iterator))), null)
         )));
+        for (Map.Entry<String, String> e : fieldSubst.entrySet()) {
+            naming.removeVariableSubst(e.getValue(), e.getKey());
+        }
         return iterable;
     }
 
