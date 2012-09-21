@@ -26,9 +26,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
@@ -61,8 +61,10 @@ import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.DiagnosticSource;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 
 /**
@@ -322,7 +324,7 @@ public class StatementTransformer extends AbstractTransformer {
             return List.<JCStatement> of(cond1);
         }
     }
-
+    
     public List<JCStatement> transform(Tree.Assertion ass) {
         final List<JCTree> parts = transformCondition(ass.getCondition(), null);
         final JCExpression test;
@@ -334,25 +336,87 @@ public class StatementTransformer extends AbstractTransformer {
             test = (JCExpression)parts.get(2);
         }
         //Get the custom message
-        String custom = "Assertion failed";
-        for (Tree.Annotation ann : ass.getAnnotationList().getAnnotations()) {
-            BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
-            if ("doc".equals(bme.getDeclaration().getName())) {
-                custom = ann.getPositionalArgumentList().getPositionalArguments().get(0).getExpression().getTerm().getText();
-                //unquote
-                custom = custom.substring(1, custom.length() - 1);
-            }
-        }
+        String message = buildAssertionMessage(ass);
+        
         //TODO proper exception type, include expression, etc
         JCExpression t = make().NewClass(null, null,
                 makeIdent(syms().ceylonExceptionType),
-                List.<JCExpression>of(boxType(make().Literal(custom), typeFact().getStringDeclaration().getType()), makeNull()),
+                List.<JCExpression>of(boxType(make().Literal(message), typeFact().getStringDeclaration().getType()), makeNull()),
                 null);
         rval.add(make().If(make().Unary(JCTree.NOT, test), make().Throw(t), null));
         if (parts.size() == 3) {
             rval.add((JCStatement)parts.get(1));
         }
         return rval.toList();
+    }
+
+    private String buildAssertionMessage(Tree.Assertion ass) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Assertion failed");
+        String docText = getDocAnnotationText(ass);
+        if (docText != null) {
+            sb.append(": ").append(docText);
+        }
+        sb.append("\n");
+        String location = ass.getUnit().getFilename() + ":" + ass.getCondition().getLocation();
+        sb.append("\tat ").append(location).append("\n");
+        sb.append("\texpression ").append(getSourceCode(ass.getCondition()));
+        String custom = sb.toString();
+        return custom;
+    }
+
+    private String getDocAnnotationText(Tree.Assertion ass) {
+        String docText = null;
+        Tree.Annotation doc = getAnnotation(ass.getAnnotationList(), "doc");
+        if (doc != null) {
+            Tree.Expression expression = null;
+            if (doc.getPositionalArgumentList() != null) {
+                Tree.PositionalArgument arg = doc.getPositionalArgumentList().getPositionalArguments().get(0);
+                expression = arg.getExpression();
+            } else if (doc.getNamedArgumentList() != null) {
+                Tree.SpecifiedArgument arg = (Tree.SpecifiedArgument)doc.getNamedArgumentList().getNamedArguments().get(0);
+                expression = arg.getSpecifierExpression().getExpression();
+            }
+            Tree.Literal literal = (Tree.Literal)expression.getTerm();
+            docText = literal.getText();
+        }
+        return docText;
+    }
+
+    private Tree.Annotation getAnnotation(Tree.AnnotationList al, String name) {
+        if (al!=null) {
+            for (Tree.Annotation a: al.getAnnotations()) {
+                Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
+                if (p!=null) {
+                    if ( p.getIdentifier().getText().equals(name) ) {
+                        return a;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Gets the source code corresponding to the given node
+     */
+    private String getSourceCode(Node node) {
+        StringBuilder sb = new StringBuilder();
+        DiagnosticSource source = new DiagnosticSource(gen().getFileObject(), Log.instance(gen().getContext()));
+        int startLine = node.getToken().getLine();
+        int endLine = node.getEndToken().getLine();
+        for (int lineNumber = startLine; lineNumber <= endLine; lineNumber++) {
+            int startPos = gen().getMap().getPosition(lineNumber, 1);
+            String line = source.getLine(startPos);
+            if (lineNumber == endLine) {
+                line = line.substring(0,  node.getEndToken().getCharPositionInLine() + node.getEndToken().getText().length());
+            }
+            if (lineNumber == startLine) {
+                line = line.substring(node.getToken().getCharPositionInLine());
+            }
+            sb.append(line).append("\n");
+        }
+        return sb.substring(0, sb.length() - 1);
     }
 
     private ProducedType actualType(Tree.TypedDeclaration decl) {
