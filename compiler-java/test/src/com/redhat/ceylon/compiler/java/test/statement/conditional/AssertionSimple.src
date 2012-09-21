@@ -2,21 +2,22 @@ package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-final class run_ {
+final class assertionSimple_ {
     
-    private run_() {
+    private assertionSimple_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
-    static void run() {
-        if (!(2L + 2L == 4L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("should be 4"), null);
+    static void assertionSimple() {
+        if (!(2L + 2L == 4L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed: \"should be 4\"\n\tat AssertionSimple.ceylon:3:10-3:17\n\texpression (2+2==4)"), null);
         final long i = 5L;
-        if (!(i < 10L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed"), null);
+        if (!(i < 10L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSimple.ceylon:5:10-5:15\n\texpression (i<10)"), null);
+        if (!(i < 10L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSimple.ceylon:6:10-8:10\n\texpression (i\n<\n        10)"), null);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.statement.conditional.run_.run();
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.assertionSimple_.assertionSimple();
     }
 }

@@ -3,4 +3,7 @@ void assertionSimple() {
     assert(2+2==4);
     value i = 5;
     assert(i<10);
+    assert(i
+<
+        10);
 }
