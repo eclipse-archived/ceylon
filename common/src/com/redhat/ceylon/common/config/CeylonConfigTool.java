@@ -18,7 +18,10 @@ package com.redhat.ceylon.common.config;
 
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.Subtool;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
 
@@ -35,18 +38,27 @@ import com.redhat.ceylon.common.tool.Tool;
 )
 public class CeylonConfigTool implements Tool {
     
-    private ConfigAction action;
+    private Tool action;
     
-    public enum ConfigAction { list };
+    private String file;
     
-    @Argument(argumentName="action", multiplicity="1")
-    public void setAction(ConfigAction action) {
+    @OptionArgument(argumentName="file")
+    @Description("The file to operate on. Default: `./.ceylon/config`)")
+    public void setFile(String file) {
+        this.file = file;
+    }
+    
+    @Subtool(argumentName="action",
+            classes={Get.class, Set.class, Unset.class, RenameSection.class, RemoveSection.class, Keystore.class})
+    public void setAction(Tool action) {
         this.action = action;
     }
 
-    @Override
-    public void run() {
-        if (action == ConfigAction.list) {
+    @Summary("Gets a value in a config file")
+    public class Get implements Tool {
+    
+        @Override
+        public void run() {
             CeylonConfig config = CeylonConfig.get();
             for (String sectionName : config.getSectionNames(null)) {
                 String[] names = config.getOptionNames(sectionName);
@@ -65,10 +77,123 @@ public class CeylonConfigTool implements Tool {
             }
         }
     }
+    
+    @Summary("Sets a value in a config file")
+    public class Set implements Tool {
+        @Override
+        public void run() {
+        }
+    }
+    
+    @Summary("Unsets a value in a config file")
+    public class Unset implements Tool {
+        @Override
+        public void run() {
+        }
+    }
+    
+    @Summary("Renames a section in a config file")
+    public class RenameSection implements Tool {
+        @Override
+        public void run() {
+        }
+    }
+    
+    @Summary("Removes a section from a config file")
+    public class RemoveSection implements Tool {
+        @Override
+        public void run() {
+        }
+    }
+    
+    @Summary("Modifies keystores")
+    public class Keystore implements Tool {
+        private Tool tool;
 
-    public static void main(String[] args) {
+        private String storePassword;
+        
+        @OptionArgument
+        @Option
+        public void setStorePassword(String storePassword) {
+            this.storePassword = storePassword;
+        }
+        
+        @Summary("Gets a password in a keystore")
+        public class GetPassword implements Tool {
+            
+            private String alias;
+            
+            @Argument(argumentName="alias", multiplicity="1", order=1)
+            public void setAlias(String alias) {
+                this.alias = alias;
+            }
+            
+            @Override
+            public void run() throws Exception {
+                // TODO Auto-generated method stub
+                
+            }
+        }
+        
+        @Summary("Sets a password in a keystore")
+        public class SetPassword implements Tool {
+            
+            private String alias;
+            
+            private String password;
+            
+            @Argument(argumentName="alias", multiplicity="1", order=1)
+            public void setAlias(String alias) {
+                this.alias = alias;
+            }
+            
+            @Argument(argumentName="password", multiplicity="?", order=2)
+            public void setPassword(String password) {
+                this.password = password;
+            }
+            
+            @Override
+            public void run() throws Exception {
+                // TODO Auto-generated method stub
+                
+            }
+        }
+        
+        @Summary("Unsets a password in a keystore")
+        public class UnsetPassword implements Tool {
+            
+            private String alias;
+            
+            @Argument(argumentName="alias", multiplicity="1", order=1)
+            public void setAlias(String alias) {
+                this.alias = alias;
+            }
+            
+            @Override
+            public void run() throws Exception {
+                // TODO Auto-generated method stub
+                
+            }
+        }
+        
+        @Subtool(argumentName="action", classes={GetPassword.class, SetPassword.class, UnsetPassword.class})
+        public void setAction(Tool action) {
+            this.tool = tool;
+        }
+        @Override
+        public void run() throws Exception {
+            tool.run();
+        }
+    }
+    
+    @Override
+    public void run() throws Exception {
+        action.run();
+    }
+
+    public static void main(String[] args) throws Exception {
         CeylonConfigTool x = new CeylonConfigTool();
-        x.action = ConfigAction.list;
+        x.action = x.new Get();
         x.run();
     }
     

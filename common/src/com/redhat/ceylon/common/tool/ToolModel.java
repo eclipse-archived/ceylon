@@ -142,7 +142,7 @@ public class ToolModel<T extends Tool> {
                 && toolClass.getAnnotation(Hidden.class) != null;
     }
 
-    public SubtoolModel<?> setSubtoolModel() {
+    public SubtoolModel<?> getSubtoolModel() {
         return this.subtoolModel;
     }
     
