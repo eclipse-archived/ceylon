@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class b_ {
+    
+    private b_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    static void b() {
+        final .ceylon.language.Sequence seq = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("2"), .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("4"), .ceylon.language.Integer.instance(5L));
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator iter$0 = seq.getIterator();
+                    private .java.lang.Object x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.java.lang.Object)$ceylontmpitem0;
+                        }
+                        return true;
+                    }
+                    private .ceylon.language.Integer $x$1;
+                    
+                    private final boolean next1() {
+                        while (this.x() && ($x$1 = (
+                            let
+                            {
+                                .java.lang.Object $ceylontmpcompr2 = x;
+                            }
+                            returning $ceylontmpcompr2 instanceof .ceylon.language.Integer;
+                        ) ? (.ceylon.language.Integer)x : null) == null) {
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? $x$1.times(.ceylon.language.Integer.instance(2L)) : .ceylon.language.exhausted_.getExhausted();
+                    }
+                };
+            }
+        }.getSequence());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.comprehensions.b_.b();
+    }
+}
+

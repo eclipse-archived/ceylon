@@ -26,4 +26,14 @@ public class ExpressionTest3 extends CompilerTest {
         compareWithJavaSource("comprehensions/for_if_if");
     }
 
+    @Test
+    public void testComprehensionIs() {
+        compareWithJavaSource("comprehensions/is_cond");
+    }
+
+    @Test
+    public void testComprehensionNonempty() {
+        compareWithJavaSource("comprehensions/nonempty_cond");
+    }
+
 }
