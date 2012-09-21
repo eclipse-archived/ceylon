@@ -8,4 +8,7 @@ void assertionSpecial() {
     Integer[] v3 = {1,2,3};
     assert(nonempty a3 = v3);
     print(a3.size);
+    assert(nonempty v3);
+    assert(exists v2);
+    assert(is Integer v1);
 }
