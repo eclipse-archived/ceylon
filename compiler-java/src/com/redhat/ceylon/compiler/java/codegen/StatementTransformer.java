@@ -323,7 +323,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
 
-    public List<JCStatement> transformAssertion(Tree.Assertion ass) {
+    public List<JCStatement> transform(Tree.Assertion ass) {
         final List<JCTree> parts = transformCondition(ass.getCondition(), null);
         final JCExpression test;
         ListBuffer<JCStatement> rval = new ListBuffer<JCStatement>();

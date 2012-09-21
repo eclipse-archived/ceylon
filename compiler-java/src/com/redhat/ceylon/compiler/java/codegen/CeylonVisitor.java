@@ -489,7 +489,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.Assertion that) {
-        appendList(gen.statementGen().transformAssertion(that));
+        appendList(gen.statementGen().transform(that));
     }
     /**
      * Gets all the results which were appended during the visit
