@@ -560,8 +560,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         String value = string
                 .getText()
                 .substring(1, string.getText().length() - 1);
-        JCExpression result = makeSelect(makeIdent(syms().ceylonQuotedType), "instance");
-        return at(string).Apply(null, result, List.<JCTree.JCExpression>of(make().Literal(value)));
+        at(string);
+        return ceylonLiteral(value);
     }
 
     public JCExpression transform(Tree.CharLiteral lit) {
