@@ -8,16 +8,16 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 3)
 public class Import {
-    private final ceylon.language.Quoted name;
-    private final ceylon.language.Quoted version;
+    private final String name;
+    private final String version;
     
-    @TypeInfo("ceylon.language.Quoted")
-    public final ceylon.language.Quoted getName() {
+    @TypeInfo("ceylon.language.String")
+    public final String getName() {
         return name;
     }
     
-    @TypeInfo("ceylon.language.Quoted")
-    public final ceylon.language.Quoted getVersion() {
+    @TypeInfo("ceylon.language.String")
+    public final String getVersion() {
         return version;
     }
     private final boolean optional;
@@ -39,10 +39,10 @@ public class Import {
     }
     
     public Import(@Name("name")
-    @TypeInfo("ceylon.language.Quoted")
-    ceylon.language.Quoted name, @Name("version")
-    @TypeInfo("ceylon.language.Quoted")
-    ceylon.language.Quoted version, @Name("optional")
+    @TypeInfo("ceylon.language.String")
+    String name, @Name("version")
+    @TypeInfo("ceylon.language.String")
+    String version, @Name("optional")
     @Defaulted
     @TypeInfo("ceylon.language.Boolean")
     boolean optional, @Name("export")
@@ -57,15 +57,15 @@ public class Import {
     
     @Ignore
     public static boolean $init$optional(
-    final ceylon.language.Quoted name,
-    final ceylon.language.Quoted version) {
+    final String name,
+    final String version) {
         return false;
     }
     
     @Ignore
     public static boolean $init$export(
-    final ceylon.language.Quoted name, 
-    final ceylon.language.Quoted version, 
+    final String name, 
+    final String version, 
     final boolean optional) {
         return false;
     }

@@ -11,7 +11,7 @@ final class package_ {
     
     @TypeInfo("ceylon.language.descriptor.Package")
     static ceylon.language.descriptor.Package getPackage() {
-        return new ceylon.language.descriptor.Package(ceylon.language.Quoted.instance("ceylon.language.descriptor"), 
+        return new ceylon.language.descriptor.Package("ceylon.language.descriptor", 
         		true, 
         		"The Ceylon Language Descriptor package",
         		new ceylon.language.ArraySequence<ceylon.language.String>(ceylon.language.String.instance("Gavin King")));

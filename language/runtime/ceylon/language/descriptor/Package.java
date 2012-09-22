@@ -10,12 +10,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 3)
 public class Package {
-    private final ceylon.language.Quoted name;
+    private final String name;
     
     
     public Package(@Name("name")
-    @TypeInfo("ceylon.language.Quoted")
-    ceylon.language.Quoted name, @Name("shared")
+    @TypeInfo("ceylon.language.String")
+    String name, @Name("shared")
     @Defaulted
     @TypeInfo("ceylon.language.Boolean")
     boolean shared, @Name("doc")
@@ -31,8 +31,8 @@ public class Package {
         this.by = by;
     }
     
-    @TypeInfo("ceylon.language.Quoted")
-    public final ceylon.language.Quoted getName() {
+    @TypeInfo("ceylon.language.String")
+    public final String getName() {
         return name;
     }
     
@@ -63,20 +63,20 @@ public class Package {
     
     @Ignore
     public static boolean $init$shared(
-    final ceylon.language.Quoted name) {
+    final String name) {
         return false;
     }
     
     @Ignore
     public static java.lang.String $init$doc(
-    final ceylon.language.Quoted name, 
+    final String name, 
     final boolean shared) {
         return "";
     }
     
     @Ignore
     public static ceylon.language.Iterable<? extends ceylon.language.String> $init$by(
-    final ceylon.language.Quoted name, 
+    final String name, 
     final boolean shared, 
     final java.lang.String doc) {
         return (Iterable)ceylon.language.empty_.getEmpty();
