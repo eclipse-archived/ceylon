@@ -6,8 +6,8 @@ class QuotedLiteral {
     }
     
     public final void m() {
-        final .ceylon.language.Quoted s1 = .ceylon.language.Quoted.instance("");
-        final .ceylon.language.Quoted s2 = .ceylon.language.Quoted.instance("This is a test");
+        final .java.lang.String s1 = "";
+        final .java.lang.String s2 = "This is a test";
         final long x1 = 3405691582L;
         final long x2 = 3405691582L;
         final long x3 = -1L;

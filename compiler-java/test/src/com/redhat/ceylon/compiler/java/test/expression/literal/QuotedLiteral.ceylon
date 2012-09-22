@@ -21,8 +21,8 @@
 class QuotedLiteral(){
     @error
     shared void m() {
-        Quoted s1 = '';
-        Quoted s2 = 'This is a test';
+        String s1 = '';
+        String s2 = 'This is a test';
         Integer x1 = hex('CAFEBABE');
         Integer x2 = hex('cafebabe');
         Integer x3 = hex('FFFFFFFFFFFFFFFF');
