@@ -175,7 +175,6 @@ public class Symtab {
     public  Type ceylonFloatType;
     public  Type ceylonIntegerType;
     public  Type ceylonStringType;
-    public  Type ceylonQuotedType;
     public  Type ceylonMethodType;
     public  Type ceylonSequenceType;
     public  Type ceylonArrayType;
@@ -797,7 +796,6 @@ public class Symtab {
         ceylonFloatType = enterClass("ceylon.language.Float");
         ceylonIntegerType = enterClass("ceylon.language.Integer");
         ceylonStringType = enterClass("ceylon.language.String");
-        ceylonQuotedType = enterClass("ceylon.language.Quoted");
         ceylonMethodType = enterClass("ceylon.language.Method");
         ceylonSequenceType = enterClass("ceylon.language.Sequence");
         ceylonArrayType = enterClass("ceylon.language.Array");
