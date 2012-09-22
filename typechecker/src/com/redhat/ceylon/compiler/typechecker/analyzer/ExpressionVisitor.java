@@ -3310,7 +3310,6 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.StringLiteral that) {
-    	//TODO: check that escapes are valid
         setLiteralType(that, unit.getStringDeclaration());
     }
     
@@ -3323,7 +3322,6 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.CharLiteral that) {
-    	//TODO: check that escapes are valid
     	String result = that.getText();
         if (result.codePointCount(1, result.length()-1)!=1) {
         	that.addError("character literal must contain exactly one character");
@@ -3332,13 +3330,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.QuotedLiteral that) {
-        setLiteralType(that, unit.getQuotedDeclaration());
-        String fn = that.getUnit().getFilename();
-        if (!"package.ceylon".equals(fn) && !"module.ceylon".equals(fn)) {
-            // temporarily disable this to get support for hex/binary literals
-            // see https://github.com/ceylon/ceylon-spec/issues/382
-            that.addUsageWarning("single-quoted literals are not yet supported");
-        }
+        setLiteralType(that, unit.getStringDeclaration());
     }
     
     private void setLiteralType(Tree.Atom that, TypeDeclaration languageType) {

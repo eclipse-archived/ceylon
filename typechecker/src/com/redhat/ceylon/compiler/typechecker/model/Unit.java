@@ -321,10 +321,6 @@ public class Unit {
         return (TypeDeclaration) getLanguageModuleDeclaration("Character");
     }
         
-    public TypeDeclaration getQuotedDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Quoted");
-    }
-    
     public Interface getComparableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Comparable");
     }
