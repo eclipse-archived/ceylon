@@ -194,8 +194,12 @@ public class Util {
 
     /** Remove quotes from a string, if it starts and ends with them. */
     public static String unquote(String string) {
-        if (string.length() >= 2 && string.charAt(0) == '"' && string.charAt(string.length()-1) == '"') {
-            return string.substring(1, string.length() - 1);
+        if (string.length() >= 2) {
+            char first = string.charAt(0);
+            char last = string.charAt(string.length()-1);
+            if ((first == '"' && last == '"') || (first == '\'' && last == '\'')) {
+                return string.substring(1, string.length() - 1);
+            }
         }
         return string;
     }
