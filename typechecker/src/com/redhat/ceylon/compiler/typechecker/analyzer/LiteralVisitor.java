@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -20,6 +21,14 @@ public class LiteralVisitor extends Visitor {
         StringBuilder result = new StringBuilder();
         stripIndent(that.getText(), that.getToken().getCharPositionInLine()+1, result);
         interpolateEscapes(result, that);
+        that.setText(result.toString());
+    }
+    
+    @Override
+    public void visit(QuotedLiteral that) {
+        StringBuilder result = new StringBuilder();
+        stripIndent(that.getText(), that.getToken().getCharPositionInLine()+1, result);
+        //interpolateEscapes(result, that);
         that.setText(result.toString());
     }
     
