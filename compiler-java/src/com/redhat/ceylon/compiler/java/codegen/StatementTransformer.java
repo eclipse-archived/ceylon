@@ -134,16 +134,27 @@ public class StatementTransformer extends AbstractTransformer {
     List<JCStatement> transform(Tree.IfStatement stmt) {
         Tree.Block thenPart = stmt.getIfClause().getBlock();
         Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
-        return transformCondition(stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
+        final TransformedCondition transformedCond = new TransformedCondition(stmt.getIfClause().getCondition(), thenPart);
+        JCStatement cond1 = make().If(transformedCond.getTest(), transformedCond.getThenBlock(), transform(elsePart));
+        if (transformedCond.getResultVarDecl() != null) {
+            return List.<JCStatement> of(transformedCond.getResultVarDecl(), cond1);
+        } else {
+            return List.<JCStatement> of(cond1);
+        }
     }
 
     List<JCStatement> transform(Tree.WhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
-        
         Tree.Block thenPart = stmt.getWhileClause().getBlock();
-        List<JCStatement> res = transformCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
-        
+        final TransformedCondition transformedCond = new TransformedCondition(stmt.getWhileClause().getCondition(), thenPart);
+        JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.getTest()), transformedCond.getThenBlock());
+        List<JCStatement> res;
+        if (transformedCond.getResultVarDecl() != null) {
+            res = List.<JCStatement> of(transformedCond.getResultVarDecl(), cond1);
+        } else {
+            res = List.<JCStatement> of(cond1);
+        }        
         currentForFailVariable = tempForFailVariable;
         
         return res;
@@ -151,11 +162,11 @@ public class StatementTransformer extends AbstractTransformer {
 
     class TransformedCondition {
 
-        private final JCVariableDecl before;
-        private JCVariableDecl blockPrelude;
+        private final JCVariableDecl resultVarDecl;
+        private final JCVariableDecl blockPrelude;
         private final JCExpression test;
         private final JCBlock thenBlock;
-        public TransformedCondition(Tree.Condition cond, Tree.Block thenPart) {
+        TransformedCondition(Tree.Condition cond, Tree.Block thenPart) {
             super();
             if ((cond instanceof Tree.IsCondition) || (cond instanceof Tree.NonemptyCondition) || (cond instanceof Tree.ExistsCondition)) {
                 String name;
@@ -190,8 +201,9 @@ public class StatementTransformer extends AbstractTransformer {
                 at(cond);
                 if (cond instanceof Tree.IsCondition && isNothing(toType)) {
                     test = make().Binary(JCTree.EQ, expr, makeNull());
-                    before = null;
+                    resultVarDecl = null;
                     thenBlock = transform(thenPart);
+                    blockPrelude = null;
                 } else {
                     JCExpression toTypeExpr = makeJavaType(toType);
         
@@ -220,23 +232,24 @@ public class StatementTransformer extends AbstractTransformer {
                     }
                     
                     // Temporary variable holding the result of the expression/variable to test
-                    before = makeVar(tmpVarName, tmpVarTypeExpr, null);
+                    resultVarDecl = makeVar(tmpVarName, tmpVarTypeExpr, null);
 
                     if (thenPart == null) {
                         thenBlock = transform(thenPart);
                         // The variable holding the result for the code inside the code block
                         if (!omit) {
                             blockPrelude = at(cond).VarDef(make().Modifiers(FINAL), names().fromString(name), toTypeExpr, tmpVarExpr);
+                        } else {
+                            blockPrelude = null;
                         }
                     } else {
                         Name substVarName = naming.aliasName(name);
-                        // The variable holding the result for the code inside the code block
-                        blockPrelude = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
                         // Prepare for variable substitution in the following code block
                         final String origVarName = name;
                         String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
                         List<JCStatement> blockStmts = transformBlock(thenPart);
-                        blockStmts = blockStmts.prepend(blockPrelude);
+                        // The variable holding the result for the code inside the code block
+                        blockStmts = blockStmts.prepend(at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr));
                         thenBlock = at(cond).Block(0, blockStmts);
                         // Deactivate the above variable substitution
                         naming.removeVariableSubst(origVarName, prevSubst);
@@ -266,7 +279,8 @@ public class StatementTransformer extends AbstractTransformer {
                 // booleans can't be erased
                 test = expressionGen().transformExpression(booleanCondition.getExpression(), 
                         BoxingStrategy.UNBOXED, null);
-                before = null;
+                resultVarDecl = null;
+                blockPrelude = null;
             } else {
                 throw new RuntimeException("Not implemented: " + cond.getNodeType());
             }
@@ -274,8 +288,8 @@ public class StatementTransformer extends AbstractTransformer {
             at(cond);   
 
         }
-        public JCVariableDecl getBefore() {
-            return before;
+        public JCVariableDecl getResultVarDecl() {
+            return resultVarDecl;
         }
         public JCVariableDecl getBlockPrelude() {
             return blockPrelude;
@@ -289,47 +303,11 @@ public class StatementTransformer extends AbstractTransformer {
         
     }
     
-    /** Transforms just the specified condition, optionally transforming a block if specified.
-     * @param cond The condition to transform
-     * @param thenPart An optional block (usually the one to execute if the condition is true)
-     * @return A list with up to 3 elements: one element means it's just the condition; two elements
-     * means it's the condition and a block; three elements means it's
-     * a two declarations and the condition, or a declaration, the condition and a block. */
-    private TransformedCondition transformCondition(Tree.Condition cond, Tree.Block thenPart) {
-        
-
-        return new TransformedCondition(cond, thenPart);
-    }
-
-    private List<JCStatement> transformCondition(Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
-        final TransformedCondition transformedCond = transformCondition(cond, thenPart);
-        JCBlock thenBlock = transformedCond.getThenBlock();
-        JCVariableDecl decl = transformedCond.getBefore();
-
-        JCStatement cond1;
-        switch (tag) {
-        case JCTree.IF:
-            cond1 = make().If(transformedCond.getTest(), thenBlock, transform(elsePart));
-            break;
-        case JCTree.WHILELOOP:
-            cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.getTest()), thenBlock);
-            break;
-        default:
-            throw new RuntimeException();
-        }
-
-        if (decl != null) {
-            return List.<JCStatement> of(decl, cond1);
-        } else {
-            return List.<JCStatement> of(cond1);
-        }
-    }
-    
-    public List<JCStatement> transform(Tree.Assertion ass) {
-        final TransformedCondition transformedCond = transformCondition(ass.getCondition(), null);
+    List<JCStatement> transform(Tree.Assertion ass) {
+        final TransformedCondition transformedCond = new TransformedCondition(ass.getCondition(), null);
         ListBuffer<JCStatement> rval = new ListBuffer<JCStatement>();
-        if (transformedCond.getBefore() != null) {
-            rval.add(transformedCond.getBefore());
+        if (transformedCond.getResultVarDecl() != null) {
+            rval.add(transformedCond.getResultVarDecl());
         }
         //Get the custom message
         String message = buildAssertionMessage(ass);
