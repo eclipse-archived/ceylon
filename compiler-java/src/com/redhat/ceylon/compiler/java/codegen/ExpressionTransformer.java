@@ -2098,8 +2098,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 clause = fcl.getComprehensionClause();
 
             } else if (clause instanceof IfComprehensionClause) {
-
-                Condition cond = ((IfComprehensionClause)clause).getCondition();
+                // TODO Support condition lists
+                Condition cond = ((IfComprehensionClause)clause).getConditionList().getConditions().get(0);
                 //The context of an if is an iteration through the parent, checking each element against the condition
                 Variable var = null;
                 Name varname = null;

@@ -213,7 +213,7 @@ public class ValueVisitor extends Visitor {
     }
     @Override public void visit(Tree.IfComprehensionClause that) {
         super.visit(that);
-        that.getCondition().visit(this);
+        //that.getCondition().visit(this);
         that.getComprehensionClause().visit(this);
     }
     @Override public void visit(Tree.ExpressionComprehensionClause that) {
