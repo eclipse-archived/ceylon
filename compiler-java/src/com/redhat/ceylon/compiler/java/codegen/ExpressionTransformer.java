@@ -2104,7 +2104,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Variable var = null;
                 Name varname = null;
                 JCExpression varType = null;
-                boolean reassign = cond instanceof IsCondition || cond instanceof NonemptyCondition;
                 if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
                     var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable()
                             : ((ExistsOrNonemptyCondition)cond).getVariable();
@@ -2112,9 +2111,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     varType = makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES | JT_RAW);
                     //Initialize the condition's attribute to finished so that this is returned
                     //in case the condition is not met and the iterator is exhausted
-                    if (reassign) {
-                        fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), varname, varType, null));
-                    }
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), varname, varType, null));
                 }
                 //Filter contexts need to check if the previous context applies and then check the condition
                 JCExpression condExpr = make().Apply(null,
@@ -2133,10 +2130,8 @@ public class ExpressionTransformer extends AbstractTransformer {
 
                 } else if (cond instanceof ExistsCondition) {
                     JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
-                    if (reassign) {
-                        //Assign the expression, check it's not null
-                        expression = make().Assign(makeUnquotedIdent(varname.toString()), expression);
-                    }
+                    //Assign the expression, check it's not null
+                    expression = make().Assign(makeUnquotedIdent(varname.toString()), expression);
                     otherCondition =  make().Binary(JCTree.EQ, expression, makeNull());
 
                 } else if (cond instanceof NonemptyCondition) {
@@ -2167,7 +2162,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 )), null));
                 clause = ((IfComprehensionClause)clause).getComprehensionClause();
                 itemVar = prevItemVar;
-                if (reassign) {
+                if (var != null) {
                     fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), varname.toString()),
                             var.getDeclarationModel().getName());
                 }
