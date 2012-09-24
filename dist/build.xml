@@ -349,9 +349,9 @@ Used with another target such as 'package'">
             <arg value="doc-tool"/>
             <arg value="--output=${dist.dir}/doc/en/toolset"/>
             <arg value="--index"/>
-            <arg value="+plumbing"/>
-            <arg value="+porcelain"/>
-        </exec>
+            <arg value="--all-plumbing"/>
+            <arg value="--all-porcelain"/>
+        </exec>	
     </target>
 
     <target name="get-code" depends="local,get-code-internal"
