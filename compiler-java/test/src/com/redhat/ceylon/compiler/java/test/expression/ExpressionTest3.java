@@ -36,4 +36,9 @@ public class ExpressionTest3 extends CompilerTest {
         compareWithJavaSource("comprehensions/nonempty_cond");
     }
 
+    @Test
+    public void testComprehensionExists() {
+        compareWithJavaSource("comprehensions/exists_cond");
+    }
+
 }
