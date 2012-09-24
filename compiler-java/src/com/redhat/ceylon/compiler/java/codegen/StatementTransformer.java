@@ -141,13 +141,43 @@ public class StatementTransformer extends AbstractTransformer {
         return res;
     }
 
+    class TransformedCondition {
+
+        private JCVariableDecl before;
+        private JCVariableDecl blockPrelude;
+        private JCExpression test;
+        private JCBlock thenBlock;
+        public TransformedCondition(JCVariableDecl before, JCExpression test,
+                JCVariableDecl blockPrelude, JCBlock thenBlock) {
+            super();
+            this.before = before;
+            this.blockPrelude = blockPrelude;
+            this.test = test;
+            this.thenBlock = thenBlock;
+        }
+        public JCVariableDecl getBefore() {
+            return before;
+        }
+        public JCVariableDecl getBlockPrelude() {
+            return blockPrelude;
+        }
+        public JCExpression getTest() {
+            return test;
+        }
+        public JCBlock getThenBlock() {
+            return thenBlock;
+        }
+        
+        
+    }
+    
     /** Transforms just the specified condition, optionally transforming a block if specified.
      * @param cond The condition to transform
      * @param thenPart An optional block (usually the one to execute if the condition is true)
      * @return A list with up to 3 elements: one element means it's just the condition; two elements
      * means it's the condition and a block; three elements means it's
      * a two declarations and the condition, or a declaration, the condition and a block. */
-    private List<JCTree> transformCondition(Tree.Condition cond, Tree.Block thenPart) {
+    private TransformedCondition transformCondition(Tree.Condition cond, Tree.Block thenPart) {
         JCExpression test;
         JCVariableDecl decl = null;
         JCVariableDecl decl2 = null;
@@ -264,61 +294,27 @@ public class StatementTransformer extends AbstractTransformer {
         
         at(cond);
 
-        ListBuffer<JCTree> parts = new ListBuffer<JCTree>();
-        if (decl != null) {
-            parts.add(decl);
-        }
-        if (decl2 != null) {
-            parts.add(decl2);
-        }
-        parts.add(test);
-        if (thenBlock != null) {
-            parts.add(thenBlock);
-        }
-        return parts.toList();
+        return new TransformedCondition(decl, test, decl2, thenBlock);
     }
 
     private List<JCStatement> transformCondition(Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
-        JCVariableDecl decl = null;
-        JCBlock thenBlock = null;
-        JCBlock elseBlock = null;
-
-        final List<JCTree> parts = transformCondition(cond, thenPart);
-        final JCExpression test;
-        if (parts.size() == 1) {
-            test = (JCExpression)parts.get(0);
-        } else if (parts.size() == 3) {
-            decl = (JCVariableDecl)parts.get(0);
-            if (thenPart == null) {
-                test = (JCExpression)parts.get(2);
-            } else {
-                test = (JCExpression)parts.get(1);
-                thenBlock = (JCBlock)parts.get(2);
-            }
-        } else {
-            if (parts.get(0) instanceof JCVariableDecl) {
-                decl = (JCVariableDecl)parts.get(0);
-                test = (JCExpression)parts.get(1);
-            } else {
-                test = (JCExpression)parts.get(0);
-                thenBlock = (JCBlock)parts.get(1);
-            }
-        }
+        final TransformedCondition transformedCond = transformCondition(cond, thenPart);
+        JCBlock thenBlock = transformedCond.getThenBlock();
+        JCVariableDecl decl = transformedCond.getBefore();
+        
         // Convert the code blocks (if not already done so above)
         if (thenPart != null && thenBlock == null) {
             thenBlock = transform(thenPart);
         }
-        if (elsePart != null && elseBlock == null) {
-            elseBlock = transform(elsePart);
-        }
+        JCBlock elseBlock = elsePart != null ? transform(elsePart) : null;
 
         JCStatement cond1;
         switch (tag) {
         case JCTree.IF:
-            cond1 = make().If(test, thenBlock, elseBlock);
+            cond1 = make().If(transformedCond.getTest(), thenBlock, elseBlock);
             break;
         case JCTree.WHILELOOP:
-            cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), test), thenBlock);
+            cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.getTest()), thenBlock);
             break;
         default:
             throw new RuntimeException();
@@ -332,14 +328,10 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     public List<JCStatement> transform(Tree.Assertion ass) {
-        final List<JCTree> parts = transformCondition(ass.getCondition(), null);
-        final JCExpression test;
+        final TransformedCondition transformedCond = transformCondition(ass.getCondition(), null);
         ListBuffer<JCStatement> rval = new ListBuffer<JCStatement>();
-        if (parts.size() == 1) {
-            test = (JCExpression)parts.get(0);
-        } else {
-            rval.add((JCStatement)parts.get(0));
-            test = (JCExpression)parts.get(parts.size()-1);
+        if (transformedCond.getBefore() != null) {
+            rval.add(transformedCond.getBefore());
         }
         //Get the custom message
         String message = buildAssertionMessage(ass);
@@ -349,9 +341,9 @@ public class StatementTransformer extends AbstractTransformer {
                 makeIdent(syms().ceylonExceptionType),
                 List.<JCExpression>of(boxType(make().Literal(message), typeFact().getStringDeclaration().getType()), makeNull()),
                 null);
-        rval.add(make().If(make().Unary(JCTree.NOT, test), make().Throw(t), null));
-        if (parts.size() == 3) {
-            rval.add((JCStatement)parts.get(1));
+        rval.add(make().If(make().Unary(JCTree.NOT, transformedCond.getTest()), make().Throw(t), null));
+        if (transformedCond.getBlockPrelude() != null) {
+            rval.add(transformedCond.getBlockPrelude());
         }
         return rval.toList();
     }
