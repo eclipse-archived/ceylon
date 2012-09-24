@@ -22,6 +22,10 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
@@ -32,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FinallyClause;
@@ -66,6 +71,7 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
+import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
 /**
  * This transformer deals with statements only
@@ -134,27 +140,68 @@ public class StatementTransformer extends AbstractTransformer {
     List<JCStatement> transform(Tree.IfStatement stmt) {
         Tree.Block thenPart = stmt.getIfClause().getBlock();
         Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
-        final TransformedCondition transformedCond = new TransformedCondition(stmt.getIfClause().getCondition(), thenPart);
-        JCStatement cond1 = make().If(transformedCond.getTest(), transformedCond.getThenBlock(), transform(elsePart));
-        if (transformedCond.getResultVarDecl() != null) {
-            return List.<JCStatement> of(transformedCond.getResultVarDecl(), cond1);
+        ListBuffer<JCStatement> result = ListBuffer.lb();
+        java.util.List<Condition> conditions = stmt.getIfClause().getConditionList().getConditions();
+        if (conditions.size() == 1) {
+            final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), thenPart);
+            JCStatement cond1 = make().If(transformedCond.getTest(), transformedCond.getThenBlock(), transform(elsePart));
+            if (transformedCond.getResultVarDecl() != null) {
+                result.append(transformedCond.getResultVarDecl());
+            }
+            result.append(cond1);
+            
         } else {
-            return List.<JCStatement> of(cond1);
+            final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+            final SyntheticName ifVar = naming.temp("if");
+            
+            final ArrayList<Tree.Condition> c = new ArrayList<>(conditions);
+            Collections.reverse(c);
+            
+            final Condition innermost = c.get(0);
+            TransformedCondition transformedCond = new TransformedCondition(innermost, thenPart);
+            final JCBlock thenBlock = transformedCond.getThenBlock();
+            List<JCStatement> stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
+            for (Tree.Condition condition : c) {
+                if (condition != innermost) {
+                    transformedCond = new TransformedCondition(condition, null);
+                }
+                if (transformedCond.getResultVarDecl() != null) {
+                    varDecls.append(transformedCond.getResultVarDecl());
+                }
+                if (transformedCond.getBlockPrelude() != null) {
+                    stmts = stmts.prepend(transformedCond.getBlockPrelude());
+                }
+                stmts = List.<JCStatement>of(make().If(
+                        transformedCond.getTest(), make().Block(0, stmts), 
+                        null));//transformedCond.getOtherBlockPrelude()));
+            }
+            result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
+            result.appendList(varDecls);
+            result.appendList(stmts);
+            result.append(make().If(ifVar.makeIdent(), thenBlock, transform(elsePart)));
         }
+        
+        return result.toList();
     }
 
     List<JCStatement> transform(Tree.WhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
+        final List<JCStatement> res;
         Tree.Block thenPart = stmt.getWhileClause().getBlock();
-        final TransformedCondition transformedCond = new TransformedCondition(stmt.getWhileClause().getCondition(), thenPart);
-        JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.getTest()), transformedCond.getThenBlock());
-        List<JCStatement> res;
-        if (transformedCond.getResultVarDecl() != null) {
-            res = List.<JCStatement> of(transformedCond.getResultVarDecl(), cond1);
+        java.util.List<Condition> conditions = stmt.getWhileClause().getConditionList().getConditions();
+        if (conditions.size() == 1) {
+            final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), thenPart);
+            JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.getTest()), transformedCond.getThenBlock());
+            if (transformedCond.getResultVarDecl() != null) {
+                res = List.<JCStatement> of(transformedCond.getResultVarDecl(), cond1);
+            } else {
+                res = List.<JCStatement> of(cond1);
+            }
         } else {
-            res = List.<JCStatement> of(cond1);
-        }        
+            // TODO conditionlists
+            res = List.<JCStatement> of(make().Exec(makeErroneous()));
+        }
         currentForFailVariable = tempForFailVariable;
         
         return res;
@@ -164,6 +211,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         private final JCVariableDecl resultVarDecl;
         private final JCVariableDecl blockPrelude;
+        private final JCVariableDecl otherBlockPrelude;
         private final JCExpression test;
         private final JCBlock thenBlock;
         TransformedCondition(Tree.Condition cond, Tree.Block thenPart) {
@@ -204,6 +252,7 @@ public class StatementTransformer extends AbstractTransformer {
                     resultVarDecl = null;
                     thenBlock = transform(thenPart);
                     blockPrelude = null;
+                    otherBlockPrelude = null;
                 } else {
                     JCExpression toTypeExpr = makeJavaType(toType);
         
@@ -216,6 +265,7 @@ public class StatementTransformer extends AbstractTransformer {
 
                     // Substitute variable with the correct type to use in the rest of the code block
                     JCExpression tmpVarExpr = tmpVarName.makeIdent();
+                    JCExpression tmpVarInit = makeNull();
                     if (cond instanceof Tree.ExistsCondition) {
                         tmpVarExpr = unboxType(tmpVarExpr, toType);
                         tmpVarTypeExpr = makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
@@ -232,15 +282,25 @@ public class StatementTransformer extends AbstractTransformer {
                     }
                     
                     // Temporary variable holding the result of the expression/variable to test
-                    resultVarDecl = makeVar(tmpVarName, tmpVarTypeExpr, null);
+                    resultVarDecl = makeVar(tmpVarName, tmpVarTypeExpr, tmpVarInit);
 
                     if (thenPart == null) {
                         thenBlock = transform(thenPart);
                         // The variable holding the result for the code inside the code block
                         if (!omit) {
-                            blockPrelude = at(cond).VarDef(make().Modifiers(FINAL), names().fromString(name), toTypeExpr, tmpVarExpr);
+                            blockPrelude = at(cond).VarDef(make().Modifiers(FINAL), 
+                                    names().fromString(name), 
+                                    toTypeExpr, tmpVarExpr);
+                            /*JCExpression dummyInit = 
+                                isCeylonBoolean(toType) ? makeBoolean(false) :
+                                    isCeylonInteger(toType) ? makeLong(0) :
+                                    isCeylonFloat(toType) ? make().Literal(Type.DOUBLE, 0.0) :
+                                    isCeylonCharacter(toType) ? make().Literal(Type.CHAR, 0) : 
+                                    makeNull();*/
+                            otherBlockPrelude = null;//at(cond).VarDef(make().Modifiers(FINAL), names().fromString(name), toTypeExpr, dummyInit);
                         } else {
                             blockPrelude = null;
+                            otherBlockPrelude = null;
                         }
                     } else {
                         Name substVarName = naming.aliasName(name);
@@ -254,6 +314,7 @@ public class StatementTransformer extends AbstractTransformer {
                         // Deactivate the above variable substitution
                         naming.removeVariableSubst(origVarName, prevSubst);
                         blockPrelude = null;
+                        otherBlockPrelude = null;
                     }
                     
                     at(cond);
@@ -281,6 +342,7 @@ public class StatementTransformer extends AbstractTransformer {
                         BoxingStrategy.UNBOXED, null);
                 resultVarDecl = null;
                 blockPrelude = null;
+                otherBlockPrelude = null;
             } else {
                 throw new RuntimeException("Not implemented: " + cond.getNodeType());
             }
@@ -294,6 +356,9 @@ public class StatementTransformer extends AbstractTransformer {
         public JCVariableDecl getBlockPrelude() {
             return blockPrelude;
         }
+        public JCVariableDecl getOtherBlockPrelude() {
+            return otherBlockPrelude;
+        }
         public JCExpression getTest() {
             return test;
         }
@@ -304,22 +369,27 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     List<JCStatement> transform(Tree.Assertion ass) {
-        final TransformedCondition transformedCond = new TransformedCondition(ass.getCondition(), null);
         ListBuffer<JCStatement> rval = new ListBuffer<JCStatement>();
-        if (transformedCond.getResultVarDecl() != null) {
-            rval.add(transformedCond.getResultVarDecl());
-        }
-        //Get the custom message
-        String message = buildAssertionMessage(ass);
-        
-        //TODO proper exception type, include expression, etc
-        JCExpression t = make().NewClass(null, null,
-                makeIdent(syms().ceylonExceptionType),
-                List.<JCExpression>of(boxType(make().Literal(message), typeFact().getStringDeclaration().getType()), makeNull()),
-                null);
-        rval.add(make().If(make().Unary(JCTree.NOT, transformedCond.getTest()), make().Throw(t), null));
-        if (transformedCond.getBlockPrelude() != null) {
-            rval.add(transformedCond.getBlockPrelude());
+        java.util.List<Condition> conditions = ass.getConditionList().getConditions();
+        if (conditions.size() == 1) {
+            final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), null);
+            if (transformedCond.getResultVarDecl() != null) {
+                rval.add(transformedCond.getResultVarDecl());
+            }
+            //Get the custom message
+            String message = buildAssertionMessage(ass);
+            
+            //TODO proper exception type, include expression, etc
+            JCExpression t = make().NewClass(null, null,
+                    makeIdent(syms().ceylonExceptionType),
+                    List.<JCExpression>of(boxType(make().Literal(message), typeFact().getStringDeclaration().getType()), makeNull()),
+                    null);
+            rval.add(make().If(make().Unary(JCTree.NOT, transformedCond.getTest()), make().Throw(t), null));
+            if (transformedCond.getBlockPrelude() != null) {
+                rval.add(transformedCond.getBlockPrelude());
+            }
+        } else {
+            
         }
         return rval.toList();
     }
@@ -332,9 +402,8 @@ public class StatementTransformer extends AbstractTransformer {
             sb.append(": ").append(docText);
         }
         sb.append("\n");
-        String location = ass.getUnit().getFilename() + ":" + ass.getCondition().getLocation();
+        String location = ass.getUnit().getFilename() + ":" + ass.getLocation();
         sb.append("\tat ").append(location).append("\n");
-        sb.append("\texpression ").append(getSourceCode(ass.getCondition()));
         String custom = sb.toString();
         return custom;
     }
