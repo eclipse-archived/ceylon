@@ -24,6 +24,12 @@ final class assertionSpecial_ {
         if (!(($a3$2 = v3) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$a3$2).getEmpty())) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:9:10-9:27\n\texpression (nonempty a3 = v3)"), null);
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$a3$2;
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(a3.getSize()));
+        .ceylon.language.Iterable<? extends .ceylon.language.Integer> $v3$3;
+        if (!(($v3$3 = v3) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$v3$3).getEmpty())) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:11:10-11:22\n\texpression (nonempty v3)"), null);
+        .ceylon.language.String $v2$4;
+        if (!(($v2$4 = v2) != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:12:10-12:20\n\texpression (exists v2)"), null);
+        .java.lang.Object $v1$5;
+        if (!(($v1$5 = v1) instanceof .ceylon.language.Integer)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:13:10-13:24\n\texpression (is Integer v1)"), null);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
