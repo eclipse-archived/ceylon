@@ -41,9 +41,12 @@ shared void test() {
     assert(2+2==4);
     Integer[] mseq = { 1, 2, 3 };
     assert(nonempty dseq = mseq);
-    check(dseq.size == 3, "assert nonempty");
+    check(dseq.first == 1, "assert nonempty [1]");
     String|Integer mt = 5;
     assert(is Integer dt=mt);
-    check(dt+1 == 6, "assert is");
+    check(dt+1 == 6, "assert is [1]");
+    assert(is Integer mt);
+    assert(nonempty mseq);
+    assert(exists ms);
     results();
 }
