@@ -33,6 +33,8 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
@@ -71,7 +73,6 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
-import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
 /**
  * This transformer deals with statements only
@@ -143,10 +144,10 @@ public class StatementTransformer extends AbstractTransformer {
         ListBuffer<JCStatement> result = ListBuffer.lb();
         java.util.List<Condition> conditions = stmt.getIfClause().getConditionList().getConditions();
         if (conditions.size() == 1) {
-            final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), thenPart);
-            JCStatement cond1 = make().If(transformedCond.getTest(), transformedCond.getThenBlock(), transform(elsePart));
-            if (transformedCond.getTestVarDecl() != null) {
-                result.append(transformedCond.getTestVarDecl());
+            final Cond transformedCond = transformedCondition(conditions.get(0), thenPart);
+            JCStatement cond1 = make().If(transformedCond.makeTest(), transformedCond.makeThenBlock(), transform(elsePart));
+            if (transformedCond.makeTestVarDecl(false) != null) {
+                result.append(transformedCond.makeTestVarDecl(false));
             }
             result.append(cond1);
             
@@ -157,18 +158,18 @@ public class StatementTransformer extends AbstractTransformer {
             final ArrayList<Tree.Condition> c = new ArrayList<>(conditions);
             Collections.reverse(c);
             
-            List<TransformedCondition> cc = List.<TransformedCondition>nil();
+            List<Cond> cc = List.<Cond>nil();
             final Condition innermost = c.get(0);
-            TransformedCondition transformedCond = new TransformedCondition(innermost, thenPart);
-            final JCBlock thenBlock = transformedCond.getThenBlock();
+            Cond transformedCond = transformedCondition(innermost, thenPart);
+            final JCBlock thenBlock = transformedCond.makeThenBlock();
             List<JCStatement> stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
             for (Tree.Condition condition : c) {
                 if (condition != innermost) {
-                    transformedCond = new TransformedCondition(condition, null);
+                    transformedCond = transformedCondition(condition, null);
                 }
                 cc = cc.append(transformedCond);
-                if (transformedCond.getTestVarDecl() != null) {
-                    varDecls.append(transformedCond.getTestVarDecl());
+                if (transformedCond.makeTestVarDecl(true) != null) {
+                    varDecls.append(transformedCond.makeTestVarDecl(true));
                 }
                 JCVariableDecl resultVarDecl = transformedCond.makeResultVarDecl(false);
                 
@@ -178,14 +179,14 @@ public class StatementTransformer extends AbstractTransformer {
                     
                 }
                 List<JCStatement> assignDefault = List.<JCStatement>nil();
-                for (TransformedCondition cx : cc) {
+                for (Cond cx : cc) {
                     if (cx.makeResultVarDecl(false) != null) {
                         assignDefault = assignDefault.append(cx.makeResultVarDefaultAssignment());
                     }
                 }
                 
                 stmts = List.<JCStatement>of(make().If(
-                        transformedCond.getTest(), 
+                        transformedCond.makeTest(), 
                         make().Block(0, stmts), 
                         assignDefault.isEmpty() ? null : make().Block(0, assignDefault)));
                 // TODO init result var to a default other value (null, 0, false)
@@ -206,10 +207,10 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Block thenPart = stmt.getWhileClause().getBlock();
         java.util.List<Condition> conditions = stmt.getWhileClause().getConditionList().getConditions();
         if (conditions.size() == 1) {
-            final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), thenPart);
-            JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.getTest()), transformedCond.getThenBlock());
-            if (transformedCond.getTestVarDecl() != null) {
-                res = List.<JCStatement> of(transformedCond.getTestVarDecl(), cond1);
+            final Cond transformedCond = transformedCondition(conditions.get(0), thenPart);
+            JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.makeTest()), transformedCond.makeThenBlock());
+            if (transformedCond.makeTestVarDecl(false) != null) {
+                res = List.<JCStatement> of(transformedCond.makeTestVarDecl(false), cond1);
             } else {
                 res = List.<JCStatement> of(cond1);
             }
@@ -222,199 +223,341 @@ public class StatementTransformer extends AbstractTransformer {
         return res;
     }
 
-    class TransformedCondition {
+    interface Cond {
 
-        private final JCVariableDecl testVarDecl;
-        private final String name;
-        private final JCExpression toTypeExpr;
-        private final JCExpression resultVarInit;
-        private final JCExpression test;
-        private final JCBlock thenBlock;
-        private final Condition cond;
-        private final JCExpression resultVarDefaultInit;
-        TransformedCondition(Tree.Condition cond, Tree.Block thenPart) {
-            super();
+        public JCVariableDecl makeResultVarDecl(boolean init);
+        
+        public JCStatement makeResultVarDefaultAssignment();
+
+        public JCStatement makeResultVarAssignment();
+
+        public JCStatement makeTestVarDecl(boolean init);
+
+        public JCExpression makeTest();
+        
+        public JCBlock makeThenBlock();
+    }
+    
+    abstract class SpecialFormCond<C extends Tree.Condition> implements Cond {
+        protected final C cond;
+        protected final Tree.Block thenPart;
+        protected final String name;
+        protected final ProducedType toType;
+        protected final Expression specifierExpr;
+        protected final Naming.SyntheticName tmpVarName;
+        protected final Tree.Variable variable;
+        SpecialFormCond(
+                C cond,
+                Tree.Block thenPart, 
+                String name, 
+                ProducedType toType, 
+                Expression specifierExpr, 
+                Naming.SyntheticName tmpVarName, Tree.Variable variable) {
             this.cond = cond;
-            if ((cond instanceof Tree.IsCondition) || (cond instanceof Tree.NonemptyCondition) || (cond instanceof Tree.ExistsCondition)) {
-                ProducedType toType;
-                Expression specifierExpr;
-                boolean omit = false;
-                if (cond instanceof Tree.IsCondition) {
-                    Tree.IsCondition isdecl = (Tree.IsCondition) cond;
-                    name = isdecl.getVariable().getIdentifier().getText();
-                    // use the type of the variable, which is more precise than the type we test for
-                    toType = isdecl.getVariable().getType().getTypeModel();
-                    specifierExpr = isdecl.getVariable().getSpecifierExpression().getExpression();
-                    omit = isdecl.getVariable().getType() instanceof Tree.SyntheticVariable;
-                } else if (cond instanceof Tree.NonemptyCondition) {
-                    Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition) cond;
-                    name = nonempty.getVariable().getIdentifier().getText();
-                    toType = nonempty.getVariable().getType().getTypeModel();
-                    specifierExpr = nonempty.getVariable().getSpecifierExpression().getExpression();
-                    omit = nonempty.getVariable().getType() instanceof Tree.SyntheticVariable;
-                } else {
-                    Tree.ExistsCondition exists = (Tree.ExistsCondition) cond;
-                    name = exists.getVariable().getIdentifier().getText();
-                    toType = simplifyType(exists.getVariable().getType().getTypeModel());
-                    specifierExpr = exists.getVariable().getSpecifierExpression().getExpression();
-                    omit = exists.getVariable().getType() instanceof Tree.SyntheticVariable;
-                }
-                
-                // no need to cast for erasure here
-                JCExpression expr = expressionGen().transformExpression(specifierExpr);
-                
-                // IsCondition with Nothing as ProducedType transformed to " == null" 
-                at(cond);
-                if (cond instanceof Tree.IsCondition && isNothing(toType)) {
-                    toTypeExpr = null;
-                    test = make().Binary(JCTree.EQ, expr, makeNull());
-                    testVarDecl = null;
-                    thenBlock = transform(thenPart);
-                    resultVarInit = null;
-                    resultVarDefaultInit = null;
-                } else {
-                    toTypeExpr = makeJavaType(toType);
+            this.thenPart = thenPart;
+            this.name = name;
+            this.toType = toType;
+            this.specifierExpr = specifierExpr;
+            this.tmpVarName = tmpVarName;
+            this.variable = variable;
+        }
         
-                    Naming.SyntheticName tmpVarName = naming.alias(name);
+        protected final boolean omit() {
+            return isNothing(toType) 
+                    || thenPart != null 
+                    || variable.getType() instanceof Tree.SyntheticVariable;
+        }
         
-                    ProducedType tmpVarType = specifierExpr.getTypeModel();
-                    JCExpression tmpVarTypeExpr;
-                    // Want raw type for instanceof since it can't be used with generic types
-                    JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
-
-                    // Substitute variable with the correct type to use in the rest of the code block
-                    final JCExpression tmpVarExpr;
-                    final JCExpression tmpVarDefaultInit;
-                    if (cond instanceof Tree.ExistsCondition) {
-                        tmpVarExpr = unboxType(tmpVarName.makeIdent(), toType);
-                        tmpVarTypeExpr = makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
-                        tmpVarDefaultInit = makeLong(0);
-                    } else if(cond instanceof Tree.IsCondition){
-                        JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
-                        if(canUnbox(toType)) {
-                            tmpVarExpr = unboxType(castedExpr, toType);
-                            tmpVarDefaultInit = makeLong(0);
-                        } else {
-                            tmpVarExpr = castedExpr;
-                            tmpVarDefaultInit = makeNull();
-                        }
-                        tmpVarTypeExpr = make().Type(syms().objectType);
-                    } else {
-                        tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarName.makeIdent());
-                        tmpVarTypeExpr = makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
-                        tmpVarDefaultInit = makeNull();
-                    }
-                    
-                    // Temporary variable holding the result of the expression/variable to test
-                    testVarDecl = makeVar(tmpVarName, tmpVarTypeExpr, makeNull());
-
-                    if (thenPart == null) {
-                        thenBlock = transform(thenPart);
-                        // The variable holding the result for the code inside the code block
-                        if (!omit) {
-                            resultVarInit = tmpVarExpr;
-                            resultVarDefaultInit = tmpVarDefaultInit;
-                        } else {
-                            resultVarInit = null;
-                            resultVarDefaultInit = null;
-                        }
-                    } else {
-                        Name substVarName = naming.aliasName(name);
-                        // Prepare for variable substitution in the following code block
-                        final String origVarName = name;
-                        String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
-                        List<JCStatement> blockStmts = transformBlock(thenPart);
-                        // The variable holding the result for the code inside the code block
-                        blockStmts = blockStmts.prepend(at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr));
-                        thenBlock = at(cond).Block(0, blockStmts);
-                        // Deactivate the above variable substitution
-                        naming.removeVariableSubst(origVarName, prevSubst);
-                        resultVarInit = null;
-                        resultVarDefaultInit = null;
-                    }
-                    
-                    at(cond);
-                    // Assign the expression to test to the temporary variable
-                    JCExpression firstTimeTestExpr = make().Assign(tmpVarName.makeIdent(), expr);
-                    
-                    // Test on the tmpVar in the following condition
-                    if (cond instanceof Tree.ExistsCondition) {
-                        test = make().Binary(JCTree.NE, firstTimeTestExpr, makeNull());                
-                    } else if (cond instanceof Tree.NonemptyCondition){
-                        test = makeNonEmptyTest(firstTimeTestExpr, tmpVarName);
-                    } else {
-                        // is
-                        test = makeTypeTest(firstTimeTestExpr, tmpVarName,
-                                // only test the types we're testing for, not the type of
-                                // the variable (which can be more precise)
-                                ((Tree.IsCondition)cond).getType().getTypeModel());
-                    }
-                }
-            } else if (cond instanceof Tree.BooleanCondition) {
-                name = null;
-                toTypeExpr = null;
-                thenBlock = transform(thenPart);
-                Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
-                // booleans can't be erased
-                test = expressionGen().transformExpression(booleanCondition.getExpression(), 
-                        BoxingStrategy.UNBOXED, null);
-                testVarDecl = null;
-                resultVarInit = null;
-                resultVarDefaultInit = null;
-            } else {
-                throw new RuntimeException("Not implemented: " + cond.getNodeType());
-            }
-            
-            at(cond);   
-
+        protected JCExpression makeTypeExpr() {
+            return makeJavaType(toType);
         }
-        public JCVariableDecl getTestVarDecl() {
-            return testVarDecl;
-        }
-        private JCExpression getResultVarInit() {
-            return resultVarInit;
-        }
-        private JCExpression getResultVarDefaultInit() {
-            return resultVarDefaultInit;
-        }
-        private JCExpression makeResultVarName() {
-            return makeUnquotedIdent(name);
-        }
+        
         /** 
          * Generates an assigment of the result var to it's 'refined' value
          */
-        public JCStatement makeResultVarAssignment() {
-            return make().Exec(make().Assign(makeResultVarName(), getResultVarInit()));   
+        @Override
+        public final JCStatement makeResultVarAssignment() {
+            return make().Exec(make().Assign(makeResultVarName(), makeResultExpr()));   
         }
+
         /** 
          * Generates an assigment of the result var to an appropriate 
          * default value (which is only used to satisfy Java's definite 
          * assignment analysis)
          */
-        public JCStatement makeResultVarDefaultAssignment() {
-            return make().Exec(make().Assign(makeResultVarName(), getResultVarDefaultInit()));   
-        }
-        public JCVariableDecl makeResultVarDecl(boolean init) {
-            return resultVarInit == null ? null : at(cond).VarDef(make().Modifiers(FINAL), 
-                    names().fromString(name), 
-                    toTypeExpr, init ? getResultVarInit() : null);
-        }
-        public JCExpression getTest() {
-            return test;
-        }
-        public JCBlock getThenBlock() {
-            return thenBlock;
+        @Override
+        public final JCStatement makeResultVarDefaultAssignment() {
+            at(cond);
+            return make().Exec(make().Assign(makeResultVarName(), makeDefaultExpr()));   
         }
         
+        protected abstract JCExpression makeDefaultExpr();
+
+        protected final JCExpression makeResultVarName() {
+            at(cond);
+            return makeUnquotedIdent(name);
+        }
+        
+        @Override
+        public JCBlock makeThenBlock() {
+            at(cond);
+            if (thenPart == null) {
+                return transform(thenPart);   
+            }
+            Name substVarName = naming.aliasName(name);
+            // Prepare for variable substitution in the following code block
+            final String origVarName = name;
+            String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
+            List<JCStatement> blockStmts = transformBlock(thenPart);
+            // The variable holding the result for the code inside the code block
+            blockStmts = blockStmts.prepend(at(cond).VarDef(make().Modifiers(FINAL), substVarName, makeTypeExpr(), makeResultExpr()));
+            JCBlock thenBlock = at(cond).Block(0, blockStmts);
+            // Deactivate the above variable substitution
+            naming.removeVariableSubst(origVarName, prevSubst);
+            return thenBlock;
+        }
+
+        protected abstract JCExpression makeResultExpr();
+        
+        @Override
+        public JCStatement makeTestVarDecl(boolean init) {
+            // Temporary variable holding the result of the expression/variable to test
+            return makeVar(tmpVarName, makeResultType(), init ? makeNull() : null);
+        }
+
+        protected abstract JCExpression makeResultType();
+        
+        @Override
+        public final JCVariableDecl makeResultVarDecl(boolean init) {
+            if (omit()) {
+                return null;
+            }
+            at(cond);
+            return at(cond).VarDef(make().Modifiers(FINAL), 
+                    names().fromString(name), 
+                    makeTypeExpr(), init ? makeResultExpr() : null);
+        }
+    }
+    
+    class IsCond extends SpecialFormCond<Tree.IsCondition> {
+        
+        IsCond(Tree.IsCondition isdecl, Tree.Block thenPart) {
+            super(isdecl, thenPart, 
+                    isdecl.getVariable().getIdentifier().getText(),
+                    // use the type of the variable, which is more precise than the type we test for
+                    isdecl.getVariable().getType().getTypeModel(), 
+                    isdecl.getVariable().getSpecifierExpression().getExpression(),
+                    isNothing(isdecl.getVariable().getType().getTypeModel()) ? null 
+                            : naming.alias(isdecl.getVariable().getIdentifier().getText()),
+                    isdecl.getVariable());
+        }
+        
+        protected JCExpression makeTypeExpr() {
+            return isNothing(toType) ? null : super.makeTypeExpr();
+        }
+        
+        @Override
+        public JCExpression makeTest() {
+         // no need to cast for erasure here
+            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            at(cond);
+            if (isNothing(toType)) {
+                return make().Binary(JCTree.EQ, expr, makeNull());
+            } else {
+                // Assign the expression to test to the temporary variable
+                JCExpression firstTimeTestExpr = make().Assign(tmpVarName.makeIdent(), expr);
+                
+                // Test on the tmpVar in the following condition
+                return makeTypeTest(firstTimeTestExpr, tmpVarName,
+                        // only test the types we're testing for, not the type of
+                        // the variable (which can be more precise)
+                        cond.getType().getTypeModel());
+            }
+        }
+        
+        @Override
+        protected JCExpression makeResultType() {
+            at(cond);
+            return make().Type(syms().objectType);
+        }
+        
+        @Override
+        protected JCExpression makeDefaultExpr() {
+            at(cond);
+            return canUnbox(toType) ? makeLong(0) : makeNull();
+        }
+        
+        @Override
+        protected JCExpression makeResultExpr() {
+            at(cond);
+            // Want raw type for instanceof since it can't be used with generic types
+            JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
+            // Substitute variable with the correct type to use in the rest of the code block
+            JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+            if (canUnbox(toType)) {
+                return unboxType(castedExpr, toType);
+            } 
+            return castedExpr;
+        }
+        
+        @Override
+        public JCBlock makeThenBlock() {
+            if (isNothing(toType)) {
+                return transform(thenPart);   
+            }
+            return super.makeThenBlock();
+        }
+        
+        @Override
+        public JCStatement makeTestVarDecl(boolean init) {
+            if (isNothing(toType)) {
+                return null;
+            }
+            return super.makeTestVarDecl(init);
+        }
+    }
+    
+    class ExistsCond extends SpecialFormCond<Tree.ExistsCondition> {
+
+        public ExistsCond(Tree.ExistsCondition exists, Tree.Block thenPart) {
+            super(exists, thenPart, exists.getVariable().getIdentifier().getText(), 
+                    simplifyType(exists.getVariable().getType().getTypeModel()),
+                    exists.getVariable().getSpecifierExpression().getExpression(), 
+                    naming.alias(exists.getVariable().getIdentifier().getText()),
+                    exists.getVariable());    
+        }
+        
+        @Override
+        protected JCExpression makeResultExpr() {
+            return unboxType(tmpVarName.makeIdent(), toType);
+        }
+        
+        @Override
+        protected JCExpression makeResultType() {
+            ProducedType tmpVarType = specifierExpr.getTypeModel();
+            return makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
+        }
+        
+        @Override
+        protected JCExpression makeDefaultExpr() {
+            return makeLong(0);
+        }
+
+        @Override
+        public JCExpression makeTest() {
+            // no need to cast for erasure here
+            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            at(cond);
+            // Assign the expression to test to the temporary variable
+            JCExpression firstTimeTestExpr = make().Assign(tmpVarName.makeIdent(), expr);
+            // Test on the tmpVar in the following condition
+            return make().Binary(JCTree.NE, firstTimeTestExpr, makeNull());
+        }
+    }
+    
+    class NonemptyCond extends SpecialFormCond<Tree.NonemptyCondition> {
+
+        public NonemptyCond(Tree.NonemptyCondition nonempty, Tree.Block thenPart) {
+            super(nonempty, thenPart, 
+                    nonempty.getVariable().getIdentifier().getText(), 
+                    nonempty.getVariable().getType().getTypeModel(), 
+                    nonempty.getVariable().getSpecifierExpression().getExpression(),
+                    naming.alias(nonempty.getVariable().getIdentifier().getText()),
+                    nonempty.getVariable());
+        }
+        
+        @Override
+        protected JCExpression makeDefaultExpr() {
+            return makeNull();
+        }
+        
+        @Override
+        protected JCExpression makeResultExpr() {
+            return make().TypeCast(makeTypeExpr(), tmpVarName.makeIdent());
+        }
+        
+        @Override
+        protected JCExpression makeResultType() {
+            ProducedType tmpVarType = specifierExpr.getTypeModel();
+            return makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
+        }
+
+        @Override
+        public JCExpression makeTest() {
+            // no need to cast for erasure here
+            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            at(cond);
+            // Assign the expression to test to the temporary variable
+            JCExpression firstTimeTestExpr = make().Assign(tmpVarName.makeIdent(), expr);
+            // Test on the tmpVar in the following condition
+            return makeNonEmptyTest(firstTimeTestExpr, tmpVarName);
+        }
+    }
+    
+    class BooleanCond implements Cond {
+        private final BooleanCondition cond;
+        private final Block thenPart;
+        
+        public BooleanCond(Tree.BooleanCondition booleanCondition, Tree.Block thenPart) {
+            super();
+            this.cond = booleanCondition;
+            this.thenPart = thenPart;
+        }
+        
+        @Override
+        public JCBlock makeThenBlock() {
+            return transform(thenPart);
+        }
+
+        @Override
+        public JCStatement makeResultVarDefaultAssignment() {
+            return null;
+        }
+
+        @Override
+        public JCStatement makeResultVarAssignment() {
+            return null;
+        }
+
+        @Override
+        public JCVariableDecl makeResultVarDecl(boolean init) {
+            return null;
+        }
+
+        @Override
+        public JCStatement makeTestVarDecl(boolean init) {
+            return null;
+        }
+
+        @Override
+        public JCExpression makeTest() {
+            at(cond);
+            // booleans can't be erased
+            return expressionGen().transformExpression(cond.getExpression(), 
+                    BoxingStrategy.UNBOXED, null);
+        }
+    }
+    
+    Cond transformedCondition(Tree.Condition cond, Tree.Block thenPart) {
+        if (cond instanceof Tree.IsCondition) {
+            return new IsCond((Tree.IsCondition)cond, thenPart);
+        } else if (cond instanceof Tree.ExistsCondition) {
+            return new ExistsCond((Tree.ExistsCondition)cond, thenPart);
+        } else if (cond instanceof Tree.NonemptyCondition) {
+            return new NonemptyCond((Tree.NonemptyCondition)cond, thenPart);
+        } else if (cond instanceof Tree.BooleanCondition) {
+            return new BooleanCond((Tree.BooleanCondition)cond, thenPart);
+        }
+        throw new RuntimeException();
     }
     
     List<JCStatement> transform(Tree.Assertion ass) {
         ListBuffer<JCStatement> rval = new ListBuffer<JCStatement>();
         java.util.List<Condition> conditions = ass.getConditionList().getConditions();
         if (conditions.size() == 1) {
-            final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), null);
-            if (transformedCond.getTestVarDecl() != null) {
-                rval.add(transformedCond.getTestVarDecl());
+            final Cond transformedCond = transformedCondition(conditions.get(0), null);
+            if (transformedCond.makeTestVarDecl(false) != null) {
+                rval.add(transformedCond.makeTestVarDecl(false));
             }
             //Get the custom message
             String message = buildAssertionMessage(ass);
@@ -424,7 +567,7 @@ public class StatementTransformer extends AbstractTransformer {
                     makeIdent(syms().ceylonExceptionType),
                     List.<JCExpression>of(boxType(make().Literal(message), typeFact().getStringDeclaration().getType()), makeNull()),
                     null);
-            rval.add(make().If(make().Unary(JCTree.NOT, transformedCond.getTest()), make().Throw(t), null));
+            rval.add(make().If(make().Unary(JCTree.NOT, transformedCond.makeTest()), make().Throw(t), null));
             if (transformedCond.makeResultVarDecl(true) != null) {
                 rval.add(transformedCond.makeResultVarDecl(true));
             }
