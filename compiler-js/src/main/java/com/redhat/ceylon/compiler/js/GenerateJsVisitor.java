@@ -2540,6 +2540,12 @@ public class GenerateJsVisitor extends Visitor
        });
    }
 
+   //Don't know if we'll ever see this...
+   @Override public void visit(ConditionList that) {
+       System.out.println("ZOMG condidion list in the wild! " + that.getLocation() + " of " + that.getUnit().getFilename());
+       super.visit(that);
+   }
+
    @Override public void visit(BooleanCondition that) {
        int boxType = boxStart(that.getExpression().getTerm());
        super.visit(that);
@@ -3007,17 +3013,12 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         endLine();
-        Condition cond = that.getCondition();
         StringBuilder sb = new StringBuilder(custom);//.append(": ");
-        if (cond instanceof ExistsOrNonemptyCondition || cond instanceof IsCondition) {
-            conds.specialConditionAndBlock(cond, null, "if (!(");
-        } else if (cond instanceof BooleanCondition) {
-            out("if (!(");
-            cond.visit(this);
-        }
+        conds.specialConditionsAndBlock(that.getConditionList(), null, "if (!");
         //sb.append(cond.getMainToken().getInputStream().substring(cond.getMainToken().getChannel(), cond.getMainEndToken().getChannel()));
-        sb.append(" at ").append(that.getUnit().getFilename()).append(" (").append(cond.getLocation()).append(")");
-        out(")) { throw ", clAlias, ".Exception('", sb.toString(), "'); }");
+        sb.append(" at ").append(that.getUnit().getFilename()).append(" (").append(
+                that.getConditionList().getLocation()).append(")");
+        out(") { throw ", clAlias, ".Exception('", sb.toString(), "'); }");
         endLine();
     }
 
