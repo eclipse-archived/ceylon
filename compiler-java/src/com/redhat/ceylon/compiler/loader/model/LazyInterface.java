@@ -51,7 +51,9 @@ public class LazyInterface extends Interface implements LazyContainer {
     private boolean isCeylon;
     
     private boolean isLoaded = false;
+    private boolean isLoaded2 = false;
     private boolean isTypeParamsLoaded = false;
+    private boolean isTypeParamsLoaded2 = false;
 
     public LazyInterface(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
@@ -75,20 +77,26 @@ public class LazyInterface extends Interface implements LazyContainer {
     }
     
     private void load() {
-        synchronized(completer){
-            loadTypeParams();
-            if(!isLoaded){
-                isLoaded = true;
-                completer.complete(this);
+        if(!isLoaded2){
+            synchronized(completer){
+                loadTypeParams();
+                if(!isLoaded){
+                    isLoaded = true;
+                    completer.complete(this);
+                    isLoaded2 = true;
+                }
             }
         }
     }
 
     private void loadTypeParams() {
-        synchronized(completer){
-            if(!isTypeParamsLoaded){
-                isTypeParamsLoaded = true;
-                completer.completeTypeParameters(this);
+        if(!isTypeParamsLoaded2){
+            synchronized(completer){
+                if(!isTypeParamsLoaded){
+                    isTypeParamsLoaded = true;
+                    completer.completeTypeParameters(this);
+                    isTypeParamsLoaded2 = true;
+                }
             }
         }
     }

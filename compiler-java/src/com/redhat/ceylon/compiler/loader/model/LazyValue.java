@@ -49,7 +49,9 @@ public class LazyValue extends Value implements LazyElement {
     public ClassMirror classMirror;
     private ModelCompleter completer;
     private String realName;
+    
     private boolean isLoaded = false;
+    private boolean isLoaded2 = false;
 
     public LazyValue(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
@@ -63,10 +65,13 @@ public class LazyValue extends Value implements LazyElement {
     }
 
     private void load() {
-        synchronized(completer){
-            if(!isLoaded){
-                isLoaded = true;
-                completer.complete(this);
+        if(!isLoaded2){
+            synchronized(completer){
+                if(!isLoaded){
+                    isLoaded = true;
+                    completer.complete(this);
+                    isLoaded2 = true;
+                }
             }
         }
     }
