@@ -640,4 +640,40 @@ public class ModelLoaderTest extends CompilerTest {
             }
         }, Arrays.asList("-verbose:loader"));
     }
+
+    @Ignore("This is the single-threaded version of parallelLoader that loads the JDK entirely to benchmark the model loader")
+    @Test
+    public void jdkModelLoaderSpeedTest(){
+        // whatever test, doesn't matter
+        verifyClassLoading("ParameterNames.ceylon", new RunnableTest(){
+            @Override
+            public void test(ModelLoader loader) {
+                // get java.lang.Integer
+                Declaration klass = loader.getDeclaration("java.lang.Integer", DeclarationType.TYPE);
+                Assert.assertNotNull(klass);
+                // get its package java.lang
+                Scope container = klass.getContainer();
+                Assert.assertTrue(container instanceof Package);
+                Package pkg = (Package)container;
+                // get its module
+                final Module mod = pkg.getModule();
+                Assert.assertNotNull(mod);
+
+                // walk every jdk package
+                for(String pkgName : JDKPackageList.jdkPackages){
+                    Package p = mod.getDirectPackage(pkgName);
+                    Assert.assertNotNull(p);
+                    for(Declaration decl : p.getMembers()){
+                        // that causes model loading
+                        decl.getQualifiedNameString();
+                    }
+                }
+                // [Model loader: 4488(loaded)/4945(total) declarations] is what we expect if it works out
+                // now print the stats
+                if(loader instanceof AbstractModelLoader){
+                    ((AbstractModelLoader)loader).printStats();
+                }
+            }
+        }, Arrays.asList("-verbose:loader"));
+    }
 }
