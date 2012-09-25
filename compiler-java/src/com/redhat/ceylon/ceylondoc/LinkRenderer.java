@@ -264,9 +264,9 @@ public class LinkRenderer {
                 break;
             }
         }
-    
-        // we can't link to parameters yet
-        if (currentDecl != null && currentDecl instanceof Value == false) {
+        // we can't link to parameters yet, unless they're toplevel
+        if (currentDecl != null && 
+                !isParameter(currentDecl)) {
             if (currentDecl instanceof ClassOrInterface) {
                 processClassOrInterface((ClassOrInterface) currentDecl);
             } else {
@@ -275,6 +275,13 @@ public class LinkRenderer {
         } else {
             buffer.append(declLink);
         }
+    }
+
+    private boolean isParameter(Declaration currentDecl) {
+        if(currentDecl instanceof Value == false)
+            return false;
+        Value value = (Value)currentDecl;
+        return !value.isToplevel() && !value.isClassOrInterfaceMember();
     }
 
     private Declaration resolveDeclaration(Scope scope, String declName, boolean isNested) {
