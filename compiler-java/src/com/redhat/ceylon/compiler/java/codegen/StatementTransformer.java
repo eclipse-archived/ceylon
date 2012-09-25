@@ -145,8 +145,8 @@ public class StatementTransformer extends AbstractTransformer {
         if (conditions.size() == 1) {
             final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), thenPart);
             JCStatement cond1 = make().If(transformedCond.getTest(), transformedCond.getThenBlock(), transform(elsePart));
-            if (transformedCond.getResultVarDecl() != null) {
-                result.append(transformedCond.getResultVarDecl());
+            if (transformedCond.getTestVarDecl() != null) {
+                result.append(transformedCond.getTestVarDecl());
             }
             result.append(cond1);
             
@@ -157,6 +157,7 @@ public class StatementTransformer extends AbstractTransformer {
             final ArrayList<Tree.Condition> c = new ArrayList<>(conditions);
             Collections.reverse(c);
             
+            List<TransformedCondition> cc = List.<TransformedCondition>nil();
             final Condition innermost = c.get(0);
             TransformedCondition transformedCond = new TransformedCondition(innermost, thenPart);
             final JCBlock thenBlock = transformedCond.getThenBlock();
@@ -165,15 +166,29 @@ public class StatementTransformer extends AbstractTransformer {
                 if (condition != innermost) {
                     transformedCond = new TransformedCondition(condition, null);
                 }
-                if (transformedCond.getResultVarDecl() != null) {
-                    varDecls.append(transformedCond.getResultVarDecl());
+                cc = cc.append(transformedCond);
+                if (transformedCond.getTestVarDecl() != null) {
+                    varDecls.append(transformedCond.getTestVarDecl());
                 }
-                if (transformedCond.getBlockPrelude() != null) {
-                    stmts = stmts.prepend(transformedCond.getBlockPrelude());
+                JCVariableDecl resultVarDecl = transformedCond.makeResultVarDecl(false);
+                
+                if (resultVarDecl != null) {
+                    varDecls.append(resultVarDecl);
+                    stmts = stmts.prepend(transformedCond.makeResultVarAssignment());
+                    
                 }
+                List<JCStatement> assignDefault = List.<JCStatement>nil();
+                for (TransformedCondition cx : cc) {
+                    if (cx.makeResultVarDecl(false) != null) {
+                        assignDefault = assignDefault.append(cx.makeResultVarDefaultAssignment());
+                    }
+                }
+                
                 stmts = List.<JCStatement>of(make().If(
-                        transformedCond.getTest(), make().Block(0, stmts), 
-                        null));//transformedCond.getOtherBlockPrelude()));
+                        transformedCond.getTest(), 
+                        make().Block(0, stmts), 
+                        assignDefault.isEmpty() ? null : make().Block(0, assignDefault)));
+                // TODO init result var to a default other value (null, 0, false)
             }
             result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
             result.appendList(varDecls);
@@ -193,8 +208,8 @@ public class StatementTransformer extends AbstractTransformer {
         if (conditions.size() == 1) {
             final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), thenPart);
             JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.getTest()), transformedCond.getThenBlock());
-            if (transformedCond.getResultVarDecl() != null) {
-                res = List.<JCStatement> of(transformedCond.getResultVarDecl(), cond1);
+            if (transformedCond.getTestVarDecl() != null) {
+                res = List.<JCStatement> of(transformedCond.getTestVarDecl(), cond1);
             } else {
                 res = List.<JCStatement> of(cond1);
             }
@@ -209,15 +224,18 @@ public class StatementTransformer extends AbstractTransformer {
 
     class TransformedCondition {
 
-        private final JCVariableDecl resultVarDecl;
-        private final JCVariableDecl blockPrelude;
-        private final JCVariableDecl otherBlockPrelude;
+        private final JCVariableDecl testVarDecl;
+        private final String name;
+        private final JCExpression toTypeExpr;
+        private final JCExpression resultVarInit;
         private final JCExpression test;
         private final JCBlock thenBlock;
+        private final Condition cond;
+        private final JCExpression resultVarDefaultInit;
         TransformedCondition(Tree.Condition cond, Tree.Block thenPart) {
             super();
+            this.cond = cond;
             if ((cond instanceof Tree.IsCondition) || (cond instanceof Tree.NonemptyCondition) || (cond instanceof Tree.ExistsCondition)) {
-                String name;
                 ProducedType toType;
                 Expression specifierExpr;
                 boolean omit = false;
@@ -248,13 +266,14 @@ public class StatementTransformer extends AbstractTransformer {
                 // IsCondition with Nothing as ProducedType transformed to " == null" 
                 at(cond);
                 if (cond instanceof Tree.IsCondition && isNothing(toType)) {
+                    toTypeExpr = null;
                     test = make().Binary(JCTree.EQ, expr, makeNull());
-                    resultVarDecl = null;
+                    testVarDecl = null;
                     thenBlock = transform(thenPart);
-                    blockPrelude = null;
-                    otherBlockPrelude = null;
+                    resultVarInit = null;
+                    resultVarDefaultInit = null;
                 } else {
-                    JCExpression toTypeExpr = makeJavaType(toType);
+                    toTypeExpr = makeJavaType(toType);
         
                     Naming.SyntheticName tmpVarName = naming.alias(name);
         
@@ -264,43 +283,40 @@ public class StatementTransformer extends AbstractTransformer {
                     JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
 
                     // Substitute variable with the correct type to use in the rest of the code block
-                    JCExpression tmpVarExpr = tmpVarName.makeIdent();
-                    JCExpression tmpVarInit = makeNull();
+                    final JCExpression tmpVarExpr;
+                    final JCExpression tmpVarDefaultInit;
                     if (cond instanceof Tree.ExistsCondition) {
-                        tmpVarExpr = unboxType(tmpVarExpr, toType);
+                        tmpVarExpr = unboxType(tmpVarName.makeIdent(), toType);
                         tmpVarTypeExpr = makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
+                        tmpVarDefaultInit = makeLong(0);
                     } else if(cond instanceof Tree.IsCondition){
-                        JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, tmpVarExpr);
-                        if(canUnbox(toType))
+                        JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+                        if(canUnbox(toType)) {
                             tmpVarExpr = unboxType(castedExpr, toType);
-                        else
+                            tmpVarDefaultInit = makeLong(0);
+                        } else {
                             tmpVarExpr = castedExpr;
+                            tmpVarDefaultInit = makeNull();
+                        }
                         tmpVarTypeExpr = make().Type(syms().objectType);
                     } else {
-                        tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarExpr);
+                        tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarName.makeIdent());
                         tmpVarTypeExpr = makeJavaType(tmpVarType, JT_NO_PRIMITIVES);
+                        tmpVarDefaultInit = makeNull();
                     }
                     
                     // Temporary variable holding the result of the expression/variable to test
-                    resultVarDecl = makeVar(tmpVarName, tmpVarTypeExpr, tmpVarInit);
+                    testVarDecl = makeVar(tmpVarName, tmpVarTypeExpr, makeNull());
 
                     if (thenPart == null) {
                         thenBlock = transform(thenPart);
                         // The variable holding the result for the code inside the code block
                         if (!omit) {
-                            blockPrelude = at(cond).VarDef(make().Modifiers(FINAL), 
-                                    names().fromString(name), 
-                                    toTypeExpr, tmpVarExpr);
-                            /*JCExpression dummyInit = 
-                                isCeylonBoolean(toType) ? makeBoolean(false) :
-                                    isCeylonInteger(toType) ? makeLong(0) :
-                                    isCeylonFloat(toType) ? make().Literal(Type.DOUBLE, 0.0) :
-                                    isCeylonCharacter(toType) ? make().Literal(Type.CHAR, 0) : 
-                                    makeNull();*/
-                            otherBlockPrelude = null;//at(cond).VarDef(make().Modifiers(FINAL), names().fromString(name), toTypeExpr, dummyInit);
+                            resultVarInit = tmpVarExpr;
+                            resultVarDefaultInit = tmpVarDefaultInit;
                         } else {
-                            blockPrelude = null;
-                            otherBlockPrelude = null;
+                            resultVarInit = null;
+                            resultVarDefaultInit = null;
                         }
                     } else {
                         Name substVarName = naming.aliasName(name);
@@ -313,8 +329,8 @@ public class StatementTransformer extends AbstractTransformer {
                         thenBlock = at(cond).Block(0, blockStmts);
                         // Deactivate the above variable substitution
                         naming.removeVariableSubst(origVarName, prevSubst);
-                        blockPrelude = null;
-                        otherBlockPrelude = null;
+                        resultVarInit = null;
+                        resultVarDefaultInit = null;
                     }
                     
                     at(cond);
@@ -335,14 +351,16 @@ public class StatementTransformer extends AbstractTransformer {
                     }
                 }
             } else if (cond instanceof Tree.BooleanCondition) {
+                name = null;
+                toTypeExpr = null;
                 thenBlock = transform(thenPart);
                 Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
                 // booleans can't be erased
                 test = expressionGen().transformExpression(booleanCondition.getExpression(), 
                         BoxingStrategy.UNBOXED, null);
-                resultVarDecl = null;
-                blockPrelude = null;
-                otherBlockPrelude = null;
+                testVarDecl = null;
+                resultVarInit = null;
+                resultVarDefaultInit = null;
             } else {
                 throw new RuntimeException("Not implemented: " + cond.getNodeType());
             }
@@ -350,14 +368,36 @@ public class StatementTransformer extends AbstractTransformer {
             at(cond);   
 
         }
-        public JCVariableDecl getResultVarDecl() {
-            return resultVarDecl;
+        public JCVariableDecl getTestVarDecl() {
+            return testVarDecl;
         }
-        public JCVariableDecl getBlockPrelude() {
-            return blockPrelude;
+        private JCExpression getResultVarInit() {
+            return resultVarInit;
         }
-        public JCVariableDecl getOtherBlockPrelude() {
-            return otherBlockPrelude;
+        private JCExpression getResultVarDefaultInit() {
+            return resultVarDefaultInit;
+        }
+        private JCExpression makeResultVarName() {
+            return makeUnquotedIdent(name);
+        }
+        /** 
+         * Generates an assigment of the result var to it's 'refined' value
+         */
+        public JCStatement makeResultVarAssignment() {
+            return make().Exec(make().Assign(makeResultVarName(), getResultVarInit()));   
+        }
+        /** 
+         * Generates an assigment of the result var to an appropriate 
+         * default value (which is only used to satisfy Java's definite 
+         * assignment analysis)
+         */
+        public JCStatement makeResultVarDefaultAssignment() {
+            return make().Exec(make().Assign(makeResultVarName(), getResultVarDefaultInit()));   
+        }
+        public JCVariableDecl makeResultVarDecl(boolean init) {
+            return resultVarInit == null ? null : at(cond).VarDef(make().Modifiers(FINAL), 
+                    names().fromString(name), 
+                    toTypeExpr, init ? getResultVarInit() : null);
         }
         public JCExpression getTest() {
             return test;
@@ -373,8 +413,8 @@ public class StatementTransformer extends AbstractTransformer {
         java.util.List<Condition> conditions = ass.getConditionList().getConditions();
         if (conditions.size() == 1) {
             final TransformedCondition transformedCond = new TransformedCondition(conditions.get(0), null);
-            if (transformedCond.getResultVarDecl() != null) {
-                rval.add(transformedCond.getResultVarDecl());
+            if (transformedCond.getTestVarDecl() != null) {
+                rval.add(transformedCond.getTestVarDecl());
             }
             //Get the custom message
             String message = buildAssertionMessage(ass);
@@ -385,8 +425,8 @@ public class StatementTransformer extends AbstractTransformer {
                     List.<JCExpression>of(boxType(make().Literal(message), typeFact().getStringDeclaration().getType()), makeNull()),
                     null);
             rval.add(make().If(make().Unary(JCTree.NOT, transformedCond.getTest()), make().Throw(t), null));
-            if (transformedCond.getBlockPrelude() != null) {
-                rval.add(transformedCond.getBlockPrelude());
+            if (transformedCond.makeResultVarDecl(true) != null) {
+                rval.add(transformedCond.makeResultVarDecl(true));
             }
         } else {
             
