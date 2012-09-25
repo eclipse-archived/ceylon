@@ -3,13 +3,16 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -118,16 +121,34 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
         if (phase==Phase.REMAINING) {
             String version = getVersionString(that.getVersion());
-            List<String> name = getNameAsList(that.getImportPath());
+            List<String> name;
+            Node node;
+            if (that.getImportPath()!=null) {
+            	name = getNameAsList(that.getImportPath());
+            	node = that.getImportPath();
+            }
+            else if (that.getQuotedLiteral()!=null) {
+            	name = asList(that.getQuotedLiteral().getText()
+            			.replace("'", "").split("\\."));
+            	node = that.getQuotedLiteral();
+            }
+            else {
+            	name = Collections.emptyList();
+            	node = null;
+            }
             if (name.isEmpty()) {
                 that.addError("missing module name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
-                that.getImportPath().addError("default is a reserved module name");
+            	if (that.getImportPath()!=null) {
+            		node.addError("default is a reserved module name");
+            	}
             }
             else {
                 Module importedModule = moduleManager.getOrCreateModule(name,version);
-                that.getImportPath().setModel(importedModule);
+                if (that.getImportPath()!=null) {
+                	that.getImportPath().setModel(importedModule);
+                }
                 if (mainModule != null) {
                     if (importedModule.getVersion() == null) {
                         importedModule.setVersion(version);

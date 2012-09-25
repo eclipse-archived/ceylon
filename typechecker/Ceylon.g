@@ -114,10 +114,15 @@ packageDescriptor returns [PackageDescriptor packageDescriptor]
 importModule returns [ImportModule importModule]
     : IMPORT
       { $importModule = new ImportModule($IMPORT); }
-      packagePath
-      { $importModule.setImportPath($packagePath.importPath); }
-      QUOTED_LITERAL
-      { $importModule.setVersion(new QuotedLiteral($QUOTED_LITERAL)); 
+      ( 
+        q1=QUOTED_LITERAL
+        { $importModule.setQuotedLiteral(new QuotedLiteral($q1)); }
+      |
+        packagePath
+        { $importModule.setImportPath($packagePath.importPath); }
+      )
+      q2=QUOTED_LITERAL
+      { $importModule.setVersion(new QuotedLiteral($q2)); 
         expecting=SEMICOLON; }
       SEMICOLON
       { $importModule.setEndToken($SEMICOLON); 
