@@ -141,16 +141,10 @@ public class StatementTransformer extends AbstractTransformer {
     List<JCStatement> transform(Tree.IfStatement stmt) {
         Tree.Block thenPart = stmt.getIfClause().getBlock();
         Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
-        ListBuffer<JCStatement> result = ListBuffer.lb();
+        
         java.util.List<Condition> conditions = stmt.getIfClause().getConditionList().getConditions();
         if (conditions.size() == 1) {
-            final Cond transformedCond = transformedCondition(conditions.get(0), thenPart);
-            JCStatement cond1 = make().If(transformedCond.makeTest(), transformedCond.makeThenBlock(), transform(elsePart));
-            if (transformedCond.makeTestVarDecl(false) != null) {
-                result.append(transformedCond.makeTestVarDecl(false));
-            }
-            result.append(cond1);
-            
+            return transformSimpleIf(thenPart, elsePart, conditions);
         } else {
             final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
             final SyntheticName ifVar = naming.temp("if");
@@ -158,7 +152,7 @@ public class StatementTransformer extends AbstractTransformer {
             final ArrayList<Tree.Condition> c = new ArrayList<>(conditions);
             Collections.reverse(c);
             
-            List<Cond> cc = List.<Cond>nil();
+            List<Cond> unassignedResultVars = List.<Cond>nil();
             final Condition innermost = c.get(0);
             Cond transformedCond = transformedCondition(innermost, thenPart);
             final JCBlock thenBlock = transformedCond.makeThenBlock();
@@ -167,7 +161,9 @@ public class StatementTransformer extends AbstractTransformer {
                 if (condition != innermost) {
                     transformedCond = transformedCondition(condition, null);
                 }
-                cc = cc.append(transformedCond);
+                if (transformedCond.hasResultDecl()) {
+                    unassignedResultVars = unassignedResultVars.append(transformedCond);
+                }
                 if (transformedCond.makeTestVarDecl(true) != null) {
                     varDecls.append(transformedCond.makeTestVarDecl(true));
                 }
@@ -179,24 +175,33 @@ public class StatementTransformer extends AbstractTransformer {
                     
                 }
                 List<JCStatement> assignDefault = List.<JCStatement>nil();
-                for (Cond cx : cc) {
-                    if (cx.makeResultVarDecl(false) != null) {
-                        assignDefault = assignDefault.append(cx.makeResultVarDefaultAssignment());
-                    }
+                for (Cond unassigned : unassignedResultVars) {
+                    assignDefault = assignDefault.append(unassigned.makeResultVarDefaultAssignment());    
                 }
-                
                 stmts = List.<JCStatement>of(make().If(
                         transformedCond.makeTest(), 
                         make().Block(0, stmts), 
                         assignDefault.isEmpty() ? null : make().Block(0, assignDefault)));
-                // TODO init result var to a default other value (null, 0, false)
             }
+            ListBuffer<JCStatement> result = ListBuffer.lb();
             result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
             result.appendList(varDecls);
             result.appendList(stmts);
             result.append(make().If(ifVar.makeIdent(), thenBlock, transform(elsePart)));
+            return result.toList();
         }
         
+    }
+
+    private List<JCStatement> transformSimpleIf(Tree.Block thenPart, Tree.Block elsePart,
+            java.util.List<Condition> conditions) {
+        ListBuffer<JCStatement> result = ListBuffer.lb();
+        final Cond transformedCond = transformedCondition(conditions.get(0), thenPart);
+        JCStatement cond1 = make().If(transformedCond.makeTest(), transformedCond.makeThenBlock(), transform(elsePart));
+        if (transformedCond.makeTestVarDecl(false) != null) {
+            result.append(transformedCond.makeTestVarDecl(false));
+        }
+        result.append(cond1);
         return result.toList();
     }
 
@@ -227,6 +232,8 @@ public class StatementTransformer extends AbstractTransformer {
 
         public JCVariableDecl makeResultVarDecl(boolean init);
         
+        public boolean hasResultDecl();
+
         public JCStatement makeResultVarDefaultAssignment();
 
         public JCStatement makeResultVarAssignment();
@@ -262,10 +269,11 @@ public class StatementTransformer extends AbstractTransformer {
             this.variable = variable;
         }
         
-        protected final boolean omit() {
-            return isNothing(toType) 
+        @Override
+        public final boolean hasResultDecl() {
+            return !(isNothing(toType) 
                     || thenPart != null 
-                    || variable.getType() instanceof Tree.SyntheticVariable;
+                    || variable.getType() instanceof Tree.SyntheticVariable);
         }
         
         protected JCExpression makeTypeExpr() {
@@ -329,7 +337,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public final JCVariableDecl makeResultVarDecl(boolean init) {
-            if (omit()) {
+            if (!hasResultDecl()) {
                 return null;
             }
             at(cond);
@@ -535,6 +543,11 @@ public class StatementTransformer extends AbstractTransformer {
             // booleans can't be erased
             return expressionGen().transformExpression(cond.getExpression(), 
                     BoxingStrategy.UNBOXED, null);
+        }
+
+        @Override
+        public boolean hasResultDecl() {
+            return false;
         }
     }
     
