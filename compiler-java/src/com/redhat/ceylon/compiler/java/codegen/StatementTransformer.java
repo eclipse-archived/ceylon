@@ -138,6 +138,89 @@ public class StatementTransformer extends AbstractTransformer {
         return childDefs;
     }
 
+    abstract class CondList {
+        protected final Tree.Block thenPart;
+        protected final java.util.List<Condition> conditions;
+        public CondList(java.util.List<Condition> conditions, Tree.Block thenPart) {
+            this.conditions = conditions;
+            this.thenPart = thenPart;
+        }
+        
+        protected List<JCStatement> transformList(java.util.List<Condition> conditions) {
+            Condition condition = conditions.get(0);
+            if (conditions.size() == 1) {
+                return transformInnermost(condition);
+            } else {
+                return transformIntermediate(condition, conditions.subList(1, conditions.size()));
+            }
+        }
+
+        protected abstract List<JCStatement> transformInnermost(Condition condition);
+        
+        protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
+            return transformList(rest);
+        }
+    }
+    
+    class IfCondList extends CondList {
+
+        final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+        final SyntheticName ifVar = naming.temp("if");
+        List<Cond> unassignedResultVars = List.<Cond>nil();
+        private JCBlock thenBlock;
+        
+        public IfCondList(java.util.List<Condition> conditions, Block thenPart) {
+            super(conditions, thenPart);
+        }     
+
+        @Override
+        protected List<JCStatement> transformInnermost(Condition condition) {
+            Cond transformedCond = transformedCondition(condition, thenPart);
+            thenBlock = transformedCond.makeThenBlock();
+            List<JCStatement> stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
+            return transformCommon(transformedCond, stmts);
+        }
+        
+        protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
+            return transformCommon(transformedCondition(condition, null), transformList(rest));
+        }
+        
+        protected List<JCStatement> transformCommon(Cond transformedCond, List<JCStatement> stmts) {
+            if (transformedCond.hasResultDecl()) {
+                unassignedResultVars = unassignedResultVars.append(transformedCond);
+            }
+            if (transformedCond.makeTestVarDecl(true) != null) {
+                varDecls.append(transformedCond.makeTestVarDecl(true));
+            }
+            JCVariableDecl resultVarDecl = transformedCond.makeResultVarDecl(false);
+            
+            if (resultVarDecl != null) {
+                varDecls.append(resultVarDecl);
+                stmts = stmts.prepend(transformedCond.makeResultVarAssignment());
+                
+            }
+            List<JCStatement> assignDefault = List.<JCStatement>nil();
+            for (Cond unassigned : unassignedResultVars) {
+                assignDefault = assignDefault.append(unassigned.makeResultVarDefaultAssignment());    
+            }
+            stmts = List.<JCStatement>of(make().If(
+                    transformedCond.makeTest(), 
+                    make().Block(0, stmts), 
+                    assignDefault.isEmpty() ? null : make().Block(0, assignDefault)));
+            return stmts;
+        }
+        
+        public List<JCStatement> getResult(Tree.Block elsePart) {
+            List<JCStatement> stmts = transformList(conditions);
+            ListBuffer<JCStatement> result = ListBuffer.lb();
+            result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
+            result.appendList(varDecls);
+            result.appendList(stmts);
+            result.append(make().If(ifVar.makeIdent(), thenBlock, StatementTransformer.this.transform(elsePart)));
+            return result.toList();   
+        }
+    }
+    
     List<JCStatement> transform(Tree.IfStatement stmt) {
         Tree.Block thenPart = stmt.getIfClause().getBlock();
         Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
@@ -146,49 +229,7 @@ public class StatementTransformer extends AbstractTransformer {
         if (conditions.size() == 1) {
             return transformSimpleIf(thenPart, elsePart, conditions);
         } else {
-            final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
-            final SyntheticName ifVar = naming.temp("if");
-            
-            final ArrayList<Tree.Condition> c = new ArrayList<>(conditions);
-            Collections.reverse(c);
-            
-            List<Cond> unassignedResultVars = List.<Cond>nil();
-            final Condition innermost = c.get(0);
-            Cond transformedCond = transformedCondition(innermost, thenPart);
-            final JCBlock thenBlock = transformedCond.makeThenBlock();
-            List<JCStatement> stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
-            for (Tree.Condition condition : c) {
-                if (condition != innermost) {
-                    transformedCond = transformedCondition(condition, null);
-                }
-                if (transformedCond.hasResultDecl()) {
-                    unassignedResultVars = unassignedResultVars.append(transformedCond);
-                }
-                if (transformedCond.makeTestVarDecl(true) != null) {
-                    varDecls.append(transformedCond.makeTestVarDecl(true));
-                }
-                JCVariableDecl resultVarDecl = transformedCond.makeResultVarDecl(false);
-                
-                if (resultVarDecl != null) {
-                    varDecls.append(resultVarDecl);
-                    stmts = stmts.prepend(transformedCond.makeResultVarAssignment());
-                    
-                }
-                List<JCStatement> assignDefault = List.<JCStatement>nil();
-                for (Cond unassigned : unassignedResultVars) {
-                    assignDefault = assignDefault.append(unassigned.makeResultVarDefaultAssignment());    
-                }
-                stmts = List.<JCStatement>of(make().If(
-                        transformedCond.makeTest(), 
-                        make().Block(0, stmts), 
-                        assignDefault.isEmpty() ? null : make().Block(0, assignDefault)));
-            }
-            ListBuffer<JCStatement> result = ListBuffer.lb();
-            result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
-            result.appendList(varDecls);
-            result.appendList(stmts);
-            result.append(make().If(ifVar.makeIdent(), thenBlock, transform(elsePart)));
-            return result.toList();
+            return new IfCondList(conditions, thenPart).getResult(elsePart);
         }
         
     }
@@ -220,12 +261,67 @@ public class StatementTransformer extends AbstractTransformer {
                 res = List.<JCStatement> of(cond1);
             }
         } else {
-            // TODO conditionlists
-            res = List.<JCStatement> of(make().Exec(makeErroneous()));
+            List<JCStatement> loopBody = new WhileCondList(conditions, thenPart).getResult();
+            JCStatement cond1 = make().WhileLoop(makeBoolean(true), 
+                    make().Block(0, loopBody));
+            res = List.<JCStatement> of(cond1);
+            
         }
         currentForFailVariable = tempForFailVariable;
         
         return res;
+    }
+    
+    class WhileCondList extends CondList {
+
+        final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+        final SyntheticName ifVar = naming.temp("while");
+        
+        public WhileCondList(java.util.List<Condition> conditions, Block thenPart) {
+            super(conditions, thenPart);
+        }     
+
+        @Override
+        protected List<JCStatement> transformInnermost(Condition condition) {
+            Cond transformedCond = transformedCondition(condition, thenPart);
+            JCBlock thenBlock = transformedCond.makeThenBlock();
+            List<JCStatement> stmts = List.<JCStatement>of(
+                    //make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))), 
+                    thenBlock);
+            return transformCommon(transformedCond, thenBlock.getStatements());
+        }
+        
+        protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
+            return transformCommon(transformedCondition(condition, null), transformList(rest));
+        }
+        
+        protected List<JCStatement> transformCommon(Cond transformedCond, List<JCStatement> stmts) {
+            if (transformedCond.makeTestVarDecl(true) != null) {
+                varDecls.append(transformedCond.makeTestVarDecl(true));
+            }
+            JCVariableDecl resultVarDecl = transformedCond.makeResultVarDecl(false);
+            
+            if (resultVarDecl != null) {
+                varDecls.append(resultVarDecl);
+                stmts = stmts.prepend(transformedCond.makeResultVarAssignment());
+            }
+            
+            stmts = List.<JCStatement>of(make().If(
+                    transformedCond.makeTest(), 
+                    make().Block(0, stmts), 
+                    make().Break(null)));
+            return stmts;
+        }
+        
+        public List<JCStatement> getResult() {
+            List<JCStatement> stmts = transformList(conditions);
+            ListBuffer<JCStatement> result = ListBuffer.lb();
+            result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
+            result.appendList(varDecls);
+            result.appendList(stmts);
+            //result.append(make().If(ifVar.makeIdent(), thenBlock, StatementTransformer.this.transform(elsePart)));
+            return result.toList();   
+        }
     }
 
     interface Cond {
