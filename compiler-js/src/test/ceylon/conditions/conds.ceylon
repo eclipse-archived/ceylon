@@ -34,5 +34,11 @@ shared void test() {
         count++;
     }
     check(count==4, "some conditions were not met: " count " instead of 4");
+    Void zz = 1;
+    assert(is Integer zz2=zz, zz2 > 0);
+    check(zz2==1, "special -> boolean");
+    //and now some comprehensions
+    Sequence<Integer?> seq1 = { 1, 2, 3, null, 4, 5, null, 6, 7, null, 10};
+    check({ for (i in seq1) if (exists i, i%2==0) i*10 }=={20,40,60,100},"comprehension [1]");
     results();
 }
