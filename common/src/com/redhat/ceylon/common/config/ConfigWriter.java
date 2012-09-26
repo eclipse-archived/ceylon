@@ -22,6 +22,28 @@ import java.util.Arrays;
 public class ConfigWriter {
 
     /**
+     * Write the given configuration to the given file. Updating the existing file if
+     * it exists or otherwise creating a new file.
+     */
+    public static void write(CeylonConfig config, File destination) throws IOException {
+        OutputStream out = null;
+        if (destination.isFile()) {
+            write(config, destination, destination);
+        } else {
+            try {
+                out = new FileOutputStream(destination);
+                write(config, out);
+            } finally {
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) { }
+                }
+            }
+        }
+    }
+
+    /**
      * Reads config from the given source file, updating it using the given 
      * configuration and writing in to the destination file. 
      */
@@ -88,23 +110,6 @@ public class ConfigWriter {
         try {
             out = new FileOutputStream(destination);
             write(config, in, out);
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) { }
-            }
-        }
-    }
-
-    /**
-     * Write the given configuration to the given file.
-     */
-    public static void write(CeylonConfig config, File destination) throws IOException {
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream(destination);
-            write(config, out);
         } finally {
             if (out != null) {
                 try {
