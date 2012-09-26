@@ -211,6 +211,7 @@ public class ConfigWriter {
         final CeylonConfig config = orgconfig.copy();
         final Writer writer = new BufferedWriter(new OutputStreamWriter(out, Charset.forName("UTF-8")));
         writeSections(writer, config, out);
+        writer.flush();
     }
 
     private static void writeSections(Writer writer, CeylonConfig config, OutputStream out) throws IOException {
