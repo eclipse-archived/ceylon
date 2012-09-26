@@ -2,6 +2,7 @@ package com.redhat.ceylon.common.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -130,6 +131,31 @@ public class RepositoriesTest {
         Assert.assertTrue(lookup.length == 2);
         assertRepository(lookup[0], "USER", "user", null, null);
         assertRepository(lookup[1], "REMOTE", "http://remote", null, null);
+    }
+    
+    @Test
+    public void testSetRepositories() {
+        CeylonConfig configCopy = testConfig.copy();
+        Repositories testRepos = Repositories.withConfig(configCopy);
+        Map<String, Repository[]> repomap = testRepos.getRepositories();
+        Repository[] reps = { new Repositories.SimpleRepository("", "./mods", null) };
+        repomap.put(Repositories.REPO_TYPE_LOCAL_LOOKUP, reps);
+        testRepos.setRepositories(repomap);
+        Repository[] lookup = testRepos.getLocalLookupRepositories();
+        Assert.assertTrue(lookup.length == 1);
+        assertRepository(lookup[0], "%lookup-1", "./mods", null, null);
+    }
+    
+    @Test
+    public void testSetRepositoriesByType() {
+        CeylonConfig configCopy = testConfig.copy();
+        Repositories testRepos = Repositories.withConfig(configCopy);
+        Repository[] reps = testRepos.getRepositoriesByType(Repositories.REPO_TYPE_LOCAL_LOOKUP);
+        reps = new Repositories.SimpleRepository[] { new Repositories.SimpleRepository("", "./mods", null) };
+        testRepos.setRepositoriesByType(Repositories.REPO_TYPE_LOCAL_LOOKUP, reps);
+        Repository[] lookup = testRepos.getLocalLookupRepositories();
+        Assert.assertTrue(lookup.length == 1);
+        assertRepository(lookup[0], "%lookup-1", "./mods", null, null);
     }
     
     private void assertRepository(Repository repo, String name, String url, String user, String password) {
