@@ -61,6 +61,7 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCatch;
@@ -493,30 +494,34 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     interface Cond {
-
+        
         public JCVariableDecl makeResultVarDecl(boolean init);
         
+        JCExpression makeTest2();
+
         public Tree.Condition getCondition();
         
         public Tree.Variable getVariable();
-
+    
         public boolean hasResultDecl();
-
+    
         public JCStatement makeResultVarDefaultAssignment();
-
+    
         public JCStatement makeResultVarAssignment();
-
+    
         public JCStatement makeTestVarDecl(boolean init);
-
+    
         public JCExpression makeTest();
         
         public JCBlock makeThenBlock();
+
+        public SyntheticName getTestVarName();
     }
     
     abstract class SpecialFormCond<C extends Tree.Condition> implements Cond {
         protected final C cond;
         protected final Tree.Block thenPart;
-        protected final String name;
+        protected final Naming.SyntheticName name;
         protected final ProducedType toType;
         protected final Expression specifierExpr;
         protected final Naming.SyntheticName testVar;
@@ -524,7 +529,7 @@ public class StatementTransformer extends AbstractTransformer {
         SpecialFormCond(
                 C cond,
                 Tree.Block thenPart, 
-                String name, 
+                Naming.SyntheticName name, 
                 ProducedType toType, 
                 Expression specifierExpr, 
                 Naming.SyntheticName tmpVarName, Tree.Variable variable) {
@@ -545,6 +550,11 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public Tree.Variable getVariable() {
             return variable;
+        }
+        
+        @Override
+        public SyntheticName getTestVarName() {
+            return testVar;
         }
         
         @Override
@@ -581,20 +591,20 @@ public class StatementTransformer extends AbstractTransformer {
 
         protected final JCExpression makeResultVarName() {
             at(cond);
-            return makeUnquotedIdent(name);
+            return name.makeIdent();
         }
         
         @Override
         public JCBlock makeThenBlock() {
             at(cond);
             if (thenPart == null) {
-                return transform(thenPart);   
+                return statementGen().transform(thenPart);   
             }
-            Name substVarName = naming.aliasName(name);
+            Name substVarName = naming.aliasName(name.getName());
             // Prepare for variable substitution in the following code block
-            final String origVarName = name;
+            final String origVarName = name.getName();
             String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
-            List<JCStatement> blockStmts = transformBlock(thenPart);
+            List<JCStatement> blockStmts = statementGen().transformBlock(thenPart);
             // The variable holding the result for the code inside the code block
             blockStmts = blockStmts.prepend(at(cond).VarDef(make().Modifiers(FINAL), substVarName, makeTypeExpr(), makeResultExpr()));
             JCBlock thenBlock = at(cond).Block(0, blockStmts);
@@ -620,16 +630,16 @@ public class StatementTransformer extends AbstractTransformer {
             }
             at(cond);
             return at(cond).VarDef(make().Modifiers(FINAL), 
-                    names().fromString(name), 
+                    name.asName(), 
                     makeTypeExpr(), init ? makeResultExpr() : null);
         }
     }
     
     class IsCond extends SpecialFormCond<Tree.IsCondition> {
         
-        IsCond(Tree.IsCondition isdecl, Tree.Block thenPart) {
+        IsCond(Tree.IsCondition isdecl, Tree.Block thenPart, SyntheticName name) {
             super(isdecl, thenPart, 
-                    isdecl.getVariable().getIdentifier().getText(),
+                    name, 
                     // use the type of the variable, which is more precise than the type we test for
                     isdecl.getVariable().getType().getTypeModel(), 
                     isdecl.getVariable().getSpecifierExpression().getExpression(),
@@ -662,9 +672,36 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
+        public JCExpression makeTest2() {
+            /*JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            at(cond);
+            if (isNothing(toType)) {
+                return make().Binary(JCTree.EQ, expr, makeNull());
+            } else {
+                // Assign the expression to test to the temporary variable
+                JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
+                
+                // Test on the tmpVar in the following condition
+                return makeTypeTest(firstTimeTestExpr, testVar,
+                        // only test the types we're testing for, not the type of
+                        // the variable (which can be more precise)
+                        cond.getType().getTypeModel());
+            }*/
+            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            at(cond);
+            JCExpression test = makeTypeTest(expressionGen().transformExpression(specifierExpr), testVar, cond.getType().getTypeModel());
+            JCAssign assign = make().Assign(testVar.makeIdent(), 
+                    make().Conditional(test, make().TypeCast(makeResultType(), expr), makeNull()));
+            return make().Binary(JCTree.EQ, assign, makeNull());
+            
+        }
+        
+        @Override
         protected JCExpression makeResultType() {
             at(cond);
-            return make().Type(syms().objectType);
+            ProducedType tmpVarType = specifierExpr.getTypeModel();
+            return makeJavaType(getVariable().getDeclarationModel().getType(), JT_NO_PRIMITIVES);
+            //return make().Type(syms().objectType);
         }
         
         @Override
@@ -689,7 +726,7 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public JCBlock makeThenBlock() {
             if (isNothing(toType)) {
-                return transform(thenPart);   
+                return statementGen().transform(thenPart);   
             }
             return super.makeThenBlock();
         }
@@ -705,8 +742,9 @@ public class StatementTransformer extends AbstractTransformer {
     
     class ExistsCond extends SpecialFormCond<Tree.ExistsCondition> {
 
-        public ExistsCond(Tree.ExistsCondition exists, Tree.Block thenPart) {
-            super(exists, thenPart, exists.getVariable().getIdentifier().getText(), 
+        public ExistsCond(Tree.ExistsCondition exists, Tree.Block thenPart, SyntheticName name) {
+            super(exists, thenPart, 
+                    name, 
                     simplifyType(exists.getVariable().getType().getTypeModel()),
                     exists.getVariable().getSpecifierExpression().getExpression(), 
                     naming.alias(exists.getVariable().getIdentifier().getText()),
@@ -739,13 +777,19 @@ public class StatementTransformer extends AbstractTransformer {
             // Test on the tmpVar in the following condition
             return make().Binary(JCTree.NE, firstTimeTestExpr, makeNull());
         }
+
+        @Override
+        public JCExpression makeTest2() {
+            // TODO Auto-generated method stub
+            return makeTest();
+        }
     }
     
     class NonemptyCond extends SpecialFormCond<Tree.NonemptyCondition> {
 
-        public NonemptyCond(Tree.NonemptyCondition nonempty, Tree.Block thenPart) {
+        public NonemptyCond(Tree.NonemptyCondition nonempty, Tree.Block thenPart, SyntheticName name) {
             super(nonempty, thenPart, 
-                    nonempty.getVariable().getIdentifier().getText(), 
+                    name, 
                     nonempty.getVariable().getType().getTypeModel(), 
                     nonempty.getVariable().getSpecifierExpression().getExpression(),
                     naming.alias(nonempty.getVariable().getIdentifier().getText()),
@@ -778,6 +822,15 @@ public class StatementTransformer extends AbstractTransformer {
             // Test on the tmpVar in the following condition
             return makeNonEmptyTest(firstTimeTestExpr, testVar);
         }
+        
+        @Override
+        public JCExpression makeTest2() {
+            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            at(cond);
+            JCExpression test = makeNonEmptyTest(expr, testVar);
+            JCAssign assign = make().Assign(testVar.makeIdent(), make().Conditional(test, expr, makeNull()));
+            return make().Binary(JCTree.EQ, assign, makeNull());
+        }
     }
     
     class BooleanCond implements Cond {
@@ -792,7 +845,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public JCBlock makeThenBlock() {
-            return transform(thenPart);
+            return statementGen().transform(thenPart);
         }
 
         @Override
@@ -837,15 +890,35 @@ public class StatementTransformer extends AbstractTransformer {
         public Variable getVariable() {
             return null;
         }
+
+        @Override
+        public SyntheticName getTestVarName() {
+            return null;
+        }
+
+        @Override
+        public JCExpression makeTest2() {
+            return makeTest();
+        }
     }
     
     Cond transformCondition(Tree.Condition cond, Tree.Block thenPart) {
+        return transformCondition(cond, thenPart, false);
+    }
+    
+    Cond transformCondition(Tree.Condition cond, Tree.Block thenPart, boolean aliasResultName) {
         if (cond instanceof Tree.IsCondition) {
-            return new IsCond((Tree.IsCondition)cond, thenPart);
+            Tree.IsCondition is = (Tree.IsCondition)cond;
+            String name = is.getVariable().getIdentifier().getText();
+            return new IsCond(is, thenPart, aliasResultName ? naming.alias(name) : naming.synthetic(name));
         } else if (cond instanceof Tree.ExistsCondition) {
-            return new ExistsCond((Tree.ExistsCondition)cond, thenPart);
+            Tree.ExistsCondition exists = (Tree.ExistsCondition)cond;
+            String name = exists.getVariable().getIdentifier().getText();
+            return new ExistsCond(exists, thenPart, aliasResultName ? naming.alias(name) : naming.synthetic(name));
         } else if (cond instanceof Tree.NonemptyCondition) {
-            return new NonemptyCond((Tree.NonemptyCondition)cond, thenPart);
+            Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition)cond;
+            String name = nonempty.getVariable().getIdentifier().getText();
+            return new NonemptyCond(nonempty, thenPart, aliasResultName ? naming.alias(name) : naming.synthetic(name));
         } else if (cond instanceof Tree.BooleanCondition) {
             return new BooleanCond((Tree.BooleanCondition)cond, thenPart);
         }

@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -44,21 +45,15 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsCondition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsOrNonemptyCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -2041,69 +2036,33 @@ public class ExpressionTransformer extends AbstractTransformer {
     
         private Variable transformIfClause(IfComprehensionClause clause) {
             // TODO Support condition lists
-            Condition cond = clause.getConditionList().getConditions().get(0);
+            Condition condition = clause.getConditionList().getConditions().get(0);
+            Cond cond = statementGen().transformCondition(condition, null, true);
             //The context of an if is an iteration through the parent, checking each element against the condition
-            Variable var = null;
-            Name varname = null;
-            JCExpression varType = null;
-            if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
-                var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable()
-                        : ((ExistsOrNonemptyCondition)cond).getVariable();
-                varname = naming.aliasName(var.getDeclarationModel().getName());
-                varType = makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES | JT_RAW);
+            final Variable var = cond.getVariable();
+            //JCExpression varType = var == null ? null : makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES | JT_RAW); 
+            if (var != null) { 
                 //Initialize the condition's attribute to finished so that this is returned
                 //in case the condition is not met and the iterator is exhausted
-                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), varname, varType, null));
+                fields.add(cond.makeTestVarDecl(false));
             }
             //Filter contexts need to check if the previous context applies and then check the condition
             JCExpression condExpr = make().Apply(null,
                 ctxtName.makeIdentWithThis(), List.<JCExpression>nil());
-            //_AND_ the previous iterator condition with the comprehension's
-            final JCExpression otherCondition;
 
-            if (cond instanceof IsCondition) {
-                JCExpression _expr = transformExpression(var.getSpecifierExpression().getExpression());
-                Naming.SyntheticName _varName = naming.temp("compr");
-                JCExpression test = makeTypeTest(null, _varName, ((IsCondition) cond).getType().getTypeModel());
-                test = makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test);
-                _expr = make().Assign(makeUnquotedIdent(varname.toString()),
-                        make().Conditional(test, make().TypeCast(varType, _expr), makeNull()));
-                otherCondition = make().Binary(JCTree.EQ, _expr, makeNull());
-
-            } else if (cond instanceof ExistsCondition) {
-                JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
-                //Assign the expression, check it's not null
-                expression = make().Assign(makeUnquotedIdent(varname.toString()), expression);
-                otherCondition =  make().Binary(JCTree.EQ, expression, makeNull());
-
-            } else if (cond instanceof NonemptyCondition) {
-                JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
-                Naming.SyntheticName varName = naming.temp("compr");
-                JCExpression test = makeNonEmptyTest(null, varName);
-                test = makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
-                //Assign the expression if it's nonempty
-                expression = make().Assign(makeUnquotedIdent(varname.toString()),
-                        make().Conditional(test, make().TypeCast(varType, expression), makeNull()));
-                otherCondition = make().Binary(JCTree.EQ, expression, makeNull());
-
-            } else if (cond instanceof BooleanCondition) {
-                otherCondition = make().Unary(JCTree.NOT, transformExpression(((BooleanCondition) cond).getExpression(),
-                    BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType()));
-            } else {
-                error = makeErroneous(cond, "This type of condition is not supported yet for comprehensions");
-                return null;
-            }
-            condExpr = make().Binary(JCTree.AND, condExpr, otherCondition);
+            condExpr = make().Binary(JCTree.AND, condExpr, 
+                    make().Unary(JCTree.NOT, cond.makeTest2()));
             //Create the context method that filters from the last iterator
             ctxtName = naming.synthetic("next"+idx);
-            fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), ctxtName.asName(),
-                makeJavaType(typeFact().getBooleanDeclaration().getType()),
-                List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(),
-                List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
-                    make().WhileLoop(condExpr, make().Block(0, List.<JCStatement>nil())),
-                    make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy("$exhausted").makeIdent()))
-            )), null));
+            MethodDefinitionBuilder mb = MethodDefinitionBuilder.systemMethod(ExpressionTransformer.this, ctxtName.getName())
+                .ignoreAnnotations()
+                .modifiers(Flags.PRIVATE | Flags.FINAL)
+                .resultType(null, makeJavaType(typeFact().getBooleanDeclaration().getType()))
+                .body(make().WhileLoop(condExpr, make().Block(0, List.<JCStatement>nil())))
+                .body(make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy("$exhausted").makeIdent())));
+            fields.add(mb.build());
             if (var != null) {
+                final Name varname = var == null ? null : cond.getTestVarName().asName();
                 fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), varname.toString()),
                         var.getDeclarationModel().getName());
             }
