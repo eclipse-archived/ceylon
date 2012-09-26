@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
@@ -45,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BooleanCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsCondition;
@@ -1954,262 +1956,291 @@ public class ExpressionTransformer extends AbstractTransformer {
     /** Creates an anonymous class that extends Iterable and implements the specified comprehension.
      */
     public JCExpression transformComprehension(Comprehension comp) {
-        at(comp);
-        Tree.ComprehensionClause clause = comp.getForComprehensionClause();
-        ProducedType targetIterType = typeFact().getIterableType(clause.getTypeModel());
+        return new ComprehensionTransformation(comp).transformComprehension();
+    }
+    
+    class ComprehensionTransformation {
+        private final Comprehension comp;
+        final ProducedType targetIterType;
         int idx = 0;
         ExpressionComprehensionClause excc = null;
         Naming.SyntheticName prevItemVar = null;
         Naming.SyntheticName ctxtName = null;
         //Iterator fields
-        ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
-        HashSet<String> fieldNames = new HashSet<String>();
-        HashMap<String,String> fieldSubst = new HashMap<String,String>();
-        while (clause != null) {
-            final Naming.SyntheticName iterVar = naming.synthetic("iter$"+idx);
-            Naming.SyntheticName itemVar = null;
-            if (clause instanceof ForComprehensionClause) {
-
-                ForComprehensionClause fcl = (ForComprehensionClause)clause;
-                SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
-                ProducedType iterType = specexpr.getExpression().getTypeModel();
-                JCExpression iterTypeExpr = makeJavaType(typeFact().getIteratorType(
-                        typeFact().getIteratedType(iterType)));
-                if (clause == comp.getForComprehensionClause()) {
-                    //The first iterator can be initialized as a field
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
-                        make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
-                                List.<JCExpression>nil())));
-                    fieldNames.add(iterVar.getName());
+        final ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
+        final HashSet<String> fieldNames = new HashSet<String>();
+        final HashMap<String,String> fieldSubst = new HashMap<String,String>();
+        private JCExpression error;
+        public ComprehensionTransformation(final Comprehension comp) {
+            this.comp = comp;
+            targetIterType = typeFact().getIterableType(comp.getForComprehensionClause().getTypeModel());
+        }
+    
+        public JCExpression transformComprehension() {
+            at(comp);
+            Tree.ComprehensionClause clause = comp.getForComprehensionClause();
+            while (clause != null) {
+                final Naming.SyntheticName iterVar = naming.synthetic("iter$"+idx);
+                Naming.SyntheticName itemVar = null;
+                if (clause instanceof ForComprehensionClause) {
+                    final ForComprehensionClause fcl = (ForComprehensionClause)clause;
+                    itemVar = transformForClause(fcl, iterVar, itemVar);
+                    if (error != null) {
+                        return error;
+                    }
+                    clause = fcl.getComprehensionClause();
+                } else if (clause instanceof IfComprehensionClause) {
+                    transformIfClause((IfComprehensionClause)clause);
+                    if (error != null) {
+                        return error;
+                    }
+                    clause = ((IfComprehensionClause)clause).getComprehensionClause();
+                    itemVar = prevItemVar;
+                } else if (clause instanceof ExpressionComprehensionClause) {
+                    //Just keep a reference to the expression
+                    excc = (ExpressionComprehensionClause)clause;
+                    at(excc);
+                    clause = null;
                 } else {
-                    //The subsequent iterators need to be inside a method,
-                    //in case they depend on the current element of the previous iterator
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), iterTypeExpr, null));
-                    fieldNames.add(iterVar.getName());
-                    JCBlock body = make().Block(0l, List.<JCStatement>of(
-                            make().If(make().Binary(JCTree.EQ, iterVar.makeIdent(), makeNull()),
-                                    make().Exec(make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
-                                    null),
-                            make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null,
-                                    makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
-                                    List.<JCExpression>nil()))),
-                            make().Return(iterVar.makeIdent())
-                    ));
-                    fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL),
-                            iterVar.asName(), iterTypeExpr, List.<JCTree.JCTypeParameter>nil(),
-                            List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
+                    return makeErroneous(clause, "No support for comprehension clause of type " + clause.getClass().getName());
                 }
-                if (fcl.getForIterator() instanceof ValueIterator) {
-
-                    //Add the item variable as a field in the iterator
-                    Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
-                    itemVar = naming.synthetic(item.getName());
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.asName(),
-                            makeJavaType(item.getType(),JT_NO_PRIMITIVES), null));
-                    fieldNames.add(itemVar.getName());
-
-                } else if (fcl.getForIterator() instanceof KeyValueIterator) {
-                    //Add the key and value variables as fields in the iterator
-                    KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
-                    Value kdec = kviter.getKeyVariable().getDeclarationModel();
-                    Value vdec = kviter.getValueVariable().getDeclarationModel();
-                    //But we'll use this as the name for the context function and base for the exhausted field
-                    itemVar = naming.synthetic("kv$" + kdec.getName() + "$" + vdec.getName());
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(kdec.getName()),
-                            makeJavaType(kdec.getType(), JT_NO_PRIMITIVES), null));
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(vdec.getName()),
-                            makeJavaType(vdec.getType(), JT_NO_PRIMITIVES), null));
-                    fieldNames.add(kdec.getName());
-                    fieldNames.add(vdec.getName());
-                } else {
-                    return makeErroneous(fcl, "No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
-                }
-                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy("$exhausted").asName(),
-                        makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
-
-                //Now the context for this iterator
-                ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
-                if (idx>0) {
-                    //Subsequent iterators may depend on the item from the previous loop so we make sure we have one
-                    contextBody.add(make().If(make().Binary(JCTree.EQ, iterVar.makeIdent(), makeNull()),
-                            make().Exec(make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil())), null));
-                }
-
-                //Assign the next item to an Object variable
-                Naming.SyntheticName tmpItem = naming.temp("item");
-                contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
-                        makeJavaType(typeFact().getObjectDeclaration().getType()),
-                        make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
-                                List.<JCExpression>nil())));
-                //Then we check if it's exhausted
-                contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy("$exhausted").makeIdent(),
-                        make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
-                //Variables get assigned in the else block
-                ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
-                if (fcl.getForIterator() instanceof ValueIterator) {
-                    ProducedType itemType = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel().getType();
-                    elseBody.add(make().Exec(make().Assign(itemVar.makeIdent(),
-                            make().TypeCast(makeJavaType(itemType,JT_NO_PRIMITIVES), tmpItem.makeIdent()))));
-                } else {
-                    KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
-                    Value key = kviter.getKeyVariable().getDeclarationModel();
-                    Value item = kviter.getValueVariable().getDeclarationModel();
-                    //Assign the key and item to the corresponding fields with the proper type casts
-                    //equivalent to k=(KeyType)((Entry<KeyType,ItemType>)tmpItem).getKey()
-                    JCExpression castEntryExpr = make().TypeCast(
-                        makeJavaType(typeFact().getIteratedType(iterType)),
-                        tmpItem.makeIdent());
-                    elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(key.getName()),
-                        make().TypeCast(makeJavaType(key.getType(), JT_NO_PRIMITIVES),
-                            make().Apply(null, makeSelect(castEntryExpr, "getKey"),
-                                List.<JCExpression>nil())
-                    ))));
-                    //equivalent to v=(ItemType)((Entry<KeyType,ItemType>)tmpItem).getItem()
-                    elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(item.getName()),
-                        make().TypeCast(makeJavaType(item.getType(), JT_NO_PRIMITIVES),
-                            make().Apply(null, makeSelect(castEntryExpr, "getItem"),
-                                List.<JCExpression>nil())
-                    ))));
-                }
-                ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
-                if (idx>0) {
-                    //Subsequent contexts run once for every iteration of the previous loop
-                    //This will reset our previous context by getting a new iterator if the previous loop isn't done
-                    innerBody.add(make().If(make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
-                            make().Block(0, List.<JCStatement>of(
-                                make().Exec(make().Assign(iterVar.makeIdent(),
-                                        make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil()))),
-                                make().Return(make().Apply(null,
-                                        itemVar.makeIdentWithThis(), List.<JCExpression>nil()))
-                    )), null));
-                }
-                innerBody.add(make().Return(makeBoolean(false)));
-                //Assign the next item to the corresponding variables if not exhausted yet
-                contextBody.add(make().If(itemVar.suffixedBy("$exhausted").makeIdent(),
-                    make().Block(0, innerBody.toList()),
-                    make().Block(0, elseBody.toList())));
-                contextBody.add(make().Return(makeBoolean(true)));
-                //Create the context method that returns the next item for this iterator
-                ctxtName = itemVar;
-                fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), itemVar.asName(),
-                    makeJavaType(typeFact().getBooleanDeclaration().getType()),
-                    List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
-                    make().Block(0, contextBody.toList()), null));
-                clause = fcl.getComprehensionClause();
-
-            } else if (clause instanceof IfComprehensionClause) {
-                // TODO Support condition lists
-                Condition cond = ((IfComprehensionClause)clause).getConditionList().getConditions().get(0);
-                //The context of an if is an iteration through the parent, checking each element against the condition
-                Variable var = null;
-                Name varname = null;
-                JCExpression varType = null;
-                if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
-                    var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable()
-                            : ((ExistsOrNonemptyCondition)cond).getVariable();
-                    varname = naming.aliasName(var.getDeclarationModel().getName());
-                    varType = makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES | JT_RAW);
-                    //Initialize the condition's attribute to finished so that this is returned
-                    //in case the condition is not met and the iterator is exhausted
-                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), varname, varType, null));
-                }
-                //Filter contexts need to check if the previous context applies and then check the condition
-                JCExpression condExpr = make().Apply(null,
-                    ctxtName.makeIdentWithThis(), List.<JCExpression>nil());
-                //_AND_ the previous iterator condition with the comprehension's
-                final JCExpression otherCondition;
-
-                if (cond instanceof IsCondition) {
-                    JCExpression _expr = transformExpression(var.getSpecifierExpression().getExpression());
-                    Naming.SyntheticName _varName = naming.temp("compr");
-                    JCExpression test = makeTypeTest(null, _varName, ((IsCondition) cond).getType().getTypeModel());
-                    test = makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test);
-                    _expr = make().Assign(makeUnquotedIdent(varname.toString()),
-                            make().Conditional(test, make().TypeCast(varType, _expr), makeNull()));
-                    otherCondition = make().Binary(JCTree.EQ, _expr, makeNull());
-
-                } else if (cond instanceof ExistsCondition) {
-                    JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
-                    //Assign the expression, check it's not null
-                    expression = make().Assign(makeUnquotedIdent(varname.toString()), expression);
-                    otherCondition =  make().Binary(JCTree.EQ, expression, makeNull());
-
-                } else if (cond instanceof NonemptyCondition) {
-                    JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
-                    Naming.SyntheticName varName = naming.temp("compr");
-                    JCExpression test = makeNonEmptyTest(null, varName);
-                    test = makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
-                    //Assign the expression if it's nonempty
-                    expression = make().Assign(makeUnquotedIdent(varname.toString()),
-                            make().Conditional(test, make().TypeCast(varType, expression), makeNull()));
-                    otherCondition = make().Binary(JCTree.EQ, expression, makeNull());
-
-                } else if (cond instanceof BooleanCondition) {
-                    otherCondition = make().Unary(JCTree.NOT, transformExpression(((BooleanCondition) cond).getExpression(),
-                        BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType()));
-                } else {
-                    return makeErroneous(cond, "This type of condition is not supported yet for comprehensions");
-                }
-                condExpr = make().Binary(JCTree.AND, condExpr, otherCondition);
-                //Create the context method that filters from the last iterator
-                ctxtName = naming.synthetic("next"+idx);
-                fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), ctxtName.asName(),
-                    makeJavaType(typeFact().getBooleanDeclaration().getType()),
-                    List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(),
-                    List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
-                        make().WhileLoop(condExpr, make().Block(0, List.<JCStatement>nil())),
-                        make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy("$exhausted").makeIdent()))
-                )), null));
-                clause = ((IfComprehensionClause)clause).getComprehensionClause();
-                itemVar = prevItemVar;
-                if (var != null) {
-                    fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), varname.toString()),
-                            var.getDeclarationModel().getName());
-                }
-
-            } else if (clause instanceof ExpressionComprehensionClause) {
-
-                //Just keep a reference to the expression
-                excc = (ExpressionComprehensionClause)clause;
-                at(excc);
-                clause = null;
-
-            } else {
-                return makeErroneous(clause, "No support for comprehension clause of type " + clause.getClass().getName());
+                idx++;
+                if (itemVar != null) prevItemVar = itemVar;
             }
-            idx++;
-            if (itemVar != null) prevItemVar = itemVar;
+    
+            //Define the next() method for the Iterator
+            fields.add(make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("next"),
+                makeJavaType(typeFact().getObjectDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
+                List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
+                    make().Return(
+                        make().Conditional(
+                            make().Apply(null, 
+                                ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
+                            transformExpression(excc.getExpression(), BoxingStrategy.BOXED, typeFact().getIteratedType(targetIterType)),
+                            makeFinished()))
+            )), null));
+            //Define the inner iterator class
+            ProducedType iteratorType = typeFact().getIteratorType(typeFact().getIteratedType(targetIterType));
+            JCExpression iterator = make().NewClass(null, null,makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
+                    List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
+            //Define the anonymous iterable class
+            JCExpression iterable = make().NewClass(null, null,
+                    make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
+                        List.<JCExpression>of(makeJavaType(typeFact().getIteratedType(targetIterType), JT_NO_PRIMITIVES))),
+                    List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(
+                        make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("getIterator"),
+                            makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
+                        List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
+                        make().Block(0, List.<JCStatement>of(make().Return(iterator))), null)
+            )));
+            for (Map.Entry<String, String> e : fieldSubst.entrySet()) {
+                naming.removeVariableSubst(e.getValue(), e.getKey());
+            }
+            return iterable;
+        }
+    
+        private Variable transformIfClause(IfComprehensionClause clause) {
+            // TODO Support condition lists
+            Condition cond = clause.getConditionList().getConditions().get(0);
+            //The context of an if is an iteration through the parent, checking each element against the condition
+            Variable var = null;
+            Name varname = null;
+            JCExpression varType = null;
+            if (cond instanceof IsCondition || cond instanceof ExistsOrNonemptyCondition) {
+                var = cond instanceof IsCondition ? ((IsCondition)cond).getVariable()
+                        : ((ExistsOrNonemptyCondition)cond).getVariable();
+                varname = naming.aliasName(var.getDeclarationModel().getName());
+                varType = makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES | JT_RAW);
+                //Initialize the condition's attribute to finished so that this is returned
+                //in case the condition is not met and the iterator is exhausted
+                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), varname, varType, null));
+            }
+            //Filter contexts need to check if the previous context applies and then check the condition
+            JCExpression condExpr = make().Apply(null,
+                ctxtName.makeIdentWithThis(), List.<JCExpression>nil());
+            //_AND_ the previous iterator condition with the comprehension's
+            final JCExpression otherCondition;
+
+            if (cond instanceof IsCondition) {
+                JCExpression _expr = transformExpression(var.getSpecifierExpression().getExpression());
+                Naming.SyntheticName _varName = naming.temp("compr");
+                JCExpression test = makeTypeTest(null, _varName, ((IsCondition) cond).getType().getTypeModel());
+                test = makeLetExpr(_varName, List.<JCStatement>nil(), make().Type(syms().objectType), _expr, test);
+                _expr = make().Assign(makeUnquotedIdent(varname.toString()),
+                        make().Conditional(test, make().TypeCast(varType, _expr), makeNull()));
+                otherCondition = make().Binary(JCTree.EQ, _expr, makeNull());
+
+            } else if (cond instanceof ExistsCondition) {
+                JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
+                //Assign the expression, check it's not null
+                expression = make().Assign(makeUnquotedIdent(varname.toString()), expression);
+                otherCondition =  make().Binary(JCTree.EQ, expression, makeNull());
+
+            } else if (cond instanceof NonemptyCondition) {
+                JCExpression expression = transformExpression(var.getSpecifierExpression().getExpression());
+                Naming.SyntheticName varName = naming.temp("compr");
+                JCExpression test = makeNonEmptyTest(null, varName);
+                test = makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
+                //Assign the expression if it's nonempty
+                expression = make().Assign(makeUnquotedIdent(varname.toString()),
+                        make().Conditional(test, make().TypeCast(varType, expression), makeNull()));
+                otherCondition = make().Binary(JCTree.EQ, expression, makeNull());
+
+            } else if (cond instanceof BooleanCondition) {
+                otherCondition = make().Unary(JCTree.NOT, transformExpression(((BooleanCondition) cond).getExpression(),
+                    BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType()));
+            } else {
+                error = makeErroneous(cond, "This type of condition is not supported yet for comprehensions");
+                return null;
+            }
+            condExpr = make().Binary(JCTree.AND, condExpr, otherCondition);
+            //Create the context method that filters from the last iterator
+            ctxtName = naming.synthetic("next"+idx);
+            fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), ctxtName.asName(),
+                makeJavaType(typeFact().getBooleanDeclaration().getType()),
+                List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(),
+                List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
+                    make().WhileLoop(condExpr, make().Block(0, List.<JCStatement>nil())),
+                    make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy("$exhausted").makeIdent()))
+            )), null));
+            if (var != null) {
+                fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), varname.toString()),
+                        var.getDeclarationModel().getName());
+            }
+            return var;
         }
 
-        //Define the next() method for the Iterator
-        fields.add(make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("next"),
-            makeJavaType(typeFact().getObjectDeclaration().getType()), List.<JCTree.JCTypeParameter>nil(),
-            List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), make().Block(0, List.<JCStatement>of(
-                make().Return(
-                    make().Conditional(
-                        make().Apply(null, 
-                            ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
-                        transformExpression(excc.getExpression(), BoxingStrategy.BOXED, typeFact().getIteratedType(targetIterType)),
-                        makeFinished()))
-        )), null));
-        //Define the inner iterator class
-        ProducedType iteratorType = typeFact().getIteratorType(typeFact().getIteratedType(targetIterType));
-        JCExpression iterator = make().NewClass(null, null,makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
-                List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), fields.toList()));
-        //Define the anonymous iterable class
-        JCExpression iterable = make().NewClass(null, null,
-                make().TypeApply(makeIdent(syms().ceylonAbstractIterableType),
-                    List.<JCExpression>of(makeJavaType(typeFact().getIteratedType(targetIterType), JT_NO_PRIMITIVES))),
-                List.<JCExpression>nil(), make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(
-                    make().MethodDef(make().Modifiers(Flags.PUBLIC | Flags.FINAL), names().fromString("getIterator"),
-                        makeJavaType(iteratorType, JT_CLASS_NEW|JT_EXTENDS),
-                    List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
-                    make().Block(0, List.<JCStatement>of(make().Return(iterator))), null)
-        )));
-        for (Map.Entry<String, String> e : fieldSubst.entrySet()) {
-            naming.removeVariableSubst(e.getValue(), e.getKey());
+        private SyntheticName transformForClause(final ForComprehensionClause clause,
+                final Naming.SyntheticName iterVar,
+                Naming.SyntheticName itemVar) {
+            final ForComprehensionClause fcl = clause;
+            SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
+            ProducedType iterType = specexpr.getExpression().getTypeModel();
+            JCExpression iterTypeExpr = makeJavaType(typeFact().getIteratorType(
+                    typeFact().getIteratedType(iterType)));
+            if (clause == comp.getForComprehensionClause()) {
+                //The first iterator can be initialized as a field
+                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
+                    make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
+                            List.<JCExpression>nil())));
+                fieldNames.add(iterVar.getName());
+            } else {
+                //The subsequent iterators need to be inside a method,
+                //in case they depend on the current element of the previous iterator
+                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), iterTypeExpr, null));
+                fieldNames.add(iterVar.getName());
+                JCBlock body = make().Block(0l, List.<JCStatement>of(
+                        make().If(make().Binary(JCTree.EQ, iterVar.makeIdent(), makeNull()),
+                                make().Exec(make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
+                                null),
+                        make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null,
+                                makeSelect(transformExpression(specexpr.getExpression()), "getIterator"), 
+                                List.<JCExpression>nil()))),
+                        make().Return(iterVar.makeIdent())
+                ));
+                fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL),
+                        iterVar.asName(), iterTypeExpr, List.<JCTree.JCTypeParameter>nil(),
+                        List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(), body, null));
+            }
+            if (fcl.getForIterator() instanceof ValueIterator) {
+    
+                //Add the item variable as a field in the iterator
+                Value item = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel();
+                itemVar = naming.synthetic(item.getName());
+                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.asName(),
+                        makeJavaType(item.getType(),JT_NO_PRIMITIVES), null));
+                fieldNames.add(itemVar.getName());
+    
+            } else if (fcl.getForIterator() instanceof KeyValueIterator) {
+                //Add the key and value variables as fields in the iterator
+                KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
+                Value kdec = kviter.getKeyVariable().getDeclarationModel();
+                Value vdec = kviter.getValueVariable().getDeclarationModel();
+                //But we'll use this as the name for the context function and base for the exhausted field
+                itemVar = naming.synthetic("kv$" + kdec.getName() + "$" + vdec.getName());
+                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(kdec.getName()),
+                        makeJavaType(kdec.getType(), JT_NO_PRIMITIVES), null));
+                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), names().fromString(vdec.getName()),
+                        makeJavaType(vdec.getType(), JT_NO_PRIMITIVES), null));
+                fieldNames.add(kdec.getName());
+                fieldNames.add(vdec.getName());
+            } else {
+                error = makeErroneous(fcl, "No support yet for iterators of type " + fcl.getForIterator().getClass().getName());
+                return null;
+            }
+            fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), itemVar.suffixedBy("$exhausted").asName(),
+                    makeJavaType(typeFact().getBooleanDeclaration().getType()), null));
+    
+            //Now the context for this iterator
+            ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
+            if (idx>0) {
+                //Subsequent iterators may depend on the item from the previous loop so we make sure we have one
+                contextBody.add(make().If(make().Binary(JCTree.EQ, iterVar.makeIdent(), makeNull()),
+                        make().Exec(make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil())), null));
+            }
+    
+            //Assign the next item to an Object variable
+            Naming.SyntheticName tmpItem = naming.temp("item");
+            contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
+                    makeJavaType(typeFact().getObjectDeclaration().getType()),
+                    make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
+                            List.<JCExpression>nil())));
+            //Then we check if it's exhausted
+            contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy("$exhausted").makeIdent(),
+                    make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
+            //Variables get assigned in the else block
+            ListBuffer<JCStatement> elseBody = new ListBuffer<JCStatement>();
+            if (fcl.getForIterator() instanceof ValueIterator) {
+                ProducedType itemType = ((ValueIterator)fcl.getForIterator()).getVariable().getDeclarationModel().getType();
+                elseBody.add(make().Exec(make().Assign(itemVar.makeIdent(),
+                        make().TypeCast(makeJavaType(itemType,JT_NO_PRIMITIVES), tmpItem.makeIdent()))));
+            } else {
+                KeyValueIterator kviter = (KeyValueIterator)fcl.getForIterator();
+                Value key = kviter.getKeyVariable().getDeclarationModel();
+                Value item = kviter.getValueVariable().getDeclarationModel();
+                //Assign the key and item to the corresponding fields with the proper type casts
+                //equivalent to k=(KeyType)((Entry<KeyType,ItemType>)tmpItem).getKey()
+                JCExpression castEntryExpr = make().TypeCast(
+                    makeJavaType(typeFact().getIteratedType(iterType)),
+                    tmpItem.makeIdent());
+                elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(key.getName()),
+                    make().TypeCast(makeJavaType(key.getType(), JT_NO_PRIMITIVES),
+                        make().Apply(null, makeSelect(castEntryExpr, "getKey"),
+                            List.<JCExpression>nil())
+                ))));
+                //equivalent to v=(ItemType)((Entry<KeyType,ItemType>)tmpItem).getItem()
+                elseBody.add(make().Exec(make().Assign(makeUnquotedIdent(item.getName()),
+                    make().TypeCast(makeJavaType(item.getType(), JT_NO_PRIMITIVES),
+                        make().Apply(null, makeSelect(castEntryExpr, "getItem"),
+                            List.<JCExpression>nil())
+                ))));
+            }
+            ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
+            if (idx>0) {
+                //Subsequent contexts run once for every iteration of the previous loop
+                //This will reset our previous context by getting a new iterator if the previous loop isn't done
+                innerBody.add(make().If(make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil()),
+                        make().Block(0, List.<JCStatement>of(
+                            make().Exec(make().Assign(iterVar.makeIdent(),
+                                    make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil()))),
+                            make().Return(make().Apply(null,
+                                    itemVar.makeIdentWithThis(), List.<JCExpression>nil()))
+                )), null));
+            }
+            innerBody.add(make().Return(makeBoolean(false)));
+            //Assign the next item to the corresponding variables if not exhausted yet
+            contextBody.add(make().If(itemVar.suffixedBy("$exhausted").makeIdent(),
+                make().Block(0, innerBody.toList()),
+                make().Block(0, elseBody.toList())));
+            contextBody.add(make().Return(makeBoolean(true)));
+            //Create the context method that returns the next item for this iterator
+            ctxtName = itemVar;
+            fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), itemVar.asName(),
+                makeJavaType(typeFact().getBooleanDeclaration().getType()),
+                List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
+                make().Block(0, contextBody.toList()), null));
+            return itemVar;
         }
-        return iterable;
     }
 
     //
