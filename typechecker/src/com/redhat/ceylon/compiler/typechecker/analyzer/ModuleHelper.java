@@ -50,7 +50,7 @@ public class ModuleHelper {
         }
         else {
             //today we attach that to the module dependency
-            moduleManager.attachErrorToDependencyDeclaration(moduleImport, error.toString());
+            moduleManager.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString());
         }
     }
 

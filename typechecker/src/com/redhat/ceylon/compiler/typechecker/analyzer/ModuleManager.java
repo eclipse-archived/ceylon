@@ -212,18 +212,41 @@ public class ModuleManager {
         moduleDepDefinition.add(definition);
     }
 
-    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
+    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, String error) {
+        if (!attachErrorToDependencyDeclaration(moduleImport, error)) {
+            //This probably can happen if the missing dependency is found deep in the dependency structure (ie the binary version of a module)
+            // in theory the first item in the dependency tree is the compiled module, and the second one is the import we have to add
+            // the error to
+            if(dependencyTree.size() >= 2){
+                Module rootModule = dependencyTree.get(0);
+                Module originalImportedModule = dependencyTree.get(1);
+                // find the original import
+                for(ModuleImport imp : rootModule.getImports()){
+                    if(imp.getModule() == originalImportedModule){
+                        // found it, try to attach the error
+                        if(attachErrorToDependencyDeclaration(imp, error)){
+                            // we're done
+                            return;
+                        }else{
+                            // failed
+                            break;
+                        }
+                    }
+                }
+            }
+            System.err.println("This might be a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
+        }
+    }
+
+    private boolean attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
         Set<Node> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError ) {
                 definition.addError(error);
             }
+            return true;
         }
-        else {
-            //This probably can happen if the missing dependency is found deep in the dependency structure (ie the binary version of a module)
-            //TODO find the nearest src module that triggered the issue
-            System.err.println("This might be a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
-        }
+        return false;
     }
 
     //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
@@ -331,7 +354,7 @@ public class ModuleManager {
                 StringBuilder error = new StringBuilder("unable to read source artifact for ");
                 error.append(artifactContext.toString());
                 error.append( "\ndue to connection error: ").append(e.getMessage());
-                attachErrorToDependencyDeclaration(moduleImport, error.toString());
+                attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString());
             } finally {
                 if (virtualArtifact != null) {
                     virtualArtifact.close();
