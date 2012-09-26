@@ -155,7 +155,11 @@ public class SharedNameTable extends Name.Table {
 
     @Override
     public void dispose() {
-        dispose(this);
+        // Stef: disabled this because as it is it leaks by adding more stuff to freelist
+        // without ever cleaning it up because create() is never called, and even if it
+        // were it would stop cleaning at the first found name table, thus leaving older
+        // entries in freelist
+//        dispose(this);
     }
 
     static class NameImpl extends Name {
