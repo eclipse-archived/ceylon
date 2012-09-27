@@ -50,9 +50,13 @@ public class ModuleValidator {
     public void verifyModuleDependencyTree() {
         phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
         LinkedList<Module> dependencyTree = new LinkedList<Module>();
-        //copy modules collection as new (dependent) modules might be added on the fly.
-        final HashSet<Module> modulesCopy = new HashSet<Module>( context.getModules().getListOfModules() );
-        for (Module module : modulesCopy) {
+        // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
+        Set<Module> compiledModules = moduleManager.getCompiledModules();
+        List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
+        modules.addAll(compiledModules);
+        modules.add(context.getModules().getDefaultModule());
+        modules.add(context.getModules().getLanguageModule());
+        for (Module module : modules) {
             dependencyTree.addLast(module);
             //we don't care about propagated dependency here as top modules are independent from one another
             verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>());

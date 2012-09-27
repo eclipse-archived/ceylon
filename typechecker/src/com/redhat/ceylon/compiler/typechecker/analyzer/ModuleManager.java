@@ -283,6 +283,10 @@ public class ModuleManager {
         }
         moduleToNode.put(module,unit);
     }
+    
+    public Set<Module> getCompiledModules(){
+        return moduleToNode.keySet();
+    }
 
     public ModuleImport findImport(Module owner, Module dependency) {
         for (ModuleImport modImprt : owner.getImports()) {
