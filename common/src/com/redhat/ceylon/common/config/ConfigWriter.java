@@ -253,7 +253,20 @@ public class ConfigWriter {
             if (config.getOptionNames(section).length > 0) {
                 writer.write(System.lineSeparator());
                 writer.write("[");
-                writer.write(section);
+                String[] names = section.split("\\.");
+                if (names.length > 1) {
+                    for (int i = 0; i < names.length - 1; i++) {
+                        if (i > 0) {
+                            writer.write(".");
+                        }
+                        writer.write(names[i]);                            
+                    }
+                    writer.write(" \"");
+                    writer.write(names[names.length - 1]);
+                    writer.write("\"");
+                } else {
+                    writer.write(section);
+                }
                 writer.write("]");
                 writer.write(System.lineSeparator());
                 writeOptions(writer, config, section);
