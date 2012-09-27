@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTrans
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -2033,40 +2034,87 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             return iterable;
         }
-    
-        private Variable transformIfClause(IfComprehensionClause clause) {
-            // TODO Support condition lists
-            Condition condition = clause.getConditionList().getConditions().get(0);
-            Cond cond = statementGen().transformCondition(condition, null, true);
-            //The context of an if is an iteration through the parent, checking each element against the condition
-            final Variable var = cond.getVariable();
-            //JCExpression varType = var == null ? null : makeJavaType(var.getDeclarationModel().getType(), JT_NO_PRIMITIVES | JT_RAW); 
-            if (var != null) { 
-                //Initialize the condition's attribute to finished so that this is returned
-                //in case the condition is not met and the iterator is exhausted
-                fields.add(cond.makeTestVarDecl(false));
+
+        class IfComprehensionCondList extends CondList {
+
+            private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+            private final JCExpression condExpr;
+            
+            public IfComprehensionCondList(java.util.List<Condition> conditions, JCExpression condExpr) {
+                statementGen().super(conditions, null);
+                this.condExpr = condExpr;
+            }     
+
+            @Override
+            protected List<JCStatement> transformInnermost(Condition condition) {
+                Cond transformedCond = statementGen().transformCondition(condition, null, true);
+                // The innermost condition's test should be transformed before
+                // variable substitution
+                JCExpression test = transformedCond.makeTest();
+                return transformCommon(addVarSubs(transformedCond),
+                        test,
+                        List.<JCStatement>of(make().Break(null)));
             }
+            
+            protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
+                Cond transformedCond = statementGen().transformCondition(condition, null, true);
+                addVarSubs(transformedCond);
+                JCExpression test = transformedCond.makeTest();
+                return transformCommon(transformedCond, test, transformList(rest));
+            }
+
+            private Cond addVarSubs(Cond transformedCond) {
+                final Variable var = transformedCond.getVariable();
+                if (var != null && transformedCond.hasResultDecl()) {
+                    fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), transformedCond.getResultVarName().getName()),
+                            var.getDeclarationModel().getName());
+                }
+                return transformedCond;
+            }
+            
+            protected List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts) {
+                
+                if (transformedCond.makeTestVarDecl(0, true) != null) {
+                    varDecls.append(transformedCond.makeTestVarDecl(0, true));
+                }
+                if (transformedCond.hasResultDecl()) {
+                    fields.add(transformedCond.makeResultVarDecl(Flags.PRIVATE, false));
+                    stmts = stmts.prepend(transformedCond.makeResultVarAssignment());
+                }
+                stmts = List.<JCStatement>of(make().If(
+                        test, 
+                        make().Block(0, stmts), 
+                        null));
+                return stmts;
+            }
+            
+            public List<JCStatement> getResult() {
+                List<JCStatement> stmts = transformList(conditions);
+                ListBuffer<JCStatement> result = ListBuffer.lb();
+                result.append(make().If(make().Unary(JCTree.NOT, condExpr), make().Break(null), null));
+                result.appendList(varDecls);
+                result.appendList(stmts);
+                return result.toList();   
+            }
+
+        }
+        
+        private void transformIfClause(IfComprehensionClause clause) {
             //Filter contexts need to check if the previous context applies and then check the condition
             JCExpression condExpr = make().Apply(null,
                 ctxtName.makeIdentWithThis(), List.<JCExpression>nil());
-
-            condExpr = make().Binary(JCTree.AND, condExpr, 
-                    make().Unary(JCTree.NOT, cond.makeTest2()));
-            //Create the context method that filters from the last iterator
             ctxtName = naming.synthetic("next"+idx);
+            
+            IfComprehensionCondList ifComprehensionCondList = new IfComprehensionCondList(clause.getConditionList().getConditions(), condExpr);
+            List<JCStatement> ifs = ifComprehensionCondList.getResult();
+            JCStatement loop = make().WhileLoop(makeBoolean(true), make().Block(0, ifs));
             MethodDefinitionBuilder mb = MethodDefinitionBuilder.systemMethod(ExpressionTransformer.this, ctxtName.getName())
                 .ignoreAnnotations()
                 .modifiers(Flags.PRIVATE | Flags.FINAL)
                 .resultType(null, makeJavaType(typeFact().getBooleanDeclaration().getType()))
-                .body(make().WhileLoop(condExpr, make().Block(0, List.<JCStatement>nil())))
+                .body(loop)
                 .body(make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy("$exhausted").makeIdent())));
             fields.add(mb.build());
-            if (var != null) {
-                final Name varname = var == null ? null : cond.getTestVarName().asName();
-                fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), varname.toString()),
-                        var.getDeclarationModel().getName());
-            }
-            return var;
         }
 
         private SyntheticName transformForClause(final ForComprehensionClause clause,
