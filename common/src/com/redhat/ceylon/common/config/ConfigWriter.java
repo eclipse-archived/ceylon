@@ -59,6 +59,7 @@ public class ConfigWriter {
             InputStream in = null;
             OutputStream out = null;
             File tmpFile = null;
+            boolean ok = false;
             try {
                 in = new FileInputStream(source);
                 if (overwriteSource) {
@@ -75,6 +76,7 @@ public class ConfigWriter {
                     out = new FileOutputStream(destination);
                 }
                 write(config, in, out);
+                ok = true;
             } finally {
                 if (out != null) {
                     try {
@@ -86,6 +88,13 @@ public class ConfigWriter {
                         in.close();
                     } catch (IOException e) { }
                 }
+            }
+            if (ok) {
+                File sourceBackup = new File(source.getParentFile(), source.getName() + ".old");
+                sourceBackup.delete();
+                source.renameTo(sourceBackup);
+                tmpFile.renameTo(source);
+            } else {
                 if (tmpFile != null) {
                     tmpFile.delete();
                 }
