@@ -31,6 +31,12 @@ public class ConfigWriter {
             write(config, destination, destination);
         } else {
             try {
+                // First create any parent directories if necessary
+                File parentDir = destination.getParentFile();
+                if (!parentDir.exists()) {
+                    parentDir.mkdirs();
+                }
+                // Now create the file itself
                 out = new FileOutputStream(destination);
                 write(config, out);
             } finally {
@@ -60,6 +66,12 @@ public class ConfigWriter {
                     tmpFile = File.createTempFile(source.getName(), "tmp", source.getParentFile());
                     out = new FileOutputStream(tmpFile);
                 } else {
+                    // First create any parent directories if necessary
+                    File parentDir = destination.getParentFile();
+                    if (!parentDir.exists()) {
+                        parentDir.mkdirs();
+                    }
+                    // Now create the file itself
                     out = new FileOutputStream(destination);
                 }
                 write(config, in, out);
@@ -108,6 +120,12 @@ public class ConfigWriter {
     public static void write(CeylonConfig config, InputStream in, File destination) throws IOException {
         OutputStream out = null;
         try {
+            // First create any parent directories if necessary
+            File parentDir = destination.getParentFile();
+            if (!parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+            // Now create the file itself
             out = new FileOutputStream(destination);
             write(config, in, out);
         } finally {
