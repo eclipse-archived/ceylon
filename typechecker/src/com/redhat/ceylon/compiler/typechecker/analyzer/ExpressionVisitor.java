@@ -16,6 +16,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
@@ -2949,8 +2950,7 @@ public class ExpressionVisitor extends Visitor {
             if (c.isAbstraction()) { 
                 //if the constructor is overloaded
                 //resolve the right overloaded version
-                Declaration result = dec.getContainer()
-                        .getMemberOrParameter(that.getUnit(), dec.getName(), that.getSignature());
+                Declaration result = findMatchingOverloadedClass(c, that.getSignature());
                 if (result!=null && result!=dec) {
                     //patch the reference, which was already
                     //initialized to the abstraction
