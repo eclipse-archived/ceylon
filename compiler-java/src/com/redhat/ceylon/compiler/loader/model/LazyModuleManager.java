@@ -73,6 +73,7 @@ public abstract class LazyModuleManager extends ModuleManager {
                 if(compiledModule.getMajor() != AbstractTransformer.BINARY_MAJOR_VERSION
                         || compiledModule.getMinor() != AbstractTransformer.BINARY_MINOR_VERSION){
                     attachErrorToDependencyDeclaration(moduleImport,
+                            dependencyTree,
                             "This module was compiled for an incompatible version of the Ceylon compiler ("+compiledModule.getMajor()+"."+compiledModule.getMinor()+")."
                                     +"\nThis compiler supports "+AbstractTransformer.BINARY_MAJOR_VERSION+"."+AbstractTransformer.BINARY_MINOR_VERSION+"."
                                     +"\nPlease try to recompile your module using a compatible compiler."
