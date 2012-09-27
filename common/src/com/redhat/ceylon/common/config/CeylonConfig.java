@@ -1,6 +1,8 @@
 package com.redhat.ceylon.common.config;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -269,4 +271,14 @@ public class CeylonConfig {
         return cfg;
     }
 
+    @Override
+    public String toString() {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ConfigWriter.write(this, out);
+            return out.toString("UTF-8");
+        } catch (IOException e) {
+            return super.toString();
+        }
+    }
 }
