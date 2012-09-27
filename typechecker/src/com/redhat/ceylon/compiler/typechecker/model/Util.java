@@ -107,8 +107,10 @@ public class Util {
         return hasMatchingSignature(signature, d, true);
     }
     
-    static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d, boolean excludeAbstractClasses) {
-        if (excludeAbstractClasses && d instanceof Class && ((Class) d).isAbstract()) {
+    static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d, 
+    		boolean excludeAbstractClasses) {
+        if (excludeAbstractClasses && 
+        		d instanceof Class && ((Class) d).isAbstract()) {
             return false;
         }
         if (d instanceof Functional) {
@@ -632,20 +634,20 @@ public class Util {
             if (betterMatch(d, o)) {
                 i.remove();
             }
-            else if (betterMatch(o, d)) { //TODO: note assymmetry here resulting in nondeterminate behavior!
+            else if (betterMatch(o, d)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
                 add=false;
             }
         }
         if (add) results.add(d);
     }
     
-    public static Declaration findMatchingOverloadedClass(Class abstractionClass, List<ProducedType> signature) {
+    public static Declaration findMatchingOverloadedClass(Class abstractionClass, 
+    		List<ProducedType> signature) {
         List<Declaration> results = new ArrayList<Declaration>();
-        
-        if (! abstractionClass.isAbstraction()) {
+        if (!abstractionClass.isAbstraction()) {
             return abstractionClass;
         }
-        for (Declaration overloaded : abstractionClass.getOverloads()) {
+        for (Declaration overloaded: abstractionClass.getOverloads()) {
             if (hasMatchingSignature(signature, overloaded, false)) {
                 addIfBetterMatch(results, overloaded);
             }

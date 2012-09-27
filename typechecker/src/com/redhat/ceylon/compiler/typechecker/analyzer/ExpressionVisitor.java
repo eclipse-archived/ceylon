@@ -2929,17 +2929,15 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-	static TypeDeclaration getSupertypeTypeDeclaration(
-			Tree.BaseTypeExpression that, SupertypeQualifier sq) {
-		TypeDeclaration type;
+	static TypeDeclaration getSupertypeTypeDeclaration(Tree.BaseTypeExpression that, 
+			SupertypeQualifier sq) {
 		Declaration dec = getSupertypeDeclaration(that, sq);
 		if (dec instanceof TypeDeclaration) {
-			type = (TypeDeclaration) dec;
+			return (TypeDeclaration) dec;
 		}
 		else {
-			type = null;
+			return null;
 		}
-		return type;
 	}
         
     @Override public void visit(Tree.ExtendedTypeExpression that) {
