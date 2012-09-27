@@ -8,22 +8,32 @@ import java.io.Reader;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.ConfigParser;
 import com.redhat.ceylon.common.config.ConfigWriter;
 
 public class ConfigWriterTest {
 
-    File testFile;
-    CeylonConfig testConfig;
+    private File testFile;
+    private File testDir;
+    private CeylonConfig testConfig;
     
     @Before
     public void setup() throws IOException {
         testFile = new File("test/src/com/redhat/ceylon/common/test/writer.config");
         testConfig = ConfigParser.loadOriginalConfigFromFile(testFile);
+        testDir = new File("tmp-test-files");
+        testDir.mkdirs();
+    }
+    
+    @After
+    public void teardown() throws IOException {
+        FileUtil.delete(testDir);
     }
     
     @Test
@@ -68,6 +78,27 @@ public class ConfigWriterTest {
         Assert.assertEquals(contents, out.toString("UTF-8"));
     }
 
+    @Test
+    public void testWritingAndOverwriting() {
+        try {
+            File configFile = new File(testDir, ".ceylon/config");
+            
+            CeylonConfig testConfigCopy = testConfig.copy();
+            testConfigCopy.setOption("test.quasar", "PKS 1127-145");
+            ConfigWriter.write(testConfigCopy, configFile);
+            
+            CeylonConfig localDirConfig = ConfigParser.loadLocalConfig(testDir);
+            localDirConfig.setOption("test.pulsar", "CP 1919");
+            ConfigWriter.write(localDirConfig, configFile);
+            
+            String contents1 = readFile(new File("test/src/com/redhat/ceylon/common/test/writer-overwriting.config"));
+            String contents2 = readFile(configFile);
+            Assert.assertEquals(contents1, contents2);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }        
+    }
+    
     private String readFile(File file) {
         try {
             Reader reader = new FileReader(file);
