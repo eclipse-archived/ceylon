@@ -22,8 +22,10 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -66,6 +68,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.DiagnosticSource;
@@ -285,9 +288,6 @@ public class StatementTransformer extends AbstractTransformer {
         protected List<JCStatement> transformInnermost(Condition condition) {
             Cond transformedCond = transformedCondition(condition, thenPart);
             JCBlock thenBlock = transformedCond.makeThenBlock();
-            List<JCStatement> stmts = List.<JCStatement>of(
-                    //make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))), 
-                    thenBlock);
             return transformCommon(transformedCond, thenBlock.getStatements());
         }
         
@@ -300,12 +300,10 @@ public class StatementTransformer extends AbstractTransformer {
                 varDecls.append(transformedCond.makeTestVarDecl(true));
             }
             JCVariableDecl resultVarDecl = transformedCond.makeResultVarDecl(false);
-            
             if (resultVarDecl != null) {
                 varDecls.append(resultVarDecl);
                 stmts = stmts.prepend(transformedCond.makeResultVarAssignment());
             }
-            
             stmts = List.<JCStatement>of(make().If(
                     transformedCond.makeTest(), 
                     make().Block(0, stmts), 
@@ -319,15 +317,189 @@ public class StatementTransformer extends AbstractTransformer {
             result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
             result.appendList(varDecls);
             result.appendList(stmts);
-            //result.append(make().If(ifVar.makeIdent(), thenBlock, StatementTransformer.this.transform(elsePart)));
+            return result.toList();   
+        }
+    }
+    
+    List<JCStatement> transform(Tree.Assertion ass) {
+        java.util.List<Condition> conditions = ass.getConditionList().getConditions();
+        if (conditions.size() == 1) {
+            return transformSingleAssertion(ass, conditions);
+        } else {
+            return new AssertCondList(ass).getResult();
+        }    
+    }
+
+    private List<JCStatement> transformSingleAssertion(Tree.Assertion ass,
+            java.util.List<Condition> conditions) {
+        final Cond transformedCond = transformedCondition(conditions.get(0), null);
+        ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
+        if (transformedCond.makeTestVarDecl(false) != null) {
+            result.add(transformedCond.makeTestVarDecl(false));
+        }
+        JCThrow assertionFailure = makeThrowAssertionFailure(
+                prependFailureMessage(
+                        appendLocation(
+                                appendViolation(
+                                        null, 
+                                        transformedCond), 
+                                ass), 
+                        ass));
+        result.add(make().If(make().Unary(JCTree.NOT, transformedCond.makeTest()), 
+                assertionFailure, null));
+        if (transformedCond.makeResultVarDecl(true) != null) {
+            result.add(transformedCond.makeResultVarDecl(true));
+        }
+        return result.toList();
+    }
+    
+    class AssertCondList extends CondList {
+        private final Tree.Assertion ass;
+        private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+        private final SyntheticName messageSb = naming.temp("assert");
+        private List<Cond> unassignedResultVars = List.<Cond>nil();
+        private final LinkedHashMap<SyntheticName, Cond> testVars = new LinkedHashMap<SyntheticName, Cond>();
+        private final Map<Tree.Condition, Cond> conds;
+        
+        public AssertCondList(Tree.Assertion ass) {
+            super(ass.getConditionList().getConditions(), null);
+            this.ass = ass;
+            this.conds = new HashMap<>(ass.getConditionList().getConditions().size());
+            for (Tree.Condition condition : ass.getConditionList().getConditions()) {
+                this.conds.put(condition, transformedCondition(condition, null));   
+            }
+        }     
+
+        @Override
+        protected List<JCStatement> transformInnermost(Tree.Condition condition) {
+            Cond transformedCond = transformedCondition(condition, null);
+            List<JCStatement> stmts = List.<JCStatement>nil();
+            return transformCommon(transformedCond, stmts, Collections.<Tree.Condition>emptyList());
+        }
+        
+        protected List<JCStatement> transformIntermediate(Tree.Condition condition, java.util.List<Tree.Condition> rest) {
+            return transformCommon(transformedCondition(condition, null), transformList(rest), rest);
+        }
+        
+        protected List<JCStatement> transformCommon(Cond cond, List<JCStatement> stmts, java.util.List<Tree.Condition> rest) {
+            if (cond.hasResultDecl()) {
+                unassignedResultVars = unassignedResultVars.append(cond);
+                varDecls.append(cond.makeResultVarDecl(false));
+                stmts = stmts.prepend(cond.makeResultVarAssignment());
+            }
+            
+            List<JCStatement> elseStmts = List.<JCStatement>nil();
+            for (Cond resultVar : unassignedResultVars) {
+                elseStmts = elseStmts.append(resultVar.makeResultVarDefaultAssignment());    
+            }
+            
+            elseStmts = elseStmts.append(make().If(make().Binary(JCTree.EQ, messageSb.makeIdent(), makeNull()), 
+                    make().Exec(make().Assign(messageSb.makeIdent(), make().Literal(""))), 
+                    null));
+            elseStmts = elseStmts.append(
+                    make().Exec(appendViolation(messageSb, cond)));
+            for (Tree.Condition condition : rest) {
+                Cond forwardCond = this.conds.get(condition);
+                if (forwardCond.getVariable() == null) {
+                    elseStmts = elseStmts.append(
+                        make().If(make().Unary(JCTree.NOT, forwardCond.makeTest()),
+                                make().Exec(appendViolation(messageSb, forwardCond)),
+                                        null));
+                } else {
+                    break;
+                }
+            }
+            
+            
+            stmts = List.<JCStatement>of(make().If(
+                    cond.makeTest(), 
+                    make().Block(0, stmts), 
+                    elseStmts.isEmpty() ? null : make().Block(0, elseStmts)));
+            
+            if (cond.makeTestVarDecl(true) != null) {
+                stmts = stmts.prepend(cond.makeTestVarDecl(true));
+            }
+            return stmts;
+        }
+        
+        public List<JCStatement> getResult() {
+            List<JCStatement> stmts = transformList(conditions);
+            ListBuffer<JCStatement> result = ListBuffer.lb();
+            result.append(makeVar(messageSb, make().Type(syms().stringType), makeNull()));
+            result.appendList(varDecls);
+            result.appendList(stmts);
+            JCExpression message = prependFailureMessage(appendLocation(messageSb.makeIdent(), ass), ass);
+            result.append(make().If(
+                    make().Binary(JCTree.NE, messageSb.makeIdent(), makeNull()), 
+                    makeThrowAssertionFailure(message), null));
             return result.toList();   
         }
     }
 
+    private JCExpression cat(JCExpression str1, JCExpression str2) {
+        return make().Binary(JCTree.PLUS, str1, str2);
+    }
+    
+    private JCExpression cat(JCExpression strExpr, String literal) {
+        return cat(strExpr, make().Literal(literal));
+    }
+    
+    private JCExpression cat(String literal, JCExpression strExpr) {
+        return cat(make().Literal(literal), strExpr);
+    }
+    
+    private JCExpression newline() {
+        return make().Apply(null, 
+                makeQualIdent(makeIdent(syms().systemType), "lineSeparator"), 
+                List.<JCExpression>nil());   
+    }
+    
+    private JCExpression prependFailureMessage(JCExpression expr, Tree.Assertion ass) {
+        JCExpression p = make().Literal("Assertion failed");
+        String docText = getDocAnnotationText(ass);
+        if (docText != null) {
+            p = cat(p, ": " + docText);
+        }
+        p = cat(p, newline());
+        return cat(p, expr);
+    }
+    
+    private JCExpression appendViolation(SyntheticName messageSb, Cond cond) {
+        JCExpression result = make().Literal("\tviolated ");
+        if (messageSb != null) {
+            result = cat(messageSb.makeIdent(), result);
+        }
+        result = cat(result, make().Literal(getSourceCode(cond.getCondition())));
+        result = cat(result, newline());
+        if (messageSb != null) {
+            return make().Assign(messageSb.makeIdent(), result);
+        }
+        return result;
+    }
+    
+    private JCExpression appendLocation(JCExpression expr, Tree.Assertion ass) {
+        String location = ass.getUnit().getFilename() + ":" + ass.getLocation();
+        JCExpression result = cat(expr, "\tat ");
+        return cat(result, location);
+    }
+    
+    private JCThrow makeThrowAssertionFailure(JCExpression expr) {
+        //TODO proper exception type
+        JCExpression exception = make().NewClass(null, null,
+                makeIdent(syms().ceylonExceptionType),
+                List.<JCExpression>of(boxType(expr, typeFact().getStringDeclaration().getType()), makeNull()),
+                null);
+        return make().Throw(exception);
+    }
+    
     interface Cond {
 
         public JCVariableDecl makeResultVarDecl(boolean init);
         
+        public Tree.Condition getCondition();
+        
+        public Tree.Variable getVariable();
+
         public boolean hasResultDecl();
 
         public JCStatement makeResultVarDefaultAssignment();
@@ -347,7 +519,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected final String name;
         protected final ProducedType toType;
         protected final Expression specifierExpr;
-        protected final Naming.SyntheticName tmpVarName;
+        protected final Naming.SyntheticName testVar;
         protected final Tree.Variable variable;
         SpecialFormCond(
                 C cond,
@@ -361,8 +533,18 @@ public class StatementTransformer extends AbstractTransformer {
             this.name = name;
             this.toType = toType;
             this.specifierExpr = specifierExpr;
-            this.tmpVarName = tmpVarName;
+            this.testVar = tmpVarName;
             this.variable = variable;
+        }
+        
+        @Override
+        public C getCondition() {
+            return cond;
+        }
+        
+        @Override
+        public Tree.Variable getVariable() {
+            return variable;
         }
         
         @Override
@@ -426,7 +608,7 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public JCStatement makeTestVarDecl(boolean init) {
             // Temporary variable holding the result of the expression/variable to test
-            return makeVar(tmpVarName, makeResultType(), init ? makeNull() : null);
+            return makeVar(testVar, makeResultType(), init ? makeNull() : null);
         }
 
         protected abstract JCExpression makeResultType();
@@ -462,17 +644,17 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public JCExpression makeTest() {
-         // no need to cast for erasure here
+            // no need to cast for erasure here
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             at(cond);
             if (isNothing(toType)) {
                 return make().Binary(JCTree.EQ, expr, makeNull());
             } else {
                 // Assign the expression to test to the temporary variable
-                JCExpression firstTimeTestExpr = make().Assign(tmpVarName.makeIdent(), expr);
+                JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
                 
                 // Test on the tmpVar in the following condition
-                return makeTypeTest(firstTimeTestExpr, tmpVarName,
+                return makeTypeTest(firstTimeTestExpr, testVar,
                         // only test the types we're testing for, not the type of
                         // the variable (which can be more precise)
                         cond.getType().getTypeModel());
@@ -497,7 +679,7 @@ public class StatementTransformer extends AbstractTransformer {
             // Want raw type for instanceof since it can't be used with generic types
             JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
             // Substitute variable with the correct type to use in the rest of the code block
-            JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+            JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, testVar.makeIdent());
             if (canUnbox(toType)) {
                 return unboxType(castedExpr, toType);
             } 
@@ -533,7 +715,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeResultExpr() {
-            return unboxType(tmpVarName.makeIdent(), toType);
+            return unboxType(testVar.makeIdent(), toType);
         }
         
         @Override
@@ -553,7 +735,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             at(cond);
             // Assign the expression to test to the temporary variable
-            JCExpression firstTimeTestExpr = make().Assign(tmpVarName.makeIdent(), expr);
+            JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
             // Test on the tmpVar in the following condition
             return make().Binary(JCTree.NE, firstTimeTestExpr, makeNull());
         }
@@ -577,7 +759,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeResultExpr() {
-            return make().TypeCast(makeTypeExpr(), tmpVarName.makeIdent());
+            return make().TypeCast(makeTypeExpr(), testVar.makeIdent());
         }
         
         @Override
@@ -592,9 +774,9 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             at(cond);
             // Assign the expression to test to the temporary variable
-            JCExpression firstTimeTestExpr = make().Assign(tmpVarName.makeIdent(), expr);
+            JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
             // Test on the tmpVar in the following condition
-            return makeNonEmptyTest(firstTimeTestExpr, tmpVarName);
+            return makeNonEmptyTest(firstTimeTestExpr, testVar);
         }
     }
     
@@ -645,6 +827,16 @@ public class StatementTransformer extends AbstractTransformer {
         public boolean hasResultDecl() {
             return false;
         }
+
+        @Override
+        public Condition getCondition() {
+            return cond;
+        }
+
+        @Override
+        public Variable getVariable() {
+            return null;
+        }
     }
     
     Cond transformedCondition(Tree.Condition cond, Tree.Block thenPart) {
@@ -658,32 +850,6 @@ public class StatementTransformer extends AbstractTransformer {
             return new BooleanCond((Tree.BooleanCondition)cond, thenPart);
         }
         throw new RuntimeException();
-    }
-    
-    List<JCStatement> transform(Tree.Assertion ass) {
-        ListBuffer<JCStatement> rval = new ListBuffer<JCStatement>();
-        java.util.List<Condition> conditions = ass.getConditionList().getConditions();
-        if (conditions.size() == 1) {
-            final Cond transformedCond = transformedCondition(conditions.get(0), null);
-            if (transformedCond.makeTestVarDecl(false) != null) {
-                rval.add(transformedCond.makeTestVarDecl(false));
-            }
-            //Get the custom message
-            String message = buildAssertionMessage(ass);
-            
-            //TODO proper exception type, include expression, etc
-            JCExpression t = make().NewClass(null, null,
-                    makeIdent(syms().ceylonExceptionType),
-                    List.<JCExpression>of(boxType(make().Literal(message), typeFact().getStringDeclaration().getType()), makeNull()),
-                    null);
-            rval.add(make().If(make().Unary(JCTree.NOT, transformedCond.makeTest()), make().Throw(t), null));
-            if (transformedCond.makeResultVarDecl(true) != null) {
-                rval.add(transformedCond.makeResultVarDecl(true));
-            }
-        } else {
-            
-        }
-        return rval.toList();
     }
 
     private String buildAssertionMessage(Tree.Assertion ass) {
