@@ -24,11 +24,11 @@ class MethodWhile {
         while ((
             let
             {
-                boolean $ceylontmp3 = ($c$1 = cont) != null;
+                boolean $ceylontmp2 = ($c$1 = cont) != null;
             }
-            returning $ceylontmp3;
+            returning $ceylontmp2;
         )) {
-            final boolean $c$2 = $c$1.booleanValue();
+            final boolean $c$3 = $c$1.booleanValue();
             cont = null;
         }
     }
@@ -39,11 +39,11 @@ class MethodWhile {
         while ((
             let
             {
-                boolean $ceylontmp6 = ($s$4 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty();
+                boolean $ceylontmp5 = ($s$4 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty();
             }
-            returning $ceylontmp6;
+            returning $ceylontmp5;
         )) {
-            final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$5 = (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)$s$4;
+            final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$6 = (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)$s$4;
             seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
         }
     }
@@ -54,11 +54,11 @@ class MethodWhile {
         while ((
             let
             {
-                boolean $ceylontmp9 = ($i$7 = int) instanceof .ceylon.language.Integer;
+                boolean $ceylontmp8 = ($i$7 = int) instanceof .ceylon.language.Integer;
             }
-            returning $ceylontmp9;
+            returning $ceylontmp8;
         )) {
-            final long $i$8 = ((.ceylon.language.Integer)$i$7).longValue();
+            final long $i$9 = ((.ceylon.language.Integer)$i$7).longValue();
             int = .ceylon.language.String.instance("");
         }
     }

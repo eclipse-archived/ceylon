@@ -18,4 +18,45 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer[] forIfIf = { for (x in 1..10) if (x%2==0) if (x>5) x };
+class MethodWhileConditionList() {
+    void m1(Integer x) {
+        variable value a := 0;
+        while (x > 0, x < 10) {
+            a += x;
+        } 
+    }
+    void m2(Void x, Integer z) {
+        variable value a := 0;
+        while (is Integer y = x, y > 0, z < 10) {
+            a += y;
+        } 
+    }
+    
+    void m3(Void x, Integer z) {
+        variable value a := 0;
+        while (z < 10, is Integer y = x, y > 0) {
+            a += y;
+        } 
+    }
+    
+    void m4(Void x, Integer z) {
+        variable value a := 0;
+        while (z < 10, z > 0, is Integer y = x) {
+            a += y;
+        } 
+    }
+    
+    void m5(Void[] x) {
+        variable value a := 0;
+        while (nonempty x, is Integer y = x[0], y > 0) {
+            a += y;
+        } 
+    }
+    
+    void m6(Void[] x) {
+        variable value a := 0;
+        if (exists x[0], is Integer y = x, y > 0) {
+            a += y;
+        } 
+    }
+}

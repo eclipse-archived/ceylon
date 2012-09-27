@@ -1,21 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-@.com.redhat.ceylon.compiler.java.metadata.Method
 final class assertionSimple_ {
     
     private assertionSimple_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
     static void assertionSimple() {
-        if (!(2L + 2L == 4L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed: \"should be 4\"\n\tat AssertionSimple.ceylon:3:10-3:17\n\texpression (2+2==4)"), null);
+        if (!(2L + 2L == 4L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + ": \"should be 4\"" + .java.lang.System.lineSeparator() + ("\tviolated " + "2+2==4" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSimple.ceylon:22:4-23:18")), null);
         final long i = 5L;
-        if (!(i < 10L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSimple.ceylon:5:10-5:15\n\texpression (i<10)"), null);
-        if (!(i < 10L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSimple.ceylon:6:10-8:10\n\texpression (i\n<\n        10)"), null);
+        if (!(i < 10L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "i<10" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSimple.ceylon:25:4-25:16")), null);
+        if (!(i < 10L)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "i\n<\n        10" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSimple.ceylon:26:4-28:11")), null);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.statement.conditional.assertionSimple_.assertionSimple();

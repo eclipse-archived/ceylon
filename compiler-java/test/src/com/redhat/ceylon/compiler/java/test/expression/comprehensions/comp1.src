@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-final class x_ {
+final class comp1_ {
     
-    private x_() {
+    private comp1_() {
     }
     private static final .ceylon.language.Iterable<? extends .ceylon.language.String>[] value;
     static {
@@ -33,7 +33,7 @@ final class x_ {
         }.getSequence()};
     }
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.String> getX() {
+    static .ceylon.language.Iterable<? extends .ceylon.language.String> getComp1() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

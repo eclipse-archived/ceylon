@@ -13,18 +13,18 @@ class MethodForElse {
             while ((
                 let
                 {
-                    boolean $ceylontmp6 = true;
+                    boolean $ceylontmp3 = true;
                 }
-                returning $ceylontmp6;
+                returning $ceylontmp3;
             )) {
-                boolean $doforelse$3 = true;
-                .java.lang.Object $elem$4;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> $t$iter$5 = seq.getIterator(); !(($elem$4 = $t$iter$5.next()) instanceof .ceylon.language.Finished); ) {
-                    final .java.lang.String t = ((.ceylon.language.String)$elem$4).toString();
-                    $doforelse$3 = false;
+                boolean $doforelse$4 = true;
+                .java.lang.Object $elem$5;
+                for (.ceylon.language.Iterator<? extends .ceylon.language.String> $t$iter$6 = seq.getIterator(); !(($elem$5 = $t$iter$6.next()) instanceof .ceylon.language.Finished); ) {
+                    final .java.lang.String t = ((.ceylon.language.String)$elem$5).toString();
+                    $doforelse$4 = false;
                     break;
                 }
-                if ($doforelse$3) {
+                if ($doforelse$4) {
                     return 1L;
                 }
                 break;

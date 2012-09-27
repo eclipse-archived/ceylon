@@ -1,14 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-@.com.redhat.ceylon.compiler.java.metadata.Method
-final class c_ {
+final class existsCond_ {
     
-    private c_() {
+    private existsCond_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
-    static void c() {
+    static void existsCond() {
         final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .ceylon.language.ArraySequence<.ceylon.language.String>(null, .ceylon.language.String.instance("a"), null, .ceylon.language.String.instance("b"), null);
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character>(){
             
@@ -28,32 +25,43 @@ final class c_ {
                         }
                         return true;
                     }
-                    private .ceylon.language.String $x$1;
+                    private .java.lang.String $x$1;
                     
                     private final boolean next1() {
-                        while (this.x() && ($x$1 = x) == null) {
+                        while (true) {
+                            if (!this.x()) break;
+                            .ceylon.language.String $x$2 = null;
+                            if (($x$2 = x) != null) {
+                                $x$1 = $x$2.toString();
+                                break;
+                            }
                         }
                         return !x$exhausted;
                     }
-                    private .ceylon.language.Character $c$2;
+                    private int $c$3;
                     
                     private final boolean next2() {
-                        while (this.next1() && ($c$2 = .ceylon.language.String.instance(.ceylon.language.String.initial($x$1.toString(), 1L)).item(.ceylon.language.Integer.instance(0L))) == null) {
+                        while (true) {
+                            if (!this.next1()) break;
+                            .ceylon.language.Character $c$4 = null;
+                            if (($c$4 = .ceylon.language.String.instance(.ceylon.language.String.initial($x$1, 1L)).item(.ceylon.language.Integer.instance(0L))) != null) {
+                                $c$3 = $c$4.intValue();
+                                break;
+                            }
                         }
                         return !x$exhausted;
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$2.intValue())) : .ceylon.language.exhausted_.getExhausted();
+                        return this.next2() ? .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$3)) : .ceylon.language.exhausted_.getExhausted();
                     }
                 };
             }
         }.getSequence());
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.comprehensions.c_.c();
+        .com.redhat.ceylon.compiler.java.test.expression.comprehensions.existsCond_.existsCond();
     }
 }

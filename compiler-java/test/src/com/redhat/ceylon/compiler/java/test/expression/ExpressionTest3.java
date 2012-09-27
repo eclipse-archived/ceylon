@@ -10,10 +10,25 @@ public class ExpressionTest3 extends CompilerTest {
     public void testComprehensions1() {
         compareWithJavaSource("comprehensions/comp1");
     }
+    
+    @Test
+    public void testComprehensions2() {
+        compareWithJavaSource("comprehensions/comp2");
+    }
 
     @Test
     public void testComprehensionForForIf() {
         compareWithJavaSource("comprehensions/for_for_if");
+    }
+    
+    @Test
+    public void testComprehensionForForIfBooleanConditions() {
+        compareWithJavaSource("comprehensions/ForForIfBooleanConditions");
+    }
+    
+    @Test
+    public void testComprehensionForIfIsBooleanConditions() {
+        compareWithJavaSource("comprehensions/ForIfIsBooleanConditions");
     }
 
     @Test
@@ -27,8 +42,13 @@ public class ExpressionTest3 extends CompilerTest {
     }
 
     @Test
-    public void testComprehensionIs() {
+    public void testComprehensionIsCond() {
         compareWithJavaSource("comprehensions/is_cond");
+    }
+    
+    @Test
+    public void testComprehensionIs() {
+        compareWithJavaSource("comprehensions/Is");
     }
 
     @Test

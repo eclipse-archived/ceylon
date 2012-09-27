@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer[] forIfIf = { for (x in 1..10) if (x%2==0) if (x>5) x };
+Integer[] forForIfBooleanConditions = { for (y in 1..5) for (x in 1..5) if (x>y, y > 2) x*y };

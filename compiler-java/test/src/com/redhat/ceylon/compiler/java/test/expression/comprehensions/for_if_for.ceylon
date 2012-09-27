@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer[] x = { for (x in 1..6) if (x % 2 == 0) for (y in 1..3) x*y };
+Integer[] forIfFor = { for (x in 1..6) if (x % 2 == 0) for (y in 1..3) x*y };

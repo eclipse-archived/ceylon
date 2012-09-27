@@ -18,4 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer[] forIfIf = { for (x in 1..10) if (x%2==0) if (x>5) x };
+void comp2(Integer[] ints) {
+    value i = {for (i in ints) for (j in ints) i*2+3/j };
+}
