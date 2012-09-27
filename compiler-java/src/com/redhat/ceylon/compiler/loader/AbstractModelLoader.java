@@ -1921,7 +1921,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     // TypeParsing and ModelLoader
 
     private ProducedType decodeType(String value, Scope scope) {
-        return typeParser.decodeType(value, scope);
+        try{
+            return typeParser.decodeType(value, scope);
+        }catch(TypeParserException x){
+            logError(x.getMessage());
+        }catch(ModelResolutionException x){
+            logError(x.getMessage());
+        }
+        return new UnknownType(typeFactory).getType();
     }
     
     /** Warning: only valid for toplevel types, not for type parameters */
