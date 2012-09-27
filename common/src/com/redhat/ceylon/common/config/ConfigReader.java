@@ -73,7 +73,7 @@ public class ConfigReader {
 
     private void handleSection() throws IOException {
         expect('[');
-        section = readName(true).toLowerCase();
+        section = readName(true);
         if (!section.matches("[\\p{L}\\p{Nd}]+(\\.[\\p{L}\\p{Nd}]+)*")) {
             throw new InvalidPropertiesFormatException("Invalid section name in configuration file at line " + (counterdr.getLineNumber() + 1));
         }
