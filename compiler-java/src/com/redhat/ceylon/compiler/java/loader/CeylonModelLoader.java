@@ -232,7 +232,11 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     classSymbol = lookupInnerClass(classSymbol, name.substring(outerName.length()+1).split("\\."));
                 if(classSymbol != null && classSymbol.classfile == null && classSymbol.sourcefile == null){
                     // try to complete it if that changes anything
-                    classSymbol.complete();
+                    try{
+                        classSymbol.complete();
+                    }catch(CompletionFailure x){
+                        // if we can't complete it it doesn't exist, its classfile will remain null
+                    }
                     if(classSymbol.classfile == null){
                         PackageSymbol pkg = classSymbol.packge();
                         // do not log an error for missing oracle jdk stuff
