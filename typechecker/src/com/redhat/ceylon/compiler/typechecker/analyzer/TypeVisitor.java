@@ -714,7 +714,7 @@ public class TypeVisitor extends Visitor {
                             Collections.<ProducedType>emptyList()).getFullType();
                     param.setType(ft);
                     if (sie!=null) {
-                        sie.addError("has matching initializer parameter: " + dec.getName());
+                        sie.addError("function is an initializer parameter and may not have an initial value: " + dec.getName());
                     }
                 }
             }
@@ -734,7 +734,7 @@ public class TypeVisitor extends Visitor {
                         ((ValueParameter) param).isHidden()) {
                     param.setType(dec.getType());
                     if (sie!=null) {
-                        sie.addError("has matching initializer parameter: " + dec.getName());
+                        sie.addError("attribute is an initializer parameter and may not have an initial value: " + dec.getName());
                     }
                 }
             }
