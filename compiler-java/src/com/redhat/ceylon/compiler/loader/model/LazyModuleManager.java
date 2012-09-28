@@ -57,6 +57,7 @@ public abstract class LazyModuleManager extends ModuleManager {
                 return;
             }
         }
+        
         if(isModuleLoadedFromSource(moduleName)){
             super.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies);
         }else{
