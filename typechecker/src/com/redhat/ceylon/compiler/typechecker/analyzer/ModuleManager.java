@@ -15,6 +15,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
@@ -69,10 +70,9 @@ public class ModuleManager {
 
             //build default module (module in which packages belong to when not explicitly under a module
             final List<String> defaultModuleName = Collections.singletonList(Module.DEFAULT_MODULE_NAME);
-            final Module defaultModule = createModule(defaultModuleName);
+            final Module defaultModule = createModule(defaultModuleName, "unversioned");
             defaultModule.setDefault(true);
             defaultModule.setAvailable(true);
-            defaultModule.setVersion("unversioned");
             bindPackageToModule(emptyPackage, defaultModule);
             modules.getListOfModules().add(defaultModule);
             modules.setDefaultModule(defaultModule);
@@ -80,7 +80,7 @@ public class ModuleManager {
             //create language module and add it as a dependency of defaultModule
             //since packages outside a module cannot declare dependencies
             final List<String> languageName = Arrays.asList("ceylon", "language");
-            Module languageModule = createModule(languageName);
+            Module languageModule = createModule(languageName, TypeChecker.LANGUAGE_MODULE_VERSION);
             languageModule.setLanguageModule(languageModule);
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
@@ -94,9 +94,10 @@ public class ModuleManager {
         }
     }
 
-    protected Module createModule(List<String> moduleName) {
+    protected Module createModule(List<String> moduleName, String version) {
 		Module module = new Module();
 		module.setName(moduleName);
+		module.setVersion(version);
 		return module;
 	}
 
@@ -132,8 +133,7 @@ public class ModuleManager {
             }
         }
         if (module == null) {
-            module = createModule(moduleName);
-            module.setVersion(version);
+            module = createModule(moduleName, version);
             module.setLanguageModule(modules.getLanguageModule());
             moduleList.add(module);
         }
