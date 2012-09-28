@@ -61,6 +61,14 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.first = 0;
     }
 
+    private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
+    
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+        return correspondence$impl;
+    }
+
     @Override
     public Element getFirst() {
         return array[(int) first];

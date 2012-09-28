@@ -38,6 +38,14 @@ public abstract class String
         value = s;
     }
 
+    private Correspondence$impl<Integer,Character> correspondence$impl = new Correspondence$impl<Integer,Character>(this);
+    
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Character> $ceylon$language$Correspondence$impl(){
+        return correspondence$impl;
+    }
+
     @Override
     public java.lang.String toString() {
         return value;

@@ -36,6 +36,14 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         this.array = array;
     }
 
+    private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
+    
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+        return correspondence$impl;
+    }
+
     @Ignore
     public static Array<Character> instance(char[] array) {
         if (array.length == 0) {

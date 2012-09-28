@@ -10,6 +10,14 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 public class empty_ {
     private final static Empty value = new Empty() {
 
+        private Correspondence$impl<Integer,java.lang.Object> correspondence$impl = new Correspondence$impl<Integer,java.lang.Object>(this);
+        
+        @Ignore
+        @Override
+        public Correspondence$impl<? super Integer,? extends java.lang.Object> $ceylon$language$Correspondence$impl(){
+            return correspondence$impl;
+        }
+        
         @Override
         @Ignore
         public Category getKeys() {

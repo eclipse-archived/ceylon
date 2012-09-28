@@ -334,4 +334,7 @@ public interface Correspondence<Key,Item> {
             return List$impl._withTrailing(this, e);
         }
     }
+
+    @com.redhat.ceylon.compiler.java.metadata.Ignore
+    public ceylon.language.Correspondence$impl<? super Key, ? extends Item> $ceylon$language$Correspondence$impl();
 }

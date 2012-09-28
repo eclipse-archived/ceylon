@@ -37,6 +37,12 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
         this.entries = entries;
     }
 
+    @Ignore
+    @Override
+    public Correspondence$impl<? super java.lang.Object,? extends Item> $ceylon$language$Correspondence$impl(){
+        return (Correspondence$impl)corr$impl;
+    }
+
     @Override
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Nothing|Item")

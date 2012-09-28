@@ -33,6 +33,12 @@ public class LazyList<Element> implements List<Element> {
         this.elems = elems;
     }
 
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+        return corr$impl;
+    }
+
     @Override @Ignore
     public boolean getEmpty() {
         return elems.getEmpty();

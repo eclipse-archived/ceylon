@@ -36,6 +36,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         this.size = Math.abs(last.distanceFrom(first))+1;
     }
 
+    private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
+    
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+        return correspondence$impl;
+    }
+
     @Override
     public final Element getFirst(){
         return first;
