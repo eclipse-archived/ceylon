@@ -50,10 +50,12 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
     var parts = window.location.search.substr(1).replace('+', ' ').split('&');
     if (parts.length > 0) {
         var argStrings = new Array(parts.length);
-        for (i in parts) { argStrings[i] = String$(parts[i]); }
+        //can't do "for (i in parts)" anymore because of the added stuff to arrays
+        var i;
+        for (i=0; i<parts.length; i++) { argStrings[i] = String$(parts[i]); }
         argv = ArraySequence(argStrings);
         
-        for (i in parts) {
+        for (i=0; i < parts.length; i++) {
             var part = parts[i];
             var pos = part.indexOf('=');
             if (pos >= 0) {
