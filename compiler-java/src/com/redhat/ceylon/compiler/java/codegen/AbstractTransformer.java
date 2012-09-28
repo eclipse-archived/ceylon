@@ -1400,10 +1400,8 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
         for(ModuleImport dependency : module.getImports()){
             Module dependencyModule = dependency.getModule();
-            // do not include the implicit java module as a dependency
-            if(dependencyModule.getNameAsString().equals(AbstractModelLoader.JDK_MODULE)
-                    // nor ceylon.language
-                    || dependencyModule.getNameAsString().equals("ceylon.language"))
+            // do not include the implicit language module as a dependency
+            if(dependencyModule.getNameAsString().equals("ceylon.language"))
                 continue;
             JCExpression dependencyName = make().Assign(naming.makeUnquotedIdent("name"),
                     make().Literal(dependencyModule.getNameAsString()));
