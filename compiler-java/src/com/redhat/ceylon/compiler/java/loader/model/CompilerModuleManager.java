@@ -42,10 +42,26 @@ public class CompilerModuleManager extends LazyModuleManager {
 
     @Override
     protected Module createModule(List<String> moduleName, String version) {
-        Module module = new CompilerModule(context);
+        CompilerModule module = new CompilerModule(context);
         module.setName(moduleName);
         module.setVersion(version);
+        setupIfJDKModule(module);
         return module;
+    }
+
+    private void setupIfJDKModule(CompilerModule module) {
+        // Make sure that the java modules are set up properly.
+        // Bad jdk versions will not be made available and the module validator
+        // will fail to load their artifacts, and the error is properly handled by the lazy module manager in
+        // attachErrorToDependencyDeclaration()
+        String nameAsString = module.getNameAsString();
+        String version = module.getVersion();
+        if(version != null
+                && version.equals(AbstractModelLoader.JDK_MODULE_VERSION)
+                && AbstractModelLoader.isJDKModule(nameAsString)){
+            module.setAvailable(true);
+            module.setJava(true);
+        }
     }
 
     public CeylonEnter getCeylonEnter() {
