@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.io { OutputStream }
 
-shared class ParameterNames (JavaParameterNames n, OutputStream o) {
+shared class Any () {
 }

@@ -552,7 +552,7 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void parallelLoader(){
         // whatever test, doesn't matter
-        verifyClassLoading("ParameterNames.ceylon", new RunnableTest(){
+        verifyClassLoading("Any.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
                 // get java.lang.Integer
@@ -616,7 +616,7 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void jdkModelLoaderSpeedTest(){
         // whatever test, doesn't matter
-        verifyClassLoading("ParameterNames.ceylon", new RunnableTest(){
+        verifyClassLoading("Any.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
                 // get java.lang.Integer
