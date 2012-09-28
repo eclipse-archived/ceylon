@@ -2349,7 +2349,7 @@ condition returns [Condition condition]
       { $condition=$existsCondition.condition; }
     | (LPAREN NONEMPTY)=>nonemptyCondition
       { $condition=$nonemptyCondition.condition; }
-    | (LPAREN IS_OP)=>isCondition 
+    | (LPAREN NOT_OP? IS_OP)=>isCondition 
       { $condition=$isCondition.condition; }
     | (LPAREN SATISFIES)=>satisfiesCondition
       { $condition=$satisfiesCondition.condition; }
@@ -2419,25 +2419,27 @@ nonemptyCondition returns [Condition condition]
 
 isCondition returns [Condition condition]
     @init { IsCondition ic = null; }
-    : (LPAREN IS_OP type LIDENTIFIER RPAREN) 
+    : (LPAREN NOT_OP? IS_OP type LIDENTIFIER RPAREN) 
       => l1=LPAREN 
       { ic = new IsCondition($l1); 
         $condition = ic; }
+      (n1=NOT_OP { ic.setNot(true); })?
       i1=IS_OP t1=type impliedVariable 
       { ic.setType($t1.type);
         ic.setVariable($impliedVariable.variable); }
       r1=RPAREN
       { ic.setEndToken($r1); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | (LPAREN IS_OP type LIDENTIFIER SPECIFY)
+    | (LPAREN NOT_OP? IS_OP type LIDENTIFIER SPECIFY)
       => l2=LPAREN
       { ic = new IsCondition($l2); 
         $condition = ic; }
+      (n2=NOT_OP { ic.setNot(true); })?
       i2=IS_OP 
       ( t2=type
       { ic.setType($t2.type);
         Variable v = new Variable(null);
-        v.setType($t2.type); 
+        v.setType(new ValueModifier(null)); 
         ic.setVariable(v); }
       memberName
       { ic.getVariable().setIdentifier($memberName.identifier); }

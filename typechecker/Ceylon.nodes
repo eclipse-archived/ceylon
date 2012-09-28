@@ -379,7 +379,8 @@
 ^(IS_CONDITION:CONDITION
     TYPE
     VARIABLE
-    EXPRESSION?)
+    EXPRESSION?
+    boolean not;)
 ^(SATISFIES_CONDITION:CONDITION
     TYPE leftType
     TYPE rightType)
