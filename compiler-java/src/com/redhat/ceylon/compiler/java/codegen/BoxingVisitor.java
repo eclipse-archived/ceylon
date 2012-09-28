@@ -311,7 +311,7 @@ public abstract class BoxingVisitor extends Visitor {
                 var = ((ExistsOrNonemptyCondition)condition).getVariable();
             }
             if (var != null) {
-                var.getDeclarationModel().setUnboxed(false);
+                var.getDeclarationModel().setUnboxed(true);
             }
         }
         super.visit(that);
