@@ -73,6 +73,10 @@ public abstract class LazyModule extends Module {
             if(pkg != null)
                 return pkg;
         }
+        // never try to load java packages from the default module because it would
+        // work and appear to come from there
+        if(AbstractModelLoader.isJDKModule(name))
+            return null;
         // do the lookup of the default module last
         if(defaultModule)
             pkg = getModelLoader().findExistingPackage(this, name);
