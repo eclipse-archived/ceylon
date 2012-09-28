@@ -544,35 +544,6 @@ public class ModelLoaderTest extends CompilerTest {
     }
     
     @Test
-    public void loadParameterNames(){
-        compile("JavaParameterNames.java");
-        verifyClassLoading("ParameterNames.ceylon", new RunnableTest(){
-            @Override
-            public void test(ModelLoader loader) {
-                Declaration klass = loader.getDeclaration("com.redhat.ceylon.compiler.java.test.model.JavaParameterNames", DeclarationType.TYPE);
-                Assert.assertNotNull("Missing decl for JavaParameterNames", klass);
-                Method method = (Method) klass.getMember("m", null);
-                Assert.assertNotNull("Missing decl for JavaParameterNames.m()", method);
-                String paramName = method.getParameterLists().get(0).getParameters().get(0).getName();
-                //Assert.assertEquals("Param name mismatch", "bytes", paramName);
-
-                Declaration klass2 = loader.getDeclaration("java.io.OutputStream", DeclarationType.TYPE);
-                Assert.assertNotNull("Missing decl for OutputStream", klass2);
-                for(Declaration member : klass2.getMembers()){
-                    if(member.getName().equals("write")){
-                        Method method2 = (Method) member;
-                        Assert.assertNotNull("Missing decl for OutputStream.write()", method2);
-                        System.err.println(method2);
-                        System.err.println(method2.getParameterLists().get(0).getParameters());
-                        String paramName2 = method2.getParameterLists().get(0).getParameters().get(0).getName();
-                        //Assert.assertEquals("Param name mismatch", "bytes", paramName2);
-                    }
-                }
-            }
-        });
-    }
-    
-    @Test
     public void testTypeParserUsingSourceModel(){
         compile("A.ceylon", "B.ceylon");
         compile("A.ceylon");
