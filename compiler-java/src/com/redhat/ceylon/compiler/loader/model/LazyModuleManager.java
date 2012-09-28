@@ -84,7 +84,7 @@ public abstract class LazyModuleManager extends ModuleManager {
     }
 
     @Override
-    protected abstract Module createModule(List<String> moduleName);
+    protected abstract Module createModule(List<String> moduleName, String version);
     
     protected abstract AbstractModelLoader getModelLoader();
 

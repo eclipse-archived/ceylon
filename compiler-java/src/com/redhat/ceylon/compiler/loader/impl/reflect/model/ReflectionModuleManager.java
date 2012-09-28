@@ -64,13 +64,14 @@ public class ReflectionModuleManager extends LazyModuleManager {
     }
 
     @Override
-    protected Module createModule(List<String> moduleName) {
+    protected Module createModule(List<String> moduleName, String version) {
         Module module;
         if(isModuleLoadedFromSource(Util.getName(moduleName)))
             module = new Module();
         else
             module = new ReflectionModule(this);
         module.setName(moduleName);
+        module.setVersion(version);
         return module;
     }
 

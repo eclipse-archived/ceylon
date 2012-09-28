@@ -105,7 +105,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     }
 
     @Override
-    protected Module createModule(List<String> moduleName) {
+    protected Module createModule(List<String> moduleName, String version) {
         String name = Util.getName(moduleName);
         // never create a reflection module for ceylon.language when we're documenting it
         Module module;
@@ -115,6 +115,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
         else
             module = new ReflectionModule(this);
         module.setName(moduleName);
+        module.setVersion(version);
         return module;
     }
     

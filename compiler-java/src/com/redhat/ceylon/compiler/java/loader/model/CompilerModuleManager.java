@@ -41,9 +41,10 @@ public class CompilerModuleManager extends LazyModuleManager {
     }
 
     @Override
-    protected Module createModule(List<String> moduleName) {
+    protected Module createModule(List<String> moduleName, String version) {
         Module module = new CompilerModule(context);
         module.setName(moduleName);
+        module.setVersion(version);
         return module;
     }
 
