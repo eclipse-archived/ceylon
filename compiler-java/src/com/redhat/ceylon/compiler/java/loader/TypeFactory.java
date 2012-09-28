@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 
 public class TypeFactory extends Unit {
@@ -117,5 +118,9 @@ public class TypeFactory extends Unit {
     
     public ProducedType getCallableType(ProducedType resultType) {
         return getCallableType(Collections.<ProducedType>singletonList(resultType));
+    }
+
+    public ProducedType getUnknownType() {
+        return new UnknownType(this).getType();
     }
 }

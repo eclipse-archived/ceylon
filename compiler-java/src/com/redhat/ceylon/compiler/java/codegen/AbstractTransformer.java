@@ -1275,6 +1275,9 @@ public abstract class AbstractTransformer implements Transformation {
         final ProducedType type = producedTypedReference.getType();
         final TypedDeclaration producedParameterDecl = producedTypedReference.getDeclaration();
         final ProducedType declType = producedParameterDecl.getType();
+        // be more resilient to upstream errors
+        if(declType == null)
+            return typeFact.getUnknownType();
         final TypeDeclaration declTypeDecl = declType.getDeclaration();
         if(isJavaVariadic(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
             // type of param must be Iterable<T>

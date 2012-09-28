@@ -750,7 +750,8 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
     @Override
     protected boolean isParameterRaw(int argIndex){
         Parameter param = getParameter(argIndex);
-        return param.getType().isRaw();
+        ProducedType type = param.getType();
+        return type == null ? false : type.isRaw();
     }
     
     protected boolean hasDefaultArgument(int ii) {
