@@ -125,9 +125,10 @@ public class JsModuleManager extends ModuleManager {
     }
 
     @Override
-    protected Module createModule(List<String> moduleName) {
+    protected Module createModule(List<String> moduleName, String version) {
         Module module = new JsonModule(this);
         module.setName(moduleName);
+        module.setVersion(version);
         return module;
     }
 
