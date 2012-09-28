@@ -2212,4 +2212,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     public void setupSourceFileObjects(List<?> treeHolders) {
     }
+
+    public static boolean isJDKModule(String name) {
+        return name.equals(AbstractModelLoader.JDK_MODULE)
+                || name.equals(AbstractModelLoader.ORACLE_JDK_MODULE);
+    }
 }
