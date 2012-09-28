@@ -392,4 +392,9 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
         return corr$impl;
     }
 
+    @Override
+    @Ignore
+    public Correspondence$impl<? super java.lang.Object, ? extends Item>.Items Items$new(Sequence<? extends java.lang.Object> keys) {
+        return corr$impl.Items$new(keys);
+    }
 }

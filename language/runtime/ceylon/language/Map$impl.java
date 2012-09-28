@@ -495,6 +495,12 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
+            @Ignore
+            public Correspondence$impl<? super java.lang.Object, ? extends Set<? extends Key>>.Items Items$new(Sequence<? extends java.lang.Object> keys) {
+                return correspondence$impl.Items$new(keys);
+            }
+
+            @Override
             public Collection<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getClone() {
                 return this;
             }
@@ -805,6 +811,12 @@ public final class Map$impl<Key,Item> {
             @Override
             public Correspondence$impl<? super java.lang.Object, ? extends Result> $ceylon$language$Correspondence$impl(){
                 return correspondence$impl;
+            }
+
+            @Override
+            @Ignore
+            public Correspondence$impl<? super java.lang.Object, ? extends Result>.Items Items$new(Sequence<? extends java.lang.Object> keys) {
+                return correspondence$impl.Items$new(keys);
             }
 
             @Override @Ignore

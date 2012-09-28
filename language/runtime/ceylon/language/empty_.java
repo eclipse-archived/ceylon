@@ -17,7 +17,13 @@ public class empty_ {
         public Correspondence$impl<? super Integer,? extends java.lang.Object> $ceylon$language$Correspondence$impl(){
             return correspondence$impl;
         }
-        
+
+        @Override
+        @Ignore
+        public Correspondence$impl<? super Integer, ? extends java.lang.Object>.Items Items$new(Sequence<? extends Integer> keys) {
+            return correspondence$impl.Items$new(keys);
+        }
+
         @Override
         @Ignore
         public Category getKeys() {

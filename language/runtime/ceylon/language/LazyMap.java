@@ -23,8 +23,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     private final Iterable<? extends Entry<? extends Key,? extends Item>> entries;
     private final Map$impl<Key,Item> map$impl = new Map$impl<Key,Item>(this);
-    @SuppressWarnings("unchecked")
-    private final Correspondence$impl<Key,Item> corr$impl = new Correspondence$impl<Key,Item>((Correspondence<Key,Item>)this);
+    private final Correspondence$impl<java.lang.Object,Item> corr$impl = new Correspondence$impl<java.lang.Object,Item>(this);
     private final Category$impl cat$impl = new Category$impl((Category)this);
 
     @Ignore @SuppressWarnings("unchecked")
@@ -40,7 +39,13 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     @Ignore
     @Override
     public Correspondence$impl<? super java.lang.Object,? extends Item> $ceylon$language$Correspondence$impl(){
-        return (Correspondence$impl)corr$impl;
+        return corr$impl;
+    }
+
+    @Override
+    @Ignore
+    public Correspondence$impl<? super java.lang.Object, ? extends Item>.Items Items$new(Sequence<? extends java.lang.Object> keys) {
+        return corr$impl.Items$new(keys);
     }
 
     @Override

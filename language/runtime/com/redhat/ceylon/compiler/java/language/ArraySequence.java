@@ -70,6 +70,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
+        return correspondence$impl.Items$new(keys);
+    }
+
+    @Override
     public Element getFirst() {
         return array[(int) first];
     }

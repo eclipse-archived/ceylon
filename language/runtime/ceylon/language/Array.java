@@ -2,6 +2,8 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import ceylon.language.Correspondence$impl.Items;
+
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ArrayOfNone;
 import com.redhat.ceylon.compiler.java.language.ArrayOfSome;
@@ -42,6 +44,12 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
         return correspondence$impl;
+    }
+
+    @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
+        return correspondence$impl.Items$new(keys);
     }
 
     @Ignore

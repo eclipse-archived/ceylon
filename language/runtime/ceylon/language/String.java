@@ -47,6 +47,12 @@ public abstract class String
     }
 
     @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Character>.Items Items$new(Sequence<? extends Integer> keys) {
+        return correspondence$impl.Items$new(keys);
+    }
+
+    @Override
     public java.lang.String toString() {
         return value;
     }

@@ -39,6 +39,12 @@ public class LazyList<Element> implements List<Element> {
         return corr$impl;
     }
 
+    @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
+        return corr$impl.Items$new(keys);
+    }
+
     @Override @Ignore
     public boolean getEmpty() {
         return elems.getEmpty();

@@ -45,6 +45,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
 
     @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
+        return correspondence$impl.Items$new(keys);
+    }
+
+    @Override
     public final Element getFirst(){
         return first;
     }
