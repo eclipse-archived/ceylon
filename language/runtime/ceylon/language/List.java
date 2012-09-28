@@ -56,6 +56,20 @@ public interface List<Element>
     @Override
     public int hashCode();
 
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @TypeInfo("Element|ceylon.language.Nothing")
+    public Element findLast(@Name("selecting")
+        @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+        Callable<? extends Boolean> selecting);
+
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @TypeInfo("Element|ceylon.language.Nothing")
+    public Element getFirst();
+
+    @Annotations({@Annotation("actual"), @Annotation("default")})
+    @TypeInfo("Element|ceylon.language.Nothing")
+    public Element getLast();
+    
     @SuppressWarnings("rawtypes")
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @TypeParameters(@TypeParameter("Other"))
