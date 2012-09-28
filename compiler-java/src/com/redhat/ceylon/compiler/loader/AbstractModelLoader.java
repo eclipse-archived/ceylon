@@ -681,7 +681,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(pkg != null)
             return pkg;
         // special case for the jdk module
-        if(module.getNameAsString().equals(JDK_MODULE)){
+        if(AbstractModelLoader.isJDKModule(module.getNameAsString())){
             if(JDKPackageList.isJDKPackage(pkgName) || JDKPackageList.isOracleJDKPackage(pkgName)){
                 return findOrCreatePackage(module, pkgName);
             }
