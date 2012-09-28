@@ -101,6 +101,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     public static final String ORACLE_JDK_MODULE = "oracle";
     public static final String JDK_MODULE = "java";
+    public static final String JDK_MODULE_VERSION = "7";
     
     public static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
     private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
