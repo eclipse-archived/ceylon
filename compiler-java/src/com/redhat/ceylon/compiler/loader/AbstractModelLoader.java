@@ -261,6 +261,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         addModuleToClassPath(languageModule, null);
         Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
         typeFactory.setPackage(languagePackage);
+        
+        // make sure the jdk modules are loaded
+        findOrCreateModule(AbstractModelLoader.JDK_MODULE);
+        findOrCreateModule(AbstractModelLoader.ORACLE_JDK_MODULE);
+        
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
          */
