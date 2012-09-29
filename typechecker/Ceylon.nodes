@@ -73,6 +73,11 @@
     TYPE_CONSTRAINT_LIST?
     abstract ClassOrInterface declarationModel;)
 
+^(TYPE_ALIAS_DECLARATION: TYPE_DECLARATION
+    TYPE_CONSTRAINT_LIST?
+    TYPE_SPECIFIER?
+    TypeAlias declarationModel;)
+
 ^(SATISFIED_TYPES 
     SIMPLE_TYPE* type)
 ^(ABSTRACTED_TYPE 
@@ -97,7 +102,7 @@
     TypeParameter declarationModel;)
 
 ^(TYPE_SPECIFIER 
-    SIMPLE_TYPE type)
+    STATIC_TYPE type)
 
 ^(ANY_CLASS:CLASS_OR_INTERFACE
     PARAMETER_LIST

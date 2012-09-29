@@ -599,6 +599,29 @@ classDeclaration returns [AnyClass declaration]
       )
     ;
 
+aliasDeclaration returns [TypeAliasDeclaration declaration]
+    : ALIAS
+      { $declaration = new TypeAliasDeclaration($ALIAS);}
+      typeNameDeclaration 
+      { $declaration.setIdentifier($typeNameDeclaration.identifier); }
+      (
+        typeParameters 
+        { $declaration.setTypeParameterList($typeParameters.typeParameterList); }
+      )?
+      (
+        typeConstraints
+        { $declaration.setTypeConstraintList($typeConstraints.typeConstraintList); }
+      )?
+      (
+        typeSpecifier
+        { $declaration.setTypeSpecifier($typeSpecifier.typeSpecifier); }
+      )?
+      { expecting=SEMICOLON; }
+      SEMICOLON
+      { $declaration.setEndToken($SEMICOLON); 
+        expecting=-1; }
+    ;
+
 assertion returns [Assertion assertion]
     : annotations
       ASSERT
@@ -1015,6 +1038,8 @@ declaration returns [Declaration declaration]
       { $declaration=$classDeclaration.declaration; }
     | interfaceDeclaration
       { $declaration=$interfaceDeclaration.declaration; }
+    | aliasDeclaration
+      { $declaration=$aliasDeclaration.declaration; }
     /*| { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(CLASS_DEFINITION, input)); }
       SEMICOLON
@@ -1150,8 +1175,8 @@ continueDirective returns [Continue directive]
 typeSpecifier returns [TypeSpecifier typeSpecifier]
     : SPECIFY 
       { $typeSpecifier = new TypeSpecifier($SPECIFY); }
-      qualifiedType
-      { $typeSpecifier.setType($qualifiedType.type); }
+      type
+      { $typeSpecifier.setType($type.type); }
     //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 
@@ -3020,6 +3045,10 @@ ASSIGN
     :   'assign'
     ;
     
+ALIAS
+    :   'alias'
+    ;
+
 BREAK
     :   'break'
     ;

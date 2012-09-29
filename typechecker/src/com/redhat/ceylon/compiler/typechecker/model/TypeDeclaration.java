@@ -46,7 +46,8 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public ClassOrInterface getExtendedTypeDeclaration() {
-        if (getExtendedType()==null) {
+        if (getExtendedType()==null || 
+        		getExtendedType().getDeclaration() instanceof UnknownType) {
             return null;
         }
         else {
@@ -610,6 +611,15 @@ public abstract class TypeDeclaration extends Declaration
                 result.put(e.getKey(), e.getValue());
             }
         }
+    }
+
+    ProducedType aliasType(ProducedType outerType, List<ProducedType> typeArguments) {
+    	if (getExtendedType() == null) {
+    		return new UnknownType(unit).getType();
+    	}
+    	else {
+    		return getExtendedType().substitute(arguments(this, outerType, typeArguments));
+    	}
     }
 
 }

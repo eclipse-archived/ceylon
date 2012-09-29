@@ -584,6 +584,15 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);        
     }
     
+    @Override
+    public void visit(Tree.TypeAliasDeclaration that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
     public void visit(Tree.Return that) {
         super.visit(that);
         if (!cannotSpecify) {
