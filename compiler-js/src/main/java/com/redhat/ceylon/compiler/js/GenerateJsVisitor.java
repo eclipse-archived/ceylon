@@ -1672,8 +1672,6 @@ public class GenerateJsVisitor extends Visitor
     private void boxUnboxEnd(int boxType) {
         if (boxType== 1) {
             out(")");
-        } else if (boxType== 2) {
-            out(".value");
         }
     }
 
