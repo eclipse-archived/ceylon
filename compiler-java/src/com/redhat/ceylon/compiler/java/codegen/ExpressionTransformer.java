@@ -1301,11 +1301,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Invocations
     
     public JCExpression transform(Tree.InvocationExpression ce) {
-        // FIXME: temporary hack for hex/bin literals
-        JCExpression ret = checkForRadixLiterals(ce);
-        if(ret != null)
-            return ret;
-        ret = checkForBitwiseOperators(ce);
+        JCExpression ret = checkForInvocationExpressionOptimisation(ce);
         if(ret != null)
             return ret;
         final boolean prevInv = withinInvocation(false);
@@ -1314,84 +1310,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         } finally {
             withinInvocation(prevInv);
         }
-    }
-    
-    private JCExpression checkForBitwiseOperators(InvocationExpression ce) {
-        if(!(ce.getPrimary() instanceof Tree.QualifiedMemberExpression))
-            return null;
-        Tree.QualifiedMemberExpression qme = (QualifiedMemberExpression) ce.getPrimary();
-        // must be a positional arg (FIXME: why?)
-        if(ce.getPositionalArgumentList() == null
-                || ce.getPositionalArgumentList().getPositionalArguments() == null
-                || ce.getPositionalArgumentList().getPositionalArguments().size() != 1)
-            return null;
-        Tree.Expression right = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
-        return checkForBitwiseOperators(ce, qme, right);
-    }
-    
-    private JCExpression checkForBitwiseOperators(Tree.Term node, Tree.QualifiedMemberExpression qme, Tree.Term right) {
-        // must be a call on Integer
-        Tree.Term left = qme.getPrimary();
-        if(left == null || !isCeylonInteger(left.getTypeModel()))
-            return null;
-        // must be a supported method/attribute
-        ProducedType integerType = typeFact().getIntegerDeclaration().getType();
-        String name = qme.getIdentifier().getText();
-        String signature = "ceylon.language.Integer."+name;
-        
-        // see if we have an operator for it
-        OperatorTranslation operator = Operators.getOperator(signature);
-        if(operator != null){
-            if(operator.getArity() == 2){
-                if(right == null)
-                    return null;
-                OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(node, left, right, this);
-                // check that we can optimise it
-                if(!optimisationStrategy.useJavaOperator())
-                    return null;
-                
-                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), integerType);
-                JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), integerType);
-
-                return make().Binary(operator.javacOperator, leftExpr, rightExpr);
-            }else{
-                // must be unary
-                if(right != null)
-                    return null;
-                OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(node, left, this);
-                // check that we can optimise it
-                if(!optimisationStrategy.useJavaOperator())
-                    return null;
-                
-                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), integerType);
-
-                return make().Unary(operator.javacOperator, leftExpr);
-            }
-        }
-        return null;
-    }
-
-    private JCExpression checkForRadixLiterals(InvocationExpression ce) {
-        if(ce.getPrimary() instanceof Tree.BaseMemberExpression
-                && ce.getPositionalArgumentList() != null){
-            java.util.List<PositionalArgument> positionalArguments = ce.getPositionalArgumentList().getPositionalArguments();
-            if(positionalArguments.size() == 1
-                && positionalArguments.get(0).getExpression() != null){
-                Term term = positionalArguments.get(0).getExpression().getTerm();
-                if(term instanceof Tree.QuotedLiteral){
-                    Declaration decl = ((Tree.BaseMemberExpression)ce.getPrimary()).getDeclaration();
-                    if(decl instanceof Method){
-                        String name = decl.getQualifiedNameString();
-                        if(name.equals("ceylon.language.hex")){
-                            return transformHexLiteral((Tree.QuotedLiteral)term);
-                        }else if(name.equals("ceylon.language.bin")){
-                            return transformBinaryLiteral((Tree.QuotedLiteral)term);
-                        }
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     public JCExpression transformFunctional(Tree.Term expr,
@@ -1410,36 +1328,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public JCExpression transform(Tree.QualifiedMemberExpression expr) {
         // check for an optim
-        JCExpression ret = checkForBitwiseOperators(expr, expr, null);
-        if(ret != null)
-            return ret;
-        ret = checkForCharacterAsInteger(expr);
+        JCExpression ret = checkForQualifiedMemberExpressionOptimisation(expr);
         if(ret != null)
             return ret;
         return transform(expr, null);
     }
     
-    private JCExpression checkForCharacterAsInteger(QualifiedMemberExpression expr) {
-        // must be a call on Character
-        Tree.Term left = expr.getPrimary();
-        if(left == null || !isCeylonCharacter(left.getTypeModel()))
-            return null;
-        // must be on "integer"
-        if(!expr.getIdentifier().getText().equals("integer"))
-            return null;
-        // must be a normal member op "."
-        if(expr.getMemberOperator() instanceof Tree.MemberOp == false)
-            return null;
-        // must be unboxed
-        if(!expr.getUnboxed() || !left.getUnboxed())
-            return null;
-        // and must be a character literal
-        if(left instanceof Tree.CharLiteral == false)
-            return null;
-        // all good
-        return transform((Tree.CharLiteral)left);
-    }
-
     private JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         JCExpression result;
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
@@ -2316,6 +2210,129 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean result = this.withinSuperInvocation;
         this.withinSuperInvocation = withinSuperInvocation;
         return result;
+    }
+
+    //
+    // Optimisations
+
+    private JCExpression checkForQualifiedMemberExpressionOptimisation(QualifiedMemberExpression expr) {
+        JCExpression ret = checkForBitwiseOperators(expr, expr, null);
+        if(ret != null)
+            return ret;
+        ret = checkForCharacterAsInteger(expr);
+        if(ret != null)
+            return ret;
+        return null;
+    }
+
+    private JCExpression checkForInvocationExpressionOptimisation(InvocationExpression ce) {
+        // FIXME: temporary hack for hex/bin literals
+        JCExpression ret = checkForRadixLiterals(ce);
+        if(ret != null)
+            return ret;
+        ret = checkForBitwiseOperators(ce);
+        if(ret != null)
+            return ret;
+        return null;
+    }
+
+    private JCExpression checkForCharacterAsInteger(QualifiedMemberExpression expr) {
+        // must be a call on Character
+        Tree.Term left = expr.getPrimary();
+        if(left == null || !isCeylonCharacter(left.getTypeModel()))
+            return null;
+        // must be on "integer"
+        if(!expr.getIdentifier().getText().equals("integer"))
+            return null;
+        // must be a normal member op "."
+        if(expr.getMemberOperator() instanceof Tree.MemberOp == false)
+            return null;
+        // must be unboxed
+        if(!expr.getUnboxed() || !left.getUnboxed())
+            return null;
+        // and must be a character literal
+        if(left instanceof Tree.CharLiteral == false)
+            return null;
+        // all good
+        return transform((Tree.CharLiteral)left);
+    }
+
+    private JCExpression checkForBitwiseOperators(InvocationExpression ce) {
+        if(!(ce.getPrimary() instanceof Tree.QualifiedMemberExpression))
+            return null;
+        Tree.QualifiedMemberExpression qme = (QualifiedMemberExpression) ce.getPrimary();
+        // must be a positional arg (FIXME: why?)
+        if(ce.getPositionalArgumentList() == null
+                || ce.getPositionalArgumentList().getPositionalArguments() == null
+                || ce.getPositionalArgumentList().getPositionalArguments().size() != 1)
+            return null;
+        Tree.Expression right = ce.getPositionalArgumentList().getPositionalArguments().get(0).getExpression();
+        return checkForBitwiseOperators(ce, qme, right);
+    }
+    
+    private JCExpression checkForBitwiseOperators(Tree.Term node, Tree.QualifiedMemberExpression qme, Tree.Term right) {
+        // must be a call on Integer
+        Tree.Term left = qme.getPrimary();
+        if(left == null || !isCeylonInteger(left.getTypeModel()))
+            return null;
+        // must be a supported method/attribute
+        ProducedType integerType = typeFact().getIntegerDeclaration().getType();
+        String name = qme.getIdentifier().getText();
+        String signature = "ceylon.language.Integer."+name;
+        
+        // see if we have an operator for it
+        OperatorTranslation operator = Operators.getOperator(signature);
+        if(operator != null){
+            if(operator.getArity() == 2){
+                if(right == null)
+                    return null;
+                OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(node, left, right, this);
+                // check that we can optimise it
+                if(!optimisationStrategy.useJavaOperator())
+                    return null;
+                
+                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), integerType);
+                JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), integerType);
+
+                return make().Binary(operator.javacOperator, leftExpr, rightExpr);
+            }else{
+                // must be unary
+                if(right != null)
+                    return null;
+                OptimisationStrategy optimisationStrategy = operator.getOptimisationStrategy(node, left, this);
+                // check that we can optimise it
+                if(!optimisationStrategy.useJavaOperator())
+                    return null;
+                
+                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), integerType);
+
+                return make().Unary(operator.javacOperator, leftExpr);
+            }
+        }
+        return null;
+    }
+
+    private JCExpression checkForRadixLiterals(InvocationExpression ce) {
+        if(ce.getPrimary() instanceof Tree.BaseMemberExpression
+                && ce.getPositionalArgumentList() != null){
+            java.util.List<PositionalArgument> positionalArguments = ce.getPositionalArgumentList().getPositionalArguments();
+            if(positionalArguments.size() == 1
+                && positionalArguments.get(0).getExpression() != null){
+                Term term = positionalArguments.get(0).getExpression().getTerm();
+                if(term instanceof Tree.QuotedLiteral){
+                    Declaration decl = ((Tree.BaseMemberExpression)ce.getPrimary()).getDeclaration();
+                    if(decl instanceof Method){
+                        String name = decl.getQualifiedNameString();
+                        if(name.equals("ceylon.language.hex")){
+                            return transformHexLiteral((Tree.QuotedLiteral)term);
+                        }else if(name.equals("ceylon.language.bin")){
+                            return transformBinaryLiteral((Tree.QuotedLiteral)term);
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }
