@@ -656,5 +656,10 @@ public class IssuesTest extends CompilerTest {
     public void testBug751() {
         assertErrors("bug07xx/Bug751", new CompilerError(20, "package not found in dependent modules: laknsd.askduyasjd"));
     }
+
+    @Test
+    public void testBug776() {
+        compile("bug07xx/Bug776.ceylon");
+    }
 }
 
