@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.expression.optimisations;
+
+class CharacterAsInteger {
+    
+    CharacterAsInteger() {
+    }
+    
+    public final void m() {
+        final long x = 97;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.optimisations.CharacterAsInteger();
+    }
+}

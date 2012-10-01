@@ -359,4 +359,11 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("lambda/ConstrainedTypeParam");
     }
     
+    //
+    // Optimisations
+
+    @Test
+    public void testOptmCharacterAsInteger(){
+        compareWithJavaSource("optimisations/CharacterAsInteger");
+    }
 }
