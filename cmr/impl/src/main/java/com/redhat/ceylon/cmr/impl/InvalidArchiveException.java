@@ -25,13 +25,19 @@ package com.redhat.ceylon.cmr.impl;
 public class InvalidArchiveException extends RuntimeException {
 
     private String path;
+    private String repository;
 
-    public InvalidArchiveException(String message, String path) {
+    public InvalidArchiveException(String message, String path, String repository) {
         super(message);
         this.path = path;
+        this.repository = repository;
     }
 
     public String getPath(){
         return path;
+    }
+
+    public String getRepository() {
+        return repository;
     }
 }
