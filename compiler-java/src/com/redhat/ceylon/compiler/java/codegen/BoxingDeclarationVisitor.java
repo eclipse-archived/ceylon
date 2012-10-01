@@ -136,14 +136,16 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     
     private void boxAndRawParameterLists(List<ParameterList> paramLists, List<ParameterList> refinedParamLists) {
         if (paramLists.size() != refinedParamLists.size()) {
-            throw new RuntimeException();
+            // abort on errors caught by the typechecker
+            return;
         }
         for (int ii = 0; ii < paramLists.size(); ii++) {
             ParameterList paramList = paramLists.get(ii);
             ParameterList refinedParamList = refinedParamLists.get(ii);
             if (paramList.getParameters().size() != 
                     refinedParamList.getParameters().size()) {
-                throw new RuntimeException();
+                // abort on errors caught by the typechecker
+                return;
             }
             for (int jj = 0; jj < paramList.getParameters().size(); jj++) {
                 Parameter param = paramList.getParameters().get(jj);
