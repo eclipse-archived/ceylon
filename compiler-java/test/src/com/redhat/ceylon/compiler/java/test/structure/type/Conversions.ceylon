@@ -151,3 +151,15 @@ class Conversions() {
         GenCon<Bottom> b3;
     }
 }
+
+// Test upper bound erasure
+
+@nomodel
+interface ISats2 {}
+
+@nomodel
+class UpperBoundErasure1<T>() given T satisfies ISats & ISats2 & IdentifiableObject & Identifiable {
+    void foo<T>() given T satisfies ISats & ISats2 & IdentifiableObject & Identifiable {
+        
+    }
+}
