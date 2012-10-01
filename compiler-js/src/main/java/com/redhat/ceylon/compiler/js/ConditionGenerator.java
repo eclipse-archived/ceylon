@@ -1,20 +1,16 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsOrNonemptyCondition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.WhileClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.WhileStatement;
 
 /** This component is used by the main JS visitor to generate code for conditions.
  * 
@@ -33,35 +29,67 @@ public class ConditionGenerator {
         directAccess = directDeclarations;
     }
 
-    /** Handles the "is", "exists" and "nonempty" conditions */
-    void specialConditionAndBlock(Condition condition,
-            Block block, String keyword) {
-        Variable variable = null;
-        if (condition instanceof ExistsOrNonemptyCondition) {
-            variable = ((ExistsOrNonemptyCondition) condition).getVariable();
-        } else if (condition instanceof IsCondition) {
-            variable = ((IsCondition) condition).getVariable();
-        } else {
-            condition.addUnexpectedError("No support for conditions of type " + condition.getClass().getSimpleName());
-            return;
+    /** Generate a list of all the variables from conditions in the list. */
+    List<VarHolder> gatherVariables(Tree.ConditionList conditions) {
+        ArrayList<VarHolder> vars = new ArrayList<VarHolder>();
+        for (Condition cond : conditions.getConditions()) {
+            Tree.Variable variable = null;
+            if (cond instanceof ExistsOrNonemptyCondition) {
+                variable = ((ExistsOrNonemptyCondition) cond).getVariable();
+            } else if (cond instanceof IsCondition) {
+                variable = ((IsCondition) cond).getVariable();
+            } else if (!(cond instanceof Tree.BooleanCondition)) {
+                cond.addUnexpectedError("No support for conditions of type " + cond.getClass().getSimpleName());
+                return null;
+            }
+            if (variable != null) {
+                Tree.Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
+                String varName = names.name(variable.getDeclarationModel());
+                gen.out("var ", varName, ";");
+                gen.endLine();
+                vars.add(new VarHolder(variable, variableRHS, varName));
+            }
         }
-        Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
+        return vars;
+    }
 
-        String varName = names.name(variable.getDeclarationModel());
-        gen.out("var ", varName, ";");
-        gen.endLine();
-
-        gen.out(keyword);
-        gen.out("(");
-        specialConditionCheck(condition, variableRHS, varName);
-        gen.out(")");
-        directAccess.add(variable.getDeclarationModel());
+    /** Handles the "is", "exists" and "nonempty" conditions */
+    void specialConditionsAndBlock(Tree.ConditionList conditions,
+            Tree.Block block, String keyword) {
+        final List<VarHolder> vars = gatherVariables(conditions);
+        specialConditions(vars, conditions, keyword);
         if (block != null) {
             gen.encloseBlockInFunction(block);
         }
     }
 
-    void specialConditionCheck(Condition condition, Term variableRHS, String varName) {
+    /** Handles the "is", "exists" and "nonempty" conditions, with a pre-generated
+     * list of the variables from the conditions. */
+    void specialConditions(final List<VarHolder> vars, Tree.ConditionList conditions, String keyword) {
+        //The first pass is gathering the conditions, which we already get here
+        //Second pass: generate the conditions
+        gen.out(keyword);
+        gen.out("(");
+        boolean first = true;
+        final Iterator<VarHolder> ivars = vars.iterator();
+        for (Condition cond : conditions.getConditions()) {
+            if (first) {
+                first = false;
+            } else {
+                gen.out("&&");
+            }
+            if (cond instanceof Tree.BooleanCondition) {
+                cond.visit(gen);
+            } else {
+                VarHolder vh = ivars.next();
+                specialConditionCheck(cond, vh.term, vh.name);
+                directAccess.add(vh.var.getDeclarationModel());
+            }
+        }
+        gen.out(")");
+    }
+
+    void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (condition instanceof NonemptyCondition) {
                 gen.out(GenerateJsVisitor.getClAlias(), ".nonempty(");
@@ -73,12 +101,12 @@ public class ConditionGenerator {
             }
 
         } else {
-            Type type = ((IsCondition) condition).getType();
+            Tree.Type type = ((IsCondition) condition).getType();
             gen.generateIsOfType(variableRHS, null, type, varName);
         }
     }
 
-    void specialConditionRHS(Term variableRHS, String varName) {
+    void specialConditionRHS(Tree.Term variableRHS, String varName) {
         if (varName == null) {
             variableRHS.visit(gen);
         } else {
@@ -99,22 +127,10 @@ public class ConditionGenerator {
     }
 
     /** Generates JS code for an "if" statement. */
-    void generateIf(IfStatement that) {
-        IfClause ifClause = that.getIfClause();
-        Block ifBlock = ifClause.getBlock();
-        Condition condition = ifClause.getCondition();
-        if ((condition instanceof ExistsOrNonemptyCondition)
-                || (condition instanceof IsCondition)) {
-            // if (is/exists/nonempty ...)
-            specialConditionAndBlock(condition, ifBlock, "if");
-        } else {
-            gen.out("if (");
-            condition.visit(gen);
-            gen.out(")");
-            if (ifBlock != null) {
-                gen.encloseBlockInFunction(ifBlock);
-            }
-        }
+    void generateIf(Tree.IfStatement that) {
+        Tree.IfClause ifClause = that.getIfClause();
+        Tree.Block ifBlock = ifClause.getBlock();
+        specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
 
         if (that.getElseClause() != null) {
             gen.out("else ");
@@ -123,19 +139,21 @@ public class ConditionGenerator {
     }
 
     /** Generates JS code for a WhileStatement. */
-    void generateWhile(WhileStatement that) {
-        WhileClause whileClause = that.getWhileClause();
-        Condition condition = whileClause.getCondition();
-        if ((condition instanceof ExistsOrNonemptyCondition)
-                || (condition instanceof IsCondition)) {
-            // while (is/exists/nonempty...)
-            specialConditionAndBlock(condition, whileClause.getBlock(), "while");
-        } else {
-            gen.out("while (");
-            condition.visit(gen);
-            gen.out(")");
-            gen.encloseBlockInFunction(whileClause.getBlock());
-        }
+    void generateWhile(Tree.WhileStatement that) {
+        Tree.WhileClause whileClause = that.getWhileClause();
+        specialConditionsAndBlock(whileClause.getConditionList(), whileClause.getBlock(), "while");
     }
 
+    /** Holder for a special condition's variable, its right-hand side term,
+     * and its name in the generated js. */
+    class VarHolder {
+        final Tree.Variable var;
+        final Tree.Term term;
+        final String name;
+        private VarHolder(Tree.Variable variable, Tree.Term rhs, String varName) {
+            var = variable;
+            term = rhs;
+            name = varName;
+        }
+    }
 }

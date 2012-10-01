@@ -8,13 +8,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExistsOrNonemptyCondition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
@@ -54,17 +53,9 @@ class ComprehensionGenerator {
             while ((clause != null) && !(clause instanceof ForComprehensionClause)) {
                 if (clause instanceof IfComprehensionClause) {
                     IfComprehensionClause ifClause = ((IfComprehensionClause) clause);
-                    Condition cond = ifClause.getCondition();
-                    loop.conditions.add(cond);
+                    loop.conditions.add(ifClause.getConditionList());
+                    loop.conditionVars.add(gen.conds.gatherVariables(ifClause.getConditionList()));
                     clause = ifClause.getComprehensionClause();
-
-                    Variable condVar = null;
-                    if (cond instanceof IsCondition) {
-                        condVar = ((IsCondition) cond).getVariable();
-                    } else if (cond instanceof ExistsOrNonemptyCondition) {
-                        condVar = ((ExistsOrNonemptyCondition) cond).getVariable();
-                    }
-                    loop.conditionVars.add(condVar);
 
                 } else if (clause instanceof ExpressionComprehensionClause) {
                     expression = ((ExpressionComprehensionClause) clause).getExpression();
@@ -102,11 +93,10 @@ class ComprehensionGenerator {
             }
 
             // variables for is/exists/nonempty conditions
-            for (Variable condVar : loop.conditionVars) {
-                if (condVar != null) {
-                    String condVarName = names.name(condVar.getDeclarationModel());
-                    gen.out("var ", condVarName, ";"); gen.endLine();
-                    directAccess.add(condVar.getDeclarationModel());
+            for (List<ConditionGenerator.VarHolder> condVarList : loop.conditionVars) {
+                for (ConditionGenerator.VarHolder condVar : condVarList) {
+                    gen.out("var ", condVar.name, ";"); gen.endLine();
+                    directAccess.add(condVar.var.getDeclarationModel());
                 }
             }
 
@@ -142,17 +132,7 @@ class ComprehensionGenerator {
 
                 // generate conditions as nested ifs
                 for (int i=0; i<loop.conditions.size(); i++) {
-                    Condition cond = loop.conditions.get(i);
-                    Variable condVar = loop.conditionVars.get(i);
-                    gen.out("if(");
-                    if (condVar != null) {
-                        gen.conds.specialConditionCheck(cond,
-                                condVar.getSpecifierExpression().getExpression().getTerm(),
-                                names.name(condVar.getDeclarationModel()));
-                    } else {
-                        cond.visit(gen);
-                    }
-                    gen.out(")");
+                    gen.conds.specialConditions(loop.conditionVars.get(i), loop.conditions.get(i), "if");
                     gen.beginBlock();
                 }
 
@@ -221,8 +201,8 @@ class ComprehensionGenerator {
     /** Represents one of the for loops of a comprehension including the associated conditions */
     private class ComprehensionLoopInfo {
         public final ForIterator forIterator;
-        public final List<Condition> conditions = new ArrayList<Condition>();
-        public final List<Variable> conditionVars = new ArrayList<Variable>();
+        public final List<Tree.ConditionList> conditions = new ArrayList<Tree.ConditionList>();
+        public final List<List<ConditionGenerator.VarHolder>> conditionVars = new ArrayList<List<ConditionGenerator.VarHolder>>();
         public final String itVarName;
         public String valueVarName;
         public String keyVarName = null;
