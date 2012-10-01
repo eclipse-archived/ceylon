@@ -245,16 +245,11 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
-        gen.at(param);
-        return typeParameter(gen.makeTypeParameter(param), gen.makeAtTypeParameter(param));
-    }
-    
     public MethodDefinitionBuilder typeParameter(TypeParameter param) {
         return typeParameter(gen.makeTypeParameter(param), gen.makeAtTypeParameter(param));
     }
     
-    public MethodDefinitionBuilder typeParameter(JCTypeParameter tp, JCAnnotation tpAnno) {
+    private MethodDefinitionBuilder typeParameter(JCTypeParameter tp, JCAnnotation tpAnno) {
         typeParams.append(tp);
         typeParamAnnotations.append(tpAnno);
         return this;
