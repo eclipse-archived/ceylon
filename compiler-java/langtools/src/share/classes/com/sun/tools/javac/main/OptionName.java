@@ -74,7 +74,6 @@ public enum OptionName {
     VERSION("-version"),
     FULLVERSION("-fullversion"),
     HELP("-help"),
-    JHELP("-jhelp"),
     A("-A"),
     X("-X"),
     J("-J"),

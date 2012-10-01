@@ -123,10 +123,6 @@ public class Main extends com.sun.tools.javac.main.Main {
             help();
         }
 
-        public void printJhelp() {
-            jhelp();
-        }
-
         public void printXhelp() {
             xhelp();
         }
@@ -170,39 +166,6 @@ public class Main extends com.sun.tools.javac.main.Main {
      * List of class files names passed on the command line
      */
     public ListBuffer<String> classnames = null; // XXX sb protected
-
-    /**
-     * Print a string that explains usage.
-     */
-    void help() {
-        Log.printLines(out, getLocalizedString("msg.usage.header", ownName));
-        for (int i = 0; i < recognizedOptions.length; i++) {
-            recognizedOptions[i].chelp(out);
-        }
-        out.println();
-    }
-
-    /**
-     * Print a string that explains usage for Java options.
-     */
-    void jhelp() {
-        for (int i = 0; i < recognizedOptions.length; i++) {
-            recognizedOptions[i].help(out);
-        }
-        out.println();
-        Log.printLines(out, getLocalizedString("msg.usage.nonstandard.footer"));
-    }
-
-    /**
-     * Print a string that explains usage for X options.
-     */
-    void xhelp() {
-        for (int i = 0; i < recognizedOptions.length; i++) {
-            recognizedOptions[i].xhelp(out);
-        }
-        out.println();
-        Log.printLines(out, getLocalizedString("msg.usage.nonstandard.footer"));
-    }
 
     /**
      * Report a usage error.

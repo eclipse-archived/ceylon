@@ -75,8 +75,6 @@ public class RecognizedOptions {
 
         void printHelp();
 
-        void printJhelp();
-
         void printXhelp();
 
         void addFile(File f);
@@ -104,10 +102,6 @@ public class RecognizedOptions {
         }
 
         public void printHelp() {
-            throw new IllegalArgumentException();
-        }
-
-        public void printJhelp() {
             throw new IllegalArgumentException();
         }
 
@@ -165,7 +159,6 @@ public class RecognizedOptions {
         FULLVERSION,
         DIAGS,
         HELP,
-        JHELP,
         A,
         X,
         J,
@@ -475,13 +468,6 @@ public class RecognizedOptions {
             @Override
             public boolean process(Options options, String option) {
                 helper.printHelp();
-                return super.process(options, option);
-            }
-        },
-        new COption(JHELP,                                       "opt.jhelp") {
-            @Override
-            public boolean process(Options options, String option) {
-                helper.printJhelp();
                 return super.process(options, option);
             }
         },
