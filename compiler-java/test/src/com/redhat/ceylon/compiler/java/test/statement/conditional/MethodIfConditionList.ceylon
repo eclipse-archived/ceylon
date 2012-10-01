@@ -40,7 +40,7 @@ class MethodIfConditionList() {
     }
     
     Boolean m6(Void[] x) {
-        if (exists x[0], is Integer y = x, y > 0) {
+        if (exists x[0], is Integer y = x[0], y > 0) {
             return y == 1;
         } else {
             return false;

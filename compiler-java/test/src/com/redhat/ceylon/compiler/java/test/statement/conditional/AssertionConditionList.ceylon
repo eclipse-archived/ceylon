@@ -44,7 +44,7 @@ class AssertionConditionList() {
     }
     
     Boolean m6(Void[] x) {
-        assert (exists x[0], is Integer y = x, y > 0);
+        assert (exists x[0], is Integer y = x[0], y > 0);
         return y == 1;
     }
     

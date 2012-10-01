@@ -138,7 +138,7 @@ class AssertionConditionList {
         final long y;
         if (((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L)) != null) {
             .java.lang.Object $y$17 = null;
-            if (($y$17 = x) instanceof .ceylon.language.Integer) {
+            if (($y$17 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 y = ((.ceylon.language.Integer)$y$17).longValue();
                 if (y > 0L) {
                 } else {
@@ -148,7 +148,7 @@ class AssertionConditionList {
             } else {
                 y = 0L;
                 if ($ceylontmpassert15 == null) $ceylontmpassert15 = "";
-                $ceylontmpassert15 = $ceylontmpassert15 + "\tviolated " + "is Integer y = x" + .java.lang.System.lineSeparator();
+                $ceylontmpassert15 = $ceylontmpassert15 + "\tviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator();
                 if (!(y > 0L)) $ceylontmpassert15 = $ceylontmpassert15 + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator();
             }
         } else {
@@ -156,7 +156,7 @@ class AssertionConditionList {
             if ($ceylontmpassert15 == null) $ceylontmpassert15 = "";
             $ceylontmpassert15 = $ceylontmpassert15 + "\tviolated " + "exists x[0]" + .java.lang.System.lineSeparator();
         }
-        if ($ceylontmpassert15 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert15 + "\tat " + "AssertionConditionList.ceylon:47:8-47:53")), null);
+        if ($ceylontmpassert15 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert15 + "\tat " + "AssertionConditionList.ceylon:47:8-47:56")), null);
         return y == 1L;
     }
     

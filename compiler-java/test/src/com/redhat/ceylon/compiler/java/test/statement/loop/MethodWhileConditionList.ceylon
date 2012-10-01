@@ -55,7 +55,7 @@ class MethodWhileConditionList() {
     
     void m6(Void[] x) {
         variable value a := 0;
-        if (exists x[0], is Integer y = x, y > 0) {
+        if (exists x[0], is Integer y = x[0], y > 0) {
             a += y;
         } 
     }

@@ -91,7 +91,7 @@ class MethodWhileConditionList {
         .java.lang.Object $y$12 = null;
         final long y;
         if (((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L)) != null) {
-            if (($y$12 = x) instanceof .ceylon.language.Integer) {
+            if (($y$12 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 y = ((.ceylon.language.Integer)$y$12).longValue();
                 if (y > 0L) {
                     $ceylontmpif11 = true;
