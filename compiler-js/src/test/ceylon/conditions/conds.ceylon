@@ -40,5 +40,18 @@ shared void test() {
     //and now some comprehensions
     Sequence<Integer?> seq1 = { 1, 2, 3, null, 4, 5, null, 6, 7, null, 10};
     check({ for (i in seq1) if (exists i, i%2==0) i*10 }=={20,40,60,100},"comprehension [1]");
+    // !is
+    if (!is String zz) {
+        check(true, "!is");
+    } else {
+        fail("!is");
+    }
+    if (!is String zz3=zz) {
+        check(is Integer zz3, "!is with variable [1]");
+        check(!is String zz3, "!is with variable [2]");
+    } else {
+        fail("!is (again)");
+    }
+    assert(!is String zz4=zz, is Integer zz4);
     results();
 }
