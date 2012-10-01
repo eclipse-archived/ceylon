@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class ImplementOverloadedConstructor1 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers {
+    
+    ImplementOverloadedConstructor1() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1();
+    }
+}
+class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers {
+    
+    ImplementOverloadedConstructor2() {
+        super(2L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2();
+    }
+}
+class ImplementOverloadedConstructor3 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers {
+    
+    ImplementOverloadedConstructor3(long i) {
+        super(i);
+    }
+}

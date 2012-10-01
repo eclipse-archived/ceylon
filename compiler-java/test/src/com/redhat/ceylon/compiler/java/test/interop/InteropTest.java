@@ -48,6 +48,12 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Methods");
     }
 
+    @Test
+    public void testIopImplementOverloadedConstructors(){
+        compile("JavaWithOverloadedMembers.java");
+        compareWithJavaSource("ImplementOverloadedConstructors");
+    }
+
     @Ignore("M3")
     @Test
     public void testIopImplementOverloadedMethods(){
