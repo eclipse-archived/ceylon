@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-call %~dp0\cey-cp.bat %*
+call %~dp0\ceylon-cp.bat %*
 
 if "%exit%" == "true" (
     exit /b 1

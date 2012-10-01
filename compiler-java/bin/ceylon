@@ -37,7 +37,7 @@ JAVA_CP="$LIB/jboss-modules.jar"
 JAVA_CP="$JAVA_CP:$LIB/ceylon-runtime-bootstrap.jar"
 
 # source classpath to set the MINIMAL_CP
-. "$DIR/cey-cp.sh"
+. "$DIR/ceylon-cp.sh"
 
 # BOOTSTRAP_CP are classes required by the compiler to run. 
 # They have to go to the boot class path on Mac OS X
