@@ -2605,12 +2605,16 @@ public class GenerateJsVisitor extends Visitor
      * @param termString (optional) a string to be used as the term to be checked
      * @param type The type to check against
      * @param tmpvar (optional) a variable to which the term is assigned
+     * @param negate If true, negates the generated condition
      */
-    void generateIsOfType(Term term, String termString, Type type, String tmpvar) {
+    void generateIsOfType(Term term, String termString, Type type, String tmpvar, final boolean negate) {
+        if (negate) {
+            out("!");
+        }
         if ((type instanceof SimpleType) || (type instanceof EntryType))  {
             out(clAlias, ".isOfType(");
         } else {
-            out(clAlias, ".Boolean(", clAlias, ".isOfTypes(");
+            out(clAlias, ".isOfTypes(");
         }
         if (term != null) {
             conds.specialConditionRHS(term, tmpvar);
@@ -2636,13 +2640,13 @@ public class GenerateJsVisitor extends Visitor
         	out("'ceylon.language.Entry')"); //TODO: type parameters
         } else {
             getTypeList((StaticType)type);
-            out("))");
+            out(")");
         }
     }
     
     @Override
     public void visit(IsOp that) {
-        generateIsOfType(that.getTerm(), null, that.getType(), null);
+        generateIsOfType(that.getTerm(), null, that.getType(), null, false);
     }
 
     @Override public void visit(Break that) {
@@ -2764,7 +2768,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 firstCatch = false;
                 out("if(");
-                generateIsOfType(null, catchVarName, variable.getType(), null);
+                generateIsOfType(null, catchVarName, variable.getType(), null, false);
                 out(")");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {
@@ -2836,7 +2840,7 @@ public class GenerateJsVisitor extends Visitor
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
-            generateIsOfType(null, expvar, isCaseItem.getType(), null);
+            generateIsOfType(null, expvar, isCaseItem.getType(), null, false);
             Variable caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 directAccess.add(caseVar.getDeclarationModel());

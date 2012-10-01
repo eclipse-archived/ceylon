@@ -95,14 +95,14 @@ public class ConditionGenerator {
                 gen.out(GenerateJsVisitor.getClAlias(), ".nonempty(");
                 specialConditionRHS(variableRHS, varName);
                 gen.out(")");
-            } else {
+            } else { //exists
                 specialConditionRHS(variableRHS, varName);
                 gen.out("!==null");
             }
 
         } else {
             Tree.Type type = ((IsCondition) condition).getType();
-            gen.generateIsOfType(variableRHS, null, type, varName);
+            gen.generateIsOfType(variableRHS, null, type, varName, ((IsCondition)condition).getNot());
         }
     }
 
