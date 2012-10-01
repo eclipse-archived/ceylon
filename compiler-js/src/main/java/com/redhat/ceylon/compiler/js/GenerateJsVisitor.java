@@ -947,7 +947,6 @@ public class GenerateJsVisitor extends Visitor
 
     private void methodDefinition(MethodDefinition that) {
         Method d = that.getDeclarationModel();
-
         if (that.getParameterLists().size() == 1) {
             out(function, names.name(d));
             ParameterList paramList = that.getParameterLists().get(0);
@@ -1281,8 +1280,18 @@ public class GenerateJsVisitor extends Visitor
                 return;
             }
         }
-        
-        qualify(that, decl);
+
+        if (that.getSupertypeQualifier() == null) {
+            qualify(that, decl);
+        } else {
+            ClassOrInterface parent = (ClassOrInterface)decl.getContainer();
+            out("this.getT$all$()['", parent.getQualifiedNameString(), "'].");
+            if (prototypeStyle) {
+                out("$$.prototype.");
+            } else {
+                //TODO what can we do here?
+            }
+        }
         if (isNative(decl)) {
             out(decl.getName());
         } else if (accessDirectly(decl)) {
