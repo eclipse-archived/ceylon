@@ -1154,7 +1154,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         if(decl instanceof JavaBeanValue)
                             ((JavaBeanValue)decl).setSetterName(setter.getName());
                     }else
-                        logWarning("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
+                        logVerbose("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
                 }catch(TypeParserException x){
                     logError("Invalid type signature for setter of "+klass.getQualifiedNameString()+"."+setter.getName()+": "+x.getMessage());
                     throw x;
