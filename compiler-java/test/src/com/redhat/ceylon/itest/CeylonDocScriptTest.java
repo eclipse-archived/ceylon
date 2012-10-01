@@ -39,7 +39,7 @@ public class CeylonDocScriptTest extends AntBasedTest {
     public void testVersion() throws Exception {
         AntResult result = ant("version");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] cey doc: ");
+        assertContains(result.getStdout(), "[exec] ceylon doc: ");
         assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     
@@ -54,7 +54,7 @@ public class CeylonDocScriptTest extends AntBasedTest {
     public void testH() throws Exception {
         AntResult result = ant("h");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] cey doc: ");
+        assertContains(result.getStdout(), "[exec] ceylon doc: ");
         assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     

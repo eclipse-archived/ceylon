@@ -203,7 +203,7 @@ public abstract class AntBasedTest {
         System.setProperty(EXEC_CEYLONC, scriptDir + "/ceylonc" + scriptExt);
         System.setProperty(EXEC_CEYLOND, scriptDir + "/ceylond" + scriptExt);
         System.setProperty(EXEC_CEYLON, "../ceylon-runtime/build/dist/bin/ceylon" + scriptExt);
-        System.setProperty(EXEC_CEY, "../ceylon-dist/dist/bin/cey" + scriptExt);
+        System.setProperty(EXEC_CEY, "../ceylon-dist/dist/bin/ceylon" + scriptExt);
         System.setProperty(ARG_VERBOSE, "false");
         System.setProperty(ARG_SRC, "test/src/com/redhat/ceylon/itest");
         out = File.createTempFile("ceylon-ant-test.", ".out.d");

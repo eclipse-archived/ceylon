@@ -38,7 +38,7 @@ public class CeylonCompileScriptTest extends AntBasedTest {
     public void testVersion() throws Exception {
         AntResult result = ant("version");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] cey compile: ");
+        assertContains(result.getStdout(), "[exec] ceylon compile: ");
         assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     
@@ -53,7 +53,7 @@ public class CeylonCompileScriptTest extends AntBasedTest {
     public void testH() throws Exception {
         AntResult result = ant("h");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] cey compile: ");
+        assertContains(result.getStdout(), "[exec] ceylon compile: ");
         assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
         
     }
@@ -62,7 +62,7 @@ public class CeylonCompileScriptTest extends AntBasedTest {
     public void testJhelp() throws Exception {
         AntResult result = ant("jhelp");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] cey compile: ");
+        assertContains(result.getStdout(), "[exec] ceylon compile: ");
         assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     

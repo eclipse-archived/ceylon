@@ -41,7 +41,7 @@ public class CeylonRunScriptTest extends AntBasedTest {
     public void testVersion() throws Exception {
         AntResult result = ant("version");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] cey run: ");
+        assertContains(result.getStdout(), "[exec] ceylon run: ");
         assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     
@@ -56,7 +56,7 @@ public class CeylonRunScriptTest extends AntBasedTest {
     public void testH() throws Exception {
         AntResult result = ant("h");
         Assert.assertEquals(1, result.getStatusCode());
-        assertContains(result.getStdout(), "[exec] cey run: ");
+        assertContains(result.getStdout(), "[exec] ceylon run: ");
         assertContains(result.getStdout(), "exec returned: " + CeylonTool.SC_ARGS);
     }
     

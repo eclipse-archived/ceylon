@@ -413,11 +413,7 @@
     </copy>
     <chmod perm="0755">
         <fileset dir="${build.bin}">
-            <include name="cey"/>
             <include name="ceylon"/>
-            <include name="ceylonc"/>
-            <include name="ceylond"/>
-            <include name="ceylon-import-jar"/>
         </fileset>
     </chmod>
     <copy todir="${build.lib}">
@@ -538,7 +534,7 @@
 
   <target name="api" depends="ant-tasks">
     <ceylond
-      executable="${build.bin}/ceylond"
+      executable="${build.bin}/ceylon"
       src="../ceylon.language/src"
       out="${build.api}"
       includeSourceCode="true">

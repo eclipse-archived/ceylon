@@ -35,9 +35,9 @@ import org.junit.runners.Suite.SuiteClasses;
     CeylondAntTest.class,
     CeylonAntTest.class,
     // Tests of the old-style scripts
-    CeyloncScriptTest.class,
-    CeylondScriptTest.class,
-    CeylonScriptTest.class
+    //CeyloncScriptTest.class,
+    //CeylondScriptTest.class,
+    //CeylonScriptTest.class
 })
 public class IntegrationTests {
 
