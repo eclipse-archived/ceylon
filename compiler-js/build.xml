@@ -105,25 +105,6 @@
             <arg value="${runtime}/${jslangpath}" />
             <arg value="${module.com.redhat.ceylon.compiler.js.version}" />
         </java>
-        <!-- copy and transform scripts and set permissions -->
-        <filter token="VERSION" value="${module.com.redhat.ceylon.compiler.js.version}"/>
-        <copy todir="${build.bin}">
-            <fileset dir="${basedir}/bin">
-                <exclude name="*.in"/>
-            </fileset>
-        </copy>
-        <copy todir="${build.bin}" filtering="yes">
-            <fileset dir="${basedir}/bin">
-                <include name="*.in"/>
-            </fileset>
-            <globmapper from="*.in" to="*"/>
-        </copy>
-        <chmod perm="0755">
-            <fileset dir="${build.bin}">
-                <include name="ceylonc-js" />
-                <include name="ceylon-js" />
-            </fileset>
-        </chmod>
     </target>
 
     <!-- build jscompiler jar -->
