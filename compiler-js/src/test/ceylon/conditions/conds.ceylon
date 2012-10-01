@@ -34,7 +34,7 @@ shared void test() {
         count++;
     }
     check(count==4, "some conditions were not met: " count " instead of 4");
-    Void zz = 1;
+    Integer|String zz = 1;
     assert(is Integer zz2=zz, zz2 > 0);
     check(zz2==1, "special -> boolean");
     //and now some comprehensions
@@ -42,16 +42,15 @@ shared void test() {
     check({ for (i in seq1) if (exists i, i%2==0) i*10 }=={20,40,60,100},"comprehension [1]");
     // !is
     if (!is String zz) {
-        check(true, "!is");
+        check(zz>0, "!is");
     } else {
         fail("!is");
     }
     if (!is String zz3=zz) {
-        check(is Integer zz3, "!is with variable [1]");
-        check(!is String zz3, "!is with variable [2]");
+        check(zz3<2, "!is with variable [1]");
     } else {
         fail("!is (again)");
     }
-    assert(!is String zz4=zz, is Integer zz4);
+    assert(!is String zz4=zz, zz4<3);
     results();
 }
