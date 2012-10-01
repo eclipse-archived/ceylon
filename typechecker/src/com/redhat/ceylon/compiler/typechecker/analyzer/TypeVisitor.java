@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -907,6 +908,17 @@ public class TypeVisitor extends Visitor {
                 }
                 list.add(type);
             }
+        }
+        if (td instanceof TypeParameter) {
+        	List<ProducedType> l = new ArrayList<ProducedType>();
+        	for (ProducedType t: list) {
+        		addToIntersection(l, t, unit);
+        	}
+        	IntersectionType it = new IntersectionType(unit);
+        	it.setSatisfiedTypes(l);
+        	if (it.getType().getDeclaration() instanceof BottomType) {
+        		that.addError("upper bound constraints cannot be satisfied by any type except Bottom");
+        	}
         }
         td.setSatisfiedTypes(list);
     }

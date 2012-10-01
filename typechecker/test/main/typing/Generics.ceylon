@@ -508,4 +508,7 @@ class Generics() {
     String->Object okEntry;
     @error String->Void brokenEntry1;
     @error Nothing->String brokenEntry2;
+    
+    void unsatisfiable1<T>() @error given T satisfies Nothing&String {}
+    void unsatisfiable2<T>() @error given T satisfies Nothing&Container {}
 }
