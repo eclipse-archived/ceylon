@@ -667,11 +667,13 @@ public class TypeVisitor extends Visitor {
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                    if (!(type.getDeclaration() instanceof Class)) {
+                    if (type.getDeclaration() instanceof Class) {
+                    	that.getDeclarationModel().setExtendedType(type);
+                    } 
+                    else {
                         et.addError("not a class: " + 
                                 type.getDeclaration().getName());
                     }
-                    that.getDeclarationModel().setExtendedType(type);
                 }
             }
         }
@@ -695,11 +697,13 @@ public class TypeVisitor extends Visitor {
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                    if (!(type.getDeclaration() instanceof Interface)) {
+                    if (type.getDeclaration() instanceof Interface) {
+                    	that.getDeclarationModel().setExtendedType(type);
+                    } 
+                    else {
                         et.addError("not an interface: " + 
                                 type.getDeclaration().getName());
                     }
-                    that.getDeclarationModel().setExtendedType(type);
                 }
             }
         }
