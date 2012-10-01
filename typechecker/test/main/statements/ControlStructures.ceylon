@@ -258,4 +258,12 @@ class ControlStructures() {
     @error switch (s)
     case (is String) {}
 
+    if (exists arg=process.arguments[0],
+        arg=="verbose") {
+        print(arg);
+    }
+    
+    @error if () {}
+    @error while () {}
+
 }

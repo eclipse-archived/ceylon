@@ -627,8 +627,8 @@ assertion returns [Assertion assertion]
       ASSERT
       { $assertion = new Assertion($ASSERT); 
         $assertion.setAnnotationList($annotations.annotationList); }
-      condition
-      { $assertion.setCondition($condition.condition); }
+      conditions
+      { $assertion.setConditionList($conditions.conditionList); }
       { expecting=SEMICOLON; }
       SEMICOLON
       { $assertion.setEndToken($SEMICOLON); 
@@ -823,7 +823,7 @@ parameters returns [ParameterList parameterList]
               $parameterList.setEndToken(null); }
           )
         )*
-      )? 
+      )?
       RPAREN
       { $parameterList.setEndToken($RPAREN); }
       //-> ^(PARAMETER_LIST[$LPAREN] annotatedParameter*)
@@ -1716,8 +1716,8 @@ forComprehensionClause returns [ForComprehensionClause comprehensionClause]
 ifComprehensionClause returns [IfComprehensionClause comprehensionClause]
     : IF_CLAUSE
       { $comprehensionClause = new IfComprehensionClause($IF_CLAUSE); }
-      condition
-      { $comprehensionClause.setCondition($condition.condition); }
+      conditions
+      { $comprehensionClause.setConditionList($conditions.conditionList); }
       comprehensionClause
       { $comprehensionClause.setComprehensionClause($comprehensionClause.comprehensionClause); }
     ;
@@ -2369,99 +2369,108 @@ compilerAnnotation returns [CompilerAnnotation annotation]
       )?
     ;
 
+conditions returns [ConditionList conditionList]
+    : LPAREN
+      { $conditionList = new ConditionList($LPAREN); }
+      (
+      c1=condition
+      { $conditionList.addCondition($c1.condition); }
+      ( c=COMMA 
+        { $conditionList.setEndToken($c); }
+        (
+          c2=condition 
+          { $conditionList.addCondition($c2.condition);
+            $conditionList.setEndToken(null); }
+        | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LIDENTIFIER, input)); } //TODO: sometimes it should be RPAREN!
+        )
+      )*
+      )?
+      RPAREN
+      { $conditionList.setEndToken($RPAREN); }
+    ;
+
 condition returns [Condition condition]
-    : (LPAREN EXISTS)=>existsCondition
+    : (EXISTS)=>existsCondition
       { $condition=$existsCondition.condition; }
-    | (LPAREN NONEMPTY)=>nonemptyCondition
+    | (NONEMPTY)=>nonemptyCondition
       { $condition=$nonemptyCondition.condition; }
-    | (LPAREN NOT_OP? IS_OP)=>isCondition 
+    | (NOT_OP? IS_OP)=>isCondition 
       { $condition=$isCondition.condition; }
-    | (LPAREN SATISFIES)=>satisfiesCondition
+    | (SATISFIES)=>satisfiesCondition
       { $condition=$satisfiesCondition.condition; }
     | booleanCondition
       { $condition=$booleanCondition.condition; }
     ;
     
 booleanCondition returns [BooleanCondition condition]
-    : LPAREN
-      { $condition = new BooleanCondition($LPAREN); }
-      (expression
-      { $condition.setExpression($expression.expression); })?
-      RPAREN
-      { $condition.setEndToken($RPAREN); }
+    : { $condition = new BooleanCondition(null); }
+      expression
+      { $condition.setExpression($expression.expression); }
     //-> ^(BOOLEAN_CONDITION expression)
     ;
     
 existsCondition returns [Condition condition]
     @init { ExistsCondition ec = null; }
-    : (LPAREN EXISTS LIDENTIFIER RPAREN)
-      => l1=LPAREN 
-      { ec = new ExistsCondition($l1); 
+    : (EXISTS LIDENTIFIER (RPAREN|COMMA))
+      => e1=EXISTS
+      { ec = new ExistsCondition($e1); 
         $condition = ec; }
-      e1=EXISTS impliedVariable
+      impliedVariable
       { ec.setVariable($impliedVariable.variable); }
-      r1=RPAREN
-      { ec.setEndToken($r1); }
     //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
-    | (LPAREN EXISTS compilerAnnotations (declarationStart|specificationStart))
-      => l2=LPAREN 
-      { ec = new ExistsCondition($l2); 
+    | (EXISTS compilerAnnotations (declarationStart|specificationStart))
+      => e2=EXISTS 
+      { ec = new ExistsCondition($e2); 
         $condition = ec; }
-      e2=EXISTS 
       specifiedVariable 
       { ec.setVariable($specifiedVariable.variable); }
-      r2=RPAREN
-      { ec.setEndToken($r2); }
     //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
-    | bc=booleanCondition
-      { $condition=$bc.condition; }
+    | booleanCondition
+      { $condition=$booleanCondition.condition; }
     ;
     
 nonemptyCondition returns [Condition condition]
     @init { NonemptyCondition nc = null; }
-    : (LPAREN NONEMPTY LIDENTIFIER RPAREN) 
-      => l1=LPAREN 
-      { nc = new NonemptyCondition($l1); 
+    : (NONEMPTY LIDENTIFIER (RPAREN|COMMA)) 
+      => n1=NONEMPTY 
+      { nc = new NonemptyCondition($n1); 
         $condition = nc; }
-      n1=NONEMPTY impliedVariable 
+      impliedVariable 
       { nc.setVariable($impliedVariable.variable); }
-      r1=RPAREN
-      { nc.setEndToken($r1); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
-    | (LPAREN NONEMPTY compilerAnnotations (declarationStart|specificationStart))
-      => l2=LPAREN 
-      { nc = new NonemptyCondition($l2); 
+    | (NONEMPTY compilerAnnotations (declarationStart|specificationStart))
+      => n2=NONEMPTY 
+      { nc = new NonemptyCondition($n2); 
         $condition = nc; }
-      n2=NONEMPTY 
-      (specifiedVariable 
-      { nc.setVariable($specifiedVariable.variable); })?
-      r2=RPAREN
-      { nc.setEndToken($r2); }
+      specifiedVariable 
+      { nc.setVariable($specifiedVariable.variable); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
-    | bc=booleanCondition
-      { $condition=$bc.condition; }
+    | booleanCondition
+      { $condition=$booleanCondition.condition; }
     ;
 
 isCondition returns [Condition condition]
-    @init { IsCondition ic = null; }
-    : (LPAREN NOT_OP? IS_OP type LIDENTIFIER RPAREN) 
-      => l1=LPAREN 
-      { ic = new IsCondition($l1); 
+    @init { IsCondition ic = null;
+            boolean not = false; }
+    : (NOT_OP? IS_OP type LIDENTIFIER (RPAREN|COMMA)) 
+      => (n1=NOT_OP { not=true; })?
+      i1=IS_OP
+      { ic = new IsCondition($i1); 
+        ic.setNot(not);
         $condition = ic; }
-      (n1=NOT_OP { ic.setNot(true); })?
-      i1=IS_OP t1=type impliedVariable 
-      { ic.setType($t1.type);
-        ic.setVariable($impliedVariable.variable); }
-      r1=RPAREN
-      { ic.setEndToken($r1); }
+      t1=type 
+      { ic.setType($t1.type); }
+      impliedVariable 
+      { ic.setVariable($impliedVariable.variable); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | (LPAREN NOT_OP? IS_OP type LIDENTIFIER SPECIFY)
-      => l2=LPAREN
-      { ic = new IsCondition($l2); 
-        $condition = ic; }
-      (n2=NOT_OP { ic.setNot(true); })?
+    | (NOT_OP? IS_OP type LIDENTIFIER SPECIFY)
+      => (n2=NOT_OP { not=true; })?
       i2=IS_OP 
-      ( t2=type
+      { ic = new IsCondition($i2);
+        ic.setNot(not); 
+        $condition = ic; }
+      t2=type
       { ic.setType($t2.type);
         Variable v = new Variable(null);
         v.setType(new ValueModifier(null)); 
@@ -2469,24 +2478,19 @@ isCondition returns [Condition condition]
       memberName
       { ic.getVariable().setIdentifier($memberName.identifier); }
       specifier
-      { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); })?
-      r2=RPAREN
-      { ic.setEndToken($r2); }
+      { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
-    | bc=booleanCondition
-      { $condition=$bc.condition; }
+    | booleanCondition
+      { $condition=$booleanCondition.condition; }
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]
-    : LPAREN 
-      { $condition = new SatisfiesCondition($LPAREN); }
-      SATISFIES 
+    : SATISFIES 
+      { $condition = new SatisfiesCondition($SATISFIES); }
       (t1=qualifiedType 
       { $condition.setLeftType($t1.type); }
       t2=qualifiedType 
       { $condition.setRightType($t2.type); })?
-      RPAREN
-      { $condition.setEndToken($RPAREN); }
     //-> ^(SATISFIES_CONDITION[$SATISFIES] type+)
     ;
 
@@ -2525,8 +2529,8 @@ ifElse returns [IfStatement statement]
 ifBlock returns [IfClause clause]
     : IF_CLAUSE 
       { $clause = new IfClause($IF_CLAUSE); }
-      condition
-      { $clause.setCondition($condition.condition); }
+      conditions
+      { $clause.setConditionList($conditions.conditionList); }
       controlBlock
       { $clause.setBlock($controlBlock.block); }
     ;
@@ -2586,8 +2590,10 @@ switchHeader returns [SwitchClause clause]
     : SWITCH_CLAUSE 
       { $clause = new SwitchClause($SWITCH_CLAUSE); }
       LPAREN 
+      (
       expression 
       { $clause.setExpression($expression.expression); }
+      )?
       RPAREN
     ;
 
@@ -2608,8 +2614,10 @@ caseBlock returns [CaseClause clause]
     : CASE_CLAUSE 
       { $clause = new CaseClause($CASE_CLAUSE); }
       LPAREN 
-      caseItem 
+      (
+      caseItem
       { $clause.setCaseItem($caseItem.item); }
+      )?
       RPAREN 
       block
       { $clause.setBlock($block.block); }
@@ -2731,8 +2739,8 @@ whileLoop returns [WhileStatement statement]
 whileBlock returns [WhileClause clause]
     : WHILE_CLAUSE
       { $clause = new WhileClause($WHILE_CLAUSE); }
-      condition 
-      { $clause.setCondition($condition.condition); }
+      conditions
+      { $clause.setConditionList($conditions.conditionList); }
       controlBlock
       { $clause.setBlock($controlBlock.block); }
     ;
@@ -2778,8 +2786,10 @@ catchBlock returns [CatchClause clause]
 catchVariable returns [CatchVariable catchVariable]
     : LPAREN 
       { $catchVariable=new CatchVariable($LPAREN); }
-      (variable 
-      { $catchVariable.setVariable($variable.variable); })?
+      (
+      variable 
+      { $catchVariable.setVariable($variable.variable); }
+      )?
       RPAREN 
       { $catchVariable.setEndToken($RPAREN); }
     ;
@@ -2803,7 +2813,7 @@ resource returns [Resource resource]
     | expression
       { $resource.setExpression($expression.expression); }
     //-> ^(RESOURCE expression)
-    )
+    )?
     RPAREN
     { $resource.setEndToken($RPAREN); }
     ;
