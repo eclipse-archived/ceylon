@@ -56,6 +56,10 @@ import com.redhat.ceylon.common.tool.Tool;
 "* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and,\n" +
 "* the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`\n" +
 "\n" +
+"Execute `ceylon compile --javac=-help` for a list of the standard javac " +
+"options, and ceylon compile --javac=-X for a list of the non-standard javac " +
+"options.\n" +
+"\n" +
 "**Important note**: There is no guarantee that any particular `javac` " +
 "option or combination of options will work, or continue to work in " +
 "future releases.")
@@ -124,7 +128,9 @@ public class CeylonCompileTool implements Tool{
         this.pass = pass;
     }
 
-    @Argument(argumentName="moduleOrFile", multiplicity="+")
+    @Argument(argumentName="moduleOrFile", multiplicity="*")
+    // multiplicity=* because of --javac=-help and --javac=-Xhelp are allowed 
+    // on their own
     public void setModule(List<String> moduleOrFile) {
         this.module = moduleOrFile;
     }
