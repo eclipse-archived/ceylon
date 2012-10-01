@@ -304,26 +304,14 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
-        ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-        for (ProducedType t : satisfiedTypes) {
-            if (!gen.willEraseToObject(t)) {
-                JCExpression bound = gen.makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES);
-                // if it's a class, we need to move it first as per JLS http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.4
-                if(t.getDeclaration() instanceof Class)
-                    bounds.prepend(bound);
-                else
-                    bounds.append(bound);
-            }
-        }
-        typeParams.append(typeParam(name, bounds));
+        typeParams.append(typeParam(name, gen.makeTypeParameterBounds(satisfiedTypes)));
         typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, covariant, contravariant));
         return this;
     }
 
     private JCTypeParameter typeParam(String name,
-            ListBuffer<JCExpression> bounds) {
-        return gen.make().TypeParameter(gen.names().fromString(name),
-                bounds.toList());
+            List<JCExpression> bounds) {
+        return gen.make().TypeParameter(gen.names().fromString(name), bounds);
     }
 
     public ClassDefinitionBuilder typeParameter(TypeParameter declarationModel) {

@@ -2135,14 +2135,23 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Erroneous(errs);
     }
 
-    private JCTypeParameter makeTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
+    List<JCExpression> makeTypeParameterBounds(java.util.List<ProducedType> satisfiedTypes){
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : satisfiedTypes) {
             if (!willEraseToObject(t)) {
-                bounds.append(makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES));
+                JCExpression bound = makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES);
+                // if it's a class, we need to move it first as per JLS http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.4
+                if(t.getDeclaration() instanceof Class)
+                    bounds.prepend(bound);
+                else
+                    bounds.append(bound);
             }
         }
-        return make().TypeParameter(names().fromString(name), bounds.toList());
+        return bounds.toList();
+    }
+    
+    private JCTypeParameter makeTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
+        return make().TypeParameter(names().fromString(name), makeTypeParameterBounds(satisfiedTypes));
     }
 
     JCTypeParameter makeTypeParameter(TypeParameter declarationModel) {
