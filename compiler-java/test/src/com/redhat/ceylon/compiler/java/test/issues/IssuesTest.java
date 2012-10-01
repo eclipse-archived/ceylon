@@ -622,6 +622,12 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
+    public void testBug713() {
+        assertErrors("bug07xx/Bug713",
+                new CompilerError(26, "member does not have the same number of parameters as the member it refines"));
+    }
+    
+    @Test
     public void testBug715() {
         compile("bug07xx/Bug715.ceylon");
     }
