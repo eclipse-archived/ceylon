@@ -256,7 +256,8 @@ public class CeylonEnter extends Enter {
                 artifact = repositoryManager.getArtifactResult(ctx);
             }
         } catch (InvalidArchiveException e) {
-            log.error("ceylon", "Module car "+e.getPath()
+            log.error("ceylon", "Module car " + e.getPath()
+                    +" obtained from repository " + e.getRepository()
                     +" has an invalid SHA1 signature: you need to remove it and rebuild the archive, since it"
                     +" may be corrupted.");
         } catch (Exception e) {

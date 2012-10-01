@@ -247,7 +247,6 @@ public class CMRTest extends CompilerTest {
         car.close();
     }
 
-    @Ignore("M3")
     @Test
     public void testMdlCarWithInvalidSHA1() throws IOException{
         compile("modules/single/module.ceylon");
@@ -269,9 +268,10 @@ public class CMRTest extends CompilerTest {
         w.close();
         
         // now try to compile the subpackage with a broken SHA1
-        //compile("module/single/subpackage/Subpackage.ceylon");
         assertErrors("modules/single/subpackage/Subpackage", 
-                new CompilerError(-1, "Module car "+destDir+"/com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.car has an invalid SHA1 signature: you need to remove it and rebuild the archive, since it may be corrupted."));
+                new CompilerError(-1, "Module car /com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.car"
+                        + " obtained from repository " + destDir 
+                        + " has an invalid SHA1 signature: you need to remove it and rebuild the archive, since it may be corrupted."));
     }
 
     @Test
