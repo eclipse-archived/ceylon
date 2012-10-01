@@ -44,6 +44,12 @@ public class Util {
      * Tries to find the given script either user-specified or detected
      */
     public static String findCeylonScript(File defaultValue, Project project) {
+        if (defaultValue != null
+                && (defaultValue.getName().contains("ceylonc")
+                        || defaultValue.getName().contains("ceylond"))) {
+            project.log("The Ceylon ant tasks now use the ceylon tool for " +
+                    "their executable attribute", Project.MSG_WARN);
+        }
         String scriptName = "cey";
         if(defaultValue != null){
             if(!defaultValue.exists())
