@@ -2139,7 +2139,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String simpleName = name.substring(name.lastIndexOf(".")+1);
         for(Package pkg : languageModule.getPackages()){
             Declaration member = pkg.getDirectMember(simpleName, null);
-            if(member != null)
+            if(member instanceof TypeDeclaration)
                 return ((TypeDeclaration)member).getType();
         }
         throw new ModelResolutionException("Failed to look up given type in language module while bootstrapping: "+name);
