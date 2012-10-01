@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-final class x_ {
+final class forIfIf_ {
     
-    private x_() {
+    private forIfIf_() {
     }
     private static final .ceylon.language.Iterable<? extends .ceylon.language.Integer>[] value;
     static {
@@ -26,13 +26,21 @@ final class x_ {
                     }
                     
                     private final boolean next1() {
-                        while (this.x() && !x.remainder(.ceylon.language.Integer.instance(2L)).equals(.ceylon.language.Integer.instance(0L))) {
+                        while (true) {
+                            if (!this.x()) break;
+                            if (x.remainder(.ceylon.language.Integer.instance(2L)).equals(.ceylon.language.Integer.instance(0L))) {
+                                break;
+                            }
                         }
                         return !x$exhausted;
                     }
                     
                     private final boolean next2() {
-                        while (this.next1() && !x.compare(.ceylon.language.Integer.instance(5L)).largerThan()) {
+                        while (true) {
+                            if (!this.next1()) break;
+                            if (x.compare(.ceylon.language.Integer.instance(5L)).largerThan()) {
+                                break;
+                            }
                         }
                         return !x$exhausted;
                     }
@@ -45,7 +53,7 @@ final class x_ {
         }.getSequence()};
     }
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> getX() {
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> getForIfIf() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

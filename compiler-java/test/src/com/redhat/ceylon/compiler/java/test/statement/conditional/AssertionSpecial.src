@@ -1,38 +1,34 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-@.com.redhat.ceylon.compiler.java.metadata.Method
 final class assertionSpecial_ {
     
     private assertionSpecial_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
     static void assertionSpecial() {
         final .java.lang.Object v1 = .ceylon.language.Integer.instance(5L);
         .java.lang.Object $a1$0;
-        if (!(($a1$0 = v1) instanceof .ceylon.language.Integer)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:3:10-3:29\n\texpression (is Integer a1 = v1)"), null);
+        if (!(($a1$0 = v1) instanceof .ceylon.language.Integer)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer a1 = v1" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:23:4-23:30")), null);
         final long a1 = ((.ceylon.language.Integer)$a1$0).longValue();
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(-a1));
         final .ceylon.language.String v2 = .ceylon.language.String.instance("X");
         .ceylon.language.String $a2$1;
-        if (!(($a2$1 = v2) != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:6:10-6:25\n\texpression (exists a2 = v2)"), null);
+        if (!(($a2$1 = v2) != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists a2 = v2" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:26:4-26:26")), null);
         final .java.lang.String a2 = $a2$1.toString();
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(.ceylon.language.String.getSize(a2)));
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> v3 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
         .ceylon.language.Iterable<? extends .ceylon.language.Integer> $a3$2;
-        if (!(($a3$2 = v3) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$a3$2).getEmpty())) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:9:10-9:27\n\texpression (nonempty a3 = v3)"), null);
+        if (!(($a3$2 = v3) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$a3$2).getEmpty())) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty a3 = v3" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:29:4-29:28")), null);
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$a3$2;
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(a3.getSize()));
         .ceylon.language.Iterable<? extends .ceylon.language.Integer> $v3$3;
-        if (!(($v3$3 = v3) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$v3$3).getEmpty())) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:11:10-11:22\n\texpression (nonempty v3)"), null);
+        if (!(($v3$3 = v3) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$v3$3).getEmpty())) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty v3" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:31:4-31:23")), null);
         .ceylon.language.String $v2$4;
-        if (!(($v2$4 = v2) != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:12:10-12:20\n\texpression (exists v2)"), null);
+        if (!(($v2$4 = v2) != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists v2" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:32:4-32:21")), null);
         .java.lang.Object $v1$5;
-        if (!(($v1$5 = v1) instanceof .ceylon.language.Integer)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed\n\tat AssertionSpecial.ceylon:13:10-13:24\n\texpression (is Integer v1)"), null);
+        if (!(($v1$5 = v1) instanceof .ceylon.language.Integer)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer v1" + .java.lang.System.lineSeparator() + "\tat " + "AssertionSpecial.ceylon:33:4-33:25")), null);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.statement.conditional.assertionSpecial_.assertionSpecial();

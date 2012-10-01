@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer[] x = { for (y in 1..5) for (x in 1..5) if (x>y) x*y };
+Integer[] forForIf = { for (y in 1..5) for (x in 1..5) if (x>y) x*y };

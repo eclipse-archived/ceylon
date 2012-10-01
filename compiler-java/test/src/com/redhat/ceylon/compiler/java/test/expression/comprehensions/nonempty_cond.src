@@ -1,14 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-@.com.redhat.ceylon.compiler.java.metadata.Method
-final class a_ {
+final class nonemptyCond_ {
     
-    private a_() {
+    private nonemptyCond_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
-    static void a() {
+    static void nonemptyCond() {
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L));
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
@@ -28,16 +25,16 @@ final class a_ {
                         }
                         return true;
                     }
-                    private .ceylon.language.Sequence $ints$1;
+                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ints$1;
                     
                     private final boolean next1() {
-                        while (this.x() && ($ints$1 = (
-                            let
-                            {
-                                .java.lang.Object $ceylontmpcompr2 = ints;
+                        while (true) {
+                            if (!this.x()) break;
+                            .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ints$2 = null;
+                            if (($ints$2 = ints) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ints$2).getEmpty()) {
+                                $ints$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$ints$2;
+                                break;
                             }
-                            returning $ceylontmpcompr2 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmpcompr2).getEmpty();
-                        ) ? (.ceylon.language.Sequence)ints : null) == null) {
                         }
                         return !x$exhausted;
                     }
@@ -50,9 +47,8 @@ final class a_ {
         }.getSequence());
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.expression.comprehensions.a_.a();
+        .com.redhat.ceylon.compiler.java.test.expression.comprehensions.nonemptyCond_.nonemptyCond();
     }
 }

@@ -123,6 +123,11 @@ public class StatementTest extends CompilerTest {
     public void testConMethodIfNonEmpty(){
         compareWithJavaSource("conditional/MethodIfNonEmpty");
     }
+    
+    @Test
+    public void testConMethodIfConditionList(){
+        compareWithJavaSource("conditional/MethodIfConditionList");
+    }
 
     //
     // switch / case
@@ -180,6 +185,11 @@ public class StatementTest extends CompilerTest {
     @Test
     public void testLopMethodWhile(){
         compareWithJavaSource("loop/MethodWhile");
+    }
+    
+    @Test
+    public void testLopMethodWhileConditionList(){
+        compareWithJavaSource("loop/MethodWhileConditionList");
     }
     
     //
@@ -308,6 +318,11 @@ public class StatementTest extends CompilerTest {
     @Test
     public void testAssertSpecial() {
         compareWithJavaSource("conditional/AssertionSpecial");
+    }
+    
+    @Test
+    public void testAssertConditionList() {
+        compareWithJavaSource("conditional/AssertionConditionList");
     }
 
 }

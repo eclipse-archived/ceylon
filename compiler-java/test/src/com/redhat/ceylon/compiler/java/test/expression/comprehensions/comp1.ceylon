@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-String[] x = { for (str in "hello world".split()) str };
+String[] comp1 = { for (str in "hello world".split()) str };

@@ -18,4 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Integer[] forIfIf = { for (x in 1..10) if (x%2==0) if (x>5) x };
+void forIfIsBooleanConditions(Void[] xs) {
+    Integer[] z = { for (x in xs) if (is Integer y = x, y > 0) y+1 };
+}

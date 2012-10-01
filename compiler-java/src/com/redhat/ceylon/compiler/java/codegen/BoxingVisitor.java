@@ -21,10 +21,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
@@ -306,13 +304,15 @@ public abstract class BoxingVisitor extends Visitor {
     }
     @Override public void visit(IfComprehensionClause that) {
         Variable var = null;
-        if (that.getCondition() instanceof IsCondition) {
-            var = ((IsCondition)that.getCondition()).getVariable();
-        } else if (that.getCondition() instanceof ExistsOrNonemptyCondition) {
-            var = ((ExistsOrNonemptyCondition)that.getCondition()).getVariable();
-        }
-        if (var != null) {
-            var.getDeclarationModel().setUnboxed(false);
+        for (Tree.Condition condition : that.getConditionList().getConditions()) {
+            if (condition instanceof IsCondition) {
+                var = ((IsCondition)condition).getVariable();
+            } else if (condition instanceof ExistsOrNonemptyCondition) {
+                var = ((ExistsOrNonemptyCondition)condition).getVariable();
+            }
+            if (var != null) {
+                var.getDeclarationModel().setUnboxed(true);
+            }
         }
         super.visit(that);
     }

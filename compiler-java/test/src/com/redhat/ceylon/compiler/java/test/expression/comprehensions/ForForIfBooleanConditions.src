@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-final class forForIf_ {
+final class forForIfBooleanConditions_ {
     
-    private forForIf_() {
+    private forForIfBooleanConditions_() {
     }
     private static final .ceylon.language.Iterable<? extends .ceylon.language.Integer>[] value;
     static {
@@ -54,7 +54,9 @@ final class forForIf_ {
                         while (true) {
                             if (!this.x()) break;
                             if (x.compare(y).largerThan()) {
-                                break;
+                                if (y.compare(.ceylon.language.Integer.instance(2L)).largerThan()) {
+                                    break;
+                                }
                             }
                         }
                         return !x$exhausted;
@@ -68,7 +70,7 @@ final class forForIf_ {
         }.getSequence()};
     }
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> getForForIf() {
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> getForForIfBooleanConditions() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
