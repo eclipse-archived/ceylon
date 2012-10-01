@@ -1413,9 +1413,33 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = checkForBitwiseOperators(expr, expr, null);
         if(ret != null)
             return ret;
+        ret = checkForCharacterAsInteger(expr);
+        if(ret != null)
+            return ret;
         return transform(expr, null);
     }
     
+    private JCExpression checkForCharacterAsInteger(QualifiedMemberExpression expr) {
+        // must be a call on Character
+        Tree.Term left = expr.getPrimary();
+        if(left == null || !isCeylonCharacter(left.getTypeModel()))
+            return null;
+        // must be on "integer"
+        if(!expr.getIdentifier().getText().equals("integer"))
+            return null;
+        // must be a normal member op "."
+        if(expr.getMemberOperator() instanceof Tree.MemberOp == false)
+            return null;
+        // must be unboxed
+        if(!expr.getUnboxed() || !left.getUnboxed())
+            return null;
+        // and must be a character literal
+        if(left instanceof Tree.CharLiteral == false)
+            return null;
+        // all good
+        return transform((Tree.CharLiteral)left);
+    }
+
     private JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         JCExpression result;
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
