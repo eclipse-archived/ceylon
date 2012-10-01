@@ -197,39 +197,19 @@ Used with another target such as 'package'">
         <mkdir dir="${dist.dir}/bin"/>
         <copy todir="${dist.dir}/bin">
             <fileset dir="${ceylon-compiler.dir}/build/bin">
-                <include name="args.sh"/>
-                <include name="args.bat"/>
                 <include name="java.bat"/>
-                <include name="cey"/>
-                <include name="cey.bat"/>
-                <include name="cey-cp.sh"/>
-                <include name="cey-cp.bat"/>
-                <include name="cey-completion.bash"/>
-                <include name="ceylonc"/>
-                <include name="ceylonc.bat"/>
-                <include name="ceylond"/>
-                <include name="ceylond.bat"/>
-                <include name="ceylon-import-jar"/>
-                <include name="ceylon-import-jar.bat"/>
+                <include name="ceylon"/>
+                <include name="ceylon.bat"/>
+                <include name="ceylon-cp.sh"/>
+                <include name="ceylon-cp.bat"/>
+                <include name="ceylon-completion.bash"/>
+                
             </fileset>
-            <fileset dir="${ceylon-js.dir}/build/bin">
-                <include name="ceylonc-js"/>
-                <include name="ceylonc-js.bat"/>
-                <include name="ceylon-js"/>
-                <include name="ceylon-js.bat"/>
-                <include name="c-js.sh" />
-                <include name="c-js.bat" />
-            </fileset>
+            
         </copy>
         <chmod perm="0755">
             <fileset dir="${dist.dir}/bin">
-                <include name="cey"/>
                 <include name="ceylon"/>
-                <include name="ceylonc"/>
-                <include name="ceylond"/>
-                <include name="ceylon-import-jar"/>
-                <include name="ceylon-js"/>
-                <include name="ceylonc-js"/>
             </fileset>
         </chmod>
     </target>
@@ -334,18 +314,17 @@ Used with another target such as 'package'">
     </target>
 
     <target name="generate-apidoc">
-        <exec executable="${dist.dir}/bin/ceylond" failonerror="yes">
-            <arg value="-out"/>
-            <arg value="${dist.dir}/repo"/>
-            <arg value="-src"/>
-            <arg value="${ceylon.language.dir}/src/"/>
-            <arg value="-source-code"/>
+        <exec executable="${dist.dir}/bin/ceylon" failonerror="yes">
+        	<arg value="doc"/>
+            <arg value="--out=${dist.dir}/repo"/>
+            <arg value="--src=${ceylon.language.dir}/src/"/>
+            <arg value="--source-code"/>
             <arg value="ceylon.language"/>
         </exec>
     </target>
 
     <target name="generate-tooldoc">
-        <exec executable="${dist.dir}/bin/cey" failonerror="yes">
+        <exec executable="${dist.dir}/bin/ceylon" failonerror="yes">
             <arg value="doc-tool"/>
             <arg value="--output=${dist.dir}/doc/en/toolset"/>
             <arg value="--index"/>
