@@ -119,7 +119,8 @@ class Strategy {
      */
     public static boolean onlyOnCompanion(Declaration model) {
         return Decl.withinInterface(model)
-                && !Decl.isShared(model);
+                && (model instanceof ClassOrInterface
+                        || !Decl.isShared(model));
     }
     
     static boolean generateInstantiator(Declaration model) {
