@@ -1,26 +1,5 @@
 import functions { ... }
-import check { check, results }
-
-interface AmbiguousParent {
-    shared formal String doSomething();
-}
-interface Ambiguous1 satisfies AmbiguousParent {
-    shared actual default String doSomething() {
-        return "ambiguous 1";
-    }
-}
-interface Ambiguous2 satisfies AmbiguousParent {
-    shared actual default String doSomething() {
-        return "ambiguous 2";
-    }
-}
-
-class QualifyAmbiguousSupertypes(Boolean one)
-        satisfies Ambiguous1 & Ambiguous2 {
-    shared actual String doSomething() {
-        return one then Ambiguous1::doSomething() else Ambiguous2::doSomething();
-    }
-}
+import check { results }
 
 shared void test() {
     helloWorld();
@@ -38,8 +17,6 @@ shared void test() {
     }
     repeat(10,p);
     testNamedArguments();
-    //qualified "super" calls
-    check(QualifyAmbiguousSupertypes(true).doSomething()=="ambiguous 1", "qualified super calls [1]");
-    check(QualifyAmbiguousSupertypes(false).doSomething()=="ambiguous 2", "qualified super calls [2]");
+    testQualified();
     results();
 }
