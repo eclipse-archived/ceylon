@@ -1545,6 +1545,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         JCExpression qualExpr = null;
         String selector = null;
+        // true for Java interop using fields, and for super constructor parameters, which must use
+        // parameters rather than getter methods
+        boolean mustUseField = false;
         if (decl instanceof Functional
                 && !(decl instanceof FunctionalParameter) // A functional parameter will already be Callable-wrapped
                 && isFunctionalResult(expr.getTypeModel())) {
@@ -1581,7 +1584,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = naming.selector((Value)decl);
                 }
             } else if (Decl.isClassAttribute(decl)) {
-                if (Decl.isJavaField(decl) || isWithinSuperInvocation()){
+                mustUseField = Decl.isJavaField(decl)
+                        || (isWithinSuperInvocation() 
+                                && primaryExpr == null
+                                && withinSuperInvocation.getDeclarationModel() == decl.getContainer());
+                if (mustUseField){
                     selector = decl.getName();
                 } else {
                     // invoke the getter, using the Java interop form of Util.getGetterName because this is the only case
@@ -1621,7 +1628,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         if (result == null) {
-            boolean useGetter = !(decl instanceof Method) && !Decl.isJavaField(decl) && !isWithinSuperInvocation();
+            boolean useGetter = !(decl instanceof Method) && !mustUseField;
             if (qualExpr == null && selector == null) {
                 useGetter = Decl.isClassAttribute(decl) && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
