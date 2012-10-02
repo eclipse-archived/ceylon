@@ -179,7 +179,7 @@
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
         <ceylonc
-            executable="${ceylon.compiler.loc}/dist/bin/cey"
+            executable="${ceylon.compiler.loc}/dist/bin/ceylon"
             src="${test.src}"
             out="${build.test}">
             <files>
