@@ -1364,7 +1364,9 @@ public class ClassTransformer extends AbstractTransformer {
                         //&& ((Class)model).getExtendedTypeDeclaration().getContainer() instanceof Class) {
                     overloadBuilder.isOverride(true);
                 }
-                overloadBuilder.modifiers(transformClassDeclFlags(klass));
+                // remove the FINAL bit in case it gets set, because that is valid for a class decl, but
+                // not for a method if in an interface
+                overloadBuilder.modifiers(transformClassDeclFlags(klass) & ~FINAL);
                 methName = naming.makeInstantiatorMethodName(null, klass);
                 JCExpression resultType;
                 if (Decl.isAncestorLocal(model)) {
