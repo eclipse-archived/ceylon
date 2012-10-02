@@ -57,7 +57,7 @@ public class PlainVisitor implements Visitor {
 
     @Override
     public void startOptions(OptionsSection optionsSection) {
-        out.append(optionsSection.getTitle().toUpperCase()).newline();
+        out.append(optionsSection.getTitle().toUpperCase()).newline().newline();
         out.setIndent(8);
     }
 
@@ -117,7 +117,7 @@ public class PlainVisitor implements Visitor {
 
     @Override
     public void startSynopses(SynopsesSection synopsesSection) {
-        out.append(synopsesSection.getTitle().toUpperCase()).newline();
+        out.append(synopsesSection.getTitle().toUpperCase()).newline().newline();
         out.setIndent(8);
     }
 
