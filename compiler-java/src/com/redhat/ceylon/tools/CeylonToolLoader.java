@@ -18,7 +18,7 @@ public class CeylonToolLoader extends ServiceToolLoader {
     }
 
     @Override
-    protected String getToolName(String className) {
+    public String getToolName(String className) {
         String toolName = className.replaceAll("^.*\\.", "").replaceAll("^Ceylon(.*)Tool$", "$1");
         return camelCaseToDashes(toolName);
     }

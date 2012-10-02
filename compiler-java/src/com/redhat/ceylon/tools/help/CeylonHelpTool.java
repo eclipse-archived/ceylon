@@ -29,6 +29,7 @@ import com.redhat.ceylon.tools.help.Output.Synopsis;
 public class CeylonHelpTool extends AbstractDoc implements Tool {
 
     private ToolModel<?> tool;
+    private Appendable out = System.out;
     
     @Option
     public void setIncludeHidden(boolean includeHidden) {
@@ -40,9 +41,13 @@ public class CeylonHelpTool extends AbstractDoc implements Tool {
         this.tool = tool;
     }
     
+    public void setOut(Appendable out) {
+        this.out = out;
+    }
+    
     @Override
     public void run() {
-        final WordWrap wrap = new WordWrap();
+        final WordWrap wrap = new WordWrap(out);
         Output plain = new PlainOutput(wrap);
         if (tool == null) {
             printTopLevelHelp(plain, wrap, toolLoader.getToolNames());
