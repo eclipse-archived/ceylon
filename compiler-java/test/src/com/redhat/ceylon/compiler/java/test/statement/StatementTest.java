@@ -102,19 +102,20 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("conditional/MethodIfIs");
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore("M5: requires reified generics")
     public void testConMethodIfIsGeneric(){
         compareWithJavaSource("conditional/MethodIfIsGeneric");
     }
 
     @Test
-    @Ignore //M3
+    @Ignore("M5: requires support from spec for satisfies conditions (reified generics)")
     public void testConMethodIfSatisfies(){
         compareWithJavaSource("conditional/MethodIfSatisfies");
     }
 
     @Test
-    @Ignore //M3
+    @Ignore("M5: requires support from spec for satisfies conditions (reified generics)")
     public void testConMethodIfSatisfiesMultiple(){
         compareWithJavaSource("conditional/MethodIfSatisfiesMultiple");
     }
@@ -127,33 +128,6 @@ public class StatementTest extends CompilerTest {
     @Test
     public void testConMethodIfConditionList(){
         compareWithJavaSource("conditional/MethodIfConditionList");
-    }
-
-    //
-    // switch / case
-    
-    @Test
-    @Ignore //M2
-    public void testConMethodSwitch(){
-        compareWithJavaSource("conditional/MethodSwitch");
-    }
-
-    @Test
-    @Ignore //M2
-    public void testConMethodSwitchNB(){
-        compareWithJavaSource("conditional/MethodSwitchNB");
-    }
-
-    @Test
-    @Ignore //M2
-    public void testConMethodSwitchElse(){
-        compareWithJavaSource("conditional/MethodSwitchElse");
-    }
-
-    @Test
-    @Ignore //M2
-    public void testConMethodSwitchElseNB(){
-        compareWithJavaSource("conditional/MethodSwitchElseNB");
     }
 
     //

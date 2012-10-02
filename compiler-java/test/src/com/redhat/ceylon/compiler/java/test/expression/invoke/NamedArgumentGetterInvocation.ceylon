@@ -21,9 +21,7 @@
 class NamedArgumentGetterInvocation(){
     Boolean m() {
         return f {
-            @error
             String s { return "foo"; }
-            @error
             Integer n { return 2; }
         };
     }

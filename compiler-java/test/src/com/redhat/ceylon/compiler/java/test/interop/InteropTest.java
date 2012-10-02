@@ -54,7 +54,7 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("ImplementOverloadedConstructors");
     }
 
-    @Ignore("M3")
+    @Ignore("M5")
     @Test
     public void testIopImplementOverloadedMethods(){
         compile("JavaWithOverloadedMembers.java", "JavaWithOverloadedMembersSubClass.java");
@@ -67,7 +67,7 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Fields");
     }
 
-    @Ignore("M3")
+    @Ignore("M5: #432")
     @Test
     public void testIopSpecialFields(){
         compile("JavaFields.java");
@@ -115,9 +115,9 @@ public class InteropTest extends CompilerTest {
         compareWithJavaSource("Variance");
     }
 
-    @Ignore("M4")
+    // depends on #612
     @Test
-    public void testIopVariance2(){
+    public void testIopVariance2_fail(){
         compile("JavaVariance.java");
         compareWithJavaSource("Variance2");
     }
@@ -162,13 +162,13 @@ public class InteropTest extends CompilerTest {
         compile("mixed/ceylon_needs_java/Java.java", "mixed/ceylon_needs_java/Ceylon.ceylon");
     }
 
-    @Ignore("M4?")
+    @Ignore("M5: #470")
     @Test
     public void testMixedCompilationJavaNeedsCeylon(){
         compile("mixed/java_needs_ceylon/Java.java", "mixed/java_needs_ceylon/Ceylon.ceylon");
     }
 
-    @Ignore("M4?")
+    @Ignore("M5: #470")
     @Test
     public void testMixedCompilationInterdependent(){
         compile("mixed/interdependent/Java.java", "mixed/interdependent/Ceylon.ceylon");
@@ -187,7 +187,7 @@ public class InteropTest extends CompilerTest {
     }
     
     @Test
-    @Ignore("#396")
+    @Ignore("M5: depends on spec #226")
     public void testIopRefinesAndCallsProtectedAccessMethod(){
         compile("access/JavaAccessModifiers.java");
         compareWithJavaSource("access/RefinesAndCallsProtectedAccessMethod");

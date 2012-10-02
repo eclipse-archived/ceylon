@@ -194,7 +194,7 @@ public class IssuesTest extends CompilerTest {
 
     // we can't test this anymore now that the typechecker chokes on `is Foo<X>`, so we wait for reified
     // generics to test it back
-    @Ignore("M5")
+    @Ignore("M5: needs reified generics")
     @Test
     public void testBug330(){
         // compile them both at the same time

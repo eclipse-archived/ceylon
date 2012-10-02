@@ -297,7 +297,7 @@ public class CMRTest extends CompilerTest {
         car.close();
     }
 
-    @Ignore("M3")
+    @Ignore("M5")
     @Test
     public void testMdlInterdepModule(){
         // first compile it all from source

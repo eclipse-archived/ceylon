@@ -101,7 +101,6 @@ public class ExpressionTest2 extends CompilerTest {
     }
 
     @Test
-    @Ignore("Not for needed for M1")
     public void testInvNamedArgumentGetterInvocation(){
         compareWithJavaSource("invoke/NamedArgumentGetterInvocation");
     }
@@ -289,7 +288,7 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
-    @Ignore("Awaiting support for parameter bounds")
+    @Ignore("M5: Awaiting support for parameter bounds")
     public void testCallableArgumentParameterCtor(){
         compareWithJavaSource("invoke/CallableArgumentParameterCtor");
     }

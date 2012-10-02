@@ -3,29 +3,32 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 interface InterfaceWithConcreteMembers {
     
     public long foo(final boolean b);
+}
+final class InterfaceWithConcreteMembers$impl {
     
-    public static final class InterfaceWithConcreteMembers$impl {
-        
-        public InterfaceWithConcreteMembers$impl() {
-            super();
-        }
-        
-        public static long foo(final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers $this, final boolean b) {
-            return 1L;
-        }
+    InterfaceWithConcreteMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers $this;
+    
+    public long foo(final boolean b) {
+        return 1L;
     }
 }
 class Impl implements .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers {
     
-    public long foo(final boolean b) {
-        return InterfaceWithConcreteMembers$impl.foo(this, b);
-    }
-    
     Impl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this = new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this;
+    
+    @.java.lang.Override
+    public long foo(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this.foo(b);
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Impl();
     }
 }

@@ -483,7 +483,7 @@ public class ModelLoaderTest extends CompilerTest {
         verifyClassLoading("KlassWithAttributeAndConflictingMethods.ceylon");
     }
 
-    @Test @Ignore("M4")
+    @Test
     public void loadTypeParameters(){
         verifyClassLoading("TypeParameters.ceylon");
     }

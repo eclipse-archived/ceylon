@@ -70,7 +70,7 @@ public class MiscTest extends CompilerTest {
         compareWithJavaSource("equalshashoverriding/EqualsHashOverriding");
     }
 
-    @Ignore("M2")
+    @Ignore("M5: requires more bootstrap work, current support dates from summer 2011")
     @Test
     public void compileRuntime(){
         String sourcePath = "../ceylon.language/src";

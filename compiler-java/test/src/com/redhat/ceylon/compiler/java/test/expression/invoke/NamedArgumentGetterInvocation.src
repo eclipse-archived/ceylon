@@ -2,20 +2,48 @@ package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 class NamedArgumentGetterInvocation {
     
+    NamedArgumentGetterInvocation() {
+    }
+    
     private final boolean m() {
-        return new .com.redhat.ceylon.compiler.impl.NamedArgumentCall<NamedArgumentInvocation>(this, 
-            new Object(){ .java.lang.String get(){ return "foo"; } }.get(), 
-            new Object(){ long get(){ return 2; } }.get()) {
-            final boolean f() {
-                return instance.f((long) args[1], (.java.lang.String) args[0]);
+        return (
+            let
+            {
+                
+                final class $s$1 {
+                    
+                    private $s$1() {
+                    }
+                    
+                    .java.lang.String getS() {
+                        return "foo";
+                    }
+                }
+                final $s$1 $s$1 = new $s$1();
+                final .java.lang.String $arg$0$1 = $s$1.getS();
+                
+                final class $n$2 {
+                    
+                    private $n$2() {
+                    }
+                    
+                    long getN() {
+                        return 2L;
+                    }
+                }
+                final $n$2 $n$2 = new $n$2();
+                final long $arg$0$0 = $n$2.getN();
             }
-         }.f();
+            returning f($arg$0$0, $arg$0$1);
+        );
     }
     
     private final boolean f(final long n, final .java.lang.String s) {
         return true;
     }
     
-    NamedArgumentGetterInvocation() {
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentGetterInvocation();
     }
 }

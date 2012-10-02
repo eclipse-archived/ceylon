@@ -138,7 +138,6 @@ public class StructureTest extends CompilerTest {
     public void testKlsInterface(){
         compareWithJavaSource("klass/Interface");
     }
-    @Ignore("M3")
     @Test
     public void testKlsInterfaceWithConcreteMembers(){
         compareWithJavaSource("klass/InterfaceWithConcreteMembers");
