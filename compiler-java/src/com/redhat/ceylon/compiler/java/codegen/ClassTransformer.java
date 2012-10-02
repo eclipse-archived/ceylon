@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -163,6 +164,7 @@ public class ClassTransformer extends AbstractTransformer {
 
             if(def instanceof Tree.ClassDefinition){
                 for (Tree.Parameter param : paramList.getParameters()) {
+                    // Overloaded instantiators
                     Parameter paramModel = param.getDeclarationModel();
                     Parameter refinedParam = (Parameter)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel());
                     at(param);
@@ -173,6 +175,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     && (refinedParam.isDefaulted()
                                             || refinedParam.isSequenced()))) {
                         ClassDefinitionBuilder cbForDevaultValues;
+                        ClassDefinitionBuilder cbForDevaultValuesDecls = null;
                         switch (Strategy.defaultParameterMethodOwner(model)) {
                         case STATIC:
                             cbForDevaultValues = classBuilder;
@@ -182,6 +185,7 @@ public class ClassTransformer extends AbstractTransformer {
                             break;
                         case OUTER_COMPANION:
                             cbForDevaultValues = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(model, true));
+                            cbForDevaultValuesDecls = classBuilder.getContainingClassBuilder();
                             break;
                         default:
                             cbForDevaultValues = classBuilder.getCompanionBuilder(model);
@@ -189,8 +193,18 @@ public class ClassTransformer extends AbstractTransformer {
                         if (generateInstantiator && refinedParam != paramModel) {}
                         else {
                             cbForDevaultValues.method(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param));
+                            if (cbForDevaultValuesDecls != null) {
+                                cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, def.getDeclarationModel(), paramList, param));
+                            }
                         }
                         if (generateInstantiator) {
+                            if (Decl.withinInterface(cls)) {
+                                MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+                                makeOverloadsForDefaultedParameter(0,
+                                        instBuilder,
+                                        model, paramList, param);
+                                instantiatorDeclCb.method(instBuilder);
+                            }
                             MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
                             makeOverloadsForDefaultedParameter(OL_BODY,
                                     instBuilder,
@@ -359,6 +373,15 @@ public class ClassTransformer extends AbstractTransformer {
         // For each super interface
         for (Declaration member : iface.getMembers()) {
             
+            if (member instanceof Class
+                    && Strategy.generateInstantiator(member)
+                    && model.getDirectMember(member.getName(), null) == null) {
+                // instantiator method implementation
+                Class klass = (Class)member;
+                generateInstantiatorDelegate(classBuilder, satisfiedType,
+                        iface, rawifyParametersAndResults, klass);
+            } 
+            
             if (Strategy.onlyOnCompanion(member)) {
                 // non-shared interface methods don't need implementing
                 // (they're just private methods on the $impl)
@@ -399,6 +422,7 @@ public class ClassTransformer extends AbstractTransformer {
                             classBuilder.method(overload);
                         }
                     }
+                    
                 }
                 // if it has the *most refined* default concrete member, 
                 // then generate a method on the class
@@ -469,6 +493,53 @@ public class ClassTransformer extends AbstractTransformer {
         
     }
 
+    private void generateInstantiatorDelegate(
+            ClassDefinitionBuilder classBuilder, ProducedType satisfiedType,
+            Interface iface, boolean rawifyParametersAndResults, Class klass) {
+        ProducedType typeMember = satisfiedType.getTypeMember(klass, Collections.<ProducedType>emptyList());
+        java.util.List<TypeParameter> typeParameters = klass.getTypeParameters();
+        java.util.List<Parameter> parameters = klass.getParameterLists().get(0).getParameters();
+        
+        String instantiatorMethodName = naming.getInstantiatorMethodName(klass);
+        for (Parameter param : parameters) {
+            if (param.isDefaulted()
+                    || param.isSequenced()) {
+                final ProducedTypedReference typedParameter = typeMember.getTypedParameter(param);
+                // If that method has a defaulted parameter, 
+                // we need to generate a default value method
+                // which also delegates to the $impl
+                final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
+                        typedParameter,
+                        PUBLIC | FINAL, 
+                        typeParameters, 
+                        typedParameter.getType(),
+                        Naming.getDefaultedParamMethodName(klass, param), 
+                        parameters.subList(0, parameters.indexOf(param)),
+                        rawifyParametersAndResults);
+                classBuilder.method(defaultValueDelegate);
+                
+                final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
+                        typeMember,
+                        PUBLIC | FINAL, 
+                        typeParameters,  
+                        typeMember.getType(), 
+                        instantiatorMethodName, 
+                        parameters.subList(0, parameters.indexOf(param)),
+                        rawifyParametersAndResults);
+                classBuilder.method(overload);
+            }
+        }
+        final MethodDefinitionBuilder overload = makeDelegateToCompanion(iface,
+                typeMember,
+                PUBLIC | FINAL, 
+                typeParameters,  
+                typeMember.getType(), 
+                instantiatorMethodName, 
+                parameters,
+                rawifyParametersAndResults);
+        classBuilder.method(overload);
+    }
+
     private boolean needsRawification(ProducedType type) {
         final Iterator<TypeParameter> refinedTypeParameters = type.getDeclaration().getTypeParameters().iterator();
         boolean rawifyParametersAndResults = false;
@@ -501,7 +572,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Generates a method which delegates to the companion instance $Foo$impl
      */
     private MethodDefinitionBuilder makeDelegateToCompanion(Interface iface,
-            ProducedTypedReference typedMember, final long mods,
+            ProducedReference typedMember, final long mods,
             final java.util.List<TypeParameter> typeParameters,
             final ProducedType methodType,
             final String methodName, final java.util.List<Parameter> parameters, 
@@ -516,13 +587,17 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         boolean explicitReturn = false;
-        TypedDeclaration member = typedMember.getDeclaration();
+        Declaration member = typedMember.getDeclaration();
         if (!isVoid(methodType) 
                 || ((member instanceof Method || member instanceof Getter || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
                 || (member instanceof Method && Strategy.useBoxedVoid((Method)member))) {
             explicitReturn = true;
-            concreteWrapper.resultTypeNonWidening(typedMember, typedMember.getType(),
-                    rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
+            if (typedMember instanceof ProducedTypedReference) {
+                concreteWrapper.resultTypeNonWidening((ProducedTypedReference)typedMember, typedMember.getType(),
+                        rawifyParametersAndResults ? JT_RAW_TP_BOUND : 0);
+            } else {
+                concreteWrapper.resultType(null, makeJavaType((ProducedType)typedMember));
+            }
         }
         
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
