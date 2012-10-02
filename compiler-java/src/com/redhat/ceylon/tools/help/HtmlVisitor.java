@@ -67,17 +67,31 @@ public class HtmlVisitor implements Visitor {
         String longName = option.getLongName();
         String shortName = option.getShortName();
         String argumentName = option.getArgumentName();
+        ArgumentType argumentType = option.getOption().getArgumentType();
         html.open("dt class='option'");
         html.open("code id='long" + longName + "'").text(longName);
-        if (argumentName != null) {
+        if (argumentType == ArgumentType.OPTIONAL) {
+            html.text("[");
+        }
+        if (argumentType != ArgumentType.NOT_ALLOWED) {
             html.text("=").text(argumentName);
+        }
+        if (argumentType == ArgumentType.OPTIONAL) {
+            html.text("]");
         }
         html.close("code");
         if (shortName != null) {
             html.text(", ");
             html.open("code id='short" + shortName +"'").text(shortName);
-            if (argumentName != null) {
-                html.text(" ").text(argumentName);
+            if (argumentType != ArgumentType.NOT_ALLOWED) {
+                html.text(" ");
+                if (argumentType == ArgumentType.OPTIONAL) {
+                    html.text("[");
+                }
+                html.text(argumentName);
+                if (argumentType == ArgumentType.OPTIONAL) {
+                    html.text("]");
+                }
             }
             html.close("code");
         }

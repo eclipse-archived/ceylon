@@ -66,18 +66,33 @@ public class PlainVisitor implements Visitor {
         String shortName = option.getShortName();
         String longName = option.getLongName();
         String argumentName = option.getArgumentName();
+        ArgumentType argumentType = option.getOption().getArgumentType();
         numOptions++;
-        if (shortName != null) {
-            out.append(shortName);
-            if (argumentName != null) {
-                out.append(" <" + argumentName + ">");
-            }
-            out.append(", ");
-        }
         out.append(longName);
-        if (argumentName != null) {
+        if (argumentType == ArgumentType.OPTIONAL) {
+            out.append("[");
+        }
+        if (argumentType != ArgumentType.NOT_ALLOWED) {
             out.append("=<" + argumentName + ">");
         }
+        if (argumentType == ArgumentType.OPTIONAL) {
+            out.append("]");
+        }
+        if (shortName != null) {
+            out.append(", ");
+            out.append(shortName);
+            if (argumentType != ArgumentType.NOT_ALLOWED) {
+                out.append(" ");
+                if (argumentType == ArgumentType.OPTIONAL) {
+                    out.append("[");
+                }
+                out.append("<" + argumentName + ">");
+                if (argumentType == ArgumentType.OPTIONAL) {
+                    out.append("]");
+                }
+            }
+        }
+        
         out.setIndent(12);
         out.newline();
         markdown(option.getDescription());    
