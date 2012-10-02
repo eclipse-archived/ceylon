@@ -117,4 +117,6 @@ public class TypesJava {
     
     void variadicObject(java.lang.Object... vars){}
     <T> void variadicT(T... vars){}
+
+    public void variadicObjectArray(Object[]... arr){}
 }

@@ -49,6 +49,20 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    // depends on https://github.com/ceylon/ceylon-compiler/issues/595
+    public void testIopVariadicOverloadedMethods_fail(){
+        compile("JavaWithOverloadedMembers.java");
+        compareWithJavaSource("VariadicOverloadedMethods");
+    }
+
+    @Test
+    // depends on https://github.com/ceylon/ceylon-spec/issues/420
+    public void testIopVariadicArrays_fail(){
+        compile("TypesJava.java");
+        compareWithJavaSource("VariadicArraysMethods");
+    }
+
+    @Test
     public void testIopImplementOverloadedConstructors(){
         compile("JavaWithOverloadedMembers.java");
         compareWithJavaSource("ImplementOverloadedConstructors");

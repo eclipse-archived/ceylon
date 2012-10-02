@@ -17,26 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.interop;
+@nomodel
+void variadicArraysMethods() {
+    TypesJava java = TypesJava();
 
-public class JavaWithOverloadedMembers {
-    
-    public JavaWithOverloadedMembers(){}
-    public JavaWithOverloadedMembers(long param){}
-    
-    public void method(){}
-    public void method(long param){}
-    public void method(long param, long param2){}
-    
-    public void topMethod(){}
-    
-    public void variadic(){}
-    public void variadic(long p1){}
-    public void variadic(long p1, long p2){}
-    public void variadic(long... params){}
-    public void variadic(double p1){}
-    public void variadic(double p1, double p2){}
-    public void variadic(double... params){}
-    public void variadic(Object param){}
-    public void variadic(Object... params){}
+    Array<Object>[] objectArray = {array<Object>("a"), array<Object>("b")};
+    java.variadicObjectArray(objectArray);
+    java.variadicObjectArray(objectArray...);
 }
