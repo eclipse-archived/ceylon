@@ -51,15 +51,15 @@ public class JsCompiler {
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
 
     /** A container for things we need to keep per-module. */
-    private final class JsOutput {
+    protected class JsOutput {
         private final File f = File.createTempFile("jsout", ".tmp");
         private final Writer w = new FileWriter(f);
         private final Set<String> s = new HashSet<String>();
         private final MetamodelVisitor mmg;
-        private JsOutput(Module m) throws IOException {
+        protected JsOutput(Module m) throws IOException {
             mmg = new MetamodelVisitor(m);
         }
-        Writer getWriter() { return w; }
+        protected Writer getWriter() { return w; }
         File close() throws IOException {
             w.close();
             return f;
@@ -135,7 +135,7 @@ public class JsCompiler {
                 System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
             }
             pu.getCompilationUnit().visit(unitVisitor);
-            GenerateJsVisitor jsv = new GenerateJsVisitor(getWriter(pu), opts.isOptimize(), names);
+            GenerateJsVisitor jsv = new GenerateJsVisitor(getOutput(pu).getWriter(), opts.isOptimize(), names);
             jsv.setAddComments(opts.isComment());
             jsv.setIndent(opts.isIndent());
             jsv.setVerbose(opts.isVerbose());
@@ -218,23 +218,24 @@ public class JsCompiler {
         return errCount == 0;
     }
 
+    /** Creates a new instance of JsOutput for the specified module. */
+    protected JsOutput newJsOutput(Module module) throws IOException {
+        return new JsOutput(module);
+    }
+
     /** Creates a JsOutput if needed, for the PhasedUnit.
      * Right now it's one file per module. */
     private JsOutput getOutput(PhasedUnit pu) throws IOException {
         Module mod = pu.getPackage().getModule();
         JsOutput jsout = output.get(mod);
         if (jsout==null) {
-            jsout = new JsOutput(mod);
+            jsout = newJsOutput(mod);
             output.put(mod, jsout);
             if (opts.isModulify()) {
                 beginWrapper(jsout.getWriter());
             }
         }
         return jsout;
-    }
-    /** Returns the writer for the Phased Unit. */
-    protected Writer getWriter(PhasedUnit pu) throws IOException {
-        return getOutput(pu).getWriter();
     }
 
     /** Closes all output writers and puts resulting artifacts in the output repo. */
