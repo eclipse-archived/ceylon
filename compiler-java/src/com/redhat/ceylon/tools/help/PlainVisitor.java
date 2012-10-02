@@ -49,6 +49,7 @@ public class PlainVisitor implements Visitor {
     }
 
     private void describedSection(DescribedSection describedSection) {
+        markdown(describedSection.getTitle());
         markdown(describedSection.getDescription());
         out.setIndent(0);
         out.newline();

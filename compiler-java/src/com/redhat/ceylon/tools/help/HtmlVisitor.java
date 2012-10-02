@@ -50,6 +50,7 @@ public class HtmlVisitor implements Visitor {
     private void describedSection(DescribedSection describedSection) {
         html.open("div class='section'");
         html.text("\n");
+        html.markdown(describedSection.getTitle()).text("\n");
         html.markdown(describedSection.getDescription());
         html.close("div").text("\n\n");
     }

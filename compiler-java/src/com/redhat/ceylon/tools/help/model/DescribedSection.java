@@ -12,6 +12,8 @@ public class DescribedSection implements Documentation {
     
     private Role role;
     
+    private Node title;
+    
     private Node description;
 
     public Role getRole() {
@@ -20,6 +22,14 @@ public class DescribedSection implements Documentation {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Node getTitle() {
+        return title;
+    }
+
+    public void setTitle(Node title) {
+        this.title = title;
     }
 
     public Node getDescription() {

@@ -178,6 +178,7 @@ public class DocBuilder {
                     // heading is H2
                     Markdown.adjustHeadings(sectionDoc, 2-sect.getHeading().getLevel());
                 }
+                ds.setTitle(sect.getHeading());
                 ds.setDescription(sectionDoc);
                 additionalSections.add(ds);
             }
@@ -211,9 +212,9 @@ public class DocBuilder {
         if (!description.isEmpty()) {
             section = new DescribedSection();
             section.setRole(Role.DESCRIPTION);
-            section.setDescription(Markdown.markdown(
-                    "##" + sectionsBundle.getString("section.DESCRIPTION") + "\n\n" +
-                    description));
+            section.setTitle(
+                    Markdown.markdown("##" + sectionsBundle.getString("section.DESCRIPTION") + "\n"));
+            section.setDescription(Markdown.markdown(description));
         }
         return section;
     }
@@ -338,13 +339,12 @@ public class DocBuilder {
     }
 
     private DescribedSection buildSummary(ToolModel<?> model) {
-        // XXX The whole dash between ceylon and the tool name is a bit of a 
-        // man(1)-ism which we probably don't want to follow
         DescribedSection summary = new DescribedSection();
         summary.setRole(Role.SUMMARY);
-        summary.setDescription(Markdown.markdown(
-                "##" + sectionsBundle.getString("section.NAME") + "\n\n" +
-                "`" + getCeylonInvocation(model) + "` - " + getSummaryValue(model)));
+        summary.setTitle(
+                Markdown.markdown("##" + sectionsBundle.getString("section.NAME") + "\n"));
+        summary.setDescription(
+                Markdown.markdown("`" + getCeylonInvocation(model) + "` - " + getSummaryValue(model)));
         return summary;
     }
     

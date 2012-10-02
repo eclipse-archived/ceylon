@@ -170,7 +170,7 @@ public class Markdown {
         
         Document doc = new Document(Parser.JJTDOCUMENT);    
         final int numChildren = parent.jjtGetNumChildren();
-        final int start = header1 != null ? Markdown.getIndexInParent(header1) : 0;
+        final int start = header1 != null ? Markdown.getIndexInParent(header1) + 1: 0;
         final int end = header2 != null ? Markdown.getIndexInParent(header2) -1 : numChildren - 1;
         for (int nodeIndex = start; nodeIndex <= end; nodeIndex++) {
             Node child = parent.jjtGetChild(nodeIndex);
