@@ -315,6 +315,7 @@ Used with another target such as 'package'">
 
     <target name="generate-apidoc">
         <exec executable="${dist.dir}/bin/ceylon" failonerror="yes">
+        	<arg value="--stacktraces"/>
         	<arg value="doc"/>
             <arg value="--out=${dist.dir}/repo"/>
             <arg value="--src=${ceylon.language.dir}/src/"/>
@@ -325,6 +326,7 @@ Used with another target such as 'package'">
 
     <target name="generate-tooldoc">
         <exec executable="${dist.dir}/bin/ceylon" failonerror="yes">
+        	<arg value="--stacktraces"/>
             <arg value="doc-tool"/>
             <arg value="--output=${dist.dir}/doc/en/toolset"/>
             <arg value="--index"/>
