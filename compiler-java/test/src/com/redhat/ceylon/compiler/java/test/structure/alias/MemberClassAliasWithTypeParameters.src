@@ -30,6 +30,11 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
         }
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$new(final S s) {
+        return new Member<S>(s);
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S>")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
@@ -41,6 +46,11 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
         }
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> MemberClassAlias2$new(final .ceylon.language.Integer s) {
+        return new Member<.ceylon.language.Integer>(s);
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<ceylon.language.Integer>")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
@@ -49,6 +59,11 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
         
         private MemberClassAlias2() {
         }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> MemberClassAlias3$new(final C s) {
+        return new Member<C>(s);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
@@ -63,9 +78,9 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
     private final void test() {
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m1 = Member$new(.ceylon.language.Integer.instance(1L));
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m2 = Member$new(.ceylon.language.Integer.instance(1L));
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> m3 = Member$new(c);
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m1 = MemberClassAlias1$new(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m2 = MemberClassAlias2$new(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> m3 = MemberClassAlias3$new(c);
     }
 }
 final class memberClassAliasWithTypeParametersMethod_ {
@@ -74,9 +89,9 @@ final class memberClassAliasWithTypeParametersMethod_ {
     }
     
     static void memberClassAliasWithTypeParametersMethod() {
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo1 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).Member$new(.ceylon.language.Integer.instance(1L));
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).Member$new(.ceylon.language.Integer.instance(1L));
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo3 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).Member$new(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo1 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).MemberClassAlias1$new(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).MemberClassAlias2$new(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo3 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L)).MemberClassAlias3$new(.ceylon.language.Integer.instance(1L));
     }
     
     public static void main(.java.lang.String[] args) {

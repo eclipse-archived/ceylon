@@ -1,0 +1,187 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAliasToToplevel2", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.MemberClassAliasToToplevel2", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias"), @.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAliasToToplevel", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.MemberClassAliasToToplevel", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class MemberClassAliasTricks_Foo {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public MemberClassAliasTricks_Foo() {
+        (
+            let
+            {
+                long $ceylontmp$a$1 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$a();
+                long $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$b($ceylontmp$a$1);
+                this($ceylontmp$a$1, $ceylontmp$b$2);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public MemberClassAliasTricks_Foo(final long a) {
+        (
+            let
+            {
+                long $ceylontmp$b$4 = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.$init$b(a);
+                this(a, $ceylontmp$b$4);
+            }
+            returning null;
+        );
+    }
+    
+    public MemberClassAliasTricks_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    long b) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static long $init$a() {
+        return 1L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static long $init$b(final long a) {
+        return 2L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel$new(final long a, final long b) {
+        return new MemberClassAliasTricks_Foo(a, b);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasTricks_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public final class MemberClassAliasToToplevel {
+        
+        private MemberClassAliasToToplevel() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel2$new(final long a, final long b) {
+        return new MemberClassAliasTricks_Foo(a, b);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasTricks_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public final class MemberClassAliasToToplevel2 {
+        
+        private MemberClassAliasToToplevel2() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member Member$new(final long a, final long b) {
+        return new Member(a, b);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member Member$new() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member$impl $ceylontmp$impl$8 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member$impl();
+                long $ceylontmp$a$9 = $ceylontmp$impl$8.$init$a();
+                long $ceylontmp$b$10 = $ceylontmp$impl$8.$init$b($ceylontmp$a$9);
+            }
+            returning new Member($ceylontmp$a$9, $ceylontmp$b$10);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member Member$new(final long a) {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member$impl $ceylontmp$impl$11 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member$impl();
+                long $ceylontmp$b$12 = $ceylontmp$impl$11.$init$b(a);
+            }
+            returning new Member(a, $ceylontmp$b$12);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final class Member$impl {
+        
+        public Member$impl() {
+            super();
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public final long $init$a() {
+            return 1L;
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public final long $init$b(final long a) {
+            return 2L;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "MemberClassAliasToEnclosingMemberClass", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.MemberClassAliasToEnclosingMemberClass", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")})
+    @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasTricks_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public class Member {
+        
+        protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+        @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+        long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+        @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+        long b) {
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member MemberClassAliasToEnclosingMemberClass$new(final long a, final long b) {
+            return new Member(a, b);
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+        @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member")
+        @.com.redhat.ceylon.compiler.java.metadata.Container(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
+        @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+        public final class MemberClassAliasToEnclosingMemberClass {
+            
+            private MemberClassAliasToEnclosingMemberClass() {
+            }
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+        private final void test() {
+            final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member m1 = MemberClassAliasToEnclosingMemberClass$new(1L, 2L);
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    private final void test() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo m1 = MemberClassAliasToToplevel$new(1L, 2L);
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo m2 = MemberClassAliasToToplevel2$new(1L, 2L);
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member m3 = Member$new(1L, 2L).MemberClassAliasToEnclosingMemberClass$new(3L, 4L);
+    }
+}
+final class memberClassAliasTricksMethod_ {
+    
+    private memberClassAliasTricksMethod_() {
+    }
+    
+    static void memberClassAliasTricksMethod() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo foo1 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo(1L, 2L).MemberClassAliasToToplevel$new(3L, 4L);
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo(1L, 2L).MemberClassAliasToToplevel2$new(3L, 4L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.alias.memberClassAliasTricksMethod_.memberClassAliasTricksMethod();
+    }
+}

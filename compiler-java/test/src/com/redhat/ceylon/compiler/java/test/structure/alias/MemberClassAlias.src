@@ -22,6 +22,11 @@ public class MemberClassAlias_Foo {
         }
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member MemberClassAlias$new() {
+        return new Member();
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAlias_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
@@ -34,7 +39,7 @@ public class MemberClassAlias_Foo {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
     private final void test() {
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member m = Member$new();
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member m = MemberClassAlias$new();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -49,7 +54,7 @@ final class memberClassAliasMethod_ {
     }
     
     static void memberClassAliasMethod() {
-        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo().Member$new();
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo().MemberClassAlias$new();
     }
     
     public static void main(.java.lang.String[] args) {

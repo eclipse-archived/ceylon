@@ -498,11 +498,6 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
-    public void testAlsMemberClassAliasTricks_fail() {
-        compareWithJavaSource("alias/MemberClassAliasTricks");
-    }
-
-    @Test
     public void testAlsClassAliasWithParameters() {
         compareWithJavaSource("alias/ClassAliasWithParameters");
     }
@@ -549,4 +544,16 @@ public class StructureTest extends CompilerTest {
                 "alias/InterfaceAliasWithTypeParameters.ceylon");
         compareWithJavaSource("alias/InterfaceAliasFromModelLoader");
     }
+
+    @Test
+    public void testAlsMemberClassAliasTricks() {
+        compareWithJavaSource("alias/MemberClassAliasTricks");
+    }
+
+    // Depends on https://github.com/ceylon/ceylon-compiler/issues/784
+    @Test
+    public void testAlsMemberInterfaceAliasTricks_fail() {
+        compareWithJavaSource("alias/MemberInterfaceAliasTricks");
+    }
+
 }
