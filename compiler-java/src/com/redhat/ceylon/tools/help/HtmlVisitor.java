@@ -163,8 +163,8 @@ public class HtmlVisitor implements Visitor {
         if (!argument.getMultiplicity().isRequired()) {
             html.text("[");
         }
-        html.text("<");
-        argumentSynopsis(name);
+        // don't generate a # link because arguments have no name or id
+        html.text("<").text(name);
         if (argument.getMultiplicity().isMultivalued()) {
             html.text("...");
         }
