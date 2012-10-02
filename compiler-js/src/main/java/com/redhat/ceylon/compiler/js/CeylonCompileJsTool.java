@@ -81,8 +81,8 @@ public class CeylonCompileJsTool implements Tool {
     @Option
     @Description("Equivalent to `--no-indent` `--no-comments`")
     public void setCompact(boolean compact) {
-        this.setNoIndent(!compact);
-        this.setNoComments(!compact);
+        this.setNoIndent(compact);
+        this.setNoComments(compact);
     }
 
     public boolean isComments() {
