@@ -68,7 +68,7 @@ public class GenerateJsVisitor extends Visitor
             }
             super.visit(that);
         }
-        
+
         public void visit(Tree.ClassOrInterface qe) {
             //don't recurse
             if (qe instanceof ClassDefinition) {
@@ -227,7 +227,7 @@ public class GenerateJsVisitor extends Visitor
         if (require(clm)) {
             setCLAlias(names.moduleAlias(clm));
         }
-        
+
         for (CompilerAnnotation ca: that.getCompilerAnnotations()) {
             ca.visit(this);
         }
@@ -286,7 +286,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void visitStatements(List<? extends Statement> statements) {
         List<String> oldRetainedVars = retainedVars.reset(null);
-        
+
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             s.visit(this);
@@ -594,12 +594,12 @@ public class GenerateJsVisitor extends Visitor
                 ClassOrInterface parentType = ((ClassOrInterface) scope).getExtendedTypeDeclaration();
                 if (parentType != null) {
                     suffix = names.typeSuffix(parentType);
-                }                    
+                }
             }
         }
         return suffix;
     }
-    
+
     private void callInterfaces(SatisfiedTypes satisfiedTypes, Class d, Node that) {
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
@@ -695,7 +695,7 @@ public class GenerateJsVisitor extends Visitor
         }
 
         out(");");
-        
+
         //The class definition needs to be inside the init function if we want forwards decls to work in prototype style
         if (prototypeStyle) {
             endLine();
@@ -977,6 +977,15 @@ public class GenerateJsVisitor extends Visitor
         }
 
         if (!share(d)) { out(";"); }
+        if (!prototypeStyle && d.isDefault()) {
+            //Add another reference to this method, with the fully qualified name as a prefix
+            outerSelf(d);
+            out(".");
+            for (String part : d.getContainer().getQualifiedNameString().split("\\.")) {
+                out(part, "$");
+            }
+            out(names.name(d), "=", names.name(d), ";");
+        }
     }
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
@@ -1272,7 +1281,7 @@ public class GenerateJsVisitor extends Visitor
         Declaration decl = that.getDeclaration();
         String name = decl.getName();
         String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
-        
+
         // map Ceylon true/false/null directly to JS true/false/null
         if ("ceylon.language".equals(pkgName)) {
             if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
@@ -1284,12 +1293,17 @@ public class GenerateJsVisitor extends Visitor
         if (that.getSupertypeQualifier() == null) {
             qualify(that, decl);
         } else {
+            //Get the declaring type
             ClassOrInterface parent = (ClassOrInterface)decl.getContainer();
-            out("this.getT$all$()['", parent.getQualifiedNameString(), "'].");
+            out("this.");
             if (prototypeStyle) {
-                out("$$.prototype.");
+                //In prototype style we can invoke the original method directly
+                out("getT$all$()['", parent.getQualifiedNameString(), "'].$$.prototype.");
             } else {
-                //TODO what can we do here?
+                //Otherwise we need to add the qualified prefix
+                for (String part : parent.getQualifiedNameString().split("\\.")) {
+                    out(part, "$");
+                }
             }
         }
         if (isNative(decl)) {
@@ -1526,9 +1540,9 @@ public class GenerateJsVisitor extends Visitor
         if (that.getNamedArgumentList()!=null) {
             NamedArgumentList argList = that.getNamedArgumentList();
             out("(");
-            
+
             Map<String, String> argVarNames = defineNamedArguments(argList);
-            
+
             that.getPrimary().visit(this);
             if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
@@ -1543,7 +1557,7 @@ public class GenerateJsVisitor extends Visitor
             super.visit(that);
         }
     }
-    
+
     private Map<String, String> defineNamedArguments(NamedArgumentList argList) {
         Map<String, String> argVarNames = new HashMap<String, String>();
         for (NamedArgument arg: argList.getNamedArguments()) {
@@ -1599,9 +1613,9 @@ public class GenerateJsVisitor extends Visitor
                 first = false;
             }
             out(")");
-        }        
+        }
     }
-    
+
     @Override
     public void visit(PositionalArgumentList that) {
         out("(");
@@ -1687,7 +1701,7 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(ObjectArgument that) {
         final Class c = (Class)that.getDeclarationModel().getTypeDeclaration();
-        
+
         out("(function()");
         beginBlock();
         out("//ObjectArgument ", that.getIdentifier().getText());
@@ -1709,7 +1723,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         out("}");
         endLine();
-        
+
         typeInitialization(xt, sts, false, c, new PrototypeInitCallback() {
             @Override
             public void addToPrototypeCallback() {
@@ -1770,13 +1784,13 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    
+
     @Override
     public void visit(Comprehension that) {
         new ComprehensionGenerator(this, names, directAccess).generateComprehension(that);
     }
 
-    
+
     @Override
     public void visit(SpecifierStatement that) {
         BaseMemberExpression bme = (Tree.BaseMemberExpression) that.getBaseMemberExpression();
@@ -1939,7 +1953,7 @@ public class GenerateJsVisitor extends Visitor
         super.visit(that);
         endLine(true);
     }
-    
+
     /** Creates a new temporary variable which can be used immediately, even
      * inside an expression. The declaration for that temporary variable will be
      * emitted after the current Ceylon statement has been completely processed.
@@ -2397,9 +2411,9 @@ public class GenerateJsVisitor extends Visitor
    }
 
    private boolean hasSimpleGetterSetter(Declaration decl) {
-       return !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal()); 
+       return !((decl instanceof Getter) || (decl instanceof Setter) || decl.isFormal());
    }
-   
+
    private void prefixIncrementOrDecrement(Term term, String functionName) {
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
@@ -2459,7 +2473,7 @@ public class GenerateJsVisitor extends Visitor
            out(",", path, names.setter(bme.getDeclaration()), "(",
                    oldValueVar, ".", functionName, "()),",
                    oldValueVar, ")");
-           
+
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
            String primaryVar = createRetainedTempVar();
@@ -2473,7 +2487,7 @@ public class GenerateJsVisitor extends Visitor
                    oldValueVar, ")");
        }
    }
-   
+
     @Override
     public void visit(UnionOp that) {
         binaryOp(that, new BinaryOpGenerator() {
@@ -2486,7 +2500,7 @@ public class GenerateJsVisitor extends Visitor
             }
         });
     }
-    
+
     @Override
     public void visit(IntersectionOp that) {
         binaryOp(that, new BinaryOpGenerator() {
@@ -2512,7 +2526,7 @@ public class GenerateJsVisitor extends Visitor
             }
         });
     }
-    
+
     @Override
     public void visit(ComplementOp that) {
         binaryOp(that, new BinaryOpGenerator() {
@@ -2594,7 +2608,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out("]}");
     }
-    
+
     private void typeNameOrList(StaticType type) {
     	if (type instanceof SimpleType) {
             out("'");
@@ -2652,7 +2666,7 @@ public class GenerateJsVisitor extends Visitor
             out(")");
         }
     }
-    
+
     @Override
     public void visit(IsOp that) {
         generateIsOfType(that.getTerm(), null, that.getType(), null, false);
