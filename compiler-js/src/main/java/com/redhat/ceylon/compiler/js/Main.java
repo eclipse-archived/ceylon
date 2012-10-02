@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,26 +61,7 @@ public class Main {
         }
     }
 
-    /**
-     * Files that are not under a proper module structure are placed under a <nomodule> module.
-     */
-    public static void main(String[] _args) throws Exception {
-        long t0, t1, t2, t3, t4;
-        List<String> args = new ArrayList<String>(Arrays.asList(_args));
-        final Options opts = Options.parse(args);
-        if (opts.isVersion()) {
-            System.err.printf("Version: ceylonc-js %s 'Ratatouille'%n", JsCompiler.VERSION);
-            return;
-        }
-        if (opts.isHelp()) {
-            help(true);
-            return;
-        }
-        if (args.size() == 0) {
-            help(false);
-            return;
-        }
-
+    public static void run(Options opts, List<String> files) throws IOException {
         final TypeChecker typeChecker;
         if (opts.isVerbose()) {
             System.out.printf("Using repositories: %s%n", opts.getRepos());
@@ -87,6 +69,7 @@ public class Main {
         final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
                 opts.getSystemRepo(), opts.getRepos(), opts.getOutDir(), new JULLogger());
         final Set<String> onlyFiles = new HashSet<String>();
+        long t0, t1, t2, t3, t4;
         if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {
                 @Override
@@ -141,7 +124,7 @@ public class Main {
             }
             final Set<String> modfilters = new HashSet<String>();
             boolean stop = false;
-            for (String filedir : args) {
+            for (String filedir : files) {
                 File f = new File(filedir);
                 boolean once=false;
                 if (f.exists() && f.isFile()) {
@@ -271,5 +254,26 @@ public class Main {
             System.err.printf("JS compilation:         %6d nanos%n", t4-t3);
         }
         System.out.println("Compilation finished.");
+    }
+
+    /**
+     * Files that are not under a proper module structure are placed under a <nomodule> module.
+     */
+    public static void main(String[] _args) throws Exception {
+        List<String> args = new ArrayList<String>(Arrays.asList(_args));
+        final Options opts = Options.parse(args);
+        if (opts.isVersion()) {
+            System.err.printf("Version: ceylonc-js %s 'Ratatouille'%n", JsCompiler.VERSION);
+            return;
+        }
+        if (opts.isHelp()) {
+            help(true);
+            return;
+        }
+        if (args.size() == 0) {
+            help(false);
+            return;
+        }
+        run(opts, args);
     }
 }
