@@ -53,14 +53,6 @@ public class TypeFactory extends Unit {
     }
     
     /**
-     * Gets the declaration of {@code ArraySequence}
-     * @return The declaration
-     */
-    public TypeDeclaration getDefaultSequenceDeclaration() {
-        return ((TypeDeclaration) getLanguageModuleDeclaration("ArraySequence"));
-    }
-
-    /**
      * Determines whether the given ProducedType is a union
      * @param pt 
      * @return whether the type is a union type
@@ -78,15 +70,6 @@ public class TypeFactory extends Unit {
     public boolean isIntersection(ProducedType pt) {
         TypeDeclaration tdecl = pt.getDeclaration();
         return (tdecl instanceof IntersectionType && tdecl.getSatisfiedTypes().size() > 1);
-    }
-
-    /**
-     * Returns a ProducedType corresponding to {@code ArraySequence<T>}
-     * @param et The ProducedType corresponding to {@code T}
-     * @return The ProducedType corresponding to {@code ArraySequence<T>}
-     */
-    public ProducedType getDefaultSequenceType(ProducedType et) {
-        return Util.producedType(getDefaultSequenceDeclaration(), et);
     }
 
     /**

@@ -692,7 +692,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return refinedType;
     }
-    
+
     private ProducedType toPType(com.sun.tools.javac.code.Type t) {
         return loader().getType(t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
@@ -1857,8 +1857,9 @@ public abstract class AbstractTransformer implements Transformation {
      * @see #makeSequenceRaw(java.util.List)
      */
     JCExpression makeSequence(List<JCExpression> elems, ProducedType seqElemType, int makeJavaTypeOpts) {
-        ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
-        JCExpression typeExpr = makeJavaType(seqType, makeJavaTypeOpts);
+        ProducedType arraySequenceType = toPType(syms().ceylonArraySequenceType);
+        ProducedType sequenceType = arraySequenceType.getDeclaration().getProducedType(null, Arrays.asList(seqElemType));
+        JCExpression typeExpr = makeJavaType(sequenceType, makeJavaTypeOpts);
         return makeNewClass(typeExpr, elems);
     }
     
