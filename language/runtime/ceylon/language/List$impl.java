@@ -58,7 +58,7 @@ public final class List$impl<Element> {
     public boolean equals(java.lang.Object that) {
         return List$impl.<Element>_equals($this, that);
     }
-    static <Element> boolean _equals(final List<Element> $this, java.lang.Object that) {
+    public static <Element> boolean _equals(final List<Element> $this, java.lang.Object that) {
         if (that instanceof List) {
             List other = (List) that;
             if (other.getSize()==$this.getSize()) {
@@ -78,7 +78,7 @@ public final class List$impl<Element> {
     public int hashCode() {
         return List$impl.<Element>_hashCode($this);
     }
-    static <Element> int _hashCode(final List<Element> $this) {
+    public static <Element> int _hashCode(final List<Element> $this) {
         int hashCode = 1;
         java.lang.Object elem;
         for (Iterator<? extends Element> iter=$this.getIterator(); 

@@ -1,6 +1,15 @@
-package ceylon.language;
+package com.redhat.ceylon.compiler.java.language;
 
 import java.util.Arrays;
+
+import ceylon.language.Array;
+import ceylon.language.FixedSized;
+import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
+import ceylon.language.List$impl;
+import ceylon.language.Sequence;
+import ceylon.language.Some;
+import ceylon.language.arrayOfNone_;
 
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -9,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 @Ceylon(major = 3)
-class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
+public class ArrayOfSome<Element> extends Array<Element> implements Some<Element> {
 
     public ArrayOfSome(java.lang.Object array) {
         super(array);

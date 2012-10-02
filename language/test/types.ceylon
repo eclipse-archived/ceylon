@@ -215,8 +215,8 @@ void types() {
     
     check(className(1)=="ceylon.language.Integer", "natural classname");
     check(className(1.0)=="ceylon.language.Float", "float classname");
-    check(className("hello")=="ceylon.language.StringOfSome", "string classname [1]");
-    check(className("")=="ceylon.language.StringOfNone", "string classname [2]");
+    check(className("hello")=="com.redhat.ceylon.compiler.java.language.StringOfSome", "string classname [1]");
+    check(className("")=="com.redhat.ceylon.compiler.java.language.StringOfNone", "string classname [2]");
     check(className(` `)=="ceylon.language.Character", "character classname");
     check(className(1->"hello")=="ceylon.language.Entry", "entry classname");
     check(className(true)=="ceylon.language.true", "true classname");

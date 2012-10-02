@@ -1,9 +1,28 @@
-package ceylon.language;
+package com.redhat.ceylon.compiler.java.language;
 
 import java.util.Arrays;
 
-import com.redhat.ceylon.compiler.java.language.FilterIterable;
-import com.redhat.ceylon.compiler.java.language.MapIterable;
+import ceylon.language.Boolean;
+import ceylon.language.Callable;
+import ceylon.language.Category;
+import ceylon.language.Category$impl;
+import ceylon.language.Collection$impl;
+import ceylon.language.Comparison;
+import ceylon.language.Correspondence$impl;
+import ceylon.language.Entry;
+import ceylon.language.FixedSized;
+import ceylon.language.Integer;
+import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
+import ceylon.language.Iterator;
+import ceylon.language.List;
+import ceylon.language.List$impl;
+import ceylon.language.Map;
+import ceylon.language.Sequence;
+import ceylon.language.Sequence$impl;
+import ceylon.language.empty_;
+import ceylon.language.exhausted_;
+
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -26,7 +45,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Ignore
-    ArraySequence(Element[] array, long first) {
+    public ArraySequence(Element[] array, long first) {
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}
@@ -35,7 +54,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Ignore
-    ArraySequence(java.util.List<Element> list) {
+    public ArraySequence(java.util.List<Element> list) {
     	if (list.size()==0) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
     	}

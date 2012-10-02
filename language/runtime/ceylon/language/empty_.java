@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.metadata.Attribute;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;

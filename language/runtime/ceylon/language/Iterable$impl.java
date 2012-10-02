@@ -5,6 +5,7 @@ import java.util.Comparator;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
+import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.MapIterable;

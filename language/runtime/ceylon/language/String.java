@@ -1,9 +1,12 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
+import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
+import com.redhat.ceylon.compiler.java.language.StringOfNone;
+import com.redhat.ceylon.compiler.java.language.StringOfSome;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;

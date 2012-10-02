@@ -14,7 +14,7 @@ final class package_ {
         return new ceylon.language.descriptor.Package("ceylon.language.descriptor", 
         		true, 
         		"The Ceylon Language Descriptor package",
-        		new ceylon.language.ArraySequence<ceylon.language.String>(ceylon.language.String.instance("Gavin King")));
+        		new com.redhat.ceylon.compiler.java.language.ArraySequence<ceylon.language.String>(ceylon.language.String.instance("Gavin King")));
     }
     
     private package_() {

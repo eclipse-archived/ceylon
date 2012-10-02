@@ -31,7 +31,7 @@ public final class Collection$impl<Element> {
     public java.lang.String toString() {
         return Collection$impl.<Element>_toString($this);
     }
-    static <Element> java.lang.String _toString(Collection<Element> $this) {
+    public static <Element> java.lang.String _toString(Collection<Element> $this) {
         if ($this.getEmpty()) return "{}";
         java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
         java.lang.Object elem;

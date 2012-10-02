@@ -1,6 +1,17 @@
-package ceylon.language;
+package com.redhat.ceylon.compiler.java.language;
 
-import com.redhat.ceylon.compiler.java.language.InternalMap;
+import ceylon.language.Array;
+import ceylon.language.Boolean;
+import ceylon.language.Callable;
+import ceylon.language.Comparison;
+import ceylon.language.Entry;
+import ceylon.language.Integer;
+import ceylon.language.Iterable;
+import ceylon.language.Map;
+import ceylon.language.None;
+import ceylon.language.Sequence;
+import ceylon.language.empty_;
+
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -8,10 +19,10 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 @Ceylon(major = 3)
-class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
+public class ArrayOfNone<Element> extends Array<Element> implements None<Element> {
 
     @Ignore
-    protected ArrayOfNone(java.lang.Object array) {
+    public ArrayOfNone(java.lang.Object array) {
         super(array);
     }
     

@@ -21,7 +21,7 @@ public final class Correspondence$impl<Key,Item> {
     public Category getKeys(){
         return Correspondence$impl.<Key,Item>_getKeys(this.$this);
     }
-    static <Key,Item> Category _getKeys(final Correspondence<Key,Item> $this){
+    public static <Key,Item> Category _getKeys(final Correspondence<Key,Item> $this){
         Category keys = new Category() {
             public boolean contains(java.lang.Object value) {
                 // FIXME
@@ -77,7 +77,7 @@ public final class Correspondence$impl<Key,Item> {
     public ceylon.language.Iterable<? extends Key> definesEvery$keys(){
         return (Iterable)empty_.getEmpty();
     }
-    static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys){
+    public static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys){
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
             final Key key = (Key) elem;
@@ -97,7 +97,7 @@ public final class Correspondence$impl<Key,Item> {
     public ceylon.language.Iterable<? extends Key> definesAny$keys() {
         return (Iterable)empty_.getEmpty();
     }
-    static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
+    public static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
         java.lang.Object elem;
         for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); !((elem = $key$iter$0.next()) instanceof Finished);) {
             final Key key = (Key) elem;
@@ -117,7 +117,7 @@ public final class Correspondence$impl<Key,Item> {
     public ceylon.language.Iterable<? extends Key> items$keys() {
         return (Iterable)empty_.getEmpty();
     }
-    static <Key,Item> ceylon.language.List<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
+    public static <Key,Item> ceylon.language.List<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
         if (keys instanceof Sequence) {
             final ceylon.language.Sequence<? extends Key> $keys$1 = (Sequence<? extends Key>)keys;
             return new Correspondence.Items($this, (Sequence<? extends Key>)$keys$1.getClone());

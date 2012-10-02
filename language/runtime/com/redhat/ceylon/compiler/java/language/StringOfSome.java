@@ -1,15 +1,29 @@
-package ceylon.language;
+package com.redhat.ceylon.compiler.java.language;
 
-import com.redhat.ceylon.compiler.java.language.FilterIterable;
-import com.redhat.ceylon.compiler.java.language.MapIterable;
+import ceylon.language.Boolean;
+import ceylon.language.Callable;
+import ceylon.language.Character;
+import ceylon.language.Comparison;
+import ceylon.language.Entry;
+import ceylon.language.FixedSized;
+import ceylon.language.Integer;
+import ceylon.language.Iterable;
+import ceylon.language.Iterable$impl;
+import ceylon.language.List$impl;
+import ceylon.language.Map;
+import ceylon.language.Sequence;
+import ceylon.language.Some;
+import ceylon.language.String;
+import ceylon.language.string_;
+
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ignore
 @Ceylon(major = 3)
-class StringOfSome extends String implements Some<Character> {
+public class StringOfSome extends String implements Some<Character> {
 
-    StringOfSome(java.lang.String s) {
+    public StringOfSome(java.lang.String s) {
         super(s);
     }
 
