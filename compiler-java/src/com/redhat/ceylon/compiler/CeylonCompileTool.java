@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -160,6 +162,16 @@ public class CeylonCompileTool implements Tool{
         this.rest = rest;
     }
 
+    @PostConstruct
+    public void init() {
+        if (module.isEmpty() &&
+                !rest.contains("--javac=-help") &&
+                !rest.contains("--javac=-X")) {
+            throw new IllegalStateException("Argument moduleOrFile should appear at least 1 time(s)");
+        }
+                
+    }
+    
     @Override
     public void run() {
         List<String> arguments = new ArrayList<>();
