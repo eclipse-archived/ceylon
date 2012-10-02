@@ -143,6 +143,7 @@ public class HtmlVisitor implements Visitor {
         hadFirstArgument = false;
         hadOptions = false;
         html.open("div class='synopsis'", "code");
+        html.text(synopsis.getInvocation() + " ");
     }
 
     @Override
