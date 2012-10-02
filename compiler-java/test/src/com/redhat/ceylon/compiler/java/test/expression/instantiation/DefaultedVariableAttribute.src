@@ -57,7 +57,7 @@ class DefaultedVariableAttribute {
     }
     
     public final .java.lang.String getFullName() {
-        return .ceylon.language.String.join(" ", new .ceylon.language.ArraySequence<.ceylon.language.String>((
+        return .ceylon.language.String.join(" ", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>((
             let
             {
                 .ceylon.language.String $ceylontmp5 = getFirstName();

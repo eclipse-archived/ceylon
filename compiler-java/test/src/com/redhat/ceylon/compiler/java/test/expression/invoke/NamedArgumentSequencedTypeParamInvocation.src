@@ -38,7 +38,7 @@ final class foo_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String> $arg$2$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String>();
-                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$2$0 = new .ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y"));
+                .ceylon.language.Iterable<? extends .ceylon.language.String> $arg$2$0 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y"));
                 $arg$2$callable$.algo($arg$2$0);
             }
             returning null;

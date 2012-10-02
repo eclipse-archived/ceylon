@@ -7,7 +7,7 @@ final class bug676_ {
     
     static void bug676() {
         .ceylon.language.Integer $l$0;
-        if (($l$0 = .ceylon.language.array_.<.ceylon.language.Integer>array(long.class, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L))).getLast()) != null) {
+        if (($l$0 = .ceylon.language.array_.<.ceylon.language.Integer>array(long.class, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L))).getLast()) != null) {
             final long $l$1 = $l$0.longValue();
         }
     }

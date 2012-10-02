@@ -6,9 +6,9 @@ class SequenceType {
     }
     
     public final void m() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> s1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> s1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> s2 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
-        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType> s3 = new .ceylon.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.structure.type.SequenceType>(this, this, this);
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType> s3 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.structure.type.SequenceType>(this, this, this);
         final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType> s4 = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     

@@ -20,7 +20,7 @@ final class bug586_ {
                     .ceylon.language.String[] $spread$1$4 = new .ceylon.language.String[$spread$1$2];
                     for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.String.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).toString());
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$1$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$1$4);
             ) : .ceylon.language.empty_.getEmpty());
         )).getFirst();
     }

@@ -6,7 +6,7 @@ final class spread_ {
     }
     
     static void spread(final .ceylon.language.Iterable<? extends .ceylon.language.String> seq2) {
-        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("Hello"), .ceylon.language.String.instance("World"));
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("Hello"), .ceylon.language.String.instance("World"));
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ini = (
             let
             {
@@ -20,7 +20,7 @@ final class spread_ {
                     .ceylon.language.Integer[] $spread$1$4 = new .ceylon.language.Integer[$spread$1$2];
                     for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.Integer.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).getSize());
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$1$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($spread$1$4);
             );
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ini2 = (
@@ -36,7 +36,7 @@ final class spread_ {
                     .ceylon.language.Integer[] $spread$4$4 = new .ceylon.language.Integer[$spread$4$2];
                     for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.Integer.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).getSize());
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.Integer>($spread$4$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($spread$4$4);
             ) : .ceylon.language.empty_.getEmpty());
         );
         final .ceylon.language.Sequence<? extends .ceylon.language.String> ini3 = (
@@ -52,7 +52,7 @@ final class spread_ {
                     .ceylon.language.String[] $spread$7$4 = new .ceylon.language.String[$spread$7$2];
                     for (int $index$8 = 0; $index$8 < $spread$7$2; $index$8++) $spread$7$4[$index$8] = .ceylon.language.String.instance($spread$7$0.item(.ceylon.language.Integer.instance($index$8)).replace(.com.redhat.ceylon.compiler.java.test.expression.operator.x_.getX(), .com.redhat.ceylon.compiler.java.test.expression.operator.x_.getX()));
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$7$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$7$4);
             );
         );
     }

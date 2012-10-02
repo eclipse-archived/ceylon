@@ -6,7 +6,7 @@ final class isCond_ {
     }
     
     static void isCond() {
-        final .ceylon.language.Sequence seq = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("2"), .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("4"), .ceylon.language.Integer.instance(5L));
+        final .ceylon.language.Sequence seq = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("2"), .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("4"), .ceylon.language.Integer.instance(5L));
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {

@@ -43,8 +43,8 @@ class SequencedParameterInvocation {
     
     private final void f() {
         m("foo");
-        m("foo", new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        m2("foo", new .ceylon.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>(this, this, this));
+        m("foo", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        m2("foo", new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation>(this, this, this));
     }
     
     public static void main(.java.lang.String[] args) {

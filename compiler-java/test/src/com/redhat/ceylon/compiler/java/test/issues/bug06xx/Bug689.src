@@ -3,12 +3,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 class Bug689<X, Y> {
     
     Bug689(X x, Y y, .java.lang.Object xy) {
-        this.attributeWithUnion = new .ceylon.language.ArraySequence(x, y);
-        this.attributeWithIntersection = new .ceylon.language.ArraySequence(xy);
-        this.variableWithUnion = new .ceylon.language.ArraySequence(x, y);
-        this.variableWithIntersection = new .ceylon.language.ArraySequence(xy);
-        this.attributeWithUnionWithinTypeArg = new .ceylon.language.ArraySequence<.ceylon.language.Sequence<? extends .java.lang.Object>>(new .ceylon.language.ArraySequence(x, y));
-        this.attributeWithUnionErasedToIterable = new .ceylon.language.ArraySequence(x, y);
+        this.attributeWithUnion = new .com.redhat.ceylon.compiler.java.language.ArraySequence(x, y);
+        this.attributeWithIntersection = new .com.redhat.ceylon.compiler.java.language.ArraySequence(xy);
+        this.variableWithUnion = new .com.redhat.ceylon.compiler.java.language.ArraySequence(x, y);
+        this.variableWithIntersection = new .com.redhat.ceylon.compiler.java.language.ArraySequence(xy);
+        this.attributeWithUnionWithinTypeArg = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Sequence<? extends .java.lang.Object>>(new .com.redhat.ceylon.compiler.java.language.ArraySequence(x, y));
+        this.attributeWithUnionErasedToIterable = new .com.redhat.ceylon.compiler.java.language.ArraySequence(x, y);
         .ceylon.language.Number sync;
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithUnion(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
         sync = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithIntersection(.ceylon.language.Integer.instance(1L))).getFirst();
@@ -22,7 +22,7 @@ class Bug689<X, Y> {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmpopE0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
-                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
                 $ceylontmpopE0.setVariableWithUnion($ceylontmpopV1);
             }
             returning $ceylontmpopV1;
@@ -31,7 +31,7 @@ class Bug689<X, Y> {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmpopE2 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
-                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV3 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV3 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
                 $ceylontmpopE2.setVariableWithIntersection($ceylontmpopV3);
             }
             returning $ceylontmpopV3;
@@ -46,7 +46,7 @@ class Bug689<X, Y> {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmpopE4 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
-                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV5 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmpopV5 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
                 $ceylontmpopE4.setVariableWithUnion($ceylontmpopV5);
             }
             returning $ceylontmpopV5;
@@ -55,19 +55,19 @@ class Bug689<X, Y> {
     }
     
     private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithUnion(final X x, final Y y) {
-        return new .ceylon.language.ArraySequence(x, y);
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence(x, y);
     }
     
     private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithIntersection(final .java.lang.Object xy) {
-        return new .ceylon.language.ArraySequence(xy);
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence(xy);
     }
     
     private final .ceylon.language.Sequence methodWithUnion(final X x, final Y y) {
-        return new .ceylon.language.ArraySequence(x, y);
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence(x, y);
     }
     
     private final .ceylon.language.Sequence methodWithIntersection(final .java.lang.Object xy) {
-        return new .ceylon.language.ArraySequence(xy);
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence(xy);
     }
     private final .ceylon.language.Sequence attributeWithUnion;
     

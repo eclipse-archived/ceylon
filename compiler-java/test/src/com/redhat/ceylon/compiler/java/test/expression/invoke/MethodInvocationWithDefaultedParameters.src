@@ -735,8 +735,8 @@ final class methodInvocationWithDefaultedParameters_ {
         f.fa();
         f.fa(6L);
         f.fa(6L);
-        f.fa(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        f.fa(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        f.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        f.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         (
             let
             {
@@ -953,7 +953,7 @@ final class methodInvocationWithDefaultedParameters_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$100$callable$ = f;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$100$this$ = $arg$100$callable$;
                 long $arg$100$0 = $arg$100$this$.fa$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$100$1 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$100$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$100$callable$.fa($arg$100$0, $arg$100$1);
             }
             returning null;
@@ -974,7 +974,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$102$callable$ = f;
                 long $arg$102$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$102$1 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$102$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$102$callable$.fa($arg$102$0, $arg$102$1);
             }
             returning null;
@@ -984,7 +984,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$103$callable$ = f;
                 long $arg$103$0 = 6L;
-                .ceylon.language.Iterable $arg$103$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$103$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$103$callable$.fa($arg$103$0, $arg$103$1);
             }
             returning null;
@@ -994,7 +994,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls $arg$104$callable$ = f;
                 long $arg$104$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$104$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$104$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$104$callable$.fa($arg$104$0, $arg$104$1);
             }
             returning null;
@@ -1023,8 +1023,8 @@ final class methodInvocationWithDefaultedParameters_ {
         f2.fa();
         f2.fa(6L);
         f2.fa(6L);
-        f2.fa(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        f2.fa(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        f2.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        f2.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         (
             let
             {
@@ -1241,7 +1241,7 @@ final class methodInvocationWithDefaultedParameters_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$126$callable$ = f2;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$126$this$ = $arg$126$callable$;
                 long $arg$126$0 = $arg$126$this$.fa$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$126$1 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$126$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$126$callable$.fa($arg$126$0, $arg$126$1);
             }
             returning null;
@@ -1262,7 +1262,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$128$callable$ = f2;
                 long $arg$128$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$128$1 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$128$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$128$callable$.fa($arg$128$0, $arg$128$1);
             }
             returning null;
@@ -1272,7 +1272,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$129$callable$ = f2;
                 long $arg$129$0 = 6L;
-                .ceylon.language.Iterable $arg$129$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$129$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$129$callable$.fa($arg$129$0, $arg$129$1);
             }
             returning null;
@@ -1282,7 +1282,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Foosubkls $arg$130$callable$ = f2;
                 long $arg$130$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$130$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$130$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$130$callable$.fa($arg$130$0, $arg$130$1);
             }
             returning null;
@@ -1306,8 +1306,8 @@ final class methodInvocationWithDefaultedParameters_ {
         b.f9(6L);
         b.fa(6L);
         b.fa(6L);
-        b.fa(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        b.fa(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        b.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        b.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         (
             let
             {
@@ -1486,7 +1486,7 @@ final class methodInvocationWithDefaultedParameters_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$148$callable$ = b;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$148$this$ = $arg$148$callable$;
                 long $arg$148$0 = $arg$148$this$.fa$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$148$1 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$148$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$148$callable$.fa($arg$148$0, $arg$148$1);
             }
             returning null;
@@ -1507,7 +1507,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$150$callable$ = b;
                 long $arg$150$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$150$1 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$150$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$150$callable$.fa($arg$150$0, $arg$150$1);
             }
             returning null;
@@ -1517,7 +1517,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$151$callable$ = b;
                 long $arg$151$0 = 6L;
-                .ceylon.language.Iterable $arg$151$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$151$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$151$callable$.fa($arg$151$0, $arg$151$1);
             }
             returning null;
@@ -1527,7 +1527,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $arg$152$callable$ = b;
                 long $arg$152$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$152$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$152$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$152$callable$.fa($arg$152$0, $arg$152$1);
             }
             returning null;
@@ -1551,8 +1551,8 @@ final class methodInvocationWithDefaultedParameters_ {
         b2.f9(6L);
         b2.fa(6L);
         b2.fa(6L);
-        b2.fa(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        b2.fa(6L, new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        b2.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
+        b2.fa(6L, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         (
             let
             {
@@ -1731,7 +1731,7 @@ final class methodInvocationWithDefaultedParameters_ {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$170$callable$ = b2;
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$170$this$ = $arg$170$callable$;
                 long $arg$170$0 = $arg$170$this$.fa$n();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$170$1 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$170$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$170$callable$.fa($arg$170$0, $arg$170$1);
             }
             returning null;
@@ -1752,7 +1752,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$172$callable$ = b2;
                 long $arg$172$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$172$1 = new .ceylon.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$172$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$172$callable$.fa($arg$172$0, $arg$172$1);
             }
             returning null;
@@ -1762,7 +1762,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$173$callable$ = b2;
                 long $arg$173$0 = 6L;
-                .ceylon.language.Iterable $arg$173$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable $arg$173$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$173$callable$.fa($arg$173$0, $arg$173$1);
             }
             returning null;
@@ -1772,7 +1772,7 @@ final class methodInvocationWithDefaultedParameters_ {
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls $arg$174$callable$ = b2;
                 long $arg$174$0 = 6L;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$174$1 = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$174$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 $arg$174$callable$.fa($arg$174$0, $arg$174$1);
             }
             returning null;

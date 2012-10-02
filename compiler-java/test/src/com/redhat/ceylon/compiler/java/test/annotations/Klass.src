@@ -71,6 +71,6 @@ public class Klass {
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer> p3) {
-        return new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
     }
 }

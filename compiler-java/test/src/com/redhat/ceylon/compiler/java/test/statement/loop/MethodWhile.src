@@ -34,7 +34,7 @@ class MethodWhile {
     }
     
     public final void whileNonEmpty() {
-        .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq = new .ceylon.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
+        .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
         .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$4;
         while ((
             let

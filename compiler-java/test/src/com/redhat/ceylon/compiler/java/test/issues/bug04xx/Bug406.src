@@ -6,7 +6,7 @@ class Bug406 {
     }
     
     private final void test() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> full = new .ceylon.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> full = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
         final .ceylon.language.Iterable<? extends .ceylon.language.String> spread1 = (
             let
             {
@@ -20,7 +20,7 @@ class Bug406 {
                     .ceylon.language.String[] $spread$1$4 = new .ceylon.language.String[$spread$1$2];
                     for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.String.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).getUppercased());
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$1$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$1$4);
             ) : .ceylon.language.empty_.getEmpty());
         );
         .ceylon.language.String $s1s$3;

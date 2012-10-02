@@ -23,7 +23,7 @@ class SpreadMethodReference {
                             .ceylon.language.String[] $spread$4$4 = new .ceylon.language.String[$spread$4$2];
                             for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.String.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).initial(((.ceylon.language.Integer)$param$0).longValue()));
                         }
-                        returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$4$4);
+                        returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$4$4);
                     ) : .ceylon.language.empty_.getEmpty());
                 );
             }

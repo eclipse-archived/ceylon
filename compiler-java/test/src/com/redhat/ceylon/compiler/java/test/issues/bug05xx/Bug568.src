@@ -21,7 +21,7 @@ final class bug568_ {
                     .ceylon.language.String[] $spread$2$4 = new .ceylon.language.String[$spread$2$2];
                     for (int $index$3 = 0; $index$3 < $spread$2$2; $index$3++) $spread$2$4[$index$3] = .ceylon.language.String.instance($spread$2$0.item(.ceylon.language.Integer.instance($index$3)).toString());
                 }
-                returning new .ceylon.language.ArraySequence<.ceylon.language.String>($spread$2$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$2$4);
             ) : .ceylon.language.empty_.getEmpty());
         ).getIterator(); !(($elem$0 = $s$iter$4.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.String s = ((.ceylon.language.String)$elem$0).toString();

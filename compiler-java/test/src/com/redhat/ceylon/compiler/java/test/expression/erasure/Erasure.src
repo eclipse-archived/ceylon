@@ -391,10 +391,10 @@ class Test {
     }
     
     private final void testSequences(final .java.lang.Object p1, final .ceylon.language.Iterable leftsAndRights, final .ceylon.language.Iterable leftsAndRightsEntries, final .ceylon.language.Iterable topsOrNothing) {
-        final .ceylon.language.Iterable naturals = new .ceylon.language.ArraySequence(p1);
+        final .ceylon.language.Iterable naturals = new .com.redhat.ceylon.compiler.java.language.ArraySequence(p1);
         final .ceylon.language.Integer n5 = (.ceylon.language.Integer)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)naturals).item((.ceylon.language.Integer)p1);
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)leftsAndRights).item((.ceylon.language.Integer)p1);
-        final .ceylon.language.Iterable naturalsOrNothing = new .ceylon.language.ArraySequence(p1);
+        final .ceylon.language.Iterable naturalsOrNothing = new .com.redhat.ceylon.compiler.java.language.ArraySequence(p1);
         final .ceylon.language.Integer n52 = (.ceylon.language.Integer)(
             let
             {
@@ -412,7 +412,7 @@ class Test {
         .ceylon.language.Iterable subrange;
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Iterable<? extends .java.lang.Object>>)naturals).span((.ceylon.language.Integer)p1, (.ceylon.language.Integer)p1);
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Iterable<? extends .java.lang.Object>>)naturals).span((.ceylon.language.Integer)p1, null);
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> plainIntegers = (.ceylon.language.Iterable)new .ceylon.language.ArraySequence(p1);
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> plainIntegers = (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ArraySequence(p1);
         .java.lang.Object $elem$17;
         for (.ceylon.language.Iterator<? extends .java.lang.Object> $it$iter$18 = (.ceylon.language.Iterator<? extends .java.lang.Object>)naturals.getIterator(); !(($elem$17 = $it$iter$18.next()) instanceof .ceylon.language.Finished); ) {
             final .java.lang.Object it = (.java.lang.Object)$elem$17;
@@ -469,7 +469,7 @@ class Test {
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)itErasedValue2).left();
             ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Right)itErasedValue2).right();
         }
-        final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> topSequence = new .ceylon.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle>(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle());
+        final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> topSequence = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle>(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle());
         .java.lang.Object $elem$31;
         for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top> $it$iter$32 = topSequence.getIterator(); !(($elem$31 = $it$iter$32.next()) instanceof .ceylon.language.Finished); ) {
             final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top it = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$elem$31;
@@ -503,7 +503,7 @@ class Test {
                     .java.lang.Object[] $spread$37$4 = new .java.lang.Object[$spread$37$2];
                     for (int $index$38 = 0; $index$38 < $spread$37$2; $index$38++) $spread$37$4[$index$38] = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$37$0.item(.ceylon.language.Integer.instance($index$38))).getLeftAndRightAttribute();
                 }
-                returning new .ceylon.language.ArraySequence($spread$37$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($spread$37$4);
             );
         );
         .ceylon.language.Iterable spreadInvocation;
@@ -520,7 +520,7 @@ class Test {
                     .java.lang.Object[] $spread$40$4 = new .java.lang.Object[$spread$40$2];
                     for (int $index$41 = 0; $index$41 < $spread$40$2; $index$41++) $spread$40$4[$index$41] = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)$spread$40$0.item(.ceylon.language.Integer.instance($index$41))).leftAndRightMethod(new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle());
                 }
-                returning new .ceylon.language.ArraySequence($spread$40$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($spread$40$4);
             );
         );
         spreadInvocation = (
@@ -543,7 +543,7 @@ class Test {
                         returning $arg$42$callable$.leftAndRightMethod($arg$42$0);
                     );
                 }
-                returning new .ceylon.language.ArraySequence($spread$44$4);
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence($spread$44$4);
             );
         );
     }

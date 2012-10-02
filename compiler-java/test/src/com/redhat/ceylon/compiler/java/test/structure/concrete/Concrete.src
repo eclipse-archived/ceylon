@@ -67,7 +67,7 @@ final class Concrete$impl<A> {
     }
     
     private final .ceylon.language.Iterable<? extends A> mNonShared$aseq(final A a) {
-        return new .ceylon.language.ArraySequence<A>(a);
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence<A>(a);
     }
     
     private void mNonShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
@@ -101,7 +101,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Iterable<? extends A> mShared$aseq(final A a) {
-        return new .ceylon.language.ArraySequence<A>(a);
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence<A>(a);
     }
     
     public void mShared(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
@@ -134,7 +134,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Iterable<? extends A> mFormal$aseq(final A a) {
-        return new .ceylon.language.ArraySequence<A>(a);
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence<A>(a);
     }
     
     public final .java.lang.Object mDefault() {
@@ -163,7 +163,7 @@ final class Concrete$impl<A> {
     }
     
     public final .ceylon.language.Iterable<? extends A> mDefault$aseq(final A a) {
-        return new .ceylon.language.ArraySequence<A>(a);
+        return new .com.redhat.ceylon.compiler.java.language.ArraySequence<A>(a);
     }
     
     public .java.lang.Object mDefault(final A a, final .ceylon.language.Iterable<? extends A> aseq) {
