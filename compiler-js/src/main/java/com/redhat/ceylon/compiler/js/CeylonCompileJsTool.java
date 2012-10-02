@@ -1,14 +1,15 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.compiler.Options;
 
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
         "module and source archives in a module repository")
@@ -33,7 +34,8 @@ public class CeylonCompileJsTool implements Tool {
     private List<String> repos = Collections.emptyList();
     
     private List<String> src = Collections.singletonList("source");
-    
+    private List<String> module = Collections.emptyList();
+
     private String out = "modules";
     
     public boolean isProfile() {
@@ -60,7 +62,7 @@ public class CeylonCompileJsTool implements Tool {
         return modulify;
     }
 
-    @Option(longName="nomodule")
+    @Option(longName="no-module")
     @Description("Do **not** wrap generated code as CommonJS module")
     public void setNoModulify(boolean nomodulify) {
         this.modulify = !nomodulify;
@@ -77,10 +79,10 @@ public class CeylonCompileJsTool implements Tool {
     }
 
     @Option
-    @Description("Equivalent to `--noindent` `--nocomments`")
-    public void setNoCompact(boolean nocompact) {
-        this.setNoIndent(nocompact);
-        this.setNoComments(nocompact);
+    @Description("Equivalent to `--no-indent` `--no-comments`")
+    public void setCompact(boolean compact) {
+        this.setNoIndent(!compact);
+        this.setNoComments(!compact);
     }
 
     public boolean isComments() {
@@ -155,61 +157,16 @@ public class CeylonCompileJsTool implements Tool {
         this.out = out;
     }
 
+    @Argument(argumentName="moduleOrFile", multiplicity="+")
+    public void setModule(List<String> moduleOrFile) {
+        this.module = moduleOrFile;
+    }
+
     @Override
     public void run() throws Exception {
-        // For now, let's just create another command line and pass that to 
-        // Main.main(). Long term we need to this class and Main need to be 
-        // merged into one.
-        ArrayList<String> argList = new ArrayList<String>();
-        
-        if (!comments) {
-            argList.add("-nocomments");
-        }
-        
-        if (!indent) {
-            argList.add("-noindent");
-        }
-        
-        if (!modulify) {
-            argList.add("-nomodel");
-        }
-        
-        if (optimize) {
-            argList.add("-optimize");
-        }
-        
-        if (profile) {
-            argList.add("-profile");
-        }
-        
-        if (verbose) {
-            argList.add("-verbose");
-        }
-        
-        if (user != null) {
-            argList.add("-user");
-            argList.add(user);
-        }
-        
-        if (pass != null) {
-            argList.add("-pass");
-            argList.add(pass);
-        }
-        
-        argList.add("-out");
-        argList.add(out);
-        
-        for (String rep : getRepos()) {
-            argList.add("-rep");
-            argList.add(rep);
-        }
-        
-        for (String src : getSrc()) {
-            argList.add("-src");
-            argList.add(src);
-        }
-        
-        Main.main(argList.toArray(new String[argList.size()]));
+        final Options opts = new Options(getRepos(), getSrc(), null, getOut(), getUser(), getPass(), isOptimize(),
+                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, true);
+        Main.run(opts, module);
     }
 
 }
