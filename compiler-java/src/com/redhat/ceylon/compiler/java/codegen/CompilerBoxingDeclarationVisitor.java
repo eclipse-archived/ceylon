@@ -43,4 +43,9 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
         return transformer.isCeylonObject(type);
     }
 
+    @Override
+    protected boolean willEraseToObject(ProducedType type) {
+        return transformer.willEraseToObject(type);
+    }
+
 }
