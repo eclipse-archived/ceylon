@@ -8,12 +8,13 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.tautua.markdownpapers.HtmlEmitter;
 import org.tautua.markdownpapers.ast.Document;
+import org.tautua.markdownpapers.ast.Node;
 
 import com.redhat.ceylon.tools.help.Markdown.Section;
 
 public class MarkdownTest {
 
-    private String html(Document sectionBody) {
+    private String html(Node sectionBody) {
         StringWriter sw = new StringWriter();
         HtmlEmitter emitter = new HtmlEmitter(sw);
         sectionBody.accept(emitter);
@@ -48,10 +49,10 @@ public class MarkdownTest {
         Assert.assertEquals("<p>Some stuff</p>", html(sectionBody).trim());
         
         section = sections.get(1);
-        Assert.assertNotNull(section.getHeading());
+        Assert.assertEquals("<h1> First <code>H1</code></h1>", 
+                html(section.getHeading()).trim());
         sectionBody = section.getDoc();
-        Assert.assertEquals("<h1> First <code>H1</code></h1>\n"+
-"\n"+
+        Assert.assertEquals(""+
 "<p>A sentence</p>\n"+
 "\n"+
 "<h2> <code>H2</code> under first <code>H1</code></h2>\n"+
@@ -59,10 +60,10 @@ public class MarkdownTest {
 "<p>A sentence</p>", html(sectionBody).trim());
         
         section = sections.get(2);
-        Assert.assertNotNull(section.getHeading());
+        Assert.assertEquals("<h1> Second <code>H1</code></h1>", 
+                html(section.getHeading()).trim());
         sectionBody = section.getDoc();
-        Assert.assertEquals("<h1> Second <code>H1</code></h1>\n"+
-"\n"+
+        Assert.assertEquals(""+
 "<p>A sentence</p>\n"+
 "\n"+
 "<h2> <code>H2</code> under second <code>H1</code></h2>\n"+
