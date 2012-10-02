@@ -9,6 +9,7 @@ import com.redhat.ceylon.tools.help.model.Option;
 import com.redhat.ceylon.tools.help.model.OptionsSection;
 import com.redhat.ceylon.tools.help.model.SynopsesSection;
 import com.redhat.ceylon.tools.help.model.Synopsis;
+import com.redhat.ceylon.tools.help.model.Synopsis.NameAndSubtool;
 import com.redhat.ceylon.tools.help.model.Visitor;
 
 public class HtmlVisitor implements Visitor {
@@ -126,12 +127,12 @@ public class HtmlVisitor implements Visitor {
     public void startSynopsis(Synopsis synopsis) {
         hadFirstArgument = false;
         hadOptions = false;
-        html.open("pre");
+        html.open("div class='synopsis'", "code");
     }
 
     @Override
     public void endSynopsis(Synopsis synopsis) {
-        html.close("pre").text("\n");   
+        html.close("code", "div").text("\n");   
     }
 
     @Override
@@ -195,6 +196,12 @@ public class HtmlVisitor implements Visitor {
     @Override
     public void visitDescription(DescribedSection descriptionSection) {
         describedSection(descriptionSection);
+    }
+
+    @Override
+    public void visitSynopsisSubtool(NameAndSubtool option) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

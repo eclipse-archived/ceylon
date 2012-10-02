@@ -20,6 +20,7 @@ import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.SubtoolModel;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
@@ -61,10 +62,11 @@ public class DocBuilder {
         doc.setSummary(buildSummary(model));
         doc.setSynopses(rootHack ? buildRootSynopsis(model) : buildSynopsis(model));
         doc.setDescription(rootHack ? buildRootDescription(model) : buildDescription(model));
-        if (!rootHack) {
-            doc.setOptions(buildOptions(model));
-            doc.setAdditionalSections(buildAdditionalSections(model));
+        doc.setOptions(buildOptions(model));
+        if (model.getSubtoolModel() != null) {
+            //doc.setSubcommands(buildSubcommands(model));
         }
+        doc.setAdditionalSections(buildAdditionalSections(model));
         return doc;
     }
     
@@ -215,6 +217,49 @@ public class DocBuilder {
         }
         return section;
     }
+    
+
+    private DescribedSection buildSubcommands(ToolModel<?> model) {
+        /*
+        DescribedSection section = null;
+        if (!description.isEmpty()) {
+            SubtoolModel<?> subtool = model.getSubtoolModel();
+            for (String toolName : subtool.getToolLoader().getToolNames()) {
+                ToolModel<Tool> subtoolModel = subtool.getToolLoader().loadToolModel(toolName);
+            }
+            / *
+             * Here I need to build up the markdown something like as follows
+             * 
+            The command `ceylon config` takes various subcommands
+            
+            ## SUBCOMMANDS
+            
+            ### `ceylon config foo`
+            
+            summary
+            
+            description
+            
+            options
+            
+            ### `ceylon config bar baz`
+            
+            summary
+            
+            description
+            
+            options
+            
+            * /
+            section = new DescribedSection();
+            section.setRole(Role.SUBCOMMANDS);
+            section.setDescription(Markdown.markdown(
+                    "##" + sectionsBundle.getString("section.SUBCOMMANDS") + "\n\n" +
+                    description));
+        }
+        return section;*/
+        return null;
+    }
 
     private SynopsesSection buildSynopsis(ToolModel<?> model) {
         //Synopsis synopsis = out.startSynopsis(bundle.getString("section.SYNOPSIS"));
@@ -226,9 +271,11 @@ public class DocBuilder {
         
         if (model.getSubtoolModel() != null) {
             for (List<?> optionsAndArguments : buildSubtoolSynopsis(model.getSubtoolModel())) {
+                List<Object> l = optionsAndArguments(model);
+                l.addAll(optionsAndArguments);
                 Synopsis synopsis = new Synopsis();
                 synopsis.setInvocation(getCeylonInvocation(model));
-                synopsis.setOptionsAndArguments(optionsAndArguments);
+                synopsis.setOptionsAndArguments(l);
                 synopsisList.add(synopsis);
             }
         } else {
@@ -253,13 +300,16 @@ public class DocBuilder {
         for (String toolName : subtoolLoader.getToolNames()) {
             ToolModel<?> model = subtoolLoader.loadToolModel(toolName);
             if (model.getSubtoolModel() != null) {
-                for (List<?> subOptAndArgs : buildSubtoolSynopsis(model.getSubtoolModel())) {
-                    List<?> optionsAndArguments = optionsAndArguments(model);
+                for (List subOptAndArgs : buildSubtoolSynopsis(model.getSubtoolModel())) {
+                    List optionsAndArguments = optionsAndArguments(model);
+                    optionsAndArguments.add(0, new Synopsis.NameAndSubtool(toolName, subtoolModel));
                     optionsAndArguments.addAll((List)subOptAndArgs);
-                    result.add(subOptAndArgs);
+                    result.add(optionsAndArguments);
                 }
             } else {
-                result.add(optionsAndArguments(model));
+                List<Object> optionsAndArguments = optionsAndArguments(model);
+                optionsAndArguments.add(0, new Synopsis.NameAndSubtool(toolName, subtoolModel));
+                result.add(optionsAndArguments);
             }
         }
         return result;

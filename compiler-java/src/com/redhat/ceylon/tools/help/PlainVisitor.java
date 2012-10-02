@@ -4,6 +4,7 @@ import org.tautua.markdownpapers.ast.Node;
 
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.OptionModel;
+import com.redhat.ceylon.common.tool.SubtoolModel;
 import com.redhat.ceylon.common.tool.WordWrap;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.tools.help.model.DescribedSection;
@@ -12,6 +13,7 @@ import com.redhat.ceylon.tools.help.model.Option;
 import com.redhat.ceylon.tools.help.model.OptionsSection;
 import com.redhat.ceylon.tools.help.model.SynopsesSection;
 import com.redhat.ceylon.tools.help.model.Synopsis;
+import com.redhat.ceylon.tools.help.model.Synopsis.NameAndSubtool;
 import com.redhat.ceylon.tools.help.model.Visitor;
 
 public class PlainVisitor implements Visitor {
@@ -149,6 +151,11 @@ public class PlainVisitor implements Visitor {
     }
 
     @Override
+    public void visitSynopsisSubtool(NameAndSubtool option) {
+        out.append(" " + option.getName());
+    }
+    
+    @Override
     public void visitSynopsisOption(OptionModel<?> option) {
         hadOptions = true;
         out.append(" ");
@@ -189,5 +196,6 @@ public class PlainVisitor implements Visitor {
     public void visitDescription(DescribedSection descriptionSection) {
         describedSection(descriptionSection);
     }
+
 
 }
