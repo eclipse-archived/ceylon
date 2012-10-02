@@ -163,8 +163,8 @@ Used with another target such as 'package'">
 
     <target name="install-all" 
             depends="install-compiler, install-js, copy-compiler-binaries, 
-                     copy-samples, copy-compiler-libraries, install-typechecker,
-                     install-language, install-runtime"
+                     copy-samples, copy-jvm-compiler-libraries, copy-js-compiler-libraries,
+                     install-typechecker, install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
@@ -214,7 +214,7 @@ Used with another target such as 'package'">
         </chmod>
     </target>
 
-    <target name="copy-compiler-libraries">
+    <target name="copy-jvm-compiler-libraries">
         <mkdir dir="${dist.dir}/lib"/>
         <copy todir="${dist.dir}/lib">
             <fileset dir="${ceylon-compiler.dir}/build/lib">
@@ -222,6 +222,15 @@ Used with another target such as 'package'">
                 <include name="markdownj-*.jar"/>
                 <include name="txtmark-*.jar"/>
                 <include name="markdownpapers-core-*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="copy-js-compiler-libraries">
+        <mkdir dir="${dist.dir}/lib"/>
+        <copy todir="${dist.dir}/lib">
+            <fileset dir="${ceylon-js.dir}/lib">
+                <include name="json-smart-*.jar"/>
             </fileset>
         </copy>
     </target>
