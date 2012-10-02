@@ -71,7 +71,10 @@ public class TopLevelToolTest {
         StringWriter sw = new StringWriter();
         CeylonHelpTool helpTool = new CeylonHelpTool();
         helpTool.setToolLoader(toolLoader);
-        helpTool.setTool(toolLoader.loadToolModel(toolName));
+        if (toolName != null
+                && !toolName.isEmpty()) {
+            helpTool.setTool(toolLoader.loadToolModel(toolName));
+        }
         helpTool.setOut(sw);
         helpTool.run();
         return sw.toString();
