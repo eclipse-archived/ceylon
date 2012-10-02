@@ -13,7 +13,7 @@ interface InterfaceFormalMemberClass {
 }
 @nomodel
 class InterfaceFormalMemberClass_sub() satisfies InterfaceFormalMemberClass {
-    shared actual class Member() extends InterfaceFormalMemberClass.Member() {
+    shared actual class Member() extends InterfaceFormalMemberClass::Member() {
     }
     shared void m2(InterfaceFormalMemberClass_sub qual) {
         Member{};

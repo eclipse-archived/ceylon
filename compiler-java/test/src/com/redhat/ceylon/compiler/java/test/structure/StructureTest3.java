@@ -47,7 +47,7 @@ public class StructureTest3 extends CompilerTest {
     
     // Default Member Class of Interface
     @Test
-    public void testMcrInterfaceDefaultMemberClass_fail(){
+    public void testMcrInterfaceDefaultMemberClass(){
         compareWithJavaSource("mcr/InterfaceDefaultMemberClass");
     }
     

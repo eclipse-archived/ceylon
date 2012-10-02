@@ -39,6 +39,7 @@ class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.jav
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this;
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this;
     }
