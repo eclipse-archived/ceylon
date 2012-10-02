@@ -28,6 +28,28 @@ public class Options {
     private boolean stdin;
     private boolean gensrc = true;
 
+    public Options(List<String> repositories, List<String> sourceDirectories, String systemRepository,
+            String outputRepository, String username, String password,
+            boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, boolean verbosity,
+            boolean showTimes, boolean fromStdin, boolean generateSrcArchive) {
+        repos = repositories;
+        srcDirs = sourceDirectories;
+        systemRepo = systemRepository;
+        outDir = outputRepository;
+        username = user;
+        pass = password;
+        optimize = protoStyle;
+        modulify = wrapModules;
+        indent = useIndent;
+        comment = useComments;
+        verbose = verbosity;
+        profile = showTimes;
+        stdin = fromStdin;
+        gensrc = generateSrcArchive;
+    }
+
+    private Options() {}
+
     /** Creates and returns an Options object from a command-list argument list. The list itself
      * is modified, so at the end it only contains the files to compile. */
     public static Options parse(List<String> args) {
