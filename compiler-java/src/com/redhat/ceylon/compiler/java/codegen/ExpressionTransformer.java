@@ -1501,7 +1501,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transform(Tree.BaseMemberOrTypeExpression expr, TermTransformer transformer) {
-        return transformMemberExpression(expr, null, transformer);
+        JCExpression primaryExpr = null;
+        if (expr.getSupertypeQualifier() != null) {
+            ClassOrInterface supertype = (ClassOrInterface)expr.getDeclaration().getContainer();
+            if (supertype instanceof Interface) {
+                primaryExpr = naming.makeCompanionFieldName((Interface)supertype);
+            } else { // class
+                primaryExpr = naming.makeSuper();
+            }
+        }
+        return transformMemberExpression(expr, primaryExpr, transformer);
     }
     
     // Type members
