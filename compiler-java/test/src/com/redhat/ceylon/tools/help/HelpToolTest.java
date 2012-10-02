@@ -31,16 +31,16 @@ public class HelpToolTest {
     public void testHelpExample() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
-        CeylonHelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("example"));
-        tool.run();
-    }
-    
-    @Test
-    public void testHelpWibble() {
-        ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
-        Assert.assertNotNull(model);
-        CeylonHelpTool tool = pluginFactory.bindArguments(model, Arrays.asList("wibble"));
-        tool.run();
+        try {
+            pluginFactory.bindArguments(model, Arrays.asList("example"));
+            Assert.fail();
+        } catch (OptionArgumentException e) {
+            Assert.assertTrue(e.getMessage().contains("Invalid value example given for argument tool"));
+            Assert.assertTrue(e.getMessage().contains("compile"));
+            Assert.assertTrue(e.getMessage().contains("help"));
+            Assert.assertTrue(e.getMessage().contains("doc"));
+            Assert.assertTrue(e.getMessage().contains("doc-tool"));
+        }
     }
     
     @Test
