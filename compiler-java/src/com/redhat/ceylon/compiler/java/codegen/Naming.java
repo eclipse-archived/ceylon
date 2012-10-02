@@ -426,8 +426,6 @@ public class Naming implements LocalId {
     }
     
     String getInstantiatorMethodName(Class model) {
-        if(model.isAlias())
-            return getInstantiatorMethodName(model.getExtendedTypeDeclaration());
         return model.getName()+"$new";
     }
     

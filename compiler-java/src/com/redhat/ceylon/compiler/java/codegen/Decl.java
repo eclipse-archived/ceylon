@@ -366,14 +366,4 @@ public class Decl {
         }
         return false;
     }
-
-    public static Declaration unalias(Declaration declaration) {
-        if(declaration instanceof ClassOrInterface){
-            ClassOrInterface classOrInterface = ((ClassOrInterface)declaration);
-            if(classOrInterface.isAlias())
-                return unalias(classOrInterface.getExtendedTypeDeclaration());
-        }
-        return declaration;
-    }
-    
 }
