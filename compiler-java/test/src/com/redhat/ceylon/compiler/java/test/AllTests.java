@@ -76,6 +76,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
 	LanguageSuite.class,
 	BcTests.class,
     CompilerToolsTests.class,
+    com.redhat.ceylon.tools.test.TopLevelToolTest.class,
+    com.redhat.ceylon.tools.TopLevelToolTest.class,
     CeylonDocToolTest.class,
     AntToolTests.class
 })

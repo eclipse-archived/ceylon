@@ -13,7 +13,6 @@ import com.redhat.ceylon.tools.help.PlaintextTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    TopLevelToolTest.class,
     BashCompletionToolTest.class,
     CompilerToolTest.class,
     DocToolTest.class,

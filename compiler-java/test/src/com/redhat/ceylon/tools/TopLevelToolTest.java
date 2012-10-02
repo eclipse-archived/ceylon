@@ -1,5 +1,9 @@
 package com.redhat.ceylon.tools;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.io.StringWriter;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -8,77 +12,161 @@ import org.junit.Test;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.tools.CeylonTool;
+import com.redhat.ceylon.tools.help.CeylonHelpTool;
 
 public class TopLevelToolTest {
 
-    protected final ToolFactory pluginFactory = new ToolFactory();
-    protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
+    protected final ToolFactory toolFactory = new ToolFactory();
+    protected final ToolLoader toolLoader = new TestingToolLoader(null, true);
     
     private CeylonTool tool;
     
     @Before
     public void setup() {
         tool = new CeylonTool();
+        tool.setToolLoader(toolLoader);
     }
     
     private String[] args(String...args) {
         return args;
     }
     
-    @Test
-    public void testNoArgs()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args()));
-        Assert.assertEquals("help", tool.getToolName());
+    class CapturingStdOut implements AutoCloseable {
+        private PrintStream savedOut;
+        private PrintStream savedErr;
+        private ByteArrayOutputStream redirectedOut;
+        private ByteArrayOutputStream redirectedErr;
+
+        public CapturingStdOut() {
+            open();
+        }
+
+        private void open() {
+            this.redirectedOut = new ByteArrayOutputStream();
+            this.redirectedErr= new ByteArrayOutputStream();
+            this.savedOut = System.out;
+            this.savedErr = System.err;
+            System.setOut(new PrintStream(redirectedOut));
+            System.setErr(new PrintStream(redirectedErr));
+        }
+
+        @Override
+        public void close() throws Exception {
+            System.out.flush();
+            System.err.flush();
+            System.setOut(savedOut);
+            System.setErr(savedErr);
+        }
+        
+        public String getOut() {
+            return new String(redirectedOut.toByteArray());
+        }
+        
+        public String getErr() {
+            return new String(redirectedErr.toByteArray());
+        }
+    }
+    
+    private String getHelpOutput(String toolName) {
+        StringWriter sw = new StringWriter();
+        CeylonHelpTool helpTool = new CeylonHelpTool();
+        helpTool.setToolLoader(toolLoader);
+        if (toolName != null
+                && !toolName.isEmpty()) {
+            helpTool.setTool(toolLoader.loadToolModel(toolName));
+        }
+        helpTool.setOut(sw);
+        helpTool.run();
+        return sw.toString();
     }
     
     @Test
+    public void testNoArgs()  throws Exception {
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args()));
+            Assert.assertEquals(getHelpOutput(""), out.getOut());
+            Assert.assertTrue(out.getErr().isEmpty());
+        } 
+        Assert.assertEquals("help", tool.getToolName());
+    }
+
+    @Test
     public void testVersionOption()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("--version")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("--version")));
+            Assert.assertTrue(out.getOut(), out.getOut().startsWith("ceylon version "));
+            Assert.assertTrue(out.getErr().isEmpty());
+        }
         Assert.assertEquals(null, tool.getToolName());
     }
     
     @Test
     public void testVersionOptionHelp()  throws Exception {
         // --version beats everything
-        Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("--version", "help")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("--version", "help")));
+            Assert.assertTrue(out.getOut(), out.getOut().startsWith("ceylon version "));
+            Assert.assertTrue(out.getErr().isEmpty());
+        }
         Assert.assertEquals(null, tool.getToolName());
     }
     
     @Test
     public void testHelpVersionOption()  throws Exception {
-        // We expect NO_SUCH_TOOL in this case because the HelpTool doesn't 
-        // exist in ceylon-common
-        Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("help", "--version")));
+        // We expect NO_SUCH_TOOL in this case because the HelpTool 
+        // isn't loadable by the toolLoader we're using
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("help", "--version")));
+            Assert.assertTrue(out.getOut().isEmpty());
+            Assert.assertTrue(out.getErr(), out.getErr().contains("ceylon help: Fatal error: Unrecognised option(s): --version"));
+        }
         Assert.assertEquals("help", tool.getToolName());
     }
     
     @Test
     public void testEmptyArg()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("")));
+            Assert.assertEquals(getHelpOutput(""), out.getOut());
+        }
         Assert.assertEquals("help", tool.getToolName());
     }
     
     @Test
     public void testHelp()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("help")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("help")));
+            Assert.assertEquals(getHelpOutput(""), out.getOut());
+        }
         Assert.assertEquals("help", tool.getToolName());
     }
     
     @Test
     public void testHelpOption()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("--help")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("--help")));
+            Assert.assertEquals(getHelpOutput(""), out.getOut());
+        }
         Assert.assertEquals("help", tool.getToolName());
     }
-    
+
     @Test
     public void testExample()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("example")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("example")));
+            Assert.assertTrue(out.getErr(), out.getErr().isEmpty());
+            Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
+        }
         Assert.assertEquals("example", tool.getToolName());
     }
     
     @Test
     public void testStacktracesOptionExample()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("--stacktraces", "example")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("--stacktraces", "example")));
+            Assert.assertTrue(out.getErr(), out.getErr().isEmpty());
+            Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
+        }
         Assert.assertEquals("example", tool.getToolName());
         Assert.assertTrue(tool.getStacktraces());
     }
@@ -86,20 +174,26 @@ public class TopLevelToolTest {
     @Test
     public void testFileOptionExample()  throws Exception {
         // the top level tool doesn't take a --file option
-        Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("--file=.", "example")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("--file=.", "example")));
+            Assert.assertEquals(out.getErr().trim(), "ceylon example: Fatal error: Unrecognised option(s): --file=.");
+            Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
+        }
     }
     
     @Test
     public void testExampleFileOption()  throws Exception {
-        // the top level tool doesn't take a --file option
-        Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("example", "--file=.")));
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("example", "--file=.")));
+            Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
+            Assert.assertTrue(out.getErr(), out.getErr().isEmpty());
+        }
     }
     
     @Test
     public void testBashCompletion()  throws Exception {
         Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(
                 args("bash-completion", "--cword=1", "--", "./cey")));
-    }
-    
+    }    
     
 }
