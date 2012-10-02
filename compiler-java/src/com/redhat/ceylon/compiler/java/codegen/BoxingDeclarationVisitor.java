@@ -36,16 +36,15 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class BoxingDeclarationVisitor extends Visitor {
@@ -53,6 +52,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     protected abstract boolean isCeylonBasicType(ProducedType type);
     protected abstract boolean isNothing(ProducedType type);
     protected abstract boolean isObject(ProducedType type);
+    protected abstract boolean willEraseToObject(ProducedType type);
 
     @Override
     public void visit(FunctionArgument that) {
@@ -65,6 +65,18 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         super.visit(that);
         boxMethod(that.getDeclarationModel());
         rawTypedDeclaration(that.getDeclarationModel());
+        erasureToObject(that.getDeclarationModel());
+    }
+
+    private void erasureToObject(TypedDeclaration decl) {
+        // deal with invalid input
+        if(decl == null)
+            return;
+
+        ProducedType type = decl.getType();
+        if(type != null && willEraseToObject(type)){
+            type.setUnderlyingType("java.lang.Object");
+        }
     }
 
     private void rawTypedDeclaration(TypedDeclaration decl) {
