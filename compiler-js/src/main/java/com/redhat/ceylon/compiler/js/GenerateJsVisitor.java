@@ -439,6 +439,7 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         //declareSelf(d);
         referenceOuter(d);
+        callInterfaces(that.getSatisfiedTypes(), d, that);
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
@@ -600,7 +601,7 @@ public class GenerateJsVisitor extends Visitor
         return suffix;
     }
 
-    private void callInterfaces(SatisfiedTypes satisfiedTypes, Class d, Node that) {
+    private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that) {
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
                 qualify(that, st.getDeclarationModel());
@@ -977,6 +978,11 @@ public class GenerateJsVisitor extends Visitor
         }
 
         if (!share(d)) { out(";"); }
+        addQualifiedReference(d, names.name(d));
+    }
+
+    /** Adds a fully qualified reference to the specified declaration (useful for non-prototype style) */
+    private void addQualifiedReference(Declaration d, String name) {
         if (!prototypeStyle && d.isDefault()) {
             //Add another reference to this method, with the fully qualified name as a prefix
             outerSelf(d);
@@ -984,7 +990,7 @@ public class GenerateJsVisitor extends Visitor
             for (String part : d.getContainer().getQualifiedNameString().split("\\.")) {
                 out(part, "$");
             }
-            out(names.name(d), "=", names.name(d), ";");
+            out(name, "=", name, ";");
         }
     }
 
@@ -1045,6 +1051,7 @@ public class GenerateJsVisitor extends Visitor
         out(";");
     }
 
+    /** Exports a getter function; useful in non-prototype style. */
     private boolean shareGetter(MethodOrValue d) {
         boolean shared = false;
         if (isCaptured(d)) {
@@ -1053,6 +1060,7 @@ public class GenerateJsVisitor extends Visitor
             out(".", names.getter(d), "=", names.getter(d), ";");
             endLine();
             shared = true;
+            addQualifiedReference(d, names.getter(d));
         }
         return shared;
     }
@@ -1103,6 +1111,7 @@ public class GenerateJsVisitor extends Visitor
             out(".", names.setter(d), "=", names.setter(d), ";");
             endLine();
             shared = true;
+            addQualifiedReference(d, names.setter(d));
         }
         return shared;
     }
