@@ -73,7 +73,7 @@ public class CeylonCompileTool implements Tool{
     private String systemRepo;
     private List<String> module = Collections.emptyList();
     private boolean d;
-    private List<String> rest = Collections.emptyList();
+    private List<String> javac = Collections.emptyList();
     private String user;
     private String pass;
     private boolean verbose = false;
@@ -148,25 +148,18 @@ public class CeylonCompileTool implements Tool{
         this.verboseFlags = verboseFlags;
     }
     
-    /** 
-     * We collect any other arguments.
-     * Long options of the form {@code --javac:<option>}  
-     */
-    @Rest
-    public void setRest(List<String> rest) {
-        for (String opt : rest) {
-            if (!opt.startsWith("--javac=")) {
-                throw new IllegalArgumentException("Unsupported option " + opt);
-            }
-        }
-        this.rest = rest;
+    @OptionArgument(argumentName="option")
+    @Description("Passes an option to the underlying java compiler.")
+    public void setJavac(List<String> javac) {
+        this.javac = javac;
     }
 
     @PostConstruct
     public void init() {
         if (module.isEmpty() &&
-                !rest.contains("--javac=-help") &&
-                !rest.contains("--javac=-X")) {
+                !javac.contains("-help") &&
+                !javac.contains("-X") &&
+                !javac.contains("-version")) {
             throw new IllegalStateException("Argument moduleOrFile should appear at least 1 time(s)");
         }
                 
@@ -234,20 +227,18 @@ public class CeylonCompileTool implements Tool{
     }
 
     private void addJavacArguments(List<String> arguments) {
-        for (String argument : rest) {
-            if (argument.startsWith("--javac=")) {
-                argument = argument.substring("--javac=".length());
-                String value = null;
-                int index = argument.indexOf('=');
-                if (index != -1) {
-                    value = index < argument.length() ? argument.substring(index+1) : "";
-                    argument = argument.substring(0, index);
-                }
-                arguments.add(argument);
-                if (value != null) {
-                    arguments.add(value);
-                }
+        for (String argument : javac) {       
+            String value = null;
+            int index = argument.indexOf('=');
+            if (index != -1) {
+                value = index < argument.length() ? argument.substring(index+1) : "";
+                argument = argument.substring(0, index);
+            }
+            arguments.add(argument);
+            if (value != null) {
+                arguments.add(value);
             }
         }
+    
     }
 }
