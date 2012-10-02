@@ -136,31 +136,32 @@ public class ClassTransformer extends AbstractTransformer {
                 .forDefinition(def);
 
         if (def instanceof Tree.AnyClass) {
-            if(def instanceof Tree.ClassDefinition){
-                Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
-                Class cls = ((Tree.AnyClass)def).getDeclarationModel();
-                // Member classes need a instantiator method
-                boolean generateInstantiator = Strategy.generateInstantiator(cls);
-                // TODO Instantiators on companion classes
-                if (generateInstantiator) {
-                    classBuilder.constructorModifiers(PROTECTED);
-                    if (Decl.withinInterface(cls)) {
-                        MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                        makeOverloadsForDefaultedParameter(0,
-                                instBuilder,
-                                model, paramList, null);
-                        instantiatorDeclCb.method(instBuilder);
-                    }
-                    if (!Decl.withinInterface(cls)
-                            || !model.isFormal()) {
-                        MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                        makeOverloadsForDefaultedParameter(!cls.isFormal() ? OL_BODY : 0,
-                                instBuilder,
-                                model, paramList, null);
-                        instantiatorImplCb.method(instBuilder);
-                    }
-
+            Tree.ParameterList paramList = ((Tree.AnyClass)def).getParameterList();
+            Class cls = ((Tree.AnyClass)def).getDeclarationModel();
+            // Member classes need a instantiator method
+            boolean generateInstantiator = Strategy.generateInstantiator(cls);
+            // TODO Instantiators on companion classes
+            if (generateInstantiator) {
+                classBuilder.constructorModifiers(PROTECTED);
+                if (Decl.withinInterface(cls)) {
+                    MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+                    makeOverloadsForDefaultedParameter(0,
+                            instBuilder,
+                            model, paramList, null);
+                    instantiatorDeclCb.method(instBuilder);
                 }
+                if (!Decl.withinInterface(cls)
+                        || !model.isFormal()) {
+                    MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+                    makeOverloadsForDefaultedParameter(!cls.isFormal() ? OL_BODY : 0,
+                            instBuilder,
+                            model, paramList, null);
+                    instantiatorImplCb.method(instBuilder);
+                }
+
+            }
+
+            if(def instanceof Tree.ClassDefinition){
                 for (Tree.Parameter param : paramList.getParameters()) {
                     Parameter paramModel = param.getDeclarationModel();
                     Parameter refinedParam = (Parameter)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel());
