@@ -5,9 +5,9 @@ class Bug544 {
     Bug544(.java.lang.String s) {
     }
 }
-class Bug544sub extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
-    Bug544sub(.java.lang.String s) {
+    Bug544SharedAttribute(.java.lang.String s) {
         super(s);
         this.s = s;
     }
@@ -15,5 +15,114 @@ class Bug544sub extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug
     
     public final .java.lang.String getS() {
         return s;
+    }
+}
+class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    Bug544Captured(.java.lang.String s) {
+        super(s);
+        this.s = s;
+    }
+    private final .java.lang.String s;
+    
+    private final .java.lang.String m() {
+        return s;
+    }
+}
+class Bug544NonSharedAttr extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    Bug544NonSharedAttr(.java.lang.String s) {
+        super(s);
+    }
+}
+final class s_ {
+    
+    private s_() {
+    }
+    private static final .java.lang.String[] value;
+    static {
+        value = new .java.lang.String[]{""};
+    }
+    
+    static .java.lang.String getS() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    Bug544Toplevel() {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.getS());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel();
+    }
+}
+class Bug544Qualified extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+    
+    Bug544Qualified(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544SharedAttribute b) {
+        super(b.getS());
+    }
+}
+class Bug544ContainerClass {
+    
+    Bug544ContainerClass() {
+        this.s = "";
+    }
+    private final .java.lang.String s;
+    
+    public final .java.lang.String getS() {
+        return s;
+    }
+    
+    .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass.Bug544CapturesFromOuterClass Bug544CapturesFromOuterClass$new() {
+        return new Bug544CapturesFromOuterClass();
+    }
+    
+    class Bug544CapturesFromOuterClass extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+        
+        protected Bug544CapturesFromOuterClass() {
+            super(getS());
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass();
+    }
+}
+interface Bug544ContainerInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Bug544ContainerInterface$impl();
+    
+    public abstract .java.lang.String getS();
+    
+    .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl.Bug544CapturesFromOuterInterface Bug544CapturesFromOuterInterface$new();
+}
+final class Bug544ContainerInterface$impl {
+    
+    Bug544ContainerInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface $this;
+    
+    public final .java.lang.String getS() {
+        return $this.getS();
+    }
+    
+    .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl.Bug544CapturesFromOuterInterface Bug544CapturesFromOuterInterface$new() {
+        return new Bug544CapturesFromOuterInterface();
+    }
+    
+    class Bug544CapturesFromOuterInterface extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
+        
+        protected Bug544CapturesFromOuterInterface() {
+            super(getS());
+        }
     }
 }

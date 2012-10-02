@@ -18,49 +18,10 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class Bug544(String s) {}
+object bug782 {}
 
 @nomodel
-class Bug544SharedAttribute(s) extends Bug544(s) {
-    shared String s;
-}
+class Bug782Top(Object t) {}
 
 @nomodel
-class Bug544Captured(String s) extends Bug544(s) {
-    String m(){
-        return s;
-    }
-}
-
-@nomodel
-class Bug544NonSharedAttr(String s) extends Bug544(s) {
-}
-
-@nomodel
-String s = "";
-
-@nomodel
-class Bug544Toplevel() extends Bug544(s) {
-}
-
-@nomodel
-class Bug544Qualified(Bug544SharedAttribute b) extends Bug544(b.s) {
-}
-
-@nomodel
-class Bug544ContainerClass() {
-    
-    shared String s = "";
-    
-    class Bug544CapturesFromOuterClass() extends Bug544(s) {
-    }
-}
-
-@nomodel
-interface Bug544ContainerInterface {
-    
-    shared formal String s;
-    
-    class Bug544CapturesFromOuterInterface() extends Bug544(s) {
-    }
-}
+class Bug782Bottom() extends Bug782Top(bug782) {}
