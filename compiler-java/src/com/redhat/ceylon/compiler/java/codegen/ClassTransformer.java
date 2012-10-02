@@ -1357,14 +1357,15 @@ public class ClassTransformer extends AbstractTransformer {
             methName = naming.makeQualifiedName(qualifier, (Method)model, Naming.NA_MEMBER);
             overloadBuilder.resultType((Method)model, 0);
         } else if (model instanceof Class) {
+            Class klass = (Class)model;
             if (Strategy.generateInstantiator(model)) {
                 overloadBuilder.ignoreAnnotations();
                 if (Strategy.generateInstantiator(((Class)model).getExtendedTypeDeclaration())){
                         //&& ((Class)model).getExtendedTypeDeclaration().getContainer() instanceof Class) {
                     overloadBuilder.isOverride(true);
                 }
-                overloadBuilder.modifiers(transformClassDeclFlags((Class)model));
-                methName = naming.makeInstantiatorMethodName(null, (Class)model);
+                overloadBuilder.modifiers(transformClassDeclFlags(klass));
+                methName = naming.makeInstantiatorMethodName(null, klass);
                 JCExpression resultType;
                 if (Decl.isAncestorLocal(model)) {
                     // We can't expose a local type name to a place it's not visible
@@ -1374,7 +1375,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 overloadBuilder.resultType(null, resultType);
             } else {   
-                overloadBuilder.modifiers(transformOverloadCtorFlags((Class)model));
+                overloadBuilder.modifiers(transformOverloadCtorFlags(klass));
                 methName = naming.makeThis();
             }
         } else {
