@@ -100,7 +100,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean inStatement = false;
     private boolean withinInvocation = false;
     private boolean withinCallableInvocation = false;
-    private boolean withinSuperInvocation = false;
+    private Tree.ClassOrInterface withinSuperInvocation = null;
     
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
@@ -2241,13 +2241,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     boolean isWithinSuperInvocation() {
-        return withinSuperInvocation;
+        return withinSuperInvocation != null;
     }
 
-    boolean withinSuperInvocation(boolean withinSuperInvocation) {
-        boolean result = this.withinSuperInvocation;
-        this.withinSuperInvocation = withinSuperInvocation;
-        return result;
+    void withinSuperInvocation(Tree.ClassOrInterface forDefinition) {
+        this.withinSuperInvocation = forDefinition;
     }
 
     //

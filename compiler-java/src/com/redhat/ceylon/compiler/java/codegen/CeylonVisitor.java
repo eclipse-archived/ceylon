@@ -195,7 +195,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.ExtendedType extendedType) {
         if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
-            InvocationBuilder builder = InvocationBuilder.forSuperInvocation(gen, extendedType.getInvocationExpression());
+            InvocationBuilder builder = InvocationBuilder.forSuperInvocation(gen, extendedType.getInvocationExpression(), classBuilder.getForDefinition());
             classBuilder.superCall(gen.at(extendedType).Exec(builder.build()));
         }
         classBuilder.extending(extendedType.getType().getTypeModel());

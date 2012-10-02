@@ -325,10 +325,11 @@ abstract class InvocationBuilder {
     }
     
     public static InvocationBuilder forSuperInvocation(AbstractTransformer gen,
-            Tree.InvocationExpression invocation) {
+            Tree.InvocationExpression invocation, 
+            com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface forDefinition) {
         // Because super() invocations cannot be nested there's no need to 
         // keep and restore the old withinSuperInvocation state.
-        gen.expressionGen().withinSuperInvocation(true);
+        gen.expressionGen().withinSuperInvocation(forDefinition);
         try {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
             java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
@@ -338,7 +339,7 @@ abstract class InvocationBuilder {
             builder.compute();
             return builder;
         } finally {
-            gen.expressionGen().withinSuperInvocation(false);
+            gen.expressionGen().withinSuperInvocation(null);
         }
     }
     
