@@ -17,7 +17,7 @@ import com.redhat.ceylon.tools.help.CeylonHelpTool;
 public class TopLevelToolTest {
 
     protected final ToolFactory toolFactory = new ToolFactory();
-    protected final ToolLoader toolLoader = new TestingToolLoader(null, false);
+    protected final ToolLoader toolLoader = new TestingToolLoader(null, true);
     
     private String[] args(String...args) {
         return args;
@@ -80,7 +80,7 @@ public class TopLevelToolTest {
     @Test
     public void testNoArgs()  throws Exception {
         try (CapturingStdOut out = new CapturingStdOut()) {
-            Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args()));
+            Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args()));
             Assert.assertEquals(getHelpOutput(""), out.getOut());
             Assert.assertTrue(out.getErr().isEmpty());
         } 
@@ -113,29 +113,28 @@ public class TopLevelToolTest {
         // We expect NO_SUCH_TOOL in this case because the HelpTool 
         // isn't loadable by the toolLoader we're using
         try (CapturingStdOut out = new CapturingStdOut()) {
-            Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("help", "--version")));
+            Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("help", "--version")));
             Assert.assertTrue(out.getOut().isEmpty());
-            Assert.assertTrue(out.getErr(), out.getErr().contains("ceylon: help is not a ceylon command. See 'ceylon --help'."));
-            Assert.assertTrue(out.getErr(), out.getErr().contains("ceylon: Fatal error"));
+            Assert.assertTrue(out.getErr(), out.getErr().contains("ceylon help: Fatal error: Unrecognised option(s): --version"));
         }
         Assert.assertEquals("help", tool.getToolName());
     }
     
     @Test
     public void testEmptyArg()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("")));
+        Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("")));
         Assert.assertEquals("help", tool.getToolName());
     }
     
     @Test
     public void testHelp()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("help")));    
+        Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("help")));    
         Assert.assertEquals("help", tool.getToolName());
     }
     
     @Test
     public void testHelpOption()  throws Exception {
-        Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("--help")));
+        Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("--help")));
         Assert.assertEquals("help", tool.getToolName());
     }
     
