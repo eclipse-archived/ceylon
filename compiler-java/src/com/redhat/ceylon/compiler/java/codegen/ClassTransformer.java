@@ -1369,11 +1369,12 @@ public class ClassTransformer extends AbstractTransformer {
                 overloadBuilder.modifiers(transformClassDeclFlags(klass) & ~FINAL);
                 methName = naming.makeInstantiatorMethodName(null, klass);
                 JCExpression resultType;
+                ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
                 if (Decl.isAncestorLocal(model)) {
                     // We can't expose a local type name to a place it's not visible
                     resultType = make().Type(syms().objectType);
                 } else {
-                    resultType = makeJavaType(((Class)model).getType());
+                    resultType = makeJavaType(type);
                 }
                 overloadBuilder.resultType(null, resultType);
             } else {   
@@ -1461,9 +1462,11 @@ public class ClassTransformer extends AbstractTransformer {
         if ((flags & OL_BODY) != 0) {
             JCExpression invocation;
             if (Strategy.generateInstantiator(model)) {
+                Class klass = (Class) model;
+                ProducedType type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
                 invocation = make().NewClass(null, 
                         null, 
-                        makeJavaType(((Class)model).getType(), JT_CLASS_NEW | JT_NON_QUALIFIED),
+                        makeJavaType(type, JT_CLASS_NEW | JT_NON_QUALIFIED),
                         args.toList(),
                         null);
             } else {
