@@ -426,9 +426,14 @@ public abstract class AbstractTransformer implements Transformation {
             // For an optional type T?:
             //  - The Ceylon type T? results in the Java type T
             type = typeFact().getDefiniteType(type);
-            if (type.getUnderlyingType() != null) {
-                // A definite type should not have its underlyingType set so we make a copy
+            if (orgType.getUnderlyingType() == null && type.getUnderlyingType() != null) {
+                // If the original type didn't have an underlying type, we don't want the simplified type to have one either
                 type = type.withoutUnderlyingType();
+            }
+            if (orgType.getUnderlyingType() != null && type.getUnderlyingType() == null) {
+                // If the original type had an underlying type, we want the simplified type to have one too
+                type = type.withoutUnderlyingType();
+                type.setUnderlyingType(orgType.getUnderlyingType());
             }
         }
         
