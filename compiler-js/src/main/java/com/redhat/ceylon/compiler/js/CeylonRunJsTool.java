@@ -151,7 +151,7 @@ public class CeylonRunJsTool implements Tool {
     }
 
     private static String getCeylonRepo() {
-        return getFromEnv("CEYLON_REPO", "ceylon.repo");
+        return getFromEnv("CEYLON_REPO", "ceylon.system.repo");
     }
 
     private static String getFromEnv(String env, String prop){
