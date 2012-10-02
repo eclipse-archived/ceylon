@@ -52,17 +52,23 @@ public class JsCompiler {
 
     /** A container for things we need to keep per-module. */
     protected class JsOutput {
-        private final File f = File.createTempFile("jsout", ".tmp");
-        private final Writer w = new FileWriter(f);
+        private File outfile;
+        private Writer writer;
         private final Set<String> s = new HashSet<String>();
         private final MetamodelVisitor mmg;
         protected JsOutput(Module m) throws IOException {
             mmg = new MetamodelVisitor(m);
         }
-        protected Writer getWriter() { return w; }
-        File close() throws IOException {
-            w.close();
-            return f;
+        protected Writer getWriter() throws IOException {
+            if (writer == null) {
+                outfile = File.createTempFile("jsout", ".tmp");
+                writer = new FileWriter(outfile);
+            }
+            return writer;
+        }
+        protected File close() throws IOException {
+            writer.close();
+            return outfile;
         }
         void addSource(String src) {
             s.add(src);
