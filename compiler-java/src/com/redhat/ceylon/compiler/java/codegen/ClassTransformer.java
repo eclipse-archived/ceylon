@@ -132,7 +132,8 @@ public class ClassTransformer extends AbstractTransformer {
             instantiatorDeclCb = null;
         }
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
-                .klass(this, javaClassName, ceylonClassName);
+                .klass(this, javaClassName, ceylonClassName)
+                .forDefinition(def);
 
         if (def instanceof Tree.AnyClass) {
             if(def instanceof Tree.ClassDefinition){

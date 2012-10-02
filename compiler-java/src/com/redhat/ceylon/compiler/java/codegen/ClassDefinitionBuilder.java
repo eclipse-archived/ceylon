@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -71,7 +72,13 @@ public class ClassDefinitionBuilder {
     
     private JCExpression extending;
     private JCStatement superCall;
-    
+
+    /** 
+     * Remembers the class which we're defining, because we need this for special
+     * cases in the super constructor invocation.
+     */
+    private ClassOrInterface forDefinition;
+
     private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
     private final ListBuffer<JCExpression> caseTypes = ListBuffer.lb();
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
@@ -356,7 +363,7 @@ public class ClassDefinitionBuilder {
 
     private boolean ignoreAnnotations = false;
     private boolean noAnnotations = false;
-    
+
     /** 
      * The class will be generated with the {@code @Ignore} annotation only
      */
@@ -568,4 +575,16 @@ public class ClassDefinitionBuilder {
         this.superCall = superCall;
         return this;
     }
+
+
+    public ClassDefinitionBuilder forDefinition(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def) {
+        this.forDefinition = def;
+        return this;
+    }
+
+
+    public ClassOrInterface getForDefinition() {
+        return forDefinition;
+    }
+    
 }
