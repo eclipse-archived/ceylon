@@ -164,7 +164,7 @@ abstract class InvocationBuilder {
             if (Strategy.generateInstantiator(declaration)) {
                 JCExpression qual;
                 if (Decl.withinInterface(declaration)) {
-                    qual = gen.naming.makeQuotedThis();
+                    qual = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
                 } else { 
                     qual = null;
                 }
