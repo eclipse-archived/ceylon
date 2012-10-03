@@ -101,6 +101,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean withinInvocation = false;
     private boolean withinCallableInvocation = false;
     private Tree.ClassOrInterface withinSuperInvocation = null;
+    private boolean outerCompanion;
     
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
@@ -665,7 +666,11 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCTree transform(Tree.Outer expr) {
         at(expr);
+        
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
+        if (outerCompanion) {
+            return naming.makeQuotedThis();
+        }
         final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
         if (outerDeclaration instanceof Interface) {
             return naming.makeQualifiedThis(makeJavaType(outerClass, JT_COMPANION | JT_RAW));
@@ -1478,9 +1483,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
         if(expr.getTarget() == null)
             return makeErroneous();
+        boolean prevOuterCompanion = this.outerCompanion;
+        this.outerCompanion = expr.getPrimary() instanceof Tree.Outer
+            && expr.getDeclaration().isFormal();
+        
         BoxingStrategy boxing = (Decl.isValueTypeDecl(expr.getPrimary())) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-        return transformExpression(expr.getPrimary(), boxing, 
+        JCExpression result = transformExpression(expr.getPrimary(), boxing, 
                 expr.getTarget().getQualifyingType());
+        this.outerCompanion = prevOuterCompanion;
+        return result;
     }
     
     // Base members
