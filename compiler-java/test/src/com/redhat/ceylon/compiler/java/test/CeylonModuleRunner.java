@@ -45,7 +45,6 @@ import org.junit.runners.model.InitializationError;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -289,7 +288,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             // Find all the top level classes/functions annotated @test
             // Unfortunately doing it like this
             final Map<String, List<String>> testMethods = new TreeMap<String, List<String>>();
-            RepositoryManager repositoryManager = CeylonUtils.makeRepositoryManager(null, null, null, new JULLogger());
+            RepositoryManager repositoryManager = CeylonUtils.repoManager().buildManager();
             TypeCheckerBuilder typeCheckerBuilder = new TypeCheckerBuilder();
             typeCheckerBuilder.addSrcDirectory(srcDir);
             typeCheckerBuilder.setRepositoryManager(repositoryManager);

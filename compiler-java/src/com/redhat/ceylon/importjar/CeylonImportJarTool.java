@@ -151,7 +151,12 @@ public class CeylonImportJarTool implements Tool {
     }
     
     public void publish() {
-        RepositoryManager outputRepository = CeylonUtils.makeOutputRepositoryManager(this.out, log, user, pass);
+        RepositoryManager outputRepository = CeylonUtils.repoManager()
+                .outRepo(this.out)
+                .logger(log)
+                .user(user)
+                .password(pass)
+                .buildOutputManager();
 
         ArtifactContext context = new ArtifactContext(module, version, ArtifactContext.JAR);
         context.setForceOperation(true);

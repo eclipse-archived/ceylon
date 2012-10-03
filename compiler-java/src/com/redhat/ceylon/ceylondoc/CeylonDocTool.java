@@ -212,7 +212,11 @@ public class CeylonDocTool implements Tool {
         this.log = new CeylondLogger();
         
         // set up the artifact repository
-        RepositoryManager repository = CeylonUtils.makeRepositoryManager(systemRepository, repositories, null, log );
+        RepositoryManager repository = CeylonUtils.repoManager()
+                .systemRepo(systemRepository)
+                .userRepos(repositories)
+                .logger(log).buildManager();
+        
         builder.setRepositoryManager(repository);
         
         // we need to plug in the module manager which can load from .cars
@@ -449,7 +453,12 @@ public class CeylonDocTool implements Tool {
         collectSubclasses();
 
         // make a destination repo
-        RepositoryManager outputRepository = CeylonUtils.makeOutputRepositoryManager(this.outputRepository, log, user, pass);
+        RepositoryManager outputRepository = CeylonUtils.repoManager()
+                .outRepo(this.outputRepository)
+                .logger(log)
+                .user(user)
+                .password(pass)
+                .buildOutputManager();
 
         try{
             // document every module

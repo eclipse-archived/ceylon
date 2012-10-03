@@ -248,7 +248,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String systemRepo = getSystemRepoOption();
         String outRepo = getOutputRepoOption();
         
-        repoManager = CeylonUtils.makeRepositoryManager(systemRepo, userRepos, outRepo, getLogger());
+        repoManager = CeylonUtils.repoManager()
+                .systemRepo(systemRepo)
+                .userRepos(userRepos)
+                .outRepo(outRepo)
+                .logger(getLogger())
+                .buildManager();
+        
         return repoManager;
     }
 
@@ -265,7 +271,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String user = options.get(OptionName.CEYLONUSER);
         String password = options.get(OptionName.CEYLONPASS);
         
-        outputRepoManager = CeylonUtils.makeOutputRepositoryManager(outRepo, getLogger(), user, password);
+        outputRepoManager = CeylonUtils.repoManager()
+                .outRepo(outRepo)
+                .logger(getLogger())
+                .user(user)
+                .password(password)
+                .buildOutputManager();
+        
         return outputRepoManager;
     }
 

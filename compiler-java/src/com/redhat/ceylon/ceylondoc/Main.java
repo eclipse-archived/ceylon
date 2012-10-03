@@ -27,7 +27,6 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 
 public class Main {
     private static final String CEYLOND_VERSION = "0.4 'Ratatouille'";
@@ -190,7 +189,11 @@ public class Main {
     }
     
     private static List<String> addDefaultRepositories(String systemRepo, List<String> userRepos, String outputRepo){
-        RepositoryManagerBuilder builder = CeylonUtils.makeRepositoryManagerBuilder(systemRepo, userRepos, outputRepo, new JULLogger());
+        RepositoryManagerBuilder builder = CeylonUtils.repoManager()
+                .systemRepo(systemRepo)
+                .userRepos(userRepos)
+                .outRepo(outputRepo)
+                .buildManagerBuilder();
         return builder.getRepositoriesDisplayString();
     }
 }
