@@ -37,45 +37,101 @@ public class CeylonUtils {
         private String password;
         private Logger log;
         
+        /**
+         * Sets the current working directory to use for encountering the configuration
+         * files to use for building the repository manager. When not set the current
+         * directory as defined by <code>new File(".")</code> will be used
+         * @param cwd A File referencing a folder that could possibly contain a <code>.ceylon</code>
+         * sub-folder with a <code>config</code> file
+         * @return This object for chaining method calls
+         */
         public CeylonRepoManagerBuilder cwd(File cwd) {
             this.cwd = cwd;
             return this;
         }
         
+        /**
+         * Sets the path to use for the system repository where the essential Ceylon
+         * modules (compiler, language, spec, etc) can be found. When not set the
+         * value will be taken from the system configuration
+         * @param systemRepo A path to a Ceylon repository
+         * @return This object for chaining method calls
+         */
         public CeylonRepoManagerBuilder systemRepo(String systemRepo) {
             this.systemRepo = systemRepo;
             return this;
         }
         
+        /**
+         * Sets a list of paths to use for the user repositories. When not set the
+         * list will be taken from the system configuration
+         * @param userRepos A list of paths to Ceylon repositories
+         * @return This object for chaining method calls
+         */
         public CeylonRepoManagerBuilder userRepos(List<String> userRepos) {
             this.userRepos = userRepos;
             return this;
         }
         
+        /**
+         * Sets the path to use for the output repository. For a normal manager
+         * (@see #buildManager()) this is used only to look up modules,
+         * for writing the output manager is needed (@see #buildOutputManager()).
+         * When not set the value will be taken from the system configuration
+         * @param outRepo A path to a Ceylon repository
+         * @return This object for chaining method calls
+         */
         public CeylonRepoManagerBuilder outRepo(String outRepo) {
             this.outRepo = outRepo;
             return this;
         }
         
+        /**
+         * Sets the user name to use for writing to the output repository.
+         * When not set the value will be take from the system configuration (if available)
+         * @param user A user name
+         * @return This object for chaining method calls
+         */
         public CeylonRepoManagerBuilder user(String user) {
             this.user = user;
             return this;
         }
         
+        /**
+         * Sets the password to use for writing to the output repository.
+         * This password is not encrypted in any way!
+         * When not set the value will be take from the system configuration (if available)
+         * @param password A password
+         * @return This object for chaining method calls
+         */
         public CeylonRepoManagerBuilder password(String password) {
             this.password = password;
             return this;
         }
         
+        /**
+         * The logger to use, both for the builder itself as well as the
+         * manager under construction. When not set <code>URLLogger</code> will be used
+         * @param logger A logger
+         * @return This object for chaining method calls
+         */
         public CeylonRepoManagerBuilder logger(Logger logger) {
             this.log = logger;
             return this;
         }
 
+        /**
+         * Creates a RepositoryManager used for doing lookups using the current state of this builder
+         * @return A new RepositoryManager
+         */
         public RepositoryManager buildManager() {
             return buildManagerBuilder().buildRepository();
         }
 
+        /**
+         * Creates a RepositoryManagerBuilder used for doing lookups using the current state of <b>this</b> builder
+         * @return A new RepositoryManagerBuilder
+         */
         public RepositoryManagerBuilder buildManagerBuilder() {
             if (log == null) {
                 log = new JULLogger();
@@ -134,6 +190,10 @@ public class CeylonUtils {
             return builder;
         }
 
+        /**
+         * Creates a RepositoryManager used for writing using the current state of this builder
+         * @return A new RepositoryManager
+         */
         public RepositoryManager buildOutputManager() {
             if (log == null) {
                 log = new JULLogger();
