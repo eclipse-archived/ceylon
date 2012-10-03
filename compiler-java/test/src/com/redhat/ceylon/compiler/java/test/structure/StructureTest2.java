@@ -339,4 +339,9 @@ public class StructureTest2 extends CompilerTest {
     public void testCncIntersectionSatisfier(){
         compareWithJavaSource("concrete/IntersectionSatisfier");
     }
+    
+    @Test
+    public void testCncValueRefiningGetterSetter(){
+        compile("concrete/ValueRefiningGetterSetter.ceylon");
+    }
 }
