@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+interface SuperInterfaceTypeMember {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner Inner$new();
+}
+final class SuperInterfaceTypeMember$impl {
+    
+    SuperInterfaceTypeMember$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner Inner$new() {
+        return new Inner();
+    }
+    
+    public class Inner {
+        
+        protected Inner() {
+        }
+    }
+}
+class SuperInterfaceTypeMember_Sub implements .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember {
+    
+    SuperInterfaceTypeMember_Sub() {
+        this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this = new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$impl() {
+        return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.Inner Inner$new() {
+        return new Inner();
+    }
+    
+    public class Inner extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner {
+        
+        protected Inner() {
+            $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this.super();
+        }
+    }
+    
+    private final void m() {
+        $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this.Inner$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub();
+    }
+}

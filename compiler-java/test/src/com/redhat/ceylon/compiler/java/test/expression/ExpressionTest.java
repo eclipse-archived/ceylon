@@ -198,6 +198,14 @@ public class ExpressionTest extends CompilerTest {
     public void testSlfOuterInterfaceFormal(){
         compareWithJavaSource("selfref/OuterInterfaceFormal");
     }
+    @Test
+    public void testSlfSuperInterface(){
+        compareWithJavaSource("selfref/SuperInterface");
+    }
+    @Test
+    public void testSlfSuperInterfaceTypeMember(){
+        compareWithJavaSource("selfref/SuperInterfaceTypeMember");
+    }
     
     // Instantiation
     
