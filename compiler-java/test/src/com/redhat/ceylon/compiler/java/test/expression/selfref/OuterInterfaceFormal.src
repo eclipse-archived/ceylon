@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+interface OuterInterfaceFormal<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T> $com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterfaceFormal$impl();
+    
+    public abstract .java.lang.Object m();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.Formal Formal$new();
+    
+    .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.InnerClass InnerClass$new();
+}
+final class OuterInterfaceFormal$impl<T> {
+    
+    OuterInterfaceFormal$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal<T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal<T> $this;
+    
+    public abstract class Formal {
+        
+        protected Formal() {
+        }
+    }
+    
+    .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.InnerClass InnerClass$new() {
+        return new InnerClass();
+    }
+    
+    class InnerClass {
+        
+        protected InnerClass() {
+            $this.m();
+            $this.Formal$new();
+        }
+    }
+}
