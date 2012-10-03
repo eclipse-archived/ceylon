@@ -969,19 +969,28 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
             appendArgument(argName.makeIdent());
         }
         if (hasDefaulted 
-                && !Strategy.defaultParameterMethodStatic(primaryDeclaration)) {
+                && !Strategy.defaultParameterMethodStatic(primaryDeclaration)
+                && !Strategy.defaultParameterMethodOnOuter(primaryDeclaration)) {
             vars.prepend(makeThis());
         }
     }
     
     private JCExpression makeDefaultedArgumentMethodCall(Parameter param) {
         JCExpression thisExpr = null;
-        if (!Strategy.defaultParameterMethodOnSelf(param) 
-                && !Strategy.defaultParameterMethodStatic(param)) {
+        switch (Strategy.defaultParameterMethodOwner(param)) {
+        case SELF:
+        case STATIC:
+        case OUTER:
+            break;
+        case OUTER_COMPANION:
+            thisExpr = callVarName.makeIdent();
+            break;
+        case INIT_COMPANION:
             thisExpr = varBaseName.suffixedBy("$this$").makeIdent();
             if (onValueType) {
                 thisExpr = gen.boxType(thisExpr, qmePrimary.getTypeModel());
             }
+            break;
         }
         JCExpression defaultValueMethodName = gen.naming.makeDefaultedParamMethod(thisExpr, param);
         JCExpression argExpr = gen.at(node).Apply(null, 
@@ -1234,7 +1243,7 @@ class NamedArgumentInvocationBuilder extends InvocationBuilder {
                 ProducedType producedType = typeA.get(tp);
                 typeArgs.append(gen.makeJavaType(producedType, JT_TYPE_ARGUMENT));
             }
-            ClassOrInterface declaration = (ClassOrInterface)((Tree.BaseTypeExpression) primary).getDeclaration();
+            ClassOrInterface declaration = (ClassOrInterface)((Tree.MemberOrTypeExpression) primary).getDeclaration();
             thisType = gen.makeJavaType(declaration.getType(), JT_COMPANION);
             defaultedParameterInstance = gen.make().NewClass(
                     null, 

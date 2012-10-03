@@ -330,6 +330,13 @@ public class Decl {
     }
     
     public static ClassOrInterface getClassOrInterfaceContainer(Element decl){
+        return getClassOrInterfaceContainer(decl, true);
+    }
+    
+    public static ClassOrInterface getClassOrInterfaceContainer(Element decl, boolean includingDecl){
+        if (!includingDecl) {
+            decl = (Element) decl.getContainer();
+        }
         // stop when null or when it's a ClassOrInterface
         while(decl != null
                 && !(decl instanceof ClassOrInterface)){

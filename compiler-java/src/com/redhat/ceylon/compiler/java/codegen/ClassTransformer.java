@@ -173,9 +173,17 @@ public class ClassTransformer extends AbstractTransformer {
                                     && (refinedParam.isDefaulted()
                                             || refinedParam.isSequenced()))) {
                         ClassDefinitionBuilder cbForDevaultValues;
-                        if (Strategy.defaultParameterMethodStatic(model)) {
+                        switch (Strategy.defaultParameterMethodOwner(model)) {
+                        case STATIC:
                             cbForDevaultValues = classBuilder;
-                        } else {
+                            break;
+                        case OUTER:
+                            cbForDevaultValues = classBuilder.getContainingClassBuilder();
+                            break;
+                        case OUTER_COMPANION:
+                            cbForDevaultValues = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(model, true));
+                            break;
+                        default:
                             cbForDevaultValues = classBuilder.getCompanionBuilder(model);
                         }
                         if (generateInstantiator && refinedParam != paramModel) {}
@@ -1405,6 +1413,7 @@ public class ClassTransformer extends AbstractTransformer {
         final Naming.SyntheticName companionInstanceName = naming.temp("$impl$");
         if (model instanceof Class
                 && !Strategy.defaultParameterMethodStatic(model)
+                && !Strategy.defaultParameterMethodOnOuter(model)
                 && currentParam != null) {
             Class classModel = (Class)model;
             vars.append(makeVar(companionInstanceName, 
@@ -1425,6 +1434,7 @@ public class ClassTransformer extends AbstractTransformer {
                 List<JCExpression> typeArguments = List.<JCExpression>nil();
                 JCIdent dpmQualifier;
                 if (Strategy.defaultParameterMethodOnSelf(model) 
+                        || Strategy.defaultParameterMethodOnOuter(model)
                         || (flags & OL_IMPLEMENTOR) != 0) {
                     dpmQualifier = null;
                 } else if (Strategy.defaultParameterMethodStatic(model)){

@@ -25,7 +25,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -46,6 +45,52 @@ class Strategy {
                 && decl.isToplevel();
     }
     
+    enum DefaultParameterMethodOwner {
+        /** 
+         * DPM should be a member of an init companion (used for local class 
+         * initializers with defaulted parameters) 
+         */
+        INIT_COMPANION,
+        /** 
+         * DPM should be static in the top level class
+         */
+        STATIC,
+        /** 
+         * DPM should be a member of the outer class 
+         */
+        OUTER,
+        /** 
+         * DPM should be a member of the outer interface's companion 
+         */
+        OUTER_COMPANION,
+        /** 
+         * DPM should be a member of the current class/interface 
+         */
+        SELF
+    }
+    
+    public static DefaultParameterMethodOwner defaultParameterMethodOwner(Declaration decl) {
+        if (decl instanceof Method 
+                && !Decl.withinInterface(decl)) {
+            return DefaultParameterMethodOwner.SELF;
+        }
+        if (decl instanceof Parameter) {
+            decl = ((Parameter) decl).getDeclaration();
+        }
+        if ((decl instanceof Method || decl instanceof Class) 
+                && decl.isToplevel()) {
+            // Only top-level methods have static default value methods
+            return DefaultParameterMethodOwner.STATIC;
+        } else if ((decl instanceof Class) 
+                && !decl.isToplevel()
+                && !Decl.isLocal(decl)) {
+            // Only inner classes have their default value methods on their outer
+            return Decl.getClassOrInterfaceContainer(decl, false) instanceof Class ? DefaultParameterMethodOwner.OUTER : DefaultParameterMethodOwner.OUTER_COMPANION;
+        }
+        
+        return DefaultParameterMethodOwner.INIT_COMPANION;
+    }
+    
     public static boolean defaultParameterMethodStatic(Tree.Declaration decl) {
         // Only top-level methods and top-level class initializers 
         // have static default value methods
@@ -59,6 +104,22 @@ class Strategy {
         // Only top-level methods have static default value methods
         return (decl instanceof Method || decl instanceof Class) 
                 && decl.isToplevel();
+    }
+    
+    public static boolean defaultParameterMethodOnOuter(Tree.Declaration decl) {
+        // Only top-level methods and top-level class initializers 
+        // have static default value methods
+        return defaultParameterMethodOnOuter(decl.getDeclarationModel());
+    }
+    
+    public static boolean defaultParameterMethodOnOuter(Declaration decl) {
+        if (decl instanceof Parameter) {
+            decl = ((Parameter) decl).getDeclaration();
+        }
+        // Only inner classes have their default value methods on their outer
+        return (decl instanceof Class) 
+                && !decl.isToplevel()
+                && !Decl.isLocal(decl);
     }
     
     public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {

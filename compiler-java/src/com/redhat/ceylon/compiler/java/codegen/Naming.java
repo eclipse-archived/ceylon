@@ -417,8 +417,12 @@ public class Naming implements LocalId {
     static String getDefaultedParamMethodName(Declaration decl, Parameter param) {
         if (decl instanceof Method) {
             return ((Method) decl).getName() + "$" + CodegenUtil.getTopmostRefinedDeclaration(param).getName();
-        } else if (decl instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
-            return "$init$" + param.getName();
+        } else if (decl instanceof ClassOrInterface) {
+            if (decl.isToplevel() || Decl.isLocal(decl)) {
+                return "$init$" + param.getName();
+            } else {
+                return "$" + decl.getName() + "$init$" + param.getName();
+            }
         } else {
             // Should never happen (for now at least)
             return null;
@@ -596,7 +600,9 @@ public class Naming implements LocalId {
                 container = (Declaration)container.getContainer();
             }
             JCExpression className = makeDeclName(qualifier, (TypeDeclaration)container, DeclNameFlag.COMPANION); 
-            return  makeSelect(className, methodName);
+            return makeSelect(className, methodName);
+        } else if (Strategy.defaultParameterMethodOnOuter(param)) {
+            return makeQuotedQualIdent(qualifier, methodName);            
         } else if (Strategy.defaultParameterMethodStatic(param)) {
             // top level method or class
             Assert.that(qualifier == null);

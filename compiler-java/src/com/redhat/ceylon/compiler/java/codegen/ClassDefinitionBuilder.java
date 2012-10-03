@@ -137,6 +137,10 @@ public class ClassDefinitionBuilder {
         }
     }
 
+    ClassDefinitionBuilder getContainingClassBuilder() {
+        return containingClassBuilder;
+    }
+    
     private ClassDefinitionBuilder getTopLevelBuilder() {
         ClassDefinitionBuilder result = this;
         while (result.containingClassBuilder != null) {
