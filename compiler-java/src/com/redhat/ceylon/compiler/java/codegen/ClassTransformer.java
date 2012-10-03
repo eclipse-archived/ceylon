@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -559,10 +560,11 @@ public class ClassTransformer extends AbstractTransformer {
 
     private boolean needsCompanionDelegate(final Class model, Declaration member) {
         final boolean mostRefined;
-        if (member instanceof Setter) {
-            mostRefined = member.equals(((Getter)model.getMember(member.getName(), null)).getSetter());
+        Declaration m = model.getMember(member.getName(), null);
+        if (member instanceof Setter && m instanceof Getter) {
+            mostRefined = member.equals(((Getter)m).getSetter());
         } else {
-            mostRefined = member.equals(model.getMember(member.getName(), null));
+            mostRefined = member.equals(m);
         }
         return mostRefined
                 && (member.isDefault() || !member.isFormal());
