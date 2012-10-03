@@ -190,7 +190,7 @@ public class JsCompiler {
             //Then write it out
             final SimpleJsonEncoder json = new SimpleJsonEncoder();
             for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
-                e.getValue().getWriter().write("$$metamodel$$=");
+                e.getValue().getWriter().write("var $$metamodel$$=");
                 json.encode(e.getValue().mmg.getModel(), e.getValue().getWriter());
                 e.getValue().getWriter().write(";\n");
             }
