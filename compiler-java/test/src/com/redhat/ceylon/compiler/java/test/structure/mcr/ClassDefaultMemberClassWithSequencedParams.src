@@ -9,26 +9,18 @@ class ClassDefaultMemberClassWithSequencedParams {
         return new Member(i);
     }
     
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $Member$init$i() {
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member Member$new() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member$impl $ceylontmp$impl$1 = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member$impl();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$2 = $ceylontmp$impl$1.$init$i();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$2 = $Member$init$i();
             }
             returning new Member($ceylontmp$i$2);
         );
-    }
-    
-    public final class Member$impl {
-        
-        public Member$impl() {
-            super();
-        }
-        
-        public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$i() {
-            return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
-        }
     }
     
     public class Member {
@@ -48,8 +40,7 @@ class ClassDefaultMemberClassWithSequencedParams {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member$impl $arg$4$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams.Member$impl();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$4$0 = $arg$4$this$.$init$i();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$4$0 = $Member$init$i();
             }
             returning Member$new($arg$4$0);
         );
@@ -78,8 +69,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member$impl $ceylontmp$impl$6 = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member$impl();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$7 = $ceylontmp$impl$6.$init$i();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$i$7 = $Member$init$i();
             }
             returning new Member($ceylontmp$i$7);
         );
@@ -103,8 +93,7 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member$impl $arg$9$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithSequencedParams_sub.Member$impl();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$9$0 = $arg$9$this$.$init$i();
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$9$0 = $Member$init$i();
             }
             returning Member$new($arg$9$0);
         );

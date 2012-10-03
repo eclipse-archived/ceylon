@@ -9,26 +9,18 @@ class ClassDefaultMemberClassWithDefaultedParams {
         return new Member(i);
     }
     
+    public final long $Member$init$i() {
+        return 1L;
+    }
+    
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member Member$new() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member$impl $ceylontmp$impl$1 = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member$impl();
-                long $ceylontmp$i$2 = $ceylontmp$impl$1.$init$i();
+                long $ceylontmp$i$2 = $Member$init$i();
             }
             returning new Member($ceylontmp$i$2);
         );
-    }
-    
-    public final class Member$impl {
-        
-        public Member$impl() {
-            super();
-        }
-        
-        public final long $init$i() {
-            return 1L;
-        }
     }
     
     public class Member {
@@ -41,8 +33,7 @@ class ClassDefaultMemberClassWithDefaultedParams {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member$impl $arg$3$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams.Member$impl();
-                long $arg$3$0 = $arg$3$this$.$init$i();
+                long $arg$3$0 = $Member$init$i();
             }
             returning Member$new($arg$3$0);
         );
@@ -70,8 +61,7 @@ class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member$impl $ceylontmp$impl$5 = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member$impl();
-                long $ceylontmp$i$6 = $ceylontmp$impl$5.$init$i();
+                long $ceylontmp$i$6 = $Member$init$i();
             }
             returning new Member($ceylontmp$i$6);
         );
@@ -88,8 +78,7 @@ class ClassDefaultMemberClassWithDefaultedParams_sub extends .com.redhat.ceylon.
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member$impl $arg$7$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithDefaultedParams_sub.Member$impl();
-                long $arg$7$0 = $arg$7$this$.$init$i();
+                long $arg$7$0 = $Member$init$i();
             }
             returning Member$new($arg$7$0);
         );

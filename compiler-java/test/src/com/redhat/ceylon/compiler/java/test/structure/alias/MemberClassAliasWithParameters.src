@@ -14,28 +14,19 @@ public class MemberClassAliasWithParameters_Foo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.String $Member$init$s(final long i) {
+        return "foo";
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member Member$new(final long i) {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member$impl $ceylontmp$impl$1 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member$impl();
-                .java.lang.String $ceylontmp$s$2 = $ceylontmp$impl$1.$init$s(i);
+                .java.lang.String $ceylontmp$s$2 = $Member$init$s(i);
             }
             returning new Member(i, $ceylontmp$s$2);
         );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final class Member$impl {
-        
-        public Member$impl() {
-            super();
-        }
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public final .java.lang.String $init$s(final long i) {
-            return "foo";
-        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)

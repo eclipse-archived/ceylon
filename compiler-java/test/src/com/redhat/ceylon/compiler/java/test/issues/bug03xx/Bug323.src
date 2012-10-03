@@ -9,42 +9,33 @@ class Bug323 {
         return new Inner(f, g);
     }
     
+    private final long $Inner$init$f() {
+        return 2L;
+    }
+    
     .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner Inner$new() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner$impl $ceylontmp$impl$1 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner$impl();
-                long $ceylontmp$f$2 = $ceylontmp$impl$1.$init$f();
-                long $ceylontmp$g$3 = $ceylontmp$impl$1.$init$g($ceylontmp$f$2);
+                long $ceylontmp$f$2 = $Inner$init$f();
+                long $ceylontmp$g$3 = $Inner$init$g($ceylontmp$f$2);
             }
             returning new Inner($ceylontmp$f$2, $ceylontmp$g$3);
         );
+    }
+    
+    private final long $Inner$init$g(final long f) {
+        return 4L;
     }
     
     .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner Inner$new(final long f) {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner$impl $ceylontmp$impl$4 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner$impl();
-                long $ceylontmp$g$5 = $ceylontmp$impl$4.$init$g(f);
+                long $ceylontmp$g$5 = $Inner$init$g(f);
             }
             returning new Inner(f, $ceylontmp$g$5);
         );
-    }
-    
-    final class Inner$impl {
-        
-        Inner$impl() {
-            super();
-        }
-        
-        private final long $init$f() {
-            return 2L;
-        }
-        
-        private final long $init$g(final long f) {
-            return 4L;
-        }
     }
     
     class Inner {

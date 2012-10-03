@@ -13,6 +13,10 @@ interface Local$local$0$LI {
     public .java.lang.Object LI$impl();
     
     .java.lang.Object LIC$new(final long j);
+    
+    public abstract long $LIC$init$j();
+    
+    .java.lang.Object LIC$new();
 }
 interface Local$C$local2$1$CL$LCI {
     
@@ -37,8 +41,8 @@ class Local {
         (
             let
             {
-                long $ceylontmp$i$10 = local$i();
-                local($ceylontmp$i$10);
+                long $ceylontmp$i$12 = local$i();
+                local($ceylontmp$i$12);
             }
             returning null;
         );
@@ -92,22 +96,18 @@ class Local {
                 return new LCC(k);
             }
             
+            private final long $LCC$init$k() {
+                return 0L;
+            }
+            
             .java.lang.Object LCC$new() {
                 return (
                     let
                     {
-                        LC.LCC$impl $ceylontmp$impl$3 = new LC.LCC$impl();
-                        long $ceylontmp$k$4 = $ceylontmp$impl$3.$init$k();
+                        long $ceylontmp$k$4 = $LCC$init$k();
                     }
                     returning new LCC($ceylontmp$k$4);
                 );
-            }
-            
-            final class LCC$impl {
-                
-                private final long $init$k() {
-                    return 0L;
-                }
             }
             
             class LCC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LC$LCI {
@@ -149,22 +149,18 @@ class Local {
                 return new LIC(j);
             }
             
+            private final long $LIC$init$j() {
+                return 0L;
+            }
+            
             .java.lang.Object LIC$new() {
                 return (
                     let
                     {
-                        LI$impl.LIC$impl $ceylontmp$impl$7 = new LI$impl.LIC$impl();
-                        long $ceylontmp$j$8 = $ceylontmp$impl$7.$init$j();
+                        long $ceylontmp$j$10 = $LIC$init$j();
                     }
-                    returning new LIC($ceylontmp$j$8);
+                    returning new LIC($ceylontmp$j$10);
                 );
-            }
-            
-            final class LIC$impl {
-                
-                private final long $init$j() {
-                    return 0L;
-                }
             }
             
             class LIC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$local$0$LI$LII {
@@ -188,26 +184,18 @@ class Local {
         return new C(i);
     }
     
+    private final long $C$init$i() {
+        return 0L;
+    }
+    
     .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C C$new() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C$impl $ceylontmp$impl$12 = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Local.C$impl();
-                long $ceylontmp$i$13 = $ceylontmp$impl$12.$init$i();
+                long $ceylontmp$i$15 = $C$init$i();
             }
-            returning new C($ceylontmp$i$13);
+            returning new C($ceylontmp$i$15);
         );
-    }
-    
-    final class C$impl {
-        
-        C$impl() {
-            super();
-        }
-        
-        private final long $init$i() {
-            return 0L;
-        }
     }
     
     class C {
@@ -221,8 +209,8 @@ class Local {
             (
                 let
                 {
-                    long $ceylontmp$j$20 = local2$j();
-                    local2($ceylontmp$j$20);
+                    long $ceylontmp$j$22 = local2$j();
+                    local2($ceylontmp$j$22);
                 }
                 returning null;
             );
@@ -247,9 +235,9 @@ class Local {
                     (
                         let
                         {
-                            CL$impl $ceylontmp$impl$14 = new CL$impl();
-                            long $ceylontmp$k$15 = $ceylontmp$impl$14.$init$k();
-                            this($ceylontmp$k$15);
+                            CL$impl $ceylontmp$impl$16 = new CL$impl();
+                            long $ceylontmp$k$17 = $ceylontmp$impl$16.$init$k();
+                            this($ceylontmp$k$17);
                         }
                         returning null;
                     );
@@ -276,22 +264,18 @@ class Local {
                     return new CLC(l);
                 }
                 
+                private final long $CLC$init$l() {
+                    return 0L;
+                }
+                
                 .java.lang.Object CLC$new() {
                     return (
                         let
                         {
-                            CL.CLC$impl $ceylontmp$impl$17 = new CL.CLC$impl();
-                            long $ceylontmp$l$18 = $ceylontmp$impl$17.$init$l();
+                            long $ceylontmp$l$20 = $CLC$init$l();
                         }
-                        returning new CLC($ceylontmp$l$18);
+                        returning new CLC($ceylontmp$l$20);
                     );
-                }
-                
-                final class CLC$impl {
-                    
-                    private final long $init$l() {
-                        return 0L;
-                    }
                 }
                 
                 class CLC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$C$local2$1$CL$LCI {
@@ -323,8 +307,8 @@ class Local {
             (
                 let
                 {
-                    long $ceylontmp$i$27 = local3$i();
-                    local3($ceylontmp$i$27);
+                    long $ceylontmp$i$29 = local3$i();
+                    local3($ceylontmp$i$29);
                 }
                 returning null;
             );
@@ -349,9 +333,9 @@ class Local {
                     (
                         let
                         {
-                            IL$impl $ceylontmp$impl$21 = new IL$impl();
-                            long $ceylontmp$j$22 = $ceylontmp$impl$21.$init$j();
-                            this($ceylontmp$j$22);
+                            IL$impl $ceylontmp$impl$23 = new IL$impl();
+                            long $ceylontmp$j$24 = $ceylontmp$impl$23.$init$j();
+                            this($ceylontmp$j$24);
                         }
                         returning null;
                     );
@@ -378,22 +362,18 @@ class Local {
                     return new ILC(k);
                 }
                 
+                private final long $ILC$init$k() {
+                    return 0L;
+                }
+                
                 .java.lang.Object ILC$new() {
                     return (
                         let
                         {
-                            IL.ILC$impl $ceylontmp$impl$24 = new IL.ILC$impl();
-                            long $ceylontmp$k$25 = $ceylontmp$impl$24.$init$k();
+                            long $ceylontmp$k$27 = $ILC$init$k();
                         }
-                        returning new ILC($ceylontmp$k$25);
+                        returning new ILC($ceylontmp$k$27);
                     );
-                }
-                
-                final class ILC$impl {
-                    
-                    private final long $init$k() {
-                        return 0L;
-                    }
                 }
                 
                 class ILC implements .com.redhat.ceylon.compiler.java.test.structure.nesting.Local$I$local3$2$IL$ICI {

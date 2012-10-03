@@ -28,26 +28,18 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         return new InnerClass(b);
     }
     
+    private final boolean $InnerClass$init$b() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+    }
+    
     .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerClass InnerClass$new() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerClass$impl $ceylontmp$impl$1 = new .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerClass$impl();
-                boolean $ceylontmp$b$2 = $ceylontmp$impl$1.$init$b();
+                boolean $ceylontmp$b$2 = $InnerClass$init$b();
             }
             returning new InnerClass($ceylontmp$b$2);
         );
-    }
-    
-    final class InnerClass$impl {
-        
-        InnerClass$impl() {
-            super();
-        }
-        
-        private final boolean $init$b() {
-            return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
-        }
     }
     
     class InnerClass {

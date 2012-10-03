@@ -24,26 +24,18 @@ class NamedArgumentInvocationInitWithSequence {
         return new Inner(x, y, z);
     }
     
+    private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $Inner$init$z(final boolean x, final .java.lang.String y) {
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
     .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner Inner$new(final boolean x, final .java.lang.String y) {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner$impl $ceylontmp$impl$3 = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner$impl();
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$z$4 = $ceylontmp$impl$3.$init$z(x, y);
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$z$4 = $Inner$init$z(x, y);
             }
             returning new Inner(x, y, $ceylontmp$z$4);
         );
-    }
-    
-    final class Inner$impl {
-        
-        Inner$impl() {
-            super();
-        }
-        
-        private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$z(final boolean x, final .java.lang.String y) {
-            return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
-        }
     }
     
     class Inner {

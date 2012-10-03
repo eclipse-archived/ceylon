@@ -85,16 +85,25 @@ public class MemberClassAliasTricks_Foo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final long $Member$init$a() {
+        return 1L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member Member$new() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member$impl $ceylontmp$impl$8 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member$impl();
-                long $ceylontmp$a$9 = $ceylontmp$impl$8.$init$a();
-                long $ceylontmp$b$10 = $ceylontmp$impl$8.$init$b($ceylontmp$a$9);
+                long $ceylontmp$a$9 = $Member$init$a();
+                long $ceylontmp$b$10 = $Member$init$b($ceylontmp$a$9);
             }
             returning new Member($ceylontmp$a$9, $ceylontmp$b$10);
         );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final long $Member$init$b(final long a) {
+        return 2L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -102,29 +111,10 @@ public class MemberClassAliasTricks_Foo {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member$impl $ceylontmp$impl$11 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member$impl();
-                long $ceylontmp$b$12 = $ceylontmp$impl$11.$init$b(a);
+                long $ceylontmp$b$12 = $Member$init$b(a);
             }
             returning new Member(a, $ceylontmp$b$12);
         );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final class Member$impl {
-        
-        public Member$impl() {
-            super();
-        }
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public final long $init$a() {
-            return 1L;
-        }
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public final long $init$b(final long a) {
-            return 2L;
-        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)

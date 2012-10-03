@@ -9,26 +9,18 @@ class Bug299 {
         return new Inner(s);
     }
     
+    private final .java.lang.String $Inner$init$s() {
+        return "a";
+    }
+    
     .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug299.Inner Inner$new() {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug299.Inner$impl $ceylontmp$impl$1 = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug299.Inner$impl();
-                .java.lang.String $ceylontmp$s$2 = $ceylontmp$impl$1.$init$s();
+                .java.lang.String $ceylontmp$s$2 = $Inner$init$s();
             }
             returning new Inner($ceylontmp$s$2);
         );
-    }
-    
-    final class Inner$impl {
-        
-        Inner$impl() {
-            super();
-        }
-        
-        private final .java.lang.String $init$s() {
-            return "a";
-        }
     }
     
     class Inner {
