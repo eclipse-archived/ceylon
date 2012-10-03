@@ -3,6 +3,16 @@ package com.redhat.ceylon.compiler.java.test.expression.selfref;
 class SuperReference {
     
     SuperReference() {
+        this.a = 0L;
+    }
+    private long a;
+    
+    public final long getA() {
+        return a;
+    }
+    
+    public final void setA(final long a) {
+        this.a = a;
     }
     
     public .java.lang.Object m(final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild x) {
@@ -27,6 +37,15 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
     
     @.java.lang.Override
     public final .java.lang.Object test() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference $ceylontmpopE0 = super;
+                long $ceylontmpopV1 = $ceylontmpopE0.getA();
+                $ceylontmpopE0.setA($ceylontmpopV1 + 1);
+            }
+            returning $ceylontmpopV1;
+        );
         super.test();
         return null;
     }

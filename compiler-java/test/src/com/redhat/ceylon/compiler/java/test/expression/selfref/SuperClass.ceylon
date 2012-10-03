@@ -18,21 +18,36 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class SuperReference(){
-    shared variable Integer a := 0;
-    shared default void m(SuperReferenceChild x) {
-        x.test();
+abstract class SuperClass() {
+    shared variable Integer a := 2;
+    shared Integer i {
+        return 2;
     }
-    
-    shared default void test() {
-        return;
+    shared default Integer m(){
+        return 2;
+    }
+    shared class Local() {
+    }
+    shared default class Default() {
+    }
+    shared formal class Formal() {
     }
 }
 
 @nomodel
-class SuperReferenceChild() extends SuperReference() {
-    shared actual void test() {
-        super.a++;
-        super.test();
+abstract class SuperClass_Sub() extends SuperClass() {
+    shared actual Integer m() {
+        SuperClass::a++;
+        return SuperClass::i + SuperClass::m();
     }
+    shared Integer m2() {
+        SuperClass::a++;
+        return SuperClass::i + SuperClass::m();
+    }
+    shared void m3() {
+        SuperClass::Local();
+        SuperClass::Default();
+        //SuperClass::Formal();
+    }
+    
 }

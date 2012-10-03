@@ -4,6 +4,8 @@ interface SuperInterface {
     
     public long getI();
     
+    public void setI(final long i);
+    
     public long m();
 }
 final class SuperInterface$impl {
@@ -15,6 +17,9 @@ final class SuperInterface$impl {
     
     public final long getI() {
         return 2L;
+    }
+    
+    public void setI(final long i) {
     }
     
     public long m() {
@@ -34,7 +39,20 @@ class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.test.expres
     }
     
     @.java.lang.Override
+    public final void setI(final long i) {
+        $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.setI(i);
+    }
+    
+    @.java.lang.Override
     public final long m() {
+        (
+            let
+            {
+                long $ceylontmpop0 = $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.getI();
+                $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.setI($ceylontmpop0 + 1);
+            }
+            returning $ceylontmpop0;
+        );
         return $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.getI() + $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterface$this.m();
     }
     

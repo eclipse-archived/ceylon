@@ -1,0 +1,89 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+abstract class SuperClass {
+    
+    SuperClass() {
+        this.a = 2L;
+    }
+    private long a;
+    
+    public final long getA() {
+        return a;
+    }
+    
+    public final void setA(final long a) {
+        this.a = a;
+    }
+    
+    public final long getI() {
+        return 2L;
+    }
+    
+    public long m() {
+        return 2L;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Local Local$new() {
+        return new Local();
+    }
+    
+    public class Local {
+        
+        protected Local() {
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Default Default$new() {
+        return new Default();
+    }
+    
+    public class Default {
+        
+        protected Default() {
+        }
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Formal Formal$new();
+    
+    public abstract class Formal {
+        
+        protected Formal() {
+        }
+    }
+}
+abstract class SuperClass_Sub extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass {
+    
+    SuperClass_Sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final long m() {
+        (
+            let
+            {
+                long $ceylontmpop3 = super.getA();
+                super.setA($ceylontmpop3 + 1);
+            }
+            returning $ceylontmpop3;
+        );
+        return super.getI() + super.m();
+    }
+    
+    public final long m2() {
+        (
+            let
+            {
+                long $ceylontmpop4 = super.getA();
+                super.setA($ceylontmpop4 + 1);
+            }
+            returning $ceylontmpop4;
+        );
+        return super.getI() + super.m();
+    }
+    
+    public final void m3() {
+        Local$new();
+        Default$new();
+    }
+}

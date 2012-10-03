@@ -206,6 +206,10 @@ public class ExpressionTest extends CompilerTest {
     public void testSlfSuperInterfaceTypeMember(){
         compareWithJavaSource("selfref/SuperInterfaceTypeMember");
     }
+    @Test
+    public void testSlfSuperClass(){
+        compareWithJavaSource("selfref/SuperClass");
+    }
     
     // Instantiation
     

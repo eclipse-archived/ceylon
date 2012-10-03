@@ -22,6 +22,9 @@ interface SuperInterface {
     shared Integer i {
         return 2;
     }
+    assign i {
+        
+    }
     shared default Integer m(){
         return 2;
     }
@@ -30,6 +33,7 @@ interface SuperInterface {
 @nomodel
 class SuperInterface_Sub() satisfies SuperInterface {
     shared actual Integer m() {
+        SuperInterface::i++;
         return SuperInterface::i + SuperInterface::m();
     }
     shared Integer m2() {
