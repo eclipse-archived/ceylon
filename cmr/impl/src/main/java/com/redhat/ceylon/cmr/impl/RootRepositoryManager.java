@@ -37,9 +37,6 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     private static File getRootDir() {
         com.redhat.ceylon.common.config.Repositories.Repository rootRepo = Repositories.get().getCacheRepository();
         final File root = new File(rootRepo.getUrl());
-        if (!root.exists() && !root.mkdirs()) {
-            throw new IllegalArgumentException("Cannot create Ceylon cache repository directory: " + rootRepo.getUrl());
-        }
         return root;
     }
 
@@ -49,6 +46,9 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
     public RootRepositoryManager(File rootDir, Logger log) {
         super(log);
+        if (!rootDir.exists() && !rootDir.mkdirs()) {
+            throw new IllegalArgumentException("Cannot create Ceylon cache repository directory: " + rootDir);
+        }
         fileContentStore = new FileContentStore(rootDir);
         final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
         setRoot(aaca);

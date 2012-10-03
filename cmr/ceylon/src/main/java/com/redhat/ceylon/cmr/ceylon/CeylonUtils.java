@@ -136,7 +136,6 @@ public class CeylonUtils {
             if (log == null) {
                 log = new JULLogger();
             }
-            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(log);
 
             // Make sure we load the correct configuration
             
@@ -145,6 +144,13 @@ public class CeylonUtils {
             }
             CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
             Repositories repositories = Repositories.withConfig(config);
+            
+            // First we determine the cache repository
+            
+            Repositories.Repository cacheRepo = repositories.getCacheRepository();
+            final File root = new File(cacheRepo.getUrl());
+            
+            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log);
             
             // The first two we add in reverse order because they get PREpended to the root
             
