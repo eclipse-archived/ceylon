@@ -89,8 +89,11 @@ public class JsCompiler {
     public JsCompiler(TypeChecker tc, Options options) {
         this.tc = tc;
         opts = options;
-        outRepo = CeylonUtils.makeOutputRepositoryManager(
-                options.getOutDir(), new JULLogger(), options.getUser(), options.getPass());
+        outRepo = CeylonUtils.repoManager()
+                .outRepo(options.getOutDir())
+                .user(options.getUser())
+                .password(options.getPass())
+                .buildOutputManager();
         String outDir = options.getOutDir();
         if(!isURL(outDir)){
         	File root = new File(outDir);

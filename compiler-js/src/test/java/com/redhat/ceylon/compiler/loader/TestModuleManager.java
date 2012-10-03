@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -59,9 +58,11 @@ public class TestModuleManager {
                 "-rep", "build/test/test_modules", "-out", "build/test/test_modules",
                 "-src", "src/test/resources/loader/pass1"));
         options = Options.parse(args);
-        repoman = CeylonUtils.makeRepositoryManager(
-                options.getSystemRepo(), options.getRepos(),
-                options.getOutDir(), new JULLogger());
+        repoman = CeylonUtils.repoManager()
+                .systemRepo(options.getSystemRepo())
+                .userRepos(options.getRepos())
+                .outRepo(options.getOutDir())
+                .buildManager();
         //Create a typechecker to compile the test module
         System.out.println("Compiling pass 1");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
@@ -83,9 +84,11 @@ public class TestModuleManager {
     private static void loadJsModel() {
         if (jstc == null) {
             System.out.println("Pass 2: Loading model from JS");
-            final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
-                    options.getSystemRepo(), options.getRepos(),
-                    options.getOutDir(), new JULLogger());
+            final RepositoryManager repoman = CeylonUtils.repoManager()
+                    .systemRepo(options.getSystemRepo())
+                    .userRepos(options.getRepos())
+                    .outRepo(options.getOutDir())
+                    .buildManager();
             TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);//.verbose(true);
             tcb.moduleManagerFactory(new JsModuleManagerFactory());
             tcb.addSrcDirectory(new java.io.File("src/test/resources/loader/pass2"));

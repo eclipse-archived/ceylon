@@ -11,7 +11,6 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -66,8 +65,7 @@ public class Main {
         if (opts.isVerbose()) {
             System.out.printf("Using repositories: %s%n", opts.getRepos());
         }
-        final RepositoryManager repoman = CeylonUtils.makeRepositoryManager(
-                opts.getSystemRepo(), opts.getRepos(), opts.getOutDir(), new JULLogger());
+        final RepositoryManager repoman = CeylonUtils.repoManager().systemRepo(opts.getSystemRepo()).userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager();
         final Set<String> onlyFiles = new HashSet<String>();
         long t0, t1, t2, t3, t4;
         if (opts.isStdin()) {
