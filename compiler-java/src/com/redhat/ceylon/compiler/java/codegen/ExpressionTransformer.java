@@ -236,8 +236,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !isNothing(exprType)) {
             // full type erasure
             if(!willEraseToObject(expectedType) 
-                    && (willEraseToObject(exprType)
-                            || "java.lang.Object".equals(exprType.getUnderlyingType())
+                    && (willEraseToObject(exprType) 
                             || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
