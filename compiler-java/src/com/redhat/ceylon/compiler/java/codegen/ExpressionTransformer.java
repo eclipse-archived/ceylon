@@ -1501,6 +1501,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transform(Tree.BaseMemberOrTypeExpression expr, TermTransformer transformer) {
+        JCExpression primaryExpr = makeSuperQualifier(expr);
+        return transformMemberExpression(expr, primaryExpr, transformer);
+    }
+
+    private JCExpression makeSuperQualifier(Tree.BaseMemberOrTypeExpression expr) {
         JCExpression primaryExpr = null;
         if (expr.getSupertypeQualifier() != null) {
             ClassOrInterface supertype = (ClassOrInterface)expr.getDeclaration().getContainer();
@@ -1510,7 +1515,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primaryExpr = naming.makeSuper();
             }
         }
-        return transformMemberExpression(expr, primaryExpr, transformer);
+        return primaryExpr;
     }
     
     // Type members
@@ -1830,7 +1835,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
                 expr = naming.makeQuotedThis();
             } else {
-                expr = null;
+                expr = makeSuperQualifier((Tree.BaseMemberExpression)leftTerm);
             }
         else if(leftTerm instanceof Tree.QualifiedMemberExpression){
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
