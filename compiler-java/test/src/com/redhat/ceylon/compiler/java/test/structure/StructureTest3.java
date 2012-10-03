@@ -11,6 +11,11 @@ public class StructureTest3 extends CompilerTest {
         return name + "-3";
     }
     
+    @Test
+    public void testMcrInstantiatorDelegates(){
+        compareWithJavaSource("mcr/InstantiatorDelegates");
+    }
+    
     //
     // Member Class Refinement
     
