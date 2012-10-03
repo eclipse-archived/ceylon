@@ -53,7 +53,7 @@ public class MemberClassAliasWithParameters_Foo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member MemberClassAlias$new(final long i, final .java.lang.String s) {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member MemberClassAlias$new(final long i, final .java.lang.String s) {
         return new Member(i, s);
     }
     

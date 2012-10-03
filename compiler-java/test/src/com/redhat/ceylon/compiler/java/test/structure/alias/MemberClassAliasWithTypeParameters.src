@@ -31,7 +31,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final <S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$new(final S s) {
+    public <S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$new(final S s) {
         return new Member<S>(s);
     }
     
@@ -47,7 +47,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> MemberClassAlias2$new(final .ceylon.language.Integer s) {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> MemberClassAlias2$new(final .ceylon.language.Integer s) {
         return new Member<.ceylon.language.Integer>(s);
     }
     
@@ -62,7 +62,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> MemberClassAlias3$new(final C s) {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> MemberClassAlias3$new(final C s) {
         return new Member<C>(s);
     }
     
