@@ -10,16 +10,12 @@ class DoublyLocalClass {
         class LocalClass {
             
             LocalClass() {
-                final LocalClass.Innermost i = (LocalClass.Innermost)Innermost$new();
-            }
-            
-            .java.lang.Object Innermost$new() {
-                return new Innermost();
+                final LocalClass.Innermost i = new LocalClass.Innermost();
             }
             
             class Innermost {
                 
-                protected Innermost() {
+                Innermost() {
                 }
             }
         }

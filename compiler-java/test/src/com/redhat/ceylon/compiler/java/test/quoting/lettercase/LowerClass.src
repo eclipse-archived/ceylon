@@ -8,17 +8,12 @@ class c_ {
     c_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    .com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.cc_ cc$new() {
-        return new cc_();
-    }
-    
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
     @.com.redhat.ceylon.compiler.java.metadata.Name("cc")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "c", javaClass = "com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_", packageName = "com.redhat.ceylon.compiler.java.test.quoting.lettercase")
     class cc_ {
         
-        protected cc_() {
+        cc_() {
         }
     }
     

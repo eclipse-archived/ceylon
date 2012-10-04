@@ -5,8 +5,6 @@ interface OuterInterface<T> {
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl<T> $com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl();
     
     public void m2();
-    
-    .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl<T>.InnerClass InnerClass$new();
 }
 final class OuterInterface$impl<T> {
     
@@ -21,13 +19,9 @@ final class OuterInterface$impl<T> {
     public void m2() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl<T>.InnerClass InnerClass$new() {
-        return new InnerClass();
-    }
-    
     class InnerClass {
         
-        protected InnerClass() {
+        InnerClass() {
         }
         
         private final void m3() {

@@ -5,13 +5,9 @@ class OuterClass {
     OuterClass() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.structure.klass.OuterClass.InnerClass InnerClass$new() {
-        return new InnerClass();
-    }
-    
     class InnerClass {
         
-        protected InnerClass() {
+        InnerClass() {
         }
     }
     

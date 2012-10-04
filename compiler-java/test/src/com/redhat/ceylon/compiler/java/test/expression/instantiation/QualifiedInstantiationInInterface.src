@@ -3,14 +3,10 @@ package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 interface QualifiedInstantiationInInterface$m2$0$Local<T> {
     
     public .java.lang.Object Local$impl();
-    
-    <X>.java.lang.Object LocalInner$new(final .java.lang.String t);
 }
 interface QualifiedInstantiationInInterface<G> {
     
     public .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
-    
-    <T>.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G>.Inner<T> Inner$new(final .java.lang.String s);
 }
 final class QualifiedInstantiationInInterface$impl<G> {
     
@@ -19,35 +15,31 @@ final class QualifiedInstantiationInInterface$impl<G> {
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $this;
     
-    <T>.com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G>.Inner<T> Inner$new(final .java.lang.String s) {
-        return new Inner<T>(s);
-    }
-    
     class Inner<T> {
         
-        protected Inner(.java.lang.String s) {
+        Inner(.java.lang.String s) {
         }
     }
     
     private void m() {
         final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> other = $this;
-        $this.Inner$new("");
-        other.Inner$new("");
+        $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>("");
+        other.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>("");
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $arg$2$callable$ = $this;
-                .java.lang.String $arg$2$0 = "";
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $arg$0$callable$ = $this;
+                .java.lang.String $arg$0$0 = "";
             }
-            returning $arg$2$callable$.Inner$new($arg$2$0);
+            returning $arg$0$callable$.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>($arg$0$0);
         );
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $arg$3$callable$ = other;
-                .java.lang.String $arg$3$0 = "";
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $arg$1$callable$ = other;
+                .java.lang.String $arg$1$0 = "";
             }
-            returning $arg$3$callable$.Inner$new($arg$3$0);
+            returning $arg$1$callable$.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>($arg$1$0);
         );
     }
     
@@ -60,43 +52,39 @@ final class QualifiedInstantiationInInterface$impl<G> {
             }
             private final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<T> $this;
             
-            <X>.java.lang.Object LocalInner$new(final .java.lang.String t) {
-                return new LocalInner<X>(t);
-            }
-            
             class LocalInner<X> {
                 
-                protected LocalInner(.java.lang.String t) {
+                LocalInner(.java.lang.String t) {
                 }
             }
             
             private void m3(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<.ceylon.language.String> l) {
-                $this.LocalInner$new("");
-                l.LocalInner$new("");
+                (Local$impl<T>)$this.Local$impl().new LocalInner<.ceylon.language.Integer>("");
+                (Local$impl<T>)l.Local$impl().new LocalInner<.ceylon.language.Integer>("");
                 (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<T> $arg$6$callable$ = $this;
-                        .java.lang.String $arg$6$0 = "";
+                        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<T> $arg$2$callable$ = $this;
+                        .java.lang.String $arg$2$0 = "";
                     }
-                    returning $arg$6$callable$.LocalInner$new($arg$6$0);
+                    returning (Local$impl<T>)$arg$2$callable$.Local$impl().new LocalInner<.ceylon.language.Integer>($arg$2$0);
                 );
                 (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<.ceylon.language.String> $arg$7$callable$ = l;
-                        .java.lang.String $arg$7$0 = "";
+                        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$0$Local<.ceylon.language.String> $arg$3$callable$ = l;
+                        .java.lang.String $arg$3$0 = "";
                     }
-                    returning $arg$7$callable$.LocalInner$new($arg$7$0);
+                    returning (Local$impl<T>)$arg$3$callable$.Local$impl().new LocalInner<.ceylon.language.Integer>($arg$3$0);
                 );
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.Inner$new("");
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.new Inner<.ceylon.language.Integer>("");
                 (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $arg$8$callable$ = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this;
-                        .java.lang.String $arg$8$0 = "";
+                        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $arg$4$callable$ = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this;
+                        .java.lang.String $arg$4$0 = "";
                     }
-                    returning $arg$8$callable$.Inner$new($arg$8$0);
+                    returning $arg$4$callable$.new Inner<.ceylon.language.Integer>($arg$4$0);
                 );
             }
         }

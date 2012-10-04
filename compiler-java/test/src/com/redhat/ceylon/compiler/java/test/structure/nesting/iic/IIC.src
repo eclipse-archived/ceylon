@@ -3,8 +3,6 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting.iic;
 interface I$II<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$II<? extends T, ? super X> $com$redhat$ceylon$compiler$java$test$structure$nesting$iic$I$impl$II$impl();
-    
-    .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$impl<? extends T, ? super X>.II$impl.IIC IIC$new();
 }
 interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
@@ -42,13 +40,9 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$II<? extends T, ? super X> $this;
         
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.iic.I$impl<? extends T, ? super X>.II$impl.IIC IIC$new() {
-            return new IIC();
-        }
-        
         class IIC {
             
-            protected IIC() {
+            IIC() {
             }
             
             private final T m2() {

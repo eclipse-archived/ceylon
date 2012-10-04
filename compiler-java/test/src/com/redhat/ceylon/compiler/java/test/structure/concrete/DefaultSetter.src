@@ -87,13 +87,9 @@ class DefaultSetter {
         }
     }
     
-    .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.Concrete Concrete$new() {
-        return new Concrete();
-    }
-    
     class Concrete implements .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I {
         
-        protected Concrete() {
+        Concrete() {
             this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this;
@@ -137,21 +133,17 @@ class DefaultSetter {
             return (
                 let
                 {
-                    long $ceylontmpop1 = $this.getAFormal();
-                    $this.setAFormal($ceylontmpop1 + 1);
+                    long $ceylontmpop0 = $this.getAFormal();
+                    $this.setAFormal($ceylontmpop0 + 1);
                 }
-                returning $ceylontmpop1;
+                returning $ceylontmpop0;
             );
         }
     }
     
-    .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.Sub Sub$new() {
-        return new Sub();
-    }
-    
     class Sub implements .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$ISub {
         
-        protected Sub() {
+        Sub() {
             this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl(this);
             this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
         }

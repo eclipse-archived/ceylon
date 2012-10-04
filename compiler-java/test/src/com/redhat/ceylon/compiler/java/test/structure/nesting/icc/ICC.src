@@ -9,8 +9,6 @@ interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolea
     public abstract <U>U m1$u(final X b);
     
     public abstract <U>T m1(final X b, final U u);
-    
-    .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I$impl<? extends T, ? super X>.IC IC$new();
 }
 final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
     
@@ -33,22 +31,14 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
         return null;
     }
     
-    .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I$impl<? extends T, ? super X>.IC IC$new() {
-        return new IC();
-    }
-    
     class IC {
         
-        protected IC() {
-        }
-        
-        .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I$impl<? extends T, ? super X>.IC.ICC ICC$new() {
-            return new ICC();
+        IC() {
         }
         
         class ICC {
             
-            protected ICC() {
+            ICC() {
             }
             
             private final T m2() {

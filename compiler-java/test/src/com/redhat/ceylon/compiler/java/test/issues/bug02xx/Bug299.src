@@ -5,35 +5,32 @@ class Bug299 {
     Bug299() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug299.Inner Inner$new(final .java.lang.String s) {
-        return new Inner(s);
-    }
-    
     private final .java.lang.String $Inner$init$s() {
         return "a";
     }
     
-    .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug299.Inner Inner$new() {
-        return (
-            let
-            {
-                .java.lang.String $ceylontmp$s$2 = $Inner$init$s();
-            }
-            returning new Inner($ceylontmp$s$2);
-        );
-    }
-    
     class Inner {
         
-        protected Inner(.java.lang.String s) {
+        Inner() {
+            (
+                let
+                {
+                    .java.lang.String $ceylontmp$s$1 = $Inner$init$s();
+                    this($ceylontmp$s$1);
+                }
+                returning null;
+            );
+        }
+        
+        Inner(.java.lang.String s) {
         }
         
         private final void m() {
             (
                 let
                 {
-                    .java.lang.String $ceylontmp$s$4 = m$s();
-                    m($ceylontmp$s$4);
+                    .java.lang.String $ceylontmp$s$3 = m$s();
+                    m($ceylontmp$s$3);
                 }
                 returning null;
             );
@@ -62,9 +59,9 @@ class Bug299 {
                 (
                     let
                     {
-                        Inner$impl $ceylontmp$impl$5 = new Inner$impl();
-                        .java.lang.String $ceylontmp$s$6 = $ceylontmp$impl$5.$init$s();
-                        this($ceylontmp$s$6);
+                        Inner$impl $ceylontmp$impl$4 = new Inner$impl();
+                        .java.lang.String $ceylontmp$s$5 = $ceylontmp$impl$4.$init$s();
+                        this($ceylontmp$s$5);
                     }
                     returning null;
                 );
@@ -77,8 +74,8 @@ class Bug299 {
                 (
                     let
                     {
-                        .java.lang.String $ceylontmp$s$8 = m$s();
-                        m($ceylontmp$s$8);
+                        .java.lang.String $ceylontmp$s$7 = m$s();
+                        m($ceylontmp$s$7);
                     }
                     returning null;
                 );

@@ -80,13 +80,9 @@ class Bug544ContainerClass {
         return s;
     }
     
-    .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass.Bug544CapturesFromOuterClass Bug544CapturesFromOuterClass$new() {
-        return new Bug544CapturesFromOuterClass();
-    }
-    
     class Bug544CapturesFromOuterClass extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
         
-        protected Bug544CapturesFromOuterClass() {
+        Bug544CapturesFromOuterClass() {
             super(getS());
         }
     }
@@ -101,8 +97,6 @@ interface Bug544ContainerInterface {
     public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$Bug544ContainerInterface$impl();
     
     public abstract .java.lang.String getS();
-    
-    .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl.Bug544CapturesFromOuterInterface Bug544CapturesFromOuterInterface$new();
 }
 final class Bug544ContainerInterface$impl {
     
@@ -115,13 +109,9 @@ final class Bug544ContainerInterface$impl {
         return $this.getS();
     }
     
-    .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface$impl.Bug544CapturesFromOuterInterface Bug544CapturesFromOuterInterface$new() {
-        return new Bug544CapturesFromOuterInterface();
-    }
-    
     class Bug544CapturesFromOuterInterface extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
         
-        protected Bug544CapturesFromOuterInterface() {
+        Bug544CapturesFromOuterInterface() {
             super(getS());
         }
     }

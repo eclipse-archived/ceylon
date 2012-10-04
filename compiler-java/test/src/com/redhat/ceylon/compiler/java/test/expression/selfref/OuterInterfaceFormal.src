@@ -7,8 +7,6 @@ interface OuterInterfaceFormal<T> {
     public abstract .java.lang.Object m();
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.Formal Formal$new();
-    
-    .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.InnerClass InnerClass$new();
 }
 final class OuterInterfaceFormal$impl<T> {
     
@@ -23,13 +21,9 @@ final class OuterInterfaceFormal$impl<T> {
         }
     }
     
-    .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.InnerClass InnerClass$new() {
-        return new InnerClass();
-    }
-    
     class InnerClass {
         
-        protected InnerClass() {
+        InnerClass() {
             $this.m();
             $this.Formal$new();
         }

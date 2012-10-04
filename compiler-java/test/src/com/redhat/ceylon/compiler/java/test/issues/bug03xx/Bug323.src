@@ -5,50 +5,48 @@ class Bug323 {
     Bug323() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner Inner$new(final long f, final long g) {
-        return new Inner(f, g);
-    }
-    
     private final long $Inner$init$f() {
         return 2L;
-    }
-    
-    .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner Inner$new() {
-        return (
-            let
-            {
-                long $ceylontmp$f$2 = $Inner$init$f();
-                long $ceylontmp$g$3 = $Inner$init$g($ceylontmp$f$2);
-            }
-            returning new Inner($ceylontmp$f$2, $ceylontmp$g$3);
-        );
     }
     
     private final long $Inner$init$g(final long f) {
         return 4L;
     }
     
-    .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner Inner$new(final long f) {
-        return (
-            let
-            {
-                long $ceylontmp$g$5 = $Inner$init$g(f);
-            }
-            returning new Inner(f, $ceylontmp$g$5);
-        );
-    }
-    
     class Inner {
         
-        protected Inner(long f, long g) {
+        Inner() {
+            (
+                let
+                {
+                    long $ceylontmp$f$1 = $Inner$init$f();
+                    long $ceylontmp$g$2 = $Inner$init$g($ceylontmp$f$1);
+                    this($ceylontmp$f$1, $ceylontmp$g$2);
+                }
+                returning null;
+            );
+        }
+        
+        Inner(final long f) {
+            (
+                let
+                {
+                    long $ceylontmp$g$4 = $Inner$init$g(f);
+                    this(f, $ceylontmp$g$4);
+                }
+                returning null;
+            );
+        }
+        
+        Inner(long f, long g) {
         }
     }
     
     private final void m() {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v1 = Inner$new();
-        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v2 = Inner$new(3L);
-        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v3 = this.Inner$new();
-        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v4 = this.Inner$new(3L);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v1 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v2 = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner(3L);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v3 = this.new Inner();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug323.Inner v4 = this.new Inner(3L);
     }
     
     public static void main(.java.lang.String[] args) {

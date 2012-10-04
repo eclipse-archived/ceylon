@@ -15,8 +15,6 @@ interface This {
     public abstract long m2$i2(final long i1);
     
     public long m2(final long i1, final long i2);
-    
-    .com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl.Inner Inner$new();
 }
 final class This$impl {
     
@@ -58,13 +56,9 @@ final class This$impl {
         return $this.m1() + $this.m1() + i1 + i2;
     }
     
-    .com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl.Inner Inner$new() {
-        return new Inner();
-    }
-    
     class Inner {
         
-        protected Inner() {
+        Inner() {
         }
         
         private final void m3() {

@@ -37,18 +37,14 @@ class InnerClassInstantiation {
     InnerClassInstantiation() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass InnerClass$new() {
-        return new InnerClass();
-    }
-    
     class InnerClass {
         
-        protected InnerClass() {
+        InnerClass() {
         }
     }
     
     private final void m() {
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass x = InnerClass$new();
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass x = new .com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass();
     }
     
     public static void main(.java.lang.String[] args) {

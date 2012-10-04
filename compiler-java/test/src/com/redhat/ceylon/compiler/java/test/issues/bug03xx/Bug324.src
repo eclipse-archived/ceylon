@@ -5,13 +5,9 @@ class Bug324 {
     Bug324() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug324.Bug324 Bug324$new() {
-        return new Bug324();
-    }
-    
     class Bug324 {
         
-        protected Bug324() {
+        Bug324() {
         }
     }
     

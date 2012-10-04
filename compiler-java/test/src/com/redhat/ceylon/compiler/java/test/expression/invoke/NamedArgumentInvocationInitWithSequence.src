@@ -20,27 +20,24 @@ class NamedArgumentInvocationInitWithSequence {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner Inner$new(final boolean x, final .java.lang.String y, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> z) {
-        return new Inner(x, y, z);
-    }
-    
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $Inner$init$z(final boolean x, final .java.lang.String y) {
         return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
     }
     
-    .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner Inner$new(final boolean x, final .java.lang.String y) {
-        return (
-            let
-            {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$z$4 = $Inner$init$z(x, y);
-            }
-            returning new Inner(x, y, $ceylontmp$z$4);
-        );
-    }
-    
     class Inner {
         
-        protected Inner(boolean x, .java.lang.String y, .ceylon.language.Iterable<? extends .ceylon.language.Integer> z) {
+        Inner(final boolean x, final .java.lang.String y) {
+            (
+                let
+                {
+                    .ceylon.language.Iterable<? extends .ceylon.language.Integer> $ceylontmp$z$3 = $Inner$init$z(x, y);
+                    this(x, y, $ceylontmp$z$3);
+                }
+                returning null;
+            );
+        }
+        
+        Inner(boolean x, .java.lang.String y, .ceylon.language.Iterable<? extends .ceylon.language.Integer> z) {
         }
         
         public final void m2() {
@@ -51,19 +48,19 @@ class NamedArgumentInvocationInitWithSequence {
         (
             let
             {
-                .java.lang.String $arg$5$0 = "a";
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$5$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .java.lang.String $arg$4$0 = "a";
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$4$1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
             }
-            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence($arg$5$0, $arg$5$1);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence($arg$4$0, $arg$4$1);
         ).m();
         (
             let
             {
-                .java.lang.String $arg$6$1 = "";
-                boolean $arg$6$0 = true;
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$6$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L), .ceylon.language.Integer.instance(6L));
+                .java.lang.String $arg$5$1 = "";
+                boolean $arg$5$0 = true;
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer> $arg$5$2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence(.ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L), .ceylon.language.Integer.instance(6L));
             }
-            returning Inner$new($arg$6$0, $arg$6$1, $arg$6$2);
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner($arg$5$0, $arg$5$1, $arg$5$2);
         ).m2();
     }
 }
