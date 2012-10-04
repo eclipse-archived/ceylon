@@ -21,10 +21,10 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.util.Util;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -41,7 +41,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 
 /**
  * Utility functions telling you about Ceylon declarations
@@ -372,5 +371,13 @@ public class Decl {
             return ((LazyClass)decl.getType().getDeclaration()).isValueType();
         }
         return false;
+    }
+    
+    static boolean isRefinableMemberClass(Declaration model) {
+        return model instanceof Class 
+                && model.isMember()
+                && (model.isFormal() || model.isDefault())
+                && !model.isAnonymous()
+                && isCeylon((Class)model);
     }
 }

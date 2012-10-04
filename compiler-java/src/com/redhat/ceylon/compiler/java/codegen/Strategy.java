@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -185,11 +186,17 @@ class Strategy {
     }
     
     static boolean generateInstantiator(Declaration model) {
-        return model instanceof Class 
-                && model.isMember()
-                && !model.isAnonymous()
-                && !((Class)model).isAbstract()
-                && Decl.isCeylon((Class)model);
+        return (Decl.isRefinableMemberClass(model) 
+                    && !((Class)model).isAbstract()) 
+                || 
+                // If shared, generate an instantiator so that BC is 
+                // preserved should the member class later become refinable
+                (model instanceof Class 
+                    && model.isMember()
+                    && model.isShared()
+                    && !model.isAnonymous()
+                    && !((Class)model).isAbstract()
+                    && Decl.isCeylon((Class)model));
     }
     
     /** 
