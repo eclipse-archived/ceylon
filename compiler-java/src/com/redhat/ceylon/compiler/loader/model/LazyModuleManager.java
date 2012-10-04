@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -71,12 +71,12 @@ public abstract class LazyModuleManager extends ModuleManager {
             if(compiledModule != null){
                 // it must be a Ceylon module
                 // default modules don't have any module descriptors so we can't check them
-                if(compiledModule.getMajor() != AbstractTransformer.BINARY_MAJOR_VERSION
-                        || compiledModule.getMinor() != AbstractTransformer.BINARY_MINOR_VERSION){
+                if(compiledModule.getMajor() != Versions.JVM_BINARY_MAJOR_VERSION
+                        || compiledModule.getMinor() != Versions.JVM_BINARY_MINOR_VERSION){
                     attachErrorToDependencyDeclaration(moduleImport,
                             dependencyTree,
                             "This module was compiled for an incompatible version of the Ceylon compiler ("+compiledModule.getMajor()+"."+compiledModule.getMinor()+")."
-                                    +"\nThis compiler supports "+AbstractTransformer.BINARY_MAJOR_VERSION+"."+AbstractTransformer.BINARY_MINOR_VERSION+"."
+                                    +"\nThis compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+"."
                                     +"\nPlease try to recompile your module using a compatible compiler."
                                     +"\nBinary compatibility will only be supported after Ceylon 1.0.");
                 }

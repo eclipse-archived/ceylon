@@ -35,7 +35,7 @@ import java.util.Set;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -544,10 +544,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Integer minor = (Integer) annotation.getValue("minor");
         if(minor == null)
             minor = 0;
-        if(major != AbstractTransformer.BINARY_MAJOR_VERSION
-                || minor != AbstractTransformer.BINARY_MINOR_VERSION){
+        if(major != Versions.JVM_BINARY_MAJOR_VERSION
+                || minor != Versions.JVM_BINARY_MINOR_VERSION){
             logError("You are using a Ceylon class compiled for an incompatible version of the Ceylon compiler ("+major+"."+minor+")."
-                    +"\nThis compiler supports "+AbstractTransformer.BINARY_MAJOR_VERSION+"."+AbstractTransformer.BINARY_MINOR_VERSION+"."
+                    +"\nThis compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+"."
                     +"\nPlease try to recompile your module using a compatible compiler."
                     +"\nBinary compatibility will only be supported after Ceylon 1.0."
                     +"\nOffending class: "+classMirror.getQualifiedName());

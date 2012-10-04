@@ -34,6 +34,7 @@ import java.util.Set;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.ceylondoc.Util;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
@@ -97,15 +98,6 @@ import com.sun.tools.javac.util.Position.LineMap;
  * Base class for all delegating transformers
  */
 public abstract class AbstractTransformer implements Transformation {
-    
-    /**
-     * M1 and M2 are 0.0 since they were not tagged at the time
-     * M3 is 1.0 as the first version with binary version information
-     * M3.1 is 2.0
-     * M4 is 3.0
-     */
-    public static final int BINARY_MAJOR_VERSION = 3;
-    public static final int BINARY_MINOR_VERSION = 0;
     
     private Context context;
     private TreeMaker make;
@@ -1357,10 +1349,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     List<JCAnnotation> makeAtCeylon() {
-        JCExpression majorAttribute = make().Assign(naming.makeUnquotedIdent("major"), make().Literal(BINARY_MAJOR_VERSION));
+        JCExpression majorAttribute = make().Assign(naming.makeUnquotedIdent("major"), make().Literal(Versions.JVM_BINARY_MAJOR_VERSION));
         List<JCExpression> annotationArgs;
-        if(BINARY_MINOR_VERSION != 0){
-            JCExpression minorAttribute = make().Assign(naming.makeUnquotedIdent("minor"), make().Literal(BINARY_MINOR_VERSION));
+        if(Versions.JVM_BINARY_MINOR_VERSION != 0){
+            JCExpression minorAttribute = make().Assign(naming.makeUnquotedIdent("minor"), make().Literal(Versions.JVM_BINARY_MINOR_VERSION));
             annotationArgs = List.<JCExpression>of(majorAttribute, minorAttribute);
         }else{
             // keep the minor implicit value of 0 to reduce bytecode size

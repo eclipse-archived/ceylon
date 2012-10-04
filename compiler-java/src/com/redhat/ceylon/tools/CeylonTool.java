@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Java7Checker;
@@ -33,8 +34,6 @@ import com.redhat.ceylon.common.tool.WordWrap;
         "line arguments and control passes to that tool.")
 public class CeylonTool implements Tool {
 
-    public static final String VERSION_NUMBER = "0.4";
-    public static final String VERSION = VERSION_NUMBER + " (Supercalifragilisticexpialidocious)";
     private static final String ARG_VERSION = "--version";
     public static final int SC_OK = 0;
     public static final int SC_TOOL_EXCEPTION = 1;
@@ -136,7 +135,7 @@ public class CeylonTool implements Tool {
     }
 
     private static void version(PrintStream out) {
-        out.println(Tools.progName() + " version " + VERSION);
+        out.println(Tools.progName() + " version " + Versions.CEYLON_VERSION);
     }
     
     private int exit(int sc, String toolName, Exception t) throws Exception {

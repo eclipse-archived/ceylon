@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import org.tautua.markdownpapers.ast.Document;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
@@ -56,7 +57,7 @@ public class DocBuilder {
     public Doc buildDoc(ToolModel<?> model, boolean specialRoot) {
         boolean rootHack = specialRoot && CeylonTool.class.isAssignableFrom(model.getToolClass());
         Doc doc = new Doc();
-        doc.setVersion(CeylonTool.VERSION);
+        doc.setVersion(Versions.CEYLON_VERSION);
         doc.setToolModel(model);
         doc.setInvocation(getCeylonInvocation(model));
         doc.setSummary(buildSummary(model));
