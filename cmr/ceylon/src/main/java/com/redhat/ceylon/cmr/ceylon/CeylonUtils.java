@@ -29,6 +29,7 @@ public class CeylonUtils {
     }
     
     public static class CeylonRepoManagerBuilder {
+        private File actualCwd;
         private File cwd;
         private String systemRepo;
         private List<String> userRepos;
@@ -139,8 +140,9 @@ public class CeylonUtils {
 
             // Make sure we load the correct configuration
             
+            actualCwd = new File(".");
             if (cwd == null) {
-                cwd = new File(".");
+                cwd = actualCwd;
             }
             CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
             Repositories repositories = Repositories.withConfig(config);
@@ -148,7 +150,7 @@ public class CeylonUtils {
             // First we determine the cache repository
             
             Repositories.Repository cacheRepo = repositories.getCacheRepository();
-            final File root = new File(cacheRepo.getUrl());
+            final File root = new File(absolute(cacheRepo.getUrl()));
             
             final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log);
             
@@ -207,8 +209,9 @@ public class CeylonUtils {
             
             // Make sure we load the correct configuration
             
+            actualCwd = new File(".");
             if (cwd == null) {
-                cwd = new File(".");
+                cwd = actualCwd;
             }
             CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
             Repositories repositories = Repositories.withConfig(config);
@@ -238,8 +241,8 @@ public class CeylonUtils {
                 outRepo = temp;
             }
             
-            if (!isHTTP(outRepo, log)) {
-                File repoFolder = new File(outRepo);
+            if (!isHTTP(outRepo)) {
+                File repoFolder = new File(absolute(outRepo));
                 if (repoFolder.exists()) {
                     if (!repoFolder.isDirectory()) {
                         log.error("Output repository is not a directory: "+outRepo);
@@ -263,7 +266,7 @@ public class CeylonUtils {
             }
         }
 
-        private boolean isHTTP(String repo, Logger log) {
+        private boolean isHTTP(String repo) {
             try {
                 URL url = new URL(repo);
                 String protocol = url.getProtocol();
@@ -277,7 +280,8 @@ public class CeylonUtils {
         private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo, boolean prepend) {
             if (repoInfo != null) {
                 try {
-                    Repository repo = builder.repositoryBuilder().buildRepository(repoInfo.getUrl());
+                    String path = absolute(repoInfo.getUrl());
+                    Repository repo = builder.repositoryBuilder().buildRepository(path);
                     if (prepend) {
                         builder.prependRepository(repo);                
                     } else {
@@ -293,13 +297,15 @@ public class CeylonUtils {
             try {
                 if (repoUrl.startsWith("+")) {
                     // The token is the name of a repository defined in the Ceylon configuration file
-                    Repositories.Repository repo = repositories.getRepository(repoUrl.substring(1));
+                    String path = absolute(repoUrl.substring(1));
+                    Repositories.Repository repo = repositories.getRepository(path);
                     if (repo != null) {
                         addRepo(builder, repo, prepend);
                         return;
                     }
                 }
-                Repository repo = builder.repositoryBuilder().buildRepository(repoUrl);
+                String path = absolute(repoUrl);
+                Repository repo = builder.repositoryBuilder().buildRepository(path);
                 if (prepend) {
                     builder.prependRepository(repo);                
                 } else {
@@ -308,6 +314,21 @@ public class CeylonUtils {
             } catch(Exception e) {
                 log.debug("Failed to add repository as input repository: " + repoUrl + ": "+e.getMessage());
             }
+        }
+        
+        private String absolute(String path) {
+            if (!isHTTP(path)) {
+                File f = new File(path);
+                if (!f.isAbsolute() && !cwd.equals(actualCwd)) {
+                    f = new File(cwd, path);
+                    try {
+                        path = f.getCanonicalPath();
+                    } catch (IOException e) {
+                        path = f.getAbsolutePath();
+                    }
+                }
+            }
+            return path;
         }
     }
 
