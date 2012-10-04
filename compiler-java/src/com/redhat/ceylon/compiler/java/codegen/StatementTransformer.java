@@ -624,7 +624,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     class IsCond extends SpecialFormCond<Tree.IsCondition> {
-        
+        private final boolean negate;
         IsCond(Tree.IsCondition isdecl, Tree.Block thenPart, SyntheticName name) {
             super(isdecl, thenPart, 
                     name, 
@@ -634,6 +634,7 @@ public class StatementTransformer extends AbstractTransformer {
                     isNothing(isdecl.getVariable().getType().getTypeModel()) ? null 
                             : naming.alias(isdecl.getVariable().getIdentifier().getText()),
                     isdecl.getVariable());
+            negate = isdecl.getNot();
         }
         
         @Override
@@ -653,10 +654,14 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
                 
                 // Test on the tmpVar in the following condition
-                return makeTypeTest(firstTimeTestExpr, testVar,
+                firstTimeTestExpr = makeTypeTest(firstTimeTestExpr, testVar,
                         // only test the types we're testing for, not the type of
                         // the variable (which can be more precise)
                         cond.getType().getTypeModel());
+                if (negate) {
+                    firstTimeTestExpr = make().Unary(JCTree.NOT, firstTimeTestExpr);
+                }
+                return firstTimeTestExpr;
             }
         }
         
