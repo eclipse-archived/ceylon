@@ -33,6 +33,7 @@ public class CeylonUtils {
         private File cwd;
         private String systemRepo;
         private List<String> userRepos;
+        private List<String> remoteRepos;
         private String outRepo;
         private String user;
         private String password;
@@ -60,6 +61,19 @@ public class CeylonUtils {
          */
         public CeylonRepoManagerBuilder systemRepo(String systemRepo) {
             this.systemRepo = systemRepo;
+            return this;
+        }
+        
+        /**
+         * Sets a list of paths to use for the remote repositories. When not set the
+         * list will be taken from the system configuration (they don't really have
+         * to be remote, but they're called that because they will be last in the list
+         * where you'd normally put remote repositories)
+         * @param userRepos A list of paths to Ceylon repositories
+         * @return This object for chaining method calls
+         */
+        public CeylonRepoManagerBuilder remoteRepos(List<String> remoteRepos) {
+            this.remoteRepos = remoteRepos;
             return this;
         }
         
@@ -177,9 +191,9 @@ public class CeylonUtils {
                     addRepo(builder, repositories, repo, false);
                 }
             } else {
-                // We add local lookup repos only when no user defined repois have been passed
-                Repositories.Repository[] lookups = repositories.getLocalLookupRepositories();
-                for (Repositories.Repository lookup : lookups) {
+                // We add the configured local lookup repos only when no user defined repos have been passed
+                Repositories.Repository[] repos = repositories.getLocalLookupRepositories();
+                for (Repositories.Repository lookup : repos) {
                     addRepo(builder, lookup, false);
                 }
             }
@@ -188,6 +202,22 @@ public class CeylonUtils {
             Repositories.Repository[] lookups = repositories.getGlobalLookupRepositories();
             for (Repositories.Repository lookup : lookups) {
                 addRepo(builder, lookup, false);
+            }
+            
+            // Add the "remote" repos (not necessarily remote but they're called that way
+            // because they will always come last in the list)
+            if (remoteRepos != null && !remoteRepos.isEmpty()) {
+                // Add remote repos
+                for (int i=0; i<remoteRepos.size(); i++) {
+                    String repo = remoteRepos.get(i);
+                    addRepo(builder, repositories, repo, false);
+                }
+            } else {
+                // We add the configured remote lookup repos only when no user defined repos have been passed
+                Repositories.Repository[] repos = repositories.getRemoteLookupRepositories();
+                for (Repositories.Repository lookup : repos) {
+                    addRepo(builder, lookup, false);
+                }
             }
             
             log.debug("Repository lookup order:");
