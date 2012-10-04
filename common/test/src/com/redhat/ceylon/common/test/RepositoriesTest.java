@@ -103,6 +103,14 @@ public class RepositoriesTest {
     }
     
     @Test
+    public void testGetRemoteLookupRepositories() {
+        Repository[] lookup = repos.getRemoteLookupRepositories();
+        Assert.assertTrue(lookup.length == 2);
+        assertRepository(lookup[0], "Four", "foobar", null, null);
+        assertRepository(lookup[1], "%remote-2", "foobar", null, null);
+    }
+    
+    @Test
     public void testGetDefaultLocalLookupRepositories() {
         Repository[] lookup = defaultRepos.getLocalLookupRepositories();
         Assert.assertTrue(lookup.length == 1);
@@ -116,6 +124,12 @@ public class RepositoriesTest {
         File userDir = defaultRepos.getUserRepoDir();
         assertRepository(lookup[0], "USER", userDir.getAbsolutePath(), null, null);
         assertRepository(lookup[1], "REMOTE", Repositories.REPO_URL_CEYLON, null, null);
+    }
+    
+    @Test
+    public void testGetDefaultRemoteLookupRepositories() {
+        Repository[] lookup = defaultRepos.getRemoteLookupRepositories();
+        Assert.assertTrue(lookup.length == 0);
     }
     
     @Test
