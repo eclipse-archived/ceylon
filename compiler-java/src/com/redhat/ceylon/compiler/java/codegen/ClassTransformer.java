@@ -901,7 +901,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformClassDeclFlags(ClassOrInterface cdecl) {
         int result = 0;
 
-        result |= Decl.isShared(cdecl) ? PUBLIC : 0;
+        result |= Decl.isShared(cdecl) && !Decl.isAncestorLocal(cdecl) ? PUBLIC : 0;
         result |= (cdecl.isAbstract() || cdecl.isFormal()) && (cdecl instanceof Class) ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         result |= cdecl.isAlias() && (cdecl instanceof Class) ? FINAL : 0;
