@@ -18,6 +18,7 @@ public class Repositories {
     public static final String REPO_TYPE_CACHE = "cache";
     public static final String REPO_TYPE_LOCAL_LOOKUP = "lookup";
     public static final String REPO_TYPE_GLOBAL_LOOKUP = "global";
+    public static final String REPO_TYPE_REMOTE_LOOKUP = "remote";
     
     private static final String REPO_NAME_SYSTEM = "SYSTEM";
     private static final String REPO_NAME_LOCAL = "LOCAL";
@@ -220,6 +221,7 @@ public class Repositories {
         repos.put(REPO_TYPE_CACHE, getRepositoriesByType(REPO_TYPE_CACHE));
         repos.put(REPO_TYPE_LOCAL_LOOKUP, getRepositoriesByType(REPO_TYPE_LOCAL_LOOKUP));
         repos.put(REPO_TYPE_GLOBAL_LOOKUP, getRepositoriesByType(REPO_TYPE_GLOBAL_LOOKUP));
+        repos.put(REPO_TYPE_REMOTE_LOOKUP, getRepositoriesByType(REPO_TYPE_REMOTE_LOOKUP));
         return repos;
     }
     
@@ -229,6 +231,7 @@ public class Repositories {
         setRepositoriesByType(REPO_TYPE_CACHE, repos.get(REPO_TYPE_CACHE));
         setRepositoriesByType(REPO_TYPE_LOCAL_LOOKUP, repos.get(REPO_TYPE_LOCAL_LOOKUP));
         setRepositoriesByType(REPO_TYPE_GLOBAL_LOOKUP, repos.get(REPO_TYPE_GLOBAL_LOOKUP));
+        setRepositoriesByType(REPO_TYPE_REMOTE_LOOKUP, repos.get(REPO_TYPE_REMOTE_LOOKUP));
     }
     
     public File getSystemRepoDir() {
@@ -306,6 +309,14 @@ public class Repositories {
             repos[0] = getRepository(REPO_NAME_USER);
             // By default "http://modules.ceylon-lang.org"
             repos[1] = getRepository(REPO_NAME_REMOTE);
+        }
+        return repos;
+    }
+    
+    public Repository[] getRemoteLookupRepositories() {
+        Repository[] repos = getRepositoriesByType(REPO_TYPE_REMOTE_LOOKUP);
+        if (repos == null) {
+            repos = new Repository[0];
         }
         return repos;
     }
