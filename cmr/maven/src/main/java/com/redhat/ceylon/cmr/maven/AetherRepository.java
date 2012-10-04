@@ -43,7 +43,14 @@ public class AetherRepository extends MavenRepository {
         AetherContentStore acs = new AetherContentStore(log);
         return new AetherRepository(acs);
     }
-
+    
+    public static Repository createRepository(Logger log, String settingsXml) {
+        AetherContentStore acs = new AetherContentStore(log);
+        AetherRepository repo = new AetherRepository(acs);
+        repo.utils.overrideSettingsXml(settingsXml);
+        return repo;
+    }
+    
     public ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
         final File[] files = utils.findDependencies(node);
         if (files == null || files.length == 0)

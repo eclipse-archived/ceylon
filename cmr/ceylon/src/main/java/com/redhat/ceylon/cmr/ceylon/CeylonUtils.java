@@ -336,7 +336,7 @@ public class CeylonUtils {
         }
         
         private String absolute(String path) {
-            if (!isRemote(path)) {
+            if (!isRemote(path) && !isExternalPath(path)) {
                 File f = new File(path);
                 if (!f.isAbsolute() && !cwd.equals(actualCwd)) {
                     f = new File(cwd, path);
@@ -367,6 +367,13 @@ public class CeylonUtils {
         private boolean isRemote(String repo) {
             String protocol = protocol(repo);
             return "http".equals(protocol) || "https".equals(protocol) || "mvn".equals(protocol) || "aether".equals(protocol);
+        }
+
+        private boolean isExternalPath(String repo) {
+            return repo.equals("aether") || 
+                    repo.equals("mvn") || 
+                    repo.startsWith("aether:") || 
+                    repo.startsWith("mvn:");
         }
     }
 

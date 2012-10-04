@@ -55,10 +55,17 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log);
         } else if (token.equals("mvn")) {
             return MavenRepositoryHelper.getMavenRepository();
-        } else if (token.equals("aether")) {
+        } else if (token.equals("aether") || token.startsWith("aether:")) {
             Class<?> aetherRepositoryClass = getClass().getClassLoader().loadClass("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
-            return (Repository) createRepository.invoke(null, log);
+            if (token.equals("aether")) {
+                Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
+                return (Repository) createRepository.invoke(null, log);
+            }
+            else {
+                String settingsXml = token.substring("aether:".length());
+                Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class);
+                return (Repository) createRepository.invoke(null, log, settingsXml);
+            }
         } else {
             final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)

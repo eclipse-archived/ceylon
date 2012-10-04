@@ -24,6 +24,9 @@ import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Aether utils.
@@ -35,12 +38,18 @@ import java.io.File;
 class AetherUtils {
 
     private Logger log;
-    private static MavenDependencyResolver resolver;
+    private String settingsXml;
+    private static Map<String, MavenDependencyResolver> resolvers = new WeakHashMap<String, MavenDependencyResolver>();
 
     AetherUtils(Logger log) {
         this.log = log;
-    }
+        settingsXml = getDefaultMavenSettings();
+        }
 
+    void overrideSettingsXml(String settingsXml) {
+        this.settingsXml = settingsXml;
+    }
+    
     File findDependency(Node node) {
         final File[] files = findDependencies(node);
         return (files != null) ? files[0] : null;
@@ -75,36 +84,35 @@ class AetherUtils {
         }
     }
 
-    private static String getMavenSettings() {
+    private static String getDefaultMavenSettings() {
         String path = System.getProperty("maven.repo.local");
         if (path != null) {
             File file = new File(path, "settings.xml");
             if (file.exists())
-                return file.getPath();
+                return file.getAbsolutePath();
         }
 
         path = System.getProperty("user.home");
         if (path != null) {
             File file = new File(path, ".m2/settings.xml");
             if (file.exists())
-                return file.getPath();
+                return file.getAbsolutePath();
         }
 
         path = System.getenv("M2_HOME");
         if (path != null) {
             File file = new File(path, "conf/settings.xml");
             if (file.exists())
-                return file.getPath();
+                return file.getAbsolutePath();
         }
 
 		return "classpath:settings.xml";
     }
 
-    private static MavenDependencyResolver getResolver() {
-        if (resolver == null) {
-            final String settingsXml = getMavenSettings();
-            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml);
+    private synchronized MavenDependencyResolver getResolver() {
+        if (! resolvers.containsKey(settingsXml)) {
+            resolvers.put(settingsXml, DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(new String(settingsXml)));
         }
-        return resolver;
+        return resolvers.get(settingsXml);
     }
 }
