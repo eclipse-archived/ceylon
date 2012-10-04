@@ -117,7 +117,6 @@ public class CeylonRunTool implements Tool {
         argList.add(moduleNameOptVersion);
                 
         try {
-            System.out.println("Calling org.jboss.modules.Main.main with arguments " + argList);
             org.jboss.modules.Main.main(argList.toArray(new String[argList.size()]));
         } catch (Error err) {
             throw err;
