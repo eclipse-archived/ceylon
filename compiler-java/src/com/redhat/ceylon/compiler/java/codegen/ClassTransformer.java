@@ -1742,17 +1742,36 @@ public class ClassTransformer extends AbstractTransformer {
         if (makeLocalInstance) {
             result = result.append(makeLocalIdentityInstance(name, objectClassBuilder.getClassName(), false));
         } else if (Decl.withinClassOrInterface(model)) {
+            final ClassDefinitionBuilder implBuilder;
+            if (Decl.withinInterface(model)) {
+                implBuilder = containingClassBuilder.getCompanionBuilder((Interface)model.getContainer());
+                implBuilder.defs(result);
+                result = List.nil();
+            } else {
+                implBuilder = containingClassBuilder;
+            }
             boolean visible = Decl.isCaptured(model);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
             JCExpression type = makeJavaType(klass.getType());
             JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
-            containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
+            implBuilder.field(modifiers, name, type, initialValue, !visible);
             
             if (visible) {
-                result = result.appendList(AttributeDefinitionBuilder
-                    .getter(this, name, model)
-                    .modifiers(transformAttributeGetSetDeclFlags(model, false))
-                    .build());
+                AttributeDefinitionBuilder getterBuilder = AttributeDefinitionBuilder
+                        .getter(this, name, model)
+                        .modifiers(transformAttributeGetSetDeclFlags(model, false));
+                
+                if (Decl.withinInterface(model)) {
+                    implBuilder.defs(getterBuilder.build());
+                    getterBuilder = AttributeDefinitionBuilder
+                            .getter(this, name, model)
+                            .modifiers(transformAttributeGetSetDeclFlags(model, false));
+                    result = result.appendList(getterBuilder
+                            .isFormal(true)
+                            .build());
+                } else {
+                    result = result.appendList(getterBuilder.build());
+                }
             }
         }
         
