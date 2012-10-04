@@ -62,6 +62,18 @@ shared object process {
     
     shared void exit(Integer code) { throw; }
     
+    doc "Returns the name of the virtual machine this process is running on."
+    shared String vm { throw; }
+    
+    doc "Returns the version of the virtual machine this process is running on."
+    shared String vmVersion { throw; }
+    
+    doc "Returns the name of the operating system this process is running on."
+    shared String os { throw; }
+    
+    doc "Returns the version of the operating system this process is running on."
+    shared String osVersion { throw; }
+    
     shared actual String string {
         return "process";
     }

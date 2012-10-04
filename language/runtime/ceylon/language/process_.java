@@ -334,6 +334,33 @@ public final class process_ {
         return newline;
     }
     
+    public java.lang.String getVm() {
+        return "jvm";
+    }
+    
+    public java.lang.String getVmVersion() {
+        return System.getProperty("java.specification.version");
+    }
+    
+    public java.lang.String getOs() {
+        java.lang.String os = System.getProperty("os.name").toLowerCase();
+        if (os.indexOf("win") >= 0) {
+            return "windows";
+        } else if (os.indexOf("mac") >= 0) {
+            return "mac";
+        } else if (os.indexOf("linux") >= 0) {
+            return "linux";
+        } else if (os.indexOf("nix") >= 0 || os.indexOf("sunos") >= 0) {
+            return "unix";
+        } else {
+            return "other";
+        }
+    }
+    
+    public java.lang.String getOsVersion() {
+        return System.getProperty("os.version");
+    }
+    
     @Override
     public java.lang.String toString() {
     	return "process";
