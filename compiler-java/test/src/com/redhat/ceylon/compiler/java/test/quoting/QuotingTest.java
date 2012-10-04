@@ -151,7 +151,7 @@ public class QuotingTest extends CompilerTest {
     }
     
     @Test
-    public void testCaseLowerInterface_fail(){
+    public void testCaseLowerInterface(){
         compareWithJavaSource("lettercase/LowerInterface");
         compile("lettercase/LowerInterfaceUsage.ceylon");
     }
