@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-doc "The classic Hello World example with Java interop"
-shared
-package com.acme.interop;
+doc "The classic Hello World module"
+by "Stéphane Épardaud"
+license "http://www.apache.org/licenses/LICENSE-2.0"
+module com.example.helloworld '1.0.0' {}

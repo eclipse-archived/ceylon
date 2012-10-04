@@ -27,18 +27,18 @@
 
     <target name="compile" depends="ceylon-ant-taskdefs">
     	<ceylonc>
-    		<module name="com.acme.interop"/>
+    		<module name="com.example.interop"/>
     	</ceylonc>
     </target>
 
     <target name="doc" depends="compile">
         <ceylond>
-            <module name="com.acme.interop"/>
+            <module name="com.example.interop"/>
         </ceylond>
     </target>
 
     <target name="run" depends="compile">
-        <ceylon module="com.acme.interop/1.0.0"/>
+        <ceylon module="com.example.interop/1.0.0"/>
     </target>
 
 	<target name="clean">

@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 doc "The classic Hello World module with Java interop"
-by "Stef Epardaud"
-license "Public domain"
-module com.acme.interop '1.0.0' {}
+by "Stéphane Épardaud"
+license "http://www.apache.org/licenses/LICENSE-2.0"
+module com.example.interop '1.0.0' {}

@@ -1,5 +1,3 @@
-package com.acme.interop;
-
 /*
  * Copyright 2011 Red Hat Inc.
  *
@@ -15,8 +13,22 @@ package com.acme.interop;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class JavaHelper {
-	public static void javaPrint(String str){
-		System.out.println(str);
-	}
+import com.example.interop { JavaHelper { javaPrint }}
+
+doc "The classic Hello World program"
+shared void hello(String name = "World") {
+    javaPrint("Hello, " name "!");
+    JavaPrinter(name).print("Hello again, ");
+}
+
+doc "The runnable method of the module." 
+shared void run(){
+    if (nonempty args=process.arguments) {
+        for (arg in args) {
+            hello(arg);
+        }
+    }
+    else {
+        hello();
+    }
 }

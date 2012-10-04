@@ -1,3 +1,5 @@
+package com.example.interop;
+
 /*
  * Copyright 2011 Red Hat Inc.
  *
@@ -13,7 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-doc "The classic Hello World module"
-by "Stef Epardaud"
-license "Public domain"
-module com.acme.helloworld '1.0.0' {}
+public class JavaHelper {
+	public static void javaPrint(String str){
+		System.out.println(str);
+	}
+}

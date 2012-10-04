@@ -27,18 +27,18 @@
 
     <target name="compile" depends="ceylon-ant-taskdefs">
     	<ceylonc>
-    		<module name="com.acme.helloworld"/>
+    		<module name="com.example.helloworld"/>
     	</ceylonc>
     </target>
 
     <target name="doc" depends="ceylon-ant-taskdefs">
         <ceylond>
-            <module name="com.acme.helloworld"/>
+            <module name="com.example.helloworld"/>
         </ceylond>
     </target>
 
     <target name="run" depends="compile">
-        <ceylon module="com.acme.helloworld/1.0.0"/>
+        <ceylon module="com.example.helloworld/1.0.0"/>
     </target>
 
 	<target name="clean">

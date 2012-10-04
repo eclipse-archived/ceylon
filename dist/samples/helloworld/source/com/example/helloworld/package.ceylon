@@ -15,4 +15,4 @@
  */
 doc "The classic Hello World example"
 shared
-package com.acme.helloworld;
+package com.example.helloworld;

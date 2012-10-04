@@ -1,4 +1,4 @@
-package com.acme.interop;
+package com.example.interop;
 
 /*
  * Copyright 2011 Red Hat Inc.
