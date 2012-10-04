@@ -72,7 +72,28 @@ class MethodIfIs() {
         }
         Void nothing = null;
         if (is Character? nothing) {
-        }        
+        }
+        //!is
+        if (!is Object x) {
+            print("x is null");
+        }
+        if (!is Nothing x) {
+            print(x.string);
+        }
+        String|Integer aint1 = "s";
+        String|Integer aint2 = 2;
+        if (!is Integer aint1) {
+            print(aint1.reversed);
+        }
+        if (!is String aint2) {
+            print(aint2-2);
+        }
+        /*if (!is Integer aint1, aint1.size==1) {
+            print(aint1.uppercased);
+        }
+        if (!is String aint2, aint2>0) {
+            print(aint2/2);
+        }*/
     }
     Foo? give() {
         return FooSub();
