@@ -27,11 +27,15 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 The command line tools are located in the `bin` directory.
 
-- `bin/ceylon`     - Run a Ceylon program on the Java VM
-- `bin/ceylon-js`  - Run a Ceylon program on node.js (JavaScript)
-- `bin/ceylonc`    - Compile a Ceylon program for the Java backend
-- `bin/ceylonc-js` - Compile a Ceylon program for the JavaScript backend
-- `bin/ceylond`    - Document a Ceylon program
+- `bin/ceylon`     - The ceylon tool which at least the following subcommands:
+    * `compile`    - Compile a Ceylon program for the Java backend
+    * `compile-js` - Compile a Ceylon program for the JavaScript backend
+    * `doc`        - Document a Ceylon program
+    * `run`        - Run a Ceylon program on the Java VM
+    * `run-js`     - Run a Ceylon program on node.js (JavaScript)
+    * `import-jar` - Import a Java `.jar` file into a Ceylon module repository
+    * `help`       - Displays help about another tool
+
 
 The API documentation for the language module `ceylon.language` may be found here:
 
@@ -50,14 +54,14 @@ To run the "hello world" program, type:
 
 For Java:
 
-    ../../bin/ceylonc com.acme.helloworld
-    ../../bin/ceylond -non-shared -source-code com.acme.helloworld
-    ../../bin/ceylon com.acme.helloworld/1.0.0 John
+    ../../bin/ceylon compile com.example.helloworld
+    ../../bin/ceylon doc -non-shared -source-code com.example.helloworld
+    ../../bin/ceylon run com.example.helloworld/1.0.0 John
 
 For JavaScript:
 
-    ../../bin/ceylonc-js com.acme.helloworld
-    ../../bin/ceylon-js com.acme.helloworld/1.0.0
+    ../../bin/ceylon compile-js com.example.helloworld
+    ../../bin/ceylon run-js com.example.helloworld/1.0.0
 
 ### Sample with no module
 
@@ -67,35 +71,32 @@ To run a program defined in the default module, type:
 
 For Java:
 
-    ../../bin/ceylonc default
-    ../../bin/ceylond -non-shared -source-code default
-    ../../bin/ceylon default
+    ../../bin/ceylon compile default
+    ../../bin/ceylon doc -non-shared -source-code default
+    ../../bin/ceylon run default
 
 For JavaScript:
 
-    ../../bin/ceylonc-js default
-    ../../bin/ceylon-js default
+    ../../bin/ceylon compile-js default
+    ../../bin/ceylon run-js default
 
 ### Sample module with Java interoperability
 
 To run the "Java interop" program, type:
 
     cd samples/interop-java
-    ../../bin/ceylonc com.acme.interop
-    ../../bin/ceylond -non-shared -source-code com.acme.interop
-    ../../bin/ceylon com.acme.interop/1.0.0 John
+    ../../bin/ceylon compile com.example.interop
+    ../../bin/ceylon doc -non-shared -source-code com.example.interop
+    ../../bin/ceylon run com.example.interop/1.0.0 John
 
 Note: this is only available for the Java backend.
 
 ## Tool usage
 
-To see a list of command line options, type one of:
+To see a list of command line options for a particular subcommand use the 
+`help` subcommand. For example, to get help on the `compile` tool:
 
-    ./bin/ceylonc -help
-    ./bin/ceylonc-js -help
-    ./bin/ceylond -help
-    ./bin/ceylon -help
-    ./bin/ceylon-js -help
+    ./bin/ceylon help compile
 
 ## Ant tasks for Ceylon
 
