@@ -89,7 +89,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if(hasErrors(decl))
             return;
         boolean annots = gen.checkCompilerAnnotations(decl);
-        if (Decl.withinClass(decl)) {
+        if (Decl.withinClassOrInterface(decl)) {
             classBuilder.defs(gen.classGen().transformObjectDefinition(decl, classBuilder));
         } else {
             appendList(gen.classGen().transformObjectDefinition(decl, null));
