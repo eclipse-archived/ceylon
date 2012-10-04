@@ -42,11 +42,13 @@ import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -54,6 +56,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
@@ -326,6 +329,7 @@ abstract class InvocationBuilder {
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
             java.util.List<ParameterList> paramLists = ((Functional)primaryDeclaration).getParameterLists();
             SuperInvocationBuilder builder = new SuperInvocationBuilder(gen,
+                    forDefinition,
                     invocation,
                     paramLists.get(0));
             builder.compute();
@@ -758,7 +762,10 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
  */
 class SuperInvocationBuilder extends PositionalInvocationBuilder {
     
+    private Tree.ClassOrInterface sub;
+    
     SuperInvocationBuilder(AbstractTransformer gen,
+            Tree.ClassOrInterface sub,
             Tree.InvocationExpression invocation,
             ParameterList parameterList) {
         super(gen, 
@@ -767,14 +774,29 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
                 ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getTarget(),
                 invocation,
                 parameterList.getParameters());
+        this.sub = sub;
     }
     @Override
     protected JCExpression makeInvocation(List<JCExpression> args) {
         gen.at(node);
-        JCExpression expr;
+        JCExpression expr = null;
         if (Strategy.generateInstantiator(primaryDeclaration)
                 && primaryDeclaration.getContainer() instanceof Interface) {
-            expr = gen.naming.makeQualifiedSuper(gen.naming.makeCompanionFieldName((Interface)primaryDeclaration.getContainer()));
+            // If the subclass is inner to an interface then it will be 
+            // generated inner to the companion and we need to qualify the 
+            // super(), *unless* the subclass is nested within the same 
+            // interface as it's superclass.
+            Scope outer = sub.getDeclarationModel().getContainer();
+            while (!(outer instanceof Package)) {
+                if (outer == primaryDeclaration.getContainer()) {
+                    expr = gen.naming.makeSuper();
+                    break;
+                }
+                outer = outer.getContainer();
+            }
+            if (expr == null) {
+                expr = gen.naming.makeQualifiedSuper(gen.naming.makeCompanionFieldName((Interface)primaryDeclaration.getContainer()));
+            }
         } else {
             expr = gen.naming.makeSuper();
         }
