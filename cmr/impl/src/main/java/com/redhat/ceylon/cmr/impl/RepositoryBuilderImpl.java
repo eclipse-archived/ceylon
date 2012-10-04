@@ -48,6 +48,8 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         if (temp != null)
             token = temp;
 
+        // IMPORTANT Make sure the below list is consistent with CeylonUtils.isRemote() !
+        
         StructureBuilder structureBuilder;
         if (token.startsWith("http:") || token.startsWith("https:")) {
             structureBuilder = new RemoteContentStore(token, log);

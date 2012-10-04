@@ -336,7 +336,7 @@ public class CeylonUtils {
         }
         
         private String absolute(String path) {
-            if (!isRemote(path) && !isExternalPath(path)) {
+            if (!isRemote(path)) {
                 File f = new File(path);
                 if (!f.isAbsolute() && !cwd.equals(actualCwd)) {
                     f = new File(cwd, path);
@@ -350,30 +350,20 @@ public class CeylonUtils {
             return path;
         }
 
-        private String protocol(String repo) {
+        private boolean isHTTP(String repo) {
             try {
                 URL url = new URL(repo);
-                return url.getProtocol();
+                String protocol = url.getProtocol();
+                return "http".equals(protocol) || "https".equals(protocol);
             } catch (MalformedURLException e) {
-                return null;
+                return false;
             }
         }
 
-        private boolean isHTTP(String repo) {
-            String protocol = protocol(repo);
-            return "http".equals(protocol) || "https".equals(protocol);
-        }
-
         private boolean isRemote(String repo) {
-            String protocol = protocol(repo);
-            return "http".equals(protocol) || "https".equals(protocol) || "mvn".equals(protocol) || "aether".equals(protocol);
-        }
-
-        private boolean isExternalPath(String repo) {
-            return repo.equals("aether") || 
-                    repo.equals("mvn") || 
-                    repo.startsWith("aether:") || 
-                    repo.startsWith("mvn:");
+            // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
+            // (except for "file:" which we don't support)
+            return isHTTP(repo) || repo.startsWith("mvn:") || "mvn".equals(repo) || "aether".equals(repo) || repo.startsWith("aether:") ;
         }
     }
 
