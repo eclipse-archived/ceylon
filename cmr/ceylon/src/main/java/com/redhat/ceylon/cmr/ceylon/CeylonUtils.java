@@ -266,17 +266,6 @@ public class CeylonUtils {
             }
         }
 
-        private boolean isHTTP(String repo) {
-            try {
-                URL url = new URL(repo);
-                String protocol = url.getProtocol();
-                return "http".equals(protocol) || "https".equals(protocol);
-            } catch (MalformedURLException e) {
-                log.debug("Invalid repo URL: "+repo+" (assuming file)");
-                return false;
-            }
-        }
-
         private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo, boolean prepend) {
             if (repoInfo != null) {
                 try {
@@ -317,7 +306,7 @@ public class CeylonUtils {
         }
         
         private String absolute(String path) {
-            if (!isHTTP(path)) {
+            if (!isRemote(path)) {
                 File f = new File(path);
                 if (!f.isAbsolute() && !cwd.equals(actualCwd)) {
                     f = new File(cwd, path);
@@ -329,6 +318,25 @@ public class CeylonUtils {
                 }
             }
             return path;
+        }
+
+        private String protocol(String repo) {
+            try {
+                URL url = new URL(repo);
+                return url.getProtocol();
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+
+        private boolean isHTTP(String repo) {
+            String protocol = protocol(repo);
+            return "http".equals(protocol) || "https".equals(protocol);
+        }
+
+        private boolean isRemote(String repo) {
+            String protocol = protocol(repo);
+            return "http".equals(protocol) || "https".equals(protocol) || "mvn".equals(protocol) || "aether".equals(protocol);
         }
     }
 
