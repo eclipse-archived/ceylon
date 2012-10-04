@@ -54,29 +54,29 @@ Integer toplevelGetterI1 {
 
 @nomodel
 class ArithmeticOperators(MyInteger initN, MyInteger initI) {
-    variable Integer n1 := 0;
-    variable Integer n2 := 0;
-    variable Integer i1 := +0;
+    shared variable Integer n1 := 0;
+    shared variable Integer n2 := 0;
+    shared variable Integer i1 := +0;
     
-    Integer getterN1 {
+    shared Integer getterN1 {
         return n1; 
     }assign getterN1 {
         n1 := getterN1; 
     }
-    Integer getterN2 {
+    shared Integer getterN2 {
         return n2; 
     }assign getterN2 {
         n2 := getterN2; 
     }
-    Integer getterI1 {
+    shared Integer getterI1 {
         return i1; 
     }assign getterI1 {
         i1 := getterI1; 
     }
 
-    variable MyInteger boxedN1 := initN;
-    variable MyInteger boxedN2 := initN;
-    variable MyInteger boxedI1 := initI;
+    shared variable MyInteger boxedN1 := initN;
+    shared variable MyInteger boxedN2 := initN;
+    shared variable MyInteger boxedI1 := initI;
 
     //
     // Class Attributes
@@ -150,7 +150,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         this.n1 %= this.n2;
     }
 
-    void unboxedQualifiedGetterAttributes() {
+    shared default void unboxedQualifiedGetterAttributes() {
         this.getterN1++;
         ++this.getterN1;
         this.getterN1--;
@@ -172,7 +172,7 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         this.getterN1 %= this.getterN2;
     }
 
-    void boxedQualifiedAttributes() {
+    shared default void boxedQualifiedAttributes() {
         this.boxedN1++;
         ++this.boxedN1;
         this.boxedN1--;
@@ -335,5 +335,52 @@ class ArithmeticOperators(MyInteger initN, MyInteger initI) {
         toplevelGetterN1 *= toplevelGetterN1;
         toplevelGetterN1 /= toplevelGetterN2;
         toplevelGetterN1 %= toplevelGetterN2;
+    }
+}
+
+@nomodel
+class ArithmeticOperatorsSub(MyInteger initN, MyInteger initI) extends ArithmeticOperators(initN, initI) {
+    shared actual void unboxedQualifiedGetterAttributes() {
+        super.getterN1++;
+        ++super.getterN1;
+        super.getterN1--;
+        --super.getterN1;
+        
+        super.getterI1 := +super.getterN1;
+        super.getterI1 := -super.getterN1;
+        
+        super.getterN1 := super.getterN1 + super.getterN2;
+        super.getterI1 := super.getterN1 - super.getterN2;
+        super.getterN1 := super.getterN1 * super.getterN2;
+        super.getterN1 := super.getterN1 / super.getterN2;
+        super.getterN1 := super.getterN1 % super.getterN2;
+        super.getterN1 := super.getterN1 ** super.getterN2;
+        
+        super.getterN1 += super.getterN2;
+        super.getterN1 *= super.getterN1;
+        super.getterN1 /= super.getterN2;
+        super.getterN1 %= super.getterN2;
+    }
+
+    shared actual void boxedQualifiedAttributes() {
+        super.boxedN1++;
+        ++super.boxedN1;
+        super.boxedN1--;
+        --super.boxedN1;
+        
+        super.boxedI1 := +super.boxedN1;
+        super.boxedI1 := -super.boxedN1;
+        
+        super.boxedN1 := super.boxedN1 + super.boxedN2;
+        super.boxedI1 := super.boxedN1 - super.boxedN2;
+        super.boxedN1 := super.boxedN1 * super.boxedN2;
+        super.boxedN1 := super.boxedN1 / super.boxedN2;
+        super.boxedN1 := super.boxedN1 % super.boxedN2;
+        super.boxedN1 := super.boxedN1 ** super.boxedN2;
+        
+        super.boxedN1 += super.boxedN2;
+        super.boxedN1 *= super.boxedN1;
+        super.boxedN1 /= super.boxedN2;
+        super.boxedN1 %= super.boxedN2;
     }
 }

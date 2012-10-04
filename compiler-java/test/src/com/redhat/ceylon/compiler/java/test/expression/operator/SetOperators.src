@@ -219,3 +219,125 @@ public class SetOperators {
         new .com.redhat.ceylon.compiler.java.test.expression.operator.SetOperators();
     }
 }
+class SetOperatorsSuper {
+    
+    SetOperatorsSuper(.ceylon.language.Set<? extends .ceylon.language.Integer> a, .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
+        this.a = a;
+        this.b = b;
+        this.sync = getA();
+    }
+    private .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
+    
+    public final .ceylon.language.Set<? extends .ceylon.language.Integer> getSync() {
+        return sync;
+    }
+    
+    public final void setSync(final .ceylon.language.Set<? extends .ceylon.language.Integer> sync) {
+        this.sync = sync;
+    }
+    private .ceylon.language.Set<? extends .ceylon.language.Integer> a;
+    
+    public final .ceylon.language.Set<? extends .ceylon.language.Integer> getA() {
+        return a;
+    }
+    
+    public final void setA(final .ceylon.language.Set<? extends .ceylon.language.Integer> a) {
+        this.a = a;
+    }
+    private .ceylon.language.Set<? extends .ceylon.language.Integer> b;
+    
+    public final .ceylon.language.Set<? extends .ceylon.language.Integer> getB() {
+        return b;
+    }
+    
+    public final void setB(final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
+        this.b = b;
+    }
+    
+    public .java.lang.Object m() {
+        setSync(getA().union(getB()));
+        setSync(getA().intersection(getB()));
+        setSync(getA().exclusiveUnion(getB()));
+        setSync(getA().complement(getB()));
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop22 = getSync().union(getA());
+                setSync($ceylontmpop22);
+            }
+            returning $ceylontmpop22;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop23 = getSync().intersection(getA());
+                setSync($ceylontmpop23);
+            }
+            returning $ceylontmpop23;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop24 = getSync().exclusiveUnion(getA());
+                setSync($ceylontmpop24);
+            }
+            returning $ceylontmpop24;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpop25 = getSync().complement(getA());
+                setSync($ceylontmpop25);
+            }
+            returning $ceylontmpop25;
+        );
+        return null;
+    }
+}
+class SetOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.SetOperatorsSuper {
+    
+    SetOperatorsSub(.ceylon.language.Set<? extends .ceylon.language.Integer> a, .ceylon.language.Set<?> b) {
+        super(a, (.ceylon.language.Set)b);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m() {
+        super.setSync(super.getA().union(super.getB()));
+        super.setSync(super.getA().intersection(super.getB()));
+        super.setSync(super.getA().exclusiveUnion(super.getB()));
+        super.setSync(super.getA().complement(super.getB()));
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpopV27 = super.getSync().union(super.getA());
+                super.setSync($ceylontmpopV27);
+            }
+            returning $ceylontmpopV27;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpopV29 = super.getSync().intersection(super.getA());
+                super.setSync($ceylontmpopV29);
+            }
+            returning $ceylontmpopV29;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpopV31 = super.getSync().exclusiveUnion(super.getA());
+                super.setSync($ceylontmpopV31);
+            }
+            returning $ceylontmpopV31;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmpopV33 = super.getSync().complement(super.getA());
+                super.setSync($ceylontmpopV33);
+            }
+            returning $ceylontmpopV33;
+        );
+        return null;
+    }
+}

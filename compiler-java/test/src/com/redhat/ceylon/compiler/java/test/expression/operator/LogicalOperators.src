@@ -24,20 +24,20 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
     }
     private boolean b1;
     
-    private final boolean getB1() {
+    public final boolean getB1() {
         return b1;
     }
     
-    private final void setB1(final boolean b1) {
+    public final void setB1(final boolean b1) {
         this.b1 = b1;
     }
     private boolean b2;
     
-    private final boolean getB2() {
+    public final boolean getB2() {
         return b2;
     }
     
-    private final void setB2(final boolean b2) {
+    public final void setB2(final boolean b2) {
         this.b2 = b2;
     }
     private .ceylon.language.Boolean boxedB1;
@@ -63,7 +63,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         this.boxedB2 = boxedB2;
     }
     
-    private final void logical() {
+    public .java.lang.Object logical() {
         setB1(!getB2());
         setB1(true || getB2());
         setB1(false && getB2());
@@ -101,9 +101,10 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
             }
             returning $ceylontmpopV5;
         ));
+        return null;
     }
     
-    private final void logicalBoxed() {
+    public .java.lang.Object logicalBoxed() {
         setBoxedB1(.ceylon.language.Boolean.instance(!getBoxedB2().booleanValue()));
         setBoxedB1(.ceylon.language.Boolean.instance(true || getBoxedB2().booleanValue()));
         setBoxedB1(.ceylon.language.Boolean.instance(false && getBoxedB2().booleanValue()));
@@ -141,10 +142,64 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
             }
             returning $ceylontmpopV11;
         )));
+        return null;
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators();
+    }
+}
+public class LogicalOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators {
+    
+    public LogicalOperatorsSub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object logical() {
+        setB1((
+            let
+            {
+                boolean $ceylontmpopV13 = super.getB1() || super.getB2();
+                super.setB1($ceylontmpopV13);
+            }
+            returning $ceylontmpopV13;
+        ));
+        setB1((
+            let
+            {
+                boolean $ceylontmpopV15 = super.getB1() && super.getB2();
+                super.setB1($ceylontmpopV15);
+            }
+            returning $ceylontmpopV15;
+        ));
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object logicalBoxed() {
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+            {
+                boolean $ceylontmpopV17 = super.getBoxedB1().booleanValue() || super.getBoxedB2().booleanValue();
+                super.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpopV17));
+            }
+            returning $ceylontmpopV17;
+        )));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+            {
+                boolean $ceylontmpopV19 = super.getBoxedB1().booleanValue() && super.getBoxedB2().booleanValue();
+                super.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmpopV19));
+            }
+            returning $ceylontmpopV19;
+        )));
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsSub();
     }
 }

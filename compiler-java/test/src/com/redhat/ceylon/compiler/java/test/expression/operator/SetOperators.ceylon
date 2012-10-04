@@ -125,3 +125,33 @@ shared class SetOperators() {
         sync ~= a;
     }
 }
+@nomodel
+class SetOperatorsSuper(a, b) {
+    shared variable Set<Integer> sync := a;
+    shared variable Set<Integer> a;
+    shared variable Set<Integer> b; 
+    
+    shared default void m() {
+        sync := a | b;
+        sync := a & b;
+        sync := a ^ b;
+        sync := a ~ b;
+        sync |= a;
+        sync &= a;
+        sync ^= a;
+        sync ~= a;
+    }
+}
+@nomodel
+class SetOperatorsSub(Set<Integer> a, Set<Bottom> b) extends SetOperatorsSuper(a, b) {
+    shared actual void m() {
+        super.sync := super.a | super.b;
+        super.sync := super.a & super.b;
+        super.sync := super.a ^ super.b;
+        super.sync := super.a ~ super.b;
+        super.sync |= super.a;
+        super.sync &= super.a;
+        super.sync ^= super.a;
+        super.sync ~= super.a;
+    }
+}

@@ -116,80 +116,80 @@ class BitwiseOperators {
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI;
     private long n1;
     
-    private final long getN1() {
+    public final long getN1() {
         return n1;
     }
     
-    private final void setN1(final long n1) {
+    public final void setN1(final long n1) {
         this.n1 = n1;
     }
     private long n2;
     
-    private final long getN2() {
+    public final long getN2() {
         return n2;
     }
     
-    private final void setN2(final long n2) {
+    public final void setN2(final long n2) {
         this.n2 = n2;
     }
     private long i1;
     
-    private final long getI1() {
+    public final long getI1() {
         return i1;
     }
     
-    private final void setI1(final long i1) {
+    public final void setI1(final long i1) {
         this.i1 = i1;
     }
     
-    private final long getGetterN1() {
+    public final long getGetterN1() {
         return getN1();
     }
     
-    private final void setGetterN1(final long getterN1) {
+    public final void setGetterN1(final long getterN1) {
         setN1(getterN1);
     }
     
-    private final long getGetterN2() {
+    public final long getGetterN2() {
         return getN2();
     }
     
-    private final void setGetterN2(final long getterN2) {
+    public final void setGetterN2(final long getterN2) {
         setN2(getterN2);
     }
     
-    private final long getGetterI1() {
+    public final long getGetterI1() {
         return getI1();
     }
     
-    private final void setGetterI1(final long getterI1) {
+    public final void setGetterI1(final long getterI1) {
         setI1(getterI1);
     }
     private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN1;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedN1() {
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedN1() {
         return boxedN1;
     }
     
-    private final void setBoxedN1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN1) {
+    public final void setBoxedN1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN1) {
         this.boxedN1 = boxedN1;
     }
     private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN2;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedN2() {
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedN2() {
         return boxedN2;
     }
     
-    private final void setBoxedN2(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN2) {
+    public final void setBoxedN2(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN2) {
         this.boxedN2 = boxedN2;
     }
     private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedI1;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedI1() {
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedI1() {
         return boxedI1;
     }
     
-    private final void setBoxedI1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedI1) {
+    public final void setBoxedI1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedI1) {
         this.boxedI1 = boxedI1;
     }
     
@@ -213,7 +213,7 @@ class BitwiseOperators {
         setGetterN1(getGetterN1() >> getGetterN2());
     }
     
-    private final void unboxedQualifiedAttributes() {
+    public .java.lang.Object unboxedQualifiedAttributes() {
         this.setI1(~this.getN1());
         this.setN1(this.getN1() & this.getN2());
         this.setI1(this.getN1() | this.getN2());
@@ -221,9 +221,10 @@ class BitwiseOperators {
         this.setN1(this.getN1() << this.getN2());
         this.setN1(this.getN1() >>> this.getN2());
         this.setN1(this.getN1() >> this.getN2());
+        return null;
     }
     
-    private final void unboxedQualifiedGetterAttributes() {
+    public .java.lang.Object unboxedQualifiedGetterAttributes() {
         this.setGetterI1(~this.getGetterN1());
         this.setGetterN1(this.getGetterN1() & this.getGetterN2());
         this.setGetterI1(this.getGetterN1() | this.getGetterN2());
@@ -231,9 +232,10 @@ class BitwiseOperators {
         this.setGetterN1(this.getGetterN1() << this.getGetterN2());
         this.setGetterN1(this.getGetterN1() >>> this.getGetterN2());
         this.setGetterN1(this.getGetterN1() >> this.getGetterN2());
+        return null;
     }
     
-    private final void boxedQualifiedAttributes() {
+    public .java.lang.Object boxedQualifiedAttributes() {
         this.setBoxedI1(this.getBoxedN1().getNot());
         this.setBoxedN1(this.getBoxedN1().and(this.getBoxedN2()));
         this.setBoxedI1(this.getBoxedN1().or(this.getBoxedN2()));
@@ -241,6 +243,7 @@ class BitwiseOperators {
         this.setBoxedN1(this.getBoxedN1().leftLogicalShift(1L));
         this.setBoxedN1(this.getBoxedN1().rightLogicalShift(1L));
         this.setBoxedN1(this.getBoxedN1().rightArithmeticShift(1L));
+        return null;
     }
     
     private final void unboxedLocals() {
@@ -423,6 +426,48 @@ class BitwiseOperators {
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.setBwToplevelGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.getBwToplevelGetterN1() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.getBwToplevelGetterN2());
+    }
+}
+class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators {
+    
+    BitwiseOperatorsSub(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
+        super(initN, initI);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object unboxedQualifiedAttributes() {
+        super.setI1(~super.getN1());
+        super.setN1(super.getN1() & super.getN2());
+        super.setI1(super.getN1() | super.getN2());
+        super.setN1(super.getN1() ^ super.getN2());
+        super.setN1(super.getN1() << super.getN2());
+        super.setN1(super.getN1() >>> super.getN2());
+        super.setN1(super.getN1() >> super.getN2());
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object unboxedQualifiedGetterAttributes() {
+        super.setGetterI1(~super.getGetterN1());
+        super.setGetterN1(super.getGetterN1() & super.getGetterN2());
+        super.setGetterI1(super.getGetterN1() | super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() ^ super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() << super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() >>> super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() >> super.getGetterN2());
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object boxedQualifiedAttributes() {
+        super.setBoxedI1(super.getBoxedN1().getNot());
+        super.setBoxedN1(super.getBoxedN1().and(super.getBoxedN2()));
+        super.setBoxedI1(super.getBoxedN1().or(super.getBoxedN2()));
+        super.setBoxedN1(super.getBoxedN1().xor(super.getBoxedN2()));
+        super.setBoxedN1(super.getBoxedN1().leftLogicalShift(1L));
+        super.setBoxedN1(super.getBoxedN1().rightLogicalShift(1L));
+        super.setBoxedN1(super.getBoxedN1().rightArithmeticShift(1L));
+        return null;
     }
 }
 final class bwToplevelGetterN1_ {

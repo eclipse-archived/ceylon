@@ -99,80 +99,80 @@ class ArithmeticOperators {
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI;
     private long n1;
     
-    private final long getN1() {
+    public final long getN1() {
         return n1;
     }
     
-    private final void setN1(final long n1) {
+    public final void setN1(final long n1) {
         this.n1 = n1;
     }
     private long n2;
     
-    private final long getN2() {
+    public final long getN2() {
         return n2;
     }
     
-    private final void setN2(final long n2) {
+    public final void setN2(final long n2) {
         this.n2 = n2;
     }
     private long i1;
     
-    private final long getI1() {
+    public final long getI1() {
         return i1;
     }
     
-    private final void setI1(final long i1) {
+    public final void setI1(final long i1) {
         this.i1 = i1;
     }
     
-    private final long getGetterN1() {
+    public final long getGetterN1() {
         return getN1();
     }
     
-    private final void setGetterN1(final long getterN1) {
+    public final void setGetterN1(final long getterN1) {
         setN1(getterN1);
     }
     
-    private final long getGetterN2() {
+    public final long getGetterN2() {
         return getN2();
     }
     
-    private final void setGetterN2(final long getterN2) {
+    public final void setGetterN2(final long getterN2) {
         setN2(getterN2);
     }
     
-    private final long getGetterI1() {
+    public final long getGetterI1() {
         return getI1();
     }
     
-    private final void setGetterI1(final long getterI1) {
+    public final void setGetterI1(final long getterI1) {
         setI1(getterI1);
     }
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN1;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedN1() {
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedN1() {
         return boxedN1;
     }
     
-    private final void setBoxedN1(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN1) {
+    public final void setBoxedN1(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN1) {
         this.boxedN1 = boxedN1;
     }
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN2;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedN2() {
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedN2() {
         return boxedN2;
     }
     
-    private final void setBoxedN2(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN2) {
+    public final void setBoxedN2(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN2) {
         this.boxedN2 = boxedN2;
     }
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedI1;
     
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedI1() {
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedI1() {
         return boxedI1;
     }
     
-    private final void setBoxedI1(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedI1) {
+    public final void setBoxedI1(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedI1) {
         this.boxedI1 = boxedI1;
     }
     
@@ -409,7 +409,7 @@ class ArithmeticOperators {
         );
     }
     
-    private final void unboxedQualifiedGetterAttributes() {
+    public .java.lang.Object unboxedQualifiedGetterAttributes() {
         (
             let
             {
@@ -490,9 +490,10 @@ class ArithmeticOperators {
             }
             returning $ceylontmpopV47;
         );
+        return null;
     }
     
-    private final void boxedQualifiedAttributes() {
+    public .java.lang.Object boxedQualifiedAttributes() {
         (
             let
             {
@@ -573,6 +574,7 @@ class ArithmeticOperators {
             }
             returning $ceylontmpopV63;
         );
+        return null;
     }
     
     private final void unboxedLocals() {
@@ -1024,6 +1026,166 @@ class ArithmeticOperators {
             }
             returning $ceylontmpop95;
         );
+    }
+}
+class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.ArithmeticOperators {
+    
+    ArithmeticOperatorsSub(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI) {
+        super(initN, initI);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object unboxedQualifiedGetterAttributes() {
+        (
+            let
+            {
+                long $ceylontmpopV97 = super.getGetterN1();
+                super.setGetterN1($ceylontmpopV97 + 1);
+            }
+            returning $ceylontmpopV97;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV99 = super.getGetterN1() + 1;
+                super.setGetterN1($ceylontmpopV99);
+            }
+            returning $ceylontmpopV99;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV101 = super.getGetterN1();
+                super.setGetterN1($ceylontmpopV101 - 1);
+            }
+            returning $ceylontmpopV101;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV103 = super.getGetterN1() - 1;
+                super.setGetterN1($ceylontmpopV103);
+            }
+            returning $ceylontmpopV103;
+        );
+        super.setGetterI1(super.getGetterN1());
+        super.setGetterI1(-super.getGetterN1());
+        super.setGetterN1(super.getGetterN1() + super.getGetterN2());
+        super.setGetterI1(super.getGetterN1() - super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() * super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() / super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() % super.getGetterN2());
+        super.setGetterN1(.ceylon.language.Integer.instance(super.getGetterN1()).power(.ceylon.language.Integer.instance(super.getGetterN2())).longValue());
+        (
+            let
+            {
+                long $ceylontmpopV105 = super.getGetterN1() + super.getGetterN2();
+                super.setGetterN1($ceylontmpopV105);
+            }
+            returning $ceylontmpopV105;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV107 = super.getGetterN1() * super.getGetterN1();
+                super.setGetterN1($ceylontmpopV107);
+            }
+            returning $ceylontmpopV107;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV109 = super.getGetterN1() / super.getGetterN2();
+                super.setGetterN1($ceylontmpopV109);
+            }
+            returning $ceylontmpopV109;
+        );
+        (
+            let
+            {
+                long $ceylontmpopV111 = super.getGetterN1() % super.getGetterN2();
+                super.setGetterN1($ceylontmpopV111);
+            }
+            returning $ceylontmpopV111;
+        );
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object boxedQualifiedAttributes() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV113 = super.getBoxedN1();
+                super.setBoxedN1($ceylontmpopV113.getSuccessor());
+            }
+            returning $ceylontmpopV113;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV115 = super.getBoxedN1().getSuccessor();
+                super.setBoxedN1($ceylontmpopV115);
+            }
+            returning $ceylontmpopV115;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV117 = super.getBoxedN1();
+                super.setBoxedN1($ceylontmpopV117.getPredecessor());
+            }
+            returning $ceylontmpopV117;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV119 = super.getBoxedN1().getPredecessor();
+                super.setBoxedN1($ceylontmpopV119);
+            }
+            returning $ceylontmpopV119;
+        );
+        super.setBoxedI1(super.getBoxedN1().getPositiveValue());
+        super.setBoxedI1(super.getBoxedN1().getNegativeValue());
+        super.setBoxedN1(super.getBoxedN1().plus(super.getBoxedN2()));
+        super.setBoxedI1(super.getBoxedN1().minus(super.getBoxedN2()));
+        super.setBoxedN1(super.getBoxedN1().times(super.getBoxedN2()));
+        super.setBoxedN1(super.getBoxedN1().divided(super.getBoxedN2()));
+        super.setBoxedN1(super.getBoxedN1().remainder(super.getBoxedN2()));
+        super.setBoxedN1(super.getBoxedN1().power(super.getBoxedN2()));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV121 = super.getBoxedN1().plus(super.getBoxedN2());
+                super.setBoxedN1($ceylontmpopV121);
+            }
+            returning $ceylontmpopV121;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV123 = super.getBoxedN1().times(super.getBoxedN1());
+                super.setBoxedN1($ceylontmpopV123);
+            }
+            returning $ceylontmpopV123;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV125 = super.getBoxedN1().divided(super.getBoxedN2());
+                super.setBoxedN1($ceylontmpopV125);
+            }
+            returning $ceylontmpopV125;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger $ceylontmpopV127 = super.getBoxedN1().remainder(super.getBoxedN2());
+                super.setBoxedN1($ceylontmpopV127);
+            }
+            returning $ceylontmpopV127;
+        );
+        return null;
     }
 }
 final class toplevelGetterN1_ {

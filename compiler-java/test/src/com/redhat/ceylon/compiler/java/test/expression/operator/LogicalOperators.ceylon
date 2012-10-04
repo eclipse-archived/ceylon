@@ -25,12 +25,12 @@ shared abstract class LogicalOperatorsParent<B>(){
 
 @nomodel
 shared class LogicalOperators() extends LogicalOperatorsParent<Boolean>(){
-    variable Boolean b1 := false;
-    variable Boolean b2 := false;
+    shared variable Boolean b1 := false;
+    shared variable Boolean b2 := false;
     shared actual variable Boolean boxedB1 := b1;
     shared actual variable Boolean boxedB2 := b2;
         
-    void logical() {
+    shared default void logical() {
         b1 := !b2;
         b1 := true || b2;
         b1 := false && b2;
@@ -40,7 +40,7 @@ shared class LogicalOperators() extends LogicalOperatorsParent<Boolean>(){
         b1 := this.b1 &&= this.b2;
     }
 
-    void logicalBoxed() {
+    shared default void logicalBoxed() {
         boxedB1 := !boxedB2;
         boxedB1 := true || boxedB2;
         boxedB1 := false && boxedB2;
@@ -48,5 +48,19 @@ shared class LogicalOperators() extends LogicalOperatorsParent<Boolean>(){
         boxedB1 := boxedB1 &&= boxedB2;
         boxedB1 := this.boxedB1 ||= this.boxedB2;
         boxedB1 := this.boxedB1 &&= this.boxedB2;
+    }
+}
+
+@nomodel
+shared class LogicalOperatorsSub() extends LogicalOperators(){
+    
+    shared actual void logical() {
+        b1 := super.b1 ||= super.b2;
+        b1 := super.b1 &&= super.b2;
+    }
+
+    shared actual void logicalBoxed() {
+        boxedB1 := super.boxedB1 ||= super.boxedB2;
+        boxedB1 := super.boxedB1 &&= super.boxedB2;
     }
 }

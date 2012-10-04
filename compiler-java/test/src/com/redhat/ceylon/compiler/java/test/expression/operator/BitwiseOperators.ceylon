@@ -55,29 +55,29 @@ Integer bwToplevelGetterI1 {
 
 @nomodel
 class BitwiseOperators(BWMyInteger initN, BWMyInteger initI) {
-    variable Integer n1 := 0;
-    variable Integer n2 := 0;
-    variable Integer i1 := 0;
+    shared variable Integer n1 := 0;
+    shared variable Integer n2 := 0;
+    shared variable Integer i1 := 0;
     
-    Integer getterN1 {
+    shared Integer getterN1 {
         return n1; 
     }assign getterN1 {
         n1 := getterN1; 
     }
-    Integer getterN2 {
+    shared Integer getterN2 {
         return n2; 
     }assign getterN2 {
         n2 := getterN2; 
     }
-    Integer getterI1 {
+    shared Integer getterI1 {
         return i1; 
     }assign getterI1 {
         i1 := getterI1; 
     }
 
-    variable BWMyInteger boxedN1 := initN;
-    variable BWMyInteger boxedN2 := initN;
-    variable BWMyInteger boxedI1 := initI;
+    shared variable BWMyInteger boxedN1 := initN;
+    shared variable BWMyInteger boxedN2 := initN;
+    shared variable BWMyInteger boxedI1 := initI;
 
     //
     // Class Attributes
@@ -111,7 +111,7 @@ class BitwiseOperators(BWMyInteger initN, BWMyInteger initI) {
     //
     // Qualified Class Attributes
 
-    void unboxedQualifiedAttributes() {
+    shared default void unboxedQualifiedAttributes() {
 
         this.i1 := this.n1.not;
 
@@ -124,7 +124,7 @@ class BitwiseOperators(BWMyInteger initN, BWMyInteger initI) {
 
     }
 
-    void unboxedQualifiedGetterAttributes() {
+    shared default void unboxedQualifiedGetterAttributes() {
 
         this.getterI1 := this.getterN1.not;
 
@@ -137,7 +137,7 @@ class BitwiseOperators(BWMyInteger initN, BWMyInteger initI) {
 
     }
 
-    void boxedQualifiedAttributes() {
+    shared default void boxedQualifiedAttributes() {
 
         this.boxedI1 := this.boxedN1.not;
 
@@ -242,6 +242,48 @@ class BitwiseOperators(BWMyInteger initN, BWMyInteger initI) {
         bwToplevelGetterN1 := bwToplevelGetterN1.leftLogicalShift(bwToplevelGetterN2);
         bwToplevelGetterN1 := bwToplevelGetterN1.rightLogicalShift(bwToplevelGetterN2);
         bwToplevelGetterN1 := bwToplevelGetterN1.rightArithmeticShift(bwToplevelGetterN2);
+
+    }
+}
+
+@nomodel
+class BitwiseOperatorsSub(BWMyInteger initN, BWMyInteger initI) extends BitwiseOperators(initN, initI) {
+    shared actual void unboxedQualifiedAttributes() {
+
+        super.i1 := super.n1.not;
+
+        super.n1 := super.n1.and(super.n2);
+        super.i1 := super.n1.or(super.n2);
+        super.n1 := super.n1.xor(super.n2);
+        super.n1 := super.n1.leftLogicalShift(super.n2);
+        super.n1 := super.n1.rightLogicalShift(super.n2);
+        super.n1 := super.n1.rightArithmeticShift(super.n2);
+
+    }
+
+    shared actual void unboxedQualifiedGetterAttributes() {
+
+        super.getterI1 := super.getterN1.not;
+
+        super.getterN1 := super.getterN1.and(super.getterN2);
+        super.getterI1 := super.getterN1.or(super.getterN2);
+        super.getterN1 := super.getterN1.xor(super.getterN2);
+        super.getterN1 := super.getterN1.leftLogicalShift(super.getterN2);
+        super.getterN1 := super.getterN1.rightLogicalShift(super.getterN2);
+        super.getterN1 := super.getterN1.rightArithmeticShift(super.getterN2);
+
+    }
+
+    shared actual void boxedQualifiedAttributes() {
+
+        super.boxedI1 := super.boxedN1.not;
+
+        super.boxedN1 := super.boxedN1.and(super.boxedN2);
+        super.boxedI1 := super.boxedN1.or(super.boxedN2);
+        super.boxedN1 := super.boxedN1.xor(super.boxedN2);
+        super.boxedN1 := super.boxedN1.leftLogicalShift(1);
+        super.boxedN1 := super.boxedN1.rightLogicalShift(1);
+        super.boxedN1 := super.boxedN1.rightArithmeticShift(1);
 
     }
 }
