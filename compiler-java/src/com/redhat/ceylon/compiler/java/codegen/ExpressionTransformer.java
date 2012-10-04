@@ -58,6 +58,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
@@ -1096,7 +1097,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // e.attr++
             // (let $tmpE = e, $tmpV = $tmpE.attr; $tmpE.attr = $tmpV.getSuccessor(); $tmpV;)
             Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
-
+            boolean isSuper = qualified.getPrimary() instanceof Super;
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
             at(expr);
@@ -1109,14 +1110,16 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = $tmpE.attr
             JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varVName = naming.tempName("opV");
-            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
+            JCExpression getter = transformMemberExpression(qualified, isSuper ? naming.makeSuper() : make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, returnType);
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, getter);
 
-            // define all the variables
             decls = decls.prepend(tmpVVar);
-            decls = decls.prepend(tmpEVar);
+            if (!isSuper) {
+                // define all the variables
+                decls = decls.prepend(tmpEVar);
+            }
             
             // $tmpE.attr = $tmpV.getSuccessor()
             JCExpression successor;
@@ -1132,7 +1135,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 //  make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
                 successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             }
-            JCExpression assignment = transformAssignment(expr, term, make().Ident(varEName), successor);
+            JCExpression assignment = transformAssignment(expr, term, isSuper ? naming.makeSuper() : make().Ident(varEName), successor);
             stats = stats.prepend(at(expr).Exec(assignment));
             
             // $tmpV
@@ -1234,7 +1237,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // e.attr
             // (let $tmpE = e, $tmpV = OP($tmpE.attr); $tmpE.attr = $tmpV; $tmpV;)
             Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
-
+            boolean isSuper = qualified.getPrimary() instanceof Super;
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
             at(operator);
@@ -1247,7 +1250,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = OP($tmpE.attr)
             JCExpression attrType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
             Name varVName = naming.tempName("opV");
-            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
+            JCExpression getter = transformMemberExpression(qualified, isSuper ? naming.makeSuper() : make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
             JCExpression newValue = factory.getNewValue(getter);
@@ -1256,13 +1259,15 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             // define all the variables
             decls = decls.prepend(tmpVVar);
-            decls = decls.prepend(tmpEVar);
+            if (!isSuper) {
+                decls = decls.prepend(tmpEVar);
+            }
             
             // $tmpE.attr = $tmpV
             // make sure $tmpV is unboxed if necessary
             JCExpression value = make().Ident(varVName);
             value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
-            JCExpression assignment = transformAssignment(operator, term, make().Ident(varEName), value);
+            JCExpression assignment = transformAssignment(operator, term, isSuper ? naming.makeSuper() : make().Ident(varEName), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
             // $tmpV
