@@ -45,10 +45,20 @@ public class StructureTest3 extends CompilerTest {
         compareWithJavaSource("mcr/ClassDefaultMemberClassWithTypeParams");
     }
     
+    @Test
+    public void testMcrClassMemberClassesWithMemberSubclasses(){
+        compareWithJavaSource("mcr/ClassMemberClassesWithMemberSubclasses");
+    }
+    
     // Default Member Class of Interface
     @Test
     public void testMcrInterfaceDefaultMemberClass(){
         compareWithJavaSource("mcr/InterfaceDefaultMemberClass");
+    }
+    
+    @Test
+    public void testMcrInterfaceMemberClassesWithMemberSubclasses(){
+        compareWithJavaSource("mcr/InterfaceMemberClassesWithMemberSubclasses");
     }
     
     // Formal Member Class of Class

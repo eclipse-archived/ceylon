@@ -1,0 +1,100 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+abstract class ClassDefaultMemberClassWithMemberSubclass {
+    
+    ClassDefaultMemberClassWithMemberSubclass() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Default Default$new(final long i) {
+        return new Default(i);
+    }
+    
+    public class Default {
+        
+        protected Default(long i) {
+        }
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Formal Formal$new(final long i);
+    
+    public abstract class Formal {
+        
+        protected Formal(long i) {
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Shared Shared$new(final long i) {
+        return new Shared(i);
+    }
+    
+    public class Shared {
+        
+        protected Shared(long i) {
+        }
+    }
+    
+    class NonShared {
+        
+        NonShared(long i) {
+        }
+    }
+    
+    class DefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Default {
+        
+        DefaultSub(long i) {
+            super(i);
+        }
+    }
+    
+    class FormalSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Formal {
+        
+        FormalSub(long i) {
+            super(i);
+        }
+    }
+    
+    class SharedSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Shared {
+        
+        SharedSub(long i) {
+            super(i);
+        }
+    }
+    
+    class NonSharedSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.NonShared {
+        
+        NonSharedSub(long i) {
+            super(i);
+        }
+    }
+    
+    private final void m() {
+        
+        class LocalDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Default {
+            
+            LocalDefaultSub(long i) {
+                super(i);
+            }
+        }
+        
+        class LocalFormalSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Formal {
+            
+            LocalFormalSub(long i) {
+                super(i);
+            }
+        }
+        
+        class LocalSharedSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Shared {
+            
+            LocalSharedSub(long i) {
+                super(i);
+            }
+        }
+        
+        class LocalNonSharedSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.NonShared {
+            
+            LocalNonSharedSub(long i) {
+                super(i);
+            }
+        }
+    }
+}
