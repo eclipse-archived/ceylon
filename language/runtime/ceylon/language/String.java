@@ -213,6 +213,7 @@ public abstract class String
     }
 
     @Override
+    @TypeInfo("ceylon.language.Character|ceylon.language.Nothing")
     public Character item(@Name("index") Integer key) {
         return item(value, key.longValue());
     }
