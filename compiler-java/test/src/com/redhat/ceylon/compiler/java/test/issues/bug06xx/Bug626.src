@@ -6,8 +6,8 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Iterable<?>>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Iterable<?>, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom_.getBottom()).longValue();
-        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>>).ceylon.language.bottom_.getBottom();
+        this.hash = (int)((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
+        this.iterator = (.ceylon.language.Iterator<? extends .ceylon.language.Iterable<?>>).ceylon.language.bottom_.getBottom$();
     }
     private final .ceylon.language.Iterable$impl<.ceylon.language.Iterable<?>> $ceylon$language$Iterable$this;
     
@@ -130,7 +130,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.bottom_.getBottom()).booleanValue();
+        return ((.ceylon.language.Boolean).ceylon.language.bottom_.getBottom$()).booleanValue();
     }
     private final int hash;
     
@@ -146,7 +146,7 @@ class Bug626 implements .ceylon.language.Iterable<.ceylon.language.Iterable<?>> 
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug626();
     }
 }

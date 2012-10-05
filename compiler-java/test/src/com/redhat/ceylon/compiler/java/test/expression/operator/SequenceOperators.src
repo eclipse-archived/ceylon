@@ -5,7 +5,7 @@ public class SequenceOperators {
     public SequenceOperators() {
         this.c1 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""));
         this.c2 = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance(""));
-        this.sequence = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        this.sequence = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     private final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c1;
     
@@ -75,7 +75,7 @@ public class SequenceOperators {
                     for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.Integer.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).getSize());
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($spread$4$4);
-            ) : .ceylon.language.empty_.getEmpty());
+            ) : .ceylon.language.empty_.getEmpty$());
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> intSequence = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer> spreadMemberWithBoxedType = (
@@ -92,7 +92,7 @@ public class SequenceOperators {
                     for (int $index$8 = 0; $index$8 < $spread$7$2; $index$8++) $spread$7$4[$index$8] = $spread$7$0.item(.ceylon.language.Integer.instance($index$8)).getWholePart();
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>($spread$7$4);
-            ) : .ceylon.language.empty_.getEmpty());
+            ) : .ceylon.language.empty_.getEmpty$());
         );
         .ceylon.language.Iterable<? extends .ceylon.language.Character> spreadInvoke;
         spreadInvoke = (
@@ -109,7 +109,7 @@ public class SequenceOperators {
                     for (int $index$11 = 0; $index$11 < $spread$10$2; $index$11++) $spread$10$4[$index$11] = $spread$10$0.item(.ceylon.language.Integer.instance($index$11)).item(.ceylon.language.Integer.instance(0L));
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Character>($spread$10$4);
-            ) : .ceylon.language.empty_.getEmpty());
+            ) : .ceylon.language.empty_.getEmpty$());
         );
         spreadInvoke = (
             let
@@ -132,9 +132,9 @@ public class SequenceOperators {
                     );
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Character>($spread$14$4);
-            ) : .ceylon.language.empty_.getEmpty());
+            ) : .ceylon.language.empty_.getEmpty$());
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.Iterable<? extends .ceylon.language.String> upperCasedEmpty = (
             let
             {
@@ -149,7 +149,7 @@ public class SequenceOperators {
                     for (int $index$18 = 0; $index$18 < $spread$17$2; $index$18++) $spread$17$4[$index$18] = .ceylon.language.String.instance($spread$17$0.item(.ceylon.language.Integer.instance($index$18)).getUppercased());
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$17$4);
-            ) : .ceylon.language.empty_.getEmpty());
+            ) : .ceylon.language.empty_.getEmpty$());
         );
     }
     
@@ -162,7 +162,7 @@ public class SequenceOperators {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.SequenceOperators();
     }
 }

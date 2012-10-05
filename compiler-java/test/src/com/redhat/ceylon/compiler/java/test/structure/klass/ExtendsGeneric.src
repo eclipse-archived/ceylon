@@ -33,7 +33,7 @@ class ExtendsGeneric<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric();
     }
 }
@@ -43,7 +43,7 @@ class ExtendsGeneric2<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric2();
     }
 }
@@ -54,7 +54,7 @@ class ExtendsGeneric_FooSub extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_FooSub();
     }
 }
@@ -65,7 +65,7 @@ class ExtendsGeneric_BarSub extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BarSub();
     }
 }
@@ -76,7 +76,7 @@ class ExtendsGeneric_BazSub extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_BazSub();
     }
 }

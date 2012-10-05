@@ -99,7 +99,7 @@ public final class globalAttrInteger_ {
         value = new long[]{1L};
     }
     
-    public static long getGlobalAttrInteger() {
+    public static long getGlobalAttrInteger$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -116,7 +116,7 @@ public final class globalAttrFloat_ {
         value = new double[]{1.0};
     }
     
-    public static double getGlobalAttrFloat() {
+    public static double getGlobalAttrFloat$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -133,7 +133,7 @@ public final class globalAttrString_ {
         value = new .java.lang.String[]{"a"};
     }
     
-    public static .java.lang.String getGlobalAttrString() {
+    public static .java.lang.String getGlobalAttrString$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -150,7 +150,7 @@ public final class globalAttrBoolean_ {
         value = new boolean[]{true};
     }
     
-    public static boolean getGlobalAttrBoolean() {
+    public static boolean getGlobalAttrBoolean$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -167,7 +167,7 @@ public final class globalAttrCharacter_ {
         value = new int[]{97};
     }
     
-    public static int getGlobalAttrCharacter() {
+    public static int getGlobalAttrCharacter$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -184,7 +184,7 @@ public final class globalAttrOptionalInteger_ {
         value = new .ceylon.language.Integer[]{null};
     }
     
-    public static .ceylon.language.Integer getGlobalAttrOptionalInteger() {
+    public static .ceylon.language.Integer getGlobalAttrOptionalInteger$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -201,7 +201,7 @@ public final class globalAttrOptionalFloat_ {
         value = new .ceylon.language.Float[]{null};
     }
     
-    public static .ceylon.language.Float getGlobalAttrOptionalFloat() {
+    public static .ceylon.language.Float getGlobalAttrOptionalFloat$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -218,7 +218,7 @@ public final class globalAttrOptionalString_ {
         value = new .ceylon.language.String[]{null};
     }
     
-    public static .ceylon.language.String getGlobalAttrOptionalString() {
+    public static .ceylon.language.String getGlobalAttrOptionalString$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -235,7 +235,7 @@ public final class globalAttrOptionalBoolean_ {
         value = new .ceylon.language.Boolean[]{null};
     }
     
-    public static .ceylon.language.Boolean getGlobalAttrOptionalBoolean() {
+    public static .ceylon.language.Boolean getGlobalAttrOptionalBoolean$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -252,7 +252,7 @@ public final class globalAttrOptionalCharacter_ {
         value = new .ceylon.language.Character[]{null};
     }
     
-    public static .ceylon.language.Character getGlobalAttrOptionalCharacter() {
+    public static .ceylon.language.Character getGlobalAttrOptionalCharacter$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

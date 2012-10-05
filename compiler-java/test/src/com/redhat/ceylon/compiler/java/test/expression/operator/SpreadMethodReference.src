@@ -24,14 +24,14 @@ class SpreadMethodReference {
                             for (int $index$5 = 0; $index$5 < $spread$4$2; $index$5++) $spread$4$4[$index$5] = .ceylon.language.String.instance($spread$4$0.item(.ceylon.language.Integer.instance($index$5)).initial(((.ceylon.language.Integer)$param$0).longValue()));
                         }
                         returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$4$4);
-                    ) : .ceylon.language.empty_.getEmpty());
+                    ) : .ceylon.language.empty_.getEmpty$());
                 );
             }
         };
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadMethodReference();
     }
 }

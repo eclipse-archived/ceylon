@@ -17,14 +17,14 @@ class SequencedTypeParamInvocation<T> {
     }
     
     public final .ceylon.language.Iterable<? extends T> algo$strings() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public final void algo(final .ceylon.language.Iterable<? extends T> strings) {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation();
     }
 }
@@ -38,7 +38,7 @@ final class sequencedTypeParamInvocationMethod_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.sequencedTypeParamInvocationMethod_.sequencedTypeParamInvocationMethod();
     }
 }

@@ -31,7 +31,7 @@ public class LocalMethod {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final .ceylon.language.Iterable<? extends .ceylon.language.String> m2$s(final long i1) {
-                return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+                return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
             }
             
             void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("i1")
@@ -45,7 +45,7 @@ public class LocalMethod {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.LocalMethod();
     }
 }

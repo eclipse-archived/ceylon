@@ -10,7 +10,7 @@ public class GenericMethodInvocationMixedClass<U> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass();
     }
 }
@@ -56,7 +56,7 @@ class GenericMethodInvocationMixed<X> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixed();
     }
 }

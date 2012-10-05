@@ -7,17 +7,17 @@ public final class helloworld_ {
     
     public static void helloworld() {
         .ceylon.language.Iterable<? extends .ceylon.language.String> $args$0;
-        if (($args$0 = .ceylon.language.process_.getProcess().getArguments()) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$args$0).getEmpty()) {
+        if (($args$0 = .ceylon.language.process_.getProcess$().getArguments()) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$args$0).getEmpty()) {
             final .ceylon.language.Sequence<? extends .ceylon.language.String> $args$1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$args$0;
-            .ceylon.language.process_.getProcess().write("Hello ");
-            .ceylon.language.process_.getProcess().writeLine($args$1.getFirst().toString());
+            .ceylon.language.process_.getProcess$().write("Hello ");
+            .ceylon.language.process_.getProcess$().writeLine($args$1.getFirst().toString());
         } else {
-            .ceylon.language.process_.getProcess().writeLine("Hello World");
+            .ceylon.language.process_.getProcess$().writeLine("Hello World");
         }
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.misc.helloworld.helloworld_.helloworld();
     }
 }

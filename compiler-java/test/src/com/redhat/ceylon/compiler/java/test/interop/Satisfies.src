@@ -11,7 +11,7 @@ class SatisfiesFileFilter implements .java.io.FileFilter {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter();
     }
 }
@@ -26,7 +26,7 @@ class SatisfiesFilenameFilter implements .java.io.FilenameFilter {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter();
     }
 }
@@ -42,7 +42,7 @@ final class test_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_.test();
     }
 }
@@ -113,11 +113,11 @@ class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final <M>M methodTypeParamMethod(final M b) {
-        return (M).ceylon.language.bottom_.getBottom();
+        return (M).ceylon.language.bottom_.getBottom$();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.JavaInterfaceImpl();
     }
 }

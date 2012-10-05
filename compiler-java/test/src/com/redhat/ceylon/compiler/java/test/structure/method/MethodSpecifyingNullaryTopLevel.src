@@ -9,7 +9,7 @@ final class f_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.method.f_.f();
     }
 }
@@ -23,7 +23,7 @@ class MethodSpecifierTopLevel {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel();
     }
 }

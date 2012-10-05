@@ -20,7 +20,7 @@ class VarargsMethodSpecifyingMethodWithIterable {
     }
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> bar$ints() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     private final void bar(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
@@ -28,7 +28,7 @@ class VarargsMethodSpecifyingMethodWithIterable {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.VarargsMethodSpecifyingMethodWithIterable();
     }
 }

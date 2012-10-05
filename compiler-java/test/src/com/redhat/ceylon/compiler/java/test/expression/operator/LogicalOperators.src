@@ -146,7 +146,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators();
     }
 }
@@ -199,7 +199,7 @@ public class LogicalOperatorsSub extends .com.redhat.ceylon.compiler.java.test.e
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsSub();
     }
 }

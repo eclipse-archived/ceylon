@@ -6,7 +6,7 @@ class CallableArgumentParameterClass {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterClass();
     }
 }
@@ -48,7 +48,7 @@ final class callableArgumentParameterClass_m_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterClass_m_.callableArgumentParameterClass_m();
     }
 }

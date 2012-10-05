@@ -49,7 +49,7 @@ class MultipleInheritanceImpl implements .com.redhat.ceylon.compiler.java.test.s
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl();
     }
 }
@@ -87,7 +87,7 @@ class MultipleInheritanceSubImpl implements .com.redhat.ceylon.compiler.java.tes
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl();
     }
 }
@@ -120,7 +120,7 @@ class MultipleInheritanceImplSub extends .com.redhat.ceylon.compiler.java.test.s
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub();
     }
 }
@@ -151,7 +151,7 @@ class MultipleInheritanceSubImplSub extends .com.redhat.ceylon.compiler.java.tes
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImplSub();
     }
 }

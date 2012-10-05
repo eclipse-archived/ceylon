@@ -16,7 +16,7 @@ final class forIfFor_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -47,7 +47,7 @@ final class forIfFor_ {
                     private final boolean y() {
                         if (iter$2 == null) this.iter$2();
                         final .java.lang.Object $ceylontmpitem1 = iter$2.next();
-                        y$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted();
+                        y$exhausted = $ceylontmpitem1 == .ceylon.language.exhausted_.getExhausted$();
                         if (y$exhausted) {
                             if (this.next1()) {
                                 iter$2 = this.iter$2();
@@ -61,14 +61,14 @@ final class forIfFor_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.y() ? x.times(y) : .ceylon.language.exhausted_.getExhausted();
+                        return this.y() ? x.times(y) : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
         }.getSequence()};
     }
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> getForIfFor() {
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> getForIfFor$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

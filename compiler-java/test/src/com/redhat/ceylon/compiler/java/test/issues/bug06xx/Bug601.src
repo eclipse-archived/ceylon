@@ -18,7 +18,7 @@ final class bug601_ {
                     
                     private final boolean str() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted();
+                        str$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
                         if (str$exhausted) {
                             return false;
                         } else {
@@ -28,7 +28,7 @@ final class bug601_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.str() ? str : .ceylon.language.exhausted_.getExhausted();
+                        return this.str() ? str : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
@@ -36,7 +36,7 @@ final class bug601_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug601_.bug601();
     }
 }

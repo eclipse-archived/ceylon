@@ -6,7 +6,7 @@ class C<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C();
     }
 }
@@ -16,7 +16,7 @@ class A {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.A();
     }
 }
@@ -29,7 +29,7 @@ final class test_ {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A>()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A> getTest() {
+    static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A> getTest$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

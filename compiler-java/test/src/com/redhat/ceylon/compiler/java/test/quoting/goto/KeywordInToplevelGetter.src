@@ -5,7 +5,7 @@ public final class strictfp_ {
     private strictfp_() {
     }
     
-    public static long getStrictfp() {
+    public static long getStrictfp$() {
         return 0L;
     }
     

@@ -24,6 +24,6 @@ class NamedArgumentInvocationInitWithEmptySequence {
     }
     
     static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$b() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
 }

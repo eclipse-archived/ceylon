@@ -101,21 +101,21 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Comparison $call() {
-                return .ceylon.language.larger_.getLarger();
+                return .ceylon.language.larger_.getLarger$();
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Comparison> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>("ceylon.language.Callable<ceylon.language.Comparison>"){
             
             @.java.lang.Override
             public .ceylon.language.Comparison $call() {
-                return .ceylon.language.larger_.getLarger();
+                return .ceylon.language.larger_.getLarger$();
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .ceylon.language.Comparison>> c3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Comparison>>("ceylon.language.Callable<ceylon.language.Sequence<ceylon.language.Comparison>>"){
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Comparison> $call() {
-                return new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Comparison>(.ceylon.language.larger_.getLarger(), .ceylon.language.smaller_.getSmaller());
+                return new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Comparison>(.ceylon.language.larger_.getLarger$(), .ceylon.language.smaller_.getSmaller$());
             }
         };
         final .ceylon.language.Callable<? extends T> t1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>("ceylon.language.Callable<T>"){

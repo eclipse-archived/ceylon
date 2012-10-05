@@ -12,7 +12,7 @@ final class testFiles_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.testFiles_.testFiles();
     }
 }
@@ -43,7 +43,7 @@ final class test_booleans_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_booleans_.test_booleans();
     }
 }
@@ -71,7 +71,7 @@ final class test_JBooleans_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_JBooleans_.test_JBooleans();
     }
 }
@@ -99,7 +99,7 @@ final class test_bytes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_bytes_.test_bytes();
     }
 }
@@ -127,7 +127,7 @@ final class test_JBytes_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_JBytes_.test_JBytes();
     }
 }
@@ -155,7 +155,7 @@ final class test_shorts_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_shorts_.test_shorts();
     }
 }
@@ -183,7 +183,7 @@ final class test_JShorts_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_JShorts_.test_JShorts();
     }
 }
@@ -211,7 +211,7 @@ final class test_ints_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_ints_.test_ints();
     }
 }
@@ -239,7 +239,7 @@ final class test_JIntegers_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_JIntegers_.test_JIntegers();
     }
 }
@@ -270,7 +270,7 @@ final class test_longs_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_longs_.test_longs();
     }
 }
@@ -298,7 +298,7 @@ final class test_JLongs_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_JLongs_.test_JLongs();
     }
 }
@@ -326,7 +326,7 @@ final class test_floats_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_floats_.test_floats();
     }
 }
@@ -354,7 +354,7 @@ final class test_JFloats_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_JFloats_.test_JFloats();
     }
 }
@@ -385,7 +385,7 @@ final class test_doubles_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_doubles_.test_doubles();
     }
 }
@@ -413,7 +413,7 @@ final class test_JDoubles_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_JDoubles_.test_JDoubles();
     }
 }
@@ -444,7 +444,7 @@ final class test_chars_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_chars_.test_chars();
     }
 }
@@ -472,7 +472,7 @@ final class test_JCharacters_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_JCharacters_.test_JCharacters();
     }
 }
@@ -503,7 +503,7 @@ final class test_Strings_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_Strings_.test_Strings();
     }
 }
@@ -530,7 +530,7 @@ final class test_Objects_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.test_Objects_.test_Objects();
     }
 }

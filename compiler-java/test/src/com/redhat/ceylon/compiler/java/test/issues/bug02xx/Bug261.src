@@ -55,7 +55,7 @@ final class bug261_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug261_.bug261();
     }
 }

@@ -25,7 +25,7 @@ final class callableArgumentVarargs_g_ {
     }
     
     static final .ceylon.language.Iterable<? extends .ceylon.language.String> callableArgumentVarargs_g$s() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     static void callableArgumentVarargs_g(final .ceylon.language.Iterable<? extends .ceylon.language.String> s) {
@@ -53,7 +53,7 @@ final class callableArgumentVarargs_m_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_m_.callableArgumentVarargs_m();
     }
 }

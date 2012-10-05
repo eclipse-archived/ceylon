@@ -16,7 +16,7 @@ public final class bug675_ {
     }
     
     public static final <Element>.ceylon.language.Iterable<? extends Element> bug675$elements() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>> bug675(final .ceylon.language.Iterable<? extends Element> elements) {

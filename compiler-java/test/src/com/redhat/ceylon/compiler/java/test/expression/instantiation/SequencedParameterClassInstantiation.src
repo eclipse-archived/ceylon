@@ -17,7 +17,7 @@ class SequencedParameterClassInstantiation {
     }
     
     static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$args(final long a) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public final void m() {

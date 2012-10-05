@@ -6,7 +6,7 @@ class SelfTypeInstantiation<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation();
     }
 }
@@ -19,7 +19,7 @@ final class selfTypeInstantiation_ {
         value = new .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation[]{new .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.ceylon.language.String>()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.ceylon.language.String> getSelfTypeInstantiation() {
+    static .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfTypeInstantiation<.ceylon.language.String> getSelfTypeInstantiation$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

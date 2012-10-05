@@ -26,14 +26,14 @@ class NamedArgumentWithEmptySequence {
     }
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$b() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     private final void m(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> b) {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithEmptySequence();
     }
 }

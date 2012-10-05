@@ -17,7 +17,7 @@ class SequencedParameterInvocation {
     }
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$i(final .java.lang.String a) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     private final void m(final .java.lang.String a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i) {
@@ -35,7 +35,7 @@ class SequencedParameterInvocation {
     }
     
     private final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> m2$i(final .java.lang.String a) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     private final void m2(final .java.lang.String a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation> i) {
@@ -48,7 +48,7 @@ class SequencedParameterInvocation {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation();
     }
 }

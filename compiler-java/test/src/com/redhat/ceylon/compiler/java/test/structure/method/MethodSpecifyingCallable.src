@@ -10,7 +10,7 @@ final class methodSpecifyingCallable_f_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingCallable_f_.methodSpecifyingCallable_f();
     }
 }
@@ -24,7 +24,7 @@ class MethodSpecifyingCallable {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingCallable();
     }
 }

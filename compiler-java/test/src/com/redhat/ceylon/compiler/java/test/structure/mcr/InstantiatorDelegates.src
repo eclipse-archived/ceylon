@@ -133,7 +133,7 @@ final class InstantiatorDelegates$impl<X> {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $Sequenced$init$i(final boolean b) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new(final boolean b) {
@@ -284,7 +284,7 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.t
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegatesImpl();
     }
 }

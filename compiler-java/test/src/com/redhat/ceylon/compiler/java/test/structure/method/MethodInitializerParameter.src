@@ -81,7 +81,7 @@ class MethodInitializerParameter<T> {
             }
             
             private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> m$seq(final long i) {
-                return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+                return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
             }
             
             void m(final long i, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {

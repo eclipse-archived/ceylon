@@ -6,10 +6,10 @@ final class toplevelObject_ {
     }
     private static final .java.lang.Object[] value;
     static {
-        value = new .java.lang.Object[]{.ceylon.language.bottom_.getBottom()};
+        value = new .java.lang.Object[]{.ceylon.language.bottom_.getBottom$()};
     }
     
-    static .java.lang.Object getToplevelObject() {
+    static .java.lang.Object getToplevelObject$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -23,10 +23,10 @@ final class toplevelInteger_ {
     }
     private static final long[] value;
     static {
-        value = new long[]{((.ceylon.language.Integer).ceylon.language.bottom_.getBottom()).longValue()};
+        value = new long[]{((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue()};
     }
     
-    static long getToplevelInteger() {
+    static long getToplevelInteger$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -37,19 +37,19 @@ final class toplevelInteger_ {
 class BottomClass {
     
     BottomClass(.java.lang.Object argObject, long argInteger) {
-        final .java.lang.Object attrObject = .ceylon.language.bottom_.getBottom();
-        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom()).longValue();
+        final .java.lang.Object attrObject = .ceylon.language.bottom_.getBottom$();
+        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
     }
     
     private final .java.lang.Object methodObject(final .java.lang.Object o) {
-        return .ceylon.language.bottom_.getBottom();
+        return .ceylon.language.bottom_.getBottom$();
     }
     
     private final long methodInteger(final long i) {
-        return ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom()).longValue();
+        return ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
     }
     
     private final void f() {
-        new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.bottom_.getBottom(), ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom()).longValue());
+        new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.bottom_.getBottom$(), ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue());
     }
 }

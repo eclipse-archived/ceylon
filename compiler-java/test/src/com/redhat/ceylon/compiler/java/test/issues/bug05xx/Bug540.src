@@ -9,7 +9,7 @@ final class arr1_ {
         value = new .ceylon.language.Array[]{.ceylon.language.array_.<.ceylon.language.Integer>array(long.class, new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)))};
     }
     
-    static .ceylon.language.Array<.ceylon.language.Integer> getArr1() {
+    static .ceylon.language.Array<.ceylon.language.Integer> getArr1$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -32,7 +32,7 @@ final class arr3_ {
         )};
     }
     
-    static .ceylon.language.Array<.ceylon.language.Integer> getArr3() {
+    static .ceylon.language.Array<.ceylon.language.Integer> getArr3$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

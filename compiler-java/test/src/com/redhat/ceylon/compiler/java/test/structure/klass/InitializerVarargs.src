@@ -21,6 +21,6 @@ class InitializerVarargs {
     }
     
     static .ceylon.language.Iterable<? extends .ceylon.language.String> $init$fs(final .java.lang.String f) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
 }

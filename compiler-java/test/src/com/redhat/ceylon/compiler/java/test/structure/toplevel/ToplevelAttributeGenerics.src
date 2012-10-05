@@ -9,7 +9,7 @@ final class topLevelAttributeGenerics_ {
         value = new .ceylon.language.List[]{new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
     }
     
-    static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelAttributeGenerics() {
+    static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelAttributeGenerics$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -26,7 +26,7 @@ public final class topLevelAttributeGenericsShared_ {
         value = new .ceylon.language.List[]{new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
     }
     
-    public static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelAttributeGenericsShared() {
+    public static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelAttributeGenericsShared$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -43,7 +43,7 @@ final class topLevelVariableGenerics_ {
         value = new .ceylon.language.List[]{new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
     }
     
-    static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelVariableGenerics() {
+    static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelVariableGenerics$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -64,7 +64,7 @@ public final class topLevelVariableGenericsShared_ {
         value = new .ceylon.language.List[]{new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"))};
     }
     
-    public static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelVariableGenericsShared() {
+    public static .ceylon.language.List<? extends .ceylon.language.String> getTopLevelVariableGenericsShared$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

@@ -67,7 +67,7 @@ class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.test.issue
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface3$this;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
     }
 }
@@ -77,7 +77,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface2$this = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2$impl(this);
         this.attr = null;
-        this.attr2 = .ceylon.language.bottom_.getBottom();
+        this.attr2 = .ceylon.language.bottom_.getBottom$();
         this.attr3 = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug260_Interface$this;
@@ -107,7 +107,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 m2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2).ceylon.language.bottom_.getBottom();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2).ceylon.language.bottom_.getBottom$();
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 attr3;
     
@@ -122,7 +122,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260();
     }
 }

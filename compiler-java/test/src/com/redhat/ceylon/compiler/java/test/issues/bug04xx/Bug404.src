@@ -14,7 +14,7 @@ class Bug404 {
             }
             returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("1"), .ceylon.language.String.instance("1.0")).contains($ceylontmp0);
         );
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> empty = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
         sync = !(
             let
             {
@@ -32,7 +32,7 @@ class Bug404 {
                             for (int $index$3 = 0; $index$3 < $spread$2$2; $index$3++) $spread$2$4[$index$3] = .ceylon.language.String.instance($spread$2$0.item(.ceylon.language.Integer.instance($index$3)).getUppercased());
                         }
                         returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$2$4);
-                    ) : .ceylon.language.empty_.getEmpty());
+                    ) : .ceylon.language.empty_.getEmpty$());
                 );
             }
             returning $ceylontmp4 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp4).getEmpty();
@@ -55,7 +55,7 @@ class Bug404 {
                             for (int $index$7 = 0; $index$7 < $spread$6$2; $index$7++) $spread$6$4[$index$7] = .ceylon.language.String.instance($spread$6$0.item(.ceylon.language.Integer.instance($index$7)).getUppercased());
                         }
                         returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$6$4);
-                    ) : .ceylon.language.empty_.getEmpty());
+                    ) : .ceylon.language.empty_.getEmpty$());
                 );
             }
             returning $ceylontmp8 instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ceylontmp8).getEmpty();
@@ -74,12 +74,12 @@ class Bug404 {
                     for (int $index$11 = 0; $index$11 < $spread$10$2; $index$11++) $spread$10$4[$index$11] = .ceylon.language.String.instance($spread$10$0.item(.ceylon.language.Integer.instance($index$11)).getUppercased());
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$10$4);
-            ) : .ceylon.language.empty_.getEmpty());
+            ) : .ceylon.language.empty_.getEmpty$());
         );
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug404();
     }
 }

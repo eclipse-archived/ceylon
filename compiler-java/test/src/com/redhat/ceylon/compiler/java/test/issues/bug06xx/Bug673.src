@@ -63,7 +63,7 @@ public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.t
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_PaisController();
     }
 }

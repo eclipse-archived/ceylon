@@ -26,7 +26,7 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.test.structure.c
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.NameCollision();
     }
 }

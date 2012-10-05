@@ -9,7 +9,7 @@ class Foo {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Foo();
     }
 }
@@ -23,7 +23,7 @@ class Bar extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Bar();
     }
 }
@@ -37,7 +37,7 @@ class Baz extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Baz();
     }
 }
@@ -50,7 +50,7 @@ class GenInv<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.GenInv();
     }
 }
@@ -63,7 +63,7 @@ class GenCov<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.GenCov();
     }
 }
@@ -76,7 +76,7 @@ class GenCon<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.GenCon();
     }
 }
@@ -100,7 +100,7 @@ class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats>
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Sats();
     }
 }
@@ -118,7 +118,7 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.BarSats();
     }
 }
@@ -129,7 +129,7 @@ class ExtVoid extends .com.redhat.ceylon.compiler.java.test.structure.type.GenIn
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.ExtVoid();
     }
 }
@@ -140,7 +140,7 @@ class ExtBottom extends .com.redhat.ceylon.compiler.java.test.structure.type.Gen
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.ExtBottom();
     }
 }
@@ -186,7 +186,7 @@ class Conversions {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.Conversions();
     }
 }
@@ -208,7 +208,7 @@ class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structu
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.UpperBoundErasure1();
     }
 }

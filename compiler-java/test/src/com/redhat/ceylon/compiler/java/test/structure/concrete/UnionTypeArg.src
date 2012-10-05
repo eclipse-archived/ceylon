@@ -6,7 +6,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>).ceylon.language.bottom_.getBottom();
+        this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>).ceylon.language.bottom_.getBottom$();
     }
     private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
@@ -134,7 +134,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg();
     }
 }
@@ -144,7 +144,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
         this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.java.lang.Object>(this);
         this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.java.lang.Object, .java.lang.Object>(this);
         this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
-        this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>).ceylon.language.bottom_.getBottom();
+        this.iterator = (.ceylon.language.Iterator<? extends .java.lang.Object>).ceylon.language.bottom_.getBottom$();
     }
     private final .ceylon.language.Iterable$impl<.java.lang.Object> $ceylon$language$Iterable$this;
     
@@ -272,7 +272,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArgOverride();
     }
 }

@@ -6,7 +6,7 @@ final class bug586_ {
     }
     
     static void bug586() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String> seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
         final .ceylon.language.String s = ((.ceylon.language.Iterable<? extends .ceylon.language.String>)(
             let
             {
@@ -21,12 +21,12 @@ final class bug586_ {
                     for (int $index$2 = 0; $index$2 < $spread$1$2; $index$2++) $spread$1$4[$index$2] = .ceylon.language.String.instance($spread$1$0.item(.ceylon.language.Integer.instance($index$2)).toString());
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$1$4);
-            ) : .ceylon.language.empty_.getEmpty());
+            ) : .ceylon.language.empty_.getEmpty$());
         )).getFirst();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug586_.bug586();
     }
 }

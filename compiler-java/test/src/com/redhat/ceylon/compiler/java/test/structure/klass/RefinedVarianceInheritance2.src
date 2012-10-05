@@ -17,7 +17,7 @@ class RefinedVarianceInheritance2Bottom extends .com.redhat.ceylon.compiler.java
     
     @.java.lang.Override
     public final long m() {
-        return ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom()).longValue();
+        return ((.ceylon.language.Integer).ceylon.language.bottom_.getBottom$()).longValue();
     }
     
     @.java.lang.Override
@@ -26,7 +26,7 @@ class RefinedVarianceInheritance2Bottom extends .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Bottom();
     }
 }

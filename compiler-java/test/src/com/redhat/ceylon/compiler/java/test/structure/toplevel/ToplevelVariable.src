@@ -9,7 +9,7 @@ final class topLevelVariable_ {
         value = new long[]{0L};
     }
     
-    static long getTopLevelVariable() {
+    static long getTopLevelVariable$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

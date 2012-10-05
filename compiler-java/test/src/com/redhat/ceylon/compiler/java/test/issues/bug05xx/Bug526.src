@@ -114,7 +114,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom1();
     }
 }
@@ -176,7 +176,7 @@ class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom2();
     }
 }

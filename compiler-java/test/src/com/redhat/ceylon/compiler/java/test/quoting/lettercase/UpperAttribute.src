@@ -13,7 +13,7 @@ public final class Zero {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("variable")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
-    public static long getZero() {
+    public static long getZero$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -36,7 +36,7 @@ public final class One {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
-    public static long getOne() {
+    public static long getOne$() {
         return 1L;
     }
     

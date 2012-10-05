@@ -157,7 +157,7 @@ public final class f5_ {
     }
     
     public static final .ceylon.language.Iterable<? extends .ceylon.language.Integer> f5$seq(final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public static void f5(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
@@ -185,7 +185,7 @@ final class test_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.test_.test();
     }
 }

@@ -38,7 +38,7 @@ final class callableArgumentVarargs2_m_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs2_m_.callableArgumentVarargs2_m();
     }
 }

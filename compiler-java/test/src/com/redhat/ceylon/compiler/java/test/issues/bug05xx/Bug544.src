@@ -44,7 +44,7 @@ final class s_ {
         value = new .java.lang.String[]{""};
     }
     
-    static .java.lang.String getS() {
+    static .java.lang.String getS$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -55,11 +55,11 @@ final class s_ {
 class Bug544Toplevel extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
     
     Bug544Toplevel() {
-        super(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.getS());
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.getS$());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Toplevel();
     }
 }
@@ -88,7 +88,7 @@ class Bug544ContainerClass {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerClass();
     }
 }

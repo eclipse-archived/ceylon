@@ -12,7 +12,7 @@ class Bug627Four extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bu
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Four();
     }
 }
@@ -23,7 +23,7 @@ class Bug627Three extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.B
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Three();
     }
 }
@@ -34,7 +34,7 @@ class Bug627Two extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Two();
     }
 }
@@ -58,11 +58,11 @@ class Bug627Concrete implements .com.redhat.ceylon.compiler.java.test.issues.bug
     
     @.java.lang.Override
     public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum> elements() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Concrete();
     }
 }

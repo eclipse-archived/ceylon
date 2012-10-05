@@ -48,11 +48,11 @@ class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compil
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.bottom_.getBottom();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.bottom_.getBottom$();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SuperCoGood();
     }
 }
@@ -66,11 +66,11 @@ class RefinementAndIntersection_SubCoGood extends .com.redhat.ceylon.compiler.ja
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.bottom_.getBottom();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.bottom_.getBottom$();
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood();
     }
 }
@@ -86,7 +86,7 @@ final class refinementAndIntersection_method_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.structure.klass.refinementAndIntersection_method_.refinementAndIntersection_method();
     }
 }

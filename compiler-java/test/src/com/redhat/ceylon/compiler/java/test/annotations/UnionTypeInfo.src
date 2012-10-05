@@ -9,7 +9,7 @@ public class Foo {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
 }
@@ -22,7 +22,7 @@ public class Bar {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
     }
 }
@@ -102,7 +102,7 @@ final class toplevelAttribute_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
-    static .java.lang.Object getToplevelAttribute() {
+    static .java.lang.Object getToplevelAttribute$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -123,7 +123,7 @@ public final class sharedToplevelAttribute_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
-    public static .java.lang.Object getSharedToplevelAttribute() {
+    public static .java.lang.Object getSharedToplevelAttribute$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -168,7 +168,7 @@ final class toplevelGetter_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
-    static .java.lang.Object getToplevelGetter() {
+    static .java.lang.Object getToplevelGetter$() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
@@ -186,7 +186,7 @@ public final class toplevelSharedGetter_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.Foo|com.redhat.ceylon.compiler.java.test.annotations.Bar")
-    public static .java.lang.Object getToplevelSharedGetter() {
+    public static .java.lang.Object getToplevelSharedGetter$() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     

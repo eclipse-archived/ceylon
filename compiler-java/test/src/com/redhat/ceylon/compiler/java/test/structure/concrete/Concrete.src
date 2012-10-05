@@ -405,7 +405,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.test.structure
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl();
     }
 }
@@ -644,7 +644,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.tes
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault();
     }
 }
@@ -1041,7 +1041,7 @@ class AbstractSub<E> extends .com.redhat.ceylon.compiler.java.test.structure.con
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub();
     }
 }
@@ -1443,7 +1443,7 @@ class AbstractImplSub<G> extends .com.redhat.ceylon.compiler.java.test.structure
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub();
     }
 }

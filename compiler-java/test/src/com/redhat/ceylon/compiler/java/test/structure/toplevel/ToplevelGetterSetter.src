@@ -5,7 +5,7 @@ final class topLevelGetterSetter_ {
     private topLevelGetterSetter_() {
     }
     
-    static long getTopLevelGetterSetter() {
+    static long getTopLevelGetterSetter$() {
         return 0L;
     }
     
@@ -17,7 +17,7 @@ public final class topLevelGetterSetterShared_ {
     private topLevelGetterSetterShared_() {
     }
     
-    public static long getTopLevelGetterSetterShared() {
+    public static long getTopLevelGetterSetterShared$() {
         return 0L;
     }
     

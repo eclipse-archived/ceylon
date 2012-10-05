@@ -241,7 +241,7 @@ class Fookls {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public .java.lang.Object fa(final long n, final .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq) {
@@ -533,7 +533,7 @@ final class Barface$impl {
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.Integer> fa$seq(final long n) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
 }
 class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface {
@@ -701,7 +701,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.test.expression.invoke.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barkls();
     }
 }
@@ -1780,7 +1780,7 @@ final class methodInvocationWithDefaultedParameters_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.methodInvocationWithDefaultedParameters_.methodInvocationWithDefaultedParameters();
     }
 }

@@ -20,7 +20,7 @@ class Bug687 {
     }
     
     public final <T extends .ceylon.language.Number>.ceylon.language.Iterable<? extends T> sort$elements() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public final <T extends .ceylon.language.Number>void sort(final .ceylon.language.Iterable<? extends T> elements) {
@@ -41,36 +41,36 @@ class Bug687 {
     }
     
     public final .ceylon.language.Iterable sort2$elements() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     public final void sort2(final .ceylon.language.Iterable elements) {
     }
     
     private final void foo(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
-        sort((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty());
+        sort((.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$());
         (
             let
             {
-                .ceylon.language.Iterable $arg$4$0 = .ceylon.language.empty_.getEmpty();
+                .ceylon.language.Iterable $arg$4$0 = .ceylon.language.empty_.getEmpty$();
                 sort($arg$4$0);
             }
             returning null;
         );
-        sort2(.ceylon.language.empty_.getEmpty());
+        sort2(.ceylon.language.empty_.getEmpty$());
         (
             let
             {
-                .ceylon.language.Iterable $arg$5$0 = .ceylon.language.empty_.getEmpty();
+                .ceylon.language.Iterable $arg$5$0 = .ceylon.language.empty_.getEmpty$();
                 sort2($arg$5$0);
             }
             returning null;
         );
-        p.$call(.ceylon.language.empty_.getEmpty());
+        p.$call(.ceylon.language.empty_.getEmpty$());
         (
             let
             {
-                .ceylon.language.Iterable $arg$6$0 = .ceylon.language.empty_.getEmpty();
+                .ceylon.language.Iterable $arg$6$0 = .ceylon.language.empty_.getEmpty$();
             }
             returning p.$call($arg$6$0);
         );
@@ -87,11 +87,11 @@ class Bug687 {
                 );
             }
         };
-        f.$call(.ceylon.language.empty_.getEmpty());
+        f.$call(.ceylon.language.empty_.getEmpty$());
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687();
     }
 }

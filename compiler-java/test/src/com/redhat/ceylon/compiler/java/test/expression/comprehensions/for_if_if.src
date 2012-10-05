@@ -16,7 +16,7 @@ final class forIfIf_ {
                     
                     private final boolean x() {
                         final .java.lang.Object $ceylontmpitem0 = iter$0.next();
-                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
                         if (x$exhausted) {
                             return false;
                         } else {
@@ -46,14 +46,14 @@ final class forIfIf_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? x : .ceylon.language.exhausted_.getExhausted();
+                        return this.next2() ? x : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
         }.getSequence()};
     }
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> getForIfIf() {
+    static .ceylon.language.Iterable<? extends .ceylon.language.Integer> getForIfIf$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

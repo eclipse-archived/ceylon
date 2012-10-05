@@ -119,7 +119,7 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.test.expression.erasur
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
     }
 }
@@ -169,7 +169,7 @@ class CLeft implements .com.redhat.ceylon.compiler.java.test.expression.erasure.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
     }
 }
@@ -191,7 +191,7 @@ final class topLevelLeftAttribute_ {
         value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[]{new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft()};
     }
     
-    static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left getTopLevelLeftAttribute() {
+    static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left getTopLevelLeftAttribute$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

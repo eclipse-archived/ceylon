@@ -9,7 +9,7 @@ final class optimToplevelInteger_ {
         value = new long[]{0L};
     }
     
-    static long getOptimToplevelInteger() {
+    static long getOptimToplevelInteger$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
@@ -340,7 +340,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger((
             let
             {
-                long $ceylontmpop13 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger();
+                long $ceylontmpop13 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger($ceylontmpop13 + 1);
             }
             returning $ceylontmpop13;
@@ -381,7 +381,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger((
             let
             {
-                long $ceylontmpop19 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger() + 1;
+                long $ceylontmpop19 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$() + 1;
                 .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger($ceylontmpop19);
             }
             returning $ceylontmpop19;
@@ -422,7 +422,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger((
             let
             {
-                long $ceylontmpop25 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger() + .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger();
+                long $ceylontmpop25 = .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$() + .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.getOptimToplevelInteger$();
                 .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.setOptimToplevelInteger($ceylontmpop25);
             }
             returning $ceylontmpop25;
@@ -566,7 +566,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.expression.operator.Optim();
     }
 }

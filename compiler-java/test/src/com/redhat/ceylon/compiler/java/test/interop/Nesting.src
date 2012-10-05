@@ -9,7 +9,7 @@ class JNI_Impl implements .com.redhat.ceylon.compiler.java.test.interop.JavaNest
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.JNI_Impl();
     }
 }
@@ -22,7 +22,7 @@ class JNI_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.test.i
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.JNI_InnerInterface_Impl();
     }
 }
@@ -35,7 +35,7 @@ class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.test
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.JN_IS_InnerInterface_Impl();
     }
 }
@@ -48,7 +48,7 @@ class JN_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.test.in
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.interop.JN_InnerInterface_Impl();
     }
 }
@@ -84,7 +84,7 @@ final class nesting_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.interop.nesting_.nesting();
     }
 }

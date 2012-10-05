@@ -46,7 +46,7 @@ final class defaultFunctionReference_call_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_call_.defaultFunctionReference_call();
     }
 }

@@ -17,7 +17,7 @@ class Foo {
     }
     
     static .ceylon.language.Iterable<? extends .ceylon.language.String> $init$name() {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
 }
 class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation.Foo {

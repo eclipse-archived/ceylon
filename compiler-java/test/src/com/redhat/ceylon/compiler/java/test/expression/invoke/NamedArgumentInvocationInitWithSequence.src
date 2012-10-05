@@ -17,11 +17,11 @@ class NamedArgumentInvocationInitWithSequence {
     }
     
     static .ceylon.language.Iterable<? extends .ceylon.language.Integer> $init$b(final .java.lang.String a) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $Inner$init$z(final boolean x, final .java.lang.String y) {
-        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
     }
     
     class Inner {

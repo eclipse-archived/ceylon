@@ -42,7 +42,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.test.statement.conditional
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo();
     }
 }
@@ -56,7 +56,7 @@ class FooSub extends .com.redhat.ceylon.compiler.java.test.statement.conditional
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub();
     }
 }
@@ -91,7 +91,7 @@ class Bar implements .com.redhat.ceylon.compiler.java.test.statement.conditional
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar();
     }
 }
@@ -164,7 +164,7 @@ class MethodIfIs {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIs();
     }
 }
