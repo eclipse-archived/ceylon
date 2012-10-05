@@ -16,6 +16,9 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import org.jboss.jandex.*;
 
 import java.io.File;
@@ -23,7 +26,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,17 +34,22 @@ import java.util.List;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class BytecodeUtils {
-    
+public final class BytecodeUtils implements DependencyResolver {
+    static BytecodeUtils INSTANCE = new BytecodeUtils();
+
     public static interface ModuleInfoCallback {
         public void storeInfo(String doc, String license, String[] authors);
     }
-    
+
     private BytecodeUtils() {
     }
 
     private static final String JAVA = "java";
     private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
+
+    public List<ModuleInfo> resolve(ArtifactResult parent) {
+        return readModuleInformation(parent.name(), parent.artifact());
+    }
 
     /**
      * Read module info from bytecode.
@@ -54,7 +61,7 @@ public final class BytecodeUtils {
     public static List<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
         final ClassInfo moduleClass = getModuleInfo(moduleName, jarFile);
         if (moduleClass == null)
-            return Collections.emptyList();
+            return null;
 
         List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
         if (annotations == null || annotations.isEmpty())
@@ -85,7 +92,7 @@ public final class BytecodeUtils {
     }
 
     private static ClassInfo getModuleInfo(final String moduleName,
-            final File jarFile) {
+                                           final File jarFile) {
         final Index index;
         try {
             // TODO -- remove this with new Jandex release
@@ -101,19 +108,18 @@ public final class BytecodeUtils {
                 stream.close();
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read index for zip file "+jarFile.getPath(), e);
+            throw new RuntimeException("Failed to read index for zip file " + jarFile.getPath(), e);
         }
 
         final DotName moduleClassName = DotName.createSimple(moduleName + ".module_");
-        final ClassInfo moduleClass = index.getClassByName(moduleClassName);
-        return moduleClass;
+        return index.getClassByName(moduleClassName);
     }
 
-    public static void readModuleInfo(String moduleName, File moduleArchive, ModuleInfoCallback callback){
+    public static void readModuleInfo(String moduleName, File moduleArchive, ModuleInfoCallback callback) {
         final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
-        if(moduleClass == null)
+        if (moduleClass == null)
             return;
-        
+
         List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
         if (annotations == null || annotations.isEmpty())
             return;
@@ -122,32 +128,32 @@ public final class BytecodeUtils {
         AnnotationValue doc = moduleAnnotation.value("doc");
         AnnotationValue license = moduleAnnotation.value("license");
         AnnotationValue by = moduleAnnotation.value("by");
-        
-        callback.storeInfo(doc != null ? doc.asString() : null, 
-                           license != null ? license.asString() : null,
-                           by != null ? by.asStringArray() : null);
+
+        callback.storeInfo(doc != null ? doc.asString() : null,
+                license != null ? license.asString() : null,
+                by != null ? by.asStringArray() : null);
     }
 
-    public static boolean matchesModuleInfo(String moduleName, File moduleArchive, String query){
+    public static boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
         final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
-        if(moduleClass == null)
+        if (moduleClass == null)
             return false;
-        
+
         List<AnnotationInstance> annotations = moduleClass.annotations().get(MODULE_ANNOTATION);
         if (annotations == null || annotations.isEmpty())
             return false;
 
         final AnnotationInstance moduleAnnotation = annotations.get(0);
         AnnotationValue doc = moduleAnnotation.value("doc");
-        if(doc != null && matches(doc.asString(), query))
+        if (doc != null && matches(doc.asString(), query))
             return true;
         AnnotationValue license = moduleAnnotation.value("license");
-        if(license != null && matches(license.asString(), query))
+        if (license != null && matches(license.asString(), query))
             return true;
         AnnotationValue by = moduleAnnotation.value("by");
-        if(by != null){
-            for(String author : by.asStringArray()){
-                if(matches(author, query))
+        if (by != null) {
+            for (String author : by.asStringArray()) {
+                if (matches(author, query))
                     return true;
             }
         }

@@ -1,33 +1,25 @@
 package com.redhat.ceylon.cmr.ceylon;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
-import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
-import com.redhat.ceylon.cmr.impl.FileContentStore;
-import com.redhat.ceylon.cmr.impl.JULLogger;
-import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
-import com.redhat.ceylon.cmr.impl.SourceArchiveCreatorImpl;
+import com.redhat.ceylon.cmr.api.*;
+import com.redhat.ceylon.cmr.impl.*;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.Repositories;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
 public class CeylonUtils {
 
     public static CeylonRepoManagerBuilder repoManager() {
         return new CeylonRepoManagerBuilder();
     }
-    
+
     public static class CeylonRepoManagerBuilder {
         private File actualCwd;
         private File cwd;
@@ -38,24 +30,26 @@ public class CeylonUtils {
         private String user;
         private String password;
         private Logger log;
-        
+
         /**
          * Sets the current working directory to use for encountering the configuration
          * files to use for building the repository manager. When not set the current
          * directory as defined by <code>new File(".")</code> will be used
+         *
          * @param cwd A File referencing a folder that could possibly contain a <code>.ceylon</code>
-         * sub-folder with a <code>config</code> file
+         *            sub-folder with a <code>config</code> file
          * @return This object for chaining method calls
          */
         public CeylonRepoManagerBuilder cwd(File cwd) {
             this.cwd = cwd;
             return this;
         }
-        
+
         /**
          * Sets the path to use for the system repository where the essential Ceylon
          * modules (compiler, language, spec, etc) can be found. When not set the
          * value will be taken from the system configuration
+         *
          * @param systemRepo A path to a Ceylon repository
          * @return This object for chaining method calls
          */
@@ -63,23 +57,25 @@ public class CeylonUtils {
             this.systemRepo = systemRepo;
             return this;
         }
-        
+
         /**
          * Sets a list of paths to use for the remote repositories. When not set the
          * list will be taken from the system configuration (they don't really have
          * to be remote, but they're called that because they will be last in the list
          * where you'd normally put remote repositories)
-         * @param userRepos A list of paths to Ceylon repositories
+         *
+         * @param remoteRepos A list of paths to Ceylon repositories
          * @return This object for chaining method calls
          */
         public CeylonRepoManagerBuilder remoteRepos(List<String> remoteRepos) {
             this.remoteRepos = remoteRepos;
             return this;
         }
-        
+
         /**
          * Sets a list of paths to use for the user repositories. When not set the
          * list will be taken from the system configuration
+         *
          * @param userRepos A list of paths to Ceylon repositories
          * @return This object for chaining method calls
          */
@@ -87,12 +83,13 @@ public class CeylonUtils {
             this.userRepos = userRepos;
             return this;
         }
-        
+
         /**
          * Sets the path to use for the output repository. For a normal manager
          * (@see #buildManager()) this is used only to look up modules,
          * for writing the output manager is needed (@see #buildOutputManager()).
          * When not set the value will be taken from the system configuration
+         *
          * @param outRepo A path to a Ceylon repository
          * @return This object for chaining method calls
          */
@@ -100,10 +97,11 @@ public class CeylonUtils {
             this.outRepo = outRepo;
             return this;
         }
-        
+
         /**
          * Sets the user name to use for writing to the output repository.
          * When not set the value will be take from the system configuration (if available)
+         *
          * @param user A user name
          * @return This object for chaining method calls
          */
@@ -111,11 +109,12 @@ public class CeylonUtils {
             this.user = user;
             return this;
         }
-        
+
         /**
          * Sets the password to use for writing to the output repository.
          * This password is not encrypted in any way!
          * When not set the value will be take from the system configuration (if available)
+         *
          * @param password A password
          * @return This object for chaining method calls
          */
@@ -123,10 +122,11 @@ public class CeylonUtils {
             this.password = password;
             return this;
         }
-        
+
         /**
          * The logger to use, both for the builder itself as well as the
          * manager under construction. When not set <code>URLLogger</code> will be used
+         *
          * @param logger A logger
          * @return This object for chaining method calls
          */
@@ -137,6 +137,7 @@ public class CeylonUtils {
 
         /**
          * Creates a RepositoryManager used for doing lookups using the current state of this builder
+         *
          * @return A new RepositoryManager
          */
         public RepositoryManager buildManager() {
@@ -145,6 +146,7 @@ public class CeylonUtils {
 
         /**
          * Creates a RepositoryManagerBuilder used for doing lookups using the current state of <b>this</b> builder
+         *
          * @return A new RepositoryManagerBuilder
          */
         public RepositoryManagerBuilder buildManagerBuilder() {
@@ -153,29 +155,29 @@ public class CeylonUtils {
             }
 
             // Make sure we load the correct configuration
-            
+
             actualCwd = new File(".");
             if (cwd == null) {
                 cwd = actualCwd;
             }
             CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
             Repositories repositories = Repositories.withConfig(config);
-            
+
             // First we determine the cache repository
-            
+
             Repositories.Repository cacheRepo = repositories.getCacheRepository();
             final File root = new File(absolute(cacheRepo.getUrl()));
-            
+
             final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log);
-            
+
             // The first two we add in reverse order because they get PREpended to the root
-            
+
             if (outRepo == null) {
                 addRepo(builder, repositories.getOutputRepository(), true);
             } else {
                 addRepo(builder, repositories, outRepo, true);
             }
-            
+
             if (systemRepo == null) {
                 addRepo(builder, repositories.getSystemRepository(), true);
             } else {
@@ -183,11 +185,10 @@ public class CeylonUtils {
             }
 
             // The rest we add in the normal order becuase they get APpended to the root
-            
+
             if (userRepos != null && !userRepos.isEmpty()) {
                 // Add user defined repos
-                for (int i=0; i<userRepos.size(); i++) {
-                    String repo = userRepos.get(i);
+                for (String repo : userRepos) {
                     addRepo(builder, repositories, repo, false);
                 }
             } else {
@@ -197,19 +198,18 @@ public class CeylonUtils {
                     addRepo(builder, lookup, false);
                 }
             }
-            
+
             // Add globally defined repos (like the user repo and the default remote Herd repo)
             Repositories.Repository[] lookups = repositories.getGlobalLookupRepositories();
             for (Repositories.Repository lookup : lookups) {
                 addRepo(builder, lookup, false);
             }
-            
+
             // Add the "remote" repos (not necessarily remote but they're called that way
             // because they will always come last in the list)
             if (remoteRepos != null && !remoteRepos.isEmpty()) {
                 // Add remote repos
-                for (int i=0; i<remoteRepos.size(); i++) {
-                    String repo = remoteRepos.get(i);
+                for (String repo : remoteRepos) {
                     addRepo(builder, repositories, repo, false);
                 }
             } else {
@@ -219,33 +219,34 @@ public class CeylonUtils {
                     addRepo(builder, lookup, false);
                 }
             }
-            
+
             log.debug("Repository lookup order:");
             for (String rds : builder.getRepositoriesDisplayString()) {
                 log.debug(" - " + rds);
             }
-            
+
             return builder;
         }
 
         /**
          * Creates a RepositoryManager used for writing using the current state of this builder
+         *
          * @return A new RepositoryManager
          */
         public RepositoryManager buildOutputManager() {
             if (log == null) {
                 log = new JULLogger();
             }
-            
+
             // Make sure we load the correct configuration
-            
+
             actualCwd = new File(".");
             if (cwd == null) {
                 cwd = actualCwd;
             }
             CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
             Repositories repositories = Repositories.withConfig(config);
-            
+
             if (outRepo == null) {
                 Repositories.Repository repo = repositories.getOutputRepository();
                 outRepo = repo.getUrl();
@@ -270,21 +271,21 @@ public class CeylonUtils {
             if (temp != null) {
                 outRepo = temp;
             }
-            
+
             if (!isHTTP(outRepo)) {
                 File repoFolder = new File(absolute(outRepo));
                 if (repoFolder.exists()) {
                     if (!repoFolder.isDirectory()) {
-                        log.error("Output repository is not a directory: "+outRepo);
+                        log.error("Output repository is not a directory: " + outRepo);
                     } else if (!repoFolder.canWrite()) {
-                        log.error("Output repository is not writable: "+outRepo);
+                        log.error("Output repository is not writable: " + outRepo);
                     }
-                } else if(!repoFolder.mkdirs()) {
-                    log.error("Failed to create output repository: "+outRepo);
+                } else if (!repoFolder.mkdirs()) {
+                    log.error("Failed to create output repository: " + outRepo);
                 }
                 StructureBuilder structureBuilder = new FileContentStore(repoFolder);
                 return new SimpleRepositoryManager(structureBuilder, log);
-            }else{
+            } else {
                 File cachingDir = FileUtil.makeTempDir("ceylonc");
 
                 // HTTP
@@ -302,12 +303,12 @@ public class CeylonUtils {
                     String path = absolute(repoInfo.getUrl());
                     Repository repo = builder.repositoryBuilder().buildRepository(path);
                     if (prepend) {
-                        builder.prependRepository(repo);                
+                        builder.prependRepository(repo);
                     } else {
                         builder.appendRepository(repo);
                     }
-                } catch(Exception e) {
-                    log.debug("Failed to add repository as input repository: " + repoInfo.getUrl() + ": "+e.getMessage());
+                } catch (Exception e) {
+                    log.debug("Failed to add repository as input repository: " + repoInfo.getUrl() + ": " + e.getMessage());
                 }
             }
         }
@@ -326,15 +327,15 @@ public class CeylonUtils {
                 String path = absolute(repoUrl);
                 Repository repo = builder.repositoryBuilder().buildRepository(path);
                 if (prepend) {
-                    builder.prependRepository(repo);                
+                    builder.prependRepository(repo);
                 } else {
                     builder.appendRepository(repo);
                 }
-            } catch(Exception e) {
-                log.debug("Failed to add repository as input repository: " + repoUrl + ": "+e.getMessage());
+            } catch (Exception e) {
+                log.debug("Failed to add repository as input repository: " + repoUrl + ": " + e.getMessage());
             }
         }
-        
+
         private String absolute(String path) {
             if (!isRemote(path)) {
                 File f = new File(path);
@@ -363,21 +364,24 @@ public class CeylonUtils {
         private boolean isRemote(String repo) {
             // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
             // (except for "file:" which we don't support)
-            return isHTTP(repo) || repo.startsWith("mvn:") || "mvn".equals(repo) || "aether".equals(repo) || repo.startsWith("aether:") ;
+            return isHTTP(repo) || repo.startsWith("mvn:") || "mvn".equals(repo) || "aether".equals(repo) || repo.startsWith("aether:");
         }
     }
 
-    /** Create and return a new SourceArchiveCreator.
-     * @param repoManager The output RepositoryManager where the .src archive will be placed
-     * @param sourcePaths The root directories that contain source files
-     * @param moduleName The module name, used for the artifact
+    /**
+     * Create and return a new SourceArchiveCreator.
+     *
+     * @param repoManager   The output RepositoryManager where the .src archive will be placed
+     * @param sourcePaths   The root directories that contain source files
+     * @param moduleName    The module name, used for the artifact
      * @param moduleVersion The module version, used for the artifact
-     * @param verbose If true, will print additional info about its progress
-     * @param log The CMR logger to use for printing progress info.
-     * @throws IOException */
+     * @param verbose       If true, will print additional info about its progress
+     * @param log           The CMR logger to use for printing progress info.
+     * @throws IOException
+     */
     public static SourceArchiveCreator makeSourceArchiveCreator(RepositoryManager repoManager,
-            Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion,
-            boolean verbose, Logger log) throws IOException {
+                                                                Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion,
+                                                                boolean verbose, Logger log) throws IOException {
         return new SourceArchiveCreatorImpl(repoManager, sourcePaths, moduleName, moduleVersion, verbose, log);
     }
 

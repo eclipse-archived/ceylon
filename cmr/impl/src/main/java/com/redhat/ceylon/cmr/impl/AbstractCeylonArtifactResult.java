@@ -29,6 +29,13 @@ import java.util.List;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResult {
+    private final static DependencyResolvers resolvers;
+
+    static {
+        resolvers = new DependencyResolvers();
+        resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
+        resolvers.addResolver(BytecodeUtils.INSTANCE);
+    }
 
     private RepositoryManager manager;
 
@@ -42,8 +49,9 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     }
 
     public List<ArtifactResult> dependencies() throws RepositoryException {
-        List<ModuleInfo> infos = BytecodeUtils.readModuleInformation(name(), artifact());
-        if (infos.isEmpty())
+        List<ModuleInfo> infos = resolvers.resolve(this);
+        // TODO -- perhaps null is not valid?
+        if (infos == null || infos.isEmpty())
             return Collections.emptyList();
 
         final List<ArtifactResult> results = new ArrayList<ArtifactResult>();

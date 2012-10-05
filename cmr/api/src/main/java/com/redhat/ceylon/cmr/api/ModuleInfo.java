@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.impl;
+package com.redhat.ceylon.cmr.api;
 
 /**
  * Module info.
