@@ -935,8 +935,11 @@ public class Naming implements LocalId {
     final String getCompanionAccessorName(Interface def) {
         return getCompanionClassName(def).replace('.', '$');
     }
-    public JCExpression makeLanguageValue(String string) {
-        return makeFQIdent("ceylon", "language", quoteClassName(string), getGetterName(string));
+    /** Generates an ident for the getter method of a Value */
+    JCExpression makeLanguageValue(String string) {
+        Declaration decl = gen().typeFact().getLanguageModuleDeclaration(string);
+        Assert.that(decl instanceof Value);
+        return makeSelect(makeName((Value)decl, NA_FQ | NA_WRAPPER), getGetterName(decl));
     }
     
     /*
