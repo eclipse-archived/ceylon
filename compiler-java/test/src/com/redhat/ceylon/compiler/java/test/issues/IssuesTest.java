@@ -240,6 +240,11 @@ public class IssuesTest extends CompilerTest {
     public void testBug410(){
         compareWithJavaSource("bug04xx/Bug410");
     }
+    
+    @Test
+    public void testBug420(){
+        compile("bug04xx/Bug420.ceylon");
+    }
 
     @Test
     public void testBug441(){
