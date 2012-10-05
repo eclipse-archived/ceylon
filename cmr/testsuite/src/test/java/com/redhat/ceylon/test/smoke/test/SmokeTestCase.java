@@ -17,15 +17,9 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URL;
-
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -43,6 +37,11 @@ import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -224,7 +223,7 @@ public class SmokeTestCase extends AbstractTest {
             ac.setSuffix(ArtifactContext.JAR);
             manager.removeArtifact(ac);
             // temporary workaround, because the jar is not stored at the right place
-            if(file != null)
+            if (file != null)
                 file.delete();
         }
     }
@@ -235,6 +234,15 @@ public class SmokeTestCase extends AbstractTest {
         File[] files = manager.resolve("moduletest", "0.1");
         Assert.assertNotNull(files);
         Assert.assertEquals(2, files.length);
+    }
+
+    @Test
+    public void testPropertiesResolver() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactContext context = new ArtifactContext("old-jar", "1.2.CR1", ArtifactContext.JAR);
+        File[] files = manager.resolve(context);
+        Assert.assertNotNull(files);
+        Assert.assertEquals(2, files.length); // TODO -- should be 3, fix it when we fix moduletest.car - > module_.class
     }
 
     @Test
@@ -313,7 +321,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testListVersion() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-            new ModuleVersionDetails("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
+                new ModuleVersionDetails("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
         };
         testListVersions("com.acme.helloworld", null, expected);
     }
@@ -334,14 +342,14 @@ public class SmokeTestCase extends AbstractTest {
                 new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
                 new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
-        
+
         testSearchResults("", Type.JVM, expected);
     }
 
     @Test
     public void testSearchModulesPaged() throws Exception {
         RepositoryManager repoManager = getRepositoryManager();
-        
+
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
@@ -357,8 +365,8 @@ public class SmokeTestCase extends AbstractTest {
                 new ModuleDetails("moduletest", null, null, set(), set("0.1")),
                 new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
         };
-        
-        results = testSearchResults("", Type.JVM, expected, results.getStart()+results.getCount(), 2l, repoManager, results.getNextPagingInfo());
+
+        results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 2l, repoManager, results.getNextPagingInfo());
         Assert.assertEquals(2, results.getCount());
         Assert.assertEquals(true, results.getHasMoreResults());
         Assert.assertEquals(2, results.getStart());
@@ -367,7 +375,7 @@ public class SmokeTestCase extends AbstractTest {
         expected = new ModuleDetails[]{
                 new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
-        results = testSearchResults("", Type.JVM, expected, results.getStart()+results.getCount(), 2l, repoManager, results.getNextPagingInfo());
+        results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 2l, repoManager, results.getNextPagingInfo());
         Assert.assertEquals(1, results.getCount());
         Assert.assertEquals(false, results.getHasMoreResults());
         Assert.assertEquals(4, results.getStart());
@@ -379,16 +387,16 @@ public class SmokeTestCase extends AbstractTest {
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
                 new ModuleDetails("hello", null, null, set(), set("1.0.0")),
         };
-        
+
         testSearchResults("hello", Type.JVM, expected);
     }
-    
+
     @Test
     public void testSearchModulesFilteredByDocLicenseAndAuthor() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
         };
-        
+
         testSearchResults("classic", Type.JVM, expected);
         testSearchResults("domain", Type.JVM, expected);
         testSearchResults("epardaud", Type.JVM, expected);
@@ -399,7 +407,7 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
         };
-        
+
         testSearchResults("classic", Type.SRC, expected);
         testSearchResults("domain", Type.SRC, expected);
         testSearchResults("epardaud", Type.SRC, expected);
@@ -409,7 +417,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testSearchModulesFilteredByDocLicenseAndAuthorJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
         };
-        
+
         testSearchResults("classic", Type.JS, expected);
         testSearchResults("domain", Type.JS, expected);
         testSearchResults("epardaud", Type.JS, expected);
@@ -418,11 +426,11 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void versionComparisonTests() {
         assertEquals(0, VersionComparator.compareVersions("", ""));
-        
+
         assertEquals(-1, VersionComparator.compareVersions("", "a"));
         assertEquals(1, VersionComparator.compareVersions("a", ""));
         assertEquals(0, VersionComparator.compareVersions("a", "a"));
-        
+
         assertEquals(-1, VersionComparator.compareVersions("a", "b"));
         assertEquals(1, VersionComparator.compareVersions("b", "a"));
         assertEquals(-1, VersionComparator.compareVersions("a", "-"));
@@ -446,12 +454,12 @@ public class SmokeTestCase extends AbstractTest {
         assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.2"));
         assertEquals(-1, VersionComparator.compareVersions("1.0.2", "2"));
         assertEquals(-1, VersionComparator.compareVersions("1.0.2", "2.2.4"));
-        
+
         assertEquals(-1, VersionComparator.compareVersions("1.0", "1.0.2"));
 
         assertEquals(-1, VersionComparator.compareVersions("0.3", "0.3.1"));
         assertEquals(1, VersionComparator.compareVersions("0.3.1", "0.3"));
         assertEquals(-1, VersionComparator.compareVersions("0.3.1", "0.3.2"));
         assertEquals(1, VersionComparator.compareVersions("0.3.2", "0.3.1"));
-}
+    }
 }
