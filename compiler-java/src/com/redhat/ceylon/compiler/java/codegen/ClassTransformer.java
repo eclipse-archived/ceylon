@@ -432,7 +432,7 @@ public class ClassTransformer extends AbstractTransformer {
                     
                     final MethodDefinitionBuilder concreteMemberDelegate = makeDelegateToCompanion(iface,
                             typedMember,
-                            PUBLIC, 
+                            PUBLIC | (method.isDefault() ? 0 : FINAL),
                             method.getTypeParameters(), 
                             method.getType(), 
                             naming.selector(method), 
