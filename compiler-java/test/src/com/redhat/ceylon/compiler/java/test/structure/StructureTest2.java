@@ -344,4 +344,9 @@ public class StructureTest2 extends CompilerTest {
     public void testCncValueRefiningGetterSetter(){
         compile("concrete/ValueRefiningGetterSetter.ceylon");
     }
+    
+    @Test
+    public void testCncMultipleInheritance(){
+        compareWithJavaSource("concrete/MultipleInheritance");
+    }
 }
