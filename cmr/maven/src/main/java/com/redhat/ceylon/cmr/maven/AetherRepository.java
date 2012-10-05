@@ -51,6 +51,14 @@ public class AetherRepository extends MavenRepository {
         return repo;
     }
     
+    @Override
+    public Node findParent(ArtifactContext context) {
+        if (context.getName().startsWith("ceylon.")) {
+            return null;
+        }
+        return super.findParent(context);
+    }
+    
     public ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
         final File[] files = utils.findDependencies(node);
         if (files == null || files.length == 0)
