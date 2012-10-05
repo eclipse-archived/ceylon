@@ -1453,8 +1453,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // reset back here after transformMemberExpression
         at(expr);
         // we always need to box to put in array
-        appliedExpr = boxUnboxIfNecessary(appliedExpr, expr, 
-                expr.getTarget().getType(), BoxingStrategy.BOXED);
+        appliedExpr = applyErasureAndBoxing(appliedExpr, expr.getTarget().getType(), CodegenUtil.hasTypeErased(expr), !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, expr.getTarget().getType(), 0);
         // newArray[index] = box(srcSequence.item(box(index)).member)
         JCStatement body = make().Exec(make().Assign(dstArrayExpr, appliedExpr));
         
