@@ -462,7 +462,7 @@ public class ClassTransformer extends AbstractTransformer {
                     if (member instanceof Setter) { 
                         final MethodDefinitionBuilder setterDelegate = makeDelegateToCompanion(iface, 
                                 typedMember,
-                                PUBLIC | (attr.isDefault() ? 0 : FINAL), 
+                                PUBLIC | (((Setter)member).getGetter().isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
                                 typeFact().getVoidDeclaration().getType(), 
                                 Naming.getSetterName(attr), 
