@@ -214,17 +214,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ProducedType expectedType, int flags) {
         ProducedType exprType = expr.getTypeModel();
         boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
-        return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType, flags);
+        boolean exprErased = CodegenUtil.hasTypeErased(expr);
+        return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, boxingStrategy, expectedType, flags);
     }
     
     JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
             boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType) {
-        return applyErasureAndBoxing(result, exprType, exprBoxed, boxingStrategy, expectedType, 0);
+        return applyErasureAndBoxing(result, exprType, false, exprBoxed, boxingStrategy, expectedType, 0);
     }
     
     JCExpression applyErasureAndBoxing(JCExpression result, ProducedType exprType,
-            boolean exprBoxed,
+            boolean exprErased, boolean exprBoxed,
             BoxingStrategy boxingStrategy, ProducedType expectedType, 
             int flags) {
         
@@ -237,7 +238,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !isNothing(exprType)) {
             // full type erasure
             if(!willEraseToObject(expectedType) 
-                    && (willEraseToObject(exprType) 
+                    && ((exprErased && !isFunctionalResult(exprType))
+                            || willEraseToObject(exprType) 
                             || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
@@ -1436,8 +1438,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 makeSelect(srcSequenceName.makeIdent(), "item"),
                 List.<JCExpression>of(boxedIndex));
         // item.member
-        sequenceItemExpr = applyErasureAndBoxing(sequenceItemExpr, srcElementType, true, BoxingStrategy.BOXED, 
-                expr.getTarget().getQualifyingType());
+        sequenceItemExpr = applyErasureAndBoxing(sequenceItemExpr, srcElementType, CodegenUtil.hasTypeErased(expr),
+                true, BoxingStrategy.BOXED, 
+                expr.getTarget().getQualifyingType(), 0);
         JCExpression appliedExpr = transformMemberExpression(expr, sequenceItemExpr, transformer);
         
         // This short-circuit is here for spread invocations

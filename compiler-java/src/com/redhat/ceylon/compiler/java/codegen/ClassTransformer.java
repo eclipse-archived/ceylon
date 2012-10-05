@@ -65,7 +65,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -636,7 +635,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(null);
         final List<JCExpression> state = List.<JCExpression>of(
                 expressionGen().applyErasureAndBoxing(naming.makeThis(), 
-                        model.getType(), true, BoxingStrategy.BOXED, 
+                        model.getType(), false, true, BoxingStrategy.BOXED, 
                         satisfiedType, ExpressionTransformer.EXPR_FOR_COMPANION));
         final String fieldName = getCompanionFieldName(iface);
         classBuilder.init(make().Exec(make().Assign(
