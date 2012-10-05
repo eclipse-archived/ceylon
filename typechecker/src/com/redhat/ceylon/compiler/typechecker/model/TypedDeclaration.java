@@ -1,10 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -18,6 +16,7 @@ public abstract class TypedDeclaration extends Declaration {
     private ProducedType type;
     private boolean uncheckedNullType = false;
     private Boolean unboxed;
+    private boolean typeErased;
     
     private TypedDeclaration originalDeclaration;
     
@@ -102,6 +101,14 @@ public abstract class TypedDeclaration extends Declaration {
 
     public void setUnboxed(Boolean value) { 
         unboxed = value; 
+    }
+
+    public Boolean getTypeErased() { 
+        return typeErased; 
+    }
+
+    public void setTypeErased(Boolean typeErased) { 
+        this.typeErased = typeErased; 
     }
 
     public boolean hasUncheckedNullType() {

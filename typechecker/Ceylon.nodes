@@ -400,7 +400,8 @@
 
 ^(abstract TERM
     ProducedType typeModel;
-    boolean unboxed;)
+    boolean unboxed;
+    boolean typeErased;)
 ^(abstract OPERATOR_EXPRESSION:TERM)
 
 ^(abstract BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION
