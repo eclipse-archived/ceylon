@@ -144,10 +144,20 @@ public class Naming implements LocalId {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
     
+    /** 
+     * @deprecated Use of this method outside this package is 
+     * <strong>strongly</strong> discouraged. 
+     * Its public modifier will be removed at a future date.
+     */
     public static String getGetterName(String property) {
         return "get"+capitalize(stripLeadingDollar(property));
     }
 
+    /** 
+     * @deprecated Use of this method outside this package is 
+     * <strong>strongly</strong> discouraged. 
+     * Its public modifier will be removed at a future date.
+     */
     public static String getSetterName(String property){
         return "set"+capitalize(stripLeadingDollar(property));
     }

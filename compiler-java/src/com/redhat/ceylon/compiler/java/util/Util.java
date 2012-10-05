@@ -113,10 +113,20 @@ public class Util {
         return Naming.getErasedGetterName(property);
     }
 
+    /** 
+     * @deprecated Use {@link Naming#getGetterName(Declaration)}.
+     * This method will be removed at a future date. 
+     */
+    @Deprecated
     public static String getGetterName(String property) {
         return Naming.getGetterName(property);
     }
 
+    /** 
+     * @deprecated Use {@link Naming#getSetterName(Declaration)}.
+     * This method will be removed at a future date.
+     */
+    @Deprecated
     public static String getSetterName(String property){
         return Naming.getSetterName(property);
     }
