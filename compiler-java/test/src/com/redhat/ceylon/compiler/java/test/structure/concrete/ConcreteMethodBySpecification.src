@@ -161,7 +161,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public long mSharedSup(final long i) {
+    public final long mSharedSup(final long i) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this.mSharedSup(i);
     }
     
@@ -182,7 +182,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this;
     
     @.java.lang.Override
-    public long mSharedFn() {
+    public final long mSharedFn() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mSharedFn();
     }
     
@@ -197,7 +197,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public long mSharedMem(final long i) {
+    public final long mSharedMem(final long i) {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this.mSharedMem(i);
     }
     

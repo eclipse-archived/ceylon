@@ -57,7 +57,7 @@ public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.t
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this;
     
     @.java.lang.Override
-    public .java.lang.Object on(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
+    public final .java.lang.Object on(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
         return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this.on(event, action);
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver$impl<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$this;

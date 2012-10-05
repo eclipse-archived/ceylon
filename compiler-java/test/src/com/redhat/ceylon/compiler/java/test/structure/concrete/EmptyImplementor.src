@@ -31,17 +31,17 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public .java.lang.Object item(final .ceylon.language.Integer key) {
+    public final .java.lang.Object item(final .ceylon.language.Integer key) {
         return $ceylon$language$Empty$this.item(key);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Empty segment(final .ceylon.language.Integer from, final long length) {
+    public final .ceylon.language.Empty segment(final .ceylon.language.Integer from, final long length) {
         return $ceylon$language$Empty$this.segment(from, length);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Empty span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+    public final .ceylon.language.Empty span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
         return $ceylon$language$Empty$this.span(from, to);
     }
     
@@ -71,12 +71,12 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
+    public final boolean contains(final .java.lang.Object element) {
         return $ceylon$language$Empty$this.contains(element);
     }
     
     @.java.lang.Override
-    public boolean defines(final .ceylon.language.Integer key) {
+    public final boolean defines(final .ceylon.language.Integer key) {
         return $ceylon$language$Empty$this.defines(key);
     }
     private final .ceylon.language.List$impl<.java.lang.Object> $ceylon$language$List$this;

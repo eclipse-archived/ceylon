@@ -73,7 +73,7 @@ class RawInvImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.test.s
     }
     
     @.java.lang.Override
-    public final void setADefault(final .java.lang.Object aDefault) {
+    public void setADefault(final .java.lang.Object aDefault) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$RawInv$this.setADefault(aDefault);
     }
     

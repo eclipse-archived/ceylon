@@ -350,7 +350,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.test.structure
     }
     
     @.java.lang.Override
-    public void mShared(final B a, final .ceylon.language.Iterable<? extends B> aseq) {
+    public final void mShared(final B a, final .ceylon.language.Iterable<? extends B> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
@@ -589,7 +589,7 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.tes
     }
     
     @.java.lang.Override
-    public void mShared(final C a, final .ceylon.language.Iterable<? extends C> aseq) {
+    public final void mShared(final C a, final .ceylon.language.Iterable<? extends C> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
@@ -828,7 +828,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.test.stru
     }
     
     @.java.lang.Override
-    public void mShared(final D a, final .ceylon.language.Iterable<? extends D> aseq) {
+    public final void mShared(final D a, final .ceylon.language.Iterable<? extends D> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     
@@ -1225,7 +1225,7 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.test.
     }
     
     @.java.lang.Override
-    public void mShared(final F a, final .ceylon.language.Iterable<? extends F> aseq) {
+    public final void mShared(final F a, final .ceylon.language.Iterable<? extends F> aseq) {
         $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this.mShared(a, aseq);
     }
     

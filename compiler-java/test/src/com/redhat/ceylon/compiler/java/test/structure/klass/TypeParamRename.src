@@ -75,7 +75,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.test.
     }
     
     @.java.lang.Override
-    public Y m(final X t) {
+    public final Y m(final X t) {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this.m(t);
     }
     
