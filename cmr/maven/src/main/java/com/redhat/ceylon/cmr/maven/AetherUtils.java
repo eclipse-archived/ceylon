@@ -35,7 +35,7 @@ import java.util.WeakHashMap;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class AetherUtils {
+public class AetherUtils {
 
     private Logger log;
     private String settingsXml;
@@ -84,7 +84,7 @@ class AetherUtils {
         }
     }
 
-    private static String getDefaultMavenSettings() {
+    public static String getDefaultMavenSettings() {
         String path = System.getProperty("maven.repo.local");
         if (path != null) {
             File file = new File(path, "settings.xml");
