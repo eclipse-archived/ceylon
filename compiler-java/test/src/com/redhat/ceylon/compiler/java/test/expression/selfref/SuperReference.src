@@ -40,9 +40,8 @@ class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expressi
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference $ceylontmpopE0 = super;
-                long $ceylontmpopV1 = $ceylontmpopE0.getA();
-                $ceylontmpopE0.setA($ceylontmpopV1 + 1);
+                long $ceylontmpopV1 = super.getA();
+                super.setA($ceylontmpopV1 + 1);
             }
             returning $ceylontmpopV1;
         );
