@@ -294,16 +294,16 @@ public final class Integer
     public Comparison compare(@Name("other") Integer other) {
         long x = value;
         long y = other.value;
-        return (x < y) ? smaller_.getSmaller() :
-            ((x == y) ? equal_.getEqual() : larger_.getLarger());
+        return (x < y) ? smaller_.getSmaller$() :
+            ((x == y) ? equal_.getEqual$() : larger_.getLarger$());
     }
 
     @Ignore
     public static Comparison compare(long value, long otherValue) {
         long x = value;
         long y = otherValue;
-        return (x < y) ? smaller_.getSmaller() :
-            ((x == y) ? equal_.getEqual() : larger_.getLarger());
+        return (x < y) ? smaller_.getSmaller$() :
+            ((x == y) ? equal_.getEqual$() : larger_.getLarger$());
     }
 
     @Override

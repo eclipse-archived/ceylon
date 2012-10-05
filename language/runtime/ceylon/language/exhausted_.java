@@ -8,7 +8,7 @@ public class exhausted_ extends Finished {
     
     private final static exhausted_ exhausted = new exhausted_();
     
-    public static exhausted_ getExhausted(){
+    public static exhausted_ getExhausted$(){
         return exhausted;
     }
 

@@ -27,7 +27,7 @@ public class LazySet<Element> implements Set<Element> {
 
     @Ignore @SuppressWarnings("unchecked")
     public LazySet() {
-        this.elems = (Iterable<? extends Element>)empty_.getEmpty();
+        this.elems = (Iterable<? extends Element>)empty_.getEmpty$();
     }
     public LazySet(@Name("elems") @Sequenced
             @TypeInfo("ceylon.language.Iterable<Element>")

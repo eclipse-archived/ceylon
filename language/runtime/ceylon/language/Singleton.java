@@ -55,12 +55,12 @@ public class Singleton<Element>
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean definesEvery() {
-	    return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty());
+	    return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Iterable<? extends Integer> definesEvery$keys() {
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
 
 	@Override
@@ -73,12 +73,12 @@ public class Singleton<Element>
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean definesAny() {
-	    return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty());
+	    return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Iterable<? extends Integer> definesAny$keys() {
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
 
 	@Override
@@ -91,12 +91,12 @@ public class Singleton<Element>
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
 	public List<? extends Element> items() {
-	    return Correspondence$impl._items(this, (Iterable)empty_.getEmpty());
+	    return Correspondence$impl._items(this, (Iterable)empty_.getEmpty$());
 	}
 	@Override @Ignore
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Iterable<? extends Integer> items$keys() {
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
 
 	@Override
@@ -114,7 +114,7 @@ public class Singleton<Element>
 	@TypeInfo("ceylon.language.Empty")
     @SuppressWarnings({"rawtypes", "unchecked"})
 	public FixedSized<? extends Element> getRest() {
-		return (FixedSized)empty_.getEmpty();
+		return (FixedSized)empty_.getEmpty$();
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class Singleton<Element>
 			@Override
 			public java.lang.Object next() {
 			    java.lang.Object result = current;
-			    current = exhausted_.getExhausted();
+			    current = exhausted_.getExhausted$();
 				return result;
 			}
 			@Override
@@ -163,7 +163,7 @@ public class Singleton<Element>
     @SuppressWarnings({"rawtypes", "unchecked"})
     public List<? extends Element> segment(@Name("from") Integer from,
     		@Name("length") long length) {
-    	return from.longValue()==0 && length>0 ? this : (List)empty_.getEmpty();
+    	return from.longValue()==0 && length>0 ? this : (List)empty_.getEmpty$();
     }
 
     @Override
@@ -172,7 +172,7 @@ public class Singleton<Element>
     public List<? extends Element> span(@Name("from") Integer from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     		@Name("to") Integer to) {
-    	return from.longValue()>0 ? (List)empty_.getEmpty(): this;
+    	return from.longValue()>0 ? (List)empty_.getEmpty$(): this;
     }
 
 	@Override
@@ -195,12 +195,12 @@ public class Singleton<Element>
     @Override
     @Ignore
     public boolean containsEvery() {
-        return Category$impl._containsEvery(this, empty_.getEmpty());
+        return Category$impl._containsEvery(this, empty_.getEmpty$());
     }
     @Override
     @Ignore
     public Iterable<?> containsEvery$elements() {
-        return empty_.getEmpty();
+        return empty_.getEmpty$();
     }
 
     @Override
@@ -212,13 +212,13 @@ public class Singleton<Element>
     @Override
     @Ignore
     public boolean containsAny() {
-        return Category$impl._containsAny(this, empty_.getEmpty());
+        return Category$impl._containsAny(this, empty_.getEmpty$());
     }
 
     @Override
     @Ignore
     public Iterable<?> containsAny$elements() {
-        return empty_.getEmpty();
+        return empty_.getEmpty$();
     }
 
     @Annotations({@Annotation("actual")})
@@ -281,7 +281,7 @@ public class Singleton<Element>
     public Iterable<? extends Element> filter(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
             Callable<? extends Boolean> selecting) {
-        return selecting.$call(element).booleanValue() ? this : (Iterable)empty_.getEmpty();
+        return selecting.$call(element).booleanValue() ? this : (Iterable)empty_.getEmpty$();
     }
     @Override
     @TypeInfo("ceylon.language.Sequence<Result>")
@@ -296,7 +296,7 @@ public class Singleton<Element>
     public Iterable<? extends Element> select(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
             Callable<? extends Boolean> selecting) {
-        return selecting.$call(element).booleanValue() ? this : (Iterable)empty_.getEmpty();
+        return selecting.$call(element).booleanValue() ? this : (Iterable)empty_.getEmpty$();
     }
     @Override
     @Ignore
@@ -315,13 +315,13 @@ public class Singleton<Element>
     @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> skipping(long skip) {
-        return skip>0 ? (Iterable)empty_.getEmpty() : this;
+        return skip>0 ? (Iterable)empty_.getEmpty$() : this;
     }
     @Override
     @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> taking(long take) {
-        return take<1 ? (Iterable)empty_.getEmpty() : this;
+        return take<1 ? (Iterable)empty_.getEmpty$() : this;
     }
     @Override @Ignore
     public Iterable<? extends Element> by(long step) {

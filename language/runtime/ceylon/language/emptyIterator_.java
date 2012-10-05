@@ -9,13 +9,13 @@ public class emptyIterator_ implements Iterator {
     
     private final static emptyIterator_ emptyIterator = new emptyIterator_();
     
-    public static emptyIterator_ getEmptyIterator(){
+    public static emptyIterator_ getEmptyIterator$(){
         return emptyIterator;
     }
     
     @Override
     public java.lang.Object next() {
-        return exhausted_.getExhausted();
+        return exhausted_.getExhausted$();
     }
 
     @Override

@@ -16,32 +16,32 @@ public class Comparison {
 
     @Ignore
     public boolean largerThan() {
-        return this == larger_.getLarger();
+        return this == larger_.getLarger$();
     }
 
     @Ignore
     public boolean smallerThan() {
-        return this == smaller_.getSmaller();
+        return this == smaller_.getSmaller$();
     }
 
     @Ignore
     public boolean equal() {
-        return this == equal_.getEqual();
+        return this == equal_.getEqual$();
     }
 
     @Ignore
     public boolean unequal() {
-        return this != equal_.getEqual();
+        return this != equal_.getEqual$();
     }
 
     @Ignore
     public boolean asLargeAs() {
-        return this != smaller_.getSmaller();
+        return this != smaller_.getSmaller$();
     }
 
     @Ignore
     public boolean asSmallAs() {
-        return this != larger_.getLarger();
+        return this != larger_.getLarger$();
     }
 
 	Comparison(java.lang.String name) {

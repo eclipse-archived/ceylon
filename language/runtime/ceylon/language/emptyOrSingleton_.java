@@ -20,7 +20,7 @@ public class emptyOrSingleton_ {
             @TypeInfo("ceylon.language.Nothing|Element")
             Element element) {
         return element==null ? 
-                (Iterable)empty_.getEmpty() : 
+                (Iterable)empty_.getEmpty$() : 
                 new Singleton<Element>(element);
     }
 }

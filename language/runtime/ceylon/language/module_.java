@@ -13,14 +13,14 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 final class module_ {
     
     @TypeInfo("ceylon.language.descriptor.Module")
-    static ceylon.language.descriptor.Module getModule() {
+    static ceylon.language.descriptor.Module getModule$() {
         return new ceylon.language.descriptor.Module(
         		"ceylon.language", 
         		"0.4", 
         		"The Ceylon language module containing the core types referred to in the language specification.", 
         		new com.redhat.ceylon.compiler.java.language.ArraySequence<ceylon.language.String>(ceylon.language.String.instance("Gavin King")), 
         		"http://www.apache.org/licenses/LICENSE-2.0.html", 
-        		(Iterable)empty_.getEmpty());
+        		(Iterable)empty_.getEmpty$());
     }
     
     private module_() {

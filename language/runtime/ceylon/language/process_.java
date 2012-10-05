@@ -189,7 +189,7 @@ public final class process_ {
     }*/
 
     @SuppressWarnings("unchecked")
-    private Iterable<? extends String> args = (Iterable)empty_.getEmpty();
+    private Iterable<? extends String> args = (Iterable)empty_.getEmpty$();
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
     public Iterable<? extends String> getArguments() {
@@ -369,7 +369,7 @@ public final class process_ {
     private process_() {}
     private static final process_ value = new process_();
     
-    public static process_ getProcess() {
+    public static process_ getProcess$() {
         return value;
     }
 }

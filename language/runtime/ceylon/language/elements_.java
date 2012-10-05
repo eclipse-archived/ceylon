@@ -25,6 +25,6 @@ public final class elements_ {
     }
     @Ignore
     public static <Element> Iterable<? extends Element> elements() {
-        return (Iterable<? extends Element>) empty_.getEmpty();
+        return (Iterable<? extends Element>) empty_.getEmpty$();
     }
 }

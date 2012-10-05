@@ -79,6 +79,6 @@ public class Package {
     final String name, 
     final boolean shared, 
     final java.lang.String doc) {
-        return (Iterable)ceylon.language.empty_.getEmpty();
+        return (Iterable)ceylon.language.empty_.getEmpty$();
     }
 }

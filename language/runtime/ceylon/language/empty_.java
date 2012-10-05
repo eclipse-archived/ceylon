@@ -235,7 +235,7 @@ public class empty_ {
         }
     };
     
-    public static Empty getEmpty(){
+    public static Empty getEmpty$(){
         return value;
     }
 

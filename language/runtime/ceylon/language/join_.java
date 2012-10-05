@@ -39,7 +39,7 @@ public final class join_ {
 			}
 		}
         if (list.isEmpty()) {
-            return (Iterable<? extends Element>) empty_.getEmpty();
+            return (Iterable<? extends Element>) empty_.getEmpty$();
         }
         else {
             return new ArraySequence<Element>(list);
@@ -47,6 +47,6 @@ public final class join_ {
     }
     @Ignore
     public static <Element> Iterable<? extends Element> join() {
-        return join((Iterable)empty_.getEmpty());
+        return join((Iterable)empty_.getEmpty$());
     }
 }

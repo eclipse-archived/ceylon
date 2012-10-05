@@ -20,7 +20,7 @@ public class greaterThan_ {
             final Element val) {
         return new AbstractCallable<Boolean>("greaterThan"){
             public Boolean $call(java.lang.Object element) {
-                return Boolean.instance(((Element)element).compare(val) == larger_.getLarger());
+                return Boolean.instance(((Element)element).compare(val) == larger_.getLarger$());
             }
         };
     }

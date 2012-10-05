@@ -23,10 +23,10 @@ public final class Category$impl {
         return _containsEvery($this, elements);
     }
     public boolean containsEvery() {
-        return _containsEvery($this, empty_.getEmpty());
+        return _containsEvery($this, empty_.getEmpty$());
     }
     public ceylon.language.Iterable containsEvery$elements() {
-        return empty_.getEmpty();
+        return empty_.getEmpty$();
     }
 
     public static boolean _containsAny(Category $this, ceylon.language.Iterable<?> elements) {
@@ -43,9 +43,9 @@ public final class Category$impl {
         return _containsAny($this, elements);
     }
     public boolean containsAny() {
-        return _containsAny($this, empty_.getEmpty());
+        return _containsAny($this, empty_.getEmpty$());
     }
     public ceylon.language.Iterable containsAny$elements() {
-        return empty_.getEmpty();
+        return empty_.getEmpty$();
     }
 }

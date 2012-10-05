@@ -24,6 +24,6 @@ public final class entries_ {
     }
     @Ignore
     public static <Element> Iterable<? extends Entry<? extends Integer, ? extends Element>> entries() {
-        return (Iterable) empty_.getEmpty();
+        return (Iterable) empty_.getEmpty$();
     }
 }

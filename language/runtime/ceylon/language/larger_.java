@@ -12,7 +12,7 @@ public class larger_ extends Comparison {
 	
 	private static final larger_ larger = new larger_();
 	
-    public static larger_ getLarger(){
+    public static larger_ getLarger$(){
         return larger;
     }
 }

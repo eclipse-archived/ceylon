@@ -86,7 +86,7 @@ public class Module {
     java.lang.String doc, 
     ceylon.language.Iterable<? extends ceylon.language.String> by, 
     String license) {
-        this(name, version, doc, by, license, (Iterable)empty_.getEmpty());
+        this(name, version, doc, by, license, (Iterable)empty_.getEmpty$());
     }
     
     @Ignore
@@ -95,7 +95,7 @@ public class Module {
     String version, 
     java.lang.String doc, 
     ceylon.language.Iterable<? extends ceylon.language.String> by) {
-        this(name, version, doc, by, null, (Iterable)empty_.getEmpty());
+        this(name, version, doc, by, null, (Iterable)empty_.getEmpty$());
     }
     
     @Ignore
@@ -103,14 +103,14 @@ public class Module {
     String name, 
     String version, 
     java.lang.String doc) {
-        this(name, version, doc, (Iterable)empty_.getEmpty(), null, (Iterable)empty_.getEmpty());
+        this(name, version, doc, (Iterable)empty_.getEmpty$(), null, (Iterable)empty_.getEmpty$());
     }
     
     @Ignore
     public Module(
     String name, 
     String version) {
-        this(name, version, "", (Iterable)empty_.getEmpty(), null, (Iterable)empty_.getEmpty());
+        this(name, version, "", (Iterable)empty_.getEmpty$(), null, (Iterable)empty_.getEmpty$());
     }
     
     @Ignore
@@ -125,7 +125,7 @@ public class Module {
     final String name, 
     final String version, 
     final java.lang.String doc) {
-        return (Iterable)ceylon.language.empty_.getEmpty();
+        return (Iterable)ceylon.language.empty_.getEmpty$();
     }
     
     @Ignore
@@ -144,7 +144,7 @@ public class Module {
             final java.lang.String doc, 
             final ceylon.language.Iterable<? extends ceylon.language.String> by,
             String license) {
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
 
 }

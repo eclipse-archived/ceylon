@@ -12,7 +12,7 @@ public class equal_ extends Comparison {
 	
 	private static final equal_ equal = new equal_();
 	
-    public static equal_ getEqual(){
+    public static equal_ getEqual$(){
         return equal;
     }
 }

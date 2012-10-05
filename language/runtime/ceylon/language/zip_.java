@@ -32,13 +32,13 @@ public final class zip_ {
 		Iterator<? extends Item> itemIter = items.getIterator();
 		Key key = (Key) keyIter.next();
         Item item = (Item) itemIter.next();
-		while (key != exhausted_.getExhausted() && item != exhausted_.getExhausted()) {
+		while (key != exhausted_.getExhausted$() && item != exhausted_.getExhausted$()) {
 			list.add(new Entry<Key,Item>(key, item));
 	        key = (Key) keyIter.next();
 	        item = (Item) itemIter.next();
 		}
 		if (list.isEmpty()) {
-		    return (Iterable) empty_.getEmpty();
+		    return (Iterable) empty_.getEmpty$();
 		}
 		else {
 		    return new ArraySequence<Entry<? extends Key,? extends Item>>(list);

@@ -20,7 +20,7 @@ public class lessThan_ {
             final Element val) {
         return new AbstractCallable<Boolean>("greaterThan"){
             public Boolean $call(java.lang.Object element) {
-                return Boolean.instance(((Element)element).compare(val) == smaller_.getSmaller());
+                return Boolean.instance(((Element)element).compare(val) == smaller_.getSmaller$());
             }
         };
     }

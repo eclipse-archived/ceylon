@@ -25,6 +25,6 @@ public final class coalesce_ {
     }
     @Ignore
     public static <Element> Iterable<? extends Element> coalesce() {
-        return (Iterable<? extends Element>) empty_.getEmpty();
+        return (Iterable<? extends Element>) empty_.getEmpty$();
     }
 }

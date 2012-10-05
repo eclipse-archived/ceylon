@@ -76,7 +76,7 @@ public class StringOfNone extends String implements None<Character> {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override @Ignore
     public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
     @Override @Ignore
     public Iterable<? extends Character> select(Callable<? extends Boolean> f) {

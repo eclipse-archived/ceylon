@@ -25,7 +25,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Ignore @SuppressWarnings("unchecked")
     public LazyList() {
-        this.elems = (Iterable<? extends Element>)empty_.getEmpty();
+        this.elems = (Iterable<? extends Element>)empty_.getEmpty$();
     }
     public LazyList(@Name("elems") @Sequenced
             @TypeInfo("ceylon.language.Iterable<Element>")
@@ -302,7 +302,7 @@ public class LazyList<Element> implements List<Element> {
             Iterable<? extends Element> els = p>0 ? elems.skipping(p) : elems;
             return new LazyList<Element>(els.taking(length));
         } else {
-            return (List<? extends Element>)empty_.getEmpty();
+            return (List<? extends Element>)empty_.getEmpty$();
         }
     }
 
@@ -313,7 +313,7 @@ public class LazyList<Element> implements List<Element> {
         long c = elems.count(new AbstractCallable<Boolean>("LazyList_lastIndex") {
             @Override
             public Boolean $call(java.lang.Object e) {
-                return true_.getTrue();
+                return true_.getTrue$();
             }
         });
         return c>0 ? Integer.instance(c-1) : null;
@@ -324,7 +324,7 @@ public class LazyList<Element> implements List<Element> {
         return elems.count(new AbstractCallable<Boolean>("LazyList_size") {
             @Override
             public Boolean $call(java.lang.Object e) {
-                return true_.getTrue();
+                return true_.getTrue$();
             }
         });
     }
@@ -378,7 +378,7 @@ public class LazyList<Element> implements List<Element> {
             long c = elems.count(new AbstractCallable<Boolean>("LazyList_lastIndex") {
                 @Override
                 public Boolean $call(java.lang.Object e) {
-                    return true_.getTrue();
+                    return true_.getTrue$();
                 }
             });
             if (other.getSize()==c) {

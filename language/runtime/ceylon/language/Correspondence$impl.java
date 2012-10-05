@@ -41,12 +41,12 @@ public final class Correspondence$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsEvery() {
-                return Category$impl._containsEvery(this, empty_.getEmpty());
+                return Category$impl._containsEvery(this, empty_.getEmpty$());
             }
             @Override
             @Ignore
             public ceylon.language.Iterable<?> containsEvery$elements() {
-                return empty_.getEmpty();
+                return empty_.getEmpty$();
             }
 
             @Override
@@ -57,12 +57,12 @@ public final class Correspondence$impl<Key,Item> {
             @Override
             @Ignore
             public boolean containsAny() {
-                return Category$impl._containsAny(this, empty_.getEmpty());
+                return Category$impl._containsAny(this, empty_.getEmpty$());
             }
             @Override
             @Ignore
             public ceylon.language.Iterable<?> containsAny$elements() {
-                return empty_.getEmpty();
+                return empty_.getEmpty$();
             }
         };
         return keys;
@@ -72,10 +72,10 @@ public final class Correspondence$impl<Key,Item> {
         return Correspondence$impl.<Key,Item>_definesEvery(this.$this, keys);
     }
     public boolean definesEvery(){
-        return Correspondence$impl.<Key,Item>_definesEvery(this.$this, (Iterable)empty_.getEmpty());
+        return Correspondence$impl.<Key,Item>_definesEvery(this.$this, (Iterable)empty_.getEmpty$());
     }
     public ceylon.language.Iterable<? extends Key> definesEvery$keys(){
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
     public static <Key,Item> boolean _definesEvery(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys){
         java.lang.Object elem;
@@ -92,10 +92,10 @@ public final class Correspondence$impl<Key,Item> {
         return Correspondence$impl.<Key,Item>_definesAny(this.$this, keys);
     }
     public boolean definesAny() {
-        return Correspondence$impl.<Key,Item>_definesAny(this.$this, (Iterable)empty_.getEmpty());
+        return Correspondence$impl.<Key,Item>_definesAny(this.$this, (Iterable)empty_.getEmpty$());
     }
     public ceylon.language.Iterable<? extends Key> definesAny$keys() {
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
     public static <Key,Item> boolean _definesAny(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
         java.lang.Object elem;
@@ -112,10 +112,10 @@ public final class Correspondence$impl<Key,Item> {
         return Correspondence$impl.<Key,Item>_items(this.$this, keys);
     }
     public ceylon.language.List<? extends Item> items() {
-        return Correspondence$impl.<Key,Item>_items(this.$this, (Iterable)empty_.getEmpty());
+        return Correspondence$impl.<Key,Item>_items(this.$this, (Iterable)empty_.getEmpty$());
     }
     public ceylon.language.Iterable<? extends Key> items$keys() {
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
     public static <Key,Item> ceylon.language.List<? extends Item> _items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
         if (keys instanceof Sequence) {
@@ -123,7 +123,7 @@ public final class Correspondence$impl<Key,Item> {
             return new Correspondence.Items($this, (Sequence<? extends Key>)$keys$1.getClone());
         }
         else {
-            return (List)empty_.getEmpty();
+            return (List)empty_.getEmpty$();
         }
     }
 }

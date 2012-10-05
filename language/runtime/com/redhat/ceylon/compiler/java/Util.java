@@ -180,7 +180,7 @@ public class Util {
         if (sequence != null) {
             Iterator<? extends T> iterator = sequence.getIterator();
             Object o; 
-            while((o = iterator.next()) != exhausted_.getExhausted()){
+            while((o = iterator.next()) != exhausted_.getExhausted$()){
                 list.add((T)o);
             }
         }

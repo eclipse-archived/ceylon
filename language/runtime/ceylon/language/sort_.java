@@ -28,7 +28,7 @@ public final class sort_ {
         final Iterable<? extends Element> elements) {
         
         if( elements.getEmpty() ) {
-            return (Iterable)empty_.getEmpty();   
+            return (Iterable)empty_.getEmpty$();   
         }
         
         java.util.List<Element> list = Util.collectIterable(elements);
@@ -47,7 +47,7 @@ public final class sort_ {
     
     @Ignore
     public static <Element> Iterable<? extends Element> sort() {
-        return (Iterable)empty_.getEmpty();
+        return (Iterable)empty_.getEmpty$();
     }
     
 }

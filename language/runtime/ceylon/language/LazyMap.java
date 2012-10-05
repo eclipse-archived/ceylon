@@ -29,7 +29,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Ignore @SuppressWarnings("unchecked")
     public LazyMap() {
-        this.entries = (Iterable)empty_.getEmpty();
+        this.entries = (Iterable)empty_.getEmpty$();
     }
     public LazyMap(@Name("entries") @Sequenced
             @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<Key,Item>>")
@@ -273,7 +273,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
         return entries.count(new AbstractCallable<Boolean>("LazyMap_size") {
             @Override
             public Boolean $call(java.lang.Object e) {
-                return true_.getTrue();
+                return true_.getTrue$();
             }
         });
     }
