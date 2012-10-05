@@ -164,7 +164,7 @@ public class BashCompletionToolTest {
            restoreStdout();
         } 
         String files = new String(out.toByteArray());
-        Assert.assertTrue(files, files.contains("--file=src/\n"));
+        Assert.assertTrue(files, files.contains("--file=src/"));
         Assert.assertFalse(files, files.contains("--file=test/ \n"));
     }
     
