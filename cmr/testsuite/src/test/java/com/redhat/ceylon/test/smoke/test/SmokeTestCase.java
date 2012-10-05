@@ -191,6 +191,7 @@ public class SmokeTestCase extends AbstractTest {
         try {
             File file = manager.getArtifact(name, version);
             Assert.assertNotNull(file);
+            Assert.assertTrue(file.delete()); // force delete
         } finally {
             manager.removeArtifact(name, version);
         }
@@ -224,7 +225,7 @@ public class SmokeTestCase extends AbstractTest {
             manager.removeArtifact(ac);
             // temporary workaround, because the jar is not stored at the right place
             if (file != null)
-                file.delete();
+                Assert.assertTrue(file.delete());
         }
     }
 
@@ -242,7 +243,7 @@ public class SmokeTestCase extends AbstractTest {
         ArtifactContext context = new ArtifactContext("old-jar", "1.2.CR1", ArtifactContext.JAR);
         File[] files = manager.resolve(context);
         Assert.assertNotNull(files);
-        Assert.assertEquals(2, files.length); // TODO -- should be 3, fix it when we fix moduletest.car - > module_.class
+        Assert.assertEquals(3, files.length);
     }
 
     @Test
@@ -262,8 +263,9 @@ public class SmokeTestCase extends AbstractTest {
 
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
-                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
-                new ModuleDetails("moduletest", null, null, set(), set("0.1")),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0")),
+                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1")),
+                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1")),
                 new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
                 new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
@@ -284,7 +286,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0")),
         };
         testComplete("he", expected, manager);
     }
@@ -337,8 +339,9 @@ public class SmokeTestCase extends AbstractTest {
     public void testSearchModules() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
-                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
-                new ModuleDetails("moduletest", null, null, set(), set("0.1")),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0")),
+                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1")),
+                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1")),
                 new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
                 new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
@@ -353,7 +356,7 @@ public class SmokeTestCase extends AbstractTest {
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
-                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0")),
         };
         ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0l, 2l, repoManager);
         Assert.assertEquals(2, results.getCount());
@@ -362,8 +365,8 @@ public class SmokeTestCase extends AbstractTest {
 
         // second page
         expected = new ModuleDetails[]{
-                new ModuleDetails("moduletest", null, null, set(), set("0.1")),
-                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
+                new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1")),
+                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1")),
         };
 
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 2l, repoManager, results.getNextPagingInfo());
@@ -373,10 +376,11 @@ public class SmokeTestCase extends AbstractTest {
 
         // third page
         expected = new ModuleDetails[]{
+                new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final")),
                 new ModuleDetails("test-jar", null, null, set(), set("0.1")),
         };
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 2l, repoManager, results.getNextPagingInfo());
-        Assert.assertEquals(1, results.getCount());
+        Assert.assertEquals(2, results.getCount());
         Assert.assertEquals(false, results.getHasMoreResults());
         Assert.assertEquals(4, results.getStart());
     }
@@ -385,7 +389,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testSearchModulesFilteredByName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0")),
-                new ModuleDetails("hello", null, null, set(), set("1.0.0")),
+                new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0")),
         };
 
         testSearchResults("hello", Type.JVM, expected);
