@@ -83,6 +83,8 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markUnBoxed(that);
         if(CodegenUtil.isRaw((TypedDeclaration) decl))
             CodegenUtil.markRaw(that);
+        if(CodegenUtil.hasTypeErased((TypedDeclaration) decl))
+            CodegenUtil.markTypeErased(that);
     }
 
     @Override
@@ -92,6 +94,8 @@ public abstract class BoxingVisitor extends Visitor {
         if(that.getDeclaration() == null)
             return;
         if(that.getMemberOperator() instanceof Tree.SafeMemberOp){
+            if(CodegenUtil.hasTypeErased((TypedDeclaration) that.getDeclaration()))
+                CodegenUtil.markTypeErased(that);
             // must be boxed, since safe member op "?." returns an optional type
             return;
         }
@@ -99,6 +103,8 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markUnBoxed(that);
             if(CodegenUtil.isRaw((TypedDeclaration) that.getDeclaration()))
                 CodegenUtil.markRaw(that);
+            if(CodegenUtil.hasTypeErased((TypedDeclaration) that.getDeclaration()))
+                CodegenUtil.markTypeErased(that);
         } else {
             propagateFromDeclaration(that, (TypedDeclaration)that.getDeclaration());
         }
@@ -326,6 +332,8 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markUnBoxed(that);
         if(CodegenUtil.isRaw(term))
             CodegenUtil.markRaw(that);
+        if(CodegenUtil.hasTypeErased(term))
+            CodegenUtil.markTypeErased(that);
     }
 
     private void propagateFromTerm(Term that, Term term) {
@@ -333,6 +341,8 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markUnBoxed(that);
         if(CodegenUtil.isRaw(term))
             CodegenUtil.markRaw(that);
+        if(CodegenUtil.hasTypeErased(term))
+            CodegenUtil.markTypeErased(that);
     }
 
 }

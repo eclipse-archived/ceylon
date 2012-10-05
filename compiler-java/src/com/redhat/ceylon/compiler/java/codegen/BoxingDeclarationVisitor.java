@@ -75,7 +75,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
         ProducedType type = decl.getType();
         if(type != null && willEraseToObject(type)){
-            type.setUnderlyingType("java.lang.Object");
+            decl.setTypeErased(true);
         }
     }
 
