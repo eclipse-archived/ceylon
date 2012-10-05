@@ -72,6 +72,18 @@ class CodegenUtil {
             type.setRaw(true);
     }
     
+    static boolean hasTypeErased(Term node){
+        return node.getTypeErased();
+    }
+
+    static boolean hasTypeErased(TypedDeclaration decl){
+        return decl.getTypeErased();
+    }
+
+    static void markTypeErased(Term node) {
+        node.setTypeErased(true);
+    }
+
     static boolean hasCompilerAnnotation(Tree.Declaration decl, String name){
         for(CompilerAnnotation annotation : decl.getCompilerAnnotations()){
             if(annotation.getIdentifier().getText().equals(name))
