@@ -10,20 +10,140 @@ final class bug708_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.bug708();
     }
 }
-final class s_ {
+class Bug708<T> {
     
-    private s_() {
+    Bug708() {
+    }
+    
+    public final .java.lang.Object test() {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708();
+    }
+}
+final class bug708extra1_ {
+    
+    private bug708extra1_() {
     }
     private static final .ceylon.language.String[] value;
     static {
         value = new .ceylon.language.String[]{(.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()};
     }
     
-    static .ceylon.language.String getS() {
+    static .ceylon.language.String getBug708extra1$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+final class bug708extra2_ {
+    
+    private bug708extra2_() {
+    }
+    private static final .ceylon.language.String[] value;
+    static {
+        value = new .ceylon.language.String[]{(.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>().test()};
+    }
+    
+    static .ceylon.language.String getBug708extra2$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+final class bug708obj_ {
+    
+    private bug708obj_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> getBug708obj$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+final class bug708extra3_ {
+    
+    private bug708extra3_() {
+    }
+    private static final .ceylon.language.String[] value;
+    static {
+        value = new .ceylon.language.String[]{(.ceylon.language.String)(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> $safe$0 = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.getBug708obj$();
+            }
+            returning $safe$0 != null ? $safe$0.test() : null;
+        )};
+    }
+    
+    static .ceylon.language.String getBug708extra3$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+final class bug708seq_ {
+    
+    private bug708seq_() {
+    }
+    private static final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>[] value;
+    static {
+        value = new .ceylon.language.Iterable[]{new .com.redhat.ceylon.compiler.java.language.ArraySequence<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>())};
+    }
+    
+    static .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> getBug708seq$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+final class bug708extra4_ {
+    
+    private bug708extra4_() {
+    }
+    private static final .ceylon.language.Iterable<? extends .ceylon.language.String>[] value;
+    static {
+        value = new .ceylon.language.Iterable[]{(
+            let
+            {
+                .ceylon.language.FixedSized<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.getBug708seq$();
+            }
+            returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$1.getEmpty() ? (
+                let
+                {
+                    .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> $spread$2$0 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>)$spreadTest$1;
+                    int $spread$2$2 = (int)$spread$2$0.getSize();
+                    .ceylon.language.String[] $spread$2$4 = new .ceylon.language.String[$spread$2$2];
+                    for (int $index$3 = 0; $index$3 < $spread$2$2; $index$3++) $spread$2$4[$index$3] = (.ceylon.language.String)((.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)$spread$2$0.item(.ceylon.language.Integer.instance($index$3))).test();
+                }
+                returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$2$4);
+            ) : .ceylon.language.empty_.getEmpty$());
+        )};
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.String> getBug708extra4$() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {

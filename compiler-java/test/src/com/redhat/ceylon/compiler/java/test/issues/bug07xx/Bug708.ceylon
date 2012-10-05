@@ -20,4 +20,18 @@
 @nomodel
 T|String? bug708<T>() { return null; }
 @nomodel
-String? s = bug708<String>();
+class Bug708<T>() { 
+    shared T|String? test() { return null; }
+}
+@nomodel
+String? bug708extra1 = bug708<String>();
+@nomodel
+String? bug708extra2 = Bug708<String>().test();
+@nomodel
+Bug708<String>? bug708obj = Bug708<String>();
+@nomodel
+String? bug708extra3 = bug708obj?.test();
+@nomodel
+Bug708<String>[] bug708seq = { Bug708<String>() };
+@nomodel
+String?[] bug708extra4 = bug708seq[].test();
