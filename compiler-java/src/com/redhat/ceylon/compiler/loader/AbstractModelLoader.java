@@ -37,6 +37,7 @@ import javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotatedMirror;
@@ -1659,12 +1660,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     continue;
 
                 if (m.getName().equals(
-                        Util.getGetterName(value.getName()))
+                        Naming.getGetterName(value))
                         && m.isStatic() && m.getParameters().size() == 0) {
                     meth = m;
                 }
                 if (m.getName().equals(
-                        Util.getSetterName(value.getName()))
+                        Naming.getSetterName(value))
                         && m.isStatic() && m.getParameters().size() == 1) {
                     value.setVariable(true);
                 }

@@ -383,7 +383,7 @@ public class Naming implements LocalId {
         }
     }
 
-    static String getGetterName(Declaration decl) {
+    public static String getGetterName(Declaration decl) {
         // always use the refined decl
         decl = decl.getRefinedDeclaration();
         if (decl instanceof JavaBeanValue) {
@@ -400,7 +400,7 @@ public class Naming implements LocalId {
         }
     }
 
-    static String getSetterName(Declaration decl){
+    public static String getSetterName(Declaration decl){
         // use the refined decl except when the current declaration is variable and the refined isn't
         Declaration refinedDecl = decl.getRefinedDeclaration();
         if (decl instanceof Value && refinedDecl instanceof Value) {
