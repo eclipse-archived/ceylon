@@ -392,7 +392,11 @@ public class Naming implements LocalId {
         if (Decl.withinClassOrInterface(decl)) {
             return getErasedGetterName(decl.getName());
         } else {
-            return getGetterName(decl.getName());
+            String getterName = getGetterName(decl.getName());
+            if (decl.isToplevel()) {
+                getterName = getterName + "$";
+            }
+            return getterName;
         }
     }
 
