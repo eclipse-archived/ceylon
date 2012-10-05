@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -722,7 +723,11 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeResultExpr() {
-            return unboxType(testVar.makeIdent(), toType);
+            Value decl = this.cond.getVariable().getDeclarationModel();
+            return expressionGen().applyErasureAndBoxing(testVar.makeIdent(), 
+                    toType, true, 
+                    CodegenUtil.getBoxingStrategy(decl), 
+                    decl.getType());
         }
         
         @Override
