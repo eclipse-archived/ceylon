@@ -45,7 +45,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
@@ -59,8 +58,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -76,7 +73,6 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -696,12 +692,15 @@ public abstract class AbstractTransformer implements Transformation {
     // Determines if a type will be erased to java.lang.Object once converted to Java
     boolean willEraseToObject(ProducedType type) {
         type = simplifyType(type);
-        return (sameType(syms().ceylonVoidType, type) || sameType(syms().ceylonObjectType, type)
-                || sameType(syms().ceylonNothingType, type)
-                || sameType(syms().ceylonIdentifiableObjectType, type)
-                || sameType(syms().ceylonIdentifiableType, type)
-                || type.getDeclaration() instanceof BottomType
-                || typeFact().isUnion(type)|| typeFact().isIntersection(type));
+        TypeDeclaration decl = type.getDeclaration();
+        return decl == typeFact.getObjectDeclaration()
+                || decl == typeFact.getIdentifiableDeclaration()
+                || decl == typeFact.getIdentifiableObjectDeclaration()
+                || decl == typeFact.getNothingDeclaration()
+                || decl == typeFact.getVoidDeclaration()
+                || decl instanceof BottomType
+                || decl instanceof UnionType
+                || decl instanceof IntersectionType;
     }
     
     boolean willEraseToException(ProducedType type) {
