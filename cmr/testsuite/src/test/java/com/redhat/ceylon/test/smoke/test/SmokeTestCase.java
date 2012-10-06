@@ -191,9 +191,10 @@ public class SmokeTestCase extends AbstractTest {
         try {
             File file = manager.getArtifact(name, version);
             Assert.assertNotNull(file);
-            Assert.assertTrue(file.delete()); // force delete
         } finally {
             manager.removeArtifact(name, version);
+            // test if remove really works
+            testSearchResults("com.redhat.fizbiz", Type.JVM, new ModuleDetails[0]);
         }
     }
 

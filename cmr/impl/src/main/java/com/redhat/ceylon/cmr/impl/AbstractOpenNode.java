@@ -17,15 +17,24 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.spi.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.ContentTransformer;
+import com.redhat.ceylon.cmr.spi.MergeStrategy;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 /**
  * Abstract node impl.
@@ -181,6 +190,8 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
             if (marker == null) {
                 child = getNode(label, false);
                 children.put(markerLabel, new MarkerNode(label, child));
+            } else {
+                return marker.getValue(Node.class);
             }
         }
         return child;

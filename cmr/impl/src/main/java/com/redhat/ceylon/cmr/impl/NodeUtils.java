@@ -17,13 +17,13 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.Repository;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
-
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
  * Node utils.
@@ -110,9 +110,12 @@ public final class NodeUtils {
     public static List<String> toLabelPath(Node node) {
         final LinkedList<String> paths = new LinkedList<String>();
         Node current = node;
-        while (current != null) {
+        Node parent = firstParent(node);
+        // ignore root path, should equal to ""
+        while (parent != null) {
             paths.addFirst(current.getLabel());
-            current = firstParent(current);
+            current = parent;
+            parent = firstParent(current);
         }
         return paths;
     }

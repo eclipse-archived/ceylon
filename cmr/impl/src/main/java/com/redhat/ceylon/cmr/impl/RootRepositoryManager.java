@@ -17,13 +17,21 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.config.Repositories;
-
-import java.io.*;
-import java.util.List;
 
 /**
  * Root node -- main entry point into Ceylon repositories.
@@ -36,8 +44,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
     private static File getRootDir() {
         com.redhat.ceylon.common.config.Repositories.Repository rootRepo = Repositories.get().getCacheRepository();
-        final File root = new File(rootRepo.getUrl());
-        return root;
+        return new File(rootRepo.getUrl());
     }
 
     public RootRepositoryManager(Logger log) {
