@@ -151,3 +151,20 @@ final class bug708extra4_ {
         }
     }
 }
+final class test_ {
+    
+    private test_() {
+    }
+    
+    static void test() {
+        .ceylon.language.String $s$4;
+        if (($s$4 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()) != null) {
+            final .java.lang.String $s$5 = $s$4.toString();
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.test_.test();
+    }
+}
