@@ -16,11 +16,6 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.DependencyResolver;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
-import org.jboss.jandex.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,6 +23,19 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.spi.Node;
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.AnnotationValue;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.Index;
+import org.jboss.jandex.IndexReader;
+import org.jboss.jandex.Indexer;
+import org.jboss.jandex.JarIndexer;
 
 /**
  * Byte hacks / utils.
@@ -49,6 +57,10 @@ public final class BytecodeUtils implements DependencyResolver {
 
     public List<ModuleInfo> resolve(ArtifactResult parent) {
         return readModuleInformation(parent.name(), parent.artifact());
+    }
+
+    public Node descriptor(Node artifact) {
+        return null; // artifact is a descriptor
     }
 
     /**

@@ -17,11 +17,11 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import java.io.Serializable;
+
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
-
-import java.io.Serializable;
 
 /**
  * Artifact lookup context.
@@ -46,6 +46,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private boolean ignoreSHA;
     private boolean throwErrorIfMissing;
     private boolean forceOperation;
+    private boolean forceDescriptorCheck;
     private boolean fetchSingleArtifact;
 
     public ArtifactContext(String name, String version) {
@@ -146,6 +147,14 @@ public class ArtifactContext implements Serializable, ContentOptions {
         this.forceOperation = forceOperation;
     }
 
+    public boolean isForceDescriptorCheck() {
+        return forceDescriptorCheck;
+    }
+
+    public void setForceDescriptorCheck(boolean forceDescriptorCheck) {
+        this.forceDescriptorCheck = forceDescriptorCheck;
+    }
+
     public boolean isFetchSingleArtifact() {
         return fetchSingleArtifact;
     }
@@ -161,5 +170,9 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public boolean forceOperation() {
         return isForceOperation();
+    }
+
+    public boolean forceDescriptorCheck() {
+        return isForceDescriptorCheck();
     }
 }

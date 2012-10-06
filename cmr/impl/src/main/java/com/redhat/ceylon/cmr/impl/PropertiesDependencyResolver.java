@@ -16,16 +16,17 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.DependencyResolver;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
-
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.spi.Node;
 
 /**
  * Read module info from properties.
@@ -57,5 +58,9 @@ final class PropertiesDependencyResolver implements DependencyResolver {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Node descriptor(Node artifact) {
+        return NodeUtils.firstParent(artifact).getChild("module.properties");
     }
 }

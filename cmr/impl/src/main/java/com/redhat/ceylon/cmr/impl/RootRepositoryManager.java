@@ -39,7 +39,6 @@ import com.redhat.ceylon.common.config.Repositories;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class RootRepositoryManager extends AbstractNodeRepositoryManager {
-
     private final FileContentStore fileContentStore;
 
     private static File getRootDir() {
@@ -118,6 +117,15 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 OpenNode sl = ((OpenNode) parent).addNode(on.getLabel() + SHA1 + LOCAL);
                 // put sha to local store as well
                 fileContentStore.putContent(sl, shaStream, context);
+            }
+        }
+
+        // only check for jars or forced checks
+        if (ArtifactContext.JAR.equals(context.getSuffix()) || context.forceDescriptorCheck()) {
+            // transfer descriptor as well, if there is one
+            final Node descriptor = Configuration.getResolvers().descriptor(node);
+            if (descriptor != null && descriptor.hasBinaries()) {
+                fileContentStore.putContent(descriptor, descriptor.getInputStream(), context);
             }
         }
 

@@ -19,6 +19,8 @@ package com.redhat.ceylon.cmr.api;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.redhat.ceylon.cmr.spi.Node;
+
 /**
  * Plugable dependencies utils mechanism.
  *
@@ -44,6 +46,15 @@ public class DependencyResolvers {
             List<ModuleInfo> deps = dr.resolve(parent);
             if (deps != null)
                 return deps;
+        }
+        return null;
+    }
+
+    public Node descriptor(Node artifact) {
+        for (DependencyResolver dr : resolvers) {
+            Node descriptor = dr.descriptor(artifact);
+            if (descriptor != null)
+                return descriptor;
         }
         return null;
     }

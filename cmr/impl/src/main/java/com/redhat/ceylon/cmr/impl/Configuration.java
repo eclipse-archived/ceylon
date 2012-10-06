@@ -14,39 +14,25 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.cmr.spi;
+package com.redhat.ceylon.cmr.impl;
+
+import com.redhat.ceylon.cmr.api.DependencyResolvers;
 
 /**
- * Content options.
+ * Simple config holder.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface ContentOptions {
+public class Configuration {
+    private static final DependencyResolvers resolvers;
 
-    /**
-     * Default content options.
-     */
-    static final ContentOptions DEFAULT = new ContentOptions() {
-        public boolean forceOperation() {
-            return false;
-        }
+    static {
+        resolvers = new DependencyResolvers();
+        resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
+        resolvers.addResolver(BytecodeUtils.INSTANCE);
+    }
 
-        public boolean forceDescriptorCheck() {
-            return false;
-        }
-    };
-
-    /**
-     * Do we force operation.
-     *
-     * @return true if forced, false otherwise
-     */
-    boolean forceOperation();
-
-    /**
-     * Do we force descriptor check.
-     *
-     * @return true if forced, false otherwise
-     */
-    boolean forceDescriptorCheck();
+    public static DependencyResolvers getResolvers() {
+        return resolvers;
+    }
 }

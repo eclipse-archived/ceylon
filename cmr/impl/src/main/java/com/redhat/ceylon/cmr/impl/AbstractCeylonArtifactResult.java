@@ -16,12 +16,18 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.*;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 
 /**
  * Abstract, use Jandex to read off Module info.
@@ -29,14 +35,6 @@ import java.util.List;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResult {
-    private final static DependencyResolvers resolvers;
-
-    static {
-        resolvers = new DependencyResolvers();
-        resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
-        resolvers.addResolver(BytecodeUtils.INSTANCE);
-    }
-
     private RepositoryManager manager;
 
     protected AbstractCeylonArtifactResult(RepositoryManager manager, String name, String version) {
@@ -49,7 +47,7 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     }
 
     public List<ArtifactResult> dependencies() throws RepositoryException {
-        List<ModuleInfo> infos = resolvers.resolve(this);
+        List<ModuleInfo> infos = Configuration.getResolvers().resolve(this);
         // TODO -- perhaps null is not valid?
         if (infos == null || infos.isEmpty())
             return Collections.emptyList();

@@ -18,6 +18,8 @@ package com.redhat.ceylon.cmr.api;
 
 import java.util.List;
 
+import com.redhat.ceylon.cmr.spi.Node;
+
 /**
  * Dependency resolver spi / api.
  *
@@ -31,5 +33,13 @@ public interface DependencyResolver {
      * @return dependencies list or null if cannot resolve
      */
     List<ModuleInfo> resolve(ArtifactResult parent);
+
+    /**
+     * Get descriptor if exists.
+     *
+     * @param artifact the artifact
+     * @return descriptor or null
+     */
+    Node descriptor(Node artifact);
 }
 
