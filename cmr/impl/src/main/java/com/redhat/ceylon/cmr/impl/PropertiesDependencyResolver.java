@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
@@ -38,7 +39,7 @@ final class PropertiesDependencyResolver implements DependencyResolver {
 
     public List<ModuleInfo> resolve(ArtifactResult parent) {
         final File artifact = parent.artifact();
-        final File mp = new File(artifact.getParent(), "module.properties");
+        final File mp = new File(artifact.getParent(), ArtifactContext.MODULE_PROPERTIES);
         if (mp.exists() == false)
             return null;
 
@@ -61,6 +62,6 @@ final class PropertiesDependencyResolver implements DependencyResolver {
     }
 
     public Node descriptor(Node artifact) {
-        return NodeUtils.firstParent(artifact).getChild("module.properties");
+        return NodeUtils.firstParent(artifact).getChild(ArtifactContext.MODULE_PROPERTIES);
     }
 }

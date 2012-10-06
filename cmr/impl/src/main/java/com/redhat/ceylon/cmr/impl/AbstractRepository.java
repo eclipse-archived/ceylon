@@ -47,13 +47,13 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
  */
 public abstract class AbstractRepository implements Repository {
 
-    private static final Comparator<? super Node> AlphabeticalNodeComparator = new Comparator<Node>(){
+    private static final Comparator<? super Node> AlphabeticalNodeComparator = new Comparator<Node>() {
         @Override
         public int compare(Node a, Node b) {
             return a.getLabel().compareToIgnoreCase(b.getLabel());
         }
     };
-    
+
     private OpenNode root;
 
     public AbstractRepository(OpenNode root) {
@@ -86,6 +86,8 @@ public abstract class AbstractRepository implements Repository {
             return ArtifactContext.DOCS;
         else if (ArtifactContext.DOCS_ZIPPED.equals(suffix))
             return ArtifactContext.DOCS_ZIPPED;
+        else if (ArtifactContext.MODULE_PROPERTIES.equals(suffix))
+            return ArtifactContext.MODULE_PROPERTIES;
         else if (RepositoryManager.DEFAULT_MODULE.equals(name))
             return name + suffix;
         else
@@ -147,12 +149,12 @@ public abstract class AbstractRepository implements Repository {
     public String getDisplayString() {
         return root.getDisplayString();
     }
-    
+
     @Override
     public void completeModules(ModuleQuery query, ModuleSearchResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);
-        if(delegate != null){
+        if (delegate != null) {
             delegate.completeModules(query, result);
             return;
         }
@@ -160,16 +162,16 @@ public abstract class AbstractRepository implements Repository {
         String[] paths = query.getName().split("\\.", -1);
         // find the right parent
         Node parent = root;
-        for(int i=0;i<paths.length-1;i++){
+        for (int i = 0; i < paths.length - 1; i++) {
             parent = parent.getChild(paths[i]);
             // no completion from here
-            if(parent == null)
+            if (parent == null)
                 return;
         }
-        String lastPart = paths[paths.length-1];
+        String lastPart = paths[paths.length - 1];
         // now find a matching child
-        for(Node child : parent.getChildren()){
-            if(child.getLabel().startsWith(lastPart)){
+        for (Node child : parent.getChildren()) {
+            if (child.getLabel().startsWith(lastPart)) {
                 collectArtifacts(child, query, result);
             }
         }
@@ -178,24 +180,24 @@ public abstract class AbstractRepository implements Repository {
     private void collectArtifacts(Node node, ModuleQuery lookup, ModuleSearchResult result) {
         // Winner of the less aptly-named method
         boolean isFolder = !node.hasBinaries();
-        if(isFolder){
-            if(node.getLabel().equals(ArtifactContext.DOCS))
+        if (isFolder) {
+            if (node.getLabel().equals(ArtifactContext.DOCS))
                 return;
             Ret ret = new Ret();
-            if(hasChildrenContainingArtifact(node, lookup.getType(), ret)){
+            if (hasChildrenContainingArtifact(node, lookup.getType(), ret)) {
                 // we have artifact children, are they of the right type?
-                if(ret.foundRightType){
+                if (ret.foundRightType) {
                     // collect them
                     String moduleName = toModuleName(node);
                     addSearchResult(result, moduleName, node, lookup.getType());
                 }
-            }else{
+            } else {
                 // collect in the children
                 List<Node> sortedChildren = new ArrayList<Node>();
-                for(Node child : node.getChildren())
+                for (Node child : node.getChildren())
                     sortedChildren.add(child);
                 Collections.sort(sortedChildren, AlphabeticalNodeComparator);
-                for(Node child : sortedChildren){
+                for (Node child : sortedChildren) {
                     collectArtifacts(child, lookup, result);
                 }
             }
@@ -207,14 +209,14 @@ public abstract class AbstractRepository implements Repository {
         // nothing in those children it means either this is an empty folder, or its children contain
         // artifacts (in which case we don't want to match it since its name must be a version component),
         // or we could only find artifacts of the wrong type.
-        
+
         // This allows us to never match the default module, since it's at "/default/default.car" which
         // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
-        for(Node child : node.getChildren()){
+        for (Node child : node.getChildren()) {
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
-            if(isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, type, ret))
+            if (isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, type, ret))
                 return true;
         }
         // could not find any
@@ -225,17 +227,17 @@ public abstract class AbstractRepository implements Repository {
         String module = toModuleName(moduleNode);
         String version = versionNode.getLabel();
         boolean foundArtifact = false;
-        for(Node child : versionNode.getChildren()){
+        for (Node child : versionNode.getChildren()) {
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
-            if(isFolder){
+            if (isFolder) {
                 // do not recurse
-            }else if(isArtifactOfType(name, module, version, type)){
+            } else if (isArtifactOfType(name, module, version, type)) {
                 // we found what we were looking for
                 ret.foundRightType = true;
                 return true;
-            }else if(isArtifact(name, module, version)){
+            } else if (isArtifact(name, module, version)) {
                 // we found something, but not the type we wanted
                 foundArtifact = true;
             }
@@ -244,14 +246,14 @@ public abstract class AbstractRepository implements Repository {
     }
 
     private boolean isArtifactOfType(String name, String module, String version, Type type) {
-        switch(type){
-        case JS:
-            return getArtifactName(module, version, ArtifactContext.JS).equals(name);
-        case JVM:
-            return getArtifactName(module, version, ArtifactContext.CAR).equals(name)
-                    || getArtifactName(module, version, ArtifactContext.JAR).equals(name);
-        case SRC:
-            return getArtifactName(module, version, ArtifactContext.SRC).equals(name);
+        switch (type) {
+            case JS:
+                return getArtifactName(module, version, ArtifactContext.JS).equals(name);
+            case JVM:
+                return getArtifactName(module, version, ArtifactContext.CAR).equals(name)
+                        || getArtifactName(module, version, ArtifactContext.JAR).equals(name);
+            case SRC:
+                return getArtifactName(module, version, ArtifactContext.SRC).equals(name);
         }
         return false;
     }
@@ -265,15 +267,15 @@ public abstract class AbstractRepository implements Repository {
         // nothing in those children it means either this is an empty folder, or its children contain
         // artifacts (in which case we don't want to match it since its name must be a version component),
         // or we could only find artifacts of the wrong type.
-        
+
         // This allows us to never match the default module, since it's at "/default/default.car" which
         // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
-        for(Node versionNode : moduleNode.getChildren()){
+        for (Node versionNode : moduleNode.getChildren()) {
             String name = versionNode.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !versionNode.hasBinaries();
-            if(isFolder 
-                    && !name.equals(ArtifactContext.DOCS) 
+            if (isFolder
+                    && !name.equals(ArtifactContext.DOCS)
                     && containsAnyArtifact(moduleNode, versionNode, query, ret))
                 return true;
         }
@@ -289,18 +291,18 @@ public abstract class AbstractRepository implements Repository {
         boolean foundArtifact = false;
         String version = versionNode.getLabel();
         String module = toModuleName(moduleNode);
-        for(Node child : versionNode.getChildren()){
+        for (Node child : versionNode.getChildren()) {
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
-            if(isFolder){
+            if (isFolder) {
                 // we don't recurse
-            }else if(isArtifactOfType(name, module, version, query.getType())
-                     && matchesSearch(name, child, versionNode, query)){
+            } else if (isArtifactOfType(name, module, version, query.getType())
+                    && matchesSearch(name, child, versionNode, query)) {
                 // we found what we were looking for
                 ret.foundRightType = true;
                 return true;
-            }else if(isArtifact(name, module, version)){
+            } else if (isArtifact(name, module, version)) {
                 // we found something, but not the type we wanted
                 foundArtifact = true;
             }
@@ -312,33 +314,33 @@ public abstract class AbstractRepository implements Repository {
         // match on the module name first
         Node moduleNode = NodeUtils.firstParent(versionNode);
         // can't happen but hey
-        if(moduleNode == null)
+        if (moduleNode == null)
             return false;
         String moduleName = toModuleName(moduleNode);
-        if(moduleName.toLowerCase().contains(query.getName()))
+        if (moduleName.toLowerCase().contains(query.getName()))
             return true;
         // now search on the metadata
         // this is easy for cars
-        if(query.getType() == Type.JVM){
+        if (query.getType() == Type.JVM) {
             return matchFromCar(artifact, moduleName, query.getName());
         }
         // for now, for SRC and JS we will fall back to the JVM archive if present, though in the
         // future we might try to load the metadata from the SRC or JS archives
         String carName;
-        switch(query.getType()){
-        case JS:
-            carName = name.substring(0, name.length() - ArtifactContext.JS.length()) + ArtifactContext.CAR;
-            break;
-        case SRC:
-            carName = name.substring(0, name.length() - ArtifactContext.SRC.length()) + ArtifactContext.CAR;
-            break;
-        default:
-            // shouldn't happen
-            return false;
+        switch (query.getType()) {
+            case JS:
+                carName = name.substring(0, name.length() - ArtifactContext.JS.length()) + ArtifactContext.CAR;
+                break;
+            case SRC:
+                carName = name.substring(0, name.length() - ArtifactContext.SRC.length()) + ArtifactContext.CAR;
+                break;
+            default:
+                // shouldn't happen
+                return false;
         }
         Node carArtifact = versionNode.getChild(carName);
         // did we find it?
-        if(carArtifact == null)
+        if (carArtifact == null)
             return false;
         // try to match from the car
         return matchFromCar(carArtifact, moduleName, query.getName());
@@ -347,7 +349,7 @@ public abstract class AbstractRepository implements Repository {
     private boolean matchFromCar(Node artifact, String moduleName, String query) {
         try {
             File file = artifact.getContent(File.class);
-            return file != null && BytecodeUtils.matchesModuleInfo(moduleName, file, query); 
+            return file != null && BytecodeUtils.matchesModuleInfo(moduleName, file, query);
         } catch (Exception e) {
             return false;
         }
@@ -363,16 +365,16 @@ public abstract class AbstractRepository implements Repository {
     private String toModuleName(Node node) {
         String path = NodeUtils.getFullPath(node, ".");
         // That's sort of an invariant, but let's be safe
-        if(path.startsWith("."))
+        if (path.startsWith("."))
             path = path.substring(1);
         return path;
     }
-    
+
     @Override
     public void completeVersions(ModuleVersionQuery lookup, ModuleVersionResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);
-        if(delegate != null){
+        if (delegate != null) {
             delegate.completeVersions(lookup, result);
             return;
         }
@@ -380,42 +382,42 @@ public abstract class AbstractRepository implements Repository {
         // FIXME: we should really get this splitting done somewhere in common
         String name = lookup.getName();
         Node namePart = NodeUtils.getNode(root, Arrays.asList(name.split("\\.")));
-        if(namePart == null)
+        if (namePart == null)
             return;
         String[] suffixes = lookup.getType().getSuffixes();
         // now each child is supposed to be a version part, let's verify that
-        for(Node child : namePart.getChildren()){
+        for (Node child : namePart.getChildren()) {
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
             // ignore non-folders
-            if(!isFolder)
+            if (!isFolder)
                 continue;
             // now make sure we can find the artifact we're looking for in there
             String version = child.getLabel();
             // optional filter on version
-            if(lookup.getVersion() != null && !version.startsWith(lookup.getVersion()))
+            if (lookup.getVersion() != null && !version.startsWith(lookup.getVersion()))
                 continue;
             // avoid duplicates
-            if(result.hasVersion(version))
+            if (result.hasVersion(version))
                 continue;
             // try every known suffix
-            for(String suffix : suffixes){
+            for (String suffix : suffixes) {
                 String artifactName = getArtifactName(name, version, suffix);
                 Node artifact = child.getChild(artifactName);
-                if(artifact == null)
+                if (artifact == null)
                     continue;
                 // we found the artifact: let's notify
                 final ModuleVersionDetails newVersion = result.addVersion(version);
-                if(newVersion != null){
+                if (newVersion != null) {
                     try {
                         File file = artifact.getContent(File.class);
-                        if(file != null)
+                        if (file != null)
                             BytecodeUtils.readModuleInfo(name, file, new ModuleInfoCallback() {
                                 @Override
                                 public void storeInfo(String doc, String license, String[] authors) {
                                     newVersion.setDoc(doc);
                                     newVersion.setLicense(license);
-                                    if(authors != null)
+                                    if (authors != null)
                                         newVersion.getAuthors().addAll(Arrays.asList(authors));
                                 }
                             });
@@ -433,13 +435,15 @@ public abstract class AbstractRepository implements Repository {
         public long found;
         public boolean stopSearching;
     }
-    private static class GetOut extends Exception {}
+
+    private static class GetOut extends Exception {
+    }
 
     @Override
     public void searchModules(ModuleQuery query, ModuleSearchResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);
-        if(delegate != null){
+        if (delegate != null) {
             delegate.searchModules(query, result);
             return;
         }
@@ -453,45 +457,45 @@ public abstract class AbstractRepository implements Repository {
 
     private void searchModules(Node parent, ModuleQuery query, ModuleSearchResult result, Ret ret) throws GetOut {
         List<Node> sortedChildren = new ArrayList<Node>();
-        for(Node child : parent.getChildren())
+        for (Node child : parent.getChildren())
             sortedChildren.add(child);
         Collections.sort(sortedChildren, AlphabeticalNodeComparator);
-        for(Node child : sortedChildren){
+        for (Node child : sortedChildren) {
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
             // ignore non-folders
-            if(!isFolder)
+            if (!isFolder)
                 continue;
             // is it a module? does it contains artifacts?
             ret.foundRightType = false;
-            if(hasChildrenContainingAnyArtifact(child, query, ret)){
+            if (hasChildrenContainingAnyArtifact(child, query, ret)) {
                 // does it contain an artifact of the type we're looking for?
-                if(ret.foundRightType){
+                if (ret.foundRightType) {
                     // check if we were already done but were checking for a next results
-                    if(ret.stopSearching){
+                    if (ret.stopSearching) {
                         // we already found enough results but were checking if there
                         // were more results to be found for paging, so record that
                         // and stop
                         result.setHasMoreResults(true);
                         throw new GetOut();
                     }
-                    if(query.getStart() == null || ret.found++ >= query.getStart()){
+                    if (query.getStart() == null || ret.found++ >= query.getStart()) {
                         // are we interested in this result or did we need to skip it?
                         String moduleName = toModuleName(child);
                         addSearchResult(result, moduleName, child, query.getType());
                         // stop if we're done searching
-                        if(query.getStart() != null
+                        if (query.getStart() != null
                                 && query.getCount() != null
-                                && ret.found >= query.getStart() + query.getCount()){
+                                && ret.found >= query.getStart() + query.getCount()) {
                             // we're done, but we want to see if there's at least one more result
                             // to be found so we can tell clients there's a next page
                             ret.stopSearching = true;
                         }
                     }
                 }
-            }else{
+            } else {
                 // it doesn't contain artifacts, it's probably leading to modules
-                if(!child.getLabel().equals(ArtifactContext.DOCS)){ // safety check
+                if (!child.getLabel().equals(ArtifactContext.DOCS)) { // safety check
                     searchModules(child, query, result, ret);
                 }
             }
@@ -501,19 +505,19 @@ public abstract class AbstractRepository implements Repository {
     private void addSearchResult(ModuleSearchResult result, String moduleName, Node namePart, Type type) {
         SortedSet<String> versions = new TreeSet<String>();
         String[] suffixes = type.getSuffixes();
-        for(Node child : namePart.getChildren()){
+        for (Node child : namePart.getChildren()) {
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
             // ignore non-folders
-            if(!isFolder)
+            if (!isFolder)
                 continue;
             // now make sure we can find the artifact we're looking for in there
             String version = child.getLabel();
             // try every known suffix
-            for(String suffix : suffixes){
+            for (String suffix : suffixes) {
                 String artifactName = getArtifactName(moduleName, version, suffix);
                 Node artifact = child.getChild(artifactName);
-                if(artifact == null)
+                if (artifact == null)
                     continue;
                 // we found the artifact: store it
                 versions.add(version);
@@ -521,31 +525,31 @@ public abstract class AbstractRepository implements Repository {
             }
         }
         // sanity check
-        if(versions.isEmpty())
+        if (versions.isEmpty())
             throw new RuntimeException("Assertion failed: we didn't find any version of the proper type for " + moduleName);
         // find the latest version
         String latestVersion = versions.last();
         Node versionChild = namePart.getChild(latestVersion);
-        if(versionChild == null)
+        if (versionChild == null)
             throw new RuntimeException("Assertion failed: we didn't find the version child for " + moduleName + "/" + latestVersion);
         String artifactName = getArtifactName(moduleName, latestVersion, ArtifactContext.CAR);
         Node artifact = versionChild.getChild(artifactName);
-        
+
         // we don't really have mutable captures yet :(
         final String[] doc = new String[1];
         final String[] license = new String[1];
         final SortedSet<String> authors = new TreeSet<String>();
-        
-        if(artifact != null){
+
+        if (artifact != null) {
             try {
                 File file = artifact.getContent(File.class);
-                if(file != null){
+                if (file != null) {
                     BytecodeUtils.readModuleInfo(moduleName, file, new ModuleInfoCallback() {
                         @Override
                         public void storeInfo(String doc2, String license2, String[] authors2) {
                             doc[0] = doc2;
                             license[0] = license2;
-                            if(authors2 != null)
+                            if (authors2 != null)
                                 authors.addAll(Arrays.asList(authors2));
                         }
                     });
