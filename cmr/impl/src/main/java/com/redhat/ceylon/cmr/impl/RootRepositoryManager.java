@@ -169,9 +169,13 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
         try {
             if (node != null) {
-                Node sl = parent.getChild(child + SHA1 + LOCAL);
+                final Node sl = parent.getChild(child + SHA1 + LOCAL);
                 if (sl != null) {
                     fileContentStore.removeFile(sl);
+                }
+                final Node descriptor = Configuration.getResolvers().descriptor(node);
+                if (descriptor != null) {
+                    fileContentStore.removeFile(descriptor);
                 }
             }
         } catch (Exception ignored) {
