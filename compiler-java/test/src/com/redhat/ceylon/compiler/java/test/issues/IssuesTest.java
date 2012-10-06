@@ -29,7 +29,6 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -676,6 +675,11 @@ public class IssuesTest extends CompilerTest {
     @Test
     public void testBug751() {
         assertErrors("bug07xx/Bug751", new CompilerError(20, "package not found in dependent modules: laknsd.askduyasjd"));
+    }
+
+    @Test
+    public void testBug774_fail() {
+        compareWithJavaSource("bug07xx/Bug774");
     }
 
     @Test
