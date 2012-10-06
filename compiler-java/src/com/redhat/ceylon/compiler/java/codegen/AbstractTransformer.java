@@ -1697,23 +1697,23 @@ public abstract class AbstractTransformer implements Transformation {
         return type.getDeclaration() instanceof TypeParameter;
     }
     
-    JCExpression unboxType(JCExpression expr, ProducedType targetType) {
-        if (isCeylonInteger(targetType)) {
+    JCExpression unboxType(JCExpression expr, ProducedType exprType) {
+        if (isCeylonInteger(exprType)) {
             expr = unboxInteger(expr);
-        } else if (isCeylonFloat(targetType)) {
+        } else if (isCeylonFloat(exprType)) {
             expr = unboxFloat(expr);
-        } else if (isCeylonString(targetType)) {
+        } else if (isCeylonString(exprType)) {
             expr = unboxString(expr);
-        } else if (isCeylonCharacter(targetType)) {
-            boolean isJavaCharacter = targetType.getUnderlyingType() != null;
+        } else if (isCeylonCharacter(exprType)) {
+            boolean isJavaCharacter = exprType.getUnderlyingType() != null;
             expr = unboxCharacter(expr, isJavaCharacter);
-        } else if (isCeylonBoolean(targetType)) {
+        } else if (isCeylonBoolean(exprType)) {
             expr = unboxBoolean(expr);
-        } else if (isCeylonArray(targetType)) {
+        } else if (isCeylonArray(exprType)) {
             expr = unboxArray(expr);
-        } else if (isOptional(targetType)) {
-            targetType = typeFact().getDefiniteType(targetType);
-            if (isCeylonString(targetType)){
+        } else if (isOptional(exprType)) {
+            exprType = typeFact().getDefiniteType(exprType);
+            if (isCeylonString(exprType)){
                 expr = unboxOptionalString(expr);
             }
         }
