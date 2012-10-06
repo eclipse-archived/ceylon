@@ -34,8 +34,8 @@ class MethodWhile {
     }
     
     public final void whileNonEmpty() {
-        .ceylon.language.Iterable<? extends .ceylon.language.Integer> seq = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
-        .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$4;
+        .ceylon.language.List<? extends .ceylon.language.Integer> seq = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
+        .ceylon.language.List<? extends .ceylon.language.Integer> $s$4;
         while ((
             let
             {
@@ -43,8 +43,8 @@ class MethodWhile {
             }
             returning $ceylontmp5;
         )) {
-            final .ceylon.language.Iterable<? extends .ceylon.language.Integer> $s$6 = (.ceylon.language.Iterable<? extends .ceylon.language.Integer>)$s$4;
-            seq = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+            final .ceylon.language.List<? extends .ceylon.language.Integer> $s$6 = (.ceylon.language.List<? extends .ceylon.language.Integer>)$s$4;
+            seq = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
         }
     }
     

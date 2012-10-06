@@ -71,7 +71,7 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T> getSequence() {
+    public .ceylon.language.List<? extends T> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     
@@ -101,17 +101,17 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+    public .ceylon.language.List<? extends T> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.List<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.collect(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.List<? extends T> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.select(selecting);
     }
     
@@ -242,13 +242,13 @@ abstract class Bug446<T> implements .ceylon.language.List<T> {
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends T> items() {
+    public final .ceylon.language.List<? extends T> items() {
         return $ceylon$language$Correspondence$this.items();
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this;
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+    public final .ceylon.language.List<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return .ceylon.language.bottom_.getBottom$();
     }
     private final .java.lang.String string;

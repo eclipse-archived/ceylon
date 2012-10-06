@@ -77,17 +77,17 @@ final class indirectTypeParam_ {
         }
         final f3_ f3 = new f3_();
         f3.f3(1L).$call();
-        final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> j = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends .java.lang.Object>>("ceylon.language.Callable<ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>,ceylon.language.Iterable<ceylon.language.Iterable<ceylon.language.Object>>>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.List<? extends .java.lang.Object>> j = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.List<? extends .java.lang.Object>>("ceylon.language.Callable<ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Object>,ceylon.language.Iterable<ceylon.language.Iterable<ceylon.language.Object>>>"){
             
             @.java.lang.Override
-            public .ceylon.language.Iterable<? extends .java.lang.Object> $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.List<? extends .java.lang.Object> $call(final .java.lang.Object $param$0) {
                 return .ceylon.language.join_.join((.ceylon.language.Iterable)$param$0);
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends X>> j2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends X>>("ceylon.language.Callable<ceylon.language.Empty|ceylon.language.Sequence<X>,ceylon.language.Iterable<ceylon.language.Iterable<X>>>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.List<? extends X>> j2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.List<? extends X>>("ceylon.language.Callable<ceylon.language.Empty|ceylon.language.Sequence<X>,ceylon.language.Iterable<ceylon.language.Iterable<X>>>"){
             
             @.java.lang.Override
-            public .ceylon.language.Iterable<? extends X> $call(final .java.lang.Object $param$0) {
+            public .ceylon.language.List<? extends X> $call(final .java.lang.Object $param$0) {
                 return .ceylon.language.join_.<X>join((.ceylon.language.Iterable)$param$0);
             }
         };

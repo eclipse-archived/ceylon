@@ -6,14 +6,14 @@ final class bug568_ {
     }
     
     static void bug568() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty$();
+        final .ceylon.language.List<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
         .java.lang.Object $elem$0;
         for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s$iter$4 = (.ceylon.language.Iterator<? extends .ceylon.language.String>)(
             let
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.Integer> $spreadTest$1 = (.ceylon.language.FixedSized<? extends .ceylon.language.Integer>)childPaths;
             }
-            returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$1.getEmpty() ? (
+            returning (.ceylon.language.List<? extends .ceylon.language.String>)(!$spreadTest$1.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.Integer> $spread$2$0 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$spreadTest$1;

@@ -1,5 +1,5 @@
 class SomeImpl<out Element>() satisfies Some<Element> {
-    shared actual FixedSized<Element> rest = bottom;
+    shared actual List<Element> rest = bottom;
     shared actual SomeImpl<Element> clone {
         return bottom;
     }

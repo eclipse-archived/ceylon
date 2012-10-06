@@ -8,7 +8,7 @@ final class bug709_ {
     static void bug709(final .ceylon.language.List<? extends .ceylon.language.String> list) {
         .java.lang.Object $list$0;
         if (($list$0 = list) instanceof .ceylon.language.FixedSized) {
-            final .ceylon.language.Iterable<? extends .ceylon.language.String> $list$1 = (.ceylon.language.Iterable)$list$0;
+            final .ceylon.language.List<? extends .ceylon.language.String> $list$1 = (.ceylon.language.List)$list$0;
         }
     }
 }

@@ -105,10 +105,10 @@ class AssertionConditionList {
         return y == 1L;
     }
     
-    private final boolean m5(final .ceylon.language.Iterable<? extends .java.lang.Object> x) {
+    private final boolean m5(final .ceylon.language.List<? extends .java.lang.Object> x) {
         .java.lang.String $ceylontmpassert10 = null;
         final long y;
-        .ceylon.language.Iterable<? extends .java.lang.Object> $x$13 = null;
+        .ceylon.language.List<? extends .java.lang.Object> $x$13 = null;
         if (($x$13 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$13).getEmpty()) {
             .java.lang.Object $y$14 = null;
             if (($y$14 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
@@ -133,7 +133,7 @@ class AssertionConditionList {
         return y == 1L;
     }
     
-    private final boolean m6(final .ceylon.language.Iterable<? extends .java.lang.Object> x) {
+    private final boolean m6(final .ceylon.language.List<? extends .java.lang.Object> x) {
         .java.lang.String $ceylontmpassert15 = null;
         final long y;
         if (((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L)) != null) {

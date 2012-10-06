@@ -134,17 +134,17 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<?> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+    public .ceylon.language.List<?> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.List<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.collect(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<?> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.List<?> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.select(selecting);
     }
     
@@ -275,12 +275,12 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<?> items() {
+    public final .ceylon.language.List<?> items() {
         return $ceylon$language$Correspondence$this.items();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<?> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+    public .ceylon.language.List<?> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<?>> $ceylon$language$Ranged$this;

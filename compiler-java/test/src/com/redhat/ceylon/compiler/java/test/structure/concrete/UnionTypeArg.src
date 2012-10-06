@@ -31,7 +31,7 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable getSequence() {
+    public .ceylon.language.List getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     
@@ -61,17 +61,17 @@ class UnionTypeArg implements .ceylon.language.Iterable<.java.lang.Object> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable sort(final .ceylon.language.Callable comparing) {
+    public .ceylon.language.List sort(final .ceylon.language.Callable comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable collect(final .ceylon.language.Callable collecting) {
+    public .ceylon.language.List collect(final .ceylon.language.Callable collecting) {
         return $ceylon$language$Iterable$this.collect(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable select(final .ceylon.language.Callable selecting) {
+    public .ceylon.language.List select(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.select(selecting);
     }
     
@@ -169,7 +169,7 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable getSequence() {
+    public .ceylon.language.List getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     
@@ -189,17 +189,17 @@ class UnionTypeArgOverride implements .ceylon.language.Iterable<.java.lang.Objec
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable sort(final .ceylon.language.Callable comparing) {
+    public .ceylon.language.List sort(final .ceylon.language.Callable comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable collect(final .ceylon.language.Callable collecting) {
+    public .ceylon.language.List collect(final .ceylon.language.Callable collecting) {
         return $ceylon$language$Iterable$this.collect(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable select(final .ceylon.language.Callable selecting) {
+    public .ceylon.language.List select(final .ceylon.language.Callable selecting) {
         return $ceylon$language$Iterable$this.select(selecting);
     }
     

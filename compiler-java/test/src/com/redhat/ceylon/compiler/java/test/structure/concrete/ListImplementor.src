@@ -74,7 +74,7 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends X> getSequence() {
+    public .ceylon.language.List<? extends X> getSequence() {
         return $ceylon$language$Iterable$this.getSequence();
     }
     
@@ -104,17 +104,17 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends X> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+    public .ceylon.language.List<? extends X> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
         return $ceylon$language$Iterable$this.sort(comparing);
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Iterable<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.List<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.collect(collecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends X> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.List<? extends X> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.select(selecting);
     }
     
@@ -245,12 +245,12 @@ class ListImplementor<X> implements .ceylon.language.List<X> {
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends X> items() {
+    public final .ceylon.language.List<? extends X> items() {
         return $ceylon$language$Correspondence$this.items();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends X> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
+    public .ceylon.language.List<? extends X> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends X>> $ceylon$language$Ranged$this;

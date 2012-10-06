@@ -67,13 +67,13 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m5(final .ceylon.language.Iterable<? extends .java.lang.Object> x) {
+    private final void m5(final .ceylon.language.List<? extends .java.lang.Object> x) {
         long a = 0L;
         while (true) {
             boolean $ceylontmpwhile8 = false;
             .java.lang.Object $y$10 = null;
             final long y;
-            .ceylon.language.Iterable<? extends .java.lang.Object> $x$9 = null;
+            .ceylon.language.List<? extends .java.lang.Object> $x$9 = null;
             if (($x$9 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$9).getEmpty()) {
                 if (($y$10 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                     y = ((.ceylon.language.Integer)$y$10).longValue();
@@ -85,7 +85,7 @@ class MethodWhileConditionList {
         }
     }
     
-    private final void m6(final .ceylon.language.Iterable<? extends .java.lang.Object> x) {
+    private final void m6(final .ceylon.language.List<? extends .java.lang.Object> x) {
         long a = 0L;
         boolean $ceylontmpif11 = false;
         .java.lang.Object $y$12 = null;

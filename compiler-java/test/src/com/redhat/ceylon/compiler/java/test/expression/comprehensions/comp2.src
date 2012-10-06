@@ -5,8 +5,8 @@ final class comp2_ {
     private comp2_() {
     }
     
-    static void comp2(final .ceylon.language.Iterable<? extends .ceylon.language.Integer> ints) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer> i = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+    static void comp2(final .ceylon.language.List<? extends .ceylon.language.Integer> ints) {
+        final .ceylon.language.List<? extends .ceylon.language.Integer> i = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
                 return new .ceylon.language.Iterator<.ceylon.language.Integer>(){

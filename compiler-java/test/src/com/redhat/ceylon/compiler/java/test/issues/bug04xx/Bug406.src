@@ -6,13 +6,13 @@ class Bug406 {
     }
     
     private final void test() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> full = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
-        final .ceylon.language.Iterable<? extends .ceylon.language.String> spread1 = (
+        final .ceylon.language.List<? extends .ceylon.language.String> full = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
+        final .ceylon.language.List<? extends .ceylon.language.String> spread1 = (
             let
             {
                 .ceylon.language.FixedSized<? extends .ceylon.language.String> $spreadTest$0 = (.ceylon.language.FixedSized<? extends .ceylon.language.String>)full;
             }
-            returning (.ceylon.language.Iterable<? extends .ceylon.language.String>)(!$spreadTest$0.getEmpty() ? (
+            returning (.ceylon.language.List<? extends .ceylon.language.String>)(!$spreadTest$0.getEmpty() ? (
                 let
                 {
                     .ceylon.language.Sequence<? extends .ceylon.language.String> $spread$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)$spreadTest$0;
