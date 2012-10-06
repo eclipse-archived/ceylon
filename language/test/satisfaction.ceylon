@@ -52,7 +52,7 @@ class MySized(Integer s) satisfies Sized {
 class MySome() satisfies Some<Integer> {
     shared actual Integer last = 1;
     shared actual Integer size = 2;
-    shared actual FixedSized<Integer> rest { return {1}; }
+    shared actual List<Integer> rest { return {1}; }
     shared actual MySome clone { return this; }
     shared actual Iterator<Integer> iterator { return {2,1}.iterator; }
 }

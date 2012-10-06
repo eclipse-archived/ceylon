@@ -7,6 +7,7 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
+import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.None;
 import ceylon.language.Sequence;
@@ -59,16 +60,16 @@ public class ArrayOfNone<Element> extends Array<Element> implements None<Element
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    @Override @Ignore public Iterable<? extends Element> getSequence() { return (Iterable)empty_.getEmpty$(); }
+    @Override @Ignore public List<? extends Element> getSequence() { return (List)empty_.getEmpty$(); }
     @Override @Ignore public Element find(Callable<? extends Boolean> f) { return null; }
     @Override @Ignore public Element findLast(Callable<? extends Boolean> f) { return null; }
-    @Override @Ignore public Iterable<? extends Element> sort(Callable<? extends Comparison> f) { return this; }
+    @Override @Ignore public List<? extends Element> sort(Callable<? extends Comparison> f) { return this; }
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override @Ignore public <Result> Iterable<Result> map(Callable<? extends Result> f) { return (Iterable)empty_.getEmpty$(); }
     @Override @Ignore public Iterable<? extends Element> filter(Callable<? extends Boolean> f) { return this; }
     @SuppressWarnings({"rawtypes", "unchecked"})
-    @Override @Ignore public <Result> Iterable<Result> collect(Callable<? extends Result> f) { return (Iterable)empty_.getEmpty$(); }
-    @Override @Ignore public Iterable<? extends Element> select(Callable<? extends Boolean> f) { return this; }
+    @Override @Ignore public <Result> List<Result> collect(Callable<? extends Result> f) { return (List)empty_.getEmpty$(); }
+    @Override @Ignore public List<? extends Element> select(Callable<? extends Boolean> f) { return this; }
     @Override @Ignore public <Result> Result fold(Result ini, Callable<? extends Result> f) { return ini; }
     @Override @Ignore public boolean any(Callable<? extends Boolean> f) { return false; }
     @Override @Ignore public boolean every(Callable<? extends Boolean> f) { return false; }

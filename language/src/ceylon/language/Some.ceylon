@@ -19,8 +19,8 @@ shared interface Some<out Element>
         return false;
     }
 
-    doc "Returns a `FixedSized` containing all but the first 
+    doc "Returns a `List` containing all but the first 
          element of this collection."
-    shared actual formal FixedSized<Element> rest;
+    shared actual formal List<Element> rest;
 
 }

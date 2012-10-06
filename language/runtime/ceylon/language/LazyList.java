@@ -68,7 +68,7 @@ public class LazyList<Element> implements List<Element> {
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> getSequence() {
+    public List<? extends Element> getSequence() {
         return elems.getSequence();
     }
 
@@ -105,19 +105,19 @@ public class LazyList<Element> implements List<Element> {
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> sort(
+    public List<? extends Element> sort(
             Callable<? extends Comparison> comparing) {
         return elems.sort(comparing);
     }
 
     @Override @Ignore
-    public <Result> Iterable<? extends Result> collect(
+    public <Result> List<? extends Result> collect(
             Callable<? extends Result> collecting) {
         return elems.collect(collecting);
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> select(
+    public List<? extends Element> select(
             Callable<? extends Boolean> selecting) {
         return elems.select(selecting);
     }
@@ -257,7 +257,7 @@ public class LazyList<Element> implements List<Element> {
     }
 
     @Override @Ignore
-    public Iterable<? extends Element> items(Iterable<? extends Integer> keys) {
+    public List<? extends Element> items(Iterable<? extends Integer> keys) {
         return corr$impl.items(keys);
     }
 

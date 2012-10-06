@@ -89,7 +89,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override @SuppressWarnings("unchecked")
-    public Iterable<? extends Item> items(
+    public List<? extends Item> items(
             Iterable<? extends java.lang.Object> keys) {
         return corr$impl.items((Iterable<? extends Key>)keys);
     }
@@ -160,7 +160,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Ignore @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>> getSequence() {
+    public List<? extends Entry<? extends Key, ? extends Item>> getSequence() {
         return entries.getSequence();
     }
 
@@ -195,19 +195,19 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override
-    public Iterable<? extends Entry<? extends Key, ? extends Item>> sort(
+    public List<? extends Entry<? extends Key, ? extends Item>> sort(
             Callable<? extends Comparison> comparing) {
         return entries.sort(comparing);
     }
 
     @Ignore @Override
-    public <Result> Iterable<? extends Result> collect(
+    public <Result> List<? extends Result> collect(
             Callable<? extends Result> collecting) {
         return entries.collect(collecting);
     }
 
     @Ignore @Override
-    public Iterable<? extends Entry<? extends Key, ? extends Item>> select(
+    public List<? extends Entry<? extends Key, ? extends Item>> select(
             Callable<? extends Boolean> selecting) {
         return entries.select(selecting);
     }

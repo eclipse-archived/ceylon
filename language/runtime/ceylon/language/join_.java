@@ -1,8 +1,5 @@
 package ceylon.language;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -21,12 +18,12 @@ public final class join_ {
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public static <Element> Iterable<? extends Element> join(
+    public static <Element> List<? extends Element> join(
     @Name("iterables")
     @Sequenced
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Iterable<Element>>")
     final Iterable<? extends Iterable<? extends Element>> iterables) {
-		List<Element> list = new ArrayList<Element>();
+        java.util.List<Element> list = new java.util.ArrayList<Element>();
 		java.lang.Object $tmp1;
 		for (Iterator<? extends Iterable<? extends Element>> iter=iterables.getIterator(); 
 				!(($tmp1 = iter.next()) instanceof Finished);) {
@@ -39,14 +36,14 @@ public final class join_ {
 			}
 		}
         if (list.isEmpty()) {
-            return (Iterable<? extends Element>) empty_.getEmpty$();
+            return (List<? extends Element>) empty_.getEmpty$();
         }
         else {
             return new ArraySequence<Element>(list);
         }
     }
     @Ignore
-    public static <Element> Iterable<? extends Element> join() {
+    public static <Element> List<? extends Element> join() {
         return join((Iterable)empty_.getEmpty$());
     }
 }

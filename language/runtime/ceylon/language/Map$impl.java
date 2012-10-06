@@ -1,13 +1,9 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
-import com.redhat.ceylon.compiler.java.metadata.Annotation;
-import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 public final class Map$impl<Key,Item> {
@@ -203,7 +199,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public Iterable<? extends Key> getSequence() {
+            public List<? extends Key> getSequence() {
                 return Iterable$impl._getSequence(this);
             }
             @Override @Ignore
@@ -216,7 +212,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public Iterable<? extends Key> sort(Callable<? extends Comparison> f) {
+            public List<? extends Key> sort(Callable<? extends Comparison> f) {
                 return Iterable$impl._sort(this, f);
             }
             @Override
@@ -230,11 +226,11 @@ public final class Map$impl<Key,Item> {
                 return new FilterIterable<Key>(this, f);
             }
             @Override @Ignore
-            public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+            public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
                 return new MapIterable<Key, Result>(this, f).getSequence();
             }
             @Override @Ignore
-            public Iterable<? extends Key> select(Callable<? extends Boolean> f) {
+            public List<? extends Key> select(Callable<? extends Boolean> f) {
                 return new FilterIterable<Key>(this, f).getSequence();
             }
             @Override
@@ -400,7 +396,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<? extends Item> getSequence() {
+            public List<? extends Item> getSequence() {
                 return Iterable$impl._getSequence(this);
             }
             @Override @Ignore
@@ -413,7 +409,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public Iterable<? extends Item> sort(Callable<? extends Comparison> f) {
+            public List<? extends Item> sort(Callable<? extends Comparison> f) {
                 return Iterable$impl._sort(this, f);
             }
             @Override
@@ -427,11 +423,11 @@ public final class Map$impl<Key,Item> {
                 return new FilterIterable<Item>(this, f);
             }
             @Override @Ignore
-            public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+            public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
                 return new MapIterable<Item, Result>(this, f).getSequence();
             }
             @Override @Ignore
-            public Iterable<? extends Item> select(Callable<? extends Boolean> f) {
+            public List<? extends Item> select(Callable<? extends Boolean> f) {
                 return new FilterIterable<Item>(this, f).getSequence();
             }
             @Override
@@ -600,7 +596,7 @@ public final class Map$impl<Key,Item> {
 
             @Override
             @Ignore
-            public Iterable<? extends Set<? extends Key>> items(Iterable<? extends java.lang.Object> keys) {
+            public List<? extends Set<? extends Key>> items(Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._items(this, keys);
             }
 
@@ -683,7 +679,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getSequence() {
+            public List<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getSequence() {
                     return Iterable$impl._getSequence(this);
             }
             @Override
@@ -710,7 +706,7 @@ public final class Map$impl<Key,Item> {
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> sort(Callable<? extends Comparison> f) {
+            public List<? extends Entry<? extends Item, ? extends Set<? extends Key>>> sort(Callable<? extends Comparison> f) {
                 return Iterable$impl._sort(this, f);
             }
             @Override
@@ -724,12 +720,12 @@ public final class Map$impl<Key,Item> {
                 return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>>(this, f);
             }
             @Override @Ignore
-            public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+            public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
                 return new MapIterable<Entry<? extends Item, ? extends Set<? extends Key>>, Result>(this, f).getSequence();
             }
             @Override
             @Ignore
-            public Iterable<? extends Entry<? extends Item, ? extends Set<? extends Key>>> select(Callable<? extends Boolean> f) {
+            public List<? extends Entry<? extends Item, ? extends Set<? extends Key>>> select(Callable<? extends Boolean> f) {
                 return new FilterIterable<Entry<? extends Item, ? extends Set<? extends Key>>>(this, f).getSequence();
             }
             @Override
@@ -838,7 +834,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Iterable<? extends Result> items(
+            public List<? extends Result> items(
                     Iterable<? extends java.lang.Object> keys) {
                 return Correspondence$impl._items(this, keys);
             }
@@ -877,7 +873,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> getSequence() {
+            public List<? extends Entry<? extends Key, ? extends Result>> getSequence() {
                 return Iterable$impl._getSequence(this);
             }
 
@@ -909,12 +905,12 @@ public final class Map$impl<Key,Item> {
                 return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting);
             }
             @Override
-            public <R2> Iterable<? extends R2> collect(
+            public <R2> List<? extends R2> collect(
                     Callable<? extends R2> collecting) {
                 return new MapIterable<Entry<? extends Key, ? extends Result>, R2>(this, collecting).getSequence();
             }
             @Override
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> select(
+            public List<? extends Entry<? extends Key, ? extends Result>> select(
                     Callable<? extends Boolean> selecting) {
                 return new FilterIterable<Entry<? extends Key, ? extends Result>>(this, selecting).getSequence();
             }
@@ -938,7 +934,7 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public Iterable<? extends Entry<? extends Key, ? extends Result>> sort(
+            public List<? extends Entry<? extends Key, ? extends Result>> sort(
                     Callable<? extends Comparison> comparing) {
                 return Iterable$impl._sort(this, comparing);
             }

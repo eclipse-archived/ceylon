@@ -37,7 +37,7 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> getSequence();
+    public List<? extends Element> getSequence();
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Iterable<Result>")
@@ -75,20 +75,20 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Not
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> sort(@Name("comparing")
+    public List<? extends Element> sort(@Name("comparing")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|ceylon.language.Comparison,Element,Element>")
         Callable<? extends Comparison> comparing);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Result>")
     @TypeParameters(@TypeParameter("Result"))
-    public <Result> Iterable<? extends Result> collect(@Name("collecting")
+    public <Result> List<? extends Result> collect(@Name("collecting")
         @TypeInfo("ceylon.language.Callable<Result,Element>")
         Callable<? extends Result> collecting);
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> select(@Name("selecting")
+    public List<? extends Element> select(@Name("selecting")
         @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
         Callable<? extends Boolean> selecting);
 

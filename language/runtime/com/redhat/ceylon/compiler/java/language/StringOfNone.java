@@ -7,6 +7,7 @@ import ceylon.language.Comparison;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
+import ceylon.language.List;
 import ceylon.language.List$impl;
 import ceylon.language.Map;
 import ceylon.language.None;
@@ -52,7 +53,7 @@ public class StringOfNone extends String implements None<Character> {
 
     @Override
     @Ignore
-    public Iterable<? extends Character> getSequence() {
+    public List<? extends Character> getSequence() {
         return this;
     }
     @Override @Ignore
@@ -65,7 +66,7 @@ public class StringOfNone extends String implements None<Character> {
     }
     @Override
     @Ignore
-    public Iterable<? extends Character> sort(Callable<? extends Comparison> f) {
+    public List<? extends Character> sort(Callable<? extends Comparison> f) {
         return this;
     }
     @Override
@@ -75,11 +76,11 @@ public class StringOfNone extends String implements None<Character> {
     }
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override @Ignore
-    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
-        return (Iterable)empty_.getEmpty$();
+    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
+        return (List)empty_.getEmpty$();
     }
     @Override @Ignore
-    public Iterable<? extends Character> select(Callable<? extends Boolean> f) {
+    public List<? extends Character> select(Callable<? extends Boolean> f) {
         return this;
     }
     @Override

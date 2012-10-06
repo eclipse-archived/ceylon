@@ -76,9 +76,9 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
     @Override @SuppressWarnings({ "unchecked", "rawtypes" })
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public FixedSized<? extends Element> getRest() {
+    public List<? extends Element> getRest() {
     	if (first.equals(last)) {
-    	    return (FixedSized)empty_.getEmpty$();
+    	    return (List)empty_.getEmpty$();
     	}
     	else {
             return new Range<Element>(next(getFirst()), getLast());
@@ -425,7 +425,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         return Sequence$impl._collect(this, f);
     }
     @Override @Ignore
-    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+    public List<? extends Element> select(Callable<? extends Boolean> f) {
         return new FilterIterable<Element>(this, f).getSequence();
     }
     @Override

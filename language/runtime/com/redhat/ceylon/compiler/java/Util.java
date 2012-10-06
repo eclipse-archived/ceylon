@@ -205,7 +205,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = sequence.getFirst().booleanValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Boolean>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Boolean>)sequence.getRest();
             else
                 break;
         }
@@ -230,7 +230,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = (byte) sequence.getFirst().longValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Integer>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Integer>)sequence.getRest();
             else
                 break;
         }
@@ -255,7 +255,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = (short) sequence.getFirst().longValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Integer>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Integer>)sequence.getRest();
             else
                 break;
         }
@@ -280,7 +280,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = (int) sequence.getFirst().longValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Integer>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Integer>)sequence.getRest();
             else
                 break;
         }
@@ -305,7 +305,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = sequence.getFirst().longValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Integer>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Integer>)sequence.getRest();
             else
                 break;
         }
@@ -330,7 +330,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = (float) sequence.getFirst().doubleValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Float>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Float>)sequence.getRest();
             else
                 break;
         }
@@ -355,7 +355,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = sequence.getFirst().doubleValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Float>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Float>)sequence.getRest();
             else
                 break;
         }
@@ -382,7 +382,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = (char) sequence.getFirst().intValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Character>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Character>)sequence.getRest();
             else
                 break;
         }
@@ -407,7 +407,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = (char) sequence.getFirst().intValue();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.Character>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.Character>)sequence.getRest();
             else
                 break;
         }
@@ -432,7 +432,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = sequence.getFirst().toString();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends ceylon.language.String>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends ceylon.language.String>)sequence.getRest();
             else
                 break;
         }
@@ -445,7 +445,7 @@ public class Util {
         while(!sequence.getEmpty()){
             ret[i++] = sequence.getFirst();
             if(sequence instanceof ceylon.language.Some<?>)
-                sequence = ((ceylon.language.Some<? extends T>)sequence).getRest();
+                sequence = (ceylon.language.FixedSized<? extends T>)sequence.getRest();
             else
                 break;
         }

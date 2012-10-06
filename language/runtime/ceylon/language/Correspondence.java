@@ -51,7 +51,7 @@ public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public Iterable<? extends Item> items(@Sequenced @Name("keys")
+    public List<? extends Item> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language.Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
@@ -75,8 +75,8 @@ public interface Correspondence<Key,Item> {
         public final Item getFirst() {
             return $this.item((Key)keys.getFirst());
         }
-        public final FixedSized<? extends Item> getRest() {
-            return (FixedSized<? extends Item>) $this.items(keys.getRest());
+        public final List<? extends Item> getRest() {
+            return (List<? extends Item>) $this.items(keys.getRest());
         }
         public final Item item(Integer key) {
             Key keyFound = keys.item(key);
@@ -289,7 +289,7 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl._collect(this, f);
         }
         @Override @Ignore
-        public Iterable<? extends Item> select(Callable<? extends Boolean> f) {
+        public List<? extends Item> select(Callable<? extends Boolean> f) {
             return new FilterIterable<Item>(this, f).getSequence();
         }
         @Override

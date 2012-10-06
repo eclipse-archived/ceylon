@@ -25,7 +25,7 @@ public interface Some<Element> extends FixedSized<Element> {
     public boolean getEmpty();
     
     @Annotations({@Annotation("formal"), @Annotation("actual")})
-    @TypeInfo("ceylon.language.FixedSized<Element>")
-    public FixedSized<? extends Element> getRest();
+    @TypeInfo("ceylon.language.List<Element>")
+    public List<? extends Element> getRest();
 
 }

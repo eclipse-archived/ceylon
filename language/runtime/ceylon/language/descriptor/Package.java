@@ -1,6 +1,7 @@
 package ceylon.language.descriptor;
 
-import ceylon.language.Iterable;
+import ceylon.language.List;
+import ceylon.language.String;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -10,12 +11,14 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 3)
 public class Package {
-    private final String name;
-    
+    private final java.lang.String name;
+    private final boolean shared;
+    private final java.lang.String doc;
+    private final List<? extends String> by;
     
     public Package(@Name("name")
     @TypeInfo("ceylon.language.String")
-    String name, @Name("shared")
+    java.lang.String name, @Name("shared")
     @Defaulted
     @TypeInfo("ceylon.language.Boolean")
     boolean shared, @Name("doc")
@@ -24,7 +27,7 @@ public class Package {
     java.lang.String doc, @Name("by")
     @Defaulted
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
-    ceylon.language.Iterable<? extends ceylon.language.String> by) {
+    List<? extends String> by) {
         this.name = name;
         this.shared = shared;
         this.doc = doc;
@@ -32,27 +35,22 @@ public class Package {
     }
     
     @TypeInfo("ceylon.language.String")
-    public final String getName() {
+    public final java.lang.String getName() {
         return name;
     }
-    
-    private final boolean shared;
     
     @TypeInfo("ceylon.language.Boolean")
     public final boolean getShared() {
         return shared;
     }
     
-    private final java.lang.String doc;
-    
     @TypeInfo("ceylon.language.String")
     public final java.lang.String getDoc() {
         return doc;
     }
-    private final ceylon.language.Iterable<? extends ceylon.language.String> by;
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
-    public final ceylon.language.Iterable<? extends ceylon.language.String> getBy() {
+    public final List<? extends String> getBy() {
         return by;
     }
  
@@ -75,10 +73,10 @@ public class Package {
     }
     
     @Ignore
-    public static ceylon.language.Iterable<? extends ceylon.language.String> $init$by(
+    public static List<? extends String> $init$by(
     final String name, 
     final boolean shared, 
     final java.lang.String doc) {
-        return (Iterable)ceylon.language.empty_.getEmpty$();
+        return (List)ceylon.language.empty_.getEmpty$();
     }
 }

@@ -20,7 +20,7 @@ final class module_ {
         		"The Ceylon language module containing the core types referred to in the language specification.", 
         		new com.redhat.ceylon.compiler.java.language.ArraySequence<ceylon.language.String>(ceylon.language.String.instance("Gavin King")), 
         		"http://www.apache.org/licenses/LICENSE-2.0.html", 
-        		(Iterable)empty_.getEmpty$());
+        		(List)empty_.getEmpty$());
     }
     
     private module_() {

@@ -113,8 +113,8 @@ public class Singleton<Element>
 	@Override
 	@TypeInfo("ceylon.language.Empty")
     @SuppressWarnings({"rawtypes", "unchecked"})
-	public FixedSized<? extends Element> getRest() {
-		return (FixedSized)empty_.getEmpty$();
+	public List<? extends Element> getRest() {
+		return (List)empty_.getEmpty$();
 	}
 
 	@Override
@@ -293,10 +293,10 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public Iterable<? extends Element> select(@Name("selecting")
+    public List<? extends Element> select(@Name("selecting")
             @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
             Callable<? extends Boolean> selecting) {
-        return selecting.$call(element).booleanValue() ? this : (Iterable)empty_.getEmpty$();
+        return selecting.$call(element).booleanValue() ? this : (List)empty_.getEmpty$();
     }
     @Override
     @Ignore

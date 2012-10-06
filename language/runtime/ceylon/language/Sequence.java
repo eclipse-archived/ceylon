@@ -36,7 +36,7 @@ public interface Sequence<Element>
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public FixedSized<? extends Element> getRest();
+    public List<? extends Element> getRest();
     
     @Annotations({@Annotation("actual"), @Annotation("formal")})
     @Override

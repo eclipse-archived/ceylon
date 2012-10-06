@@ -387,15 +387,15 @@ public abstract class String
     }
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
-    public Iterable<? extends Character> getCharacters() {
+    public List<? extends Character> getCharacters() {
         return getCharacters(value);
     }
 
     @Ignore
-    public static Iterable<? extends Character> getCharacters(java.lang.String value) {
+    public static List<? extends Character> getCharacters(java.lang.String value) {
         int length = value.length();
         if (length == 0) {
-            return (Iterable)empty_.getEmpty$();
+            return (List)empty_.getEmpty$();
         }
         Character[] chars = new Character[(int)getSize(value)];
         for (int offset = 0, i = 0; offset < length; i++) {
@@ -1009,16 +1009,16 @@ public abstract class String
     }
 
     @Override @Ignore
-    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
         return new MapIterable<Character, Result>(this, f).getSequence();
     }
     @Ignore
-    public static <Result> Iterable<? extends Result> collect(java.lang.String value, Callable<? extends Result> f) {
+    public static <Result> List<? extends Result> collect(java.lang.String value, Callable<? extends Result> f) {
         return new MapIterable<Character, Result>(instance(value), f).getSequence();
     }
 
     @Ignore
-    public static Iterable<? extends Character> filter(java.lang.String value, Callable<? extends Boolean> f) {
+    public static List<? extends Character> filter(java.lang.String value, Callable<? extends Boolean> f) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1027,11 +1027,11 @@ public abstract class String
     }
 
     @Override @Ignore
-    public Iterable<? extends Character> select(Callable<? extends Boolean> f) {
-        return filter(f);
+    public List<? extends Character> select(Callable<? extends Boolean> f) {
+        return filter(value, f);
     }
     @Ignore
-    public static Iterable<? extends Character> select(java.lang.String value, Callable<? extends Boolean> f) {
+    public static List<? extends Character> select(java.lang.String value, Callable<? extends Boolean> f) {
         return filter(value, f);
     }
 
@@ -1320,7 +1320,7 @@ public abstract class String
 
         @Override
         @Ignore
-        public Iterable<? extends String> getSequence() {
+        public List<? extends String> getSequence() {
             return Iterable$impl._getSequence(this);
         }
         @Override @Ignore
@@ -1333,7 +1333,7 @@ public abstract class String
         }
         @Override
         @Ignore
-        public Iterable<? extends String> sort(Callable<? extends Comparison> f) {
+        public List<? extends String> sort(Callable<? extends Comparison> f) {
             return Iterable$impl._sort(this, f);
         }
         @Override
@@ -1348,12 +1348,12 @@ public abstract class String
         }
         @Override
         @Ignore
-        public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+        public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
             return new MapIterable<String, Result>(this, f).getSequence();
         }
         @Override
         @Ignore
-        public Iterable<? extends String> select(Callable<? extends Boolean> f) {
+        public List<? extends String> select(Callable<? extends Boolean> f) {
             return new FilterIterable<String>(this, f).getSequence();
         }
         @Override
@@ -1453,7 +1453,7 @@ public abstract class String
 
         @Override
         @Ignore
-        public Iterable<? extends Integer> getSequence() {
+        public List<? extends Integer> getSequence() {
             return Iterable$impl._getSequence(this);
         }
         @Override @Ignore
@@ -1466,7 +1466,7 @@ public abstract class String
         }
         @Override
         @Ignore
-        public Iterable<? extends Integer> sort(Callable<? extends Comparison> f) {
+        public List<? extends Integer> sort(Callable<? extends Comparison> f) {
             return Iterable$impl._sort(this, f);
         }
         @Override
@@ -1480,11 +1480,11 @@ public abstract class String
             return new FilterIterable<Integer>(this, f);
         }
         @Override @Ignore
-        public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+        public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
             return new MapIterable<Integer, Result>(this, f).getSequence();
         }
         @Override @Ignore
-        public Iterable<? extends Integer> select(Callable<? extends Boolean> f) {
+        public List<? extends Integer> select(Callable<? extends Boolean> f) {
             return new FilterIterable<Integer>(this, f).getSequence();
         }
         @Override

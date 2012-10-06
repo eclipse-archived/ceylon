@@ -10,7 +10,6 @@ import ceylon.language.Collection$impl;
 import ceylon.language.Comparison;
 import ceylon.language.Correspondence$impl;
 import ceylon.language.Entry;
-import ceylon.language.FixedSized;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
@@ -68,9 +67,9 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public FixedSized<? extends Element> getRest() {
+    public List<? extends Element> getRest() {
         if (first+1==array.length) {
-            return (FixedSized)empty_.getEmpty$();
+            return (List)empty_.getEmpty$();
         }
         else {
             return new ArraySequence<Element>(array, first + 1);
@@ -344,7 +343,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+    public List<? extends Element> select(Callable<? extends Boolean> f) {
         return new FilterIterable<Element>(this, f).getSequence();
     }
 

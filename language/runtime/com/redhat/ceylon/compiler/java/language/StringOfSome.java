@@ -5,10 +5,10 @@ import ceylon.language.Callable;
 import ceylon.language.Character;
 import ceylon.language.Comparison;
 import ceylon.language.Entry;
-import ceylon.language.FixedSized;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
+import ceylon.language.List;
 import ceylon.language.List$impl;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
@@ -33,7 +33,7 @@ public class StringOfSome extends String implements Some<Character> {
     }
 
     @Override
-    public FixedSized<? extends Character> getRest() {
+    public List<? extends Character> getRest() {
         return span(Integer.instance(1), null);
     }
 
@@ -49,7 +49,7 @@ public class StringOfSome extends String implements Some<Character> {
 
     @Override
     @Ignore
-    public Iterable<? extends Character> getSequence() {
+    public List<? extends Character> getSequence() {
         return Iterable$impl._getSequence(this);
     }
     @Override @Ignore
@@ -62,7 +62,7 @@ public class StringOfSome extends String implements Some<Character> {
     }
     @Override
     @Ignore
-    public Iterable<? extends Character> sort(Callable<? extends Comparison> f) {
+    public List<? extends Character> sort(Callable<? extends Comparison> f) {
         return String.instance(string_.string(Iterable$impl._sort(this, f)));
     }
     @Override
@@ -71,11 +71,11 @@ public class StringOfSome extends String implements Some<Character> {
         return String.instance(string_.string(new FilterIterable<Character>(this, f)));
     }
     @Override @Ignore
-    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
         return new MapIterable<Character,Result>(this, f).getSequence();
     }
     @Override @Ignore
-    public Iterable<? extends Character> select(Callable<? extends Boolean> f) {
+    public List<? extends Character> select(Callable<? extends Boolean> f) {
         return String.instance(string_.string(new FilterIterable<Character>(this, f)));
     }
     @Override

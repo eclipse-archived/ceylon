@@ -471,7 +471,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Override
     @Ignore
-    public Iterable<? extends Element> items(@Sequenced @Name("keys")
+    public List<? extends Element> items(@Sequenced @Name("keys")
     @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
     Iterable<? extends Integer> keys){
         return Correspondence$impl._items(this, keys);
@@ -595,7 +595,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
     @Override
     @Ignore
-    public Iterable<? extends Element> sort(Callable<? extends Comparison> f) {
+    public List<? extends Element> sort(Callable<? extends Comparison> f) {
         return Iterable$impl._sort(this, f);
     }
     @Override
@@ -609,11 +609,11 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         return new FilterIterable<Element>(this, f);
     }
     @Override @Ignore
-    public <Result> Iterable<? extends Result> collect(Callable<? extends Result> f) {
+    public <Result> List<? extends Result> collect(Callable<? extends Result> f) {
         return new MapIterable<Element, Result>(this, f).getSequence();
     }
     @Override @Ignore
-    public Iterable<? extends Element> select(Callable<? extends Boolean> f) {
+    public List<? extends Element> select(Callable<? extends Boolean> f) {
         return new FilterIterable<Element>(this, f).getSequence();
     }
     @Override

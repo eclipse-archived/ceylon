@@ -18,6 +18,7 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
+import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 import ceylon.language.Set;
@@ -92,7 +93,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public Iterable<? extends Item> items(Iterable<? extends Object> keys) {
+    public List<? extends Item> items(Iterable<? extends Object> keys) {
         return corr$impl.items(keys);
     }
 
@@ -163,7 +164,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>> getSequence() {
+    public List<? extends Entry<? extends Key, ? extends Item>> getSequence() {
         return iter$impl.getSequence();
     }
 
@@ -212,7 +213,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>> sort(
+    public List<? extends Entry<? extends Key, ? extends Item>> sort(
             Callable<? extends Comparison> comparing) {
         return iter$impl.sort(comparing);
     }
@@ -221,7 +222,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Result>")
     @TypeParameters(@TypeParameter("Result"))
-    public <Result> Iterable<? extends Result> collect(
+    public <Result> List<? extends Result> collect(
             Callable<? extends Result> collecting) {
         return iter$impl.collect(collecting);
     }
@@ -229,7 +230,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>> select(
+    public List<? extends Entry<? extends Key, ? extends Item>> select(
             Callable<? extends Boolean> selecting) {
         return iter$impl.select(selecting);
     }

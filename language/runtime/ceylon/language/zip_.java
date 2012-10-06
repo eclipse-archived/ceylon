@@ -1,8 +1,5 @@
 package ceylon.language;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Method;
@@ -20,14 +17,14 @@ public final class zip_ {
     @TypeParameters({@TypeParameter(value="Key", satisfies="ceylon.language.Object"),
                      @TypeParameter(value="Item", satisfies="ceylon.language.Object")})
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Entry<Key,Item>>")
-    public static <Key,Item> Iterable<? extends Entry<? extends Key, ? extends Item>> zip(
+    public static <Key,Item> List<? extends Entry<? extends Key, ? extends Item>> zip(
     @Name("keys")
     @TypeInfo("ceylon.language.Iterable<Key>")
     final ceylon.language.Iterable<? extends Key> keys,
     @Name("items")
     @TypeInfo("ceylon.language.Iterable<Item>")
     final ceylon.language.Iterable<? extends Item> items) {
-		List<Entry<? extends Key,? extends Item>> list = new ArrayList<Entry<? extends Key,? extends Item>>();
+		java.util.List<Entry<? extends Key,? extends Item>> list = new java.util.ArrayList<Entry<? extends Key,? extends Item>>();
 		Iterator<? extends Key> keyIter = keys.getIterator();
 		Iterator<? extends Item> itemIter = items.getIterator();
 		Key key = (Key) keyIter.next();
@@ -38,7 +35,7 @@ public final class zip_ {
 	        item = (Item) itemIter.next();
 		}
 		if (list.isEmpty()) {
-		    return (Iterable) empty_.getEmpty$();
+		    return (List) empty_.getEmpty$();
 		}
 		else {
 		    return new ArraySequence<Entry<? extends Key,? extends Item>>(list);

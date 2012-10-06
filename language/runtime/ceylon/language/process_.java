@@ -189,10 +189,10 @@ public final class process_ {
     }*/
 
     @SuppressWarnings("unchecked")
-    private Iterable<? extends String> args = (Iterable)empty_.getEmpty$();
+    private List<? extends String> args = (List)empty_.getEmpty$();
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
-    public Iterable<? extends String> getArguments() {
+    public List<? extends String> getArguments() {
         return args;
     }
     

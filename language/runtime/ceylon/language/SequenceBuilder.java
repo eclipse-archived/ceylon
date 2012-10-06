@@ -22,9 +22,9 @@ public class SequenceBuilder<Element> implements Sized {
     public SequenceBuilder() {}
      
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public synchronized Iterable<? extends Element> getSequence() {
+    public synchronized List<? extends Element> getSequence() {
         if (list==null || list.isEmpty()) {
-            return (Iterable)empty_.getEmpty$();
+            return (List)empty_.getEmpty$();
         }
         else {
             return new ArraySequence<Element>(list);

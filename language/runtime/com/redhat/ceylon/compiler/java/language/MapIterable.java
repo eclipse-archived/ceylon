@@ -9,6 +9,7 @@ import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
+import ceylon.language.List;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
 
@@ -57,7 +58,7 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
 
     @Override
     @Ignore
-    public Iterable<? extends Result> getSequence() {
+    public List<? extends Result> getSequence() {
         return Iterable$impl._getSequence(this);
     }
     @Override
@@ -70,15 +71,15 @@ public class MapIterable<Element, Result> implements Iterable<Result> {
         return Iterable$impl._findLast(this, f);
     }
     @Override @Ignore
-    public Iterable<? extends Result> sort(Callable<? extends Comparison> f) {
+    public List<? extends Result> sort(Callable<? extends Comparison> f) {
         return Iterable$impl._sort(this, f);
     }
     @Override @Ignore
-    public <R2> Iterable<? extends R2> collect(Callable<? extends R2> f) {
+    public <R2> List<? extends R2> collect(Callable<? extends R2> f) {
         return Iterable$impl._collect(this, f);
     }
     @Override @Ignore
-    public Iterable<? extends Result> select(Callable<? extends Boolean> f) {
+    public List<? extends Result> select(Callable<? extends Boolean> f) {
         return Iterable$impl._select(this, f);
     }
     @Override
