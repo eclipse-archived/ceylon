@@ -233,7 +233,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if (expectedType != null
                 // don't add cast to an erased type 
-                && (!willEraseToObject(expectedType) || willEraseToIterable(expectedType))
+                && (!willEraseToObject(expectedType) || willEraseToList(expectedType))
                 // don't add cast for null
                 && !isNothing(exprType)) {
             // full type erasure
@@ -276,7 +276,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(exprType.isExactly(expectedType))
             return false;
         // we can't find a common type with a sequence since it's a union
-        if(willEraseToIterable(expectedType)){
+        if(willEraseToList(expectedType)){
             ProducedType commonType = exprType.getSupertype(typeFact().getIterableDeclaration());
             // something fishy
             if(commonType == null)
@@ -307,7 +307,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         for(ProducedType arg : type.getTypeArgumentList()){
             if(willEraseToObject(arg)
                     // Iterable is not raw
-                    && !willEraseToIterable(arg))
+                    && !willEraseToList(arg))
                 return true;
             if(keepRecursing
                     && arg.getDeclaration() instanceof ClassOrInterface

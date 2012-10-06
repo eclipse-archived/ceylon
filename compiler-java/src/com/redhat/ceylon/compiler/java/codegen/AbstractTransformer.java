@@ -708,8 +708,8 @@ public abstract class AbstractTransformer implements Transformation {
         return (sameType(syms().ceylonExceptionType, type));
     }
     
-    boolean willEraseToIterable(ProducedType type) {
-        return typeFact().getNonemptyIterableType(typeFact().getDefiniteType(type)) != null;
+    boolean willEraseToList(ProducedType type) {
+        return typeFact().getNonemptyListType(typeFact().getDefiniteType(type)) != null;
     }
 
     boolean isCeylonString(ProducedType type) {
@@ -825,10 +825,10 @@ public abstract class AbstractTransformer implements Transformation {
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
-            ProducedType iterType = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(type));
-            if (iterType != null) {
+            ProducedType listType = typeFact().getNonemptyListType(typeFact().getDefiniteType(type));
+            if (listType != null) {
                 // We special case the erasure of X[] and X[]?
-                type = iterType;
+                type = listType;
             } else {
                 if ((flags & JT_SATISFIES) != 0) {
                     return null;
@@ -1038,9 +1038,9 @@ public abstract class AbstractTransformer implements Transformation {
                 // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
                 // For any other intersection type U|V:
                 // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
-                ProducedType iterType = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(ta));
+                ProducedType listType = typeFact().getNonemptyListType(typeFact().getDefiniteType(ta));
                 // don't break if the union type is erased to something better than Object
-                if(iterType == null){
+                if(listType == null){
                     // use raw types if:
                     // - we're calling a constructor
                     // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
@@ -1052,7 +1052,7 @@ public abstract class AbstractTransformer implements Transformation {
                     }
                     // otherwise just go on
                 }else
-                    ta = iterType;
+                    ta = listType;
             }
             if (isCeylonBoolean(ta)
                     && !isTypeParameter(ta)) {
