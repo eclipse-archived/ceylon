@@ -248,6 +248,21 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testPropertiesPut() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactContext context = new ArtifactContext("org.acme.props", "1.0", ArtifactContext.JAR);
+        try {
+            manager.putArtifact(context, new ByteArrayInputStream("dummy_jar".getBytes()));
+            manager.putArtifact(context.getModuleProperties(), new ByteArrayInputStream("moduletest=0.1\n".getBytes()));
+            File[] files = manager.resolve(context);
+            Assert.assertNotNull(files);
+            Assert.assertEquals(3, files.length);
+        } finally {
+            manager.removeArtifact(context);
+        }
+    }
+
+    @Test
     public void test2ndTry() throws Exception {
         RepositoryManager manager = getRepositoryManager();
         ArtifactContext ac = new ArtifactContext("test-jar", "0.1");
