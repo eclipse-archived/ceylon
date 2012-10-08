@@ -22,8 +22,8 @@ void comprehensions() {
   check({for (x in {"a", "", "c"}) if (exists c=x[0]) c.uppercased}=={`A`, `C`}, "comprehensions w/exists 2");
   check({for (x in {"a", "", "c"}) if (nonempty x) x.uppercased}=={"A", "C"}, "comprehensions w/nonempty 1");
   check({for (x in {"a", "", "c"}) if (nonempty s=x) s.uppercased}=={"A", "C"}, "comprehensions w/nonempty 2");
-  check({for (x in {1,2,"3.1",4}) if (is String x) x}=={"3.1"}, "comprehensions w/is 1");
-  check({for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i}=={3}, "comprehensions w/is 2");
+  check({for (x in {1,2,"3.1",4}) if (is String x) x.reversed}=={"1.3"}, "comprehensions w/is 1");
+  check({for (x in {1.1,2.2,3,4.4}) if (is Integer i=x) i*2}=={6}, "comprehensions w/is 2");
   check(array {for (k->v in entries("a","b","c","d","e")) if (k%2==0) v.uppercased}==array("A","C","E"), "key-value comprehensions");
   // comprehension nested inside comprehension
   check({for(i in 1..2){for(j in 1..2)""i","j""}}=={{"1,1","1,2"},{"2,1","2,2"}}, "nested comprehension");
