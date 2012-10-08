@@ -223,17 +223,9 @@ public class ClassDefinitionBuilder {
                 init.prepend(superCall);
             }
             if (!isCompanion) {
-                // Make the init statements into the primary constructor
                 createConstructor(init.toList());
-            } else {
-                if (constructors.size() == 1) {
-                    constructors.first().body(init.toList());
-                } else if (constructors.size() > 1) {
-                    Assert.fail("Companion classes can't have overloaded constructors");
-                }
             }
             for (MethodDefinitionBuilder builder : constructors) {
-                // Append the overloaded constructors
                 if (noAnnotations || ignoreAnnotations) {
                     builder.noAnnotations();
                 }
