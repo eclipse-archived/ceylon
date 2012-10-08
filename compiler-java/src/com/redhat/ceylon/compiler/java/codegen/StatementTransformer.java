@@ -180,7 +180,7 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformInnermost(Condition condition) {
             Cond transformedCond = transformCondition(condition, thenPart);
-            thenBlock = transformedCond.makeThenBlock();
+            thenBlock = makeThenBlock(transformedCond, thenPart);
             List<JCStatement> stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
             return transformCommon(transformedCond, stmts);
         }
@@ -241,7 +241,7 @@ public class StatementTransformer extends AbstractTransformer {
             java.util.List<Condition> conditions) {
         ListBuffer<JCStatement> result = ListBuffer.lb();
         final Cond transformedCond = transformCondition(conditions.get(0), thenPart);
-        JCStatement cond1 = make().If(transformedCond.makeTest(), transformedCond.makeThenBlock(), transform(elsePart));
+        JCStatement cond1 = make().If(transformedCond.makeTest(), makeThenBlock(transformedCond, thenPart), transform(elsePart));
         if (transformedCond.makeTestVarDecl(0, false) != null) {
             result.append(transformedCond.makeTestVarDecl(0, false));
         }
@@ -249,6 +249,25 @@ public class StatementTransformer extends AbstractTransformer {
         return result.toList();
     }
 
+    private final JCBlock makeThenBlock(Cond cond, Block thenPart) {
+        at(cond.getCondition());
+        if (thenPart == null || cond.getVariableName() == null) {
+            return statementGen().transform(thenPart);   
+        }
+        Name substVarName = naming.aliasName(cond.getVariableName().getName());
+        // Prepare for variable substitution in the following code block
+        final String origVarName = cond.getVariableName().getName();
+        String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
+        List<JCStatement> blockStmts = statementGen().transformBlock(thenPart);
+        // The variable holding the result for the code inside the code block
+        blockStmts = blockStmts.prepend(at(cond.getCondition()).VarDef(make().Modifiers(FINAL), substVarName, 
+                cond.makeTypeExpr(), cond.makeResultExpr()));
+        JCBlock thenBlock = at(cond.getCondition()).Block(0, blockStmts);
+        // Deactivate the above variable substitution
+        naming.removeVariableSubst(origVarName, prevSubst);
+        return thenBlock;
+    }
+    
     List<JCStatement> transform(Tree.WhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
@@ -257,7 +276,7 @@ public class StatementTransformer extends AbstractTransformer {
         java.util.List<Condition> conditions = stmt.getWhileClause().getConditionList().getConditions();
         if (conditions.size() == 1) {
             final Cond transformedCond = transformCondition(conditions.get(0), thenPart);
-            JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.makeTest()), transformedCond.makeThenBlock());
+            JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.makeTest()), makeThenBlock(transformedCond, thenPart));
             if (transformedCond.makeTestVarDecl(0, false) != null) {
                 res = List.<JCStatement> of(transformedCond.makeTestVarDecl(0, false), cond1);
             } else {
@@ -287,7 +306,7 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformInnermost(Condition condition) {
             Cond transformedCond = transformCondition(condition, thenPart);
-            JCBlock thenBlock = transformedCond.makeThenBlock();
+            JCBlock thenBlock = makeThenBlock(transformedCond, thenPart);
             return transformCommon(transformedCond, thenBlock.getStatements());
         }
         
@@ -517,18 +536,16 @@ public class StatementTransformer extends AbstractTransformer {
         public JCStatement makeTestVarDecl(int flags, boolean init);
     
         public JCExpression makeTest();
-        
-        public JCBlock makeThenBlock();
     }
     
     abstract class SpecialFormCond<C extends Tree.Condition> implements Cond {
         protected final C cond;
-        protected final Tree.Block thenPart;
         protected final Naming.SyntheticName name;
         protected final ProducedType toType;
         protected final Expression specifierExpr;
         protected final Naming.SyntheticName testVar;
         protected final Tree.Variable variable;
+        private final boolean hasResultDecl;
         SpecialFormCond(
                 C cond,
                 Tree.Block thenPart,  
@@ -536,7 +553,7 @@ public class StatementTransformer extends AbstractTransformer {
                 Expression specifierExpr, 
                 Tree.Variable variable) {
             this.cond = cond;
-            this.thenPart = thenPart;
+            this.hasResultDecl = thenPart == null;
             this.name = naming.synthetic(variable.getIdentifier().getText());
             this.toType = toType;
             this.specifierExpr = specifierExpr;
@@ -561,7 +578,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public final boolean hasResultDecl() {
-            return thenPart == null;
+            return hasResultDecl;
         }
         
         @Override
@@ -570,25 +587,6 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         protected abstract JCExpression makeDefaultExpr();
-        
-        @Override
-        public final JCBlock makeThenBlock() {
-            at(cond);
-            if (thenPart == null) {
-                return statementGen().transform(thenPart);   
-            }
-            Name substVarName = naming.aliasName(name.getName());
-            // Prepare for variable substitution in the following code block
-            final String origVarName = name.getName();
-            String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
-            List<JCStatement> blockStmts = statementGen().transformBlock(thenPart);
-            // The variable holding the result for the code inside the code block
-            blockStmts = blockStmts.prepend(at(cond).VarDef(make().Modifiers(FINAL), substVarName, makeTypeExpr(), makeResultExpr()));
-            JCBlock thenBlock = at(cond).Block(0, blockStmts);
-            // Deactivate the above variable substitution
-            naming.removeVariableSubst(origVarName, prevSubst);
-            return thenBlock;
-        }
         
         @Override
         public final JCStatement makeTestVarDecl(int flags, boolean init) {
@@ -756,11 +754,6 @@ public class StatementTransformer extends AbstractTransformer {
             super();
             this.cond = booleanCondition;
             this.thenPart = thenPart;
-        }
-        
-        @Override
-        public JCBlock makeThenBlock() {
-            return statementGen().transform(thenPart);
         }
 
         @Override
