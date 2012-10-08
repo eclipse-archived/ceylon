@@ -13,6 +13,14 @@ class MethodIfIsUnion {
         }
     }
     
+    public final void mvar(final .java.lang.Object y) {
+        .java.lang.Object $x$2;
+        if (($x$2 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$2 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
+            final .java.lang.Object $x$3 = (.java.lang.Object)$x$2;
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)$x$3).common();
+        }
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsUnion();

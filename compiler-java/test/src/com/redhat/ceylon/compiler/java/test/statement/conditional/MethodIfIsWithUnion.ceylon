@@ -24,7 +24,7 @@ class MethodIfIsUnion() {
             x.common();
         }
     }
-    shared void m(Object? y) {
+    shared void mvar(Object? y) {
         if (is Foo|Bar x=y) {
             x.common();
         }
