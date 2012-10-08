@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -169,23 +170,7 @@ public class ClassTransformer extends AbstractTransformer {
         addAtContainer(classBuilder, model);
         
         // Transform the class/interface members
-        CeylonVisitor visitor = gen().visitor;
-        final ListBuffer<JCTree> prevDefs = visitor.defs;
-        final boolean prevInInitializer = visitor.inInitializer;
-        final ClassDefinitionBuilder prevClassBuilder = visitor.classBuilder;
-        List<JCStatement> childDefs;
-        try {
-            visitor.defs = new ListBuffer<JCTree>();
-            visitor.inInitializer = true;
-            visitor.classBuilder = classBuilder;
-            
-            def.visitChildren(visitor);
-            childDefs = (List<JCStatement>)visitor.getResult().toList();
-        } finally {
-            visitor.classBuilder = prevClassBuilder;
-            visitor.inInitializer = prevInInitializer;
-            visitor.defs = prevDefs;
-        }
+        List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
 
         // If it's a Class without initializer parameters...
         if (Strategy.generateMain(def)) {
@@ -201,6 +186,26 @@ public class ClassTransformer extends AbstractTransformer {
             .of(model.getSelfType())
             .init(childDefs)
             .build();
+    }
+
+    private List<JCStatement> visitClassOrInterfaceDefinition(Node def, ClassDefinitionBuilder classBuilder) {
+        // Transform the class/interface members
+        CeylonVisitor visitor = gen().visitor;
+        final ListBuffer<JCTree> prevDefs = visitor.defs;
+        final boolean prevInInitializer = visitor.inInitializer;
+        final ClassDefinitionBuilder prevClassBuilder = visitor.classBuilder;
+        try {
+            visitor.defs = new ListBuffer<JCTree>();
+            visitor.inInitializer = true;
+            visitor.classBuilder = classBuilder;
+            
+            def.visitChildren(visitor);
+            return (List<JCStatement>)visitor.getResult().toList();
+        } finally {
+            visitor.classBuilder = prevClassBuilder;
+            visitor.inInitializer = prevInInitializer;
+            visitor.defs = prevDefs;
+        }
     }
 
     private void generateInstantiators(ClassOrInterface model, ClassDefinitionBuilder classBuilder, Tree.ParameterList paramList,
