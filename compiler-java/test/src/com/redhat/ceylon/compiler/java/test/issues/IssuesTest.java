@@ -708,6 +708,12 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
+    public void testBug796() {
+        compile("bug07xx/Bug796_1.ceylon");
+        compile("bug07xx/Bug796_2.ceylon");
+    }
+
+    @Test
     public void testBug797() {
         assertErrors("bug07xx/Bug797",
                 new CompilerError(2, "Type aliases not supported yet"));
