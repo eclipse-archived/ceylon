@@ -1438,6 +1438,11 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtAliasType, List.<JCExpression>of(make().Literal(name)));
     }
 
+    List<JCAnnotation> makeAtTypeAlias(ProducedType type) {
+        String name = serialiseTypeSignature(type);
+        return makeModelAnnotation(syms().ceylonAtTypeAliasType, List.<JCExpression>of(make().Literal(name)));
+    }
+
     final JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
         JCExpression nameAttribute = make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name));
         // variance
