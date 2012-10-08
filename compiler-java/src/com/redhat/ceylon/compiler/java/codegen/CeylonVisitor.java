@@ -59,8 +59,21 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      * Compilation Unit
      */
     
-    public void visit(Tree.TypeAliasDeclaration that){
-        gen.makeErroneous(that, "Type aliases not supported yet");
+    public void visit(Tree.TypeAliasDeclaration decl){
+        if(hasErrors(decl))
+            return;
+        boolean annots = gen.checkCompilerAnnotations(decl);
+        
+        if (Decl.withinClassOrInterface(decl)) {
+            if (Decl.withinInterface(decl)) {
+                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl));
+            } else {
+                classBuilder.defs(gen.classGen().transform(decl));
+            }
+        } else {
+            appendList(gen.classGen().transform(decl));
+        }
+        gen.resetCompilerAnnotations(annots);
     }
     
     public void visit(Tree.ImportList that) {

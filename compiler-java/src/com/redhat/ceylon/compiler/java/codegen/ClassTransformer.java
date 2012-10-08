@@ -55,6 +55,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -70,6 +71,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeAliasDeclaration;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
@@ -334,7 +336,7 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.annotations(makeAtMembers(members));
     }
 
-    private void addAtContainer(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
+    private void addAtContainer(ClassDefinitionBuilder classBuilder, TypeDeclaration model) {
         Package pkg = Decl.getPackageContainer(model);
         Scope scope = model.getContainer();
         if(scope == null || scope instanceof ClassOrInterface == false)
@@ -917,17 +919,30 @@ public class ClassTransformer extends AbstractTransformer {
         return builder;    
     }
 
+    private int transformDeclarationSharedFlags(Declaration decl){
+        return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
+    }
+    
     private int transformClassDeclFlags(ClassOrInterface cdecl) {
         int result = 0;
 
-        result |= Decl.isShared(cdecl) && !Decl.isAncestorLocal(cdecl) ? PUBLIC : 0;
+        result |= transformDeclarationSharedFlags(cdecl);
         result |= (cdecl.isAbstract() || cdecl.isFormal()) && (cdecl instanceof Class) ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         result |= cdecl.isAlias() && (cdecl instanceof Class) ? FINAL : 0;
 
         return result;
     }
-    
+
+    private int transformTypeAliasDeclFlags(TypeAlias decl) {
+        int result = 0;
+
+        result |= transformDeclarationSharedFlags(decl);
+        result |= FINAL;
+
+        return result;
+    }
+
     private int transformClassDeclFlags(Tree.ClassOrInterface cdecl) {
         return transformClassDeclFlags(cdecl.getDeclarationModel());
     }
@@ -1828,5 +1843,38 @@ public class ClassTransformer extends AbstractTransformer {
                 methodBuilder.typeParameter(t);
             }
         }
+    }
+
+    public List<JCTree> transform(final Tree.TypeAliasDeclaration def) {
+        final TypeAlias model = def.getDeclarationModel();
+        
+        // we only create types for aliases so they can be imported with the model loader
+        // and since we can't import local declarations let's just not create those types
+        // in that case
+        if(Decl.isAncestorLocal(def))
+            return List.nil();
+        
+        naming.noteDecl(model);
+        String ceylonClassName = def.getIdentifier().getText();
+        final String javaClassName = Naming.quoteClassName(def.getIdentifier().getText());
+
+        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
+                .klass(this, javaClassName, ceylonClassName);
+
+        // class alias
+        classBuilder.constructorModifiers(PRIVATE);
+        classBuilder.annotations(makeAtTypeAlias(model.getExtendedType()));
+        classBuilder.isAlias(true);
+
+        // make sure we set the container in case we move it out
+        addAtContainer(classBuilder, model);
+
+        visitClassOrInterfaceDefinition(def, classBuilder);
+
+        return classBuilder
+            .modelAnnotations(model.getAnnotations())
+            .modifiers(transformTypeAliasDeclFlags(model))
+            .satisfies(model.getSatisfiedTypes())
+            .build();
     }
 }
