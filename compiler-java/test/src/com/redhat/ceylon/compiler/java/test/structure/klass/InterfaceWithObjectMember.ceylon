@@ -19,12 +19,5 @@
  */
 @nomodel
 shared interface InterfaceWithObjectMember {
-    shared object member {
-    }
-}
-@nomodel
-class InterfaceWithObjectMember_Sub() satisfies InterfaceWithObjectMember {
-}
-@nomodel
-class InterfaceWithObjectMember_Subsub() extends InterfaceWithObjectMember_Sub() satisfies InterfaceWithObjectMember {    
+    shared object member {}
 }
