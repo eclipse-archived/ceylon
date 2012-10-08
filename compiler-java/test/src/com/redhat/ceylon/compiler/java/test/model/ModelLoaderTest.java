@@ -296,6 +296,9 @@ public class ModelLoaderTest extends CompilerTest {
     private void compareClassOrInterfaceDeclarations(ClassOrInterface validDeclaration, ClassOrInterface modelDeclaration) {
         String name = validDeclaration.getQualifiedNameString();
         Assert.assertEquals(name+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
+        Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
+        Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
+        Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
         // extended type
         if(validDeclaration.getExtendedTypeDeclaration() == null)
             Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
