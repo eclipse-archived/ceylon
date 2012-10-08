@@ -592,6 +592,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
         LazyClass klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
         klass.setAnonymous(classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null);
+        if(klass.isCeylon())
+            klass.setAbstract(isAnnotated(classMirror, "abstract"));
+        else
+            klass.setAbstract(classMirror.isAbstract());
+        klass.setFormal(isAnnotated(classMirror, "formal"));
+        klass.setDefault(isAnnotated(classMirror, "default"));
+        klass.setActual(isAnnotated(classMirror, "actual"));
         return klass;
     }
 
