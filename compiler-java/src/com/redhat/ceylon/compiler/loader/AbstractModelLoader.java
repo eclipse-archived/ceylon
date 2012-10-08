@@ -61,6 +61,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyInterfaceAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
+import com.redhat.ceylon.compiler.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -81,6 +82,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -124,6 +126,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_ANNOTATIONS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Annotations";
     public static final String CEYLON_VALUETYPE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ValueType";
     public static final String CEYLON_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Alias";
+    public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
 
     private static final TypeMirror OBJECT_TYPE = simpleObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleObjectType("ceylon.language.Object");
@@ -471,6 +474,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case CLASS:
             if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
                 decl = makeClassAlias(classMirror);
+            }else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
+                decl = makeTypeAlias(classMirror);
             }else{
                 List<MethodMirror> constructors = getClassConstructors(classMirror);
                 if (!constructors.isEmpty()) {
@@ -521,14 +526,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private Declaration makeClassAlias(ClassMirror classMirror) {
-        // we're going to make an eager ClassAlias, but that should be OK since it's impossible that the
-        // aliased type refers to this alias, since aliases are not reified
         return new LazyClassAlias(classMirror, this);
     }
 
+    private Declaration makeTypeAlias(ClassMirror classMirror) {
+        return new LazyTypeAlias(classMirror, this);
+    }
+
     private Declaration makeInterfaceAlias(ClassMirror classMirror) {
-        // we're going to make an eager InterfaceAlias, but that should be OK since it's impossible that the
-        // aliased type refers to this alias, since aliases are not reified
         return new LazyInterfaceAlias(classMirror, this);
     }
 
@@ -658,13 +663,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // not found
                 return null;
             }
-        }else if(scope instanceof ClassOrInterface){
-            ClassOrInterface klass = (ClassOrInterface) scope;
-            for(TypeParameter param : klass.getTypeParameters()){
+        }else if(scope instanceof ClassOrInterface
+                || scope instanceof TypeAlias){
+            TypeDeclaration decl = (TypeDeclaration) scope;
+            for(TypeParameter param : decl.getTypeParameters()){
                 if(param.getName().equals(name))
                     return param;
             }
-            if (!klass.isToplevel()) {
+            if (!decl.isToplevel()) {
                 // look it up in its container
                 return lookupTypeParameter(scope.getContainer(), name);
             } else {
@@ -1002,18 +1008,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         completeLazyAliasTypeParameters(lazyInterfaceAlias, lazyInterfaceAlias.classMirror);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
-    
+
+    @Override
+    public synchronized void completeTypeParameters(LazyTypeAlias lazyTypeAlias) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        completeLazyAliasTypeParameters(lazyTypeAlias, lazyTypeAlias.classMirror);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+    }
+
     @Override
     public synchronized void complete(LazyInterfaceAlias alias) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        completeLazyAlias(alias, alias.classMirror);
+        completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
     
     @Override
     public synchronized void complete(LazyClassAlias alias) {
         Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        completeLazyAlias(alias, alias.classMirror);
+        completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
         // must be a class
         Class declaration = (Class) alias.getExtendedType().getDeclaration();
         
@@ -1022,14 +1035,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
-    private void completeLazyAliasTypeParameters(ClassOrInterface alias, ClassMirror mirror) {
+    @Override
+    public synchronized void complete(LazyTypeAlias alias) {
+        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        completeLazyAlias(alias, alias.classMirror, CEYLON_TYPE_ALIAS_ANNOTATION);
+        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+    }
+
+    private void completeLazyAliasTypeParameters(TypeDeclaration alias, ClassMirror mirror) {
         // type parameters
         setTypeParameters(alias, mirror);
     }
-    
-    private void completeLazyAlias(ClassOrInterface alias, ClassMirror mirror) {
+
+    private void completeLazyAlias(TypeDeclaration alias, ClassMirror mirror, String aliasAnnotationName) {
         // now resolve the extended type
-        AnnotationMirror aliasAnnotation = mirror.getAnnotation(CEYLON_ALIAS_ANNOTATION);
+        AnnotationMirror aliasAnnotation = mirror.getAnnotation(aliasAnnotationName);
         String extendedTypeString = (String) aliasAnnotation.getValue();
         
         ProducedType extendedType = decodeType(extendedTypeString, alias);
@@ -1919,7 +1939,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     // class
-    private void setTypeParameters(ClassOrInterface klass, ClassMirror classMirror) {
+    private void setTypeParameters(TypeDeclaration klass, ClassMirror classMirror) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         klass.setTypeParameters(params);
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(classMirror);
