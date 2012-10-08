@@ -96,6 +96,11 @@ public class StatementTest extends CompilerTest {
     public void testConMethodIfExists(){
         compareWithJavaSource("conditional/MethodIfExists");
     }
+    
+    @Test
+    public void testConMethodIfExists2dArray(){
+        compareWithJavaSource("conditional/MethodIfExists2dArray");
+    }
 
     @Test
     public void testConMethodIfIs(){

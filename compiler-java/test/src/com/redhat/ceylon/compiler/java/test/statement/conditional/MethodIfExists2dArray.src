@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfExists2dArray {
+    
+    MethodIfExists2dArray() {
+    }
+    
+    private final void ints() {
+        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(long.class, 2L, .ceylon.language.Integer.instance(0L)));
+        .ceylon.language.Array<.ceylon.language.Integer> $r$0;
+        if (($r$0 = t.item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .ceylon.language.Array<.ceylon.language.Integer> $r$1 = $r$0;
+            $r$1.setItem(0L, .ceylon.language.Integer.instance(100L));
+        }
+    }
+    
+    private final void strings() {
+        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.String>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.String>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.<.ceylon.language.String>arrayOfSize(.java.lang.String.class, 2L, .ceylon.language.String.instance("")));
+        .ceylon.language.Array<.ceylon.language.String> $r$2;
+        if (($r$2 = t.item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .ceylon.language.Array<.ceylon.language.String> $r$3 = $r$2;
+            $r$3.setItem(0L, .ceylon.language.String.instance(""));
+        }
+    }
+    
+    private final void nulls() {
+        final .ceylon.language.Array<.ceylon.language.Array<?>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<?>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, null));
+        .ceylon.language.Array<?> $r$4;
+        if (($r$4 = t.item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .ceylon.language.Array<?> $r$5 = $r$4;
+            $r$5.setItem(0L, null);
+        }
+    }
+    
+    private final void objects(final .java.lang.Object obj) {
+        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(.java.lang.Object.class, 2L, obj));
+        .ceylon.language.Array<.java.lang.Object> $r$6;
+        if (($r$6 = t.item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .ceylon.language.Array<.java.lang.Object> $r$7 = $r$6;
+            $r$7.setItem(0L, obj);
+        }
+    }
+    
+    private final void union(final .java.lang.Object obj) {
+        final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> t = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.java.lang.Object>>arrayOfSize(.ceylon.language.Array.class, 2L, .ceylon.language.arrayOfSize_.arrayOfSize(null, 2L, obj));
+        .ceylon.language.Array $r$8;
+        if (($r$8 = t.item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .ceylon.language.Array $r$9 = $r$8;
+            $r$9.setItem(0L, obj);
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists2dArray();
+    }
+}
