@@ -59,6 +59,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      * Compilation Unit
      */
     
+    public void visit(Tree.TypeAliasDeclaration that){
+        gen.makeErroneous(that, "Type aliases not supported yet");
+    }
+    
     public void visit(Tree.ImportList that) {
         //append(gen.transform(that));
     }
