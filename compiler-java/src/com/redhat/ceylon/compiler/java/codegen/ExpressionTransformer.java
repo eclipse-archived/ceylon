@@ -308,7 +308,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // feeling that callables never need a raw cast
             if(isCeylonCallable(commonType))
                 return false;
-            return hasErasedTypeParameters(commonType, true);
+            return hasErasedTypeParameters(commonType, false);
         }
     }
 
