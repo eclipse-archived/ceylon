@@ -245,6 +245,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Iterable");
     }
     
+    public Interface getListDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("List");
+    }
+    
     /**
      * Gets the declaration of {@code Iterator}
      * @return The declaration
@@ -545,6 +549,10 @@ public class Unit {
     
     public ProducedType getNonemptyIterableType(ProducedType pt) {
         return pt.minus(getEmptyDeclaration()).getSupertype(getIterableDeclaration());
+    }
+    
+    public ProducedType getNonemptyListType(ProducedType pt) {
+        return pt.minus(getEmptyDeclaration()).getSupertype(getListDeclaration());
     }
     
     public boolean isEntryType(ProducedType pt) {
