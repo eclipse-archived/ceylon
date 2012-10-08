@@ -716,7 +716,7 @@ public class IssuesTest extends CompilerTest {
     @Test
     public void testBug797() {
         assertErrors("bug07xx/Bug797",
-                new CompilerError(2, "Type aliases not supported yet"));
+                new CompilerError(21, "Type aliases not supported yet"));
     }
 }
 
