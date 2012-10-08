@@ -553,6 +553,11 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     @Test
+    public void loadFormalClasses(){
+        verifyClassLoading("FormalClasses.ceylon");
+    }
+    
+    @Test
     public void parallelLoader(){
         // whatever test, doesn't matter
         verifyClassLoading("Any.ceylon", new RunnableTest(){
