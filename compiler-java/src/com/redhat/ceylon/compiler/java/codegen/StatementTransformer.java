@@ -677,7 +677,18 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCExpression makeDefaultExpr() {
             at(cond);
-            return canUnbox(toType) ? makeLong(0) : makeNull();
+            if (canUnbox(toType)) {
+                if (isCeylonBoolean(toType)) {
+                    return makeBoolean(false);
+                } else if (isCeylonFloat(toType)) {
+                    return make().Literal(0.0);
+                } else if (isCeylonInteger(toType)) {
+                    return makeLong(0);
+                } else if (isCeylonCharacter(toType)) {
+                    return make().Literal('\0');
+                }
+            }
+            return makeNull();
         }
         
         @Override
