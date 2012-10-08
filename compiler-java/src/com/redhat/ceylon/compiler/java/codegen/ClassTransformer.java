@@ -141,88 +141,12 @@ public class ClassTransformer extends AbstractTransformer {
             Class cls = ((Tree.AnyClass)def).getDeclarationModel();
             // Member classes need a instantiator method
             boolean generateInstantiator = Strategy.generateInstantiator(cls);
-            // TODO Instantiators on companion classes
-            if (generateInstantiator) {
-                classBuilder.constructorModifiers(PROTECTED);
-                if (Decl.withinInterface(cls)) {
-                    MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                    makeOverloadsForDefaultedParameter(0,
-                            instBuilder,
-                            model, paramList, null);
-                    instantiatorDeclCb.method(instBuilder);
-                }
-                if (!Decl.withinInterface(cls)
-                        || !model.isFormal()) {
-                    MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                    makeOverloadsForDefaultedParameter(!cls.isFormal() ? OL_BODY : 0,
-                            instBuilder,
-                            model, paramList, null);
-                    instantiatorImplCb.method(instBuilder);
-                }
-
+            if(generateInstantiator){
+                generateInstantiators(model, classBuilder, paramList, cls, instantiatorDeclCb, instantiatorImplCb);
             }
 
             if(def instanceof Tree.ClassDefinition){
-                for (Tree.Parameter param : paramList.getParameters()) {
-                    // Overloaded instantiators
-                    Parameter paramModel = param.getDeclarationModel();
-                    Parameter refinedParam = (Parameter)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel());
-                    at(param);
-                    classBuilder.parameter(paramModel);
-                    if (paramModel.isDefaulted()
-                            || paramModel.isSequenced()
-                            || (generateInstantiator
-                                    && (refinedParam.isDefaulted()
-                                            || refinedParam.isSequenced()))) {
-                        ClassDefinitionBuilder cbForDevaultValues;
-                        ClassDefinitionBuilder cbForDevaultValuesDecls = null;
-                        switch (Strategy.defaultParameterMethodOwner(model)) {
-                        case STATIC:
-                            cbForDevaultValues = classBuilder;
-                            break;
-                        case OUTER:
-                            cbForDevaultValues = classBuilder.getContainingClassBuilder();
-                            break;
-                        case OUTER_COMPANION:
-                            cbForDevaultValues = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(model, true));
-                            cbForDevaultValuesDecls = classBuilder.getContainingClassBuilder();
-                            break;
-                        default:
-                            cbForDevaultValues = classBuilder.getCompanionBuilder(model);
-                        }
-                        if (generateInstantiator && refinedParam != paramModel) {}
-                        else {
-                            cbForDevaultValues.method(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param));
-                            if (cbForDevaultValuesDecls != null) {
-                                cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, def.getDeclarationModel(), paramList, param));
-                            }
-                        }
-                        if (generateInstantiator) {
-                            if (Decl.withinInterface(cls)) {
-                                MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                                makeOverloadsForDefaultedParameter(0,
-                                        instBuilder,
-                                        model, paramList, param);
-                                instantiatorDeclCb.method(instBuilder);
-                            }
-                            MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
-                            makeOverloadsForDefaultedParameter(OL_BODY,
-                                    instBuilder,
-                                    model, paramList, param);
-                            instantiatorImplCb.method(instBuilder);
-                        } else {
-                            // Add overloaded constructors for defaulted parameter
-                            MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
-                            makeOverloadsForDefaultedParameter(OL_BODY,
-                                    overloadBuilder,
-                                    model, paramList, param);
-                        }
-                    }
-                }
-                satisfaction((Class)model, classBuilder);
-                at(def);
-                // Generate the inner members list for model loading
-                addAtMembers(classBuilder, model);
+                transformClass(def, model, classBuilder, paramList, generateInstantiator, cls, instantiatorDeclCb, instantiatorImplCb);
             }else{
                 // class alias
                 classBuilder.constructorModifiers(PRIVATE);
@@ -233,25 +157,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (def instanceof Tree.AnyInterface) {
             if(def instanceof Tree.InterfaceDefinition){
-                //  Copy all the qualifying type's type parameters into the interface
-                ProducedType type = model.getType().getQualifyingType();
-                while (type != null) {
-                    java.util.List<TypeParameter> typeArguments = type.getDeclaration().getTypeParameters();
-                    if (typeArguments == null) {
-                        continue;
-                    }
-                    for (TypeParameter typeArgument : typeArguments) {
-                        classBuilder.typeParameter(typeArgument);
-                    }
-                    type = type.getQualifyingType();
-                }
-                
-                classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), false));
-                // Build the companion class
-                buildCompanion(def, (Interface)model, classBuilder);
-                
-                // Generate the inner members list for model loading
-                addAtMembers(classBuilder, model);
+                transformInterface(def, model, classBuilder);
             }else{
                 // interface alias
                 classBuilder.annotations(makeAtAlias(model.getExtendedType()));
@@ -295,6 +201,115 @@ public class ClassTransformer extends AbstractTransformer {
             .of(model.getSelfType())
             .init(childDefs)
             .build();
+    }
+
+    private void generateInstantiators(ClassOrInterface model, ClassDefinitionBuilder classBuilder, Tree.ParameterList paramList,
+            Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb) {
+        // TODO Instantiators on companion classes
+        classBuilder.constructorModifiers(PROTECTED);
+        if (Decl.withinInterface(cls)) {
+            MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+            makeOverloadsForDefaultedParameter(0,
+                    instBuilder,
+                    model, paramList, null);
+            instantiatorDeclCb.method(instBuilder);
+        }
+        if (!Decl.withinInterface(cls)
+                || !model.isFormal()) {
+            MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+            makeOverloadsForDefaultedParameter(!cls.isFormal() ? OL_BODY : 0,
+                    instBuilder,
+                    model, paramList, null);
+            instantiatorImplCb.method(instBuilder);
+        }
+    }
+
+    private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, ClassOrInterface model, ClassDefinitionBuilder classBuilder, 
+            com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList paramList, boolean generateInstantiator, 
+            Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb) {
+        
+        for (Tree.Parameter param : paramList.getParameters()) {
+            // Overloaded instantiators
+            Parameter paramModel = param.getDeclarationModel();
+            Parameter refinedParam = (Parameter)CodegenUtil.getTopmostRefinedDeclaration(param.getDeclarationModel());
+            at(param);
+            classBuilder.parameter(paramModel);
+            if (paramModel.isDefaulted()
+                    || paramModel.isSequenced()
+                    || (generateInstantiator
+                            && (refinedParam.isDefaulted()
+                                    || refinedParam.isSequenced()))) {
+                ClassDefinitionBuilder cbForDevaultValues;
+                ClassDefinitionBuilder cbForDevaultValuesDecls = null;
+                switch (Strategy.defaultParameterMethodOwner(model)) {
+                case STATIC:
+                    cbForDevaultValues = classBuilder;
+                    break;
+                case OUTER:
+                    cbForDevaultValues = classBuilder.getContainingClassBuilder();
+                    break;
+                case OUTER_COMPANION:
+                    cbForDevaultValues = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(model, true));
+                    cbForDevaultValuesDecls = classBuilder.getContainingClassBuilder();
+                    break;
+                default:
+                    cbForDevaultValues = classBuilder.getCompanionBuilder(model);
+                }
+                if (generateInstantiator && refinedParam != paramModel) {}
+                else {
+                    cbForDevaultValues.method(makeParamDefaultValueMethod(false, def.getDeclarationModel(), paramList, param));
+                    if (cbForDevaultValuesDecls != null) {
+                        cbForDevaultValuesDecls.method(makeParamDefaultValueMethod(true, def.getDeclarationModel(), paramList, param));
+                    }
+                }
+                if (generateInstantiator) {
+                    if (Decl.withinInterface(cls)) {
+                        MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+                        makeOverloadsForDefaultedParameter(0,
+                                instBuilder,
+                                model, paramList, param);
+                        instantiatorDeclCb.method(instBuilder);
+                    }
+                    MethodDefinitionBuilder instBuilder = MethodDefinitionBuilder.systemMethod(this, naming.getInstantiatorMethodName(cls));
+                    makeOverloadsForDefaultedParameter(OL_BODY,
+                            instBuilder,
+                            model, paramList, param);
+                    instantiatorImplCb.method(instBuilder);
+                } else {
+                    // Add overloaded constructors for defaulted parameter
+                    MethodDefinitionBuilder overloadBuilder = classBuilder.addConstructor();
+                    makeOverloadsForDefaultedParameter(OL_BODY,
+                            overloadBuilder,
+                            model, paramList, param);
+                }
+            }
+        }
+        satisfaction((Class)model, classBuilder);
+        at(def);
+        // Generate the inner members list for model loading
+        addAtMembers(classBuilder, model);
+    }
+
+    private void transformInterface(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, ClassOrInterface model, ClassDefinitionBuilder classBuilder) {
+        //  Copy all the qualifying type's type parameters into the interface
+        ProducedType type = model.getType().getQualifyingType();
+        while (type != null) {
+            java.util.List<TypeParameter> typeArguments = type.getDeclaration().getTypeParameters();
+            if (typeArguments == null) {
+                continue;
+            }
+            for (TypeParameter typeArgument : typeArguments) {
+                classBuilder.typeParameter(typeArgument);
+            }
+            type = type.getQualifyingType();
+        }
+        
+        classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), false));
+        // Build the companion class
+        buildCompanion(def, (Interface)model, classBuilder);
+        
+        // Generate the inner members list for model loading
+        addAtMembers(classBuilder, model);
     }
 
     private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
