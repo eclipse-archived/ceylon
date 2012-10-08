@@ -706,5 +706,11 @@ public class IssuesTest extends CompilerTest {
     public void testBug785() {
         compile("bug07xx/Bug785.ceylon");
     }
+
+    @Test
+    public void testBug797() {
+        assertErrors("bug07xx/Bug797",
+                new CompilerError(2, "Type aliases not supported yet"));
+    }
 }
 
