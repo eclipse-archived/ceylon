@@ -523,38 +523,37 @@ public class StatementTransformer extends AbstractTransformer {
                 Naming.SyntheticName name, 
                 ProducedType toType, 
                 Expression specifierExpr, 
-                Naming.SyntheticName tmpVarName, Tree.Variable variable) {
+                Tree.Variable variable) {
             this.cond = cond;
             this.thenPart = thenPart;
             this.name = name;
             this.toType = toType;
             this.specifierExpr = specifierExpr;
-            this.testVar = tmpVarName;
+            this.testVar = naming.alias(variable.getIdentifier().getText());
             this.variable = variable;
         }
         
         @Override
-        public C getCondition() {
+        public final C getCondition() {
             return cond;
         }
         
         @Override
-        public Tree.Variable getVariable() {
+        public final Tree.Variable getVariable() {
             return variable;
         }
         
         @Override
-        public SyntheticName getResultVarName() {
+        public final SyntheticName getResultVarName() {
             return name;
         }
         
         @Override
         public final boolean hasResultDecl() {
-            return !isNothing(toType) 
-                    && thenPart == null;
+            return thenPart == null;
         }
         
-        protected JCExpression makeTypeExpr() {
+        protected final JCExpression makeTypeExpr() {
             return makeJavaType(toType);
         }
         
@@ -579,13 +578,13 @@ public class StatementTransformer extends AbstractTransformer {
         
         protected abstract JCExpression makeDefaultExpr();
 
-        protected final JCExpression makeResultVarName() {
+        private JCExpression makeResultVarName() {
             at(cond);
             return name.makeIdent();
         }
         
         @Override
-        public JCBlock makeThenBlock() {
+        public final JCBlock makeThenBlock() {
             at(cond);
             if (thenPart == null) {
                 return statementGen().transform(thenPart);   
@@ -606,7 +605,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected abstract JCExpression makeResultExpr();
         
         @Override
-        public JCStatement makeTestVarDecl(int flags, boolean init) {
+        public final JCStatement makeTestVarDecl(int flags, boolean init) {
             // Temporary variable holding the result of the expression/variable to test
             return make().VarDef(make().Modifiers(flags), testVar.asName(), makeResultType(), init ? makeNull() : null);
         }
@@ -632,15 +631,8 @@ public class StatementTransformer extends AbstractTransformer {
                     // use the type of the variable, which is more precise than the type we test for
                     isdecl.getVariable().getType().getTypeModel(), 
                     isdecl.getVariable().getSpecifierExpression().getExpression(),
-                    isNothing(isdecl.getVariable().getType().getTypeModel()) ? null 
-                            : naming.alias(isdecl.getVariable().getIdentifier().getText()),
                     isdecl.getVariable());
             negate = isdecl.getNot();
-        }
-        
-        @Override
-        protected JCExpression makeTypeExpr() {
-            return isNothing(toType) ? null : super.makeTypeExpr();
         }
         
         @Override
@@ -648,22 +640,18 @@ public class StatementTransformer extends AbstractTransformer {
             // no need to cast for erasure here
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             at(cond);
-            if (isNothing(toType)) {
-                return make().Binary(JCTree.EQ, expr, makeNull());
-            } else {
-                // Assign the expression to test to the temporary variable
-                JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
-                
-                // Test on the tmpVar in the following condition
-                firstTimeTestExpr = makeTypeTest(firstTimeTestExpr, testVar,
-                        // only test the types we're testing for, not the type of
-                        // the variable (which can be more precise)
-                        cond.getType().getTypeModel());
-                if (negate) {
-                    firstTimeTestExpr = make().Unary(JCTree.NOT, firstTimeTestExpr);
-                }
-                return firstTimeTestExpr;
+            // Assign the expression to test to the temporary variable
+            JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
+            
+            // Test on the tmpVar in the following condition
+            firstTimeTestExpr = makeTypeTest(firstTimeTestExpr, testVar,
+                    // only test the types we're testing for, not the type of
+                    // the variable (which can be more precise)
+                    cond.getType().getTypeModel());
+            if (negate) {
+                firstTimeTestExpr = make().Unary(JCTree.NOT, firstTimeTestExpr);
             }
+            return firstTimeTestExpr;
         }
         
         @Override
@@ -704,21 +692,6 @@ public class StatementTransformer extends AbstractTransformer {
             return castedExpr;
         }
         
-        @Override
-        public JCBlock makeThenBlock() {
-            if (isNothing(toType)) {
-                return statementGen().transform(thenPart);   
-            }
-            return super.makeThenBlock();
-        }
-        
-        @Override
-        public JCStatement makeTestVarDecl(int flags, boolean init) {
-            if (isNothing(toType)) {
-                return null;
-            }
-            return super.makeTestVarDecl(flags, init);
-        }
     }
     
     class ExistsCond extends SpecialFormCond<Tree.ExistsCondition> {
@@ -728,7 +701,6 @@ public class StatementTransformer extends AbstractTransformer {
                     name, 
                     simplifyType(exists.getVariable().getType().getTypeModel()),
                     exists.getVariable().getSpecifierExpression().getExpression(), 
-                    naming.alias(exists.getVariable().getIdentifier().getText()),
                     exists.getVariable());    
         }
         
@@ -771,7 +743,6 @@ public class StatementTransformer extends AbstractTransformer {
                     name, 
                     nonempty.getVariable().getType().getTypeModel(), 
                     nonempty.getVariable().getSpecifierExpression().getExpression(),
-                    naming.alias(nonempty.getVariable().getIdentifier().getText()),
                     nonempty.getVariable());
         }
         
