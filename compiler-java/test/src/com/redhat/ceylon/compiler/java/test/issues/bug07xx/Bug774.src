@@ -1,1 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
+
+final class bug774_ {
+    
+    private bug774_() {
+    }
+    
+    static void bug774() {
+        final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> m = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.ceylon.language.Array.class, 10L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(long.class, 10L, .ceylon.language.Integer.instance(0L)));
+        .ceylon.language.Array<.ceylon.language.Integer> $row$0;
+        if (($row$0 = m.item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .ceylon.language.Array<.ceylon.language.Integer> $row$1 = $row$0;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug774_.bug774();
+    }
+}
