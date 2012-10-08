@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsNullUnion {
+    
+    MethodIfIsNullUnion() {
+    }
+    
+    public final void m() {
+        final .java.lang.Object nothing = null;
+        .java.lang.Object $nothing$0;
+        if (($nothing$0 = nothing) == null || $nothing$0 instanceof .ceylon.language.Character) {
+            final .ceylon.language.Character $nothing$1 = (.ceylon.language.Character)$nothing$0;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsNullUnion();
+    }
+}

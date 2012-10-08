@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsWithMethod {
+    
+    MethodIfIsWithMethod() {
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo give() {
+        return new .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub();
+    }
+    
+    public final void m() {
+        .java.lang.Object $y$0;
+        if (($y$0 = give()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $y$1 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$y$0;
+            $y$1.foo();
+        }
+        if (give() == null) {
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsWithMethod();
+    }
+}

@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfExistsSequence {
+    
+    MethodIfExistsSequence() {
+    }
+    
+    public final long mvar(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+        .ceylon.language.Integer $y$0;
+        if (($y$0 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer>)x).item(.ceylon.language.Integer.instance(0L))) != null) {
+            final long $y$1 = $y$0.longValue();
+            return $y$1;
+        }
+        return 0L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExistsSequence();
+    }
+}

@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsFoo {
+    
+    MethodIfIsFoo() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        .java.lang.Object $x$0;
+        if (($x$0 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo $x$1 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$0;
+            $x$1.foo();
+            .java.lang.Object $x$2;
+            if (($x$2 = $x$1) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+                final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $x$3 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$x$2;
+                $x$3.foo2();
+            }
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        .java.lang.Object $x$4;
+        if (($x$4 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo $x$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$4;
+            $x$5.foo();
+            .java.lang.Object $x$6;
+            if (($x$6 = $x$5) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+                final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $x$7 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$x$6;
+                $x$7.foo2();
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsFoo();
+    }
+}

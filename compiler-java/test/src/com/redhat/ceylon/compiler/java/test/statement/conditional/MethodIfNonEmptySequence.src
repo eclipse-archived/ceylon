@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class MethodIfNonEmpty {
+class MethodIfNonEmptySequence {
     
-    MethodIfNonEmpty() {
+    MethodIfNonEmptySequence() {
     }
     
     public final long m(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
@@ -10,20 +10,22 @@ class MethodIfNonEmpty {
         if (($x$0 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$0).getEmpty()) {
             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $x$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$x$0;
             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = $x$1;
+            return $x$1.getFirst().longValue();
         }
         return 0L;
     }
     
-    public final void m2(final .java.lang.String s) {
-        .ceylon.language.String $s$2;
-        if (($s$2 = .ceylon.language.String.instance(s)) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$2).getEmpty()) {
-            final .ceylon.language.List<? extends .ceylon.language.Character> $s$3 = (.ceylon.language.List<? extends .ceylon.language.Character>)$s$2;
-            .ceylon.language.print_.print($s$3);
+    public final long mvar(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+        .ceylon.language.List<? extends .ceylon.language.Integer> $s$2;
+        if (($s$2 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$2).getEmpty()) {
+            final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $s$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$2;
+            return $s$3.getFirst().longValue();
         }
+        return 0L;
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfNonEmpty();
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfNonEmptySequence();
     }
 }

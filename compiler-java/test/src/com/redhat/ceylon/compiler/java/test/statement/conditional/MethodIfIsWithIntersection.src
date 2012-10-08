@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsIntersection {
+    
+    MethodIfIsIntersection() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        .java.lang.Object $x$0;
+        if (($x$0 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && $x$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
+            final .java.lang.Object $x$1 = (.java.lang.Object)$x$0;
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$1).common();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$1).foo();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)$x$1).bar();
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        .java.lang.Object $x$2;
+        if (($x$2 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && $x$2 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
+            final .java.lang.Object $x$3 = (.java.lang.Object)$x$2;
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$3).common();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)$x$3).foo();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)$x$3).bar();
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsIntersection();
+    }
+}

@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsUnion {
+    
+    MethodIfIsUnion() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        .java.lang.Object $x$0;
+        if (($x$0 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
+            final .java.lang.Object $x$1 = (.java.lang.Object)$x$0;
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)$x$1).common();
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsUnion();
+    }
+}

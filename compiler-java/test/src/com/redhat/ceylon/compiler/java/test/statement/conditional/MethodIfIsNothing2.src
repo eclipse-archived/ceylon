@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsNothing {
+    
+    MethodIfIsNothing() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        if (x == null) {
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsNothing();
+    }
+}

@@ -98,13 +98,63 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testConMethodIfExistsSequence(){
+        compareWithJavaSource("conditional/MethodIfExistsSequence");
+    }
+    
+    @Test
+    public void testConMethodIfExistsWithMethod(){
+        compareWithJavaSource("conditional/MethodIfExistsWithMethod");
+    }
+    
+    @Test
     public void testConMethodIfExists2dArray(){
         compareWithJavaSource("conditional/MethodIfExists2dArray");
     }
 
     @Test
-    public void testConMethodIfIs(){
-        compareWithJavaSource("conditional/MethodIfIs");
+    public void testConMethodIfIsFoo(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/MethodIfIsFoo");
+    }
+    
+    @Test
+    public void testConMethodIfIsNotNothing(){
+        compareWithJavaSource("conditional/MethodIfIsNotNothing");
+    }
+    
+    @Test
+    public void testConMethodIfIsNotObject(){
+        compareWithJavaSource("conditional/MethodIfIsNotObject");
+    }
+    
+    @Test
+    public void testConMethodIfIsNullUnion(){
+        compareWithJavaSource("conditional/MethodIfIsNullUnion");
+    }
+    
+    @Test
+    public void testConMethodIfIsWithIntersection(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/MethodIfIsWithIntersection");
+    }
+    
+    @Test
+    public void testConMethodIfIsWithMethod(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/MethodIfIsWithMethod");
+    }
+    
+
+    @Test
+    public void testConMethodIfIsWithUnion(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/MethodIfIsWithUnion");
+    }
+    
+    @Test
+    public void testConMethodIfIsNothing2(){
+        compareWithJavaSource("conditional/MethodIfIsNothing2");
     }
     
     @Test
@@ -131,8 +181,13 @@ public class StatementTest extends CompilerTest {
     }
 
     @Test
-    public void testConMethodIfNonEmpty(){
-        compareWithJavaSource("conditional/MethodIfNonEmpty");
+    public void testConMethodIfNonEmptySequence(){
+        compareWithJavaSource("conditional/MethodIfNonEmptySequence");
+    }
+    
+    @Test
+    public void testConMethodIfNonEmptyString(){
+        compareWithJavaSource("conditional/MethodIfNonEmptyString");
     }
     
     @Test

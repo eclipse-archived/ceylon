@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfExistsWithMethod {
+    
+    MethodIfExistsWithMethod() {
+    }
+    
+    private final .ceylon.language.Integer give() {
+        return .ceylon.language.Integer.instance(0L);
+    }
+    
+    public final long m() {
+        .ceylon.language.Integer $y$0;
+        if (($y$0 = give()) != null) {
+            final long $y$1 = $y$0.longValue();
+            return $y$1;
+        }
+        return 0L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExistsWithMethod();
+    }
+}

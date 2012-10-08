@@ -18,16 +18,21 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodIfNonEmpty() {
-    shared Integer m(Integer[] x) {
-        if (nonempty x) {
-            Sequence<Integer> s = x;
+class MethodIfIsFoo() {
+    shared void m(Object? x) {
+        if (is Foo x) {
+            x.foo();
+            if (is FooSub x) {
+                x.foo2();
+            }
         }
-        return 0;
     }
-    shared void m2(String s) {
-        if (nonempty s) {
-            print(s);
+    shared void mvar(Object? y) {
+        if (is Foo x=y) {
+            x.foo();
+            if (is FooSub x) {
+                x.foo2();
+            }
         }
     }
 }
