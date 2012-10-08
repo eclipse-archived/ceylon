@@ -1507,8 +1507,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private boolean isAnnotated(MethodMirror methodMirror, String name) {
-        AnnotationMirror annotations = methodMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION);
+    private boolean isAnnotated(AnnotatedMirror annotatedMirror, String name) {
+        AnnotationMirror annotations = annotatedMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION);
         if(annotations == null)
             return false;
         @SuppressWarnings("unchecked")
