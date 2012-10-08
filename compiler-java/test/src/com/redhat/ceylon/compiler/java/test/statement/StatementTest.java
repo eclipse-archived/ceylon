@@ -106,6 +106,11 @@ public class StatementTest extends CompilerTest {
     public void testConMethodIfIs(){
         compareWithJavaSource("conditional/MethodIfIs");
     }
+    
+    @Test
+    public void testConMethodIfIsNothing(){
+        compareWithJavaSource("conditional/MethodIfIsNothing");
+    }
 
     @Test
     @Ignore("M5: requires reified generics")
