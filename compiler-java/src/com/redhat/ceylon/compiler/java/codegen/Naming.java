@@ -1144,6 +1144,10 @@ public class Naming implements LocalId {
         SyntheticName suffixedBy(String suffix) {
             return new SyntheticName(names.fromString(name.toString() + suffix));
         }
+        
+        SyntheticName alias() {
+            return Naming.this.alias(name.toString());
+        }
     }
     
     /*

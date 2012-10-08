@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.SpecialFormCond;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -2013,39 +2014,47 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             @Override
             protected List<JCStatement> transformInnermost(Condition condition) {
-                Cond transformedCond = statementGen().transformCondition(condition, null, true);
+                Cond transformedCond = statementGen().transformCondition(condition, null);
                 // The innermost condition's test should be transformed before
                 // variable substitution
+                
                 JCExpression test = transformedCond.makeTest();
-                return transformCommon(addVarSubs(transformedCond),
+                SyntheticName resultVarName = addVarSubs(transformedCond);
+                return transformCommon(transformedCond,
                         test,
-                        List.<JCStatement>of(make().Break(null)));
+                        List.<JCStatement>of(make().Break(null)),
+                        resultVarName);
             }
             
             protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
-                Cond transformedCond = statementGen().transformCondition(condition, null, true);
-                addVarSubs(transformedCond);
+                Cond transformedCond = statementGen().transformCondition(condition, null);
+                SyntheticName resultVarName = addVarSubs(transformedCond);
                 JCExpression test = transformedCond.makeTest();
-                return transformCommon(transformedCond, test, transformList(rest));
+                return transformCommon(transformedCond, test, transformList(rest), resultVarName);
             }
 
-            private Cond addVarSubs(Cond transformedCond) {
+            private SyntheticName addVarSubs(Cond transformedCond) {
                 final Variable var = transformedCond.getVariable();
                 if (var != null && transformedCond.hasResultDecl()) {
-                    fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), transformedCond.getResultVarName().getName()),
+                    SyntheticName resultVarName = transformedCond.getVariableName().alias();
+                    fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), resultVarName.getName()),
                             var.getDeclarationModel().getName());
+                    return resultVarName;
                 }
-                return transformedCond;
+                return null;
             }
             
-            protected List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts) {
+            protected List<JCStatement> transformCommon(Cond transformedCond, 
+                    JCExpression test, List<JCStatement> stmts,
+                    SyntheticName resultVarName) {
                 
                 if (transformedCond.makeTestVarDecl(0, true) != null) {
                     varDecls.append(transformedCond.makeTestVarDecl(0, true));
                 }
                 if (transformedCond.hasResultDecl()) {
-                    fields.add(transformedCond.makeResultVarDecl(Flags.PRIVATE, false));
-                    stmts = stmts.prepend(transformedCond.makeResultVarAssignment());
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), 
+                            resultVarName.asName(), transformedCond.makeTypeExpr(), null));
+                    stmts = stmts.prepend(make().Exec(make().Assign(resultVarName.makeIdent(), transformedCond.makeResultExpr())));
                 }
                 stmts = List.<JCStatement>of(make().If(
                         test, 
