@@ -1,0 +1,111 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class TypeAliasClass {
+    
+    public TypeAliasClass() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public interface TypeAliasInterface {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class TypeAliasInterface$impl {
+    
+    public TypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface $this;
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+final class TypeAlias1 {
+    
+    private TypeAlias1() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+final class TypeAlias2 {
+    
+    private TypeAlias2() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass")
+final class TypeAlias3 {
+    
+    private TypeAlias3() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+final class TypeAlias4 {
+    
+    private TypeAlias4() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class typeAliasMethod1_ {
+    
+    private typeAliasMethod1_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+    static .java.lang.Object typeAliasMethod1(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+    final .java.lang.Object f) {
+        return f;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class typeAliasMethod2_ {
+    
+    private typeAliasMethod2_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+    static .java.lang.Object typeAliasMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+    final .java.lang.Object f) {
+        return f;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class typeAliasMethod3_ {
+    
+    private typeAliasMethod3_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass")
+    static .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass typeAliasMethod3(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass")
+    final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass f) {
+        return f;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class typeAliasMethod4_ {
+    
+    private typeAliasMethod4_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+    static .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface typeAliasMethod4(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface")
+    final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface f) {
+        return f;
+    }
+}

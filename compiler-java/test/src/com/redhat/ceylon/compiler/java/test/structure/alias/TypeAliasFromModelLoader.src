@@ -1,0 +1,10 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+final class typeAliasFromModelLoader_ {
+    
+    private typeAliasFromModelLoader_() {
+    }
+    
+    static void typeAliasFromModelLoader(final .java.lang.Object p1, final .java.lang.Object p2, final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass p3, final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface p4, final .java.lang.Object ptp1, final .java.lang.Object ptp2, final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersClass<.ceylon.language.Integer> ptp3, final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<.ceylon.language.String> ptp4) {
+    }
+}
