@@ -60,7 +60,7 @@ public class JsModuleManager extends ModuleManager {
                     String line = reader.readLine();
                     Map<String,Object> model = null;
                     while (model == null && (line = reader.readLine()) != null) {
-                        if (line.startsWith("$$metamodel$$={") && line.endsWith("};")) {
+                        if ((line.startsWith("var $$metamodel$$={") || line.startsWith("$$metamodel$$={")) && line.endsWith("};")) {
                             line = line.substring(14, line.length()-1);
                             model = (Map<String,Object>)JSONValue.parse(line);
                             line = null;
