@@ -508,4 +508,7 @@ class Generics() {
     String->Object okEntry;
     @error String->Void brokenEntry1;
     @error Nothing->String brokenEntry2;
+    
+    void withParamOfMethod<T>(T t) { Void x = t; } 
+    class WithParamOfClass<T>(T t) { Void x = t; } 
 }
