@@ -2034,9 +2034,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
 
             private SyntheticName addVarSubs(Cond transformedCond) {
-                final Variable var = transformedCond.getVariable();
-                if (var != null && transformedCond.hasResultDecl()) {
-                    SyntheticName resultVarName = transformedCond.getVariableName().alias();
+                if (transformedCond.hasResultDecl()) {
+                    Variable var = transformedCond.getVariable();
+                    SyntheticName resultVarName = naming.alias(transformedCond.getVariableName().getName());
                     fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), resultVarName.getName()),
                             var.getDeclarationModel().getName());
                     return resultVarName;
