@@ -1302,26 +1302,14 @@ public class GenerateJsVisitor extends Visitor
         if (that.getSupertypeQualifier() == null) {
             qualify(that, decl);
         } else {
-            //Get the declaring type
-            ClassOrInterface parent = (ClassOrInterface)decl.getContainer();
-            out("this.");
-            if (prototypeStyle) {
-                //In prototype style we can invoke the original method directly
-                out("getT$all$()['", parent.getQualifiedNameString(), "'].$$.prototype.");
-            } else {
-                //Otherwise we need to add the qualified prefix
-                for (String part : parent.getQualifiedNameString().split("\\.")) {
-                    out(part, "$");
-                }
-            }
+            out(qualifySupertype(decl));
         }
         if (isNative(decl)) {
             out(decl.getName());
         } else if (accessDirectly(decl)) {
             out(names.name(decl));
         } else {
-            out(names.getter(decl));
-            out("()");
+            out(names.getter(decl), prototypeStyle && that.getSupertypeQualifier() != null ? ".apply(this)" : "()");
         }
     }
 
@@ -1882,6 +1870,22 @@ public class GenerateJsVisitor extends Visitor
             out(".");
         }
     }
+    /** Generates the path to the qualified declaration (useful for Super::member) */
+    private String qualifySupertype(Declaration d) {
+        //Get the declaring type
+        final ClassOrInterface parent = (ClassOrInterface)d.getContainer();
+        final StringBuilder sb = new StringBuilder("this.");
+        if (prototypeStyle) {
+            //In prototype style we can invoke the original method directly
+            sb.append("getT$all$()['").append(parent.getQualifiedNameString()).append("'].$$.prototype.");
+        } else {
+            //Otherwise we need to add the qualified prefix
+            for (String part : parent.getQualifiedNameString().split("\\.")) {
+                sb.append(part).append('$');
+            }
+        }
+        return sb.toString();
+    }
 
     private String qualifiedPath(Node that, Declaration d) {
         return qualifiedPath(that, d, false);
@@ -2426,18 +2430,26 @@ public class GenerateJsVisitor extends Visitor
    private void prefixIncrementOrDecrement(Term term, String functionName) {
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
-           String path = qualifiedPath(bme, bme.getDeclaration());
-           if (path.length() > 0) {
-               path += '.';
+           String path;
+           boolean qsuper = false;
+           if (bme.getSupertypeQualifier() == null) {
+               path = qualifiedPath(bme, bme.getDeclaration());
+               if (path.length() > 0) {
+                   path += '.';
+               }
+           } else {
+               path = qualifySupertype(bme.getDeclaration());
+               qsuper = prototypeStyle;
            }
 
            boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
            String member = accessDirectly(bme.getDeclaration())
                    ? names.name(bme.getDeclaration())
-                   : (names.getter(bme.getDeclaration()) + "()");
+                   : names.getter(bme.getDeclaration()) + (qsuper?".apply(this)":"()");
            if (!simpleSetter) { out("("); }
-           out(path, names.setter(bme.getDeclaration()), "(", path, member, ".",
-                   functionName, "())");
+           out(path, names.setter(bme.getDeclaration()),
+                   qsuper ? ".apply(this,[" : "(", path, member, ".",
+                   functionName, qsuper ? "()])": "())");
            if (!simpleSetter) {
                out(",", path, member, ")");
            }
@@ -2467,21 +2479,38 @@ public class GenerateJsVisitor extends Visitor
    private void postfixIncrementOrDecrement(Term term, String functionName) {
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
-           String path = qualifiedPath(bme, bme.getDeclaration());
-           if (path.length() > 0) {
-               path += '.';
+           String path;
+           boolean qsuper = false;
+           if (bme.getSupertypeQualifier() == null) {
+               path = qualifiedPath(bme, bme.getDeclaration());
+               if (path.length() > 0) {
+                   path += '.';
+               }
+           } else {
+               path=qualifySupertype(bme.getDeclaration());
+               qsuper = prototypeStyle;
            }
 
            String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
            out("(", oldValueVar, "=", path);
-           if (!accessDirectly(bme.getDeclaration())) {
-               out(names.getter(bme.getDeclaration()), "()");
-           } else {
+           if (accessDirectly(bme.getDeclaration())) {
                out(names.name(bme.getDeclaration()));
+           } else {
+               out(names.getter(bme.getDeclaration()));
+               //For qualified supertypes, call the prototype function with "this"
+               if (qsuper) {
+                   out(".apply(this)");
+               } else {
+                   out("()");
+               }
            }
-           out(",", path, names.setter(bme.getDeclaration()), "(",
-                   oldValueVar, ".", functionName, "()),",
-                   oldValueVar, ")");
+           out(",", path, names.setter(bme.getDeclaration()),
+                   qsuper ? ".apply(this, [" : "(");
+           out(oldValueVar, ".", functionName, "()");
+           if (qsuper) {
+               out("]");
+           }
+           out("),", oldValueVar, ")");
 
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
