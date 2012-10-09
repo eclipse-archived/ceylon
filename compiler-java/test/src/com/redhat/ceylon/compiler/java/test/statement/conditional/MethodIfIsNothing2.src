@@ -6,7 +6,9 @@ class MethodIfIsNothing {
     }
     
     public final void m(final .java.lang.Object x) {
-        if (x == null) {
+        .java.lang.Object $x$0;
+        if (($x$0 = x) == null) {
+            final .java.lang.Object $x$1 = (.java.lang.Object)$x$0;
         }
     }
     

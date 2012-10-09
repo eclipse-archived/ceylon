@@ -19,15 +19,18 @@
  */
 @nomodel
 class MethodIfIsNothing() {
-    Integer nowt(Integer|Nothing n) {
+    Integer owt(Integer|Nothing n) {
         return 0;
     }
-    
+    Integer nowt(Nothing n) {
+        return 0;
+    }
+
     Integer m1(Integer|Nothing x) {
         if (is Integer x) {
            return x; 
         } else {
-            return nowt(x);
+            return owt(x);
         }
     }
         
@@ -35,7 +38,7 @@ class MethodIfIsNothing() {
         if (is Integer y=x) {
            return y;
         } else {
-            return nowt(x);
+            return owt(x);
         }
     }
         
@@ -43,15 +46,15 @@ class MethodIfIsNothing() {
         if (is Nothing x) {
             return nowt(x);
         } else {
-            return nowt(x);
+            return owt(x);
         }
     }
-        
+
     Integer m4(Integer|Nothing x) {
         if (is Nothing y=x) {
             return nowt(y);
         } else {
-            return nowt(x);
+            return owt(x);
         }
     }
 }

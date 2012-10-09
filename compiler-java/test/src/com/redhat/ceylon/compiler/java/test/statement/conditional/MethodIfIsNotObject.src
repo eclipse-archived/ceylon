@@ -6,8 +6,20 @@ class MethodIfIsNotObject {
     }
     
     public final void m(final .java.lang.Object x) {
-        if (x == null) {
+        .java.lang.Object $x$0;
+        if (!(($x$0 = x) != null)) {
+            final .java.lang.Object $x$1 = (.java.lang.Object)$x$0;
             .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
+            .ceylon.language.print_.print($x$1);
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        .java.lang.Object $x$2;
+        if (!(($x$2 = y) != null)) {
+            final .java.lang.Object $x$3 = (.java.lang.Object)$x$2;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
+            .ceylon.language.print_.print($x$3);
         }
     }
     
