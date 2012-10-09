@@ -195,6 +195,10 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("conditional/MethodIfConditionListBoolBool");
     }
     @Test
+    public void testConMethodIfConditionListIsIs(){
+        compareWithJavaSource("conditional/MethodIfConditionListIsIs");
+    }
+    @Test
     public void testConMethodIfConditionListBoolBoolIs(){
         compareWithJavaSource("conditional/MethodIfConditionListBoolBoolIs");
     }

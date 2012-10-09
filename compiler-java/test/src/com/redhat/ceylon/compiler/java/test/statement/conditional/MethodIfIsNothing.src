@@ -34,20 +34,18 @@ class MethodIfIsNothing {
     }
     
     private final long m3(final .ceylon.language.Integer x) {
-        .java.lang.Object $x$4;
-        if (($x$4 = x) == null) {
-            final .java.lang.Object $x$5 = (.java.lang.Object)$x$4;
-            return nowt($x$5);
+        if (x == null) {
+            return nowt(x);
         } else {
             return owt(x);
         }
     }
     
     private final long m4(final .ceylon.language.Integer x) {
-        .java.lang.Object $y$6;
-        if (($y$6 = x) == null) {
-            final .java.lang.Object $y$7 = (.java.lang.Object)$y$6;
-            return nowt($y$7);
+        .java.lang.Object $y$5;
+        if (($y$5 = x) == null) {
+            final .java.lang.Object $y$6 = (.java.lang.Object)$y$5;
+            return nowt($y$6);
         } else {
             return owt(x);
         }

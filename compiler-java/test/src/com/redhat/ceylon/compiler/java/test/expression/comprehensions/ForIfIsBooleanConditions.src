@@ -24,15 +24,15 @@ final class forIfIsBooleanConditions_ {
                         }
                         return true;
                     }
-                    private long $y$1;
+                    private long $y$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $y$2 = null;
-                            if (($y$2 = x) instanceof .ceylon.language.Integer) {
-                                $y$1 = ((.ceylon.language.Integer)$y$2).longValue();
-                                if ($y$1 > 0L) {
+                            .java.lang.Object $y$1 = null;
+                            if (($y$1 = x) instanceof .ceylon.language.Integer) {
+                                $y$2 = ((.ceylon.language.Integer)$y$1).longValue();
+                                if ($y$2 > 0L) {
                                     break;
                                 }
                             }
@@ -41,7 +41,7 @@ final class forIfIsBooleanConditions_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? .ceylon.language.Integer.instance($y$1 + 1L) : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? .ceylon.language.Integer.instance($y$2 + 1L) : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }

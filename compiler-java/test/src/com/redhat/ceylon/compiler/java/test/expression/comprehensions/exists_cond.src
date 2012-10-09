@@ -25,27 +25,27 @@ final class existsCond_ {
                         }
                         return true;
                     }
-                    private .java.lang.String $x$1;
+                    private .java.lang.String $x$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.String $x$2 = null;
-                            if (($x$2 = x) != null) {
-                                $x$1 = $x$2.toString();
+                            .ceylon.language.String $x$1 = null;
+                            if (($x$1 = x) != null) {
+                                $x$2 = $x$1.toString();
                                 break;
                             }
                         }
                         return !x$exhausted;
                     }
-                    private int $c$3;
+                    private int $c$4;
                     
                     private final boolean next2() {
                         while (true) {
                             if (!this.next1()) break;
-                            .ceylon.language.Character $c$4 = null;
-                            if (($c$4 = .ceylon.language.String.instance(.ceylon.language.String.initial($x$1, 1L)).item(.ceylon.language.Integer.instance(0L))) != null) {
-                                $c$3 = $c$4.intValue();
+                            .ceylon.language.Character $c$3 = null;
+                            if (($c$3 = .ceylon.language.String.instance(.ceylon.language.String.initial($x$2, 1L)).item(.ceylon.language.Integer.instance(0L))) != null) {
+                                $c$4 = $c$3.intValue();
                                 break;
                             }
                         }
@@ -53,7 +53,7 @@ final class existsCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next2() ? .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$3)) : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next2() ? .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$4)) : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }

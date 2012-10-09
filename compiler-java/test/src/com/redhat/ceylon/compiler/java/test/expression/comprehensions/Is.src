@@ -120,14 +120,14 @@ final class isCond_ {
                         }
                         return true;
                     }
-                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo $x$1;
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo $x$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$2 = null;
-                            if (($x$2 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
-                                $x$1 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$2;
+                            .java.lang.Object $x$1 = null;
+                            if (($x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
+                                $x$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$1;
                                 break;
                             }
                         }
@@ -135,7 +135,7 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $x$1.foo() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? $x$2.foo() : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
@@ -158,14 +158,14 @@ final class isCond_ {
                         }
                         return true;
                     }
-                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub $x$4;
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub $x$5;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$5 = null;
-                            if (($x$5 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
-                                $x$4 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)$x$5;
+                            .java.lang.Object $x$4 = null;
+                            if (($x$4 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
+                                $x$5 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)$x$4;
                                 break;
                             }
                         }
@@ -173,7 +173,7 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $x$4.foo() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? $x$5.foo() : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
@@ -196,14 +196,14 @@ final class isCond_ {
                         }
                         return true;
                     }
-                    private .java.lang.Object $x$7;
+                    private .java.lang.Object $x$8;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$8 = null;
-                            if (($x$8 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || $x$8 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
-                                $x$7 = (.java.lang.Object)$x$8;
+                            .java.lang.Object $x$7 = null;
+                            if (($x$7 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || $x$7 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
+                                $x$8 = (.java.lang.Object)$x$7;
                                 break;
                             }
                         }
@@ -211,7 +211,7 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$x$7).common() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)$x$8).common() : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
@@ -234,14 +234,14 @@ final class isCond_ {
                         }
                         return true;
                     }
-                    private .java.lang.Object $x$10;
+                    private .java.lang.Object $x$11;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$11 = null;
-                            if (($x$11 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && $x$11 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
-                                $x$10 = (.java.lang.Object)$x$11;
+                            .java.lang.Object $x$10 = null;
+                            if (($x$10 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && $x$10 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
+                                $x$11 = (.java.lang.Object)$x$10;
                                 break;
                             }
                         }
@@ -249,7 +249,7 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$10).foo().common() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)$x$11).foo().common() : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
@@ -272,14 +272,14 @@ final class isCond_ {
                         }
                         return true;
                     }
-                    private .java.lang.Object $x$13;
+                    private .java.lang.Object $x$14;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .java.lang.Object $x$14 = null;
-                            if (($x$14 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && $x$14 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
-                                $x$13 = (.java.lang.Object)$x$14;
+                            .java.lang.Object $x$13 = null;
+                            if (($x$13 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && $x$13 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
+                                $x$14 = (.java.lang.Object)$x$13;
                                 break;
                             }
                         }
@@ -287,7 +287,7 @@ final class isCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)$x$13).bar() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)$x$14).bar() : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }

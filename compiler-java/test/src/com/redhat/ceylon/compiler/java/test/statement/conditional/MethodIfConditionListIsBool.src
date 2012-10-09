@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfConditionListIsBool {
+    
+    MethodIfConditionListIsBool() {
+    }
+    
+    private final void m(final .java.lang.Object x) {
+        boolean $ceylontmpif0 = false;
+        .java.lang.Object $x$1 = null;
+        final .java.lang.String $x$2;
+        if (($x$1 = x) instanceof .ceylon.language.String) {
+            $x$2 = ((.ceylon.language.String)$x$1).toString();
+            if (.ceylon.language.String.getUppercased($x$2).equals("S")) {
+                $ceylontmpif0 = true;
+            }
+        } else {
+            $x$2 = null;
+        }
+        if ($ceylontmpif0) {
+            .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2)));
+        }
+    }
+    
+    private final void synthetic(final .java.lang.Object x) {
+        boolean $ceylontmpif3 = false;
+        .java.lang.Object $z$4 = null;
+        final .java.lang.String $z$5;
+        if (($z$4 = x) instanceof .ceylon.language.String) {
+            $z$5 = ((.ceylon.language.String)$z$4).toString();
+            if (.ceylon.language.String.getUppercased($z$5).equals("S")) {
+                $ceylontmpif3 = true;
+            }
+        } else {
+            $z$5 = null;
+        }
+        if ($ceylontmpif3) {
+            .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5)));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListIsBool();
+    }
+}

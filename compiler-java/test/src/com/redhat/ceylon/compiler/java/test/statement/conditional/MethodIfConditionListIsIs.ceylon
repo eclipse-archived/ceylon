@@ -18,10 +18,28 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class MethodIfConditionListExistsIsBool() {
-    Boolean m(Void[] x) {
-        if (exists z=x[0], is Integer y = z, y > 0) {
-            return y == 1;
+class MethodIfConditionListIsIs() {
+    Boolean m(Void x, Void y) {
+        if (is Integer x1=x, is Integer y1=y) {
+            return x1 == y1;
+        } else {
+            return false;
+        }
+    }
+    Boolean synthetic(Void x, Void y) {
+        if (is Integer x, is Integer y) {
+            return x == y;
+        } else {
+            return false;
+        }
+    }
+    Boolean mElseIf(Void x, Void y) {
+        if (is Integer x1=x, is Integer y1=y) {
+            return x1 == y1;
+        } else if (is Integer x1=x) {
+            return x1 == 0;
+        } else if (is Integer y) {
+            return y == 0;
         } else {
             return false;
         }

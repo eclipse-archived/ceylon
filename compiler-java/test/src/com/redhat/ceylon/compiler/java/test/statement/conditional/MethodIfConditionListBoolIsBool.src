@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfConditionListBoolIsBool {
+    
+    MethodIfConditionListBoolIsBool() {
+    }
+    
+    private final boolean m(final .java.lang.Object x, final long z) {
+        boolean $ceylontmpif0 = false;
+        .java.lang.Object $x$1 = null;
+        final long $x$2;
+        if (z < 10L) {
+            if (($x$1 = x) instanceof .ceylon.language.Integer) {
+                $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
+                if ($x$2 > 0L) {
+                    $ceylontmpif0 = true;
+                }
+            } else {
+                $x$2 = 0L;
+            }
+        } else {
+            $x$2 = 0L;
+        }
+        if ($ceylontmpif0) {
+            return $x$2 == 1L;
+        } else {
+            return false;
+        }
+    }
+    
+    private final boolean synthetic(final .java.lang.Object x, final long z) {
+        boolean $ceylontmpif3 = false;
+        .java.lang.Object $y$4 = null;
+        final long $y$5;
+        if (z < 10L) {
+            if (($y$4 = x) instanceof .ceylon.language.Integer) {
+                $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
+                if ($y$5 > 0L) {
+                    $ceylontmpif3 = true;
+                }
+            } else {
+                $y$5 = 0L;
+            }
+        } else {
+            $y$5 = 0L;
+        }
+        if ($ceylontmpif3) {
+            return $y$5 == 1L;
+        } else {
+            return false;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolIsBool();
+    }
+}

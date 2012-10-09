@@ -25,14 +25,14 @@ final class nonemptyCond_ {
                         }
                         return true;
                     }
-                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ints$1;
+                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ints$2;
                     
                     private final boolean next1() {
                         while (true) {
                             if (!this.x()) break;
-                            .ceylon.language.List<? extends .ceylon.language.Integer> $ints$2 = null;
-                            if (($ints$2 = ints) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ints$2).getEmpty()) {
-                                $ints$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$ints$2;
+                            .ceylon.language.List<? extends .ceylon.language.Integer> $ints$1 = null;
+                            if (($ints$1 = ints) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$ints$1).getEmpty()) {
+                                $ints$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$ints$1;
                                 break;
                             }
                         }
@@ -40,7 +40,7 @@ final class nonemptyCond_ {
                     }
                     
                     public final .java.lang.Object next() {
-                        return this.next1() ? $ints$1.getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                        return this.next1() ? $ints$2.getFirst() : .ceylon.language.exhausted_.getExhausted$();
                     }
                 };
             }
