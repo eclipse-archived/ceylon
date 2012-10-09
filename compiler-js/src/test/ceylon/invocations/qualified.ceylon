@@ -46,6 +46,20 @@ class QualifyAmbiguousSupertypes(Boolean one)
     }
 }
 
+class QualifiedA() {
+  shared default variable Integer a:=0;
+}
+class QualifiedB() extends QualifiedA() {
+  shared actual variable Integer a:=0;
+  shared void f() {
+    QualifiedA::a++;
+  }
+  shared Integer g() {
+    return ++QualifiedA::a;
+  }
+  shared Integer supera { return QualifiedA::a; }
+}
+
 void testQualified() {
     value q1 = QualifyAmbiguousSupertypes(true);
     value q2 = QualifyAmbiguousSupertypes(false);
@@ -57,4 +71,9 @@ void testQualified() {
     check(q1.somethingElse(6)=="something 6 else", "qualified super method [2]");
     check(q2.somethingElse(5)=="Ambiguous2 5 something else", "qualified super method [3]");
     check(q2.somethingElse(6)=="Ambiguous2 6 something else", "qualified super method [4]");
+    value qb = QualifiedB();
+    check(qb.a == qb.supera, "Qualified attribute [1]");
+    qb.f();
+    check(++qb.a == qb.supera, "Qualified attribute [2]");
+    check(++qb.a == qb.g(), "Qualified attribute [3]");
 }
