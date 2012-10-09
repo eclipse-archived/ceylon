@@ -48,7 +48,7 @@ void testFixedSized() {
   check(!s2.empty, "Some.empty 2");
   check(s2.size == 2, "Some.size 2");
   if (is Some<Integer> s3 = s2) {
-    s2 := s3.rest;
+    s2 := TestSome(s3.rest.first else 0, s3.rest.rest...);
   } else {
     fail("s2.rest 1");
   }
@@ -57,8 +57,9 @@ void testFixedSized() {
   check(s2.size == 1, "Some.size 3");
   check(is Integer s2.first, "Some.first 2");
   if (is Some<Integer> s3 = s2) {
-    s2 := s3.rest;
     check(s3.first == 3, "Some.first 3");
+    check(!exists s3.rest.first, "empty Some.rest");
+    s2 := TestNone();
   } else {
     fail("s2.rest 2");
   }
