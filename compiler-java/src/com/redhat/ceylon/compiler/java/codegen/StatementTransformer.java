@@ -180,9 +180,16 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformInnermost(Condition condition) {
             Cond transformedCond = transformCondition(condition, thenPart);
-            thenBlock = makeThenBlock(transformedCond, thenPart);
+            //thenBlock = makeThenBlock(transformedCond, thenPart);
+            Substitution subs = thenBlockVariableSubstitution(transformedCond, thenPart);
+            thenBlock = makeThenBlock(transformedCond, thenPart, subs);
+            // Deactivate the above variable substitution
+            if (subs != null) {
+                subs.remove();
+            }
             List<JCStatement> stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
-            return transformCommon(transformedCond, stmts);
+            stmts = transformCommon(transformedCond, stmts);
+            return stmts;
         }
         
         protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
@@ -249,22 +256,60 @@ public class StatementTransformer extends AbstractTransformer {
         return result.toList();
     }
 
+    class Substitution {
+        private final String original;
+        private final SyntheticName substituted;
+        private final String previous;
+        private boolean restored = false;
+        
+        public Substitution(String original, SyntheticName substituted) {
+            this.original = original;
+            this.substituted = substituted;
+            this.previous = naming.addVariableSubst(original, substituted.getName());
+        }
+        
+        public void remove() {
+            if (restored) {
+                throw new IllegalStateException();
+            }
+            naming.removeVariableSubst(original, previous);
+            restored = true;
+        }
+    }
+    Substitution substituteAlias(String original) {
+        return new Substitution(original, naming.alias(original));
+    }
+    
     private final JCBlock makeThenBlock(Cond cond, Block thenPart) {
         at(cond.getCondition());
-        if (thenPart == null || cond.getVariableName() == null) {
-            return statementGen().transform(thenPart);   
-        }
-        Name substVarName = naming.aliasName(cond.getVariableName().getName());
         // Prepare for variable substitution in the following code block
-        final String origVarName = cond.getVariableName().getName();
-        String prevSubst = naming.addVariableSubst(origVarName, substVarName.toString());
-        List<JCStatement> blockStmts = statementGen().transformBlock(thenPart);
-        // The variable holding the result for the code inside the code block
-        blockStmts = blockStmts.prepend(at(cond.getCondition()).VarDef(make().Modifiers(FINAL), substVarName, 
-                cond.makeTypeExpr(), cond.makeResultExpr()));
-        JCBlock thenBlock = at(cond.getCondition()).Block(0, blockStmts);
+        Substitution subs = thenBlockVariableSubstitution(cond, thenPart);
+        JCBlock thenBlock = makeThenBlock(cond, thenPart, subs);
         // Deactivate the above variable substitution
-        naming.removeVariableSubst(origVarName, prevSubst);
+        if (subs != null) {
+            subs.remove();
+        }
+        return thenBlock;
+    }
+
+    private Substitution thenBlockVariableSubstitution(Cond cond, Block thenPart) {
+        Substitution subs;
+        if (thenPart == null || cond.getVariableName() == null) {
+            subs = null;   
+        } else {
+            subs = substituteAlias(cond.getVariableName().getName());
+        }
+        return subs;
+    }
+
+    private JCBlock makeThenBlock(Cond cond, Block thenPart, Substitution subs) {
+        List<JCStatement> blockStmts = statementGen().transformBlock(thenPart);
+        if (subs != null) {
+            // The variable holding the result for the code inside the code block
+            blockStmts = blockStmts.prepend(at(cond.getCondition()).VarDef(make().Modifiers(FINAL), subs.substituted.asName(), 
+                    cond.makeTypeExpr(), cond.makeResultExpr()));
+        }
+        JCBlock thenBlock = at(cond.getCondition()).Block(0, blockStmts);
         return thenBlock;
     }
     
