@@ -39,4 +39,6 @@ class Aliases() {
     @error class BadC2(Integer n) = Class<String>;
     @error class BadC3(String s1, String s2) = Class<String>;
     
+    @error class X() = String|Integer;
+    @error interface Y = Container&Identifiable;
 }

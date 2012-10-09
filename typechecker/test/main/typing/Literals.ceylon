@@ -15,7 +15,7 @@ class Literals() {
     @type["Sequence<String>"] value ss = { "hello", "world" };
     @type["Sequence<Integer>"] value ns = { 1, 2, 3, 4 };
     @type["String"] value st = "pi = " 3.1415 " approx";
-    @type["Quoted"] value q = 'hibernate.org';
+    @type["String"] value q = 'hibernate.org';
     
     Boolean b = true;
     

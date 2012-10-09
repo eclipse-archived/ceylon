@@ -1,9 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
-
-import java.util.List;
-
 
 public abstract class ClassOrInterface extends TypeDeclaration {
 
@@ -32,15 +28,6 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
 
     public abstract boolean isAbstract();
-
-    ProducedType aliasType(ProducedType outerType, List<ProducedType> typeArguments) {
-    	if (getExtendedType()!=null) {
-    		return getExtendedType().substitute(arguments(this, outerType, typeArguments));
-    	}
-    	else {
-    		return super.getProducedType(outerType, typeArguments);
-    	}
-    }
 
     @Override
     public DeclarationKind getDeclarationKind() {

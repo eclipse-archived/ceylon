@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -31,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -650,9 +652,13 @@ public class TypeVisitor extends Visitor {
             that.addError("missing class body or aliased class reference");
         }
         else {
-            Tree.SimpleType et = that.getTypeSpecifier().getType();
+            Tree.StaticType et = that.getTypeSpecifier().getType();
             if (et==null) {
                 that.addError("malformed aliased class");
+            }
+            else if (!(et instanceof Tree.StaticType)) {
+            	that.getTypeSpecifier()
+            			.addError("aliased type must be a class");
             }
             else if (et instanceof Tree.QualifiedType) {
             	that.getTypeSpecifier()
@@ -661,11 +667,13 @@ public class TypeVisitor extends Visitor {
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                    if (!(type.getDeclaration() instanceof Class)) {
+                    if (type.getDeclaration() instanceof Class) {
+                    	that.getDeclarationModel().setExtendedType(type);
+                    } 
+                    else {
                         et.addError("not a class: " + 
                                 type.getDeclaration().getName());
                     }
-                    that.getDeclarationModel().setExtendedType(type);
                 }
             }
         }
@@ -678,17 +686,43 @@ public class TypeVisitor extends Visitor {
             that.addError("missing interface body or aliased interface reference");
         }
         else {
-            Tree.SimpleType et = that.getTypeSpecifier().getType();
+            Tree.StaticType et = that.getTypeSpecifier().getType();
             if (et==null) {
                 that.addError("malformed aliased interface");
+            }
+            else if (!(et instanceof Tree.StaticType)) {
+            	that.getTypeSpecifier()
+            			.addError("aliased type must be an interface");
             }
             else {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
-                    if (!(type.getDeclaration() instanceof Interface)) {
+                    if (type.getDeclaration() instanceof Interface) {
+                    	that.getDeclarationModel().setExtendedType(type);
+                    } 
+                    else {
                         et.addError("not an interface: " + 
                                 type.getDeclaration().getName());
                     }
+                }
+            }
+        }
+    }
+    
+    @Override 
+    public void visit(Tree.TypeAliasDeclaration that) {
+        super.visit(that);
+        if (that.getTypeSpecifier()==null) {
+            that.addError("missing aliased type");
+        }
+        else {
+            Tree.StaticType et = that.getTypeSpecifier().getType();
+            if (et==null) {
+                that.addError("malformed aliased type");
+            }
+            else {
+                ProducedType type = et.getTypeModel();
+                if (type!=null) {
                     that.getDeclarationModel().setExtendedType(type);
                 }
             }
@@ -714,7 +748,7 @@ public class TypeVisitor extends Visitor {
                             Collections.<ProducedType>emptyList()).getFullType();
                     param.setType(ft);
                     if (sie!=null) {
-                        sie.addError("has matching initializer parameter: " + dec.getName());
+                        sie.addError("function is an initializer parameter and may not have an initial value: " + dec.getName());
                     }
                 }
             }
@@ -734,7 +768,7 @@ public class TypeVisitor extends Visitor {
                         ((ValueParameter) param).isHidden()) {
                     param.setType(dec.getType());
                     if (sie!=null) {
-                        sie.addError("has matching initializer parameter: " + dec.getName());
+                        sie.addError("attribute is an initializer parameter and may not have an initial value: " + dec.getName());
                     }
                 }
             }
@@ -764,47 +798,57 @@ public class TypeVisitor extends Visitor {
                     }
                 }
             }*/
-            ProducedType type = et.getTypeModel();
-            if (type!=null) {
-                if (type.getDeclaration()==td) {
-                    //TODO: handle indirect circularities!
-                    et.addError("directly extends itself: " + td.getName());
-                    return;
-                }
-                if (et instanceof Tree.QualifiedType) {
-                    if ( !(((Tree.QualifiedType) et).getOuterType() instanceof Tree.SuperType) ) {
-                        checkTypeBelongsToContainingScope(type, td.getContainer(), et);
-                    }
-                }
-                if (that.getInvocationExpression()!=null) {
-                    //TODO: it would probably be better to leave
-                    //      all this following  stuff to 
-                    //ExpressionVisitor.visit(ExtendedTypeExpression)
-                    Tree.Primary pr = that.getInvocationExpression().getPrimary();
-                    if (pr instanceof Tree.ExtendedTypeExpression) {
-                        pr.setTypeModel(type);
-                        Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
-                        ete.setDeclaration(type.getDeclaration());
-                        ete.setTarget(type);
-                    }
-                }
-                if (type.getDeclaration() instanceof TypeParameter) {
-                    et.addError("directly extends a type parameter: " + 
-                            type.getProducedTypeName());
-                }
-                else if (type.getDeclaration() instanceof Interface) {
-                    et.addError("extends an interface: " + 
-                            type.getProducedTypeName());
-                }
-                else if (!type.getDeclaration().isExtendable() && 
-                		!inLanguageModule(that)) {
-                    et.addError("directly extends a special language type: " +
-                        type.getProducedTypeName());
-                }
-                else {
-                    td.setExtendedType(type);
-                }
-            }
+        	if (!(et instanceof Tree.SimpleType)) {
+        		et.addError("extended type must be a class"); //actually this case never occurs due to grammar
+        	}
+        	else {
+        		ProducedType type = et.getTypeModel();
+        		if (type!=null) {
+        			TypeDeclaration etd = ((Tree.SimpleType) et).getDeclarationModel();
+        			if (etd==td) {
+        				//TODO: handle indirect circularities!
+        				et.addError("directly extends itself: " + td.getName());
+        				return;
+        			}
+        			if (et instanceof Tree.QualifiedType) {
+        				if ( !(((Tree.QualifiedType) et).getOuterType() instanceof Tree.SuperType) ) {
+        					checkTypeBelongsToContainingScope(type, td.getContainer(), et);
+        				}
+        			}
+        			if (that.getInvocationExpression()!=null) {
+        				//TODO: it would probably be better to leave
+        				//      all this following  stuff to 
+        				//ExpressionVisitor.visit(ExtendedTypeExpression)
+        				Tree.Primary pr = that.getInvocationExpression().getPrimary();
+        				if (pr instanceof Tree.ExtendedTypeExpression) {
+        					pr.setTypeModel(type);
+        					Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression) pr;
+        					ete.setDeclaration(etd);
+        					ete.setTarget(type);
+        				}
+        			}
+        			if (etd instanceof TypeParameter) {
+        				et.addError("directly extends a type parameter: " + 
+        						type.getProducedTypeName());
+        			}
+        			else if (etd instanceof Interface) {
+        				et.addError("extends an interface: " + 
+        						type.getProducedTypeName());
+        			}
+        			else if (etd instanceof TypeAlias) {
+        				et.addError("extends a type alias: " + 
+        						type.getProducedTypeName());
+        			}
+        			else if (!etd.isExtendable() && 
+        					!inLanguageModule(that)) {
+        				et.addError("directly extends a special language type: " +
+        						type.getProducedTypeName());
+        			}
+        			else {
+        				td.setExtendedType(type);
+        			}
+        		}
+        	}
         }
     }
 
@@ -821,34 +865,64 @@ public class TypeVisitor extends Visitor {
         if ( that.getTypes().isEmpty() ) {
             that.addError("missing types in satisfies");
         }
-        for (Tree.StaticType t: that.getTypes()) {
-            ProducedType type = t.getTypeModel();
+        boolean foundTypeParam = false;
+        for (Tree.StaticType st: that.getTypes()) {
+        	if (!(st instanceof Tree.SimpleType)) {
+        		st.addError("satisfied type must be an interface");  //actually this case never occurs due to grammar
+        		continue;
+        	}
+            ProducedType type = st.getTypeModel();
             if (type!=null) {
-                if (type.getDeclaration()==td) {
+                TypeDeclaration std = ((Tree.SimpleType) st).getDeclarationModel();
+				if (std==td) {
                     //TODO: handle indirect circularities!
-                    t.addError("directly extends itself: " + td.getName());
+                    st.addError("directly extends itself: " + td.getName());
+                    continue;
+                }
+                if (std instanceof TypeAlias) {
+                    st.addError("satisfies a type alias: " + 
+                            type.getProducedTypeName());
                     continue;
                 }
                 if (type.isCallable()) {
-                    t.addError("directly satisfies Callable");
+                    st.addError("directly satisfies Callable");
                 }
-                if (!(td instanceof TypeParameter)) {
-                    if (type.getDeclaration() instanceof TypeParameter) {
-                        t.addError("directly satisfies type parameter: " + 
+                if (td instanceof TypeParameter) {
+                	if (std instanceof TypeParameter) {
+                		if (foundTypeParam) {
+                            st.addWarning("multiple type parameter upper bounds are not yet supported");
+                		}
+                		foundTypeParam = true;
+                	}
+                } 
+                else {
+                    if (std instanceof TypeParameter) {
+                        st.addError("directly satisfies type parameter: " + 
                                 type.getProducedTypeName());
                         continue;
                     }
-                    if (type.getDeclaration() instanceof Class) {
-                        t.addError("satisfies a class: " + 
+                    if (std instanceof Class) {
+                        st.addError("satisfies a class: " + 
                                 type.getProducedTypeName());
                         continue;
                     }
-                    if (t instanceof Tree.QualifiedType) {
-                        checkTypeBelongsToContainingScope(type, td.getContainer(), t);
+                    if (st instanceof Tree.QualifiedType) {
+                        checkTypeBelongsToContainingScope(type, td.getContainer(), st);
                     }
                 }
                 list.add(type);
             }
+        }
+        if (td instanceof TypeParameter) {
+        	List<ProducedType> l = new ArrayList<ProducedType>();
+        	for (ProducedType t: list) {
+        		addToIntersection(l, t, unit);
+        	}
+        	IntersectionType it = new IntersectionType(unit);
+        	it.setSatisfiedTypes(l);
+        	if (it.getType().getDeclaration() instanceof BottomType) {
+        		that.addError("upper bound constraints cannot be satisfied by any type except Bottom");
+        	}
         }
         td.setSatisfiedTypes(list);
     }

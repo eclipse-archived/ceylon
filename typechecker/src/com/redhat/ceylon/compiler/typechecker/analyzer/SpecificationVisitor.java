@@ -584,6 +584,15 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);        
     }
     
+    @Override
+    public void visit(Tree.TypeAliasDeclaration that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
     public void visit(Tree.Return that) {
         super.visit(that);
         if (!cannotSpecify) {
@@ -623,8 +632,8 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.IfStatement that) {
         
         if (that.getIfClause()!=null) {
-        	if (that.getIfClause().getCondition()!=null) {
-        		that.getIfClause().getCondition().visit(this);
+        	if (that.getIfClause().getConditionList()!=null) {
+        		that.getIfClause().getConditionList().visit(this);
         	}
         }
         
@@ -745,8 +754,8 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.WhileStatement that) {
     	if (that.getWhileClause()!=null) {
-    		if (that.getWhileClause().getCondition()!=null) {
-    			that.getWhileClause().getCondition().visit(this);
+    		if (that.getWhileClause().getConditionList()!=null) {
+    			that.getWhileClause().getConditionList().visit(this);
     		}
     	}
     	

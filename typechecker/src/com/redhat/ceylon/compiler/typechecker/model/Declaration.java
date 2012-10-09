@@ -28,8 +28,6 @@ public abstract class Declaration
     private boolean staticallyImportable;
     private boolean protectedVisibility;
 
-    private int refCount;
-
     public Scope getVisibleScope() {
         return visibleScope;
     }

@@ -104,7 +104,13 @@ public class Util {
     }
 
     static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d) {
-        if (d instanceof Class && ((Class) d).isAbstract()) {
+        return hasMatchingSignature(signature, d, true);
+    }
+    
+    static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d, 
+    		boolean excludeAbstractClasses) {
+        if (excludeAbstractClasses && 
+        		d instanceof Class && ((Class) d).isAbstract()) {
             return false;
         }
         if (d instanceof Functional) {
@@ -599,17 +605,7 @@ public class Util {
                     if (hasMatchingSignature(signature, d)) {
                         //we have found an exactly matching 
                         //overloaded declaration
-                        boolean add=true;
-                        for (Iterator<Declaration> i = results.iterator(); i.hasNext();) {
-                            Declaration o = i.next();
-                            if (betterMatch(d, o)) {
-                                i.remove();
-                            }
-                            else if (betterMatch(o, d)) { //TODO: note assymmetry here resulting in nondeterminate behavior!
-                                add=false;
-                            }
-                        }
-                        if (add) results.add(d);
+                        addIfBetterMatch(results, d);
                     }
                 }
             }
@@ -629,6 +625,37 @@ public class Util {
             //declaration
             return inexactMatch;
         }
+    }
+
+    private static void addIfBetterMatch(List<Declaration> results, Declaration d) {
+        boolean add=true;
+        for (Iterator<Declaration> i = results.iterator(); i.hasNext();) {
+            Declaration o = i.next();
+            if (betterMatch(d, o)) {
+                i.remove();
+            }
+            else if (betterMatch(o, d)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
+                add=false;
+            }
+        }
+        if (add) results.add(d);
+    }
+    
+    public static Declaration findMatchingOverloadedClass(Class abstractionClass, 
+    		List<ProducedType> signature) {
+        List<Declaration> results = new ArrayList<Declaration>();
+        if (!abstractionClass.isAbstraction()) {
+            return abstractionClass;
+        }
+        for (Declaration overloaded: abstractionClass.getOverloads()) {
+            if (hasMatchingSignature(signature, overloaded, false)) {
+                addIfBetterMatch(results, overloaded);
+            }
+        }
+        if (results.size() == 1) {
+            return results.get(0);
+        }
+        return abstractionClass;
     }
 
     public static boolean isTypeUnknown(ProducedType type) {

@@ -193,7 +193,7 @@ class Assignability() {
     }
 
     @error if (is Y y = something) {
-        print(y.name);
+        @error print(y.name);
     }
     
     @error if (is Y X()) {}

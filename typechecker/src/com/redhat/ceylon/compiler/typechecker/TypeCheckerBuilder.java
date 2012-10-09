@@ -123,7 +123,9 @@ public class TypeCheckerBuilder {
     
     public TypeChecker getTypeChecker() {
         if (repositoryManager == null) {
-            repositoryManager = CeylonUtils.makeRepositoryManager(null, null, null, new LeakingLogger());
+            repositoryManager = CeylonUtils.repoManager()
+                    .logger(new LeakingLogger())
+                    .buildManager();
         }
         return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor, moduleManagerFactory, verbose, statistics, moduleFilters);
     }

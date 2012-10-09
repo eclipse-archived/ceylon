@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -296,6 +297,16 @@ public class DeclarationVisitor extends Visitor {
         if (that.getAdaptedTypes()!=null) {
             that.addWarning("introductions are not yet supported");
         }
+    }
+    
+    @Override
+    public void visit(Tree.TypeAliasDeclaration that) {
+        TypeAlias a = new TypeAlias();
+        that.setDeclarationModel(a);
+        visitDeclaration(that, a);
+        Scope o = enterScope(a);
+        super.visit(that);
+        exitScope(o);
     }
     
     @Override

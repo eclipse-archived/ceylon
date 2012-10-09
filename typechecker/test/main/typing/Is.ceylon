@@ -72,4 +72,34 @@ class Is() {
         @error value c = is Integer s;
     }
     
+    value next = "hello".iterator.next();
+    if (!is Finished next) {
+        Character char = next;
+    }
+    if (!is Finished ch = next) {
+        Character char = ch;
+    }
+    @error if (!is Object next) {}
+    @error if (!is Nothing next) {}
+    
+    Identifiable? i = null;
+    if (is Category cat = i) {
+        Identifiable&Category ic = cat;
+    }
+    
+    void notIs<T>(T... ts) {
+        value next = ts.iterator.next();
+        if (!is Finished next) {
+            T tt = next;
+        }
+        if (!is Finished t = next) {
+            T tt = t;
+        }
+        @error if (!is T next) {
+            //Finished f = next;
+        }
+        @error if (!is T t = next) {
+            //Finished f = t;
+        }
+    }
 }

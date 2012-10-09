@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclar
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.findMatchingOverloadedClass;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
@@ -231,6 +232,13 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+    
+    @Override public void visit(Tree.ConditionList that) {
+    	if (that.getConditions().isEmpty()) {
+    		that.addError("empty condition list");
+    	}
+    	super.visit(that);
+    }
 
     private void initOriginalDeclaration(Tree.Variable that) {
         if (that.getType() instanceof Tree.SyntheticVariable) {
@@ -250,6 +258,10 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable v = that.getVariable();
         ProducedType type = that.getType().getTypeModel();
         if (v!=null) {
+//            if (type!=null && !that.getNot()) {
+//            	v.getType().setTypeModel(type);
+//            	v.getDeclarationModel().setType(type);
+//            }
             //v.getType().visit(this);
             Tree.SpecifierExpression se = v.getSpecifierExpression();
             ProducedType knownType;
@@ -268,27 +280,58 @@ public class ExpressionVisitor extends Visitor {
                 //instead of the real StaticType which it very well knows!)
                 Expression e = se.getExpression();
                 knownType = e==null ? null : e.getTypeModel();
-                if (knownType!=null && knownType.isSubtypeOf(type)) {
-                    that.addError("does not narrow type: " + knownType.getProducedTypeName() + 
-                            " is a subtype of " + type.getProducedTypeName());
+                //TODO: what to do here in case of !is
+                if (knownType!=null) {
+                	if (that.getNot()) {
+                		if (intersectionType(type,knownType, unit).getDeclaration() instanceof BottomType) {
+                			that.addError("does not narrow type: intersection of " + type.getProducedTypeName() + 
+                					" and " + knownType.getProducedTypeName() + " is empty ");
+                		}
+                	} 
+                	else {
+                		if (knownType.isSubtypeOf(type)) {
+                			that.addError("does not narrow type: " + knownType.getProducedTypeName() + 
+                					" is a subtype of " + type.getProducedTypeName());
+                		}
+                	}
                 }
             }
             defaultTypeToVoid(v);
-            ProducedType it = knownType==null ? type : 
-                    intersectionType(type, knownType, that.getUnit());
+            if (knownType==null) {
+            	knownType = unit.getVoidDeclaration().getType(); //or should we use unknown?
+            }
+            ProducedType it;
+            if (that.getNot()) {
+            	//a !is condition, narrow to complement
+            	if (type.getDeclaration() instanceof ClassOrInterface) {
+            		//TODO: see comment in ProducedType - minus() is not robust 
+            		it = knownType.minus((ClassOrInterface) type.getDeclaration());
+            	}
+            	else {
+            		//TODO: what should we really do here?
+            		that.addError("type specified in negated assignability condition must be a class or interface");
+            		it = knownType;
+            	}
+            }
+            else {
+                //narrow to the intersection of the outer type 
+                //and the type specified in the condition
+                it = intersectionType(type, knownType, that.getUnit());
+            }
             if (it.getDeclaration() instanceof BottomType) {
-                that.addError("tests assignability to Bottom type: intersection of " +
-                        knownType.getProducedTypeName() + " and " + 
-                        type.getProducedTypeName() +
-                        " is empty");
+            	if (that.getNot()) {
+            		that.addError("tests assignability to Bottom type: " +
+            				knownType.getProducedTypeName() + " is a subtype of " + 
+            				type.getProducedTypeName());
+            	}
+            	else {
+            		that.addError("tests assignability to Bottom type: intersection of " +
+            				knownType.getProducedTypeName() + " and " + 
+            				type.getProducedTypeName() + " is empty");
+            	}
             }
-            if (v.getType() instanceof Tree.SyntheticVariable) {
-                //when we're reusing the original name, we narrow to the
-                //intersection of the outer type and the type specified
-                //in the condition
-                v.getType().setTypeModel(it);
-                v.getDeclarationModel().setType(it);
-            }
+            v.getType().setTypeModel(it);
+            v.getDeclarationModel().setType(it);
         }
         else if (that.getExpression()!=null) {
             that.getExpression().visit(this);
@@ -2928,17 +2971,15 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-	static TypeDeclaration getSupertypeTypeDeclaration(
-			Tree.BaseTypeExpression that, SupertypeQualifier sq) {
-		TypeDeclaration type;
+	static TypeDeclaration getSupertypeTypeDeclaration(Tree.BaseTypeExpression that, 
+			SupertypeQualifier sq) {
 		Declaration dec = getSupertypeDeclaration(that, sq);
 		if (dec instanceof TypeDeclaration) {
-			type = (TypeDeclaration) dec;
+			return (TypeDeclaration) dec;
 		}
 		else {
-			type = null;
+			return null;
 		}
-		return type;
 	}
         
     @Override public void visit(Tree.ExtendedTypeExpression that) {
@@ -2949,8 +2990,7 @@ public class ExpressionVisitor extends Visitor {
             if (c.isAbstraction()) { 
                 //if the constructor is overloaded
                 //resolve the right overloaded version
-                Declaration result = dec.getContainer()
-                        .getMemberOrParameter(that.getUnit(), dec.getName(), that.getSignature());
+                Declaration result = findMatchingOverloadedClass(c, that.getSignature());
                 if (result!=null && result!=dec) {
                     //patch the reference, which was already
                     //initialized to the abstraction

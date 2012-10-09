@@ -511,4 +511,7 @@ class Generics() {
     
     void withParamOfMethod<T>(T t) { Void x = t; } 
     class WithParamOfClass<T>(T t) { Void x = t; } 
+
+    void unsatisfiable1<T>() @error given T satisfies Nothing&String {}
+    void unsatisfiable2<T>() @error given T satisfies Nothing&Container {}
 }

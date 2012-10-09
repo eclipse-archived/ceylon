@@ -15,6 +15,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
@@ -69,10 +70,9 @@ public class ModuleManager {
 
             //build default module (module in which packages belong to when not explicitly under a module
             final List<String> defaultModuleName = Collections.singletonList(Module.DEFAULT_MODULE_NAME);
-            final Module defaultModule = createModule(defaultModuleName);
+            final Module defaultModule = createModule(defaultModuleName, "unversioned");
             defaultModule.setDefault(true);
             defaultModule.setAvailable(true);
-            defaultModule.setVersion("unversioned");
             bindPackageToModule(emptyPackage, defaultModule);
             modules.getListOfModules().add(defaultModule);
             modules.setDefaultModule(defaultModule);
@@ -80,7 +80,7 @@ public class ModuleManager {
             //create language module and add it as a dependency of defaultModule
             //since packages outside a module cannot declare dependencies
             final List<String> languageName = Arrays.asList("ceylon", "language");
-            Module languageModule = createModule(languageName);
+            Module languageModule = createModule(languageName, TypeChecker.LANGUAGE_MODULE_VERSION);
             languageModule.setLanguageModule(languageModule);
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
@@ -94,9 +94,10 @@ public class ModuleManager {
         }
     }
 
-    protected Module createModule(List<String> moduleName) {
+    protected Module createModule(List<String> moduleName, String version) {
 		Module module = new Module();
 		module.setName(moduleName);
+		module.setVersion(version);
 		return module;
 	}
 
@@ -132,8 +133,7 @@ public class ModuleManager {
             }
         }
         if (module == null) {
-            module = createModule(moduleName);
-            module.setVersion(version);
+            module = createModule(moduleName, version);
             module.setLanguageModule(modules.getLanguageModule());
             moduleList.add(module);
         }
@@ -212,18 +212,41 @@ public class ModuleManager {
         moduleDepDefinition.add(definition);
     }
 
-    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
+    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, String error) {
+        if (!attachErrorToDependencyDeclaration(moduleImport, error)) {
+            //This probably can happen if the missing dependency is found deep in the dependency structure (ie the binary version of a module)
+            // in theory the first item in the dependency tree is the compiled module, and the second one is the import we have to add
+            // the error to
+            if(dependencyTree.size() >= 2){
+                Module rootModule = dependencyTree.get(0);
+                Module originalImportedModule = dependencyTree.get(1);
+                // find the original import
+                for(ModuleImport imp : rootModule.getImports()){
+                    if(imp.getModule() == originalImportedModule){
+                        // found it, try to attach the error
+                        if(attachErrorToDependencyDeclaration(imp, error)){
+                            // we're done
+                            return;
+                        }else{
+                            // failed
+                            break;
+                        }
+                    }
+                }
+            }
+            System.err.println("This might be a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
+        }
+    }
+
+    private boolean attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
         Set<Node> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError ) {
                 definition.addError(error);
             }
+            return true;
         }
-        else {
-            //This probably can happen if the missing dependency is found deep in the dependency structure (ie the binary version of a module)
-            //TODO find the nearest src module that triggered the issue
-            System.err.println("This might be a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
-        }
+        return false;
     }
 
     //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
@@ -259,6 +282,10 @@ public class ModuleManager {
             errors.clear();
         }
         moduleToNode.put(module,unit);
+    }
+    
+    public Set<Module> getCompiledModules(){
+        return moduleToNode.keySet();
     }
 
     public ModuleImport findImport(Module owner, Module dependency) {
@@ -331,7 +358,7 @@ public class ModuleManager {
                 StringBuilder error = new StringBuilder("unable to read source artifact for ");
                 error.append(artifactContext.toString());
                 error.append( "\ndue to connection error: ").append(e.getMessage());
-                attachErrorToDependencyDeclaration(moduleImport, error.toString());
+                attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString());
             } finally {
                 if (virtualArtifact != null) {
                     virtualArtifact.close();
