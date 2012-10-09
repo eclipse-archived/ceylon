@@ -21,6 +21,6 @@ shared interface Some<out Element>
 
     doc "Returns a `List` containing all but the first 
          element of this collection."
-    shared actual formal List<Element> rest;
+    shared actual formal Element[] rest;
 
 }
