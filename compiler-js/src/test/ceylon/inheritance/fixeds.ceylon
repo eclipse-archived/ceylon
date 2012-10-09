@@ -9,25 +9,25 @@ class TestSome(Integer i, Integer... items) satisfies Some<Integer> {
 
   value sap = SequenceBuilder<Integer>();
   sap.append(i);
-    sap.appendAll(items...);
+  sap.appendAll(items...);
   value elems = sap.sequence;
 
   shared actual Iterator<Integer> iterator { return elems.iterator; }
   shared actual Integer size = elems.size;
 
-  shared actual FixedSized<Integer> rest {
+  shared actual Integer[] rest {
     if (nonempty elems) {
       value sub = elems.rest;
       if (nonempty sub) {
         value s2 = sub.rest;
         if (nonempty s2) {
-          return TestSome(sub.first, s2...);
+          return sub;
         } else {
-          return TestSome(sub.first);
+          return Singleton(sub.first);
         }
       }
     }
-    return TestNone();
+    return {};
   }
   shared actual TestSome clone { return this; }
   shared actual Integer last { return elems.last else -1; }
@@ -62,8 +62,7 @@ void testFixedSized() {
   } else {
     fail("s2.rest 2");
   }
-  check(is TestNone s2, "Some.rest -> empty");
-  check(!nonempty s2, "!nonempty TestNone");
+  check(!nonempty s2, "Some.rest -> empty");
   check(s2.size == 0, "None.size");
   check(!exists s2.first, "None.first");
 }
