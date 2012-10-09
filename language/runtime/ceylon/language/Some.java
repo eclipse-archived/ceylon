@@ -24,8 +24,4 @@ public interface Some<Element> extends FixedSized<Element> {
     @Override
     public boolean getEmpty();
     
-    @Annotations({@Annotation("formal"), @Annotation("actual")})
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public List<? extends Element> getRest();
-
 }

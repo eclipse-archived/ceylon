@@ -27,4 +27,5 @@ public final class Some$impl<Element> {
     static <Element> boolean _getEmpty(Some<Element> $this){
         return false;
     }
+
 }
