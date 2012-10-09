@@ -1069,10 +1069,32 @@ public class Naming implements LocalId {
         return new SyntheticName(aliasName(name)).makeIdent();
     }
     
+    interface CName {
+        
+        /**
+         * Returns the name
+         */
+        public String getName();
+        
+        public String getUnsubstitutedName();
+        
+        /**
+         * This name as a Name
+         */
+        public Name asName();
+        
+        /**
+         * A new JCIdent for this name.
+         */
+        public JCIdent makeIdent();
+        
+        public JCExpression makeIdentWithThis();
+    }
+    
     /**
      * Encapsulates a temporary name or alias 
      */
-    class SyntheticName {
+    class SyntheticName implements CName {
         
         private final Name name;
         
@@ -1115,26 +1137,30 @@ public class Naming implements LocalId {
         /**
          * Returns the name
          */
-        String getName() {
+        public String getName() {
             return name.toString();
+        }
+        
+        public String getUnsubstitutedName() {
+            return getName();
         }
         
         /**
          * This name as a Name
          */
-        Name asName() {
+        public Name asName() {
             return name;
         }
         
         /**
          * A new JCIdent for this name.
          */
-        JCIdent makeIdent() {
-            return make().Ident(name);
+        public JCIdent makeIdent() {
+            return make().Ident(asName());
         }
         
-        JCExpression makeIdentWithThis() {
-            return makeSelect("this", name.toString());
+        public JCExpression makeIdentWithThis() {
+            return makeSelect("this", getName());
         }
         
         /**
@@ -1142,12 +1168,89 @@ public class Naming implements LocalId {
          * this SyntheticName's name.
          */
         SyntheticName suffixedBy(String suffix) {
-            return new SyntheticName(names.fromString(name.toString() + suffix));
+            return new SyntheticName(names.fromString(getName() + suffix));
         }
         
         SyntheticName alias() {
-            return Naming.this.alias(name.toString());
+            return Naming.this.alias(getName());
         }
+    }
+    
+    class SubstitutedName implements CName {
+        
+        private final String name;
+        
+        private SubstitutedName(String name) {
+            this.name = name;
+        }
+        
+        /**
+         * Returns the name
+         */
+        public String toString() {
+            return getName();
+        }
+        
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((name.toString() == null) ? 0 : name.toString().hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            SyntheticName other = (SyntheticName) obj;
+            if (name.toString() == null) {
+                if (other.name.toString() != null)
+                    return false;
+            } else if (!name.toString().equals(other.name.toString()))
+                return false;
+            return true;
+        }
+
+        /**
+         * Returns the name
+         */
+        public String getName() {
+            return substitute(name);
+        }
+        
+        public String getUnsubstitutedName() {
+            return name;
+        }
+        
+        /**
+         * This name as a Name
+         */
+        public Name asName() {
+            return names.fromString(getName());
+        }
+        
+        /**
+         * A new JCIdent for this name.
+         */
+        public JCIdent makeIdent() {
+            return make().Ident(asName());
+        }
+        
+        public JCExpression makeIdentWithThis() {
+            return makeSelect("this", getName());
+        }
+        
+        public SyntheticName capture() {
+            return new SyntheticName(asName());
+        }
+    }
+    public SubstitutedName substituted(String name) {
+        return new SubstitutedName(name);
     }
     
     /*
@@ -1191,6 +1294,38 @@ public class Naming implements LocalId {
         }
     }
     
+    class Substitution {
+        public final String original;
+        public final CName substituted;
+        public final String previous;
+        private boolean restored = false;
+        
+        public Substitution(String original, CName substituted) {
+            this.original = original;
+            this.substituted = substituted;
+            this.previous = addVariableSubst(original, substituted.getName());
+        }
+        
+        public String toString() {
+            if (restored) {
+                return "Spent substitution";
+            }
+            return "Substituting " + substituted + " for " + original + " (masking " + previous + ")";
+        }
+        
+        public void remove() {
+            if (restored) {
+                throw new IllegalStateException();
+            }
+            removeVariableSubst(original, previous);
+            restored = true;
+        }
+    }
+    Substitution substituteAlias(String original) {
+        return new Substitution(original, alias(substitute(original)));
+    }
+    
+    
     SyntheticName synthetic(String name) {
         return new SyntheticName(names.fromString(name));
     }
@@ -1223,5 +1358,6 @@ public class Naming implements LocalId {
         }
         return String.valueOf(id);
     }
+    
     
 }
