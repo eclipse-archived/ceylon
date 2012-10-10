@@ -1,4 +1,4 @@
-interface ClassBodies {
+class ClassBodies() {
     
     class GoodWithCircular() {
         String name = "gavin";

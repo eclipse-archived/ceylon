@@ -425,6 +425,9 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
+        if (c.isInterfaceMember()) {
+        	that.addError("object declaration may not occur directly in interface body");
+        }
     }
 
     @Override

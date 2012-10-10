@@ -53,8 +53,10 @@ interface Declarations {
     @error value { return Y(); }
     @error function () { return Y(); }
     
-    object x {
-        String hello = "Hello";
+    class XXX() {
+        object x {
+            String hello = "Hello";
+        }
     }
     
     void a(String s = "a string") {}
@@ -110,10 +112,12 @@ interface Declarations {
     @error shared assign getterForSharedSetter {
     }
     
-    class Ni–o() {
-        Ni–o ni–o = Ni–o();
+    class Niï¿½o() {
+        Niï¿½o niï¿½o = Niï¿½o();
     }
     
     void _bar() { _bar(); }
+    
+    @error object obj {}
     
 }

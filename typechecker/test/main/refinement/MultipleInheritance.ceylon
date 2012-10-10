@@ -1,4 +1,4 @@
-interface MultipleInheritance {
+class MultipleInheritance() {
 
 interface Top {
 	shared formal Object id;
