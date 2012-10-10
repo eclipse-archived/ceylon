@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.antlr.runtime.CommonToken;
+
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -45,6 +47,7 @@ public class GenerateJsVisitor extends Visitor
     private final RetainedVars retainedVars = new RetainedVars();
     private final Set<Module> importedModules = new HashSet<Module>();
     final ConditionGenerator conds;
+    private final List<CommonToken> tokens;
 
     private final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -117,11 +120,12 @@ public class GenerateJsVisitor extends Visitor
         that.addUnexpectedError(that.getMessage(e, this));
     }
 
-    public GenerateJsVisitor(Writer out, boolean prototypeStyle, JsIdentifierNames names) {
+    public GenerateJsVisitor(Writer out, boolean prototypeStyle, JsIdentifierNames names, List<CommonToken> tokens) {
         this.out = out;
         this.prototypeStyle=prototypeStyle;
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
+        this.tokens = tokens;
     }
 
     /** Tells the receiver whether to add comments to certain declarations. Default is true. */
@@ -3069,11 +3073,14 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         endLine();
-        StringBuilder sb = new StringBuilder(custom);//.append(": ");
-        conds.specialConditionsAndBlock(that.getConditionList(), null, "if (!");
-        //sb.append(cond.getMainToken().getInputStream().substring(cond.getMainToken().getChannel(), cond.getMainEndToken().getChannel()));
-        sb.append(" at ").append(that.getUnit().getFilename()).append(" (").append(
+        StringBuilder sb = new StringBuilder(custom).append(": '");
+        for (int i = that.getConditionList().getToken().getTokenIndex()+1;
+                i < that.getConditionList().getEndToken().getTokenIndex(); i++) {
+            sb.append(tokens.get(i).getText());
+        }
+        sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
                 that.getConditionList().getLocation()).append(")");
+        conds.specialConditionsAndBlock(that.getConditionList(), null, "if (!");
         out(") { throw ", clAlias, ".Exception('", sb.toString(), "'); }");
         endLine();
     }
