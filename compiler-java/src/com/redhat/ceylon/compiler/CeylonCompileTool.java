@@ -13,7 +13,6 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
-import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
 
@@ -82,9 +81,10 @@ public class CeylonCompileTool implements Tool{
     public CeylonCompileTool() {
     }
     
-    @OptionArgument(longName="src", argumentName="dir")
-    @Description("Specifies a source directory " +
-    		"(default: `./source`).")
+    @OptionArgument(longName="src", argumentName="dirs")
+    @Description("Path to source files (default: `./source`). " +
+            "Can be specified multiple times; you can also specify several " +
+            "paths separated by your operating system's `PATH` separator")
     public void setSource(List<File> source) {
         this.source = source;
     }
