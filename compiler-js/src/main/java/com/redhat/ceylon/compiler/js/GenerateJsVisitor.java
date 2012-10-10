@@ -3075,8 +3075,6 @@ public class GenerateJsVisitor extends Visitor
             BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
             if ("doc".equals(bme.getDeclaration().getName())) {
                 custom = ann.getPositionalArgumentList().getPositionalArguments().get(0).getExpression().getTerm().getText();
-                //escape
-                custom = escapeStringLiteral(custom);
                 //unquote
                 custom = custom.substring(1, custom.length() - 1);
             }
@@ -3090,7 +3088,9 @@ public class GenerateJsVisitor extends Visitor
         sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
                 that.getConditionList().getLocation()).append(")");
         conds.specialConditionsAndBlock(that.getConditionList(), null, "if (!");
-        out(") { throw ", clAlias, ".Exception('", sb.toString(), "'); }");
+        //escape
+        custom = escapeStringLiteral(sb.toString());
+        out(") { throw ", clAlias, ".Exception('", custom, "'); }");
         endLine();
     }
 
