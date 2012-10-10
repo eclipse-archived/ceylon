@@ -377,33 +377,12 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         public List<JCStatement> getResult() {
-            List<JCStatement> res;
-           if (conditions.size() == 1) {
-                final Cond transformedCond = transformCondition(conditions.get(0), thenPart);
-                JCExpression test = transformedCond.makeTest();
-                Substitution subs = getSubstitution(transformedCond);
-                JCBlock thenBlock = makeThenBlock(transformedCond, thenPart, subs);
-                if (subs != null) {
-                    subs.remove();
-                }
-                JCStatement cond1 = make().WhileLoop(
-                        makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), 
-                                test), 
-                                thenBlock);
-                if (transformedCond.makeTestVarDecl(0, false) != null) {
-                    res = List.<JCStatement> of(transformedCond.makeTestVarDecl(0, false), cond1);
-                } else {
-                    res = List.<JCStatement> of(cond1);
-                }
-            } else {
-                List<JCStatement> stmts = transformList(conditions);
-                ListBuffer<JCStatement> result = ListBuffer.lb();
-                result.appendList(varDecls);
-                result.appendList(stmts);
-                res =  List.<JCStatement>of(make().WhileLoop(makeBoolean(true), 
-                        make().Block(0, result.toList())));
-            }
-            return res;
+            List<JCStatement> stmts = transformList(conditions);
+            ListBuffer<JCStatement> result = ListBuffer.lb();
+            result.appendList(varDecls);
+            result.appendList(stmts);
+            return List.<JCStatement>of(make().WhileLoop(makeBoolean(true), 
+                    make().Block(0, result.toList())));
         }
     }
     
