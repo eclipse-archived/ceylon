@@ -143,9 +143,10 @@ public class CeylonCompileJsTool implements Tool {
     }
 
     @OptionArgument(longName="src", argumentName="dirs")
-    @Description("Path to source files (default: `./source`). " +
+    @Description("Path to source files. " +
     		"Can be specified multiple times; you can also specify several " +
-    		"paths separated by your operating system's `PATH` separator")
+    		"paths separated by your operating system's `PATH` separator." +
+            " (default: `./source`)")
     public void setSrc(List<String> src) {
         this.src = src;
     }
