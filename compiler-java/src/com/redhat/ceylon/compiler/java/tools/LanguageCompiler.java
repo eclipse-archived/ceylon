@@ -32,7 +32,6 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -61,7 +60,6 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-import com.redhat.ceylon.compiler.typechecker.io.impl.Helper;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -76,6 +74,7 @@ import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
+import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.jvm.ClassWriter;
 import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.main.OptionName;
@@ -87,7 +86,6 @@ import com.sun.tools.javac.tree.TreeInfo;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.Convert;
-import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
@@ -319,6 +317,8 @@ public class LanguageCompiler extends JavaCompiler {
                     return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName, phasedUnit);
                 }
             }
+        } catch (CompilerErrorException e) {
+            log.error("ceylon", e.getMessage());
         } catch (Exception e) {
             log.error("ceylon", e);
         }
@@ -471,7 +471,11 @@ public class LanguageCompiler extends JavaCompiler {
         if (srcDirFile != null) {
             return srcDirFile;
         }
-        throw new RuntimeException(name+ " is not in the current source path: "+((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH));
+        
+        String srcPath = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH).toString();
+        String msg = sourceFile.getPath() + " is not in the current source path: " + srcPath + "\n"
+                + "Either move the sources into that path or add a --src argument to specify their actual location.";
+        throw new CompilerErrorException(msg);
     }
 
     private String getPackage(JavaFileObject file) throws IOException{
