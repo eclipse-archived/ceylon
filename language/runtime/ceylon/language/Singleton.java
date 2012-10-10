@@ -140,15 +140,16 @@ public class Singleton<Element>
 	@Override
 	public Iterator<Element> getIterator() {
 		class SingletonIterator implements Iterator<Element> {
-		    java.lang.Object current;
-		    SingletonIterator() {
-		        current = element;
-		    }
+		    boolean done;
 			@Override
 			public java.lang.Object next() {
-			    java.lang.Object result = current;
-			    current = exhausted_.getExhausted$();
-				return result;
+			    if (done) {
+			        return exhausted_.getExhausted$();
+			    }
+			    else {
+			    	done = true;
+			    	return element;
+			    }
 			}
 			@Override
 			public java.lang.String toString() {

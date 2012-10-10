@@ -1,5 +1,5 @@
 doc "A sequence with exactly one element."
-shared class Singleton<Element>(Element element)
+shared class Singleton<out Element>(Element element)
         extends Object()
         satisfies Sequence<Element>
         given Element satisfies Object {
@@ -42,11 +42,15 @@ shared class Singleton<Element>(Element element)
     shared actual default Iterator<Element> iterator {
         class SingletonIterator()
                 satisfies Iterator<Element> {
-            variable Element|Finished current := first;
+            variable Boolean done := false;
             shared actual Element|Finished next() {
-                value result = current;
-                current := exhausted;
-                return result;
+                if (done) {
+                    return exhausted;
+                }
+                else {
+                    done:=true;
+                    return element;
+                }
             }
             shared actual String string {
                 return "SingletonIterator";
