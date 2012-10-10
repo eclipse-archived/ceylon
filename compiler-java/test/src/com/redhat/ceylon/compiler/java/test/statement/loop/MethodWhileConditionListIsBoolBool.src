@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileConditionListIsBoolBool {
+    
+    MethodWhileConditionListIsBoolBool() {
+    }
+    
+    private final boolean m(final .java.lang.Object x, final long z) {
+        while (true) {
+            .java.lang.Object $x$0;
+            if (($x$0 = x) instanceof .ceylon.language.Integer) {
+                final long $x$1 = ((.ceylon.language.Integer)$x$0).longValue();
+                if ($x$1 > 0L) {
+                    if (z < 10L) {
+                        return z == 1L;
+                    } else break;
+                } else break;
+            } else break;
+        }
+        return false;
+    }
+    
+    private final boolean synthetic(final .java.lang.Object x, final long z) {
+        while (true) {
+            .java.lang.Object $y$2;
+            if (($y$2 = x) instanceof .ceylon.language.Integer) {
+                final long $y$3 = ((.ceylon.language.Integer)$y$2).longValue();
+                if ($y$3 > 0L) {
+                    if (z < 10L) {
+                        return z == 1L;
+                    } else break;
+                } else break;
+            } else break;
+        }
+        return false;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListIsBoolBool();
+    }
+}

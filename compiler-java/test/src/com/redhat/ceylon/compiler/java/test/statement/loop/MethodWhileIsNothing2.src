@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileIsNothing {
+    
+    MethodWhileIsNothing() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        while (true) {
+            if (x == null) {
+            } else break;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNothing();
+    }
+}

@@ -259,6 +259,138 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("loop/MethodWhileConditionList");
     }
     
+    @Test
+    public void testConMethodWhileExists(){
+        compareWithJavaSource("loop/MethodWhileExists");
+    }
+    
+    @Test
+    public void testConMethodWhileExistsSequence(){
+        compareWithJavaSource("loop/MethodWhileExistsSequence");
+    }
+    
+    @Test
+    public void testConMethodWhileExistsWithMethod(){
+        compareWithJavaSource("loop/MethodWhileExistsWithMethod");
+    }
+    
+    @Test
+    public void testConMethodWhileExists2dArray(){
+        compareWithJavaSource("loop/MethodWhileExists2dArray");
+    }
+
+    @Test
+    public void testConMethodWhileIsFoo(){
+        compile("loop/FooBar.ceylon");
+        compareWithJavaSource("loop/MethodWhileIsFoo");
+    }
+    
+    @Test
+    public void testConMethodWhileIsNotNothing(){
+        compareWithJavaSource("loop/MethodWhileIsNotNothing");
+    }
+    
+    @Test
+    public void testConMethodWhileIsNotObject(){
+        compareWithJavaSource("loop/MethodWhileIsNotObject");
+    }
+    
+    @Test
+    public void testConMethodWhileIsNullUnion(){
+        compareWithJavaSource("loop/MethodWhileIsNullUnion");
+    }
+    
+    @Test
+    public void testConMethodWhileIsWithIntersection(){
+        compile("loop/FooBar.ceylon");
+        compareWithJavaSource("loop/MethodWhileIsWithIntersection");
+    }
+    
+    @Test
+    public void testConMethodWhileIsWithMethod(){
+        compile("loop/FooBar.ceylon");
+        compareWithJavaSource("loop/MethodWhileIsWithMethod");
+    }
+    
+
+    @Test
+    public void testConMethodWhileIsWithUnion(){
+        compile("loop/FooBar.ceylon");
+        compareWithJavaSource("loop/MethodWhileIsWithUnion");
+    }
+    
+    @Test
+    public void testConMethodWhileIsNothing2(){
+        compareWithJavaSource("loop/MethodWhileIsNothing2");
+    }
+    
+    @Test
+    public void testConMethodWhileIsNothing(){
+        compareWithJavaSource("loop/MethodWhileIsNothing");
+    }
+
+    @Test
+    @Ignore("M5: requires reified generics")
+    public void testConMethodWhileIsGeneric(){
+        compareWithJavaSource("loop/MethodWhileIsGeneric");
+    }
+
+    @Test
+    @Ignore("M5: requires support from spec for satisfies conditions (reified generics)")
+    public void testConMethodWhileSatisfies(){
+        compareWithJavaSource("loop/MethodWhileSatisfies");
+    }
+
+    @Test
+    @Ignore("M5: requires support from spec for satisfies conditions (reified generics)")
+    public void testConMethodWhileSatisfiesMultiple(){
+        compareWithJavaSource("loop/MethodWhileSatisfiesMultiple");
+    }
+
+    @Test
+    public void testConMethodWhileNonEmptySequence(){
+        compareWithJavaSource("loop/MethodWhileNonEmptySequence");
+    }
+    
+    @Test
+    public void testConMethodWhileNonEmptyString(){
+        compareWithJavaSource("loop/MethodWhileNonEmptyString");
+    }
+    
+    @Test
+    public void testConMethodWhileConditionListBoolBool(){
+        compareWithJavaSource("loop/MethodWhileConditionListBoolBool");
+    }
+    @Test
+    public void testConMethodWhileConditionListIsIs(){
+        compareWithJavaSource("loop/MethodWhileConditionListIsIs");
+    }
+    @Test
+    public void testConMethodWhileConditionListBoolBoolIs(){
+        compareWithJavaSource("loop/MethodWhileConditionListBoolBoolIs");
+    }
+    @Test
+    public void testConMethodWhileConditionListBoolIsBool(){
+        compareWithJavaSource("loop/MethodWhileConditionListBoolIsBool");
+    }
+    @Test
+    public void testConMethodWhileConditionListExistsIsBool(){
+        compareWithJavaSource("loop/MethodWhileConditionListExistsIsBool");
+    }
+    @Test
+    public void testConMethodWhileConditionListIsBool(){
+        compareWithJavaSource("loop/MethodWhileConditionListIsBool");
+    }
+    @Test
+    public void testConMethodWhileConditionListIsBoolBool(){
+        compareWithJavaSource("loop/MethodWhileConditionListIsBoolBool");
+    }
+    @Test
+    public void testConMethodWhileConditionListNonemptyIsBool(){
+        compareWithJavaSource("loop/MethodWhileConditionListNonemptyIsBool");
+    }
+
+    
     //
     // Locals (value / function)
     

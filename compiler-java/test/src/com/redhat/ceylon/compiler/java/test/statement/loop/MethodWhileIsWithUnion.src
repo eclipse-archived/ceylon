@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileIsUnion {
+    
+    MethodWhileIsUnion() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        while (true) {
+            if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)x).common();
+            } else break;
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        while (true) {
+            .java.lang.Object $x$1;
+            if (($x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || $x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
+                final .java.lang.Object $x$2 = $x$1;
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)$x$2).common();
+            } else break;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsUnion();
+    }
+}

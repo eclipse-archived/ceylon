@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileIsIntersection {
+    
+    MethodWhileIsIntersection() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        while (true) {
+            if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.BarInterface) {
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Foo)x).common();
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Foo)x).foo();
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.BarInterface)x).bar();
+            } else break;
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        while (true) {
+            .java.lang.Object $x$1;
+            if (($x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo && $x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.BarInterface) {
+                final .java.lang.Object $x$2 = $x$1;
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Foo)$x$2).common();
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Foo)$x$2).foo();
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.BarInterface)$x$2).bar();
+            } else break;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsIntersection();
+    }
+}

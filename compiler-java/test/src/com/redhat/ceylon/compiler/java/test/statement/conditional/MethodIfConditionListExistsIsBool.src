@@ -7,22 +7,26 @@ class MethodIfConditionListExistsIsBool {
     
     private final boolean m(final .ceylon.language.List<? extends .java.lang.Object> x) {
         boolean $ceylontmpif0 = false;
-        .java.lang.Object $y$1 = null;
-        final long y;
-        if (((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L)) != null) {
-            if (($y$1 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
-                y = ((.ceylon.language.Integer)$y$1).longValue();
-                if (y > 0L) {
+        .java.lang.Object $y$3;
+        final long $y$4;
+        .java.lang.Object $z$1;
+        final .java.lang.Object $z$2;
+        if (($z$1 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) != null) {
+            $z$2 = $z$1;
+            if (($y$3 = $z$2) instanceof .ceylon.language.Integer) {
+                $y$4 = ((.ceylon.language.Integer)$y$3).longValue();
+                if ($y$4 > 0L) {
                     $ceylontmpif0 = true;
                 }
             } else {
-                y = 0L;
+                $y$4 = 0L;
             }
         } else {
-            y = 0L;
+            $y$4 = 0L;
+            $z$2 = 0L;
         }
         if ($ceylontmpif0) {
-            return y == 1L;
+            return $y$4 == 1L;
         } else {
             return false;
         }

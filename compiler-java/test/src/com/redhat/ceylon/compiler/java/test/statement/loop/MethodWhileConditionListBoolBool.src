@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileConditionListBoolBool {
+    
+    MethodWhileConditionListBoolBool() {
+    }
+    
+    private final boolean m(final long x) {
+        while (true) {
+            if (x > 0L) {
+                if (x < 10L) {
+                    return x == 1L;
+                } else break;
+            } else break;
+        }
+        return false;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileConditionListBoolBool();
+    }
+}

@@ -7,59 +7,43 @@ class MethodWhile {
     
     public final void m() {
         boolean cont = true;
-        while ((
-            let
-            {
-                boolean $ceylontmp0 = cont;
-            }
-            returning $ceylontmp0;
-        )) {
-            cont = false;
+        while (true) {
+            if (cont) {
+                cont = false;
+            } else break;
         }
     }
     
     public final void whileExists() {
         .ceylon.language.Boolean cont = .ceylon.language.Boolean.instance(true);
-        .ceylon.language.Boolean $c$1;
-        while ((
-            let
-            {
-                boolean $ceylontmp2 = ($c$1 = cont) != null;
-            }
-            returning $ceylontmp2;
-        )) {
-            final boolean $c$3 = $c$1.booleanValue();
-            cont = null;
+        while (true) {
+            .ceylon.language.Boolean $c$0;
+            if (($c$0 = cont) != null) {
+                final boolean $c$1 = $c$0.booleanValue();
+                cont = null;
+            } else break;
         }
     }
     
     public final void whileNonEmpty() {
         .ceylon.language.List<? extends .ceylon.language.Integer> seq = new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
-        .ceylon.language.List<? extends .ceylon.language.Integer> $s$4;
-        while ((
-            let
-            {
-                boolean $ceylontmp5 = ($s$4 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty();
-            }
-            returning $ceylontmp5;
-        )) {
-            final .ceylon.language.List<? extends .ceylon.language.Integer> $s$6 = (.ceylon.language.List<? extends .ceylon.language.Integer>)$s$4;
-            seq = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+        while (true) {
+            .ceylon.language.List<? extends .ceylon.language.Integer> $s$2;
+            if (($s$2 = seq) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$2).getEmpty()) {
+                final .ceylon.language.List<? extends .ceylon.language.Integer> $s$3 = (.ceylon.language.List<? extends .ceylon.language.Integer>)$s$2;
+                seq = (.ceylon.language.List).ceylon.language.empty_.getEmpty$();
+            } else break;
         }
     }
     
     public final void whileIs() {
         .java.lang.Object int = .ceylon.language.Integer.instance(1L);
-        .java.lang.Object $i$7;
-        while ((
-            let
-            {
-                boolean $ceylontmp8 = ($i$7 = int) instanceof .ceylon.language.Integer;
-            }
-            returning $ceylontmp8;
-        )) {
-            final long $i$9 = ((.ceylon.language.Integer)$i$7).longValue();
-            int = .ceylon.language.String.instance("");
+        while (true) {
+            .java.lang.Object $i$4;
+            if (($i$4 = int) instanceof .ceylon.language.Integer) {
+                final long $i$5 = ((.ceylon.language.Integer)$i$4).longValue();
+                int = .ceylon.language.String.instance("");
+            } else break;
         }
     }
     

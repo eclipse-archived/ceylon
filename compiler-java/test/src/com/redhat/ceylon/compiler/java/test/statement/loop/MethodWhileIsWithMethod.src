@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileIsWithMethod {
+    
+    MethodWhileIsWithMethod() {
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.statement.loop.Foo give() {
+        return new .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub();
+    }
+    
+    public final void m() {
+        while (true) {
+            .java.lang.Object $y$0;
+            if (($y$0 = give()) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub) {
+                final .com.redhat.ceylon.compiler.java.test.statement.loop.FooSub $y$1 = (.com.redhat.ceylon.compiler.java.test.statement.loop.FooSub)$y$0;
+                $y$1.foo();
+            } else break;
+        }
+        while (true) {
+            .java.lang.Object $y$2;
+            if (($y$2 = give()) == null) {
+                final .java.lang.Object $y$3 = $y$2;
+            } else break;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsWithMethod();
+    }
+}

@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileIsNothing {
+    
+    MethodWhileIsNothing() {
+    }
+    
+    private final long owt(final .ceylon.language.Integer n) {
+        return 0L;
+    }
+    
+    private final long nowt(final .java.lang.Object n) {
+        return 0L;
+    }
+    
+    private final long m1(final .ceylon.language.Integer x) {
+        while (true) {
+            .java.lang.Object $x$0;
+            if (($x$0 = x) instanceof .ceylon.language.Integer) {
+                final long $x$1 = ((.ceylon.language.Integer)$x$0).longValue();
+                return $x$1;
+            } else break;
+        }
+        return owt(x);
+    }
+    
+    private final long m2(final .ceylon.language.Integer x) {
+        while (true) {
+            .java.lang.Object $y$2;
+            if (($y$2 = x) instanceof .ceylon.language.Integer) {
+                final long $y$3 = ((.ceylon.language.Integer)$y$2).longValue();
+                return $y$3;
+            } else break;
+        }
+        return owt(x);
+    }
+    
+    private final long m3(final .ceylon.language.Integer x) {
+        while (true) {
+            if (x == null) {
+                return nowt(x);
+            } else break;
+        }
+        return owt(x);
+    }
+    
+    private final long m4(final .ceylon.language.Integer x) {
+        while (true) {
+            .java.lang.Object $y$5;
+            if (($y$5 = x) == null) {
+                final .java.lang.Object $y$6 = $y$5;
+                return nowt($y$6);
+            } else break;
+        }
+        return owt(x);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNothing();
+    }
+}

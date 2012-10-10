@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileNonEmptySequence {
+    
+    MethodWhileNonEmptySequence() {
+    }
+    
+    public final long m(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+        while (true) {
+            .ceylon.language.List<? extends .ceylon.language.Integer> $x$0;
+            if (($x$0 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$0).getEmpty()) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $x$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$x$0;
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = $x$1;
+                return $x$1.getFirst().longValue();
+            } else break;
+        }
+        return 0L;
+    }
+    
+    public final long mvar(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+        while (true) {
+            .ceylon.language.List<? extends .ceylon.language.Integer> $s$2;
+            if (($s$2 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$2).getEmpty()) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> $s$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$2;
+                return $s$3.getFirst().longValue();
+            } else break;
+        }
+        return 0L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileNonEmptySequence();
+    }
+}
