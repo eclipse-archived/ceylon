@@ -6,6 +6,31 @@ function String$(x){}//IGNORE
 function ArraySequence(x){}//IGNORE
 var exports,$empty;//IGNORE
 
+function languageClass() {
+    var lang = new languageClass.$$;
+    IdentifiableObject(lang);
+    return lang;
+}
+initTypeProto(languageClass, "ceylon.language.language", IdentifiableObject);
+var lang$proto=languageClass.$$.prototype;
+lang$proto.getVersion=function() {
+    return String$("0.4",3);
+}
+lang$proto.getMajorVersion=function() { return 0; }
+lang$proto.getMinorVersion=function() { return 4; }
+lang$proto.getReleaseVersion=function() { return 0; }
+lang$proto.getVersionName=function() { return String$("Ratatouille",11); }
+lang$proto.getMajorVersionBinary=function() { return 3; }
+lang$proto.getMinorVersionBinary=function() { return 0; }
+var languageString = String$("language", 7);
+lang$proto.getString = function() {
+    return languageString;
+}
+
+var language$ = languageClass();
+function getLanguage() { return language$; }
+exports.getLanguage=getLanguage;
+
 function processClass() {
     var proc = new processClass.$$;
     IdentifiableObject(proc);
