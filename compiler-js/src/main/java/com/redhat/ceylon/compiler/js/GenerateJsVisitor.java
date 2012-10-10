@@ -547,7 +547,7 @@ public class GenerateJsVisitor extends Visitor
                 if (declaredInCL(parentTypeDecl)) {
                     return;
                 }
-                parentSuffix = names.typeSuffix(parentTypeDecl);
+                parentSuffix = names.scopeSuffix(parentTypeDecl);
             }
 
             final List<Declaration> decs = new ArrayList<Declaration>();
@@ -594,7 +594,7 @@ public class GenerateJsVisitor extends Visitor
             if (((QualifiedType) type).getOuterType() instanceof SuperType) {
                 ClassOrInterface parentType = ((ClassOrInterface) scope).getExtendedTypeDeclaration();
                 if (parentType != null) {
-                    suffix = names.typeSuffix(parentType);
+                    suffix = names.scopeSuffix(parentType);
                 }
             }
         }
@@ -986,11 +986,7 @@ public class GenerateJsVisitor extends Visitor
         if (!prototypeStyle && d.isDefault()) {
             //Add another reference to this method, with the fully qualified name as a prefix
             outerSelf(d);
-            out(".");
-            for (String part : d.getContainer().getQualifiedNameString().split("\\.")) {
-                out(part, "$");
-            }
-            out(name, "=", name, ";");
+            out(".", name, names.scopeSuffix(d.getContainer()), "=", name, ";");
         }
     }
 
@@ -1299,17 +1295,23 @@ public class GenerateJsVisitor extends Visitor
             }
         }
 
-        if (that.getSupertypeQualifier() == null) {
-            qualify(that, decl);
-        } else {
-            out(qualifySupertype(decl));
+        qualify(that, decl);
+        String suffix = "";
+        boolean protoCall = false;
+        if (that.getSupertypeQualifier() != null) {
+            if (prototypeStyle) {
+                protoCall = true;
+            } else {
+                suffix = names.scopeSuffix(decl.getContainer());
+            }
         }
+            
         if (isNative(decl)) {
             out(decl.getName());
         } else if (accessDirectly(decl)) {
-            out(names.name(decl));
+            out(names.name(decl), suffix);
         } else {
-            out(names.getter(decl), prototypeStyle && that.getSupertypeQualifier() != null ? ".call(this)" : "()");
+            out(names.getter(decl), suffix, protoCall ? ".call(this)" : "()");
         }
     }
 
@@ -1463,7 +1465,7 @@ public class GenerateJsVisitor extends Visitor
              ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
              ClassOrInterface parentType = type.getExtendedTypeDeclaration();
              if (parentType != null) {
-                 postfix = names.typeSuffix(parentType);
+                 postfix = names.scopeSuffix(parentType);
              }
         }
         if (isNative(that.getDeclaration())) {
@@ -1870,22 +1872,6 @@ public class GenerateJsVisitor extends Visitor
             out(".");
         }
     }
-    /** Generates the path to the qualified declaration (useful for Super::member) */
-    private String qualifySupertype(Declaration d) {
-        //Get the declaring type
-        final ClassOrInterface parent = (ClassOrInterface)d.getContainer();
-        final StringBuilder sb = new StringBuilder("this.");
-        if (prototypeStyle) {
-            //In prototype style we can invoke the original method directly
-            sb.append("getT$all$()['").append(parent.getQualifiedNameString()).append("'].$$.prototype.");
-        } else {
-            //Otherwise we need to add the qualified prefix
-            for (String part : parent.getQualifiedNameString().split("\\.")) {
-                sb.append(part).append('$');
-            }
-        }
-        return sb.toString();
-    }
 
     private String qualifiedPath(Node that, Declaration d) {
         return qualifiedPath(that, d, false);
@@ -1896,6 +1882,15 @@ public class GenerateJsVisitor extends Visitor
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (prototypeStyle && !inProto) {
+            if (that instanceof BaseMemberOrTypeExpression) {
+                BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) that;
+                if (bmte.getSupertypeQualifier() != null) {
+                    // A supertype qualifier (Supertype::member). In prototype style
+                    // we access such members through their respective prototype:
+                    return String.format("this.getT$all$()['%s'].$$.prototype",
+                            d.getContainer().getQualifiedNameString());
+                }
+            }
             if (d.isClassOrInterfaceMember() &&
                     !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
                             !d.isCaptured())) {
@@ -2431,23 +2426,27 @@ public class GenerateJsVisitor extends Visitor
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
            String path;
-           boolean qsuper = false;
-           if (bme.getSupertypeQualifier() == null) {
-               path = qualifiedPath(bme, bme.getDeclaration());
-               if (path.length() > 0) {
-                   path += '.';
-               }
-           } else {
-               path = qualifySupertype(bme.getDeclaration());
-               qsuper = prototypeStyle;
+           path = qualifiedPath(bme, bme.getDeclaration());
+           if (path.length() > 0) {
+               path += '.';
            }
+           boolean qsuper = false;
+           String suffix = "";
+           if (bme.getSupertypeQualifier() != null) {
+               if (prototypeStyle) {
+                   qsuper = true;
+               } else {
+                   suffix = names.scopeSuffix(bme.getDeclaration().getContainer());
+               }
+           }
+
 
            boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
            String member = accessDirectly(bme.getDeclaration())
-                   ? names.name(bme.getDeclaration())
-                   : names.getter(bme.getDeclaration()) + (qsuper?".call(this)":"()");
+                   ? names.name(bme.getDeclaration()) + suffix
+                   : names.getter(bme.getDeclaration()) + suffix + (qsuper?".call(this)":"()");
            if (!simpleSetter) { out("("); }
-           out(path, names.setter(bme.getDeclaration()),
+           out(path, names.setter(bme.getDeclaration()), suffix,
                    qsuper ? ".call(this," : "(", path, member, ".",
                    functionName, "())");
            if (!simpleSetter) {
@@ -2480,27 +2479,30 @@ public class GenerateJsVisitor extends Visitor
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
            String path;
+           path = qualifiedPath(bme, bme.getDeclaration());
+           if (path.length() > 0) {
+               path += '.';
+           }
            boolean qsuper = false;
-           if (bme.getSupertypeQualifier() == null) {
-               path = qualifiedPath(bme, bme.getDeclaration());
-               if (path.length() > 0) {
-                   path += '.';
+           String suffix = "";
+           if (bme.getSupertypeQualifier() != null) {
+               if (prototypeStyle) {
+                   qsuper = true;
+               } else {
+                   suffix = names.scopeSuffix(bme.getDeclaration().getContainer());
                }
-           } else {
-               path=qualifySupertype(bme.getDeclaration());
-               qsuper = prototypeStyle;
            }
 
            String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
            out("(", oldValueVar, "=", path);
            if (accessDirectly(bme.getDeclaration())) {
-               out(names.name(bme.getDeclaration()));
+               out(names.name(bme.getDeclaration()), suffix);
            } else {
-               out(names.getter(bme.getDeclaration()));
+               out(names.getter(bme.getDeclaration()), suffix);
                //For qualified supertypes, call the prototype function with "this"
                out(qsuper ? ".call(this)" : "()");
            }
-           out(",", path, names.setter(bme.getDeclaration()),
+           out(",", path, names.setter(bme.getDeclaration()), suffix,
                    qsuper ? ".call(this, " : "(");
            out(oldValueVar, ".", functionName, "()");
            out("),", oldValueVar, ")");
