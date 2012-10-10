@@ -74,7 +74,6 @@ import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
-import com.sun.tools.javac.tree.JCTree.JCWhileLoop;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.DiagnosticSource;
 import com.sun.tools.javac.util.List;
@@ -426,7 +425,6 @@ public class StatementTransformer extends AbstractTransformer {
         private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
         private final SyntheticName messageSb = naming.temp("assert");
         private List<Cond> unassignedResultVars = List.<Cond>nil();
-        private final LinkedHashMap<SyntheticName, Cond> testVars = new LinkedHashMap<SyntheticName, Cond>();
         private final Map<Tree.Condition, Cond> conds;
         
         public AssertCondList(Tree.Assertion ass) {
@@ -513,10 +511,6 @@ public class StatementTransformer extends AbstractTransformer {
     
     private JCExpression cat(JCExpression strExpr, String literal) {
         return cat(strExpr, make().Literal(literal));
-    }
-    
-    private JCExpression cat(String literal, JCExpression strExpr) {
-        return cat(make().Literal(literal), strExpr);
     }
     
     private JCExpression newline() {
@@ -645,7 +639,7 @@ public class StatementTransformer extends AbstractTransformer {
     
     class IsCond extends SpecialFormCond<Tree.IsCondition> {
         private final boolean negate;
-        IsCond(Tree.IsCondition isdecl, Tree.Block thenPart) {
+        private IsCond(Tree.IsCondition isdecl) {
             super(isdecl, 
                     // use the type of the variable, which is more precise than the type we test for
                     isdecl.getVariable().getType().getTypeModel(), 
@@ -759,7 +753,7 @@ public class StatementTransformer extends AbstractTransformer {
     
     class ExistsCond extends SpecialFormCond<Tree.ExistsCondition> {
 
-        public ExistsCond(Tree.ExistsCondition exists, Tree.Block thenPart) {
+        private ExistsCond(Tree.ExistsCondition exists) {
             super(exists, 
                     simplifyType(exists.getVariable().getType().getTypeModel()),
                     exists.getVariable().getSpecifierExpression().getExpression(), 
@@ -800,7 +794,7 @@ public class StatementTransformer extends AbstractTransformer {
     
     class NonemptyCond extends SpecialFormCond<Tree.NonemptyCondition> {
 
-        public NonemptyCond(Tree.NonemptyCondition nonempty, Tree.Block thenPart) {
+        private NonemptyCond(Tree.NonemptyCondition nonempty) {
             super(nonempty, 
                     nonempty.getVariable().getType().getTypeModel(), 
                     nonempty.getVariable().getSpecifierExpression().getExpression(),
@@ -837,12 +831,10 @@ public class StatementTransformer extends AbstractTransformer {
     
     class BooleanCond implements Cond {
         private final BooleanCondition cond;
-        private final Block thenPart;
         
-        public BooleanCond(Tree.BooleanCondition booleanCondition, Tree.Block thenPart) {
+        private BooleanCond(Tree.BooleanCondition booleanCondition) {
             super();
             this.cond = booleanCondition;
-            this.thenPart = thenPart;
         }
 
         @Override
@@ -898,15 +890,15 @@ public class StatementTransformer extends AbstractTransformer {
     Cond transformCondition(Tree.Condition cond, Tree.Block thenPart) {
         if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition is = (Tree.IsCondition)cond;
-            return new IsCond(is, thenPart);
+            return new IsCond(is);
         } else if (cond instanceof Tree.ExistsCondition) {
             Tree.ExistsCondition exists = (Tree.ExistsCondition)cond;
-            return new ExistsCond(exists, thenPart);
+            return new ExistsCond(exists);
         } else if (cond instanceof Tree.NonemptyCondition) {
             Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition)cond;
-            return new NonemptyCond(nonempty, thenPart);
+            return new NonemptyCond(nonempty);
         } else if (cond instanceof Tree.BooleanCondition) {
-            return new BooleanCond((Tree.BooleanCondition)cond, thenPart);
+            return new BooleanCond((Tree.BooleanCondition)cond);
         }
         throw new RuntimeException();
     }
