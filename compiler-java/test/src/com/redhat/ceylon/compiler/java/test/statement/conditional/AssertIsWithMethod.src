@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsWithMethod {
+    
+    AssertIsWithMethod() {
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo give() {
+        return new .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub();
+    }
+    
+    public final void m() {
+        .java.lang.Object $y$0;
+        if (!(($y$0 = give()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is FooSub y = give()" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsWithMethod.ceylon:26:8-26:37")), null);
+        final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub y = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$y$0;
+        y.foo();
+        .java.lang.Object $y2$1;
+        if (!(($y2$1 = give()) == null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing y2 = give()" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsWithMethod.ceylon:28:8-28:39")), null);
+        final .java.lang.Object y2 = $y2$1;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsWithMethod();
+    }
+}

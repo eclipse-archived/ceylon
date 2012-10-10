@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsUnion {
+    
+    AssertIsUnion() {
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        .java.lang.Object $x$0;
+        if (!(($x$0 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Foo|Bar x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsWithUnion.ceylon:27:8-27:31")), null);
+        final .java.lang.Object x = $x$0;
+        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)x).common();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsUnion();
+    }
+}

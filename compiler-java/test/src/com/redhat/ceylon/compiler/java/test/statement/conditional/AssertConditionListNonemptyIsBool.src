@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertConditionList {
+    
+    AssertConditionList() {
+    }
+    
+    private final boolean m(final .ceylon.language.List<? extends .java.lang.Object> x) {
+        .java.lang.String $ceylontmpassert0 = null;
+        final long y;
+        .ceylon.language.List<? extends .java.lang.Object> $x$3 = null;
+        if (($x$3 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$3).getEmpty()) {
+            .java.lang.Object $y$4 = null;
+            if (($y$4 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+                y = ((.ceylon.language.Integer)$y$4).longValue();
+                if (y > 0L) {
+                } else {
+                    if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+                    $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator();
+                }
+            } else {
+                y = 0L;
+                if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+                $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator();
+                if (!(y > 0L)) $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator();
+            }
+        } else {
+            y = 0L;
+            if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+            $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "nonempty x" + .java.lang.System.lineSeparator();
+        }
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert0 + "\tat " + "AssertConditionListNonemptyIsBool.ceylon:23:8-23:55")), null);
+        return y == 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionList();
+    }
+}

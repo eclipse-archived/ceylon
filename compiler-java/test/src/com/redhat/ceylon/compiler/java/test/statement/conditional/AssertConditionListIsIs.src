@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertConditionListIsIs {
+    
+    AssertConditionListIsIs() {
+    }
+    
+    private final boolean mvar(final .java.lang.Object x, final .java.lang.Object y) {
+        .java.lang.String $ceylontmpassert0 = null;
+        final long y1;
+        final long x1;
+        .java.lang.Object $x1$3 = null;
+        if (($x1$3 = x) instanceof .ceylon.language.Integer) {
+            x1 = ((.ceylon.language.Integer)$x1$3).longValue();
+            .java.lang.Object $y1$4 = null;
+            if (($y1$4 = y) instanceof .ceylon.language.Integer) {
+                y1 = ((.ceylon.language.Integer)$y1$4).longValue();
+            } else {
+                y1 = 0L;
+                if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+                $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "is Integer y1=y" + .java.lang.System.lineSeparator();
+            }
+        } else {
+            y1 = 0L;
+            x1 = 0L;
+            if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+            $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "is Integer x1=x" + .java.lang.System.lineSeparator();
+        }
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert0 + "\tat " + "AssertConditionListIsIs.ceylon:23:8-23:49")), null);
+        return x1 == y1;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsIs();
+    }
+}

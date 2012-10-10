@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertExists {
+    
+    AssertExists() {
+    }
+    
+    public final long m2(final .ceylon.language.Integer x) {
+        .ceylon.language.Integer $y$0;
+        if (!(($y$0 = x) != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists y = x" + .java.lang.System.lineSeparator() + "\tat " + "AssertExists.ceylon:27:8-27:29")), null);
+        final long y = $y$0.longValue();
+        return y;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertExists();
+    }
+}

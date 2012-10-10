@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertExistsWithMethod {
+    
+    AssertExistsWithMethod() {
+    }
+    
+    private final .ceylon.language.Integer give() {
+        return .ceylon.language.Integer.instance(0L);
+    }
+    
+    public final long m() {
+        .ceylon.language.Integer $y$0;
+        if (!(($y$0 = give()) != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "exists y=give()" + .java.lang.System.lineSeparator() + "\tat " + "AssertExistsWithMethod.ceylon:26:8-26:32")), null);
+        final long y = $y$0.longValue();
+        return y;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertExistsWithMethod();
+    }
+}

@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsNullUnion {
+    
+    AssertIsNullUnion() {
+    }
+    
+    public final void m() {
+        final .java.lang.Object nothing = null;
+        .java.lang.Object $nothing$0;
+        if (!(($nothing$0 = nothing) == null || $nothing$0 instanceof .ceylon.language.Character)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Character? nothing" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNullUnion.ceylon:24:8-24:38")), null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsNullUnion();
+    }
+}

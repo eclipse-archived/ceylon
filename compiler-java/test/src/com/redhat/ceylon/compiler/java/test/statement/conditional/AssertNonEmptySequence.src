@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertNonEmptySequence {
+    
+    AssertNonEmptySequence() {
+    }
+    
+    public final long mvar(final .ceylon.language.List<? extends .ceylon.language.Integer> x) {
+        .ceylon.language.List<? extends .ceylon.language.Integer> $s$0;
+        if (!(($s$0 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$0).getEmpty())) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "nonempty s=x" + .java.lang.System.lineSeparator() + "\tat " + "AssertNonEmptySequence.ceylon:28:8-28:29")), null);
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$0;
+        return s.getFirst().longValue();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertNonEmptySequence();
+    }
+}

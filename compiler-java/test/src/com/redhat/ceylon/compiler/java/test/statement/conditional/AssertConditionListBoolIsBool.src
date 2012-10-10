@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertConditionListBoolIsBool {
+    
+    AssertConditionListBoolIsBool() {
+    }
+    
+    private final boolean mvar(final .java.lang.Object x, final long z) {
+        .java.lang.String $ceylontmpassert0 = null;
+        final long y;
+        if (z < 10L) {
+            .java.lang.Object $y$2 = null;
+            if (($y$2 = x) instanceof .ceylon.language.Integer) {
+                y = ((.ceylon.language.Integer)$y$2).longValue();
+                if (y > 0L) {
+                } else {
+                    if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+                    $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator();
+                }
+            } else {
+                y = 0L;
+                if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+                $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "is Integer y = x" + .java.lang.System.lineSeparator();
+                if (!(y > 0L)) $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator();
+            }
+        } else {
+            y = 0L;
+            if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+            $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "z < 10" + .java.lang.System.lineSeparator();
+        }
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert0 + "\tat " + "AssertConditionListBoolIsBool.ceylon:27:8-27:48")), null);
+        return y == 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolIsBool();
+    }
+}

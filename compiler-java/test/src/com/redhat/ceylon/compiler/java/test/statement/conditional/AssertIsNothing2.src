@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsNothing {
+    
+    AssertIsNothing() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        if (!(x == null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNothing2.ceylon:23:8-23:29")), null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsNothing();
+    }
+}

@@ -391,5 +391,136 @@ public class StatementTest extends CompilerTest {
     public void testAssertConditionList() {
         compareWithJavaSource("conditional/AssertionConditionList");
     }
+    
+    @Test
+    public void testConAssertExists(){
+        compareWithJavaSource("conditional/AssertExists");
+    }
+    
+    @Test
+    public void testConAssertExistsSequence(){
+        compareWithJavaSource("conditional/AssertExistsSequence");
+    }
+    
+    @Test
+    public void testConAssertExistsWithMethod(){
+        compareWithJavaSource("conditional/AssertExistsWithMethod");
+    }
+    
+    @Test
+    public void testConAssertExists2dArray(){
+        compareWithJavaSource("conditional/AssertExists2dArray");
+    }
+
+    @Test
+    public void testConAssertIsFoo(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/AssertIsFoo");
+    }
+    
+    @Test
+    public void testConAssertIsNotNothing(){
+        compareWithJavaSource("conditional/AssertIsNotNothing");
+    }
+    
+    @Test
+    public void testConAssertIsNotObject(){
+        compareWithJavaSource("conditional/AssertIsNotObject");
+    }
+    
+    @Test
+    public void testConAssertIsNullUnion(){
+        compareWithJavaSource("conditional/AssertIsNullUnion");
+    }
+    
+    @Test
+    public void testConAssertIsWithIntersection(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/AssertIsWithIntersection");
+    }
+    
+    @Test
+    public void testConAssertIsWithMethod(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/AssertIsWithMethod");
+    }
+    
+
+    @Test
+    public void testConAssertIsWithUnion(){
+        compile("conditional/FooBar.ceylon");
+        compareWithJavaSource("conditional/AssertIsWithUnion");
+    }
+    
+    @Test
+    public void testConAssertIsNothing2(){
+        compareWithJavaSource("conditional/AssertIsNothing2");
+    }
+    
+    @Test
+    public void testConAssertIsNothing(){
+        compareWithJavaSource("conditional/AssertIsNothing");
+    }
+
+    @Test
+    @Ignore("M5: requires reified generics")
+    public void testConAssertIsGeneric(){
+        compareWithJavaSource("conditional/AssertIsGeneric");
+    }
+
+    @Test
+    @Ignore("M5: requires support from spec for satisfies conditions (reified generics)")
+    public void testConAssertSatisfies(){
+        compareWithJavaSource("conditional/AssertSatisfies");
+    }
+
+    @Test
+    @Ignore("M5: requires support from spec for satisfies conditions (reified generics)")
+    public void testConAssertSatisfiesMultiple(){
+        compareWithJavaSource("conditional/AssertSatisfiesMultiple");
+    }
+
+    @Test
+    public void testConAssertNonEmptySequence(){
+        compareWithJavaSource("conditional/AssertNonEmptySequence");
+    }
+    
+    @Test
+    public void testConAssertNonEmptyString(){
+        compareWithJavaSource("conditional/AssertNonEmptyString");
+    }
+    
+    @Test
+    public void testConAssertConditionListBoolBool(){
+        compareWithJavaSource("conditional/AssertConditionListBoolBool");
+    }
+    @Test
+    public void testConAssertConditionListIsIs(){
+        compareWithJavaSource("conditional/AssertConditionListIsIs");
+    }
+    @Test
+    public void testConAssertConditionListBoolBoolIs(){
+        compareWithJavaSource("conditional/AssertConditionListBoolBoolIs");
+    }
+    @Test
+    public void testConAssertConditionListBoolIsBool(){
+        compareWithJavaSource("conditional/AssertConditionListBoolIsBool");
+    }
+    @Test
+    public void testConAssertConditionListExistsIsBool(){
+        compareWithJavaSource("conditional/AssertConditionListExistsIsBool");
+    }
+    @Test
+    public void testConAssertConditionListIsBool(){
+        compareWithJavaSource("conditional/AssertConditionListIsBool");
+    }
+    @Test
+    public void testConAssertConditionListIsBoolBool(){
+        compareWithJavaSource("conditional/AssertConditionListIsBoolBool");
+    }
+    @Test
+    public void testConAssertConditionListNonemptyIsBool(){
+        compareWithJavaSource("conditional/AssertConditionListNonemptyIsBool");
+    }
 
 }

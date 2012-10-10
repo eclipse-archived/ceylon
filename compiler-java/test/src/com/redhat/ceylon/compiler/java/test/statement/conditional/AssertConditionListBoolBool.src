@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertConditionListBoolBool {
+    
+    AssertConditionListBoolBool() {
+    }
+    
+    private final boolean m(final long x) {
+        .java.lang.String $ceylontmpassert0 = null;
+        if (x > 0L) {
+            if (x < 10L) {
+            } else {
+                if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+                $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "x < 10" + .java.lang.System.lineSeparator();
+            }
+        } else {
+            if ($ceylontmpassert0 == null) $ceylontmpassert0 = "";
+            $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "x > 0" + .java.lang.System.lineSeparator();
+            if (!(x < 10L)) $ceylontmpassert0 = $ceylontmpassert0 + "\tviolated " + "x < 10" + .java.lang.System.lineSeparator();
+        }
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert0 + "\tat " + "AssertConditionListBoolBool.ceylon:23:8-23:30")), null);
+        return x == 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolBool();
+    }
+}
