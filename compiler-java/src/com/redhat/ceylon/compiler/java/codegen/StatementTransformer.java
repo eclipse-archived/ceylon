@@ -257,7 +257,7 @@ public class StatementTransformer extends AbstractTransformer {
                             make().Exec(make().Assign(unassignedResultVars.get(unassigned).makeIdent(), 
                             ((SpecialFormCond)unassigned).makeDefaultExpr())));
                 }
-                elsePart = make().Block(0, assignDefault);
+                elsePart = assignDefault.isEmpty() ? null : make().Block(0, assignDefault);
             } else {
                 elsePart = elseBlock;
             }
