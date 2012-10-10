@@ -54,4 +54,8 @@ interface LL1<out E> = List<List<E>>;
 
 class Si1<T>(T t) given T satisfies Object = Singleton<T>; 
 @error class Si2<in T>(T t) given T satisfies Object = Singleton<T>; 
-class Si3<out T>(T t) given T satisfies Object = Singleton<T>; 
+class Si3<out T>(T t) given T satisfies Object = Singleton<T>;
+
+class E1<out T>(T x, T y) given T satisfies Object = Entry<T,T>;
+@error class E2<out T>(T x, T y) = Entry<T,T>;
+@error class E3<in T>(T x, T y) given T satisfies Object = Entry<T,T>;
