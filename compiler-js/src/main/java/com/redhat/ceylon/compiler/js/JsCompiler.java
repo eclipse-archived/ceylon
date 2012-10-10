@@ -144,7 +144,7 @@ public class JsCompiler {
                 System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
             }
             pu.getCompilationUnit().visit(unitVisitor);
-            GenerateJsVisitor jsv = new GenerateJsVisitor(getOutput(pu).getWriter(), opts.isOptimize(), names);
+            GenerateJsVisitor jsv = new GenerateJsVisitor(getOutput(pu).getWriter(), opts.isOptimize(), names, pu.getTokens());
             jsv.setAddComments(opts.isComment());
             jsv.setIndent(opts.isIndent());
             jsv.setVerbose(opts.isVerbose());
