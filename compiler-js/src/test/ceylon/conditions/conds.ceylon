@@ -52,5 +52,19 @@ shared void test() {
         fail("!is (again)");
     }
     assert(!is String zz4=zz, zz4<3);
+    //several conditions chained together
+    Empty|Sequence<Integer?> seq2 = seq1;
+    if (nonempty seq2, exists zz5=seq2.first) {
+        check(zz5==1, "nonempty,exists");
+    } else { fail("nonempty,exists"); }
+    if (nonempty seq2, is Integer zz5=seq2.first, zz5>0) {
+        check(zz5==1, "nonempty,is");
+    } else { fail("nonempty,is"); }
+    if (is String c, c.lowercased=="x") {
+        check(true,"is,boolean");
+    } else { fail("is,boolean"); }
+    if (exists c, nonempty c, exists zz5=c[0]) {
+        check(zz5==`X`,"exists,nonempty,boolean");
+    } else { fail("exists,nonempty,boolean"); }
     results();
 }
