@@ -435,10 +435,6 @@ public class TypeVisitor extends Visitor {
 						ci.getName() + " does not inherit " + dec.getName());
 			}*/
 			Declaration member = dec.getMember(name(that.getIdentifier()), null);
-			if (member!=null && member.isFormal()) {
-				sq.addError("supertype member is declared formal: " + 
-						typeName + "::" + member.getName());
-			}
 			if (member instanceof TypeDeclaration) {
 				return (TypeDeclaration) member;
 			}

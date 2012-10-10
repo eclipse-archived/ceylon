@@ -54,3 +54,21 @@ void testSin() {
 
 @error class SingletonAlias() = Singleton.Iterator;
 @error class Alias() = Many<Integer>.Iterator;
+
+interface InterfaceFormalMemberClass {
+    shared formal class Member() {
+    }
+}
+
+class InterfaceFormalMemberClass1() satisfies InterfaceFormalMemberClass {
+    shared actual default class Member() extends InterfaceFormalMemberClass::Member() {
+    }
+}
+class InterfaceFormalMemberClass2() extends InterfaceFormalMemberClass1() {
+    @error shared actual class Member() extends InterfaceFormalMemberClass::Member() {
+    }
+}
+class InterfaceFormalMemberClass3() extends InterfaceFormalMemberClass1() {
+    shared actual class Member() extends InterfaceFormalMemberClass1::Member() {
+    }
+}
