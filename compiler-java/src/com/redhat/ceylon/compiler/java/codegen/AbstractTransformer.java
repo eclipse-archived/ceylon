@@ -2027,7 +2027,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     // Creates comparisons of expressions against types
-    JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.SyntheticName varName, ProducedType type) {
+    JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.CName varName, ProducedType type) {
         JCExpression result = null;
         // make sure aliases are resolved
         type = type.resolveAliases();

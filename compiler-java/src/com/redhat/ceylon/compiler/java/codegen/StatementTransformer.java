@@ -665,9 +665,8 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public boolean hasResultDecl() {
-            
-            return isNothingOptimization() ? false : super.hasResultDecl();
-        }
+            return isErasedToObjectOptimization() || isNothingOptimization() ? false : super.hasResultDecl();
+        }        
 
         /** 
          * We can optimize "is Nothing x" (but not "is Nothing y = x")
@@ -678,11 +677,30 @@ public class StatementTransformer extends AbstractTransformer {
                     && ! hasAliasedVariable();
         }
         
+        /**
+         * Optimization: if no typecast will be required, and there's no 
+         * aliasing then we don't need to declare a test var, and the result var
+         * is simply the variable name.
+         */
+        private boolean isErasedToObjectOptimization() {
+            return !typecastRequired() && !hasAliasedVariable();
+        }
+        
+        /** 
+         * Optimization: if the type of the expression and toType
+         * both erase to Object then we can avoid the typecast
+         */
+        private boolean typecastRequired() {
+            // TODO: In fact it should be possible to avoid declaring a test
+            // var this case, but it complicates the test when dealing with unions and intersections
+            return !willEraseToObject(toType);
+        }
+        
         @Override
         public JCStatement makeTestVarDecl(int flags, boolean init) {
-         // We can optimize "is Nothing x" (but not "is Nothing y = x")
+            // We can optimize "is Nothing x" (but not "is Nothing y = x")
             // because there can be no unboxing or typecasting of the result
-            return isNothingOptimization() ? null : super.makeTestVarDecl(flags, init);
+            return isErasedToObjectOptimization() || isNothingOptimization() ? null : super.makeTestVarDecl(flags, init);
         }
         
         @Override
@@ -691,12 +709,12 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             at(cond);
             // Assign the expression to test to the temporary variable
-            if (!isNothingOptimization()) {
+            if (!isErasedToObjectOptimization() && !isNothingOptimization()) {
                 expr = make().Assign(testVar.makeIdent(), expr);
             }
             
             // Test on the tmpVar in the following condition
-            expr = makeTypeTest(expr, testVar,
+            expr = makeTypeTest(expr, isErasedToObjectOptimization() ? getVariableName() : testVar,
                     // only test the types we're testing for, not the type of
                     // the variable (which can be more precise)
                     cond.getType().getTypeModel());
@@ -732,16 +750,20 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public JCExpression makeResultExpr() {
             at(cond);
-            // Want raw type for instanceof since it can't be used with generic types
-            JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
-            // Substitute variable with the correct type to use in the rest of the code block
-            JCExpression castedExpr = at(cond).TypeCast(rawToTypeExpr, testVar.makeIdent());
-            if (canUnbox(toType)) {
-                return unboxType(castedExpr, toType);
-            } 
-            return castedExpr;
+            JCExpression expr = testVar.makeIdent();
+            
+            if (typecastRequired()) {
+                // Want raw type for instanceof since it can't be used with generic types
+                JCExpression rawToTypeExpr = makeJavaType(toType, JT_NO_PRIMITIVES | JT_RAW);
+                // Substitute variable with the correct type to use in the rest of the code block
+                expr = at(cond).TypeCast(rawToTypeExpr, expr);
+                if (canUnbox(toType)) {
+                    expr = unboxType(expr, toType);
+                } 
+            }
+            return expr;
         }
-        
+
     }
     
     class ExistsCond extends SpecialFormCond<Tree.ExistsCondition> {
