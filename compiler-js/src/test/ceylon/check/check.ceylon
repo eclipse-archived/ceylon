@@ -49,6 +49,19 @@ shared void test() {
     assert(nonempty mseq, exists mseq[1]);
     assert(exists ms2=ms, nonempty ms2.initial(1));
     assert(is String ms3=ms, exists ms3[0]);
+    try {
+        assert(2+2==5);
+        fail("check assert [1]");
+    } catch (Exception ex) {
+        check("Assertion failed: '2+2==5'" in ex.message, "Assertion message");
+    }
+    try {
+        doc "ms is a looong String"
+        assert(is String ms, exists ms[1100]);
+        fail("check assert [2]");
+    } catch (Exception ex) {
+        check("ms is a looong String: 'is String ms, exists ms[1100]'" in ex.message, "custom assert message");
+    }
     check(ms2==ms3, "assertion values");
     results();
 }
