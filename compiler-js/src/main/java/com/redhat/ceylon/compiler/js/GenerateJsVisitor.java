@@ -1309,7 +1309,7 @@ public class GenerateJsVisitor extends Visitor
         } else if (accessDirectly(decl)) {
             out(names.name(decl));
         } else {
-            out(names.getter(decl), prototypeStyle && that.getSupertypeQualifier() != null ? ".apply(this)" : "()");
+            out(names.getter(decl), prototypeStyle && that.getSupertypeQualifier() != null ? ".call(this)" : "()");
         }
     }
 
@@ -2445,11 +2445,11 @@ public class GenerateJsVisitor extends Visitor
            boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
            String member = accessDirectly(bme.getDeclaration())
                    ? names.name(bme.getDeclaration())
-                   : names.getter(bme.getDeclaration()) + (qsuper?".apply(this)":"()");
+                   : names.getter(bme.getDeclaration()) + (qsuper?".call(this)":"()");
            if (!simpleSetter) { out("("); }
            out(path, names.setter(bme.getDeclaration()),
-                   qsuper ? ".apply(this,[" : "(", path, member, ".",
-                   functionName, qsuper ? "()])": "())");
+                   qsuper ? ".call(this," : "(", path, member, ".",
+                   functionName, "())");
            if (!simpleSetter) {
                out(",", path, member, ")");
            }
@@ -2498,18 +2498,11 @@ public class GenerateJsVisitor extends Visitor
            } else {
                out(names.getter(bme.getDeclaration()));
                //For qualified supertypes, call the prototype function with "this"
-               if (qsuper) {
-                   out(".apply(this)");
-               } else {
-                   out("()");
-               }
+               out(qsuper ? ".call(this)" : "()");
            }
            out(",", path, names.setter(bme.getDeclaration()),
-                   qsuper ? ".apply(this, [" : "(");
+                   qsuper ? ".call(this, " : "(");
            out(oldValueVar, ".", functionName, "()");
-           if (qsuper) {
-               out("]");
-           }
            out("),", oldValueVar, ")");
 
        } else if (term instanceof QualifiedMemberExpression) {
