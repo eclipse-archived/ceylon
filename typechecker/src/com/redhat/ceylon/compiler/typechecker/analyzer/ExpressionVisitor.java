@@ -1510,8 +1510,10 @@ public class ExpressionVisitor extends Visitor {
         if (type!=null) {
             Parameter parameter = getMatchingParameter(parameters, arg);
             if (parameter!=null) {
-                ProducedType pt = pr.getTypedParameter(parameter.getAliasedParameter()).getFullType();
-                addToUnion(inferredTypes, inferTypeArg(tp, pt, type, new ArrayList<TypeParameter>()));
+                ProducedType pt = pr.getTypedParameter(parameter)
+                		.getFullType();
+                addToUnion(inferredTypes, inferTypeArg(tp, pt, type, 
+                		new ArrayList<TypeParameter>()));
             }
         }
     }
@@ -1537,7 +1539,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     Tree.PositionalArgument a = args.getPositionalArguments().get(i);
                     if (a.getExpression()!=null) {
-                        ProducedType pt = pr.getTypedParameter(parameter.getAliasedParameter())
+                        ProducedType pt = pr.getTypedParameter(parameter)
                                 .getFullType();
                         addToUnion(inferredTypes, inferTypeArg(tp, pt, 
                                 getPositionalArgumentType(a), 
