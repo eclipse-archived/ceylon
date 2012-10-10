@@ -81,7 +81,7 @@ public class CustomTree extends Tree {
             }
         }
         @Override public String getNodeType() {
-            return AttributeDeclaration.class.getSimpleName();
+            return Variable.class.getSimpleName();
         }
     }
 
