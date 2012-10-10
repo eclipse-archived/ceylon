@@ -74,6 +74,7 @@ import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.tree.JCTree.JCWhileLoop;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.DiagnosticSource;
 import com.sun.tools.javac.util.List;
@@ -289,16 +290,6 @@ public class StatementTransformer extends AbstractTransformer {
         java.util.List<Condition> conditions = stmt.getIfClause().getConditionList().getConditions();
         return new IfCondList(conditions, thenPart, elsePart).getResult();    
     }
-    
-    private final JCBlock makeThenBlock(Cond cond, Block thenPart) {
-        at(cond.getCondition());
-        Substitution subs = getSubstitution(cond);
-        JCBlock thenBlock = makeThenBlock(cond, thenPart, subs);
-        if (subs != null) {
-            subs.remove();
-        }
-        return thenBlock;
-    }
 
     private Substitution getSubstitution(Cond cond) {
         Substitution subs;
@@ -327,21 +318,7 @@ public class StatementTransformer extends AbstractTransformer {
         final List<JCStatement> res;
         Tree.Block thenPart = stmt.getWhileClause().getBlock();
         java.util.List<Condition> conditions = stmt.getWhileClause().getConditionList().getConditions();
-        if (conditions.size() == 1) {
-            final Cond transformedCond = transformCondition(conditions.get(0), thenPart);
-            JCStatement cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), transformedCond.makeTest()), makeThenBlock(transformedCond, thenPart));
-            if (transformedCond.makeTestVarDecl(0, false) != null) {
-                res = List.<JCStatement> of(transformedCond.makeTestVarDecl(0, false), cond1);
-            } else {
-                res = List.<JCStatement> of(cond1);
-            }
-        } else {
-            List<JCStatement> loopBody = new WhileCondList(conditions, thenPart).getResult();
-            JCStatement cond1 = make().WhileLoop(makeBoolean(true), 
-                    make().Block(0, loopBody));
-            res = List.<JCStatement> of(cond1);
-            
-        }
+        res =  new WhileCondList(conditions, thenPart).getResult();    
         currentForFailVariable = tempForFailVariable;
         
         return res;
@@ -350,48 +327,83 @@ public class StatementTransformer extends AbstractTransformer {
     class WhileCondList extends CondList {
 
         private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
-        private final SyntheticName ifVar = naming.temp("while");
-        
         public WhileCondList(java.util.List<Condition> conditions, Block thenPart) {
             super(conditions, thenPart);
-        }     
+        }
 
         @Override
         protected List<JCStatement> transformInnermost(Condition condition) {
             Cond transformedCond = transformCondition(condition, thenPart);
-            JCBlock thenBlock = makeThenBlock(transformedCond, thenPart);
-            return transformCommon(transformedCond, thenBlock.getStatements());
+            // Note: The innermost test happens outside the substitution scope
+            JCExpression test = transformedCond.makeTest();
+            Substitution subs = getSubstitution(transformedCond);
+            List<JCStatement> stmts = makeThenBlock(transformedCond, thenPart, null).getStatements();
+            stmts = transformCommon(transformedCond, test, stmts, make().Break(null));
+            if (subs != null) {
+                subs.remove();
+            }
+            return stmts;
         }
         
         protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
-            return transformCommon(transformCondition(condition, null), transformList(rest));
+            Cond intermediate = transformCondition(condition, null);
+            JCExpression test = intermediate.makeTest();
+            Substitution subs = getSubstitution(intermediate);
+            List<JCStatement> stmts = transformList(rest);
+            stmts = transformCommon(intermediate, test, stmts, make().Break(null));
+            if (subs != null) {
+                subs.remove();
+            }
+            return stmts;
         }
         
-        protected List<JCStatement> transformCommon(Cond transformedCond, List<JCStatement> stmts) {
-            if (transformedCond.makeTestVarDecl(0, true) != null) {
-                varDecls.append(transformedCond.makeTestVarDecl(0, true));
+        protected List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts, JCStatement elseBlock) {
+            if (transformedCond.makeTestVarDecl(0, false) != null) {
+                varDecls.append(transformedCond.makeTestVarDecl(0, false));
             }
-            if (transformedCond.hasAliasedVariable()) {
+            if (transformedCond.hasResultDecl()) {
                 JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
-                        transformedCond.getVariableName().asName(),
-                        transformedCond.makeTypeExpr(), null);
-                varDecls.append(resultVarDecl);
-                stmts = stmts.prepend(make().Exec(make().Assign(transformedCond.getVariableName().makeIdent(), transformedCond.makeResultExpr())));
+                        transformedCond.getVariableName().asName(), 
+                        transformedCond.makeTypeExpr(), 
+                        transformedCond.makeResultExpr());
+                stmts = stmts.prepend(resultVarDecl);
             }
+            JCStatement elsePart = elseBlock;
             stmts = List.<JCStatement>of(make().If(
-                    transformedCond.makeTest(), 
+                    test, 
                     make().Block(0, stmts), 
-                    make().Break(null)));
+                    elsePart));
             return stmts;
         }
         
         public List<JCStatement> getResult() {
-            List<JCStatement> stmts = transformList(conditions);
-            ListBuffer<JCStatement> result = ListBuffer.lb();
-            result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
-            result.appendList(varDecls);
-            result.appendList(stmts);
-            return result.toList();   
+            List<JCStatement> res;
+           if (conditions.size() == 1) {
+                final Cond transformedCond = transformCondition(conditions.get(0), thenPart);
+                JCExpression test = transformedCond.makeTest();
+                Substitution subs = getSubstitution(transformedCond);
+                JCBlock thenBlock = makeThenBlock(transformedCond, thenPart, subs);
+                if (subs != null) {
+                    subs.remove();
+                }
+                JCStatement cond1 = make().WhileLoop(
+                        makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), 
+                                test), 
+                                thenBlock);
+                if (transformedCond.makeTestVarDecl(0, false) != null) {
+                    res = List.<JCStatement> of(transformedCond.makeTestVarDecl(0, false), cond1);
+                } else {
+                    res = List.<JCStatement> of(cond1);
+                }
+            } else {
+                List<JCStatement> stmts = transformList(conditions);
+                ListBuffer<JCStatement> result = ListBuffer.lb();
+                result.appendList(varDecls);
+                result.appendList(stmts);
+                res =  List.<JCStatement>of(make().WhileLoop(makeBoolean(true), 
+                        make().Block(0, result.toList())));
+            }
+            return res;
         }
     }
     
