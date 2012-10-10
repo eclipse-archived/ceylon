@@ -109,8 +109,9 @@ public class CeylonCompileJsTool implements Tool {
         return user;
     }
 
-    @OptionArgument
-    @Description("User name for output repository (HTTP only)")
+    @OptionArgument(argumentName="name")
+    @Description("Sets the user name for use with an authenticated output repository" +
+            "(no default).")
     public void setUser(String user) {
         this.user = user;
     }
@@ -119,8 +120,9 @@ public class CeylonCompileJsTool implements Tool {
         return pass;
     }
 
-    @OptionArgument
-    @Description("Password for output repository (HTTP only)")
+    @OptionArgument(argumentName="secret")
+    @Description("Sets the password for use with an authenticated output repository" +
+            "(no default).")
     public void setPass(String pass) {
         this.pass = pass;
     }
@@ -129,8 +131,9 @@ public class CeylonCompileJsTool implements Tool {
         return repos;
     }
 
-    @OptionArgument(longName="rep")
-    @Description("Module repository (default: `./modules`). Can be specified multiple times.")
+    @OptionArgument(longName="rep", argumentName="url")
+    @Description("Specifies a module repository containing dependencies. Can be specified multiple times. " +
+            "(default: `modules`, `~/.ceylon/repo`, http://modules.ceylon-lang.org)")
     public void setRepos(List<String> repos) {
         this.repos = repos;
     }
@@ -139,7 +142,7 @@ public class CeylonCompileJsTool implements Tool {
         return src;
     }
 
-    @OptionArgument
+    @OptionArgument(longName="src", argumentName="dirs")
     @Description("Path to source files (default: `./source`). " +
     		"Can be specified multiple times; you can also specify several " +
     		"paths separated by your operating system's `PATH` separator")
@@ -151,8 +154,9 @@ public class CeylonCompileJsTool implements Tool {
         return out;
     }
 
-    @OptionArgument
-    @Description("Output module repository (default: `./modules`)")
+    @OptionArgument(argumentName="url")
+    @Description("Specifies the output module repository (which must be publishable). " +
+            "(default: `./modules`)")
     public void setOut(String out) {
         this.out = out;
     }
