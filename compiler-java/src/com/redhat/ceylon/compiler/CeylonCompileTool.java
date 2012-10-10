@@ -90,7 +90,7 @@ public class CeylonCompileTool implements Tool{
     }
     
     @OptionArgument(longName="rep", argumentName="url")
-    @Description("Specifies a module repository containing dependencies. " +
+    @Description("Specifies a module repository containing dependencies. Can be specified multiple times. " +
     		"(default: `modules`, `~/.ceylon/repo`, http://modules.ceylon-lang.org)")
     public void setRepository(List<URI> repo) {
         this.repo = repo;
