@@ -7,7 +7,7 @@ class MethodIfConditionListIsBoolBool {
     
     private final boolean m(final .java.lang.Object x, final long z) {
         boolean $ceylontmpif0 = false;
-        .java.lang.Object $x$1 = null;
+        .java.lang.Object $x$1;
         final long $x$2;
         if (($x$1 = x) instanceof .ceylon.language.Integer) {
             $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
@@ -28,7 +28,7 @@ class MethodIfConditionListIsBoolBool {
     
     private final boolean synthetic(final .java.lang.Object x, final long z) {
         boolean $ceylontmpif3 = false;
-        .java.lang.Object $y$4 = null;
+        .java.lang.Object $y$4;
         final long $y$5;
         if (($y$4 = x) instanceof .ceylon.language.Integer) {
             $y$5 = ((.ceylon.language.Integer)$y$4).longValue();

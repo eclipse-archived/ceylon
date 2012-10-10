@@ -7,11 +7,11 @@ class ExceptionAttributes {
     
     private final void m(final .java.lang.Throwable e) {
         final .java.lang.Throwable c = e.getCause();
-        .java.lang.Throwable $cause$0;
-        if (($cause$0 = e.getCause()) != null) {
-            final .java.lang.Throwable $cause$1 = $cause$0;
-            final .java.lang.Throwable cc = $cause$1.getCause();
-            final .ceylon.language.String message = .ceylon.language.String.instance($cause$1.getMessage());
+        .java.lang.Throwable $cause$1;
+        if (($cause$1 = e.getCause()) != null) {
+            final .java.lang.Throwable $cause$2 = $cause$1;
+            final .java.lang.Throwable cc = $cause$2.getCause();
+            final .ceylon.language.String message = .ceylon.language.String.instance($cause$2.getMessage());
         }
         final .java.lang.String message = e.getMessage();
     }

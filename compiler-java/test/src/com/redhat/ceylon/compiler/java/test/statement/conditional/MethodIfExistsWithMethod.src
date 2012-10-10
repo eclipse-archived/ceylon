@@ -10,10 +10,10 @@ class MethodIfExistsWithMethod {
     }
     
     public final long m() {
-        .ceylon.language.Integer $y$0;
-        if (($y$0 = give()) != null) {
-            final long $y$1 = $y$0.longValue();
-            return $y$1;
+        .ceylon.language.Integer $y$1;
+        if (($y$1 = give()) != null) {
+            final long $y$2 = $y$1.longValue();
+            return $y$2;
         }
         return 0L;
     }

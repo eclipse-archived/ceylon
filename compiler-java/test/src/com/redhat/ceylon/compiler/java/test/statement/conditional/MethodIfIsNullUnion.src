@@ -7,9 +7,9 @@ class MethodIfIsNullUnion {
     
     public final void m() {
         final .java.lang.Object nothing = null;
-        .java.lang.Object $nothing$0;
-        if (($nothing$0 = nothing) == null || $nothing$0 instanceof .ceylon.language.Character) {
-            final .ceylon.language.Character $nothing$1 = (.ceylon.language.Character)$nothing$0;
+        .java.lang.Object $nothing$1;
+        if (($nothing$1 = nothing) == null || $nothing$1 instanceof .ceylon.language.Character) {
+            final .ceylon.language.Character $nothing$2 = (.ceylon.language.Character)$nothing$1;
         }
     }
     

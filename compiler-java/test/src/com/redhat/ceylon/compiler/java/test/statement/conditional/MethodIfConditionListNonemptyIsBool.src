@@ -7,9 +7,9 @@ class MethodIfConditionList {
     
     private final boolean m(final .ceylon.language.List<? extends .java.lang.Object> x) {
         boolean $ceylontmpif0 = false;
-        .java.lang.Object $y$3 = null;
+        .java.lang.Object $y$3;
         final long $y$4;
-        .ceylon.language.List<? extends .java.lang.Object> $x$1 = null;
+        .ceylon.language.List<? extends .java.lang.Object> $x$1;
         final .ceylon.language.Sequence<? extends .java.lang.Object> $x$2;
         if (($x$1 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$1).getEmpty()) {
             $x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$x$1;

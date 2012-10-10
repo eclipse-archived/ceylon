@@ -6,18 +6,16 @@ class MethodIfIsNotNothing {
     }
     
     public final void m(final .java.lang.Object x) {
-        .java.lang.Object $x$0;
-        if (!(($x$0 = x) == null)) {
-            final .java.lang.Object $x$1 = (.java.lang.Object)$x$0;
-            .ceylon.language.print_.print(.ceylon.language.String.instance($x$1.toString()));
+        if (!(x == null)) {
+            .ceylon.language.print_.print(.ceylon.language.String.instance(x.toString()));
         }
     }
     
     public final void mvar(final .java.lang.Object y) {
-        .java.lang.Object $x$2;
-        if (!(($x$2 = y) == null)) {
-            final .java.lang.Object $x$3 = (.java.lang.Object)$x$2;
-            .ceylon.language.print_.print(.ceylon.language.String.instance($x$3.toString()));
+        .java.lang.Object $x$3;
+        if (!(($x$3 = y) == null)) {
+            final .java.lang.Object $x$4 = $x$3;
+            .ceylon.language.print_.print(.ceylon.language.String.instance($x$4.toString()));
         }
     }
     

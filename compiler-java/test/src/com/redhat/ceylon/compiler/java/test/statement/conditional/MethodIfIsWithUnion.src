@@ -6,18 +6,16 @@ class MethodIfIsUnion {
     }
     
     public final void m(final .java.lang.Object x) {
-        .java.lang.Object $x$0;
-        if (($x$0 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
-            final .java.lang.Object $x$1 = (.java.lang.Object)$x$0;
-            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)$x$1).common();
+        if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)x).common();
         }
     }
     
     public final void mvar(final .java.lang.Object y) {
-        .java.lang.Object $x$2;
-        if (($x$2 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$2 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
-            final .java.lang.Object $x$3 = (.java.lang.Object)$x$2;
-            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)$x$3).common();
+        .java.lang.Object $x$3;
+        if (($x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || $x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
+            final .java.lang.Object $x$4 = $x$3;
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)$x$4).common();
         }
     }
     

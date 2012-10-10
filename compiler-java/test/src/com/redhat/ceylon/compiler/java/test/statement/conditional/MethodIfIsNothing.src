@@ -14,20 +14,20 @@ class MethodIfIsNothing {
     }
     
     private final long m1(final .ceylon.language.Integer x) {
-        .java.lang.Object $x$0;
-        if (($x$0 = x) instanceof .ceylon.language.Integer) {
-            final long $x$1 = ((.ceylon.language.Integer)$x$0).longValue();
-            return $x$1;
+        .java.lang.Object $x$1;
+        if (($x$1 = x) instanceof .ceylon.language.Integer) {
+            final long $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
+            return $x$2;
         } else {
             return owt(x);
         }
     }
     
     private final long m2(final .ceylon.language.Integer x) {
-        .java.lang.Object $y$2;
-        if (($y$2 = x) instanceof .ceylon.language.Integer) {
-            final long $y$3 = ((.ceylon.language.Integer)$y$2).longValue();
-            return $y$3;
+        .java.lang.Object $y$4;
+        if (($y$4 = x) instanceof .ceylon.language.Integer) {
+            final long $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
+            return $y$5;
         } else {
             return owt(x);
         }
@@ -42,10 +42,10 @@ class MethodIfIsNothing {
     }
     
     private final long m4(final .ceylon.language.Integer x) {
-        .java.lang.Object $y$5;
-        if (($y$5 = x) == null) {
-            final .java.lang.Object $y$6 = (.java.lang.Object)$y$5;
-            return nowt($y$6);
+        .java.lang.Object $y$9;
+        if (($y$9 = x) == null) {
+            final .java.lang.Object $y$10 = $y$9;
+            return nowt($y$10);
         } else {
             return owt(x);
         }
