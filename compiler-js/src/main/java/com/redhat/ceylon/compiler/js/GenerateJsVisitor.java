@@ -63,6 +63,14 @@ public class GenerateJsVisitor extends Visitor
             }
             super.visit(qe);
         }
+        
+        @Override
+        public void visit(BaseMemberOrTypeExpression that) {
+            if (that.getSupertypeQualifier() != null) {
+                decs.add(that.getDeclaration());
+            }
+            super.visit(that);
+        }
 
         @Override
         public void visit(QualifiedType that) {
@@ -443,7 +451,11 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         //declareSelf(d);
         referenceOuter(d);
-        callInterfaces(that.getSatisfiedTypes(), d, that);
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!prototypeStyle) {
+            new SuperVisitor(superDecs).visit(that.getInterfaceBody());
+        }
+        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
@@ -522,9 +534,14 @@ public class GenerateJsVisitor extends Visitor
         declareSelf(d);
         referenceOuter(d);
         initParameters(that.getParameterList(), d);
-        callSuperclass(that.getExtendedType(), d, that);
-        copySuperMembers(that.getExtendedType(), that.getClassBody(), d);
-        callInterfaces(that.getSatisfiedTypes(), d, that);
+        
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!prototypeStyle) {
+            new SuperVisitor(superDecs).visit(that.getClassBody());
+        }
+        callSuperclass(that.getExtendedType(), d, that, superDecs);
+        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
+        
         that.getClassBody().visit(this);
         returnSelf(d);
         endBlockNewLine();
@@ -543,44 +560,37 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void copySuperMembers(ExtendedType extType, ClassBody body, Class d) {
+    private void copySuperMembers(TypeDeclaration typeDecl, final List<Declaration> decs, ClassOrInterface d) {
         if (!prototypeStyle) {
-            String parentSuffix = "";
-            if (extType != null) {
-                TypeDeclaration parentTypeDecl = extType.getType().getDeclarationModel();
-                if (declaredInCL(parentTypeDecl)) {
-                    return;
-                }
-                parentSuffix = names.typeSuffix(parentTypeDecl);
-            }
-
-            final List<Declaration> decs = new ArrayList<Declaration>();
-            new SuperVisitor(decs).visit(body);
             for (Declaration dec: decs) {
+                if (!typeDecl.isMember(dec)) { continue; }
+                String suffix = names.scopeSuffix(dec.getContainer());
                 if (dec instanceof Value) {
-                    superGetterRef(dec,d,parentSuffix);
+                    superGetterRef(dec,d,suffix);
                     if (((Value) dec).isVariable()) {
-                        superSetterRef(dec,d,parentSuffix);
+                        superSetterRef(dec,d,suffix);
                     }
                 }
                 else if (dec instanceof Getter) {
-                    superGetterRef(dec,d,parentSuffix);
+                    superGetterRef(dec,d,suffix);
                     if (((Getter) dec).isVariable()) {
-                        superSetterRef(dec,d,parentSuffix);
+                        superSetterRef(dec,d,suffix);
                     }
                 }
                 else {
-                    superRef(dec,d,parentSuffix);
+                    superRef(dec,d,suffix);
                 }
             }
         }
     }
 
-    private void callSuperclass(ExtendedType extendedType, Class d, Node that) {
+    private void callSuperclass(ExtendedType extendedType, Class d, Node that,
+                final List<Declaration> superDecs) {
         if (extendedType!=null) {
             String suffix = typeReferenceSuffix(extendedType.getType(), d.getContainer());
-            qualify(that, extendedType.getType().getDeclarationModel());
-            out(names.name(extendedType.getType().getDeclarationModel()), suffix, "(");
+            TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
+            qualify(that, typeDecl);
+            out(names.name(typeDecl), suffix, "(");
             for (PositionalArgument arg: extendedType.getInvocationExpression()
                     .getPositionalArgumentList().getPositionalArguments()) {
                 arg.visit(this);
@@ -589,30 +599,34 @@ public class GenerateJsVisitor extends Visitor
             self(d);
             out(");");
             endLine();
+           
+            copySuperMembers(typeDecl, superDecs, d);
         }
     }
 
     private String typeReferenceSuffix(StaticType type, Scope scope) {
         String suffix = "";
         if ((scope instanceof ClassOrInterface) && (type instanceof QualifiedType)) {
-            if (((QualifiedType) type).getOuterType() instanceof SuperType) {
-                ClassOrInterface parentType = ((ClassOrInterface) scope).getExtendedTypeDeclaration();
-                if (parentType != null) {
-                    suffix = names.typeSuffix(parentType);
-                }
+            QualifiedType qtype = (QualifiedType) type;
+            if (qtype.getOuterType() instanceof SuperType) {
+                suffix = names.scopeSuffix(qtype.getDeclarationModel().getContainer());
             }
         }
         return suffix;
     }
 
-    private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that) {
+    private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that,
+            final List<Declaration> superDecs) {
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
-                qualify(that, st.getDeclarationModel());
-                out(names.name((ClassOrInterface)st.getDeclarationModel()), "(");
+                TypeDeclaration typeDecl = st.getDeclarationModel();
+                qualify(that, typeDecl);
+                out(names.name((ClassOrInterface)typeDecl), "(");
                 self(d);
                 out(");");
                 endLine();
+                
+                copySuperMembers(typeDecl, superDecs, d);
             }
     }
 
@@ -845,9 +859,14 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         instantiateSelf(c);
         referenceOuter(c);
-        callSuperclass(that.getExtendedType(), c, that);
-        copySuperMembers(that.getExtendedType(), that.getClassBody(), c);
-        callInterfaces(that.getSatisfiedTypes(), c, that);
+        
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!prototypeStyle) {
+            new SuperVisitor(superDecs).visit(that.getClassBody());
+        }
+        callSuperclass(that.getExtendedType(), c, that, superDecs);
+        callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
+        
         that.getClassBody().visit(this);
         returnSelf(c);
         indentLevel--;
@@ -880,7 +899,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void superRef(Declaration d, Class sub, String parentSuffix) {
+    private void superRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
             out(".", names.name(d), parentSuffix, "=");
@@ -890,7 +909,7 @@ public class GenerateJsVisitor extends Visitor
         //}
     }
 
-    private void superGetterRef(Declaration d, Class sub, String parentSuffix) {
+    private void superGetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
             out(".", names.getter(d), parentSuffix, "=");
@@ -900,7 +919,7 @@ public class GenerateJsVisitor extends Visitor
         //}
     }
 
-    private void superSetterRef(Declaration d, Class sub, String parentSuffix) {
+    private void superSetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
             out(".", names.setter(d), parentSuffix, "=");
@@ -982,20 +1001,6 @@ public class GenerateJsVisitor extends Visitor
         }
 
         if (!share(d)) { out(";"); }
-        addQualifiedReference(d, names.name(d));
-    }
-
-    /** Adds a fully qualified reference to the specified declaration (useful for non-prototype style) */
-    private void addQualifiedReference(Declaration d, String name) {
-        if (!prototypeStyle && d.isDefault()) {
-            //Add another reference to this method, with the fully qualified name as a prefix
-            outerSelf(d);
-            out(".");
-            for (String part : d.getContainer().getQualifiedNameString().split("\\.")) {
-                out(part, "$");
-            }
-            out(name, "=", name, ";");
-        }
     }
 
     private void initParameters(ParameterList params, TypeDeclaration typeDecl) {
@@ -1064,7 +1069,6 @@ public class GenerateJsVisitor extends Visitor
             out(".", names.getter(d), "=", names.getter(d), ";");
             endLine();
             shared = true;
-            addQualifiedReference(d, names.getter(d));
         }
         return shared;
     }
@@ -1115,7 +1119,6 @@ public class GenerateJsVisitor extends Visitor
             out(".", names.setter(d), "=", names.setter(d), ";");
             endLine();
             shared = true;
-            addQualifiedReference(d, names.setter(d));
         }
         return shared;
     }
@@ -1303,17 +1306,23 @@ public class GenerateJsVisitor extends Visitor
             }
         }
 
-        if (that.getSupertypeQualifier() == null) {
-            qualify(that, decl);
-        } else {
-            out(qualifySupertype(decl));
+        qualify(that, decl);
+        String suffix = "";
+        boolean protoCall = false;
+        if (that.getSupertypeQualifier() != null) {
+            if (prototypeStyle) {
+                protoCall = true;
+            } else {
+                suffix = names.scopeSuffix(decl.getContainer());
+            }
         }
+            
         if (isNative(decl)) {
             out(decl.getName());
         } else if (accessDirectly(decl)) {
-            out(names.name(decl));
+            out(names.name(decl), suffix);
         } else {
-            out(names.getter(decl), prototypeStyle && that.getSupertypeQualifier() != null ? ".call(this)" : "()");
+            out(names.getter(decl), suffix, protoCall ? ".call(this)" : "()");
         }
     }
 
@@ -1461,14 +1470,9 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void qualifiedMemberRHS(QualifiedMemberOrTypeExpression that) {
-        boolean sup = that.getPrimary() instanceof Super;
         String postfix = "";
-        if (sup) {
-             ClassOrInterface type = Util.getContainingClassOrInterface(that.getScope());
-             ClassOrInterface parentType = type.getExtendedTypeDeclaration();
-             if (parentType != null) {
-                 postfix = names.typeSuffix(parentType);
-             }
+        if (that.getPrimary() instanceof Super) {
+             postfix = names.scopeSuffix(that.getDeclaration().getContainer());
         }
         if (isNative(that.getDeclaration())) {
             out(that.getDeclaration().getName());
@@ -1715,9 +1719,14 @@ public class GenerateJsVisitor extends Visitor
         ExtendedType xt = that.getExtendedType();
         final ClassBody body = that.getClassBody();
         SatisfiedTypes sts = that.getSatisfiedTypes();
-        callSuperclass(xt, c, that);
-        copySuperMembers(xt, body, c);
-        callInterfaces(sts, c, that);
+        
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!prototypeStyle) {
+            new SuperVisitor(superDecs).visit(that.getClassBody());
+        }
+        callSuperclass(xt, c, that, superDecs);
+        callInterfaces(sts, c, that, superDecs);
+        
         body.visit(this);
         returnSelf(c);
         indentLevel--;
@@ -1874,22 +1883,6 @@ public class GenerateJsVisitor extends Visitor
             out(".");
         }
     }
-    /** Generates the path to the qualified declaration (useful for Super::member) */
-    private String qualifySupertype(Declaration d) {
-        //Get the declaring type
-        final ClassOrInterface parent = (ClassOrInterface)d.getContainer();
-        final StringBuilder sb = new StringBuilder("this.");
-        if (prototypeStyle) {
-            //In prototype style we can invoke the original method directly
-            sb.append("getT$all$()['").append(parent.getQualifiedNameString()).append("'].$$.prototype.");
-        } else {
-            //Otherwise we need to add the qualified prefix
-            for (String part : parent.getQualifiedNameString().split("\\.")) {
-                sb.append(part).append('$');
-            }
-        }
-        return sb.toString();
-    }
 
     private String qualifiedPath(Node that, Declaration d) {
         return qualifiedPath(that, d, false);
@@ -1900,6 +1893,15 @@ public class GenerateJsVisitor extends Visitor
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (prototypeStyle && !inProto) {
+            if (that instanceof BaseMemberOrTypeExpression) {
+                BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) that;
+                if (bmte.getSupertypeQualifier() != null) {
+                    // A supertype qualifier (Supertype::member). In prototype style
+                    // we access such members through their respective prototype:
+                    return String.format("this.getT$all$()['%s'].$$.prototype",
+                            d.getContainer().getQualifiedNameString());
+                }
+            }
             if (d.isClassOrInterfaceMember() &&
                     !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
                             !d.isCaptured())) {
@@ -2435,23 +2437,27 @@ public class GenerateJsVisitor extends Visitor
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
            String path;
-           boolean qsuper = false;
-           if (bme.getSupertypeQualifier() == null) {
-               path = qualifiedPath(bme, bme.getDeclaration());
-               if (path.length() > 0) {
-                   path += '.';
-               }
-           } else {
-               path = qualifySupertype(bme.getDeclaration());
-               qsuper = prototypeStyle;
+           path = qualifiedPath(bme, bme.getDeclaration());
+           if (path.length() > 0) {
+               path += '.';
            }
+           boolean qsuper = false;
+           String suffix = "";
+           if (bme.getSupertypeQualifier() != null) {
+               if (prototypeStyle) {
+                   qsuper = true;
+               } else {
+                   suffix = names.scopeSuffix(bme.getDeclaration().getContainer());
+               }
+           }
+
 
            boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
            String member = accessDirectly(bme.getDeclaration())
-                   ? names.name(bme.getDeclaration())
-                   : names.getter(bme.getDeclaration()) + (qsuper?".call(this)":"()");
+                   ? names.name(bme.getDeclaration()) + suffix
+                   : names.getter(bme.getDeclaration()) + suffix + (qsuper?".call(this)":"()");
            if (!simpleSetter) { out("("); }
-           out(path, names.setter(bme.getDeclaration()),
+           out(path, names.setter(bme.getDeclaration()), suffix,
                    qsuper ? ".call(this," : "(", path, member, ".",
                    functionName, "())");
            if (!simpleSetter) {
@@ -2484,27 +2490,30 @@ public class GenerateJsVisitor extends Visitor
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
            String path;
+           path = qualifiedPath(bme, bme.getDeclaration());
+           if (path.length() > 0) {
+               path += '.';
+           }
            boolean qsuper = false;
-           if (bme.getSupertypeQualifier() == null) {
-               path = qualifiedPath(bme, bme.getDeclaration());
-               if (path.length() > 0) {
-                   path += '.';
+           String suffix = "";
+           if (bme.getSupertypeQualifier() != null) {
+               if (prototypeStyle) {
+                   qsuper = true;
+               } else {
+                   suffix = names.scopeSuffix(bme.getDeclaration().getContainer());
                }
-           } else {
-               path=qualifySupertype(bme.getDeclaration());
-               qsuper = prototypeStyle;
            }
 
            String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
            out("(", oldValueVar, "=", path);
            if (accessDirectly(bme.getDeclaration())) {
-               out(names.name(bme.getDeclaration()));
+               out(names.name(bme.getDeclaration()), suffix);
            } else {
-               out(names.getter(bme.getDeclaration()));
+               out(names.getter(bme.getDeclaration()), suffix);
                //For qualified supertypes, call the prototype function with "this"
                out(qsuper ? ".call(this)" : "()");
            }
-           out(",", path, names.setter(bme.getDeclaration()),
+           out(",", path, names.setter(bme.getDeclaration()), suffix,
                    qsuper ? ".call(this, " : "(");
            out(oldValueVar, ".", functionName, "()");
            out("),", oldValueVar, ")");

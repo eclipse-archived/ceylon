@@ -186,11 +186,11 @@ public class JsIdentifierNames {
     }
 
     /**
-     * Returns a disambiguation suffix for the given type. It is guaranteed that
-     * the suffixes generated for two different types are different.
+     * Returns a disambiguation suffix for the given scope. It is guaranteed that
+     * the suffixes generated for two different scopes are different.
      */
-    public String typeSuffix(TypeDeclaration typeDecl) {
-        return String.format("$$%s$", typeDecl.getQualifiedNameString().replace('.', '$'));
+    public String scopeSuffix(Scope scope) {
+        return String.format("$$%s$", scope.getQualifiedNameString().replace('.', '$'));
     }
 
     /**
