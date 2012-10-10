@@ -175,20 +175,42 @@ public class StatementTransformer extends AbstractTransformer {
         final SyntheticName ifVar = naming.temp("if");
         private LinkedHashMap<Cond, CName> unassignedResultVars = new LinkedHashMap<Cond, CName>();
         private JCBlock thenBlock;
+        private Block elsePart;
         
-        public IfCondList(java.util.List<Condition> conditions, Block thenPart) {
+        public IfCondList(java.util.List<Condition> conditions, Block thenPart,
+                Block elsePart) {
             super(conditions, thenPart);
+            this.elsePart = elsePart;
         }     
 
+        /** 
+         * If the "if" statement has > 1 condition and an else block, then 
+         * we need to use one set of nested "if"s to do the narrowing and 
+         * determine whether the overall condition is satisfied, and a separate 
+         * if/else block to actually hold the transformed blocks.
+         */
+        private boolean isDeferred() {
+            return conditions.size() > 1 && elsePart != null;
+        }
+        
         @Override
         protected List<JCStatement> transformInnermost(Condition condition) {
             Cond transformedCond = transformCondition(condition, thenPart);
             // Note: The innermost test happens outside the substitution scope
             JCExpression test = transformedCond.makeTest();
+            JCBlock elseBlock = null;
+            if (!isDeferred()) {
+                elseBlock = transform(this.elsePart);
+            }
             Substitution subs = getSubstitution(transformedCond);
-            thenBlock = makeThenBlock(transformedCond, thenPart, null);
-            List<JCStatement> stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
-            stmts = transformCommon(transformedCond, test, stmts);
+            List<JCStatement> stmts;
+            if (isDeferred()) {
+                stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
+                thenBlock = makeThenBlock(transformedCond, thenPart, null);
+            } else {
+                stmts = makeThenBlock(transformedCond, thenPart, null).getStatements();   
+            }
+            stmts = transformCommon(transformedCond, test, stmts, elseBlock);
             if (subs != null) {
                 subs.remove();
             }
@@ -200,48 +222,63 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression test = intermediate.makeTest();
             Substitution subs = getSubstitution(intermediate);
             List<JCStatement> stmts = transformList(rest);
-            stmts = transformCommon(intermediate, test, stmts);
+            stmts = transformCommon(intermediate, test, stmts, null);
             if (subs != null) {
                 subs.remove();
             }
             return stmts;
         }
         
-        protected List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts) {
-            if (transformedCond.makeTestVarDecl(0, true) != null) {
-                varDecls.append(transformedCond.makeTestVarDecl(0, true));
+        protected List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts, JCBlock elseBlock) {
+            if (transformedCond.makeTestVarDecl(0, false) != null) {
+                varDecls.append(transformedCond.makeTestVarDecl(0, false));
             }
             if (transformedCond.hasResultDecl()) {
-                // Note we capture the substitution here, because it won't be 
-                // in scope when we generate the default assignment branches.
-                unassignedResultVars.put(transformedCond, 
-                        transformedCond.getVariableName().capture());
                 JCVariableDecl resultVarDecl = make().VarDef(make().Modifiers(Flags.FINAL), 
                         transformedCond.getVariableName().asName(), 
-                        transformedCond.makeTypeExpr(), null);
-                varDecls.append(resultVarDecl);
-                stmts = stmts.prepend(make().Exec(make().Assign(transformedCond.getVariableName().makeIdent(), transformedCond.makeResultExpr())));
+                        transformedCond.makeTypeExpr(), 
+                        isDeferred() ? null : transformedCond.makeResultExpr());
+                if (isDeferred()) {
+                    // Note we capture the substitution here, because it won't be 
+                    // in scope when we generate the default assignment branches.
+                    unassignedResultVars.put(transformedCond, 
+                            transformedCond.getVariableName().capture());
+                    varDecls.append(resultVarDecl);
+                    stmts = stmts.prepend(make().Exec(make().Assign(transformedCond.getVariableName().makeIdent(), transformedCond.makeResultExpr())));
+                } else {
+                    stmts = stmts.prepend(resultVarDecl);
+                }
             }
-            List<JCStatement> assignDefault = List.<JCStatement>nil();
-            for (Cond unassigned : unassignedResultVars.keySet()) {
-                assignDefault = assignDefault.append(
-                        make().Exec(make().Assign(unassignedResultVars.get(unassigned).makeIdent(), 
-                        ((SpecialFormCond)unassigned).makeDefaultExpr())));
+            JCStatement elsePart;
+            if (isDeferred()) {
+                List<JCStatement> assignDefault = List.<JCStatement>nil();
+                for (Cond unassigned : unassignedResultVars.keySet()) {
+                    assignDefault = assignDefault.append(
+                            make().Exec(make().Assign(unassignedResultVars.get(unassigned).makeIdent(), 
+                            ((SpecialFormCond)unassigned).makeDefaultExpr())));
+                }
+                elsePart = make().Block(0, assignDefault);
+            } else {
+                elsePart = elseBlock;
             }
             stmts = List.<JCStatement>of(make().If(
                     test, 
                     make().Block(0, stmts), 
-                    assignDefault.isEmpty() ? null : make().Block(0, assignDefault)));
+                    elsePart));
             return stmts;
         }
         
-        public List<JCStatement> getResult(Tree.Block elsePart) {
+        public List<JCStatement> getResult() {
             List<JCStatement> stmts = transformList(conditions);
             ListBuffer<JCStatement> result = ListBuffer.lb();
-            result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
+            if (isDeferred()) {
+                result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
+            }
             result.appendList(varDecls);
             result.appendList(stmts);
-            result.append(make().If(ifVar.makeIdent(), thenBlock, StatementTransformer.this.transform(elsePart)));
+            if (isDeferred()) {
+                result.append(make().If(ifVar.makeIdent(), thenBlock, StatementTransformer.this.transform(elsePart)));
+            }
             return result.toList();   
         }
     }
@@ -250,23 +287,7 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Block thenPart = stmt.getIfClause().getBlock();
         Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
         java.util.List<Condition> conditions = stmt.getIfClause().getConditionList().getConditions();
-        if (conditions.size() == 1) {
-            return transformSimpleIf(thenPart, elsePart, conditions);
-        } else {
-            return new IfCondList(conditions, thenPart).getResult(elsePart);
-        }
-    }
-
-    private List<JCStatement> transformSimpleIf(Tree.Block thenPart, Tree.Block elsePart,
-            java.util.List<Condition> conditions) {
-        ListBuffer<JCStatement> result = ListBuffer.lb();
-        final Cond transformedCond = transformCondition(conditions.get(0), thenPart);
-        JCStatement cond1 = make().If(transformedCond.makeTest(), makeThenBlock(transformedCond, thenPart), transform(elsePart));
-        if (transformedCond.makeTestVarDecl(0, false) != null) {
-            result.append(transformedCond.makeTestVarDecl(0, false));
-        }
-        result.append(cond1);
-        return result.toList();
+        return new IfCondList(conditions, thenPart, elsePart).getResult();    
     }
     
     private final JCBlock makeThenBlock(Cond cond, Block thenPart) {
@@ -605,12 +626,12 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        public final boolean hasResultDecl() {
+        public boolean hasResultDecl() {
             return true;
         }
         
         @Override
-        public final boolean hasAliasedVariable() {
+        public boolean hasAliasedVariable() {
             return !(getVariable().getType() instanceof Tree.SyntheticVariable);
         }
         
@@ -622,7 +643,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected abstract JCExpression makeDefaultExpr();
         
         @Override
-        public final JCStatement makeTestVarDecl(int flags, boolean init) {
+        public JCStatement makeTestVarDecl(int flags, boolean init) {
             // Temporary variable holding the result of the expression/variable to test
             return make().VarDef(make().Modifiers(flags), testVar.asName(), makeResultType(), init ? makeNull() : null);
         }
@@ -643,29 +664,51 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
+        public boolean hasResultDecl() {
+            
+            return isNothingOptimization() ? false : super.hasResultDecl();
+        }
+
+        /** 
+         * We can optimize "is Nothing x" (but not "is Nothing y = x")
+         * because there can be no unboxing or typecasting of the result
+         */
+        private boolean isNothingOptimization() {
+            return toType.isExactly(typeFact().getNothingDeclaration().getType()) 
+                    && ! hasAliasedVariable();
+        }
+        
+        @Override
+        public JCStatement makeTestVarDecl(int flags, boolean init) {
+         // We can optimize "is Nothing x" (but not "is Nothing y = x")
+            // because there can be no unboxing or typecasting of the result
+            return isNothingOptimization() ? null : super.makeTestVarDecl(flags, init);
+        }
+        
+        @Override
         public JCExpression makeTest() {
             // no need to cast for erasure here
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             at(cond);
             // Assign the expression to test to the temporary variable
-            JCExpression firstTimeTestExpr = make().Assign(testVar.makeIdent(), expr);
+            if (!isNothingOptimization()) {
+                expr = make().Assign(testVar.makeIdent(), expr);
+            }
             
             // Test on the tmpVar in the following condition
-            firstTimeTestExpr = makeTypeTest(firstTimeTestExpr, testVar,
+            expr = makeTypeTest(expr, testVar,
                     // only test the types we're testing for, not the type of
                     // the variable (which can be more precise)
                     cond.getType().getTypeModel());
             if (negate) {
-                firstTimeTestExpr = make().Unary(JCTree.NOT, firstTimeTestExpr);
+                expr = make().Unary(JCTree.NOT, expr);
             }
-            return firstTimeTestExpr;
+            return expr;
         }
         
         @Override
         protected JCExpression makeResultType() {
             at(cond);
-            //ProducedType tmpVarType = specifierExpr.getTypeModel();
-            //return makeJavaType(getVariable().getDeclarationModel().getType(), JT_NO_PRIMITIVES);
             return make().Type(syms().objectType);
         }
         
