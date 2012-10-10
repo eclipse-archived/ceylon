@@ -42,3 +42,16 @@ class Aliases() {
     @error class X() = String|Integer;
     @error interface Y = Container&Identifiable;
 }
+
+interface Li0<U,V> = List<U>;
+@error interface Li1<in E> = List<E>;
+interface Li2<E> = List<E>;
+interface Li3<out E> = List<E>;
+
+interface LL1<out E> = List<List<E>>;
+@error interface LL2<out E> = List<SequenceBuilder<E>>;
+@error interface LL3<out E> = SequenceBuilder<List<E>>;
+
+class Si1<T>(T t) given T satisfies Object = Singleton<T>; 
+@error class Si2<in T>(T t) given T satisfies Object = Singleton<T>; 
+class Si3<out T>(T t) given T satisfies Object = Singleton<T>; 

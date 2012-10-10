@@ -80,6 +80,10 @@ public class TypeArgumentVisitor extends Visitor {
             }
         }
     }
+
+    @Override public void visit(Tree.TypeSpecifier that) {
+    	check(that.getType(), false);
+    }
     
     @Override public void visit(Tree.AnyClass that) {
         super.visit(that);
