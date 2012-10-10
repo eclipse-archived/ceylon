@@ -691,6 +691,16 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Condition that) {
+        ControlBlock cb = new ControlBlock();
+        cb.setId(id++);
+        that.setScope(cb);
+        visitElement(that, cb);
+        enterScope(cb);
+        super.visit(that);
+    }
+    
+    @Override
     public void visit(Tree.Body that) {
         int oid=id;
         id=0;
