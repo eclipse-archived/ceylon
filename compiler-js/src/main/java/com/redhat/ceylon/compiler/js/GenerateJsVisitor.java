@@ -447,7 +447,11 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         //declareSelf(d);
         referenceOuter(d);
-        callInterfaces(that.getSatisfiedTypes(), d, that);
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!prototypeStyle) {
+            new SuperVisitor(superDecs).visit(that.getInterfaceBody());
+        }
+        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
@@ -526,9 +530,14 @@ public class GenerateJsVisitor extends Visitor
         declareSelf(d);
         referenceOuter(d);
         initParameters(that.getParameterList(), d);
-        callSuperclass(that.getExtendedType(), d, that);
-        callInterfaces(that.getSatisfiedTypes(), d, that);
-        copySuperMembers(that.getExtendedType(), that.getClassBody(), d);
+        
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!prototypeStyle) {
+            new SuperVisitor(superDecs).visit(that.getClassBody());
+        }
+        callSuperclass(that.getExtendedType(), d, that, superDecs);
+        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
+        
         that.getClassBody().visit(this);
         returnSelf(d);
         endBlockNewLine();
@@ -547,11 +556,10 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void copySuperMembers(ExtendedType extType, ClassBody body, Class d) {
+    private void copySuperMembers(TypeDeclaration typeDecl, final List<Declaration> decs, ClassOrInterface d) {
         if (!prototypeStyle) {
-            final List<Declaration> decs = new ArrayList<Declaration>();
-            new SuperVisitor(decs).visit(body);
             for (Declaration dec: decs) {
+                if (!typeDecl.isMember(dec)) { continue; }
                 String suffix = names.scopeSuffix(dec.getContainer());
                 if (dec instanceof Value) {
                     superGetterRef(dec,d,suffix);
@@ -572,11 +580,13 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void callSuperclass(ExtendedType extendedType, Class d, Node that) {
+    private void callSuperclass(ExtendedType extendedType, Class d, Node that,
+                final List<Declaration> superDecs) {
         if (extendedType!=null) {
             String suffix = typeReferenceSuffix(extendedType.getType(), d.getContainer());
-            qualify(that, extendedType.getType().getDeclarationModel());
-            out(names.name(extendedType.getType().getDeclarationModel()), suffix, "(");
+            TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
+            qualify(that, typeDecl);
+            out(names.name(typeDecl), suffix, "(");
             for (PositionalArgument arg: extendedType.getInvocationExpression()
                     .getPositionalArgumentList().getPositionalArguments()) {
                 arg.visit(this);
@@ -585,6 +595,8 @@ public class GenerateJsVisitor extends Visitor
             self(d);
             out(");");
             endLine();
+           
+            copySuperMembers(typeDecl, superDecs, d);
         }
     }
 
@@ -599,14 +611,18 @@ public class GenerateJsVisitor extends Visitor
         return suffix;
     }
 
-    private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that) {
+    private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that,
+            final List<Declaration> superDecs) {
         if (satisfiedTypes!=null)
             for (SimpleType st: satisfiedTypes.getTypes()) {
-                qualify(that, st.getDeclarationModel());
-                out(names.name((ClassOrInterface)st.getDeclarationModel()), "(");
+                TypeDeclaration typeDecl = st.getDeclarationModel();
+                qualify(that, typeDecl);
+                out(names.name((ClassOrInterface)typeDecl), "(");
                 self(d);
                 out(");");
                 endLine();
+                
+                copySuperMembers(typeDecl, superDecs, d);
             }
     }
 
@@ -839,9 +855,14 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         instantiateSelf(c);
         referenceOuter(c);
-        callSuperclass(that.getExtendedType(), c, that);
-        callInterfaces(that.getSatisfiedTypes(), c, that);
-        copySuperMembers(that.getExtendedType(), that.getClassBody(), c);
+        
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!prototypeStyle) {
+            new SuperVisitor(superDecs).visit(that.getClassBody());
+        }
+        callSuperclass(that.getExtendedType(), c, that, superDecs);
+        callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
+        
         that.getClassBody().visit(this);
         returnSelf(c);
         indentLevel--;
@@ -874,7 +895,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void superRef(Declaration d, Class sub, String parentSuffix) {
+    private void superRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
             out(".", names.name(d), parentSuffix, "=");
@@ -884,7 +905,7 @@ public class GenerateJsVisitor extends Visitor
         //}
     }
 
-    private void superGetterRef(Declaration d, Class sub, String parentSuffix) {
+    private void superGetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
             out(".", names.getter(d), parentSuffix, "=");
@@ -894,7 +915,7 @@ public class GenerateJsVisitor extends Visitor
         //}
     }
 
-    private void superSetterRef(Declaration d, Class sub, String parentSuffix) {
+    private void superSetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         //if (d.isActual()) {
             self(sub);
             out(".", names.setter(d), parentSuffix, "=");
@@ -1694,9 +1715,14 @@ public class GenerateJsVisitor extends Visitor
         ExtendedType xt = that.getExtendedType();
         final ClassBody body = that.getClassBody();
         SatisfiedTypes sts = that.getSatisfiedTypes();
-        callSuperclass(xt, c, that);
-        copySuperMembers(xt, body, c);
-        callInterfaces(sts, c, that);
+        
+        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        if (!prototypeStyle) {
+            new SuperVisitor(superDecs).visit(that.getClassBody());
+        }
+        callSuperclass(xt, c, that, superDecs);
+        callInterfaces(sts, c, that, superDecs);
+        
         body.visit(this);
         returnSelf(c);
         indentLevel--;
