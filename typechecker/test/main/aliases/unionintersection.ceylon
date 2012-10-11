@@ -32,12 +32,13 @@ void testSwitch(Number nn, C cc) {
 
 void testCanonicalization() {
     Integer|Float i = n;
-    Sequence<Number> ns = {n};
+    @type["Sequence<Number>"] value ns = {n};
     @type["Nothing|Number"] value temp = ns[0];
     print(temp);
     Integer|Float|Nothing t = temp;
     Number? num = t;
-    Number&Object no = t else 1.0;
+    @type["Number"] Number&Object no = t else 1.0;
+    @type["Number"] value noo = temp else 1.0;
     if (is Container num) {
         @type["Number&Container"] value nnn = num;
         Integer&Container|Float&Container numif = num;
