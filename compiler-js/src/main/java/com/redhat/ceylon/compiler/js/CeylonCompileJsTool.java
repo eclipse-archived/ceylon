@@ -170,7 +170,7 @@ public class CeylonCompileJsTool implements Tool {
     @Override
     public void run() throws Exception {
         final Options opts = new Options(getRepos(), getSrc(), null, getOut(), getUser(), getPass(), isOptimize(),
-                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, true);
+                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, true, null);
         Main.run(opts, module);
     }
 
