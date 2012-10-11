@@ -147,7 +147,9 @@ public class Util {
                             if(signature.size() > size+1)
                                 return false;
                             ProducedType sdt = signature.get(size);
-                            if(!matches(pdt, sdt, d))
+                            ProducedType isdt = d.getUnit().getIteratedType(sdt);
+                            ProducedType ipdt = d.getUnit().getIteratedType(pdt);
+                            if(!matches(ipdt, isdt, d))
                                 return false;
                         }else{
                             pdt = d.getUnit().getIteratedType(pdt);
