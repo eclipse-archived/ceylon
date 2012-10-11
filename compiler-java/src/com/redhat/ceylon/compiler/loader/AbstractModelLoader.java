@@ -183,7 +183,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Modules modules;
     protected Map<String, ClassMirror> classMirrorCache = new HashMap<String, ClassMirror>();
     protected boolean binaryCompatibilityErrorRaised = false;
-
+    protected Timer timer;
+    
     /**
      * Loads a given package, if required. This is mostly useful for the javac reflection impl.
      * 
@@ -201,7 +202,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * @return a ClassMirror for the specified class, or null if not found.
      */
     public synchronized final ClassMirror lookupClassMirror(String name){
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             // we use containsKey to be able to cache null results
             if(classMirrorCache.containsKey(name))
@@ -211,7 +212,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             classMirrorCache.put(name, mirror);
             return mirror;
         }finally{
-            Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
     }
 
@@ -617,7 +618,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         //This should be done where the TypeInfo annotation is parsed
         //to avoid retarded errors because of a space after a comma
         typeName = typeName.trim();
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             if ("ceylon.language.Bottom".equals(typeName)) {
                 return new BottomType(typeFactory);
@@ -638,7 +639,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return null;
             return convertToDeclaration(classMirror, declarationType);
         }finally{
-            Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
     }
 
@@ -969,77 +970,77 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     @Override
     public synchronized void complete(LazyInterface iface) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         complete(iface, iface.classMirror);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public synchronized void completeTypeParameters(LazyInterface iface) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeTypeParameters(iface, iface.classMirror);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public synchronized void complete(LazyClass klass) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         complete(klass, klass.classMirror);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public synchronized void completeTypeParameters(LazyClass klass) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeTypeParameters(klass, klass.classMirror);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public synchronized void completeTypeParameters(LazyClassAlias lazyClassAlias) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAliasTypeParameters(lazyClassAlias, lazyClassAlias.classMirror);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
     
     @Override
     public synchronized void completeTypeParameters(LazyInterfaceAlias lazyInterfaceAlias) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAliasTypeParameters(lazyInterfaceAlias, lazyInterfaceAlias.classMirror);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public synchronized void completeTypeParameters(LazyTypeAlias lazyTypeAlias) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAliasTypeParameters(lazyTypeAlias, lazyTypeAlias.classMirror);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public synchronized void complete(LazyInterfaceAlias alias) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
     
     @Override
     public synchronized void complete(LazyClassAlias alias) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
         // must be a class
         Class declaration = (Class) alias.getExtendedType().getDeclaration();
         
         // copy the parameters from the extended type
         alias.setParameterList(declaration.getParameterList());
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     @Override
     public synchronized void complete(LazyTypeAlias alias) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAlias(alias, alias.classMirror, CEYLON_TYPE_ALIAS_ANNOTATION);
-        Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
     private void completeLazyAliasTypeParameters(TypeDeclaration alias, ClassMirror mirror) {
@@ -1678,7 +1679,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     @Override
     public synchronized void complete(LazyValue value) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             MethodMirror meth = null;
             for (MethodMirror m : value.classMirror.getDirectMethods()) {
@@ -1709,13 +1710,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setAnnotations(value, meth);
             markUnboxed(value, meth.getReturnType());
         }finally{
-            Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
     }
 
     @Override
     public synchronized void complete(LazyMethod method) {
-        Timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             MethodMirror meth = null;
             String lookupName = method.getName();
@@ -1748,7 +1749,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
             setAnnotations(method, meth);
         }finally{
-            Timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
      }
     

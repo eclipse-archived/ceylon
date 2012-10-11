@@ -113,6 +113,8 @@ public class LanguageCompiler extends JavaCompiler {
     private CeylonEnter ceylonEnter;
 
     private Options options;
+    
+    private Timer timer;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -210,7 +212,7 @@ public class LanguageCompiler extends JavaCompiler {
         modelLoader = CeylonModelLoader.instance(context);
         ceylonEnter = CeylonEnter.instance(context);
         options = Options.instance(context);
-        Timer.setup(options);
+        timer = Timer.instance(context);
     }
 
     /**
@@ -330,15 +332,15 @@ public class LanguageCompiler extends JavaCompiler {
 
     @Override
     public List<JCCompilationUnit> parseFiles(Iterable<JavaFileObject> fileObjects) {
-        Timer.startTask("parse");
+        timer.startTask("parse");
         List<JCCompilationUnit> trees = super.parseFiles(fileObjects);
-        Timer.startTask("loadCompiledModules");
+        timer.startTask("loadCompiledModules");
         LinkedList<JCCompilationUnit> moduleTrees = new LinkedList<JCCompilationUnit>();
         loadCompiledModules(trees, moduleTrees);
         for (JCCompilationUnit moduleTree : moduleTrees) {
             trees = trees.append(moduleTree);
         }
-        Timer.endTask();
+        timer.endTask();
         return trees;
     }
 
@@ -620,8 +622,8 @@ public class LanguageCompiler extends JavaCompiler {
     
     @Override
     public void generate(Queue<Pair<Env<AttrContext>, JCClassDecl>> queue, Queue<JavaFileObject> results) {
-        Timer.startTask("Generate");
+        timer.startTask("Generate");
         super.generate(queue, results);
-        Timer.endTask();
+        timer.endTask();
     }
 }

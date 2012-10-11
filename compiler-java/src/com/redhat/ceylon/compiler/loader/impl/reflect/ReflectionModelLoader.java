@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.loader.impl.reflect;
 import java.io.File;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.TypeParser;
@@ -49,6 +50,7 @@ public class ReflectionModelLoader extends AbstractModelLoader {
         this.modules = modules;
         this.typeFactory = new Unit();
         this.typeParser = new TypeParser(this, typeFactory);
+        this.timer = new Timer(false);
     }
     
     @Override

@@ -33,8 +33,6 @@ package com.redhat.ceylon.compiler.java;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
-import com.redhat.ceylon.compiler.java.util.Timer;
-
 public class Main extends com.sun.tools.javac.Main {
 
     /**
@@ -60,7 +58,6 @@ public class Main extends com.sun.tools.javac.Main {
      * @param args The command line parameters.
      */
     public static void main(String[] args) throws Exception {
-        Timer.init();
         if (args.length > 0 && args[0].equals("-Xjdb")) {
             String[] newargs = new String[args.length + 2];
             Class<?> c = Class.forName("com.sun.tools.example.debug.tty.TTY");
@@ -73,7 +70,6 @@ public class Main extends com.sun.tools.javac.Main {
             method.invoke(null, new Object[] { newargs });
         } else {
             int code = compile(args);
-            Timer.end();
             System.exit(code);
         }
     }

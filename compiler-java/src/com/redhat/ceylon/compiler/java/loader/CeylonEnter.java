@@ -21,7 +21,6 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
@@ -47,7 +46,6 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -95,6 +93,7 @@ public class CeylonEnter extends Enter {
     private Log log;
     private AbstractModelLoader modelLoader;
     private Options options;
+    private Timer timer;
     private Paths paths;
     private CeyloncFileManager fileManager;
     private JavaCompiler compiler;
@@ -117,6 +116,7 @@ public class CeylonEnter extends Enter {
         log = CeylonLog.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
         options = Options.instance(context);
+        timer = Timer.instance(context);
         paths = Paths.instance(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
         compiler = LanguageCompiler.instance(context);
@@ -130,9 +130,9 @@ public class CeylonEnter extends Enter {
     @Override
     public void main(List<JCCompilationUnit> trees) {
         // complete the javac AST with a completed ceylon model
-        Timer.startTask("prepareForTypeChecking");
+        timer.startTask("prepareForTypeChecking");
         prepareForTypeChecking(trees);
-        Timer.endTask();
+        timer.endTask();
         List<JCCompilationUnit> javaTrees = List.nil();
         List<JCCompilationUnit> ceylonTrees = List.nil();
         if (modelLoader instanceof CeylonModelLoader) {
@@ -143,16 +143,16 @@ public class CeylonEnter extends Enter {
                 else
                     javaTrees = javaTrees.prepend(tree);
             }
-            Timer.startTask("Enter on Java trees");
+            timer.startTask("Enter on Java trees");
             // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
             if(!javaTrees.isEmpty())
                 super.main(javaTrees);
             // now we can type-check the Ceylon code
             completeCeylonTrees(trees);
-            Timer.startTask("Enter on Ceylon trees");
+            timer.startTask("Enter on Ceylon trees");
             // and complete their new trees
             super.main(ceylonTrees);
-            Timer.endTask();
+            timer.endTask();
         }
         else {
             completeCeylonTrees(trees);
@@ -208,11 +208,11 @@ public class CeylonEnter extends Enter {
     
     public void completeCeylonTrees(List<JCCompilationUnit> trees){
         // run the type checker
-        Timer.startTask("Ceylon type checking");
+        timer.startTask("Ceylon type checking");
         typeCheck();
         // some debugging
         //printModules();
-        Timer.startTask("Ceylon code generation");
+        timer.startTask("Ceylon code generation");
         /*
          * Here we convert the ceylon tree to its javac AST, after the typechecker has run
          */
@@ -232,9 +232,9 @@ public class CeylonEnter extends Enter {
                 }
             }
         }
-        Timer.startTask("Ceylon error generation");
+        timer.startTask("Ceylon error generation");
         printGeneratorErrors();
-        Timer.endTask();
+        timer.endTask();
         // write some stats
         if(verbose)
             modelLoader.printStats();

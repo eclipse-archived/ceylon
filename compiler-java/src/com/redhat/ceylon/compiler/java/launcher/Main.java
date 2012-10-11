@@ -47,7 +47,9 @@ import javax.tools.StandardLocation;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.java.util.Timer;
 import com.sun.tools.javac.code.Source;
+import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.jvm.Target;
 import com.sun.tools.javac.main.CommandLine;
 import com.sun.tools.javac.main.JavaCompiler;
@@ -59,11 +61,9 @@ import com.sun.tools.javac.util.ClientCodeException;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.FatalError;
 import com.sun.tools.javac.util.JavacMessages;
-import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.api.Messages;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.PropagatedException;
 
@@ -157,6 +157,9 @@ public class Main extends com.sun.tools.javac.main.Main {
     /** A table of all options that's passed to the JavaCompiler constructor. */
     private Options options = null;
 
+    /** A timer used to calculate task execution times times */
+    private Timer timer = null;
+    
     /**
      * The list of source files to process
      */
@@ -351,8 +354,9 @@ public class Main extends com.sun.tools.javac.main.Main {
      * @param args The command line parameters.
      */
     public int compile(String[] args, Context context, List<JavaFileObject> fileObjects, Iterable<? extends Processor> processors) {
-        if (options == null)
+        if (options == null) {
             options = Options.instance(context); // creates a new one
+        }
 
         filenames = new ListBuffer<File>();
         classnames = new ListBuffer<String>();
@@ -388,6 +392,11 @@ public class Main extends com.sun.tools.javac.main.Main {
                 return EXIT_SYSERR;
             }
 
+            // Set up the timer *after* we've processed to options
+            // because it needs to know if we need logging or not
+            timer = Timer.instance(context);
+            timer.init();
+            
             boolean forceStdOut = options.get("stdout") != null;
             if (forceStdOut) {
                 out.flush();
@@ -456,6 +465,8 @@ public class Main extends com.sun.tools.javac.main.Main {
                 comp.close();
             filenames = null;
             options = null;
+            timer.end();
+            timer = null;
         }
         return EXIT_OK;
     }
