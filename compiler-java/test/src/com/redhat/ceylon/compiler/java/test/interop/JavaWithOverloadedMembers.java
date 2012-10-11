@@ -39,4 +39,5 @@ public class JavaWithOverloadedMembers {
     public void variadic(double... params){}
     public void variadic(Object param){}
     public void variadic(Object... params){}
+    public void variadic(String... params){}
 }
