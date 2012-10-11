@@ -399,7 +399,11 @@ public abstract class AbstractTransformer implements Transformation {
     boolean isNothing(ProducedType type) {
         return type.getSupertype(typeFact.getNothingDeclaration()) != null;
     }
-    
+
+    boolean isNull(ProducedType type) {
+        return type.getSupertype(typeFact.getNullDeclaration().getTypeDeclaration()) != null;
+    }
+
     public boolean isVoid(ProducedType type) {
         return CodegenUtil.isVoid(type);
     }

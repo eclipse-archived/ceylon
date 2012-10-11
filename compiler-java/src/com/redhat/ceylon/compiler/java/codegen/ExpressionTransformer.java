@@ -233,11 +233,20 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if (expectedType != null
                 // don't add cast to an erased type 
-                && (!willEraseToObject(expectedType) || willEraseToList(expectedType))
+                && (!willEraseToObject(expectedType) || willEraseToList(expectedType))) {
+            // special case for returning Nothing expressions
+            if(isNothing(exprType)){
                 // don't add cast for null
-                && !isNothing(exprType)) {
-            // full type erasure
-            if(!willEraseToObject(expectedType) 
+                if(!isNull(exprType)){
+                    // in some cases we may have an instance of Nothing, which is of type java.lang.Object, being
+                    // returned in a context where we expect a String? (aka ceylon.language.String) so even though
+                    // the instance at hand will really be null, we need a up-cast to it
+                    if(!willEraseToObject(expectedType)){
+                        JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
+                        result = make().TypeCast(targetType, result);
+                    }
+                }
+            }else if(!willEraseToObject(expectedType) // full type erasure 
                     && ((exprErased && !isFunctionalResult(exprType))
                             || willEraseToObject(exprType) 
                             || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))){
