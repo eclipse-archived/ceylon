@@ -77,15 +77,18 @@ shared class EqualityAndComparisonOperators() {
         // normal test
         sync := is Boolean foo;
         // unions
-        //FIXME: parser doesn't like that 
-        // sync := is BasicOperatorsA | BasicOperatorsB foo;
+        sync := is BasicOperatorsA | BasicOperatorsB foo;
         // intersections
-        //FIXME: parser doesn't like that
-        // sync := is BasicOperatorsA & BasicOperatorsB foo;
+        sync := is BasicOperatorsA & BasicOperatorsB foo;
+        // type aliases
+        alias Alias1 = BasicOperatorsA | BasicOperatorsB;
+        alias Alias2 = BasicOperatorsA & BasicOperatorsB;
+        sync := is Alias1 foo;
+        sync := is Alias2 foo;
         // erased types
         sync := is IdentifiableObject foo;
         sync := is Exception foo;
         // type parameters
-        //M2: sync := is Sequence<Boolean> foo;
+        //M5: sync := is Sequence<Boolean> foo;
     }
 }

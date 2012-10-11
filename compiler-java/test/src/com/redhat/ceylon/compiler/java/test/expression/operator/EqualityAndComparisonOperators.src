@@ -116,14 +116,42 @@ public class EqualityAndComparisonOperators {
             {
                 .java.lang.Object $ceylontmp5 = foo;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.isIdentifiableObject($ceylontmp5);
+            returning $ceylontmp5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp5 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
         );
         sync = (
             let
             {
                 .java.lang.Object $ceylontmp6 = foo;
             }
-            returning $ceylontmp6 instanceof .java.lang.Throwable;
+            returning $ceylontmp6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp6 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+        );
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp7 = foo;
+            }
+            returning $ceylontmp7 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA || $ceylontmp7 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+        );
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp8 = foo;
+            }
+            returning $ceylontmp8 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA && $ceylontmp8 instanceof .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB;
+        );
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp9 = foo;
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.isIdentifiableObject($ceylontmp9);
+        );
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp10 = foo;
+            }
+            returning $ceylontmp10 instanceof .java.lang.Throwable;
         );
     }
     
