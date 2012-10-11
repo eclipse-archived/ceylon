@@ -235,7 +235,12 @@ public class Main {
             t1=System.nanoTime();
         }
         //getting the type checker does process all types in the source directory
-        typeChecker.process();
+        try {
+            typeChecker.process();
+        } catch (Exception ex) {
+            System.err.println("Unexpected error while compiling");
+            ex.printStackTrace();
+        }
         t2=System.nanoTime();
         JsCompiler jsc = new JsCompiler(typeChecker, opts);
         if (!onlyFiles.isEmpty()) { jsc.setFiles(onlyFiles); }
