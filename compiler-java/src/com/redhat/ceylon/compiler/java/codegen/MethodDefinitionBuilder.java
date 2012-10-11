@@ -310,7 +310,18 @@ public class MethodDefinitionBuilder {
                 || mov instanceof Value && mov.isVariable() && mov.isCaptured()) {
             aliasedName = Naming.getAliasedParameterName(param);
         }
-        return parameter(mods, paramName, aliasedName, param, param, param.getType(), flags);
+        TypedDeclaration nonWideningDecl;
+        ProducedType nonWideningType;
+        if (mov instanceof Value) {
+            ProducedTypedReference typedRef = gen.getTypedReference(mov);
+            ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
+            nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+            nonWideningDecl = nonWideningTypedRef.getDeclaration();
+        }else{
+            nonWideningType = param.getType();
+            nonWideningDecl = param;
+        }
+        return parameter(mods, paramName, aliasedName, param, nonWideningDecl, nonWideningType, flags);
     }
 
     public MethodDefinitionBuilder isOverride(boolean isOverride) {
