@@ -141,13 +141,21 @@ public class Util {
                         if (!matches(pdt, sdt, d)) return false;
                     }
                     if (hasSeqParam) {
-                    	//TODO: handle "spread" ... syntax
                         ProducedType pdt = params.get(size).getType();
-                        pdt = d.getUnit().getIteratedType(pdt);
-                    	for (int j=size; j<signature.size(); j++) {
-                            ProducedType sdt = signature.get(j);
-                            if (!matches(pdt, sdt, d)) return false;
-                    	}
+                        if(ellipsis){
+                            // we must have exactly one spread param
+                            if(signature.size() > size+1)
+                                return false;
+                            ProducedType sdt = signature.get(size);
+                            if(!matches(pdt, sdt, d))
+                                return false;
+                        }else{
+                            pdt = d.getUnit().getIteratedType(pdt);
+                            for (int j=size; j<signature.size(); j++) {
+                                ProducedType sdt = signature.get(j);
+                                if (!matches(pdt, sdt, d)) return false;
+                            }
+                        }
                     }
                     return true;
                 }
