@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -96,6 +97,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                         loadMethod(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
                         refineMembers((com.redhat.ceylon.compiler.typechecker.model.Class)loadObject(k, m, this, null));
+                    } else if (metatype.equals(MetamodelGenerator.METATYPE_ALIAS)) {
+                        loadTypeAlias(k, m, this, null);
                     }
                 } else if (m.get(MetamodelGenerator.KEY_METATYPE) == null) {
                     throw new IllegalArgumentException("Missing metatype from entry " + m);
@@ -540,6 +543,58 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         return type;
     }
 
+    /** Load a type alias, creating it if necessary.
+     * @return The TypeAlias declaration. */
+    @SuppressWarnings("unchecked")
+    private TypeAlias loadTypeAlias(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
+        TypeAlias alias;
+        if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof TypeAlias) {
+            //It's been loaded already
+            alias = (TypeAlias)m.get(MetamodelGenerator.KEY_METATYPE);
+        } else {
+            Declaration maybe = parent.getDirectMember(name, null);
+            if (maybe == null) {
+                alias = new TypeAlias();
+                alias.setContainer(parent);
+                alias.setName(name);
+                alias.setUnit(unit);
+                setAnnotations(alias, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
+                if (parent == this) {
+                    unit.addDeclaration(alias);
+                } else {
+                    parent.getMembers().add(alias);
+                }
+            } else if (maybe instanceof TypeAlias) {
+                alias = (TypeAlias)maybe;
+            } else {
+                throw new IllegalStateException(maybe + " should be an TypeAlias");
+            }
+        }
+        //All interfaces extend Object, except aliases
+        alias.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("$alias"), existing));
+        final List<TypeParameter> tparms = parseTypeParameters(
+                (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), alias, existing);
+        if (tparms != null) {
+            alias.setTypeParameters(tparms);
+        }
+        final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);
+        if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
+            for (TypeParameter _tp : tparms) {
+                if (_tp.getName().equals(m.get(MetamodelGenerator.KEY_SELF_TYPE))) {
+                    alias.setSelfType(_tp.getType());
+                }
+            }
+        }
+        if (m.containsKey("of")) {
+            alias.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.get("of"), allparms));
+        }
+        if (m.containsKey("satisfies")) {
+            alias.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.get("satisfies"), allparms));
+        }
+        m.put(MetamodelGenerator.KEY_METATYPE, alias);
+        return alias;
+    }
+
     /** Looks up a type from model data, creating it if necessary. The returned type will have its
      * type parameters substituted if needed. */
     private ProducedType getTypeFromJson(Map<String, Object> m, List<TypeParameter> typeParams) {
@@ -657,6 +712,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             return loadMethod(name, map, this, existing);
         } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
             return loadObject(name, map, this, existing);
+        } else if (metatype.equals(MetamodelGenerator.METATYPE_ALIAS)) {
+            return loadTypeAlias(name, map, this, existing);
         }
         System.out.println("WTF is this shit " + map);
         return null;
