@@ -1087,6 +1087,7 @@ declarationKeyword
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
     | OBJECT_DEFINITION
+    | ALIAS
     ;
 
 statement returns [Statement statement]
