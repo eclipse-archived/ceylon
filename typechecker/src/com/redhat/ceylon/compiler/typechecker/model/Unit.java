@@ -115,14 +115,14 @@ public class Unit {
      * for the named toplevel declaration.
      */
     public Declaration getImportedDeclaration(String name, 
-            List<ProducedType> signature) {
+            List<ProducedType> signature, boolean ellipsis) {
         for (Import i: getImports()) {
             if (i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
                 //be the "abstraction", so search for the 
                 //correct overloaded version
                 Declaration d = i.getDeclaration();
-                return d.getContainer().getMember(d.getName(), signature);
+                return d.getContainer().getMember(d.getName(), signature, ellipsis);
             }
         }
         return null;
@@ -133,7 +133,7 @@ public class Unit {
      * for the named member declaration.
      */
     public Declaration getImportedDeclaration(TypeDeclaration td, String name, 
-            List<ProducedType> signature) {
+            List<ProducedType> signature, boolean ellipsis) {
         for (Import i: getImports()) {
             TypeDeclaration itd = i.getTypeDeclaration();
 			if (itd!=null && itd.equals(td) && 
@@ -142,7 +142,7 @@ public class Unit {
                 //be the "abstraction", so search for the 
                 //correct overloaded version
                 Declaration d = i.getDeclaration();
-                return d.getContainer().getMember(d.getName(), signature);
+                return d.getContainer().getMember(d.getName(), signature, ellipsis);
             }
         }
         return null;
@@ -188,7 +188,7 @@ public class Unit {
                 return getBottomDeclaration();
             }
             for (Package languageScope : languageModule.getPackages() ) {
-                Declaration d = languageScope.getMember(name, null);
+                Declaration d = languageScope.getMember(name, null, false);
                 if (d != null && d.isShared()) {
                     return d;
                 }

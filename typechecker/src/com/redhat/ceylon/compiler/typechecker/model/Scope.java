@@ -16,10 +16,10 @@ public interface Scope {
 
     public ProducedType getDeclaringType(Declaration d);
 
-    public Declaration getMember(String name, List<ProducedType> signature);
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature);
-    public Declaration getDirectMember(String name, List<ProducedType> signature);
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature);
+    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis);
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis);
+    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis);
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis);
 
     public boolean isInherited(Declaration d);
     public TypeDeclaration getInheritingDeclaration(Declaration d);

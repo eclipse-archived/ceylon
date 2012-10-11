@@ -204,7 +204,7 @@ public class TypeVisitor extends Visitor {
                 }
             }
         }
-        Declaration d = importedPackage.getMember(name, null);
+        Declaration d = importedPackage.getMember(name, null, false);
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name, 100);
@@ -281,7 +281,7 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
-        Declaration m = d.getMember(name, null);
+        Declaration m = d.getMember(name, null, false);
         if (m==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     name + " of " + d.getName(), 100);
@@ -427,14 +427,14 @@ public class TypeVisitor extends Visitor {
 	private static TypeDeclaration getSupertypeDeclaration(Tree.BaseType that, 
 			SupertypeQualifier sq) {
 		String typeName = name(sq.getIdentifier());
-		Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null);
+		Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null, false);
 		if (dec instanceof TypeDeclaration) {
 			/*ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
 			if (ci.getType().getSupertype((TypeDeclaration) dec)==null) {
 				sq.addError("not a supertype of containing class or interface: " +
 						ci.getName() + " does not inherit " + dec.getName());
 			}*/
-			Declaration member = dec.getMember(name(that.getIdentifier()), null);
+			Declaration member = dec.getMember(name(that.getIdentifier()), null, false);
 			if (member instanceof TypeDeclaration) {
 				return (TypeDeclaration) member;
 			}
@@ -496,7 +496,7 @@ public class TypeVisitor extends Visitor {
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             TypeDeclaration d = pt.getDeclaration();
-			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit, null);
+			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), unit, null, false);
             if (type==null) {
                 that.addError("member type declaration does not exist or is ambiguous: " + 
                         name(that.getIdentifier()) +
@@ -949,7 +949,7 @@ public class TypeVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.BaseMemberExpression bme: that.getBaseMemberExpressions()) {
                 //bmes have not yet been resolved
-                TypedDeclaration od = getBaseDeclaration(bme, null);
+                TypedDeclaration od = getBaseDeclaration(bme, null, false);
                 if (od!=null) {
                     ProducedType type = od.getType();
                     TypeDeclaration dec = type.getDeclaration();
@@ -1005,7 +1005,7 @@ public class TypeVisitor extends Visitor {
         if (that.getType() instanceof LocalModifier) {
             //i.e. an attribute initializer parameter
             ValueParameter d = that.getDeclarationModel();
-            Declaration a = that.getScope().getDirectMember(d.getName(), null);
+            Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
             if (a==null) {
                 that.addError("attribute does not exist: " + d.getName());
             }

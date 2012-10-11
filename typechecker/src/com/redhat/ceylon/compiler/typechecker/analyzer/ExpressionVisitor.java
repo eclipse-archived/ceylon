@@ -1330,7 +1330,9 @@ public class ExpressionVisitor extends Visitor {
                         .getPositionalArguments()) {
                     sig.add(pa.getExpression().getTypeModel());
                 }
+                boolean ellipsis = that.getPositionalArgumentList().getEllipsis() != null;
                 ((Tree.MemberOrTypeExpression) that.getPrimary()).setSignature(sig);
+                ((Tree.MemberOrTypeExpression) that.getPrimary()).setEllipsis(ellipsis);
             }
         }
         
@@ -2754,20 +2756,20 @@ public class ExpressionVisitor extends Visitor {
 	private static Declaration getSupertypeDeclaration(Tree.BaseMemberOrTypeExpression that, 
 			SupertypeQualifier sq) {
 		String typeName = name(sq.getIdentifier());
-		Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null);
+		Declaration dec = that.getScope().getMemberOrParameter(that.getUnit(), typeName, null, false);
 		if (dec instanceof TypeDeclaration) {
 			ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
 			if (ci.getType().getSupertype((TypeDeclaration) dec)==null) {
 				sq.addError("not a supertype of containing class or interface: " +
 						ci.getName() + " does not inherit " + dec.getName());
 			}
-			Declaration member = dec.getMember(name(that.getIdentifier()), that.getSignature());
+			Declaration member = dec.getMember(name(that.getIdentifier()), that.getSignature(), that.getEllipsis());
 			if (member!=null && member.isFormal()) {
 				that.addError("supertype member is declared formal: " + 
 						typeName + "::" + member.getName());
 			}
 			Declaration etm = ci.getExtendedTypeDeclaration()
-					.getMember(member.getName(), that.getSignature());
+					.getMember(member.getName(), that.getSignature(), that.getEllipsis());
 			if (etm!=null && !etm.equals(member) && etm.refines(member)) {
 				that.addError("inherited member is refined by intervening superclass: " + 
 						((TypeDeclaration) etm.getContainer()).getName() + 
@@ -2775,7 +2777,7 @@ public class ExpressionVisitor extends Visitor {
 						((TypeDeclaration) member.getContainer()).getName());
 			}
 			for (TypeDeclaration td: ci.getSatisfiedTypeDeclarations()) {
-				Declaration stm = td.getMember(member.getName(), that.getSignature());
+				Declaration stm = td.getMember(member.getName(), that.getSignature(), that.getEllipsis());
 				if (stm!=null && !stm.equals(member) && stm.refines(member)) {
 					that.addError("inherited member is refined by intervening superinterface: " + 
 							((TypeDeclaration) stm.getContainer()).getName() + 
@@ -2798,7 +2800,7 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration member;
         SupertypeQualifier sq = that.getSupertypeQualifier();
 		if (sq==null) {
-        	member = getBaseDeclaration(that, that.getSignature());
+        	member = getBaseDeclaration(that, that.getSignature(), that.getEllipsis());
         }
         else {
         	member = getSupertypeMemberDeclaration(that, sq);
@@ -2857,7 +2859,7 @@ public class ExpressionVisitor extends Visitor {
                 !that.getIdentifier().getText().equals("")) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
             TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()), 
-                    unit, that.getSignature());
+                    unit, that.getSignature(), that.getEllipsis());
             if (member==null) {
                 that.addError("member method or attribute does not exist or is ambiguous: " +
                         name(that.getIdentifier()) + 
@@ -2942,7 +2944,7 @@ public class ExpressionVisitor extends Visitor {
         SupertypeQualifier sq = that.getSupertypeQualifier();
         TypeDeclaration type;
         if (sq==null) {
-        	type = getBaseDeclaration(that, that.getSignature());
+        	type = getBaseDeclaration(that, that.getSignature(), that.getEllipsis());
         }
         else {
         	type = getSupertypeTypeDeclaration(that, sq);
@@ -2992,7 +2994,7 @@ public class ExpressionVisitor extends Visitor {
             if (c.isAbstraction()) { 
                 //if the constructor is overloaded
                 //resolve the right overloaded version
-                Declaration result = findMatchingOverloadedClass(c, that.getSignature());
+                Declaration result = findMatchingOverloadedClass(c, that.getSignature(), that.getEllipsis());
                 if (result!=null && result!=dec) {
                     //patch the reference, which was already
                     //initialized to the abstraction
@@ -3029,7 +3031,7 @@ public class ExpressionVisitor extends Visitor {
         if (pt!=null) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
             TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()), 
-                    unit, that.getSignature());
+                    unit, that.getSignature(), that.getEllipsis());
             if (type==null) {
                 that.addError("member type does not exist or is ambiguous: " +
                         name(that.getIdentifier()) +
@@ -3856,7 +3858,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         //TODO: lots wrong here?
-                        TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName(), null);
+                        TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName(), null, false);
                         at = mtd==null ? null : mtd.getType();
                     }
                     if (at!=null) {

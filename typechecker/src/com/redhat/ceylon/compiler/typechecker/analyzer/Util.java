@@ -28,9 +28,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 class Util {
     
     static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme, 
-            List<ProducedType> signature) {
+            List<ProducedType> signature, boolean ellipsis) {
         Declaration result = bme.getScope().getMemberOrParameter(bme.getUnit(), 
-                name(bme.getIdentifier()), signature);
+                name(bme.getIdentifier()), signature, ellipsis);
         if (result instanceof TypedDeclaration) {
         	return (TypedDeclaration) result;
         }
@@ -41,7 +41,7 @@ class Util {
     
     static TypeDeclaration getBaseDeclaration(Tree.BaseType bt) {
         Declaration result = bt.getScope().getMemberOrParameter(bt.getUnit(), 
-                name(bt.getIdentifier()), null);
+                name(bt.getIdentifier()), null, false);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }
@@ -51,9 +51,9 @@ class Util {
     }
     
     static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte, 
-            List<ProducedType> signature) {
+            List<ProducedType> signature, boolean ellipsis) {
         Declaration result = bte.getScope().getMemberOrParameter(bte.getUnit(), 
-                name(bte.getIdentifier()), signature);
+                name(bte.getIdentifier()), signature, ellipsis);
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }

@@ -197,7 +197,7 @@ public class RefinementVisitor extends Visitor {
 		                !((ClassOrInterface) td).isAbstract()) {
 		            for (Declaration d: st.getDeclaration().getMembers()) {
 		                if (d.isShared() && !errors.contains(d.getName())) {
-		                    Declaration r = td.getMember(d.getName(), null);
+		                    Declaration r = td.getMember(d.getName(), null, false);
 		                    if (r==null) {
 		                        //TODO: This seems to dupe some checks that are already 
 		                        //      done in TypeHierarchyVisitor, resulting in
@@ -284,7 +284,7 @@ public class RefinementVisitor extends Visitor {
                     checkMember(that, dec);
                 }
                 ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
-                Declaration refined = declaringType.getRefinedMember(dec.getName(), null);
+                Declaration refined = declaringType.getRefinedMember(dec.getName(), null, false);
                 dec.setRefinedDeclaration(refined);
             }
 

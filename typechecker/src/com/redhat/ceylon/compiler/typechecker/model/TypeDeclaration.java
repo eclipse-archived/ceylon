@@ -315,13 +315,13 @@ public abstract class TypeDeclaration extends Declaration
      * order and searching supertypes first.
      */
     public Declaration getRefinedMember(String name, 
-            List<ProducedType> signature) {
-        return getRefinedMember(name, signature, 
+            List<ProducedType> signature, boolean ellipsis) {
+        return getRefinedMember(name, signature, ellipsis,
                 new ArrayList<TypeDeclaration>());
     }
 
     private Declaration getRefinedMember(String name, 
-            List<ProducedType> signature, List<TypeDeclaration> visited) {
+            List<ProducedType> signature, boolean ellipsis, List<TypeDeclaration> visited) {
         if (visited.contains(this)) {
             return null;
         }
@@ -329,18 +329,18 @@ public abstract class TypeDeclaration extends Declaration
             visited.add(this);
             TypeDeclaration et = getExtendedTypeDeclaration();
             if (et!=null) {
-                Declaration ed = et.getRefinedMember(name, signature, visited);
+                Declaration ed = et.getRefinedMember(name, signature, ellipsis, visited);
                 if (ed!=null) {
                     return ed;
                 }
             }
             for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-                Declaration sd = st.getRefinedMember(name, signature, visited);
+                Declaration sd = st.getRefinedMember(name, signature, ellipsis, visited);
                 if (sd!=null) {
                     return sd;
                 }
             }
-            return getDirectMember(name, signature);
+            return getDirectMember(name, signature, ellipsis);
         }
     }
     
@@ -350,11 +350,11 @@ public abstract class TypeDeclaration extends Declaration
      * account, followed by supertypes.
      */
     public Declaration getMember(String name, Unit unit, 
-            List<ProducedType> signature) {
+            List<ProducedType> signature, boolean ellipsis) {
         //TODO: does not handle aliased members of supertypes
-        Declaration d = unit.getImportedDeclaration(this, name, signature);
+        Declaration d = unit.getImportedDeclaration(this, name, signature, ellipsis);
         if (d==null) {
-            return getMember(name, signature);
+            return getMember(name, signature, ellipsis);
         }
         else {
             return d;
@@ -367,11 +367,11 @@ public abstract class TypeDeclaration extends Declaration
      */
     @Override
     public Declaration getMember(String name, 
-            List<ProducedType> signature) {
+            List<ProducedType> signature, boolean ellipsis) {
         //first search for the member in the local
         //scope, including non-shared declarations
-        Declaration d = getDirectMember(name, signature);
-        if (d==null) d = getDirectMemberOrParameter(name, signature);
+        Declaration d = getDirectMember(name, signature, ellipsis);
+        if (d==null) d = getDirectMemberOrParameter(name, signature, ellipsis);
         if (d!=null && d.isShared()) {
             //if it's shared, it's what we're 
             //looking for, return it
@@ -379,7 +379,7 @@ public abstract class TypeDeclaration extends Declaration
             //      calling from local scope!
             if (signature!=null && isAbstraction(d)){
                 // look for a supertype decl that matches the signature better
-                Declaration s = getSupertypeDeclaration(name, signature);
+                Declaration s = getSupertypeDeclaration(name, signature, ellipsis);
                 if (s!=null && !isAbstraction(s)) {
                     return s;
                 }
@@ -388,7 +388,7 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             //now look for inherited shared declarations
-            Declaration s = getSupertypeDeclaration(name, signature);
+            Declaration s = getSupertypeDeclaration(name, signature, ellipsis);
             if (s!=null) {
                 return s;
             }
@@ -406,15 +406,15 @@ public abstract class TypeDeclaration extends Declaration
      */
     @Override
     public Declaration getMemberOrParameter(String name, 
-            List<ProducedType> signature) {
+            List<ProducedType> signature, boolean ellipsis) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
         //declarations
-        Declaration d = getDirectMemberOrParameter(name, signature);
+        Declaration d = getDirectMemberOrParameter(name, signature, ellipsis);
         if (d!=null) {
             if (signature!=null && isAbstraction(d)){
                 // look for a supertype decl that matches the signature better
-                Declaration s = getSupertypeDeclaration(name, signature);
+                Declaration s = getSupertypeDeclaration(name, signature, ellipsis);
                 if (s!=null && !isAbstraction(s)) {
                     return s;
                 }
@@ -423,7 +423,7 @@ public abstract class TypeDeclaration extends Declaration
         }
         else {
             //now look for inherited shared declarations
-            return getSupertypeDeclaration(name, signature);
+            return getSupertypeDeclaration(name, signature, ellipsis);
         }
     }
 
@@ -476,7 +476,7 @@ public abstract class TypeDeclaration extends Declaration
                     return false;
                 }
                 else {
-                    Declaration dm = type.getDirectMember(member.getName(), null);
+                    Declaration dm = type.getDirectMember(member.getName(), null, false);
                     return dm!=null && dm.equals(member);
                 }
             }
@@ -489,14 +489,14 @@ public abstract class TypeDeclaration extends Declaration
      * member with the given name.
      * @param signature 
      */
-    private Declaration getSupertypeDeclaration(final String name, final List<ProducedType> signature) {
+    private Declaration getSupertypeDeclaration(final String name, final List<ProducedType> signature, final boolean ellipsis) {
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
                 if (type == TypeDeclaration.this)
                     return false;
-                Declaration d = type.getDirectMember(name, signature);
+                Declaration d = type.getDirectMember(name, signature, ellipsis);
                 if (d!=null && d.isShared()) {
                     // only accept abstractions if we don't have a signature
                     return !Util.isAbstraction(d) || signature == null;
@@ -510,7 +510,7 @@ public abstract class TypeDeclaration extends Declaration
         //that defines the member
         ProducedType st = getType().getSupertype(new Criteria());
         if (st!=null) {
-            return st.getDeclaration().getDirectMember(name, signature);
+            return st.getDeclaration().getDirectMember(name, signature, ellipsis);
         }
         else {
             return null;

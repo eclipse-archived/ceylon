@@ -102,21 +102,21 @@ public class Package
 
     @Override
     public Declaration getDirectMemberOrParameter(String name, 
-            List<ProducedType> signature) {
-        return getDirectMember(name, signature);
+            List<ProducedType> signature, boolean ellipsis) {
+        return getDirectMember(name, signature, ellipsis);
     }
 
     /**
      * Search only inside the package, ignoring imports
      */
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature) {
-        return getDirectMember(name, signature);
+    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+        return getDirectMember(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature) {
-        return lookupMember(getMembers(), name, signature, false);
+    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+        return lookupMember(getMembers(), name, signature, ellipsis, false);
     }
 
     @Override
@@ -130,16 +130,16 @@ public class Package
      */
     @Override
     public Declaration getMemberOrParameter(Unit unit, String name, 
-            List<ProducedType> signature) {
+            List<ProducedType> signature, boolean ellipsis) {
         //this implements the rule that imports hide 
         //toplevel members of a package
         //TODO: would it be better to look in the given unit 
         //      first, before checking imports?
-        Declaration d = unit.getImportedDeclaration(name, signature);
+        Declaration d = unit.getImportedDeclaration(name, signature, ellipsis);
         if (d!=null) {
             return d;
         }
-        d = getDirectMemberOrParameter(name, signature);
+        d = getDirectMemberOrParameter(name, signature, ellipsis);
         if (d!=null) {
             return d;
         }

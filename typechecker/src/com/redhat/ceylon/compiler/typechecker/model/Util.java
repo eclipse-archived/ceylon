@@ -103,11 +103,11 @@ public class Util {
         return false;
     }
 
-    static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d) {
-        return hasMatchingSignature(signature, d, true);
+    static boolean hasMatchingSignature(List<ProducedType> signature, boolean ellipsis, Declaration d) {
+        return hasMatchingSignature(signature, ellipsis, d, true);
     }
     
-    static boolean hasMatchingSignature(List<ProducedType> signature, Declaration d, 
+    static boolean hasMatchingSignature(List<ProducedType> signature, boolean ellipsis, Declaration d, 
     		boolean excludeAbstractClasses) {
         if (excludeAbstractClasses && 
         		d instanceof Class && ((Class) d).isAbstract()) {
@@ -584,7 +584,7 @@ public class Util {
     }*/
     
     public static Declaration lookupMember(List<Declaration> members, String name,
-            List<ProducedType> signature, boolean includeParameters) {
+            List<ProducedType> signature, boolean ellipsis, boolean includeParameters) {
         List<Declaration> results = new ArrayList<Declaration>();
         Declaration inexactMatch = null;
         for (Declaration d: members) {
@@ -613,7 +613,7 @@ public class Util {
                         //of the declaration
                         inexactMatch = d;
                     }
-                    if (hasMatchingSignature(signature, d)) {
+                    if (hasMatchingSignature(signature, ellipsis, d)) {
                         //we have found an exactly matching 
                         //overloaded declaration
                         addIfBetterMatch(results, d);
@@ -653,13 +653,13 @@ public class Util {
     }
     
     public static Declaration findMatchingOverloadedClass(Class abstractionClass, 
-    		List<ProducedType> signature) {
+    		List<ProducedType> signature, boolean ellipsis) {
         List<Declaration> results = new ArrayList<Declaration>();
         if (!abstractionClass.isAbstraction()) {
             return abstractionClass;
         }
         for (Declaration overloaded: abstractionClass.getOverloads()) {
-            if (hasMatchingSignature(signature, overloaded, false)) {
+            if (hasMatchingSignature(signature, ellipsis, overloaded, false)) {
                 addIfBetterMatch(results, overloaded);
             }
         }

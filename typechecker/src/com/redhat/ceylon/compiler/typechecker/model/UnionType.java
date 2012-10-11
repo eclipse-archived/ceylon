@@ -53,7 +53,7 @@ public class UnionType extends TypeDeclaration {
 		        .entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String, DeclarationWithProximity> e = iter.next();
-		    if (getMember(e.getKey(), null)!=null) {
+		    if (getMember(e.getKey(), null, false)!=null) {
 		        result.put(e.getKey(), e.getValue());
 		    }
 		}

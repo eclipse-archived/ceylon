@@ -49,12 +49,12 @@ public abstract class Element {
      * without considering containing scopes or
      * imports.
      */
-    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature) {
-        return getDirectMemberOrParameter(name, signature);
+    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
+        return getDirectMemberOrParameter(name, signature, ellipsis);
     }
 
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
-        return lookupMember(members, name, signature, true);
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
+        return lookupMember(members, name, signature, ellipsis, true);
     }
 
     /**
@@ -62,12 +62,12 @@ public abstract class Element {
      * without considering containing scopes or
      * imports, and ignoring parameters.
      */
-    public Declaration getMember(String name, List<ProducedType> signature) {
-        return getDirectMember(name, signature);
+    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
+        return getDirectMember(name, signature, ellipsis);
     }
 
-    public Declaration getDirectMember(String name, List<ProducedType> signature) {
-        return lookupMember(members, name, signature, false);
+    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+        return lookupMember(members, name, signature, ellipsis, false);
     }
 
     public ProducedType getDeclaringType(Declaration d) {
@@ -83,13 +83,13 @@ public abstract class Element {
      * Search in the given scope, taking into account
      * containing scopes and imports
      */
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
-        Declaration d = getMemberOrParameter(name, signature);
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis) {
+        Declaration d = getMemberOrParameter(name, signature, ellipsis);
         if (d!=null) {
             return d;
         }
         else if (getContainer()!=null) {
-            return getContainer().getMemberOrParameter(unit, name, signature);
+            return getContainer().getMemberOrParameter(unit, name, signature, ellipsis);
         }
         else {
             //union type or bottom type 

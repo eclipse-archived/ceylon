@@ -232,7 +232,7 @@ public class SpecificationVisitor extends Visitor {
         assign(lt);
         if (lt instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
-            Declaration member = getBaseDeclaration(m, null);
+            Declaration member = getBaseDeclaration(m, null, false);
             if (member==declaration) {
                 if (that.getRightTerm()!=null) {
                     that.getRightTerm().visit(this);
@@ -274,7 +274,7 @@ public class SpecificationVisitor extends Visitor {
         //      completely in ExpressionVisitor.checkAssignable()
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
-            Declaration member = getBaseDeclaration(m, null);
+            Declaration member = getBaseDeclaration(m, null, false);
             if (member==declaration) {
                 if (!isVariable()) {
                     if (node instanceof Tree.AssignOp) {
@@ -295,7 +295,7 @@ public class SpecificationVisitor extends Visitor {
         Tree.Term m = that.getBaseMemberExpression();
         assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
-	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m, null);
+	        Declaration member = getBaseDeclaration((Tree.BaseMemberExpression)m, null, false);
 	        if (member==declaration) {
 	            that.getSpecifierExpression().visit(this);
 	            /*if (!declared) {
@@ -429,7 +429,7 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
         if (that.getType() instanceof LocalModifier) {
             ValueParameter d = that.getDeclarationModel();
-            Declaration a = that.getScope().getDirectMember(d.getName(), null);
+            Declaration a = that.getScope().getDirectMember(d.getName(), null, false);
             if (a!=null && a==declaration) {
                 specify();
                 hasParameter = true;
