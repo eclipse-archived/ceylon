@@ -190,16 +190,16 @@ public class TestModuleManager {
     @Test
     public void tmptest() {
         System.out.println("-----------------------");
-        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Sequence", null);
+        ClassOrInterface d0 = (ClassOrInterface)srclang.getDirectMember("Sequence", null, false);
         Assert.assertNotNull("Scalar from srclang", d0);
-        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Sequence", null);
+        ClassOrInterface d1 = (ClassOrInterface)jslang.getDirectMember("Sequence", null, false);
         Assert.assertNotNull("Scalar from jslang", d1);
         System.out.println("src " + d0.getTypeParameters() + " vs " + d1.getTypeParameters());
         compareTypeDeclarations(d0, d1);
-        MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("sort", null);
-        MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("sort", null);
+        MethodOrValue m0 = (MethodOrValue)d0.getDirectMember("sort", null, false);
+        MethodOrValue m1 = (MethodOrValue)d1.getDirectMember("sort", null, false);
         System.out.println("Sequence.sort " + m0 + " vs " + m1);
-        System.out.println("refined member " + d0.getRefinedMember("sort", null).getContainer() + " vs " + d1.getRefinedMember("sort", null).getContainer());
+        System.out.println("refined member " + d0.getRefinedMember("sort", null, false).getContainer() + " vs " + d1.getRefinedMember("sort", null, false).getContainer());
         System.out.println("refined " + m0.getRefinedDeclaration().getContainer() + " vs " + m1.getRefinedDeclaration().getContainer());
     }
 

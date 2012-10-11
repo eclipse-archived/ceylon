@@ -117,7 +117,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             return (com.redhat.ceylon.compiler.typechecker.model.Class)m.get(MetamodelGenerator.KEY_METATYPE);
         } else {
             //Check if it's already been added first
-            Declaration maybe = parent.getDirectMember(name, null);
+            Declaration maybe = parent.getDirectMember(name, null, false);
             if (maybe == null) {
                 //It's not there, so create it
                 if (m.containsKey("$alias")) {
@@ -249,7 +249,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             } else if (!tp.containsKey(MetamodelGenerator.KEY_TYPES)) {
                 throw new IllegalArgumentException("Invalid type parameter map " + tp);
             }
-            Declaration maybe = container.getDirectMemberOrParameter(tparm.getName(), null);
+            Declaration maybe = container.getDirectMemberOrParameter(tparm.getName(), null, false);
             if (maybe instanceof TypeParameter) {
                 //we already had it (from partial loading elsewhere)
                 allparms.add((TypeParameter)maybe);
@@ -423,7 +423,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         //fill refined declarations
         for (Declaration d : coi.getMembers()) {
             if (d.isActual()) {
-                Declaration refined = coi.getRefinedMember(d.getName(), null);
+                Declaration refined = coi.getRefinedMember(d.getName(), null, false);
                 d.setRefinedDeclaration(refined);
             }
             if (d instanceof ClassOrInterface) {
@@ -441,7 +441,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             //it's been loaded
             return (Interface)m.get(MetamodelGenerator.KEY_METATYPE);
         } else {
-            Declaration maybe = parent.getDirectMember(name, null);
+            Declaration maybe = parent.getDirectMember(name, null, false);
             if (maybe == null) {
                 if (m.containsKey("$alias")) {
                     t = new InterfaceAlias();
@@ -511,7 +511,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     /** Loads an object declaration, creating it if necessary, and returns its type declaration. */
     @SuppressWarnings("unchecked")
     private TypeDeclaration loadObject(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
-        Declaration maybe = parent.getDirectMember(name, null);
+        Declaration maybe = parent.getDirectMember(name, null, false);
         if (maybe instanceof Value) {
             return ((Value) maybe).getTypeDeclaration();
         }
@@ -552,7 +552,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             //It's been loaded already
             alias = (TypeAlias)m.get(MetamodelGenerator.KEY_METATYPE);
         } else {
-            Declaration maybe = parent.getDirectMember(name, null);
+            Declaration maybe = parent.getDirectMember(name, null, false);
             if (maybe == null) {
                 alias = new TypeAlias();
                 alias.setContainer(parent);
