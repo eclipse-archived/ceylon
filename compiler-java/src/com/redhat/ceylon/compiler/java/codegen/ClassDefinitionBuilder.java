@@ -425,8 +425,7 @@ public class ClassDefinitionBuilder {
         return type;
     }
 
-    private void initParam(String name, Parameter decl) {
-        JCExpression type = paramType(decl);
+    private void initParam(String name, Parameter decl, JCExpression type) {
         if (decl.isCaptured()) {
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
@@ -455,7 +454,7 @@ public class ClassDefinitionBuilder {
         pdb.defaulted(param.isDefaulted());
         pdb.type(type, gen.makeJavaTypeAnnotations(param));
         parameter(pdb);
-        initParam(name, param);
+        initParam(name, param, type);
         return this;
     }
     
