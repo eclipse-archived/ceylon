@@ -123,11 +123,8 @@ public class Util {
                 if (pls!=null && !pls.isEmpty()) {
                     List<Parameter> params = pls.get(0).getParameters();
                     int size = params.size();
-                    if (pls.get(0).hasSequencedParameter()) {
-                        //ignore sequenced args
-                        //TODO: don't ignore them! check that they 
-                        //      all actually match the sequenced
-                        //      param!
+                    boolean hasSeqParam = pls.get(0).hasSequencedParameter();
+					if (hasSeqParam) {
                         size--;
                         if (signature.size()<size) {
                             return false;
@@ -141,20 +138,15 @@ public class Util {
                         //all Java method params are treated as optional
                         ProducedType pdt = params.get(i).getType();
                         ProducedType sdt = signature.get(i);
-                        if (pdt==null || sdt==null) return false;
-                        ProducedType paramType = d.getUnit().getDefiniteType(pdt);
-                        ProducedType sigType = d.getUnit().getDefiniteType(sdt);
-                        ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
-                        if (ast!=null) sigType = ast;
-                        if (sigType.isSubtypeOf(d.getUnit().getNothingDeclaration().getType())) {
-                            continue;
-                        }
-                        if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
-                        if (!erase(sigType.getDeclaration())
-                                .inherits(erase(paramType.getDeclaration())) &&
-                                underlyingTypesUnequal(paramType, sigType)) {
-                            return false;
-                        }
+                        if (!matches(pdt, sdt, d)) return false;
+                    }
+                    if (hasSeqParam) {
+                        ProducedType pdt = params.get(size).getType();
+                        pdt = d.getUnit().getIteratedType(pdt);
+                    	for (int j=size; j<signature.size(); j++) {
+                            ProducedType sdt = signature.get(j);
+                            if (!matches(pdt, sdt, d)) return false;
+                    	}
                     }
                     return true;
                 }
@@ -166,6 +158,24 @@ public class Util {
         else {
             return false;
         }
+    }
+    
+    private static boolean matches(ProducedType pdt, ProducedType sdt, Declaration d) {
+        if (pdt==null || sdt==null) return false;
+        ProducedType paramType = d.getUnit().getDefiniteType(pdt);
+        ProducedType sigType = d.getUnit().getDefiniteType(sdt);
+        ProducedType ast = sigType.getSupertype(d.getUnit().getArrayDeclaration());
+        if (ast!=null) sigType = ast;
+        if (sigType.isSubtypeOf(d.getUnit().getNothingDeclaration().getType())) {
+            return true;
+        }
+        if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
+        if (!erase(sigType.getDeclaration())
+                .inherits(erase(paramType.getDeclaration())) &&
+                underlyingTypesUnequal(paramType, sigType)) {
+            return false;
+        }
+        return true;
     }
 
     private static boolean underlyingTypesUnequal(ProducedType paramType,
