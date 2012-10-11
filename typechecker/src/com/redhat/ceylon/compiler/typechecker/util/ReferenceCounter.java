@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -37,9 +39,11 @@ public class ReferenceCounter extends Visitor {
     @Override
     public void visit(Tree.SimpleType that) {
         super.visit(that);
-        ProducedType t = that.getTypeModel();
-        if (t!=null) {
-        	inc(t.getDeclaration());
+        TypeDeclaration t = that.getDeclarationModel();
+        if (t!=null && 
+        		!(t instanceof UnionType) && 
+        		!(t instanceof IntersectionType)) {
+        	inc(t);
         }
     }
 }
