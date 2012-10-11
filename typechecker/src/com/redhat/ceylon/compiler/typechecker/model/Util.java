@@ -217,6 +217,9 @@ public class Util {
                 if (!dhsp && rhsp) {
                     return true;
                 }
+                if (dhsp && !rhsp) {
+                    return false;
+                }
                 //ignore sequenced parameters
                 if (dhsp) { dplSize--; }
                 if (rhsp) { dplSize--; }
