@@ -15,7 +15,7 @@ final class variadicOverloadedMethods_ {
         java.variadic(1.0, 2.0);
         java.variadic(new double[]{1.0, 2.0, 3.0});
         java.variadic(.ceylon.language.String.instance("a"));
-        java.variadic(new .java.lang.String[]{"a", "b"});
+        java.variadic("a", "b");
         java.variadic(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"))));
     }
     
