@@ -158,6 +158,10 @@ public class Util {
                                 if (!matches(pdt, sdt, d)) return false;
                             }
                         }
+                    }else if(ellipsis){
+                        // if the method doesn't take sequenced params and we have an ellipsis
+                        // let's not use it since we expect a variadic method
+                        return false;
                     }
                     return true;
                 }
