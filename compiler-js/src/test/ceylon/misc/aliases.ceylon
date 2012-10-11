@@ -1,5 +1,7 @@
 import check { ... }
 
+alias Strinteger = String|Integer;
+
 shared class AliasingClass() {
     shared interface AliasingIface {
         shared Boolean aliasingIface() { return true; }
@@ -35,5 +37,6 @@ void testAliasing() {
     interface AliasedIface2 = AliasingClass.AliasingIface;
     Boolean use(AliasedIface2 aif) { return aif.aliasingIface(); }
     check(use(AliasingSub2().iface), "Aliased member interface");
-    
+    Strinteger xxxxx = 5;
+    check(is Integer xxxxx, "Type alias");
 }
