@@ -22,6 +22,6 @@ shared interface I {
     shared formal Integer? x;
 }
 @nomodel
-shared class C(x, void f()=(){}) satisfies I {
+shared class C(x, Boolean b = false) satisfies I {
     shared actual Integer x;
 }

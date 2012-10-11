@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+public interface I {
+    
+    public abstract .ceylon.language.Integer getX();
+}
+public final class I$impl {
+    
+    public I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this;
+    
+    public final .ceylon.language.Integer getX() {
+        return $this.getX();
+    }
+}
+public class C implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
+    
+    public C(final .ceylon.language.Integer x) {
+        (
+            let
+            {
+                boolean $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.C.$init$b(x);
+                this(x, $ceylontmp$b$1);
+            }
+            returning null;
+        );
+    }
+    
+    public C(.ceylon.language.Integer x, boolean b) {
+        this.x = x;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl(this);
+    }
+    
+    public static boolean $init$b(final .ceylon.language.Integer x) {
+        return false;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this;
+    private final .ceylon.language.Integer x;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getX() {
+        return x;
+    }
+}

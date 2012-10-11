@@ -600,7 +600,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug693_fail() {
+    public void testBug693() {
         compareWithJavaSource("bug06xx/Bug693");
     }
     
