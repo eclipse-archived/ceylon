@@ -11,6 +11,7 @@ final class variadicOverloadedMethods_ {
         java.variadic(1L);
         java.variadic(1L, 2L);
         java.variadic(new long[]{1L, 2L, 3L});
+        java.variadic(.com.redhat.ceylon.compiler.java.Util.toLongArray(new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L))));
         java.variadic(1.0);
         java.variadic(1.0, 2.0);
         java.variadic(new double[]{1.0, 2.0, 3.0});
