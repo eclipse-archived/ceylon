@@ -463,14 +463,14 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 throw new IllegalStateException(maybe + " should be an Interface");
             }
         }
+        final List<TypeParameter> tparms = parseTypeParameters(
+                (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), t, existing);
         //All interfaces extend Object, except aliases
         if (t.isAlias()) {
             t.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("$alias"), existing));
         } else {
             t.setExtendedType(getTypeFromJson(objclass, null));
         }
-        final List<TypeParameter> tparms = parseTypeParameters(
-                (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), t, existing);
         if (tparms != null) {
             t.setTypeParameters(tparms);
         }
@@ -682,7 +682,13 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
         }
         if (rval == null) {
-            System.out.println("couldn't find type " + m.get(MetamodelGenerator.KEY_PACKAGE) + "." + m.get(MetamodelGenerator.KEY_NAME) + " for " + m.get(MetamodelGenerator.KEY_MODULE));
+            try {
+                throw new IllegalArgumentException("Couldn't find type " + m.get(MetamodelGenerator.KEY_PACKAGE)
+                        + "." + m.get(MetamodelGenerator.KEY_NAME) + " for " + m.get(MetamodelGenerator.KEY_MODULE)
+                        + " in " + m + "<" + typeParams + ">");
+            } catch (IllegalArgumentException ex) {
+                ex.printStackTrace();
+            }
         }
         return rval;
     }
