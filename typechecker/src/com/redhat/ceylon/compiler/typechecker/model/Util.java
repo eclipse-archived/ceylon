@@ -236,6 +236,20 @@ public class Util {
                             return false;
                         }
                     }
+                    // check sequenced parameters last
+                    if (dhsp && rhsp){
+                        ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(dplSize).getType());
+                        ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(dplSize).getType());
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        paramType = d.getUnit().getIteratedType(paramType);
+                        otherType = d.getUnit().getIteratedType(otherType);
+                        if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
+                        if (!erase(paramType.getDeclaration())
+                                .inherits(erase(otherType.getDeclaration())) &&
+                            underlyingTypesUnequal(paramType, otherType)) {
+                            return false;
+                        }
+                    }
                     return true;
                 }
             }
