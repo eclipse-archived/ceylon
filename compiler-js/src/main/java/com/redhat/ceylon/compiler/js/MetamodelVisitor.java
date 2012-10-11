@@ -27,16 +27,19 @@ public class MetamodelVisitor extends Visitor {
 
     @Override public void visit(Tree.MethodDeclaration that) {
         gen.encodeMethod(that.getDeclarationModel());
+        super.visit(that);
     }
 
     /** Create and store the model of a method definition. */
     @Override public void visit(Tree.MethodDefinition that) {
         gen.encodeMethod(that.getDeclarationModel());
+        super.visit(that);
     }
 
     /** Create and store the metamodel info for an attribute. */
     @Override public void visit(Tree.AttributeDeclaration that) {
         gen.encodeAttribute(that.getDeclarationModel());
+        super.visit(that);
     }
 
     @Override
@@ -60,6 +63,7 @@ public class MetamodelVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
         gen.encodeGetter(that.getDeclarationModel());
+        super.visit(that);
     }
 
     @Override
