@@ -191,7 +191,7 @@ public class StatementTransformer extends AbstractTransformer {
             stmts = transformCommon(transformedCond, rest, test, 
                     stmts, elseBlock);
             if (subs != null) {
-                subs.remove();
+                subs.close();
             }
             return stmts;
         }
@@ -203,7 +203,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected Substitution getSubstitution(Cond cond) {
             Substitution subs;
             if (cond.hasResultDecl()) {
-                subs = naming.substituteAlias(cond.getVariableName().getUnsubstitutedName());
+                subs = naming.substituteAlias(cond.getVariable().getDeclarationModel());
             } else {
                 subs = null;
             }
@@ -220,7 +220,7 @@ public class StatementTransformer extends AbstractTransformer {
             stmts = transformCommon(intermediate, rest, test, 
                     stmts, intermediateElse);
             if (subs != null) {
-                subs.remove();
+                subs.close();
             }
             return stmts;
         }
@@ -348,7 +348,7 @@ public class StatementTransformer extends AbstractTransformer {
         List<JCStatement> blockStmts = statementGen().transformBlock(thenPart);
         if (subs != null) {
             // The variable holding the result for the code inside the code block
-            blockStmts = blockStmts.prepend(at(cond.getCondition()).VarDef(make().Modifiers(FINAL), subs.substituted.asName(), 
+            blockStmts = blockStmts.prepend(at(cond.getCondition()).VarDef(make().Modifiers(FINAL), names().fromString(subs.substituted), 
                     cond.makeTypeExpr(), cond.makeResultExpr()));
         }
         JCBlock thenBlock = at(cond.getCondition()).Block(0, blockStmts);
@@ -446,12 +446,10 @@ public class StatementTransformer extends AbstractTransformer {
             if (subs == null) {
                 return subs;
             }
-            // XXX hack: We need the substitution to live until we exit the 
-            // scope the variable was declared in, for now we'll have make it 
-            // live forever.
             return naming.new Substitution(subs.original, subs.substituted) {
-                public void remove() {
-                    // That's right, we don't remove it
+                public void close() {
+                    // Don't delegate close(): We need the substitution to 
+                    // live until the end of the declaration's scope
                 }
             };
         }
@@ -657,7 +655,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public final SubstitutedName getVariableName() {
-            return naming.substituted(variable.getIdentifier().getText());
+            return naming.substituted(variable.getDeclarationModel());
         }
         
         @Override
@@ -1360,7 +1358,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCVariableDecl decl2 = at(isCase).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
 
         // Prepare for variable substitution in the following code block
-        String prevSubst = naming.addVariableSubst(name, substVarName.toString());
+        Substitution prevSubst = naming.addVariableSubst(isCase.getVariable().getDeclarationModel(), substVarName.toString());
 
         JCBlock block = transform(caseClause.getBlock());
         List<JCStatement> stats = List.<JCStatement> of(decl2);
@@ -1368,7 +1366,7 @@ public class StatementTransformer extends AbstractTransformer {
         block = at(isCase).Block(0, stats);
 
         // Deactivate the above variable substitution
-        naming.removeVariableSubst(name, prevSubst);
+        prevSubst.close();
 
         last = make().If(cond, block, last);
         return last;

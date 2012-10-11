@@ -32,6 +32,8 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Token;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -1178,10 +1180,10 @@ public class Naming implements LocalId {
     
     class SubstitutedName implements CName {
         
-        private final String name;
+        private TypedDeclaration decl;
         
-        private SubstitutedName(String name) {
-            this.name = name;
+        private SubstitutedName(TypedDeclaration decl) {
+            this.decl = decl;
         }
         
         /**
@@ -1195,7 +1197,7 @@ public class Naming implements LocalId {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((name.toString() == null) ? 0 : name.toString().hashCode());
+            result = prime * result + ((getName().toString() == null) ? 0 : getName().toString().hashCode());
             return result;
         }
 
@@ -1208,10 +1210,10 @@ public class Naming implements LocalId {
             if (getClass() != obj.getClass())
                 return false;
             SyntheticName other = (SyntheticName) obj;
-            if (name.toString() == null) {
-                if (other.name.toString() != null)
+            if (getName().toString() == null) {
+                if (other.getName().toString() != null)
                     return false;
-            } else if (!name.toString().equals(other.name.toString()))
+            } else if (!getName().toString().equals(other.getName().toString()))
                 return false;
             return true;
         }
@@ -1220,11 +1222,11 @@ public class Naming implements LocalId {
          * Returns the name
          */
         public String getName() {
-            return substitute(name);
+            return substitute(decl);
         }
         
         public String getUnsubstitutedName() {
-            return name;
+            return decl.getName();
         }
         
         /**
@@ -1249,8 +1251,8 @@ public class Naming implements LocalId {
             return new SyntheticName(asName());
         }
     }
-    public SubstitutedName substituted(String name) {
-        return new SubstitutedName(name);
+    public SubstitutedName substituted(TypedDeclaration decl) {
+        return new SubstitutedName(decl);
     }
     
     /*
@@ -1258,10 +1260,83 @@ public class Naming implements LocalId {
      */
     
     @SuppressWarnings("serial")
-    protected static class VarMapper extends HashMap<String, String> {
+    protected static class VarMapper {
+        /** 
+         * A key for the substituton map, composed of the declaration's name and
+         * its original declaration's containing scope. This allows 
+         * substitutions to not be block structured (indeed for 
+         * {@link Substitution#close()} to never be called) without 
+         * the substitution leaking outside the (Ceylon) scope in which the 
+         * variable is defined. 
+         */
+        private class SubstitutionKey {
+            private final String name;
+            private final Scope scope;
+            SubstitutionKey(TypedDeclaration decl) {
+                super();
+                this.name = decl.getName();
+                TypedDeclaration orig = decl.getOriginalDeclaration();
+                this.scope = (orig != null ? orig : decl).getContainer();
+            }
+            public String toString() {
+                return name + " in " + scope;
+            }
+            @Override
+            public int hashCode() {
+                final int prime = 31;
+                int result = 1;
+                result = prime * result + getOuterType().hashCode();
+                result = prime * result
+                        + ((name == null) ? 0 : name.hashCode());
+                result = prime * result
+                        + ((scope == null) ? 0 : scope.hashCode());
+                return result;
+            }
+            @Override
+            public boolean equals(Object obj) {
+                if (this == obj)
+                    return true;
+                if (obj == null)
+                    return false;
+                if (getClass() != obj.getClass())
+                    return false;
+                SubstitutionKey other = (SubstitutionKey) obj;
+                if (!getOuterType().equals(other.getOuterType()))
+                    return false;
+                if (name == null) {
+                    if (other.name != null)
+                        return false;
+                } else if (!name.equals(other.name))
+                    return false;
+                if (scope == null) {
+                    if (other.scope != null)
+                        return false;
+                } else if (!scope.equals(other.scope))
+                    return false;
+                return true;
+            }
+            private VarMapper getOuterType() {
+                return VarMapper.this;
+            }
+            
+        }
+        private Map<SubstitutionKey, String> map = new HashMap<>();
+        public String put(TypedDeclaration decl, String value) {
+            return map.put(new SubstitutionKey(decl), value);
+        }
+        public String remove(TypedDeclaration decl) {
+            return map.remove(new SubstitutionKey(decl));
+        }
+        public String get(TypedDeclaration decl) {
+            SubstitutionKey key = new SubstitutionKey(decl);
+            if (map.containsKey(key)) {
+                return map.get(key);
+            }
+            return key.name;
+        }
     }
     
-    private Map<String, String> getVarMapper() {
+    private VarMapper getVarMapper() {
         VarMapper map = context.get(VarMapper.class);
         if (map == null) {
             map = new VarMapper();
@@ -1270,15 +1345,24 @@ public class Naming implements LocalId {
         return map;
     }
     
-    String addVariableSubst(String origVarName, String substVarName) {
-        return getVarMapper().put(origVarName, substVarName);
+    /**
+     * Create a variable substitution for the given declaration, using the 
+     * given substituted name. The substitution will be scoped to the end of 
+     * the declaring scope of the original declaration of the given declaration,
+     * or until {@link Substitution#close()} is called.
+     */
+    Substitution addVariableSubst(TypedDeclaration decl, String substVarName) {
+        return new Substitution(decl, substVarName);
     }
-
-    void removeVariableSubst(String origVarName, String prevSubst) {
-        if (prevSubst != null) {
-            getVarMapper().put(origVarName, prevSubst);
+    
+    /** 
+     * Removes a previously created Substitution 
+     */
+    void removeVariableSubst(Substitution substitution) {
+        if (substitution.previous != null) {
+            getVarMapper().put(substitution.original, substitution.previous);
         } else {
-            getVarMapper().remove(origVarName);
+            getVarMapper().remove(substitution.original);
         }
     }
     
@@ -1286,45 +1370,50 @@ public class Naming implements LocalId {
      * Checks a global map of variable name substitutions and returns
      * either the original name if none was found or the substitute.
      */
-    String substitute(String varName) {
-        if (getVarMapper().containsKey(varName)) {
-            return getVarMapper().get(varName);            
-        } else {
-            return varName;
+    String substitute(Declaration decl) {
+        if (decl instanceof TypedDeclaration) {
+            return getVarMapper().get((TypedDeclaration)decl);
         }
+        return decl.getName();
     }
     
-    class Substitution {
-        public final String original;
-        public final CName substituted;
+    /**
+     * A substitution
+     */
+    class Substitution implements AutoCloseable {
+        public final TypedDeclaration original;
+        public final String substituted;
         public final String previous;
-        private boolean restored = false;
+        private boolean closed = false;
         
-        public Substitution(String original, CName substituted) {
-            this.original = original;
+        Substitution(TypedDeclaration decl, String substituted) {
+            this.original = decl;
             this.substituted = substituted;
-            this.previous = addVariableSubst(original, substituted.getName());
+            this.previous = getVarMapper().put(decl, substituted);
         }
         
         public String toString() {
-            if (restored) {
+            if (closed) {
                 return "Spent substitution";
             }
             return "Substituting " + substituted + " for " + original + " (masking " + previous + ")";
         }
         
-        public void remove() {
-            if (restored) {
+        public void close() {
+            if (closed) {
                 throw new IllegalStateException();
             }
-            removeVariableSubst(original, previous);
-            restored = true;
+            removeVariableSubst(this);
+            closed = true;
         }
     }
-    Substitution substituteAlias(String original) {
-        return new Substitution(original, alias(substitute(original)));
+    /** 
+     * Generates an alias for the given declaration, and adds a 
+     * substitution for the given declaration using this alias. 
+     */
+    Substitution substituteAlias(TypedDeclaration decl) {
+        return addVariableSubst(decl, alias(substitute(decl)).getName());
     }
-    
     
     SyntheticName synthetic(String name) {
         return new SyntheticName(names.fromString(name));

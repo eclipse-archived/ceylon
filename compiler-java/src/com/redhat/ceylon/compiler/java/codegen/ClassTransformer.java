@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -1401,18 +1402,18 @@ public class ClassTransformer extends AbstractTransformer {
             returnNull = isVoid(resultType) && fa.getExpression().getUnboxed();
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
             final java.util.List<com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
+            List<Substitution> substitutions = List.nil();
             for (int ii = 0; ii < lambdaParams.size(); ii++) {
-                naming.addVariableSubst(lambdaParams.get(ii).getIdentifier().getText(), 
-                        defParams.get(ii).getIdentifier().getText());
+                substitutions = substitutions.append(naming.addVariableSubst(lambdaParams.get(ii).getDeclarationModel(), 
+                        defParams.get(ii).getIdentifier().getText()));
             }
             bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), BoxingStrategy.UNBOXED, null);
             bodyExpr = gen().expressionGen().applyErasureAndBoxing(bodyExpr, resultType, 
                     true, 
                     model.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, 
                             resultType);
-            for (int ii = 0; ii < lambdaParams.size(); ii++) {
-                naming.removeVariableSubst(lambdaParams.get(ii).getIdentifier().getText(), 
-                        null);
+            for (Substitution subs : substitutions) {
+                subs.close();
             }
         } else {
             returnNull = isVoid(getReturnTypeOfCallable(term.getTypeModel())) && term.getUnboxed();

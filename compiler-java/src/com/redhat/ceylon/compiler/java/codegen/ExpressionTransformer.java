@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Operators.AssignmentOperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
@@ -1676,7 +1677,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (useGetter) {
                     selector = naming.selector((TypedDeclaration)decl);
                 } else {
-                    selector = naming.substitute(decl.getName());
+                    selector = naming.substitute(decl);
                 }
             }
             
@@ -1932,7 +1933,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         //Iterator fields
         final ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
         final HashSet<String> fieldNames = new HashSet<String>();
-        final HashMap<String,String> fieldSubst = new HashMap<String,String>();
+        final ListBuffer<Substitution> fieldSubst = new ListBuffer<Substitution>();
         private JCExpression error;
         public ComprehensionTransformation(final Comprehension comp) {
             this.comp = comp;
@@ -1996,8 +1997,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                         List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), List.<JCExpression>nil(),
                         make().Block(0, List.<JCStatement>of(make().Return(iterator))), null)
             )));
-            for (Map.Entry<String, String> e : fieldSubst.entrySet()) {
-                naming.removeVariableSubst(e.getValue(), e.getKey());
+            for (Substitution subs : fieldSubst) {
+                subs.close();
             }
             return iterable;
         }
@@ -2037,8 +2038,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (transformedCond.hasResultDecl()) {
                     Variable var = transformedCond.getVariable();
                     SyntheticName resultVarName = naming.alias(transformedCond.getVariableName().getName());
-                    fieldSubst.put(naming.addVariableSubst(var.getDeclarationModel().getName(), resultVarName.getName()),
-                            var.getDeclarationModel().getName());
+                    fieldSubst.add(naming.addVariableSubst(var.getDeclarationModel(), resultVarName.getName()));
                     return resultVarName;
                 }
                 return null;
