@@ -477,8 +477,18 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
     @Override
     protected final void compute() {
         int numArguments = getNumArguments();
+        boolean wrapIntoArray = false;
+        ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
             final JCExpression expr;
+            // for Java methods of variadic primitives, it's better to wrap them ourselves into an array
+            // to avoid ambiguity of foo(1,2) for foo(int...) and foo(Object...) methods
+            if(!wrapIntoArray
+                    && isParameterSequenced(argIndex)
+                    && isJavaMethod()
+                    && getParameterBoxingStrategy(argIndex) == BoxingStrategy.UNBOXED
+                    && !dontBoxSequence())
+                wrapIntoArray = true;
             if (!isParameterSequenced(argIndex)
                     || dontBoxSequence()
                     || isJavaMethod()) {
@@ -492,7 +502,16 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
                 }
                 expr = gen.makeSequence(x, iteratedType, JT_TYPE_ARGUMENT);
             }
-            appendArgument(expr);
+            if(!wrapIntoArray)
+                appendArgument(expr);
+            else
+                arrayWrap.append(expr);
+        }
+        if(wrapIntoArray){
+            // must have at least one arg, so take the last one
+            ProducedType parameterType = getParameterType(numArguments-1);
+            JCExpression arrayType = gen.makeJavaType(parameterType);
+            appendArgument(gen.make().NewArray(arrayType, List.<JCExpression>nil(), arrayWrap.toList()));
         }
     }
 
