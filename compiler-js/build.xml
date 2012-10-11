@@ -185,6 +185,12 @@
             description="Publish Ceylon JS compiler module to default repo">
     </target>
 
+    <target name="ide" depends="dist">
+        <copy overwrite="true"
+              file="${ceylon.js.lib}"
+              tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.js-0.4-ide.jar"/>
+    </target>
+
     <target name="publish-internal">
         <copy todir="${ceylon.repo.dir}">
             <fileset dir="${build.dist}"/>
