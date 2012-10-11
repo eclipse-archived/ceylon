@@ -1,6 +1,6 @@
 import check { ... }
 
-alias Strinteger = String|Integer;
+shared alias Strinteger = String|Integer;
 
 shared class AliasingClass() {
     shared interface AliasingIface {
@@ -68,6 +68,6 @@ void testAliasing() {
     check(use(AliasingSub2().iface), "Aliased member interface");
     Strinteger xxxxx = 5;
     check(is Integer xxxxx, "Type alias");
-    print(Listleton<Integer>({{1},{2},{3}}.first));
-    print(MiMatrix(2));
+    check(Listleton<Integer>({{1},{2},{3}}.first).string=="{ { 1 } }", "class alias");
+    check(MiMatrix(2).string=="{ { 1, 2 }, { 1, 2 } }", "interface alias");
 }
