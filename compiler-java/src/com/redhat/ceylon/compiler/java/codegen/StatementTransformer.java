@@ -67,6 +67,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
+import com.sun.tools.javac.tree.JCTree.JCBreak;
 import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
@@ -167,9 +168,55 @@ public class StatementTransformer extends AbstractTransformer {
         protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
             return transformList(rest);
         }
+        
+        public abstract List<JCStatement> getResult();
     }
     
-    class IfCondList extends CondList {
+    abstract class BlockCondList extends CondList {
+
+        public BlockCondList(java.util.List<Condition> conditions,
+                Block thenPart) {
+            super(conditions, thenPart);
+        }
+        
+        @Override
+        protected final List<JCStatement> transformInnermost(Condition condition) {
+            Cond transformedCond = transformCondition(condition, thenPart);
+            // Note: The innermost test happens outside the substitution scope
+            JCExpression test = transformedCond.makeTest();
+            JCStatement elseBlock = transformInnermostElse(transformedCond);
+            Substitution subs = getSubstitution(transformedCond);
+            List<JCStatement> stmts = transformInnermostThen(transformedCond);
+            stmts = transformCommon(transformedCond, test, stmts, elseBlock);
+            if (subs != null) {
+                subs.remove();
+            }
+            return stmts;
+        }
+        
+        protected abstract List<JCStatement> transformInnermostThen(Cond transformedCond);
+
+        protected abstract JCStatement transformInnermostElse(Cond transformedCond);
+
+        @Override
+        protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
+            Cond intermediate = transformCondition(condition, null);
+            JCExpression test = intermediate.makeTest();
+            Substitution subs = getSubstitution(intermediate);
+            List<JCStatement> stmts = transformList(rest);
+            stmts = transformCommon(intermediate, test, stmts, transformIntermediateElse());
+            if (subs != null) {
+                subs.remove();
+            }
+            return stmts;
+        }
+
+        protected abstract JCStatement transformIntermediateElse();
+        
+        protected abstract List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts, JCStatement elseBlock);
+    }
+    
+    class IfCondList extends BlockCondList {
 
         final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
         final SyntheticName ifVar = naming.temp("if");
@@ -194,15 +241,12 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected List<JCStatement> transformInnermost(Condition condition) {
-            Cond transformedCond = transformCondition(condition, thenPart);
-            // Note: The innermost test happens outside the substitution scope
-            JCExpression test = transformedCond.makeTest();
-            JCBlock elseBlock = null;
-            if (!isDeferred()) {
-                elseBlock = transform(this.elsePart);
-            }
-            Substitution subs = getSubstitution(transformedCond);
+        protected JCBreak transformIntermediateElse() {
+            return null;
+        }
+
+        @Override
+        protected List<JCStatement> transformInnermostThen(Cond transformedCond) {
             List<JCStatement> stmts;
             if (isDeferred()) {
                 stmts = List.<JCStatement>of(make().Exec(make().Assign(ifVar.makeIdent(), makeBoolean(true))));
@@ -210,26 +254,20 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 stmts = makeThenBlock(transformedCond, thenPart, null).getStatements();   
             }
-            stmts = transformCommon(transformedCond, test, stmts, elseBlock);
-            if (subs != null) {
-                subs.remove();
-            }
             return stmts;
         }
-        
-        protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
-            Cond intermediate = transformCondition(condition, null);
-            JCExpression test = intermediate.makeTest();
-            Substitution subs = getSubstitution(intermediate);
-            List<JCStatement> stmts = transformList(rest);
-            stmts = transformCommon(intermediate, test, stmts, null);
-            if (subs != null) {
-                subs.remove();
+
+        @Override
+        protected JCStatement transformInnermostElse(Cond transformedCond) {
+            JCBlock elseBlock = null;
+            if (!isDeferred()) {
+                elseBlock = transform(this.elsePart);
             }
-            return stmts;
+            return elseBlock;
         }
         
-        protected List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts, JCBlock elseBlock) {
+        @Override
+        protected List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts, JCStatement elseBlock) {
             if (transformedCond.makeTestVarDecl(0, false) != null) {
                 varDecls.append(transformedCond.makeTestVarDecl(0, false));
             }
@@ -268,6 +306,7 @@ public class StatementTransformer extends AbstractTransformer {
             return stmts;
         }
         
+        @Override
         public List<JCStatement> getResult() {
             List<JCStatement> stmts = transformList(conditions);
             ListBuffer<JCStatement> result = ListBuffer.lb();
@@ -281,6 +320,8 @@ public class StatementTransformer extends AbstractTransformer {
             }
             return result.toList();   
         }
+
+ 
     }
     
     List<JCStatement> transform(Tree.IfStatement stmt) {
@@ -323,39 +364,29 @@ public class StatementTransformer extends AbstractTransformer {
         return res;
     }
     
-    class WhileCondList extends CondList {
+    class WhileCondList extends BlockCondList {
 
         private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
         public WhileCondList(java.util.List<Condition> conditions, Block thenPart) {
             super(conditions, thenPart);
         }
+        
+        @Override
+        protected JCBreak transformIntermediateElse() {
+            return make().Break(null);
+        }
 
         @Override
-        protected List<JCStatement> transformInnermost(Condition condition) {
-            Cond transformedCond = transformCondition(condition, thenPart);
-            // Note: The innermost test happens outside the substitution scope
-            JCExpression test = transformedCond.makeTest();
-            Substitution subs = getSubstitution(transformedCond);
-            List<JCStatement> stmts = makeThenBlock(transformedCond, thenPart, null).getStatements();
-            stmts = transformCommon(transformedCond, test, stmts, make().Break(null));
-            if (subs != null) {
-                subs.remove();
-            }
-            return stmts;
+        protected List<JCStatement> transformInnermostThen(Cond transformedCond) {
+            return makeThenBlock(transformedCond, thenPart, null).getStatements();   
+        }
+
+        @Override
+        protected JCStatement transformInnermostElse(Cond transformedCond) {
+            return make().Break(null);
         }
         
-        protected List<JCStatement> transformIntermediate(Condition condition, java.util.List<Condition> rest) {
-            Cond intermediate = transformCondition(condition, null);
-            JCExpression test = intermediate.makeTest();
-            Substitution subs = getSubstitution(intermediate);
-            List<JCStatement> stmts = transformList(rest);
-            stmts = transformCommon(intermediate, test, stmts, make().Break(null));
-            if (subs != null) {
-                subs.remove();
-            }
-            return stmts;
-        }
-        
+        @Override
         protected List<JCStatement> transformCommon(Cond transformedCond, JCExpression test, List<JCStatement> stmts, JCStatement elseBlock) {
             if (transformedCond.makeTestVarDecl(0, false) != null) {
                 varDecls.append(transformedCond.makeTestVarDecl(0, false));
@@ -375,6 +406,7 @@ public class StatementTransformer extends AbstractTransformer {
             return stmts;
         }
         
+        @Override
         public List<JCStatement> getResult() {
             List<JCStatement> stmts = transformList(conditions);
             ListBuffer<JCStatement> result = ListBuffer.lb();
@@ -383,6 +415,7 @@ public class StatementTransformer extends AbstractTransformer {
             return List.<JCStatement>of(make().WhileLoop(makeBoolean(true), 
                     make().Block(0, result.toList())));
         }
+
     }
     
     List<JCStatement> transform(Tree.Assertion ass) {
@@ -443,6 +476,7 @@ public class StatementTransformer extends AbstractTransformer {
             return transformCommon(transformedCond, stmts, Collections.<Tree.Condition>emptyList());
         }
         
+        @Override
         protected List<JCStatement> transformIntermediate(Tree.Condition condition, java.util.List<Tree.Condition> rest) {
             return transformCommon(transformCondition(condition, null), transformList(rest), rest);
         }
@@ -491,6 +525,7 @@ public class StatementTransformer extends AbstractTransformer {
             return stmts;
         }
         
+        @Override
         public List<JCStatement> getResult() {
             List<JCStatement> stmts = transformList(conditions);
             ListBuffer<JCStatement> result = ListBuffer.lb();
