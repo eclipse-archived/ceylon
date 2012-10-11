@@ -27,15 +27,17 @@ public class Options {
     private boolean version;
     private boolean stdin;
     private boolean gensrc = true;
+    private String encoding = "UTF-8";
 
     public Options(List<String> repositories, List<String> sourceDirectories, String systemRepository,
             String outputRepository, String username, String password,
             boolean protoStyle, boolean wrapModules, boolean useIndent, boolean useComments, boolean verbosity,
-            boolean showTimes, boolean fromStdin, boolean generateSrcArchive) {
+            boolean showTimes, boolean fromStdin, boolean generateSrcArchive,
+            String srcEncoding) {
         repos = repositories;
         srcDirs = sourceDirectories;
-        systemRepo = systemRepository;
-        outDir = outputRepository;
+        if (systemRepository != null) systemRepo = systemRepository;
+        if (outputRepository != null) outDir = outputRepository;
         username = user;
         pass = password;
         optimize = protoStyle;
@@ -46,6 +48,7 @@ public class Options {
         profile = showTimes;
         stdin = fromStdin;
         gensrc = generateSrcArchive;
+        if (srcEncoding != null) encoding = srcEncoding;
     }
 
     private Options() {}
@@ -98,6 +101,8 @@ public class Options {
                         opts.srcDirs.add(v);
                     } else if ("-out".equals(s)) {
                         opts.outDir=v;
+                    } else if ("-encoding".equals(s)) {
+                        opts.encoding = v;
                     } else {
                         System.err.printf("Unrecognized option %s %s%n", s, v);
                     }
@@ -220,6 +225,10 @@ public class Options {
     }
     public boolean isHelp() {
         return help;
+    }
+    /** The character encoding to use when reading source files. */
+    public String getEncoding() {
+        return encoding;
     }
 
     /** Sets the option to generate the source archive or skip it.
