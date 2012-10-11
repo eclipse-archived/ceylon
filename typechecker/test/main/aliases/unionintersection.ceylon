@@ -20,3 +20,12 @@ class Outer() {
 }
 
 Outer.Cs cs = Outer().cs;
+
+void testSwitch(Number nn, C cc) {
+    switch (nn)
+    case (is Integer) {}
+    case (is Float) {}
+    print(cc.empty);
+    print(cc.contains(1.0));
+    print("hello" in cc);
+}
