@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -116,7 +117,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             Declaration maybe = parent.getDirectMember(name, null);
             if (maybe == null) {
                 //It's not there, so create it
-                cls = new com.redhat.ceylon.compiler.typechecker.model.Class();
+                if (m.containsKey("$alias")) {
+                    cls = new com.redhat.ceylon.compiler.typechecker.model.ClassAlias();
+                } else {
+                    cls = new com.redhat.ceylon.compiler.typechecker.model.Class();
+                }
                 cls.setAbstract(m.containsKey("abstract"));
                 setAnnotations(cls, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
                 cls.setAnonymous(m.containsKey("$anon"));
@@ -435,7 +440,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         } else {
             Declaration maybe = parent.getDirectMember(name, null);
             if (maybe == null) {
-                t = new Interface();
+                if (m.containsKey("$alias")) {
+                    t = new InterfaceAlias();
+                } else {
+                    t = new Interface();
+                }
                 t.setContainer(parent);
                 t.setName(name);
                 t.setUnit(unit);
@@ -451,8 +460,12 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 throw new IllegalStateException(maybe + " should be an Interface");
             }
         }
-        //All interfaces extend Object
-        t.setExtendedType(getTypeFromJson(objclass, null));
+        //All interfaces extend Object, except aliases
+        if (t.isAlias()) {
+            t.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("$alias"), existing));
+        } else {
+            t.setExtendedType(getTypeFromJson(objclass, null));
+        }
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), t, existing);
         if (tparms != null) {
