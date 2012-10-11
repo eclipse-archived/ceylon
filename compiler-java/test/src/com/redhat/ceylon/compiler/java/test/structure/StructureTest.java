@@ -487,9 +487,8 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("alias/LocalClassAlias");
     }
 
-    // depends on spec: local type aliases not implemented yet
     @Test
-    public void testAlsLocalTypeAlias_fail() {
+    public void testAlsLocalTypeAlias() {
         compareWithJavaSource("alias/LocalTypeAlias");
     }
 
@@ -503,9 +502,8 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("alias/MemberClassAlias");
     }
 
-    // depends on spec: local type aliases not implemented yet
     @Test
-    public void testAlsMemberTypeAlias_fail() {
+    public void testAlsMemberTypeAlias() {
         compareWithJavaSource("alias/MemberTypeAlias");
     }
 
@@ -550,7 +548,8 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testAlsTypeAliasFromModelLoader() {
         compile("alias/TypeAlias.ceylon", 
-                "alias/TypeAliasWithTypeParameters.ceylon");
+                "alias/TypeAliasWithTypeParameters.ceylon",
+                "alias/MemberTypeAlias.ceylon");
         compareWithJavaSource("alias/TypeAliasFromModelLoader");
     }
 

@@ -1,7 +1,5 @@
 void localTypeAliasMethod(){
-    @nomodel
     class TypeAliasClass(){}
-    @nomodel
     interface TypeAliasInterface{}
     
     alias TypeAlias1 = TypeAliasClass & TypeAliasInterface;
