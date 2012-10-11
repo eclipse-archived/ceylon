@@ -589,6 +589,9 @@ public class GenerateJsVisitor extends Visitor
         if (extendedType!=null) {
             String suffix = typeReferenceSuffix(extendedType.getType(), d.getContainer());
             TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
+            if (typeDecl.isAlias()) {
+                typeDecl = typeDecl.getExtendedTypeDeclaration();
+            }
             qualify(that, typeDecl);
             out(names.name(typeDecl), suffix, "(");
             for (PositionalArgument arg: extendedType.getInvocationExpression()
@@ -617,9 +620,12 @@ public class GenerateJsVisitor extends Visitor
 
     private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that,
             final List<Declaration> superDecs) {
-        if (satisfiedTypes!=null)
+        if (satisfiedTypes!=null) {
             for (SimpleType st: satisfiedTypes.getTypes()) {
                 TypeDeclaration typeDecl = st.getDeclarationModel();
+                if (typeDecl.isAlias()) {
+                    typeDecl = typeDecl.getExtendedTypeDeclaration();
+                }
                 qualify(that, typeDecl);
                 out(names.name((ClassOrInterface)typeDecl), "(");
                 self(d);
@@ -628,6 +634,7 @@ public class GenerateJsVisitor extends Visitor
                 
                 copySuperMembers(typeDecl, superDecs, d);
             }
+        }
     }
 
     /** Generates a function to initialize the specified type. */
@@ -697,9 +704,13 @@ public class GenerateJsVisitor extends Visitor
 
         if (satisfiedTypes != null) {
             for (SimpleType satType : satisfiedTypes.getTypes()) {
+                TypeDeclaration tdec = satType.getDeclarationModel();
+                if (tdec.isAlias()) {
+                    tdec = tdec.getExtendedTypeDeclaration();
+                }
                 String fname = typeFunctionName(satType, true);
                 //Actually it could be "if not in same module"
-                if (declaredInCL(satType.getDeclarationModel())) {
+                if (declaredInCL(tdec)) {
                     out(",", fname);
                 } else {
                     int idx = fname.lastIndexOf('.');
