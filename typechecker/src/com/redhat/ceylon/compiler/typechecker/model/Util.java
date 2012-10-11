@@ -222,7 +222,7 @@ public class Util {
                 }
                 //ignore sequenced parameters
                 if (dhsp) { dplSize--; }
-                if (rhsp) { dplSize--; }
+                if (rhsp) { rplSize--; }
                 if (dplSize==rplSize) {
                     //if all parameters are of more specific
                     //or equal type, prefer it
