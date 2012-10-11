@@ -1,0 +1,84 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+class Bug667TopClass {
+    
+    Bug667TopClass() {
+    }
+    
+    public .ceylon.language.String getGet() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass();
+    }
+}
+class Bug667BottomClass extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass {
+    
+    Bug667BottomClass(.java.lang.Object n) {
+        super();
+        this.n = n;
+    }
+    private final .java.lang.Object n;
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getGet() {
+        return (.ceylon.language.String)n;
+    }
+    
+    public final .ceylon.language.String perhaps() {
+        return (.ceylon.language.String)n;
+    }
+}
+interface Bug667Interface<T> {
+    
+    public T getGet();
+}
+final class Bug667Interface$impl<T> {
+    
+    Bug667Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<T> $this;
+    
+    public final T getGet() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+class Bug667Class<Null> implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
+    
+    Bug667Class(Null n) {
+        this.n = n;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(this);
+    }
+    private final Null n;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getGet() {
+        return (.ceylon.language.String)n;
+    }
+}
+final class bug667Method_ {
+    
+    private bug667Method_() {
+    }
+    
+    static <Null>void bug667Method(final Null n) {
+        
+        final class x_ implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
+            
+            private x_() {
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(this);
+            }
+            
+            @.java.lang.Override
+            public final .ceylon.language.String getGet() {
+                return (.ceylon.language.String)n;
+            }
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this;
+        }
+        final x_ x = new x_();
+    }
+}
