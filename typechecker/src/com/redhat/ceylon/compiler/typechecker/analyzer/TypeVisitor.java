@@ -520,12 +520,12 @@ public class TypeVisitor extends Visitor {
         if (tal!=null) tal.setTypeModels(ta);
         //if (acceptsTypeArguments(dec, ta, tal, that)) {
             ProducedType pt = dec.getProducedType(ot, ta);
-            if (!dec.isAlias()) {
+//            if (!dec.isAlias()) {
             	//TODO: remove this awful hack which means
             	//      we can't define aliases for types
             	//      with sequenced type parameters
             	dec = pt.getDeclaration();
-            }
+//            }
             that.setTypeModel(pt);
             that.setDeclarationModel(dec);
         //}

@@ -613,13 +613,4 @@ public abstract class TypeDeclaration extends Declaration
         }
     }
 
-    ProducedType aliasType(ProducedType outerType, List<ProducedType> typeArguments) {
-    	if (getExtendedType() == null) {
-    		return new UnknownType(unit).getType();
-    	}
-    	else {
-    		return getExtendedType().substitute(arguments(this, outerType, typeArguments));
-    	}
-    }
-
 }

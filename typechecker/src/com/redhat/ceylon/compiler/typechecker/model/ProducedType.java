@@ -36,7 +36,7 @@ public class ProducedType extends ProducedReference {
      * given type? 
      */
     public boolean isExactly(ProducedType type) {
-        return isExactly(type, true);
+        return resolveAliases().isExactly(type.resolveAliases(), true);
     }
     
     public boolean isExactly(ProducedType type, boolean selfTypesSame) {
@@ -197,7 +197,7 @@ public class ProducedType extends ProducedReference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(ProducedType type) {
-        return type!=null && isSubtypeOf(type, null);
+        return type!=null && resolveAliases().isSubtypeOf(type.resolveAliases(), null);
     }
     
     /**
@@ -1556,6 +1556,29 @@ public class ProducedType extends ProducedReference {
 
     public void setRaw(boolean isRaw) {
         this.isRaw = isRaw;
+    }
+    
+    public ProducedType resolveAliases() {
+    	TypeDeclaration d = getDeclaration();
+    	List<ProducedType> args = getTypeArgumentList();
+    	List<ProducedType> aliasedArgs = new ArrayList<ProducedType>(args.size());
+    	for (ProducedType arg: args) {
+    		aliasedArgs.add(arg.resolveAliases());
+    	}
+    	ProducedType qt = getQualifyingType();
+    	ProducedType aliasedQualifyingType = qt==null ? 
+    			null : qt.resolveAliases();
+    	if (d.isAlias()) {
+    		ProducedType et = d.getExtendedType();
+			if (et == null) {
+    			return new UnknownType(d.getUnit()).getType();
+    		}
+    		return et.resolveAliases()
+    				.substitute(arguments(d, aliasedQualifyingType, aliasedArgs));
+    	}
+    	else {
+    		return d.getProducedType(aliasedQualifyingType, aliasedArgs);
+    	}
     }
     
 }

@@ -1896,7 +1896,7 @@ public class ExpressionVisitor extends Visitor {
                     Collections.<ProducedType>emptyList()).getFullType();
             //argType = ta.getType().getTypeModel();
         }
-        checkAssignable(argType, pr.getTypedParameter(p.getAliasedParameter()).getFullType(), 
+        checkAssignable(argType, pr.getTypedParameter(p).getFullType(), 
                 a, "named argument must be assignable to parameter " + 
                 p.getName() + " of " + pr.getDeclaration().getName(), 
                 2100);
@@ -1907,8 +1907,7 @@ public class ExpressionVisitor extends Visitor {
         a.setParameter(p);
         List<Tree.Expression> es = a.getExpressionList().getExpressions();
         Tree.Ellipsis ell = a.getEllipsis();
-        ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
-                .getFullType();
+        ProducedType paramType = pr.getTypedParameter(p).getFullType();
         if (ell==null) {
             for (Tree.Expression e: es) {
                 if (paramType==null) {
@@ -1933,8 +1932,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkComprehensionArgument(Tree.Comprehension ch, ProducedReference pr, 
             Parameter p) {
         //a.setParameter(p); //TODO!!!!!!
-        ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
-                .getFullType();
+        ProducedType paramType = pr.getTypedParameter(p).getFullType();
         if (paramType==null) {
             paramType = new UnknownType(ch.getUnit()).getType();
         }
@@ -1984,8 +1982,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             } 
             else {
-                ProducedType paramType = pr.getTypedParameter(p.getAliasedParameter())
-                        .getFullType();
+                ProducedType paramType = pr.getTypedParameter(p).getFullType();
                 if (p.isSequenced() && ell==null) {
                     checkSequencedPositionalArgument(p, pr, pal, i, paramType);
                     if (pal.getComprehension()!=null) {
@@ -3132,12 +3129,12 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         ProducedType outerType = that.getScope().getDeclaringType(type);
         ProducedType t = type.getProducedType(outerType, typeArgs);
-        if (!type.isAlias()) {
+//        if (!type.isAlias()) {
             //TODO: remove this awful hack which means
             //      we can't define aliases for types
             //      with sequenced type parameters
             type = t.getDeclaration();
-        }
+//        }
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
             ProducedType ft = isAbstractType(t) ?
                     unit.getVoidDeclaration().getType() : //TODO: set the correct metatype

@@ -1,8 +1,10 @@
 class Aliases() {
     
     class C(String s) = Class<String>;
-    @type["Class<String>"] C("hello");
-    @type["Class<String>"] C{s="hello";};
+    @type["Aliases.C"] C("hello");
+    @type["Aliases.C"] C{s="hello";};
+    Class<String> x = C("hello");
+    Class<String> y = C{s="hello";};
     C("hello").hello("gavin");
     C{s="hello";}.hello{name="gavin";};
     Class<String>{message="hello";}.hello{name="gavin";};
@@ -10,8 +12,8 @@ class Aliases() {
     c.hello("gavin");
     Class<String> csp = c;
     Class<String> cs = Class<String>("gday");
-    @type["Class<String>"] C cp = cs;
-    @type["Class<String>"] value l = C("hi");
+    @type["Aliases.C"] C cp = cs;
+    @type["Aliases.C"] value l = C("hi");
     
     class D() extends C("greetings") {}
     
@@ -24,15 +26,16 @@ class Aliases() {
     }
     B<String> b = B("gavin");
     String n = b.name;
-    @type["Interface<String>"] I<String> i = b;
+    @type["Aliases.I<String>"] I<String> i = b;
     Interface<String> ins = i;
     function m() {
         return i;
     }
-    @type["Interface<String>"] m();
+    @type["Aliases.I<String>"] m();
+    Interface<String> z = m();
     
     interface IS = Interface<String>;
-    @type["Interface<String>"] IS isa = i;
+    @type["Aliases.IS"] IS isa = i;
     Interface<String> insa = isa;
     
     @error class BadC1() = Class<String>;
