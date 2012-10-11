@@ -707,6 +707,10 @@ public abstract class AbstractTransformer implements Transformation {
                 || decl instanceof UnionType
                 || decl instanceof IntersectionType;
     }
+
+    boolean willEraseToPrimitive(ProducedType type) {
+        return (isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
+    }
     
     boolean willEraseToException(ProducedType type) {
         type = simplifyType(type);

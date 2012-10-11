@@ -487,6 +487,7 @@ abstract class SimpleInvocationBuilder extends InvocationBuilder {
                     && isParameterSequenced(argIndex)
                     && isJavaMethod()
                     && getParameterBoxingStrategy(argIndex) == BoxingStrategy.UNBOXED
+                    && gen.willEraseToPrimitive(gen.typeFact().getDefiniteType(getParameterType(argIndex)))
                     && !dontBoxSequence())
                 wrapIntoArray = true;
             if (!isParameterSequenced(argIndex)
