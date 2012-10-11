@@ -70,4 +70,8 @@ void testAliasing() {
     check(is Integer xxxxx, "Type alias");
     check(Listleton<Integer>({{1},{2},{3}}.first).string=="{ { 1 } }", "class alias");
     check(MiMatrix(2).string=="{ { 1, 2 }, { 1, 2 } }", "interface alias");
+    Object xxxxx1 = 6;
+    Object xxxxx2 = "XXXX";
+    check(is String|Integer xxxxx1, "is String|Integer");
+    check(is String&Some<Void> xxxxx2, "is String&Some");
 }
