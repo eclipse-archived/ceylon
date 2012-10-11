@@ -54,7 +54,7 @@ public class ProducedType extends ProducedReference {
                     for (ProducedType c: cases) {
                         boolean found = false;
                         for (ProducedType oc: otherCases) {
-                            if (c.isExactly(oc)) {
+                            if (c.isExactly(oc, true)) {
                                 found = true;
                                 break;
                             }
@@ -68,7 +68,7 @@ public class ProducedType extends ProducedReference {
             }
             else if (cases.size()==1) {
                 ProducedType st = cases.get(0);
-                return st.isExactly(type);
+                return st.isExactly(type, true);
             }
             else {
                 return false;
@@ -85,7 +85,7 @@ public class ProducedType extends ProducedReference {
                     for (ProducedType c: types) {
                         boolean found = false;
                         for (ProducedType oc: otherTypes) {
-                            if (c.isExactly(oc)) {
+                            if (c.isExactly(oc, true)) {
                                 found = true;
                                 break;
                             }
@@ -99,7 +99,7 @@ public class ProducedType extends ProducedReference {
             }
             else if (types.size()==1) {
                 ProducedType st = types.get(0);
-                return st.isExactly(type);
+                return st.isExactly(type, true);
             }
             else {
                 return false;
@@ -109,7 +109,7 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> otherCases = type.getCaseTypes();
             if (otherCases.size()==1) {
                 ProducedType st = otherCases.get(0);
-                return this.isExactly(st);
+                return this.isExactly(st, true);
             }
             else {
                 return false;
@@ -119,7 +119,7 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> otherTypes = type.getSatisfiedTypes();
             if (otherTypes.size()==1) {
                 ProducedType st = otherTypes.get(0);
-                return this.isExactly(st);
+                return this.isExactly(st, true);
             }
             else {
                 return false;
@@ -131,13 +131,13 @@ public class ProducedType extends ProducedReference {
                     ProducedType selfType = getDeclaration().getSelfType();
                     if (selfType!=null &&
                             type.isSubtypeOf(this) &&
-                            type.isExactly(selfType.substitute(getTypeArguments()))) {
+                            type.isExactly(selfType.substitute(getTypeArguments()), true)) {
                         return true;
                     }
                     ProducedType typeSelfType = type.getDeclaration().getSelfType();
                     if (typeSelfType!=null &&
                             isSubtypeOf(type) &&
-                            isExactly(typeSelfType.substitute(type.getTypeArguments()))) {
+                            isExactly(typeSelfType.substitute(type.getTypeArguments()), true)) {
                         return true;
                     }
                 }
@@ -162,7 +162,7 @@ public class ProducedType extends ProducedReference {
                         ProducedType tqts = tqt.getSupertype(totd);
                         TypeDeclaration otd = (TypeDeclaration) getDeclaration().getContainer();
                         ProducedType qts = qt.getSupertype(otd);
-                        if ( !qts.isExactly(tqts) ) {
+                        if ( !qts.isExactly(tqts, true) ) {
                             return false;
                         }
                     }
@@ -177,7 +177,7 @@ public class ProducedType extends ProducedReference {
                                         p.getName() + " of " +
                                         getDeclaration().getName());*/
                     }
-                    else if (!arg.isExactly(otherArg)) {
+                    else if (!arg.isExactly(otherArg, true)) {
                         return false;
                     }
                 }
@@ -297,7 +297,7 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                     else {
-                        if (!arg.isExactly(otherArg)) {
+                        if (!arg.isExactly(otherArg, true)) {
                             return false;
                         }
                     }
@@ -1560,10 +1560,28 @@ public class ProducedType extends ProducedReference {
     
     public ProducedType resolveAliases() {
     	TypeDeclaration d = getDeclaration();
+    	if (d instanceof UnionType) {
+    		List<ProducedType> list = new ArrayList<ProducedType>();
+    		for (ProducedType pt: d.getCaseTypes()) {
+    			addToUnion(list, pt.resolveAliases());
+    		}
+    		UnionType ut = new UnionType(d.getUnit());
+    		ut.setCaseTypes(list);
+    		return ut.getType();
+    	}
+    	if (d instanceof IntersectionType) {
+    		List<ProducedType> list = new ArrayList<ProducedType>();
+    		for (ProducedType pt: d.getSatisfiedTypes()) {
+    			addToIntersection(list, pt.resolveAliases(), d.getUnit());
+    		}
+    		IntersectionType ut = new IntersectionType(d.getUnit());
+    		ut.setSatisfiedTypes(list);
+    		return ut.canonicalize().getType();
+    	}
     	List<ProducedType> args = getTypeArgumentList();
     	List<ProducedType> aliasedArgs = new ArrayList<ProducedType>(args.size());
     	for (ProducedType arg: args) {
-    		aliasedArgs.add(arg.resolveAliases());
+    		aliasedArgs.add(arg==null ? null : arg.resolveAliases());
     	}
     	ProducedType qt = getQualifyingType();
     	ProducedType aliasedQualifyingType = qt==null ? 

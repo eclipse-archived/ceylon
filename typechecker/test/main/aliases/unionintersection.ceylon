@@ -29,3 +29,14 @@ void testSwitch(Number nn, C cc) {
     print(cc.contains(1.0));
     print("hello" in cc);
 }
+
+void testCanonicalization() {
+    Integer|Float i = n;
+    Sequence<Number> ns = {n};
+    value temp = ns[0];
+    print(temp);
+    Integer|Float|Nothing t = temp;
+    Number? num = t;
+    List<Integer|Float> list = ns;
+    List<Number> nums = list;
+}
