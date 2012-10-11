@@ -141,6 +141,7 @@ public class Util {
                         if (!matches(pdt, sdt, d)) return false;
                     }
                     if (hasSeqParam) {
+                    	//TODO: handle "spread" ... syntax
                         ProducedType pdt = params.get(size).getType();
                         pdt = d.getUnit().getIteratedType(pdt);
                     	for (int j=size; j<signature.size(); j++) {
