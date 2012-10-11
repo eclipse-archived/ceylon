@@ -54,20 +54,20 @@ public class LazyPackage extends Package {
     }
     
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature) {
+    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
         // FIXME: what use is this method in the type checker?
-        return getDirectMember(name, signature);
+        return getDirectMember(name, signature, ellipsis);
     }
     
     @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
         // FIXME: what's the difference?
-        return getDirectMember(name, signature);
+        return getDirectMember(name, signature, ellipsis);
     }
     
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature) {
+    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
         synchronized(modelLoader){
 
             String pkgName = getQualifiedNameString();
@@ -77,7 +77,7 @@ public class LazyPackage extends Package {
 
             // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
             // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
-            Declaration d = lookupMember(copy(compiledDeclarations), name, signature, false);
+            Declaration d = lookupMember(copy(compiledDeclarations), name, signature, ellipsis, false);
             if (d != null) {
                 return d;
             }
@@ -93,7 +93,7 @@ public class LazyPackage extends Package {
                     if ( ((Class) d).isAbstraction()) {
                         // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
                         // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
-                        return lookupMember(copy(compiledDeclarations), name, signature, false);
+                        return lookupMember(copy(compiledDeclarations), name, signature, ellipsis, false);
                     }
                 }
                 return d;

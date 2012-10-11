@@ -1159,7 +1159,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             String name = fieldMirror.getName();
             // skip the field if "we've already got one"
-            if(klass.getDirectMember(name, null) != null)
+            if(klass.getDirectMember(name, null, false) != null)
                 continue;
             addValue(klass, fieldMirror, isCeylon);
         }
@@ -1168,7 +1168,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(Entry<MethodMirror, List<MethodMirror>> setterEntry : variables.entrySet()){
             MethodMirror setter = setterEntry.getKey();
             String name = getJavaAttributeName(setter.getName());
-            Declaration decl = klass.getMember(name, null);
+            Declaration decl = klass.getMember(name, null, false);
             boolean foundGetter = false;
             if (decl != null && decl instanceof Value) {
                 Value value = (Value)decl;
@@ -1332,7 +1332,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(member instanceof ClassOrInterface && !Decl.isCeylon((ClassOrInterface)member))
                 continue;
             if(member.isActual()){
-                member.setRefinedDeclaration(findRefinedDeclaration(klass, member.getName(), getSignature(member)));
+                member.setRefinedDeclaration(findRefinedDeclaration(klass, member.getName(), getSignature(member), false));
             }
         }
     }
@@ -1352,8 +1352,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return result;
     }
     
-    private Declaration findRefinedDeclaration(ClassOrInterface decl, String name, List<ProducedType> signature) {
-        Declaration refinedDeclaration = decl.getRefinedMember(name, signature);
+    private Declaration findRefinedDeclaration(ClassOrInterface decl, String name, List<ProducedType> signature, boolean ellipsis) {
+        Declaration refinedDeclaration = decl.getRefinedMember(name, signature, ellipsis);
         if(refinedDeclaration == null)
             throw new ModelResolutionException("Failed to find refined declaration for "+name);
         return refinedDeclaration;
@@ -2141,7 +2141,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }else
                     relativeName = unquotedName;
                 if(relativeName != null && pkg != null){
-                    Declaration declaration = pkg.getDirectMember(relativeName, null);
+                    Declaration declaration = pkg.getDirectMember(relativeName, null, false);
                     // if we get a value, we want its type
                     if(declaration instanceof Value
                             && ((Value)declaration).getTypeDeclaration().getName().equals(relativeName))
@@ -2166,7 +2166,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Module languageModule = modules.getLanguageModule();
         String simpleName = name.substring(name.lastIndexOf(".")+1);
         for(Package pkg : languageModule.getPackages()){
-            Declaration member = pkg.getDirectMember(simpleName, null);
+            Declaration member = pkg.getDirectMember(simpleName, null, false);
             if(member instanceof TypeDeclaration)
                 return ((TypeDeclaration)member).getType();
         }

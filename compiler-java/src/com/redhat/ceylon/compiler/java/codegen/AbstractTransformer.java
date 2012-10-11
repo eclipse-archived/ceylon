@@ -504,7 +504,7 @@ public abstract class AbstractTransformer implements Transformation {
             if(willEraseToObject(typedReference.getType())
                     && !isTypeParameter(typedReference.getType())){
                 ClassOrInterface declaringType = (ClassOrInterface) decl.getContainer();
-                Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), null);
+                Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), null, false);
                 // now we must select a different refined declaration if we refine it more than once
                 if(refinedMembers.size() > 1){
                     // first case
@@ -554,15 +554,16 @@ public abstract class AbstractTransformer implements Transformation {
 
     public Set<TypedDeclaration> getRefinedMembers(TypeDeclaration decl,
             String name, 
-            java.util.List<ProducedType> signature) {
+            java.util.List<ProducedType> signature, boolean ellipsis) {
         Set<TypedDeclaration> ret = new HashSet<TypedDeclaration>();
-        collectRefinedMembers(decl, name, signature, 
+        collectRefinedMembers(decl, name, signature, ellipsis, 
                 new HashSet<TypeDeclaration>(), ret);
         return ret;
     }
 
     private void collectRefinedMembers(TypeDeclaration decl, String name, 
-            java.util.List<ProducedType> signature, java.util.Set<TypeDeclaration> visited, Set<TypedDeclaration> ret) {
+            java.util.List<ProducedType> signature, boolean ellipsis,
+            java.util.Set<TypeDeclaration> visited, Set<TypedDeclaration> ret) {
         if (visited.contains(decl)) {
             return;
         }
@@ -570,12 +571,12 @@ public abstract class AbstractTransformer implements Transformation {
             visited.add(decl);
             TypeDeclaration et = decl.getExtendedTypeDeclaration();
             if (et!=null) {
-                collectRefinedMembers(et, name, signature, visited, ret);
+                collectRefinedMembers(et, name, signature, ellipsis, visited, ret);
             }
             for (TypeDeclaration st: decl.getSatisfiedTypeDeclarations()) {
-                collectRefinedMembers(st, name, signature, visited, ret);
+                collectRefinedMembers(st, name, signature, ellipsis, visited, ret);
             }
-            Declaration found = decl.getDirectMember(name, signature);
+            Declaration found = decl.getDirectMember(name, signature, ellipsis);
             if(found != null)
                 ret.add((TypedDeclaration) found);
         }

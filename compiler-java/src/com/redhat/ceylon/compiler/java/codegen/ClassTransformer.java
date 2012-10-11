@@ -398,7 +398,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             if (member instanceof Class
                     && Strategy.generateInstantiator(member)
-                    && model.getDirectMember(member.getName(), null) == null) {
+                    && model.getDirectMember(member.getName(), null, false) == null) {
                 // instantiator method implementation
                 Class klass = (Class)member;
                 generateInstantiatorDelegate(classBuilder, satisfiedType,
@@ -582,7 +582,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     private boolean needsCompanionDelegate(final Class model, Declaration member) {
         final boolean mostRefined;
-        Declaration m = model.getMember(member.getName(), null);
+        Declaration m = model.getMember(member.getName(), null, false);
         if (member instanceof Setter && m instanceof Getter) {
             mostRefined = member.equals(((Getter)m).getSetter());
         } else {

@@ -324,27 +324,27 @@ public class LazyValue extends Value implements LazyElement {
     }
 
     @Override
-    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature) {
+    protected Declaration getMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
         load();
-        return super.getMemberOrParameter(name, signature);
+        return super.getMemberOrParameter(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature) {
+    public Declaration getDirectMemberOrParameter(String name, List<ProducedType> signature, boolean ellipsis) {
         load();
-        return super.getDirectMemberOrParameter(name, signature);
+        return super.getDirectMemberOrParameter(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getMember(String name, List<ProducedType> signature) {
+    public Declaration getMember(String name, List<ProducedType> signature, boolean ellipsis) {
         load();
-        return super.getMember(name, signature);
+        return super.getMember(name, signature, ellipsis);
     }
 
     @Override
-    public Declaration getDirectMember(String name, List<ProducedType> signature) {
+    public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
         load();
-        return super.getDirectMember(name, signature);
+        return super.getDirectMember(name, signature, ellipsis);
     }
 
     @Override
@@ -354,9 +354,9 @@ public class LazyValue extends Value implements LazyElement {
     }
 
     @Override
-    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature) {
+    public Declaration getMemberOrParameter(Unit unit, String name, List<ProducedType> signature, boolean ellipsis) {
         load();
-        return super.getMemberOrParameter(unit, name, signature);
+        return super.getMemberOrParameter(unit, name, signature, ellipsis);
     }
 
     @Override

@@ -384,7 +384,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             // clean already listed methods (refined in subclasses)
             // done in 2 phases to avoid empty tables
             for (Declaration method : methods) {
-                if (subclass.getDirectMember(method.getName(), null) == null) {
+                if (subclass.getDirectMember(method.getName(), null, false) == null) {
                     notRefined.add(method);
                 }
             }

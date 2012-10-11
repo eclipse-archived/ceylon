@@ -288,10 +288,10 @@ public class LinkRenderer {
         Declaration decl = null;
 
         if (scope != null) {
-            decl = scope.getMember(declName, null);
+            decl = scope.getMember(declName, null, false);
 
             if (decl == null && !isNested && scope instanceof Element) {
-                decl = ((Element) scope).getUnit().getImportedDeclaration(declName, null);
+                decl = ((Element) scope).getUnit().getImportedDeclaration(declName, null, false);
             }
 
             if (decl == null && !isNested) {

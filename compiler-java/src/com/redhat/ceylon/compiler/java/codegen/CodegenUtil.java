@@ -152,7 +152,7 @@ class CodegenUtil {
     static MethodOrValue findMethodOrValueForParam(Parameter param) {
         MethodOrValue result = null;
         String attrName = param.getName();
-        Declaration member = param.getContainer().getDirectMember(attrName, null);
+        Declaration member = param.getContainer().getDirectMember(attrName, null, false);
         if (member instanceof MethodOrValue) {
             result = (MethodOrValue)member;
         }
