@@ -19,12 +19,12 @@
  */
 @nomodel
 class AssertIsIntersection() {
-    /*shared void m(Object? x) {
+    shared void m(Object? x) {
         assert (is Foo&BarInterface x);
         x.common();
         x.foo();
         x.bar();
-    }*/
+    }
     shared void mvar(Object? y) {
         assert (is Foo&BarInterface x=y);
         x.common();

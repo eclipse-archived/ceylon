@@ -19,10 +19,10 @@
  */
 @nomodel
 class AssertIsUnion() {
-    /*shared void m(Object? x) {
+    shared void m(Object? x) {
         assert (is Foo|Bar x);
         x.common();
-    }*/
+    }
     shared void mvar(Object? y) {
         assert (is Foo|Bar x=y);
         x.common();    

@@ -111,7 +111,7 @@ class AssertionConditionList {
         .ceylon.language.List<? extends .java.lang.Object> $x$13 = null;
         if (($x$13 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$13).getEmpty()) {
             .java.lang.Object $y$14 = null;
-            if (($y$14 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+            if (($y$14 = x.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                 y = ((.ceylon.language.Integer)$y$14).longValue();
                 if (y > 0L) {
                 } else {

@@ -19,11 +19,11 @@
  */
 @nomodel
 class AssertNonEmptySequence() {
-    /*shared Integer m(Integer[] x) {
+    shared Integer m(Integer[] x) {
         assert (nonempty x);
         Sequence<Integer> s = x;
         return x.first;
-    }*/
+    }
     shared Integer mvar(Integer[] x) {
         assert (nonempty s=x);
         return s.first;

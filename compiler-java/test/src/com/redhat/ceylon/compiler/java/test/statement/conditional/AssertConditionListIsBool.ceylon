@@ -19,10 +19,10 @@
  */
 @nomodel
 class AssertConditionListIsBool() {
-    /*void m(String|Integer x) {
+    void m(String|Integer x) {
         assert (is String x, x.uppercased=="S");
         print (x.uppercased);
-    }*/
+    }
     void mvar(String|Integer x) {
         assert (is String z=x, z.uppercased=="S");
         print (z.uppercased);

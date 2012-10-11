@@ -19,10 +19,10 @@
  */
 @nomodel
 class AssertExists() {
-    /*shared Integer m(Integer? x) {
+    shared Integer m(Integer? x) {
         assert (exists x);
         return x;
-    }*/
+    }
     shared Integer m2(Integer? x) {
         assert (exists y = x);
         return y;

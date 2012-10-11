@@ -19,10 +19,10 @@
  */
 @nomodel
 class AssertIsNotNothing() {
-    /*shared void m(Object? x) {
+    shared void m(Object? x) {
         assert (!is Nothing x);
         print(x.string);
-    }*/
+    }
     shared void mvar(Object? y) {
         assert (!is Nothing x=y);
         print(x.string);

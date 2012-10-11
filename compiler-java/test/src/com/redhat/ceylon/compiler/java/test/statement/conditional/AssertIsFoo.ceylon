@@ -19,12 +19,12 @@
  */
 @nomodel
 class AssertIsFoo() {
-    /*shared void m(Object? x) {
+    shared void m(Object? x) {
         assert (is Foo x);
         x.foo();
         assert (is FooSub x);
         x.foo2();
-    }*/
+    }
     shared void mvar(Object? y) {
         assert (is Foo x=y);
         x.foo();
