@@ -380,7 +380,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(!classMirror.isInnerClass()){
             pkg.addMember(d);
             d.setContainer(pkg);
-        }else if(d instanceof ClassOrInterface){
+        }else if(d instanceof ClassOrInterface || d instanceof TypeAlias){
             // do overloads later, since their container is their abstract superclass's container and
             // we have to set that one first
             if(d instanceof Class == false || !((Class)d).isOverloaded()){
