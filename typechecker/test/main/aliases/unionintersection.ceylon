@@ -11,8 +11,12 @@ shared alias Strings = List<String>;
 
 void local() {
     alias Numbers = List<Number>;
+    Numbers ns = { 1, 3.0 };
 }
 
-class Class() {
-    shared alias Cs = Set<C>;
+class Outer() {
+    shared alias Cs = List<C>;
+    shared Cs cs = { c, c };
 }
+
+Outer.Cs cs = Outer().cs;
