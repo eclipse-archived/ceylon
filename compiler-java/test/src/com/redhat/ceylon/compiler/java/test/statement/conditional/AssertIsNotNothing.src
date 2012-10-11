@@ -5,11 +5,19 @@ class AssertIsNotNothing {
     AssertIsNotNothing() {
     }
     
-    public final void mvar(final .java.lang.Object y) {
-        .java.lang.Object $x$0;
-        if (!!(($x$0 = y) == null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNothing.ceylon:27:8-27:32")), null);
-        final .java.lang.Object x = $x$0;
+    public final void m(final .java.lang.Object x) {
+        if (!(x == null)) {
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNothing.ceylon:23:8-23:30")), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance(x.toString()));
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        final .java.lang.Object $x$4;
+        .java.lang.Object $x$3 = null;
+        if (!(($x$3 = y) == null)) {
+            $x$4 = $x$3;
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotNothing.ceylon:27:8-27:32")), null);
+        .ceylon.language.print_.print(.ceylon.language.String.instance($x$4.toString()));
     }
     
     public static void main(.java.lang.String[] args) {

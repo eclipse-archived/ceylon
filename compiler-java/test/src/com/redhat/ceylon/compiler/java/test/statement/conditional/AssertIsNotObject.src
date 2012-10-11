@@ -6,17 +6,20 @@ class AssertIsNotObject {
     }
     
     public final void m(final .java.lang.Object x) {
-        if (!!(x != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Object x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotObject.ceylon:24:8-24:29")), null);
+        if (!(x != null)) {
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Object x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotObject.ceylon:24:8-24:29")), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
         .ceylon.language.print_.print(x);
     }
     
     public final void mvar(final .java.lang.Object y) {
-        .java.lang.Object $x$1;
-        if (!!(($x$1 = y) != null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Object x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotObject.ceylon:30:8-30:31")), null);
-        final .java.lang.Object x = $x$1;
+        final .java.lang.Object $x$4;
+        .java.lang.Object $x$3 = null;
+        if (!(($x$3 = y) != null)) {
+            $x$4 = $x$3;
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Object x=y" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNotObject.ceylon:30:8-30:31")), null);
         .ceylon.language.print_.print(.ceylon.language.String.instance("x is null"));
-        .ceylon.language.print_.print(x);
+        .ceylon.language.print_.print($x$4);
     }
     
     public static void main(.java.lang.String[] args) {

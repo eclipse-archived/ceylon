@@ -12,8 +12,8 @@ class MethodIfIsFoo {
             $x$2.foo();
             .java.lang.Object $x$4;
             if (($x$4 = $x$2) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
-                final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $$x$2$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$x$4;
-                $$x$2$5.foo2();
+                final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub $x$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)$x$4;
+                $x$5.foo2();
             }
         }
     }

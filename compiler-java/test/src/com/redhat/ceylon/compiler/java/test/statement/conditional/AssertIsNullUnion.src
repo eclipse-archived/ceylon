@@ -7,8 +7,11 @@ class AssertIsNullUnion {
     
     public final void m() {
         final .java.lang.Object nothing = null;
-        .java.lang.Object $nothing$0;
-        if (!(($nothing$0 = nothing) == null || $nothing$0 instanceof .ceylon.language.Character)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Character? nothing" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNullUnion.ceylon:24:8-24:38")), null);
+        final .ceylon.language.Character $nothing$2;
+        .java.lang.Object $nothing$1 = null;
+        if (($nothing$1 = nothing) == null || $nothing$1 instanceof .ceylon.language.Character) {
+            $nothing$2 = (.ceylon.language.Character)$nothing$1;
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Character? nothing" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNullUnion.ceylon:24:8-24:38")), null);
     }
     
     public static void main(.java.lang.String[] args) {

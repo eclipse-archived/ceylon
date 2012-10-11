@@ -13,18 +13,37 @@ class AssertIsNothing {
         return 0L;
     }
     
+    private final long m1(final .ceylon.language.Integer x) {
+        final long $x$2;
+        .java.lang.Object $x$1 = null;
+        if (($x$1 = x) instanceof .ceylon.language.Integer) {
+            $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNothing.ceylon:30:8-30:29")), null);
+        return $x$2;
+    }
+    
     private final long m2(final .ceylon.language.Integer x) {
-        .java.lang.Object $y$0;
-        if (!(($y$0 = x) instanceof .ceylon.language.Integer)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer y=x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNothing.ceylon:35:8-35:31")), null);
-        final long y = ((.ceylon.language.Integer)$y$0).longValue();
-        return y;
+        final long $y$5;
+        .java.lang.Object $y$4 = null;
+        if (($y$4 = x) instanceof .ceylon.language.Integer) {
+            $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Integer y=x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNothing.ceylon:35:8-35:31")), null);
+        return $y$5;
+    }
+    
+    private final long m3(final .ceylon.language.Integer x) {
+        if (x == null) {
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNothing.ceylon:40:8-40:29")), null);
+        return nowt(x);
     }
     
     private final long m4(final .ceylon.language.Integer x) {
-        .java.lang.Object $y$1;
-        if (!(($y$1 = x) == null)) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing y=x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNothing.ceylon:45:8-45:31")), null);
-        final .java.lang.Object y = $y$1;
-        return nowt(y);
+        final .java.lang.Object $y$10;
+        .java.lang.Object $y$9 = null;
+        if (($y$9 = x) == null) {
+            $y$10 = $y$9;
+        } else throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ("\tviolated " + "is Nothing y=x" + .java.lang.System.lineSeparator() + "\tat " + "AssertIsNothing.ceylon:45:8-45:31")), null);
+        return nowt($y$10);
     }
     
     public static void main(.java.lang.String[] args) {
