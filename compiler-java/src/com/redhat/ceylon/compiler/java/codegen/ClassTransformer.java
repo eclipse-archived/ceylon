@@ -323,10 +323,11 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCExpression> members = List.nil();
         Package pkg = Decl.getPackageContainer(model);
         for(Declaration member : model.getMembers()){
-            if(member instanceof ClassOrInterface == false){
+            if(member instanceof ClassOrInterface == false
+                    && member instanceof TypeAlias == false){
                 continue;
             }
-            ClassOrInterface innerType = (ClassOrInterface) member;
+            TypeDeclaration innerType = (TypeDeclaration) member;
             // figure out its java name (strip the leading dot)
             String javaClass = naming.declName(innerType, DeclNameFlag.QUALIFIED).substring(1);
             String ceylonName = member.getName();
