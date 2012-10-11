@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -236,8 +237,8 @@ public class Naming implements LocalId {
     }
 
     private void appendDeclName2(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, DeclName helper, Scope scope, final boolean last) {
-        if (scope instanceof Class) {
-            Class klass = (Class)scope;
+        if (scope instanceof Class || scope instanceof TypeAlias) {
+            TypeDeclaration klass = (TypeDeclaration)scope;
             helper.append(klass.getName());
             if (Decl.isCeylon(klass)
                     && flags.contains(DeclNameFlag.COMPANION)
@@ -248,7 +249,7 @@ public class Naming implements LocalId {
             Interface iface = (Interface)scope;
             helper.append(iface.getName());
             if (Decl.isCeylon(iface)
-                && ((decl instanceof Class) 
+                && ((decl instanceof Class || decl instanceof TypeAlias) 
                         || flags.contains(DeclNameFlag.COMPANION))) {
                 helper.append("$impl");
             }
