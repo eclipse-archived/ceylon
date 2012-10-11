@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -53,6 +54,7 @@ public class MetamodelGenerator {
 
     public static final String METATYPE_CLASS           = "cls";
     public static final String METATYPE_INTERFACE       = "ifc";
+    public static final String METATYPE_ALIAS           = "als";
     public static final String METATYPE_OBJECT          = "obj";
     public static final String METATYPE_METHOD          = "mthd";
     public static final String METATYPE_ATTRIBUTE       = "attr";
@@ -391,6 +393,9 @@ public class MetamodelGenerator {
         if (d.isAnonymous()) {
             m.put("$anon", "1");
         }
+        if (d.isAlias()) {
+            m.put("$alias", "1");
+        }
         parent.put(d.getName(), m);
     }
 
@@ -426,6 +431,9 @@ public class MetamodelGenerator {
         encodeTypes(d.getCaseTypes(), m, "of");
         //Annotations
         encodeAnnotations(d, m);
+        if (d.isAlias()) {
+            m.put("$alias", typeMap(d.getExtendedType()));
+        }
         parent.put(d.getName(), m);
     }
 
@@ -484,6 +492,42 @@ public class MetamodelGenerator {
 
     public void encodeGetter(Getter d) {
         encodeAttributeOrGetter(d);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> encodeTypeAlias(TypeAlias d) {
+        Map<String, Object> parent;
+        if (d.isToplevel() || d.isMember()) {
+            parent = findParent(d);
+            if (parent == null) {
+                return null;
+            }
+            if (!d.isToplevel()) {
+                if (!parent.containsKey(KEY_ATTRIBUTES)) {
+                    parent.put(KEY_ATTRIBUTES, new HashMap<String, Object>());
+                }
+                parent = (Map<String,Object>)parent.get(KEY_ATTRIBUTES);
+            }
+        } else {
+            //Ignore attributes inside control blocks, methods, etc.
+            return null;
+        }
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put(KEY_METATYPE, METATYPE_ALIAS);
+        m.put(KEY_NAME, d.getName());
+        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters());
+        if (tpl != null) {
+            m.put(KEY_TYPE_PARAMS, tpl);
+        }
+        if (d.getSelfType() != null) {
+            m.put(KEY_SELF_TYPE, typeMap(d.getSelfType()));
+        }
+        m.put("$alias", typeMap(d.getExtendedType()));
+        encodeTypes(d.getCaseTypes(), m, "of");
+        encodeTypes(d.getSatisfiedTypes(), m, "satisfies");
+        encodeAnnotations(d, m);
+        parent.put(d.getName(), m);
+        return m;
     }
 
     /** Encodes the list of types and puts them under the specified key in the map. */
