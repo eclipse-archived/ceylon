@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+public interface Bug668_X<Element, Null> {
+    
+    public abstract .java.lang.Object getFirst();
+}
+public final class Bug668_X$impl<Element, Null> {
+    
+    public Bug668_X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Null> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Null> $this;
+    
+    public final .java.lang.Object getFirst() {
+        return $this.getFirst();
+    }
+}
+public interface Bug668_Y<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<Element, .java.lang.Object> {
+    
+    @.java.lang.Override
+    public Element getFirst();
+}
+public final class Bug668_Y$impl<Element> {
+    
+    public Bug668_Y$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<? extends Element> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<? extends Element> $this;
+    
+    public final Element getFirst() {
+        return null;
+    }
+}
+final class bug668_method_ {
+    
+    private bug668_method_() {
+    }
+    
+    static <Null>void bug668_method(final Null n) {
+        
+        final class obj_ implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<.java.lang.Object>, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<.java.lang.Object, .java.lang.Object> {
+            
+            private obj_() {
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object>(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<.java.lang.Object, .java.lang.Object>(this);
+            }
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this;
+            
+            @.java.lang.Override
+            public .java.lang.Object getFirst() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this.getFirst();
+            }
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this;
+        }
+        final obj_ obj = new obj_();
+    }
+}
