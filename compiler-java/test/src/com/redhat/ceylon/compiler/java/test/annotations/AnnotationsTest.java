@@ -45,6 +45,18 @@ public class AnnotationsTest extends CompilerTest {
         compareWithJavaSource("attribute");
     }
     @Test
+    public void testMemberClass(){
+        compareWithJavaSource("MemberKlass");
+    }
+    @Test
+    public void testMemberObject(){
+        compareWithJavaSource("MemberObject");
+    }
+    @Test
+    public void testKlassInMemberObject(){
+        compareWithJavaSource("KlassInMemberObject");
+    }
+    @Test
     public void testLocalClass(){
         compareWithJavaSource("LocalKlass");
     }
@@ -59,5 +71,10 @@ public class AnnotationsTest extends CompilerTest {
     @Test
     public void testModule(){
         compareWithJavaSource("module");
+    }
+    @Test
+    public void testTypeReferences(){
+        compile("Interface.ceylon", "Klass.ceylon", "MemberKlass.ceylon", "KlassInMemberObject.ceylon");
+        compareWithJavaSource("typereferences");
     }
 }

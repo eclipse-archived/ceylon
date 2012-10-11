@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(name = "member", javaClass = "com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member_", packageName = "com.redhat.ceylon.compiler.java.test.annotations")})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class MemberObject {
+    
+    public MemberObject() {
+        this.member = new .com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member_();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member_ member;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+    @.com.redhat.ceylon.compiler.java.metadata.Name("member")
+    @.com.redhat.ceylon.compiler.java.metadata.Object
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public final class member_ {
+        
+        private member_() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member")
+    public final .com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member_ getMember() {
+        return member;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.MemberObject();
+    }
+}
