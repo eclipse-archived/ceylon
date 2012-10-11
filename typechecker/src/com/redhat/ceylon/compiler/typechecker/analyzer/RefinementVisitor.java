@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -253,7 +254,8 @@ public class RefinementVisitor extends Visitor {
             
             boolean mayBeShared = 
                     dec instanceof MethodOrValue || 
-                    dec instanceof ClassOrInterface;
+                    dec instanceof ClassOrInterface ||
+                    dec instanceof TypeAlias;
             if (!mayBeShared) {
                 if (dec.isShared()) {
                     that.addError("shared member is not a method, attribute, class, or interface", 1200);
