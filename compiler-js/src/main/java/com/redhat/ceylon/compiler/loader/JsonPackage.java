@@ -465,16 +465,16 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), t, existing);
-        //All interfaces extend Object, except aliases
-        if (t.isAlias()) {
-            t.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("$alias"), existing));
-        } else {
-            t.setExtendedType(getTypeFromJson(objclass, null));
-        }
         if (tparms != null) {
             t.setTypeParameters(tparms);
         }
         final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);
+        //All interfaces extend Object, except aliases
+        if (t.isAlias()) {
+            t.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("$alias"), allparms));
+        } else {
+            t.setExtendedType(getTypeFromJson(objclass, null));
+        }
         if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
             for (TypeParameter _tp : tparms) {
                 if (_tp.getName().equals(m.get(MetamodelGenerator.KEY_SELF_TYPE))) {
