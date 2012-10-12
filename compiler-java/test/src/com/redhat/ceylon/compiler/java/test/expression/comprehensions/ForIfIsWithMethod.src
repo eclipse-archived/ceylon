@@ -1,0 +1,99 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfIsWithMethod {
+    
+    ForIfIsWithMethod() {
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo give() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub();
+    }
+    
+    private final .java.lang.Object nowt(final .java.lang.Object n) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public final void m(final .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> xs) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
+                return new .ceylon.language.Iterator<.java.lang.Object>(){
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> iter$0 = xs.getIterator();
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod)$ceylontmpitem0;
+                        }
+                        return true;
+                    }
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub $y$2;
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            .java.lang.Object $y$1 = null;
+                            if (($y$1 = x.give()) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
+                                $y$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)$y$1;
+                                break;
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? $y$2.foo() : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence());
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object>(){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> getIterator() {
+                return new .ceylon.language.Iterator<.java.lang.Object>(){
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> iter$0 = xs.getIterator();
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
+                        x$exhausted = $ceylontmpitem3 == .ceylon.language.exhausted_.getExhausted$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod)$ceylontmpitem3;
+                        }
+                        return true;
+                    }
+                    private .java.lang.Object $y$5;
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            .java.lang.Object $y$4 = null;
+                            if (($y$4 = x.give()) == null) {
+                                $y$5 = $y$4;
+                                break;
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? nowt($y$5) : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod();
+    }
+}

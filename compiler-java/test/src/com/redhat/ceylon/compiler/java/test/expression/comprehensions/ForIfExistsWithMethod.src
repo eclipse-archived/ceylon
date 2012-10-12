@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfExistsWithMethod {
+    
+    ForIfExistsWithMethod() {
+    }
+    
+    private final .ceylon.language.Integer give() {
+        return .ceylon.language.Integer.instance(0L);
+    }
+    
+    public final .ceylon.language.List<? extends .ceylon.language.Integer> m(final .ceylon.language.List<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> xs) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod> iter$0 = xs.getIterator();
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod)$ceylontmpitem0;
+                        }
+                        return true;
+                    }
+                    private long $y$2;
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            .ceylon.language.Integer $y$1 = null;
+                            if (($y$1 = x.give()) != null) {
+                                $y$2 = $y$1.longValue();
+                                break;
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? .ceylon.language.Integer.instance($y$2) : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfExistsWithMethod();
+    }
+}

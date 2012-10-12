@@ -1,0 +1,94 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfNonEmptySequence {
+    
+    ForIfNonEmptySequence() {
+    }
+    
+    public final void m(final .ceylon.language.List<? extends .ceylon.language.List<? extends .ceylon.language.Integer>> xs) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Integer>> iter$0 = xs.getIterator();
+                    private .ceylon.language.List<? extends .ceylon.language.Integer> x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.ceylon.language.List<? extends .ceylon.language.Integer>)$ceylontmpitem0;
+                        }
+                        return true;
+                    }
+                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $x$2;
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            .ceylon.language.List<? extends .ceylon.language.Integer> $x$1 = null;
+                            if (($x$1 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$1).getEmpty()) {
+                                $x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$x$1;
+                                break;
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? $x$2.getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence());
+    }
+    
+    public final void mvar(final .ceylon.language.List<? extends .ceylon.language.List<? extends .ceylon.language.Integer>> xs) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Integer>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Integer>> iter$0 = xs.getIterator();
+                    private .ceylon.language.List<? extends .ceylon.language.Integer> x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
+                        x$exhausted = $ceylontmpitem3 == .ceylon.language.exhausted_.getExhausted$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.ceylon.language.List<? extends .ceylon.language.Integer>)$ceylontmpitem3;
+                        }
+                        return true;
+                    }
+                    private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $s$5;
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            .ceylon.language.List<? extends .ceylon.language.Integer> $s$4 = null;
+                            if (($s$4 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$s$4).getEmpty()) {
+                                $s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$s$4;
+                                break;
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? $s$5.getFirst() : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfNonEmptySequence();
+    }
+}

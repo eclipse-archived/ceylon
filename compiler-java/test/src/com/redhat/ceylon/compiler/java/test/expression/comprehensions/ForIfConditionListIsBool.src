@@ -1,0 +1,98 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfConditionListIsBool {
+    
+    ForIfConditionListIsBool() {
+    }
+    
+    private final .ceylon.language.List<? extends .ceylon.language.String> m(final .ceylon.language.Sequence xs) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private final .ceylon.language.Iterator iter$0 = xs.getIterator();
+                    private .java.lang.Object x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.exhausted_.getExhausted$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.java.lang.Object)$ceylontmpitem0;
+                        }
+                        return true;
+                    }
+                    private .java.lang.String $x$2;
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            .java.lang.Object $x$1 = null;
+                            if (($x$1 = $x$2) instanceof .ceylon.language.String) {
+                                $x$2 = ((.ceylon.language.String)$x$1).toString();
+                                if (.ceylon.language.String.getUppercased($x$2).equals("S")) {
+                                    break;
+                                }
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? .ceylon.language.String.instance(.ceylon.language.String.getUppercased($x$2)) : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence();
+    }
+    
+    private final .ceylon.language.List<? extends .ceylon.language.String> synthetic(final .ceylon.language.Sequence xs) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.String>(){
+                    private final .ceylon.language.Iterator iter$0 = xs.getIterator();
+                    private .java.lang.Object x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem3 = iter$0.next();
+                        x$exhausted = $ceylontmpitem3 == .ceylon.language.exhausted_.getExhausted$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.java.lang.Object)$ceylontmpitem3;
+                        }
+                        return true;
+                    }
+                    private .java.lang.String $z$5;
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            .java.lang.Object $z$4 = null;
+                            if (($z$4 = x) instanceof .ceylon.language.String) {
+                                $z$5 = ((.ceylon.language.String)$z$4).toString();
+                                if (.ceylon.language.String.getUppercased($z$5).equals("S")) {
+                                    break;
+                                }
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next1() ? .ceylon.language.String.instance(.ceylon.language.String.getUppercased($z$5)) : .ceylon.language.exhausted_.getExhausted$();
+                    }
+                };
+            }
+        }.getSequence();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionListIsBool();
+    }
+}
