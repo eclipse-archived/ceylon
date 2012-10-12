@@ -29,13 +29,15 @@ public class FileUtil {
      * @throws RuntimeException if the file or directory could not be deleted
      */
     public static void delete(File f){
-        if (f.isDirectory()) {
-            for (File c : f.listFiles()) {
-                delete(c);
+        if (f.exists()) {
+            if (f.isDirectory()) {
+                for (File c : f.listFiles()) {
+                    delete(c);
+                }
             }
-        }
-        if (!f.delete()) {
-            throw new RuntimeException("Failed to delete file: " + f.getPath());
+            if (!f.delete()) {
+                throw new RuntimeException("Failed to delete file: " + f.getPath());
+            }
         }
     }
     
