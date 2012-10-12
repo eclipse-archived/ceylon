@@ -15,6 +15,7 @@ shared object unit extends Object() satisfies Unit {
 }
 
 shared class Tuple<out X, out Y> (first, rest)
+        extends Object()
         satisfies AbstractTuple
         given Y satisfies AbstractTuple {
     shared X first;
@@ -22,4 +23,13 @@ shared class Tuple<out X, out Y> (first, rest)
     shared actual String string { 
         return "(" first?.string else "null" ", " rest.string[1...] "";
     }
+    shared actual Boolean equals(Object that) {
+        if (is Tuple<Void,AbstractTuple> that) {
+            return first==that.first && rest==that.rest;
+        }
+        else {
+            return false;
+        }
+    }
+    shared actual Integer hash = (31 + first.hash) * 31 + rest.hash;
 }
