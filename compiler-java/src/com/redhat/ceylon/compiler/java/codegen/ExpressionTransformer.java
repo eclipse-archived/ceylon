@@ -235,7 +235,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if (expectedType != null
                 // don't add cast to an erased type 
-                && (!willEraseToObject(expectedType) || willEraseToList(expectedType))) {
+                && (!willEraseToObjectOrList(expectedType) || willEraseToList(expectedType))) {
             // special case for returning Nothing expressions
             if(isNothing(exprType)){
                 // don't add cast for null
@@ -243,14 +243,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // in some cases we may have an instance of Nothing, which is of type java.lang.Object, being
                     // returned in a context where we expect a String? (aka ceylon.language.String) so even though
                     // the instance at hand will really be null, we need a up-cast to it
-                    if(!willEraseToObject(expectedType)){
+                    if(!willEraseToObjectOrList(expectedType)){
                         JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW);
                         result = make().TypeCast(targetType, result);
                     }
                 }
-            }else if(!willEraseToObject(expectedType) // full type erasure 
+            }else if(!willEraseToObjectOrList(expectedType) // full type erasure 
                     && ((exprErased && !isFunctionalResult(exprType))
-                            || willEraseToObject(exprType) 
+                            || willEraseToObjectOrList(exprType) 
                             || (exprType.isRaw() && !hasErasedTypeParameters(expectedType, true)))){
                 // Set the new expression type to a "clean" copy of the expected type
                 // (without the underlying type, because the cast is always to a non-primitive)
@@ -316,7 +316,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private boolean hasErasedTypeParameters(ProducedType type, boolean keepRecursing) {
         for(ProducedType arg : type.getTypeArgumentList()){
-            if(willEraseToObject(arg)
+            if(willEraseToObjectOrList(arg)
                     // Iterable is not raw
                     && !willEraseToList(arg))
                 return true;

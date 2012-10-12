@@ -501,7 +501,7 @@ public abstract class AbstractTransformer implements Transformation {
             return null;
         if(decl.getContainer() instanceof ClassOrInterface){
             // only try to find better if we're erasing to Object and we're not returning a type param
-            if(willEraseToObject(typedReference.getType())
+            if(willEraseToObjectOrList(typedReference.getType())
                     && !isTypeParameter(typedReference.getType())){
                 ClassOrInterface declaringType = (ClassOrInterface) decl.getContainer();
                 Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), 
@@ -521,7 +521,7 @@ public abstract class AbstractTransformer implements Transformation {
                         // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method
                         ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
                         // if we're not erasing this one to Object let's select it
-                        if(!willEraseToObject(refinedTypedReference.getType()))
+                        if(!willEraseToObjectOrList(refinedTypedReference.getType()))
                             return refinedTypedReference;
                     }
                     // third case
@@ -535,7 +535,7 @@ public abstract class AbstractTransformer implements Transformation {
                             ProducedTypedReference refinedTypedReference = getRefinedTypedReference(extendedType, modelRefinedDecl);
                             ProducedType refinedType = refinedTypedReference.getType();
                             if(!isTypeParameter(refinedType)
-                                    && !willEraseToObject(refinedType))
+                                    && !willEraseToObjectOrList(refinedType))
                                 return refinedTypedReference;
                         }
                         // then satisfied interfaces
@@ -543,7 +543,7 @@ public abstract class AbstractTransformer implements Transformation {
                             ProducedTypedReference refinedTypedReference = getRefinedTypedReference(satisfiedType, modelRefinedDecl);
                             ProducedType refinedType = refinedTypedReference.getType();
                             if(!isTypeParameter(refinedType)
-                                    && !willEraseToObject(refinedType))
+                                    && !willEraseToObjectOrList(refinedType))
                                 return refinedTypedReference;
                         }
                     }
@@ -598,8 +598,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     public boolean isWidening(ProducedType declType, ProducedType refinedDeclType) {
         return !sameType(syms().ceylonObjectType, declType)
-                && willEraseToObject(declType)
-                && !willEraseToObject(refinedDeclType);
+                && willEraseToObjectOrList(declType)
+                && !willEraseToObjectOrList(refinedDeclType);
     }
 
     private boolean isWideningTypeArguments(ProducedType declType, ProducedType refinedDeclType, boolean allowSubtypes) {
@@ -613,8 +613,8 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if(allowSubtypes){
             // if we don't erase to object and we refine something that does, we can't possibly be widening
-            if(willEraseToObject(refinedDeclType)
-                    && !willEraseToObject(declType))
+            if(willEraseToObjectOrList(refinedDeclType)
+                    && !willEraseToObjectOrList(declType))
                 return false;
 
             // if we have exactly the same type don't bother finding a common ancestor
@@ -695,8 +695,16 @@ public abstract class AbstractTransformer implements Transformation {
         return t2 != null && toPType(t1).isExactly(t2);
     }
     
-    // Determines if a type will be erased to java.lang.Object once converted to Java
+    /**
+     * Determines if a type will be erased to java.lang.Object once converted to Java
+     * @param type
+     * @return
+     */
     boolean willEraseToObject(ProducedType type) {
+        return willEraseToObjectOrList(type) && !willEraseToList(type);
+    }
+    
+    boolean willEraseToObjectOrList(ProducedType type) {
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
         return decl == typeFact.getObjectDeclaration()
@@ -834,7 +842,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         // ERASURE
-        if (willEraseToObject(type)) {
+        if (willEraseToObjectOrList(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing,
             //   IdentifiableObject, and Bottom result in the Java type Object
@@ -2154,7 +2162,7 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCExpression> makeTypeParameterBounds(java.util.List<ProducedType> satisfiedTypes){
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : satisfiedTypes) {
-            if (!willEraseToObject(t)) {
+            if (!willEraseToObjectOrList(t)) {
                 JCExpression bound = makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES);
                 // if it's a class, we need to move it first as per JLS http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.4
                 if(t.getDeclaration() instanceof Class)

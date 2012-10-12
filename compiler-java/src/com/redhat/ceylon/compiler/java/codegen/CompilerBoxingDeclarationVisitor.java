@@ -45,7 +45,7 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
 
     @Override
     protected boolean willEraseToObject(ProducedType type) {
-        return transformer.willEraseToObject(type);
+        return transformer.willEraseToObjectOrList(type);
     }
 
 }

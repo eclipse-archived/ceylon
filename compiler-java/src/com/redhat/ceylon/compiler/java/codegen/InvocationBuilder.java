@@ -120,7 +120,7 @@ abstract class InvocationBuilder {
         if(typeArguments != null){
             for (ProducedType arg : typeArguments) {
                 // cancel type parameters and go raw if we can't specify them
-                if(gen.willEraseToObject(arg))
+                if(gen.willEraseToObjectOrList(arg))
                     return List.nil();
                 result = result.append(gen.makeJavaType(arg, JT_TYPE_ARGUMENT));
             }
