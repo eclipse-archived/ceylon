@@ -2162,7 +2162,7 @@ public abstract class AbstractTransformer implements Transformation {
     List<JCExpression> makeTypeParameterBounds(java.util.List<ProducedType> satisfiedTypes){
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : satisfiedTypes) {
-            if (!willEraseToObjectOrList(t)) {
+            if (!willEraseToObject(t)) {
                 JCExpression bound = makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES);
                 // if it's a class, we need to move it first as per JLS http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.4
                 if(t.getDeclaration() instanceof Class)
