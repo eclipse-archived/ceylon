@@ -644,7 +644,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private Boolean hasImpl(Interface iface) {
-        if (gen().willEraseToObjectOrList(iface.getType())) {
+        if (gen().willEraseToObject(iface.getType())) {
             return false;
         }
         if (iface instanceof LazyInterface) {
