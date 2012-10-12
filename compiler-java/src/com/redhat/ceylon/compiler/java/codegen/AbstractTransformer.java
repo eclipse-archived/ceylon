@@ -598,8 +598,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     public boolean isWidening(ProducedType declType, ProducedType refinedDeclType) {
         return !sameType(syms().ceylonObjectType, declType)
-                && willEraseToObjectOrList(declType)
-                && !willEraseToObjectOrList(refinedDeclType);
+                && willEraseToObject(declType)
+                && !willEraseToObject(refinedDeclType);
     }
 
     private boolean isWideningTypeArguments(ProducedType declType, ProducedType refinedDeclType, boolean allowSubtypes) {
