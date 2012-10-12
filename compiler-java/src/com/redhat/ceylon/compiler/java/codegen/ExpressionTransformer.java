@@ -316,9 +316,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     private boolean hasErasedTypeParameters(ProducedType type, boolean keepRecursing) {
         for(ProducedType arg : type.getTypeArgumentList()){
-            if(willEraseToObjectOrList(arg)
-                    // Iterable is not raw
-                    && !willEraseToList(arg))
+            if(willEraseToObject(arg))
                 return true;
             if(keepRecursing
                     && arg.getDeclaration() instanceof ClassOrInterface
