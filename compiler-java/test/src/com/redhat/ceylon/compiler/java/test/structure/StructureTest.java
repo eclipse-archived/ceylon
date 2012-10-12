@@ -578,5 +578,10 @@ public class StructureTest extends CompilerTest {
     public void testAlsMemberInterfaceAliasTricks_fail() {
         compareWithJavaSource("alias/MemberInterfaceAliasTricks");
     }
+    
+    @Test
+    public void testAlsMemberOverriding(){
+        compareWithJavaSource("alias/MemberOverriding");
+    }
 
 }
