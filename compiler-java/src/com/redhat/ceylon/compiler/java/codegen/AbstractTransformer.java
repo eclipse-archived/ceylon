@@ -521,7 +521,7 @@ public abstract class AbstractTransformer implements Transformation {
                         // get the type reference to see if any eventual type param is instantiated in our inheritance of this type/method
                         ProducedTypedReference refinedTypedReference = getRefinedTypedReference(typedReference, refinedDecl);
                         // if we're not erasing this one to Object let's select it
-                        if(!willEraseToObjectOrList(refinedTypedReference.getType()))
+                        if(!willEraseToObject(refinedTypedReference.getType()))
                             return refinedTypedReference;
                     }
                     // third case
@@ -535,7 +535,7 @@ public abstract class AbstractTransformer implements Transformation {
                             ProducedTypedReference refinedTypedReference = getRefinedTypedReference(extendedType, modelRefinedDecl);
                             ProducedType refinedType = refinedTypedReference.getType();
                             if(!isTypeParameter(refinedType)
-                                    && !willEraseToObjectOrList(refinedType))
+                                    && !willEraseToObject(refinedType))
                                 return refinedTypedReference;
                         }
                         // then satisfied interfaces
@@ -543,7 +543,7 @@ public abstract class AbstractTransformer implements Transformation {
                             ProducedTypedReference refinedTypedReference = getRefinedTypedReference(satisfiedType, modelRefinedDecl);
                             ProducedType refinedType = refinedTypedReference.getType();
                             if(!isTypeParameter(refinedType)
-                                    && !willEraseToObjectOrList(refinedType))
+                                    && !willEraseToObject(refinedType))
                                 return refinedTypedReference;
                         }
                     }
