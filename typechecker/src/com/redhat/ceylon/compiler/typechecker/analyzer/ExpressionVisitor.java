@@ -18,8 +18,10 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -3251,6 +3253,18 @@ public class ExpressionVisitor extends Visitor {
         /*if (defaultArgument) {
             that.addWarning("references to this from default argument expressions not yet supported");
         }*/
+    }
+    
+    @Override public void visit(Tree.Tuple that) {
+        super.visit(that);
+        ProducedType result = unit.getUnitDeclaration().getType();
+        List<Expression> es = that.getExpressions();
+		for (int i=es.size()-1; i>=0; i--) {
+			ProducedType et = es.get(i).getTypeModel();
+			result = unit.getTupleDeclaration().getProducedType(null, 
+					asList(et, result));
+		}
+        that.setTypeModel(result);
     }
     
     @Override public void visit(Tree.SequenceEnumeration that) {

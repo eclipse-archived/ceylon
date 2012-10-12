@@ -229,6 +229,9 @@
 ^(OPTIONAL_TYPE: STATIC_TYPE
     STATIC_TYPE definiteType)
 
+^(TUPLE_TYPE: STATIC_TYPE
+    STATIC_TYPE* elementType)
+
 ^(FUNCTION_TYPE: STATIC_TYPE
     STATIC_TYPE returnType
     STATIC_TYPE* argumentType)
@@ -656,6 +659,9 @@ argument list."
 ^(SEQUENCE_ENUMERATION:ATOM 
     SEQUENCED_ARGUMENT?
     COMPREHENSION?)
+
+^(TUPLE:ATOM 
+    EXPRESSION*)
 
 "A string template."
 ^(STRING_TEMPLATE:ATOM 

@@ -855,9 +855,9 @@ parameter returns [Parameter parameter]
       { vp.setIdentifier($memberName.identifier);
         fp.setIdentifier($memberName.identifier); }
       (
-        (
+        /*(
           valueParameter
-        )?
+        )?*/
         //-> ^(VALUE_PARAMETER_DECLARATION parameterType memberName specifier?)
       |
         (
@@ -869,10 +869,10 @@ parameter returns [Parameter parameter]
         //-> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
       )
       (
-        specifier
+        defaultArgument
         { DefaultArgument da = new DefaultArgument(null);
           $parameter.setDefaultArgument(da);
-          da.setSpecifierExpression($specifier.specifierExpression); }
+          da.setSpecifierExpression($defaultArgument.specifierExpression); }
       )?
     ;
 
@@ -883,10 +883,10 @@ parameterRef returns [Parameter parameter]
     : memberName
       { vp.setIdentifier($memberName.identifier); }
       (
-        specifier
+        defaultArgument
         { DefaultArgument da = new DefaultArgument(null);
           $parameter.setDefaultArgument(da);
-          da.setSpecifierExpression($specifier.specifierExpression); }
+          da.setSpecifierExpression($defaultArgument.specifierExpression); }
       )?
     ;
 
@@ -907,7 +907,7 @@ parameterDeclaration returns [Parameter parameter]
     ;
 
 valueParameter
-    : ENTRY_OP type memberName
+    : ENTRY_OP abbreviatedType memberName
     ;
 
 parameterType returns [Type type]
@@ -1102,7 +1102,7 @@ statement returns [Statement statement]
 expressionOrSpecificationStatement returns [Statement statement]
     @init { SpecifierStatement ss=new SpecifierStatement(null); 
             ExpressionStatement es=new ExpressionStatement(null); }
-    : expression 
+    : expression
       { if ($expression.expression!=null) 
             es.setExpression($expression.expression);
         $statement = es; }
@@ -1117,10 +1117,10 @@ expressionOrSpecificationStatement returns [Statement statement]
       (
         SEMICOLON
         { $statement.setEndToken($SEMICOLON); }
-      | { displayRecognitionError(getTokenNames(), 
+      /*| { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(SEMICOLON, input)); }
         COMMA
-        { $statement.setEndToken($COMMA); }
+        { $statement.setEndToken($COMMA); }*/
       )
       { expecting=-1; }
     ;
@@ -1149,8 +1149,8 @@ returnDirective returns [Return directive]
     : RETURN 
       { $directive = new Return($RETURN); }
       (
-        functionOrExpression
-        { $directive.setExpression($functionOrExpression.expression); }
+        tupleExpression
+        { $directive.setExpression($tupleExpression.expression); }
       )?
     ;
 
@@ -1184,6 +1184,13 @@ typeSpecifier returns [TypeSpecifier typeSpecifier]
 specifier returns [SpecifierExpression specifierExpression]
     : SPECIFY 
       { $specifierExpression = new SpecifierExpression($SPECIFY); }
+      tupleExpression
+      { $specifierExpression.setExpression($tupleExpression.expression); }
+    ;
+
+defaultArgument returns [SpecifierExpression specifierExpression]
+    : SPECIFY 
+      { $specifierExpression = new SpecifierExpression($SPECIFY); }
       functionOrExpression
       { $specifierExpression.setExpression($functionOrExpression.expression); }
     ;
@@ -1191,8 +1198,8 @@ specifier returns [SpecifierExpression specifierExpression]
 initializer returns [InitializerExpression initializerExpression]
     : ASSIGN_OP 
       { $initializerExpression = new InitializerExpression($ASSIGN_OP); }
-      expression
-      { $initializerExpression.setExpression($expression.expression); }
+      tupleExpression
+      { $initializerExpression.setExpression($tupleExpression.expression); }
     //-> ^(INITIALIZER_EXPRESSION[$ASSIGN_OP] expression)
     ;
 
@@ -1604,8 +1611,8 @@ specificationStart
 parExpression returns [Expression expression] 
     : LPAREN 
       { $expression = new Expression($LPAREN); }
-      assignmentExpression
-      { $expression.setTerm($assignmentExpression.term); }
+      tupleExpression
+      { $expression.setTerm($tupleExpression.expression.getTerm()); }
       RPAREN
       { $expression.setEndToken($RPAREN); }
     ;
@@ -1645,7 +1652,23 @@ positionalArgument returns [PositionalArgument positionalArgument]
     : functionOrExpression
       { $positionalArgument.setExpression($functionOrExpression.expression); }
     ;
-    
+
+tupleExpression returns [Expression expression]
+    @init { Tuple t = new Tuple(null); }
+    : fe1=functionOrExpression
+      { $expression=$fe1.expression;
+        t.getExpressions().add($fe1.expression); }
+      (
+        c=COMMA 
+        { $expression = new Expression(null); 
+          $expression.setTerm(t);
+          t.setEndToken($c); }
+        fe2=functionOrExpression
+        { t.getExpressions().add($fe2.expression);
+          t.setEndToken(null); }
+      )*
+    ;
+
 functionOrExpression returns [Expression expression]
     @init { FunctionArgument fa = new FunctionArgument(null);
             fa.setType(new FunctionModifier(null)); }
@@ -1852,7 +1875,7 @@ comparisonExpression returns [Term term]
       | to1=typeOperator
         { $to1.operator.setTerm($ee1.term); 
           $term = $to1.operator;}
-        t1=type
+        t1=comparableType
         { $to1.operator.setType($t1.type); }
       )?
     | to2=typeOperator
@@ -2133,7 +2156,7 @@ typeArguments returns [TypeArgumentList typeArgumentList]
     ;
 
 typeArgument returns [Type type]
-    : t=type
+    : t=unionType
       { $type = $t.type; }
       ( 
         ELLIPSIS
@@ -2144,8 +2167,18 @@ typeArgument returns [Type type]
     ;
     
 type returns [StaticType type]
-    : unionType 
-      { $type=$unionType.type; }
+    @init { TupleType tt = new TupleType(null); }
+    : ut1=unionType 
+      { $type=$ut1.type; 
+        tt.getElementTypes().add($ut1.type); }
+      (
+        c=COMMA
+        { $type=tt; 
+          tt.setEndToken($c); }
+        ut2=unionType
+        { tt.getElementTypes().add($ut2.type);
+          tt.setEndToken(null); }
+      )*
     ;
     
 entryType returns [StaticType type]
@@ -2233,13 +2266,13 @@ abbreviatedType returns [StaticType type]
           bt.setReturnType($type);
           $type=bt; }
           (
-            t1=type
+            t1=unionType
             { if ($t1.type!=null)
                   bt.addArgumentType($t1.type); }
             (
               COMMA
-              { bt.setEndToken($COMMA); } 
-              t2=type
+              { bt.setEndToken($COMMA); }
+              t2=unionType
               { if ($t2.type!=null)
                   bt.getArgumentTypes().add($t2.type); }
             )*
@@ -2527,8 +2560,8 @@ isCondition returns [Condition condition]
         ic.setVariable(v); }
       memberName
       { ic.getVariable().setIdentifier($memberName.identifier); }
-      specifier
-      { ic.getVariable().setSpecifierExpression($specifier.specifierExpression); }
+      defaultArgument
+      { ic.getVariable().setSpecifierExpression($defaultArgument.specifierExpression); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
     | booleanCondition
       { $condition=$booleanCondition.condition; }
@@ -2872,8 +2905,8 @@ specifiedVariable returns [Variable variable]
     : v=variable 
       { $variable = $v.variable; }
       (
-        specifier
-        { $variable.setSpecifierExpression($specifier.specifierExpression); }
+        defaultArgument
+        { $variable.setSpecifierExpression($defaultArgument.specifierExpression); }
       )?
     ;
 

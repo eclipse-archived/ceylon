@@ -8,6 +8,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -421,6 +423,19 @@ public class TypeVisitor extends Visitor {
         }
         that.setTypeModel(unit.getCallableDeclaration()
                 .getProducedType(null, args));
+    }
+    
+    @Override
+    public void visit(Tree.TupleType that) {
+        super.visit(that);
+        ProducedType result = unit.getUnitDeclaration().getType();
+		List<StaticType> ets = that.getElementTypes();
+		for (int i=ets.size()-1; i>=0; i--) {
+			Tree.StaticType st = ets.get(i);
+            result = unit.getTupleDeclaration().getProducedType(null, 
+            				asList(st.getTypeModel(), result));
+        }
+        that.setTypeModel(result);
     }
     
     //TODO: copy/pasted from ExpressionVisitor
