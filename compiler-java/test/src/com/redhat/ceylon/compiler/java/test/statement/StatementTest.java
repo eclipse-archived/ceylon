@@ -654,5 +654,9 @@ public class StatementTest extends CompilerTest {
     public void testConAssertConditionListNonemptyIsBool(){
         compareWithJavaSource("conditional/AssertConditionListNonemptyIsBool");
     }
+    @Test
+    public void testConAssertVariableScopes(){
+        compareWithJavaSource("conditional/AssertVariableScopes");
+    }
 
 }
