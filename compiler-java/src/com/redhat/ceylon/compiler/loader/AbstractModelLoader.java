@@ -1032,8 +1032,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Class declaration = (Class) alias.getExtendedType().getDeclaration();
         
         // copy the parameters from the extended type
-        alias.setParameterList(declaration.getParameterList());
+        alias.setParameterList(copyParameterList(alias, declaration));
         timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+    }
+
+    private ParameterList copyParameterList(LazyClassAlias alias, Class declaration) {
+        ParameterList newList = new ParameterList();
+        // FIXME: multiple param lists?
+        newList.setNamedParametersSupported(declaration.getParameterList().isNamedParametersSupported());
+        for(Parameter p : declaration.getParameterList().getParameters()){
+            // FIXME: functionalparams?
+            Parameter newParam = new ValueParameter();
+            newParam.setName(p.getName());
+            newParam.setContainer(alias);
+            newParam.setDeclaration(alias);
+            newParam.setSequenced(p.isSequenced());
+            newParam.setUnboxed(p.getUnboxed());
+            newParam.setUncheckedNullType(p.hasUncheckedNullType());
+            newParam.setUnit(p.getUnit());
+            newParam.setType(p.getProducedTypedReference(alias.getExtendedType(), Collections.<ProducedType>emptyList()).getType());
+            alias.addMember(newParam);
+            newList.getParameters().add(newParam);
+        }
+        return newList;
     }
 
     @Override
