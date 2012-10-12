@@ -284,7 +284,7 @@ public class RefinementVisitor extends Visitor {
                     checkMember(that, dec);
                 }
                 ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
-                Declaration refined = declaringType.getRefinedMember(dec.getName(), null, false);
+                Declaration refined = declaringType.getRefinedMember(dec.getName(), com.redhat.ceylon.compiler.typechecker.model.Util.getSignature(dec), false);
                 dec.setRefinedDeclaration(refined);
             }
 

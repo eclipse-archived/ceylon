@@ -705,4 +705,19 @@ public class Util {
                 type.getDeclaration() instanceof UnknownType;
     }
 
+    public static List<ProducedType> getSignature(Declaration dec) {
+        if(dec instanceof Functional == false)
+            return null;
+        List<ParameterList> parameterLists = ((Functional)dec).getParameterLists();
+        if(parameterLists == null || parameterLists.isEmpty())
+            return null;
+        ParameterList parameterList = parameterLists.get(0);
+        if(parameterList == null || parameterList.getParameters() == null)
+            return null;
+        ArrayList<ProducedType> signature = new ArrayList<ProducedType>(parameterList.getParameters().size());
+        for(Parameter param : parameterList.getParameters()){
+            signature.add(param.getType());
+        }
+        return signature;
+    }
 }
