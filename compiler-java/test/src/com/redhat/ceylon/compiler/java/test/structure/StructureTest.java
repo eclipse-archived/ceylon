@@ -573,9 +573,8 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("alias/MemberClassAliasTricks");
     }
 
-    // Depends on https://github.com/ceylon/ceylon-compiler/issues/784
     @Test
-    public void testAlsMemberInterfaceAliasTricks_fail() {
+    public void testAlsMemberInterfaceAliasTricks() {
         compareWithJavaSource("alias/MemberInterfaceAliasTricks");
     }
     
