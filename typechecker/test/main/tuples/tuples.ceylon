@@ -2,6 +2,10 @@ String, Integer, Float triple(String s, Integer i, Float f) {
     return s, i, f;
 }
 
+Float add(Float,Float floats=(1.0, 2.0)) {
+    return floats.first+floats.rest.first;
+}
+
 void test() {
     @type["Tuple<String,Tuple<Integer,Tuple<Float,Unit>>>"] 
     value tup = triple("hello", 0, 0.0);
@@ -16,4 +20,5 @@ void test() {
     }
     @type["String"] value hi = hibye.first;
     @type["String"] value bye = hibye.rest.first;
+    add((1.0, 2.0));
 }
