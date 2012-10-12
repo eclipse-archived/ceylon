@@ -117,6 +117,11 @@ public class StatementTest extends CompilerTest {
         compile("conditional/FooBar.ceylon");
         compareWithJavaSource("conditional/MethodIfIsFoo");
     }
+
+    @Test
+    public void testConMethodIfIsVoidSeq(){
+        compareWithJavaSource("conditional/MethodIfIsVoidSeq");
+    }
     
     @Test
     public void testConMethodIfIsNotNothing(){
