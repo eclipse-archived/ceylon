@@ -726,7 +726,7 @@ public class StatementTransformer extends AbstractTransformer {
         private boolean typecastRequired() {
             // TODO: In fact it should be possible to avoid declaring a test
             // var this case, but it complicates the test when dealing with unions and intersections
-            return !willEraseToObject(toType);
+            return !(willEraseToObject(toType) && !willEraseToList(toType));
         }
         
         @Override
