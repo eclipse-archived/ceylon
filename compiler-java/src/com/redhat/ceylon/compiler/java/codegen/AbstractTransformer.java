@@ -504,7 +504,8 @@ public abstract class AbstractTransformer implements Transformation {
             if(willEraseToObject(typedReference.getType())
                     && !isTypeParameter(typedReference.getType())){
                 ClassOrInterface declaringType = (ClassOrInterface) decl.getContainer();
-                Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), null, false);
+                Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), 
+                        com.redhat.ceylon.compiler.typechecker.model.Util.getSignature(decl), false);
                 // now we must select a different refined declaration if we refine it more than once
                 if(refinedMembers.size() > 1){
                     // first case
