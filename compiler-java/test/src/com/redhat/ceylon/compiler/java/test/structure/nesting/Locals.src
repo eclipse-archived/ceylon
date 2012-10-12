@@ -157,7 +157,7 @@ class Local {
                 
                 LIC(long j) {
                     this.j = j;
-                    this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this = new LI$impl.LII$impl(this);
+                    this.$com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this = LI$impl.this.new LII$impl(this);
                 }
                 private final long j;
                 private final LI$impl.LII$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this;

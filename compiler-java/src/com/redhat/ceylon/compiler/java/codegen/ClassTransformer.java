@@ -675,11 +675,18 @@ public class ClassTransformer extends AbstractTransformer {
                 Assert.that(modelContainer != null, "Could not find container that satisfies interface "
                         + iface.getQualifiedNameString() + " to find qualifying instance for companion instance for "
                         + model.getQualifiedNameString());
-                // find the right field used for the interface container impl
-                String containerFieldName = getCompanionFieldName((Interface)interfaceContainer);
-                JCExpression containerType = makeJavaType(modelContainer.getType(), JT_SATISFIES);
-                containerInstance = makeSelect(makeSelect(containerType, "this"), containerFieldName);
-                ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_SATISFIES | JT_NON_QUALIFIED);
+                // if it's an interface we just qualify it properly
+                if(modelContainer instanceof Interface){
+                    JCExpression containerType = makeJavaType(modelContainer.getType(), JT_COMPANION | JT_SATISFIES);
+                    containerInstance = makeSelect(containerType, "this");
+                    ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_SATISFIES | JT_NON_QUALIFIED);
+                }else{
+                    // it's a class: find the right field used for the interface container impl
+                    String containerFieldName = getCompanionFieldName((Interface)interfaceContainer);
+                    JCExpression containerType = makeJavaType(modelContainer.getType(), JT_SATISFIES);
+                    containerInstance = makeSelect(makeSelect(containerType, "this"), containerFieldName);
+                    ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_SATISFIES | JT_NON_QUALIFIED);
+                }
             }
         }
         if(ifaceImplType == null){
