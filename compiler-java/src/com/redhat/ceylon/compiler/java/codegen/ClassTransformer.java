@@ -660,14 +660,41 @@ public class ClassTransformer extends AbstractTransformer {
                 expressionGen().applyErasureAndBoxing(naming.makeThis(), 
                         model.getType(), false, true, BoxingStrategy.BOXED, 
                         satisfiedType, ExpressionTransformer.EXPR_FOR_COMPANION));
+
+        JCExpression containerInstance = null;
+        JCExpression ifaceImplType = null;
+        if(!Decl.isToplevel(iface)){
+            // if it's a member type we need to qualify the new instance with its $impl container
+            ClassOrInterface interfaceContainer = Decl.getClassOrInterfaceContainer(iface, false);
+            if(interfaceContainer instanceof Interface){
+                ClassOrInterface modelContainer = model;
+                while((modelContainer = Decl.getClassOrInterfaceContainer(modelContainer, false)) != null
+                        && modelContainer.getType().getSupertype(interfaceContainer) == null){
+                    // keep searching
+                }
+                Assert.that(modelContainer != null, "Could not find container that satisfies interface "
+                        + iface.getQualifiedNameString() + " to find qualifying instance for companion instance for "
+                        + model.getQualifiedNameString());
+                // find the right field used for the interface container impl
+                String containerFieldName = getCompanionFieldName((Interface)interfaceContainer);
+                JCExpression containerType = makeJavaType(modelContainer.getType(), JT_SATISFIES);
+                containerInstance = makeSelect(makeSelect(containerType, "this"), containerFieldName);
+                ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_SATISFIES | JT_NON_QUALIFIED);
+            }
+        }
+        if(ifaceImplType == null){
+            ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_SATISFIES);
+        }
+        JCExpression newInstance = make().NewClass(containerInstance, 
+                null,
+                ifaceImplType,
+                state,
+                null);
+        
         final String fieldName = getCompanionFieldName(iface);
         classBuilder.init(make().Exec(make().Assign(
                 makeSelect("this", fieldName),// TODO Use qualified name for quoting? 
-                make().NewClass(null, 
-                        null,
-                        makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES),
-                        state,
-                        null))));
+                newInstance)));
         
         classBuilder.field(PRIVATE | FINAL, fieldName, 
                 makeJavaType(satisfiedType, AbstractTransformer.JT_COMPANION | JT_SATISFIES), null, false);
