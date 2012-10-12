@@ -333,12 +333,12 @@ public abstract class Bug476<T> implements .ceylon.language.List<T> {
     
     @.java.lang.Override
     public final .ceylon.language.List<? extends T> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
-        return (.ceylon.language.List<? extends T>).ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.bottom_.getBottom$();
     }
     
     @.java.lang.Override
     public final .ceylon.language.List<? extends T> segment(final .ceylon.language.Integer from, final long length) {
-        return (.ceylon.language.List<? extends T>).ceylon.language.bottom_.getBottom$();
+        return .ceylon.language.bottom_.getBottom$();
     }
     private final .java.lang.String string;
     
