@@ -822,6 +822,11 @@ public abstract class AbstractTransformer implements Transformation {
                 || type.getDeclaration() instanceof UnknownType)
             return make().Erroneous();
         
+        // resolve aliases, but only for aliases, not for things where the underlying type
+        // might be meaningful, which we'd lose
+        if(type.getDeclaration().isAlias())
+            type = type.resolveAliases();
+        
         if ((flags & __JT_RAW_TP_BOUND) != 0
                 && type.getDeclaration() instanceof TypeParameter) {
             type = ((TypeParameter)type.getDeclaration()).getExtendedType();    
@@ -1662,6 +1667,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private String serialiseTypeSignature(ProducedType type){
+        // resolve aliases
+        type = type.resolveAliases();
         return type.getProducedTypeQualifiedName();
 
     }

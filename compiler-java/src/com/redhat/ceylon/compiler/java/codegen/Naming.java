@@ -918,6 +918,9 @@ public class Naming implements LocalId {
      * instance.
      */
     final String getCompanionFieldName(Interface def) {
+        // resolve aliases
+        if(def.isAlias())
+            def = (Interface) def.getExtendedTypeDeclaration();
         return "$" + def.getQualifiedNameString().replace('.', '$') + "$this";
     }
     
