@@ -501,7 +501,7 @@ public abstract class AbstractTransformer implements Transformation {
             return null;
         if(decl.getContainer() instanceof ClassOrInterface){
             // only try to find better if we're erasing to Object and we're not returning a type param
-            if(willEraseToObjectOrList(typedReference.getType())
+            if(willEraseToObject(typedReference.getType())
                     && !isTypeParameter(typedReference.getType())){
                 ClassOrInterface declaringType = (ClassOrInterface) decl.getContainer();
                 Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), 
