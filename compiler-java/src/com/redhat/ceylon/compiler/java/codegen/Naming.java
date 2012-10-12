@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -1276,7 +1277,15 @@ public class Naming implements LocalId {
                 super();
                 this.name = decl.getName();
                 TypedDeclaration orig = decl.getOriginalDeclaration();
-                this.scope = (orig != null ? orig : decl).getContainer();
+                Scope stop = (orig != null ? orig : decl).getContainer();
+                Scope scope = decl.getContainer();
+                while (scope != stop) {
+                    if (!(scope instanceof ControlBlock)) {
+                        break;
+                    }
+                    scope = scope.getContainer();
+                }
+                this.scope = scope;
             }
             public String toString() {
                 return name + " in " + scope;
