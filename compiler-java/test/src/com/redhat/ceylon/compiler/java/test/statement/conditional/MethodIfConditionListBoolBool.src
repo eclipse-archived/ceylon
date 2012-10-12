@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfConditionListBoolBool {
+    
+    MethodIfConditionListBoolBool() {
+    }
+    
+    private final boolean m(final long x) {
+        boolean $ceylontmpif0 = false;
+        if (x > 0L) {
+            if (x < 10L) {
+                $ceylontmpif0 = true;
+            }
+        }
+        if ($ceylontmpif0) {
+            return x == 1L;
+        } else {
+            return false;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBool();
+    }
+}

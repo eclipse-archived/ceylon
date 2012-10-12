@@ -191,8 +191,32 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConMethodIfConditionList(){
-        compareWithJavaSource("conditional/MethodIfConditionList");
+    public void testConMethodIfConditionListBoolBool(){
+        compareWithJavaSource("conditional/MethodIfConditionListBoolBool");
+    }
+    @Test
+    public void testConMethodIfConditionListBoolBoolIs(){
+        compareWithJavaSource("conditional/MethodIfConditionListBoolBoolIs");
+    }
+    @Test
+    public void testConMethodIfConditionListBoolIsBool(){
+        compareWithJavaSource("conditional/MethodIfConditionListBoolIsBool");
+    }
+    @Test
+    public void testConMethodIfConditionListExistsIsBool(){
+        compareWithJavaSource("conditional/MethodIfConditionListExistsIsBool");
+    }
+    @Test
+    public void testConMethodIfConditionListIsBool(){
+        compareWithJavaSource("conditional/MethodIfConditionListIsBool");
+    }
+    @Test
+    public void testConMethodIfConditionListIsBoolBool(){
+        compareWithJavaSource("conditional/MethodIfConditionListIsBoolBool");
+    }
+    @Test
+    public void testConMethodIfConditionListNonemptyIsBool(){
+        compareWithJavaSource("conditional/MethodIfConditionListNonemptyIsBool");
     }
 
     //

@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfConditionListBoolBoolIs {
+    
+    MethodIfConditionListBoolBoolIs() {
+    }
+    
+    private final boolean m(final .java.lang.Object x, final long z) {
+        boolean $ceylontmpif0 = false;
+        .java.lang.Object $x$1 = null;
+        if (z < 10L) {
+            if (z > 0L) {
+                if (($x$1 = x) instanceof .ceylon.language.Integer) {
+                    $ceylontmpif0 = true;
+                }
+            }
+        }
+        if ($ceylontmpif0) {
+            final long $x$2 = ((.ceylon.language.Integer)$x$1).longValue();
+            return $x$2 == 1L;
+        } else {
+            return false;
+        }
+    }
+    
+    private final boolean synthetic(final .java.lang.Object x, final long z) {
+        boolean $ceylontmpif3 = false;
+        .java.lang.Object $y$4 = null;
+        if (z < 10L) {
+            if (z > 0L) {
+                if (($y$4 = x) instanceof .ceylon.language.Integer) {
+                    $ceylontmpif3 = true;
+                }
+            }
+        }
+        if ($ceylontmpif3) {
+            final long $y$5 = ((.ceylon.language.Integer)$y$4).longValue();
+            return $y$5 == 1L;
+        } else {
+            return false;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBoolIs();
+    }
+}

@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfConditionList {
+    
+    MethodIfConditionList() {
+    }
+    
+    private final boolean m(final .ceylon.language.List<? extends .java.lang.Object> x) {
+        boolean $ceylontmpif0 = false;
+        .java.lang.Object $y$2 = null;
+        final long y;
+        .ceylon.language.List<? extends .java.lang.Object> $x$1 = null;
+        if (($x$1 = x) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$x$1).getEmpty()) {
+            if (($y$2 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)x).item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
+                y = ((.ceylon.language.Integer)$y$2).longValue();
+                if (y > 0L) {
+                    $ceylontmpif0 = true;
+                }
+            } else {
+                y = 0L;
+            }
+        } else {
+            y = 0L;
+        }
+        if ($ceylontmpif0) {
+            return y == 1L;
+        } else {
+            return false;
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList();
+    }
+}
