@@ -31,18 +31,6 @@ class RVI_Covariant_Sub() extends RVI_Covariant_Super() satisfies RVI_Covariant<
     }
 }
 
-interface RVI_Contravariant<in T> {
-    shared formal void m(T t);
-}
-class RVI_Contravariant_Super() satisfies RVI_Contravariant<String> {
-    shared actual default void m(String t) {
-        print("t: " t "");
-    }
-}
-class RVI_Contravariant_Sub() extends RVI_Contravariant_Super() satisfies RVI_Contravariant<Object> {
-}
-
-
 shared void rvi_run(){ 
     RVI_Covariant<String> cov_string = RVI_Covariant_Sub();
     print(cov_string.m());
@@ -52,15 +40,4 @@ shared void rvi_run(){
     print(cov_super.m());
     RVI_Covariant_Sub cov_sub = RVI_Covariant_Sub();
     print(cov_sub.m());
-
-    RVI_Contravariant<Object> contrav_object = RVI_Contravariant_Sub();
-    // FIXME: needs overloading to work
-    //contrav_object.m(2);
-    RVI_Contravariant<String> contrav_string = RVI_Contravariant_Sub();
-    contrav_string.m("string");
-    RVI_Contravariant_Super contrav_super = RVI_Contravariant_Sub();
-    contrav_super.m("super");
-    RVI_Contravariant_Sub contrav_sub = RVI_Contravariant_Sub();
-    // FIXME: needs type checker fix to work (is limited to m(String) for now)
-    //contrav_sub.m(2);
 }

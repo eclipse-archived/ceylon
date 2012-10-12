@@ -199,8 +199,7 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/SatisfiesWithMembers");
     }
     @Test
-    public void testKlsRefinedVarianceInheritance_fail(){
-        // Fails because of ceylon-spec#343 -- Is this test required now? 
+    public void testKlsRefinedVarianceInheritance(){
         // See https://github.com/ceylon/ceylon-compiler/issues/319
         //compareWithJavaSource("klass/RefinedVarianceInheritance");
         compileAndRun("com.redhat.ceylon.compiler.java.test.structure.klass.rvi_run", "klass/RefinedVarianceInheritance.ceylon");
