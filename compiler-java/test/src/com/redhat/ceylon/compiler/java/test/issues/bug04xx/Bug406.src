@@ -23,9 +23,9 @@ class Bug406 {
                 returning new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.String>($spread$1$4);
             ) : .ceylon.language.empty_.getEmpty$());
         );
-        .ceylon.language.String $s1s$3;
-        if (($s1s$3 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)spread1).item(.ceylon.language.Integer.instance(0L))) != null) {
-            final .java.lang.String $s1s$4 = $s1s$3.toString();
+        .ceylon.language.String $s1s$4;
+        if (($s1s$4 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)spread1).item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .java.lang.String $s1s$5 = $s1s$4.toString();
         }
     }
     

@@ -22,19 +22,19 @@ class StringBoxing {
     }
     
     private final .ceylon.language.String upper2(final .ceylon.language.String s) {
-        .ceylon.language.String $s$0;
-        if (($s$0 = s) != null) {
-            final .java.lang.String $s$1 = $s$0.toString();
-            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($s$1));
+        .ceylon.language.String $s$1;
+        if (($s$1 = s) != null) {
+            final .java.lang.String $s$2 = $s$1.toString();
+            return .ceylon.language.String.instance(.ceylon.language.String.getUppercased($s$2));
         }
         return null;
     }
     
     private final .java.lang.String upper3(final .ceylon.language.String s) {
-        .ceylon.language.String $s$2;
-        if (($s$2 = s) != null) {
-            final .java.lang.String $s$3 = $s$2.toString();
-            return .ceylon.language.String.getUppercased($s$3);
+        .ceylon.language.String $s$4;
+        if (($s$4 = s) != null) {
+            final .java.lang.String $s$5 = $s$4.toString();
+            return .ceylon.language.String.getUppercased($s$5);
         } else {
             return "";
         }

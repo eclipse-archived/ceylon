@@ -19,19 +19,19 @@ class BooleanBoxing {
     }
     
     private final .ceylon.language.Boolean negate2(final .ceylon.language.Boolean b) {
-        .ceylon.language.Boolean $b$0;
-        if (($b$0 = b) != null) {
-            final boolean $b$1 = $b$0.booleanValue();
-            return .ceylon.language.Boolean.instance(!$b$1);
+        .ceylon.language.Boolean $b$1;
+        if (($b$1 = b) != null) {
+            final boolean $b$2 = $b$1.booleanValue();
+            return .ceylon.language.Boolean.instance(!$b$2);
         }
         return b;
     }
     
     private final boolean negate3(final .ceylon.language.Boolean b) {
-        .ceylon.language.Boolean $b$2;
-        if (($b$2 = b) != null) {
-            final boolean $b$3 = $b$2.booleanValue();
-            return !$b$3;
+        .ceylon.language.Boolean $b$4;
+        if (($b$4 = b) != null) {
+            final boolean $b$5 = $b$4.booleanValue();
+            return !$b$5;
         } else {
             return false;
         }

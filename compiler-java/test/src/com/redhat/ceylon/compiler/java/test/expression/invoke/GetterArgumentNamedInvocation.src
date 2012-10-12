@@ -86,9 +86,9 @@ final class getterArgumentNamedInvocation_ {
             let
             {
                 
-                final class $i$9 {
+                final class $i$10 {
                     
-                    private $i$9() {
+                    private $i$10() {
                     }
                     
                     long getI() {
@@ -98,28 +98,8 @@ final class getterArgumentNamedInvocation_ {
                         return 1L;
                     }
                 }
-                final $i$9 $i$9 = new $i$9();
-                final long $arg$8$0 = $i$9.getI();
-                
-                final class $s$10 {
-                    
-                    private $s$10() {
-                    }
-                    
-                    .java.lang.String getS() {
-                        return "s";
-                    }
-                }
-                final $s$10 $s$10 = new $s$10();
-                final .java.lang.String $arg$8$1 = $s$10.getS();
-                callFunction.callFunction($arg$8$0, $arg$8$1);
-            }
-            returning null;
-        );
-        (
-            let
-            {
-                callFunction_ $arg$11$this$ = callFunction;
+                final $i$10 $i$10 = new $i$10();
+                final long $arg$9$0 = $i$10.getI();
                 
                 final class $s$12 {
                     
@@ -131,9 +111,8 @@ final class getterArgumentNamedInvocation_ {
                     }
                 }
                 final $s$12 $s$12 = new $s$12();
-                final .java.lang.String $arg$11$1 = $s$12.getS();
-                long $arg$11$0 = $arg$11$this$.callFunction$i();
-                callFunction.callFunction($arg$11$0, $arg$11$1);
+                final .java.lang.String $arg$9$1 = $s$12.getS();
+                callFunction.callFunction($arg$9$0, $arg$9$1);
             }
             returning null;
         );
@@ -142,9 +121,30 @@ final class getterArgumentNamedInvocation_ {
             {
                 callFunction_ $arg$13$this$ = callFunction;
                 
-                final class $i$14 {
+                final class $s$14 {
                     
-                    private $i$14() {
+                    private $s$14() {
+                    }
+                    
+                    .java.lang.String getS() {
+                        return "s";
+                    }
+                }
+                final $s$14 $s$14 = new $s$14();
+                final .java.lang.String $arg$13$1 = $s$14.getS();
+                long $arg$13$0 = $arg$13$this$.callFunction$i();
+                callFunction.callFunction($arg$13$0, $arg$13$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                callFunction_ $arg$15$this$ = callFunction;
+                
+                final class $i$16 {
+                    
+                    private $i$16() {
                     }
                     
                     long getI() {
@@ -154,10 +154,10 @@ final class getterArgumentNamedInvocation_ {
                         return 1L;
                     }
                 }
-                final $i$14 $i$14 = new $i$14();
-                final long $arg$13$0 = $i$14.getI();
-                .java.lang.String $arg$13$1 = $arg$13$this$.callFunction$s($arg$13$0);
-                callFunction.callFunction($arg$13$0, $arg$13$1);
+                final $i$16 $i$16 = new $i$16();
+                final long $arg$15$0 = $i$16.getI();
+                .java.lang.String $arg$15$1 = $arg$15$this$.callFunction$s($arg$15$0);
+                callFunction.callFunction($arg$15$0, $arg$15$1);
             }
             returning null;
         );

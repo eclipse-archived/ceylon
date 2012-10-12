@@ -12,10 +12,10 @@ class EqualsHashOverriding {
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        .java.lang.Object $that$0;
-        if (($that$0 = that) instanceof .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding) {
-            final .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding $that$1 = (.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding)$that$0;
-            return .ceylon.language.String.equals(s, .ceylon.language.String.instance($that$1.s));
+        .java.lang.Object $that$1;
+        if (($that$1 = that) instanceof .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding) {
+            final .com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding $that$2 = (.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding)$that$1;
+            return .ceylon.language.String.equals(s, .ceylon.language.String.instance($that$2.s));
         } else {
             return false;
         }

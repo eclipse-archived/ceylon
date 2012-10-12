@@ -26,14 +26,14 @@ final class test_booleans_ {
         final .ceylon.language.Array<.ceylon.language.Boolean> items = .ceylon.language.Array.<.ceylon.language.Boolean>instance(java.return_booleans());
         final .ceylon.language.Boolean b = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Boolean b3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Boolean $b$0;
-        if (($b$0 = b) != null) {
-            final boolean $b$1 = $b$0.booleanValue();
-            items.setItem(1L, .ceylon.language.Boolean.instance($b$1));
+        .ceylon.language.Boolean $b$1;
+        if (($b$1 = b) != null) {
+            final boolean $b$2 = $b$1.booleanValue();
+            items.setItem(1L, .ceylon.language.Boolean.instance($b$2));
         }
-        .java.lang.Object $elem$2;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> $b2$iter$3 = items.getIterator(); !(($elem$2 = $b2$iter$3.next()) instanceof .ceylon.language.Finished); ) {
-            final boolean b2 = ((.ceylon.language.Boolean)$elem$2).booleanValue();
+        .java.lang.Object $elem$3;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Boolean> $b2$iter$4 = items.getIterator(); !(($elem$3 = $b2$iter$4.next()) instanceof .ceylon.language.Finished); ) {
+            final boolean b2 = ((.ceylon.language.Boolean)$elem$3).booleanValue();
             .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b2));
         }
         java.take_booleans((boolean[])items.toArray());
@@ -57,14 +57,14 @@ final class test_JBooleans_ {
         final .ceylon.language.Array<.java.lang.Boolean> items = .ceylon.language.Array.<.java.lang.Boolean>instance(java.return_Booleans());
         final .java.lang.Boolean b = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Boolean b3 = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Boolean $b$4;
-        if (($b$4 = b) != null) {
-            final .java.lang.Boolean $b$5 = $b$4;
-            items.setItem(1L, $b$5);
+        .java.lang.Boolean $b$6;
+        if (($b$6 = b) != null) {
+            final .java.lang.Boolean $b$7 = $b$6;
+            items.setItem(1L, $b$7);
         }
-        .java.lang.Object $elem$6;
-        for (.ceylon.language.Iterator<? extends .java.lang.Boolean> $b2$iter$7 = items.getIterator(); !(($elem$6 = $b2$iter$7.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Boolean b2 = (.java.lang.Boolean)$elem$6;
+        .java.lang.Object $elem$8;
+        for (.ceylon.language.Iterator<? extends .java.lang.Boolean> $b2$iter$9 = items.getIterator(); !(($elem$8 = $b2$iter$9.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Boolean b2 = (.java.lang.Boolean)$elem$8;
             .ceylon.language.print_.print(b2);
         }
         java.take_Booleans((.java.lang.Boolean[])items.toArray());
@@ -85,14 +85,14 @@ final class test_bytes_ {
         final .ceylon.language.Array<.ceylon.language.Integer> items = .ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_bytes());
         final .ceylon.language.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Integer $n$8;
-        if (($n$8 = n) != null) {
-            final long $n$9 = $n$8.longValue();
-            items.setItem(1L, .ceylon.language.Integer.instance($n$9));
+        .ceylon.language.Integer $n$11;
+        if (($n$11 = n) != null) {
+            final long $n$12 = $n$11.longValue();
+            items.setItem(1L, .ceylon.language.Integer.instance($n$12));
         }
-        .java.lang.Object $elem$10;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$11 = items.getIterator(); !(($elem$10 = $n2$iter$11.next()) instanceof .ceylon.language.Finished); ) {
-            final long n2 = ((.ceylon.language.Integer)$elem$10).longValue();
+        .java.lang.Object $elem$13;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$14 = items.getIterator(); !(($elem$13 = $n2$iter$14.next()) instanceof .ceylon.language.Finished); ) {
+            final long n2 = ((.ceylon.language.Integer)$elem$13).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_bytes((byte[])items.toArray());
@@ -113,14 +113,14 @@ final class test_JBytes_ {
         final .ceylon.language.Array<.java.lang.Byte> items = .ceylon.language.Array.<.java.lang.Byte>instance(java.return_Bytes());
         final .java.lang.Byte n = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Byte n3 = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Byte $n$12;
-        if (($n$12 = n) != null) {
-            final .java.lang.Byte $n$13 = $n$12;
-            items.setItem(1L, $n$13);
+        .java.lang.Byte $n$16;
+        if (($n$16 = n) != null) {
+            final .java.lang.Byte $n$17 = $n$16;
+            items.setItem(1L, $n$17);
         }
-        .java.lang.Object $elem$14;
-        for (.ceylon.language.Iterator<? extends .java.lang.Byte> $n2$iter$15 = items.getIterator(); !(($elem$14 = $n2$iter$15.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Byte n2 = (.java.lang.Byte)$elem$14;
+        .java.lang.Object $elem$18;
+        for (.ceylon.language.Iterator<? extends .java.lang.Byte> $n2$iter$19 = items.getIterator(); !(($elem$18 = $n2$iter$19.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Byte n2 = (.java.lang.Byte)$elem$18;
             .ceylon.language.print_.print(n2);
         }
         java.take_Bytes((.java.lang.Byte[])items.toArray());
@@ -141,14 +141,14 @@ final class test_shorts_ {
         final .ceylon.language.Array<.ceylon.language.Integer> items = .ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_shorts());
         final .ceylon.language.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Integer $n$16;
-        if (($n$16 = n) != null) {
-            final long $n$17 = $n$16.longValue();
-            items.setItem(1L, .ceylon.language.Integer.instance($n$17));
+        .ceylon.language.Integer $n$21;
+        if (($n$21 = n) != null) {
+            final long $n$22 = $n$21.longValue();
+            items.setItem(1L, .ceylon.language.Integer.instance($n$22));
         }
-        .java.lang.Object $elem$18;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$19 = items.getIterator(); !(($elem$18 = $n2$iter$19.next()) instanceof .ceylon.language.Finished); ) {
-            final long n2 = ((.ceylon.language.Integer)$elem$18).longValue();
+        .java.lang.Object $elem$23;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$24 = items.getIterator(); !(($elem$23 = $n2$iter$24.next()) instanceof .ceylon.language.Finished); ) {
+            final long n2 = ((.ceylon.language.Integer)$elem$23).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_shorts((short[])items.toArray());
@@ -169,14 +169,14 @@ final class test_JShorts_ {
         final .ceylon.language.Array<.java.lang.Short> items = .ceylon.language.Array.<.java.lang.Short>instance(java.return_Shorts());
         final .java.lang.Short n = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Short n3 = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Short $n$20;
-        if (($n$20 = n) != null) {
-            final .java.lang.Short $n$21 = $n$20;
-            items.setItem(1L, $n$21);
+        .java.lang.Short $n$26;
+        if (($n$26 = n) != null) {
+            final .java.lang.Short $n$27 = $n$26;
+            items.setItem(1L, $n$27);
         }
-        .java.lang.Object $elem$22;
-        for (.ceylon.language.Iterator<? extends .java.lang.Short> $n2$iter$23 = items.getIterator(); !(($elem$22 = $n2$iter$23.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Short n2 = (.java.lang.Short)$elem$22;
+        .java.lang.Object $elem$28;
+        for (.ceylon.language.Iterator<? extends .java.lang.Short> $n2$iter$29 = items.getIterator(); !(($elem$28 = $n2$iter$29.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Short n2 = (.java.lang.Short)$elem$28;
             .ceylon.language.print_.print(n2);
         }
         java.take_Shorts((.java.lang.Short[])items.toArray());
@@ -197,14 +197,14 @@ final class test_ints_ {
         final .ceylon.language.Array<.ceylon.language.Integer> items = .ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_ints());
         final .ceylon.language.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Integer $n$24;
-        if (($n$24 = n) != null) {
-            final long $n$25 = $n$24.longValue();
-            items.setItem(1L, .ceylon.language.Integer.instance($n$25));
+        .ceylon.language.Integer $n$31;
+        if (($n$31 = n) != null) {
+            final long $n$32 = $n$31.longValue();
+            items.setItem(1L, .ceylon.language.Integer.instance($n$32));
         }
-        .java.lang.Object $elem$26;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$27 = items.getIterator(); !(($elem$26 = $n2$iter$27.next()) instanceof .ceylon.language.Finished); ) {
-            final long n2 = ((.ceylon.language.Integer)$elem$26).longValue();
+        .java.lang.Object $elem$33;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$34 = items.getIterator(); !(($elem$33 = $n2$iter$34.next()) instanceof .ceylon.language.Finished); ) {
+            final long n2 = ((.ceylon.language.Integer)$elem$33).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_ints((int[])items.toArray());
@@ -225,14 +225,14 @@ final class test_JIntegers_ {
         final .ceylon.language.Array<.java.lang.Integer> items = .ceylon.language.Array.<.java.lang.Integer>instance(java.return_Integers());
         final .java.lang.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Integer $n$28;
-        if (($n$28 = n) != null) {
-            final .java.lang.Integer $n$29 = $n$28;
-            items.setItem(1L, $n$29);
+        .java.lang.Integer $n$36;
+        if (($n$36 = n) != null) {
+            final .java.lang.Integer $n$37 = $n$36;
+            items.setItem(1L, $n$37);
         }
-        .java.lang.Object $elem$30;
-        for (.ceylon.language.Iterator<? extends .java.lang.Integer> $n2$iter$31 = items.getIterator(); !(($elem$30 = $n2$iter$31.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Integer n2 = (.java.lang.Integer)$elem$30;
+        .java.lang.Object $elem$38;
+        for (.ceylon.language.Iterator<? extends .java.lang.Integer> $n2$iter$39 = items.getIterator(); !(($elem$38 = $n2$iter$39.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Integer n2 = (.java.lang.Integer)$elem$38;
             .ceylon.language.print_.print(n2);
         }
         java.take_Integers((.java.lang.Integer[])items.toArray());
@@ -253,14 +253,14 @@ final class test_longs_ {
         final .ceylon.language.Array<.ceylon.language.Integer> items = .ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_longs());
         final .ceylon.language.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Integer $n$32;
-        if (($n$32 = n) != null) {
-            final long $n$33 = $n$32.longValue();
-            items.setItem(1L, .ceylon.language.Integer.instance($n$33));
+        .ceylon.language.Integer $n$41;
+        if (($n$41 = n) != null) {
+            final long $n$42 = $n$41.longValue();
+            items.setItem(1L, .ceylon.language.Integer.instance($n$42));
         }
-        .java.lang.Object $elem$34;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$35 = items.getIterator(); !(($elem$34 = $n2$iter$35.next()) instanceof .ceylon.language.Finished); ) {
-            final long n2 = ((.ceylon.language.Integer)$elem$34).longValue();
+        .java.lang.Object $elem$43;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n2$iter$44 = items.getIterator(); !(($elem$43 = $n2$iter$44.next()) instanceof .ceylon.language.Finished); ) {
+            final long n2 = ((.ceylon.language.Integer)$elem$43).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(n2));
         }
         java.take_longs((long[])items.toArray());
@@ -284,14 +284,14 @@ final class test_JLongs_ {
         final .ceylon.language.Array<.java.lang.Long> items = .ceylon.language.Array.<.java.lang.Long>instance(java.return_Longs());
         final .java.lang.Long n = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Long n3 = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Long $n$36;
-        if (($n$36 = n) != null) {
-            final .java.lang.Long $n$37 = $n$36;
-            items.setItem(1L, $n$37);
+        .java.lang.Long $n$46;
+        if (($n$46 = n) != null) {
+            final .java.lang.Long $n$47 = $n$46;
+            items.setItem(1L, $n$47);
         }
-        .java.lang.Object $elem$38;
-        for (.ceylon.language.Iterator<? extends .java.lang.Long> $n2$iter$39 = items.getIterator(); !(($elem$38 = $n2$iter$39.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Long n2 = (.java.lang.Long)$elem$38;
+        .java.lang.Object $elem$48;
+        for (.ceylon.language.Iterator<? extends .java.lang.Long> $n2$iter$49 = items.getIterator(); !(($elem$48 = $n2$iter$49.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Long n2 = (.java.lang.Long)$elem$48;
             .ceylon.language.print_.print(n2);
         }
         java.take_Longs((.java.lang.Long[])items.toArray());
@@ -312,14 +312,14 @@ final class test_floats_ {
         final .ceylon.language.Array<.ceylon.language.Float> items = .ceylon.language.Array.<.ceylon.language.Float>instance(java.return_floats());
         final .ceylon.language.Float f = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Float f3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Float $f$40;
-        if (($f$40 = f) != null) {
-            final double $f$41 = $f$40.doubleValue();
-            items.setItem(1L, .ceylon.language.Float.instance($f$41));
+        .ceylon.language.Float $f$51;
+        if (($f$51 = f) != null) {
+            final double $f$52 = $f$51.doubleValue();
+            items.setItem(1L, .ceylon.language.Float.instance($f$52));
         }
-        .java.lang.Object $elem$42;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Float> $f2$iter$43 = items.getIterator(); !(($elem$42 = $f2$iter$43.next()) instanceof .ceylon.language.Finished); ) {
-            final double f2 = ((.ceylon.language.Float)$elem$42).doubleValue();
+        .java.lang.Object $elem$53;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Float> $f2$iter$54 = items.getIterator(); !(($elem$53 = $f2$iter$54.next()) instanceof .ceylon.language.Finished); ) {
+            final double f2 = ((.ceylon.language.Float)$elem$53).doubleValue();
             .ceylon.language.print_.print(.ceylon.language.Float.instance(f2));
         }
         java.take_floats((float[])items.toArray());
@@ -340,14 +340,14 @@ final class test_JFloats_ {
         final .ceylon.language.Array<.java.lang.Float> items = .ceylon.language.Array.<.java.lang.Float>instance(java.return_Floats());
         final .java.lang.Float f = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Float f3 = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Float $f$44;
-        if (($f$44 = f) != null) {
-            final .java.lang.Float $f$45 = $f$44;
-            items.setItem(1L, $f$45);
+        .java.lang.Float $f$56;
+        if (($f$56 = f) != null) {
+            final .java.lang.Float $f$57 = $f$56;
+            items.setItem(1L, $f$57);
         }
-        .java.lang.Object $elem$46;
-        for (.ceylon.language.Iterator<? extends .java.lang.Float> $f2$iter$47 = items.getIterator(); !(($elem$46 = $f2$iter$47.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Float f2 = (.java.lang.Float)$elem$46;
+        .java.lang.Object $elem$58;
+        for (.ceylon.language.Iterator<? extends .java.lang.Float> $f2$iter$59 = items.getIterator(); !(($elem$58 = $f2$iter$59.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Float f2 = (.java.lang.Float)$elem$58;
             .ceylon.language.print_.print(f2);
         }
         java.take_Floats((.java.lang.Float[])items.toArray());
@@ -368,14 +368,14 @@ final class test_doubles_ {
         final .ceylon.language.Array<.ceylon.language.Float> items = .ceylon.language.Array.<.ceylon.language.Float>instance(java.return_doubles());
         final .ceylon.language.Float f = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Float f3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Float $f$48;
-        if (($f$48 = f) != null) {
-            final double $f$49 = $f$48.doubleValue();
-            items.setItem(1L, .ceylon.language.Float.instance($f$49));
+        .ceylon.language.Float $f$61;
+        if (($f$61 = f) != null) {
+            final double $f$62 = $f$61.doubleValue();
+            items.setItem(1L, .ceylon.language.Float.instance($f$62));
         }
-        .java.lang.Object $elem$50;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Float> $f2$iter$51 = items.getIterator(); !(($elem$50 = $f2$iter$51.next()) instanceof .ceylon.language.Finished); ) {
-            final double f2 = ((.ceylon.language.Float)$elem$50).doubleValue();
+        .java.lang.Object $elem$63;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Float> $f2$iter$64 = items.getIterator(); !(($elem$63 = $f2$iter$64.next()) instanceof .ceylon.language.Finished); ) {
+            final double f2 = ((.ceylon.language.Float)$elem$63).doubleValue();
             .ceylon.language.print_.print(.ceylon.language.Float.instance(f2));
         }
         java.take_doubles((double[])items.toArray());
@@ -399,14 +399,14 @@ final class test_JDoubles_ {
         final .ceylon.language.Array<.java.lang.Double> items = .ceylon.language.Array.<.java.lang.Double>instance(java.return_Doubles());
         final .java.lang.Double f = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Double f3 = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Double $f$52;
-        if (($f$52 = f) != null) {
-            final .java.lang.Double $f$53 = $f$52;
-            items.setItem(1L, $f$53);
+        .java.lang.Double $f$66;
+        if (($f$66 = f) != null) {
+            final .java.lang.Double $f$67 = $f$66;
+            items.setItem(1L, $f$67);
         }
-        .java.lang.Object $elem$54;
-        for (.ceylon.language.Iterator<? extends .java.lang.Double> $f2$iter$55 = items.getIterator(); !(($elem$54 = $f2$iter$55.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Double f2 = (.java.lang.Double)$elem$54;
+        .java.lang.Object $elem$68;
+        for (.ceylon.language.Iterator<? extends .java.lang.Double> $f2$iter$69 = items.getIterator(); !(($elem$68 = $f2$iter$69.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Double f2 = (.java.lang.Double)$elem$68;
             .ceylon.language.print_.print(f2);
         }
         java.take_Doubles((.java.lang.Double[])items.toArray());
@@ -427,14 +427,14 @@ final class test_chars_ {
         final .ceylon.language.Array<.ceylon.language.Character> items = .ceylon.language.Array.<.ceylon.language.Character>instance(java.return_chars());
         final .ceylon.language.Character c = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Character c3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.Character $c$56;
-        if (($c$56 = c) != null) {
-            final int $c$57 = $c$56.intValue();
-            items.setItem(1L, .ceylon.language.Character.instance($c$57));
+        .ceylon.language.Character $c$71;
+        if (($c$71 = c) != null) {
+            final int $c$72 = $c$71.intValue();
+            items.setItem(1L, .ceylon.language.Character.instance($c$72));
         }
-        .java.lang.Object $elem$58;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Character> $c2$iter$59 = items.getIterator(); !(($elem$58 = $c2$iter$59.next()) instanceof .ceylon.language.Finished); ) {
-            final int c2 = ((.ceylon.language.Character)$elem$58).intValue();
+        .java.lang.Object $elem$73;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Character> $c2$iter$74 = items.getIterator(); !(($elem$73 = $c2$iter$74.next()) instanceof .ceylon.language.Finished); ) {
+            final int c2 = ((.ceylon.language.Character)$elem$73).intValue();
             .ceylon.language.print_.print(.ceylon.language.Character.instance(c2));
         }
         java.take_chars((char[])items.toArray());
@@ -458,14 +458,14 @@ final class test_JCharacters_ {
         final .ceylon.language.Array<.java.lang.Character> items = .ceylon.language.Array.<.java.lang.Character>instance(java.return_Characters());
         final .java.lang.Character c = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Character c3 = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Character $c$60;
-        if (($c$60 = c) != null) {
-            final .java.lang.Character $c$61 = $c$60;
-            items.setItem(1L, $c$61);
+        .java.lang.Character $c$76;
+        if (($c$76 = c) != null) {
+            final .java.lang.Character $c$77 = $c$76;
+            items.setItem(1L, $c$77);
         }
-        .java.lang.Object $elem$62;
-        for (.ceylon.language.Iterator<? extends .java.lang.Character> $c2$iter$63 = items.getIterator(); !(($elem$62 = $c2$iter$63.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Character c2 = (.java.lang.Character)$elem$62;
+        .java.lang.Object $elem$78;
+        for (.ceylon.language.Iterator<? extends .java.lang.Character> $c2$iter$79 = items.getIterator(); !(($elem$78 = $c2$iter$79.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Character c2 = (.java.lang.Character)$elem$78;
             .ceylon.language.print_.print(c2);
         }
         java.take_Characters((.java.lang.Character[])items.toArray());
@@ -486,14 +486,14 @@ final class test_Strings_ {
         final .ceylon.language.Array<.ceylon.language.String> items = .ceylon.language.Array.<.ceylon.language.String>instance(java.return_Strings());
         final .ceylon.language.String s = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.String s3 = items.item(.ceylon.language.Integer.instance(0L));
-        .ceylon.language.String $s$64;
-        if (($s$64 = s) != null) {
-            final .java.lang.String $s$65 = $s$64.toString();
-            items.setItem(1L, .ceylon.language.String.instance($s$65));
+        .ceylon.language.String $s$81;
+        if (($s$81 = s) != null) {
+            final .java.lang.String $s$82 = $s$81.toString();
+            items.setItem(1L, .ceylon.language.String.instance($s$82));
         }
-        .java.lang.Object $elem$66;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s2$iter$67 = items.getIterator(); !(($elem$66 = $s2$iter$67.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.String s2 = ((.ceylon.language.String)$elem$66).toString();
+        .java.lang.Object $elem$83;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.String> $s2$iter$84 = items.getIterator(); !(($elem$83 = $s2$iter$84.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.String s2 = ((.ceylon.language.String)$elem$83).toString();
             .ceylon.language.print_.print(.ceylon.language.String.instance(s2));
         }
         java.take_Strings((.java.lang.String[])items.toArray());
@@ -516,14 +516,14 @@ final class test_Objects_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .ceylon.language.Array<.java.lang.Object> items = .ceylon.language.Array.<.java.lang.Object>instance(java.return_Objects());
         final .java.lang.Object o = items.item(.ceylon.language.Integer.instance(0L));
-        .java.lang.Object $o$68;
-        if (($o$68 = o) != null) {
-            final .java.lang.Object $o$69 = $o$68;
-            items.setItem(1L, $o$69);
+        .java.lang.Object $o$86;
+        if (($o$86 = o) != null) {
+            final .java.lang.Object $o$87 = $o$86;
+            items.setItem(1L, $o$87);
         }
-        .java.lang.Object $elem$70;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> $o2$iter$71 = items.getIterator(); !(($elem$70 = $o2$iter$71.next()) instanceof .ceylon.language.Finished); ) {
-            final .java.lang.Object o2 = (.java.lang.Object)$elem$70;
+        .java.lang.Object $elem$88;
+        for (.ceylon.language.Iterator<? extends .java.lang.Object> $o2$iter$89 = items.getIterator(); !(($elem$88 = $o2$iter$89.next()) instanceof .ceylon.language.Finished); ) {
+            final .java.lang.Object o2 = (.java.lang.Object)$elem$88;
             .ceylon.language.print_.print(o2);
         }
         java.take_Objects((.java.lang.Object[])items.toArray());

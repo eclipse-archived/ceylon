@@ -74,15 +74,15 @@ class DefaultedVariableAttribute {
     
     public final void setFullName(final .java.lang.String fullName) {
         final .ceylon.language.Iterator<? extends .ceylon.language.String> tokens = .ceylon.language.String.split(fullName).getIterator();
-        .java.lang.Object $first$7;
-        if (($first$7 = tokens.next()) instanceof .ceylon.language.String) {
-            final .java.lang.String $first$8 = ((.ceylon.language.String)$first$7).toString();
-            setFirstName(.ceylon.language.String.instance($first$8));
+        .java.lang.Object $first$8;
+        if (($first$8 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String $first$9 = ((.ceylon.language.String)$first$8).toString();
+            setFirstName(.ceylon.language.String.instance($first$9));
         }
-        .java.lang.Object $last$9;
-        if (($last$9 = tokens.next()) instanceof .ceylon.language.String) {
-            final .java.lang.String $last$10 = ((.ceylon.language.String)$last$9).toString();
-            setLastName(.ceylon.language.String.instance($last$10));
+        .java.lang.Object $last$11;
+        if (($last$11 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String $last$12 = ((.ceylon.language.String)$last$11).toString();
+            setLastName(.ceylon.language.String.instance($last$12));
         }
     }
 }

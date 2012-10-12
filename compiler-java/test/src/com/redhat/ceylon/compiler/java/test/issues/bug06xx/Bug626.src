@@ -156,9 +156,9 @@ final class bug626f_ {
     }
     
     static void bug626f(final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> f, final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> f2, final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<?>> f3) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i = (.ceylon.language.Iterable)f;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i2 = (.ceylon.language.Iterable)f2;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i3 = (.ceylon.language.Iterable)f3;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i = f;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i2 = f2;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .java.lang.Object>> i3 = f3;
         final .ceylon.language.List<?> temp = (
             let
             {

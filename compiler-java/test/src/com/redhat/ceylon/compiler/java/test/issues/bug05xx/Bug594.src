@@ -8,13 +8,13 @@ final class bug594_ {
     static <T>void bug594(final T t) {
         final .java.lang.Object s = .ceylon.language.String.instance("s");
         final .ceylon.language.String s2 = .ceylon.language.String.instance("s");
-        .java.lang.Object $s$0;
-        if (($s$0 = s) == null || $s$0 instanceof .ceylon.language.String) {
-            final .ceylon.language.String $s$1 = (.ceylon.language.String)$s$0;
+        .java.lang.Object $s$1;
+        if (($s$1 = s) == null || $s$1 instanceof .ceylon.language.String) {
+            final .ceylon.language.String $s$2 = (.ceylon.language.String)$s$1;
         }
-        .java.lang.Object $t$2;
-        if (($t$2 = t) == null || $t$2 instanceof .ceylon.language.String) {
-            final .ceylon.language.List<? extends .ceylon.language.Character> $t$3 = (.ceylon.language.List)$t$2;
+        .java.lang.Object $t$4;
+        if (($t$4 = t) == null || $t$4 instanceof .ceylon.language.String) {
+            final .ceylon.language.List<? extends .ceylon.language.Character> $t$5 = (.ceylon.language.List)$t$4;
         }
     }
 }

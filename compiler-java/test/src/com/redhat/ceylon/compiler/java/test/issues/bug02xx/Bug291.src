@@ -32,10 +32,10 @@ final class run_ {
             }
         }
         final holaMundo_ holaMundo = new holaMundo_();
-        .ceylon.language.String $arg$2;
-        if (($arg$2 = ((.ceylon.language.Iterable<? extends .ceylon.language.String>).ceylon.language.process_.getProcess$().getArguments()).getFirst()) != null) {
-            final .java.lang.String $arg$3 = $arg$2.toString();
-            holaMundo.holaMundo($arg$3);
+        .ceylon.language.String $arg$3;
+        if (($arg$3 = ((.ceylon.language.Iterable<? extends .ceylon.language.String>).ceylon.language.process_.getProcess$().getArguments()).getFirst()) != null) {
+            final .java.lang.String $arg$4 = $arg$3.toString();
+            holaMundo.holaMundo($arg$4);
         } else {
             holaMundo.holaMundo();
         }

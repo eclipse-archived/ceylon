@@ -37,12 +37,13 @@ class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this;
     
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this;
     }
     
     @.java.lang.Override
-    public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass qual) {
+    public final void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass qual) {
         $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this.m1(qual);
     }
     
@@ -68,7 +69,7 @@ class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess().setupArguments(args);
+        .ceylon.language.process_.getProcess$().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub();
     }
 }

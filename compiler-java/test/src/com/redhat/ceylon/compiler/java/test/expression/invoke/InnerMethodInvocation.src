@@ -21,9 +21,9 @@ public final class innerMethodInvocation_ {
             }
         }
         final fib_ fib = new fib_();
-        .java.lang.Object $elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(50L)).getIterator(); !(($elem$0 = $n$iter$1.next()) instanceof .ceylon.language.Finished); ) {
-            final long n = ((.ceylon.language.Integer)$elem$0).longValue();
+        .java.lang.Object $elem$1;
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$2 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(50L)).getIterator(); !(($elem$1 = $n$iter$2.next()) instanceof .ceylon.language.Finished); ) {
+            final long n = ((.ceylon.language.Integer)$elem$1).longValue();
             .ceylon.language.print_.print(.ceylon.language.String.instance("n! = " + .ceylon.language.Integer.toString(fib.fib(n))));
         }
     }

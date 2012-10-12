@@ -21,19 +21,19 @@ class CharacterBoxing {
     }
     
     private final .ceylon.language.Character successor2(final .ceylon.language.Character c) {
-        .ceylon.language.Character $c$0;
-        if (($c$0 = c) != null) {
-            final int $c$1 = $c$0.intValue();
-            return .ceylon.language.Character.instance(.ceylon.language.Character.getSuccessor($c$1));
+        .ceylon.language.Character $c$1;
+        if (($c$1 = c) != null) {
+            final int $c$2 = $c$1.intValue();
+            return .ceylon.language.Character.instance(.ceylon.language.Character.getSuccessor($c$2));
         }
         return null;
     }
     
     private final int successor3(final .ceylon.language.Character c) {
-        .ceylon.language.Character $c$2;
-        if (($c$2 = c) != null) {
-            final int $c$3 = $c$2.intValue();
-            return .ceylon.language.Character.getSuccessor($c$3);
+        .ceylon.language.Character $c$4;
+        if (($c$4 = c) != null) {
+            final int $c$5 = $c$4.intValue();
+            return .ceylon.language.Character.getSuccessor($c$5);
         } else {
             return 32;
         }

@@ -7,9 +7,9 @@ final class bug774_ {
     
     static void bug774() {
         final .ceylon.language.Array<.ceylon.language.Array<.ceylon.language.Integer>> m = .ceylon.language.arrayOfSize_.<.ceylon.language.Array<.ceylon.language.Integer>>arrayOfSize(.ceylon.language.Array.class, 10L, .ceylon.language.arrayOfSize_.<.ceylon.language.Integer>arrayOfSize(long.class, 10L, .ceylon.language.Integer.instance(0L)));
-        .ceylon.language.Array<.ceylon.language.Integer> $row$0;
-        if (($row$0 = m.item(.ceylon.language.Integer.instance(0L))) != null) {
-            final .ceylon.language.Array<.ceylon.language.Integer> $row$1 = $row$0;
+        .ceylon.language.Array<.ceylon.language.Integer> $row$1;
+        if (($row$1 = m.item(.ceylon.language.Integer.instance(0L))) != null) {
+            final .ceylon.language.Array<.ceylon.language.Integer> $row$2 = $row$1;
         }
     }
     

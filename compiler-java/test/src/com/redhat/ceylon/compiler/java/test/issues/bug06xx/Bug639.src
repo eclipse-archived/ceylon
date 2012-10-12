@@ -48,11 +48,11 @@ class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.test.issue
     }
     
     public final void neg(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening w) {
-        .java.lang.Object $w$0;
-        if (($w$0 = w) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2 $w$1 = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2)$w$0;
+        .java.lang.Object $w$1;
+        if (($w$1 = w) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2 $w$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2)$w$1;
             final .ceylon.language.Number a = .ceylon.language.Integer.instance(.ceylon.language.Integer.getNegativeValue(getImplementation().longValue()));
-            final .ceylon.language.Number b = .ceylon.language.Integer.instance(.ceylon.language.Integer.getNegativeValue($w$1.getImplementation().longValue()));
+            final .ceylon.language.Number b = .ceylon.language.Integer.instance(.ceylon.language.Integer.getNegativeValue($w$2.getImplementation().longValue()));
         }
     }
 }

@@ -157,9 +157,9 @@ final class test_ {
     }
     
     static void test() {
-        .ceylon.language.String $s$4;
-        if (($s$4 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()) != null) {
-            final .java.lang.String $s$5 = $s$4.toString();
+        .ceylon.language.String $s$5;
+        if (($s$5 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()) != null) {
+            final .java.lang.String $s$6 = $s$5.toString();
         }
     }
     
