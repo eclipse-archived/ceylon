@@ -2028,6 +2028,8 @@ public abstract class AbstractTransformer implements Transformation {
     // Creates comparisons of expressions against types
     JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.SyntheticName varName, ProducedType type) {
         JCExpression result = null;
+        // make sure aliases are resolved
+        type = type.resolveAliases();
         if (typeFact().isUnion(type)) {
             UnionType union = (UnionType)type.getDeclaration();
             for (ProducedType pt : union.getCaseTypes()) {
