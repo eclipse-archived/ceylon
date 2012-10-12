@@ -52,4 +52,5 @@ void misc() {
     {1,2,3}.definesEvery();
     {1,2,3}.containsAny();
     {1,2,3}.containsEvery();
+    print(null);
 }
