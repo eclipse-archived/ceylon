@@ -727,5 +727,10 @@ public class IssuesTest extends CompilerTest {
     public void testBug797() {
         compile("bug07xx/Bug797.ceylon");
     }
+
+    @Test
+    public void testBug801() {
+        compareWithJavaSource("bug08xx/Bug801");
+    }
 }
 
