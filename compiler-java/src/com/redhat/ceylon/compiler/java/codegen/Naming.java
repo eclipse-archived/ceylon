@@ -1334,6 +1334,9 @@ public class Naming implements LocalId {
             }
             return key.name;
         }
+        public void clear() {
+            map.clear();
+        }
     }
     
     private VarMapper getVarMapper() {
@@ -1434,6 +1437,8 @@ public class Naming implements LocalId {
     void noteDecl(Declaration decl) {
         if (decl.isToplevel()) {
             resetLocals();
+            // Clear all the substitutions before each top level declaration
+            getVarMapper().clear();
         } else if (Decl.isLocal(decl)){
             local(decl.getContainer());
         }
