@@ -137,21 +137,22 @@ public class Util {
                         //ignore optionality for resolving overloads, since
                         //all Java method params are treated as optional
                         ProducedType pdt = params.get(i).getType();
+                        if (pdt==null) return false;
                         ProducedType sdt = signature.get(i);
                         if (!matches(pdt, sdt, d)) return false;
                     }
                     if (hasSeqParam) {
                         ProducedType pdt = params.get(size).getType();
-                        if(ellipsis){
+                        if (pdt==null) return false;
+                        if (ellipsis){
                             // we must have exactly one spread param
-                            if(signature.size() > size+1)
-                                return false;
+                            if (signature.size() > size+1) return false;
                             ProducedType sdt = signature.get(size);
                             ProducedType isdt = d.getUnit().getIteratedType(sdt);
                             ProducedType ipdt = d.getUnit().getIteratedType(pdt);
-                            if(!matches(ipdt, isdt, d))
-                                return false;
-                        }else{
+                            if (!matches(ipdt, isdt, d)) return false;
+                        }
+                        else {
                             pdt = d.getUnit().getIteratedType(pdt);
                             for (int j=size; j<signature.size(); j++) {
                                 ProducedType sdt = signature.get(j);
@@ -705,4 +706,19 @@ public class Util {
                 type.getDeclaration() instanceof UnknownType;
     }
 
+    public static List<ProducedType> getSignature(Declaration dec) {
+        if(dec instanceof Functional == false)
+            return null;
+        List<ParameterList> parameterLists = ((Functional)dec).getParameterLists();
+        if(parameterLists == null || parameterLists.isEmpty())
+            return null;
+        ParameterList parameterList = parameterLists.get(0);
+        if(parameterList == null || parameterList.getParameters() == null)
+            return null;
+        ArrayList<ProducedType> signature = new ArrayList<ProducedType>(parameterList.getParameters().size());
+        for(Parameter param : parameterList.getParameters()){
+            signature.add(param.getType());
+        }
+        return signature;
+    }
 }
