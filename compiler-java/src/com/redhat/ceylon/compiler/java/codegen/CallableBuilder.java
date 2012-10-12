@@ -227,7 +227,7 @@ public class CallableBuilder {
         }
         JCExpression cast;
         // let's not cast to Object there's no point
-        if(gen.willEraseToObjectOrList(castType) && !gen.willEraseToList(castType))
+        if(gen.willEraseToObject(castType))
             cast = argExpr;
         else{
             // make it raw: it can't hurt and it may even be required if the target method's param is raw
