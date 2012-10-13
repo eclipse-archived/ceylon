@@ -10,6 +10,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
@@ -52,8 +53,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  *
  */
 public class DeclarationVisitor extends Visitor {
-    
-    private final Package pkg;
+	
+	private final Package pkg;
     private final String filename;
     private Scope scope;
     private Unit unit;
@@ -106,14 +107,15 @@ public class DeclarationVisitor extends Visitor {
         }
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
-        if (!(scope instanceof Package)) {
-            scope.getMembers().add(model);
+        Scope sc = scope(that);
+        if (!(sc instanceof Package)) {
+        	sc.getMembers().add(model);
         }
-
+        
         handleDeclarationAnnotations(that, model);        
-
+        
         setVisibleScope(model);
-
+        
         checkFormalMember(that, model);
     }
 
@@ -198,8 +200,23 @@ public class DeclarationVisitor extends Visitor {
 
     private void visitElement(Node that, Element model) {
         model.setUnit(unit);
-        model.setContainer(scope);
+        model.setContainer(scope(that));
     }
+
+	private Scope scope(Node that) {
+        if (that instanceof Tree.Declaration &&
+        		!(that instanceof Tree.Parameter) &&
+        		!(that instanceof Tree.Variable)) {
+        	Scope s = scope;
+        	while (s instanceof ConditionScope) {
+        		s = s.getContainer();
+        	}
+			return s;
+		} 
+        else {
+			return scope;
+		}
+	}
     
     @Override
     public void visitAny(Node that) {
@@ -561,8 +578,9 @@ public class DeclarationVisitor extends Visitor {
         p.setDeclaration(s);
         visitElement(that, p);
         unit.addDeclaration(p);
-        if (!(scope instanceof Package)) {
-            scope.getMembers().add(p);
+        Scope sc = scope(that);
+        if (!(sc instanceof Package)) {
+        	sc.getMembers().add(p);
         }
         
         s.setParameter(p);
@@ -695,7 +713,7 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Condition that) {
-        ControlBlock cb = new ControlBlock();
+        ConditionScope cb = new ConditionScope();
         cb.setId(id++);
         that.setScope(cb);
         visitElement(that, cb);
