@@ -13,5 +13,17 @@ class Conditions(String... elems) {
             if (1==s) {}
         }
     }
+    
+    void z(Void o) {
+        if (is Object o) {
+            class Inner() {
+                Object x = o;
+            }
+        }
+        assert (is Object o);
+        class Inner() {
+            Object x = o;
+        }
+    }
 
 }
