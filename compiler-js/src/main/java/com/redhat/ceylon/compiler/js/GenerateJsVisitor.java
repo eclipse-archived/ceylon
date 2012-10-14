@@ -1524,33 +1524,27 @@ public class GenerateJsVisitor extends Visitor
         return memberAccess(expr, true);
     }
     
+    private static interface MemberAccessCallback {
+        public void generateValue();
+    }
+    
     /**
      * Generates a write access to a member, as represented by the given expression.
-     * The assigned value can either be specified as a string or, if strValue==null,
-     * as a Node. If the expression is a QualifiedMemberOrTypeExpression then the
+     * The given callback is responsible for generating the assigned value.
+     * If the expression is a QualifiedMemberOrTypeExpression then the
      * LHS is *not* included. If it is a BaseMemberOrTypeExpression and
      * qualifyBaseExpr==true then the qualified path is included.
-     * If expression=true then it is made sure that the result can be used in an
-     * expression context by adding surrounding parentheses if necessary.
      */
-    private void generateMemberAccess(MemberOrTypeExpression expr, Node value,
-                String strValue, boolean qualifyBaseExpr, boolean expression) {
+    private void generateMemberAccess(MemberOrTypeExpression expr,
+                MemberAccessCallback callback, boolean qualifyBaseExpr) {
         Declaration decl = expr.getDeclaration();
         boolean paren = false;
         if (isNative(decl)) {
             // direct access to a native element
-            if (expression) {
-                out("(");
-                paren = true;
-            }
             out(decl.getName(), "=");
         }
         else if (accessDirectly(decl)) {
             // direct access, without setter
-            if (expression) {
-                out("(");
-                paren = true;
-            }
             out(memberAccessBase(expr, names.name(decl), qualifyBaseExpr), "=");
         }
         else {
@@ -1561,22 +1555,15 @@ public class GenerateJsVisitor extends Visitor
             paren = true;
         }
         
-        if (strValue != null) {
-            out(strValue);
-        }
-        else {
-            value.visit(this);
-        }
+        callback.generateValue();
         if (paren) { out(")"); }
     }
-//    private void generateMemberAccess(MemberOrTypeExpression expr, Node value,
-//                boolean qualifyBaseExpr) {
-//        generateMemberAccess(expr, value, null, true, qualifyBaseExpr);
-//    }
-//    private void generateMemberAccess(MemberOrTypeExpression expr, String strValue,
-//                boolean qualifyBaseExpr) {
-//        generateMemberAccess(expr, null, strValue, true, qualifyBaseExpr);
-//    }
+    private void generateMemberAccess(MemberOrTypeExpression expr, final String strValue,
+            boolean qualifyBaseExpr) {
+        generateMemberAccess(expr, new MemberAccessCallback() {
+            @Override public void generateValue() { out(strValue); }
+        }, qualifyBaseExpr);
+    }
     
     @Override
     public void visit(BaseTypeExpression that) {
@@ -1921,66 +1908,47 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(AssignOp that) {
-        boolean paren=false;
+    public void visit(final AssignOp that) {
         String returnValue = null;
+        MemberOrTypeExpression lhsExpr = null;
+        out("(");
+        
         if (that.getLeftTerm() instanceof BaseMemberExpression) {
             BaseMemberExpression bme = (BaseMemberExpression) that.getLeftTerm();
+            lhsExpr = bme;
             Declaration bmeDecl = bme.getDeclaration();
             boolean simpleSetter = hasSimpleGetterSetter(bmeDecl);
             if (!simpleSetter) {
-                out("(");
+                returnValue = memberAccess(bme);
             }
-            String path = qualifiedPath(that, bmeDecl);
-            if (path.length() > 0) { path += '.'; }
-            out(path);
-            if (isNative(bme.getDeclaration())) {
-                out(bmeDecl.getName());
-                out("=");
-            } else {
-                out(names.setter(bmeDecl));
-                out("(");
-                if (!simpleSetter) {
-                    returnValue = accessDirectly(bmeDecl)
-                            ? (path + names.name(bmeDecl))
-                            : (path + names.getter(bmeDecl) + "()");
-                }
-                paren = true;//!(bmeDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter);
-            }
+
         } else if (that.getLeftTerm() instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression qme = (QualifiedMemberExpression)that.getLeftTerm();
+            lhsExpr = qme;
             boolean simpleSetter = hasSimpleGetterSetter(qme.getDeclaration());
             String lhsVar = null;
             if (!simpleSetter) {
                 lhsVar = createRetainedTempVar();
-                out("(", lhsVar, "=");
+                out(lhsVar, "=");
                 super.visit(qme);
-                out(",", lhsVar);
-                paren=true;
+                out(",", lhsVar, ".");
+                returnValue = lhsVar + "." + memberAccess(qme);
             } else {
                 super.visit(qme);
-            }
-            if (isNative(qme.getDeclaration())) {
-                out(".", qme.getDeclaration().getName());
-                out("=");
-            } else {
-                out(".", names.setter(qme.getDeclaration()));
-                out("(");
-                if (!simpleSetter) {
-                    returnValue = lhsVar + "." + names.getter(qme.getDeclaration()) + "()";
-                }
-                paren = true;
+                out(".");
             }
         }
-        int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
-        that.getRightTerm().visit(this);
-        boxUnboxEnd(boxType);
-        if (paren) {
-            out(")");
-        }
-        if (returnValue != null) {
-            out(",", returnValue, ")");
-        }
+        
+        generateMemberAccess(lhsExpr, new MemberAccessCallback() {
+            @Override public void generateValue() {
+                int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
+                that.getRightTerm().visit(GenerateJsVisitor.this);
+                boxUnboxEnd(boxType);
+            }
+        }, true);
+        
+        if (returnValue != null) { out(",", returnValue); }
+        out(")");
     }
 
     private void qualify(Node that, Declaration d) {
@@ -2243,28 +2211,25 @@ public class GenerateJsVisitor extends Visitor
         arithmeticAssignOp(that, "remainder");
     }
 
-    private void arithmeticAssignOp(ArithmeticAssignmentOp that,
-                                    String functionName) {
+    private void arithmeticAssignOp(final ArithmeticAssignmentOp that,
+                                    final String functionName) {
         Term lhs = that.getLeftTerm();
         if (lhs instanceof BaseMemberExpression) {
             BaseMemberExpression lhsBME = (BaseMemberExpression) lhs;
             Declaration lhsDecl = lhsBME.getDeclaration();
-            String lhsPath = qualifiedPath(lhsBME, lhsDecl);
-            if (lhsPath.length() > 0) {
-                lhsPath += '.';
-            }
 
-            boolean simpleSetter = hasSimpleGetterSetter(lhsDecl);
-            String svar = accessDirectly(lhsDecl)
-                    ? names.name(lhsDecl) : (names.getter(lhsDecl)+"()");
-            if (!simpleSetter) { out("("); }
-            out(lhsPath, names.setter(lhsDecl), "(", lhsPath,
-                    svar, ".", functionName, "(");
-            that.getRightTerm().visit(this);
-            out("))");
-            if (!simpleSetter) {
-                out(",", lhsPath, svar, ")");
-            }
+            final String getLHS = memberAccess(lhsBME);
+            out("(");
+            generateMemberAccess(lhsBME, new MemberAccessCallback() {
+                @Override public void generateValue() {
+                    out(getLHS, ".", functionName, "(");
+                    that.getRightTerm().visit(GenerateJsVisitor.this);
+                    out(")");
+                }
+            }, true);
+            if (!hasSimpleGetterSetter(lhsDecl)) { out(",", getLHS); }
+            out(")");
+
         } else if (lhs instanceof QualifiedMemberExpression) {
             QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
             if (isNative(lhsQME)) {
@@ -2280,17 +2245,23 @@ public class GenerateJsVisitor extends Visitor
                 out(".", functionName, "(");
                 that.getRightTerm().visit(this);
                 out("))");
+                
             } else {
-                String lhsPrimaryVar = createRetainedTempVar();
-                String member = names.getter(lhsQME.getDeclaration()) + "()";
+                final String lhsPrimaryVar = createRetainedTempVar();
+                final String getLHS = lhsPrimaryVar + "." + memberAccess(lhsQME);
                 out("(", lhsPrimaryVar, "=");
                 lhsQME.getPrimary().visit(this);
-                out(",", lhsPrimaryVar, ".", names.setter(lhsQME.getDeclaration()), "(",
-                        lhsPrimaryVar, ".", member, ".", functionName, "(");
-                that.getRightTerm().visit(this);
-                out("))");
+                out(",", lhsPrimaryVar, ".");
+                generateMemberAccess(lhsQME, new MemberAccessCallback() {
+                    @Override public void generateValue() {
+                        out(getLHS, ".", functionName, "(");
+                        that.getRightTerm().visit(GenerateJsVisitor.this);
+                        out(")");
+                    }
+                }, false);
+                
                 if (!hasSimpleGetterSetter(lhsQME.getDeclaration())) {
-                    out(",", lhsPrimaryVar, ".", member);
+                    out(",", getLHS);
                 }
                 out(")");
             }
@@ -2537,9 +2508,10 @@ public class GenerateJsVisitor extends Visitor
            boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
            String getMember = memberAccess(bme);
            String applyFunc = String.format("%s.%s()", getMember, functionName);
-           if (!simpleSetter) { out("("); }
-           generateMemberAccess(bme, null, applyFunc, true, simpleSetter);
-           if (!simpleSetter) { out(",", getMember, ")"); }
+           out("(");
+           generateMemberAccess(bme, applyFunc, true);
+           if (!simpleSetter) { out(",", getMember); }
+           out(")");
            
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
@@ -2549,7 +2521,7 @@ public class GenerateJsVisitor extends Visitor
            out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
            out(",", primaryVar, ".");
-           generateMemberAccess(qme, null, applyFunc, false, false);
+           generateMemberAccess(qme, applyFunc, false);
            if (!hasSimpleGetterSetter(qme.getDeclaration())) {
                out(",", getMember);
            }
@@ -2571,7 +2543,7 @@ public class GenerateJsVisitor extends Visitor
            String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
            String applyFunc = String.format("%s.%s()", oldValueVar, functionName);
            out("(", oldValueVar, "=", memberAccess(bme), ",");
-           generateMemberAccess(bme, null, applyFunc, true, false);
+           generateMemberAccess(bme, applyFunc, true);
            out(",", oldValueVar, ")");
 
        } else if (term instanceof QualifiedMemberExpression) {
@@ -2583,7 +2555,7 @@ public class GenerateJsVisitor extends Visitor
            qme.getPrimary().visit(this);
            out(",", oldValueVar, "=", primaryVar, ".", memberAccess(qme), ",",
                    primaryVar, ".");
-           generateMemberAccess(qme, null, applyFunc, false, false);
+           generateMemberAccess(qme, applyFunc, false);
            out(",", oldValueVar, ")");
        }
    }
