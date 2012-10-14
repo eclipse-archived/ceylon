@@ -587,15 +587,19 @@ public class GenerateJsVisitor extends Visitor
     private void callSuperclass(ExtendedType extendedType, Class d, Node that,
                 final List<Declaration> superDecs) {
         if (extendedType!=null) {
-            String suffix = typeReferenceSuffix(extendedType.getType(), d.getContainer());
             TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
             if (typeDecl.isAlias()) {
                 typeDecl = typeDecl.getExtendedTypeDeclaration();
             }
+            List<PositionalArgument> argList = extendedType.getInvocationExpression()
+                    .getPositionalArgumentList().getPositionalArguments();
+            
             qualify(that, typeDecl);
-            out(names.name(typeDecl), suffix, "(");
-            for (PositionalArgument arg: extendedType.getInvocationExpression()
-                    .getPositionalArgumentList().getPositionalArguments()) {
+            out(memberAccessBase(extendedType.getType(), names.name(typeDecl), false),
+                    (prototypeStyle && (getSuperMemberScope(extendedType.getType()) != null))
+                        ? ".call(this," : "(");
+            
+            for (PositionalArgument arg: argList) {
                 arg.visit(this);
                 out(",");
             }
@@ -605,17 +609,6 @@ public class GenerateJsVisitor extends Visitor
            
             copySuperMembers(typeDecl, superDecs, d);
         }
-    }
-
-    private String typeReferenceSuffix(StaticType type, Scope scope) {
-        String suffix = "";
-        if ((scope instanceof ClassOrInterface) && (type instanceof QualifiedType)) {
-            QualifiedType qtype = (QualifiedType) type;
-            if (qtype.getOuterType() instanceof SuperType) {
-                suffix = names.scopeSuffix(qtype.getDeclarationModel().getContainer());
-            }
-        }
-        return suffix;
     }
 
     private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Node that,
@@ -696,8 +689,7 @@ public class GenerateJsVisitor extends Visitor
             d.getQualifiedNameString(), "'");
 
         if (extendedType != null) {
-            String suffix = typeReferenceSuffix(extendedType.getType(), d.getContainer());
-            out(",", typeFunctionName(extendedType.getType(), false), suffix);
+            out(",", typeFunctionName(extendedType.getType(), false));
         } else if (!isInterface) {
             out(",", clAlias, ".IdentifiableObject");
         }
@@ -754,7 +746,7 @@ public class GenerateJsVisitor extends Visitor
         if (constr.length() > 0) {
             constr += '.';
         }
-        constr += names.name(d);
+        constr += memberAccessBase(type, names.name(d), false);
         return constr;
     }
 
@@ -1451,45 +1443,57 @@ public class GenerateJsVisitor extends Visitor
     }
     
     /**
-     * Checks if the given node is a MemberOrTypeExpression which represents an
-     * access to a supertype member.
+     * Checks if the given node is a MemberOrTypeExpression or QualifiedType which
+     * represents an access to a supertype member and returns the scope of that
+     * member or null.
      */
-    private boolean isSuperMemberAccess(Node node) {
+    private Scope getSuperMemberScope(Node node) {
+        Scope scope = null;
         if (node instanceof BaseMemberOrTypeExpression) {
             // Check for "Supertype::member"
             BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) node;
-            if (bmte.getSupertypeQualifier() != null) { return true; }
+            if (bmte.getSupertypeQualifier() != null) {
+                scope = bmte.getDeclaration().getContainer();
+            }
         }
         else if (node instanceof QualifiedMemberOrTypeExpression) {
             // Check for "super.member"
             QualifiedMemberOrTypeExpression qmte = (QualifiedMemberOrTypeExpression) node;
-            if (qmte.getPrimary() instanceof Super) { return true; }
+            if (qmte.getPrimary() instanceof Super) {
+                scope = qmte.getDeclaration().getContainer();
+            }
         }
-        return false;
+        else if (node instanceof QualifiedType) {
+            // Check for super.Membertype
+            QualifiedType qtype = (QualifiedType) node;
+            if (qtype.getOuterType() instanceof SuperType) { 
+                scope = qtype.getDeclarationModel().getContainer();
+            }
+        }
+        return scope;
     }
     
-    private String memberAccessBase(MemberOrTypeExpression expr, String member,
+    private String memberAccessBase(Node node, String member,
                 boolean qualifyBaseExpr) {
-        Declaration decl = expr.getDeclaration();
-        Scope scope = decl.getContainer();
         StringBuilder sb = new StringBuilder();
         
-        if (qualifyBaseExpr && (expr instanceof BaseMemberOrTypeExpression)) {
-            String path = qualifiedPath(expr, decl);
+        if (qualifyBaseExpr && (node instanceof BaseMemberOrTypeExpression)) {
+            BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) node;
+            String path = qualifiedPath(node, bmte.getDeclaration());
             if (path.length() > 0) {
                 sb.append(path);
                 sb.append(".");
             }
         }
         
-        boolean isSuper = isSuperMemberAccess(expr);
-        if (isSuper && prototypeStyle) {
+        Scope scope = getSuperMemberScope(node);
+        if (prototypeStyle && (scope != null)) {
             sb.append("getT$all$()['");
             sb.append(scope.getQualifiedNameString());
             sb.append("'].$$.prototype.");
         }
         sb.append(member);
-        if (isSuper && !prototypeStyle) {
+        if (!prototypeStyle && (scope != null)) {
             sb.append(names.scopeSuffix(scope));
         }
         return sb.toString();
@@ -1512,8 +1516,9 @@ public class GenerateJsVisitor extends Visitor
             return memberAccessBase(expr, names.name(decl), qualifyBaseExpr);
         }
         // access through getter
+        boolean protoCall = prototypeStyle && (getSuperMemberScope(expr) != null);
         return memberAccessBase(expr, names.getter(decl), qualifyBaseExpr)
-                + ((prototypeStyle && isSuperMemberAccess(expr)) ? ".call(this)" : "()");
+                + (protoCall ? ".call(this)" : "()");
     }
     private String memberAccess(MemberOrTypeExpression expr) {
         return memberAccess(expr, true);
@@ -1550,8 +1555,9 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             // access through setter
+            boolean protoCall = prototypeStyle && (getSuperMemberScope(expr) != null);
             out(memberAccessBase(expr, names.setter(decl), qualifyBaseExpr),
-                    (prototypeStyle && isSuperMemberAccess(expr)) ? ".call(this," : "(");
+                    protoCall ? ".call(this," : "(");
             paren = true;
         }
         
@@ -1635,7 +1641,7 @@ public class GenerateJsVisitor extends Visitor
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
-                    applyNamedArguments(argList, f, argVarNames, isSuperMemberAccess(mte));
+                    applyNamedArguments(argList, f, argVarNames, getSuperMemberScope(mte)!=null);
                 }
             }
             out(")");
@@ -1643,7 +1649,7 @@ public class GenerateJsVisitor extends Visitor
         else {
             PositionalArgumentList argList = that.getPositionalArgumentList();
             that.getPrimary().visit(this);
-            if (prototypeStyle && isSuperMemberAccess(that.getPrimary())) {
+            if (prototypeStyle && (getSuperMemberScope(that.getPrimary()) != null)) {
                 out(".call(this");
                 if (!argList.getPositionalArguments().isEmpty()
                         || (argList.getComprehension() != null)) {
