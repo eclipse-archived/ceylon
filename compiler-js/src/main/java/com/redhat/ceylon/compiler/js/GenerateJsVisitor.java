@@ -1317,24 +1317,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
 
-        qualify(that, decl);
-        String suffix = "";
-        boolean protoCall = false;
-        if (that.getSupertypeQualifier() != null) {
-            if (prototypeStyle) {
-                protoCall = true;
-            } else {
-                suffix = names.scopeSuffix(decl.getContainer());
-            }
-        }
-            
-        if (isNative(decl)) {
-            out(decl.getName());
-        } else if (accessDirectly(decl)) {
-            out(names.name(decl), suffix);
-        } else {
-            out(names.getter(decl), suffix, protoCall ? ".call(this)" : "()");
-        }
+        out(memberAccess(that));
     }
 
     private boolean accessDirectly(Declaration d) {
@@ -1342,8 +1325,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private boolean accessThroughGetter(Declaration d) {
-        return !((d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter)
-                  || (d instanceof Method));
+        return (d instanceof MethodOrValue) && !(d instanceof Method);
     }
 
     /** Returns true if the top-level declaration for the term is annotated "nativejs" */
@@ -1390,9 +1372,7 @@ public class GenerateJsVisitor extends Visitor
         if (isMethod) {
             out(clAlias, ".JsCallable(", lhsVar, ",");
         }
-        out(lhsVar, "!==null?", lhsVar, ".");
-        qualifiedMemberRHS(that);
-        out(":null)");
+        out(lhsVar, "!==null?", lhsVar, ".", memberAccess(that), ":null)");
         if (isMethod) {
             out(")");
         }
@@ -1413,8 +1393,7 @@ public class GenerateJsVisitor extends Visitor
             generateCallable(that, null);
         } else {
             super.visit(that);
-            out(".");
-            qualifiedMemberRHS(that);
+            out(".", memberAccess(that));
         }
     }
 
@@ -1445,12 +1424,9 @@ public class GenerateJsVisitor extends Visitor
         //Add value or reference to the array
         out(tmplist, ".push(");
         if (isMethod) {
-            out("{o:", elem, ", f:", elem, ".");
-            qualifiedMemberRHS(that);
-            out("}");
+            out("{o:", elem, ", f:", elem, ".", memberAccess(that), "}");
         } else {
-            out(elem, ".");
-            qualifiedMemberRHS(that);
+            out(elem, ".", memberAccess(that));
         }
         out(");");
         endBlockNewLine();
@@ -1471,36 +1447,131 @@ public class GenerateJsVisitor extends Visitor
         out("(", primaryVar, "=");
         that.getPrimary().visit(this);
         out(",", clAlias, ".JsCallable(", primaryVar, ",", primaryVar, "!==null?",
-                primaryVar, ".");
-        if (name == null) {
-            qualifiedMemberRHS(that);
-        } else {
-            out(name);
-        }
-        out(":null))");
+                primaryVar, ".", (name == null) ? memberAccess(that) : name, ":null))");
     }
-
-    private void qualifiedMemberRHS(QualifiedMemberOrTypeExpression that) {
-        String postfix = "";
-        if (that.getPrimary() instanceof Super) {
-             postfix = names.scopeSuffix(that.getDeclaration().getContainer());
+    
+    /**
+     * Checks if the given node is a MemberOrTypeExpression which represents an
+     * access to a supertype member.
+     */
+    private boolean isSuperMemberAccess(Node node) {
+        if (node instanceof BaseMemberOrTypeExpression) {
+            // Check for "Supertype::member"
+            BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) node;
+            if (bmte.getSupertypeQualifier() != null) { return true; }
         }
-        if (isNative(that.getDeclaration())) {
-            out(that.getDeclaration().getName());
-        } else if (!accessThroughGetter(that.getDeclaration())) {
-            out(names.name(that.getDeclaration()), postfix);
+        else if (node instanceof QualifiedMemberOrTypeExpression) {
+            // Check for "super.member"
+            QualifiedMemberOrTypeExpression qmte = (QualifiedMemberOrTypeExpression) node;
+            if (qmte.getPrimary() instanceof Super) { return true; }
         }
-        else {
-            out(names.getter(that.getDeclaration()));
-            out(postfix);
-            if (that instanceof QualifiedTypeExpression) {
-                //Nothing at the moment
-            } else {
-                out("()");
+        return false;
+    }
+    
+    private String memberAccessBase(MemberOrTypeExpression expr, String member,
+                boolean qualifyBaseExpr) {
+        Declaration decl = expr.getDeclaration();
+        Scope scope = decl.getContainer();
+        StringBuilder sb = new StringBuilder();
+        
+        if (qualifyBaseExpr && (expr instanceof BaseMemberOrTypeExpression)) {
+            String path = qualifiedPath(expr, decl);
+            if (path.length() > 0) {
+                sb.append(path);
+                sb.append(".");
             }
         }
+        
+        boolean isSuper = isSuperMemberAccess(expr);
+        if (isSuper && prototypeStyle) {
+            sb.append("getT$all$()['");
+            sb.append(scope.getQualifiedNameString());
+            sb.append("'].$$.prototype.");
+        }
+        sb.append(member);
+        if (isSuper && !prototypeStyle) {
+            sb.append(names.scopeSuffix(scope));
+        }
+        return sb.toString();
     }
-
+    
+    /**
+     * Returns a string representing a read access to a member, as represented by
+     * the given expression. If the expression is a QualifiedMemberOrTypeExpression
+     * then the LHS is *not* included. If it is a BaseMemberOrTypeExpression and
+     * qualifyBaseExpr==true then the qualified path is included.
+     */
+    private String memberAccess(MemberOrTypeExpression expr, boolean qualifyBaseExpr) {
+        Declaration decl = expr.getDeclaration();
+        if (isNative(decl)) {
+            // direct access to a native element
+            return decl.getName();
+        }
+        if (accessDirectly(decl)) {
+            // direct access, without getter
+            return memberAccessBase(expr, names.name(decl), qualifyBaseExpr);
+        }
+        // access through getter
+        return memberAccessBase(expr, names.getter(decl), qualifyBaseExpr)
+                + ((prototypeStyle && isSuperMemberAccess(expr)) ? ".call(this)" : "()");
+    }
+    private String memberAccess(MemberOrTypeExpression expr) {
+        return memberAccess(expr, true);
+    }
+    
+    /**
+     * Generates a write access to a member, as represented by the given expression.
+     * The assigned value can either be specified as a string or, if strValue==null,
+     * as a Node. If the expression is a QualifiedMemberOrTypeExpression then the
+     * LHS is *not* included. If it is a BaseMemberOrTypeExpression and
+     * qualifyBaseExpr==true then the qualified path is included.
+     * If expression=true then it is made sure that the result can be used in an
+     * expression context by adding surrounding parentheses if necessary.
+     */
+    private void generateMemberAccess(MemberOrTypeExpression expr, Node value,
+                String strValue, boolean qualifyBaseExpr, boolean expression) {
+        Declaration decl = expr.getDeclaration();
+        boolean paren = false;
+        if (isNative(decl)) {
+            // direct access to a native element
+            if (expression) {
+                out("(");
+                paren = true;
+            }
+            out(decl.getName(), "=");
+        }
+        else if (accessDirectly(decl)) {
+            // direct access, without setter
+            if (expression) {
+                out("(");
+                paren = true;
+            }
+            out(memberAccessBase(expr, names.name(decl), qualifyBaseExpr), "=");
+        }
+        else {
+            // access through setter
+            out(memberAccessBase(expr, names.setter(decl), qualifyBaseExpr),
+                    (prototypeStyle && isSuperMemberAccess(expr)) ? ".call(this," : "(");
+            paren = true;
+        }
+        
+        if (strValue != null) {
+            out(strValue);
+        }
+        else {
+            value.visit(this);
+        }
+        if (paren) { out(")"); }
+    }
+//    private void generateMemberAccess(MemberOrTypeExpression expr, Node value,
+//                boolean qualifyBaseExpr) {
+//        generateMemberAccess(expr, value, null, true, qualifyBaseExpr);
+//    }
+//    private void generateMemberAccess(MemberOrTypeExpression expr, String strValue,
+//                boolean qualifyBaseExpr) {
+//        generateMemberAccess(expr, null, strValue, true, qualifyBaseExpr);
+//    }
+    
     @Override
     public void visit(BaseTypeExpression that) {
         qualify(that, that.getDeclaration());
@@ -1564,13 +1635,26 @@ public class GenerateJsVisitor extends Visitor
                 Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                 if (mte.getDeclaration() instanceof Functional) {
                     Functional f = (Functional) mte.getDeclaration();
-                    applyNamedArguments(argList, f, argVarNames);
+                    applyNamedArguments(argList, f, argVarNames, isSuperMemberAccess(mte));
                 }
             }
             out(")");
         }
         else {
-            super.visit(that);
+            PositionalArgumentList argList = that.getPositionalArgumentList();
+            that.getPrimary().visit(this);
+            if (prototypeStyle && isSuperMemberAccess(that.getPrimary())) {
+                out(".call(this");
+                if (!argList.getPositionalArguments().isEmpty()
+                        || (argList.getComprehension() != null)) {
+                    out(",");
+                }
+            }
+            else {
+                out("(");
+            }
+            argList.visit(this);
+            out(")");
         }
     }
 
@@ -1607,11 +1691,18 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void applyNamedArguments(NamedArgumentList argList, Functional func,
-                Map<String, String> argVarNames) {
+                Map<String, String> argVarNames, boolean superAccess) {
+        boolean firstList = true;
         for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : func.getParameterLists()) {
             List<String> argNames = argList.getNamedArgumentList().getArgumentNames();
             boolean first=true;
-            out("(");
+            if (firstList && superAccess) {
+                out(".call(this");
+                if (!plist.getParameters().isEmpty()) { out(","); }
+            }
+            else {
+                out("(");
+            }
             for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : plist.getParameters()) {
                 if (!first) out(",");
                 boolean namedArgumentGiven = argNames.contains(p.getName());
@@ -1629,12 +1720,12 @@ public class GenerateJsVisitor extends Visitor
                 first = false;
             }
             out(")");
+            firstList = false;
         }
     }
 
     @Override
     public void visit(PositionalArgumentList that) {
-        out("(");
         if (!that.getPositionalArguments().isEmpty()) {
             boolean first=true;
             boolean sequenced=false;
@@ -1656,7 +1747,6 @@ public class GenerateJsVisitor extends Visitor
         if (that.getComprehension() != null) {
             that.getComprehension().visit(this);
         }
-        out(")");
     }
 
     // Make sure fromTerm is compatible with toTerm by boxing it when necessary
@@ -1904,15 +1994,6 @@ public class GenerateJsVisitor extends Visitor
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (prototypeStyle && !inProto) {
-            if (that instanceof BaseMemberOrTypeExpression) {
-                BaseMemberOrTypeExpression bmte = (BaseMemberOrTypeExpression) that;
-                if (bmte.getSupertypeQualifier() != null) {
-                    // A supertype qualifier (Supertype::member). In prototype style
-                    // we access such members through their respective prototype:
-                    return String.format("this.getT$all$()['%s'].$$.prototype",
-                            d.getContainer().getQualifiedNameString());
-                }
-            }
             if (d.isClassOrInterfaceMember() &&
                     !(d instanceof com.redhat.ceylon.compiler.typechecker.model.Parameter &&
                             !d.isCaptured())) {
@@ -2447,43 +2528,24 @@ public class GenerateJsVisitor extends Visitor
    private void prefixIncrementOrDecrement(Term term, String functionName) {
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
-           String path;
-           path = qualifiedPath(bme, bme.getDeclaration());
-           if (path.length() > 0) {
-               path += '.';
-           }
-           boolean qsuper = false;
-           String suffix = "";
-           if (bme.getSupertypeQualifier() != null) {
-               if (prototypeStyle) {
-                   qsuper = true;
-               } else {
-                   suffix = names.scopeSuffix(bme.getDeclaration().getContainer());
-               }
-           }
-
-
            boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
-           String member = accessDirectly(bme.getDeclaration())
-                   ? names.name(bme.getDeclaration()) + suffix
-                   : names.getter(bme.getDeclaration()) + suffix + (qsuper?".call(this)":"()");
+           String getMember = memberAccess(bme);
+           String applyFunc = String.format("%s.%s()", getMember, functionName);
            if (!simpleSetter) { out("("); }
-           out(path, names.setter(bme.getDeclaration()), suffix,
-                   qsuper ? ".call(this," : "(", path, member, ".",
-                   functionName, "())");
-           if (!simpleSetter) {
-               out(",", path, member, ")");
-           }
+           generateMemberAccess(bme, null, applyFunc, true, simpleSetter);
+           if (!simpleSetter) { out(",", getMember, ")"); }
+           
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-           String member = names.getter(qme.getDeclaration()) + "()";
            String primaryVar = createRetainedTempVar();
+           String getMember = primaryVar + "." + memberAccess(qme);
+           String applyFunc = String.format("%s.%s()", getMember, functionName);
            out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
-           out(",", primaryVar, ".", names.setter(qme.getDeclaration()), "(",
-                   primaryVar, ".", member, ".", functionName, "())");
+           out(",", primaryVar, ".");
+           generateMemberAccess(qme, null, applyFunc, false, false);
            if (!hasSimpleGetterSetter(qme.getDeclaration())) {
-               out(",", primaryVar, ".", member);
+               out(",", getMember);
            }
            out(")");
        }
@@ -2500,46 +2562,23 @@ public class GenerateJsVisitor extends Visitor
    private void postfixIncrementOrDecrement(Term term, String functionName) {
        if (term instanceof BaseMemberExpression) {
            BaseMemberExpression bme = (BaseMemberExpression) term;
-           String path;
-           path = qualifiedPath(bme, bme.getDeclaration());
-           if (path.length() > 0) {
-               path += '.';
-           }
-           boolean qsuper = false;
-           String suffix = "";
-           if (bme.getSupertypeQualifier() != null) {
-               if (prototypeStyle) {
-                   qsuper = true;
-               } else {
-                   suffix = names.scopeSuffix(bme.getDeclaration().getContainer());
-               }
-           }
-
            String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
-           out("(", oldValueVar, "=", path);
-           if (accessDirectly(bme.getDeclaration())) {
-               out(names.name(bme.getDeclaration()), suffix);
-           } else {
-               out(names.getter(bme.getDeclaration()), suffix);
-               //For qualified supertypes, call the prototype function with "this"
-               out(qsuper ? ".call(this)" : "()");
-           }
-           out(",", path, names.setter(bme.getDeclaration()), suffix,
-                   qsuper ? ".call(this, " : "(");
-           out(oldValueVar, ".", functionName, "()");
-           out("),", oldValueVar, ")");
+           String applyFunc = String.format("%s.%s()", oldValueVar, functionName);
+           out("(", oldValueVar, "=", memberAccess(bme), ",");
+           generateMemberAccess(bme, null, applyFunc, true, false);
+           out(",", oldValueVar, ")");
 
        } else if (term instanceof QualifiedMemberExpression) {
            QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
            String primaryVar = createRetainedTempVar();
            String oldValueVar = createRetainedTempVar("old" + qme.getDeclaration().getName());
+           String applyFunc = String.format("%s.%s()", oldValueVar, functionName);
            out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
-           out(",", oldValueVar, "=",
-                   primaryVar, ".", names.getter(qme.getDeclaration()), "(),",
-                   primaryVar, ".", names.setter(qme.getDeclaration()), "(",
-                   oldValueVar, ".", functionName, "()),",
-                   oldValueVar, ")");
+           out(",", oldValueVar, "=", primaryVar, ".", memberAccess(qme), ",",
+                   primaryVar, ".");
+           generateMemberAccess(qme, null, applyFunc, false, false);
+           out(",", oldValueVar, ")");
        }
    }
 
