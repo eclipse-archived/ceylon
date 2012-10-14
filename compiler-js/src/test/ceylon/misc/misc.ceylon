@@ -19,6 +19,7 @@ shared class Foo(name) {
 shared class Bar() extends Foo("Hello") satisfies X {
     shared actual void printName() {
         print("bar name = " + name);
+        Foo::printName();
         super.printName();
     }
     shared class Inner() {
