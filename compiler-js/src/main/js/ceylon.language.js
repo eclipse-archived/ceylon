@@ -33,12 +33,7 @@ function initTypeProto(type, typeName) {
     args.unshift(type);
     inheritProto.apply(this, args);
 }
-function initTypeProtoI(type, typeName) {
-    initType.apply(this, arguments);
-    var args = [].slice.call(arguments, 2);
-    args.unshift(type);
-    inheritProtoI.apply(this, args);
-}
+var initTypeProtoI = initTypeProto;
 function initExistingType(type, cons, typeName) {
     type.$$ = cons;
     cons.T$name = typeName;
@@ -66,34 +61,21 @@ function initExistingTypeProto(type, cons, typeName) {
     if ((proto !== undefined) && (proto.getHash === undefined)) {
     	var origToString = proto.toString;
         try {
-            inheritProtoI(type, IdentifiableObject);
+            inheritProto(type, IdentifiableObject);
             proto.toString = origToString;
         } catch (exc) {
             // browser probably prevented access to the prototype
         }
     }
 }
-function inheritProto(type, superType) {
-    var suffix = '$$' + superType.$$.T$name.replace(/\./g, '$') + '$';
-    var proto = type.$$.prototype;
-    var superProto = superType.$$.prototype;
-    for(var $ in superProto){
-        var $m = superProto[$];
-        proto[$] = $m;
-        if($.charAt($.length-1)!=='$') {proto[$+suffix] = $m}
-    }
-    for (var i=2; i<arguments.length; ++i) {
-        superProto = arguments[i].$$.prototype;
-        for (var $ in superProto) {proto[$] = superProto[$]}
-    }
-}
-function inheritProtoI(type) {
+function inheritProto(type) {
     var proto = type.$$.prototype;
     for (var i=1; i<arguments.length; ++i) {
         var superProto = arguments[i].$$.prototype;
         for (var $ in superProto) {proto[$] = superProto[$]}
     }
 }
+var inheritProtoI = inheritProto;
 exports.initType=initType;
 exports.initTypeProto=initTypeProto;
 exports.initTypeProtoI=initTypeProtoI;
@@ -246,7 +228,7 @@ exports.Invertable=Invertable;
 function Numeric(wat) {
     return wat;
 }
-initTypeProtoI(Numeric, 'ceylon.language.Numeric', Number$, Comparable, Summable, Invertable);
+initTypeProto(Numeric, 'ceylon.language.Numeric', Number$, Comparable, Summable, Invertable);
 exports.Numeric=Numeric;
 function Ordinal(wat) {
     return wat;
@@ -256,13 +238,13 @@ exports.Ordinal=Ordinal;
 function Integral(wat) {
     return wat;
 }
-initTypeProtoI(Integral, 'ceylon.language.Integral', Numeric, Ordinal);
+initTypeProto(Integral, 'ceylon.language.Integral', Numeric, Ordinal);
 exports.Integral=Integral;
 function Scalar(scalar) { return scalar; }
-initTypeProtoI(Scalar, 'ceylon.language.Scalar', Numeric, Comparable, Number$);
+initTypeProto(Scalar, 'ceylon.language.Scalar', Numeric, Comparable, Number$);
 exports.Scalar=Scalar;
 function Exponentiable(exp) { return exp; }
-initTypeProtoI(Exponentiable, 'ceylon.language.Exponentiable', Numeric);
+initTypeProto(Exponentiable, 'ceylon.language.Exponentiable', Numeric);
 exports.Exponentiable=Exponentiable;
 
 function Exception(description, cause, wat) {

@@ -677,9 +677,6 @@ public class GenerateJsVisitor extends Visitor
 
         //Let's always use initTypeProto to avoid #113
         String initFuncName = "initTypeProto";
-        if (isInterface) {
-            initFuncName += 'I';
-        }
 
         out("function $init$", names.name(d), "()");
         beginBlock();

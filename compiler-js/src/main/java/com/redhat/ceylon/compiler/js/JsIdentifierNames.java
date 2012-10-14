@@ -190,7 +190,7 @@ public class JsIdentifierNames {
      * the suffixes generated for two different scopes are different.
      */
     public String scopeSuffix(Scope scope) {
-        return String.format("$$%s$", scope.getQualifiedNameString().replace('.', '$'));
+        return String.format("$$%s", scope.getQualifiedNameString().replace('.', '$'));
     }
 
     /**
@@ -236,12 +236,7 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = uniqueVarNames.get(decl);
             if (name == null) {
-                // Add a "$" for member in prototype style, marking it as private:
-                // this will keep refining classes from unnecessarily creating a
-                // parent reference for that member (the refining class can't access
-                // it anyway).
-                String format = (prototypeStyle && decl.isMember()) ? "%s$%d$" : "%s$%d";
-                name = String.format(format, decl.getName(), getUID(decl));
+                name = String.format("%s$%d", decl.getName(), getUID(decl));
             }
         } else {
             // The identifier might be accessed from other .js files, so it must
