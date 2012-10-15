@@ -16,6 +16,10 @@ public interface References<T> {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member|T")
     public abstract .java.lang.Object memberKlass();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember|T")
+    public abstract .java.lang.Object memberMember();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class References$impl<T> {

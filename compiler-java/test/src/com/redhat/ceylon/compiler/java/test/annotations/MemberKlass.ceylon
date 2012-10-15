@@ -18,5 +18,8 @@
  * MA  02110-1301, USA.
  */
 shared class MemberKlass() {
-    shared class Member() {}
+    shared class Member() {
+        shared class MemberMember() {
+        }
+    }
 }

@@ -20,6 +20,7 @@
 shared interface References<T> {
     shared formal Interface|T iface();
     shared formal Klass|T klass();
-    shared formal MemberKlass::Member|T memberKlass();
-//    shared formal KlassInMemberObject::member::Klass|T klassInMemberObject();
+    shared formal MemberKlass.Member|T memberKlass();
+    shared formal MemberKlass.Member.MemberMember|T memberMember();
+//    shared formal KlassInMemberObject.member::Klass|T klassInMemberObject();
 }
