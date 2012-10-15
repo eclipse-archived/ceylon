@@ -84,7 +84,7 @@ public class StructureTest3 extends CompilerTest {
     
     // Formal Member Class of Interface
     @Test
-    public void testMcrInterfaceFormalMemberClass_fail(){
+    public void testMcrInterfaceFormalMemberClass(){
         compareWithJavaSource("mcr/InterfaceFormalMemberClass");
     }
 }
