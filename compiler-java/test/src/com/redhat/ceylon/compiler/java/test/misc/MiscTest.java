@@ -166,27 +166,45 @@ public class MiscTest extends CompilerTest {
     public void testKeywordParameter(){
         compareWithJavaSource("keyword/Parameter");
     }
-    
+
+    @Test
+    public void testJDKModules(){
+        Assert.assertTrue(JDKPackageList.isJDKModule("jdk.base"));
+        Assert.assertTrue(JDKPackageList.isJDKModule("jdk.desktop"));
+        Assert.assertTrue(JDKPackageList.isJDKModule("jdk.compiler")); // last one
+        Assert.assertFalse(JDKPackageList.isJDKModule("jdk.stef"));
+    }
+
     @Test
     public void testJDKPackages(){
-        Assert.assertTrue(JDKPackageList.isJDKPackage("java.awt"));
-        Assert.assertTrue(JDKPackageList.isJDKPackage("java.lang"));
-        Assert.assertTrue(JDKPackageList.isJDKPackage("java.util"));
-        Assert.assertTrue(JDKPackageList.isJDKPackage("javax.swing"));
-        Assert.assertTrue(JDKPackageList.isJDKPackage("org.w3c.dom"));
-        Assert.assertTrue(JDKPackageList.isJDKPackage("org.xml.sax.helpers"));// last one
-        Assert.assertFalse(JDKPackageList.isJDKPackage("fr.epardaud"));
+        Assert.assertTrue(JDKPackageList.isJDKAnyPackage("java.awt"));
+        Assert.assertTrue(JDKPackageList.isJDKAnyPackage("java.lang"));
+        Assert.assertTrue(JDKPackageList.isJDKAnyPackage("java.util"));
+        Assert.assertTrue(JDKPackageList.isJDKAnyPackage("javax.swing"));
+        Assert.assertTrue(JDKPackageList.isJDKAnyPackage("org.w3c.dom"));
+        Assert.assertTrue(JDKPackageList.isJDKAnyPackage("org.xml.sax.helpers"));// last one
+        Assert.assertFalse(JDKPackageList.isJDKAnyPackage("fr.epardaud"));
+    }
+
+    @Test
+    public void testOracleJDKModules(){
+        Assert.assertTrue(JDKPackageList.isOracleJDKModule("oracle.jdk.base"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKModule("oracle.jdk.desktop"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKModule("oracle.jdk.httpserver"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKModule("oracle.jdk.tools.base")); // last one
+        Assert.assertFalse(JDKPackageList.isOracleJDKModule("oracle.jdk.stef"));
+        Assert.assertFalse(JDKPackageList.isOracleJDKModule("jdk.base"));
     }
 
     @Test
     public void testOracleJDKPackages(){
-        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.oracle.net"));
-        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.sun.awt"));
-        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.sun.imageio.plugins.bmp"));
-        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.sun.java.swing.plaf.gtk"));
-        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("com.sun.nio.sctp"));
-        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("sun.nio"));
-        Assert.assertTrue(JDKPackageList.isOracleJDKPackage("sunw.util"));// last one
-        Assert.assertFalse(JDKPackageList.isOracleJDKPackage("fr.epardaud"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKAnyPackage("com.oracle.net"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKAnyPackage("com.sun.awt"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKAnyPackage("com.sun.imageio.plugins.bmp"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKAnyPackage("com.sun.java.swing.plaf.gtk"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKAnyPackage("com.sun.nio.sctp"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKAnyPackage("sun.nio"));
+        Assert.assertTrue(JDKPackageList.isOracleJDKAnyPackage("sunw.util"));// last one
+        Assert.assertFalse(JDKPackageList.isOracleJDKAnyPackage("fr.epardaud"));
     }
 }

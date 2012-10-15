@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.TypeParserException;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -114,6 +115,12 @@ public class TypeParserTest {
 
         @Override
         public Declaration getDeclaration(String typeName, DeclarationType declarationType) {
+            throw new RuntimeException("Not yet implemented");
+        }
+
+
+        @Override
+        public Module getLoadedModule(String moduleName) {
             throw new RuntimeException("Not yet implemented");
         }
         

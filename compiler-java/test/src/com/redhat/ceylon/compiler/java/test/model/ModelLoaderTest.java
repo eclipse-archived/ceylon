@@ -562,17 +562,7 @@ public class ModelLoaderTest extends CompilerTest {
         // whatever test, doesn't matter
         verifyClassLoading("Any.ceylon", new RunnableTest(){
             @Override
-            public void test(ModelLoader loader) {
-                // get java.lang.Integer
-                Declaration klass = loader.getDeclaration("java.lang.Integer", DeclarationType.TYPE);
-                Assert.assertNotNull(klass);
-                // get its package java.lang
-                Scope container = klass.getContainer();
-                Assert.assertTrue(container instanceof Package);
-                Package pkg = (Package)container;
-                // get its module
-                final Module mod = pkg.getModule();
-                Assert.assertNotNull(mod);
+            public void test(final ModelLoader loader) {
                 // now walk it in threads
                 List<Callable<Object>> tasks = new ArrayList<Callable<Object>>(10);
                 // make a runnable that walks the whole jdk model
@@ -581,12 +571,18 @@ public class ModelLoaderTest extends CompilerTest {
                     public Object call() throws Exception {
                         System.err.println("Starting work from thread " + Thread.currentThread().getName());
                         // walk every jdk package
-                        for(String pkgName : JDKPackageList.jdkPackages){
-                            Package p = mod.getDirectPackage(pkgName);
-                            Assert.assertNotNull(p);
-                            for(Declaration decl : p.getMembers()){
-                                // that causes model loading
-                                decl.getQualifiedNameString();
+                        for(Entry<String, Set<String>> packagesByModule : JDKPackageList.getJDKPackagesByModule().entrySet()){
+                            String moduleName = packagesByModule.getKey();
+                            // load the module
+                            Module mod = loader.getLoadedModule(moduleName);
+                            Assert.assertNotNull(mod);
+                            for(String pkgName : packagesByModule.getValue()){
+                                Package p = mod.getDirectPackage(pkgName);
+                                Assert.assertNotNull(p);
+                                for(Declaration decl : p.getMembers()){
+                                    // that causes model loading
+                                    decl.getQualifiedNameString();
+                                }
                             }
                         }
                         System.err.println("Done work from thread " + Thread.currentThread().getName());
@@ -627,24 +623,19 @@ public class ModelLoaderTest extends CompilerTest {
         verifyClassLoading("Any.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
-                // get java.lang.Integer
-                Declaration klass = loader.getDeclaration("java.lang.Integer", DeclarationType.TYPE);
-                Assert.assertNotNull(klass);
-                // get its package java.lang
-                Scope container = klass.getContainer();
-                Assert.assertTrue(container instanceof Package);
-                Package pkg = (Package)container;
-                // get its module
-                final Module mod = pkg.getModule();
-                Assert.assertNotNull(mod);
-
                 // walk every jdk package
-                for(String pkgName : JDKPackageList.jdkPackages){
-                    Package p = mod.getDirectPackage(pkgName);
-                    Assert.assertNotNull(p);
-                    for(Declaration decl : p.getMembers()){
-                        // that causes model loading
-                        decl.getQualifiedNameString();
+                for(Entry<String, Set<String>> packagesByModule : JDKPackageList.getJDKPackagesByModule().entrySet()){
+                    String moduleName = packagesByModule.getKey();
+                    // load the module
+                    Module mod = loader.getLoadedModule(moduleName);
+                    Assert.assertNotNull(mod);
+                    for(String pkgName : packagesByModule.getValue()){
+                        Package p = mod.getDirectPackage(pkgName);
+                        Assert.assertNotNull(p);
+                        for(Declaration decl : p.getMembers()){
+                            // that causes model loading
+                            decl.getQualifiedNameString();
+                        }
                     }
                 }
                 // [Model loader: 4488(loaded)/4945(total) declarations] is what we expect if it works out

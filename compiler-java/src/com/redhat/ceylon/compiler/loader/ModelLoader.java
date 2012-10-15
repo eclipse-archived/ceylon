@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
@@ -64,4 +65,10 @@ public interface ModelLoader {
      * @return the ProducedType found
      */
     public ProducedType getType(String pkg, String name, Scope scope);
+
+    /**
+     * Returns a loaded module by name
+     * @return null if module is not already loaded
+     */
+    public Module getLoadedModule(String moduleName);
 }

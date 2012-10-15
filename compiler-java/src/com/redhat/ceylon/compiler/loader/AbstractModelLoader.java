@@ -102,8 +102,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_LANGUAGE = "ceylon.language";
     
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
-    public static final String ORACLE_JDK_MODULE = "oracle";
-    public static final String JDK_MODULE = "java";
     public static final String JDK_MODULE_VERSION = "7";
     
     public static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
@@ -268,8 +266,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         typeFactory.setPackage(languagePackage);
         
         // make sure the jdk modules are loaded
-        findOrCreateModule(AbstractModelLoader.JDK_MODULE);
-        findOrCreateModule(AbstractModelLoader.ORACLE_JDK_MODULE);
+        for(String jdkModule : JDKPackageList.getJDKModuleNames())
+            findOrCreateModule(jdkModule);
+        for(String jdkOracleModule : JDKPackageList.getOracleJDKModuleNames())
+            findOrCreateModule(jdkOracleModule);
         
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
@@ -696,8 +696,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(pkg != null)
             return pkg;
         // special case for the jdk module
-        if(AbstractModelLoader.isJDKModule(module.getNameAsString())){
-            if(JDKPackageList.isJDKPackage(pkgName) || JDKPackageList.isOracleJDKPackage(pkgName)){
+        String moduleName = module.getNameAsString();
+        if(AbstractModelLoader.isJDKModule(moduleName)){
+            if(JDKPackageList.isJDKPackage(moduleName, pkgName) || JDKPackageList.isOracleJDKPackage(moduleName, pkgName)){
                 return findOrCreatePackage(module, pkgName);
             }
             return null;
@@ -812,11 +813,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(pkgName == null){
             pkgName = Module.DEFAULT_MODULE_NAME;
             defaultModule = true;
-        } else if(pkgName.equals(JDK_MODULE) || JDKPackageList.isJDKPackage(pkgName)){
-            pkgName = JDK_MODULE;
-            isJava = true;
-        } else if(pkgName.equals(ORACLE_JDK_MODULE) || JDKPackageList.isOracleJDKPackage(pkgName)){
-            pkgName = ORACLE_JDK_MODULE;
+        } else if(JDKPackageList.isJDKModule(pkgName) || JDKPackageList.isOracleJDKModule(pkgName)){
             isJava = true;
         } else if(pkgName.startsWith("ceylon.language.")){
             pkgName = CEYLON_LANGUAGE;
@@ -1228,7 +1225,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private boolean isFromJDK(ClassMirror classMirror) {
         String pkgName = classMirror.getPackage().getQualifiedName();
-        return JDKPackageList.isJDKPackage(pkgName) || JDKPackageList.isOracleJDKPackage(pkgName);
+        return JDKPackageList.isJDKAnyPackage(pkgName) || JDKPackageList.isOracleJDKAnyPackage(pkgName);
     }
 
     private void setAnnotations(Declaration decl, AnnotatedMirror classMirror) {
@@ -1796,12 +1793,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     klass.getSatisfiedTypes().add(getType(iface, klass, VarianceLocation.INVARIANT));
                 }catch(ModelResolutionException x){
                     PackageMirror classPackage = classMirror.getPackage();
-                    if(JDKPackageList.isJDKPackage(classPackage.getQualifiedName())){
+                    if(JDKPackageList.isJDKAnyPackage(classPackage.getQualifiedName())){
                         if(iface.getKind() == TypeKind.DECLARED){
                             // check if it's a JDK thing
                             ClassMirror ifaceClass = iface.getDeclaredClass();
                             PackageMirror ifacePackage = ifaceClass.getPackage();
-                            if(JDKPackageList.isOracleJDKPackage(ifacePackage.getQualifiedName())){
+                            if(JDKPackageList.isOracleJDKAnyPackage(ifacePackage.getQualifiedName())){
                                 // just log and ignore it
                                 logMissingOracleType(iface.getQualifiedName());
                                 continue;
@@ -2267,7 +2264,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public static boolean isJDKModule(String name) {
-        return name.equals(AbstractModelLoader.JDK_MODULE)
-                || name.equals(AbstractModelLoader.ORACLE_JDK_MODULE);
+        return JDKPackageList.isJDKModule(name)
+                || JDKPackageList.isOracleJDKModule(name);
+    }
+    
+    @Override
+    public Module getLoadedModule(String moduleName) {
+        for(Module mod : modules.getListOfModules()){
+            if(mod.getNameAsString().equals(moduleName))
+                return mod;
+        }
+        return null;
     }
 }
