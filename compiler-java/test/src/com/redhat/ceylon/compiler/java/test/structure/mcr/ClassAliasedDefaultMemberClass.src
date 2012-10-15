@@ -1,0 +1,73 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+class ClassAliasedDefaultMemberClass {
+    
+    ClassAliasedDefaultMemberClass() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass.Member Member$new() {
+        return new Member();
+    }
+    
+    public class Member {
+        
+        protected Member() {
+        }
+    }
+    
+    public final void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass qual) {
+        Member$new();
+        Member$new();
+        qual.Member$new();
+        qual.Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass();
+    }
+}
+class ClassAliasedDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass {
+    
+    ClassAliasedDefaultMemberClass_sub() {
+        super();
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass.Member Alias$new() {
+        return new Member();
+    }
+    
+    public final class Alias {
+        
+        private Alias() {
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass_sub.Member Member$new() {
+        return new Member();
+    }
+    
+    public class Member extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass.Member {
+        
+        protected Member() {
+            super();
+        }
+    }
+    
+    public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass_sub qual) {
+        Alias$new();
+        Alias$new();
+        qual.Alias$new();
+        qual.Alias$new();
+        Member$new();
+        Member$new();
+        qual.Member$new();
+        qual.Member$new();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass_sub();
+    }
+}

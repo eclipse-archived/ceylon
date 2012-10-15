@@ -50,6 +50,11 @@ public class StructureTest3 extends CompilerTest {
         compareWithJavaSource("mcr/ClassMemberClassesWithMemberSubclasses");
     }
     
+    @Test
+    public void testMcrClassAliasedDefaultMemberClass(){
+        compareWithJavaSource("mcr/ClassAliasedDefaultMemberClass");
+    }
+    
     // Default Member Class of Interface
     @Test
     public void testMcrInterfaceDefaultMemberClass(){
