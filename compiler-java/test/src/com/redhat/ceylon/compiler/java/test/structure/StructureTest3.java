@@ -87,4 +87,9 @@ public class StructureTest3 extends CompilerTest {
     public void testMcrInterfaceFormalMemberClass(){
         compareWithJavaSource("mcr/InterfaceFormalMemberClass");
     }
+    
+    @Test
+    public void testMcrInterfaceAliasedFormalMemberClass(){
+        compareWithJavaSource("mcr/InterfaceAliasedFormalMemberClass");
+    }
 }
