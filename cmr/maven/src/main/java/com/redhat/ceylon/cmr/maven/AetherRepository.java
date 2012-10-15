@@ -19,12 +19,16 @@ package com.redhat.ceylon.cmr.maven;
 import com.redhat.ceylon.cmr.api.*;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
+import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import org.sonatype.aether.util.filter.PatternExclusionsDependencyFilter;
 
 /**
  * Aether repository.
@@ -64,24 +68,34 @@ public class AetherRepository extends MavenRepository {
         if (files == null || files.length == 0)
             return null;
 
-        if (files.length == 1)
-            return new SingleArtifactResult(files[0]);
-
         final ArtifactContext context = ArtifactContext.fromNode(node);
         final String name = getArtifactName(context);
 
+        String fullPath = NodeUtils.getFullPath(node, File.separator);
+
         File artifact = null;
-        final List<ArtifactResult> dependecies = new ArrayList<ArtifactResult>();
+        String repositoryPrefix = null;
+        Pattern fullPathPattern = Pattern.compile(fullPath, Pattern.LITERAL | Pattern.CASE_INSENSITIVE);
         for (File file : files) {
-            if (name.equalsIgnoreCase(file.getName()))
+            if (name.equalsIgnoreCase(file.getName())) {
                 artifact = file;
-            else
-                dependecies.add(new SingleArtifactResult(file));
+                repositoryPrefix = fullPathPattern.split(file.getAbsolutePath())[0] + File.separator;
+            }
         }
 
         if (artifact == null)
             throw new IllegalArgumentException("No matching artifact, should not happen: " + name);
 
+        if (files.length == 1)
+            return new SingleArtifactResult(repositoryPrefix, artifact);
+        
+        final List<ArtifactResult> dependecies = new ArrayList<ArtifactResult>();
+        for (File file : files) {
+            if (! name.equalsIgnoreCase(file.getName())) {
+                dependecies.add(new SingleArtifactResult(repositoryPrefix, file));
+            }
+        }
+        
         return new AetherArtifactResult(context.getName(), context.getVersion(), artifact, dependecies);
     }
 
@@ -111,8 +125,8 @@ public class AetherRepository extends MavenRepository {
     private static class SingleArtifactResult extends AbstractArtifactResult {
         private File file;
 
-        private SingleArtifactResult(File file) {
-            super(parseName(file), parseVersion(file));
+        private SingleArtifactResult(String repositoryPrefix, File file) {
+            super(parseName(repositoryPrefix, file), parseVersion(file));
             this.file = file;
         }
 
@@ -143,9 +157,15 @@ public class AetherRepository extends MavenRepository {
         }
     }
 
-    private static String parseName(File file) {
-        String name = file.getName();
-        return name.substring(0, split(name));
+    private static String parseName(String repositoryPrefix, File file) {
+        String artifactId = file.getParentFile().getParentFile().getName();
+        String groupIdPath = file.getParentFile().getParentFile().getParentFile().getAbsolutePath();
+        String groupId = null;
+        if (groupIdPath.regionMatches(true, 0, repositoryPrefix, 0, repositoryPrefix.length())) {
+            groupId = groupIdPath.substring(repositoryPrefix.length()).replace(File.separatorChar, '.');
+        }
+        
+        return groupId != null ? groupId + "." + artifactId : artifactId;
     }
 
     private static String parseVersion(File file) {

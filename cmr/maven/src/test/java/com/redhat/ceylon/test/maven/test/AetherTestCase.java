@@ -80,4 +80,27 @@ public class AetherTestCase {
         }
     }
 
+    @Test
+    public void testAetherWithExternalSettings() throws Throwable {
+        Repository repository = AetherRepository.createRepository(log, "src/test/resources/maven-settings/settings.xml");
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
+        Assert.assertNotNull(result);
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            Assert.assertEquals(deps.size(), 1);
+            Assert.assertEquals("org.slf4j.slf4j-api", deps.get(0).name());
+            Assert.assertEquals("1.6.1", deps.get(0).version());
+            log.debug("deps = " + deps);
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
 }

@@ -362,7 +362,7 @@ public abstract class AbstractRepository implements Repository {
                 || getArtifactName(module, version, ArtifactContext.SRC).equals(name);
     }
 
-    private String toModuleName(Node node) {
+    protected String toModuleName(Node node) {
         String path = NodeUtils.getFullPath(node, ".");
         // That's sort of an invariant, but let's be safe
         if (path.startsWith("."))
