@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.TermTransformer;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -782,6 +783,14 @@ class PositionalInvocationBuilder extends DirectInvocationBuilder {
  */
 class SuperInvocationBuilder extends PositionalInvocationBuilder {
     
+    static Declaration unaliasedPrimaryDeclaration(Tree.InvocationExpression invocation) {
+        Declaration declaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
+        if (declaration instanceof ClassAlias) {
+            declaration = ((ClassAlias) declaration).getExtendedTypeDeclaration();
+        }
+        return declaration;
+    }
+    
     private Tree.ClassOrInterface sub;
     
     SuperInvocationBuilder(AbstractTransformer gen,
@@ -790,7 +799,7 @@ class SuperInvocationBuilder extends PositionalInvocationBuilder {
             ParameterList parameterList) {
         super(gen, 
                 invocation.getPrimary(), 
-                ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration(),
+                unaliasedPrimaryDeclaration(invocation),
                 ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getTarget(),
                 invocation,
                 parameterList.getParameters());
