@@ -63,7 +63,7 @@ public class AetherTestCase {
     public void testAether() throws Throwable {
         Repository repository = AetherRepository.createRepository(log);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult("org.slf4j.slf4j-api", "1.6.4");
+        ArtifactResult result = manager.getArtifactResult("org.slf4j:slf4j-api", "1.6.4");
         Assert.assertNotNull(result);
         File artifact = result.artifact();
         boolean exists = false;
@@ -86,6 +86,7 @@ public class AetherTestCase {
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
         Assert.assertNotNull(result);
+        Assert.assertEquals(result.name(), "org.apache.camel.camel-core");
         File artifact = result.artifact();
         boolean exists = false;
         try {
@@ -94,8 +95,32 @@ public class AetherTestCase {
             exists = true;
             List<ArtifactResult> deps = result.dependencies();
             Assert.assertEquals(deps.size(), 1);
-            Assert.assertEquals("org.slf4j.slf4j-api", deps.get(0).name());
+            Assert.assertEquals("org.slf4j:slf4j-api", deps.get(0).name());
             Assert.assertEquals("1.6.1", deps.get(0).version());
+            log.debug("deps = " + deps);
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
+    @Test
+    public void testAetherWithSemiColonModule() throws Throwable {
+        Repository repository = AetherRepository.createRepository(log, "src/test/resources/maven-settings/settings.xml");
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult("org.restlet.jse:org.restlet", "2.0.10");
+        Assert.assertNotNull(result);
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            Assert.assertEquals(deps.size(), 1);
+            Assert.assertEquals("org.osgi:org.osgi.core", deps.get(0).name());
+            Assert.assertEquals("4.0.0", deps.get(0).version());
             log.debug("deps = " + deps);
         } finally {
             if (exists) {

@@ -18,12 +18,14 @@ package com.redhat.ceylon.cmr.maven;
 
 import com.redhat.ceylon.cmr.api.*;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
+import com.redhat.ceylon.cmr.impl.DefaultNode;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -53,6 +55,45 @@ public class AetherRepository extends MavenRepository {
         AetherRepository repo = new AetherRepository(acs);
         repo.utils.overrideSettingsXml(settingsXml);
         return repo;
+    }
+    
+    @Override
+    public String getArtifactName(ArtifactContext context) {
+        String name = context.getName();
+        final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".") ;
+        
+        return getArtifactName(p >= 0 ? name.substring(p + 1) : name, context.getVersion(), ArtifactContext.JAR);
+    }
+    
+    @Override
+    protected String toModuleName(Node node) {
+        ArtifactContext context = ArtifactContext.fromNode(node);
+        if (context != null) {
+            return context.getName();
+        }
+        String moduleName = node.getLabel();
+        String groupId = null;
+        for (Node parent : node.getParents()) {
+            groupId = NodeUtils.getFullPath(parent, ".");
+            // That's sort of an invariant, but let's be safe
+            if (groupId.startsWith("."))
+                groupId = groupId.substring(1);
+            break; // just use the first one
+        }
+        moduleName = groupId != null ? groupId + ":" + moduleName : moduleName;
+        return moduleName;
+    }
+    
+    protected List<String> getDefaultParentPathInternal(ArtifactContext context) {
+        final String name = context.getName();
+        final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".") ;
+        final List<String> tokens = new ArrayList<String>();
+        tokens.addAll(Arrays.asList(name.substring(0, p).split("\\.")));
+        tokens.add(name.substring(p+1));
+        final String version = context.getVersion();
+        if (RepositoryManager.DEFAULT_MODULE.equals(name) == false && version != null)
+            tokens.add(version); // add version
+        return tokens;
     }
     
     @Override
@@ -165,7 +206,7 @@ public class AetherRepository extends MavenRepository {
             groupId = groupIdPath.substring(repositoryPrefix.length()).replace(File.separatorChar, '.');
         }
         
-        return groupId != null ? groupId + "." + artifactId : artifactId;
+        return groupId != null ? groupId + ":" + artifactId : artifactId;
     }
 
     private static String parseVersion(File file) {

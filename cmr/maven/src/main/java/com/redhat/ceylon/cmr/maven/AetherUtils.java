@@ -65,7 +65,7 @@ public class AetherUtils {
             return null;
 
         final String name = ac.getName();
-        final int p = name.lastIndexOf(".");
+        final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".");
         final String groupId = name.substring(0, p);
         final String artifactId = name.substring(p + 1);
         final String version = ac.getVersion();
