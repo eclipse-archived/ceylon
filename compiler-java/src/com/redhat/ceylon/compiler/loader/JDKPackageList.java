@@ -160,4 +160,10 @@ public class JDKPackageList {
         loadPackageList();
         return jdkOracleModules.keySet();
     }
+
+    public static Map<String,Set<String>> getOracleJDKPackagesByModule() {
+        loadPackageList();
+        return jdkOracleModules;
+    }
+
 }
