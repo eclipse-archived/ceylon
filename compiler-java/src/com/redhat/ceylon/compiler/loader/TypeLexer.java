@@ -16,7 +16,8 @@ public class TypeLexer {
     // type string to parse
     char[] type;
     int index = 0;
-
+    int mark = -1;
+    
     public TypeLexer(){}
     
     public void setup(String type){
@@ -133,4 +134,11 @@ public class TypeLexer {
         return peek() == token;
     }
 
+    public void mark() {
+        mark = index;
+    }
+
+    public void reset() {
+        index = mark;
+    }
 }
