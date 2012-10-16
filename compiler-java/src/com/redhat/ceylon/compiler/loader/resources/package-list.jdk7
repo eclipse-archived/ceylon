@@ -93,8 +93,8 @@ javax.net
 javax.net.ssl
 javax.security.cert
 
-# jdk security-kerberos
-=java.kerberos
+# aka security-kerberos
+=jdk.kerberos
 javax.security.auth.kerberos
 org.ietf.jgss
 
