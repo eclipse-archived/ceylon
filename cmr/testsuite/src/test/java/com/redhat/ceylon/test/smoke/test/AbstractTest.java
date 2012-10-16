@@ -75,6 +75,11 @@ public class AbstractTest {
 
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected) throws Exception{
         RepositoryManager manager = getRepositoryManager();
+        testListVersions(query, versionQuery, expected, manager);
+    }
+    
+    protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
+            RepositoryManager manager) throws Exception{
         ModuleVersionQuery lookup = new ModuleVersionQuery(query, versionQuery, ModuleQuery.Type.JVM);
         ModuleVersionResult result = manager.completeVersions(lookup);
         int i=0;

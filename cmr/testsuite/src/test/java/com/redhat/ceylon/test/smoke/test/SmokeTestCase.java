@@ -33,6 +33,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
+import com.redhat.ceylon.cmr.impl.JDKRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
@@ -482,4 +483,210 @@ public class SmokeTestCase extends AbstractTest {
         assertEquals(-1, VersionComparator.compareVersions("0.3.1", "0.3.2"));
         assertEquals(1, VersionComparator.compareVersions("0.3.2", "0.3.1"));
     }
+
+    private RepositoryManager getJDKRepositoryManager() {
+        return new SimpleRepositoryManager(new JDKRepository(), log);
+    }
+
+    @Test
+    public void testCompleteJDK() throws Exception {
+        RepositoryManager manager = getJDKRepositoryManager();
+
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("jdk.auth", "JDK module jdk.auth", null, set(), set("7")),
+                new ModuleDetails("jdk.base", "JDK module jdk.base", null, set(), set("7")),
+                new ModuleDetails("jdk.compiler", "JDK module jdk.compiler", null, set(), set("7")),
+                new ModuleDetails("jdk.corba", "JDK module jdk.corba", null, set(), set("7")),
+                new ModuleDetails("jdk.desktop", "JDK module jdk.desktop", null, set(), set("7")),
+                new ModuleDetails("jdk.instrument", "JDK module jdk.instrument", null, set(), set("7")),
+                new ModuleDetails("jdk.jaxp", "JDK module jdk.jaxp", null, set(), set("7")),
+                new ModuleDetails("jdk.jaxws", "JDK module jdk.jaxws", null, set(), set("7")),
+                new ModuleDetails("jdk.jdbc", "JDK module jdk.jdbc", null, set(), set("7")),
+                new ModuleDetails("jdk.jdbc.rowset", "JDK module jdk.jdbc.rowset", null, set(), set("7")),
+                new ModuleDetails("jdk.jndi", "JDK module jdk.jndi", null, set(), set("7")),
+                new ModuleDetails("jdk.jta", "JDK module jdk.jta", null, set(), set("7")),
+                new ModuleDetails("jdk.jx.annotations", "JDK module jdk.jx.annotations", null, set(), set("7")),
+                new ModuleDetails("jdk.kerberos", "JDK module jdk.kerberos", null, set(), set("7")),
+                new ModuleDetails("jdk.logging", "JDK module jdk.logging", null, set(), set("7")),
+                new ModuleDetails("jdk.management", "JDK module jdk.management", null, set(), set("7")),
+                new ModuleDetails("jdk.prefs", "JDK module jdk.prefs", null, set(), set("7")),
+                new ModuleDetails("jdk.rmi", "JDK module jdk.rmi", null, set(), set("7")),
+                new ModuleDetails("jdk.scripting", "JDK module jdk.scripting", null, set(), set("7")),
+                new ModuleDetails("jdk.security.acl", "JDK module jdk.security.acl", null, set(), set("7")),
+                new ModuleDetails("jdk.tls", "JDK module jdk.tls", null, set(), set("7")),
+                new ModuleDetails("jdk.xmldsig", "JDK module jdk.xmldsig", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.auth", "JDK module oracle.jdk.auth", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.compat", "JDK module oracle.jdk.compat", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.corba", "JDK module oracle.jdk.corba", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.cosnaming", "JDK module oracle.jdk.cosnaming", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.deploy", "JDK module oracle.jdk.deploy", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.desktop", "JDK module oracle.jdk.desktop", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.httpserver", "JDK module oracle.jdk.httpserver", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.instrument", "JDK module oracle.jdk.instrument", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.jaxp", "JDK module oracle.jdk.jaxp", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.jaxws", "JDK module oracle.jdk.jaxws", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.jdbc.rowset", "JDK module oracle.jdk.jdbc.rowset", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.jndi", "JDK module oracle.jdk.jndi", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.logging", "JDK module oracle.jdk.logging", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.management", "JDK module oracle.jdk.management", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.management.iiop", "JDK module oracle.jdk.management.iiop", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.rmi", "JDK module oracle.jdk.rmi", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.scripting", "JDK module oracle.jdk.scripting", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.sctp", "JDK module oracle.jdk.sctp", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.security.acl", "JDK module oracle.jdk.security.acl", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.smartcardio", "JDK module oracle.jdk.smartcardio", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.tools.jaxws", "JDK module oracle.jdk.tools.jaxws", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.tools.jre", "JDK module oracle.jdk.tools.jre", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.xmldsig", "JDK module oracle.jdk.xmldsig", null, set(), set("7")),
+                new ModuleDetails("oracle.sun.charsets", "JDK module oracle.sun.charsets", null, set(), set("7")),
+        };
+        testComplete("", expected, manager);
+    }
+
+    @Test
+    public void testCompleteJDKOnJS() throws Exception {
+        RepositoryManager manager = getJDKRepositoryManager();
+
+        ModuleDetails[] expected = new ModuleDetails[]{
+        };
+        testComplete("", expected, manager, ModuleQuery.Type.JS);
+    }
+
+    @Test
+    public void testCompleteJDKWithPrefix() throws Exception {
+        RepositoryManager manager = getJDKRepositoryManager();
+
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("jdk.auth", "JDK module jdk.auth", null, set(), set("7")),
+                new ModuleDetails("jdk.base", "JDK module jdk.base", null, set(), set("7")),
+                new ModuleDetails("jdk.compiler", "JDK module jdk.compiler", null, set(), set("7")),
+                new ModuleDetails("jdk.corba", "JDK module jdk.corba", null, set(), set("7")),
+                new ModuleDetails("jdk.desktop", "JDK module jdk.desktop", null, set(), set("7")),
+                new ModuleDetails("jdk.instrument", "JDK module jdk.instrument", null, set(), set("7")),
+                new ModuleDetails("jdk.jaxp", "JDK module jdk.jaxp", null, set(), set("7")),
+                new ModuleDetails("jdk.jaxws", "JDK module jdk.jaxws", null, set(), set("7")),
+                new ModuleDetails("jdk.jdbc", "JDK module jdk.jdbc", null, set(), set("7")),
+                new ModuleDetails("jdk.jdbc.rowset", "JDK module jdk.jdbc.rowset", null, set(), set("7")),
+                new ModuleDetails("jdk.jndi", "JDK module jdk.jndi", null, set(), set("7")),
+                new ModuleDetails("jdk.jta", "JDK module jdk.jta", null, set(), set("7")),
+                new ModuleDetails("jdk.jx.annotations", "JDK module jdk.jx.annotations", null, set(), set("7")),
+                new ModuleDetails("jdk.kerberos", "JDK module jdk.kerberos", null, set(), set("7")),
+                new ModuleDetails("jdk.logging", "JDK module jdk.logging", null, set(), set("7")),
+                new ModuleDetails("jdk.management", "JDK module jdk.management", null, set(), set("7")),
+                new ModuleDetails("jdk.prefs", "JDK module jdk.prefs", null, set(), set("7")),
+                new ModuleDetails("jdk.rmi", "JDK module jdk.rmi", null, set(), set("7")),
+                new ModuleDetails("jdk.scripting", "JDK module jdk.scripting", null, set(), set("7")),
+                new ModuleDetails("jdk.security.acl", "JDK module jdk.security.acl", null, set(), set("7")),
+                new ModuleDetails("jdk.tls", "JDK module jdk.tls", null, set(), set("7")),
+                new ModuleDetails("jdk.xmldsig", "JDK module jdk.xmldsig", null, set(), set("7")),
+        };
+        testComplete("jd", expected, manager);
+    }
+
+    @Test
+    public void testListVersionJDK() throws Exception {
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+                new ModuleVersionDetails("7", "JDK module jdk.base", null, new String[0]),
+        };
+        testListVersions("jdk.base", null, expected, getJDKRepositoryManager());
+    }
+
+    @Test
+    public void testListVersionJDKFiltered() throws Exception {
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+        };
+        testListVersions("jdk.base", "8", expected, getJDKRepositoryManager());
+    }
+
+    @Test
+    public void testSearchJDKModulesFilteredByName() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("jdk.base", "JDK module jdk.base", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7")),
+        };
+
+        testSearchResults("base", Type.JVM, expected, getJDKRepositoryManager());
+    }
+
+    @Test
+    public void testSearchJDKModulesPaged() throws Exception {
+        RepositoryManager repoManager = getJDKRepositoryManager();
+
+        // first page
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("jdk.auth", "JDK module jdk.auth", null, set(), set("7")),
+                new ModuleDetails("jdk.base", "JDK module jdk.base", null, set(), set("7")),
+                new ModuleDetails("jdk.compiler", "JDK module jdk.compiler", null, set(), set("7")),
+                new ModuleDetails("jdk.corba", "JDK module jdk.corba", null, set(), set("7")),
+                new ModuleDetails("jdk.desktop", "JDK module jdk.desktop", null, set(), set("7")),
+                new ModuleDetails("jdk.instrument", "JDK module jdk.instrument", null, set(), set("7")),
+                new ModuleDetails("jdk.jaxp", "JDK module jdk.jaxp", null, set(), set("7")),
+                new ModuleDetails("jdk.jaxws", "JDK module jdk.jaxws", null, set(), set("7")),
+                new ModuleDetails("jdk.jdbc", "JDK module jdk.jdbc", null, set(), set("7")),
+                new ModuleDetails("jdk.jdbc.rowset", "JDK module jdk.jdbc.rowset", null, set(), set("7")),
+                new ModuleDetails("jdk.jndi", "JDK module jdk.jndi", null, set(), set("7")),
+                new ModuleDetails("jdk.jta", "JDK module jdk.jta", null, set(), set("7")),
+                new ModuleDetails("jdk.jx.annotations", "JDK module jdk.jx.annotations", null, set(), set("7")),
+                new ModuleDetails("jdk.kerberos", "JDK module jdk.kerberos", null, set(), set("7")),
+                new ModuleDetails("jdk.logging", "JDK module jdk.logging", null, set(), set("7")),
+                new ModuleDetails("jdk.management", "JDK module jdk.management", null, set(), set("7")),
+                new ModuleDetails("jdk.prefs", "JDK module jdk.prefs", null, set(), set("7")),
+                new ModuleDetails("jdk.rmi", "JDK module jdk.rmi", null, set(), set("7")),
+                new ModuleDetails("jdk.scripting", "JDK module jdk.scripting", null, set(), set("7")),
+                new ModuleDetails("jdk.security.acl", "JDK module jdk.security.acl", null, set(), set("7")),
+        };
+        ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0l, 20l, repoManager);
+        Assert.assertEquals(20, results.getCount());
+        Assert.assertEquals(true, results.getHasMoreResults());
+        Assert.assertEquals(0, results.getStart());
+
+        // second page
+        expected = new ModuleDetails[]{
+                new ModuleDetails("jdk.tls", "JDK module jdk.tls", null, set(), set("7")),
+                new ModuleDetails("jdk.xmldsig", "JDK module jdk.xmldsig", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.auth", "JDK module oracle.jdk.auth", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.base", "JDK module oracle.jdk.base", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.compat", "JDK module oracle.jdk.compat", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.corba", "JDK module oracle.jdk.corba", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.cosnaming", "JDK module oracle.jdk.cosnaming", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.deploy", "JDK module oracle.jdk.deploy", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.desktop", "JDK module oracle.jdk.desktop", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.httpserver", "JDK module oracle.jdk.httpserver", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.instrument", "JDK module oracle.jdk.instrument", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.jaxp", "JDK module oracle.jdk.jaxp", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.jaxws", "JDK module oracle.jdk.jaxws", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.jdbc.rowset", "JDK module oracle.jdk.jdbc.rowset", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.jndi", "JDK module oracle.jdk.jndi", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.logging", "JDK module oracle.jdk.logging", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.management", "JDK module oracle.jdk.management", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.management.iiop", "JDK module oracle.jdk.management.iiop", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.rmi", "JDK module oracle.jdk.rmi", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.scripting", "JDK module oracle.jdk.scripting", null, set(), set("7")),
+        };
+
+        results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 20l, repoManager, results.getNextPagingInfo());
+        Assert.assertEquals(20, results.getCount());
+        Assert.assertEquals(true, results.getHasMoreResults());
+        Assert.assertEquals(20, results.getStart());
+
+        // third page
+        expected = new ModuleDetails[]{
+                new ModuleDetails("oracle.jdk.sctp", "JDK module oracle.jdk.sctp", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.security.acl", "JDK module oracle.jdk.security.acl", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.smartcardio", "JDK module oracle.jdk.smartcardio", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.tools.jaxws", "JDK module oracle.jdk.tools.jaxws", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.tools.jre", "JDK module oracle.jdk.tools.jre", null, set(), set("7")),
+                new ModuleDetails("oracle.jdk.xmldsig", "JDK module oracle.jdk.xmldsig", null, set(), set("7")),
+                new ModuleDetails("oracle.sun.charsets", "JDK module oracle.sun.charsets", null, set(), set("7")),
+        };
+        results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 20l, repoManager, results.getNextPagingInfo());
+        Assert.assertEquals(8, results.getCount());
+        Assert.assertEquals(false, results.getHasMoreResults());
+        Assert.assertEquals(40, results.getStart());
+    }
+
 }
