@@ -23,6 +23,8 @@ public class ProducedType extends ProducedReference {
     
     private String underlyingType;
     private boolean isRaw;
+    private ProducedType resolvedAliases;
+    private boolean isResolved;
 
     ProducedType() {}
 
@@ -1559,6 +1561,20 @@ public class ProducedType extends ProducedReference {
     }
     
     public ProducedType resolveAliases() {
+        // don't resolve anymore if we are already resolved
+        if(isResolved)
+            return this;
+        // cache the resolved version
+        if(resolvedAliases == null){
+            // really compute it
+            resolvedAliases = curriedResolveAliases();
+            // mark it as resolved so it doesn't get resolved again
+            resolvedAliases.isResolved = true;
+        }
+        return resolvedAliases;
+    }
+    
+    private ProducedType curriedResolveAliases() {
     	TypeDeclaration d = getDeclaration();
     	if (d instanceof UnionType) {
     		List<ProducedType> list = new ArrayList<ProducedType>();
