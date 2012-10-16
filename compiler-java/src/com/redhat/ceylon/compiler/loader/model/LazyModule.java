@@ -164,4 +164,15 @@ public abstract class LazyModule extends Module {
             return jarPackages.contains(pkgName);
         }
     }
+    
+    @Override
+    protected boolean isJdkModule(String moduleName) {
+        return JDKPackageList.isJDKModule(moduleName) || JDKPackageList.isOracleJDKModule(moduleName);
+    }
+    
+    @Override
+    protected boolean isJdkPackage(String moduleName, String packageName) {
+        return JDKPackageList.isJDKPackage(moduleName, packageName)
+                || JDKPackageList.isOracleJDKPackage(moduleName, packageName);
+    }
 }
