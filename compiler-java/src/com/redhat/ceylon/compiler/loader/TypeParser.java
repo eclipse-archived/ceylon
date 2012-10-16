@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.loader;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -12,7 +11,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class TypeParser {
     public class Part {
@@ -37,6 +35,7 @@ public class TypeParser {
         // save the previous state (this method is reentrant)
         char[] oldType = lexer.type;
         int oldIndex = lexer.index;
+        int oldMark = lexer.mark;
         Scope oldScope = this.scope;
         try{
             // setup the new state
@@ -51,6 +50,7 @@ public class TypeParser {
             // restore the previous state
             lexer.type = oldType;
             lexer.index = oldIndex;
+            lexer.mark = oldMark;
             this.scope = oldScope;
         }
     }
@@ -93,20 +93,31 @@ public class TypeParser {
     }
 
     /*
-     * qualifiedType: typeNameWithArguments (. typeNameWithArguments)*
+     * qualifiedType: [packageName (. packageName)* ::] typeNameWithArguments (. typeNameWithArguments)*
      */
     private ProducedType parseQualifiedType() {
+        String pkg;
+        
+        if (hasPackage()) {
+            // handle the package name
+            pkg = lexer.eatWord();
+            while(lexer.lookingAt(TypeLexer.DOT)){
+                lexer.eat();
+                pkg = pkg + '.' + lexer.eatWord();
+            }
+            lexer.eat(TypeLexer.DBLCOLON);
+        } else {
+            // type is in default package
+            pkg = "";
+        }
+        
+        // then the type itself
         Part part = parseTypeNameWithArguments();
-        String fullName = part.name;
-        // start with the toplevel package
-        String pkg = "";
+        String fullName = (pkg.isEmpty()) ? part.name : pkg + "." + part.name;
         ProducedType qualifyingType = loadType(pkg, fullName, part, null);
         while(lexer.lookingAt(TypeLexer.DOT)){
             lexer.eat();
             part = parseTypeNameWithArguments();
-            // if we didn't find a type it must be part of the package name
-            if(qualifyingType == null)
-                pkg = fullName;
             fullName = fullName + '.' + part.name;
             qualifyingType = loadType(pkg, fullName, part, qualifyingType);
         }
@@ -116,6 +127,17 @@ public class TypeParser {
         return qualifyingType;
     }
 
+    private boolean hasPackage() {
+        boolean result;
+        lexer.mark();
+        while(lexer.lookingAt(TypeLexer.WORD) || lexer.lookingAt(TypeLexer.DOT)){
+            lexer.eat();
+        }
+        result = lexer.lookingAt(TypeLexer.DBLCOLON);
+        lexer.reset();
+        return result;
+    }
+    
     private ProducedType loadType(String pkg, String fullName, Part part, ProducedType qualifyingType) {
         // try to find a qualified type
         try{

@@ -9,7 +9,8 @@ public class TypeLexer {
     public final static int LT = OR + 1;
     public final static int GT = LT + 1;
     public final static int DOT = GT + 1;
-    public final static int EOT = DOT + 1;
+    public final static int DBLCOLON = DOT + 1;
+    public final static int EOT = DBLCOLON + 1;
     public final static int WORD = EOT + 1;
 
     // type string to parse
@@ -23,6 +24,7 @@ public class TypeLexer {
         index = 0;
     }
     
+    @SuppressWarnings("unused")
     private void dump() {
         do{
             System.err.println(eatTokenString());
@@ -46,6 +48,11 @@ public class TypeLexer {
         case '|': token = OR; break;
         case '.': token = DOT; break;
         case ',': token = COMMA; break;
+        case ':':
+            if ((index + 1) < type.length && type[index + 1] == ':') {
+                token = DBLCOLON;
+                break;
+            }
         }
         return token;
     }
@@ -58,12 +65,13 @@ public class TypeLexer {
         FOR: for(;index<type.length;index++){
             char c = type[index];
             switch(c){
-            case '<': 
-            case '>': 
-            case '&': 
-            case '|': 
-            case '.': 
-            case ',': 
+            case '<':
+            case '>':
+            case '&':
+            case '|':
+            case '.':
+            case ',':
+            case ':':
                 break FOR;
             }
         }
@@ -95,6 +103,7 @@ public class TypeLexer {
         case LT    : return "LT";
         case GT    : return "GT";
         case DOT   : return "DOT";
+        case DBLCOLON   : return "DBLCOLON";
         case EOT   : return "EOT";
         case WORD  : return "WORD";
         }
@@ -113,7 +122,11 @@ public class TypeLexer {
     }
 
     public void eat() {
-        index++;
+        if(lookingAt(DBLCOLON)){
+            index += 2;
+        } else {
+            index++;
+        }
     }
 
     public boolean lookingAt(int token) {
