@@ -16,21 +16,16 @@
 
 package com.redhat.ceylon.cmr.maven;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.spi.Node;
+import java.io.File;
+import java.util.WeakHashMap;
 
-import org.jboss.shrinkwrap.api.Assignable;
-import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.spi.Node;
 
 /**
  * Aether utils.
