@@ -12,14 +12,14 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters({
     @TypeParameter(value = "Index", variance = Variance.IN,
-    		satisfies="ceylon.language.Comparable<Index>"),
+    		satisfies="ceylon.language::Comparable<Index>"),
     @TypeParameter(value = "Span", variance = Variance.OUT)
 })
 public interface Ranged<Index extends Comparable<? super Index>, Span> {
     
     @Annotations(@Annotation("formal"))
 	public Span span(@Name("from") Index from, 
-			@Name("to") @TypeInfo("ceylon.language.Nothing|Index") Index to);
+			@Name("to") @TypeInfo("ceylon.language::Nothing|Index") Index to);
     
     @Annotations(@Annotation("formal"))
 	public Span segment(@Name("from") Index from, @Name("length") long length);

@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 public class see_
 {
     public static Nothing see(@Name("programElements") @Sequenced
-            @TypeInfo("ceylon.language.Iterable<ceylon.language.Void>")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Void>")
             final ceylon.language.Iterable<? extends java.lang.Object> value) {
         return null;
     }

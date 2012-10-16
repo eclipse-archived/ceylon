@@ -14,11 +14,11 @@ public class byItem_ {
 
     private byItem_(){}
 
-    @TypeParameters(@TypeParameter(value="Item", satisfies="ceylon.language.Object"))
-    @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|ceylon.language.Comparison,ceylon.language.Entry<ceylon.language.Object,Item>,ceylon.language.Entry<ceylon.language.Object,Item>>")
+    @TypeParameters(@TypeParameter(value="Item", satisfies="ceylon.language::Object"))
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Entry<ceylon.language::Object,Item>,ceylon.language::Entry<ceylon.language::Object,Item>>")
     public static <Element> Callable<? extends Comparison> byItem(
             @Name("comparing")
-            @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|ceylon.language.Comparison,Item,Item>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,Item,Item>")
             final Callable<? extends Comparison> comparing) {
         return new AbstractCallable<Comparison>("byItem") {
             public Comparison $call(java.lang.Object x, java.lang.Object y) {

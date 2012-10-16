@@ -11,9 +11,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Other",
-    		satisfies="ceylon.language.Numeric<Other>"))
-@SatisfiedTypes({"ceylon.language.Summable<Other>",
-		         "ceylon.language.Invertable<Other>"})
+    		satisfies="ceylon.language::Numeric<Other>"))
+@SatisfiedTypes({"ceylon.language::Summable<Other>",
+		         "ceylon.language::Invertable<Other>"})
 @CaseTypes(of = "Other")
 public interface Numeric<Other extends Numeric<Other>> 
     extends Summable<Other>, Invertable<Other> {

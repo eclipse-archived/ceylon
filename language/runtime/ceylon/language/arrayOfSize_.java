@@ -18,10 +18,10 @@ public final class arrayOfSize_ {
     private arrayOfSize_() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
-    @TypeInfo("ceylon.language.Array<Element>")
+    @TypeInfo("ceylon.language::Array<Element>")
     public static <Element> Array<Element> arrayOfSize(
     @Name("size")
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     final long size,
     @Name("element")
     @TypeInfo("Element")
@@ -48,7 +48,7 @@ public final class arrayOfSize_ {
             public Iterator<Element> getIterator() {
                 return new Iterator<Element>() {
                     long idx = 0;
-                    @TypeInfo("Element|ceylon.language.Finished")
+                    @TypeInfo("Element|ceylon.language::Finished")
                     public java.lang.Object next() {
                         return idx++<size ? element : exhausted_.getExhausted$();
                     }

@@ -9,11 +9,11 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.Object")
+@Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes({
-    "ceylon.language.Scalar<ceylon.language.Float>",
-    "ceylon.language.Exponentiable<ceylon.language.Float,ceylon.language.Float>",
-    "ceylon.language.Castable<ceylon.language.Float>"
+    "ceylon.language::Scalar<ceylon.language::Float>",
+    "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>",
+    "ceylon.language::Castable<ceylon.language::Float>"
 })
 @ValueType
 public final class Float
@@ -273,7 +273,7 @@ public final class Float
     
     // Conversions between numeric types
     
-    @TypeInfo(value="ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     @Override
     public long getInteger() {
         if (value >= Long.MIN_VALUE
@@ -292,7 +292,7 @@ public final class Float
         throw new OverflowException();
     }
     
-    @TypeInfo(value="ceylon.language.Float")
+    @TypeInfo("ceylon.language::Float")
     @Override
     public double getFloat() {
         return value;

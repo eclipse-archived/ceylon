@@ -11,22 +11,22 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
-@SatisfiedTypes({"ceylon.language.FixedSized<Element>", 
-                 "ceylon.language.ContainerWithFirstElement<ceylon.language.Bottom,ceylon.language.Nothing>"})
+@SatisfiedTypes({"ceylon.language::FixedSized<Element>", 
+                 "ceylon.language::ContainerWithFirstElement<ceylon.language::Bottom,ceylon.language::Nothing>"})
 public interface None<Element> extends FixedSized<Element> {
     
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Nothing")
+    @TypeInfo("ceylon.language::Nothing")
     @Override
     public Element getFirst();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Nothing")
+    @TypeInfo("ceylon.language::Nothing")
     @Override
     public Element getLast();
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Iterator<Element>")
+    @TypeInfo("ceylon.language::Iterator<Element>")
     @Override
     public Iterator<? extends Element> getIterator();
 

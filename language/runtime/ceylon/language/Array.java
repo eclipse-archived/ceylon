@@ -20,13 +20,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.Object")
+@Class(extendsType="ceylon.language::Object")
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
-    "ceylon.language.List<Element>",
-    "ceylon.language.FixedSized<Element>",
-    "ceylon.language.Cloneable<ceylon.language.Array<Element>>",
-    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Array<Element>>"
+    "ceylon.language::List<Element>",
+    "ceylon.language::FixedSized<Element>",
+    "ceylon.language::Cloneable<ceylon.language::Array<Element>>",
+    "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Array<Element>>"
 })
 public abstract class Array<Element> implements List<Element>, FixedSized<Element> {
 
@@ -234,7 +234,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     /*@Override
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     public Element getFirst() {
         if (getEmpty()) {
             return null;
@@ -245,7 +245,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Override
     public Array<? extends Element> span(@Name("from") Integer from,
-            @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer") Integer to) {
+            @Name("to") @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer") Integer to) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long toIndex = to==null ? getSize()-1 : to.longValue();
@@ -314,7 +314,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     public Integer getLastIndex() {
         return getEmpty() ? null : Integer.instance(getSize() - 1);
     }
@@ -359,7 +359,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         return new ArrayIterator();
     }
 
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     @Override
     public Element item(@Name("key") Integer key) {
         long i = key.longValue();
@@ -397,7 +397,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         }
     }
 
-    public void setItem(@Name("index") @TypeInfo("ceylon.language.Integer") long index,
+    public void setItem(@Name("index") @TypeInfo("ceylon.language::Integer") long index,
             @Name("element") @TypeInfo("Element") Element element) {
         int idx = (int) index;
         if (idx >= 0 && idx < getSize()) {
@@ -440,7 +440,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public boolean definesEvery(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
@@ -456,7 +456,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public boolean definesAny(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
@@ -472,7 +472,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public List<? extends Element> items(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     Iterable<? extends Integer> keys){
         return Correspondence$impl._items(this, keys);
     }
@@ -505,7 +505,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Override
     @Ignore
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object")
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language::Object")
     java.lang.Object that) {
         return List$impl._equals(this, that);
     }
@@ -517,7 +517,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object")
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language::Object")
     java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
         Iterator<Element> iter = getIterator();
@@ -531,7 +531,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     }
 
     @Override
-    public long count(@Name("selecting") @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+    public long count(@Name("selecting") @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
             Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
@@ -548,7 +548,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
@@ -566,7 +566,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
     @Override
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }

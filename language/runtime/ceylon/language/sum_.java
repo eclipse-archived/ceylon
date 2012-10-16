@@ -14,10 +14,10 @@ public final class sum_ {
     private sum_() {
     }
     
-    @TypeParameters(@TypeParameter(value="Value", satisfies="ceylon.language.Summable<Value>"))
+    @TypeParameters(@TypeParameter(value="Value", satisfies="ceylon.language::Summable<Value>"))
     @TypeInfo("Value")
     public static <Value extends Summable<Value>>Value sum(@Name("values")
-    @TypeInfo("ceylon.language.Sequence<Value>")
+    @TypeInfo("ceylon.language::Sequence<Value>")
     final Sequence<? extends Value> values) {
         Value sum = values.getFirst();
         java.lang.Object $tmp;

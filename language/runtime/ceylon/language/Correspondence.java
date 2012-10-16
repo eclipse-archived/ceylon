@@ -16,13 +16,13 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters({
     @TypeParameter(value = "Key", variance = Variance.IN,
-            satisfies="ceylon.language.Object"),
+            satisfies="ceylon.language::Object"),
     @TypeParameter(value = "Item", variance = Variance.OUT)
 })
 public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("formal"))
-    @TypeInfo("Item|ceylon.language.Nothing")
+    @TypeInfo("Item|ceylon.language::Nothing")
     public Item item(@Name("key") Key key);
 
     @Annotations(@Annotation("default"))
@@ -33,7 +33,7 @@ public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("default"))
     public boolean definesEvery(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<Key>")
+    @TypeInfo("ceylon.language::Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public boolean definesEvery();
@@ -42,7 +42,7 @@ public interface Correspondence<Key,Item> {
 
     @Annotations(@Annotation("default"))
     public boolean definesAny(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<Key>")
+    @TypeInfo("ceylon.language::Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public boolean definesAny();
@@ -50,9 +50,9 @@ public interface Correspondence<Key,Item> {
     public Iterable<? extends Key> definesAny$keys();
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Item|ceylon.language::Nothing>")
     public List<? extends Item> items(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<Key>")
+    @TypeInfo("ceylon.language::Iterable<Key>")
     Iterable<? extends Key> keys);
     @Ignore
     public Iterable<? extends Item> items();

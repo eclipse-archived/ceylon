@@ -8,9 +8,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
-@CaseTypes({"ceylon.language.Some<Element>", 
-            "ceylon.language.None<Element>"})
-@SatisfiedTypes("ceylon.language.Collection<Element>")
+@CaseTypes({"ceylon.language::Some<Element>", 
+            "ceylon.language::None<Element>"})
+@SatisfiedTypes("ceylon.language::Collection<Element>")
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 public interface FixedSized<Element> 
         extends Collection<Element> {}

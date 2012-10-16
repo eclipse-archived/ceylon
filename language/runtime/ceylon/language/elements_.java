@@ -16,10 +16,10 @@ public final class elements_ {
     private elements_() {
     }
     
-    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeInfo("ceylon.language::Iterable<Element>")
     @TypeParameters(@TypeParameter(value="Element"))
     public static <Element> Iterable<? extends Element> elements(@Name("elements") 
-    @Sequenced @TypeInfo("ceylon.language.Iterable<Element>")
+    @Sequenced @TypeInfo("ceylon.language::Iterable<Element>")
     final Iterable<? extends Element> elements) {
         return elements;
     }

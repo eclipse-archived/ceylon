@@ -17,11 +17,11 @@ public final class join_ {
     private join_() {}
     
     @TypeParameters(@TypeParameter(value="Element"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public static <Element> List<? extends Element> join(
     @Name("iterables")
     @Sequenced
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Iterable<Element>>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Iterable<Element>>")
     final Iterable<? extends Iterable<? extends Element>> iterables) {
         java.util.List<Element> list = new java.util.ArrayList<Element>();
 		java.lang.Object $tmp1;

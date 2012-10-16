@@ -11,9 +11,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes({"ceylon.language.Comparable<ceylon.language.Character>",
-		        "ceylon.language.Ordinal<ceylon.language.Character>"})
+@Class(extendsType="ceylon.language::Object")
+@SatisfiedTypes({"ceylon.language::Comparable<ceylon.language::Character>",
+		        "ceylon.language::Ordinal<ceylon.language::Character>"})
 @ValueType
 public final class Character
         implements Comparable<Character>, Ordinal<Character> {
@@ -225,7 +225,7 @@ public final class Character
 
     @Override
     @Annotations(@Annotation("formal"))
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public long distanceFrom(Character other) {
         return codePoint-other.codePoint;
     }

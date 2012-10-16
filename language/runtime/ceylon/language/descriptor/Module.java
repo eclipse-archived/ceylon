@@ -20,57 +20,57 @@ public class Module {
     private final java.lang.String license;
     private final List<? extends Import> dependencies;
     
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public final java.lang.String getName() {
         return name;
     }
     
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public final java.lang.String getVersion() {
         return version;
     }
     
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public final java.lang.String getDoc() {
         return doc;
     }
     
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
     public final List<? extends String> getBy() {
         return by;
     }
     
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
     public final java.lang.String getLicense() {
         return license;
     }
     
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language.descriptor::Import>")
     public final List<? extends Import> getDependencies() {
         return dependencies;
     }
     
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public final java.lang.String toString() {
         return new java.lang.StringBuilder().append("Module[").append(name.toString()).append("/").append(version.toString()).append("]").toString();
     }
     
     public Module(@Name("name")
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     java.lang.String name, @Name("version")
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     java.lang.String version, @Name("doc")
     @Defaulted
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     java.lang.String doc, @Name("by")
     @Defaulted
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
     List<? extends String> by, @Name("license")
     @Defaulted
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
     java.lang.String license, @Name("dependencies")
     @Sequenced
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language.descriptor::Import>")
     List<? extends Import> dependencies) {
         this.name = name;
         this.version = version;

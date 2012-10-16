@@ -16,10 +16,10 @@ public final class arrayOfSome_ {
     private arrayOfSome_() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
-    @TypeInfo("ceylon.language.Array<Element>&ceylon.language.Some<Element>")
+    @TypeInfo("ceylon.language::Array<Element>&ceylon.language::Some<Element>")
     public static <Element> Array<Element> arrayOfSome(
     @Name("elements")
-    @TypeInfo("ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequence<Element>")
     final Iterable<? extends Element> elements) {
         return ArrayOfSome.<Element>instance(null, elements);
     }

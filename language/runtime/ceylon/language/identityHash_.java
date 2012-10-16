@@ -13,7 +13,7 @@ public final class identityHash_ {
     }
     
     public static long identityHash(@Name("x")
-    @TypeInfo("ceylon.language.Identifiable")
+    @TypeInfo("ceylon.language::Identifiable")
     final java.lang.Object x) {
         return System.identityHashCode(x);
     }

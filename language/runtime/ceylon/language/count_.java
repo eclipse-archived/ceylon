@@ -14,9 +14,9 @@ public final class count_ {
     private count_() {
     }
     
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public static long count(@Name("values") @Sequenced
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Boolean>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean>")
     final Iterable<? extends Boolean> values) {
         long count=0;
         java.lang.Object $tmp;

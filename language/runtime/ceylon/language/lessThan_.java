@@ -13,8 +13,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public class lessThan_ {
     private lessThan_(){}
 
-    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Comparable<Element>"))
-    @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Comparable<Element>"))
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
     public static <Element extends Comparable<? super Element>> Callable<? extends Boolean> lessThan(
             @Name("val") @TypeInfo("Element")
             final Element val) {

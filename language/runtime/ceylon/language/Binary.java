@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Other",
-    		satisfies="ceylon.language.Binary<Other>"))
+    		satisfies="ceylon.language::Binary<Other>"))
 @CaseTypes(of = "Other")
 public interface Binary<Other extends Binary<Other>> {
 

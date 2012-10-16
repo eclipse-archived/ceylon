@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Other",
-        satisfies="ceylon.language.Summable<Other>"))
+        satisfies="ceylon.language::Summable<Other>"))
 @CaseTypes(of = "Other")
 public interface Summable<Other extends Summable<Other>> {
 

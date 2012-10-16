@@ -17,16 +17,16 @@ public class combine_ {
 
     private combine_(){}
 
-    @TypeInfo("ceylon.language.Iterable<Result>")
+    @TypeInfo("ceylon.language::Iterable<Result>")
     @TypeParameters({
         @TypeParameter("Result"), @TypeParameter("Element"), @TypeParameter("OtherElement")
     })
     public static <Result,Element,OtherElement> Iterable<Result> combine(
-            @Name("combination") @TypeInfo("ceylon.language.Callable<Result,Element,OtherElement>")
+            @Name("combination") @TypeInfo("ceylon.language::Callable<Result,Element,OtherElement>")
             final Callable<? extends Result> combination,
-            @Name("elements") @TypeInfo("ceylon.language.Iterable<Element>")
+            @Name("elements") @TypeInfo("ceylon.language::Iterable<Element>")
             final Iterable<? extends Element> elements,
-            @Name("otherElements") @TypeInfo("ceylon.language.Iterable<OtherElement>")
+            @Name("otherElements") @TypeInfo("ceylon.language::Iterable<OtherElement>")
             final Iterable<? extends OtherElement> otherElements) {
         return new AbstractIterable<Result>() {
             @Override @Ignore

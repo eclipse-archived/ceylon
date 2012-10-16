@@ -12,10 +12,10 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
-@SatisfiedTypes({"ceylon.language.Iterable<Element>",
-        "ceylon.language.Sized",
-        "ceylon.language.Category",
-        "ceylon.language.Cloneable<ceylon.language.Collection<Element>>"})
+@SatisfiedTypes({"ceylon.language::Iterable<Element>",
+        "ceylon.language::Sized",
+        "ceylon.language::Category",
+        "ceylon.language::Cloneable<ceylon.language::Collection<Element>>"})
 public interface Collection<Element> 
         extends Iterable<Element>, Sized, Category,
                 Cloneable<Collection<? extends Element>> {
@@ -26,7 +26,7 @@ public interface Collection<Element>
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
-    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Object")
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language::Object")
             java.lang.Object element);
 
     @Annotations({@Annotation("actual"), @Annotation("default")})

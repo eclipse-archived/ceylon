@@ -12,7 +12,7 @@ public final class className_ {
     private className_() {}
     
     public static java.lang.String className(@Name("obj")
-    @TypeInfo("ceylon.language.Object")
+    @TypeInfo("ceylon.language::Object")
     final java.lang.Object object) {
     	//TODO: type args?
         Name annot = object.getClass().getAnnotation(Name.class);

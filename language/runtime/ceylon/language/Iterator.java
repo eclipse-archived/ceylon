@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 public interface Iterator<Element> {
     
     @Annotations(@Annotation("formal"))
-    @TypeInfo("Element|ceylon.language.Finished")
+    @TypeInfo("Element|ceylon.language::Finished")
     public java.lang.Object next();
     
 }

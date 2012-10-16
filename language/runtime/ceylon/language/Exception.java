@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.IdentifiableObject")
+@Class(extendsType="ceylon.language::IdentifiableObject")
 public class Exception extends RuntimeException {
 
 	private static final long serialVersionUID = -1790691559137471641L;
@@ -16,11 +16,11 @@ public class Exception extends RuntimeException {
 	private String description;
     
     public Exception(
-            @TypeInfo("ceylon.language.String|ceylon.language.Nothing")
+            @TypeInfo("ceylon.language::String|ceylon.language::Nothing")
             @Name("description")
             @Defaulted
             String description,
-            @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
+            @TypeInfo("ceylon.language::Exception|ceylon.language::Nothing")
             @Name("cause")
             @Defaulted
             java.lang.Throwable cause) {
@@ -38,12 +38,12 @@ public class Exception extends RuntimeException {
         this($init$description());
     }
         
-    @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
+    @TypeInfo("ceylon.language::Exception|ceylon.language::Nothing")
     public java.lang.Throwable getCause() {
         return super.getCause();
     }
     
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public java.lang.String getMessage() {
         if (description != null
                 && description != null) {
@@ -56,7 +56,7 @@ public class Exception extends RuntimeException {
         return "";
     }
 
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public java.lang.String toString() {
         return className_.className(this) + " \"" + getMessage() +"\""; 
     }

@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value="Clone", variance=Variance.OUT,
-        satisfies="ceylon.language.Cloneable<Clone>"))
+        satisfies="ceylon.language::Cloneable<Clone>"))
 @CaseTypes(of = "Clone")
 public interface Cloneable<Clone extends Cloneable<? extends Clone>> {
     @Annotations(@Annotation("formal"))
