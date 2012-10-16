@@ -57,6 +57,8 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log);
         } else if (token.equals("mvn")) {
             return MavenRepositoryHelper.getMavenRepository();
+        } else if (token.equals("jdk")) {
+            return new JDKRepository();
         } else if (token.equals("aether") || token.startsWith("aether:")) {
             Class<?> aetherRepositoryClass = getClass().getClassLoader().loadClass("com.redhat.ceylon.cmr.maven.AetherRepository");
             if (token.equals("aether")) {

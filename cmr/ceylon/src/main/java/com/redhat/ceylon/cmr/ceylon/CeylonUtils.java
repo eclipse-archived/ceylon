@@ -30,6 +30,7 @@ public class CeylonUtils {
         private String user;
         private String password;
         private Logger log;
+        private boolean jdkIncluded;
 
         /**
          * Sets the current working directory to use for encountering the configuration
@@ -122,6 +123,14 @@ public class CeylonUtils {
             this.password = password;
             return this;
         }
+        
+        /**
+         * Set to true to have JDK modules included in search/completion queries
+         */
+        public CeylonRepoManagerBuilder isJDKIncluded(boolean include){
+            this.jdkIncluded = include;
+            return this;
+        }
 
         /**
          * The logger to use, both for the builder itself as well as the
@@ -185,6 +194,9 @@ public class CeylonUtils {
             }
 
             // The rest we add in the normal order becuase they get APpended to the root
+
+            if (jdkIncluded)
+                addRepo(builder, repositories, "jdk", false);
 
             if (userRepos != null && !userRepos.isEmpty()) {
                 // Add user defined repos
@@ -364,7 +376,7 @@ public class CeylonUtils {
         private boolean isRemote(String repo) {
             // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
             // (except for "file:" which we don't support)
-            return isHTTP(repo) || repo.startsWith("mvn:") || "mvn".equals(repo) || "aether".equals(repo) || repo.startsWith("aether:");
+            return isHTTP(repo) || repo.startsWith("mvn:") || "mvn".equals(repo) || "aether".equals(repo) || repo.startsWith("aether:") || repo.equals("jdk");
         }
     }
 
