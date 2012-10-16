@@ -60,7 +60,7 @@ public abstract class AbstractRepository implements Repository {
         this.root = root;
     }
 
-    private List<String> getDefaultParentPathInternal(ArtifactContext context) {
+    protected List<String> getDefaultParentPathInternal(ArtifactContext context) {
         final String name = context.getName();
         final List<String> tokens = new ArrayList<String>();
         tokens.addAll(Arrays.asList(name.split("\\.")));
