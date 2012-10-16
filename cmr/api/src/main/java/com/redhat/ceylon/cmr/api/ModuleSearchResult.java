@@ -53,6 +53,17 @@ public class ModuleSearchResult {
         public NavigableSet<String> getVersions() {
             return versions;
         }
+        
+        @Override
+        public String toString() {
+            return "ModuleSearchResult ["
+                    +"name: "+name
+                    +", license: "+license
+                    +", doc: "+doc
+                    +", authors: "+authors
+                    +", versions: "+versions
+                    +"]";
+        }
     }
 
     private NavigableMap<String,ModuleDetails> results = new TreeMap<String,ModuleDetails>();
