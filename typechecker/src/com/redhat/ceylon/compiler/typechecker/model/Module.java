@@ -94,11 +94,11 @@ public class Module
 		int jdkResults = 0;
     	for (Package p: getAllPackages()) {
     		String moduleName = p.getModule().getNameAsString();
-			boolean isJdk = moduleName.startsWith("java");
+			boolean isJdk = isJdkModule(moduleName);
 			boolean isLanguageModule = moduleName.equals("ceylon.language");
 			String packageName = p.getNameAsString();
 			boolean isDefaultPackage = packageName.isEmpty();
-			if ((!isJdk || (jdkResults<10 && packageName.startsWith("java"))) && 
+			if ((!isJdk || (jdkResults<10 && isJdkPackage(moduleName, packageName))) && 
 					!isDefaultPackage) {
     			for (Declaration d: p.getMembers()) {
     				if (isJdk && jdkResults>=10) break;
@@ -127,6 +127,16 @@ public class Module
     		}
         }
         return result;
+    }
+
+    protected boolean isJdkModule(String moduleName) {
+        // overridden by subclasses
+        return false;
+    }
+
+    protected boolean isJdkPackage(String moduleName, String packageName) {
+        // overridden by subclasses
+        return false;
     }
 
     List<Package> getAllKnownPackages() {
