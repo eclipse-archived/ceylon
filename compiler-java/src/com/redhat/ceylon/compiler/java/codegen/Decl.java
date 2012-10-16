@@ -380,4 +380,8 @@ public class Decl {
                 && !model.isAnonymous()
                 && isCeylon((Class)model);
     }
+    
+    public static String className(Declaration decl) {
+        return com.redhat.ceylon.compiler.java.Util.declClassName(decl.getQualifiedNameString());
+    }
 }

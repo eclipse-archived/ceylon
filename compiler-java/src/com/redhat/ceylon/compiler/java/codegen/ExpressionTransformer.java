@@ -20,10 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -32,7 +30,6 @@ import com.redhat.ceylon.compiler.java.codegen.Operators.OperatorTranslation;
 import com.redhat.ceylon.compiler.java.codegen.Operators.OptimisationStrategy;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.Cond;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
-import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.SpecialFormCond;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -1687,7 +1684,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = naming.makeQuotedThis();
             }
             if (qualExpr == null && decl.isStaticallyImportable()) {
-                qualExpr = naming.makeQuotedFQIdent(decl.getContainer().getQualifiedNameString());
+                qualExpr = naming.makeQuotedFQIdent(Decl.className((Declaration) decl.getContainer()));
             }
             
             if (transformer != null) {

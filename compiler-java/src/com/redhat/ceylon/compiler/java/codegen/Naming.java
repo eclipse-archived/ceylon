@@ -33,8 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Token;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -924,7 +922,7 @@ public class Naming implements LocalId {
         // resolve aliases
         if(def.isAlias())
             def = (Interface) def.getExtendedTypeDeclaration();
-        return "$" + def.getQualifiedNameString().replace('.', '$') + "$this";
+        return "$" + Decl.className(def).replace('.', '$') + "$this";
     }
     
     /**
@@ -1260,7 +1258,6 @@ public class Naming implements LocalId {
      * Variable name substitution
      */
     
-    @SuppressWarnings("serial")
     protected static class VarMapper {
         /** 
          * A key for the substituton map, composed of the declaration's name and
