@@ -82,6 +82,16 @@ public abstract class LazyModuleManager extends ModuleManager {
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
                 ((LazyModule)module).loadPackageList(artifact);
+                
+                for (ArtifactResult dep : artifact.dependencies()) {
+                    Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());
+
+                    ModuleImport depImport = findImport(module, dependency);
+                    if (depImport == null) {
+                        moduleImport = new ModuleImport(dependency, false, false);
+                        module.getImports().add(moduleImport);
+                    }
+                }
             }
             if(compiledModule != null){
                 // it must be a Ceylon module
