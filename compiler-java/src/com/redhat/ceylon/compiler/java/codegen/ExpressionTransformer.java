@@ -2414,9 +2414,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Declaration decl = ((Tree.BaseMemberExpression)ce.getPrimary()).getDeclaration();
                     if(decl instanceof Method){
                         String name = decl.getQualifiedNameString();
-                        if(name.equals("ceylon.language.hex")){
+                        if(name.equals("ceylon.language::hex")){
                             return transformHexLiteral((Tree.QuotedLiteral)term);
-                        }else if(name.equals("ceylon.language.bin")){
+                        }else if(name.equals("ceylon.language::bin")){
                             return transformBinaryLiteral((Tree.QuotedLiteral)term);
                         }
                     }

@@ -368,7 +368,7 @@ public class MethodDefinitionBuilder {
             StringBuilder sb = new StringBuilder();
             //It's a bunch of nested callables (# of param lists - 1)
             for (int i = 1; i < method.getParameterLists().size(); i++) {
-                sb.append("ceylon.language.Callable<");
+                sb.append("ceylon.language::Callable<");
             }
             //Then the return type as defined originally
             sb.append(method.getType().getProducedTypeQualifiedName());

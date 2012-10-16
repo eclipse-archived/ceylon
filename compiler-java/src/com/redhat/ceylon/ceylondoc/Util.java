@@ -286,7 +286,7 @@ public class Util {
     
     public static boolean isException(Class c) {
         if (c != null) {
-            if ("ceylon.language.Exception".equals(c.getQualifiedNameString())) {
+            if ("ceylon.language::Exception".equals(c.getQualifiedNameString())) {
                 return true;
             } else {
                 return isException(c.getExtendedTypeDeclaration());
