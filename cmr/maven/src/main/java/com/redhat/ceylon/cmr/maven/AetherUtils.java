@@ -43,7 +43,7 @@ public class AetherUtils {
 
     private Logger log;
     private String settingsXml;
-    private static Map<String, MavenDependencyResolver> resolvers = new WeakHashMap<String, MavenDependencyResolver>();
+    private static WeakHashMap<String, WeakHashMap<String, MavenDependencyResolver>> resolvers = new WeakHashMap<String, WeakHashMap<String, MavenDependencyResolver>>();
 
     AetherUtils(Logger log) {
         this.log = log;
@@ -76,7 +76,7 @@ public class AetherUtils {
     private File[] fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) {
         final String coordinates = groupId + ":" + artifactId + ":" + version;
         try {
-            final MavenDependencyResolver mdr = getResolver().artifact(coordinates);
+            final MavenDependencyResolver mdr = getResolver(coordinates);
             if (fetchSingleArtifact)
                 mdr.exclusion("*");
 
@@ -112,10 +112,18 @@ public class AetherUtils {
 		return "classpath:settings.xml";
     }
 
-    private synchronized MavenDependencyResolver getResolver() {
-        if (! resolvers.containsKey(settingsXml)) {
-            resolvers.put(settingsXml, DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(new String(settingsXml)));
+    private synchronized MavenDependencyResolver getResolver(String coordinates) {
+        WeakHashMap<String, MavenDependencyResolver> settingsResolvers = resolvers.get(settingsXml);
+        if (settingsResolvers == null) {
+            settingsResolvers = new WeakHashMap<String, MavenDependencyResolver>();
+            resolvers.put(settingsXml, settingsResolvers);
+         }
+        
+        MavenDependencyResolver resolver = settingsResolvers.get(coordinates);
+        if (resolver == null) {
+            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(new String(settingsXml)).artifact(coordinates);
+            settingsResolvers.put(coordinates, resolver);
         }
-        return resolvers.get(settingsXml);
+        return resolver;
     }
 }
