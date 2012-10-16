@@ -25,7 +25,7 @@ class KeywordInCallable {
             }
         }
         final enum_ enum = new enum_();
-        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {
@@ -38,7 +38,7 @@ class KeywordInCallable {
                 );
             }
         });
-        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+        m(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void>"){
             
             @.java.lang.Override
             public .java.lang.Object $call() {

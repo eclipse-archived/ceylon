@@ -10,7 +10,7 @@ class CE {
     }
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language.Callable<ceylon.language.Integer>"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language::Callable<ceylon.language::Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call() {

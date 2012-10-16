@@ -14,7 +14,7 @@ public class ClassAlias_Foo {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-@.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo")
+@.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::ClassAlias_Foo")
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public final class ClassAlias {
     

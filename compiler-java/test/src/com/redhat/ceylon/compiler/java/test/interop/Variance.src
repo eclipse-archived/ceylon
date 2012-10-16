@@ -7,7 +7,7 @@ final class variance_ {
     
     static void variance() {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance var = new .com.redhat.ceylon.compiler.java.test.interop.JavaVariance();
-        final .ceylon.language.Callable<? extends .java.lang.Object> interfaceMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Object,ceylon.language.Nothing|com.redhat.ceylon.compiler.java.test.interop.Interface<ceylon.language.Object>>"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> interfaceMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Object,ceylon.language::Nothing|com.redhat.ceylon.compiler.java.test.interop::Interface<ceylon.language::Object>>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {
@@ -15,7 +15,7 @@ final class variance_ {
             }
         };
         final .java.lang.Object ret1 = var.interfaceMethod((.com.redhat.ceylon.compiler.java.test.interop.Interface)var);
-        final .ceylon.language.Callable<? extends .java.lang.Object> classMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Object,ceylon.language.Nothing|com.redhat.ceylon.compiler.java.test.interop.Class<ceylon.language.Object>>"){
+        final .ceylon.language.Callable<? extends .java.lang.Object> classMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Object,ceylon.language::Nothing|com.redhat.ceylon.compiler.java.test.interop::Class<ceylon.language::Object>>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

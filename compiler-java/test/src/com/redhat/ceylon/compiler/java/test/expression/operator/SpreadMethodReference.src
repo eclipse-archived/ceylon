@@ -6,7 +6,7 @@ class SpreadMethodReference {
     }
     
     private final void m(final .ceylon.language.List<? extends .ceylon.language.String> seq) {
-        final .ceylon.language.Callable<? extends .ceylon.language.List<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.List<? extends .ceylon.language.String>>("ceylon.language.Callable<ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>,ceylon.language.Integer>"){
+        final .ceylon.language.Callable<? extends .ceylon.language.List<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.List<? extends .ceylon.language.String>>("ceylon.language::Callable<ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>,ceylon.language::Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.List<? extends .ceylon.language.String> $call(final .java.lang.Object $param$0) {

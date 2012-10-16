@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 class Bug699 {
     
     Bug699() {
-        final .ceylon.language.Singleton<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> singleton = new .ceylon.language.Singleton<.ceylon.language.Callable<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String>"){
+        final .ceylon.language.Singleton<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> singleton = new .ceylon.language.Singleton<.ceylon.language.Callable<? extends .ceylon.language.String>>(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language::Callable<ceylon.language::String>"){
             
             @.java.lang.Override
             public .ceylon.language.String $call() {

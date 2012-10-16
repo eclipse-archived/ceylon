@@ -6,7 +6,7 @@ final class returnAnonFunction_ {
     }
     
     static .ceylon.language.Callable<? extends .ceylon.language.Integer> returnAnonFunction() {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language.Callable<ceylon.language.Integer>"){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>("ceylon.language::Callable<ceylon.language::Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call(final .java.lang.Object $param$0) {

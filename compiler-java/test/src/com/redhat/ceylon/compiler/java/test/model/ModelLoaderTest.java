@@ -21,16 +21,13 @@ package com.redhat.ceylon.compiler.java.test.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -42,11 +39,11 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.JDKPackageList;
 import com.redhat.ceylon.compiler.loader.ModelLoader;
@@ -82,7 +79,7 @@ public class ModelLoaderTest extends CompilerTest {
     private Map<Integer, Set<Integer>> alreadyCompared = new HashMap<Integer, Set<Integer>>();
     
     private static String getQualifiedPrefixedName(Declaration decl){
-        String name = decl.getQualifiedNameString();
+        String name = Decl.className(decl);
         String prefix;
         if(decl instanceof ClassOrInterface)
             prefix = "C";

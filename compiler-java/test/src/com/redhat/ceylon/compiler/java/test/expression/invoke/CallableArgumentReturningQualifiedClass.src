@@ -19,7 +19,7 @@ class CallableArgumentReturningQualifiedClass {
     }
     
     private final void m() {
-        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D>("ceylon.language.Callable<com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D>"){
+        f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D>("ceylon.language::Callable<com.redhat.ceylon.compiler.java.test.expression.invoke::CallableArgumentReturningQualifiedClass.D>"){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D $call() {

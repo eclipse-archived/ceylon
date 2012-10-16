@@ -32,10 +32,10 @@ public class MemberClassAliasTricks_Foo {
     
     public MemberClassAliasTricks_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     long b) {
     }
     
@@ -55,7 +55,7 @@ public class MemberClassAliasTricks_Foo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasTricks_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class MemberClassAliasToToplevel {
@@ -70,7 +70,7 @@ public class MemberClassAliasTricks_Foo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasTricks_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class MemberClassAliasToToplevel2 {
@@ -125,10 +125,10 @@ public class MemberClassAliasTricks_Foo {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
         @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
         @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         long b) {
         }
         
@@ -138,7 +138,7 @@ public class MemberClassAliasTricks_Foo {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-        @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member")
+        @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo.Member")
         @.com.redhat.ceylon.compiler.java.metadata.Container(name = "Member", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
         public final class MemberClassAliasToEnclosingMemberClass {
@@ -147,13 +147,13 @@ public class MemberClassAliasTricks_Foo {
             }
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
         private final void test() {
             final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member m1 = MemberClassAliasToEnclosingMemberClass$new(1L, 2L);
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
     private final void test() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo m1 = MemberClassAliasToToplevel$new(1L, 2L);
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo m2 = MemberClassAliasToToplevel2$new(1L, 2L);

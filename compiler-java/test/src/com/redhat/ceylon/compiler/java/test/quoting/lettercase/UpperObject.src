@@ -19,19 +19,19 @@ public final class Object {
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
         public final void m() {
         }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object.InnerObject")
     public final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject getInnerObject() {
         return InnerObject;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
     public final void m() {
         getInnerObject().m();
     }
@@ -41,7 +41,7 @@ public final class Object {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object")
     public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object getObject$() {
         try {
             return value[0];

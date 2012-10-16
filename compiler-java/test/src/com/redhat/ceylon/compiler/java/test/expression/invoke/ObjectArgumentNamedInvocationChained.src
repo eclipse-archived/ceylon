@@ -7,9 +7,9 @@ class ObjectArgumentNamedInvocationChained {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke::ObjectArgumentNamedInvocationChained")
     public final .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained callFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Object")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object o) {
         .ceylon.language.print_.print(.ceylon.language.String.instance(o.toString()));
         return this;
@@ -29,7 +29,7 @@ public final class objectArgumentNamedInvocationChained_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
     public static void objectArgumentNamedInvocationChained() {
         (
             let
@@ -41,7 +41,7 @@ public final class objectArgumentNamedInvocationChained_ {
                         
                         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
                         @.com.redhat.ceylon.compiler.java.metadata.Name("o")
-                        @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language.Object")
+                        @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
                         @.com.redhat.ceylon.compiler.java.metadata.Object
                         final class o_ extends .java.lang.Object {
                             
@@ -54,16 +54,16 @@ public final class objectArgumentNamedInvocationChained_ {
                             
                             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
                             @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
+                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                             public final .java.lang.String toString() {
                                 return string;
                             }
                             
                             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
                             @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
+                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
                             public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
-                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Object")
+                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
                             final .java.lang.Object other) {
                                 return false;
                             }
@@ -71,7 +71,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             
                             @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
                             @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                             public final int hashCode() {
                                 return hash;
                             }
@@ -83,7 +83,7 @@ public final class objectArgumentNamedInvocationChained_ {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("o")
-                @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language.Object")
+                @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
                 final class o_ extends .java.lang.Object {
                     
@@ -96,16 +96,16 @@ public final class objectArgumentNamedInvocationChained_ {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
                     @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                     public final .java.lang.String toString() {
                         return string;
                     }
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
                     @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Boolean")
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
                     public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Object")
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
                     final .java.lang.Object other) {
                         return false;
                     }
@@ -113,7 +113,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
                     @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final int hashCode() {
                         return hash;
                     }

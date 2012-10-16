@@ -36,7 +36,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S>")
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<S>")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "S", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
@@ -52,7 +52,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<ceylon.language.Integer>")
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<ceylon.language::Integer>")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class MemberClassAlias2 {
@@ -67,7 +67,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C>")
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<C>")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithTypeParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class MemberClassAlias3 {
@@ -76,7 +76,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
     private final void test() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m1 = MemberClassAlias1$new(.ceylon.language.Integer.instance(1L));
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m2 = MemberClassAlias2$new(.ceylon.language.Integer.instance(1L));

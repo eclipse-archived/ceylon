@@ -37,7 +37,7 @@ final class callableArgumentVarargs_m_ {
     }
     
     static void callableArgumentVarargs_m() {
-        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_f_.callableArgumentVarargs_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void,ceylon.language.Iterable<ceylon.language.String>>"){
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentVarargs_f_.callableArgumentVarargs_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language::Callable<ceylon.language::Void,ceylon.language::Iterable<ceylon.language::String>>"){
             
             @.java.lang.Override
             public .java.lang.Object $call(final .java.lang.Object $param$0) {

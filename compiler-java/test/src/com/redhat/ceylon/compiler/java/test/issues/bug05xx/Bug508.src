@@ -28,7 +28,7 @@ final class bug508_ {
             }
         }
         final f_ f = new f_();
-        callFunction.callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language.Callable<ceylon.language.String,ceylon.language.Integer>"){
+        callFunction.callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>("ceylon.language::Callable<ceylon.language::String,ceylon.language::Integer>"){
             
             @.java.lang.Override
             public .ceylon.language.String $call(final .java.lang.Object $param$0) {

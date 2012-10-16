@@ -330,12 +330,12 @@ public class TypeParserTest {
 
     @Test
     public void testPackageQualified(){
-        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("pkg.b", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("pkg::b", null);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
         Assert.assertTrue(declaration instanceof Class);
-        Assert.assertEquals("pkg.b", declaration.getQualifiedNameString());
+        Assert.assertEquals("pkg::b", declaration.getQualifiedNameString());
 
         Assert.assertNull(type.getQualifyingType());
     }

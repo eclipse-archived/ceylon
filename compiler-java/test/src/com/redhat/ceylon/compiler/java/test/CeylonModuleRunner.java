@@ -45,6 +45,7 @@ import org.junit.runners.model.InitializationError;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -307,7 +308,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                                 && !((AnyClass)that).getDeclarationModel().isAbstract()
                                 && ((AnyClass)that).getDeclarationModel().isToplevel()
                                 && ((AnyClass)that).getDeclarationModel().getParameterLists().get(0).getParameters().size() == 0) {
-                            testClassName = that.getDeclarationModel().getQualifiedNameString();
+                            testClassName = Decl.className(that.getDeclarationModel());
                             that.visitChildren(this);
                             if (moduleRunner.errorIfNoTests 
                                     && (testMethods.get(testClassName) == null
@@ -339,7 +340,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                                     }
                                 } 
                                 if (!added) {
-                                    moduleRunner.createFailingTest(decl.getQualifiedNameString(), 
+                                    moduleRunner.createFailingTest(Decl.className(decl),
                                             new Exception("@test should only be used on methods of concrete top level classes whose name ends with 'Test'"));
                                 }
                             }

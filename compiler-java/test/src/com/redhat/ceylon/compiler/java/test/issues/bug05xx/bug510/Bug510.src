@@ -33,7 +33,7 @@ final class goto_ {
     private goto_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
     static void $goto() {
     }
     
@@ -54,7 +54,7 @@ final class volatile_ {
         value = new long[]{5L};
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     static long getVolatile$() {
         try {
             return value[0];
@@ -75,7 +75,7 @@ final class synchronized_ {
         value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_()};
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510::synchronized")
     static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_ getSynchronized$() {
         try {
             return value[0];

@@ -35,10 +35,10 @@ public class MemberClassAliasWithParameters_Foo {
     public class Member {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
         @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.String")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         .java.lang.String s) {
         }
     }
@@ -49,7 +49,7 @@ public class MemberClassAliasWithParameters_Foo {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
-    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member")
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithParameters_Foo.Member")
     @.com.redhat.ceylon.compiler.java.metadata.Container(name = "MemberClassAliasWithParameters_Foo", javaClass = "com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo", packageName = "com.redhat.ceylon.compiler.java.test.structure.alias")
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class MemberClassAlias {
@@ -58,7 +58,7 @@ public class MemberClassAliasWithParameters_Foo {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
     private final void test() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member m = MemberClassAlias$new(1L, "a");
     }
