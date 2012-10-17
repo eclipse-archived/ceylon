@@ -15,11 +15,11 @@ public class byIncreasing_ {
     private byIncreasing_(){}
 
     @TypeParameters({@TypeParameter(value="Element"),
-            @TypeParameter(value="Value", satisfies="ceylon.language.Comparable<Value>")})
-    @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|ceylon.language.Comparison,Element,Element>")
+            @TypeParameter(value="Value", satisfies="ceylon.language::Comparable<Value>")})
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,Element,Element>")
     public static <Element,Value extends Comparable<? super Value>> Callable<? extends Comparison> byIncreasing(
             @Name("comparable")
-            @TypeInfo("ceylon.language.Callable<ceylon.language.Nothing|Value,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|Value,Element>")
             final Callable<? extends Value> comparable) {
         return new AbstractCallable<Comparison>("byIncreasing") {
             public Comparison $call(java.lang.Object x, java.lang.Object y) {

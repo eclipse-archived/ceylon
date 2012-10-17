@@ -16,9 +16,9 @@ public final class entries_ {
     private entries_() {}
     
     @TypeParameters(@TypeParameter("Element"))
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<ceylon.language.Integer,Element&ceylon.language.Object>>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
     public static <Element> Iterable<? extends Entry<? extends Integer, ? extends Element>> entries(@Name("elements")
-    @Sequenced @TypeInfo("ceylon.language.Iterable<Element>")
+    @Sequenced @TypeInfo("ceylon.language::Iterable<Element>")
     final ceylon.language.Iterable<? extends Element> elements) {
         return elements.getIndexed();
     }

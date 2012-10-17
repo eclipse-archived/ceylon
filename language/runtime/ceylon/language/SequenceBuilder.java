@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.IdentifiableObject")
+@Class(extendsType="ceylon.language::IdentifiableObject")
 @TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceBuilder<Element> implements Sized {
 
@@ -21,7 +21,7 @@ public class SequenceBuilder<Element> implements Sized {
     
     public SequenceBuilder() {}
      
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public synchronized List<? extends Element> getSequence() {
         if (list==null || list.isEmpty()) {
             return (List)empty_.getEmpty$();
@@ -39,7 +39,7 @@ public class SequenceBuilder<Element> implements Sized {
     }
     
     public final synchronized void appendAll(@Sequenced @Name("elements") 
-    @TypeInfo("ceylon.language.Iterable<Element>") 
+    @TypeInfo("ceylon.language::Iterable<Element>") 
     Iterable<? extends Element> elements) {
     	if (list==null) {
     	    //we don't always receive a Sized

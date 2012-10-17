@@ -13,12 +13,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public class forItem_ {
     private forItem_(){}
 
-    @TypeParameters({@TypeParameter(value="Item", satisfies="ceylon.language.Object"),
+    @TypeParameters({@TypeParameter(value="Item", satisfies="ceylon.language::Object"),
     		        @TypeParameter(value="Result")})
-    @TypeInfo("ceylon.language.Callable<Result,ceylon.language.Entry<Object,Item>>")
+    @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Entry<ceylon.language::Object,Item>>")
     public static 
     <Item,Result> Callable<? extends Result> forItem(
-            @Name("resulting") @TypeInfo("ceylon.language.Callable<Result,Item>")
+            @Name("resulting") @TypeInfo("ceylon.language::Callable<Result,Item>")
             final Callable<? extends Result> resulting) {
         return new AbstractCallable<Result>("forItem"){
             public Result $call(java.lang.Object entry) {

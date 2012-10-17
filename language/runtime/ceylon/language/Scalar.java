@@ -10,10 +10,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Other",
-    		satisfies="ceylon.language.Scalar<Other>"))
-@SatisfiedTypes({"ceylon.language.Number",
-		         "ceylon.language.Numeric<Other>",
-		         "ceylon.language.Comparable<Other>"})
+    		satisfies="ceylon.language::Scalar<Other>"))
+@SatisfiedTypes({"ceylon.language::Number",
+		         "ceylon.language::Numeric<Other>",
+		         "ceylon.language::Comparable<Other>"})
 @CaseTypes(of = "Other")
 public interface Scalar<Other extends Scalar<Other>> 
     extends Number, Numeric<Other>, Comparable<Other> {

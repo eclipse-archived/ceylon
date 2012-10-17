@@ -14,10 +14,10 @@ public class throws_
     private throws_(){}
     
     public static Nothing $throws(
-    		@Name("type") @TypeInfo("ceylon.language.Void") 
+    		@Name("type") @TypeInfo("ceylon.language::Void") 
     		final java.lang.Object type, 
     	    @Defaulted
-    		@Name("when") @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+    		@Name("when") @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
     		String when) {
         return null;
     }

@@ -16,10 +16,10 @@ public final class coalesce_ {
     private coalesce_() {}
 
     @TypeParameters(@TypeParameter("Element"))
-    @TypeInfo("ceylon.language.Iterable<Element&ceylon.language.Object>")
+    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
     public static <Element> Iterable<? extends Element> coalesce(
     @Name("values") @Sequenced
-    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeInfo("ceylon.language::Iterable<Element>")
     final ceylon.language.Iterable<? extends Element> values) {
         return values.getCoalesced();
     }

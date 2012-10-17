@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.Void")
+@Class(extendsType="ceylon.language::Void")
 public abstract class Object extends Void {
     
     @Override

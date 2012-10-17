@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
-@SatisfiedTypes("ceylon.language.List<Element>")
+@SatisfiedTypes("ceylon.language::List<Element>")
 public class LazyList<Element> implements List<Element> {
 
     private final Iterable<? extends Element> elems;
@@ -28,7 +28,7 @@ public class LazyList<Element> implements List<Element> {
         this.elems = (Iterable<? extends Element>)empty_.getEmpty$();
     }
     public LazyList(@Name("elems") @Sequenced
-            @TypeInfo("ceylon.language.Iterable<Element>")
+            @TypeInfo("ceylon.language::Iterable<Element>")
             Iterable<? extends Element> elems) {
         this.elems = elems;
     }
@@ -50,14 +50,14 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     public Element getFirst() {
         return elems.getFirst();
     }
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     public Element getLast() {
         return elems.getLast();
     }
@@ -97,9 +97,9 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     public Element findLast(
-            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
             Callable<? extends Boolean> selecting) {
         return elems.findLast(selecting);
     }
@@ -176,7 +176,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override @Ignore
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -194,7 +194,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override @Ignore
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
@@ -212,7 +212,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.List<Element>")
+    @TypeInfo("ceylon.language::List<Element>")
     public Collection<? extends Element> getClone() {
         return new LazyList<Element>(elems);
     }
@@ -275,7 +275,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.List<Element>")
+    @TypeInfo("ceylon.language::List<Element>")
     public List<? extends Element> span(Integer from, Integer to) {
         long p0 = from.value;
         if (to == null) {
@@ -295,7 +295,7 @@ public class LazyList<Element> implements List<Element> {
     @SuppressWarnings("unchecked")
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.List<Element>")
+    @TypeInfo("ceylon.language::List<Element>")
     public List<? extends Element> segment(Integer from, long length) {
         if (length > 0) {
             long p = from.value;
@@ -308,7 +308,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     public Integer getLastIndex() {
         long c = elems.count(new AbstractCallable<Boolean>("LazyList_lastIndex") {
             @Override
@@ -336,7 +336,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     public Element item(Integer key) {
         long l = key.value;
         return l==0 ? elems.getFirst() : elems.skipping(l).getFirst();
@@ -344,14 +344,14 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Iterator<Element>")
+    @TypeInfo("ceylon.language::Iterator<Element>")
     public Iterator<? extends Element> getIterator() {
         return elems.getIterator();
     }
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.List<Element>")
+    @TypeInfo("ceylon.language::List<Element>")
     public List<? extends Element> getReversed() {
         return ((List<? extends Element>)elems.getSequence()).getReversed();
     }
@@ -370,7 +370,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Boolean")
+    @TypeInfo("ceylon.language::Boolean")
     public boolean equals(java.lang.Object obj) {
         if (obj instanceof List) {
             @SuppressWarnings("rawtypes")
@@ -398,7 +398,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public int hashCode() {
         return list$impl.hashCode();
     }

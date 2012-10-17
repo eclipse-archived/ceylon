@@ -18,14 +18,14 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes({"ceylon.language.List<ceylon.language.Character>",
-                 "ceylon.language.Comparable<ceylon.language.String>",
-                 "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.String>",
-                 "ceylon.language.FixedSized<ceylon.language.Character>",
-                 "ceylon.language.Summable<ceylon.language.String>",
-                 "ceylon.language.Castable<ceylon.language.String>",
-                 "ceylon.language.Cloneable<ceylon.language.String>"})
+@Class(extendsType="ceylon.language::Object")
+@SatisfiedTypes({"ceylon.language::List<ceylon.language::Character>",
+                 "ceylon.language::Comparable<ceylon.language::String>",
+                 "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>",
+                 "ceylon.language::FixedSized<ceylon.language::Character>",
+                 "ceylon.language::Summable<ceylon.language::String>",
+                 "ceylon.language::Castable<ceylon.language::String>",
+                 "ceylon.language::Cloneable<ceylon.language::String>"})
 @ValueType
 public abstract class String
     implements Comparable<String>, List<Character>,
@@ -176,7 +176,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public long getSize() {
         //TODO: should we cache this value in an instvar?
         // But remember that we'll mostly be using the static verion
@@ -190,7 +190,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     public Integer getLastIndex() {
         long length = getSize();
         return (length == 0) ? null : Integer.instance(length - 1);
@@ -213,7 +213,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.Character|ceylon.language.Nothing")
+    @TypeInfo("ceylon.language::Character|ceylon.language::Nothing")
     public Character item(@Name("index") Integer key) {
         return item(value, key.longValue());
     }
@@ -257,7 +257,7 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesEvery(@Name("keys")
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Integer>")
     Iterable<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
@@ -293,7 +293,7 @@ public abstract class String
     @Override
     @Ignore
     public boolean definesAny(@Name("keys")
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Integer>")
     Iterable<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
@@ -329,7 +329,7 @@ public abstract class String
     @Override
     @Ignore
     public List<? extends Character> items(@Name("keys")
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
@@ -359,7 +359,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.Iterator<ceylon.language.Character>")
+    @TypeInfo("ceylon.language::Iterator<ceylon.language::Character>")
     public Iterator<Character> getIterator() {
         return getIterator(value);
     }
@@ -386,7 +386,7 @@ public abstract class String
         return new StringIterator();
     }
 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Character>")
     public List<? extends Character> getCharacters() {
         return getCharacters(value);
     }
@@ -406,7 +406,7 @@ public abstract class String
         return new ArraySequence<Character>(chars);
     }
 
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     public Integer firstOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.indexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
@@ -418,7 +418,7 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     public Integer lastOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.lastIndexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
@@ -430,9 +430,9 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     public Integer firstCharacterOccurrence(@Name("character")
-    @TypeInfo("ceylon.language.Character") int character) {
+    @TypeInfo("ceylon.language::Character") int character) {
         int index = value.indexOf(character);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
@@ -443,9 +443,9 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     public Integer lastCharacterOccurrence(@Name("character")
-    @TypeInfo("ceylon.language.Character") int character) {
+    @TypeInfo("ceylon.language::Character") int character) {
         int index = value.lastIndexOf(character);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
@@ -503,7 +503,7 @@ public abstract class String
     @Override
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
@@ -535,7 +535,7 @@ public abstract class String
     @Override
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
@@ -564,7 +564,7 @@ public abstract class String
         return empty_.getEmpty$();
     }
 
-    public boolean longerThan(@TypeInfo("ceylon.language.Integer")
+    public boolean longerThan(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
         try {
             value.offsetByCodePoints(0, (int)length+1);
@@ -586,7 +586,7 @@ public abstract class String
         }
     }
 
-    public boolean shorterThan(@TypeInfo("ceylon.language.Integer")
+    public boolean shorterThan(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
         try {
             value.offsetByCodePoints(0, (int)length);
@@ -608,7 +608,7 @@ public abstract class String
         }
     }
 
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public java.lang.String getTrimmed() {
         return value.trim();
     }
@@ -618,7 +618,7 @@ public abstract class String
         return value.trim();
     }
 
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public java.lang.String getNormalized() {
         return getNormalized(value);
     }
@@ -642,8 +642,8 @@ public abstract class String
         return result.toString();
     }
 
-    @TypeInfo("ceylon.language.String")
-    public java.lang.String initial(@TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String initial(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
     	return initial(value, length);
     }
@@ -660,8 +660,8 @@ public abstract class String
         }
     }
 
-    @TypeInfo("ceylon.language.String")
-    public java.lang.String terminal(@TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String terminal(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
     	return terminal(value, length);
     }
@@ -678,9 +678,9 @@ public abstract class String
         }
     }
 
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public java.lang.String join(@Name("strings") @Sequenced
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     Iterable<? extends String> strings) {
         return join(value, strings);
     }
@@ -710,7 +710,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public String segment(@Name("from") final Integer from,
             @Name("length") final long length) {
         return instance(segment(value, from.longValue(), length));
@@ -733,9 +733,9 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public String span(@Name("from") final Integer from,
-            @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+            @Name("to") @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
             final Integer to) {
         return instance(span(value, from.longValue(), to));
     }
@@ -760,7 +760,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public String getReversed() {
         return instance(getReversed(value));
     }
@@ -781,9 +781,9 @@ public abstract class String
         return builder.toString();
     }
 
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public java.lang.String repeat(
-            @TypeInfo("ceylon.language.Integer")
+            @TypeInfo("ceylon.language::Integer")
             @Name("times") long times) {
         return repeat(value, times);
     }
@@ -800,7 +800,7 @@ public abstract class String
         return builder.toString();
     }
 
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public java.lang.String replace(
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {
@@ -812,9 +812,9 @@ public abstract class String
         return value.replace(substring, replacement);
     }
 
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String> split(
-            @TypeInfo("ceylon.language.Iterable<ceylon.language.Character>|ceylon.language.Callable<ceylon.language.Boolean,ceylon.language.Character>")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Character>|ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Character>")
             @Defaulted
             @Name("separator") java.lang.Object separator,
             @Defaulted
@@ -894,7 +894,7 @@ public abstract class String
         return true;
     }
 
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String> getLines() {
         return split(new AbstractCallable<Boolean>("whitespace") {
             @Override
@@ -914,7 +914,7 @@ public abstract class String
         }, true);
     }
 
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     public Iterable<? extends Integer> occurrences(
             @Name("substring") java.lang.String substring) {
         return new Occurs(value, substring);
@@ -1098,7 +1098,7 @@ public abstract class String
         }
     }
 
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     @Override
     public String getCoalesced() {
         return this; //Can't have null characters

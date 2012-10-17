@@ -16,9 +16,9 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Element",
         variance = Variance.OUT,
-        satisfies="ceylon.language.Object"))
-@Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes("ceylon.language.Sequence<Element>")
+        satisfies="ceylon.language::Object"))
+@Class(extendsType="ceylon.language::Object")
+@SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class Singleton<Element>
         implements Sequence<Element> {
 
@@ -34,7 +34,7 @@ public class Singleton<Element>
 	}
 
 	@Override
-	@TypeInfo("ceylon.language.Nothing|Element")
+	@TypeInfo("ceylon.language::Nothing|Element")
 	public Element item(@Name("key") Integer key) {
 		return key.longValue()==0 ? element : null;
 	}
@@ -48,7 +48,7 @@ public class Singleton<Element>
 	@Override
 	@Ignore
 	public boolean definesEvery(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._definesEvery(this, keys);
 	}
@@ -66,7 +66,7 @@ public class Singleton<Element>
 	@Override
 	@Ignore
 	public boolean definesAny(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._definesAny(this, keys);
 	}
@@ -84,7 +84,7 @@ public class Singleton<Element>
 	@Override
 	@Ignore
 	public List<? extends Element> items(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
 	Iterable<? extends Integer> keys) {
 		return Correspondence$impl._items(this, keys);
 	}
@@ -100,7 +100,7 @@ public class Singleton<Element>
     }
 
 	@Override
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
 	public Integer getLastIndex() {
 		return Integer.instance(0);
 	}
@@ -111,7 +111,7 @@ public class Singleton<Element>
 	}
 
 	@Override
-	@TypeInfo("ceylon.language.Empty")
+	@TypeInfo("ceylon.language::Empty")
     @SuppressWarnings({"rawtypes", "unchecked"})
 	public List<? extends Element> getRest() {
 		return (List)empty_.getEmpty$();
@@ -123,7 +123,7 @@ public class Singleton<Element>
 	}
 
 	@Override
-	@TypeInfo("ceylon.language.Integer")
+	@TypeInfo("ceylon.language::Integer")
 	public long getSize() {
 		return 1;
 	}
@@ -160,7 +160,7 @@ public class Singleton<Element>
 	}
 
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Singleton<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Singleton<Element>")
     @SuppressWarnings({"rawtypes", "unchecked"})
     public List<? extends Element> segment(@Name("from") Integer from,
     		@Name("length") long length) {
@@ -168,10 +168,10 @@ public class Singleton<Element>
     }
 
     @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Singleton<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Singleton<Element>")
     @SuppressWarnings({"rawtypes", "unchecked"})
     public List<? extends Element> span(@Name("from") Integer from,
-    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     		@Name("to") Integer to) {
     	return from.longValue()>0 ? (List)empty_.getEmpty$(): this;
     }
@@ -263,39 +263,39 @@ public class Singleton<Element>
         return f.$call(element).booleanValue() ? element : null;
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>")
+    @TypeInfo("ceylon.language::Singleton<Element>")
     public Singleton<? extends Element> sort(@Name("comparing")
-            @TypeInfo("ceylon.language.Callable<Comparison,Element,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,Element,Element>")
             Callable<? extends Comparison> comparing) {
         return this;
     }
     @Override
-    @TypeInfo("ceylon.language.Sequence<Result>")
+    @TypeInfo("ceylon.language::Sequence<Result>")
     public <Result> Sequence<? extends Result> map(@Name("selecting")
-            @TypeInfo("ceylon.language.Callable<Result,Element>")
+            @TypeInfo("ceylon.language::Callable<Result,Element>")
             Callable<? extends Result> selecting) {
         return new Singleton<Result>(selecting.$call(element));
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
+    @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> filter(@Name("selecting")
-            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
             Callable<? extends Boolean> selecting) {
         return selecting.$call(element).booleanValue() ? this : (Iterable)empty_.getEmpty$();
     }
     @Override
-    @TypeInfo("ceylon.language.Sequence<Result>")
+    @TypeInfo("ceylon.language::Sequence<Result>")
     public <Result> Sequence<? extends Result> collect(@Name("selecting")
-            @TypeInfo("ceylon.language.Callable<Result,Element>")
+            @TypeInfo("ceylon.language::Callable<Result,Element>")
             Callable<? extends Result> selecting) {
         return new Singleton<Result>(selecting.$call(element));
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
+    @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public List<? extends Element> select(@Name("selecting")
-            @TypeInfo("ceylon.language.Callable<ceylon.language.Boolean,Element>")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,Element>")
             Callable<? extends Boolean> selecting) {
         return selecting.$call(element).booleanValue() ? this : (List)empty_.getEmpty$();
     }
@@ -313,13 +313,13 @@ public class Singleton<Element>
         return f.$call(element).booleanValue();
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
+    @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> skipping(long skip) {
         return skip>0 ? (Iterable)empty_.getEmpty$() : this;
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>|ceylon.language.Empty")
+    @TypeInfo("ceylon.language::Singleton<Element>|ceylon.language::Empty")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Iterable<? extends Element> taking(long take) {
         return take<1 ? (Iterable)empty_.getEmpty$() : this;
@@ -333,7 +333,7 @@ public class Singleton<Element>
         return f.$call(element).booleanValue() ? 1 : 0;
     }
     @Override
-    @TypeInfo("ceylon.language.Singleton<Element>")
+    @TypeInfo("ceylon.language::Singleton<Element>")
     public Singleton<? extends Element> getCoalesced() {
         return this;
     }
@@ -353,14 +353,14 @@ public class Singleton<Element>
     @Override @SuppressWarnings("rawtypes")
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    @TypeInfo("ceylon.language::Sequence<Element|Other>")
     public <Other>Sequence withLeading(Other elem) {
         return List$impl._withLeading(this, elem);
     }
     @Override @SuppressWarnings("rawtypes")
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    @TypeInfo("ceylon.language::Sequence<Element|Other>")
     public <Other>Sequence withTrailing(Other elem) {
         return List$impl._withTrailing(this, elem);
     }

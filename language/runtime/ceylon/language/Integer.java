@@ -13,13 +13,13 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
 @SatisfiedTypes({
-    "ceylon.language.Scalar<ceylon.language.Integer>",
-    "ceylon.language.Integral<ceylon.language.Integer>",
-    "ceylon.language.Binary<ceylon.language.Integer>",
-    "ceylon.language.Exponentiable<ceylon.language.Integer,ceylon.language.Integer>",
-    "ceylon.language.Castable<ceylon.language.Integer|ceylon.language.Float>"
+    "ceylon.language::Scalar<ceylon.language::Integer>",
+    "ceylon.language::Integral<ceylon.language::Integer>",
+    "ceylon.language::Binary<ceylon.language::Integer>",
+    "ceylon.language::Exponentiable<ceylon.language::Integer,ceylon.language::Integer>",
+    "ceylon.language::Castable<ceylon.language::Integer|ceylon.language::Float>"
 })
-@Class(extendsType="ceylon.language.Object")
+@Class(extendsType="ceylon.language::Object")
 @ValueType
 public final class Integer
     implements Scalar<Integer>, Integral<Integer>,
@@ -318,7 +318,7 @@ public final class Integer
 
     // Conversions between numeric types
 
-    @TypeInfo(value="ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     @Override
     public long getInteger() {
         return value;
@@ -329,7 +329,7 @@ public final class Integer
         return value;
     }
 
-    @TypeInfo(value="ceylon.language.Float")
+    @TypeInfo("ceylon.language::Float")
     @Override
     public double getFloat() {
         if (value >= 9007199254740992L
@@ -348,13 +348,13 @@ public final class Integer
         return (double) value;
     }
 
-    @TypeInfo("ceylon.language.Character")
+    @TypeInfo("ceylon.language::Character")
     public int getCharacter() {
         return (int) value;
     }
 
     @Ignore
-    @TypeInfo("ceylon.language.Character")
+    @TypeInfo("ceylon.language::Character")
     public static int getCharacter(long value) {
         return (int) value;
     }
@@ -401,7 +401,7 @@ public final class Integer
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public long distanceFrom(Integer other) {
         return value-other.value;
     }

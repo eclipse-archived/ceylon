@@ -6,10 +6,10 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 
 @Ceylon(major = 3)
-@Class(extendsType = "ceylon.language.IdentifiableObject")
-@CaseTypes({"ceylon.language.equal", 
-	        "ceylon.language.smaller", 
-	        "ceylon.language.larger"})
+@Class(extendsType = "ceylon.language::IdentifiableObject")
+@CaseTypes({"ceylon.language::equal", 
+	        "ceylon.language::smaller", 
+	        "ceylon.language::larger"})
 public class Comparison {
     
     private final java.lang.String name;

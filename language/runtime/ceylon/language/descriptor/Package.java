@@ -17,16 +17,16 @@ public class Package {
     private final List<? extends String> by;
     
     public Package(@Name("name")
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     java.lang.String name, @Name("shared")
     @Defaulted
-    @TypeInfo("ceylon.language.Boolean")
+    @TypeInfo("ceylon.language::Boolean")
     boolean shared, @Name("doc")
     @Defaulted
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     java.lang.String doc, @Name("by")
     @Defaulted
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
     List<? extends String> by) {
         this.name = name;
         this.shared = shared;
@@ -34,27 +34,27 @@ public class Package {
         this.by = by;
     }
     
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public final java.lang.String getName() {
         return name;
     }
     
-    @TypeInfo("ceylon.language.Boolean")
+    @TypeInfo("ceylon.language::Boolean")
     public final boolean getShared() {
         return shared;
     }
     
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public final java.lang.String getDoc() {
         return doc;
     }
     
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
     public final List<? extends String> getBy() {
         return by;
     }
  
-    @TypeInfo("ceylon.language.String")
+    @TypeInfo("ceylon.language::String")
     public final java.lang.String toString() {
         return new java.lang.StringBuilder().append("Package[").append(name.toString()).append("]").toString();
     }

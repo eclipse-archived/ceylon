@@ -11,7 +11,7 @@ public interface Identifiable {
 
     @Annotations({@Annotation("default"), @Annotation("actual")})
     @Override
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Object") 
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language::Object") 
     java.lang.Object that);
     
     @Annotations({@Annotation("default"), @Annotation("actual")})

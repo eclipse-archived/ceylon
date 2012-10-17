@@ -15,7 +15,7 @@ public final class arrayOfNone_ {
     private arrayOfNone_() {}
 
     @TypeParameters(@TypeParameter(value="Element"))
-    @TypeInfo("ceylon.language.Array<Element>&None<Element>")
+    @TypeInfo("ceylon.language::Array<Element>&ceylon.language::None<Element>")
     public static <Element> Array<Element> arrayOfNone() {
         return ArrayOfNone.<Element>instance((Class)null);
     }

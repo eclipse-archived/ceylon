@@ -191,7 +191,7 @@ public final class process_ {
     @SuppressWarnings("unchecked")
     private List<? extends String> args = (List)empty_.getEmpty$();
     
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::String>")
     public List<? extends String> getArguments() {
         return args;
     }
@@ -250,12 +250,12 @@ public final class process_ {
     	System.exit((int) code);
     }
     
-    /*@TypeInfo("ceylon.language.Map<ceylon.language.String, ceylon.language.String>")
+    /*@TypeInfo("ceylon.language::Map<ceylon.language::String, ceylon.language::String>")
     public Map<? extends String, ? extends String> getProperties() {
         return new PropertiesMap(System.getProperties());
     }*/
     
-    /*@TypeInfo("ceylon.language.Map<ceylon.language.String, ceylon.language.String>")
+    /*@TypeInfo("ceylon.language::Map<ceylon.language::String, ceylon.language::String>")
     public Map<? extends String, ? extends String> getNamedArguments() {
         Properties props = new Properties();
         Iterator<? extends String> iterator = args.getIterator();
@@ -280,7 +280,7 @@ public final class process_ {
         return new PropertiesMap(props);
     }*/
     
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
     public String namedArgumentValue(@Name("name") java.lang.String name) {
         if (name.isEmpty()) return null;
         Iterator<? extends String> iterator = args.getIterator();
@@ -319,7 +319,7 @@ public final class process_ {
         return false;
     }
     
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+    @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
     public String propertyValue(@Name("name") java.lang.String name) {
         if (name.isEmpty()) {
             return null;

@@ -11,10 +11,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
 @TypeParameters({@TypeParameter(value = "This",
-    		satisfies="ceylon.language.Exponentiable<This,Other>"),
+    		satisfies="ceylon.language::Exponentiable<This,Other>"),
     		    @TypeParameter(value = "Other",
-            satisfies="ceylon.language.Numeric<Other>")})
-@SatisfiedTypes("ceylon.language.Numeric<This>")
+            satisfies="ceylon.language::Numeric<Other>")})
+@SatisfiedTypes("ceylon.language::Numeric<This>")
 @CaseTypes(of = "This")
 public interface Exponentiable<This extends Exponentiable<This,Other>,
                                Other extends Numeric<Other>> 

@@ -16,12 +16,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes({"ceylon.language.Sequence<Element>",
-	             "ceylon.language.Category"})
+@Class(extendsType="ceylon.language::Object")
+@SatisfiedTypes({"ceylon.language::Sequence<Element>",
+	             "ceylon.language::Category"})
 @TypeParameters(@TypeParameter(value="Element",
-    satisfies={"ceylon.language.Comparable<Element>",
-		       "ceylon.language.Ordinal<Element>"}))
+    satisfies={"ceylon.language::Comparable<Element>",
+		       "ceylon.language::Ordinal<Element>"}))
 public class Range<Element extends Comparable<? super Element> & Ordinal<? super Element>>
     implements Sequence<Element>, Category {
 
@@ -63,19 +63,19 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
 
     @Override
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public final long getSize(){
         return size;
     }
 
     @Override
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public final Integer getLastIndex(){
         return Integer.instance(size - 1);
     }
 
     @Override @SuppressWarnings({ "unchecked", "rawtypes" })
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public List<? extends Element> getRest() {
     	if (first.equals(last)) {
     	    return (List)empty_.getEmpty$();
@@ -85,7 +85,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     	}
     }
 
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     @Override
     public Element item(@Name("key") Integer key) {
         long index = 0;
@@ -103,13 +103,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
 
     @Override @SuppressWarnings("unchecked")
-    @TypeInfo("ceylon.language.Iterator<Element>")
+    @TypeInfo("ceylon.language::Iterator<Element>")
 	public Iterator<Element> getIterator() {
         return new Iterator<Element>() {
             private java.lang.Object current = first;
             private boolean go = true;
 
-            @TypeInfo("Element|ceylon.language.Finished")
+            @TypeInfo("Element|ceylon.language::Finished")
             public java.lang.Object next() {
                 if (!go) return exhausted_.getExhausted$();
                 java.lang.Object result = current;
@@ -189,7 +189,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public boolean definesEvery(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesEvery(this, keys);
     }
@@ -207,7 +207,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public boolean definesAny(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._definesAny(this, keys);
     }
@@ -225,7 +225,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public ceylon.language.List<? extends Element> items(@Sequenced @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Integer>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer>")
     Iterable<? extends Integer> keys) {
         return Correspondence$impl._items(this, keys);
     }
@@ -242,11 +242,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         return (Iterable)empty_.getEmpty$();
     }
 
-    //TODO: @TypeInfo
     @Override
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
     Iterable<?> elements) {
         return Category$impl._containsEvery(this, elements);
     }
@@ -261,11 +260,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         return empty_.getEmpty$();
     }
 
-    //TODO: @TypeInfo
     @Override
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
     Iterable<?> elements) {
         return Category$impl._containsAny(this, elements);
     }
@@ -299,7 +297,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
 
     @Override @SuppressWarnings({ "unchecked", "rawtypes" })
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Range<Element>")
     public ceylon.language.List<? extends Element> segment(
     		@Name("from") final Integer from,
     		@Name("length") final long length) {
@@ -315,10 +313,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     }
 
     @Override @SuppressWarnings({ "unchecked", "rawtypes" })
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Range<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Range<Element>")
     public ceylon.language.List<? extends Element> span(
     		@Name("from") Integer from,
-    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     		@Name("to") Integer to) {
         Integer lastIndex = getLastIndex();
 		to = to==null ? lastIndex : to;
@@ -355,7 +353,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
             return new AbstractIterable<Element>() {
                 @Override
                 @Annotations(@Annotation("formal"))
-                @TypeInfo("ceylon.language.Iterator<Element>")
+                @TypeInfo("ceylon.language::Iterator<Element>")
                 public Iterator<? extends Element> getIterator() {
 
                     return new Iterator<Element>() {
@@ -363,7 +361,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                         final long lim = ((Integer)last).value;
                         boolean inverse = lim < current;
 
-                        @TypeInfo("Element|ceylon.language.Finished")
+                        @TypeInfo("Element|ceylon.language::Finished")
                         public java.lang.Object next() {
                             long result = current;
                             if (inverse) {
@@ -442,7 +440,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         return Iterable$impl._every(this, f);
     }
     @Override @SuppressWarnings("unchecked")
-    @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
+    @TypeInfo("ceylon.language::Range<Element>|ceylon.language::Empty")
     public Iterable<? extends Element> skipping(@Name("take") long skip) {
         long x=0;
         Element e=first;
@@ -452,7 +450,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         return this.includes(e) ? new Range<Element>(e, last) : (Iterable)empty_.getEmpty$();
     }
     @Override @SuppressWarnings({ "unchecked", "rawtypes" })
-    @TypeInfo("ceylon.language.Range<Element>|ceylon.language.Empty")
+    @TypeInfo("ceylon.language::Range<Element>|ceylon.language::Empty")
     public Iterable<? extends Element> taking(@Name("take") long take) {
         if (take == 0) {
             return (Iterable)empty_.getEmpty$();
@@ -475,7 +473,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         }
         return c;
     }
-    @TypeInfo("ceylon.language.Range<Element>")
+    @TypeInfo("ceylon.language::Range<Element>")
     @Override
     public Range<? extends Element> getCoalesced() {
         return this; //There can be no nulls in a Range
@@ -495,14 +493,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
 
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    @TypeInfo("ceylon.language::Sequence<Element|Other>")
     @Override @SuppressWarnings("rawtypes")
     public <Other>Sequence withLeading(Other e) {
         return List$impl._withLeading(this, e);
     }
     @Annotations(@Annotation("actual"))
     @TypeParameters(@TypeParameter("Other"))
-    @TypeInfo("ceylon.language.Sequence<Element|Other>")
+    @TypeInfo("ceylon.language::Sequence<Element|Other>")
     @Override @SuppressWarnings("rawtypes")
     public <Other>Sequence withTrailing(Other e) {
         return List$impl._withTrailing(this, e);

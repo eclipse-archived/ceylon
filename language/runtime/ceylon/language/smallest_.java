@@ -13,7 +13,7 @@ public class smallest_ {
 
     private smallest_(){}
 
-    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Comparable<Element>"))
+    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Comparable<Element>"))
     @TypeInfo("Element")
     public static <Element extends Comparable<? super Element>> Element smallest(
             @Name("x")

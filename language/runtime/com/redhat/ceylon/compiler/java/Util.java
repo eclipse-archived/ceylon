@@ -20,6 +20,10 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
  */
 public class Util {
     
+    public static String declClassName(String name) {
+        return name.replace("::", ".");
+    }
+    
     /**
      * Returns true if the given object satisfies ceylon.language.Identifiable
      */
@@ -62,7 +66,7 @@ public class Util {
         }
         Class classAnnotation = klass.getAnnotation(Class.class);
         if (classAnnotation != null) {
-            String superclassName = classAnnotation.extendsType();
+            String superclassName = declClassName(classAnnotation.extendsType());
             int i = superclassName.indexOf('<');
             if (i>0) {
                 superclassName = superclassName.substring(0, i);
@@ -114,7 +118,7 @@ public class Util {
         Class classAnnotation = klass.getAnnotation(Class.class);
         String superclassName;
         if (classAnnotation!=null) {
-            superclassName = classAnnotation.extendsType();
+            superclassName = declClassName(classAnnotation.extendsType());
             int i = superclassName.indexOf('<');
             if (i>0) {
                 superclassName = superclassName.substring(0, i);
@@ -147,6 +151,7 @@ public class Util {
         SatisfiedTypes satisfiesAnnotation = klass.getAnnotation(SatisfiedTypes.class);
         if (satisfiesAnnotation!=null){
             for (String satisfiedType : satisfiesAnnotation.value()){
+                satisfiedType = declClassName(satisfiedType);
                 int i = satisfiedType.indexOf('<');
                 if (i>0) {
                     satisfiedType = satisfiedType.substring(0, i);

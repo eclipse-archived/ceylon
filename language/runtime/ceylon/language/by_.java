@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 public final class by_
 {
     public static Nothing by(@Name("authors") @Sequenced
-            @TypeInfo("ceylon.language.Iterable<ceylon.language.String>")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
             final ceylon.language.Iterable<? extends ceylon.language.String> authors) {
         return null;
     }

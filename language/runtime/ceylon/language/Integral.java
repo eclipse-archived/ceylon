@@ -11,9 +11,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value="Other",
-        satisfies="ceylon.language.Integral<Other>"))
-@SatisfiedTypes({"ceylon.language.Numeric<Other>",
-	             "ceylon.language.Ordinal<Other>"})
+        satisfies="ceylon.language::Integral<Other>"))
+@SatisfiedTypes({"ceylon.language::Numeric<Other>",
+	             "ceylon.language::Ordinal<Other>"})
 @CaseTypes(of = "Other")
 public interface Integral<Other extends Integral<Other>> 
         extends Numeric<Other>, Ordinal<Other> {

@@ -15,20 +15,20 @@ public final class copyArray_ {
 
     @TypeParameters(@TypeParameter(value="Element"))
     public static <Element> void copyArray(
-    @TypeInfo("ceylon.language.Array<Element>")
+    @TypeInfo("ceylon.language::Array<Element>")
     @Name("source")
     final Array<Element> source,
-    @TypeInfo("ceylon.language.Array<Element>")
+    @TypeInfo("ceylon.language::Array<Element>")
     @Name("target")
     final Array<Element> target,
     @Name("from")
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     final long from,
     @Name("to")
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     final long to,
     @Name("length")
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     final long length) {
         System.arraycopy(source.array, (int) from, target.array, (int) to, (int) length);
     }

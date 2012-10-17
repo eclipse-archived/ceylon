@@ -11,12 +11,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.SequenceBuilder<Element>")
+@Class(extendsType="ceylon.language::SequenceBuilder<Element>")
 @TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     
     public SequenceAppender(@Name("elements") 
-    @TypeInfo("ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequence<Element>")
     Sequence<? extends Element> elements) {
     	list = new ArrayList<Element>((int) elements.getSize()+2);
         java.lang.Object elem;
@@ -26,7 +26,7 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     }
     
     @Override
-    @TypeInfo("ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Sequence<Element>")
     public final synchronized Sequence<? extends Element> getSequence() {
         return new ArraySequence<Element>(list);
     }

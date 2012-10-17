@@ -43,7 +43,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("formal"))
-    @TypeInfo("Item|ceylon.language.Nothing")
+    @TypeInfo("Item|ceylon.language::Nothing")
     public Item item(Object key) {
         return m.get(key);
     }
@@ -92,7 +92,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Item|ceylon.language::Nothing>")
     public List<? extends Item> items(Iterable<? extends Object> keys) {
         return corr$impl.items(keys);
     }
@@ -123,13 +123,13 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("formal"))
-    @TypeInfo("ceylon.language.Iterator<Element>")
+    @TypeInfo("ceylon.language::Iterator<Element>")
     public Iterator<? extends Entry<? extends Key, ? extends Item>> getIterator() {
         return new Iterator<Entry<? extends Key, ? extends Item>>(){
             private final java.util.Iterator<? extends java.util.Map.Entry<? extends Key, ? extends Item>> inner = m.entrySet().iterator();
             @Override
             @Annotations(@Annotation("formal"))
-            @TypeInfo("Element|ceylon.language.Finished")
+            @TypeInfo("Element|ceylon.language::Finished")
             public Object next() {
                 if (inner.hasNext()) {
                     java.util.Map.Entry<? extends Key, ? extends Item> e = inner.next();
@@ -142,35 +142,35 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     public Entry<? extends Key, ? extends Item> getFirst() {
         return iter$impl.getFirst();
     }
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })
-    @TypeInfo("ceylon.language.Nothing|Element")
+    @TypeInfo("ceylon.language::Nothing|Element")
     public Entry<? extends Key, ? extends Item> getLast() {
         return iter$impl.getLast();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeInfo("ceylon.language::Iterable<Element>")
     public Iterable<? extends Entry<? extends Key, ? extends Item>> getRest() {
         return iter$impl.getRest();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public List<? extends Entry<? extends Key, ? extends Item>> getSequence() {
         return iter$impl.getSequence();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Result>")
+    @TypeInfo("ceylon.language::Iterable<Result>")
     @TypeParameters(@TypeParameter("Result"))
     public <Result> Iterable<? extends Result> map(
             Callable<? extends Result> collecting) {
@@ -179,7 +179,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeInfo("ceylon.language::Iterable<Element>")
     public Iterable<? extends Entry<? extends Key, ? extends Item>> filter(
             Callable<? extends Boolean> selecting) {
         return iter$impl.filter(selecting);
@@ -196,7 +196,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("Element|ceylon.language.Nothing")
+    @TypeInfo("Element|ceylon.language::Nothing")
     public Entry<? extends Key, ? extends Item> find(
             Callable<? extends Boolean> selecting) {
         return iter$impl.find(selecting);
@@ -204,7 +204,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("Element|ceylon.language.Nothing")
+    @TypeInfo("Element|ceylon.language::Nothing")
     public Entry<? extends Key, ? extends Item> findLast(
             Callable<? extends Boolean> selecting) {
         return iter$impl.findLast(selecting);
@@ -212,7 +212,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public List<? extends Entry<? extends Key, ? extends Item>> sort(
             Callable<? extends Comparison> comparing) {
         return iter$impl.sort(comparing);
@@ -220,7 +220,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Result>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Result>")
     @TypeParameters(@TypeParameter("Result"))
     public <Result> List<? extends Result> collect(
             Callable<? extends Result> collecting) {
@@ -229,7 +229,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public List<? extends Entry<? extends Key, ? extends Item>> select(
             Callable<? extends Boolean> selecting) {
         return iter$impl.select(selecting);
@@ -237,21 +237,21 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Boolean")
+    @TypeInfo("ceylon.language::Boolean")
     public boolean any(Callable<? extends Boolean> selecting) {
         return iter$impl.any(selecting);
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Boolean")
+    @TypeInfo("ceylon.language::Boolean")
     public boolean every(Callable<? extends Boolean> selecting) {
         return iter$impl.every(selecting);
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeInfo("ceylon.language::Iterable<Element>")
     public Iterable<? extends Entry<? extends Key, ? extends Item>> skipping(
             long skip) {
         return iter$impl.skipping(skip);
@@ -259,7 +259,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeInfo("ceylon.language::Iterable<Element>")
     public Iterable<? extends Entry<? extends Key, ? extends Item>> taking(
             long take) {
         return iter$impl.taking(take);
@@ -267,35 +267,35 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeInfo("ceylon.language::Iterable<Element>")
     public Iterable<? extends Entry<? extends Key, ? extends Item>> by(long step) {
         return iter$impl.by(step);
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public long count(Callable<? extends Boolean> selecting) {
         return iter$impl.count(selecting);
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Element&ceylon.language.Object>")
+    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
     public Iterable<? extends Entry<? extends Key, ? extends Item>> getCoalesced() {
         return iter$impl.getCoalesced();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<ceylon.language.Integer,Element&ceylon.language.Object>>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
     public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Key, ? extends Item>>> getIndexed() {
         return iter$impl.getIndexed();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Iterable<Element|Other>")
+    @TypeInfo("ceylon.language::Iterable<Element|Other>")
     @TypeParameters(@TypeParameter("Other"))
     public <Other> Iterable chain(Iterable<? extends Other> other) {
         return iter$impl.chain(other);
@@ -314,7 +314,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -333,7 +333,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
@@ -357,29 +357,29 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })
-    @TypeInfo("ceylon.language.Set<Key>")
+    @TypeInfo("ceylon.language::Set<Key>")
     public Set<? extends Key> getKeys() {
         return map$impl.getKeys();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Collection<Item>")
+    @TypeInfo("ceylon.language::Collection<Item>")
     public Collection<? extends Item> getValues() {
         return map$impl.getValues();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Map<Item,ceylon.language.Set<Key>>")
+    @TypeInfo("ceylon.language::Map<Item,ceylon.language::Set<Key>>")
     public Map<? extends Item, ? extends Set<? extends Key>> getInverse() {
         return map$impl.getInverse();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language.Map<Key,Result>")
-    @TypeParameters(@TypeParameter(value = "Result", satisfies = "ceylon.language.Object"))
+    @TypeInfo("ceylon.language::Map<Key,Result>")
+    @TypeParameters(@TypeParameter(value="Result", satisfies="ceylon.language::Object"))
     public <Result> Map<? extends Key, ? extends Result> mapItems(
             Callable<? extends Result> mapping) {
         return map$impl.mapItems(mapping);

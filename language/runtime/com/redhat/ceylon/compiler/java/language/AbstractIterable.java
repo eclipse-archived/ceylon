@@ -23,8 +23,8 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
  * @author Enrique Zamudio
  */
 @Ignore
-@Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes("ceylon.language.Iterable<Element>")
+@Class(extendsType="ceylon.language::Object")
+@SatisfiedTypes("ceylon.language::Iterable<Element>")
 public abstract class AbstractIterable<Element> implements Iterable<Element> {
 
     @Override

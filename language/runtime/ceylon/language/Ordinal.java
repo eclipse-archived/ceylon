@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Other", variance = Variance.NONE,
-    		       satisfies="ceylon.language.Ordinal<Other>"))
+    		       satisfies="ceylon.language::Ordinal<Other>"))
 @CaseTypes(of = "Other")
 public interface Ordinal<Other extends Ordinal<? extends Other>> {
 
@@ -23,7 +23,7 @@ public interface Ordinal<Other extends Ordinal<? extends Other>> {
     public Other getPredecessor();
 
     @Annotations(@Annotation("formal"))
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public long distanceFrom(@Name("other")
         @TypeInfo("Other") Other other);
 }

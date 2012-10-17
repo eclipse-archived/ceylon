@@ -301,7 +301,7 @@ public final class Iterable$impl<Element> {
     public static <Element,Other> Iterable _chain(final Iterable<? extends Element> one, final Iterable<? extends Other> two) {
         return new AbstractIterable() {
             @Override @SuppressWarnings("unchecked")
-            @TypeInfo("ceylon.language.Iterator<Element|Other>")
+            @TypeInfo("ceylon.language::Iterator<Element|Other>")
             public Iterator getIterator() {
                 return new ChainedIterator(one, two);
             }

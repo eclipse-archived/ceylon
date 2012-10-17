@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
     license="http://www.apache.org/licenses/LICENSE-2.0.html")
 final class module_ {
     
-    @TypeInfo("ceylon.language.descriptor.Module")
+    @TypeInfo("ceylon.language.descriptor::Module")
     static ceylon.language.descriptor.Module getModule$() {
         return new ceylon.language.descriptor.Module(
         		"ceylon.language", 

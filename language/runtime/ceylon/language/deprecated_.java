@@ -15,7 +15,7 @@ public final class deprecated_
     
     public static Nothing deprecated(
             @Defaulted
-            @Name("reason") @TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+            @Name("reason") @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
             String reason) {
         return null;
     }

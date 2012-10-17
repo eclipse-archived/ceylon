@@ -14,15 +14,15 @@ public final class zip_ {
     
     private zip_() {}
     
-    @TypeParameters({@TypeParameter(value="Key", satisfies="ceylon.language.Object"),
-                     @TypeParameter(value="Item", satisfies="ceylon.language.Object")})
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Entry<Key,Item>>")
+    @TypeParameters({@TypeParameter(value="Key", satisfies="ceylon.language::Object"),
+                     @TypeParameter(value="Item", satisfies="ceylon.language::Object")})
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<ceylon.language::Entry<Key,Item>>")
     public static <Key,Item> List<? extends Entry<? extends Key, ? extends Item>> zip(
     @Name("keys")
-    @TypeInfo("ceylon.language.Iterable<Key>")
+    @TypeInfo("ceylon.language::Iterable<Key>")
     final ceylon.language.Iterable<? extends Key> keys,
     @Name("items")
-    @TypeInfo("ceylon.language.Iterable<Item>")
+    @TypeInfo("ceylon.language::Iterable<Item>")
     final ceylon.language.Iterable<? extends Item> items) {
 		java.util.List<Entry<? extends Key,? extends Item>> list = new java.util.ArrayList<Entry<? extends Key,? extends Item>>();
 		Iterator<? extends Key> keyIter = keys.getIterator();

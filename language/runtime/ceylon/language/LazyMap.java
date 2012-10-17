@@ -15,10 +15,10 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters({
-    @TypeParameter(value = "Key", variance = Variance.OUT, satisfies = "ceylon.language.Object"),
-    @TypeParameter(value = "Item", variance = Variance.OUT, satisfies = "ceylon.language.Object")
+    @TypeParameter(value="Key", variance=Variance.OUT, satisfies="ceylon.language::Object"),
+    @TypeParameter(value="Item", variance=Variance.OUT, satisfies="ceylon.language::Object")
 })
-@SatisfiedTypes("ceylon.language.Map<Key,Item>")
+@SatisfiedTypes("ceylon.language::Map<Key,Item>")
 public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     private final Iterable<? extends Entry<? extends Key,? extends Item>> entries;
@@ -32,16 +32,16 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
         this.entries = (Iterable)empty_.getEmpty$();
     }
     public LazyMap(@Name("entries") @Sequenced
-            @TypeInfo("ceylon.language.Iterable<ceylon.language.Entry<Key,Item>>")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<Key,Item>>")
             Iterable<? extends Entry<? extends Key,? extends Item>> entries) {
         this.entries = entries;
     }
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Nothing|Item")
+    @TypeInfo("ceylon.language::Nothing|Item")
     public Item item(@Name("key")
-            @TypeInfo("ceylon.language.Object")
+            @TypeInfo("ceylon.language::Object")
             final java.lang.Object key) {
         Entry<? extends Key, ? extends Item> item = entries.find(new AbstractCallable<Boolean>("LazyMap_item") {
             @SuppressWarnings("rawtypes")
@@ -121,23 +121,23 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Iterator<ceylon.language.Entry<Key,Item>>")
+    @TypeInfo("ceylon.language::Iterator<ceylon.language::Entry<Key,Item>>")
     public Iterator<? extends Entry<? extends Key, ? extends Item>> getIterator() {
         return entries.getIterator();
     }
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Boolean")
+    @TypeInfo("ceylon.language::Boolean")
     public boolean equals(@Name("that")
-            @TypeInfo("ceylon.language.Object")
+            @TypeInfo("ceylon.language::Object")
             final java.lang.Object that) {
         return map$impl.equals(that);
     }
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public int hashCode() {
         return map$impl.hashCode();
     }
@@ -153,13 +153,13 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     }
 
     @Ignore @Override
-    @TypeInfo("ceylon.language.Iterable<Element>")
+    @TypeInfo("ceylon.language::Iterable<Element>")
     public Iterable<? extends Entry<? extends Key, ? extends Item>> getRest() {
         return entries.getRest();
     }
 
     @Ignore @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    @TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
     public List<? extends Entry<? extends Key, ? extends Item>> getSequence() {
         return entries.getSequence();
     }
@@ -267,7 +267,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public long getSize() {
         //TODO Does this need to eliminate duplicate keys?
         return entries.count(new AbstractCallable<Boolean>("LazyMap_size") {
@@ -295,7 +295,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Ignore @Override
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
@@ -311,7 +311,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.LazyMap<Key,Item>")
+    @TypeInfo("ceylon.language::LazyMap<Key,Item>")
     public Collection<? extends Entry<? extends Key, ? extends Item>> getClone() {
         return new LazyMap<Key,Item>(entries);
     }

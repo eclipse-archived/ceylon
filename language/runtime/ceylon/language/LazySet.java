@@ -16,9 +16,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
-@TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT,
-    satisfies = "ceylon.language.Object"))
-@SatisfiedTypes("ceylon.language.Set<Element>")
+@TypeParameters(@TypeParameter(value="Element", variance=Variance.OUT,
+    satisfies="ceylon.language::Object"))
+@SatisfiedTypes("ceylon.language::Set<Element>")
 public class LazySet<Element> implements Set<Element> {
 
     private final Iterable<? extends Element> elems;
@@ -30,21 +30,21 @@ public class LazySet<Element> implements Set<Element> {
         this.elems = (Iterable<? extends Element>)empty_.getEmpty$();
     }
     public LazySet(@Name("elems") @Sequenced
-            @TypeInfo("ceylon.language.Iterable<Element>")
+            @TypeInfo("ceylon.language::Iterable<Element>")
             Iterable<? extends Element> elems) {
         this.elems = elems;
     }
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Set<Element>")
+    @TypeInfo("ceylon.language::Set<Element>")
     public Collection<? extends Element> getClone() {
         return new LazySet<Element>(elems);
     }
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public long getSize() {
         //This is to avoid counting duplicates
         HashSet<Element> s = new HashSet<Element>();
@@ -57,7 +57,7 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language.Iterator<Element>")
+    @TypeInfo("ceylon.language::Iterator<Element>")
     public Iterator<? extends Element> getIterator() {
         return elems.getIterator();
     }
@@ -65,8 +65,8 @@ public class LazySet<Element> implements Set<Element> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
-    @TypeInfo("ceylon.language.Set<Element|Other>")
+    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
+    @TypeInfo("ceylon.language::Set<Element|Other>")
     public <Other> Set union(Set<? extends Other> set) {
         return new LazySet(elems.chain(set));
     }
@@ -74,8 +74,8 @@ public class LazySet<Element> implements Set<Element> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
-    @TypeInfo("ceylon.language.Set<Element&Other>")
+    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
+    @TypeInfo("ceylon.language::Set<Element&Other>")
     public <Other> Set intersection(Set<? extends Other> set) {
         return new LazySet(set.filter(new AbstractCallable<Boolean>("Set_intersection"){
             @Override
@@ -93,8 +93,8 @@ public class LazySet<Element> implements Set<Element> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
-    @TypeInfo("ceylon.language.Set<Element|Other>")
+    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
+    @TypeInfo("ceylon.language::Set<Element|Other>")
     public <Other> Set exclusiveUnion(final Set<? extends Other> set) {
         Iterable<? extends Element> hereNotThere = elems.filter(new AbstractCallable<Boolean>("Set_xor1"){
             @Override
@@ -119,8 +119,8 @@ public class LazySet<Element> implements Set<Element> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeParameters(@TypeParameter(value = "Other", satisfies = "ceylon.language.Object"))
-    @TypeInfo("ceylon.language.Set<Element>")
+    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
+    @TypeInfo("ceylon.language::Set<Element>")
     public <Other> Set<? extends Element> complement(final Set<? extends Other> set) {
         return new LazySet(this.filter(new AbstractCallable<Boolean>("Set_xor2"){
             @Override
@@ -132,13 +132,13 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Boolean")
+    @TypeInfo("ceylon.language::Boolean")
     public boolean equals(java.lang.Object other) {
         return set$impl.equals(other);
     }
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public int hashCode() {
         return set$impl.hashCode();
     }
@@ -278,7 +278,7 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -294,7 +294,7 @@ public class LazySet<Element> implements Set<Element> {
 
     @Override @Ignore
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language.Iterable<ceylon.language.Object>") Iterable<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
         return cat$impl.containsAny(elements);
     }
 

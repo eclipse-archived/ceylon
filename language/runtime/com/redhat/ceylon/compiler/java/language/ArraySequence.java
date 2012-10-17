@@ -32,8 +32,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language.Object")
-@SatisfiedTypes("ceylon.language.Sequence<Element>")
+@Class(extendsType="ceylon.language::Object")
+@SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {
 
     protected final Element[] array;
@@ -123,13 +123,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public Integer getLastIndex() {
         return Integer.instance(array.length - first - 1);
     }
 
     @Override
-    @TypeInfo("ceylon.language.Integer")
+    @TypeInfo("ceylon.language::Integer")
     public long getSize() {
         return array.length - first;
     }

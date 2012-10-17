@@ -14,9 +14,9 @@ public final class every_ {
     private every_() {
     }
     
-    @TypeInfo("ceylon.language.Boolean")
+    @TypeInfo("ceylon.language::Boolean")
     public static boolean every(@Name("values") @Sequenced
-    @TypeInfo("ceylon.language.Iterable<ceylon.language.Boolean>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean>")
     final Iterable<? extends Boolean> values) {
         java.lang.Object $tmp;
         for (Iterator<? extends Boolean> $val$iter$0 = values.getIterator(); 

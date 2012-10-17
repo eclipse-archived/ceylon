@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @com.redhat.ceylon.compiler.java.metadata.Package(name = "ceylon.language.descriptor", shared = true)
 final class package_ {
     
-    @TypeInfo("ceylon.language.descriptor.Package")
+    @TypeInfo("ceylon.language.descriptor::Package")
     static ceylon.language.descriptor.Package getPackage$() {
         return new ceylon.language.descriptor.Package("ceylon.language.descriptor", 
         		true, 

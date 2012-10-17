@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Method
 public final class print_ {
 	static final process_ p = process_.getProcess$();
-    public static void print(@Name("line") @TypeInfo("ceylon.language.Void") java.lang.Object line){
+    public static void print(@Name("line") @TypeInfo("ceylon.language::Void") java.lang.Object line){
     	p.writeLine(line==null ? "\u00abnull\u00bb" : line.toString());
     }
     private print_(){}
