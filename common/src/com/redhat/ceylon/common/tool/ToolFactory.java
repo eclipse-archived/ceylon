@@ -29,10 +29,17 @@ public class ToolFactory {
         return toolModel.getToolLoader().instance(toolModel.getName(), null);
     }
 
-    private <T extends Tool> void setToolLoader(ToolModel<T> toolModel,
+    private <T extends Tool> void setToolLoaderAndModel(ToolModel<T> toolModel,
             T tool) {
         try {
             toolModel.getToolClass().getMethod("setToolLoader", ToolLoader.class).invoke(tool, toolModel.getToolLoader());
+        } catch (NoSuchMethodException e) {
+            // Ignore
+        } catch (ReflectiveOperationException e) {
+            throw new ToolException("Could not instantitate tool " + toolModel.getToolClass(), e);
+        }
+        try {
+            toolModel.getToolClass().getMethod("setToolModel", ToolModel.class).invoke(tool, toolModel);
         } catch (NoSuchMethodException e) {
             // Ignore
         } catch (ReflectiveOperationException e) {
@@ -399,7 +406,7 @@ public class ToolFactory {
      * there are few tools which need to call this method directly.
      */
     public <T extends Tool> T bindArguments(ToolModel<T> toolModel, T tool, Iterable<String> args) {
-            setToolLoader(toolModel, tool);
+            setToolLoaderAndModel(toolModel, tool);
             ArgumentProcessor<T> invocation = new ArgumentProcessor<>(toolModel, tool, args.iterator());
             invocation.processArguments();
             return tool;
