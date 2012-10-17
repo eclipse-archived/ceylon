@@ -100,12 +100,13 @@ public class TypeParser {
         
         if (hasPackage()) {
             // handle the package name
-            pkg = lexer.eatWord();
+            StringBuilder pkgstr = new StringBuilder(lexer.eatWord());
             while(lexer.lookingAt(TypeLexer.DOT)){
                 lexer.eat();
-                pkg = pkg + '.' + lexer.eatWord();
+                pkgstr = pkgstr.append('.').append(lexer.eatWord());
             }
             lexer.eat(TypeLexer.DBLCOLON);
+            pkg = pkgstr.toString();
         } else {
             // type is in default package
             pkg = "";
