@@ -109,6 +109,9 @@ public final class BytecodeUtils implements DependencyResolver {
         try {
             // TODO -- remove this with new Jandex release
             final File indexFile = new File(jarFile.getAbsolutePath().replace(".jar", "-jar") + ".idx");
+            // remove the index file if it is older than the jar file
+            if(indexFile.exists() && indexFile.lastModified() < jarFile.lastModified())
+                indexFile.delete();
             if (indexFile.exists() == false) {
                 JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
             }
