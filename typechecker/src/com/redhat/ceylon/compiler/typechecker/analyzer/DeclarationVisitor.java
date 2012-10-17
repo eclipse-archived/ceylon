@@ -107,7 +107,7 @@ public class DeclarationVisitor extends Visitor {
         }
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
-        Scope sc = scope(that);
+        Scope sc = getContainer(that);
         if (!(sc instanceof Package)) {
         	sc.getMembers().add(model);
         }
@@ -200,16 +200,17 @@ public class DeclarationVisitor extends Visitor {
 
     private void visitElement(Node that, Element model) {
         model.setUnit(unit);
-        model.setContainer(scope(that));
+        model.setScope(scope);
+        model.setContainer(getContainer(that));
     }
 
-	private Scope scope(Node that) {
+	private Scope getContainer(Node that) {
         if (that instanceof Tree.Declaration &&
         		!(that instanceof Tree.Parameter) &&
         		!(that instanceof Tree.Variable)) {
         	Scope s = scope;
         	while (s instanceof ConditionScope) {
-        		s = s.getContainer();
+        		s = s.getScope();
         	}
 			return s;
 		} 
@@ -578,7 +579,7 @@ public class DeclarationVisitor extends Visitor {
         p.setDeclaration(s);
         visitElement(that, p);
         unit.addDeclaration(p);
-        Scope sc = scope(that);
+        Scope sc = getContainer(that);
         if (!(sc instanceof Package)) {
         	sc.getMembers().add(p);
         }

@@ -25,6 +25,7 @@ public interface Scope {
     public TypeDeclaration getInheritingDeclaration(Declaration d);
 
     public Scope getContainer();
+    public Scope getScope();
     
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity);
     

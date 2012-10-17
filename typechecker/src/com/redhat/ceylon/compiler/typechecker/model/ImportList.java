@@ -68,6 +68,11 @@ public class ImportList implements Scope {
         return container;
     }
     
+    @Override
+    public Scope getScope() {
+    	return container;
+    }
+    
     public void setContainer(Scope container) {
         this.container = container;
     }

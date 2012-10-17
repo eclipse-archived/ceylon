@@ -12,6 +12,7 @@ import java.util.Map;
 public abstract class Element {
 
 	private Scope container;
+	private Scope scope;
 	protected Unit unit;
 	private List<Declaration> members = new ArrayList<Declaration>();
 
@@ -30,7 +31,15 @@ public abstract class Element {
     public void setContainer(Scope scope) {
         this.container = scope;
     }
+    
+    public Scope getScope() {
+		return scope;
+	}
 
+    public void setScope(Scope scope) {
+    	this.scope = scope;
+    }
+    
     public List<Declaration> getMembers() {
         return members;
     }
@@ -88,8 +97,8 @@ public abstract class Element {
         if (d!=null) {
             return d;
         }
-        else if (getContainer()!=null) {
-            return getContainer().getMemberOrParameter(unit, name, signature, ellipsis);
+        else if (getScope()!=null) {
+            return getScope().getMemberOrParameter(unit, name, signature, ellipsis);
         }
         else {
             //union type or bottom type 
@@ -122,7 +131,7 @@ public abstract class Element {
     }
     
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-    	Map<String, DeclarationWithProximity> result = getContainer()
+    	Map<String, DeclarationWithProximity> result = getScope()
     			.getMatchingDeclarations(unit, startingWith, proximity+1);
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && !isOverloadedVersion(d) && isNameMatching(startingWith, d)) {
