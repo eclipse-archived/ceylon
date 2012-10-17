@@ -63,7 +63,7 @@ public class AetherTestCase {
     public void testAether() throws Throwable {
         Repository repository = AetherRepository.createRepository(log);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult("org.slf4j:slf4j-api", "1.6.4");
+        ArtifactResult result = manager.getArtifactResult("org.slf4j.slf4j-api", "1.6.4");
         Assert.assertNotNull(result);
         File artifact = result.artifact();
         boolean exists = false;
