@@ -65,7 +65,7 @@
     <pathelement path="${ceylon.language.lib}"/>
     <pathelement path="${antlr.lib}"/>
     <pathelement path="${markdown.lib}"/>
-  	<pathelement path="${markdown-papers.lib}"/>
+    <pathelement path="${markdown-papers.lib}"/>
   </path>
 
   <path id="test.compile.classpath">
@@ -420,7 +420,9 @@
         <fileset dir="${basedir}/lib">
             <include name="antlr-*-complete.jar"/>
             <include name="txtmark-*.jar"/>
-        	<include name="markdownpapers-core-*.jar"/>
+            <include name="markdownpapers-core-*.jar"/>
+            <include name="cmr-maven-*.jar"/>
+            <include name="shrinkwrap-maven-uberjar-*.jar"/>
         </fileset>
     </copy>    
   </target>
