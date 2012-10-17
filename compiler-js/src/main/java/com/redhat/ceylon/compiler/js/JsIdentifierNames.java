@@ -101,12 +101,12 @@ public class JsIdentifierNames {
         // The names of the following members also have to be escaped to avoid
         // collisions with members of native JavaScript classes in the
         // implementation of the language module.
-        substitutedMemberNames.add("ceylon.language.String.split");
-        substitutedMemberNames.add("ceylon.language.String.replace");
-        substitutedMemberNames.add("ceylon.language.Iterable.filter");
-        substitutedMemberNames.add("ceylon.language.Iterable.every");
-        substitutedMemberNames.add("ceylon.language.Iterable.map");
-        substitutedMemberNames.add("ceylon.language.Iterable.sort");
+        substitutedMemberNames.add("ceylon.language::String.split");
+        substitutedMemberNames.add("ceylon.language::String.replace");
+        substitutedMemberNames.add("ceylon.language::Iterable.filter");
+        substitutedMemberNames.add("ceylon.language::Iterable.every");
+        substitutedMemberNames.add("ceylon.language::Iterable.map");
+        substitutedMemberNames.add("ceylon.language::Iterable.sort");
     }
 
     public JsIdentifierNames(boolean prototypeStyle) {

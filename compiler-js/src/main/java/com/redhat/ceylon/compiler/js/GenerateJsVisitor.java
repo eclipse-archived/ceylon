@@ -1596,9 +1596,9 @@ public class GenerateJsVisitor extends Visitor
                     if (decl instanceof Method) {
                         String name = decl.getQualifiedNameString();
                         int radix=0;
-                        if ("ceylon.language.hex".equals(name)) {
+                        if ("ceylon.language::hex".equals(name)) {
                             radix = 16;
-                        } else if ("ceylon.language.bin".equals(name)) {
+                        } else if ("ceylon.language::bin".equals(name)) {
                             radix = 2;
                         }
                         if (radix > 0) {
@@ -1767,15 +1767,15 @@ public class GenerateJsVisitor extends Visitor
         if (fromNative != toNative) {
             // Box the value
             if (fromNative) {
-                if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.String")) {
+                if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::String")) {
                     out(clAlias, ".String(");
-                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Integer")) {
+                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::Integer")) {
                     out("(");
-                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Float")) {
+                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::Float")) {
                     out(clAlias, ".Float(");
-                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Boolean")) {
+                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::Boolean")) {
                     out("(");
-                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language.Character")) {
+                } else if (fromType.getProducedTypeQualifiedName().equals("ceylon.language::Character")) {
                     out(clAlias, ".Character(");
                 } else {
                     return 0;
@@ -2660,10 +2660,10 @@ public class GenerateJsVisitor extends Visitor
         }
         out("', l:[");
         if (type instanceof OptionalType) {
-            out("'ceylon.language.Nothing',");
+            out("'ceylon.language::Nothing',");
             typeNameOrList(((OptionalType) type).getDefiniteType());
         } else if (type instanceof SequenceType) {
-            out("'ceylon.language.Empty','ceylon.language.Sequence'");
+            out("'ceylon.language::Empty','ceylon.language::Sequence'");
         } else {
             List<StaticType> types = type instanceof UnionType
                         ? ((UnionType)type).getStaticTypes()
@@ -2684,7 +2684,7 @@ public class GenerateJsVisitor extends Visitor
             out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
             out("'");
         } else if (type instanceof EntryType) {
-            out("'ceylon.language.Entry'"); //TODO: type parameters
+            out("'ceylon.language::Entry'"); //TODO: type parameters
         } else {
             getTypeList(type);
         }
@@ -2729,7 +2729,7 @@ public class GenerateJsVisitor extends Visitor
                 out("*/");
             }
         } else if (type instanceof EntryType) {
-        	out("'ceylon.language.Entry')"); //TODO: type parameters
+        	out("'ceylon.language::Entry')"); //TODO: type parameters
         } else {
             getTypeList((StaticType)type);
             out(")");
