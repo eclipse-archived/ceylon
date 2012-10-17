@@ -11,6 +11,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Java7Checker;
 import com.redhat.ceylon.common.tool.ModelException;
 import com.redhat.ceylon.common.tool.NoSuchToolException;
+import com.redhat.ceylon.common.tool.NonFatal;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.Summary;
@@ -140,14 +141,17 @@ public class CeylonTool implements Tool {
     
     private int exit(int sc, String toolName, Exception t) throws Exception {
         if (t != null) {
-            String msg = CeylonToolMessages.msg("fatal.error");
+            String msg = "";
+            if (Tools.isFatal(t)) {
+                msg += CeylonToolMessages.msg("fatal.error");
+            }
             if (t.getLocalizedMessage() != null) {
                 msg += ": " + t.getLocalizedMessage();
             }
             System.err.println(Tools.progName() + 
                     (toolName != null ? " " + toolName : "") +
                     ": " + msg);
-            if (stacktraces) {
+            if (stacktraces || Tools.isFatal(t)) {
                 t.printStackTrace(System.err);
             }
         }
