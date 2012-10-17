@@ -18,6 +18,7 @@ public class MapToolLoader extends ToolLoader {
         }
     }
     
+    @SafeVarargs
     public static MapToolLoader fromClassNames(Class<? extends Tool>... classes) {
         MapToolLoader result = new MapToolLoader();
         for (Class<? extends Tool> cls : classes) {
