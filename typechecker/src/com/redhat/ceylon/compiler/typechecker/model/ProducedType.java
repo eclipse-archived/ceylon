@@ -23,6 +23,8 @@ public class ProducedType extends ProducedReference {
     
     private String underlyingType;
     private boolean isRaw;
+    private ProducedType resolvedAliases;
+    private boolean isResolved;
 
     ProducedType() {}
 
@@ -1281,7 +1283,7 @@ public class ProducedType extends ProducedReference {
     private boolean abbreviateCallable() {
         return getDeclaration() instanceof Interface &&
                 getDeclaration().getQualifiedNameString()
-                        .equals("ceylon.language.Callable") &&
+                        .equals("ceylon.language::Callable") &&
                 getTypeArgumentList().size()>0 && getTypeArgumentList().get(0)!=null &&
                 getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
                 getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
@@ -1539,7 +1541,7 @@ public class ProducedType extends ProducedReference {
     public boolean isCallable() {
         //TODO: yew, fix this:
         return getDeclaration().getQualifiedNameString()
-                .equals("ceylon.language.Callable");
+                .equals("ceylon.language::Callable");
     }
     
     public ProducedType withoutUnderlyingType() {
@@ -1559,6 +1561,20 @@ public class ProducedType extends ProducedReference {
     }
     
     public ProducedType resolveAliases() {
+        // don't resolve anymore if we are already resolved
+        if(isResolved)
+            return this;
+        // cache the resolved version
+        if(resolvedAliases == null){
+            // really compute it
+            resolvedAliases = curriedResolveAliases();
+            // mark it as resolved so it doesn't get resolved again
+            resolvedAliases.isResolved = true;
+        }
+        return resolvedAliases;
+    }
+    
+    private ProducedType curriedResolveAliases() {
     	TypeDeclaration d = getDeclaration();
     	if (d instanceof UnionType) {
     		List<ProducedType> list = new ArrayList<ProducedType>();
