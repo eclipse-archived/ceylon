@@ -65,7 +65,7 @@ shared class SubRef31() extends SubRef3() {
 
 void testRefinement() {
     value c1 = Y().SubRef1().Inner();
-    check(className(c1) == "nesting.Y.SubRef1.Inner", "classname is " + className(c1));
+    check(className(c1) == "nesting::Y.SubRef1.Inner", "classname is " + className(c1));
     check(c1.origin == "RefineTest1.Inner", "refinement [1]");
     check(c1.suborigin == "SubRef1.Inner", "refinement [2]");
     check(c1.x() == "REFINED x and y", "refinement [3]");
