@@ -6,7 +6,7 @@ class ImportJavaRuntimeTypeSingle {
     }
     
     private final void m(final .java.util.List<.ceylon.language.Integer> l) {
-        new .java.lang.Throwable();
+        new .java.lang.Exception();
     }
     
     public static void main(.java.lang.String[] args) {
