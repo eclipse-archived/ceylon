@@ -18,12 +18,19 @@ class Conditions(String... elems) {
         if (is Object o) {
             class Inner() {
                 Object x = o;
+                assert (is String x);
+                shared String s = x;
             }
+            print(Inner().s);
+            
         }
         assert (is Object o);
         class Inner() {
             Object x = o;
+            assert (is String x);
+            shared String s = x;
         }
+        print(Inner().s);
     }
 
 }

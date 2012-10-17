@@ -658,6 +658,7 @@ public class ExpressionVisitor extends Visitor {
         v.setRefinedDeclaration(sv.getRefinedDeclaration());
         v.setUnit(unit);
         v.setContainer(c);
+        v.setScope(c);
         v.setShortcutRefinement(true);
         DeclarationVisitor.setVisibleScope(v);
         c.getMembers().add(v);
@@ -696,6 +697,7 @@ public class ExpressionVisitor extends Visitor {
                 vp.setType(rm.getTypedParameter(p).getFullType());
                 vp.setDeclaration(m);
                 vp.setContainer(m);
+                vp.setScope(m);
                 l.getParameters().add(vp);
             }
             m.getParameterLists().add(l);

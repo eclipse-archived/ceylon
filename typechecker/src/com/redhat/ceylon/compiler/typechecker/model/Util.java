@@ -18,7 +18,7 @@ public class Util {
             if (inner.equals(outer)) {
                 return true;
             }
-            inner = inner.getContainer();
+            inner = inner.getScope();
         }
         return false;
     }

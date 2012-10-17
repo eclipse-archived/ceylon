@@ -81,6 +81,11 @@ public class Package
         return null;
     }
 
+    @Override
+    public Scope getScope() {
+        return null;
+    }
+
     public String getNameAsString() {
         return formatPath(name);
     }
