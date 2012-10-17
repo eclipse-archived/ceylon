@@ -60,7 +60,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         } else if (token.equals("jdk")) {
             return new JDKRepository();
         } else if (token.equals("aether") || token.startsWith("aether:")) {
-            Class<?> aetherRepositoryClass = getClass().getClassLoader().loadClass("com.redhat.ceylon.cmr.maven.AetherRepository");
+            Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
             if (token.equals("aether")) {
                 Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
                 return (Repository) createRepository.invoke(null, log);
