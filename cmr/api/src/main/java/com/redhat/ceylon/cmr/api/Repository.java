@@ -67,5 +67,8 @@ public interface Repository extends ContentFinder {
      */
     ArtifactResult getArtifactResult(RepositoryManager manager, Node node);
 
+    /**
+     * Returns a display string that represents this Repository
+     */
     String getDisplayString();
 }

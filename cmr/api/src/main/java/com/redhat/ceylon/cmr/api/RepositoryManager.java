@@ -49,24 +49,110 @@ public interface RepositoryManager {
      */
     File[] resolve(ArtifactContext context) throws RepositoryException;
 
+    /**
+     * Returns an artifact as a File object, looked up by name and version
+     * 
+     * @param name the artifact name
+     * @param version the artifact version
+     * @return the File representing this artifact, if found. Null otherwise
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     File getArtifact(String name, String version) throws RepositoryException;
 
+    /**
+     * Returns an artifact as a File object, looked up by context. This allows
+     * you to specify the artifact type.
+     * 
+     * @param context the artifact lookup info
+     * @return the File representing this artifact, if found. Null otherwise
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     File getArtifact(ArtifactContext context) throws RepositoryException;
 
+    /**
+     * Returns an artifact as an ArtifactResult object, looked up by name and version
+     * 
+     * @param name the artifact name
+     * @param version the artifact version
+     * @return the ArtifactResult representing this artifact, if found. Null otherwise
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     ArtifactResult getArtifactResult(String name, String version) throws RepositoryException;
 
+    /**
+     * Returns an artifact as an ArtifactResult object, looked up by context. This allows
+     * you to specify the artifact type.
+     * 
+     * @param context the artifact lookup info
+     * @return the ArtifactResult representing this artifact, if found. Null otherwise
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException;
 
+    /**
+     * Publishes an artifact by name/version as an InputStream
+     * 
+     * @param name the artifact name
+     * @param version the artifact version
+     * @param content the artifact content as an InputStream
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     void putArtifact(String name, String version, InputStream content) throws RepositoryException;
 
+    /**
+     * Publishes an artifact by name/version as a File
+     * 
+     * @param name the artifact name
+     * @param version the artifact version
+     * @param content the artifact content as a File
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     void putArtifact(String name, String version, File content) throws RepositoryException;
 
+    /**
+     * Publishes an artifact by context as an InputStream
+     * 
+     * @param context the artifact lookup info
+     * @param content the artifact content as an InputStream
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException;
 
+    /**
+     * Publishes an artifact by context as a File
+     * 
+     * @param context the artifact lookup info
+     * @param content the artifact content as a File
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     void putArtifact(ArtifactContext context, File content) throws RepositoryException;
 
+    /**
+     * Removes an artifact by name/version
+     * 
+     * @param name the artifact name
+     * @param version the artifact version
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     void removeArtifact(String name, String version) throws RepositoryException;
 
+    /**
+     * Removes an artifact by context
+     * 
+     * @param context the artifact lookup info
+     * @param content the artifact content as a File
+     * 
+     * @throws RepositoryException if anything went wrong
+     */
     void removeArtifact(ArtifactContext context) throws RepositoryException;
 
     /**
@@ -76,9 +162,30 @@ public interface RepositoryManager {
      */
     List<String> getRepositoriesDisplayString();
     
+    /**
+     * Completes a list of module names, using the given query.
+     * 
+     * @param query specifies the type of backend and optionally a completion match start
+     * 
+     * @return the list of matching module names
+     */
     ModuleSearchResult completeModules(ModuleQuery query);
     
+    /**
+     * Completes a list of module versions, using the given query.
+     * 
+     * @param query specifies the module name, type of backend and optionally a completion match start
+     * 
+     * @return the list of matching module versions
+     */
     ModuleVersionResult completeVersions(ModuleVersionQuery query);
     
+    /**
+     * Searches a list of module names, using the given query.
+     * 
+     * @param query specifies the type of backend and optionally a pattern
+     * 
+     * @return the list of matching module names
+     */
     ModuleSearchResult searchModules(ModuleQuery query);
 }
