@@ -1283,7 +1283,7 @@ public class ProducedType extends ProducedReference {
     private boolean abbreviateCallable() {
         return getDeclaration() instanceof Interface &&
                 getDeclaration().getQualifiedNameString()
-                        .equals("ceylon.language.Callable") &&
+                        .equals("ceylon.language::Callable") &&
                 getTypeArgumentList().size()>0 && getTypeArgumentList().get(0)!=null &&
                 getTypeArgumentList().get(0).isPrimitiveAbbreviatedType() &&
                 getTypeArgumentList().size()==getDeclaration().getTypeParameters().size();
@@ -1541,7 +1541,7 @@ public class ProducedType extends ProducedReference {
     public boolean isCallable() {
         //TODO: yew, fix this:
         return getDeclaration().getQualifiedNameString()
-                .equals("ceylon.language.Callable");
+                .equals("ceylon.language::Callable");
     }
     
     public ProducedType withoutUnderlyingType() {

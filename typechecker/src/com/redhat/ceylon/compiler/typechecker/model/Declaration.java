@@ -74,7 +74,16 @@ public abstract class Declaration
     @Override
     public String getQualifiedNameString() {
         String qualifier = getContainer().getQualifiedNameString();
-		return qualifier.isEmpty() ? getName() : qualifier + "." + getName();
+        String name = getName();
+        if (qualifier.isEmpty()) {
+            return name; 
+        }
+        else if (getContainer() instanceof Package) {
+            return qualifier + "::" + name;
+        }
+        else {
+            return qualifier + "." + name;
+        }
     }
 
     public boolean isActual() {
