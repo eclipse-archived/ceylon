@@ -17,18 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
-@error
-void checkedExceptionsInMethod() {
-    @error
-    JavaCheckedExceptions x = JavaCheckedExceptions();
-    @error
-    x.m();
-}
+package com.redhat.ceylon.compiler.java.test.interop;
 
-@nomodel
-@error
-class CheckedExceptions() extends JavaCheckedExceptions() {
-    @error
-    shared actual void m(){}
+public class JavaExceptionsAndThrowable {
+    
+    public Throwable throwable(){
+        return null;
+    }
+    
+    public Throwable t(Throwable x){ return x; }
+    public Error e(Error x){ return x; }
+    public Exception x(Exception x){ return x; }
+    public RuntimeException rtx(RuntimeException x){ return x; }
 }

@@ -159,7 +159,13 @@ public class InteropTest extends CompilerTest {
         compile("JavaCheckedExceptions.java");
         compareWithJavaSource("CheckedExceptions");
     }
-    
+
+    @Test
+    public void testIopExceptionsAndThrowable(){
+        compile("JavaExceptionsAndThrowable.java");
+        compareWithJavaSource("ExceptionsAndThrowable");
+    }
+
     @Test
     public void testIopRefinesProtectedAccessMethod(){
         compile("access/JavaAccessModifiers.java");
