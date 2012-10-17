@@ -91,8 +91,13 @@ public class AetherRepository extends MavenRepository {
         final String name = context.getName();
         final int p = name.contains(":") ? name.lastIndexOf(":") : name.lastIndexOf(".") ;
         final List<String> tokens = new ArrayList<String>();
-        tokens.addAll(Arrays.asList(name.substring(0, p).split("\\.")));
-        tokens.add(name.substring(p+1));
+        if (p == -1) {
+            tokens.addAll(Arrays.asList(name.split("\\.")));
+        }
+        else {
+            tokens.addAll(Arrays.asList(name.substring(0, p).split("\\.")));
+            tokens.add(name.substring(p+1));
+        }
         final String version = context.getVersion();
         if (RepositoryManager.DEFAULT_MODULE.equals(name) == false && version != null)
             tokens.add(version); // add version
