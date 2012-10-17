@@ -862,6 +862,8 @@ public class TypeVisitor extends Visitor {
             that.addError("missing types in satisfies");
         }
         boolean foundTypeParam = false;
+        boolean foundClass = false;
+        boolean foundInterface = false;
         for (Tree.StaticType st: that.getTypes()) {
         	if (!(st instanceof Tree.SimpleType)) {
         		st.addError("satisfied type must be an interface");  //actually this case never occurs due to grammar
@@ -884,11 +886,23 @@ public class TypeVisitor extends Visitor {
                     st.addError("directly satisfies Callable");
                 }
                 if (td instanceof TypeParameter) {
-                	if (std instanceof TypeParameter) {
-                		if (foundTypeParam) {
-                            st.addWarning("multiple type parameter upper bounds are not yet supported");
+            		if (foundTypeParam) {
+            			st.addWarning("type parameter upper bounds are not yet supported in combination with other bounds");
+            		}
+            		else if (std instanceof TypeParameter) {
+                		if (foundClass||foundInterface) {
+                			st.addWarning("type parameter upper bounds are not yet supported in combination with other bounds");
                 		}
                 		foundTypeParam = true;
+                	}
+                	if (std instanceof Class) {
+                		if (foundClass) {
+                            st.addWarning("multiple class upper bounds are not yet supported");
+                		}
+                		foundClass = true;
+                	}
+                	if (std instanceof Interface) {
+                		foundInterface = true;
                 	}
                 } 
                 else {
