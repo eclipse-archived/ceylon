@@ -190,7 +190,7 @@ public class JsIdentifierNames {
      * the suffixes generated for two different scopes are different.
      */
     public String scopeSuffix(Scope scope) {
-        return String.format("$$%s", scope.getQualifiedNameString().replace('.', '$'));
+        return String.format("$$%s", scope.getQualifiedNameString().replace("::","$").replace('.', '$'));
     }
 
     /**
