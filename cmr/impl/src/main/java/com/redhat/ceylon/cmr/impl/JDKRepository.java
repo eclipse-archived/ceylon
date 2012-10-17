@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
@@ -29,6 +30,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
  * Repository that provides ContentFinder implementation for JDK modules
@@ -185,6 +187,16 @@ public class JDKRepository extends AbstractRepository {
                 }
             }
         }
+    }
+
+    @Override
+    public Node findParent(ArtifactContext context) {
+        return null;
+    }
+
+    @Override
+    public OpenNode createParent(ArtifactContext context) {
+        return null;
     }
 
 }
