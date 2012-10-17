@@ -622,7 +622,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         try{
             if ("ceylon.language.Bottom".equals(typeName)) {
                 return new BottomType(typeFactory);
-            } else if ("java.lang.Exception".equals(typeName)) {
+            } else if ("java.lang.Throwable".equals(typeName)) {
                 return convertToDeclaration("ceylon.language.Exception", declarationType);
             }
             ClassMirror classMirror = lookupClassMirror(typeName);
@@ -1580,9 +1580,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
                 extendedType = getType(CEYLON_IDENTIFIABLE_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
-            }else if("java.lang.Exception".equals(superClassName)){
-                // we pretend that a subclass of j.l.Excpetion is really a subclass of c.l.Excpetion
-                extendedType = getType(CEYLON_EXCEPTION_TYPE, klass, VarianceLocation.INVARIANT);
             }else{
                 // read it from annotation first
                 String annotationSuperClassName = getAnnotationStringValue(classMirror, CEYLON_CLASS_ANNOTATION, "extendsType");
