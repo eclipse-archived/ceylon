@@ -163,7 +163,7 @@ Used with another target such as 'package'">
 
     <target name="install-all" 
             depends="install-compiler, install-js, copy-compiler-binaries, 
-                     copy-samples, copy-jvm-compiler-libraries, copy-js-compiler-libraries,
+                     copy-samples, copy-templates, copy-jvm-compiler-libraries, copy-js-compiler-libraries,
                      install-typechecker, install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
@@ -242,6 +242,15 @@ Used with another target such as 'package'">
                 <include name="helloworld/**"/>
                 <include name="no-module/**"/>
                 <include name="interop-java/**"/>
+            </fileset>
+        </copy>
+    </target>
+	
+    <target name="copy-templates">
+        <mkdir dir="${dist.dir}/templates"/>
+        <copy todir="${dist.dir}/templates">
+            <fileset dir="templates">
+                <include name="**/*"/>
             </fileset>
         </copy>
     </target>
