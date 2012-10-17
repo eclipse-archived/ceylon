@@ -11,7 +11,7 @@ function languageClass() {
     IdentifiableObject(lang);
     return lang;
 }
-initTypeProto(languageClass, "ceylon.language.language", IdentifiableObject);
+initTypeProto(languageClass, "ceylon.language::language", IdentifiableObject);
 var lang$proto=languageClass.$$.prototype;
 lang$proto.getVersion=function() {
     return String$("0.4",3);
@@ -36,7 +36,7 @@ function processClass() {
     IdentifiableObject(proc);
     return proc;
 }
-initTypeProto(processClass, "ceylon.language.process", IdentifiableObject);
+initTypeProto(processClass, "ceylon.language::process", IdentifiableObject);
 var process$proto = processClass.$$.prototype;
 
 var argv = $empty;

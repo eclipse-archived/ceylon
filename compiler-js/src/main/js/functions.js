@@ -133,13 +133,13 @@ function nonempty(value) {
 
 function isOfType(obj, typeName) {
     if (obj === null) {
-        return typeName==="ceylon.language.Nothing" || typeName==="ceylon.language.Void";
+        return typeName==="ceylon.language::Nothing" || typeName==="ceylon.language::Void";
     }
     return obj.getT$all$ && typeName in obj.getT$all$();
 }
 function isOfTypes(obj, types) {
     if (obj===null) {
-        return types.l.indexOf('ceylon.language.Nothing')>=0 || types.l.indexOf('ceylon.language.Void')>=0;
+        return types.l.indexOf('ceylon.language::Nothing')>=0 || types.l.indexOf('ceylon.language::Void')>=0;
     }
     var unions = false;
     var inters = true;
@@ -164,7 +164,7 @@ function isOfTypes(obj, types) {
 }
 
 function className(obj) {
-    if (obj === null) return String$('ceylon.language.Nothing');
+    if (obj === null) return String$('ceylon.language::Nothing');
     return String$(obj.getT$name$());
 }
 

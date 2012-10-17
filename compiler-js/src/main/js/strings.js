@@ -12,15 +12,15 @@ function String$(value,size) {
     that.codePoints = size;
     return that;
 }
-initExistingType(String$, String, 'ceylon.language.String', Object$, Comparable,
+initExistingType(String$, String, 'ceylon.language::String', Object$, Comparable,
         Ranged, FixedSized, Summable, Castable, Cloneable, List);
 var origStrToString = String.prototype.toString;
 inheritProtoI(String$, Object$, Comparable, Ranged, FixedSized, Summable, Castable,
         Cloneable, List);
 function StringOfSome() {}
-initType(StringOfSome, "ceylon.language.StringOfSome", String$, Some);
+initType(StringOfSome, "ceylon.language::StringOfSome", String$, Some);
 function StringOfNone() {}
-initType(StringOfNone, "ceylon.language.StringOfNone", String$, None);
+initType(StringOfNone, "ceylon.language::StringOfNone", String$, None);
 var String$proto = String$.$$.prototype;
 String$proto.getT$name$ = function() {
     return ((this.length!==0)?StringOfSome:StringOfNone).$$.T$name;
@@ -309,7 +309,7 @@ String$proto.$split = function(sep, discard, group) {
     function pushToken(tokenEnd) {
         tokens.push(String$(value.substring(tokenBegin, tokenEnd), count-tokenBeginCount));
     }
-    if (isOfType(sep, 'ceylon.language.Iterable')) {
+    if (isOfType(sep, 'ceylon.language::Iterable')) {
         var sepChars = {}
         var it = sep.getIterator();
         var c; while ((c=it.next()) !== $finished) {sepChars[c.value] = true}
@@ -474,7 +474,7 @@ function StringIterator(string) {
     that.index = 0;
     return that;
 }
-initTypeProto(StringIterator, 'ceylon.language.StringIterator', IdentifiableObject, Iterator);
+initTypeProto(StringIterator, 'ceylon.language::StringIterator', IdentifiableObject, Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
 StringIterator$proto.next = function() {
     if (this.index >= this.string.length) { return $finished }
@@ -512,7 +512,7 @@ function Character(value) {
     that.value = value;
     return that;
 }
-initTypeProto(Character, 'ceylon.language.Character', Object$, Comparable);
+initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable);
 var Character$proto = Character.$$.prototype;
 Character$proto.getString = function() { return String$(codepointToString(this.value)) }
 Character$proto.equals = function(other) {
@@ -610,7 +610,7 @@ function StringBuilder() {
     that.value = "";
     return that;
 }
-initTypeProto(StringBuilder, 'ceylon.language.StringBuilder', IdentifiableObject);
+initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', IdentifiableObject);
 var StringBuilder$proto = StringBuilder.$$.prototype;
 StringBuilder$proto.getString = function() { return String$(this.value); }
 StringBuilder$proto.append = function(s) {

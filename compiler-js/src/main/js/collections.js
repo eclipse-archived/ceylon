@@ -15,7 +15,7 @@ var Iterable,Iterator;//IGNORE
 function Sized(wat) {
     return wat;
 }
-initTypeProtoI(Sized, 'ceylon.language.Sized', Container);
+initTypeProtoI(Sized, 'ceylon.language::Sized', Container);
 Sized.$$.prototype.getEmpty = function() {
     return this.getSize() == 0;
 }
@@ -24,7 +24,7 @@ exports.Sized=Sized;
 function Category(wat) {
     return wat;
 }
-initType(Category, 'ceylon.language.Category');
+initType(Category, 'ceylon.language::Category');
 Category.$$.prototype.containsEvery = function(keys) {
     if (keys === undefined) return true;
     for (var i = 0; i < keys.length; i++) {
@@ -48,7 +48,7 @@ exports.Category=Category;
 function Collection(wat) {
     return wat;
 }
-initTypeProtoI(Collection, 'ceylon.language.Collection', Iterable, Sized, Category, Cloneable);
+initTypeProtoI(Collection, 'ceylon.language::Collection', Iterable, Sized, Category, Cloneable);
 var Collection$proto = Collection.$$.prototype;
 Collection$proto.contains = function(obj) {
     var iter = this.getIterator();
@@ -85,7 +85,7 @@ exports.Collection=Collection;
 function FixedSized(wat) {
     return wat;
 }
-initTypeProtoI(FixedSized, 'ceylon.language.FixedSized', Collection);
+initTypeProtoI(FixedSized, 'ceylon.language::FixedSized', Collection);
 var FixedSized$proto = FixedSized.$$.prototype;
 FixedSized$proto.getFirst = function() {
     var e = this.getIterator().next();
@@ -96,7 +96,7 @@ exports.FixedSized=FixedSized;
 function Some(wat) {
     return wat;
 }
-initTypeProtoI(Some, 'ceylon.language.Some', FixedSized, ContainerWithFirstElement);
+initTypeProtoI(Some, 'ceylon.language::Some', FixedSized, ContainerWithFirstElement);
 var $Some = Some.$$;
 $Some.prototype.getFirst = function() {
     var e = this.getIterator().next();
@@ -114,7 +114,7 @@ exports.Some=Some;
 function None(wat) {
     return wat;
 }
-initTypeProtoI(None, 'ceylon.language.None', FixedSized, ContainerWithFirstElement);
+initTypeProtoI(None, 'ceylon.language::None', FixedSized, ContainerWithFirstElement);
 var None$proto = None.$$.prototype;
 None$proto.getFirst = function() { return null; }
 None$proto.getIterator = function() { return emptyIterator; }
@@ -126,13 +126,13 @@ exports.None=None;
 function Ranged(wat) {
     return wat;
 }
-initType(Ranged, 'ceylon.language.Ranged');
+initType(Ranged, 'ceylon.language::Ranged');
 exports.Ranged=Ranged;
 
 function List(wat) {
     return wat;
 }
-initTypeProtoI(List, 'ceylon.language.List', Collection, Correspondence, Ranged, Cloneable);
+initTypeProtoI(List, 'ceylon.language::List', Collection, Correspondence, Ranged, Cloneable);
 var List$proto = List.$$.prototype;
 List$proto.getSize = function() {
     var li = this.getLastIndex();
@@ -147,7 +147,7 @@ List$proto.getIterator = function() {
     return ListIterator(this);
 }
 List$proto.equals = function(other) {
-    if (isOfType(other, 'ceylon.language.List') && other.getSize().equals(this.getSize())) {
+    if (isOfType(other, 'ceylon.language::List') && other.getSize().equals(this.getSize())) {
         for (var i = 0; i < this.getSize(); i++) {
             var mine = this.item(i);
             var theirs = other.item(i);
@@ -209,7 +209,7 @@ function ListIterator(list) {
     }
     return that;
 }
-initTypeProtoI(ListIterator, 'ceylon.language.ListIterator', Iterator);
+initTypeProtoI(ListIterator, 'ceylon.language::ListIterator', Iterator);
 ListIterator.$$.prototype.next = function() {
     if (this.index <= this.lastIndex) {
         return this.list.item(this.index++);
@@ -222,11 +222,11 @@ function Empty() {
     that.value = [];
     return that;
 }
-initTypeProtoI(Empty, 'ceylon.language.Empty', None, Ranged, Cloneable, List);
+initTypeProtoI(Empty, 'ceylon.language::Empty', None, Ranged, Cloneable, List);
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return true; }
 Empty$proto.defines = function(x) { return false; }
-Empty$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language.Integer'); }
+Empty$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
 Empty$proto.definesEvery = function(x) { return false; }
 Empty$proto.definesAny = function(x) { return false; }
 Empty$proto.items = function(x) { return this; }
@@ -269,7 +269,7 @@ function EmptyIterator() {
     var that = new EmptyIterator.$$;
     return that;
 }
-initTypeProto(EmptyIterator, 'ceylon.language.EmptyIterator', IdentifiableObject, Iterator);
+initTypeProto(EmptyIterator, 'ceylon.language::EmptyIterator', IdentifiableObject, Iterator);
 var EmptyIterator$proto = EmptyIterator.$$.prototype;
 EmptyIterator$proto.next = function() { return $finished; }
 var emptyIterator=EmptyIterator();
@@ -284,7 +284,7 @@ function Comprehension(makeNextFunc, compr) {
     compr.makeNextFunc = makeNextFunc;
     return compr;
 }
-initTypeProto(Comprehension, 'ceylon.language.Comprehension', IdentifiableObject, Iterable);
+initTypeProto(Comprehension, 'ceylon.language::Comprehension', IdentifiableObject, Iterable);
 var Comprehension$proto = Comprehension.$$.prototype;
 Comprehension$proto.getIterator = function() {
     return ComprehensionIterator(this.makeNextFunc());
@@ -297,7 +297,7 @@ function ComprehensionIterator(nextFunc, it) {
     it.next = nextFunc;
     return it;
 }
-initTypeProto(ComprehensionIterator, 'ceylon.language.ComprehensionIterator',
+initTypeProto(ComprehensionIterator, 'ceylon.language::ComprehensionIterator',
         IdentifiableObject, Iterator);
 
 function ChainedIterator(first, second, chained) {
@@ -307,7 +307,7 @@ function ChainedIterator(first, second, chained) {
     chained.second = second;
     return chained;
 }
-initTypeProto(ChainedIterator, 'ceylon.language.ChainedIterator',
+initTypeProto(ChainedIterator, 'ceylon.language::ChainedIterator',
         IdentifiableObject, Iterator);
 var ChainedIterator$proto = ChainedIterator.$$.prototype;
 ChainedIterator$proto.next = function() {
@@ -327,7 +327,7 @@ function LazyList(elems, lst) {
     lst.elems = elems===undefined?$empty:elems;
     return lst;
 }
-initTypeProto(LazyList, 'ceylon.language.LazyList', IdentifiableObject, List);
+initTypeProto(LazyList, 'ceylon.language::LazyList', IdentifiableObject, List);
 var LazyList$proto = LazyList.$$.prototype;
 LazyList$proto.getIterator = function() { return this.elems.getIterator(); }
 LazyList$proto.getClone = function() { return this; }
@@ -337,7 +337,7 @@ LazyList$proto.findLast = function(selecting) {
     return this.elems.findLast(selecting);
 }
 LazyList$proto.getSize = function() {
-    if (isOfType(this.elems, 'ceylon.language.Sized')) {
+    if (isOfType(this.elems, 'ceylon.language::Sized')) {
         return this.elems.getSize();
     }
     var it = this.elems.getIterator();
@@ -361,7 +361,7 @@ LazyList$proto.item = function(index) {
 }
 LazyList$proto.getReversed = function() { return this.elems.getSequence().getReversed(); }
 LazyList$proto.equals = function(other) {
-    if (!isOfType(other, 'ceylon.language.List')) { return false; }
+    if (!isOfType(other, 'ceylon.language::List')) { return false; }
     var it1 = this.elems.getIterator();
     var it2 = other.getIterator();
     var e1;

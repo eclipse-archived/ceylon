@@ -9,19 +9,19 @@ var Object$,Castable,Integral,Numeric,Exponentiable,Scalar,equal,smaller,larger,
 function Binary(wat) {
     return wat;
 }
-initTypeProtoI(Binary, 'ceylon.language.Binary');
+initTypeProtoI(Binary, 'ceylon.language::Binary');
 Binary.$$.prototype.clear = function(index) {
     return this.set(index, false);
 }
 exports.Binary=Binary;
 
 function JSNumber(value) { return Number(value); }
-initExistingType(JSNumber, Number, 'ceylon.language.JSNumber');
+initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 var origNumToString = Number.prototype.toString;
 inheritProtoI(JSNumber, Object$, Scalar, Castable, Integral, Exponentiable);
 
 function Integer(value) { return Number(value); }
-initTypeProto(Integer, 'ceylon.language.Integer', Object$, Scalar, Castable,
+initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, Castable,
         Integral, Exponentiable, Binary);
 
 function Float(value) {
@@ -29,7 +29,7 @@ function Float(value) {
     that.$float = true;
     return that;
 }
-initTypeProto(Float, 'ceylon.language.Float', Object$, Scalar, Castable, Exponentiable);
+initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Castable, Exponentiable);
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all$ = function() {

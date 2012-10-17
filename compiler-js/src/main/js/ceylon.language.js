@@ -87,11 +87,11 @@ exports.inheritProtoI=inheritProtoI;
 function Void(wat) {
     return wat;
 }
-initType(Void, 'ceylon.language.Void');
+initType(Void, 'ceylon.language::Void');
 function Object$(wat) {
     return wat;
 }
-initTypeProto(Object$, 'ceylon.language.Object', Void);
+initTypeProto(Object$, 'ceylon.language::Object', Void);
 var Object$proto = Object$.$$.prototype;
 Object$proto.getString = function() { return String$(className(this) + "@" + this.getHash()); }
 //Object$proto.getString=function() { String$(Object.prototype.toString.apply(this)) };
@@ -105,23 +105,23 @@ function $identityHash(x) {
 }
 
 function Identifiable(obj) {}
-initType(Identifiable, "ceylon.language.Identifiable");
+initType(Identifiable, "ceylon.language::Identifiable");
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
-    return isOfType(that, 'ceylon.language.Identifiable') && (that===this);
+    return isOfType(that, 'ceylon.language::Identifiable') && (that===this);
 }
 Identifiable$proto.getHash = function() { return $identityHash(this); }
 
 function IdentifiableObject(obj) {
     return obj;
 }
-initTypeProto(IdentifiableObject, 'ceylon.language.IdentifiableObject', Object$, Identifiable);
+initTypeProto(IdentifiableObject, 'ceylon.language::IdentifiableObject', Object$, Identifiable);
 
 //INTERFACES
 function Cloneable(wat) {
     return wat;
 }
-initType(Cloneable, 'ceylon.language.Cloneable');
+initType(Cloneable, 'ceylon.language::Cloneable');
 exports.Cloneable=Cloneable;
 
 //#include callable.js
@@ -129,17 +129,17 @@ exports.Cloneable=Cloneable;
 function Castable(wat) {
     return wat;
 }
-initType(Castable, 'ceylon.language.Castable');
+initType(Castable, 'ceylon.language::Castable');
 exports.Castable=Castable;
 function Closeable(wat) {
     return wat;
 }
-initType(Closeable, 'ceylon.language.Closeable');
+initType(Closeable, 'ceylon.language::Closeable');
 exports.Closeable=Closeable;
 function Comparable(wat) {
     return wat;
 }
-initType(Comparable, 'ceylon.language.Comparable');
+initType(Comparable, 'ceylon.language::Comparable');
 /*var Comparable$proto = Comparable.$$.prototype;
 Comparable$proto.largerThan = function(other) {
     return Boolean$(this.compare(other)===$larger);
@@ -158,17 +158,17 @@ exports.Comparable=Comparable;
 function Container(wat) {
     return wat;
 }
-initType(Container, 'ceylon.language.Container');
+initType(Container, 'ceylon.language::Container');
 exports.Container=Container;
 function ContainerWithFirstElement(wat) {
     return wat;
 }
-initType(ContainerWithFirstElement, 'ceylon.language.ContainerWithFirstElement');
+initType(ContainerWithFirstElement, 'ceylon.language::ContainerWithFirstElement');
 exports.ContainerWithFirstElement=ContainerWithFirstElement;
 function Correspondence(wat) {
     return wat;
 }
-initType(Correspondence, 'ceylon.language.Correspondence');
+initType(Correspondence, 'ceylon.language::Correspondence');
 var Correspondence$proto=Correspondence.$$.prototype;
 Correspondence$proto.defines = function(key) {
     return exists(this.item(key));
@@ -202,7 +202,7 @@ Correspondence$proto.items = function(keys) {
     return $empty;
 }
 Correspondence$proto.keys = function() {
-    return TypeCategory(this, 'ceylon.language.Integer');
+    return TypeCategory(this, 'ceylon.language::Integer');
 }
 exports.Correspondence=Correspondence;
 
@@ -213,38 +213,38 @@ exports.Correspondence=Correspondence;
 function Summable(wat) {
     return wat;
 }
-initType(Summable, 'ceylon.language.Summable');
+initType(Summable, 'ceylon.language::Summable');
 exports.Summable=Summable;
 function Number$(wat) {
     return wat;
 }
-initType(Number$, 'ceylon.language.Number');
+initType(Number$, 'ceylon.language::Number');
 exports.Number=Number$;
 function Invertable(wat) {
     return wat;
 }
-initType(Invertable, 'ceylon.language.Invertable');
+initType(Invertable, 'ceylon.language::Invertable');
 exports.Invertable=Invertable;
 function Numeric(wat) {
     return wat;
 }
-initTypeProto(Numeric, 'ceylon.language.Numeric', Number$, Comparable, Summable, Invertable);
+initTypeProto(Numeric, 'ceylon.language::Numeric', Number$, Comparable, Summable, Invertable);
 exports.Numeric=Numeric;
 function Ordinal(wat) {
     return wat;
 }
-initType(Ordinal, 'ceylon.language.Ordinal');
+initType(Ordinal, 'ceylon.language::Ordinal');
 exports.Ordinal=Ordinal;
 function Integral(wat) {
     return wat;
 }
-initTypeProto(Integral, 'ceylon.language.Integral', Numeric, Ordinal);
+initTypeProto(Integral, 'ceylon.language::Integral', Numeric, Ordinal);
 exports.Integral=Integral;
 function Scalar(scalar) { return scalar; }
-initTypeProto(Scalar, 'ceylon.language.Scalar', Numeric, Comparable, Number$);
+initTypeProto(Scalar, 'ceylon.language::Scalar', Numeric, Comparable, Number$);
 exports.Scalar=Scalar;
 function Exponentiable(exp) { return exp; }
-initTypeProto(Exponentiable, 'ceylon.language.Exponentiable', Numeric);
+initTypeProto(Exponentiable, 'ceylon.language::Exponentiable', Numeric);
 exports.Exponentiable=Exponentiable;
 
 function Exception(description, cause, wat) {
@@ -253,7 +253,7 @@ function Exception(description, cause, wat) {
     wat.cause = cause;
     return wat;
 }
-initTypeProto(Exception, 'ceylon.language.Exception', IdentifiableObject);
+initTypeProto(Exception, 'ceylon.language::Exception', IdentifiableObject);
 var Exception$proto = Exception.$$.prototype;
 Exception$proto.getCause = function() {return this.cause;}
 Exception$proto.getMessage = function() {
@@ -269,11 +269,11 @@ Exception$proto.getString = function() {
 
 function getNull() { return null }
 function Boolean$(value) {return Boolean(value)}
-initExistingTypeProto(Boolean$, Boolean, 'ceylon.language.Boolean');
+initExistingTypeProto(Boolean$, Boolean, 'ceylon.language::Boolean');
 function trueClass() {}
-initType(trueClass, "ceylon.language.true", Boolean$);
+initType(trueClass, "ceylon.language::true", Boolean$);
 function falseClass() {}
-initType(falseClass, "ceylon.language.false", Boolean$);
+initType(falseClass, "ceylon.language::false", Boolean$);
 Boolean.prototype.getT$name$ = function() {
     return (this.valueOf()?trueClass:falseClass).$$.T$name;
 }
@@ -290,7 +290,7 @@ function getFalse() {return false}
 var $true = true;
 var $false = false;
 function Finished() {}
-initTypeProto(Finished, 'ceylon.language.Finished', IdentifiableObject);
+initTypeProto(Finished, 'ceylon.language::Finished', IdentifiableObject);
 var $finished = new Finished.$$;
 $finished.string = String$("exhausted", 9);
 $finished.getString = function() { return this.string; }
@@ -301,7 +301,7 @@ function Comparison(name) {
     that.name = String$(name);
     return that;
 }
-initTypeProto(Comparison, 'ceylon.language.Comparison', IdentifiableObject);
+initTypeProto(Comparison, 'ceylon.language::Comparison', IdentifiableObject);
 var Comparison$proto = Comparison.$$.prototype;
 Comparison$proto.getString = function() { return this.name; }
 
@@ -318,7 +318,7 @@ function Range(first, last) {
     that.size=(dist>0?dist:-dist)+1;
     return that;
 }
-initTypeProto(Range, 'ceylon.language.Range', Object$, Sequence, Category);
+initTypeProto(Range, 'ceylon.language::Range', Object$, Sequence, Category);
 var Range$proto = Range.$$.prototype;
 Range$proto.getFirst = function() { return this.first; }
 Range$proto.getLast = function() { return this.last; }
@@ -460,7 +460,7 @@ function RangeIterator(range) {
     that.current = range.getFirst();
     return that;
 }
-initTypeProto(RangeIterator, 'ceylon.language.RangeIterator', IdentifiableObject, Iterator);
+initTypeProto(RangeIterator, 'ceylon.language::RangeIterator', IdentifiableObject, Iterator);
 var RangeIterator$proto = RangeIterator.$$.prototype;
 RangeIterator$proto.next = function() {
     var rval = this.current;
@@ -483,7 +483,7 @@ function Entry(key, item) {
     that.item = item;
     return that;
 }
-initTypeProto(Entry, 'ceylon.language.Entry', Object$);
+initTypeProto(Entry, 'ceylon.language::Entry', Object$);
 var Entry$proto = Entry.$$.prototype;
 Entry$proto.getString = function() {
     return String$(this.key.getString() + "->" + this.item.getString());
@@ -491,7 +491,7 @@ Entry$proto.getString = function() {
 Entry$proto.getKey = function() { return this.key; }
 Entry$proto.getItem = function() { return this.item; }
 Entry$proto.equals = function(other) {
-    return other && isOfType(other, 'ceylon.language.Entry') && this.getKey().equals(other.getKey()) && this.getItem().equals(other.getItem());
+    return other && isOfType(other, 'ceylon.language::Entry') && this.getKey().equals(other.getKey()) && this.getItem().equals(other.getItem());
 }
 Entry$proto.getHash = function() { (31 + this.key.getHash()) * 31 + this.item.getHash(); }
 

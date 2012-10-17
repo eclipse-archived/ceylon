@@ -11,13 +11,13 @@ var Container,$finished,$empty,larger,smaller,exports;//IGNORE
 function Iterator(wat) {
     return wat;
 }
-initType(Iterator, 'ceylon.language.Iterator');
+initType(Iterator, 'ceylon.language::Iterator');
 exports.Iterator=Iterator;
 
 function Iterable(wat) {
     return wat;
 }
-initTypeProtoI(Iterable, 'ceylon.language.Iterable', ContainerWithFirstElement);
+initTypeProtoI(Iterable, 'ceylon.language::Iterable', ContainerWithFirstElement);
 var Iterable$proto=Iterable.$$.prototype;
 Iterable$proto.getEmpty = function() {
     return this.getIterator().next() === $finished;
@@ -135,7 +135,7 @@ Iterable$proto.skipping = function(skip) {
         };
         return $cmp$;
     }
-    initTypeProto(skip$iter, 'ceylon.language.SkipIterable', IdentifiableObject, Iterable);
+    initTypeProto(skip$iter, 'ceylon.language::SkipIterable', IdentifiableObject, Iterable);
     return skip$iter(this,skip);
 }
 Iterable$proto.taking = function(take) {
@@ -235,7 +235,7 @@ function ChainedIterator(i1, i2) {
 	that.more=true;
 	return that;
 }
-initTypeProto(ChainedIterator, 'ceylon.language.ChainedIterator', IdentifiableObject, Iterator);
+initTypeProto(ChainedIterator, 'ceylon.language::ChainedIterator', IdentifiableObject, Iterator);
 ChainedIterator.$$.prototype.next = function() {
 	if (this.iter === undefined) {
 		this.iter = this.i1.getIterator();
@@ -261,7 +261,7 @@ function ChainedIterable(first, second, chained) {
     chained.second = second;
     return chained;
 }
-initTypeProto(ChainedIterable, "ceylon.language.ChainedIterable",
+initTypeProto(ChainedIterable, "ceylon.language::ChainedIterable",
         IdentifiableObject, Iterable);
 var ChainedIterable$proto = ChainedIterable.$$.prototype;
 ChainedIterable$proto.getIterator = function() {
