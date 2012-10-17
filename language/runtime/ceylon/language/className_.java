@@ -24,12 +24,18 @@ public final class className_ {
             }
         } else {
             Ceylon ann = object.getClass().getAnnotation(Ceylon.class);
-            java.lang.String pkg = object.getClass().getPackage() == null ? ""
-                    : mangle(object.getClass().getPackage().getName(), ann);
-            java.lang.String name = mangle(object.getClass().getSimpleName(), ann);
-            // FIXME The next part really shouldn't be necessary as long as we add @Name
+            java.lang.String pkg = object.getClass().getPackage() == null ? "" : object.getClass().getPackage().getName();
+            java.lang.String name = object.getClass().getSimpleName();
+            if (name.isEmpty()) {
+                name = object.getClass().getName();
+                //Remove the package from the classname
+                if (!pkg.isEmpty()) {
+                    name = name.substring(pkg.length()+1);
+                }
+            }
+            // FIXME The mangle part really shouldn't be necessary as long as we add @Name
             // annotations to all classes with mangled names
-            return pkg + "::" + name;
+            return mangle(pkg, ann) + "::" + mangle(name, ann);
         }
     }
 
