@@ -106,15 +106,25 @@ public class ArraySequence<Element> implements Sequence<Element> {
         if (fromIndex<0) fromIndex=0;
         long toIndex = to==null ? array.length-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||toIndex<fromIndex) {
+        if (fromIndex>lastIndex) {
             return (List)empty_.getEmpty$();
         }
         else if (toIndex>lastIndex) {
             return new ArraySequence<Element>(array, fromIndex);
         }
         else {
-            return new ArraySequence<Element>(Arrays.copyOfRange(array,
-                    (int)fromIndex, (int)toIndex+1), 0);
+            final Element[] sub;
+            if (fromIndex>toIndex) {
+                sub = Arrays.copyOfRange(array,
+                        (int)toIndex, (int)fromIndex+1);
+                for (int i = 0, j=(int)fromIndex; i < sub.length; i++, j--) {
+                    sub[i] = array[j];
+                }
+            } else {
+                sub = Arrays.copyOfRange(array,
+                        (int)fromIndex, (int)toIndex+1);
+            }
+            return new ArraySequence<Element>(sub, 0);
         }
     }
 
