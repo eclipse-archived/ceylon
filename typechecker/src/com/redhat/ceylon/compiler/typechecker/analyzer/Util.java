@@ -205,6 +205,17 @@ class Util {
         }
     }
 
+    static void checkAssignableToOneOf(ProducedType type, ProducedType supertype1, ProducedType supertype2, 
+            Node node, String message) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
+            addTypeUnknownError(node, message);
+        }
+        else if (!type.isSubtypeOf(supertype1)
+                && !type.isSubtypeOf(supertype2)) {
+            node.addError(message + message(type, " is not assignable to ", supertype1));
+        }
+    }
+
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message, int code) {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
@@ -234,7 +245,18 @@ class Util {
             node.addError(message + message(type, " is not exactly ", supertype));
         }
     }
-    
+
+    static void checkIsExactlyOneOf(ProducedType type, ProducedType supertype1, ProducedType supertype2, 
+            Node node, String message) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
+            addTypeUnknownError(node, message);
+        }
+        else if (!type.isExactly(supertype1)
+                && !type.isExactly(supertype2)) {
+            node.addError(message + message(type, " is not exactly ", supertype1));
+        }
+    }
+
     private static boolean hasError(Node node) {
         // we use an exception to get out of the visitor as fast as possible
         // when an error is found
