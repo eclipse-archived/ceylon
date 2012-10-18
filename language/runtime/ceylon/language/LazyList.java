@@ -299,7 +299,8 @@ public class LazyList<Element> implements List<Element> {
                 Iterable<? extends Element> els = p0>0 ? elems.skipping(p0) : elems;
                 return new LazyList<Element>(els.taking(p1-p0+1));
             } else {
-                throw new UnsupportedOperationException("reverse span unsupported");
+                Iterable<? extends Element> els = p1>0 ? elems.skipping(p1) : elems;
+                return new LazyList<Element>(els.taking(p0-p1+1).getSequence().getReversed());
             }
         }
     }
