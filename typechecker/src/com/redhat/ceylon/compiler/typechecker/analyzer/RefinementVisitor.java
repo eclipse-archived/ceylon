@@ -504,23 +504,29 @@ public class RefinementVisitor extends Visitor {
                         }
                         else {
                             //TODO: consider type parameter substitution!!!
-                            if(refinedParams.isNamedParametersSupported()){
-                                // it must be a Ceylon method
-                                checkIsExactly(parameterType, refinedParameterType, type, "type of parameter " + 
-                                        param.getName() + " is different to type of corresponding parameter " +
-                                        rparam.getName() + " of refined member");
-                            }else{
-                                // we're refining a Java method
-                                ProducedType refinedDefiniteType = refinedMember.getDeclaration().getUnit().getDefiniteType(refinedParameterType);
-                                checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, type, "type of parameter " + 
-                                        param.getName() + " is different to type of corresponding parameter " +
-                                        rparam.getName() + " of refined member");
-                            }
+                            checkIsExactlyForInterop(refinedMember, 
+                                    refinedParams.isNamedParametersSupported(), 
+                                    parameterType, refinedParameterType, type,
+                                    "type of parameter " + 
+                                            param.getName() + " is different to type of corresponding parameter " +
+                                            rparam.getName() + " of refined member");
                         }
                     }
                 }
                 param.setDefaulted(rparam.isDefaulted());
             }
+        }
+    }
+
+    private void checkIsExactlyForInterop(ProducedReference refinedMember, boolean isCeylon,  
+            ProducedType parameterType, ProducedType refinedParameterType, Tree.Type type, String message) {
+        if(isCeylon){
+            // it must be a Ceylon method
+            checkIsExactly(parameterType, refinedParameterType, type, message);
+        }else{
+            // we're refining a Java method
+            ProducedType refinedDefiniteType = refinedMember.getDeclaration().getUnit().getDefiniteType(refinedParameterType);
+            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, type, message);
         }
     }
 
