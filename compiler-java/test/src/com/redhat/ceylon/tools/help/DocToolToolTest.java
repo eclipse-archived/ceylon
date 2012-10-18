@@ -132,10 +132,7 @@ public class DocToolToolTest {
             runDocTool("wibble", "--format=txt");
         } catch (OptionArgumentException e) {
             String s = e.getMessage();
-            Assert.assertTrue(s, s.startsWith("Invalid value wibble given for argument tool, allowed values are:"));
-            Assert.assertTrue(s, s.contains("help"));
-            Assert.assertTrue(s, s.contains("doc-tool"));
-            Assert.assertTrue(s, s.contains("compile"));
+            Assert.assertTrue(s, s.startsWith("Invalid value 'wibble' given for argument 'tool'"));
         }
     }
     

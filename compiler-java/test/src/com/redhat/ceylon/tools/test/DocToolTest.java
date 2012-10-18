@@ -26,7 +26,7 @@ public class DocToolTest {
             pluginFactory.bindArguments(model, Collections.<String>emptyList());
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Argument modules should appear at least 1 time(s)", e.getMessage());
+            Assert.assertEquals("Argument 'modules' should appear at least 1 time(s)", e.getMessage());
         }
     }
     

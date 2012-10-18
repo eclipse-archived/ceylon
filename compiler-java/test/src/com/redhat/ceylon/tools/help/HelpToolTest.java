@@ -35,11 +35,7 @@ public class HelpToolTest {
             pluginFactory.bindArguments(model, Arrays.asList("example"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("Invalid value example given for argument tool"));
-            Assert.assertTrue(e.getMessage().contains("compile"));
-            Assert.assertTrue(e.getMessage().contains("help"));
-            Assert.assertTrue(e.getMessage().contains("doc"));
-            Assert.assertTrue(e.getMessage().contains("doc-tool"));
+            Assert.assertTrue(e.getMessage(), e.getMessage().contains("Invalid value 'example' given for argument 'tool'"));
         }
     }
     
@@ -63,7 +59,7 @@ public class HelpToolTest {
             pluginFactory.bindArguments(model, Arrays.asList("--", "compile", "--javac="));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unexpected argument --javac=", e.getMessage());
+            Assert.assertEquals("Unexpected argument '--javac='", e.getMessage());
         }
     }
     
