@@ -102,33 +102,10 @@ public class ToolFactory {
             final Object[] args = new Object[3];
             final String badValue = unparsedArgumentValue != null ? unparsedArgumentValue : String.valueOf(value);
             if (optionModel != null) {
-                key = "option.invalid.value";
-                args[0] = givenOption;
-                args[1] = badValue;
+                throw new OptionArgumentException.InvalidOptionValueException(optionModel, givenOption, badValue);   
             } else {
-                key = "argument.invalid.value";
-                args[0] = argumentModel.getName();
-                args[1] = badValue;
+                throw new OptionArgumentException.InvalidArgumentValueException(argumentModel, badValue);
             }
-            if (parser instanceof EnumerableParser) {
-                EnumerableParser<?> enumerableParser = (EnumerableParser<?>)parser;
-                if (enumerableParser.possibilities().iterator().hasNext()) {
-                    List<String> l = new ArrayList<>();
-                    for (String valid : enumerableParser.possibilities()) {
-                        l.add(valid);
-                    }
-                    Collections.sort(l);
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(System.getProperty("line.separator"));
-                    for (String valid : l) {
-                        sb.append(valid).append(System.getProperty("line.separator"));
-                    }
-                    key+= ".with.allowed";
-                    args[2] = sb.toString();
-                }
-            }
-            
-            return new OptionArgumentException(key, args);
         }
     }
     
@@ -182,7 +159,7 @@ public class ToolFactory {
                                 if (iter.hasNext()) {
                                     argument = iter.next();
                                 } else {
-                                    throw new OptionArgumentException("option.without.argument", arg);
+                                    throw new OptionArgumentException.OptionWithoutArgumentException(option, arg);
                                 }
                             }
                             break;
@@ -212,7 +189,7 @@ public class ToolFactory {
                         case REQUIRED:
                             if (idx == arg.length() -1) {// argument is next arg
                                 if (!iter.hasNext()) {
-                                    throw new OptionArgumentException("option.without.argument", arg);
+                                    throw new OptionArgumentException.OptionWithoutArgumentException(option, arg);
                                 }
                                 argument = iter.next();
                             } else {// argument is rest of this arg
@@ -232,7 +209,7 @@ public class ToolFactory {
                     if (isArgument(arg)) {
                         final List<ArgumentModel<?>> argumentModels = toolModel.getArgumentsAndSubtool();
                         if (argumentModelIndex >= argumentModels.size()) {
-                            throw new OptionArgumentException("argument.unexpected", arg);
+                            throw new OptionArgumentException.UnexpectedArgumentException(arg);
                         }
                         final ArgumentModel<?> argumentModel = argumentModels.get(argumentModelIndex);
                         processArgument(new Binding(argumentModel, argument));
@@ -389,12 +366,7 @@ public class ToolFactory {
         
         private void assertAllRecognised() {
             if (!unrecognised.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (String s : unrecognised) {
-                    sb.append(s).append(", ");
-                }
-                sb.setLength(sb.length()-2);// remove last ,
-                throw new OptionArgumentException("option.unknown", sb.toString());
+                throw new OptionArgumentException.UnknownOptionException(unrecognised);
             }
         }
     }
@@ -455,22 +427,24 @@ public class ToolFactory {
         int size = values != null ? values.size() : 0;
         if (size < multiplicity.getMin()) {
             if (option != null) {
-                throw new OptionArgumentException("option.too.few",
-                        argument.getOption(), multiplicity.getMin());
+                throw new OptionArgumentException.OptionMultiplicityException(
+                        argument.getOption(), multiplicity.getMin(),
+                        "option.too.few");
             } else {
-                throw new OptionArgumentException(
-                    "argument.too.few", 
-                    argument.getName(), multiplicity.getMin());    
+                throw new OptionArgumentException.ArgumentMultiplicityException(
+                    argument, multiplicity.getMin(),
+                    "argument.too.few");    
             }
         }
         if (size > multiplicity.getMax()) {
             if (option != null) {
-                throw new OptionArgumentException("option.too.many",
-                        argument.getOption(), multiplicity.getMax());
+                throw new OptionArgumentException.OptionMultiplicityException(
+                        argument.getOption(), multiplicity.getMax(),
+                        "option.too.many");
             } else {
-                throw new OptionArgumentException(
-                    "argument.too.many", 
-                    argument.getName(), multiplicity.getMax());    
+                throw new OptionArgumentException.ArgumentMultiplicityException(
+                    argument, multiplicity.getMax(),
+                    "argument.too.many");    
             }
         }
     }
