@@ -67,6 +67,7 @@
         <path refid="compiler.classpath"/>
         <pathelement path="${build.classes}"/>
         <pathelement path="${junit.lib}"/>
+        <pathelement path="${cmr-maven.lib}"/>
     </path>
 
     <path id="test.run.classpath">
@@ -78,7 +79,6 @@
         <pathelement path="${commons-logging.lib}"/>
         <pathelement path="${slf4j-api.lib}"/>
         <pathelement path="${slf4j-simple.lib}"/>
-        <pathelement path="${cmr-maven.lib}"/>
         <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
     </path>
 
@@ -228,8 +228,6 @@
 
     <target name="test" depends="compile.tests" description="Runs the JUnit tests">
         <mkdir dir="${test.reports}"/>
-<property name="myclasspath" refid="test.run.classpath"/>
-<echo message="${myclasspath}"/>
         <junit printsummary="yes" haltonfailure="no">
             <classpath refid="test.run.classpath"/>
             <formatter type="xml"/>
