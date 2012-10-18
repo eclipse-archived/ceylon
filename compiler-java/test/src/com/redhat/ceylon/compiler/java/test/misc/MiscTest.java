@@ -30,11 +30,11 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.impl.JDKPackageList;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
-import com.redhat.ceylon.compiler.loader.JDKPackageList;
 
 public class MiscTest extends CompilerTest {
 

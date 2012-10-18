@@ -135,9 +135,6 @@
         <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
         <exclude name="com/redhat/ceylon/ant/**"/>
       </fileset>
-      <fileset dir="${ceylonc.src}">
-        <include name="com/redhat/ceylon/compiler/loader/resources/*"/>
-      </fileset>
       <fileset dir="${javac.src}">
         <include name="com/sun/tools/javac/resources/*.properties"/>
       </fileset>
@@ -385,9 +382,6 @@
         <exclude name="ceylon/**"/>
         <exclude name="com/redhat/ceylon/compiler/java/test/**"/>
         <exclude name="com/redhat/ceylon/ant/**"/>
-      </fileset>
-      <fileset dir="${ceylonc.src}">
-        <include name="com/redhat/ceylon/compiler/loader/resources/*"/>
       </fileset>
       <fileset dir="${javac.src}">
         <include name="com/sun/tools/javac/resources/*.properties"/>

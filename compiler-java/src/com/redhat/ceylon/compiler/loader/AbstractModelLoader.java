@@ -35,6 +35,7 @@ import java.util.Set;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.impl.JDKPackageList;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
