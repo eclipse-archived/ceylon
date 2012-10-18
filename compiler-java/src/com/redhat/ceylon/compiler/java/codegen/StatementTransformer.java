@@ -1187,6 +1187,8 @@ public class StatementTransformer extends AbstractTransformer {
                 ProducedTypedReference typedRef = getTypedReference(declaration);
                 ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                 ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+                // respect the refining definition of optionality
+                nonWideningType = propagateOptionality(declaration.getType(), nonWideningType);
                 returnExpr = expressionGen().transformExpression(expr.getTerm(), 
                         CodegenUtil.getBoxingStrategy(nonWideningTypedRef.getDeclaration()),
                         nonWideningType);
@@ -1197,6 +1199,21 @@ public class StatementTransformer extends AbstractTransformer {
             returnExpr = makeNull();
         }
         return at(ret).Return(returnExpr);
+    }
+
+    private ProducedType propagateOptionality(ProducedType type, ProducedType nonWideningType) {
+        if(!isNothing(type)){
+            if(isOptional(type)){
+                if(!isOptional(nonWideningType)){
+                    return typeFact().getOptionalType(nonWideningType);
+                }
+            }else{
+                if(isOptional(nonWideningType)){
+                    return typeFact().getDefiniteType(nonWideningType);
+                }
+            }
+        }
+        return nonWideningType;
     }
 
     public JCStatement transform(Throw t) {
