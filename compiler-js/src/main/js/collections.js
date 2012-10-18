@@ -384,7 +384,7 @@ LazyList$proto.span = function(from, to) {
     if (to < 0) { to = 0; }
     if (from < 0) { from = 0; }
     if (to < from) {
-        var seg = (to > 0) ? this.elems.skipping(to) : this.elems;
+        var seq = (to > 0) ? this.elems.skipping(to) : this.elems;
         return seq.taking(from-to+1).getSequence().getReversed();
     }
     var seq = (from > 0) ? this.elems.skipping(from) : this.elems;
