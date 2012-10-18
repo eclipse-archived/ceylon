@@ -7,11 +7,11 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Java7Checker;
 import com.redhat.ceylon.common.tool.ModelException;
 import com.redhat.ceylon.common.tool.NoSuchToolException;
-import com.redhat.ceylon.common.tool.NonFatal;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.Summary;
@@ -20,7 +20,6 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
-import com.redhat.ceylon.common.tool.WordWrap;
 
 
 /**
@@ -69,10 +68,20 @@ public class CeylonTool implements Tool {
         return stacktraces;
     }
     
+    //@Argument(argumentName="command", multiplicity="?", order=1)
+    public void setCommand(String command) {
+        this.toolName = command;
+    }
+    
+    //@Argument(argumentName="command-arguments", multiplicity="*", order=2)
+    public void setCommandArguments(List<String> commandArgs) {
+        this.toolArgs = commandArgs;
+    }
+    
     @Argument(argumentName="tool-arguments", multiplicity="*")
     public void setArgs(List<String> args) {
-        this.toolName = args.get(0);
-        this.toolArgs = args.subList(1, args.size());
+        setCommand(args.get(0));
+        setCommandArguments(args.subList(1, args.size()));
     }
 
     /** The name of the tool to run */
@@ -139,24 +148,7 @@ public class CeylonTool implements Tool {
         out.println(Tools.progName() + " version " + Versions.CEYLON_VERSION);
     }
     
-    private int exit(int sc, String toolName, Exception t) throws Exception {
-        if (t != null) {
-            String msg = "";
-            if (Tools.isFatal(t)) {
-                msg += CeylonToolMessages.msg("fatal.error");
-            }
-            if (t.getLocalizedMessage() != null) {
-                msg += ": " + t.getLocalizedMessage();
-            }
-            System.err.println(Tools.progName() + 
-                    (toolName != null ? " " + toolName : "") +
-                    ": " + msg);
-            if (stacktraces || Tools.isFatal(t)) {
-                t.printStackTrace(System.err);
-            }
-        }
-        return sc;
-    }
+
     
     public static void main(String[] args) throws Exception {
         if (args.length > 0 && ARG_VERSION.equals(args[0])) {
@@ -164,7 +156,7 @@ public class CeylonTool implements Tool {
             System.exit(SC_OK);
         } else {
             Java7Checker.check();
-            System.exit(new CeylonTool().bootstrap(args));
+            System.exit(new CeylonTool().bootstrap(false, args));
         }
     }
 
@@ -181,21 +173,35 @@ public class CeylonTool implements Tool {
      * @throws Exception
      */
     public int bootstrap(String[] args) throws Exception {
+        return bootstrap(false, args);
+    }
+    int bootstrap(boolean recursive, String... args) throws Exception {
+        int result;
+        Exception error = null;
         try {
             ToolModel<CeylonTool> model = getToolModel("");
             List<String> myArgs = rearrangeArgs(args);
             getPluginFactory().bindArguments(model, this, myArgs);
             run();
+            result = SC_OK;
         } catch (NoSuchToolException e) {
-            return exit(SC_NO_SUCH_TOOL, null, e);
+            error = e;
+            result = SC_NO_SUCH_TOOL;
         } catch (ModelException e) {
-            return exit(SC_TOOL_CREATION, getToolName(), e);
+            error = e;
+            result = SC_TOOL_CREATION;
         } catch (OptionArgumentException e) {
-            return exit(SC_ARGS, getToolName(), e);
+            error = e;
+            result = SC_ARGS;
         } catch (Exception e) {
-            return exit(SC_TOOL_EXCEPTION, getToolName(), e);
+            error = e;
+            result = SC_TOOL_EXCEPTION;
         }
-        return exit(SC_OK, null, null);
+        if (!recursive && error != null) {
+            Usage.handleException(this, error instanceof NoSuchToolException ? null : getToolName(), error);
+        }
+        System.out.flush();
+        return result;
     }
 
     @Override
@@ -213,14 +219,15 @@ public class CeylonTool implements Tool {
 
     Tool getTool() {
         Tool tool = null;
-        
-        // TODO Need to sort out how we load tools -- We need to be clear 
-        // on where external tools should be put, and should it be 
-        // possible to replace the standard tools?
         final ToolModel<?> model = getToolModel(getToolName());
         if (model == null) {
-            Tools.printToolSuggestions(getPluginLoader(), new WordWrap(System.err), getToolName());
-            throw new NoSuchToolException();
+            ArgumentModel<?> argumentModel = getToolModel("").getArguments().get(0);
+            // XXX Very evil hack to work around the fact that the CeyonTool does 
+            // not use subtools yet, and so the model used to generate help doc
+            // doesn't quite work right.
+            argumentModel.setName("command");
+            throw new NoSuchToolException(argumentModel,
+                    getToolName());
         }
         tool = getPluginFactory().bindArguments(model, toolArgs);
         return tool;
