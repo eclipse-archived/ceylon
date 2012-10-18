@@ -25,12 +25,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ceylon.modules.api.util.ModuleVersion;
-import ceylon.modules.jboss.repository.ResourceLoaderProvider;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
@@ -40,6 +34,15 @@ import org.jboss.modules.ModuleSpec;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
+
+import ceylon.modules.api.util.ModuleVersion;
+import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.JDKPackageList;
 
 /**
  * Ceylon JBoss Module loader.
@@ -56,10 +59,6 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
 
-    // TODO -- filter out java.* when available, add proper loaderPaths to this system dependency
-    private static final String JAVA = "java";
-    private static final Set<String> JAVA_SYSTEM_PATHS;
-
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.4");
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
@@ -74,10 +73,6 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP.add(CMR);
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(RUNTIME);
-
-        JAVA_SYSTEM_PATHS = new HashSet<String>();
-        JAVA_SYSTEM_PATHS.add("java/lang");
-        JAVA_SYSTEM_PATHS.add("java/util");
     }
 
     private RepositoryManager repository;
@@ -265,8 +260,12 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @return new module dependency
      */
     DependencySpec createModuleDependency(ArtifactResult i) {
-        if (JAVA.equalsIgnoreCase(i.name())) {
-            return DependencySpec.createSystemDependencySpec(JAVA_SYSTEM_PATHS);
+        if (JDKPackageList.isJDKModule(i.name())) {
+            Set<String> packages = JDKPackageList.getJDKPackagesByModule().get(i.name());
+            return DependencySpec.createSystemDependencySpec(packages);
+        } else if (JDKPackageList.isOracleJDKModule(i.name())) {
+            Set<String> packages = JDKPackageList.getOracleJDKPackagesByModule().get(i.name());
+            return DependencySpec.createSystemDependencySpec(packages);
         } else {
             final ModuleIdentifier mi = createModuleIdentifier(i);
             final boolean export = (i.importType() == ImportType.EXPORT);
