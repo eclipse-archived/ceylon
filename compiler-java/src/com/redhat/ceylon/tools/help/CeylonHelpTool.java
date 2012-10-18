@@ -1,9 +1,14 @@
 package com.redhat.ceylon.tools.help;
 
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.Tool;
@@ -29,11 +34,13 @@ import com.redhat.ceylon.tools.help.model.Visitor;
 )
 public class CeylonHelpTool implements Tool {
 
-    private Appendable out = System.out;
+    private Appendable out;
     private boolean includeHidden;
     private ToolLoader toolLoader;
     private DocBuilder docBuilder;
     private ToolModel<?> tool;
+    private boolean synopsis = false;
+    private String options = null;
     
     public final void setToolLoader(ToolLoader toolLoader) {
         this.toolLoader = toolLoader;
@@ -43,6 +50,21 @@ public class CeylonHelpTool implements Tool {
     @Option
     public void setIncludeHidden(boolean includeHidden) {
         this.includeHidden = includeHidden;
+    }
+    
+    @Hidden
+    @Option
+    @Description("Used to generate a synopsis when another tool was invoked incorrectly")
+    public void setSynopsis(boolean synopsis) {
+        this.synopsis = synopsis;
+    }
+    
+    @Hidden
+    @Option
+    @OptionArgument
+    @Description("Used to generate doc on a given option (or options)")
+    public void setOptions(String options) {
+        this.options = options;
     }
     
     @Argument(argumentName="tool", multiplicity="?")
@@ -64,9 +86,21 @@ public class CeylonHelpTool implements Tool {
             final ToolModel<CeylonTool> root = toolLoader.loadToolModel("");
             doc = docBuilder.buildDoc(root, true);
         }
-        final WordWrap wrap = new WordWrap(out);
+        final WordWrap wrap = getWrap();
         Visitor plain = new PlainVisitor(wrap);
+        if (synopsis) {
+            plain = new SynopsisOnlyVisitor(plain);
+        } else if (options != null) {
+            plain = new OptionsOnlyVisitor(plain, 
+                    new HashSet<String>(Arrays.asList(options.trim().split("\\s*,\\s*"))));
+        }
         doc.accept(plain);
         wrap.flush();
+    }
+
+    private WordWrap getWrap() {
+        return new WordWrap(out != null ? out 
+                : synopsis || options != null ? System.err 
+                : System.out);
     }
 }
