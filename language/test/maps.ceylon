@@ -56,6 +56,7 @@ void testMaps() {
         if (v%100 != 0) { fail("Map.mapItems [2]"); }
     }
     //LazyMap
+    check(LazyMap().size==0, "empty LazyMap()");
     value m = LazyMap("a"->1, "b"->2, "c"->3);
     check(m.size == 3, "LazyMap size");
     if (exists v=m["a"]) {
