@@ -23,6 +23,9 @@
     <property name="cmr-testsuite-test.src" location="${basedir}/testsuite/src/test/java"/>
     <property name="cmr-testsuite-test.resources" location="${basedir}/testsuite/src/test/resources"/>
 
+    <property name="maven-test.src" location="${basedir}/maven/src/test/java"/>
+    <property name="maven-test.resources" location="${basedir}/maven/src/test/resources"/>
+
     <tstamp/>
 
     <!-- Local repositoryManager -->
@@ -73,8 +76,10 @@
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
         <pathelement path="${commons-logging.lib}"/>
-        <pathelement path="${slf4j.lib}"/>
-        <pathelement path="${slf4j.simple}"/>
+        <pathelement path="${slf4j-api.lib}"/>
+        <pathelement path="${slf4j-simple.lib}"/>
+        <pathelement path="${cmr-maven.lib}"/>
+        <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
     </path>
 
     <!-- ################################################################## -->
@@ -214,15 +219,25 @@
                destdir="${build.test}"
                classpathref="test.build.classpath"
                includeantruntime="false"/>
+        <javac debug="true"
+               srcdir="${maven-test.src}"
+               destdir="${build.test}"
+               classpathref="test.build.classpath"
+               includeantruntime="false"/>
     </target>
 
     <target name="test" depends="compile.tests" description="Runs the JUnit tests">
         <mkdir dir="${test.reports}"/>
+<property name="myclasspath" refid="test.run.classpath"/>
+<echo message="${myclasspath}"/>
         <junit printsummary="yes" haltonfailure="no">
             <classpath refid="test.run.classpath"/>
             <formatter type="xml"/>
             <batchtest fork="yes" todir="${test.reports}">
                 <fileset dir="${cmr-testsuite-test.src}">
+                    <include name="**/*TestCase.java"/>
+                </fileset>
+                <fileset dir="${maven-test.src}">
                     <include name="**/*TestCase.java"/>
                 </fileset>
             </batchtest>
