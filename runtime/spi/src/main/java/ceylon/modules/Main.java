@@ -45,8 +45,7 @@ public class Main {
         try {
             execute(args);
         } catch (CeylonRuntimeException cre) {
-            cre.printStackTrace();
-            System.err.println("Error: " + cre.getMessage() + (cre.getCause() != null ? " [" + cre.getCause().getMessage() + "]" : ""));
+            throw cre;
         } catch (Throwable t) {
             // Get rid of unwanted stack elements
             Throwable t2 = (t.getCause() != null) ? t.getCause() : t;
