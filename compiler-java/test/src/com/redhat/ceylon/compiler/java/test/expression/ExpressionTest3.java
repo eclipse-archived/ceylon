@@ -98,7 +98,7 @@ public class ExpressionTest3 extends CompilerTest {
     }
     
     @Test
-    public void testComprehensionForIfIsWithIntersection_fail(){
+    public void testComprehensionForIfIsWithIntersection(){
         compile("comprehensions/FooBar.ceylon");
         compareWithJavaSource("comprehensions/ForIfIsWithIntersection");
     }

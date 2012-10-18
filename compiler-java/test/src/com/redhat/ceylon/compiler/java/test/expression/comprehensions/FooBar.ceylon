@@ -18,25 +18,33 @@
  * MA  02110-1301, USA.
  */
 interface Common {
-    shared formal void common();
+    shared formal Object common();
 }
 
 interface FooInterface {
-    shared formal void foo();
+    shared formal Object foo();
 }
 
 class Foo() satisfies Common & FooInterface {
-    shared actual void common() {}
-    shared actual void foo() {}
+    shared actual Object common() {
+        return false;
+    }
+    shared actual Object foo() {
+        return false;
+    }
 }
 class FooSub() extends Foo() {
     shared void foo2() {}
 }
 
 interface BarInterface {
-    shared formal void bar();
+    shared formal Object bar();
 }
 class Bar() satisfies Common & BarInterface {
-    shared actual void common() {}
-    shared actual void bar() {}
+    shared actual Object common() {
+        return false;
+    }
+    shared actual Object bar() {
+        return false;
+    }
 }
