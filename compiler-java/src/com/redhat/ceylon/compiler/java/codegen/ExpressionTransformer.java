@@ -61,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -185,6 +186,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType, flags);
+        if(expectedType != null && hasUncheckedNulls(expr) && !isOptional(expectedType)){
+            result = makeUtilInvocation("checkNull", List.of(result), null);
+        }
 
         return result;
     }
