@@ -755,22 +755,25 @@ public abstract class String
     }
 
     @Ignore
-    public static java.lang.String span(java.lang.String value, final long from, final Integer to) {
+    public static java.lang.String span(java.lang.String value, long from, final Integer to) {
         long len = getSize(value);
-        if (len == 0) {
+        if (len == 0 || from >= len) {
             return "";
         }
-        long fromIndex = from;
         long toIndex = (to == null) ? len - 1 : to.longValue();
-        if (fromIndex >= len || toIndex < fromIndex) {
-            return "";
+        boolean revert = toIndex < from;
+        if (revert) {
+            long _tmp = toIndex;
+            toIndex = from;
+            from = _tmp;
         }
         if (toIndex >= len) {
             toIndex = len - 1;
         }
-        int start = value.offsetByCodePoints(0, (int)fromIndex);
-        int end = value.offsetByCodePoints(start, (int)(toIndex - fromIndex + 1));
-        return value.substring(start, end);
+        int start = value.offsetByCodePoints(0, (int)from);
+        int end = value.offsetByCodePoints(start, (int)(toIndex - from + 1));
+        java.lang.String result = value.substring(start, end);
+        return revert ? getReversed(result) : result;
     }
 
     @Override
