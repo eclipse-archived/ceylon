@@ -267,30 +267,38 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         long toIndex = to==null ? getSize()-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
         java.lang.Class<?> typeClass = array.getClass().getComponentType();
-        if (fromIndex>lastIndex||toIndex<fromIndex) {
+        if (fromIndex>lastIndex) {
             return ArrayOfNone.instance(typeClass, null);
         } else {
-            if (typeClass == char.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == byte.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == short.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == int.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == long.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == float.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == double.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == boolean.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
-            } else if (typeClass == java.lang.String.class) {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
-            } else {
-                return new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
+            boolean revert = toIndex<fromIndex;
+            if (revert) {
+                long _tmp = toIndex;
+                toIndex = fromIndex;
+                fromIndex = _tmp;
             }
+            ArrayOfSome<Element> rval;
+            if (typeClass == char.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((char[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (typeClass == byte.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((byte[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (typeClass == short.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((short[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (typeClass == int.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((int[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (typeClass == long.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((long[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (typeClass == float.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((float[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (typeClass == double.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((double[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (typeClass == boolean.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((boolean[])array, (int)fromIndex, (int)toIndex+1));
+            } else if (typeClass == java.lang.String.class) {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((java.lang.String[])array, (int)fromIndex, (int)toIndex+1));
+            } else {
+                rval = new ArrayOfSome<Element>(Arrays.copyOfRange((Element[])array, (int)fromIndex, (int)toIndex+1));
+            }
+            return revert ? rval.getReversed() : rval;
         }
     }
 
