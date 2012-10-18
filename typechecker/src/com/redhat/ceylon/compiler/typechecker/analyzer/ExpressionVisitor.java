@@ -2525,7 +2525,11 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         ProducedType lhst = leftType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkAssignable(rhst, lhst, that.getRightTerm(), 
+            ProducedType leftHandType = lhst;
+            // allow assigning null to java properties that could after all be null
+            if(hasUncheckedNulls(that.getLeftTerm()))
+                leftHandType = unit.getOptionalType(leftHandType);
+            checkAssignable(rhst, leftHandType, that.getRightTerm(), 
                     "assigned expression must be assignable to declared type", 
                     2100);
         }
