@@ -68,7 +68,14 @@ public class AbstractTest {
     
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
             ModuleQuery.Type type){
+        testComplete(query, expected, manager, type, null, null);
+    }
+    
+    protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
+            ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor){
         ModuleQuery lookup = new ModuleQuery(query, type);
+        lookup.setBinaryMajor(binaryMajor);
+        lookup.setBinaryMinor(binaryMinor);
         ModuleSearchResult result = manager.completeModules(lookup);
         compareSearchResults(expected, result);
     }
@@ -80,7 +87,14 @@ public class AbstractTest {
     
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
             RepositoryManager manager) throws Exception{
+        testListVersions(query, versionQuery, expected, manager, null, null);
+    }
+    
+    protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
+            RepositoryManager manager, Integer binaryMajor, Integer binaryMinor) throws Exception{
         ModuleVersionQuery lookup = new ModuleVersionQuery(query, versionQuery, ModuleQuery.Type.JVM);
+        lookup.setBinaryMajor(binaryMajor);
+        lookup.setBinaryMinor(binaryMinor);
         ModuleVersionResult result = manager.completeVersions(lookup);
         int i=0;
         Assert.assertEquals(expected.length, result.getVersions().size());
@@ -115,11 +129,19 @@ public class AbstractTest {
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, 
             Long start, Long count, RepositoryManager manager, long[] pagingInfo) throws Exception{
+        return testSearchResults(q, type, expected, start, count, manager, null, null, null);
+    }
+
+    protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, 
+            Long start, Long count, RepositoryManager manager, long[] pagingInfo, 
+            Integer binaryMajor, Integer binaryMinor) throws Exception{
         
         ModuleQuery query = new ModuleQuery(q, type);
         query.setStart(start);
         query.setCount(count);
         query.setPagingInfo(pagingInfo);
+        query.setBinaryMajor(binaryMajor);
+        query.setBinaryMinor(binaryMinor);
         ModuleSearchResult results = manager.searchModules(query);
         
         compareSearchResults(expected, results);

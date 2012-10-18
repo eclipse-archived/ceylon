@@ -79,6 +79,15 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
+    public void testHerdCompleteBinaryIncompatible() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
+        };
+        testComplete("", expected, getRepositoryManager(), Type.JVM, 1234, 0);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteCeyl() throws Exception{
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
@@ -135,6 +144,14 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
+    public void testHerdCompleteVersionsBinaryIncompatible() throws Exception{
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+        };
+        testListVersions("ceylon.collection", null, expected, getRepositoryManager(), 1234, 0);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
     public void testHerdCompleteVersionsFiltered() throws Exception{
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
@@ -156,6 +173,15 @@ public class HerdTestCase extends AbstractTest {
                 new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
         };
         testSearchResults("", Type.JVM, expected);
+    }
+
+    @Test
+    @Ignore("Required Herd running locally")
+    public void testHerdSearchBinaryIncompatible() throws Exception{
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
+        };
+        testSearchResults("", Type.JVM, expected, null, null, getRepositoryManager(), null, 1234, 0);
     }
 
     @Test

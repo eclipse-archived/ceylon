@@ -319,6 +319,15 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testCompleteOrgBinaryIncompatible() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        ModuleDetails[] expected = new ModuleDetails[]{
+        };
+        testComplete("org", expected, manager, Type.JVM, 1234, 0);
+    }
+
+    @Test
     public void testCompleteOrgDot() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
@@ -343,6 +352,13 @@ public class SmokeTestCase extends AbstractTest {
                 new ModuleVersionDetails("1.0.0", "The classic Hello World module", "Public domain", "Stef Epardaud"),
         };
         testListVersions("com.acme.helloworld", null, expected);
+    }
+
+    @Test
+    public void testListVersionBinaryIncompatible() throws Exception {
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+        };
+        testListVersions("com.acme.helloworld", null, expected, getRepositoryManager(), 1234, 0);
     }
 
     @Test
@@ -435,11 +451,21 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
+    public void testSearchModulesIncompatibleBinaryVersion() throws Exception {
+        // we only get jars since those have no binary version
+        ModuleDetails[] expected = new ModuleDetails[]{
+                new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1")),
+                new ModuleDetails("test-jar", null, null, set(), set("0.1")),
+        };
+        testSearchResults("", Type.JVM, expected, null, null, getRepositoryManager(), null, 1234, 0);
+    }
+
+    @Test
     public void testSearchModulesFilteredByDocLicenseAndAuthorJs() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
         };
 
-        testSearchResults("classic", Type.JS, expected);
+        testSearchResults("classic", Type.JS, expected); 
         testSearchResults("domain", Type.JS, expected);
         testSearchResults("epardaud", Type.JS, expected);
     }
