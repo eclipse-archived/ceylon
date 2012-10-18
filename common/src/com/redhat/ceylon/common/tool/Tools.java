@@ -10,6 +10,10 @@ public class Tools {
 
     private Tools() {}
     
+    public static boolean isFatal(Throwable t) {
+        return t.getClass().getAnnotation(NonFatal.class) == null;
+    }
+    
     public static void printToolSuggestions(ToolLoader toolLoader, WordWrap wrap, String toolName) {
         
         wrap.append(ToolMessages.msg("tool.unknown", Tools.progName(), toolName)).newline();

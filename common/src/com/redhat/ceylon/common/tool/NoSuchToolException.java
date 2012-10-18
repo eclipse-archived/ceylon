@@ -1,5 +1,6 @@
 package com.redhat.ceylon.common.tool;
 
+@NonFatal
 public class NoSuchToolException extends ToolException {
 
     private String toolName;
