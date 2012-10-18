@@ -11,7 +11,9 @@ public class Tools {
     private Tools() {}
     
     public static boolean isFatal(Throwable t) {
-        return t.getClass().getAnnotation(NonFatal.class) == null;
+        return t.getClass().getAnnotation(NonFatal.class) == null
+                // Dreadful hack to work around ceylon/ceylon-runtime#20
+                && !t.getClass().getName().equals("ceylon.modules.CeylonRuntimeException");
     }
     
     public static void printToolSuggestions(ToolLoader toolLoader, WordWrap wrap, String toolName) {
