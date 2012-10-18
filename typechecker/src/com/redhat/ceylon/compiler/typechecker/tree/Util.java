@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+
 
 public class Util {
     
@@ -26,4 +29,18 @@ public class Util {
         return false;
     }
     
+    public static boolean hasUncheckedNulls(Tree.Term term) {
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Declaration d = ((Tree.MemberOrTypeExpression) term).getDeclaration();
+            return d instanceof TypedDeclaration && 
+                    ((TypedDeclaration) d).hasUncheckedNullType();
+        }
+        else if (term instanceof Tree.InvocationExpression) {
+            return hasUncheckedNulls(((Tree.InvocationExpression) term).getPrimary());
+        }
+        else {
+            return false;
+        }
+    }
+
 }

@@ -18,6 +18,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -494,20 +495,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private boolean hasUncheckedNulls(Tree.Term term) {
-        if (term instanceof Tree.MemberOrTypeExpression) {
-            Declaration d = ((Tree.MemberOrTypeExpression) term).getDeclaration();
-            return d instanceof TypedDeclaration && 
-                    ((TypedDeclaration) d).hasUncheckedNullType();
-        }
-        else if (term instanceof Tree.InvocationExpression) {
-            return hasUncheckedNulls(((Tree.InvocationExpression) term).getPrimary());
-        }
-        else {
-            return false;
-        }
-    }
-
     private void checkOptional(ProducedType t, Tree.Term term, Node n) {
         /*if (t==null) {
             n.addError("expression must be of optional type: type not known");
