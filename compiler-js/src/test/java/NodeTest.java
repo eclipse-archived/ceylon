@@ -10,15 +10,13 @@ import com.redhat.ceylon.compiler.js.Runner;
  */
 public class NodeTest {
 
-    final static String nodePath = Runner.findNode(); //if not found, prints error and exits
-
     /** Gets a JavaScript file from a directory under the modules dir. */
     private static File getJavaScript(final File subdir) {
         return subdir.getName().equals("default") ? new File(subdir, "default.js") :
             new File(subdir, "0.1/" + subdir.getName() + "-0.1.js");
     }
 
-    private static void run(final File subdir) throws IOException, InterruptedException {
+    private static void run(final String nodePath, final File subdir) throws IOException, InterruptedException {
         final File root = subdir.getParentFile();
         final File jsf = getJavaScript(subdir);
         final String path = jsf.getPath();
@@ -53,12 +51,13 @@ public class NodeTest {
             System.out.printf("%s is not a readable directory%n", root2);
             System.exit(1);
         }
+        final String nodePath = Runner.findNode();
         for (File subdir1 : root1.listFiles()) {
             final String modname = subdir1.getName();
             if (subdir1.isDirectory() && !(modname.equals("ceylon"))) { //skip language module
                 File subdir2 = new File(root2, modname);
-                run(subdir1);
-                run(subdir2);
+                run(nodePath, subdir1);
+                run(nodePath, subdir2);
             }
         }
     }
