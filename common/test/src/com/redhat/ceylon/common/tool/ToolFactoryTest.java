@@ -49,7 +49,7 @@ public class ToolFactoryTest {
             pluginFactory.bindArguments(model, Arrays.asList("--short-name"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option --short-name should be followed by an argument"));
+            Assert.assertEquals(e.getMessage(), e.getMessage(), "Option '--short-name' should be followed by an argument");
         }
     }
      
@@ -80,7 +80,7 @@ public class ToolFactoryTest {
             pluginFactory.bindArguments(model, Arrays.asList("-b"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option -b should be followed by an argument"));
+            Assert.assertEquals(e.getMessage(), e.getMessage(), "Option '-b' should be followed by an argument");
         }
     }
     @Test
@@ -90,19 +90,19 @@ public class ToolFactoryTest {
             pluginFactory.bindArguments(model, Arrays.asList("-b1", "-b2"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option --short-name/-b should appear at most 1 time(s)"));
+            Assert.assertEquals(e.getMessage(), e.getMessage(), "Option '-b' should appear at most 1 time(s)");
         }
         try {
             pluginFactory.bindArguments(model, Arrays.asList("--short-name=1", "-b2"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option --short-name/-b should appear at most 1 time(s)"));
+            Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option '--short-name'/'-b' should appear at most 1 time(s)"));
         }
         try {
             pluginFactory.bindArguments(model, Arrays.asList("--short-name=1", "--short-name=2"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option --short-name/-b should appear at most 1 time(s)"));
+            Assert.assertTrue(e.getMessage(), e.getMessage().equals("Option '--short-name' should appear at most 1 time(s)"));
         }
     }
     
@@ -161,13 +161,13 @@ public class ToolFactoryTest {
             pluginFactory.bindArguments(model, Arrays.<String>asList());
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Argument value should appear at least 3 time(s)", e.getMessage());
+            Assert.assertEquals("Argument 'value' should appear at least 3 time(s)", e.getMessage());
         }
         try {
             pluginFactory.bindArguments(model, Arrays.asList("true", "false"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Argument value should appear at least 3 time(s)", e.getMessage());
+            Assert.assertEquals("Argument 'value' should appear at least 3 time(s)", e.getMessage());
         }
         pluginFactory.bindArguments(model, Arrays.asList("true", "false", "3"));
         
@@ -180,19 +180,19 @@ public class ToolFactoryTest {
             pluginFactory.bindArguments(model, Arrays.asList("-l"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unrecognised option(s): -l", e.getMessage());
+            Assert.assertEquals("Unrecognised short option '-l'", e.getMessage());
         }
         try {
             pluginFactory.bindArguments(model, Arrays.asList("-Fl"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unrecognised option(s): l (in -Fl)", e.getMessage());
+            Assert.assertEquals("Unrecognised short option '-l' (in combined options '-Fl')", e.getMessage());
         }
         try {
             pluginFactory.bindArguments(model, Arrays.asList("-lalala"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unrecognised option(s): l (in -lalala)", e.getMessage());
+            Assert.assertEquals("Unrecognised short option '-l' (in combined options '-lalala')", e.getMessage());
         }        
     }
     
@@ -203,7 +203,7 @@ public class ToolFactoryTest {
             pluginFactory.bindArguments(model, Arrays.asList("--lalala"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unrecognised option(s): --lalala", e.getMessage());
+            Assert.assertEquals("Unrecognised long option '--lalala'", e.getMessage());
         }
     }
     
@@ -214,7 +214,7 @@ public class ToolFactoryTest {
             pluginFactory.bindArguments(model, Arrays.asList("--lalala=f"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unrecognised option(s): --lalala=f", e.getMessage());
+            Assert.assertEquals("Unrecognised long option '--lalala=f'", e.getMessage());
         }
     }
     
@@ -263,7 +263,7 @@ public class ToolFactoryTest {
             ex = pluginFactory.bindArguments(model, Arrays.asList("subtool1", "--bar"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unrecognised option(s): --bar", e.getMessage());
+            Assert.assertEquals("Unrecognised long option '--bar'", e.getMessage());
         }
         
         ex = pluginFactory.bindArguments(model, Arrays.asList("subtool2"));
@@ -276,7 +276,7 @@ public class ToolFactoryTest {
             ex = pluginFactory.bindArguments(model, Arrays.asList("subtool2", "--foo"));
         Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unrecognised option(s): --foo", e.getMessage());
+            Assert.assertEquals("Unrecognised long option '--foo'", e.getMessage());
         }
         
         try {
@@ -284,9 +284,9 @@ public class ToolFactoryTest {
             Assert.fail();
         } catch (OptionArgumentException e) {
             String message = e.getMessage();
-            Assert.assertTrue(message, message.startsWith("Invalid value subtool3 given for argument action, allowed values are:"));
-            Assert.assertTrue(message, message.contains("subtool1"));
-            Assert.assertTrue(message, message.contains("subtool2"));
+            Assert.assertTrue(message, message.startsWith("Invalid value 'subtool3' given for argument 'action'"));
+            //Assert.assertTrue(message, message.contains("subtool1"));
+            //Assert.assertTrue(message, message.contains("subtool2"));
         }
     }
 
