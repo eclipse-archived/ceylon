@@ -402,7 +402,7 @@ public class RefinementVisitor extends Visitor {
         ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
         if (refinedMember.getDeclaration() instanceof TypedDeclaration &&
                 ((TypedDeclaration) refinedMember.getDeclaration()).isVariable()) {
-            checkRefinedMembertype(refiningMember, refinedMember, that,
+            checkRefinedMemberTypeExactly(refiningMember, refinedMember, that,
                     "type of member must be exactly the same as type of variable refined member: " + 
                     message(refined));
         }
@@ -410,7 +410,7 @@ public class RefinementVisitor extends Visitor {
             //note: this version checks return type and parameter types in one shot, but the
             //resulting error messages aren't as friendly, so do it the hard way instead!
             //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
-            checkRefinedMembertype(refiningMember, refinedMember, that,
+            checkRefinedMemberTypeAssignable(refiningMember, refinedMember, that,
                     "type of member must be assignable to type of refined member: " + 
                     message(refined));
         }
@@ -429,7 +429,7 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void checkRefinedMembertype(ProducedReference refiningMember, ProducedReference refinedMember, 
+    private void checkRefinedMemberTypeAssignable(ProducedReference refiningMember, ProducedReference refinedMember, 
             Tree.Declaration that, String message) {
         if(hasUncheckedNullType(refinedMember)){
             ProducedType optionalRefinedType = refiningMember.getDeclaration().getUnit().getOptionalType(refinedMember.getType());
@@ -437,6 +437,18 @@ public class RefinementVisitor extends Visitor {
                     message);
         }else{
             checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
+                    message);
+        }
+    }
+
+    private void checkRefinedMemberTypeExactly(ProducedReference refiningMember, ProducedReference refinedMember, 
+            Tree.Declaration that, String message) {
+        if(hasUncheckedNullType(refinedMember)){
+            ProducedType optionalRefinedType = refiningMember.getDeclaration().getUnit().getOptionalType(refinedMember.getType());
+            checkIsExactlyOneOf(refiningMember.getType(), refinedMember.getType(), optionalRefinedType, that,
+                    message);
+        }else{
+            checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
                     message);
         }
     }
