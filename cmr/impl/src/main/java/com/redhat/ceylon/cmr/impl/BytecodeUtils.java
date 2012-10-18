@@ -54,6 +54,7 @@ public final class BytecodeUtils implements DependencyResolver {
 
     private static final String JAVA = "java";
     private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
+    private static final DotName CEYLON_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ceylon");
 
     public List<ModuleInfo> resolve(ArtifactResult parent) {
         return readModuleInformation(parent.name(), parent.artifact());
@@ -129,6 +130,25 @@ public final class BytecodeUtils implements DependencyResolver {
         final DotName moduleClassName = DotName.createSimple(moduleName + ".module_");
         return index.getClassByName(moduleClassName);
     }
+
+    public static int[] getBinaryVersions(String moduleName, File moduleArchive) {
+        final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
+        if (moduleClass == null)
+            return null;
+
+        List<AnnotationInstance> annotations = moduleClass.annotations().get(CEYLON_ANNOTATION);
+        if (annotations == null || annotations.isEmpty())
+            return null;
+
+        final AnnotationInstance moduleAnnotation = annotations.get(0);
+        AnnotationValue majorAnnotation = moduleAnnotation.value("major");
+        AnnotationValue minorAnnotation = moduleAnnotation.value("minor");
+        
+        int major = majorAnnotation != null ? majorAnnotation.asInt() : 0;
+        int minor = minorAnnotation != null ? minorAnnotation.asInt() : 0;
+        return new int[]{major, minor};
+    }
+
 
     public static void readModuleInfo(String moduleName, File moduleArchive, ModuleInfoCallback callback) {
         final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);

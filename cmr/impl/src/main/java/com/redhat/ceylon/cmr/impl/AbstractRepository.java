@@ -184,7 +184,7 @@ public abstract class AbstractRepository implements Repository {
             if (node.getLabel().equals(ArtifactContext.DOCS))
                 return;
             Ret ret = new Ret();
-            if (hasChildrenContainingArtifact(node, lookup.getType(), ret)) {
+            if (hasChildrenContainingArtifact(node, lookup, ret)) {
                 // we have artifact children, are they of the right type?
                 if (ret.foundRightType) {
                     // collect them
@@ -204,7 +204,7 @@ public abstract class AbstractRepository implements Repository {
         }
     }
 
-    private boolean hasChildrenContainingArtifact(Node node, Type type, Ret ret) {
+    private boolean hasChildrenContainingArtifact(Node node, ModuleQuery lookup, Ret ret) {
         // We don't look directly at our children, we want the children's children, because if there's
         // nothing in those children it means either this is an empty folder, or its children contain
         // artifacts (in which case we don't want to match it since its name must be a version component),
@@ -216,14 +216,14 @@ public abstract class AbstractRepository implements Repository {
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
-            if (isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, type, ret))
+            if (isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, lookup, ret))
                 return true;
         }
         // could not find any
         return false;
     }
 
-    private boolean containsArtifact(Node moduleNode, Node versionNode, Type type, Ret ret) {
+    private boolean containsArtifact(Node moduleNode, Node versionNode, ModuleQuery lookup, Ret ret) {
         String module = toModuleName(moduleNode);
         String version = versionNode.getLabel();
         boolean foundArtifact = false;
@@ -233,7 +233,7 @@ public abstract class AbstractRepository implements Repository {
             boolean isFolder = !child.hasBinaries();
             if (isFolder) {
                 // do not recurse
-            } else if (isArtifactOfType(name, module, version, type)) {
+            } else if (isArtifactOfType(name, child, module, version, lookup)) {
                 // we found what we were looking for
                 ret.foundRightType = true;
                 return true;
@@ -245,17 +245,40 @@ public abstract class AbstractRepository implements Repository {
         return foundArtifact;
     }
 
-    private boolean isArtifactOfType(String name, String module, String version, Type type) {
-        switch (type) {
+    private boolean isArtifactOfType(String name, Node node, String module, String version, ModuleQuery lookup) {
+        switch (lookup.getType()) {
             case JS:
                 return getArtifactName(module, version, ArtifactContext.JS).equals(name);
             case JVM:
-                return getArtifactName(module, version, ArtifactContext.CAR).equals(name)
+                return (getArtifactName(module, version, ArtifactContext.CAR).equals(name)
+                        && checkBinaryVersion(module, node, lookup))
                         || getArtifactName(module, version, ArtifactContext.JAR).equals(name);
             case SRC:
                 return getArtifactName(module, version, ArtifactContext.SRC).equals(name);
         }
         return false;
+    }
+
+    private boolean checkBinaryVersion(String module, Node node, ModuleQuery lookup) {
+        if(lookup.getBinaryMajor() == null && lookup.getBinaryMinor() == null)
+            return true;
+        try{
+            File file = node.getContent(File.class);
+            if (file == null)
+                return false; // can't verify
+
+            int[] versions = BytecodeUtils.getBinaryVersions(module, file);
+            if(versions == null)
+                return false; // can't verify
+            if(lookup.getBinaryMajor() != null && versions[0] != lookup.getBinaryMajor())
+                return false;
+            if(lookup.getBinaryMinor() != null && versions[1] != lookup.getBinaryMinor())
+                return false;
+            return true;
+        }catch(Exception x){
+            // can't verify
+            return false;
+        }
     }
 
     /*
@@ -297,7 +320,7 @@ public abstract class AbstractRepository implements Repository {
             boolean isFolder = !child.hasBinaries();
             if (isFolder) {
                 // we don't recurse
-            } else if (isArtifactOfType(name, module, version, query.getType())
+            } else if (isArtifactOfType(name, child, module, version, query)
                     && matchesSearch(name, child, versionNode, query)) {
                 // we found what we were looking for
                 ret.foundRightType = true;
@@ -405,6 +428,9 @@ public abstract class AbstractRepository implements Repository {
                 String artifactName = getArtifactName(name, version, suffix);
                 Node artifact = child.getChild(artifactName);
                 if (artifact == null)
+                    continue;
+                // is it the right version?
+                if(suffix.equals(ArtifactContext.CAR) && !checkBinaryVersion(name, artifact, lookup))
                     continue;
                 // we found the artifact: let's notify
                 final ModuleVersionDetails newVersion = result.addVersion(version);

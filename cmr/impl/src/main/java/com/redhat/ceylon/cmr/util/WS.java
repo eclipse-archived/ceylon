@@ -212,6 +212,12 @@ public class WS {
             this.values[0] = value != null ? value.toString() : null;
         }
 
+        public Param(String name, Integer value) {
+            this.name = name;
+            this.values = new String[1];
+            this.values[0] = value != null ? value.toString() : null;
+        }
+
         public void toString(StringBuilder b) {
             if(values.length == 1){
                 b.append(encodeURLQueryParam(name)).append("=").append(encodeURLQueryParam(values[0]));
@@ -233,6 +239,10 @@ public class WS {
     }
 
     public static Param param(String name, Long value) {
+        return new Param(name, value);
+    }
+
+    public static Param param(String name, Integer value) {
         return new Param(name, value);
     }
 

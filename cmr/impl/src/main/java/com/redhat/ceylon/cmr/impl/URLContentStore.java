@@ -224,7 +224,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             try{
                 WS.getXML(herdCompleteModulesURL,
                           WS.params(WS.param("module", query.getName()),
-                                    WS.param("type", getHerdTypeParam(query.getType()))),
+                                    WS.param("type", getHerdTypeParam(query.getType())),
+                                    WS.param("binaryMajor", query.getBinaryMajor()),
+                                    WS.param("binaryMinor", query.getBinaryMinor())),
                           new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
@@ -258,7 +260,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 WS.getXML(herdCompleteVersionsURL,
                           WS.params(WS.param("module", lookup.getName()),
                                     WS.param("version", lookup.getVersion()),
-                                    WS.param("type", getHerdTypeParam(lookup.getType()))),
+                                    WS.param("type", getHerdTypeParam(lookup.getType())),
+                                    WS.param("binaryMajor", lookup.getBinaryMajor()),
+                                    WS.param("binaryMinor", lookup.getBinaryMinor())),
                           new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {
@@ -320,7 +324,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                           WS.params(WS.param("query", query.getName()),
                                     WS.param("type", getHerdTypeParam(query.getType())),
                                     WS.param("start", query.getStart()),
-                                    WS.param("count", query.getCount())),
+                                    WS.param("count", query.getCount()),
+                                    WS.param("binaryMajor", query.getBinaryMajor()),
+                                    WS.param("binaryMinor", query.getBinaryMinor())),
                           new XMLHandler(){
                     @Override
                     public void onOK(Parser p) {

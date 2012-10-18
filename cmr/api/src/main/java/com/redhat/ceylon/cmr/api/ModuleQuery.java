@@ -6,6 +6,8 @@ public class ModuleQuery {
     private Long start;
     private Long count;
     private long[] pagingInfo;
+    private Integer binaryMajor;
+    private Integer binaryMinor;
 
     public enum Type {
         SRC(ArtifactContext.SRC), 
@@ -70,6 +72,22 @@ public class ModuleQuery {
 
     public long[] getPagingInfo() {
         return pagingInfo;
+    }
+
+    public Integer getBinaryMajor() {
+        return binaryMajor;
+    }
+
+    public void setBinaryMajor(Integer binaryMajor) {
+        this.binaryMajor = binaryMajor;
+    }
+
+    public Integer getBinaryMinor() {
+        return binaryMinor;
+    }
+
+    public void setBinaryMinor(Integer binaryMinor) {
+        this.binaryMinor = binaryMinor;
     }
 
 }
