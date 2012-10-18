@@ -188,6 +188,11 @@
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
+    	<copy todir="${build.classes}">
+            <fileset dir="${cmr-impl.resources}">
+                <include name="**"/>
+            </fileset>
+    	</copy>
     </target>
 
     <!-- Rule to build module-resolver jar -->
