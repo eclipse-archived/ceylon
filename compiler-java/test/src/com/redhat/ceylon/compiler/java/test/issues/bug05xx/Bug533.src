@@ -6,7 +6,7 @@ final class bug533_ {
     }
     
     static void bug533(final .java.util.Map<.java.lang.Object, .java.lang.Object> jmap) {
-        final .java.util.Map.Entry<.java.lang.Object, .java.lang.Object> foo = jmap.entrySet().iterator().next();
+        final .java.util.Map.Entry<.java.lang.Object, .java.lang.Object> foo = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(jmap.entrySet()).iterator()).next();
         final .java.util.Set<.java.util.Map.Entry<.java.lang.Object, .java.lang.Object>> es = jmap.entrySet();
     }
 }

@@ -15,9 +15,9 @@ final class attributes_ {
         sync = java.oldStyle();
         java.setOldStyle(false);
         .java.lang.String syncStr;
-        syncStr = java.getURL();
+        syncStr = .com.redhat.ceylon.compiler.java.Util.checkNull(java.getURL());
         java.setURL("");
-        syncStr = java.getURLEncoderForHTML();
+        syncStr = .com.redhat.ceylon.compiler.java.Util.checkNull(java.getURLEncoderForHTML());
         java.setURLEncoderForHTML("");
         sync = java.getConfusedProperty();
         java.setConfusedProperty("");

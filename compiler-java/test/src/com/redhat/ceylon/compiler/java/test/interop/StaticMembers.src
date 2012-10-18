@@ -7,11 +7,11 @@ final class staticMethods_ {
     
     static void staticMethods() {
         .java.io.File sync;
-        sync = .java.io.File.createTempFile("", "");
-        sync = .java.io.File.createTempFile("", "", sync);
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
         final .java.lang.Object roots1 = .ceylon.language.Array.<.java.io.File>instance(.java.io.File.listRoots());
-        sync = sync.createTempFile("", "");
-        sync = sync.createTempFile("", "", sync);
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", ""));
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", "", sync));
         final .java.lang.Object roots2 = .ceylon.language.Array.<.java.io.File>instance(sync.listRoots());
     }
     
