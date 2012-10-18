@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -83,7 +84,7 @@ public class Runner {
     }
 
     /** Finds the full path to the node.js executable. */
-    public static String findNode() {
+    public static String findNode() throws FileNotFoundException {
         String path = getNodeExe();
         if (path != null && !path.isEmpty() && isExe(path)) {
             return path;
@@ -106,9 +107,7 @@ public class Runner {
                 }
             }
         }
-        System.err.println("Could not find 'node' executable. Please install node.js (from http://nodejs.org).");
-        System.exit(2);
-        return null;
+        throw new FileNotFoundException("Could not find 'node' executable. Please install node.js (from http://nodejs.org).");
     }
 
     private static boolean isExe(String p) {
@@ -116,52 +115,22 @@ public class Runner {
         return f.exists() && f.canExecute();
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        if (args.length == 0) {
-            usage();
-            System.exit(1);
-            return;
+    public static int run(List<String> repos, String module, String func, PrintStream output)
+            throws IOException, InterruptedException {
+        final String node;
+        try {
+            node = findNode();
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            return -1;
         }
-        List<String> opts = new ArrayList<String>();
-        opts.addAll(Arrays.asList(args));
-        if (Options.findOption("-version", opts, true)) {
-            System.err.println("Version: ceylon-js 0.4 'Ratatouille'");
-        }
-        if (Options.findOption("-help", opts, true)) {
-            usage();
-            return;
-        }
-        final String node = findNode();
-        List<String> repos = Options.findRepos(opts, true);
-        String func = Options.findOptionValue("-run", opts, true);
-        if (repos.isEmpty()) {
-            repos.add("modules");
-        }
-        if (func == null) {
-            func = "run";
-        }
-        if (opts.isEmpty()) {
-            System.err.println("ceylon-js: You must specify a module name and version.");
-            usage();
-            return;
-        }
-        String module = opts.remove(0);
-        if (!opts.isEmpty()) {
-            System.err.println("ceylon-js: Command-line arguments not supported yet.");
-        }
+        //The timeout is to have enough time to start reading on the process streams
         final boolean isDefault = "default".equals(module);
         String version = "";
-        if (!isDefault && !module.contains("/")) {
-            System.out.println("Specified module is not default and is missing version.");
-            usage();
-            return;
-        }
         if (!isDefault) {
             version = module.substring(module.indexOf('/')+1);
             module = module.substring(0, module.indexOf('/'));
         }
-
-        //The timeout is to have enough time to start reading on the process streams
         final String eval = String.format("setTimeout(function(){},50);require('%s%s/%s%s').%s();",
                 module.replace(".", "/"),
                 isDefault ? "" : "/" + version,
@@ -187,9 +156,50 @@ public class Runner {
         proc.environment().put("NODE_PATH", nodePath);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
-        new ReadStream(nodeProcess.getInputStream(), System.out).start();
-        new ReadErrorStream(nodeProcess.getErrorStream(), System.err).start();
-        int exitCode = nodeProcess.waitFor();
+        new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
+        new ReadErrorStream(nodeProcess.getErrorStream(), output == null ? System.err : output).start();
+        return nodeProcess.waitFor();
+    }
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+        if (args.length == 0) {
+            usage();
+            System.exit(1);
+            return;
+        }
+        List<String> opts = new ArrayList<String>();
+        opts.addAll(Arrays.asList(args));
+        if (Options.findOption("-version", opts, true)) {
+            System.err.println("Version: ceylon-js 0.4 'Ratatouille'");
+        }
+        if (Options.findOption("-help", opts, true)) {
+            usage();
+            return;
+        }
+        List<String> repos = Options.findRepos(opts, true);
+        String func = Options.findOptionValue("-run", opts, true);
+        if (repos.isEmpty()) {
+            repos.add("modules");
+        }
+        if (func == null) {
+            func = "run";
+        }
+        if (opts.isEmpty()) {
+            System.err.println("ceylon-js: You must specify a module name and version.");
+            usage();
+            return;
+        }
+        String module = opts.remove(0);
+        if (!opts.isEmpty()) {
+            System.err.println("ceylon-js: Command-line arguments not supported yet.");
+        }
+        final boolean isDefault = "default".equals(module);
+        if (!isDefault && !module.contains("/")) {
+            System.out.println("Specified module is not default and is missing version.");
+            usage();
+            return;
+        }
+        int exitCode = run(repos, module, func, null);
         if (exitCode != 0) {
             System.err.println("Exit code: "+exitCode);
         }
