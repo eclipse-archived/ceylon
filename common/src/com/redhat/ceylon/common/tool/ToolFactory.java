@@ -3,12 +3,13 @@ package com.redhat.ceylon.common.tool;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
+import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 
 
@@ -119,7 +120,7 @@ public class ToolFactory {
     }
     
     class ArgumentProcessor<T extends Tool> {
-        final List<String> unrecognised = new ArrayList<String>(1);
+        final List<UnknownOptionException> unrecognised = new ArrayList<UnknownOptionException>(1);
         final List<String> rest = new ArrayList<String>(1);
         final Map<ArgumentModel<?>, List<Binding<?>>> bindings = new HashMap<ArgumentModel<?>, List<Binding<?>>>(1);
         final Iterator<String> iter;
@@ -173,13 +174,7 @@ public class ToolFactory {
                         char shortName = arg.charAt(idx);
                         option = toolModel.getOptionByShort(shortName);
                         if (option == null) {
-                            String msg;
-                            if (arg.equals("-"+shortName)) {
-                                msg = arg;
-                            } else {
-                                msg = ToolMessages.msg("option.unknown.short", shortName, arg);
-                            }
-                            unrecognised.add(msg);
+                            unrecognised.add(UnknownOptionException.shortOption(shortName, arg));
                             continue argloop;
                         } 
                         switch (option.getArgumentType()) {
@@ -333,7 +328,9 @@ public class ToolFactory {
                     throw new OptionArgumentException(e);
                 }
             } else {
-                unrecognised.addAll(rest);
+                for (String arg : rest) {
+                    unrecognised.add(UnknownOptionException.longOption(arg));
+                }
             }
         }
 
@@ -350,23 +347,28 @@ public class ToolFactory {
         private void checkMultiplicities() {
             for (Map.Entry<ArgumentModel<?>, List<Binding<?>>> entry : bindings.entrySet()) {
                 final ArgumentModel<?> argument = entry.getKey();
-                List values = (List)entry.getValue();
+                List<Binding<?>> values = entry.getValue();
                 checkMultiplicity(argument, values);
             }
-            for (OptionModel option : toolModel.getOptions()) {
-                ArgumentModel argument = option.getArgument();
+            for (OptionModel<?> option : toolModel.getOptions()) {
+                ArgumentModel<?> argument = option.getArgument();
                 checkMultiplicity(argument, bindings.get(argument));
                 
             }
-            for (ArgumentModel argument : toolModel.getArgumentsAndSubtool()) {
+            for (ArgumentModel<?> argument : toolModel.getArgumentsAndSubtool()) {
                 argument.getMultiplicity().getMin();
                 checkMultiplicity(argument, bindings.get(argument));
             }
         }
         
         private void assertAllRecognised() {
-            if (!unrecognised.isEmpty()) {
-                throw new OptionArgumentException.UnknownOptionException(unrecognised);
+            switch (unrecognised.size()) {
+            case 0:
+                break;
+            case 1:
+                throw unrecognised.get(0);
+            default:
+                throw OptionArgumentException.UnknownOptionException.aggregate(unrecognised);
             }
         }
     }
@@ -421,14 +423,15 @@ public class ToolFactory {
         return true;
     }
 
-    private void checkMultiplicity(final ArgumentModel<?> argument, List values) {
-        OptionModel option = argument.getOption();
+    private void checkMultiplicity(final ArgumentModel<?> argument, List<Binding<?>> values) {
+        OptionModel<?> option = argument.getOption();
         Multiplicity multiplicity = argument.getMultiplicity();
         int size = values != null ? values.size() : 0;
+        
         if (size < multiplicity.getMin()) {
             if (option != null) {
                 throw new OptionArgumentException.OptionMultiplicityException(
-                        argument.getOption(), multiplicity.getMin(),
+                        argument.getOption(), getGivenOptions(values), multiplicity.getMin(),
                         "option.too.few");
             } else {
                 throw new OptionArgumentException.ArgumentMultiplicityException(
@@ -439,7 +442,7 @@ public class ToolFactory {
         if (size > multiplicity.getMax()) {
             if (option != null) {
                 throw new OptionArgumentException.OptionMultiplicityException(
-                        argument.getOption(), multiplicity.getMax(),
+                        argument.getOption(), getGivenOptions(values), multiplicity.getMax(),
                         "option.too.many");
             } else {
                 throw new OptionArgumentException.ArgumentMultiplicityException(
@@ -447,6 +450,24 @@ public class ToolFactory {
                     "argument.too.many");    
             }
         }
+    }
+
+    private String getGivenOptions(List<Binding<?>> values) {
+        TreeSet<String> given = new TreeSet<>();
+        for (Binding<?> binding : values) {
+            if (binding.optionModel.getLongName().equals(binding.givenOption)) {
+                given.add("--"+binding.givenOption);
+            }
+            if (binding.optionModel.getShortName() != null
+                    && binding.givenOption.equals(binding.optionModel.getShortName().toString())) {
+                given.add("-"+binding.givenOption);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String s : given) {
+            sb.append('\'').append(s).append("\'/");
+        }
+        return sb.substring(0, sb.length()-1);
     }
 
     
