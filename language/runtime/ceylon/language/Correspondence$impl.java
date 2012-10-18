@@ -156,8 +156,8 @@ public final class Correspondence$impl<Key,Item> {
         public final Item getFirst() {
             return $this.item((Key)keys.getFirst());
         }
-        public final FixedSized<? extends Item> getRest() {
-            return (FixedSized<? extends Item>) $this.items(keys.getRest());
+        public final List<? extends Item> getRest() {
+            return (List<? extends Item>) $this.items(keys.getRest());
         }
         public final Item item(Integer key) {
             Key keyFound = keys.item(key);
@@ -194,12 +194,12 @@ public final class Correspondence$impl<Key,Item> {
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesEvery() {
-            return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty());
+            return Correspondence$impl._definesEvery(this, (Iterable)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> definesEvery$keys() {
-            return (Iterable)empty_.getEmpty();
+            return (Iterable)empty_.getEmpty$();
         }
         @Override
         @Ignore
@@ -209,12 +209,12 @@ public final class Correspondence$impl<Key,Item> {
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public boolean definesAny() {
-            return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty());
+            return Correspondence$impl._definesAny(this, (Iterable)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> definesAny$keys() {
-            return (Iterable)empty_.getEmpty();
+            return (Iterable)empty_.getEmpty$();
         }
         @Override
         @Ignore
@@ -224,12 +224,12 @@ public final class Correspondence$impl<Key,Item> {
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public List<? extends Item> items() {
-            return Correspondence$impl._items(this, (Iterable)empty_.getEmpty());
+            return Correspondence$impl._items(this, (Iterable)empty_.getEmpty$());
         }
         @Override @Ignore
         @SuppressWarnings({"rawtypes", "unchecked"})
         public Iterable<? extends Integer> items$keys() {
-            return (Iterable)empty_.getEmpty();
+            return (Iterable)empty_.getEmpty$();
         }
         @Override
         @Ignore
@@ -275,7 +275,7 @@ public final class Correspondence$impl<Key,Item> {
         public List<? extends Item> segment(Integer from, long length) {
             Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.segment(from, length);
             if (keys.getEmpty()) {
-                return (List)empty_.getEmpty();
+                return (List)empty_.getEmpty$();
             }
             else {
                 return new Items((Sequence<? extends Key>)keys);
@@ -286,7 +286,7 @@ public final class Correspondence$impl<Key,Item> {
         public List<? extends Item> span(Integer from, Integer to) {
             Iterable<? extends Key> keys = (Iterable<? extends Key>) this.keys.span(from, to);
             if (keys.getEmpty()) {
-                return (List)empty_.getEmpty();
+                return (List)empty_.getEmpty$();
             }
             else {
                 return new Items((Sequence<? extends Key>)keys);
@@ -305,12 +305,12 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean containsEvery() {
-            return Category$impl._containsEvery(this, empty_.getEmpty());
+            return Category$impl._containsEvery(this, empty_.getEmpty$());
         }
         @Override
         @Ignore
         public Iterable<?> containsEvery$elements() {
-            return empty_.getEmpty();
+            return empty_.getEmpty$();
         }
         @Override
         @Ignore
@@ -320,12 +320,12 @@ public final class Correspondence$impl<Key,Item> {
         @Override
         @Ignore
         public boolean containsAny() {
-            return Category$impl._containsAny(this, empty_.getEmpty());
+            return Category$impl._containsAny(this, empty_.getEmpty$());
         }
         @Override
         @Ignore
         public Iterable<?> containsAny$elements() {
-            return empty_.getEmpty();
+            return empty_.getEmpty$();
         }
         @Override
         @Ignore
@@ -370,7 +370,7 @@ public final class Correspondence$impl<Key,Item> {
             return Sequence$impl._collect(this, f);
         }
         @Override @Ignore
-        public Iterable<? extends Item> select(Callable<? extends Boolean> f) {
+        public List<? extends Item> select(Callable<? extends Boolean> f) {
             return new FilterIterable<Item>(this, f).getSequence();
         }
         @Override
