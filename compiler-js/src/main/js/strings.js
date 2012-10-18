@@ -49,13 +49,11 @@ String$proto.getSize = function() {
 }
 String$proto.getLastIndex = function() { return this.getSize().equals(0) ? null : this.getSize().getPredecessor(); }
 String$proto.span = function(from, to) {
-    var fromIndex = from;
     var toIndex = (to===null || to===undefined) ? 0x7fffffff : to;
-    if (fromIndex > toIndex) {
-        //TODO: should we return an empty string or a reverse string in this case?
-        return String$("", 0);
+    if (from > toIndex) {
+        return this.segment(toIndex, from-toIndex+1).getReversed();
     }
-    return this.segment(from, toIndex-fromIndex+1);
+    return this.segment(from, toIndex-from+1);
 }
 String$proto.segment = function(from, len) {
     var fromIndex = from;
