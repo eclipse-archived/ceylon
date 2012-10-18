@@ -16,6 +16,7 @@ import java.util.Set;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Rest;
@@ -47,11 +48,13 @@ public class CeylonNewTool implements Tool {
         this.project = project;
     }
     
+    @Hidden
     @OptionArgument(argumentName="dir")
     public void setFrom(File from) {
         this.from = from;
     }
     
+    @Hidden
     @Option
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
