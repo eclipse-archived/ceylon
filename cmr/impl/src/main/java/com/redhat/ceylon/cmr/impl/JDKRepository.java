@@ -48,54 +48,10 @@ public class JDKRepository extends AbstractRepository {
 
     public static final Set<String> JDK_MODULES = new TreeSet<String>();
     static{
-        JDK_MODULES.add("jdk.base");
-        JDK_MODULES.add("jdk.logging");
-        JDK_MODULES.add("jdk.management");
-        JDK_MODULES.add("jdk.instrument");
-        JDK_MODULES.add("jdk.rmi");
-        JDK_MODULES.add("jdk.prefs");
-        JDK_MODULES.add("jdk.tls");
-        JDK_MODULES.add("jdk.kerberos");
-        JDK_MODULES.add("jdk.auth");
-        JDK_MODULES.add("jdk.xmldsig");
-        JDK_MODULES.add("jdk.security.acl");
-        JDK_MODULES.add("jdk.jndi");
-        JDK_MODULES.add("jdk.jta");
-        JDK_MODULES.add("jdk.jdbc");
-        JDK_MODULES.add("jdk.jdbc.rowset");
-        JDK_MODULES.add("jdk.scripting");
-        JDK_MODULES.add("jdk.jaxp");
-        JDK_MODULES.add("jdk.jaxws");
-        JDK_MODULES.add("jdk.jx.annotations");
-        JDK_MODULES.add("jdk.corba");
-        JDK_MODULES.add("jdk.desktop");
-        JDK_MODULES.add("jdk.compiler");
-        JDK_MODULES.add("oracle.jdk.base");
-        JDK_MODULES.add("oracle.sun.charsets");
-        JDK_MODULES.add("oracle.jdk.logging");
-        JDK_MODULES.add("oracle.jdk.management.iiop");
-        JDK_MODULES.add("oracle.jdk.management");
-        JDK_MODULES.add("oracle.jdk.tools.jre");
-        JDK_MODULES.add("oracle.jdk.instrument");
-        JDK_MODULES.add("oracle.jdk.rmi");
-        JDK_MODULES.add("oracle.jdk.auth");
-        JDK_MODULES.add("oracle.jdk.xmldsig");
-        JDK_MODULES.add("oracle.jdk.smartcardio");
-        JDK_MODULES.add("oracle.jdk.security.acl");
-        JDK_MODULES.add("oracle.jdk.jndi");
-        JDK_MODULES.add("oracle.jdk.cosnaming");
-        JDK_MODULES.add("oracle.jdk.jdbc.rowset");
-        JDK_MODULES.add("oracle.jdk.scripting");
-        JDK_MODULES.add("oracle.jdk.httpserver");
-        JDK_MODULES.add("oracle.jdk.sctp");
-        JDK_MODULES.add("oracle.jdk.desktop");
-        JDK_MODULES.add("oracle.jdk.jaxp");
-        JDK_MODULES.add("oracle.jdk.tools.jaxws");
-        JDK_MODULES.add("oracle.jdk.jaxws");
-        JDK_MODULES.add("oracle.jdk.corba");
-        JDK_MODULES.add("oracle.jdk.deploy");
-        JDK_MODULES.add("oracle.jdk.compat");
-        JDK_MODULES.add("oracle.jdk.tools.base");
+        for(String module : JDKPackageList.getJDKModuleNames())
+            JDK_MODULES.add(module);
+        for(String module : JDKPackageList.getOracleJDKModuleNames())
+            JDK_MODULES.add(module);
     }
 
     public JDKRepository() {

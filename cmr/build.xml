@@ -12,6 +12,7 @@
     <!-- The Java source files for the module-resolver -->
     <property name="cmr-api.src" location="${basedir}/api/src/main/java"/>
     <property name="cmr-impl.src" location="${basedir}/impl/src/main/java"/>
+    <property name="cmr-impl.resources" location="${basedir}/impl/src/main/resources"/>
     <property name="cmr-spi.src" location="${basedir}/spi/src/main/java"/>
     <property name="cmr-webdav.src" location="${basedir}/webdav/src/main/java"/>
     <property name="cmr-ceylon.src" location="${basedir}/ceylon/src/main/java"/>
@@ -113,6 +114,9 @@
             </fileset>
             <fileset dir="${cmr-impl.src}">
                 <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${cmr-impl.resources}">
+                <include name="**"/>
             </fileset>
             <fileset dir="${cmr-spi.src}">
                 <include name="**/*.java"/>
