@@ -1,0 +1,60 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface {
+    
+    OptionalInterface(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
+        this.prop1 = x;
+        this.prop2 = null;
+        this.prop3 = x;
+        this.prop4 = x;
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface method(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
+        return .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(x.getProp1()).getProp1());
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface method2(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
+        .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $x$1;
+        if (($x$1 = x) != null) {
+            final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface $x$2 = $x$1;
+            return .com.redhat.ceylon.compiler.java.Util.checkNull($x$2.getProp1()).getProp1();
+        }
+        return null;
+    }
+    private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop1;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp1() {
+        return prop1;
+    }
+    
+    @.java.lang.Override
+    public final void setProp1(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop1) {
+        this.prop1 = prop1;
+    }
+    private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop2;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp2() {
+        return prop2;
+    }
+    
+    @.java.lang.Override
+    public final void setProp2(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop2) {
+        this.prop2 = prop2;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop3;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp3() {
+        return prop3;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop4;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp4() {
+        return prop4;
+    }
+}

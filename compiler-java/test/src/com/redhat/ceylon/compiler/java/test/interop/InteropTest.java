@@ -101,6 +101,12 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
+    public void testIopOptionality(){
+        compile("JavaOptionalInterface.java");
+        compareWithJavaSource("Optionality");
+    }
+
+    @Test
     public void testIopStaticMembers(){
         compile("JavaWithStaticMembers.java", "JavaWithStaticMembersSubClass.java");
         compareWithJavaSource("StaticMembers");
