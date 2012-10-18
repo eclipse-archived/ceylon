@@ -464,4 +464,10 @@ public class Util {
         T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass, list.size());
         return list.toArray(ret);
     }
+    
+    public static <T> T checkNull(T t){
+        if(t == null)
+            throw new NullPointerException();
+        return t;
+    }
 }
