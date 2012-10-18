@@ -82,7 +82,7 @@ public class AetherTestCase {
 
     @Test
     public void testAetherWithExternalSettings() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, "src/test/resources/maven-settings/settings.xml");
+        Repository repository = AetherRepository.createRepository(log, "maven/src/test/resources/maven-settings/settings.xml");
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
         Assert.assertNotNull(result);
@@ -107,7 +107,7 @@ public class AetherTestCase {
 
     @Test
     public void testAetherWithSemiColonModule() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, "src/test/resources/maven-settings/settings.xml");
+        Repository repository = AetherRepository.createRepository(log, "maven/src/test/resources/maven-settings/settings.xml");
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.restlet.jse:org.restlet", "2.0.10");
         Assert.assertNotNull(result);

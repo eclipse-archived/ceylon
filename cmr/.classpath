@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="api/src/main/java"/>
+	<classpathentry kind="src" path="maven/src/main/resources"/>
+	<classpathentry kind="src" path="maven/src/test/resources"/>
+	<classpathentry kind="src" path="maven/src/test/java"/>
 	<classpathentry kind="src" path="testsuite/src/test/resources"/>
 	<classpathentry kind="src" path="impl/src/main/java"/>
 	<classpathentry kind="src" path="spi/src/main/java"/>
@@ -19,5 +22,6 @@
 	<classpathentry kind="lib" path="lib/shrinkwrap-resolver-api-1.1.0-alpha-2.jar"/>
 	<classpathentry kind="lib" path="lib/shrinkwrap-resolver-api-maven-1.1.0-alpha-2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
+	<classpathentry kind="lib" path="/ceylon-compiler/lib/shrinkwrap-maven-uberjar-1.1.0-alpha-2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
