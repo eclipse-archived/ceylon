@@ -17,32 +17,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@nomodel
 interface Common {
-    shared formal void common();
+    shared formal Object common();
 }
 
-@nomodel 
 interface FooInterface {
-    shared formal void foo();
+    shared formal Object foo();
 }
 
-@nomodel
 class Foo() satisfies Common & FooInterface {
-    shared actual void common() {}
-    shared actual void foo() {}
+    shared actual Object common() {
+        return false;
+    }
+    shared actual Object foo() {
+        return false;
+    }
 }
-@nomodel
 class FooSub() extends Foo() {
     shared void foo2() {}
 }
 
-@nomodel
 interface BarInterface {
-    shared formal void bar();
+    shared formal Object bar();
 }
-@nomodel
 class Bar() satisfies Common & BarInterface {
-    shared actual void common() {}
-    shared actual void bar() {}
+    shared actual Object common() {
+        return false;
+    }
+    shared actual Object bar() {
+        return false;
+    }
 }
