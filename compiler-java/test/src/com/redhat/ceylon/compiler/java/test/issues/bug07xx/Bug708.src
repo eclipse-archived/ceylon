@@ -1,14 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug708_ {
     
     private bug708_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T|ceylon.language::Nothing|ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
     static <T>.java.lang.Object bug708() {
         return null;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.bug708();
@@ -151,12 +156,12 @@ final class bug708extra4_ {
         }
     }
 }
-final class test_ {
+final class bug708_test_ {
     
-    private test_() {
+    private bug708_test_() {
     }
     
-    static void test() {
+    static void bug708_test() {
         .ceylon.language.String $s$5;
         if (($s$5 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708()) != null) {
             final .java.lang.String $s$6 = $s$5.toString();
@@ -165,6 +170,57 @@ final class test_ {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.getProcess$().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.test_.test();
+        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_test_.bug708_test();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+class Bug708_Class<T> {
+    
+    Bug708_Class(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T|ceylon.language::Nothing|ceylon.language::String")
+    .java.lang.Object param, @.com.redhat.ceylon.compiler.java.metadata.Name("param2")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T|ceylon.language::Nothing|ceylon.language::String")
+    .java.lang.Object param2) {
+        this.param = param;
+        this.param2 = param2;
+        this.attr = param;
+        .ceylon.language.String $s$8;
+        if (($s$8 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).param) != null) {
+            final .java.lang.String $s$9 = $s$8.toString();
+        }
+        .ceylon.language.String $s$11;
+        if (($s$11 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getParam2()) != null) {
+            final .java.lang.String $s$12 = $s$11.toString();
+        }
+        .ceylon.language.String $s$14;
+        if (($s$14 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getAttr()) != null) {
+            final .java.lang.String $s$15 = $s$14.toString();
+        }
+        .ceylon.language.String $s$17;
+        if (($s$17 = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class<.ceylon.language.String>(.ceylon.language.String.instance(""), .ceylon.language.String.instance("")).getGetter()) != null) {
+            final .java.lang.String $s$18 = $s$17.toString();
+        }
+    }
+    private final .java.lang.Object param;
+    private final .java.lang.Object attr;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T|ceylon.language::Nothing|ceylon.language::String")
+    public final .java.lang.Object getAttr() {
+        return attr;
+    }
+    private final .java.lang.Object param2;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T|ceylon.language::Nothing|ceylon.language::String")
+    public final .java.lang.Object getParam2() {
+        return param2;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T|ceylon.language::Nothing|ceylon.language::String")
+    public final .java.lang.Object getGetter() {
+        return param;
     }
 }
