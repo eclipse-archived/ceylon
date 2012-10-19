@@ -11,6 +11,8 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface method(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
+        x.setProp1(x);
+        x.setProp1(null);
         return .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(x.getProp1()).getProp1());
     }
     

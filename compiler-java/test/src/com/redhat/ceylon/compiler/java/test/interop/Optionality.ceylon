@@ -20,6 +20,9 @@
 @nomodel
 class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface {
     shared actual JavaOptionalInterface method(JavaOptionalInterface x){
+        x.prop1 := x;
+        x.prop1 := null;
+        
         return x.prop1.prop1;
     }
     shared actual JavaOptionalInterface? method2(JavaOptionalInterface? x){
