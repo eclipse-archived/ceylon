@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 
@@ -28,15 +29,27 @@ public class Util {
         }
         return false;
     }
-    
+
     public static boolean hasUncheckedNulls(Tree.Term term) {
+        return hasUncheckedNulls(term, false);
+    }
+    
+    private static boolean hasUncheckedNulls(Tree.Term term, boolean invoking) {
         if (term instanceof Tree.MemberOrTypeExpression) {
             Declaration d = ((Tree.MemberOrTypeExpression) term).getDeclaration();
-            return d instanceof TypedDeclaration && 
-                    ((TypedDeclaration) d).hasUncheckedNullType();
+            return d instanceof TypedDeclaration 
+                    && ((TypedDeclaration) d).hasUncheckedNullType()
+                    // only consider method types when invoking them, because java method references can't be null
+                    && (d instanceof Method == false || invoking);
+        }
+        else if (term instanceof Tree.QualifiedMemberOrTypeExpression) {
+            return hasUncheckedNulls(((Tree.QualifiedMemberOrTypeExpression)term).getPrimary(), invoking);
         }
         else if (term instanceof Tree.InvocationExpression) {
-            return hasUncheckedNulls(((Tree.InvocationExpression) term).getPrimary());
+            return hasUncheckedNulls(((Tree.InvocationExpression) term).getPrimary(), true);
+        }
+        else if (term instanceof Tree.Expression) {
+            return hasUncheckedNulls(((Tree.Expression)term).getTerm(), invoking);
         }
         else {
             return false;
