@@ -16,6 +16,10 @@
 
 package com.redhat.ceylon.test.maven.test;
 
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -28,9 +32,6 @@ import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * Aether tests.
@@ -82,7 +83,7 @@ public class AetherTestCase {
 
     @Test
     public void testAetherWithExternalSettings() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, "maven/src/test/resources/maven-settings/settings.xml");
+        Repository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
         Assert.assertNotNull(result);
@@ -107,7 +108,7 @@ public class AetherTestCase {
 
     @Test
     public void testAetherWithSemiColonModule() throws Throwable {
-        Repository repository = AetherRepository.createRepository(log, "maven/src/test/resources/maven-settings/settings.xml");
+        Repository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         ArtifactResult result = manager.getArtifactResult("org.restlet.jse:org.restlet", "2.0.10");
         Assert.assertNotNull(result);
@@ -127,5 +128,10 @@ public class AetherTestCase {
                 Assert.assertTrue(artifact.delete()); // delete this one
             }
         }
+    }
+
+    private Repository createAetherRepository() throws Exception {
+        URL settingsXml = getClass().getClassLoader().getResource("maven-settings/settings.xml");
+        return AetherRepository.createRepository(log, new File(settingsXml.toURI()).getPath());
     }
 }

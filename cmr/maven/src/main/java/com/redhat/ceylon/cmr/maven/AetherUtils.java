@@ -17,15 +17,13 @@
 package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
-import java.util.WeakHashMap;
-
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.ResolutionException;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
+import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
+import org.jboss.shrinkwrap.resolver.api.ResolutionException;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 /**
  * Aether utils.
@@ -38,17 +36,18 @@ public class AetherUtils {
 
     private Logger log;
     private String settingsXml;
-    private static WeakHashMap<String, WeakHashMap<String, MavenDependencyResolver>> resolvers = new WeakHashMap<String, WeakHashMap<String, MavenDependencyResolver>>();
+    private MavenDependencyResolver resolver;
 
     AetherUtils(Logger log) {
         this.log = log;
         settingsXml = getDefaultMavenSettings();
-        }
+    }
 
     void overrideSettingsXml(String settingsXml) {
         this.settingsXml = settingsXml;
+        this.resolver = null; // reset resolver
     }
-    
+
     File findDependency(Node node) {
         final File[] files = findDependencies(node);
         return (files != null) ? files[0] : null;
@@ -74,7 +73,7 @@ public class AetherUtils {
     private File[] fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) {
         final String coordinates = groupId + ":" + artifactId + ":" + version;
         try {
-            final MavenDependencyResolver mdr = getResolver(coordinates);
+            final MavenDependencyResolver mdr = getResolver().artifact(coordinates);
             if (fetchSingleArtifact)
                 mdr.exclusion("*");
 
@@ -107,20 +106,12 @@ public class AetherUtils {
                 return file.getAbsolutePath();
         }
 
-		return "classpath:settings.xml";
+        return "classpath:settings.xml";
     }
 
-    private synchronized MavenDependencyResolver getResolver(String coordinates) {
-        WeakHashMap<String, MavenDependencyResolver> settingsResolvers = resolvers.get(settingsXml);
-        if (settingsResolvers == null) {
-            settingsResolvers = new WeakHashMap<String, MavenDependencyResolver>();
-            resolvers.put(settingsXml, settingsResolvers);
-         }
-        
-        MavenDependencyResolver resolver = settingsResolvers.get(coordinates);
+    private synchronized MavenDependencyResolver getResolver() {
         if (resolver == null) {
-            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(new String(settingsXml)).artifact(coordinates);
-            settingsResolvers.put(coordinates, resolver);
+            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml);
         }
         return resolver;
     }
