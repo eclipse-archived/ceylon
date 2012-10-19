@@ -17,13 +17,17 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.*;
+import java.io.File;
+import java.util.List;
+
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryBuilder;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.OpenNode;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * Root repository builder.
@@ -48,11 +52,11 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     }
 
     protected void init() {
-        getRoot().addService(MergeStrategy.class, new DefaultMergeStrategy());
+        getCache().addService(MergeStrategy.class, new DefaultMergeStrategy());
     }
 
-    private OpenNode getRoot() {
-        return repository.getRoot();
+    private OpenNode getCache() {
+        return repository.getCache();
     }
 
     @Override
@@ -61,17 +65,17 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilderImpl mergeStrategy(MergeStrategy strategy) {
-        getRoot().addService(MergeStrategy.class, strategy);
+        getCache().addService(MergeStrategy.class, strategy);
         return this;
     }
 
     public RepositoryManagerBuilderImpl contentTransformer(ContentTransformer transformer) {
-        getRoot().addService(ContentTransformer.class, transformer);
+        getCache().addService(ContentTransformer.class, transformer);
         return this;
     }
 
     public RepositoryManagerBuilderImpl cacheContent() {
-        getRoot().addService(ContentTransformer.class, new CachingContentTransformer());
+        getCache().addService(ContentTransformer.class, new CachingContentTransformer());
         return this;
     }
 

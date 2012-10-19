@@ -16,14 +16,19 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.*;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.StructureBuilder;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 /**
  * Caching / tmp repository.
@@ -40,7 +45,8 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
         if (root == null)
             throw new IllegalArgumentException("Null structure builder!");
 
-        setRoot(new DefaultRepository(root.createRoot()));
+        setAddCacheAsRoot(true);
+        setCache(new DefaultRepository(root.createRoot()));
         this.caching = new SimpleRepositoryManager(new FileContentStore(cachingDir), log);
         this.cachingDir = cachingDir;
     }
@@ -50,7 +56,8 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
         if (root == null)
             throw new IllegalArgumentException("Null root!");
 
-        setRoot(root);
+        setAddCacheAsRoot(true);
+        setCache(root);
         this.caching = new SimpleRepositoryManager(new FileContentStore(cachingDir), log);
         this.cachingDir = cachingDir;
     }
@@ -101,10 +108,10 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
 
     @Override
     public String toString() {
-        return "CachingRepositoryManager: " + getRoot();
+        return "CachingRepositoryManager: " + getCache();
     }
-    
-    public File getCacheFolder(){
+
+    public File getCacheFolder() {
         return cachingDir;
     }
 }

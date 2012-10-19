@@ -37,6 +37,7 @@ import com.redhat.ceylon.cmr.impl.JDKRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -114,12 +115,14 @@ public class SmokeTestCase extends AbstractTest {
     public void testRemove() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
         String name = "org.jboss.qwerty";
         String version = "1.0.0.Alpha2";
         File file = null;
         try {
-            manager.putArtifact(name, version, baos);
+            File artifact = manager.getArtifact(name, version);
+            Assert.assertNull(artifact);
+
+            manager.putArtifact(name, version, new ByteArrayInputStream("qwerty".getBytes()));
 
             file = manager.getArtifact(name, version);
             Assert.assertNotNull("Failed to retrieve after put", file);
@@ -132,19 +135,25 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testExternalNodes() throws Exception {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder();
 
         InMemoryContentStore imcs = new InMemoryContentStore();
-        Repository repo = new DefaultRepository(imcs.createRoot());
+        OpenNode root = imcs.createRoot();
+        Repository repo = new DefaultRepository(root);
         RepositoryManager manager = builder.appendRepository(repo).buildRepository();
 
-        ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
+        // a few impl details, feel free to remove/ignore this test
+
         String name = "com.redhat.acme";
         String version = "1.0.0.CR1";
-        try {
-            manager.putArtifact(name, version, baos);
+        ArtifactContext context = new ArtifactContext(name, version);
+        context.setIgnoreSHA(true); // ignore with in-memory
 
-            File file = manager.getArtifact(name, version);
+        OpenNode parent = repo.createParent(context);
+        parent.addContent(name + "-" + version + ArtifactContext.CAR, new ByteArrayInputStream("qwerty".getBytes()), context);
+
+        try {
+            File file = manager.getArtifact(context);
             Assert.assertNotNull("Failed to retrieve after put", file);
         } finally {
             manager.removeArtifact(name, version);
@@ -182,7 +191,7 @@ public class SmokeTestCase extends AbstractTest {
             return; // probably not on the internet?
         }
 
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder();
         RemoteContentStore rcs = new RemoteContentStore(repoURL, log);
         Repository repo = new DefaultRepository(rcs.createRoot());
         RepositoryManager manager = builder.appendRepository(repo).buildRepository();
@@ -211,7 +220,7 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testMavenRemote() throws Exception {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(getRepositoryRoot(), log);
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder();
         Repository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log);
         builder.prependRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
@@ -465,7 +474,7 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
         };
 
-        testSearchResults("classic", Type.JS, expected); 
+        testSearchResults("classic", Type.JS, expected);
         testSearchResults("domain", Type.JS, expected);
         testSearchResults("epardaud", Type.JS, expected);
     }
@@ -614,7 +623,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testListVersionJDK() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("7", "JDK module jdk.base", null, new String[0]),
+                new ModuleVersionDetails("7", "JDK module jdk.base", null),
         };
         testListVersions("jdk.base", null, expected, getJDKRepositoryManager());
     }

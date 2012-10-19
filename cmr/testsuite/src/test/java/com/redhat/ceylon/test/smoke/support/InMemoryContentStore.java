@@ -17,15 +17,25 @@
 
 package com.redhat.ceylon.test.smoke.support;
 
-import com.redhat.ceylon.cmr.impl.DefaultNode;
-import com.redhat.ceylon.cmr.impl.IOUtils;
-import com.redhat.ceylon.cmr.impl.RootNode;
-import com.redhat.ceylon.cmr.spi.*;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.redhat.ceylon.cmr.impl.DefaultNode;
+import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.cmr.impl.RootNode;
+import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.ContentOptions;
+import com.redhat.ceylon.cmr.spi.ContentStore;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -60,13 +70,23 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
 
     @Override
     public OpenNode createRoot() {
-        return new RootNode(this, this);
+        return new RootNode(this, this) {
+            @Override
+            public boolean isRemote() {
+                return true;
+            }
+        };
     }
 
     @Override
     public OpenNode create(Node parent, String child) {
         // automagically build the tree
-        DefaultNode node = new DefaultNode(child);
+        DefaultNode node = new DefaultNode(child) {
+            @Override
+            public boolean isRemote() {
+                return true;
+            }
+        };
         store.put(node, MARKER);
         return node;
     }

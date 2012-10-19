@@ -57,7 +57,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         }
         fileContentStore = new FileContentStore(rootDir);
         final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
-        setRoot(aaca);
+        setCache(aaca);
     }
 
     public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
@@ -131,7 +131,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
         // refresh markers from root to this newly put node
         final List<String> paths = NodeUtils.toLabelPath(node);
-        OpenNode current = getRoot();
+        OpenNode current = getCache();
         for (String path : paths) {
             if (current == null)
                 break;
@@ -193,7 +193,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     @Override
     protected Boolean checkSHA(Node artifact) throws IOException {
         Boolean result = super.checkSHA(artifact);
-        if (result == null && artifact.isRemote() == false && NodeUtils.isAncestor(getRoot(), artifact)) {
+        if (result == null && artifact.isRemote() == false && NodeUtils.isAncestor(getCache(), artifact)) {
             Node sha = artifact.getChild(SHA1 + LOCAL);
             if (sha != null) {
                 File shaFile = fileContentStore.getFile(sha);

@@ -18,11 +18,6 @@
 package com.redhat.ceylon.test.smoke.test;
 
 import java.io.File;
-import java.net.URISyntaxException;
-
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -33,6 +28,9 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Stef Epardaud
@@ -43,26 +41,26 @@ public class HerdTestCase extends AbstractTest {
     public void testDummy() {
     }
 
-    private RepositoryManager getRepositoryManager(File root) {
-        RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log);
+    private RepositoryManager getRepositoryManager(File root) throws Exception {
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(root);
         WebDAVContentStore rcs = new WebDAVContentStore("http://localhost:9000/test", log);
         Repository repo = new DefaultRepository(rcs.createRoot());
         return builder.appendRepository(repo).buildRepository();
     }
 
-    protected RepositoryManager getRepositoryManager() throws URISyntaxException {
+    protected RepositoryManager getRepositoryManager() throws Exception {
         // only Herd
         return getRepositoryManager(getFolders());
     }
 
-    protected RepositoryManager getDualRepositoryManager() throws URISyntaxException {
+    protected RepositoryManager getDualRepositoryManager() throws Exception {
         // Herd + /repo
         return getRepositoryManager(getRepositoryRoot());
     }
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteEmpty() throws Exception{
+    public void testHerdCompleteEmpty() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -79,7 +77,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteBinaryIncompatible() throws Exception{
+    public void testHerdCompleteBinaryIncompatible() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
         };
@@ -88,7 +86,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteCeyl() throws Exception{
+    public void testHerdCompleteCeyl() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -98,7 +96,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteCeylon() throws Exception{
+    public void testHerdCompleteCeylon() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -108,7 +106,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteCompleteName() throws Exception{
+    public void testHerdCompleteCompleteName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
         };
@@ -117,7 +115,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteStopsAfterCompleteName() throws Exception{
+    public void testHerdCompleteStopsAfterCompleteName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
         };
         testComplete("ceylon.collection.", expected, getRepositoryManager());
@@ -125,7 +123,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteCeylonDot() throws Exception{
+    public void testHerdCompleteCeylonDot() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -135,7 +133,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteVersions() throws Exception{
+    public void testHerdCompleteVersions() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("0.3.0", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", "Stéphane Épardaud"),
         };
@@ -144,7 +142,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteVersionsBinaryIncompatible() throws Exception{
+    public void testHerdCompleteVersionsBinaryIncompatible() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
         testListVersions("ceylon.collection", null, expected, getRepositoryManager(), 1234, 0);
@@ -152,7 +150,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdCompleteVersionsFiltered() throws Exception{
+    public void testHerdCompleteVersionsFiltered() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
         testListVersions("ceylon.collection", "1.0", expected);
@@ -160,7 +158,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdSearch() throws Exception{
+    public void testHerdSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -177,7 +175,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdSearchBinaryIncompatible() throws Exception{
+    public void testHerdSearchBinaryIncompatible() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("org.apache.commons.httpclient", null, null, set(), set("3.1")),
         };
@@ -186,7 +184,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdSearchFiltered() throws Exception{
+    public void testHerdSearchFiltered() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -196,17 +194,17 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdSearchPaged() throws Exception{
+    public void testHerdSearchPaged() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.2", "1.0.3")),
         };
         testSearchResults("", Type.JVM, expected, 1l, 2l);
     }
-    
+
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdAndRepoSearch() throws Exception{
+    public void testHerdAndRepoSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -227,7 +225,7 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdAndRepoSearchPaged1() throws Exception{
+    public void testHerdAndRepoSearchPaged1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
@@ -238,21 +236,21 @@ public class HerdTestCase extends AbstractTest {
 
     @Test
     @Ignore("Required Herd running locally")
-    public void testHerdAndRepoSearchPaged2() throws Exception{
+    public void testHerdAndRepoSearchPaged2() throws Exception {
         // first page
         ModuleDetails[] expected = new ModuleDetails[]{
                 new ModuleDetails("ceylon.collection", "A module for collections \"foo\" `hehe` < 3\n\n    some code `with` \"stuff\" < 𐒅 &lt; &#32; &#x32; 2\n\nboo", "Apache Software License", set("Stéphane Épardaud"), set("0.3.0")),
                 new ModuleDetails("ceylon.language", null, null, set(), set("0.1")),
         };
         ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0L, 2L, getDualRepositoryManager());
-        
+
         // check end indices
         long[] pagingInfo = results.getNextPagingInfo();
         Assert.assertNotNull(pagingInfo);
         Assert.assertEquals(2, pagingInfo.length);
         Assert.assertEquals(0, pagingInfo[0]);
         Assert.assertEquals(2, pagingInfo[1]);
-        
+
         // second page
         expected = new ModuleDetails[]{
                 new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0", "1.0.2", "1.0.3")),

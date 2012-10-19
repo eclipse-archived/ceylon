@@ -45,6 +45,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private String suffix = CAR;
     private boolean localOnly;
     private boolean ignoreSHA;
+    private boolean ignoreCache;
     private boolean throwErrorIfMissing;
     private boolean forceOperation;
     private boolean forceDescriptorCheck;
@@ -134,6 +135,14 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public void setIgnoreSHA(boolean ignoreSHA) {
         this.ignoreSHA = ignoreSHA;
+    }
+
+    public boolean isIgnoreCache() {
+        return ignoreCache;
+    }
+
+    public void setIgnoreCache(boolean ignoreCache) {
+        this.ignoreCache = ignoreCache;
     }
 
     public boolean isThrowErrorIfMissing() {

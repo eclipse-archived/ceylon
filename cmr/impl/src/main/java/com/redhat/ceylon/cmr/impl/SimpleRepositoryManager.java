@@ -16,7 +16,11 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.api.*;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 /**
@@ -31,7 +35,8 @@ public class SimpleRepositoryManager extends AbstractNodeRepositoryManager {
         if (structureBuilder == null)
             throw new IllegalArgumentException("Null structure builder!");
 
-        setRoot(new DefaultRepository(structureBuilder.createRoot()));
+        setAddCacheAsRoot(true);
+        setCache(new DefaultRepository(structureBuilder.createRoot()));
     }
 
     public SimpleRepositoryManager(Repository root, Logger log) {
@@ -39,15 +44,16 @@ public class SimpleRepositoryManager extends AbstractNodeRepositoryManager {
         if (root == null)
             throw new IllegalArgumentException("Null root!");
 
-        setRoot(root);
+        setAddCacheAsRoot(true);
+        setCache(root);
     }
 
     public ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException {
-        return root.getArtifactResult(this, getLeafNode(context));
+        return cache.getArtifactResult(this, getLeafNode(context));
     }
 
     @Override
     public String toString() {
-        return "SimpleRepositoryManager: " + getRoot();
+        return "SimpleRepositoryManager: " + getCache();
     }
 }
