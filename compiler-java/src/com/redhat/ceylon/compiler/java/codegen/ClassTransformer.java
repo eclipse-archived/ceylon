@@ -194,6 +194,11 @@ public class ClassTransformer extends AbstractTransformer {
     private List<JCStatement> visitClassOrInterfaceDefinition(Node def, ClassDefinitionBuilder classBuilder) {
         // Transform the class/interface members
         CeylonVisitor visitor = gen().visitor;
+        
+        // don't visit if we have errors in the initialiser
+        if(def instanceof Tree.ClassOrInterface && visitor.hasClassInitialiserErrors((Tree.ClassOrInterface)def))
+            return List.nil();
+        
         final ListBuffer<JCTree> prevDefs = visitor.defs;
         final boolean prevInInitializer = visitor.inInitializer;
         final ClassDefinitionBuilder prevClassBuilder = visitor.classBuilder;

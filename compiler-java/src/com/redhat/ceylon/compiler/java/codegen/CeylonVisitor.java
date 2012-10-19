@@ -102,6 +102,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         return errorVisitor.hasErrors(decl);
     }
 
+    boolean hasClassInitialiserErrors(Tree.ClassOrInterface decl) {
+        ClassInitialiserErrorVisitor errorVisitor = new ClassInitialiserErrorVisitor(gen.getContext());
+        return errorVisitor.hasErrors(decl);
+    }
+
     public void visit(Tree.ObjectDefinition decl) {
         if(hasErrors(decl))
             return;
