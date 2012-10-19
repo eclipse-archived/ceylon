@@ -56,6 +56,16 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     
     @.java.lang.Override
+    public final .java.lang.Object getFirst() {
+        return $ceylon$language$Empty$this.getFirst();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getLast() {
+        return $ceylon$language$Empty$this.getLast();
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Empty getReversed() {
         return $ceylon$language$Empty$this.getReversed();
     }
@@ -89,6 +99,11 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     @.java.lang.Override
     public int hashCode() {
         return $ceylon$language$List$this.hashCode();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -126,11 +141,6 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     @.java.lang.Override
     public .java.lang.Object find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.Object findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -235,6 +245,16 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     private final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Correspondence$this;
     
     @.java.lang.Override
+    public .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ?> $ceylon$language$Correspondence$impl() {
+        return $ceylon$language$Correspondence$this;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ?>.Items Items$new(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> arg0) {
+        return $ceylon$language$Correspondence$this.Items$new(arg0);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Category getKeys() {
         return $ceylon$language$Correspondence$this.getKeys();
     }
@@ -285,16 +305,6 @@ class EmptyImpl extends .java.lang.Object implements .ceylon.language.Empty {
     }
     private final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<?>> $ceylon$language$Ranged$this;
     private final .ceylon.language.None$impl<.java.lang.Object> $ceylon$language$None$this;
-    
-    @.java.lang.Override
-    public .java.lang.Object getFirst() {
-        return $ceylon$language$None$this.getFirst();
-    }
-    
-    @.java.lang.Override
-    public .java.lang.Object getLast() {
-        return $ceylon$language$None$this.getLast();
-    }
     
     @.java.lang.Override
     public final boolean getEmpty() {
