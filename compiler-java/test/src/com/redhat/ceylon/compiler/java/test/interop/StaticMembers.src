@@ -9,10 +9,10 @@ final class staticMethods_ {
         .java.io.File sync;
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
-        final .java.lang.Object roots1 = .ceylon.language.Array.<.java.io.File>instance(.java.io.File.listRoots());
+        final .java.lang.Object roots1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(.java.io.File.listRoots()));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", ""));
         sync = .com.redhat.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", "", sync));
-        final .java.lang.Object roots2 = .ceylon.language.Array.<.java.io.File>instance(sync.listRoots());
+        final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(sync.listRoots()));
     }
     
     public static void main(.java.lang.String[] args) {
@@ -85,7 +85,7 @@ final class staticFields_ {
     }
     
     static void staticFields() {
-        final .java.lang.Boolean false = .java.lang.Boolean.FALSE;
+        final .java.lang.Boolean false = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Boolean.FALSE);
     }
     
     public static void main(.java.lang.String[] args) {

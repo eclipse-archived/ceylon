@@ -6,7 +6,7 @@ final class enums_ {
     }
     
     static void enums() {
-        final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e = .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE;
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE);
         e.field = e.field;
         e.setProperty(e.getProperty());
         e.method();

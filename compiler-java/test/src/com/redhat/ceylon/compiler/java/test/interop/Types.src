@@ -18,7 +18,7 @@ final class booleanTypes_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final boolean b1 = java.return_boolean();
         final boolean b2 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Boolean()).booleanValue();
-        final .java.lang.Object b4 = java.return_Boolean();
+        final .java.lang.Object b4 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Boolean());
         final .java.lang.Object b5 = java.return_Boolean();
         java.booleanParams(true, new .java.lang.Boolean(true), .ceylon.language.Boolean.instance(true));
         java.booleanParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)).booleanValue(), new .java.lang.Boolean(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)).booleanValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.instance(true)));
@@ -185,7 +185,7 @@ final class stringTypes_ {
     
     static void stringTypes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .java.lang.String s1 = java.return_String();
+        final .java.lang.String s1 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_String());
         final .ceylon.language.String s2 = .ceylon.language.String.instance(java.return_String());
         java.stringParams("a", .ceylon.language.String.instance("a"));
         java.stringParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.String>box(.ceylon.language.String.instance("a")).toString(), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.String>box(.ceylon.language.String.instance("a")));
@@ -204,7 +204,7 @@ final class objectTypes_ {
     
     static void objectTypes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .java.lang.Object o1 = java.return_Object();
+        final .java.lang.Object o1 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Object());
         final .java.lang.Object o2 = java.return_Object();
         java.objectParams(o1);
         java.objectParams(java.return_Object());
@@ -507,11 +507,11 @@ final class typeParameters_ {
     
     static void typeParameters() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .java.util.List<.ceylon.language.String> stringList = java.stringList();
+        final .java.util.List<.ceylon.language.String> stringList = .com.redhat.ceylon.compiler.java.Util.checkNull(java.stringList());
         stringList.add(.ceylon.language.String.instance("foo"));
-        final .java.util.List<.java.lang.String> jstringList = java.jstringList();
+        final .java.util.List<.java.lang.String> jstringList = .com.redhat.ceylon.compiler.java.Util.checkNull(java.jstringList());
         jstringList.add(new .java.lang.String("foo"));
-        final .java.util.List<.java.lang.Object> objectList = java.objectList();
+        final .java.util.List<.java.lang.Object> objectList = .com.redhat.ceylon.compiler.java.Util.checkNull(java.objectList());
         objectList.add(.ceylon.language.String.instance("foo"));
     }
     

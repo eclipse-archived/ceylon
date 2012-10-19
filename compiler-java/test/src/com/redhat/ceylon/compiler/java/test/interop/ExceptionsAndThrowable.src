@@ -34,7 +34,7 @@ public final class testThrowable_ {
     }
     
     public static void testThrowable(final .com.redhat.ceylon.compiler.java.test.interop.JavaExceptionsAndThrowable j) {
-        final .java.lang.Throwable t = j.throwable();
+        final .java.lang.Throwable t = .com.redhat.ceylon.compiler.java.Util.checkNull(j.throwable());
         if (2L > 1L) {
             throw new .ceylon.language.Exception(.ceylon.language.String.instance("error"), j.throwable());
         }

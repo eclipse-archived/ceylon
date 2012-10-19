@@ -7,7 +7,7 @@ final class testFiles_ {
     
     static void testFiles() {
         final .java.io.File f = new .java.io.File(".");
-        final .ceylon.language.Array<.java.io.File> items = .ceylon.language.Array.<.java.io.File>instance(f.listFiles());
+        final .ceylon.language.Array<.java.io.File> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.io.File>instance(f.listFiles()));
         final .java.io.File f2 = items.item(.ceylon.language.Integer.instance(0L));
     }
     
@@ -23,7 +23,7 @@ final class test_booleans_ {
     
     static void test_booleans() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Boolean> items = .ceylon.language.Array.<.ceylon.language.Boolean>instance(java.return_booleans());
+        final .ceylon.language.Array<.ceylon.language.Boolean> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Boolean>instance(java.return_booleans()));
         final .ceylon.language.Boolean b = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Boolean b3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.Boolean $b$1;
@@ -54,7 +54,7 @@ final class test_JBooleans_ {
     
     static void test_JBooleans() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Boolean> items = .ceylon.language.Array.<.java.lang.Boolean>instance(java.return_Booleans());
+        final .ceylon.language.Array<.java.lang.Boolean> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Boolean>instance(java.return_Booleans()));
         final .java.lang.Boolean b = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Boolean b3 = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Boolean $b$6;
@@ -82,7 +82,7 @@ final class test_bytes_ {
     
     static void test_bytes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Integer> items = .ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_bytes());
+        final .ceylon.language.Array<.ceylon.language.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_bytes()));
         final .ceylon.language.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.Integer $n$11;
@@ -110,7 +110,7 @@ final class test_JBytes_ {
     
     static void test_JBytes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Byte> items = .ceylon.language.Array.<.java.lang.Byte>instance(java.return_Bytes());
+        final .ceylon.language.Array<.java.lang.Byte> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Byte>instance(java.return_Bytes()));
         final .java.lang.Byte n = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Byte n3 = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Byte $n$16;
@@ -138,7 +138,7 @@ final class test_shorts_ {
     
     static void test_shorts() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Integer> items = .ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_shorts());
+        final .ceylon.language.Array<.ceylon.language.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_shorts()));
         final .ceylon.language.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.Integer $n$21;
@@ -166,7 +166,7 @@ final class test_JShorts_ {
     
     static void test_JShorts() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Short> items = .ceylon.language.Array.<.java.lang.Short>instance(java.return_Shorts());
+        final .ceylon.language.Array<.java.lang.Short> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Short>instance(java.return_Shorts()));
         final .java.lang.Short n = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Short n3 = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Short $n$26;
@@ -194,7 +194,7 @@ final class test_ints_ {
     
     static void test_ints() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Integer> items = .ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_ints());
+        final .ceylon.language.Array<.ceylon.language.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_ints()));
         final .ceylon.language.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.Integer $n$31;
@@ -222,7 +222,7 @@ final class test_JIntegers_ {
     
     static void test_JIntegers() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Integer> items = .ceylon.language.Array.<.java.lang.Integer>instance(java.return_Integers());
+        final .ceylon.language.Array<.java.lang.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Integer>instance(java.return_Integers()));
         final .java.lang.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Integer $n$36;
@@ -250,7 +250,7 @@ final class test_longs_ {
     
     static void test_longs() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Integer> items = .ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_longs());
+        final .ceylon.language.Array<.ceylon.language.Integer> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Integer>instance(java.return_longs()));
         final .ceylon.language.Integer n = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Integer n3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.Integer $n$41;
@@ -281,7 +281,7 @@ final class test_JLongs_ {
     
     static void test_JLongs() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Long> items = .ceylon.language.Array.<.java.lang.Long>instance(java.return_Longs());
+        final .ceylon.language.Array<.java.lang.Long> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Long>instance(java.return_Longs()));
         final .java.lang.Long n = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Long n3 = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Long $n$46;
@@ -309,7 +309,7 @@ final class test_floats_ {
     
     static void test_floats() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Float> items = .ceylon.language.Array.<.ceylon.language.Float>instance(java.return_floats());
+        final .ceylon.language.Array<.ceylon.language.Float> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Float>instance(java.return_floats()));
         final .ceylon.language.Float f = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Float f3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.Float $f$51;
@@ -337,7 +337,7 @@ final class test_JFloats_ {
     
     static void test_JFloats() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Float> items = .ceylon.language.Array.<.java.lang.Float>instance(java.return_Floats());
+        final .ceylon.language.Array<.java.lang.Float> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Float>instance(java.return_Floats()));
         final .java.lang.Float f = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Float f3 = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Float $f$56;
@@ -365,7 +365,7 @@ final class test_doubles_ {
     
     static void test_doubles() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Float> items = .ceylon.language.Array.<.ceylon.language.Float>instance(java.return_doubles());
+        final .ceylon.language.Array<.ceylon.language.Float> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Float>instance(java.return_doubles()));
         final .ceylon.language.Float f = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Float f3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.Float $f$61;
@@ -396,7 +396,7 @@ final class test_JDoubles_ {
     
     static void test_JDoubles() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Double> items = .ceylon.language.Array.<.java.lang.Double>instance(java.return_Doubles());
+        final .ceylon.language.Array<.java.lang.Double> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Double>instance(java.return_Doubles()));
         final .java.lang.Double f = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Double f3 = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Double $f$66;
@@ -424,7 +424,7 @@ final class test_chars_ {
     
     static void test_chars() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.Character> items = .ceylon.language.Array.<.ceylon.language.Character>instance(java.return_chars());
+        final .ceylon.language.Array<.ceylon.language.Character> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.Character>instance(java.return_chars()));
         final .ceylon.language.Character c = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.Character c3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.Character $c$71;
@@ -455,7 +455,7 @@ final class test_JCharacters_ {
     
     static void test_JCharacters() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Character> items = .ceylon.language.Array.<.java.lang.Character>instance(java.return_Characters());
+        final .ceylon.language.Array<.java.lang.Character> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Character>instance(java.return_Characters()));
         final .java.lang.Character c = items.item(.ceylon.language.Integer.instance(0L));
         final .java.lang.Character c3 = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Character $c$76;
@@ -483,7 +483,7 @@ final class test_Strings_ {
     
     static void test_Strings() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.ceylon.language.String> items = .ceylon.language.Array.<.ceylon.language.String>instance(java.return_Strings());
+        final .ceylon.language.Array<.ceylon.language.String> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.ceylon.language.String>instance(java.return_Strings()));
         final .ceylon.language.String s = items.item(.ceylon.language.Integer.instance(0L));
         final .ceylon.language.String s3 = items.item(.ceylon.language.Integer.instance(0L));
         .ceylon.language.String $s$81;
@@ -514,7 +514,7 @@ final class test_Objects_ {
     
     static void test_Objects() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        final .ceylon.language.Array<.java.lang.Object> items = .ceylon.language.Array.<.java.lang.Object>instance(java.return_Objects());
+        final .ceylon.language.Array<.java.lang.Object> items = .com.redhat.ceylon.compiler.java.Util.checkNull(.ceylon.language.Array.<.java.lang.Object>instance(java.return_Objects()));
         final .java.lang.Object o = items.item(.ceylon.language.Integer.instance(0L));
         .java.lang.Object $o$86;
         if (($o$86 = o) != null) {
