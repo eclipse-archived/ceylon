@@ -157,14 +157,14 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(PositiveOp that) {
         super.visit(that);
         // we are unboxed if our term is
-        propagateFromTerm(that, that.getTerm());
+        propagateBoxingFromTerm(that, that.getTerm());
     }
 
     @Override
     public void visit(NegativeOp that) {
         super.visit(that);
         // we are unboxed if our term is
-        propagateFromTerm(that, that.getTerm());
+        propagateBoxingFromTerm(that, that.getTerm());
     }
 
     @Override
@@ -192,14 +192,14 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(PostfixOperatorExpression that) {
         super.visit(that);
         // we are unboxed if the term is
-        propagateFromTerm(that, that.getTerm());
+        propagateBoxingFromTerm(that, that.getTerm());
     }
 
     @Override
     public void visit(PrefixOperatorExpression that) {
         super.visit(that);
         // we are unboxed if the term is
-        propagateFromTerm(that, that.getTerm());
+        propagateBoxingFromTerm(that, that.getTerm());
     }
 
     @Override
@@ -336,6 +336,15 @@ public abstract class BoxingVisitor extends Visitor {
             CodegenUtil.markTypeErased(that);
     }
 
+    /**
+     * Only for things that can't produce raw/erased types, such as math operators because
+     * those are always casted
+     */
+    private void propagateBoxingFromTerm(Term that, Term term) {
+        if(CodegenUtil.isUnBoxed(term))
+            CodegenUtil.markUnBoxed(that);
+    }
+    
     private void propagateFromTerm(Term that, Term term) {
         if(CodegenUtil.isUnBoxed(term))
             CodegenUtil.markUnBoxed(that);
