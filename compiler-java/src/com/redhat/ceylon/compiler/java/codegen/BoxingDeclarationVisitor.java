@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -207,6 +208,18 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             // an error must have already been reported
             return;
         }
+        // fetch the real refined declaration if required
+        if(declaration == refinedDeclaration
+                && declaration instanceof Parameter
+                && declaration.getContainer() instanceof Class){
+            // maybe it is really inherited from a field?
+            MethodOrValue methodOrValueForParam = CodegenUtil.findMethodOrValueForParam((Parameter) declaration);
+            if(methodOrValueForParam != null){
+                // make sure we get the refined version of that member
+                refinedDeclaration = (TypedDeclaration) methodOrValueForParam.getRefinedDeclaration();
+            }
+        }
+        
         // inherit underlying type constraints
         if(refinedDeclaration != declaration && type.getUnderlyingType() == null)
             type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
