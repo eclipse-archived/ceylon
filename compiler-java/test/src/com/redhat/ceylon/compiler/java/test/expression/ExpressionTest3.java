@@ -131,7 +131,8 @@ public class ExpressionTest3 extends CompilerTest {
     }
     
     @Test
-    public void testComprehensionForIfNonEmptyString(){
+    // depends on https://github.com/ceylon/ceylon-spec/issues/441
+    public void testComprehensionForIfNonEmptyString_fail(){
         compareWithJavaSource("comprehensions/ForIfNonEmptyString");
     }
     

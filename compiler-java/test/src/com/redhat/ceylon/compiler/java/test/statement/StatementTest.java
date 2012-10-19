@@ -191,7 +191,8 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConMethodIfNonEmptyString(){
+    // depends on https://github.com/ceylon/ceylon-spec/issues/441
+    public void testConMethodIfNonEmptyString_fail(){
         compareWithJavaSource("conditional/MethodIfNonEmptyString");
     }
     
@@ -358,7 +359,8 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConMethodWhileNonEmptyString(){
+    // depends on https://github.com/ceylon/ceylon-spec/issues/441
+    public void testConMethodWhileNonEmptyString_fail(){
         compareWithJavaSource("loop/MethodWhileNonEmptyString");
     }
     
@@ -623,7 +625,8 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testConAssertNonEmptyString(){
+    // depends on https://github.com/ceylon/ceylon-spec/issues/441
+    public void testConAssertNonEmptyString_fail(){
         compareWithJavaSource("conditional/AssertNonEmptyString");
     }
     
