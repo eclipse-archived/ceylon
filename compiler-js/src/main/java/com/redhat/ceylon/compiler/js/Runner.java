@@ -47,21 +47,23 @@ public class Runner {
         protected final PrintStream out;
         protected final byte[] buf  = new byte[16384];
         protected boolean printing = true;
-        public ReadErrorStream(InputStream from, PrintStream to) {
+        protected boolean debug = false;
+        public ReadErrorStream(InputStream from, PrintStream to, boolean debug) {
             this.in = new BufferedReader(new InputStreamReader(from));
             this.out = to;
+            this.debug = debug;
         }
         public void run() {
             try {
                 String line = in.readLine();
                 while (line != null) {
-                    if (line.trim().startsWith("throw new")) {
-                        printing = false;
-                    } else if (line.startsWith("Error: Cannot find module")) {
+                    if (line.trim().startsWith("throw ")) {
+                        printing = false || debug;
+                    } else if (line.startsWith("Error: Cannot find module ")) {
                         out.println(line);
-                        printing = false;
+                        printing = false || debug;
                     } else if (!printing) {
-                        printing = !(line.isEmpty() || line.startsWith("    at "));
+                        printing = !(line.isEmpty() || line.startsWith("    at ")) || debug;
                     }
                     if (printing) {
                         out.println(line);
@@ -115,7 +117,7 @@ public class Runner {
         return f.exists() && f.canExecute();
     }
 
-    public static int run(List<String> repos, String module, String func, PrintStream output)
+    public static int run(List<String> repos, String module, String func, PrintStream output, boolean debug)
             throws IOException, InterruptedException {
         final String node;
         try {
@@ -156,8 +158,10 @@ public class Runner {
         proc.environment().put("NODE_PATH", nodePath);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
-        new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
-        new ReadErrorStream(nodeProcess.getErrorStream(), output == null ? System.err : output).start();
+        new ReadStream(nodeProcess.getInputStream(),
+                output == null ? System.out : output).start();
+        new ReadErrorStream(nodeProcess.getErrorStream(),
+                output == null ? System.err : output, debug).start();
         return nodeProcess.waitFor();
     }
 
@@ -176,6 +180,7 @@ public class Runner {
             usage();
             return;
         }
+        boolean debug = Options.findOption("-debug", opts, true);
         List<String> repos = Options.findRepos(opts, true);
         String func = Options.findOptionValue("-run", opts, true);
         if (repos.isEmpty()) {
@@ -199,7 +204,7 @@ public class Runner {
             usage();
             return;
         }
-        int exitCode = run(repos, module, func, null);
+        int exitCode = run(repos, module, func, null, debug);
         if (exitCode != 0) {
             System.err.println("Exit code: "+exitCode);
         }
