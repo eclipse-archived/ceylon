@@ -1,46 +1,60 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-public interface I {
+public interface Bug693_Interface {
     
     public abstract .ceylon.language.Integer getX();
 }
-public final class I$impl {
+public final class Bug693_Interface$impl {
     
-    public I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this) {
+    public Bug693_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface $this) {
         this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface $this;
     
     public final .ceylon.language.Integer getX() {
         return $this.getX();
     }
 }
-public class C implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
+public class Bug693_Class implements .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface {
     
-    public C(final .ceylon.language.Integer x) {
+    public Bug693_Class(final .ceylon.language.Integer x) {
         (
             let
             {
-                boolean $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.C.$init$b(x);
+                boolean $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$init$b(x);
                 this(x, $ceylontmp$b$1);
             }
             returning null;
         );
     }
     
-    public C(.ceylon.language.Integer x, boolean b) {
+    public Bug693_Class(.ceylon.language.Integer x, boolean b) {
         this.x = x;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl(this);
     }
     
     public static boolean $init$b(final .ceylon.language.Integer x) {
         return false;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug693_Interface$this;
     private final .ceylon.language.Integer x;
     
     @.java.lang.Override
     public final .ceylon.language.Integer getX() {
         return x;
+    }
+}
+final class bug693_ {
+    
+    private bug693_() {
+    }
+    
+    static void bug693() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class c = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class(.ceylon.language.Integer.instance(0L), true);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug693_.bug693();
     }
 }

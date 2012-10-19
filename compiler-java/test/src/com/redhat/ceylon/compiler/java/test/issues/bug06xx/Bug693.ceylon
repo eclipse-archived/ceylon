@@ -18,10 +18,14 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared interface I {
+shared interface Bug693_Interface {
     shared formal Integer? x;
 }
 @nomodel
-shared class C(x, Boolean b = false) satisfies I {
+shared class Bug693_Class(x, Boolean b = false) satisfies Bug693_Interface {
     shared actual Integer x;
+}
+@nomodel
+void bug693() {
+    Bug693_Class c = Bug693_Class(0, true);
 }
