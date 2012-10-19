@@ -1338,6 +1338,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         markUnboxed(method, methodMirror.getReturnType());
+        markTypeErased(method, methodMirror.getReturnType());
         setAnnotations(method, methodMirror);
         
         klass.getMembers().add(method);
@@ -1488,6 +1489,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             throw x;
         }
         markUnboxed(value, fieldMirror.getType());
+        markTypeErased(value, fieldMirror.getType());
         klass.getMembers().add(value);
     }
     
@@ -1508,6 +1510,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             throw x;
         }
         markUnboxed(value, methodMirror.getReturnType());
+        markTypeErased(value, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
         klass.getMembers().add(value);
     }
@@ -1682,6 +1685,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private void markTypeErased(TypedDeclaration decl, TypeMirror type) {
+        decl.setTypeErased(sameType(type, OBJECT_TYPE));
+    }
+
     private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
         boolean unboxed = false;
         if(type.isPrimitive() 
@@ -1762,6 +1769,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 throw x;
             }
             markUnboxed(method, meth.getReturnType());
+            markTypeErased(method, meth.getReturnType());
 
             setAnnotations(method, meth);
         }finally{
