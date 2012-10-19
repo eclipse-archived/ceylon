@@ -36,7 +36,6 @@ public class AetherUtils {
 
     private Logger log;
     private String settingsXml;
-    private MavenDependencyResolver resolver;
 
     AetherUtils(Logger log) {
         this.log = log;
@@ -45,7 +44,6 @@ public class AetherUtils {
 
     void overrideSettingsXml(String settingsXml) {
         this.settingsXml = settingsXml;
-        this.resolver = null; // reset resolver
     }
 
     File findDependency(Node node) {
@@ -109,10 +107,7 @@ public class AetherUtils {
         return "classpath:settings.xml";
     }
 
-    private synchronized MavenDependencyResolver getResolver() {
-        if (resolver == null) {
-            resolver = DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml);
-        }
-        return resolver;
+    private MavenDependencyResolver getResolver() {
+        return DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml);
     }
 }
