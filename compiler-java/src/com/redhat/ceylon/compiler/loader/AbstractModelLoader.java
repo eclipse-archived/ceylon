@@ -64,6 +64,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
+import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
@@ -1043,6 +1044,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             Parameter newParam = new ValueParameter();
             newParam.setName(p.getName());
             newParam.setContainer(alias);
+            DeclarationVisitor.setVisibleScope(newParam);
             newParam.setDeclaration(alias);
             newParam.setSequenced(p.isSequenced());
             newParam.setUnboxed(p.getUnboxed());
@@ -1622,6 +1624,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             ValueParameter parameter = new ValueParameter();
             parameter.setContainer((Scope) decl);
+            DeclarationVisitor.setVisibleScope(parameter);
             parameter.setUnit(((Element)decl).getUnit());
             if(decl instanceof Class){
                 ((Class)decl).getMembers().add(parameter);
