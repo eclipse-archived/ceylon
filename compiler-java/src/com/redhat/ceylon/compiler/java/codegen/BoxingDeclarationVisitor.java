@@ -170,6 +170,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 setBoxingState(param, refinedParam);
                 // also mark params as raw if needed
                 rawTypedDeclaration(param);
+                erasureToObject(param);
             }
         }
     }
@@ -274,6 +275,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         TypedDeclaration declaration = that.getDeclarationModel();
         boxAttribute(declaration);
         rawTypedDeclaration(declaration);
+        erasureToObject(declaration);
     }
     
     @Override
