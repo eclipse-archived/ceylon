@@ -103,12 +103,12 @@
     </target>
 
     <target name="ide" depends="dist">
-        <copy 
-            overwrite="true"
-            file="${build.dist}/${ceylon.module-resolver.jar}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.module-resolver-0.4-ide.jar"/>
+        <copy
+                overwrite="true"
+                file="${build.dist}/${ceylon.module-resolver.jar}"
+                tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.module-resolver-0.4-ide.jar"/>
     </target>
-	
+
     <target name="dist"
             depends="build"
             description="Create Ceylon module-resolver distribution">
@@ -193,11 +193,11 @@
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
-    	<copy todir="${build.classes}">
+        <copy todir="${build.classes}">
             <fileset dir="${cmr-impl.resources}">
                 <include name="**"/>
             </fileset>
-    	</copy>
+        </copy>
     </target>
 
     <!-- Rule to build module-resolver jar -->
@@ -224,6 +224,11 @@
                destdir="${build.test}"
                classpathref="test.build.classpath"
                includeantruntime="false"/>
+        <copy todir="${build.test}">
+            <fileset dir="${maven-test.resources}">
+                <include name="**"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="test" depends="compile.tests" description="Runs the JUnit tests">
