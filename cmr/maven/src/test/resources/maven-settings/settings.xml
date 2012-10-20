@@ -1,28 +1,28 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                       http://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <localRepository>build/classes/maven-settings/repository</localRepository>
-  <interactiveMode/>
-  <usePluginRegistry/>
-  <offline/>
-  <pluginGroups/>
-  <servers/>
-  <mirrors/>
-  <proxies/>
-  <profiles>
-	<profile>  
-	  <id>restlet</id>  
-	  <repositories>  
-	     <repository>  
-	        <id>maven-restlet</id>  
-	        <name>Public online Restlet repository</name>  
-	        <url>http://maven.restlet.org</url>  
-	     </repository>  
-	  </repositories>  
-	</profile>  
-  </profiles>
-  <activeProfiles>  
-    <activeProfile>restlet</activeProfile>
-  </activeProfiles>
+    <localRepository>build/test-classes/maven-settings/repository</localRepository>
+    <interactiveMode/>
+    <usePluginRegistry/>
+    <offline/>
+    <pluginGroups/>
+    <servers/>
+    <mirrors/>
+    <proxies/>
+    <profiles>
+        <profile>
+            <id>restlet</id>
+            <repositories>
+                <repository>
+                    <id>maven-restlet</id>
+                    <name>Public online Restlet repository</name>
+                    <url>http://maven.restlet.org</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>restlet</activeProfile>
+    </activeProfiles>
 </settings>
