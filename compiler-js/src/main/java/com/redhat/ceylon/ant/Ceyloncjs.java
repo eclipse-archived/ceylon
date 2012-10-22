@@ -80,7 +80,7 @@ public class Ceyloncjs extends Task {
         modules.add(module);
     }
 
-    public void add(FileSet fileset) {
+    public void addFiles(FileSet fileset) {
         if (this.files != null) {
             throw new BuildException("<ceyloncjs> only supports a single <files> element");
         }
