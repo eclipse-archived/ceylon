@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
+import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -116,6 +117,8 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
             module = new ReflectionModule(this);
         module.setName(moduleName);
         module.setVersion(version);
+        if(module instanceof ReflectionModule)
+            setupIfJDKModule((LazyModule) module);
         return module;
     }
     

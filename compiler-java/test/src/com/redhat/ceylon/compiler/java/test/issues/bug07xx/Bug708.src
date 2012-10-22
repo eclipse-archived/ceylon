@@ -224,3 +224,409 @@ class Bug708_Class<T> {
         return param;
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Map<ceylon.language::Integer,ceylon.language::String|T>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {"ceylon.language::Object"})})
+public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.Map<.ceylon.language.Integer, .java.lang.Object> {
+    
+    public Bug708Map() {
+        super();
+        this.$ceylon$language$Map$this = new .ceylon.language.Map$impl<.ceylon.language.Integer, .java.lang.Object>(this);
+        this.$ceylon$language$Collection$this = new .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(this);
+        this.$ceylon$language$Iterable$this = new .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(this);
+        this.$ceylon$language$ContainerWithFirstElement$this = new .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object>(this);
+        this.$ceylon$language$Container$this = new .ceylon.language.Container$impl(this);
+        this.$ceylon$language$Sized$this = new .ceylon.language.Sized$impl(this);
+        this.$ceylon$language$Category$this = new .ceylon.language.Category$impl(this);
+        this.$ceylon$language$Cloneable$this = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>>((.ceylon.language.Cloneable<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Correspondence$this = new .ceylon.language.Correspondence$impl<.java.lang.Object, .java.lang.Object>(this);
+    }
+    private final .ceylon.language.Map$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Map$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean equals(final .java.lang.Object that) {
+        return $ceylon$language$Map$this.equals(that);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public int hashCode() {
+        return $ceylon$language$Map$this.hashCode();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Map getInverse() {
+        return $ceylon$language$Map$this.getInverse();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Result>.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends Result> mapItems(final .ceylon.language.Callable<? extends Result> mapping) {
+        return $ceylon$language$Map$this.mapItems(mapping);
+    }
+    private final .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Collection$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.String toString() {
+        return $ceylon$language$Collection$this.toString();
+    }
+    private final .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Iterable$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Entry getFirst() {
+        return $ceylon$language$Iterable$this.getFirst();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Entry getLast() {
+        return $ceylon$language$Iterable$this.getLast();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> getRest() {
+        return $ceylon$language$Iterable$this.getRest();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.List<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> getSequence() {
+        return $ceylon$language$Iterable$this.getSequence();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Result>.ceylon.language.Iterable<? extends Result> map(final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.map(collecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.filter(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Result>Result fold(final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this.fold(initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Entry find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.find(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Entry findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.findLast(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.List<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return $ceylon$language$Iterable$this.sort(comparing);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Result>.ceylon.language.List<? extends Result> collect(final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this.collect(collecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.List<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.select(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean any(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.any(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.every(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> skipping(final long skip) {
+        return $ceylon$language$Iterable$this.skipping(skip);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> taking(final long take) {
+        return $ceylon$language$Iterable$this.taking(take);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> by(final long step) {
+        return $ceylon$language$Iterable$this.by(step);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this.count(selecting);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> getCoalesced() {
+        return $ceylon$language$Iterable$this.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>> getIndexed() {
+        return $ceylon$language$Iterable$this.getIndexed();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Other>.ceylon.language.Iterable chain(final .ceylon.language.Iterable<? extends Other> other) {
+        return $ceylon$language$Iterable$this.chain(other);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Grouping>.ceylon.language.Map<? extends Grouping, ? extends .ceylon.language.Sequence<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>> group(final .ceylon.language.Callable<? extends Grouping> grouping) {
+        return $ceylon$language$Iterable$this.group(grouping);
+    }
+    private final .ceylon.language.ContainerWithFirstElement$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$ContainerWithFirstElement$this;
+    private final .ceylon.language.Container$impl $ceylon$language$Container$this;
+    private final .ceylon.language.Sized$impl $ceylon$language$Sized$this;
+    private final .ceylon.language.Category$impl $ceylon$language$Category$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.Iterable<? extends .java.lang.Object> containsEvery$elements() {
+        return $ceylon$language$Category$this.containsEvery$elements();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean containsEvery() {
+        return $ceylon$language$Category$this.containsEvery();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsEvery(elements);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.Iterable<? extends .java.lang.Object> containsAny$elements() {
+        return $ceylon$language$Category$this.containsAny$elements();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean containsAny() {
+        return $ceylon$language$Category$this.containsAny();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this.containsAny(elements);
+    }
+    private final .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>> $ceylon$language$Cloneable$this;
+    private final .ceylon.language.Correspondence$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Correspondence$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Correspondence$impl $ceylon$language$Correspondence$impl() {
+        return $ceylon$language$Correspondence$this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.Correspondence$impl.Items Items$new(final .ceylon.language.Sequence arg0) {
+        return $ceylon$language$Correspondence$this.Items$new(arg0);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.Iterable definesEvery$keys() {
+        return $ceylon$language$Correspondence$this.definesEvery$keys();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean definesEvery() {
+        return $ceylon$language$Correspondence$this.definesEvery();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean definesEvery(final .ceylon.language.Iterable keys) {
+        return $ceylon$language$Correspondence$this.definesEvery(keys);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.Iterable definesAny$keys() {
+        return $ceylon$language$Correspondence$this.definesAny$keys();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final boolean definesAny() {
+        return $ceylon$language$Correspondence$this.definesAny();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean definesAny(final .ceylon.language.Iterable keys) {
+        return $ceylon$language$Correspondence$this.definesAny(keys);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.Iterable items$keys() {
+        return $ceylon$language$Correspondence$this.items$keys();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.List items() {
+        return $ceylon$language$Correspondence$this.items();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.List items(final .ceylon.language.Iterable keys) {
+        return $ceylon$language$Correspondence$this.items(keys);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public final boolean getEmpty() {
+        return true;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long getSize() {
+        return 0L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String|ceylon.language::Nothing|T")
+    public final .java.lang.Object item(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object key) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public final boolean contains(@.com.redhat.ceylon.compiler.java.metadata.Name("element")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object element) {
+        return false;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public final boolean defines(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object key) {
+        return false;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<T>")
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<T> getClone() {
+        return this;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterator<ceylon.language::Entry<ceylon.language::Integer,ceylon.language::String|T>>")
+    public final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> getIterator() {
+        return (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>).ceylon.language.bottom_.getBottom$();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::Integer>")
+    public final .ceylon.language.Set<? extends .ceylon.language.Integer> getKeys() {
+        return (.ceylon.language.Set<? extends .ceylon.language.Integer>).ceylon.language.bottom_.getBottom$();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"), @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Collection<ceylon.language::String|T>")
+    public final .ceylon.language.Collection getValues() {
+        return (.ceylon.language.Collection<? extends .java.lang.Object>).ceylon.language.bottom_.getBottom$();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+final class bug708_cache_ {
+    
+    private bug708_cache_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>()};
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<ceylon.language::String>")
+    static .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String> getBug708_cache$() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.RecursiveInitializationException();
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class bug708_test2_ {
+    
+    private bug708_test2_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    public static void bug708_test2(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long key) {
+        .ceylon.language.String $entry$20;
+        if (($entry$20 = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.getBug708_cache$().item(.ceylon.language.Integer.instance(key))) != null) {
+            final .java.lang.String $entry$21 = $entry$20.toString();
+        }
+    }
+}

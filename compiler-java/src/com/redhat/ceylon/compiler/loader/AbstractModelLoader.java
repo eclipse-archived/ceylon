@@ -358,7 +358,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         // find its module
         String pkgName = classMirror.getPackage().getQualifiedName();
-        Module module = findOrCreateModule(pkgName);
+        Module module = findModuleForPackage(pkgName);
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
         // find/make its Unit
@@ -785,13 +785,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     protected Module lookupModuleInternal(String packageName) {
         for(Module module : modules.getListOfModules()){
+            // don't try the default module because it will always say yes
+            if(module.isDefault())
+                continue;
             if(module instanceof LazyModule){
                 if(((LazyModule)module).containsPackage(packageName))
                     return module;
             }else if(isSubPackage(module.getNameAsString(), packageName))
                 return module;
         }
-        return null;
+        return modules.getDefaultModule();
     }
 
     private boolean isSubPackage(String moduleName, String pkgName) {
@@ -802,31 +805,28 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Modules
     
-    public synchronized Module findOrCreateModule(String pkgName) {
+    /**
+     * Finds or creates a new module. This is mostly useful to force creation of modules such as jdk
+     * or ceylon.language modules.
+     */
+    public synchronized Module findOrCreateModule(String moduleName) {
         boolean isJava = false;
         boolean defaultModule = false;
 
-        Module module = lookupModuleInternal(pkgName);
-        if (module != null) {
+        // make sure it isn't loaded
+        Module module = getLoadedModule(moduleName);
+        if(module != null)
             return module;
-        }
         
-        // FIXME: this is a rather simplistic view of the world
-        if(pkgName == null){
-            pkgName = Module.DEFAULT_MODULE_NAME;
-            defaultModule = true;
-        } else if(JDKPackageList.isJDKModule(pkgName) || JDKPackageList.isOracleJDKModule(pkgName)){
+        if(JDKPackageList.isJDKModule(moduleName) || JDKPackageList.isOracleJDKModule(moduleName)){
             isJava = true;
-        } else if(pkgName.startsWith("ceylon.language.")){
-            pkgName = CEYLON_LANGUAGE;
         }
         
-        java.util.List<String> moduleName = Arrays.asList(pkgName.split("\\."));
-        module = moduleManager.getOrCreateModule(moduleName, null);
+        java.util.List<String> moduleNameList = Arrays.asList(moduleName.split("\\."));
+        module = moduleManager.getOrCreateModule(moduleNameList, null);
         // make sure that when we load the ceylon language module we set it to where
         // the typechecker will look for it
-        if(pkgName != null
-                 && pkgName.startsWith("ceylon.language.")
+        if(moduleName.equals(CEYLON_LANGUAGE)
                  && modules.getLanguageModule() == null){
              modules.setLanguageModule(module);
         }
@@ -842,6 +842,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         module.setAvailable(true);
         module.setDefault(defaultModule);
         return module;
+    }
+
+    private Module findModuleForPackage(String pkgName) {
+        Module module = lookupModuleInternal(pkgName);
+        if (module != null) {
+            return module;
+        }
+        throw new ModelResolutionException("Failed to find module for package "+pkgName);
     }
 
     public synchronized Module loadCompiledModule(String pkgName) {
