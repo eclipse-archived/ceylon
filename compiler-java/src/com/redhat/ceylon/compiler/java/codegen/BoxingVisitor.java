@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsOp;
@@ -120,6 +121,24 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(InvocationExpression that) {
         super.visit(that);
         propagateFromTerm(that, that.getPrimary());
+    }
+
+    @Override
+    public void visit(IndexExpression that) {
+        super.visit(that);
+        // we need to propagate from the underlying method call (item/span)
+        if(that.getPrimary() == null
+                || that.getPrimary().getTypeModel() == null)
+            return;
+        ProducedType lhsModel = that.getPrimary().getTypeModel();
+        if(lhsModel.getDeclaration() == null)
+            return;
+        String methodName = that.getElementOrRange() instanceof Tree.Element ? "item" : "span";
+        // find the method from its declaration
+        TypedDeclaration member = (TypedDeclaration) lhsModel.getDeclaration().getMember(methodName, null, false);
+        if(member == null)
+            return;
+        propagateFromDeclaration(that, member);
     }
 
     @Override

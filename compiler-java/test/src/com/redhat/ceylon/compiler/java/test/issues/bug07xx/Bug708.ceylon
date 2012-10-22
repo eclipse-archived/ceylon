@@ -50,3 +50,23 @@ class Bug708_Class<T>(T|String? param, param2) {
     if (exists s = Bug708_Class<String>("","").attr) {}
     if (exists s = Bug708_Class<String>("","").getter) {}
 }
+
+shared class Bug708Map<T>() extends Object()
+            satisfies Map<Integer, String|T>
+            given T satisfies Object {
+    shared actual Boolean empty { return true; }
+    shared actual Integer size { return 0; }
+    shared actual String|T? item(Object key) { return null; }
+    shared actual Boolean contains(Object element) { return false; }
+    shared actual Boolean defines(Object key) { return false; }
+    shared actual Bug708Map<T> clone { return this; }
+    shared actual Iterator<Entry<Integer, String|T>> iterator { return bottom; }
+    shared actual Set<Integer> keys { return bottom; }
+    shared actual Collection<String|T> values { return bottom; }    
+}
+
+Bug708Map<String> bug708_cache = Bug708Map<String>();   
+
+shared void bug708_test2(Integer key) {
+   if (exists entry = bug708_cache[key]) { }
+}
