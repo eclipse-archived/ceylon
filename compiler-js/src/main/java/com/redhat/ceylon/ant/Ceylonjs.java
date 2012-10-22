@@ -89,7 +89,6 @@ public class Ceylonjs extends Task {
             if (r != null) {
                 reps.add(r.getAbsolutePath());
             }
-            System.out.println(reps);
         }
         try {
             Runner.run(reps, module, func, System.out, true);
