@@ -81,7 +81,7 @@ public abstract class CompilerTest {
         } else {
             destDir = destDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         }
-        defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
+        defaultOptions = Arrays.asList("-out", destDir);
     }
 
     // for subclassers 
