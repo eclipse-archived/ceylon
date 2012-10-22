@@ -52,7 +52,7 @@ public class Ceylonjs extends Task {
     public void setModule(String value) {
         module = value;
     }
-    public void setMethod(String value) {
+    public void setRun(String value) {
         func = value;
     }
     public void setNodePath(String value) {
