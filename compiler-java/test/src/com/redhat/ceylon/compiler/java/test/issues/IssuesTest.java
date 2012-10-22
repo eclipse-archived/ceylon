@@ -746,7 +746,7 @@ public class IssuesTest extends CompilerTest {
     }
 
     @Test
-    public void testBug817_fail() {
+    public void testBug817() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug817.bug817", "bug08xx/bug817/NullArray.java", "bug08xx/bug817/Bug817.ceylon");
     }
 
