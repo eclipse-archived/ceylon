@@ -358,7 +358,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         // find its module
         String pkgName = classMirror.getPackage().getQualifiedName();
-        Module module = findOrCreateModule(pkgName);
+        Module module = findModuleForPackage(pkgName);
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
         // find/make its Unit
@@ -842,6 +842,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         module.setAvailable(true);
         module.setDefault(defaultModule);
         return module;
+    }
+
+    private Module findModuleForPackage(String pkgName) {
+        Module module = lookupModuleInternal(pkgName);
+        if (module != null) {
+            return module;
+        }
+        throw new ModelResolutionException("Failed to find module for package "+pkgName);
     }
 
     public synchronized Module loadCompiledModule(String pkgName) {
