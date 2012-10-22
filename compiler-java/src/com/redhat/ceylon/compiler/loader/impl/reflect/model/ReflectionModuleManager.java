@@ -25,6 +25,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
+import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyModuleManager;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -72,6 +73,8 @@ public class ReflectionModuleManager extends LazyModuleManager {
             module = new ReflectionModule(this);
         module.setName(moduleName);
         module.setVersion(version);
+        if(module instanceof ReflectionModule)
+            setupIfJDKModule((LazyModule) module);
         return module;
     }
 

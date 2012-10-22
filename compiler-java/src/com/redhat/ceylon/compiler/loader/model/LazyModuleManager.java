@@ -43,7 +43,22 @@ public abstract class LazyModuleManager extends ModuleManager {
     public LazyModuleManager(Context ceylonContext) {
         super(ceylonContext);
     }
-    
+
+    protected void setupIfJDKModule(LazyModule module) {
+        // Make sure that the java modules are set up properly.
+        // Bad jdk versions will not be made available and the module validator
+        // will fail to load their artifacts, and the error is properly handled by the lazy module manager in
+        // attachErrorToDependencyDeclaration()
+        String nameAsString = module.getNameAsString();
+        String version = module.getVersion();
+        if(version != null
+                && version.equals(AbstractModelLoader.JDK_MODULE_VERSION)
+                && AbstractModelLoader.isJDKModule(nameAsString)){
+            module.setAvailable(true);
+            module.setJava(true);
+        }
+    }
+
     @Override
     public void resolveModule(ArtifactResult artifact, Module module, ModuleImport moduleImport, 
             LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies) {
