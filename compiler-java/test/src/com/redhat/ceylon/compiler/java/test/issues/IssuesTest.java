@@ -745,5 +745,10 @@ public class IssuesTest extends CompilerTest {
         compareWithJavaSource("bug08xx/Bug803");
     }
 
+    @Test
+    public void testBug817_fail() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug817.bug817", "bug08xx/bug817/NullArray.java", "bug08xx/bug817/Bug817.ceylon");
+    }
+
 }
 
