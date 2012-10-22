@@ -50,7 +50,7 @@ public class Util {
             project.log("The Ceylon ant tasks now use the ceylon tool for " +
                     "their executable attribute", Project.MSG_WARN);
         }
-        String scriptName = "cey";
+        String scriptName = "ceylon";
         if(defaultValue != null){
             if(!defaultValue.exists())
                 throw new BuildException("Failed to find '"+scriptName+"' executable in "+defaultValue.getPath());
