@@ -41,7 +41,7 @@ class ModuleDescriptorReader {
     
     private final Module moduleDescriptor;
 
-    public ModuleDescriptorReader(com.redhat.ceylon.ant.Module module, File srcDir) {
+    public ModuleDescriptorReader(com.redhat.ceylon.common.ant.Module module, File srcDir) {
         RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger());
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
