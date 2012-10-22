@@ -264,7 +264,7 @@ Used with another target such as 'package'">
         </ant>
     </target>
 
-    <target name="install-js" depends="install-compiler">
+    <target name="install-js" depends="install-typechecker, install-language">
         <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
         </ant>
