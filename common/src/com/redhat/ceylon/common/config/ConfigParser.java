@@ -180,7 +180,15 @@ public class ConfigParser {
                 }
                 
             });
-            reader.process();
+            try {
+                reader.process();
+            } catch (IOException ex) {
+                System.err.print("Error parsing configuration");
+                if (configFile != null) {
+                    System.err.print(" '" + FileUtil.relativeFile(configFile).getPath() + "'");
+                }
+                System.err.println(": " + ex.getMessage());
+            }
         } else {
             throw new FileNotFoundException("Couldn't open configuration file");
         }

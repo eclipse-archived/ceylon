@@ -42,6 +42,27 @@ public class FileUtil {
     }
     
     /**
+     * Turns the given path, if absolute, into a path relative to the
+     * VM's current working directory and leaves it alone otherwise 
+     * @param f The File to make relative
+     * @return A relative File
+     */
+    public static File relativeFile(File f) {
+        if (f.isAbsolute()) {
+            File cwd = new File(".");
+            String path = f.getAbsolutePath();
+            if (path.startsWith(cwd.getAbsolutePath())) {
+                path = "./" + path.substring(cwd.getAbsolutePath().length());
+                f = new File(path);
+            } else if (path.startsWith(System.getProperty("user.home"))) {
+                path = "~/" + path.substring(System.getProperty("user.home").length() + 1);
+                f = new File(path);
+            }
+        }
+        return f;
+    }
+    
+    /**
      * The OS-specific directory where global application data can be stored.
      * As given by the {@code ceylon.config.dir} system property or the default
      * OS-dependent directory if the property doesn't exist. (/etc/ceylon on
