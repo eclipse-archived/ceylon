@@ -785,13 +785,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     protected Module lookupModuleInternal(String packageName) {
         for(Module module : modules.getListOfModules()){
+            // don't try the default module because it will always say yes
+            if(module.isDefault())
+                continue;
             if(module instanceof LazyModule){
                 if(((LazyModule)module).containsPackage(packageName))
                     return module;
             }else if(isSubPackage(module.getNameAsString(), packageName))
                 return module;
         }
-        return null;
+        return modules.getDefaultModule();
     }
 
     private boolean isSubPackage(String moduleName, String pkgName) {
