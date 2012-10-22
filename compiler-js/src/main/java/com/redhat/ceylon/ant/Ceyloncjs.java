@@ -80,9 +80,9 @@ public class Ceyloncjs extends Task {
         modules.add(module);
     }
 
-    public void addFiles(FileSet fileset) {
+    public void add(FileSet fileset) {
         if (this.files != null) {
-            throw new BuildException("<ceylonc> only supports a single <files> element");
+            throw new BuildException("<ceyloncjs> only supports a single <files> element");
         }
         this.files = fileset;
     }
@@ -152,7 +152,7 @@ public class Ceyloncjs extends Task {
      * @param rep the new module repository
      */
     public void addRep(Rep rep) {
-        systemRepository = rep;
+        repositories.add(rep);
     }
 
     protected Rep getSystemRepository() {
@@ -164,7 +164,7 @@ public class Ceyloncjs extends Task {
      * @param rep the new system repository
      */
     public void setSysRep(Rep rep) {
-        repositories.add(rep);
+        systemRepository = rep;
     }
 
     protected List<Rep> getRepositories() {
@@ -211,7 +211,7 @@ public class Ceyloncjs extends Task {
             return;
         }
 
-        List<String> sourceDirs = new ArrayList<String>(src.size());
+        List<String> sourceDirs = new ArrayList<String>(getSrc().size());
         for (File f : getSrc()) {
             sourceDirs.add(f.getAbsolutePath());
         }
