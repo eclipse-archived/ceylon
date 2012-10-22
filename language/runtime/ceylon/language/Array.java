@@ -2,8 +2,6 @@ package ceylon.language;
 
 import java.util.Arrays;
 
-import ceylon.language.Correspondence$impl.Items;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ArrayOfNone;
 import com.redhat.ceylon.compiler.java.language.ArrayOfSome;
@@ -54,6 +52,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<Character> instance(char[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<Character>(array);
         } else {
@@ -63,6 +64,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<Integer> instance(byte[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<Integer>(array);
         } else {
@@ -72,6 +76,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<Integer> instance(short[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<Integer>(array);
         } else {
@@ -81,6 +88,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<Integer> instance(int[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<Integer>(array);
         } else {
@@ -90,6 +100,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<Integer> instance(long[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<Integer>(array);
         } else {
@@ -99,6 +112,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<Float> instance(float[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<Float>(array);
         } else {
@@ -108,6 +124,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<Float> instance(double[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<Float>(array);
         } else {
@@ -117,6 +136,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<Boolean> instance(boolean[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<Boolean>(array);
         } else {
@@ -126,6 +148,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static Array<String> instance(java.lang.String[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<String>(array);
         } else {
@@ -135,6 +160,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static <T> Array<T> instance(T[] array) {
+        if (array == null) {
+            return null;
+        }
         if (array.length == 0) {
             return new ArrayOfNone<T>(array);
         } else {
@@ -144,6 +172,9 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
 
     @Ignore
     public static <T> Array<T> instance(java.lang.Object array) {
+        if (array == null) {
+            return null;
+        }
         int length = java.lang.reflect.Array.getLength(array);
         if (length == 0) {
             return new ArrayOfNone<T>(array);
