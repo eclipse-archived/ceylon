@@ -86,7 +86,6 @@
         -->
         <delete dir="${build.classes}">
             <include name="**/*Main5.class"/>
-            <include name="**/Java7Checker.class"/>
         </delete>
         <javac srcdir="${src}" destdir="${build.classes}" debug="true" source="1.5" target="1.5">
             <classpath>
@@ -97,7 +96,6 @@
                 <pathelement path="${ceylon.compiler.lib}" />
             </classpath>
             <include name="**/*Main5.java" />
-            <include name="**/Java7Checker.java"/>
         </javac>
         <!-- generate the ceylon.language.js file -->
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath">
