@@ -458,31 +458,34 @@ function RangeIterator(range) {
     var that = new RangeIterator.$$;
     that.range = range;
     that.current = range.getFirst();
+    that.next = (range.last>=range.first) ? RangeIterator$forwardNext : RangeIterator$backwardNext;
     return that;
 }
 initTypeProto(RangeIterator, 'ceylon.language::RangeIterator', IdentifiableObject, Iterator);
-var RangeIterator$proto = RangeIterator.$$.prototype;
-RangeIterator$proto.next = function() {
+RangeIterator$forwardNext = function() {
     var rval = this.current;
     if (rval === $finished) {
         return rval;
     }
-    if (this.range.getDecreasing()) {
-        if (rval.compare(this.range.getLast()) === larger) {
-            this.current = this.range.next(this.current);
-        } else {
-            this.current = $finished;
-        }
+    if (rval.compare(this.range.last) === smaller) {
+        this.current = rval.getSuccessor();
     } else {
-        if (rval.compare(this.range.getLast()) === smaller) {
-            this.current = this.range.next(this.current);
-        } else {
-            this.current = $finished;
-        }
+        this.current = $finished;
     }
     return rval;
 }
-
+RangeIterator$backwardNext = function() {
+    var rval = this.current;
+    if (rval === $finished) {
+        return rval;
+    }
+    if (rval.compare(this.range.last) === larger) {
+        this.current = rval.getPredecessor();
+    } else {
+        this.current = $finished;
+    }
+    return rval;
+}
 
 function Entry(key, item) {
     var that = new Entry.$$;
