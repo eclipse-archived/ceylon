@@ -642,4 +642,9 @@ public class CMRTest extends CompilerTest {
                     || (c >= 'A' && c <= 'F'));
         }
     }
+
+    @Test
+    public void testMdlJdkBaseModule() throws IOException{
+        compile("modules/jdk/appletBroken/Foo.ceylon");
+    }
 }
