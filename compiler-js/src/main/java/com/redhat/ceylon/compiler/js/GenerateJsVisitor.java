@@ -371,6 +371,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(ClassDeclaration that) {
+        //Don't even bother with nodes that have errors
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         Class d = that.getDeclarationModel();
         if (prototypeStyle && d.isClassOrInterfaceMember()) return;
         comment(that);
@@ -397,6 +399,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InterfaceDeclaration that) {
+        //Don't even bother with nodes that have errors
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         Interface d = that.getDeclarationModel();
         if (prototypeStyle && d.isClassOrInterfaceMember()) return;
         //It's pointless declaring interface aliases outside of classes/interfaces
@@ -436,6 +440,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InterfaceDefinition that) {
+        //Don't even bother with nodes that have errors
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
             interfaceDefinition(that);
         }
@@ -501,6 +507,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(ClassDefinition that) {
+        //Don't even bother with nodes that have errors
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
             classDefinition(that);
         }
@@ -835,6 +843,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(ObjectDefinition that) {
+        //Don't even bother with nodes that have errors
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         Value d = that.getDeclarationModel();
         if (!(prototypeStyle && d.isClassOrInterfaceMember())) {
             objectDefinition(that);
@@ -931,6 +941,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(MethodDeclaration that) {
+        //Don't even bother with nodes that have errors
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         if (that.getSpecifierExpression() != null) {
             comment(that);
             out("var ", names.name(that.getDeclarationModel()), "=");
@@ -963,6 +975,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(MethodDefinition that) {
+        //Don't even bother with nodes that have errors
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         if (!(prototypeStyle && that.getDeclarationModel().isClassOrInterfaceMember())) {
             comment(that);
             methodDefinition(that);
@@ -1796,6 +1810,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(ObjectArgument that) {
+        //Don't even bother with nodes that have errors
+        if (that.getErrors() != null && !that.getErrors().isEmpty()) return;
         final Class c = (Class)that.getDeclarationModel().getTypeDeclaration();
 
         out("(function()");
