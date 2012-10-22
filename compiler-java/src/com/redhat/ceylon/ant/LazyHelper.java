@@ -29,14 +29,7 @@ import java.util.List;
 
 import org.apache.tools.ant.Project;
 
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
-import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
-import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.common.ant.Module;
 
 abstract class LazyHelper {
 

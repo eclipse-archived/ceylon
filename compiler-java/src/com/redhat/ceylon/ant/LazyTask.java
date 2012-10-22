@@ -9,6 +9,8 @@ import java.util.List;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
 
+import com.redhat.ceylon.common.ant.Rep;
+
 /**
  * Baseclass for tasks which only do something if source files are newer than
  * corresponding module artifacts in the output repository.

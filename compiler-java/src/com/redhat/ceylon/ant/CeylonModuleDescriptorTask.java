@@ -5,6 +5,8 @@ import java.io.File;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
+import com.redhat.ceylon.common.ant.Module;
+
 /**
  * Any task to extract information from a Ceylon module descriptor and 
  * set ant properties with it
