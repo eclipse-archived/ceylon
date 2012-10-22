@@ -26,54 +26,74 @@ public class MetamodelVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
-        gen.encodeMethod(that.getDeclarationModel());
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeMethod(that.getDeclarationModel());
+        }
     }
 
     /** Create and store the model of a method definition. */
     @Override public void visit(Tree.MethodDefinition that) {
-        gen.encodeMethod(that.getDeclarationModel());
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeMethod(that.getDeclarationModel());
+        }
     }
 
     /** Create and store the metamodel info for an attribute. */
     @Override public void visit(Tree.AttributeDeclaration that) {
-        gen.encodeAttribute(that.getDeclarationModel());
-        super.visit(that);
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeAttribute(that.getDeclarationModel());
+            super.visit(that);
+        }
     }
 
     @Override
     public void visit(Tree.ClassDefinition that) {
-        gen.encodeClass(that.getDeclarationModel());
-        super.visit(that);
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeClass(that.getDeclarationModel());
+            super.visit(that);
+        }
     }
 
     @Override
     public void visit(Tree.InterfaceDefinition that) {
-        gen.encodeInterface(that.getDeclarationModel());
-        super.visit(that);
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeInterface(that.getDeclarationModel());
+            super.visit(that);
+        }
     }
 
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        gen.encodeObject(that.getDeclarationModel());
-        super.visit(that);
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeObject(that.getDeclarationModel());
+            super.visit(that);
+        }
     }
 
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
-        gen.encodeGetter(that.getDeclarationModel());
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeGetter(that.getDeclarationModel());
+        }
     }
 
     @Override
     public void visit(Tree.TypeAliasDeclaration that) {
-        gen.encodeTypeAlias(that.getDeclarationModel());
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeTypeAlias(that.getDeclarationModel());
+        }
     }
     @Override
     public void visit(Tree.ClassDeclaration that) {
-        gen.encodeClass(that.getDeclarationModel());
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeClass(that.getDeclarationModel());
+        }
     }
     @Override
     public void visit(Tree.InterfaceDeclaration that) {
-        gen.encodeInterface(that.getDeclarationModel());
+        if (that.getErrors() == null  || that.getErrors().isEmpty()) {
+            gen.encodeInterface(that.getDeclarationModel());
+        }
     }
 
 }

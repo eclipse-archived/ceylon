@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 
 /** Generates the metamodel for all objects in a module.
+ * This is used by the MetamodelVisitor.
  * 
  * @author Enrique Zamudio
  */
