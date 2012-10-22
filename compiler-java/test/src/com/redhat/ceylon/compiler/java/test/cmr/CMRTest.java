@@ -186,7 +186,40 @@ public class CMRTest extends CompilerTest {
         assertTrue(carFile.exists());
     }
 
-    private void compileModuleFromSourceFolder(String module, String srcFolder, String outFolder) {
+    @Test
+    public void testMdlModuleNotLoadedFromCache() throws IOException {
+        File carFile = getModuleArchive("b", "1.0");
+        assertFalse(carFile.exists());
+
+        // clean up the cache repo if required
+        String cacheRepo = Repositories.get().getCacheRepository().getUrl();
+        File carFileInHomeRepo = getModuleArchive("a", "1.0", cacheRepo);
+        if(carFileInHomeRepo.exists())
+            carFileInHomeRepo.delete();
+
+        // clean up the working repo if required
+        String workingRepo = destDir + "-working";
+        File carFileInWorkingRepo = getModuleArchive("a", "1.0", workingRepo);
+        if(carFileInWorkingRepo.exists())
+            carFileInWorkingRepo.delete();
+        assertFalse(carFileInWorkingRepo.exists());
+        
+        // put a broken one in the cache repo
+        compileModuleFromSourceFolder("a", "home_repo/a_broken", cacheRepo);
+        assertTrue(carFileInHomeRepo.exists());
+
+        // the good one in a local repo
+        compileModuleFromSourceFolder("a", "home_repo/a_working", workingRepo);
+        assertTrue(carFileInWorkingRepo.exists());
+
+        // now compile the dependent module by using that repo
+        compileModuleFromSourceFolder("b", "home_repo/b", null, workingRepo);
+
+        // make sure it was created in the output repo
+        assertTrue(carFile.exists());
+    }
+    
+    private void compileModuleFromSourceFolder(String module, String srcFolder, String outFolder, String... repos) {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath()+"/modules/"+srcFolder);
@@ -195,6 +228,10 @@ public class CMRTest extends CompilerTest {
             options.add(outFolder);
         }else{
             options.addAll(defaultOptions);
+        }
+        for(String repo : repos){
+            options.add("-rep");
+            options.add(repo);
         }
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
