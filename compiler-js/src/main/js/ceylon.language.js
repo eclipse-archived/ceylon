@@ -466,10 +466,19 @@ RangeIterator$proto.next = function() {
     var rval = this.current;
     if (rval === $finished) {
         return rval;
-    } else if (rval.equals(this.range.getLast())) {
-        this.current = $finished;
+    }
+    if (this.range.getDecreasing()) {
+        if (rval.compare(this.range.getLast()) === larger) {
+            this.current = this.range.next(this.current);
+        } else {
+            this.current = $finished;
+        }
     } else {
-        this.current = this.range.next(this.current);
+        if (rval.compare(this.range.getLast()) === smaller) {
+            this.current = this.range.next(this.current);
+        } else {
+            this.current = $finished;
+        }
     }
     return rval;
 }
