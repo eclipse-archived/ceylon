@@ -66,7 +66,10 @@ abstract class LazyTask extends Task {
      * @param rep the new module repository
      */
     public void addRep(Rep rep) {
-        systemRepository = rep;
+        repositories.add(rep);
+    }
+    protected List<Rep> getRepositories() {
+        return repositories;
     }
 
     protected Rep getSystemRepository() {
@@ -78,11 +81,7 @@ abstract class LazyTask extends Task {
      * @param rep the new system repository
      */
     public void setSysRep(Rep rep) {
-        repositories.add(rep);
-    }
-
-    protected List<Rep> getRepositories() {
-        return repositories;
+        systemRepository = rep;
     }
 
     /**
