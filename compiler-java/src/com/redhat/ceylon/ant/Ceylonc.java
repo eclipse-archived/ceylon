@@ -44,6 +44,9 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
 
+import com.redhat.ceylon.common.ant.Module;
+import com.redhat.ceylon.common.ant.Rep;
+
 public class Ceylonc extends LazyTask {
 
     private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
@@ -85,7 +88,7 @@ public class Ceylonc extends LazyTask {
     public void setVerbose(Boolean verbose){
         this.verbose = verbose;
     }
-    
+
     /**
      * Sets the classpath
      * @param path
