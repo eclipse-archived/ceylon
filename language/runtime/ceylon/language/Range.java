@@ -119,27 +119,97 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language::Iterator<Element>")
 	public Iterator<Element> getIterator() {
-        return new Iterator<Element>() {
-            private java.lang.Object current = first;
-            private boolean go = true;
+        if (getDecreasing()) {
+            if (first instanceof Integer && last instanceof Integer) {
+                return new Iterator<Element>() {
+                    private long current = ((Integer)first).value;
+                    private boolean go = true;
 
-            @TypeInfo("Element|ceylon.language::Finished")
-            public java.lang.Object next() {
-                if (!go) return exhausted_.getExhausted$();
-                java.lang.Object result = current;
-                if (current.equals(getLast())) {
-                    go = false;
-                } else {
-                    current = Range.this.next((Element) current);
+                    @TypeInfo("Element|ceylon.language::Finished")
+                    public java.lang.Object next() {
+                        if (!go) return exhausted_.getExhausted$();
+                        long result = current;
+                        if (result > ((Integer)last).value) {
+                            current--;
+                        } else {
+                            go = false;
+                        }
+                        return Integer.instance(result);
+                    }
+
+                    @Override
+                    public java.lang.String toString() {
+                        return "IntegerRangeIterator";
+                    }
+                };
+            }
+            return new Iterator<Element>() {
+                private java.lang.Object current = first;
+                private boolean go = true;
+
+                @TypeInfo("Element|ceylon.language::Finished")
+                public java.lang.Object next() {
+                    if (!go) return exhausted_.getExhausted$();
+                    java.lang.Object result = current;
+                    if (((Comparable<Element>)result).compare(getLast()) == larger_.getLarger$()) {
+                        current = Range.this.next((Element) current);
+                    } else {
+                        go = false;
+                    }
+                    return result;
                 }
-                return result;
-            }
 
-            @Override
-            public java.lang.String toString() {
-                return "RangeIterator";
+                @Override
+                public java.lang.String toString() {
+                    return "RangeIterator";
+                }
+            };
+        } else {
+            if (first instanceof Integer && last instanceof Integer) {
+                return new Iterator<Element>() {
+                    private long current = ((Integer)first).value;
+                    private boolean go = true;
+
+                    @TypeInfo("Element|ceylon.language::Finished")
+                    public java.lang.Object next() {
+                        if (!go) return exhausted_.getExhausted$();
+                        long result = current;
+                        if (result < ((Integer)last).value) {
+                            current++;
+                        } else {
+                            go = false;
+                        }
+                        return Integer.instance(result);
+                    }
+
+                    @Override
+                    public java.lang.String toString() {
+                        return "IntegerRangeIterator";
+                    }
+                };
             }
-        };
+            return new Iterator<Element>() {
+                private java.lang.Object current = first;
+                private boolean go = true;
+
+                @TypeInfo("Element|ceylon.language::Finished")
+                public java.lang.Object next() {
+                    if (!go) return exhausted_.getExhausted$();
+                    java.lang.Object result = current;
+                    if (((Comparable<Element>)result).compare(getLast()) == smaller_.getSmaller$()) {
+                        current = Range.this.next((Element) current);
+                    } else {
+                        go = false;
+                    }
+                    return result;
+                }
+
+                @Override
+                public java.lang.String toString() {
+                    return "RangeIterator";
+                }
+            };
+        }
     }
 
     @Override @SuppressWarnings("unchecked")
