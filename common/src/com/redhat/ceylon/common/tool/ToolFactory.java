@@ -174,7 +174,7 @@ public class ToolFactory {
                         char shortName = arg.charAt(idx);
                         option = toolModel.getOptionByShort(shortName);
                         if (option == null) {
-                            unrecognised.add(UnknownOptionException.shortOption(shortName, arg));
+                            unrecognised.add(UnknownOptionException.shortOption(toolModel, shortName, arg));
                             continue argloop;
                         } 
                         switch (option.getArgumentType()) {
@@ -204,7 +204,7 @@ public class ToolFactory {
                     if (isArgument(arg)) {
                         final List<ArgumentModel<?>> argumentModels = toolModel.getArgumentsAndSubtool();
                         if (argumentModelIndex >= argumentModels.size()) {
-                            throw new OptionArgumentException.UnexpectedArgumentException(arg);
+                            throw new OptionArgumentException.UnexpectedArgumentException(arg, toolModel);
                         }
                         final ArgumentModel<?> argumentModel = argumentModels.get(argumentModelIndex);
                         processArgument(new Binding(argumentModel, argument));
@@ -329,7 +329,7 @@ public class ToolFactory {
                 }
             } else {
                 for (String arg : rest) {
-                    unrecognised.add(UnknownOptionException.longOption(arg));
+                    unrecognised.add(UnknownOptionException.longOption(toolModel, arg));
                 }
             }
         }

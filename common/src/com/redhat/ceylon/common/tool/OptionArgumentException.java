@@ -33,6 +33,10 @@ public class OptionArgumentException extends ToolException {
             return optionModel;
         }
         
+        public ToolModel<?> getToolModel() {
+            return getOptionModel().getToolModel();
+        }
+        
     }
     
     @NonFatal
@@ -57,6 +61,10 @@ public class OptionArgumentException extends ToolException {
 
         public OptionModel<?> getOptionModel() {
             return optionModel;
+        }
+        
+        public ToolModel<?> getToolModel() {
+            return getOptionModel().getToolModel();
         }
 
         public String getGivenOption() {
@@ -83,7 +91,11 @@ public class OptionArgumentException extends ToolException {
         public ArgumentModel<?> getArgumentModel() {
             return argumentModel;
         }
-
+        
+        public ToolModel<?> getToolModel() {
+            return getArgumentModel().getToolModel();
+        }
+        
         public String getBadValue() {
             return badValue;
         }    
@@ -103,10 +115,16 @@ public class OptionArgumentException extends ToolException {
             return optionModel;
         }
         
+        public ToolModel<?> getToolModel() {
+            return getOptionModel().getToolModel();
+        }
+        
     }
     
     @NonFatal
     public static class ArgumentMultiplicityException extends OptionArgumentException {
+        private ArgumentModel<?> argumentModel;
+
         public ArgumentMultiplicityException(ArgumentModel<?> argumentModel, int bound, String msgKey) {
             super(ToolMessages.msg(msgKey, argumentModel.getName(), bound));
         }
@@ -118,15 +136,22 @@ public class OptionArgumentException extends ToolException {
         private final List<UnknownOptionException> aggregating;
         private final String longName;
         private final Character shortName;
+        private ToolModel<?> toolModel;
         
         private UnknownOptionException(
+                ToolModel<?> toolModel, 
                 String longName,
                 Character shortName,
                 List<UnknownOptionException> aggregating, String msg) {
             super(msg);
+            this.toolModel = toolModel;
             this.longName = longName;
             this.shortName = shortName;
             this.aggregating = aggregating;
+        }
+        
+        public ToolModel<?> getToolModel() {
+            return toolModel;
         }
         
         public String getLongName() {
@@ -141,7 +166,7 @@ public class OptionArgumentException extends ToolException {
             return aggregating;
         }
 
-        public static UnknownOptionException shortOption(char shortName,
+        public static UnknownOptionException shortOption(ToolModel<?> toolModel, char shortName,
                 String arg) {
             String msgKey;
             if (arg.equals("-"+shortName)) {
@@ -149,15 +174,15 @@ public class OptionArgumentException extends ToolException {
             } else {
                 msgKey = "option.unknown.short.in.combined";
             }
-            return new UnknownOptionException(null, shortName,
+            return new UnknownOptionException(toolModel, null, shortName,
                     Collections.<UnknownOptionException>emptyList(), 
                     ToolMessages.msg(msgKey, "-" + shortName, arg));
         }
 
-        public static UnknownOptionException longOption(String arg) {
+        public static UnknownOptionException longOption(ToolModel<?> toolModel, String arg) {
             int idx = arg.indexOf('=');
             String longOption = arg.substring(2, idx == -1 ? arg.length() : idx);
-            return new UnknownOptionException(
+            return new UnknownOptionException(toolModel, 
                     longOption, null,
                     Collections.<UnknownOptionException>emptyList(), 
                     ToolMessages.msg("option.unknown.long", arg));
@@ -165,7 +190,7 @@ public class OptionArgumentException extends ToolException {
 
         public static UnknownOptionException aggregate(
                 List<UnknownOptionException> unrecognised) {
-            UnknownOptionException result = new UnknownOptionException(
+            UnknownOptionException result = new UnknownOptionException(null,
                     null, null,
                     unrecognised,
                     ToolMessages.msg("option.unknown.multiple"));
