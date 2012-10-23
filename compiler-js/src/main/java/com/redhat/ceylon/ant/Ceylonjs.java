@@ -1,8 +1,6 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +10,8 @@ import org.apache.tools.ant.Task;
 
 import com.redhat.ceylon.common.ant.Rep;
 import com.redhat.ceylon.common.config.Repositories;
-import com.redhat.ceylon.compiler.js.Runner;
+import com.redhat.ceylon.compiler.js.CeylonRunJsException;
+import com.redhat.ceylon.compiler.js.CeylonRunJsTool;
 
 /** Ant task to run Ceylon code compiled to JS from ant.
  * 
@@ -63,8 +62,8 @@ public class Ceylonjs extends Task {
     public void execute() throws BuildException {
         if (nodePath == null) {
             try {
-                nodePath = Runner.findNode();
-            } catch (FileNotFoundException ex) {
+                nodePath = CeylonRunJsTool.findNode();
+            } catch (CeylonRunJsException ex) {
                 throw new BuildException("Cannot find Node.js executable", ex);
             }
         }
@@ -91,10 +90,12 @@ public class Ceylonjs extends Task {
             }
         }
         try {
-            Runner.run(reps, module, func, System.out, true);
-        } catch (IOException ex) {
-            throw new BuildException(ex);
-        } catch (InterruptedException ex) {
+            CeylonRunJsTool runner = new CeylonRunJsTool();
+            runner.setRepositories(reps);
+            runner.setModuleVersion(module);
+            runner.setRun(func);
+            runner.run();
+        } catch (Exception ex) {
             throw new BuildException(ex);
         }
     }
