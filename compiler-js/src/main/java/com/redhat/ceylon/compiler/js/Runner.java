@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.Options;
  *
  * @author Enrique Zamudio
  */
+@Deprecated
 public class Runner {
 
     /** A thread dedicated to reading from a stream and storing the result to return it as a String. */
