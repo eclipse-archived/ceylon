@@ -812,8 +812,27 @@ public class ClassTransformer extends AbstractTransformer {
                 makeAtIgnore());
 
         classBuilder.method(makeCompanionAccessor(iface, satisfiedType, true));
+        
+        // add the interface's reified is method
+        addIsDelegate(classBuilder, iface.getType(), fieldName);
     }
     
+    private void addIsDelegate(ClassDefinitionBuilder classBuilder,
+            ProducedType type, String fieldName) {
+        String typeParamName = "type";
+        MethodDefinitionBuilder isMethod = MethodDefinitionBuilder.systemMethod(this, naming.getIsMethodName(type));
+        isMethod.resultType(List.<JCAnnotation>nil(), make().TypeIdent(TypeTags.BOOLEAN));
+        ParameterDefinitionBuilder typeParam = ParameterDefinitionBuilder.instance(this, typeParamName).type(makeTypeDescriptorType(), List.<JCAnnotation>nil());
+        isMethod.parameter(typeParam);
+        isMethod.body(make().Return(make().Apply(null, 
+                makeSelect(makeSelect("this", fieldName), naming.getIsMethodName(type)),
+                        List.of(makeUnquotedIdent(typeParamName)))));
+        isMethod.modifiers(PUBLIC);
+        isMethod.isOverride(true);
+        
+        classBuilder.method(isMethod);
+    }
+
     private MethodDefinitionBuilder makeCompanionAccessor(Interface iface, ProducedType satisfiedType, boolean forImplementor) {
         MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
                 this, getCompanionAccessorName(iface));
