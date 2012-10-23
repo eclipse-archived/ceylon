@@ -551,9 +551,8 @@ public class CMRTest extends CompilerTest {
                 (DiagnosticListener<? super FileObject>)null, 
                 "modules/aethercustom/module.ceylon", "modules/aethercustom/foo.ceylon");
         assertEquals(Boolean.TRUE, ceylonTask.call());
-        // We're assuming a standard Maven configuration here!
-        File camelJar = new File("build/test-cars/cmr-repository", "org/apache/camel/camel-core/2.9.2/camel-core-2.9.2.jar");
-        assertTrue(camelJar.exists());
+        File restletJar = new File("build/test-cars/cmr-repository", "org/restlet/org.restlet/1.1.10/org.restlet-1.1.10.jar");
+        assertTrue(restletJar.exists());
     }
 
     @Test
