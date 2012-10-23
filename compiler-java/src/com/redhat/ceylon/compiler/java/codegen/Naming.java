@@ -987,12 +987,16 @@ public class Naming implements LocalId {
      * instance.
      */
     final String getCompanionFieldName(Interface def) {
+        return getCompanionFieldName(def, "$this");
+    }
+
+    final String getCompanionFieldName(Interface def, String name) {
         // resolve aliases
         if(def.isAlias())
             def = (Interface) def.getExtendedTypeDeclaration();
-        return "$" + Decl.className(def).replace('.', '$') + "$this";
+        return "$" + Decl.className(def).replace('.', '$') + name;
     }
-    
+
     /**
      * Returns the name of the field in classes which holds the companion 
      * instance.
