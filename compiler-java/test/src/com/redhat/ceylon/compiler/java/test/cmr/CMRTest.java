@@ -530,12 +530,30 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
-    public void testMdlAetherDependency() throws IOException{
+    public void testMdlAetherDependencyDefault() throws IOException{
         // Try to compile the ceylon module
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether", "-verbose:cmr"), 
                 (DiagnosticListener<? super FileObject>)null, 
-                "modules/maven/module.ceylon", "modules/maven/foo.ceylon");
+                "modules/aetherdefault/module.ceylon", "modules/aetherdefault/foo.ceylon");
         assertEquals(Boolean.TRUE, ceylonTask.call());
+        // We're assuming a standard Maven configuration here!
+        File camelJar = new File(System.getProperty("user.home"), ".m2/repository/org/apache/camel/camel-core/2.9.2/camel-core-2.9.2.jar");
+        assertTrue(camelJar.exists());
+        File slf4jJar = new File(System.getProperty("user.home"), ".m2/repository/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar");
+        assertTrue(slf4jJar.exists());
+    }
+
+    @Test
+    public void testMdlAetherDependencyCustom() throws IOException{
+        // Try to compile the ceylon module
+        File settingsFile = new File(getPackagePath(), "modules/aethercustom/settings.xml");
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether:" + settingsFile.getAbsolutePath(), "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aethercustom/module.ceylon", "modules/aethercustom/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+        // We're assuming a standard Maven configuration here!
+        File camelJar = new File("build/test-cars/cmr-repository", "org/apache/camel/camel-core/2.9.2/camel-core-2.9.2.jar");
+        assertTrue(camelJar.exists());
     }
 
     @Test
