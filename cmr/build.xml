@@ -140,6 +140,12 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist}/${ceylon.module-resolver.jar}"/>
         </antcall>
+        <copy todir="${build.lib}">
+            <fileset dir="${basedir}/lib">
+                <include name="cmr-maven-*.jar"/>
+                <include name="shrinkwrap-maven-uberjar-*.jar"/>
+            </fileset>
+        </copy>
     </target>
 
     <!-- Repository targets -->
