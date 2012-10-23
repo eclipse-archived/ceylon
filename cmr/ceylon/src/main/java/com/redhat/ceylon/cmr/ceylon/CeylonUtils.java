@@ -231,8 +231,10 @@ public class CeylonUtils {
             }
 
             // Add the extra user defined repos
-            for (String repo : extraUserRepos) {
-                addRepo(builder, repositories, repo, false);
+            if (extraUserRepos != null && !extraUserRepos.isEmpty()) {
+                for (String repo : extraUserRepos) {
+                    addRepo(builder, repositories, repo, false);
+                }
             }
             
             // Add globally defined repos (like the user repo and the default remote Herd repo)
