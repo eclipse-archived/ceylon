@@ -1,0 +1,146 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType {
+    
+    public MethodClass() {
+        this.methodSpec = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("ceylon.language.Callable<ceylon.language.Void>"){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call() {
+                return (
+                    let
+                    {
+                        <.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+    public final <T>void method(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        <T>method($reifiedT);
+        <.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Callable<ceylon.language.Void>")
+    public final .ceylon.language.Callable<? extends .java.lang.Object> getMethodSpec() {
+        return methodSpec;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    private final void test() {
+        getMethodSpec().$call();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        (
+            let
+            {
+                long $ceylontmp$a$1 = methodWithOverloads$a($reifiedT);
+                long $ceylontmp$b$2 = methodWithOverloads$b($reifiedT, $ceylontmp$a$1);
+                methodWithOverloads($reifiedT, $ceylontmp$a$1, $ceylontmp$b$2);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>long methodWithOverloads$a(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        return 2L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
+        (
+            let
+            {
+                long $ceylontmp$b$4 = methodWithOverloads$b($reifiedT, a);
+                methodWithOverloads($reifiedT, a, $ceylontmp$b$4);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <T>long methodWithOverloads$b(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, final long a) {
+        return 3L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+    public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    final long b) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    private final void test2() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass $arg$5$this$ = this;
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class);
+                long $arg$5$0 = $arg$5$this$.methodWithOverloads$a($arg$5$reified$0);
+                long $arg$5$1 = $arg$5$this$.methodWithOverloads$b($arg$5$reified$0, $arg$5$0);
+                <.ceylon.language.Integer>methodWithOverloads($arg$5$reified$0, $arg$5$0, $arg$5$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass.class).equals(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class method_ {
+    
+    private method_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+    public static <T>void method(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<T>method($reifiedT);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
+    }
+}

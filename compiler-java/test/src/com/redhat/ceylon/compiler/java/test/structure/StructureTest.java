@@ -626,4 +626,26 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("alias/MemberOverriding");
     }
 
+    //
+    // Reified generics
+    
+    @Test
+    public void testRfdClass(){
+        compareWithJavaSource("reified/Class");
+    }
+
+    @Test
+    public void testRfdMethod(){
+        compareWithJavaSource("reified/Method");
+    }
+
+    @Test
+    public void testRfdComposite(){
+        compareWithJavaSource("reified/Composite");
+    }
+
+    @Test
+    public void testRfdTest(){
+        compareWithJavaSource("reified/Test");
+    }
 }

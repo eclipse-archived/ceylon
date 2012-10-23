@@ -1,0 +1,183 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Key", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Value", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+public interface Interface<Key, Value> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class Interface$impl<Key, Value> {
+    
+    public Interface$impl(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this) {
+        this.$this = $this;
+        this.$reifiedKey = $reifiedKey;
+        this.$reifiedValue = $reifiedValue;
+    }
+    private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
+    private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Interface.class, $reifiedKey, $reifiedValue).equals(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key,ceylon.language.Integer>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Key", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {}), @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "Value", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, .ceylon.language.Integer> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue) {
+        (
+            let
+            {
+                long $ceylontmp$a$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$init$a($reifiedKey, $reifiedValue);
+                long $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$init$b($reifiedKey, $reifiedValue, $ceylontmp$a$1);
+                this($reifiedKey, $reifiedValue, $ceylontmp$a$1, $ceylontmp$b$2);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, final long a) {
+        (
+            let
+            {
+                long $ceylontmp$b$4 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.<Key, Value>$init$b($reifiedKey, $reifiedValue, a);
+                this($reifiedKey, $reifiedValue, a, $ceylontmp$b$4);
+            }
+            returning null;
+        );
+    }
+    
+    public Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Integer")
+    long b) {
+        this.$reifiedKey = $reifiedKey;
+        this.$reifiedValue = $reifiedValue;
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, .ceylon.language.Integer>($reifiedKey, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), this);
+    }
+    private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
+    private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static <Key, Value>long $init$a(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue) {
+        return 2L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static <Key, Value>long $init$b(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, final long a) {
+        return 3L;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        return this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(type);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class.class, $reifiedKey, $reifiedValue).equals(type)) return true;
+        if ($com$redhat$ceylon$compiler$java$test$structure$reified$Interface$is(type)) return true;
+        return false;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified.Class<T,ceylon.language.Integer>")
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(value = "T", variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, satisfies = {})})
+public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure.reified.Class<T, .ceylon.language.Integer> {
+    
+    public SubClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
+        super($reifiedT, .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        this.$reifiedT = $reifiedT;
+    }
+    private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.SubClass(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean $is(.com.redhat.ceylon.compiler.java.TypeDescriptor type) {
+        if (.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubClass.class, $reifiedT).equals(type)) return true;
+        return super.$is(type);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class reifiedInstantiate_ {
+    
+    private reifiedInstantiate_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.Void")
+    static void reifiedInstantiate() {
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c2 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class);
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$5$reified$1 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class);
+                long $arg$5$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$5$reified$0, $arg$5$reified$1);
+                long $arg$5$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$b($arg$5$reified$0, $arg$5$reified$1, $arg$5$0);
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$5$reified$0, $arg$5$reified$1, $arg$5$0, $arg$5$1);
+        );
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>> constr = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>>("ceylon.language.Callable<com.redhat.ceylon.compiler.java.test.structure.reified.Class<ceylon.language.Integer,ceylon.language.String>,ceylon.language.Integer,ceylon.language.Integer>"){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class), ((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.Integer)$param$1).longValue());
+            }
+        };
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c3 = constr.$call(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c4 = (
+            let
+            {
+                long $arg$6$1 = 5L;
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$6$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class);
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$6$reified$1 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class);
+                long $arg$6$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$6$reified$0, $arg$6$reified$1);
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$6$reified$0, $arg$6$reified$1, $arg$6$0, $arg$6$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedInstantiate_.reifiedInstantiate();
+    }
+}
