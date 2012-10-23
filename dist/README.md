@@ -55,7 +55,7 @@ To run the "hello world" program, type:
 For Java:
 
     ../../bin/ceylon compile com.example.helloworld
-    ../../bin/ceylon doc -non-shared -source-code com.example.helloworld
+    ../../bin/ceylon doc --non-shared --source-code com.example.helloworld
     ../../bin/ceylon run com.example.helloworld/1.0.0 John
 
 For JavaScript:
@@ -72,7 +72,7 @@ To run a program defined in the default module, type:
 For Java:
 
     ../../bin/ceylon compile default
-    ../../bin/ceylon doc -non-shared -source-code default
+    ../../bin/ceylon doc --non-shared --source-code default
     ../../bin/ceylon run default
 
 For JavaScript:
@@ -86,7 +86,7 @@ To run the "Java interop" program, type:
 
     cd samples/interop-java
     ../../bin/ceylon compile com.example.interop
-    ../../bin/ceylon doc -non-shared -source-code com.example.interop
+    ../../bin/ceylon doc --non-shared --source-code com.example.interop
     ../../bin/ceylon run com.example.interop/1.0.0 John
 
 Note: this is only available for the Java backend.
