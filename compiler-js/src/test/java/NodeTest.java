@@ -1,7 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 
-import com.redhat.ceylon.compiler.js.Runner;
+import com.redhat.ceylon.compiler.js.CeylonRunJsTool;
 
 
 /** Runs the test() function in each js module that was generated.
@@ -26,8 +26,8 @@ public class NodeTest {
         ProcessBuilder pb = new ProcessBuilder(nodePath, "-e", eval).directory(root.getParentFile());
         pb.environment().put("NODE_PATH", root.getPath());
         Process proc = pb.start();
-        new Runner.ReadStream(proc.getInputStream(), System.out).start();
-        new Runner.ReadStream(proc.getErrorStream(), System.err).start();
+        new CeylonRunJsTool.ReadStream(proc.getInputStream(), System.out).start();
+        new CeylonRunJsTool.ReadStream(proc.getErrorStream(), System.err).start();
         int xv = proc.waitFor();
         proc.getInputStream().close();
         proc.getErrorStream().close();
@@ -51,7 +51,7 @@ public class NodeTest {
             System.out.printf("%s is not a readable directory%n", root2);
             System.exit(1);
         }
-        final String nodePath = Runner.findNode();
+        final String nodePath = CeylonRunJsTool.findNode();
         for (File subdir1 : root1.listFiles()) {
             final String modname = subdir1.getName();
             if (subdir1.isDirectory() && !(modname.equals("ceylon"))) { //skip language module
