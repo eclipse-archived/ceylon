@@ -169,10 +169,10 @@ public class MiscTest extends CompilerTest {
 
     @Test
     public void testJDKModules(){
-        Assert.assertTrue(JDKPackageList.isJDKModule("jdk.base"));
-        Assert.assertTrue(JDKPackageList.isJDKModule("jdk.desktop"));
-        Assert.assertTrue(JDKPackageList.isJDKModule("jdk.compiler")); // last one
-        Assert.assertFalse(JDKPackageList.isJDKModule("jdk.stef"));
+        Assert.assertTrue(JDKPackageList.isJDKModule("java.base"));
+        Assert.assertTrue(JDKPackageList.isJDKModule("java.desktop"));
+        Assert.assertTrue(JDKPackageList.isJDKModule("java.compiler")); // last one
+        Assert.assertFalse(JDKPackageList.isJDKModule("java.stef"));
     }
 
     @Test

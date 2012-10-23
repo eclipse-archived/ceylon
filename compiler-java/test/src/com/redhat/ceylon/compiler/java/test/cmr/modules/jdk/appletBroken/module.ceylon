@@ -1,4 +1,4 @@
-module com.redhat.ceylon.compiler.java.test.cmr.modules.jdk.appletBroken '1' {
-    import jdk.base '7';
-    import jdk.desktop '7';
+module com.redhat.ceylon.compiler.java.test.cmr.modules.java.appletBroken '1' {
+    import java.base '7';
+    import java.desktop '7';
 }
