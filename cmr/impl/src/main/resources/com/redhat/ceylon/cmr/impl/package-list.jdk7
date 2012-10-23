@@ -13,7 +13,7 @@
 # - lines that start with a '=' define the start of a new module name
 # - other lines are package names that belong to the current module
 
-=jdk.base
+=java.base
 java.lang
 java.lang.annotation
 java.lang.ref
@@ -58,10 +58,10 @@ javax.crypto.spec
 java.beans
 java.beans.beancontext
 
-=jdk.logging
+=java.logging
 java.util.logging
 
-=jdk.management
+=java.management
 java.lang.management
 javax.management
 javax.management.loading
@@ -73,10 +73,10 @@ javax.management.remote
 javax.management.remote.rmi
 javax.management.timer
 
-=jdk.instrument
+=java.instrument
 java.lang.instrument
 
-=jdk.rmi
+=java.rmi
 java.rmi
 java.rmi.activation
 java.rmi.dgc
@@ -84,26 +84,26 @@ java.rmi.registry
 java.rmi.server
 javax.rmi.ssl
 
-=jdk.prefs
+=java.prefs
 java.util.prefs
 
 # aka security-jsse
-=jdk.tls
+=java.tls
 javax.net
 javax.net.ssl
 javax.security.cert
 
 # aka security-kerberos
-=jdk.kerberos
+=java.auth.kerberos
 javax.security.auth.kerberos
 org.ietf.jgss
 
 # aka security-sasl
-=jdk.auth
+=java.auth
 javax.security.sasl
 
 # aka security-xmldsig
-=jdk.xmldsig
+=javax.xmldsig
 javax.xml.crypto
 javax.xml.crypto.dom
 javax.xml.crypto.dsig
@@ -113,11 +113,11 @@ javax.xml.crypto.dsig.spec
 # Seems we're missing org.jcp.xml.dsig, not sure why
 
 # aka security-acl
-=jdk.security.acl
+=java.security.acl
 java.security.acl
 
 # aka jndi-ldap and jndi
-=jdk.jndi
+=javax.naming
 javax.naming.ldap
 javax.naming
 javax.naming.directory
@@ -126,24 +126,24 @@ javax.naming.spi
 # seems this includes javax.naming.ldap as well, from jndi-ldap, but it must be a bug in Jigsaw? 
 
 # aka jta
-=jdk.jta
+=javax.transaction
 javax.transaction
 javax.transaction.xa
 
-=jdk.jdbc
+=java.jdbc
 java.sql
 javax.sql
 
-=jdk.jdbc.rowset
+=java.jdbc.rowset
 javax.sql.rowset
 javax.sql.rowset.serial
 javax.sql.rowset.spi
 
 # aka scripting
-=jdk.scripting
+=javax.script
 javax.script
 
-=jdk.jaxp
+=javax.xml
 javax.xml
 javax.xml.datatype
 javax.xml.namespace
@@ -166,7 +166,7 @@ org.xml.sax
 org.xml.sax.ext
 org.xml.sax.helpers
 
-=jdk.jaxws
+=javax.jaxws
 javax.jws
 javax.jws.soap
 javax.xml.bind
@@ -186,10 +186,10 @@ javax.xml.ws.spi.http
 javax.xml.ws.wsaddressing
 javax.activation
 
-=jdk.jx.annotations
+=javax.annotation
 javax.annotation
 
-=jdk.corba
+=java.corba
 javax.activity
 javax.rmi
 javax.rmi.CORBA
@@ -225,7 +225,7 @@ org.omg.stub.java.rmi
 # That one consists in beans, client and applet. But beans is in base for us, because we don't
 # do partial package modules, and client consists in awt, imageio, print, sound and swing with
 # accessibility
-=jdk.desktop
+=java.desktop
 #applet
 java.applet
 #client
@@ -282,14 +282,10 @@ javax.swing.undo
 # accessibility
 javax.accessibility
 
-=jdk.compiler
+=java.compiler
 javax.tools
 javax.lang.model
 javax.lang.model.element
 javax.lang.model.type
 javax.lang.model.util
 javax.annotation.processing
-
-# This is non-existant in Jigsaw, because it is part of the "client"
-# meta-package that includes awt,print,sound and swing. We didn't
-# map this meta-package yet so I include it in its own module
