@@ -26,6 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Versions;
+
 /**
  * @author Stephane Epardaud
  * @author Ales Justin
@@ -130,7 +132,7 @@ public class Configuration {
     }
 
     private void printVersion() {
-        System.out.println("Version: ceylon " + Constants.CEYLON_VERSION);
+        System.out.println("Version: ceylon " + Versions.CEYLON_VERSION);
         SecurityActions.exit(0);
     }
 
