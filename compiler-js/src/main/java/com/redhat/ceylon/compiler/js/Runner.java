@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.Options;
 
 /** Command-line runner for ceylonc-js compiled code, using node.js
@@ -174,7 +175,7 @@ public class Runner {
         List<String> opts = new ArrayList<String>();
         opts.addAll(Arrays.asList(args));
         if (Options.findOption("-version", opts, true)) {
-            System.err.println("Version: ceylon-js 0.4 'Ratatouille'");
+            System.err.println("Version: ceylon-js " + Versions.CEYLON_VERSION);
         }
         if (Options.findOption("-help", opts, true)) {
             usage();

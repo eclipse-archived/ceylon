@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -266,7 +267,7 @@ public class Main {
         List<String> args = new ArrayList<String>(Arrays.asList(_args));
         final Options opts = Options.parse(args);
         if (opts.isVersion()) {
-            System.err.printf("Version: ceylonc-js %s 'Ratatouille'%n", JsCompiler.VERSION);
+            System.err.printf("Version: ceylonc-js %s%n", Versions.CEYLON_VERSION);
             return;
         }
         if (opts.isHelp()) {
