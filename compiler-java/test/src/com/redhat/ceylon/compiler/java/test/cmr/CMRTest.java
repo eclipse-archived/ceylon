@@ -521,7 +521,7 @@ public class CMRTest extends CompilerTest {
 
     // fails due to https://github.com/ceylon/ceylon-spec/issues/369
     @Test
-    public void testMdlMavenDependency_fail() throws IOException{
+    public void testMdlMavenDependency() throws IOException{
         // Try to compile the ceylon module
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "mvn:http://repo1.maven.org/maven2", "-verbose:cmr"), 
                 (DiagnosticListener<? super FileObject>)null, 
@@ -530,7 +530,7 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
-    public void testMdlAetherDependency_fail() throws IOException{
+    public void testMdlAetherDependency() throws IOException{
         // Try to compile the ceylon module
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether", "-verbose:cmr"), 
                 (DiagnosticListener<? super FileObject>)null, 

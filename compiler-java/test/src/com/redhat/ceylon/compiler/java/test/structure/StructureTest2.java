@@ -256,7 +256,7 @@ public class StructureTest2 extends CompilerTest {
     }
     
     @Test
-    public void testNstMethodReturningInner_fail(){
+    public void testNstMethodReturningInner(){
         compareWithJavaSource("nesting/MethodReturningInner");
     }
 
