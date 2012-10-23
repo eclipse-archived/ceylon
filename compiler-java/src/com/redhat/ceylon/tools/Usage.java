@@ -15,6 +15,7 @@ import com.redhat.ceylon.common.tool.OptionArgumentException.OptionMultiplicityE
 import com.redhat.ceylon.common.tool.OptionArgumentException.OptionWithoutArgumentException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 import com.redhat.ceylon.common.tool.OptionModel;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
 import com.redhat.ceylon.common.tool.WordWrap;
 
@@ -161,16 +162,22 @@ class Usage {
     }
     
     void run() throws Exception {
-        out.append(buildFirstLine()).newline();
-        if (t instanceof OptionArgumentException) {
-            printUsage((OptionArgumentException)t);
-        }
-        
-        if (rootTool.getStacktraces() || Tools.isFatal(t)) {
+        if (!validToolName()) {
+            out.append(buildFirstLineBadToolName(toolName)).newline();
+            printHelpInvocation();
             out.flush();
-            t.printStackTrace(System.err);
+        } else {
+            out.append(buildFirstLine()).newline();
+            if (t instanceof OptionArgumentException) {
+                printUsage((OptionArgumentException)t);
+            }
+            
+            if (rootTool.getStacktraces() || Tools.isFatal(t)) {
+                out.flush();
+                t.printStackTrace(System.err);
+            }
+            out.flush();
         }
-        out.flush();
     }
 
     private String buildFirstLine() {
@@ -189,39 +196,50 @@ class Usage {
         return sb.toString();
     }
     
+    private String buildFirstLineBadToolName(String toolName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(Tools.progName()).append(": ");
+        sb.append(CeylonToolMessages.msg("bad.tool.name", toolName));
+        return sb.toString();
+    }
+    
     private void printUsage(OptionArgumentException t) throws Exception {
         if (t instanceof UnknownOptionException) {
             UnknownOptionException e = (UnknownOptionException)t;
-            printSynopsis();
+            printSynopsis(e.getToolModel());
             printOptionSuggestions(e);
         } else if (t instanceof OptionMultiplicityException) {
             OptionMultiplicityException e = (OptionMultiplicityException)t;
-            printSynopsis();
+            printSynopsis(e.getToolModel());
             printOptions(e.getOptionModel().getLongName());
         } else if (t instanceof ArgumentMultiplicityException) {
-            printSynopsis();
+            ArgumentMultiplicityException e = (ArgumentMultiplicityException)t;
+            printSynopsis(e.getToolModel());
         } else if (t instanceof OptionWithoutArgumentException) {
             OptionWithoutArgumentException e = (OptionWithoutArgumentException)t;
-            printSynopsis();
+            printSynopsis(e.getToolModel());
             printOptions(e.getOptionModel().getLongName());
             printSuggestions(e.getOptionModel().getArgument().getParser(), null);
         } else if (t instanceof InvalidArgumentValueException) {
             InvalidArgumentValueException e = (InvalidArgumentValueException)t;
-            printSynopsis();
+            printSynopsis(e.getToolModel());
             printSuggestions(e.getArgumentModel().getParser(), e.getBadValue());
         } else if (t instanceof InvalidOptionValueException) {
             InvalidOptionValueException e = (InvalidOptionValueException)t;
-            printSynopsis();
+            printSynopsis(e.getToolModel());
             printOptions(e.getOptionModel().getLongName());
             printSuggestions(e.getOptionModel().getArgument().getParser(), e.getBadValue());
         } else {
-            printSynopsis();
+            printSynopsis(null);
         } 
         
         printHelpInvocation();
     }
 
-    private void printSynopsis() throws Exception {
+    private void printSynopsis(ToolModel<?> toolModel) throws Exception {
+        if (!validToolName()) {
+            return;
+        }
         // Call the help tool to generate the usage
         out.newline();
         out.append(CeylonToolMessages.msg("usage")).newline();
@@ -229,8 +247,9 @@ class Usage {
         // Can't call rootTool.bootstrap() because that would replace the 
         // rootTool's toolName, which we need when printing option suggestions
         CeylonTool r = new CeylonTool();
+        r.setToolLoader(rootTool.getPluginLoader());
         r.setCommand("help");
-        r.setCommandArguments(Arrays.asList("--synopsis", toolName != null ? toolName : ""));
+        r.setCommandArguments(Arrays.asList("--synopsis", toolModel.getName()));
         r.run();
         out.newline();
     }
@@ -244,6 +263,7 @@ class Usage {
         // Can't call rootTool.bootstrap() because that would replace the 
         // rootTool's toolName, which we need when printing option suggestions
         CeylonTool r = new CeylonTool();
+        r.setToolLoader(rootTool.getPluginLoader());
         r.setCommand("help");
         r.setCommandArguments(Arrays.asList(
                 option == null ? "--options" :"--options=" + option, 
@@ -253,7 +273,8 @@ class Usage {
     
     private void printHelpInvocation() {
         String helpInvocation = Tools.progName()+ " help";
-        if (toolName != null) {
+        if (toolName != null
+                && validToolName()) {
             helpInvocation += " " + toolName;
         }
         out.append(CeylonToolMessages.msg("run.ceylon.help", helpInvocation));
@@ -279,8 +300,11 @@ class Usage {
     
     private void printOptionSuggestions(UnknownOptionException e) {
         if (e.getAggregating() == null || e.getAggregating().size() == 0) {
+            /*if (!validToolName()) {
+                return;
+            }*/
             List<String> suggestions = new ArrayList<>();
-            for (OptionModel<?> model : rootTool.getToolModel().getOptions()) {
+            for (OptionModel<?> model : e.getToolModel().getOptions()) {
                 if (e.getLongName() != null
                         && isSuggestionFor(e.getLongName(), model.getLongName())) {
                     suggestions.add("--"+model.getLongName());
@@ -296,6 +320,10 @@ class Usage {
             }
             printSuggestions(suggestions);
         }
+    }
+
+    private boolean validToolName() {
+        return rootTool.getToolModel() != null;
     }
 
     private void printSuggestions(List<String> l) {
