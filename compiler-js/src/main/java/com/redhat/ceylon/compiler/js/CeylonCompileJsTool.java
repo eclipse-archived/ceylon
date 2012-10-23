@@ -16,32 +16,25 @@ import com.redhat.ceylon.compiler.Options;
 public class CeylonCompileJsTool implements Tool {
 
     private boolean profile = false;
-    
     private boolean optimize = false;
-    
     private boolean modulify = true;
-    
     private boolean indent = true;
-    
     private boolean comments = false;
-    
     private boolean verbose = false;
-    
+    private boolean skipSrc = false;
+
     private String user = null;
-    
     private String pass = null;
-    
+    private String out = "modules";
+
     private List<String> repos = Collections.emptyList();
-    
     private List<String> src = Collections.singletonList("source");
     private List<String> module = Collections.emptyList();
 
-    private String out = "modules";
-    
     public boolean isProfile() {
         return profile;
     }
-    
+
     @Option
     @Description("Time the compilation phases (results are printed to standard error)")
     public void setProfile(boolean profile) {
@@ -155,6 +148,15 @@ public class CeylonCompileJsTool implements Tool {
         return out;
     }
 
+    @Option
+    @Description("Do **not** generate .src archive - useful when doing joint compilation")
+    public void setSkipSrcArchive(boolean skip) {
+        skipSrc = skip;
+    }
+    public boolean isSkipSrcArchive() {
+        return skipSrc;
+    }
+
     @OptionArgument(argumentName="url")
     @Description("Specifies the output module repository (which must be publishable). " +
             "(default: `./modules`)")
@@ -170,7 +172,7 @@ public class CeylonCompileJsTool implements Tool {
     @Override
     public void run() throws Exception {
         final Options opts = new Options(getRepos(), getSrc(), null, getOut(), getUser(), getPass(), isOptimize(),
-                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, true, null);
+                isModulify(), isIndent(), isComments(), isVerbose(), isProfile(), false, !skipSrc, null);
         Main.run(opts, module);
     }
 
