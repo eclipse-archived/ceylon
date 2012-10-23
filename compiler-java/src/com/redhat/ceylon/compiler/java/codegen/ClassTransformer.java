@@ -195,6 +195,7 @@ public class ClassTransformer extends AbstractTransformer {
             .satisfies(model.getSatisfiedTypes())
             .caseTypes(model.getCaseTypes(), model.getSelfType())
             .init(childDefs)
+            .reifiedIs(model.getType(), model.getTypeParameters(), model.getSatisfiedTypes(), model.getExtendedType())
             .build();
     }
 
