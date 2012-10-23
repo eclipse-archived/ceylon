@@ -247,6 +247,9 @@ public class ClassTransformer extends AbstractTransformer {
     private void transformClass(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, ClassOrInterface model, ClassDefinitionBuilder classBuilder, 
             com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList paramList, boolean generateInstantiator, 
             Class cls, ClassDefinitionBuilder instantiatorDeclCb, ClassDefinitionBuilder instantiatorImplCb, TypeParameterList typeParameterList) {
+        // do reified type params first
+        if(typeParameterList != null)
+            classBuilder.reifiedTypeParameters(typeParameterList);
         
         for (Tree.Parameter param : paramList.getParameters()) {
             // Overloaded instantiators
@@ -309,6 +312,9 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model);
+        // Make sure top types satisfy reified type
+        if(model.getExtendedType() == null || willEraseToObject(model.getExtendedType()))
+            classBuilder.reifiedType();
     }
     
     /**
