@@ -8,5 +8,6 @@ shared void test() {
   testFixedSized();
   test_concrete_members();
   testMultipleInheritance();
+  bug135();
   results();
 }
