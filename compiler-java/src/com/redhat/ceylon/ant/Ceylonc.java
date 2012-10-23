@@ -44,8 +44,6 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
 
-import com.redhat.ceylon.common.ant.Module;
-import com.redhat.ceylon.common.ant.Rep;
 
 public class Ceylonc extends LazyTask {
 

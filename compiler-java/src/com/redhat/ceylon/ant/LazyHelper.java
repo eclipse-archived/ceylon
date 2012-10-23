@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.apache.tools.ant.Project;
 
-import com.redhat.ceylon.common.ant.Module;
 
 abstract class LazyHelper {
 

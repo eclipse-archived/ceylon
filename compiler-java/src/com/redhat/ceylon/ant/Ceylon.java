@@ -40,8 +40,6 @@ import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
 
-import com.redhat.ceylon.common.ant.ModuleAndVersion;
-import com.redhat.ceylon.common.ant.Rep;
 
 public class Ceylon extends Task {
 
