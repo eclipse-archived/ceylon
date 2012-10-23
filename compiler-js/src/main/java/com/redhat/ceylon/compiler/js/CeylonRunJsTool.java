@@ -137,7 +137,7 @@ public class CeylonRunJsTool implements Tool {
         this.repos = repos;
     }
     
-    @Argument(argumentName="arg", multiplicity="1")
+    @Argument(argumentName="module", multiplicity="1")
     public void setModuleVersion(String moduleVersion) {
         this.module= moduleVersion;
     }
