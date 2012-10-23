@@ -67,9 +67,9 @@ public class CeylonRunJsTool implements Tool {
             try {
                 String line = in.readLine();
                 while (line != null) {
-                    if (line.trim().startsWith("throw new")) {
+                    if (line.trim().startsWith("throw ")) {
                         printing = false;
-                    } else if (line.startsWith("Error: Cannot find module")) {
+                    } else if (line.startsWith("Error: Cannot find module ")) {
                         out.println(line);
                         printing = false;
                     } else if (!printing) {
@@ -224,7 +224,7 @@ public class CeylonRunJsTool implements Tool {
         }
         int exitCode = nodeProcess.waitFor();
         if (exitCode != 0) {
-            throw new Exception(Tools.progName() + " node exit code: "+exitCode);
+            throw new RuntimeException(Tools.progName() + " node exit code: "+exitCode);
         }        
     }
 
