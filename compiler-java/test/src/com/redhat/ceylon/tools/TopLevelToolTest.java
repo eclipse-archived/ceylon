@@ -118,7 +118,7 @@ public class TopLevelToolTest {
         try (CapturingStdOut out = new CapturingStdOut()) {
             Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("help", "--version")));
             Assert.assertTrue(out.getOut().isEmpty());
-            Assert.assertTrue(out.getErr(), out.getErr().contains("ceylon help: Fatal error: Unrecognised option(s): --version"));
+            Assert.assertTrue(out.getErr(), out.getErr().contains("ceylon help: Unrecognised long option '--version'"));
         }
         Assert.assertEquals("help", tool.getToolName());
     }
@@ -176,7 +176,14 @@ public class TopLevelToolTest {
         // the top level tool doesn't take a --file option
         try (CapturingStdOut out = new CapturingStdOut()) {
             Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("--file=.", "example")));
-            Assert.assertEquals(out.getErr().trim(), "ceylon example: Fatal error: Unrecognised option(s): --file=.");
+            Assert.assertEquals(
+"ceylon example: Unrecognised long option '--file=.' to command 'ceylon'\n"+
+"\n"+
+"Usage:\n"+
+"ceylon [--stacktraces] [--version] [--] [<tool-arguments...>]\n"+
+"\n"+
+"Run 'ceylon help example' for more help",
+                    out.getErr().trim().replace("\r", ""));
             Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
         }
     }
@@ -187,6 +194,40 @@ public class TopLevelToolTest {
             Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(args("example", "--file=.")));
             Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
             Assert.assertTrue(out.getErr(), out.getErr().isEmpty());
+        }
+    }
+    
+    @Test
+    public void testOptionExampleFil()  throws Exception {
+        // the top level tool doesn't take a --file option
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("example", "--fil=.")));
+            Assert.assertEquals(
+"ceylon example: Unrecognised long option '--fil=.' to command 'example'\n"+
+"\n" +
+"Usage:\n" +
+"ceylon example [--file=<value>] [--list-option=<bars>...] [--long-name] [--pure-\n"+
+"               option] [--short-name=<value>] [--thread-state=<value>] [--] [\n"+
+"               <args...>]\n"+
+"\n" +
+"Did you mean?\n"+
+"    --file\n"+
+"\n"+
+"Run 'ceylon help example' for more help",
+                    out.getErr().trim().replace("\r", ""));
+            Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
+        }
+    }
+    
+    @Test
+    public void testBug820()  throws Exception {
+        // the top level tool doesn't take a --file option
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("-rep", "http://something", "compile")));
+            Assert.assertEquals(
+                    "ceylon: 'http://something' is not a ceylon command\n" +
+                    "Run 'ceylon help' for more help", out.getErr().trim().replace("\r", ""));
+            Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
         }
     }
     

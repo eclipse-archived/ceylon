@@ -59,7 +59,7 @@ public class HelpToolTest {
             pluginFactory.bindArguments(model, Arrays.asList("--", "compile", "--javac="));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Unexpected argument '--javac='", e.getMessage());
+            Assert.assertEquals("Unexpected argument '--javac=' to command 'help'", e.getMessage());
         }
     }
     
