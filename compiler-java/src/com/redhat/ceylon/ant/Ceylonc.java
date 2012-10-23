@@ -47,7 +47,7 @@ import org.apache.tools.ant.types.Reference;
 
 public class Ceylonc extends LazyTask {
 
-    private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
+    static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
     private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
         @Override
