@@ -43,7 +43,7 @@ import org.apache.tools.ant.types.Path;
 
 public class Ceylon extends Task {
 
-    private static final String FAIL_MSG = "Run failed; see the compiler error output for details.";
+    static final String FAIL_MSG = "Run failed; see the compiler error output for details.";
 
     private Path src;   
     private String run;
