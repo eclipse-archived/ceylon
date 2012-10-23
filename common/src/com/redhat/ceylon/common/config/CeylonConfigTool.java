@@ -16,6 +16,9 @@
 
 package com.redhat.ceylon.common.config;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -40,39 +43,57 @@ public class CeylonConfigTool implements Tool {
     
     private Tool action;
     
-    private String file;
+    private File file;
     
     @OptionArgument(argumentName="file")
-    @Description("The file to operate on. Default: `./.ceylon/config`)")
-    public void setFile(String file) {
+    @Description("The file to operate on.")
+    public void setFile(File file) {
         this.file = file;
     }
     
     @Subtool(argumentName="action",
-            classes={Get.class, Set.class, Unset.class, RenameSection.class, RemoveSection.class, Keystore.class})
+            classes={List.class, Get.class, Set.class, Unset.class, RenameSection.class, RemoveSection.class, Keystore.class})
     public void setAction(Tool action) {
         this.action = action;
     }
 
-    @Summary("Gets a value in a config file")
-    public class Get implements Tool {
+    private CeylonConfig getConfig() throws IOException {
+        if (file != null) {
+            return ConfigParser.loadConfigFromFile(file);
+        } else {
+            return CeylonConfig.get();
+        }
+    }
+    
+    @Summary("Lists configuration values")
+    public class List implements Tool {
     
         @Override
-        public void run() {
-            CeylonConfig config = CeylonConfig.get();
-            for (String sectionName : config.getSectionNames(null)) {
-                String[] names = config.getOptionNames(sectionName);
-                if (names != null && names.length > 0) {
-                    System.out.println("[" + sectionName + "]");
-                    for (String optionName : names) {
-                        String[] values = config.getOptionValues(sectionName + "." + optionName);
-                        if (values != null) {
-                            for (String value : values) {
-                                System.out.println(optionName + "=" + value);
-                            }
-                        }
-                    }
-                    System.out.println();
+        public void run() throws IOException {
+            CeylonConfig config = getConfig();
+            System.out.print(config.toString());
+        }
+    }
+
+    @Summary("Gets a configuration value")
+    @Description(
+            "Get the value defined for <key>")
+    public class Get implements Tool {
+    
+        private String key;
+        
+        @Argument(argumentName="key", multiplicity="1")
+        public void setKey(String key) {
+            this.key = key;
+        }
+        
+        @Override
+        public void run() throws IOException {
+            CeylonConfig config = getConfig();
+            String[] values = config.getOptionValues(key);
+            if (values != null) {
+                for (String value : values) {
+                    System.out.println(ConfigWriter.escape(value));
                 }
             }
         }
