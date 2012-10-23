@@ -346,7 +346,12 @@ public class ClassDefinitionBuilder {
         }
         return this;
     }
-    
+
+    public ClassDefinitionBuilder reifiedType() {
+        this.satisfies.add(gen.makeReifiedTypeType());
+        return this;
+    }
+
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
         this.satisfies.addAll(transformTypesList(satisfies));
         //this.defs.addAll(appendConcreteInterfaceMembers(satisfies));
