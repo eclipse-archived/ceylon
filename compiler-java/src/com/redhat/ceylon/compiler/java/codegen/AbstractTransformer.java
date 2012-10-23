@@ -2797,4 +2797,8 @@ public abstract class AbstractTransformer implements Transformation {
                 log.useSource(gen().getFileObject());
         return pos;
     }
+
+    public JCExpression makeClassLiteral(ProducedType type) {
+        return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW), "class");
+    }
 }
