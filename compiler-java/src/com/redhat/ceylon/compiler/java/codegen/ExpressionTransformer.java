@@ -1763,6 +1763,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         withinInvocation(false);
         // Implicit arguments
+        result = invocation.addReifiedArguments(result);
         if (needsTypeInfoArgument(invocation)) {
             result = result.append(new ExpressionAndType(makeTypeInfoArgument(invocation), make().Type(syms().classType)));
         }

@@ -127,6 +127,8 @@ abstract class Invocation {
         return onValueType;
     }
 
+    protected abstract List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result);
+    
     public final void setUnboxed(boolean unboxed) {
         this.unboxed = unboxed;
     }
@@ -328,6 +330,14 @@ class IndirectInvocationBuilder extends SimpleInvocation {
     }
     
     @Override
+    protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+        java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(parameterTypes);
+        for(JCExpression reifiedTypeArg : reifiedTypeArgs)
+            result = result.append(new ExpressionAndType(gen.makeReifiedTypeType(), reifiedTypeArg));
+        return result;
+    }
+
+    @Override
     protected boolean isParameterSequenced(int argIndex) {
         return variadic && argIndex >= parameterTypes.size() - 1;
     }
@@ -478,6 +488,14 @@ abstract class DirectInvocation extends SimpleInvocation {
     @Override
     protected boolean hasParameter(int argIndex) {
         return getParameter(argIndex) != null;
+    }
+    
+    @Override
+    protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+        java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(producedReference);
+        for(JCExpression reifiedTypeArg : reifiedTypeArgs)
+            result = result.append(new ExpressionAndType(gen.makeReifiedTypeType(), reifiedTypeArg));
+        return result;
     }
 }
 
@@ -800,6 +818,11 @@ class CallableSpecifierInvocation extends Invocation {
         setBoxingStrategy(method.getUnboxed() ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED);
     }
 
+    @Override
+    protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+        throw new RuntimeException("not implemented yet");
+    }
+    
     JCExpression getCallable() {
         return callable;
     }
@@ -839,6 +862,15 @@ class NamedArgumentInvocation extends Invocation {
         callVarName = varBaseName.suffixedBy("$callable$");
     }
     
+    @Override
+    protected List<ExpressionAndType> addReifiedArguments(List<ExpressionAndType> result) {
+        int tpCount = gen.getTypeParameters(producedReference).size();
+        for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
+            result = result.append(new ExpressionAndType(gen.makeReifiedTypeType(), reifiedTypeArgName(tpIndex).makeIdent()));
+        }
+        return result;
+    }
+    
     ListBuffer<JCStatement> getVars() {
         return vars;
     }
@@ -864,6 +896,7 @@ class NamedArgumentInvocation extends Invocation {
         java.util.List<ParameterList> paramLists = ((Functional)getPrimaryDeclaration()).getParameterLists();
         java.util.List<Parameter> declaredParams = paramLists.get(0).getParameters();
         appendVarsForNamedArguments(namedArguments, declaredParams);
+        appendVarsForReifiedTypeArguments();
         if(sequencedArgument != null)
             appendVarsForSequencedArguments(sequencedArgument, declaredParams);
         boolean hasDefaulted = appendVarsForDefaulted(declaredParams);
@@ -874,6 +907,17 @@ class NamedArgumentInvocation extends Invocation {
             vars.prepend(makeThis());
         }
         gen.expressionGen().withinInvocation(prev);
+    }
+    
+    private void appendVarsForReifiedTypeArguments() {
+        java.util.List<JCExpression> reifiedTypeArgs = gen.makeReifiedTypeArguments(producedReference);
+        int index = 0;
+        for(JCExpression reifiedTypeArg : reifiedTypeArgs){
+            Naming.SyntheticName argName = reifiedTypeArgName(index);
+            JCVariableDecl varDecl = gen.makeVar(argName, gen.makeTypeDescriptorType(), reifiedTypeArg);
+            this.vars.append(varDecl);
+            index++;
+        }
     }
     
     private void appendVarsForSequencedArguments(Tree.SequencedArgument sequencedArgument, java.util.List<Parameter> declaredParams) {
@@ -927,6 +971,11 @@ class NamedArgumentInvocation extends Invocation {
                 && Strategy.defaultParameterMethodTakesThis(param)) {
             names.append(varBaseName.suffixedBy("$this$").makeIdent());
         }
+        // put all the required reified type args too
+        int tpCount = gen.getTypeParameters(producedReference).size();
+        for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
+            names.append(reifiedTypeArgName(tpIndex).makeIdent());
+        }
         final int parameterIndex = parameterIndex(param);
         for (int ii = 0; ii < parameterIndex; ii++) {
             names.append(this.argsNamesByIndex.get(ii).makeIdent());
@@ -950,6 +999,12 @@ class NamedArgumentInvocation extends Invocation {
         //    throw new RuntimeException();
         //}
         return argName;
+    }
+
+    /** Generates the argument name; namedArg may be null if no  
+     * argument was given explicitly */
+    private Naming.SyntheticName reifiedTypeArgName(int index) {
+        return varBaseName.suffixedBy("$reified$" + index);
     }
 
     private java.util.List<Parameter> parameterList(Parameter param) {
