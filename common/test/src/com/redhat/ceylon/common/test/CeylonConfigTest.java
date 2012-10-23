@@ -124,7 +124,7 @@ public class CeylonConfigTest {
     @Test
     public void testOptionNames() {
         Assert.assertTrue(compareStringArrays(new String[]{"foo", "fooz"}, testConfig.getOptionNames("test.section.Mies")));
-        Assert.assertTrue(compareStringArrays(new String[]{"local.dir", "test.string-hello", "test.multiple.strings", "local.dir2", "local.foo"}, localConfig.getOptionNames(null)));
+        Assert.assertTrue(compareStringArrays(new String[]{"local.foo", "local.dir", "local.dir2", "test.string-hello", "test.multiple.strings"}, localConfig.getOptionNames(null)));
     }
     
     @Test

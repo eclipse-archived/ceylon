@@ -89,6 +89,7 @@ public class ConfigWriterTest {
             
             CeylonConfig localDirConfig = ConfigParser.loadLocalConfig(testDir);
             localDirConfig.setOption("test.pulsar", "CP 1919");
+            localDirConfig.setOption("test.string-escapes2", "\n\t\"\\# ");
             ConfigWriter.write(localDirConfig, configFile);
             
             String contents1 = readFile(new File("test/src/com/redhat/ceylon/common/test/writer-overwriting.config"));
