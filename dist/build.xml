@@ -185,6 +185,7 @@ Used with another target such as 'package'">
             </zipfileset>
             <zipfileset dir="${basedir}" prefix="${dist.name}">
                 <include name="LICENSE-ASL" />
+                <include name="LICENSE-LGPL" />
                 <include name="LICENSE-GPL-CP" />
                 <include name="NOTICE" />
                 <include name="README.md" />
