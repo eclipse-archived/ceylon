@@ -387,7 +387,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (dec instanceof TypeParameter) {
-                that.addWarning("type parameter in assignability condition not yet supported (until we implement reified generics)");
+//                that.addWarning("type parameter in assignability condition not yet supported (until we implement reified generics)");
             }
             else if (isGeneric(dec)) {
                 List<TypeParameter> params = dec.getTypeParameters();
@@ -408,18 +408,18 @@ public class ExpressionVisitor extends Visitor {
                                 }
                                 IntersectionType ut = new IntersectionType(unit);
                                 ut.setSatisfiedTypes(list);
-                                if (!ut.getType().isSubtypeOf(ta)) {
-                                    that.addWarning("type argument to covariant (out) type parameter in assignability condition must be " +
-                                            ut.getType().getProducedTypeName(unit) + " (until we implement reified generics)");
-                                }
+//                                if (!ut.getType().isSubtypeOf(ta)) {
+//                                    that.addWarning("type argument to covariant (out) type parameter in assignability condition must be " +
+//                                            ut.getType().getProducedTypeName(unit) + " (until we implement reified generics)");
+//                                }
                             }
                             else if (tp.isContravariant()) {
-                                if (!ta.isNothing()) {
-                                    that.addWarning("type argument to contravariant (in) type parameter in assignability condition must be Nothing (until we implement reified generics)");
-                                }
+//                                if (!ta.isNothing()) {
+//                                    that.addWarning("type argument to contravariant (in) type parameter in assignability condition must be Nothing (until we implement reified generics)");
+//                                }
                             }
                             else {
-                                that.addWarning("type argument to invariant type parameter in assignability condition not yet supported (until we implement reified generics)");
+//                                that.addWarning("type argument to invariant type parameter in assignability condition not yet supported (until we implement reified generics)");
                             }
                         }
                     }
