@@ -119,7 +119,7 @@ public class CeylonRunJsTool implements Tool {
         File f = new File(p);
         return f.exists() && f.canExecute();
     }
-    
+
     private List<String> repos = Collections.singletonList("modules");
     private String func = "run";
     private String module;
@@ -133,34 +133,34 @@ public class CeylonRunJsTool implements Tool {
     }
 
     @OptionArgument(argumentName="debug")
-    @Description("Shows more detailed output in case of errors.") 
+    @Description("Shows more detailed output in case of errors.")
     public void setDebug(boolean debug) {
         this.debug = debug;
     }
-    
+
     @OptionArgument(argumentName="func")
     @Description("The function to run, which must be exported from the " +
-    		"given `<module>`. (default: `run`).") 
+    		"given `<module>`. (default: `run`).")
     public void setRun(String func) {
         this.func = func;
     }
-    
+
     @OptionArgument(argumentName="url")
     @Description("A module repository. (default: `./modules`).")
     public void setRepositories(List<String> repos) {
         this.repos = repos;
     }
-    
+
     @Argument(argumentName="module", multiplicity="1", order=1)
     public void setModuleVersion(String moduleVersion) {
         this.module= moduleVersion;
     }
-    
+
     @Argument(argumentName="args", multiplicity="*", order=2)
     public void setArgs(List<String> args) {
         this.args = args;
     }
-        
+
     private static String getNodePath() {
         return getFromEnv("NODE_PATH", "node.path");
     }
@@ -180,11 +180,11 @@ public class CeylonRunJsTool implements Tool {
         }
         return System.getProperty(prop);
     }
-    
+
     @Override
     public void run() throws Exception {
         final String node = findNode();
-        
+
         final boolean isDefault = "default".equals(module);
         String version = "";
         if (!isDefault && !module.contains("/")) {
@@ -234,7 +234,7 @@ public class CeylonRunJsTool implements Tool {
         int exitCode = nodeProcess.waitFor();
         if (exitCode != 0) {
             throw new RuntimeException(Tools.progName() + " node exit code: "+exitCode);
-        }        
+        }
     }
 
 }
