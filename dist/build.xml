@@ -163,7 +163,8 @@ Used with another target such as 'package'">
 
     <target name="install-all" 
             depends="install-compiler, install-js, copy-compiler-binaries, 
-                     copy-samples, copy-templates, copy-jvm-compiler-libraries, copy-js-compiler-libraries,
+                     copy-samples, copy-templates, copy-jvm-compiler-libraries,
+                     copy-js-compiler-libraries, copy-cmr-libraries,
                      install-typechecker, install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
@@ -204,9 +205,7 @@ Used with another target such as 'package'">
                 <include name="ceylon-cp.sh"/>
                 <include name="ceylon-cp.bat"/>
                 <include name="ceylon-completion.bash"/>
-                
             </fileset>
-            
         </copy>
         <chmod perm="0755">
             <fileset dir="${dist.dir}/bin">
@@ -223,6 +222,14 @@ Used with another target such as 'package'">
                 <include name="markdownj-*.jar"/>
                 <include name="txtmark-*.jar"/>
                 <include name="markdownpapers-core-*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="copy-cmr-libraries">
+        <mkdir dir="${dist.dir}/lib"/>
+        <copy todir="${dist.dir}/lib">
+            <fileset dir="${ceylon-module-resolver.dir}/build/lib">
                 <include name="cmr-maven-*.jar"/>
                 <include name="shrinkwrap-maven-uberjar-*.jar"/>
             </fileset>
