@@ -838,11 +838,7 @@ public abstract class AbstractTransformer implements Transformation {
         // resolve aliases, but only for aliases, not for things where the underlying type
         // might be meaningful, which we'd lose
         if (isAlias(type)) {
-            if (isOptional(type)) {
-                type = typeFact.getOptionalType(typeFact.getDefiniteType(type).resolveAliases());
-            } else {
-                type = type.resolveAliases();
-            }
+            type = type.resolveAliases();
         }
         
         if ((flags & __JT_RAW_TP_BOUND) != 0
