@@ -18,6 +18,7 @@ package ceylon.modules.bootstrap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.common.tool.Argument;
@@ -49,10 +50,16 @@ public class CeylonRunTool implements Tool {
     private boolean disableDefault;
     private boolean verbose = false;
     private String verboseFlags = "";
+    private List<String> args = Collections.emptyList();
     
-    @Argument(argumentName="module", multiplicity="1")
+    @Argument(argumentName="module", multiplicity="1", order=1)
     public void setModule(String moduleNameOptVersion) {
         this.moduleNameOptVersion = moduleNameOptVersion;
+    }
+    
+    @Argument(argumentName="args", multiplicity="*", order=2)
+    public void setArgs(List<String> args) {
+        this.args  =args;
     }
 
     @OptionArgument(longName="run", argumentName="toplevel")
@@ -132,6 +139,7 @@ public class CeylonRunTool implements Tool {
         }
         
         argList.add(moduleNameOptVersion);
+        argList.addAll(args);
                 
         try {
             org.jboss.modules.Main.main(argList.toArray(new String[argList.size()]));
