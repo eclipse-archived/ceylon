@@ -22,8 +22,9 @@ package com.redhat.ceylon.importjar;
 
 import java.io.IOException;
 
+import com.redhat.ceylon.common.Versions;
+
 public class ImportJarMain {
-    private static final String CEYLOND_VERSION = "0.4 'Ratatouille'";
     private static final int SC_OK = 0;
     private static final int SC_ARGS = 1;
     private static final int SC_ERROR = 2;
@@ -116,7 +117,7 @@ public class ImportJarMain {
     }
 
     private static void printVersion() {
-        System.out.println(ImportJarMessages.msg("info.version", CEYLOND_VERSION));
+        System.out.println(ImportJarMessages.msg("info.version", Versions.CEYLON_VERSION));
         exit(SC_OK);
     }
 

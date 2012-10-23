@@ -27,9 +27,9 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.Versions;
 
 public class Main {
-    private static final String CEYLOND_VERSION = "0.4 'Ratatouille'";
     private static final int SC_OK = 0;
     private static final int SC_ARGS = 1;
     private static final int SC_ERROR = 2;
@@ -174,7 +174,7 @@ public class Main {
     }
 
     private static void printVersion() {
-        System.out.println(CeylondMessages.msg("info.version", CEYLOND_VERSION));
+        System.out.println(CeylondMessages.msg("info.version", Versions.CEYLON_VERSION));
         exit(SC_OK);
     }
 
