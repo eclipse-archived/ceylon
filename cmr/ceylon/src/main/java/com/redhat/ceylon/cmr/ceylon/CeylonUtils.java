@@ -165,11 +165,14 @@ public class CeylonUtils {
 
             // Make sure we load the correct configuration
 
+            CeylonConfig config;
             actualCwd = new File(".");
-            if (cwd == null) {
+            if (cwd == null || actualCwd.equals(cwd)) {
                 cwd = actualCwd;
+                config = CeylonConfig.get();
+            } else {
+                config = CeylonConfig.createFromLocalDir(cwd);
             }
-            CeylonConfig config = CeylonConfig.createFromLocalDir(cwd);
             Repositories repositories = Repositories.withConfig(config);
 
             // First we determine the cache repository
