@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -40,8 +41,8 @@ public class TestModuleManager {
     public static void setup() throws IOException {
         //Copy language module to destination
         java.io.File srclangmod = new java.io.File(String.format(
-                "build/runtime/ceylon/language/%s/ceylon.language-%<s.js", JsCompiler.VERSION));
-        java.io.File dstlangmod = new java.io.File("build/test/test_modules/ceylon/language/" + JsCompiler.VERSION);
+                "build/runtime/ceylon/language/%s/ceylon.language-%<s.js", Versions.CEYLON_VERSION_NUMBER));
+        java.io.File dstlangmod = new java.io.File("build/test/test_modules/ceylon/language/" + Versions.CEYLON_VERSION_NUMBER);
         System.out.printf("Copying %s to %s%n", srclangmod, dstlangmod);
         dstlangmod.mkdirs();
         java.io.BufferedReader lmreader = new java.io.BufferedReader(new java.io.FileReader(srclangmod));
