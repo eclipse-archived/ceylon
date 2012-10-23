@@ -27,7 +27,7 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 The command line tools are located in the `bin` directory.
 
-- `bin/ceylon`     - The ceylon tool which at least the following subcommands:
+- `bin/ceylon`     - The ceylon tool which provides at least the following subcommands:
     * `compile`    - Compile a Ceylon program for the Java backend
     * `compile-js` - Compile a Ceylon program for the JavaScript backend
     * `doc`        - Document a Ceylon program
