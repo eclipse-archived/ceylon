@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 
 public class CeylonConfig {
@@ -42,10 +44,10 @@ public class CeylonConfig {
     }
     
     public CeylonConfig() {
-        options = new HashMap<String, String[]>();
-        sectionNames = new HashMap<String, HashSet<String>>();
-        sectionNames.put("", new HashSet<String>());
-        optionNames = new HashMap<String, HashSet<String>>();
+        options = new LinkedHashMap<String, String[]>();
+        sectionNames = new LinkedHashMap<String, HashSet<String>>();
+        sectionNames.put("", new LinkedHashSet<String>());
+        optionNames = new LinkedHashMap<String, HashSet<String>>();
     }
     
     public static class Key {
@@ -110,14 +112,14 @@ public class CeylonConfig {
         
         HashSet<String> sn = sectionNames.get(k.getSectionName());
         if (sn == null) {
-            sn = new HashSet<String>();
+            sn = new LinkedHashSet<String>();
             sectionNames.put(k.getSectionName(), sn);
         }
         
         if (!"#".equals(k.getOptionName())) {
             HashSet<String> on = optionNames.get(k.getSectionName());
             if (on == null) {
-                on = new HashSet<String>();
+                on = new LinkedHashSet<String>();
                 optionNames.put(k.getSectionName(), on);
             }
             on.add(k.getOptionName());
@@ -231,7 +233,7 @@ public class CeylonConfig {
         if (section != null) {
             sn = sectionNames.get(section);
         } else {
-            sn = new HashSet<String>(sectionNames.keySet());
+            sn = new LinkedHashSet<String>(sectionNames.keySet());
             sn.remove("");
         }
         String[] res = new String[sn.size()];
