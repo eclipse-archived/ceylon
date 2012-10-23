@@ -4,7 +4,7 @@ How to do a release of Ceylon.
 
 1. Find every occurence of the previous version `0.3.1` and turn it into `0.3.2`
   - Beware that in ceylon-runtime you need to rename some folders whose name is the version number, and `module.xml` contents.
-1. Find every occurence of the previous code name `Ratatouille` and turn it into the new one
+1. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
 1. If required, bump `AbstractTransformer.BINARY_MAJOR_VERSION` and all the `@Ceylon(major = X)` annotations in `ceylon.language`
    and the compiler tests' `.src` files
   - Note that most likely you'll need a new Herd as well (good luck)
