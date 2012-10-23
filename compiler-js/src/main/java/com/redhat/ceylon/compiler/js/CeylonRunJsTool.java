@@ -110,9 +110,7 @@ public class CeylonRunJsTool implements Tool {
                 }
             }
         }
-        System.err.println("Could not find 'node' executable. Please install node.js (from http://nodejs.org).");
-        System.exit(2);
-        return null;
+        throw new CeylonRunJsException("Could not find 'node' executable. Please install node.js (from http://nodejs.org).");
     }
 
     private static boolean isExe(String p) {
@@ -124,7 +122,13 @@ public class CeylonRunJsTool implements Tool {
     private String func = "run";
     private String module;
     private List<String> args;
-    
+    private PrintStream output;
+
+    /** Sets the PrintStream to use for output. Default is System.out. */
+    public void setOutput(PrintStream value) {
+        output = value;
+    }
+
     @OptionArgument(argumentName="func")
     @Description("The function to run, which must be exported from the " +
     		"given `<module>`. (default: `run`).") 
@@ -209,10 +213,15 @@ public class CeylonRunJsTool implements Tool {
             }
         }
         proc.environment().put("NODE_PATH", nodePath);
+        if (output != null) {
+            proc.redirectErrorStream();
+        }
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
-        new ReadStream(nodeProcess.getInputStream(), System.out).start();
-        new ReadErrorStream(nodeProcess.getErrorStream(), System.err).start();
+        new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
+        if (output == null) {
+            new ReadErrorStream(nodeProcess.getErrorStream(), System.err).start();
+        }
         int exitCode = nodeProcess.waitFor();
         if (exitCode != 0) {
             throw new Exception(Tools.progName() + " node exit code: "+exitCode);
