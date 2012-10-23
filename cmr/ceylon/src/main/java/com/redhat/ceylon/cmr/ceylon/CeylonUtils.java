@@ -236,7 +236,7 @@ public class CeylonUtils {
                     addRepo(builder, repositories, repo, false);
                 }
             }
-            
+                
             // Add globally defined repos (like the user repo and the default remote Herd repo)
             Repositories.Repository[] lookups = repositories.getGlobalLookupRepositories();
             for (Repositories.Repository lookup : lookups) {
