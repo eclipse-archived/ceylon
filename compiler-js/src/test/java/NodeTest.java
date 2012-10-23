@@ -25,12 +25,11 @@ public class NodeTest {
         final String eval = String.format("setTimeout(function(){}, 50);require('%s').test();", subpath);
         ProcessBuilder pb = new ProcessBuilder(nodePath, "-e", eval).directory(root.getParentFile());
         pb.environment().put("NODE_PATH", root.getPath());
+        pb.redirectErrorStream();
         Process proc = pb.start();
         new CeylonRunJsTool.ReadStream(proc.getInputStream(), System.out).start();
-        new CeylonRunJsTool.ReadStream(proc.getErrorStream(), System.err).start();
         int xv = proc.waitFor();
         proc.getInputStream().close();
-        proc.getErrorStream().close();
         if (xv != 0) {
             System.out.printf("ERROR abnormal termination of node: %s%n", xv);
         }
