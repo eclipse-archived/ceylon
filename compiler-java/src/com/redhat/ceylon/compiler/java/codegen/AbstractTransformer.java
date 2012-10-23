@@ -22,7 +22,9 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -2800,5 +2802,73 @@ public abstract class AbstractTransformer implements Transformation {
 
     public JCExpression makeClassLiteral(ProducedType type) {
         return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW), "class");
+    }
+
+    public java.util.List<JCExpression> makeReifiedTypeArguments(ProducedReference ref){
+        return makeReifiedTypeArguments(getTypeArguments(ref));
+    }
+
+    private Collection<ProducedType> getTypeArguments(
+            ProducedReference producedReference) {
+        java.util.List<TypeParameter> typeParameters = getTypeParameters(producedReference);
+        java.util.List<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
+        for(TypeParameter tp : typeParameters)
+            typeArguments.add(producedReference.getTypeArguments().get(tp));
+        return typeArguments;
+    }
+
+    java.util.List<TypeParameter> getTypeParameters(
+            ProducedReference producedReference) {
+        Declaration declaration = producedReference.getDeclaration();
+        if(declaration instanceof ClassOrInterface)
+            return ((ClassOrInterface)declaration).getTypeParameters();
+        else
+            return ((Method)declaration).getTypeParameters();
+    }
+
+    public java.util.List<JCExpression> makeReifiedTypeArguments(
+            Collection<ProducedType> typeArguments) {
+        java.util.List<JCExpression> ret = new ArrayList<JCExpression>(typeArguments.size());
+        for(ProducedType pt : typeArguments){
+            ret.add(makeReifiedTypeArgument(pt));
+        }
+        return ret;
+    }
+
+    private JCExpression makeReifiedTypeArgument(ProducedType pt) {
+        TypeDeclaration declaration = pt.getDeclaration();
+        if(declaration instanceof ClassOrInterface){
+            List<JCExpression> typeTestArguments = List.nil();
+            JCExpression thisType = makeClassLiteral(pt);
+            java.util.List<ProducedType> typeParameters = pt.getTypeArgumentList();
+            for(int i=typeParameters.size()-1;i>=0;i--){
+                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
+            }
+            typeTestArguments = typeTestArguments.prepend(thisType);
+            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
+        }
+        if(declaration instanceof TypeParameter){
+            TypeParameter tp = (TypeParameter) declaration;
+            String name = naming.getTypeArgumentDescriptorName(tp.getName());
+            return makeUnquotedIdent(name);
+        }
+        // FIXME: refactor this shite
+        if(declaration instanceof UnionType){
+            List<JCExpression> typeTestArguments = List.nil();
+            java.util.List<ProducedType> typeParameters = ((UnionType)declaration).getCaseTypes();
+            for(int i=typeParameters.size()-1;i>=0;i--){
+                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
+            }
+            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "union"), typeTestArguments);
+        }
+        if(declaration instanceof IntersectionType){
+            List<JCExpression> typeTestArguments = List.nil();
+            java.util.List<ProducedType> typeParameters = ((IntersectionType)declaration).getSatisfiedTypes();
+            for(int i=typeParameters.size()-1;i>=0;i--){
+                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i)));
+            }
+            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "intersection"), typeTestArguments);
+        }
+        throw new RuntimeException("Unsupported type");
     }
 }
