@@ -12,6 +12,23 @@ import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionExcept
 @NonFatal
 public class OptionArgumentException extends ToolException {
 
+    private static String getToolName(ArgumentModel<?> argumentModel) {
+        return getToolName(argumentModel.getToolModel());
+    }
+    
+    private static String getToolName(OptionModel<?> optionModel) {
+        return getToolName(optionModel.getToolModel());
+    }
+    
+    private static String getToolName(ToolModel<?> toolModel) {
+        String toolName = toolModel.getName();
+        if (toolName == null 
+                || toolName.isEmpty()) {
+            toolName = Tools.progName();
+        }
+        return toolName;
+    }
+    
     private OptionArgumentException(String message) {
         super(message);
     }
@@ -25,7 +42,7 @@ public class OptionArgumentException extends ToolException {
         private final OptionModel<?> optionModel;
 
         public OptionWithoutArgumentException(OptionModel<?> optionModel, String arg) {
-            super(ToolMessages.msg("option.without.argument", arg));
+            super(ToolMessages.msg("option.without.argument", arg, getToolName(optionModel)));
             this.optionModel = optionModel;
         }
 
@@ -41,8 +58,8 @@ public class OptionArgumentException extends ToolException {
     
     @NonFatal
     public static class UnexpectedArgumentException extends OptionArgumentException {
-        public UnexpectedArgumentException(String arg) {
-            super(ToolMessages.msg("argument.unexpected", arg));
+        public UnexpectedArgumentException(String arg, ToolModel<?> toolModel) {
+            super(ToolMessages.msg("argument.unexpected", arg, getToolName(toolModel)));
         }
     }
     
@@ -53,7 +70,9 @@ public class OptionArgumentException extends ToolException {
         private final String badValue;
 
         public InvalidOptionValueException(OptionModel<?> optionModel, String givenOption, String badValue) {
-            super(ToolMessages.msg("option.invalid.value", givenOption, badValue));
+            super(ToolMessages.msg("option.invalid.value", givenOption,
+                    getToolName(optionModel),
+                    badValue));
             this.optionModel = optionModel;
             this.givenOption = givenOption;
             this.badValue = badValue;
@@ -83,7 +102,9 @@ public class OptionArgumentException extends ToolException {
         private final String badValue;
 
         public InvalidArgumentValueException(ArgumentModel<?> argumentModel, String badValue) {
-            super(ToolMessages.msg("argument.invalid.value", argumentModel.getName(), badValue));
+            super(ToolMessages.msg("argument.invalid.value", argumentModel.getName(),
+                    getToolName(argumentModel),
+                    badValue));
             this.argumentModel = argumentModel;
             this.badValue = badValue;
         }
@@ -107,7 +128,7 @@ public class OptionArgumentException extends ToolException {
 
         public OptionMultiplicityException(OptionModel<?> optionModel, 
                 String givenOptions, int bound, String msgKey) {
-            super(ToolMessages.msg(msgKey, givenOptions, bound));
+            super(ToolMessages.msg(msgKey, givenOptions, getToolName(optionModel), bound));
             this.optionModel = optionModel;
         }
 
@@ -126,7 +147,16 @@ public class OptionArgumentException extends ToolException {
         private ArgumentModel<?> argumentModel;
 
         public ArgumentMultiplicityException(ArgumentModel<?> argumentModel, int bound, String msgKey) {
-            super(ToolMessages.msg(msgKey, argumentModel.getName(), bound));
+            super(ToolMessages.msg(msgKey, argumentModel.getName(), getToolName(argumentModel), bound));
+            this.argumentModel = argumentModel;
+        }
+        
+        public ArgumentModel<?> getArgumentModel() {
+            return argumentModel;
+        }
+        
+        public ToolModel<?> getToolModel() {
+            return getArgumentModel().getToolModel();
         }
     }
     
@@ -176,7 +206,7 @@ public class OptionArgumentException extends ToolException {
             }
             return new UnknownOptionException(toolModel, null, shortName,
                     Collections.<UnknownOptionException>emptyList(), 
-                    ToolMessages.msg(msgKey, "-" + shortName, arg));
+                    ToolMessages.msg(msgKey, "-" + shortName, getToolName(toolModel), arg));
         }
 
         public static UnknownOptionException longOption(ToolModel<?> toolModel, String arg) {
@@ -185,15 +215,25 @@ public class OptionArgumentException extends ToolException {
             return new UnknownOptionException(toolModel, 
                     longOption, null,
                     Collections.<UnknownOptionException>emptyList(), 
-                    ToolMessages.msg("option.unknown.long", arg));
+                    ToolMessages.msg("option.unknown.long", arg, getToolName(toolModel)));
         }
 
         public static UnknownOptionException aggregate(
                 List<UnknownOptionException> unrecognised) {
+            StringBuilder sb = new StringBuilder();
+            for (UnknownOptionException u : unrecognised) {
+                if (u.getLongName() != null) {
+                    sb.append(u.getLongName());
+                } else if (u.getShortName() != null) {
+                    sb.append(u.getShortName());
+                }
+                sb.append(", ");
+            }
+            sb.setLength(sb.length()-2);
             UnknownOptionException result = new UnknownOptionException(null,
                     null, null,
                     unrecognised,
-                    ToolMessages.msg("option.unknown.multiple"));
+                    ToolMessages.msg("option.unknown.multiple", sb.toString()));
             return result;
         }
         
