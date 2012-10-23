@@ -221,6 +221,8 @@ public class Symtab {
     public final Type ceylonAtTypeAliasType;
 
     public final Type ceylonUtilType;
+    public final Type ceylonTypeDescriptorType;
+    public final Type ceylonReifiedTypeType;
 
     /** The symbol representing the length field of an array.
      */
@@ -584,6 +586,8 @@ public class Symtab {
         ceylonAtTypeAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeAlias");
         
         ceylonUtilType = enterClass("com.redhat.ceylon.compiler.java.Util");
+        ceylonTypeDescriptorType = enterClass("com.redhat.ceylon.compiler.java.TypeDescriptor");
+        ceylonReifiedTypeType = enterClass("com.redhat.ceylon.compiler.java.ReifiedType");
 
         synthesizeEmptyInterfaceIfMissing(autoCloseableType);
         synthesizeEmptyInterfaceIfMissing(cloneableType);
