@@ -411,6 +411,10 @@ public abstract class AbstractTransformer implements Transformation {
     private boolean isObject(ProducedType type) {
         return typeFact.getObjectDeclaration().getType().isExactly(type);
     }
+    
+    public boolean isAlias(ProducedType type) {
+        return type.getDeclaration().isAlias() || typeFact.getDefiniteType(type).getDeclaration().isAlias();
+    }
 
     ProducedType simplifyType(ProducedType orgType) {
         ProducedType type = orgType;
@@ -833,8 +837,13 @@ public abstract class AbstractTransformer implements Transformation {
         
         // resolve aliases, but only for aliases, not for things where the underlying type
         // might be meaningful, which we'd lose
-        if(type.getDeclaration().isAlias())
-            type = type.resolveAliases();
+        if (isAlias(type)) {
+            if (isOptional(type)) {
+                type = typeFact.getOptionalType(typeFact.getDefiniteType(type).resolveAliases());
+            } else {
+                type = type.resolveAliases();
+            }
+        }
         
         if ((flags & __JT_RAW_TP_BOUND) != 0
                 && type.getDeclaration() instanceof TypeParameter) {
