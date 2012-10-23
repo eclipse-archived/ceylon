@@ -19,6 +19,7 @@
  */
 @nomodel
 alias Bug821Alias = Integer|Float;
+@nomodel
 void bug821(){
     Sequence<Bug821Alias> ns = { 1 };
     value num = ns[0];
