@@ -596,9 +596,6 @@ public class GenerateJsVisitor extends Visitor
                 final List<Declaration> superDecs) {
         if (extendedType!=null) {
             TypeDeclaration typeDecl = extendedType.getType().getDeclarationModel();
-            if (typeDecl.isAlias()) {
-                typeDecl = typeDecl.getExtendedTypeDeclaration();
-            }
             List<PositionalArgument> argList = extendedType.getInvocationExpression()
                     .getPositionalArgumentList().getPositionalArguments();
             
@@ -624,6 +621,7 @@ public class GenerateJsVisitor extends Visitor
         if (satisfiedTypes!=null) {
             for (SimpleType st: satisfiedTypes.getTypes()) {
                 TypeDeclaration typeDecl = st.getDeclarationModel();
+                //I'm starting to think this shouldn't be done
                 if (typeDecl.isAlias()) {
                     typeDecl = typeDecl.getExtendedTypeDeclaration();
                 }
