@@ -25,6 +25,7 @@ public class CeylonUtils {
         private File cwd;
         private String systemRepo;
         private List<String> userRepos;
+        private List<String> extraUserRepos;
         private List<String> remoteRepos;
         private String outRepo;
         private String user;
@@ -75,13 +76,28 @@ public class CeylonUtils {
 
         /**
          * Sets a list of paths to use for the user repositories. When not set the
-         * list will be taken from the system configuration
+         * list will be taken from the system configuration. When set this list
+         * will override any "local" repositories that might have been defined
+         * in Ceylon's configuration files
          *
          * @param userRepos A list of paths to Ceylon repositories
          * @return This object for chaining method calls
          */
         public CeylonRepoManagerBuilder userRepos(List<String> userRepos) {
             this.userRepos = userRepos;
+            return this;
+        }
+
+        /**
+         * Sets a list of paths to use for the user repositories. The difference with
+         * `userRepos` is that providing this list has no side-effects, it will not
+         * override anything nor has it any (configured) default value
+         *
+         * @param extraUserRepos A list of paths to Ceylon repositories
+         * @return This object for chaining method calls
+         */
+        public CeylonRepoManagerBuilder extraUserRepos(List<String> extraUserRepos) {
+            this.extraUserRepos = extraUserRepos;
             return this;
         }
 
@@ -214,6 +230,11 @@ public class CeylonUtils {
                 }
             }
 
+            // Add the extra user defined repos
+            for (String repo : extraUserRepos) {
+                addRepo(builder, repositories, repo, false);
+            }
+            
             // Add globally defined repos (like the user repo and the default remote Herd repo)
             Repositories.Repository[] lookups = repositories.getGlobalLookupRepositories();
             for (Repositories.Repository lookup : lookups) {
