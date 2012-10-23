@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
@@ -1552,5 +1553,16 @@ public class Naming implements LocalId {
     
     public static String getImplClassName(String name){
         return name + IMPL_POSTFIX;
+    }
+    
+    public String getTypeArgumentDescriptorName(String name) {
+        return "$reified" + name;
+    }
+    
+    public String getIsMethodName(ProducedType type) {
+        if(type.getDeclaration() instanceof Interface){
+            return getCompanionFieldName((Interface) type.getDeclaration(), "$is");
+        }
+        return "$is";
     }
 }
