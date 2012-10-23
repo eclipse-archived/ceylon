@@ -123,6 +123,7 @@ public class CeylonRunJsTool implements Tool {
     private List<String> repos = Collections.singletonList("modules");
     private String func = "run";
     private String module;
+    private List<String> args;
     
     @OptionArgument(argumentName="func")
     @Description("The function to run, which must be exported from the " +
@@ -137,9 +138,14 @@ public class CeylonRunJsTool implements Tool {
         this.repos = repos;
     }
     
-    @Argument(argumentName="module", multiplicity="1")
+    @Argument(argumentName="module", multiplicity="1", order=1)
     public void setModuleVersion(String moduleVersion) {
         this.module= moduleVersion;
+    }
+    
+    @Argument(argumentName="args", multiplicity="*", order=2)
+    public void setArgs(List<String> args) {
+        this.args = args;
     }
         
     private static String getNodePath() {
@@ -169,8 +175,10 @@ public class CeylonRunJsTool implements Tool {
         final boolean isDefault = "default".equals(module);
         String version = "";
         if (!isDefault && !module.contains("/")) {
-            System.out.println("Specified module is not default and is missing version.");
-            return;
+            throw new CeylonRunJsException("Specified module is not default and is missing version.");
+        }
+        if (args != null && !args.isEmpty()) {
+            throw new CeylonRunJsException("Command-line arguments not supported yet.");
         }
         if (!isDefault) {
             version = module.substring(module.indexOf('/')+1);
