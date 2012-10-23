@@ -22,28 +22,6 @@ import com.redhat.ceylon.compiler.Options;
 public class Runner {
 
     /** A thread dedicated to reading from a stream and storing the result to return it as a String. */
-    public static class ReadStream extends Thread {
-        protected final InputStream in;
-        protected final PrintStream out;
-        protected final byte[] buf  = new byte[16384];
-        public ReadStream(InputStream from, PrintStream to) {
-            this.in = from;
-            this.out = to;
-        }
-        public void run() {
-            try {
-                int count = in.read(buf);
-                while (count > 0) {
-                    out.write(buf, 0, count);
-                    count = in.read(buf);
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace(out);
-            }
-        }
-    }
-
-    /** A thread dedicated to reading from a stream and storing the result to return it as a String. */
     public static class ReadErrorStream extends Thread {
         protected final BufferedReader in;
         protected final PrintStream out;
@@ -160,7 +138,7 @@ public class Runner {
         proc.environment().put("NODE_PATH", nodePath);
         Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
-        new ReadStream(nodeProcess.getInputStream(),
+        new CeylonRunJsTool.ReadStream(nodeProcess.getInputStream(),
                 output == null ? System.out : output).start();
         new ReadErrorStream(nodeProcess.getErrorStream(),
                 output == null ? System.err : output, debug).start();
