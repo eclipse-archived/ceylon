@@ -28,6 +28,10 @@ public class Util {
         return name.replace("::", ".");
     }
     
+    public static boolean isReified(java.lang.Object o, TypeDescriptor type){
+        return o instanceof ReifiedType && ((ReifiedType) o).$is(type);
+    }
+    
     /**
      * Returns true if the given object satisfies ceylon.language.Identifiable
      */
