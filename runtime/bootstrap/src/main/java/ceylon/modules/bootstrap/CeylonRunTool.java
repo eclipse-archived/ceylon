@@ -43,14 +43,12 @@ import com.redhat.ceylon.common.tool.Summary;
 public class CeylonRunTool implements Tool {
     
     private String moduleNameOptVersion;
-    
     private String run;
-    
     private List<String> repo = new ArrayList<String>(1);
-    
     private String systemRepo;
-    
     private boolean disableDefault;
+    private boolean verbose = false;
+    private String verboseFlags = "";
     
     @Argument(argumentName="module", multiplicity="1")
     public void setModule(String moduleNameOptVersion) {
@@ -80,6 +78,17 @@ public class CeylonRunTool implements Tool {
     public void setDisableDefault(boolean disableDefault) {
         this.disableDefault = disableDefault;
     }
+    
+    @Option
+    @OptionArgument(argumentName="flags")
+    @Description("Produce verbose output. " +
+            "If no `flags` are given then be verbose about everything, " +
+            "otherwise just be vebose about the flags which are present. " +
+            "Allowed flags include: `cmr`.")
+    public void setVerbose(String verboseFlags) {
+        this.verbose = true;
+        this.verboseFlags = verboseFlags;
+    }
 
     @Override
     public void run() {
@@ -104,6 +113,14 @@ public class CeylonRunTool implements Tool {
         
         if (disableDefault) {
             argList.add("-d");
+        }
+        
+        if (verbose) {
+            if (verboseFlags == null || verboseFlags.isEmpty()) {
+                argList.add("-verbose");
+            } else {
+                argList.add("-verbose:" + verboseFlags);
+            }
         }
         
         argList.add("-sysrep");
