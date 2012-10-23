@@ -70,7 +70,7 @@ public class CeylonJs extends Task {
         try {
             Commandline cmd = new Commandline();
             cmd.setExecutable(Util.findCeylonScript(this.executable, getProject()));
-            cmd.createArgument().setValue("run");
+            cmd.createArgument().setValue("run-js");
             if(func != null){
                 cmd.createArgument().setValue("--run=" + func);
             }
