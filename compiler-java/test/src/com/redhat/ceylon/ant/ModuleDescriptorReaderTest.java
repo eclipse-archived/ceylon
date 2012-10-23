@@ -7,7 +7,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.common.ant.Module;
 
 public class ModuleDescriptorReaderTest {
 
