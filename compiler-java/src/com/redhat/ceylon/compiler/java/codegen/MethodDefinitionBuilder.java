@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -424,5 +425,20 @@ public class MethodDefinitionBuilder {
         return sb.toString();
     }
 
+    public MethodDefinitionBuilder reifiedTypeParameters(java.util.List<TypeParameterDeclaration> typeParams) {
+        for(TypeParameterDeclaration typeParam : typeParams)
+            reifiedTypeParameter(typeParam);
+        return this;
+    }
+
+    public MethodDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
+        String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getIdentifier().getText());
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
+        pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
+        pdb.ignored(true);
+        parameter(pdb);
+
+        return this;
+    }
     
 }
