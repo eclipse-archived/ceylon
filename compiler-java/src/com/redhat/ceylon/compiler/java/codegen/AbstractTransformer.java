@@ -2567,6 +2567,9 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (type.getDeclaration() instanceof NothingType){
                 // nothing is Bottom
                 return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
+            } else if (!type.getTypeArguments().isEmpty() || isTypeParameter(type)){
+                // requires a little magic
+                return makeUtilInvocation("isReified", List.of(varExpr, makeReifiedTypeArgument(type)), null);
             } else {
                 JCExpression rawTypeExpr = makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW);
                 result = make().TypeTest(varExpr, rawTypeExpr);
