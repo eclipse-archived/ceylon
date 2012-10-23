@@ -2064,7 +2064,8 @@ public class ClassTransformer extends AbstractTransformer {
         if(model.isAlias())
             model = model.getExtendedTypeDeclaration();
         JCExpression nameId = makeJavaType(model.getType(), JT_RAW);
-        JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
+        List<JCExpression> arguments = makeBottomReifiedTypeParameters(model.getTypeParameters());
+        JCNewClass expr = make().NewClass(null, null, nameId, arguments, null);
         return makeMainMethod(model, expr);
     }
     
@@ -2075,10 +2076,20 @@ public class ClassTransformer extends AbstractTransformer {
     private MethodDefinitionBuilder makeMainForFunction(Method method) {
         at(null);
         JCExpression qualifiedName = naming.makeName(method, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER);
-        MethodDefinitionBuilder mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, List.<JCTree.JCExpression>nil()));
+        List<JCExpression> arguments = makeBottomReifiedTypeParameters(method.getTypeParameters());
+        MethodDefinitionBuilder mainMethod = makeMainMethod(method, make().Apply(null, qualifiedName, arguments));
         return mainMethod;
     }
     
+    private List<JCExpression> makeBottomReifiedTypeParameters(
+            java.util.List<TypeParameter> typeParameters) {
+        List<JCExpression> arguments = List.nil();
+        for(int i=typeParameters.size()-1;i>=0;i--){
+            arguments = arguments.prepend(gen().makeBottomTypeDescriptor());
+        }
+        return arguments;
+    }
+
     /** 
      * Makes a {@code main()} method which calls the given callee 
      * (a no-args method or class)
