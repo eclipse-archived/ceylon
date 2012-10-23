@@ -47,6 +47,8 @@ public class ParameterDefinitionBuilder {
     
     private boolean noAnnotations = false;
     
+    private boolean ignored = false;
+    
     private boolean built = false;
 
     private java.util.List<Annotation> annos;
@@ -86,6 +88,11 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
+    public ParameterDefinitionBuilder ignored(boolean ignored) {
+        this.ignored = ignored;
+        return this;
+    }
+    
     public ParameterDefinitionBuilder defaulted(boolean defaulted) {
         this.defaulted = defaulted;
         return this;
@@ -102,7 +109,7 @@ public class ParameterDefinitionBuilder {
         }
         built = true;
         List<JCAnnotation> annots = List.nil();
-        if (!noAnnotations) {
+        if (!noAnnotations && !ignored) {
             annots = annots.appendList(gen.makeAtName(name));
             if (sequenced) {
                 annots = annots.appendList(gen.makeAtSequenced());
@@ -116,6 +123,8 @@ public class ParameterDefinitionBuilder {
             if (annos != null) {
                 annots = annots.appendList(gen.makeAtAnnotations(annos));
             }
+        }else if(ignored){
+            annots = annots.appendList(gen.makeAtIgnore());
         }
         Name name = gen.names().fromString(aliasedName != null ? aliasedName : this.name);
         return gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots), 
