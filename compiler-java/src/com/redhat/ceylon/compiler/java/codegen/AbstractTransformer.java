@@ -68,6 +68,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.sun.tools.javac.code.BoundKind;
+import com.sun.tools.javac.code.Symbol.TypeSymbol;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.TypeTags;
@@ -1015,6 +1016,10 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
+    JCExpression makeJavaType(TypeSymbol tsym){
+        return make().QualIdent(tsym);
+    }
+    
     JCExpression makeJavaType(ProducedType producedType) {
         return makeJavaType(producedType, 0);
     }
