@@ -72,21 +72,19 @@
     <path refid="compiler.classpath"/>
     <pathelement path="${build.classes}"/>
     <pathelement path="${junit.lib}"/>
+    <pathelement path="${cmr-maven.lib}"/>
   </path>
 
   <path id="test.run.classpath">
-    <path refid="compiler.classpath"/>
+    <path refid="test.compile.classpath"/>
     <pathelement path="${ceylon.compiler.lib}"/>
     <pathelement path="${ceylon.language.lib}"/>
-    <pathelement path="${junit.lib}"/>
-    <pathelement path="${build.classes}"/>
     <pathelement path="${ceylon-tests.car}"/>
+    <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
   </path>
   
   <path id="integrationtest.run.classpath">
-    <path refid="compiler.classpath"/>
-    <pathelement path="${junit.lib}"/>
-    <pathelement path="${build.classes}"/>
+    <path refid="test.compile.classpath"/>
     <pathelement path="${ceylon.ant.lib}"/>
   </path>
 
