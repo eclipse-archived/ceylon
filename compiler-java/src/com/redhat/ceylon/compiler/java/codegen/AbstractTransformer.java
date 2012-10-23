@@ -2592,6 +2592,20 @@ public abstract class AbstractTransformer implements Transformation {
                             params);
     }
 
+    public JCExpression makeTypeDescriptorType(){
+        return makeJavaType(syms().ceylonTypeDescriptorType.tsym);
+    }
+
+    public JCExpression makeReifiedTypeType(){
+        return makeJavaType(syms().ceylonReifiedTypeType.tsym);
+    }
+    
+    public JCExpression makeBottomTypeDescriptor() {
+        return make().Select(makeTypeDescriptorType(), 
+                names().fromString("BottomType"));
+
+    }
+
     private LetExpr makeIgnoredEvalAndReturn(JCExpression toEval, JCExpression toReturn){
         // define a variable of type j.l.Object to hold the result of the evaluation
         JCVariableDecl def = makeVar(naming.temp(), make().Type(syms().objectType), toEval);
