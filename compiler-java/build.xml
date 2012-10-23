@@ -415,8 +415,6 @@
             <include name="antlr-*-complete.jar"/>
             <include name="txtmark-*.jar"/>
             <include name="markdownpapers-core-*.jar"/>
-            <include name="cmr-maven-*.jar"/>
-            <include name="shrinkwrap-maven-uberjar-*.jar"/>
         </fileset>
     </copy>    
   </target>
