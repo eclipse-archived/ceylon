@@ -59,21 +59,23 @@ public class CeylonRunJsTool implements Tool {
         protected final PrintStream out;
         protected final byte[] buf  = new byte[16384];
         protected boolean printing = true;
-        public ReadErrorStream(InputStream from, PrintStream to) {
+        protected boolean debug = false;
+        public ReadErrorStream(InputStream from, PrintStream to, boolean debug) {
             this.in = new BufferedReader(new InputStreamReader(from));
             this.out = to;
+            this.debug = debug;
         }
         public void run() {
             try {
                 String line = in.readLine();
                 while (line != null) {
                     if (line.trim().startsWith("throw ")) {
-                        printing = false;
+                        printing = false || debug;
                     } else if (line.startsWith("Error: Cannot find module ")) {
                         out.println(line);
-                        printing = false;
+                        printing = false || debug;
                     } else if (!printing) {
-                        printing = !(line.isEmpty() || line.startsWith("    at "));
+                        printing = !(line.isEmpty() || line.startsWith("    at ")) || debug;
                     }
                     if (printing) {
                         out.println(line);
@@ -123,12 +125,19 @@ public class CeylonRunJsTool implements Tool {
     private String module;
     private List<String> args;
     private PrintStream output;
+    private boolean debug;
 
     /** Sets the PrintStream to use for output. Default is System.out. */
     public void setOutput(PrintStream value) {
         output = value;
     }
 
+    @OptionArgument(argumentName="debug")
+    @Description("Shows more detailed output in case of errors.") 
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+    
     @OptionArgument(argumentName="func")
     @Description("The function to run, which must be exported from the " +
     		"given `<module>`. (default: `run`).") 
@@ -220,7 +229,7 @@ public class CeylonRunJsTool implements Tool {
         //All this shit because inheritIO doesn't work on fucking Windows
         new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
         if (output == null) {
-            new ReadErrorStream(nodeProcess.getErrorStream(), System.err).start();
+            new ReadErrorStream(nodeProcess.getErrorStream(), System.err, debug).start();
         }
         int exitCode = nodeProcess.waitFor();
         if (exitCode != 0) {
