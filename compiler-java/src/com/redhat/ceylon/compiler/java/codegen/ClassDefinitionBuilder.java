@@ -28,6 +28,8 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -36,10 +38,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
+import com.sun.corba.se.spi.ior.MakeImmutable;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
+import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.util.List;
@@ -594,5 +601,94 @@ public class ClassDefinitionBuilder {
     public ClassOrInterface getForDefinition() {
         return forDefinition;
     }
-    
+
+    public ClassDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
+        String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getIdentifier().getText());
+        parameter(makeReifiedParameter(descriptorName));
+
+        JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(descriptorName), 
+                gen.makeTypeDescriptorType(), null);
+        defs(localVar);
+        init(gen.make().Exec(gen.make().Assign(
+                gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
+                gen.naming.makeQualIdent(null, descriptorName))));
+        return this;
+    }
+
+    private ParameterDefinitionBuilder makeReifiedParameter(String descriptorName) {
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.instance(gen, descriptorName);
+        pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
+        pdb.ignored(true);
+        return pdb;
+    }
+
+
+    public ClassDefinitionBuilder reifiedIs(ProducedType type, java.util.List<TypeParameter> typeParameters,
+            java.util.List<ProducedType> satisfiedTypes, ProducedType extendedType){
+        MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getIsMethodName(type));
+        method.modifiers(PUBLIC);
+        method.resultType(List.<JCAnnotation>nil(), gen.make().TypeIdent(TypeTags.BOOLEAN));
+        // in classes this overrides an interface method
+        if(type.getDeclaration() instanceof Class)
+            method.isOverride(true);
+
+        String paramName = "type";
+        ParameterDefinitionBuilder param = ParameterDefinitionBuilder.instance(gen, paramName);
+        param.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
+        method.parameter(param);
+
+        if ((modifiers & INTERFACE) != 0) {
+            // place the real body in the impl class
+            concreteInterfaceMemberDefs.reifiedIs(type, typeParameters, satisfiedTypes, extendedType);
+            method.noBody();
+        }else{
+            // we build the body last to first, and last is false or extended type
+            JCExpression lastTest;
+            if(extendedType != null && !gen.willEraseToObject(extendedType))
+                lastTest = gen.make().Apply(null, gen.makeSelect("super", gen.naming.getIsMethodName(extendedType)), List.of(gen.makeUnquotedIdent(paramName)));
+            else
+                lastTest = gen.makeBoolean(false);
+            List<JCStatement> body = List.<JCStatement>of(gen.make().Return(lastTest));
+
+            // then before that we test every interface
+            if(!satisfiedTypes.isEmpty()){
+                JCExpression interfacesTest = null;
+                for(ProducedType pt : satisfiedTypes){
+                    String isDelegateName = gen.naming.getIsMethodName(pt);
+                    JCExpression isCall = gen.make().Apply(null, gen.makeUnquotedIdent(isDelegateName), List.<JCExpression>of(gen.makeUnquotedIdent(paramName)));
+                    if(interfacesTest != null)
+                        interfacesTest = gen.make().Binary(JCTree.OR, isCall, interfacesTest);
+                    else
+                        interfacesTest = isCall;
+                }
+                JCStatement ifInterfacesTest = gen.make().If(interfacesTest, gen.make().Return(gen.makeBoolean(true)), null);
+                body = body.prepend(ifInterfacesTest);
+            }
+            
+            // and first make the call to TypeDescriptor.klass(thisClass, typeParamDescr...).equals(type)
+            List<JCExpression> typeTestArguments = List.nil();
+            JCExpression thisType = gen.makeClassLiteral(type);
+            for(int i=typeParameters.size()-1;i>=0;i--){
+                String name = gen.naming.getTypeArgumentDescriptorName(typeParameters.get(i).getName());
+                typeTestArguments = typeTestArguments.prepend(gen.makeUnquotedIdent(name));
+            }
+            typeTestArguments = typeTestArguments.prepend(thisType);
+            JCExpression classDescriptorCall = gen.make().Apply(null, gen.makeSelect(gen.makeTypeDescriptorType(), "klass"), typeTestArguments);
+            JCExpression classEqualsCall = gen.make().Apply(null, gen.makeSelect(classDescriptorCall, "equals"), List.of(gen.makeUnquotedIdent(paramName)));
+            JCStatement classTest = gen.make().If(classEqualsCall, gen.make().Return(gen.makeBoolean(true)), null);
+            body = body.prepend(classTest);
+
+            method.body(body);
+        }
+        
+        defs(method.build());
+        return this;
+    }
+
+
+    public void reifiedTypeParameters(TypeParameterList typeParameterList) {
+        for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
+            reifiedTypeParameter(tp);
+        }
+    }
 }
