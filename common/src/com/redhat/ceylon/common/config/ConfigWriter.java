@@ -305,11 +305,16 @@ public class ConfigWriter {
         writer.write(quote(value));
     }
 
-    private static String quote(String value) {
+    public static String escape(String value) {
         value = value.replace("\\", "\\\\");
         value = value.replace("\"", "\\\"");
         value = value.replace("\t", "\\t");
         value = value.replace("\n", "\\n");
+        return value;
+    }
+
+    public static String quote(String value) {
+        value = escape(value);
         boolean needsQuotes = value.contains(";") || value.contains("#") || value.endsWith(" ");
         if (needsQuotes) {
             return "\"" + value + "\"";
