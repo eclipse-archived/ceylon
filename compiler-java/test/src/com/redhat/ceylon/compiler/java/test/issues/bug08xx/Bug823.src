@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+final class bug823_ {
+    
+    private bug823_() {
+    }
+    
+    static void bug823(final .ceylon.language.List<? extends .java.lang.Object> xx) {
+        .java.lang.String $ceylontmpassert0 = null;
+        final int $z$4;
+        final .ceylon.language.Sequence<? extends .java.lang.Object> $xx$2;
+        .ceylon.language.List<? extends .java.lang.Object> $xx$1 = null;
+        if (($xx$1 = xx) instanceof .ceylon.language.FixedSized && !((.ceylon.language.FixedSized)$xx$1).getEmpty()) {
+            $xx$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)$xx$1;
+            .java.lang.Object $z$3 = null;
+            if (($z$3 = $xx$2.item(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Character) {
+                $z$4 = ((.ceylon.language.Character)$z$3).intValue();
+            } else {
+                $z$4 = 0;
+                $ceylontmpassert0 = "\tunviolated " + "nonempty xx" + .java.lang.System.lineSeparator() + "\tviolated " + "is Character z=xx[0]" + .java.lang.System.lineSeparator();
+            }
+        } else {
+            $xx$2 = null;
+            $z$4 = 0;
+            $ceylontmpassert0 = "\tviolated " + "nonempty xx" + .java.lang.System.lineSeparator() + "\tuntested " + "is Character z=xx[0]" + .java.lang.System.lineSeparator();
+        }
+        if ($ceylontmpassert0 != null) throw new .ceylon.language.Exception(.ceylon.language.String.instance("Assertion failed" + .java.lang.System.lineSeparator() + ($ceylontmpassert0 + "\tat " + "Bug823.ceylon:22:4-22:45")), null);
+    }
+}
