@@ -164,6 +164,9 @@ class Usage {
     void run() throws Exception {
         if (!validToolName()) {
             out.append(buildFirstLineBadToolName(toolName)).newline();
+            if (t instanceof InvalidArgumentValueException) {
+                printSuggestions(toolName, rootTool.getPluginLoader().getToolNames());
+            }
             printHelpInvocation();
             out.flush();
         } else {
@@ -284,18 +287,19 @@ class Usage {
     private void printSuggestions(ArgumentParser<?> parser, String badValue) {
         if (parser instanceof EnumerableParser) {
             EnumerableParser<?> enumerableParser = (EnumerableParser<?>)parser;
-            if (enumerableParser.possibilities().iterator().hasNext()) {
-                List<String> l = new ArrayList<>();
-                for (String valid : enumerableParser.possibilities()) {
-                    if (badValue == null || isSuggestionFor(badValue, valid)) {
-                        l.add(valid);
-                    }
-                }
-                Collections.sort(l);
-                
-                printSuggestions(l);
+            printSuggestions(badValue, enumerableParser.possibilities());
+        }
+    }
+    
+    private void printSuggestions(String badValue, Iterable<String> valids) {
+        List<String> l = new ArrayList<>();
+        for (String valid : valids) {
+            if (badValue == null || isSuggestionFor(badValue, valid)) {
+                l.add(valid);
             }
         }
+        Collections.sort(l);
+        printSuggestions(l);   
     }
     
     private void printOptionSuggestions(UnknownOptionException e) {

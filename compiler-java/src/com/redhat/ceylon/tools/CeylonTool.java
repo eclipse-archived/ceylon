@@ -198,7 +198,7 @@ public class CeylonTool implements Tool {
             result = SC_TOOL_EXCEPTION;
         }
         if (!recursive && error != null) {
-            Usage.handleException(this, error instanceof NoSuchToolException ? null : getToolName(), error);
+            Usage.handleException(this, getToolName(), error);
         }
         System.out.flush();
         return result;
