@@ -257,7 +257,7 @@ td .description {
 }
 
 #results .highlight {
-	background: Highlight; /* zadat absolutne */
+	background: rgb(191, 223, 255);
 }
 
 .doc.section {
