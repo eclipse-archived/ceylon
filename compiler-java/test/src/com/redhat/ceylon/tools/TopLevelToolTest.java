@@ -248,6 +248,25 @@ public class TopLevelToolTest {
     }
     
     @Test
+    public void testSubtoolMissingArg()  throws Exception {
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("new", "hello-world")));
+            Assert.assertEquals(
+"ceylon new: Argument 'dir' to command 'hello-world' should appear at least 1\n"+
+"time(s)\n"+
+"\n"+
+"Usage:\n"+
+"ceylon new hello-world [--ant=<value>] [--eclipse=<value>] [--eclipse-project-\n"+
+"           name=<value>] [--module-name=<value>] [--module-version=<value>] [--\n"+
+"           ] <dir>\n"+
+"\n"+
+"Run 'ceylon help new' for more help", 
+        out.getErr().trim().replace("\r", ""));
+            Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
+        }
+    }
+    
+    @Test
     public void testBashCompletion()  throws Exception {
         Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(
                 args("bash-completion", "--cword=1", "--", "./cey")));
