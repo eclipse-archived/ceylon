@@ -1,0 +1,55 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+interface Bug824_X {
+    
+    public .java.lang.String getName();
+}
+final class Bug824_X$impl {
+    
+    Bug824_X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X $this;
+    
+    public final .java.lang.String getName() {
+        return "Gavin";
+    }
+}
+interface Bug824_Y {
+}
+interface Bug824_Z {
+}
+class Bug824_W implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X {
+    
+    Bug824_W() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+    
+    @.java.lang.Override
+    public final .java.lang.String getName() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this.getName();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W();
+    }
+}
+class Bug824_W2 implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X {
+    
+    Bug824_W2() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_X$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this;
+    
+    @.java.lang.Override
+    public final .java.lang.String getName() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug824_X$this.getName();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug824_W2();
+    }
+}
