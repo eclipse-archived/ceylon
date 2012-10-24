@@ -15,7 +15,7 @@
 	    classname="com.redhat.ceylon.ant.Ceylonc"
 	    classpathref="ant-tasks"/>
 	  <taskdef name="ceylonc-js"
-	    classname="com.redhat.ceylon.ant.Ceyloncjs"
+	    classname="com.redhat.ceylon.ant.CeyloncJs"
 	    classpathref="ant-tasks"/>
 	  <taskdef name="ceylond"
 	    classname="com.redhat.ceylon.ant.Ceylond"
@@ -24,7 +24,7 @@
 	    classname="com.redhat.ceylon.ant.Ceylon"
 	    classpathref="ant-tasks"/>
 	  <taskdef name="ceylon-js"
-	    classname="com.redhat.ceylon.ant.Ceylonjs"
+	    classname="com.redhat.ceylon.ant.CeylonJs"
 	    classpathref="ant-tasks"/>
 	</target>
 	
@@ -56,7 +56,7 @@
         <ceylon module="com.example.helloworld/1.0.0"/>
     </target>
 
-    <target name="run-js" depends="compile">
+    <target name="run-js" depends="compile-js">
         <ceylon-js module="com.example.helloworld/1.0.0"/>
     </target>
 
