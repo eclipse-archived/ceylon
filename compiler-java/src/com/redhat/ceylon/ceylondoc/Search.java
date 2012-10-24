@@ -32,20 +32,38 @@ public class Search extends CeylonDoc {
     }
 
     public void generate() throws IOException {
-        htmlHead("Search");
-        writeNav(module, null, DocType.SEARCH);
-        include("resources/search.html");
-        close("body", "html");
+        writeHeader("Search");
+        writeNavBar();
+
+        open("div id='search'");
+        write("<input type='search' name='q' id='q' autocomplete='off' autofocus placeholder='Search'></input>");
+        close("div");
+
+        open("div class='container-fluid'");
+        write("<table class='table table-condensed table-hover' id='results'></table>");
+        close("div");        
+
+        writeFooter();
     }
     
     @Override
-    protected Object getFromObject() {
-        return module;
+    protected void writeNavBarSearchMenu() throws IOException {
+        // noop
+    }
+    
+    @Override
+    protected void writeNavBarFilterMenu() throws IOException {
+        // noop
     }
 
+    @Override
     protected void writeKeyboardShortcuts() throws IOException {
-        // Hack: Don't do shortcuts on the search page, because it interferes 
-        // with the search
+        // Hack: Don't do shortcuts on the search page, because it interferes with the search
+    }
+
+    @Override
+    protected Object getFromObject() {
+        return module;
     }
 
 }

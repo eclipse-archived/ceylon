@@ -20,10 +20,7 @@
 
 package com.redhat.ceylon.ceylondoc;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Writer;
 
 public class Markup {
@@ -35,75 +32,69 @@ public class Markup {
         this.writer = writer;
     }
 
-    /**
-     * Writes the given strings to the writer
-     * @param text The strings to write
-     * @throws IOException
-     * @see #text(String...)
-     */
     protected void write(String... text) throws IOException {
-        for (String s : text)
+        for (String s : text) {
             writer.append(s);
+        }
     }
 
     protected void tag(String... tags) throws IOException {
-        for (String tag : tags)
+        for (String tag : tags) {
             writer.append("<").append(tag).append("/>\n");
+        }
     }
 
     protected void around(String tag, String... text) throws IOException {
         open(tag);
-        for (String s : text)
+        for (String s : text) {
             writer.append(s);
+        }
         int space = tag.indexOf(" ");
-        if (space > -1)
+        if (space > -1) {
             tag = tag.substring(0, space);
+        }
         close(tag);
     }
 
     protected void close(String... tags) throws IOException {
-        for (String tag : tags)
+        for (String tag : tags) {
             writer.append("</").append(tag).append(">");
+        }
     }
 
     protected void open(String... tags) throws IOException {
-        for (String tag : tags)
+        for (String tag : tags) {
             writer.append("<").append(tag).append(">");
-    }
-
-    protected void openTable(String id, String title) throws IOException {
-        String opener = "table class='category'";
-        if (id != null) {
-            opener += " id='" + id + "'";
         }
-        open(opener);
-        open("tr class='TableHeadingColor'");
-        around("th", title);
-        close("tr");
     }
 
-    protected void openTable(String id, String title, String firstColumnTitle, String secondColumnTitle)
-            throws IOException {
-        String opener = "table class='category'";
-        if (id != null) {
-            opener += " id='" + id + "'";
+    protected void openTable(String id, String title, int columnCount, boolean isBodyExpanded) throws IOException {
+        open("table id='" + id + "' class='table table-condensed table-bordered table-hover'");
+        open("thead");
+        
+        open("tr class='table-header' title='Click for expand/collapse'");
+        open("td colspan='" + columnCount + "'");
+        if( isBodyExpanded ) {
+            around("i class='icon-expand'");
+        } else {
+            around("i class='icon-collapse'");
         }
-        open(opener);
-        open("tr class='TableHeadingColor'");
-        around("th colspan='2'", title);
+        write(title);
+        close("td");
         close("tr");
-        open("tr class='TableSubHeadingColor'");
-        around("th", firstColumnTitle);
-        around("th", secondColumnTitle);
-        close("tr");
+        
+        close("thead");
+        if(isBodyExpanded) {
+            open("tbody");
+        } else {
+            open("tbody style='display: none'");
+        }
+    }
+    
+    protected void closeTable() throws IOException {
+        close("tbody", "table");
     }
 
-    /**
-     * Like {@link #write(String...)}, but HTML encodes the its arguments
-     * @param text
-     * @throws IOException
-     * @see #write(String...)
-     */
     protected void text(String... text) throws IOException {
         for (String s : text) {
             write(s.replace("&", "&amp;")
@@ -111,20 +102,6 @@ public class Markup {
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
                 .replace("'", "&apos;"));
-        }
-    }
-    
-    protected void include(String classpathResource) throws IOException {
-        InputStream resource = getClass().getResourceAsStream(classpathResource);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
-        try {
-            String line = reader.readLine();
-            while (line != null) {
-                write(line);
-                line = reader.readLine();
-            }
-        } finally {
-            reader.close();
         }
     }
 

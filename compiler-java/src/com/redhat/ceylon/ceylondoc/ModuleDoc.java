@@ -24,6 +24,7 @@ import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -31,66 +32,77 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 public class ModuleDoc extends CeylonDoc {
 
     private Module module;
+    private PackageDoc rootPackageDoc;
 
     public ModuleDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
         super(module, tool, writer);
         this.module = module;
     }
-    
+
     public void generate() throws IOException {
-        htmlHead();
-        overview();
-        summary();
-        packages();
-    }
-    
-    public void complete() throws IOException {
-        close("body");
-        close("html");
-    }
+        writeHeader("Overview");
+        writeNavBar();
 
-    private void htmlHead() throws IOException {
-        htmlHead("Overview");
-    }
-
-    private void overview() throws IOException {
-        writeNav(module, module, DocType.MODULE);
-    }
-
-    private void summary() throws IOException {
-        open("div class='head summary'");
-        open("h1 id='section-module'");
-        write("Module ");
-        around("code", module.getNameAsString());
-        close("h1");
-        writeSourceLink(module);
+        open("div class='container-fluid'");
+        writeDescription();
+        writePackagesTable();
         close("div");
-        
-        around("div class='doc'", getDoc(module, linkRenderer()));
-        
-        writeBy(Util.getAuthors(module), false);
-    }
 
-    private void packages() throws IOException {
-        openTable("section-packages", "Packages", "Package", "Description");
-        for (Package pkg : tool.getPackages(module)) {
-            doc(pkg);
+        for (Package pkg : module.getPackages()) {
+            if (tool.isRootPackage(module, pkg) && !pkg.getMembers().isEmpty()) {
+                rootPackageDoc = new PackageDoc(tool, writer, pkg);
+                rootPackageDoc.generate();
+            }
         }
-        close("table");
+
+        writeFooter();
     }
 
-    private void doc(Package pkg) throws IOException {
-        open("tr class='TableRowColor'");
-        open("td", "code");
+    @Override
+    protected void writeAdditionalKeyboardShortcuts() throws IOException {
+        if( rootPackageDoc != null ) {
+            rootPackageDoc.writeAdditionalKeyboardShortcuts();
+        }
+    }
+
+    private void writeDescription() throws IOException {
+        open("div class='module-description'");
+
+        writeLinkSourceCode(module);
+        around("div class='doc section'", getDoc(module, linkRenderer()));
+
+        writeBy(module);
+
+        close("div");
+    }
+
+    private void writePackagesTable() throws IOException {
+        List<Package> packages = tool.getPackages(module);
+        if (!packages.isEmpty()) {
+            openTable("section-packages", "Packages", 2, true);
+            for (Package pkg : tool.getPackages(module)) {
+                writePackagesTableRow(pkg);
+            }
+            closeTable();
+        }
+    }
+
+    private void writePackagesTableRow(Package pkg) throws IOException {
+        open("tr");
+
+        open("td");
+        writeIcon(pkg);
         if (pkg.getNameAsString().isEmpty()) {
-            around("a href='index.html'", "default package");
+            around("a class='link' href='index.html'", "default package");
         } else {
-            around("a href='" + tool.getObjectUrl(module, pkg) + "'", pkg.getNameAsString());
+            around("a class='link' href='" + tool.getObjectUrl(module, pkg) + "'", pkg.getNameAsString());
         }
-        close("code", "td");
+        close("td");
+
         open("td");
         write(Util.getDocFirstLine(pkg, linkRenderer()));
         close("td");
+
         close("tr");
     }
 

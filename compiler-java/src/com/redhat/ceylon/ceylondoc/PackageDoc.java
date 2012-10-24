@@ -21,17 +21,15 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
-import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import com.redhat.ceylon.ceylondoc.Util.DeclarationComparatorByName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -42,228 +40,175 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class PackageDoc extends ClassOrPackageDoc {
 
-    private Package pkg;
-    /**
-     * The {@linkplain #shouldInclude(Declaration) visible} 
-     * classes in the package
-     */
-    private List<Class> classes;
-    /**
-     * The {@linkplain #shouldInclude(Declaration) visible} 
-     * interfaces in the package
-     */
-    private List<Interface> interfaces;
-    /**
-     * The {@linkplain #shouldInclude(Declaration) visible} 
-     * attributes in the package
-     */
-    private List<MethodOrValue> attributes;
-    /**
-     * The {@linkplain #shouldInclude(Declaration) visible} 
-     * methods in the package
-     */
-    private List<Method> methods;
-    /**
-     * The {@linkplain #shouldInclude(Declaration) visible} 
-     * exceptions in the package
-     */
-    private List<Class> exceptions;
-    
+    private final Package pkg;
     private final boolean sharingPageWithModule;
+    private final List<Class> classes = new ArrayList<Class>();
+    private final List<Interface> interfaces = new ArrayList<Interface>();
+    private final List<MethodOrValue> attributes = new ArrayList<MethodOrValue>();
+    private final List<Method> methods = new ArrayList<Method>();
+    private final List<Class> exceptions = new ArrayList<Class>();
 
 	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
 		super(pkg.getModule(), tool, writer);
-		this.sharingPageWithModule = tool.isRootPackage(module, pkg);
 		this.pkg = pkg;
+		this.sharingPageWithModule = tool.isRootPackage(module, pkg);
 		loadMembers();
 	}
 
     private void loadMembers() {
-        classes = new ArrayList<Class>();
-        interfaces = new ArrayList<Interface>();
-        attributes = new ArrayList<MethodOrValue>();
-        methods = new ArrayList<Method>();
-        exceptions = new ArrayList<Class>();
         for (Declaration m : pkg.getMembers()) {
-            if (!shouldInclude(m)) {
+            if (!tool.shouldInclude(m)) {
                 continue;
             }
             if (m instanceof Interface) {
                 interfaces.add((Interface) m);
-            }
-            else if (m instanceof Class) {
+            } else if (m instanceof Class) {
                 Class c = (Class) m;
-                if( Util.isException(c) ) {
+                if (Util.isException(c)) {
                     exceptions.add(c);
-                }
-                else {
+                } else {
                     classes.add(c);
                 }
-            }
-            else if (m instanceof Value || m instanceof Getter) {
+            } else if (m instanceof Value || m instanceof Getter) {
                 attributes.add((MethodOrValue) m);
-            }
-            else if (m instanceof Method) {
+            } else if (m instanceof Method) {
                 methods.add((Method) m);
             }
         }
-        Comparator<Declaration> comparator = new Comparator<Declaration>() {
-            @Override
-            public int compare(Declaration a, Declaration b) {
-                return a.getName().compareTo(b.getName());
-            }
-        };
-        Collections.sort(classes, comparator);
-        Collections.sort(interfaces, comparator);
-        Collections.sort(attributes, comparator);
-        Collections.sort(methods, comparator);
-        Collections.sort(exceptions, comparator);
+        
+        Collections.sort(classes, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(interfaces, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(attributes, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(methods, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(exceptions, DeclarationComparatorByName.INSTANCE);
     }
 
     public void generate() throws IOException {
         if (!sharingPageWithModule) {
-            htmlHead();
-            writeNav(module, pkg, DocType.PACKAGE);
-        } else {
-            writeKeyboardShortcuts();
+            writeHeader("Package " + pkg.getName());
+            writeNavBar();
         }
-        subMenu();
-        summary();
-        attributes();
-        methods();
-        interfaces();
-        classes();
-        exceptions();
-        if (!sharingPageWithModule) {
-            close("body");
-            close("html");
-        }
-    }
-
-    private void htmlHead() throws IOException {
-        htmlHead("Package " + pkg.getName());
-    }
-
-    private void summary() throws IOException {
-        open("div class='head summary'");
-        String id = "";
-        if (tool.isRootPackage(module, pkg)) {
-            id = " id='section-package'";
-        }
-        open("h1" + id);
-        write("Package ");
-        around("code", pkg.getNameAsString());
-        close("h1");
-        writeSourceLink(pkg);
+        
+        writeSubNav();
+        
+        open("div class='container-fluid'");
+        
+        writeDescription();
+        writeAttributes();
+        writeMethods();
+        writeInterfaces();
+        writeClasses();
+        writeExceptions();
+        
         close("div");
         
-        around("div class='doc'", getDoc(pkg, linkRenderer()));
-        
-        writeBy(Util.getAuthors(pkg), false);
+        if (!sharingPageWithModule) {
+            writeFooter();
+        }
     }
 
-    protected void subMenu() throws IOException {
-        if (attributes.isEmpty()
-                && methods.isEmpty()
-                && interfaces.isEmpty()
-                && classes.isEmpty()
-                && exceptions.isEmpty()) {
-            return;
+    private void writeSubNav() throws IOException {
+        open("div class='sub-navbar'");
+        
+        writeLinkSourceCode(pkg);
+        
+        if (sharingPageWithModule) {
+            open("div id='section-package' class='sub-navbar-inner'");
+        } else {
+            open("div class='sub-navbar-inner'");
         }
-        open("div class='submenu'");
+        
+        around("span class='sub-navbar-label'", "package");
+        writeIcon(pkg);
+        around("span class='sub-navbar-name'", pkg.getNameAsString());
+        close("div"); // sub-navbar-inner
+        
+        open("div class='sub-navbar-menu'");
+        if (!sharingPageWithModule) {
+            writeSubNavBarLink(linkRenderer().to(module).getUrl(), "Overview", 'O', "Jump to module documentation");
+        }
         if (!attributes.isEmpty()) {
-            printSubMenuItem("section-attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
+            writeSubNavBarLink("#section-attributes", "Attributes", 'A', "Jump to attributes");
         }
         if (!methods.isEmpty()) {
-            printSubMenuItem("section-methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
+            writeSubNavBarLink("#section-methods", "Methods", 'M', "Jump to methods");
         }
         if (!interfaces.isEmpty()) {
-            printSubMenuItem("section-interfaces", getAccessKeyed("Interfaces", 'I', "Jump to interfaces"));
+            writeSubNavBarLink("#section-interfaces", "Interfaces", 'I', "Jump to interfaces");
         }
         if (!classes.isEmpty()) {
-            printSubMenuItem("section-classes", getAccessKeyed("Classes", 'C', "Jump to classes"));
+            writeSubNavBarLink("#section-classes", "Classes", 'C', "Jump to classes");
         }
         if (!exceptions.isEmpty()) {
-            printSubMenuItem("section-exceptions", getAccessKeyed("Exceptions", 'E', "Jump to exceptions"));
+            writeSubNavBarLink("#section-exceptions", "Exceptions", 'E', "Jump to exceptions");
         }
+        close("div"); // sub-navbar-menu
+        
+        close("div"); // sub-navbar
+    }
+
+    private void writeDescription() throws IOException {
+        open("div class='package-description'");
+        around("div class='doc'", getDoc(pkg, linkRenderer()));
+        writeBy(pkg);
         close("div");
     }
 
-    private void methods() throws IOException {
+    private void writeMethods() throws IOException {
         if (methods.isEmpty()) {
             return;
         }
-        openTable("section-methods", "Methods", "Modifier and Type", "Method and Description");
+        openTable("section-methods", "Methods", 2, true);
         for (Method m : methods) {
             doc(m);
         }
         close("table");
     }
 
-    private void attributes() throws IOException {
+    private void writeAttributes() throws IOException {
         if (attributes.isEmpty()) {
             return;
         }
-        openTable("section-attributes", "Attributes", "Modifier and Type", "Name and Description");
+        openTable("section-attributes", "Attributes", 2, true);
         for (MethodOrValue v : attributes) {
             doc(v);
         }
-        close("table");
+        closeTable();
     }
 
-    private void interfaces() throws IOException {
+    private void writeInterfaces() throws IOException {
         if (interfaces.isEmpty()) {
             return;
         }
-        openTable("section-interfaces", "Interfaces", "Modifier and Type", "Description");
+        openTable("section-interfaces", "Interfaces", 2, true);
         for (Interface i : interfaces) {
             doc(i);
         }
-        close("table");
+        closeTable();
     }
 
-    private void classes() throws IOException {
+    private void writeClasses() throws IOException {
         if (classes.isEmpty()) {
             return;
         }
-        openTable("section-classes", "Classes", "Modifier and Type", "Description");
+        openTable("section-classes", "Classes", 2, true);
         for (Class c : classes) {
             doc(c);
         }
-        close("table");
+        closeTable();
     }
     
-    private void exceptions() throws IOException {
+    private void writeExceptions() throws IOException {
         if (exceptions.isEmpty()) {
             return;
         }
-        openTable("section-exceptions", "Exceptions", "Modifier and Type", "Description");
+        openTable("section-exceptions", "Exceptions", 2, true);
         for (Class e : exceptions) {
             doc(e);
         }
-        close("table");
-    }
-
-    private void doc(ClassOrInterface d) throws IOException {
-        open("tr class='TableRowColor category'");
-        open("td", "code");
-        writeIcon(d);
-        around("span class='modifiers'", getModifiers(d));
-        write(" ");
-        linkRenderer().to(d.getType()).write();
-        close("code", "td");
-        open("td");
-        writeTagged(d);
-        writeDescription(d);
-        close("td");
-        close("tr");
+        closeTable();
     }
     
-    @Override
-    protected Object getFromObject() {
-        return pkg;
-    }
-
     @Override
     protected void writeAdditionalKeyboardShortcuts() throws IOException {
         writeKeyboardShortcut('p', "index.html");
@@ -282,5 +227,10 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (!exceptions.isEmpty()) {
             writeKeyboardShortcut('e', "#section-exceptions");
         }
+    }
+
+    @Override
+    protected Object getFromObject() {
+        return pkg;
     }
 }
