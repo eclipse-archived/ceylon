@@ -47,7 +47,7 @@ public abstract class TypeDeclaration extends Declaration
 
     public ClassOrInterface getExtendedTypeDeclaration() {
         if (getExtendedType()==null || 
-        		getExtendedType().getDeclaration() instanceof UnknownType) {
+        		getExtendedType().getDeclaration() instanceof ClassOrInterface == false) {
             return null;
         }
         else {
