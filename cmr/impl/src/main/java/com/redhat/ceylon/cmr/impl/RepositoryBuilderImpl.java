@@ -17,14 +17,14 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URI;
+
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
-
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.URI;
 
 /**
  * Repository builder.
@@ -53,23 +53,21 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         StructureBuilder structureBuilder;
         if (token.startsWith("http:") || token.startsWith("https:")) {
             structureBuilder = new RemoteContentStore(token, log);
+        } else if (token.equals("mvn") || token.equals("mvn:")) {
+            return MavenRepositoryHelper.getMavenRepository();
         } else if (token.startsWith("mvn:")) {
             return MavenRepositoryHelper.getMavenRepository(token.substring("mvn:".length()), log);
-        } else if (token.equals("mvn")) {
-            return MavenRepositoryHelper.getMavenRepository();
-        } else if (token.equals("jdk")) {
+        } else if (token.equals("jdk") || token.equals("jdk:")) {
             return new JDKRepository();
-        } else if (token.equals("aether") || token.startsWith("aether:")) {
+        } else if (token.equals("aether") || token.equals("aether:")) {
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            if (token.equals("aether")) {
-                Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
-                return (Repository) createRepository.invoke(null, log);
-            }
-            else {
-                String settingsXml = token.substring("aether:".length());
-                Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class);
-                return (Repository) createRepository.invoke(null, log, settingsXml);
-            }
+            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class);
+            return (Repository) createRepository.invoke(null, log);
+        } else if (token.startsWith("aether:")) {
+            String settingsXml = token.substring("aether:".length());
+            Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
+            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class);
+            return (Repository) createRepository.invoke(null, log, settingsXml);
         } else {
             final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)

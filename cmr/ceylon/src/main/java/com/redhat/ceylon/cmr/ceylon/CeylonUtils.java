@@ -402,7 +402,7 @@ public class CeylonUtils {
         private boolean isRemote(String repo) {
             // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
             // (except for "file:" which we don't support)
-            return isHTTP(repo) || repo.startsWith("mvn:") || "mvn".equals(repo) || "aether".equals(repo) || repo.startsWith("aether:") || repo.equals("jdk");
+            return isHTTP(repo) || "mvn".equals(repo) || repo.startsWith("mvn:") || "aether".equals(repo) || repo.startsWith("aether:") || repo.equals("jdk") || repo.equals("jdk:");
         }
     }
 
