@@ -243,6 +243,11 @@ class Usage {
         if (!validToolName()) {
             return;
         }
+        String name = toolName;
+        while (toolModel != null) {
+            name = toolModel.getName();
+            toolModel = toolModel.getParentTool();
+        }
         // Call the help tool to generate the usage
         out.newline();
         out.append(CeylonToolMessages.msg("usage")).newline();
@@ -252,7 +257,8 @@ class Usage {
         CeylonTool r = new CeylonTool();
         r.setToolLoader(rootTool.getPluginLoader());
         r.setCommand("help");
-        r.setCommandArguments(Arrays.asList("--synopsis", toolModel.getName()));
+        
+        r.setCommandArguments(Arrays.asList("--synopsis", name));
         r.run();
         out.newline();
     }
