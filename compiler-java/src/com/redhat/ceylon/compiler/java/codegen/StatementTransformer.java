@@ -774,7 +774,7 @@ public class StatementTransformer extends AbstractTransformer {
                 } else if (isCeylonInteger(toType)) {
                     return makeLong(0);
                 } else if (isCeylonCharacter(toType)) {
-                    return make().Literal('\0');
+                    return make().Literal(0);
                 }
             }
             return makeNull();
