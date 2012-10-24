@@ -159,7 +159,12 @@ public class JarOutputRepositoryManager {
             writeMappingJarEntry(previousMapping, filterForCars);
             JarUtils.finishUpdatingJar(originalJarFile, outputJarFile, carContext, jarOutputStream, filterForCars,
                     repoManager, options.get(OptionName.VERBOSE) != null, cmrLog);
-            cmrLog.info("created module " + module.getNameAsString() + "/" + module.getVersion());
+            String info;
+            if(module.isDefault())
+                info = module.getNameAsString();
+            else
+                info = module.getNameAsString() + "/" + module.getVersion();
+            cmrLog.info("Created module " + info);
         }
 
         private void writeMappingJarEntry(Properties previousMapping, JarUtils.JarEntryFilter filter) {
