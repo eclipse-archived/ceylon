@@ -28,6 +28,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
     .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
         <T>method($reifiedT);
         <.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
     
@@ -107,6 +108,19 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.ReifiedType
             }
             returning null;
         );
+        <.ceylon.language.Integer>methodWithOverloads(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass $arg$6$this$ = this;
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$6$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType;
+                long $arg$6$0 = $arg$6$this$.methodWithOverloads$a($arg$6$reified$0);
+                long $arg$6$1 = $arg$6$this$.methodWithOverloads$b($arg$6$reified$0, $arg$6$0);
+                methodWithOverloads($arg$6$reified$0, $arg$6$0, $arg$6$1);
+            }
+            returning null;
+        );
+        methodWithOverloads(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -136,6 +150,7 @@ public final class method_ {
     .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedT) {
         .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<T>method($reifiedT);
         .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

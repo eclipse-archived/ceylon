@@ -2,6 +2,7 @@ shared class MethodClass(){
     shared void method<T>(){
         method<T>();
         method<Integer>();
+        method();
     }
     shared Callable<Void> methodSpec = method<Integer>;
     
@@ -13,10 +14,14 @@ shared class MethodClass(){
     
     void test2(){
         methodWithOverloads<Integer>{};
+        methodWithOverloads<Integer>();
+        methodWithOverloads{};
+        methodWithOverloads();
     }
 }
 
 shared void method<T>(){
     method<T>();
     method<Integer>();
+    method();
 }

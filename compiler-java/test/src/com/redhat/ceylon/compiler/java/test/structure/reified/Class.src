@@ -173,6 +173,7 @@ final class reifiedInstantiate_ {
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$6$reified$0, $arg$6$reified$1, $arg$6$0, $arg$6$1);
         );
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<?, ?> c5 = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType, .com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
