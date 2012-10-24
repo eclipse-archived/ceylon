@@ -2872,6 +2872,9 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return make().Apply(null, makeSelect(makeTypeDescriptorType(), "intersection"), typeTestArguments);
         }
-        throw new RuntimeException("Unsupported type");
+        if(declaration instanceof BottomType){
+            return makeBottomTypeDescriptor();
+        }
+        throw new RuntimeException("Unsupported type: " + declaration);
     }
 }
