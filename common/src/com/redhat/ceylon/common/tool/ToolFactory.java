@@ -266,6 +266,7 @@ public class ToolFactory {
                      */
                     ToolLoader loader = ((ToolArgumentParser)parser).getToolLoader();
                     ToolModel<T> model = loader.loadToolModel(binding.unparsedArgumentValue);
+                    model.setParentTool(toolModel);
                     
                     return (A)bindArguments(model, (T)value, new Iterable<String>() {
                         @Override

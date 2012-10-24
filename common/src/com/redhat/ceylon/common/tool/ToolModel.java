@@ -25,6 +25,7 @@ public class ToolModel<T extends Tool> {
     private Class<T> toolClass;
     private Method rest;
     private SubtoolModel<?> subtoolModel;
+    private ToolModel<?> parentTool;
 
     public ToolLoader getToolLoader() {
         return loader;
@@ -149,6 +150,14 @@ public class ToolModel<T extends Tool> {
     public void setSubtoolModel(SubtoolModel<?> subtoolModel) {
         subtoolModel.setToolModel(this);
         this.subtoolModel = subtoolModel;
+    }
+
+    public ToolModel<?> getParentTool() {
+        return parentTool;
+    }
+
+    public void setParentTool(ToolModel<?> parentTool) {
+        this.parentTool = parentTool;
     }
     
 }
