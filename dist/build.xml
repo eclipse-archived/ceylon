@@ -229,9 +229,11 @@ Used with another target such as 'package'">
     <target name="copy-cmr-libraries">
         <mkdir dir="${dist.dir}/lib"/>
         <copy todir="${dist.dir}/lib">
+            <fileset dir="${ceylon-module-resolver.dir}/lib">
+                <include name="shrinkwrap-maven-uberjar-*.jar"/>
+            </fileset>
             <fileset dir="${ceylon-module-resolver.dir}/build/lib">
                 <include name="cmr-maven-*.jar"/>
-                <include name="shrinkwrap-maven-uberjar-*.jar"/>
             </fileset>
         </copy>
     </target>
