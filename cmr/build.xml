@@ -4,6 +4,7 @@
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.classes" location="${build.dir}/classes"/>
+    <property name="build.classes.cmr-maven" location="${build.dir}/classes-cmr-maven"/>
     <property name="build.dist" location="${build.dir}/dist"/>
     <property name="build.lib" location="${build.dir}/lib"/>
     <property name="build.test" location="${build.dir}/test"/>
@@ -17,8 +18,13 @@
     <property name="cmr-webdav.src" location="${basedir}/webdav/src/main/java"/>
     <property name="cmr-ceylon.src" location="${basedir}/ceylon/src/main/java"/>
 
+    <!-- The Java source files for cmr-maven -->
+    <property name="cmr-maven.src" location="${basedir}/maven/src/main/java"/>
+    <property name="cmr-maven.resources" location="${basedir}/maven/src/main/resources"/>
+
     <!-- jar generated -->
     <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
+    <property name="cmr-maven.jar" location="${build.lib}/cmr-maven-${cmr-maven.version}.jar"/>
 
     <property name="cmr-testsuite-test.src" location="${basedir}/testsuite/src/test/java"/>
     <property name="cmr-testsuite-test.resources" location="${basedir}/testsuite/src/test/resources"/>
@@ -63,11 +69,16 @@
         <pathelement path="${httpcore.lib}"/>
     </path>
 
-    <path id="test.build.classpath">
+    <path id="compiler.classpath.cmr-maven">
         <path refid="compiler.classpath"/>
         <pathelement path="${build.classes}"/>
+        <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
+    </path>
+
+    <path id="test.build.classpath">
+        <path refid="compiler.classpath.cmr-maven"/>
+        <pathelement path="${build.classes.cmr-maven}"/>
         <pathelement path="${junit.lib}"/>
-        <pathelement path="${cmr-maven.lib}"/>
     </path>
 
     <path id="test.run.classpath">
@@ -79,7 +90,6 @@
         <pathelement path="${commons-logging.lib}"/>
         <pathelement path="${slf4j-api.lib}"/>
         <pathelement path="${slf4j-simple.lib}"/>
-        <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
     </path>
 
     <!-- ################################################################## -->
@@ -215,8 +225,33 @@
         </jar>
     </target>
 
+    <!-- Tasks related to building cmr-maven -->
+    <!-- Rule to build cmr-maven classes from their Java sources -->
+    <target name="cmr-maven.classes" depends="module-resolver.classes">
+        <mkdir dir="${build.classes.cmr-maven}"/>
+        <javac debug="true"
+               srcdir="${cmr-maven.src}"
+               destdir="${build.classes.cmr-maven}"
+               classpathref="compiler.classpath.cmr-maven"
+               includeantruntime="false"/>
+        <copy todir="${build.classes.cmr-maven}">
+            <fileset dir="${cmr-maven.resources}">
+                <include name="**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Rule to build module-resolver jar -->
+    <target name="cmr-maven.jar" depends="cmr-maven.classes">
+        <mkdir dir="${build.lib}"/>
+        <jar destfile="${cmr-maven.jar}">
+            <fileset dir="${build.classes.cmr-maven}">
+            </fileset>
+        </jar>
+    </target>
+
     <!-- Rule to compile and test -->
-    <target name="build" depends="module-resolver.jar"/>
+    <target name="build" depends="module-resolver.jar, cmr-maven.jar"/>
 
     <target name="compile.tests" depends="build">
         <mkdir dir="${build.test}"/>
