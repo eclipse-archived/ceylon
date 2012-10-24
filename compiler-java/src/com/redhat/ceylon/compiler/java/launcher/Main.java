@@ -465,7 +465,9 @@ public class Main extends com.sun.tools.javac.main.Main {
                 comp.close();
             filenames = null;
             options = null;
-            timer.end();
+            if (timer != null) {
+                timer.end();
+            }
             timer = null;
         }
         return EXIT_OK;
