@@ -57,15 +57,15 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             Module module = moduleLoader.loadModule(moduleIdentifier);
             return SecurityActions.getClassLoader(module);
         } catch (ModuleNotFoundException e) {
-            String spec = name;
+            String spec = e.getMessage().replace(':', '/');
             String hint = "";
             if (RepositoryManager.DEFAULT_MODULE.equals(name)) {
                 if (version != null)
                     hint = " (default module should not have any version)";
             } else if (version != null) {
-                spec += "/" + version;
                 hint = " (invalid version?)";
             } else {
+                spec = spec.replace("/null", "");
                 hint = " (missing required version, try " + spec + "/version)";
             }
             final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + hint);
