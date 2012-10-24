@@ -310,6 +310,9 @@ public class Naming implements LocalId {
         if (decl instanceof Tree.AnyClass) {
             Tree.AnyClass klass = (Tree.AnyClass)decl;
             b.append(klass.getIdentifier().getText());
+        }else if (decl instanceof Tree.TypeAliasDeclaration) {
+            Tree.TypeAliasDeclaration klass = (Tree.TypeAliasDeclaration)decl;
+            b.append(klass.getIdentifier().getText());
         } else if (decl instanceof Tree.AnyInterface) {
             Tree.AnyInterface iface = (Tree.AnyInterface)decl;
             b.append(iface.getIdentifier().getText());
