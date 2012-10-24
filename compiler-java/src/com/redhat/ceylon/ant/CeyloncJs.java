@@ -27,10 +27,10 @@ public class CeyloncJs extends Task {
     private List<File> compileList = new ArrayList<File>(2);
     private List<Module> modules = new LinkedList<Module>();
     private FileSet files;
-    private Boolean verbose;
-    private Boolean optimize;
-    private Boolean modulify = true;
-    private Boolean gensrc = true;
+    private boolean verbose;
+    private boolean optimize;
+    private boolean modulify = true;
+    private boolean gensrc = true;
     private String user;
     private String pass;
     private String out;
@@ -61,19 +61,19 @@ public class CeyloncJs extends Task {
     }
 
     /** Tells the JS compiler whether to wrap the generated code in CommonJS module format. */
-    public void setWrapModule(Boolean flag){
+    public void setWrapModule(boolean flag){
         modulify = flag;
     }
     /** Tells the JS compiler whether to use prototype style or not. */
-    public void setOptimize(Boolean flag){
+    public void setOptimize(boolean flag){
         this.optimize = flag;
     }
     /** Tells the JS compiler whether to generate the .src archive; default is true, but can be turned off
      * to save some time when doing joint jvm/js compilation. */
-    public void setSrcArchive(Boolean flag) {
+    public void setSrcArchive(boolean flag) {
         gensrc = flag;
     }
-    public void setVerbose(Boolean verbose){
+    public void setVerbose(boolean verbose){
         this.verbose = verbose;
     }
 
@@ -219,7 +219,7 @@ public class CeyloncJs extends Task {
         Commandline cmd = new Commandline();
         cmd.setExecutable(Util.findCeylonScript(this.executable, getProject()));
         cmd.createArgument().setValue("compile-js");
-        if(verbose != null && verbose.booleanValue()){
+        if(verbose){
             cmd.createArgument().setValue("--verbose");
         }
         if(user != null){
