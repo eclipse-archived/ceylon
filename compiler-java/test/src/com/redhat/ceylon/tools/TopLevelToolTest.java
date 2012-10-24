@@ -232,6 +232,22 @@ public class TopLevelToolTest {
     }
     
     @Test
+    public void testTopLevelUnknownTool()  throws Exception {
+        try (CapturingStdOut out = new CapturingStdOut()) {
+            Assert.assertEquals(CeylonTool.SC_NO_SUCH_TOOL, tool.bootstrap(args("comple", "foo/bar")));
+            Assert.assertEquals(
+                    "ceylon: 'comple' is not a ceylon command\n"+
+"Did you mean?\n"+
+"    compile\n"+
+"    example\n"+
+"\n"+
+"Run 'ceylon help' for more help", 
+		out.getErr().trim().replace("\r", ""));
+            Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
+        }
+    }
+    
+    @Test
     public void testBashCompletion()  throws Exception {
         Assert.assertEquals(CeylonTool.SC_OK, tool.bootstrap(
                 args("bash-completion", "--cword=1", "--", "./cey")));
