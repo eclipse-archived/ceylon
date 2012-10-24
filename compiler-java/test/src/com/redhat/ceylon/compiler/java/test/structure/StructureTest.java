@@ -648,4 +648,10 @@ public class StructureTest extends CompilerTest {
     public void testRfdTest(){
         compareWithJavaSource("reified/Test");
     }
+
+    @Test
+    public void testRfdModelLoader(){
+        compile("reified/Class.ceylon", "reified/Method.ceylon");
+        compareWithJavaSource("reified/ModelLoader");
+    }
 }

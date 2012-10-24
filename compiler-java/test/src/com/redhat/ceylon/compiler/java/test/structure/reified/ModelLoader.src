@@ -1,0 +1,76 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class reifiedInstantiateFromModelLoader_ {
+    
+    private reifiedInstantiateFromModelLoader_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    static void reifiedInstantiateFromModelLoader() {
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c2 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$0$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class);
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$0$reified$1 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class);
+                long $arg$0$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$0$reified$0, $arg$0$reified$1);
+                long $arg$0$1 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$b($arg$0$reified$0, $arg$0$reified$1, $arg$0$0);
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$0$reified$0, $arg$0$reified$1, $arg$0$0, $arg$0$1);
+        );
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>> constr = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>>("ceylon.language::Callable<com.redhat.ceylon.compiler.java.test.structure.reified::Class<ceylon.language::Integer,ceylon.language::String>,ceylon.language::Integer,ceylon.language::Integer>"){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                return new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class), ((.ceylon.language.Integer)$param$0).longValue(), ((.ceylon.language.Integer)$param$1).longValue());
+            }
+        };
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c3 = constr.$call(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c4 = (
+            let
+            {
+                long $arg$1$1 = 5L;
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$1$reified$0 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class);
+                .com.redhat.ceylon.compiler.java.TypeDescriptor $arg$1$reified$1 = .com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.String.class);
+                long $arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.reified.Class.$init$a($arg$1$reified$0, $arg$1$reified$1);
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>($arg$1$reified$0, $arg$1$reified$1, $arg$1$0, $arg$1$1);
+        );
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.Class<?, ?> c5 = new .com.redhat.ceylon.compiler.java.test.structure.reified.Class(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType, .com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedInstantiateFromModelLoader_.reifiedInstantiateFromModelLoader();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 3)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class reifiedMethodsFromModelLoader_ {
+    
+    private reifiedMethodsFromModelLoader_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Void")
+    static void reifiedMethodsFromModelLoader() {
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.<.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        .com.redhat.ceylon.compiler.java.test.structure.reified.method_.method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass mc = new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass();
+        mc.<.ceylon.language.Integer>method(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        mc.method(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType);
+        mc.getMethodSpec().$call();
+        mc.<.ceylon.language.Integer>methodWithOverloads(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class));
+        mc.<.ceylon.language.Integer>methodWithOverloads(.com.redhat.ceylon.compiler.java.TypeDescriptor.klass(.ceylon.language.Integer.class), 1L, 2L);
+        mc.methodWithOverloads(.com.redhat.ceylon.compiler.java.TypeDescriptor.BottomType, 1L, 2L);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedMethodsFromModelLoader_.reifiedMethodsFromModelLoader();
+    }
+}
