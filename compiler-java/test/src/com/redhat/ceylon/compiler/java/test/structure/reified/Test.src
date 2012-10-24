@@ -7,9 +7,9 @@ public interface TestInterface<Key, Value> {
 public final class TestInterface$impl<Key, Value> {
     
     public TestInterface$impl(.com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this) {
-        this.$this = $this;
         this.$reifiedKey = $reifiedKey;
         this.$reifiedValue = $reifiedValue;
+        this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;

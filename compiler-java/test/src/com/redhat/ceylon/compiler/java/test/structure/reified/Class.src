@@ -14,9 +14,9 @@ public final class Interface$impl<Key, Value> {
     public Interface$impl(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this) {
-        this.$this = $this;
         this.$reifiedKey = $reifiedKey;
         this.$reifiedValue = $reifiedValue;
+        this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedKey;
     private final .com.redhat.ceylon.compiler.java.TypeDescriptor $reifiedValue;
