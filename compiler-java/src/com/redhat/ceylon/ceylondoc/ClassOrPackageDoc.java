@@ -56,6 +56,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("td");
         
         open("td");
+        writeLinkSourceCode(d);
         writeTagged(d);
         open("div class='signature'");
         around("span class='modifiers'", getModifiers(d));
