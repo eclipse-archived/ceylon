@@ -34,7 +34,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -52,9 +51,9 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -375,19 +374,6 @@ public class CeylonDocTool implements Tool {
         return dir;
     }
 
-    private File getFolder(Module module) {
-        List<String> unprefixedName;
-        if(module.isDefault())
-            unprefixedName = Arrays.asList("");
-        else{
-            unprefixedName = module.getName();
-        }
-        File dir = new File(getOutputFolder(module), join("/", unprefixedName));
-        if(shouldInclude(module))
-            dir.mkdirs();
-        return dir;
-    }
-
     public File getOutputFolder(Module module) {
         File folder = new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(tempDestDir, module),
                 "module-doc");
@@ -510,14 +496,20 @@ public class CeylonDocTool implements Tool {
             makeSearch(module);
             
             File resourcesDir = getResourcesDir(module);
-            copyResource("resources/style.css", new File(resourcesDir, "style.css"));
+            copyResource("resources/ceylondoc.css", new File(resourcesDir, "ceylondoc.css"));
+            copyResource("resources/ceylondoc.js", new File(resourcesDir, "ceylondoc.js"));
+            
+            copyResource("resources/bootstrap.min.css", new File(resourcesDir, "bootstrap.min.css"));
+            copyResource("resources/bootstrap.min.js", new File(resourcesDir, "bootstrap.min.js"));
+            copyResource("resources/jquery-1.8.2.min.js", new File(resourcesDir, "jquery-1.8.2.min.js"));
+            
             copyResource("resources/shCore.css", new File(resourcesDir, "shCore.css"));
             copyResource("resources/shThemeDefault.css", new File(resourcesDir, "shThemeDefault.css"));
-            copyResource("resources/jquery-1.7.min.js", new File(resourcesDir, "jquery-1.7.min.js"));
-            copyResource("resources/ceylond.js", new File(resourcesDir, "ceylond.js"));
             copyResource("resources/shCore.js", new File(resourcesDir, "shCore.js"));
             copyResource("resources/shBrushCeylon.js", new File(resourcesDir, "shBrushCeylon.js"));
-            copyResource("resources/icons.png", new File(resourcesDir, "icons.png"));
+            
+            copyResource("resources/ceylondoc-logo.png", new File(resourcesDir, "ceylondoc-logo.png"));
+            copyResource("resources/ceylondoc-icons.png", new File(resourcesDir, "ceylondoc-icons.png"));
             copyResource("resources/NOTICE.txt", new File(getOutputFolder(module), "NOTICE.txt"));
         }
         finally {
@@ -613,8 +605,8 @@ public class CeylonDocTool implements Tool {
                 Package decl = pu.getUnit().getPackage();
                 markup.tag("link href='" + getResourceUrl(decl, "shCore.css") + "' rel='stylesheet' type='text/css'");
                 markup.tag("link href='" + getResourceUrl(decl, "shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
-                markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "jquery-1.7.min.js")+"'");
-                markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "ceylond.js")+"'");
+                markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "jquery-1.8.2.min.js")+"'");
+                markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "ceylondoc.js")+"'"); 
                 markup.around("script src='" + getResourceUrl(decl, "shCore.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(decl, "shBrushCeylon.js") + "' type='text/javascript'");
                 markup.close("head");
@@ -647,9 +639,7 @@ public class CeylonDocTool implements Tool {
                     continue;
                 }
                 // document the package
-                if (isRootPackage(module, pkg)) {
-                    new PackageDoc(this, rootWriter, pkg).generate();
-                } else {
+                if (!isRootPackage(module, pkg)) {
                     Writer packageWriter = openWriter(getObjectFile(pkg));
                     try {
                         new PackageDoc(this, packageWriter, pkg).generate();
@@ -662,7 +652,6 @@ public class CeylonDocTool implements Tool {
                     doc(decl);
                 }
             }
-            moduleDoc.complete();
         } finally {
             rootWriter.close();
         }
@@ -897,7 +886,7 @@ public class CeylonDocTool implements Tool {
             folder = getFolder((Package)modPkgOrDecl);
         } else if (modPkgOrDecl instanceof Module) {
             Module moduleDecl = (Module)modPkgOrDecl;
-            folder = getFolder(moduleDecl);
+            folder = getOutputFolder(moduleDecl);
             filename = "module.ceylon";
         } else {
             throw new RuntimeException(CeylondMessages.msg("error.unexpected", modPkgOrDecl));

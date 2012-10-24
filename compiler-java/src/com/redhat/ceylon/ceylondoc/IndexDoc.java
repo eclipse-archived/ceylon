@@ -75,56 +75,69 @@ public class IndexDoc extends CeylonDoc {
             indexPackage(pkg);
         }
         // get rid of the eventual final dangling JSON list comma but adding a module entry 
-        writeIndexElement(module.getNameAsString(), tool.kind(module), 
-                linkRenderer().to(module).getUrl(), Util.getDocFirstLine(module, linkRenderer()), null);
+        writeIndexElement(
+                module.getNameAsString(), 
+                tool.kind(module), 
+                linkRenderer().to(module).getUrl(), 
+                Util.getDocFirstLine(module, linkRenderer()), 
+                null, null);
     }
 
     private void indexPackage(Package pkg) throws IOException {
-        writeIndexElement(pkg.getNameAsString(), tool.kind(pkg), 
-                linkRenderer().to(pkg).getUrl(), Util.getDocFirstLine(pkg, linkRenderer()), null);
+        writeIndexElement(
+                pkg.getNameAsString(), 
+                tool.kind(pkg), 
+                linkRenderer().to(pkg).getUrl(), 
+                Util.getDocFirstLine(pkg, linkRenderer()), 
+                null, 
+                getIcons(pkg));
         write(",\n");
-        indexMembers(pkg);
+        indexMembers(pkg, pkg.getMembers());
     }
 
-    private void indexMembers(Scope scope) throws IOException {
-        for (Declaration decl : scope.getMembers()) {
+    private void indexMembers(Scope container, List<Declaration> members) throws IOException {
+        for (Declaration decl : members) {
             if (!tool.shouldInclude(decl)) {
                 continue;
             }
-            if(decl instanceof ClassOrInterface)
-                indexMembers((Scope) decl);
-            if(indexDecl(scope, decl))
+            if (decl instanceof ClassOrInterface) {
+                ClassOrInterface classOrInterface = (ClassOrInterface) decl;
+                indexMembers(classOrInterface, classOrInterface.getMembers());
+            }
+            if (indexDecl(container, decl)) {
                 write(",\n");
+            }
         }
     }
 
     private boolean indexDecl(Scope container, Declaration decl) throws IOException {
-        String name = decl.getName();
         String url;
-        if(decl instanceof ClassOrInterface){
+        String name = decl.getName();
+        
+        if (decl instanceof ClassOrInterface) {
             url = linkRenderer().to(decl).getUrl();
-        }else if(decl instanceof Method
-                || decl instanceof Value
-                || decl instanceof Getter){
+        } else if (decl instanceof Method || decl instanceof Value || decl instanceof Getter) {
             url = tool.getObjectUrl(module, container, false) + "#" + name;
-            if(decl.isMember())
-                name = ((ClassOrInterface)container).getName() + "." + name;
-        }else if(decl instanceof Setter
-                || decl instanceof ValueParameter
-                || decl instanceof TypeParameter){
-            // ignore
-            return false;
-        }else
-            throw new RuntimeException("Unknown type of object: "+decl);
+            if (decl.isMember()) {
+                name = ((ClassOrInterface) container).getName() + "." + name;
+            }
+        } else if (decl instanceof Setter || decl instanceof ValueParameter || decl instanceof TypeParameter) {
+            return false; // ignore
+        } else {
+            throw new RuntimeException("Unknown type of object: " + decl);
+        }
+        
         String type = tool.kind(decl);
         String doc = Util.getDocFirstLine(decl, linkRenderer());
         List<String> tags = Util.getTags(decl);
         tagIndex.addAll(tags);
-        writeIndexElement(name, type, url, doc, tags);
+        
+        writeIndexElement(name, type, url, doc, tags, getIcons(decl));
+        
         return true;
     }
 
-    private void writeIndexElement(String name, String type, String url, String doc, List<String> tags) throws IOException {
+    private void writeIndexElement(String name, String type, String url, String doc, List<String> tags, List<String> icons) throws IOException {
         write("{'name': '");
         write(name);
         write("', 'type': '");
@@ -141,6 +154,19 @@ public class IndexDoc extends CeylonDoc {
                 write(escapeJSONString(tagIterator.next()).trim());
                 write("'");
                 if (tagIterator.hasNext()) {
+                    write(", ");
+                }
+            }        
+        }
+        write("],");
+        write("'icons': [");
+        if( icons != null ) {
+            Iterator<String> iconIterator = icons.iterator();
+            while (iconIterator.hasNext()) {
+                write("'");
+                write(escapeJSONString(iconIterator.next()).trim());
+                write("'");
+                if (iconIterator.hasNext()) {
                     write(", ");
                 }
             }        

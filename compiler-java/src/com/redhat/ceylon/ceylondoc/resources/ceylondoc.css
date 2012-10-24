@@ -1,0 +1,433 @@
+.module-header {
+	float: left;
+	display: block;
+	font-size: 20px;
+	font-weight: bold;
+	margin: 4px 0 0 -16px;
+}
+
+.module-header:HOVER {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.module-header:HOVER .module-name {
+	color: rgb(242, 223, 183);
+}
+
+.module-name {
+	color: rgb(250, 250, 250);
+	margin-top: 6px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.module-label,
+.module-version {
+	color: rgb(160, 160, 160);
+	margin: 6px 6px 0 6px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.module-logo {
+	display: inline-block;
+	background-image: url("ceylondoc-logo.png");
+	background-repeat: no-repeat;
+	height: 28px;
+	width: 28px;
+	margin-top: 3px;
+	margin-left: 3px;
+}
+
+.sub-navbar {
+	background-color: #EEE;
+	border-top: 1px solid rgb(190, 190, 190);
+	border-bottom: 1px solid rgb(190, 190, 190);
+	margin-bottom: 10px;
+}
+
+.sub-navbar-inner {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 14px 6px 0 20px;
+}
+
+.sub-navbar-label {
+	color: rgb(160, 160, 160);
+	padding-right: 6px;
+}
+
+.sub-navbar-name {
+	color: #333;
+}
+
+.sub-navbar-package {
+	color: #333;
+	font-size: 16px;
+}
+
+.sub-navbar-menu {
+	text-align: center;
+	line-height: 15px;
+	position: relative;
+	top: -4px;
+}
+
+.sub-navbar-menu a {
+	color: rgb(80, 80, 80);
+	padding: 0 20px;
+}
+
+.sub-navbar-menu .accesskey {
+	color: #0088cc;
+}
+
+.section {
+	padding: 4px 0;
+}
+.section .title {
+    font-weight: bold;
+    font-size: 13px;
+    color: rgb(90, 90, 90);
+}
+
+.table-header {
+	font-weight: bold;
+	background-color: #EEE;
+	color: #333;
+	cursor: pointer;
+}
+
+.table-header:HOVER {
+	background-color: rgb(232, 232, 232);
+}
+
+.link {
+	font-family: monospace;
+	color: #005580;
+}
+
+.link-source-code,.link-collapsible {
+	float: right;
+	font-size: 0.8em;
+	padding-left: 10px;
+}
+
+.link-source-code:VISITED
+.link-collapsible:VISITED {
+	color: #0088cc;
+}
+
+.link-discreet {
+	color: black;
+}
+
+.link-discreet:HOVER {
+	color: black;
+}
+
+.module-description,
+.class-description {
+	padding: 10px 0;
+}
+
+.module-description .link-source-code {
+	position: relative;
+	top: -8px;
+}
+
+.sub-navbar .link-source-code {
+	padding-top: 2px;
+	padding-right: 24px;
+}
+
+.signature {
+	font-family: monospace;
+}
+
+.modifiers {
+	color: rgb(120, 120, 120);
+}
+
+.type-parameter {
+	font-style: italic;
+}
+
+.inherited-members {
+	padding-left: 30px;
+}
+
+.inheritance {
+	list-style-type: none;
+}
+
+td .description {
+    padding: 0 30px;
+}
+
+.description-collapsed {
+    height: 26px;
+    overflow: hidden;
+}
+
+.row-collapsible {
+    cursor: pointer;
+}
+
+.description-decoration {
+    height: 4px;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+
+.tags.section {
+    padding: 0;
+    float: right;
+    clear: right;
+}
+
+.tag {
+    position: relative;
+    top: -4px;
+    margin-left: 4px;
+}
+
+.tag:HOVER {
+    background-color: rgb(120, 120, 120);
+}
+
+.tagOccurrenceCount {
+    font-size: small;
+    float: right;
+    position: relative;
+    top: 6px;
+}
+
+.tagSelected {
+    background-color: #468847;
+}
+
+.tagSelected:hover {
+    background-color: #356635;
+}
+
+#filterDropdown {
+	display: none;
+}
+
+#filterDropdownPanel {
+    min-width: 260px;
+}
+
+#filterDropdownPanelInfo {
+    text-align: center;
+    color: #333;
+}
+
+#filterActions {
+    text-align: center;
+}
+
+#filterActions a {
+    cursor: pointer;
+    padding: 0 16px;
+    display: inline;
+    color: #08C;
+    font-size: 12px;
+}
+
+#filterDropdownPanelTags {
+    margin: 0 4px;
+}
+
+#filterDropdownPanelTags .tag {
+    padding: 1px 4px 2px;
+    line-height: 14px;
+    color: white;
+    display: inline-block;
+    vertical-align: sub;
+    top: 0;
+}
+
+#search {
+	padding: 40px 0 20px 0;
+	text-align: center;
+}
+
+#search input {
+	width: 200px;
+}
+
+#results .highlight {
+	background: rgb(191, 223, 255);
+}
+
+.doc.section {
+    margin-bottom: -10px; /* HACK for <p> padding-bottom 10px */
+}
+
+td>p:FIRST-CHILD {
+    margin: 0; /* HACK for markdown first paragraph */
+}
+
+code {
+	color: #333; /* default bootstrap color is red */
+}
+
+.doc .syntaxhighlighter {
+  display: block;
+  padding: 9.5px !important;
+  margin: 0 0 10px !important;
+  font-size: 13px;
+  line-height: 20px;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: #f5f5f5 !important;
+  border: 1px solid #ccc !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+[class^='icon-'] {
+	display: inline-block;
+	background-image: url("ceylondoc-icons.png");
+	background-repeat: no-repeat;
+	height: 16px;
+	width: 16px;
+	vertical-align: baseline;
+	margin-right: 4px;
+}
+
+td [class^='icon-'] {
+	vertical-align: text-top;
+}
+
+.icon-none {
+	background-image: none;
+}
+
+.icon-local-member {
+	background-position: 0px 0px;
+}
+
+.icon-shared-member {
+	background-position: -16px 0px;
+}
+
+.icon-interface {
+	background-position: -32px 0px;
+}
+
+.icon-class {
+	background-position: -48px 0px;
+}
+
+.icon-package {
+	background-position: -64px 0px;
+}
+
+.icon-decoration-local {
+	background-position: 4px 4px;
+}
+
+.icon-decoration-abstract {
+	background-position: -80px 0px;
+}
+
+.icon-decoration-formal {
+	background-position: -96px 0px;
+}
+
+.icon-decoration-impl {
+	background-position: -112px 0px;
+}
+
+.icon-decoration-over {
+	background-position: -128px 0px;
+}
+
+.icon-decoration-deprecated {
+	background-position: -144px 0px;
+}
+
+.icon-search {
+	vertical-align: text-bottom;
+	background-position: -176px 0px;
+}
+
+.icon-filter {
+    vertical-align: text-bottom;
+    background-position: -208px 0px;
+}
+
+.icon-expand {
+	background-position: -224px 0px;
+}
+
+.icon-collapse {
+	background-position: -240px 0px;
+}
+
+.icon-indentation {
+	background-position: -256px 0px;
+	position: relative;
+	top: -6px;
+	left: -2px;
+}
+
+.icon-source-code {
+	background-position: -272px 0px;
+	vertical-align: top !important;
+	margin-right: 1px;
+}
+
+.icon-expand2 {
+	background-position: -288px 0px;
+}
+
+.icon-collapse2 {
+	background-position: -304px 0px;
+}
+
+.icon-decoration-expand {
+	background-position: -320px 0px;
+	width: 32px;
+	height: 4px;
+}
+
+.icon-decoration-collapse {
+	background-position: -352px 0px;
+	width: 32px;
+	height: 4px;
+}
+
+a:HOVER .icon-search {
+	vertical-align: text-bottom;
+	background-position: -160px 0px;
+}
+
+a:HOVER .icon-filter {
+    vertical-align: text-bottom;
+    background-position: -192px 0px;
+}
+.dropdown.open .icon-filter {
+    vertical-align: text-bottom;
+    background-position: -192px 0px;
+}
+
+thead .icon-expand,
+thead .icon-collapse {
+	float: right;
+}
+
+td .icon-expand2,
+td .icon-collapse2 {
+	vertical-align: top;
+	margin-right: 1px;
+}

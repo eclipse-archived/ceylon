@@ -23,7 +23,6 @@ package com.redhat.ceylon.ceylondoc;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -34,7 +33,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
 public abstract class CeylonDoc extends Markup {
 
@@ -47,110 +45,120 @@ public abstract class CeylonDoc extends Markup {
         this.tool = tool;
     }
     
-    protected LinkRenderer linkRenderer() {
+    protected final LinkRenderer linkRenderer() {
         return new LinkRenderer(tool, writer, getFromObject());
     }
-    
-    protected void linkToDeclaration(Declaration declaration) throws IOException {
+
+    protected final void linkToDeclaration(Declaration declaration) throws IOException {
         linkRenderer().to(declaration).write();
     }
     
-    protected abstract Object getFromObject();
+    protected final void writeHeader(String title, String... additionalCss) throws IOException {
+        write("<!DOCTYPE html>");
+        open("html");
+        open("head");
+        tag("meta charset='UTF-8'");
+        around("title", title);
 
-    protected static Package getPackage(Scope decl) {
-        while (!(decl instanceof Package)) {
-            decl = decl.getContainer();
-        }
-        return (Package) decl;
-    }
+        tag("link href='" + linkRenderer().getResourceUrl("shCore.css") + "' rel='stylesheet' type='text/css'");
+        tag("link href='" + linkRenderer().getResourceUrl("shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
+        tag("link href='" + linkRenderer().getResourceUrl("bootstrap.min.css") + "' rel='stylesheet' type='text/css'");
+        tag("link href='" + linkRenderer().getResourceUrl("ceylondoc.css") + "' rel='stylesheet' type='text/css'");
 
-    protected boolean shouldInclude(Declaration decl){
-        return tool.shouldInclude(decl);
-    }
-    
-    protected void writeNav(Module module, Object decl, DocType docType) throws IOException {
-        open("div class='nav menu'");
-        open("div");
-        linkRenderer().to(module).useCustomText(getAccessKeyed("Overview", 'O', "Module documentation")).write();
-        close("div");
-        if(docType == DocType.PACKAGE)
-            open("div class='selected'");
-        else
-            open("div");
-        if(docType != DocType.MODULE
-                && docType != DocType.SEARCH) {
-            String accessKeyed = getAccessKeyed("Package", 'P', "Package documentation");
-            if (decl instanceof Declaration) {
-                linkRenderer().to(getPackage(((Declaration)decl).getContainer())).useCustomText(accessKeyed).write();
-            } else if (decl instanceof Package) {
-                linkRenderer().to((Package)decl).useCustomText(accessKeyed).write();
-            } else {
-                throw new RuntimeException("" + decl);
+        for (String css : additionalCss) {
+            if (!css.endsWith(".css")) {
+                throw new RuntimeException(CeylondMessages.msg("error.unexpectedAdditionalResource", css));
             }
-        } else
-            write("Package");
-        close("div");
-        if(docType == DocType.TYPE){
-            open("div class='selected'");
-            linkRenderer().to((ClassOrInterface)decl).useCustomText(getAccessKeyed("Type", 'T', "Type documentation")).write();
-        }else{
-            open("div");
-            write("Type");
+            tag("link href='" + linkRenderer().getResourceUrl(css) + "' rel='stylesheet' type='text/css'");
         }
-        close("div");
 
-        open("div");
-        around("a href='"+linkRenderer().getResourceUrl("../search.html")+"'", getAccessKeyed("Search", 'S', "Search this module"));
-        close("div");
-        
-        writeFilterDropdownMenu(docType);
-        
-        open("div");
-        write(module.getNameAsString() + "/" + module.getVersion());
-        close("div");
+        close("head");
+        open("body");
+    }
 
-        close("div");
+    protected final void writeFooter(String... additionalJs) throws IOException {
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("jquery-1.8.2.min.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("bootstrap.min.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shCore.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shBrushCeylon.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("index.js") + "'");
+        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("ceylondoc.js") + "'");
+        
+        for (String js : additionalJs) {
+            if (!js.endsWith(".js")) {
+                throw new RuntimeException(CeylondMessages.msg("error.unexpectedAdditionalResource", js));
+            }
+            around("script type='text/javascript' src='" + linkRenderer().getResourceUrl(js) + "'");
+        }
+        
+        writeKeyboardShortcuts();
+        
+        close("body");
+        close("html");
+    }
+
+    protected final void writeNavBar() throws IOException {
+        open("div class='navbar navbar-inverse navbar-static-top'");
+        open("div class='navbar-inner'");
+
+        open("a class='module-header' href='" + linkRenderer().to(module).getUrl() + "'");
+        around("i class='module-logo'");
+        around("span class='module-label'", "module");
+        around("span class='module-name'", module.getNameAsString());
+        around("span class='module-version'", module.getVersion());
+        close("a");
+
+        writeNavBarSearchMenu();
+        writeNavBarFilterMenu();
+
+        close("div"); // navbar-inner
+        close("div"); // navbar
+    }
+
+    protected void writeNavBarSearchMenu() throws IOException {
+        open("ul class='nav pull-right'");
+        write("<li class='divider-vertical' />");
+        write("<li><a href='" + linkRenderer().getResourceUrl("../search.html") + "' title='Search this module [Shortcut: S]'><i class='icon-search'></i>Search</a></li>");
+        close("ul");
     }
     
-    private void writeFilterDropdownMenu(DocType docType) throws IOException {
-        if( docType != DocType.SEARCH ) {
-            open("div id='filterMenu'");
-            open("div id='filterDropdownLink'");
-            write("<span title='Filter this page [Shortcut: F]'>");
-            write("<span class='accesskey'>F</span>ilter</span>");
-            write("<span id='filterDropdownLinkInfo'></span>");
-            write("<span id='filterDropdownCaret'></span>");
-            close("div"); // filterDropdownLink
-            open("div id='filterDropdownPanel'");
-            write("<div id='filterDropdownPanelInfo'>Filter declarations by tags.</div>");
-            write("<div id='filterDropdownPanelTags'></div>");
-            open("div id='filterActions'");
-            write("<a id='filterActionAll'>All</a>");
-            write("<a id='filterActionNone'>None</a>");
-            write("<a id='filterActionMore'>Show more</a>");
-            close("div"); // filterActions
-            close("div"); // filterDropdownPanel
-            close("div"); // filterMenu
-        }        
+    protected void writeNavBarFilterMenu() throws IOException {
+        open("ul class='nav pull-right'");
+        write("<li class='divider-vertical' />");
+        open("li id='filterDropdown' class='dropdown'");
+        write("<a href='#' title='Filter declarations by tags [Shortcut: F]' role='button' class='dropdown-toggle' data-toggle='dropdown'><i class='icon-filter'></i>Filter <span id='filterDropdownLinkInfo'></span> <b class='caret'></b></a>");
+        open("ul id='filterDropdownPanel' class='dropdown-menu'");
+        write("<div id='filterDropdownPanelInfo'>Filter declarations by tags</div>");
+        write("<div id='filterDropdownPanelTags'></div>");
+        write("<li class='divider'></li>");
+        open("div id='filterActions'");
+        write("<a id='filterActionAll'>All</a>");
+        write("<a id='filterActionNone'>None</a>");
+        write("<a id='filterActionMore'>Show more</a>");
+        close("div"); // filterActions
+        close("ul"); // filterDropdownPanel
+        close("li"); // filterDropdown
+        close("ul"); // nav        
     }
 
-    protected String getAccessKeyed(String string, char key, String tooltip) {
-        int index = string.indexOf(key);
-        if(index == -1)
-            return string;
-        String before = string.substring(0, index);
-        String after = string.substring(index+1);
-        return "<span title='" + tooltip + " [Shortcut: " + key + "]'>" +
-                before + "<span class='accesskey'>" + key + "</span>" + after +
-                "</span>";
+    protected final void writeSubNavBarLink(String href, String text, char key, String tooltip) throws IOException {
+        open("a href='" + href + "'");
+        
+        int index = text.indexOf(key);
+        String before = text.substring(0, index);
+        String after = text.substring(index+1);
+        
+        write("<span title='", tooltip, " [Shortcut: ", String.valueOf(key), "]'>");
+        write(before, "<span class='accesskey'>", String.valueOf(key), "</span>", after, "</span>");
+        
+        close("a");
     }
 
     protected void writeKeyboardShortcuts() throws IOException{
-        // shortcuts
         open("script type='text/javascript'");
         write("jQuery('html').keypress(function(evt){\n");
-        write(" evt = evt || window.event;\n");
-        write(" var keyCode = evt.keyCode || evt.which;\n");
+        write("  evt = evt || window.event;\n");
+        write("  var keyCode = evt.keyCode || evt.which;\n");
         writeKeyboardShortcut('s', linkRenderer().getResourceUrl("../search.html"));
         writeKeyboardShortcut('o', linkRenderer().getResourceUrl("../index.html"));
         writeAdditionalKeyboardShortcuts();
@@ -162,126 +170,55 @@ public abstract class CeylonDoc extends Markup {
         // for subclasses
     }
 
-    protected void writeKeyboardShortcut(char c, String url) throws IOException {
+    protected final void writeKeyboardShortcut(char c, String url) throws IOException {
         write(" if(keyCode == "+(int)c+"){\n");
-        write("  document.location = '"+url+"';\n"); 
+        write("   document.location = '"+url+"';\n"); 
         write(" }\n");
     }
 
-    protected void htmlHead(String title, String... additional) throws IOException {
-        write("<!DOCTYPE html>");
-        open("html xmlns='http://www.w3.org/1999/xhtml'");
-        open("head");
-        tag("meta charset='UTF-8'");
-        around("title", title);
-        tag("link href='" + linkRenderer().getResourceUrl("shCore.css") + "' rel='stylesheet' type='text/css'");
-        tag("link href='" + linkRenderer().getResourceUrl("shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
-        tag("link href='" + linkRenderer().getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
-        for (String add : additional) {
-            if (add.endsWith(".css")) {
-                tag("link href='" + linkRenderer().getResourceUrl(add) + "' rel='stylesheet' type='text/css'");
-            } else if (!add.endsWith(".js")) {
-                throw new RuntimeException(CeylondMessages.msg("error.unexpectedAdditionalResource", add));
-            }
-        }
-        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("jquery-1.7.min.js") + "'");
-        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shCore.js") + "'");
-        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shBrushCeylon.js") + "'");
-        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("index.js") + "'");
-        around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("ceylond.js") + "'");
-        for (String add : additional) {
-            if (add.endsWith(".js")) {
-                around("script type='text/javascript' src='" + linkRenderer().getResourceUrl(add) + "'");
-            } else if (!add.endsWith(".css")) {
-                throw new RuntimeException(CeylondMessages.msg("error.unexpectedAdditionalResource", add));
-            }
-        }
-        close("head");
-        open("body");
-        writeKeyboardShortcuts();
-    }
-    
-    protected void writeSourceLink(Object modPkgOrDecl) throws IOException {
-        String srcUrl = linkRenderer().getSrcUrl(modPkgOrDecl);
+    protected final void writeLinkSourceCode(Object obj) throws IOException {
+        String srcUrl = linkRenderer().getSrcUrl(obj);
         if (tool.isIncludeSourceCode() && srcUrl != null) {
-            open("a class='link-source-code "+DocType.typeOf(modPkgOrDecl).name().toLowerCase()+"' href='" + srcUrl + "'");
+            open("a class='link-source-code' href='" + srcUrl + "'");
             write("<i class='icon-source-code'></i>");
             write("Source Code");
             close("a");
         }
     }
     
-    protected void writeBy(Declaration decl) throws IOException {
-        Annotation by = Util.getAnnotation(decl, "by");
-        if (by != null) {
-            writeBy(by.getPositionalArguments(), true);
+    protected final void writeBy(Object obj) throws IOException {
+        List<Annotation> annotations;
+        
+        if( obj instanceof Declaration ) {
+            annotations = ((Declaration) obj).getAnnotations();
+        } else if ( obj instanceof Module ) {
+            annotations = ((Module) obj).getAnnotations();
+        } else if( obj instanceof Package ) {
+            annotations = ((Package) obj).getAnnotations();
+        } else {
+            throw new IllegalArgumentException();
         }
-    }
-
-    protected void writeBy(List<String> authors, boolean unquote) throws IOException {
-        if (!authors.isEmpty()) {
-            StringBuilder authorBuilder = new StringBuilder();
-            Iterator<String> authorIterator = authors.iterator();
-            while (authorIterator.hasNext()) {
-                if (unquote) {
-                    authorBuilder.append(Util.unquote(authorIterator.next()));
-                } else {
-                    authorBuilder.append(authorIterator.next());
-                }
-                if (authorIterator.hasNext()) {
-                    authorBuilder.append(", ");
+        
+        List<String> authors = new ArrayList<>();
+        for (Annotation annotation : annotations) {
+            if (annotation.getName().equals("by")) {
+                for (String author : annotation.getPositionalArguments()) {
+                    authors.add(Util.unquote(author));
                 }
             }
-            around("div class='by'", "By: ", authorBuilder.toString());
         }
+        
+        if (!authors.isEmpty()) {
+            open("div class='by section'");
+            around("span class='title'", "By: ");
+            around("span class='value'", Util.join(", ", authors));
+            close("div");
+        }        
     }
     
-    protected void writeIcon(Declaration d) throws IOException {
-        List<String> icons = new ArrayList<String>();
-        
-        Annotation deprecated = Util.findAnnotation(d, "deprecated");
-        if (deprecated != null) {
-            icons.add("icon-decoration-deprecated");
-        }
-        
-        if( d instanceof ClassOrInterface ) {
-            if (d instanceof Interface) {
-                icons.add("icon-interface");
-            }
-            if (d instanceof Class) {
-                icons.add("icon-class");
-                if (((Class) d).isAbstract()) {
-                    icons.add("icon-decoration-abstract");
-                }
-            }
-            if (!d.isShared() ) {
-                icons.add("icon-decoration-local");
-            }
-        }
-        
-        if (d instanceof MethodOrValue) {
-            if( d.isShared() ) {
-                icons.add("icon-shared-member");
-            }
-            else {
-                icons.add("icon-local-member");
-            }
-            if( d.isFormal() ) {
-                icons.add("icon-decoration-formal");
-            }
-            if (d.isActual()) {
-                Declaration refinedDeclaration = d.getRefinedDeclaration();
-                if (refinedDeclaration != null) {
-                    if (refinedDeclaration.isFormal()) {
-                        icons.add("icon-decoration-impl");
-                    }
-                    if (refinedDeclaration.isDefault()) {
-                        icons.add("icon-decoration-over");
-                    }
-                }
-            }            
-        }
-        
+    protected final void writeIcon(Object obj) throws IOException {
+        List<String> icons = getIcons(obj);
+    
         int i = 0;
         for (String icon : icons) {
             open("i class='" + icon + "'");
@@ -291,5 +228,69 @@ public abstract class CeylonDoc extends Markup {
             close("i");
         }
     }
+
+    protected final List<String> getIcons(Object obj) {
+        List<String> icons = new ArrayList<String>();
+
+        if( obj instanceof Declaration ) {
+            Declaration decl = (Declaration) obj;
+
+            Annotation deprecated = Util.findAnnotation(decl, "deprecated");
+            if (deprecated != null) {
+                icons.add("icon-decoration-deprecated");
+            }
+
+            if( decl instanceof ClassOrInterface ) {
+                if (decl instanceof Interface) {
+                    icons.add("icon-interface");
+                }
+                if (decl instanceof Class) {
+                    icons.add("icon-class");
+                    if (((Class) decl).isAbstract()) {
+                        icons.add("icon-decoration-abstract");
+                    }
+                }
+                if (!decl.isShared() ) {
+                    icons.add("icon-decoration-local");
+                }
+            }
+
+            if (decl instanceof MethodOrValue) {
+                if( decl.isShared() ) {
+                    icons.add("icon-shared-member");
+                }
+                else {
+                    icons.add("icon-local-member");
+                }
+                if( decl.isFormal() ) {
+                    icons.add("icon-decoration-formal");
+                }
+                if (decl.isActual()) {
+                    Declaration refinedDeclaration = decl.getRefinedDeclaration();
+                    if (refinedDeclaration != null) {
+                        if (refinedDeclaration.isFormal()) {
+                            icons.add("icon-decoration-impl");
+                        }
+                        if (refinedDeclaration.isDefault()) {
+                            icons.add("icon-decoration-over");
+                        }
+                    }
+                }            
+            }
+        }
+
+        if( obj instanceof Package ) {
+            Package pkg = (Package) obj;
+
+            icons.add("icon-package");
+            if (!pkg.isShared()) {
+                icons.add("icon-decoration-local");
+            }
+        }
+
+        return icons;
+    }
+
+    protected abstract Object getFromObject();    
     
 }

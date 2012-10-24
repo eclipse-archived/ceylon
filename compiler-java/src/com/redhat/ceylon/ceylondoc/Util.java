@@ -24,6 +24,7 @@ import java.io.File;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -45,13 +46,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class Util {
 	
-	protected static String join(String str, List<String> parts) {
+	protected static String join(String separator, List<String> parts) {
         StringBuilder stringBuilder = new StringBuilder();
         Iterator<String> iterator = parts.iterator();
         while(iterator.hasNext()){
             stringBuilder.append(iterator.next());
             if(iterator.hasNext())
-                stringBuilder.append(str);
+                stringBuilder.append(separator);
         }
         return stringBuilder.toString();
     }
@@ -64,26 +65,6 @@ public class Util {
 
     public static String getDoc(Module module, LinkRenderer linkRenderer) {
         return wikiToHTML(getRawDoc(module.getAnnotations()), linkRenderer.useScope(module));
-    }
-    /** Returns the list of authors specified in the module through "by" annotations. */
-    public static List<String> getAuthors(List<Annotation> anns) {
-        ArrayList<String> moduleAuthors = new ArrayList<>();
-        for (Annotation a : anns) {
-            if (a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty() && a.getName().equals("by")) {
-                for (String author : a.getPositionalArguments()) {
-                    moduleAuthors.add(unquote(author));
-                }
-            }
-        }
-        return moduleAuthors;
-    }
-    /** Returns the list of authors specified in the module through "by" annotations. */
-    public static List<String> getAuthors(Module module) {
-        return getAuthors(module.getAnnotations());
-    }
-    /** Returns the list of authors specified in the package through "by" annotations. */
-    public static List<String> getAuthors(Package pkg) {
-        return getAuthors(pkg.getAnnotations());
     }
 
     public static String getDoc(Package pkg, LinkRenderer linkRenderer) {
@@ -280,7 +261,7 @@ public class Util {
         }
     }
 
-    public static boolean isNullOrEmpty(Collection<? extends Object> collection) {
+    public static boolean isNullOrEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
     
@@ -388,6 +369,27 @@ public class Util {
             out.append(link);
         }
         
-    }    
+    }
     
+    public static class DeclarationComparatorByName implements Comparator<Declaration> {
+
+        public static final DeclarationComparatorByName INSTANCE = new DeclarationComparatorByName();
+
+        @Override
+        public int compare(Declaration a, Declaration b) {
+            return a.getName().compareTo(b.getName());
+        }
+        
+    };
+    
+    public static class ProducedTypeComparatorByName implements Comparator<ProducedType> {
+        
+        public static final ProducedTypeComparatorByName INSTANCE = new ProducedTypeComparatorByName();
+        
+        @Override
+        public int compare(ProducedType a, ProducedType b) {
+            return a.getDeclaration().getName().compareTo(b.getDeclaration().getName());
+        }
+    };
+   
 }
