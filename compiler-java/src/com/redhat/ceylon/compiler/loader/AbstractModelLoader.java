@@ -1643,6 +1643,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         int parameterIndex = 0;
         
         for(VariableMirror paramMirror : methodMirror.getParameters()){
+            // ignore some parameters
+            if(paramMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+                continue;
+            
             boolean isLastParameter = parameterIndex == parameterCount - 1;
             boolean isVariadic = isLastParameter && methodMirror.isVariadic();
             
