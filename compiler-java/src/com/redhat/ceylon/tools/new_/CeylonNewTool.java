@@ -165,7 +165,7 @@ public class CeylonNewTool implements Tool {
         private Variable eclipse = Variable.yesNo("eclipse", eclipseProjectName);
         private Variable ant = Variable.yesNo("ant");
 
-        @Argument(argumentName="dir", multiplicity="?", order=1)
+        @Argument(argumentName="dir", multiplicity="1", order=1)
         public void setDirectory(File directory) {
             // TODO This sucks -- in general we want an @Argument
             // for the directory in which the project should be created
