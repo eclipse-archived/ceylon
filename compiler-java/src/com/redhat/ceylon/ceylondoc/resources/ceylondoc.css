@@ -213,6 +213,10 @@ td .description {
     background-color: #356635;
 }
 
+#filterDropdown {
+	display: none;
+}
+
 #filterDropdownPanel {
     min-width: 260px;
 }

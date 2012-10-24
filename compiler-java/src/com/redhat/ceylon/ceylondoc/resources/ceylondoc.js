@@ -119,9 +119,9 @@ $(document).ready(function() {
         return;
     }
     if( tagIndex.length == 0 ) {
-        $('#filterDropdown').hide();
-        return;
+    	return;
     }
+    $('#filterDropdown').show();
     
     initFilterKeyboardShortcuts();
     initFilterActionAll();
