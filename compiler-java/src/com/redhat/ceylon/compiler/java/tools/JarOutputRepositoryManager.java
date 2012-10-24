@@ -98,6 +98,7 @@ public class JarOutputRepositoryManager {
         private RepositoryManager repoManager;
         private ArtifactContext carContext;
         private SourceArchiveCreator creator;
+        private Module module;
         
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
             this.options = options;
@@ -106,6 +107,7 @@ public class JarOutputRepositoryManager {
             this.cmrLog = new JavacLogger(options, Log.instance(ceyloncFileManager.getContext()));
             this.creator = CeylonUtils.makeSourceArchiveCreator(repoManager, ceyloncFileManager.getLocation(StandardLocation.SOURCE_PATH),
                     module.getNameAsString(), module.getVersion(), options.get(OptionName.VERBOSE) != null, cmrLog);
+            this.module = module;
             setupJarOutput();
         }
 
@@ -157,6 +159,7 @@ public class JarOutputRepositoryManager {
             writeMappingJarEntry(previousMapping, filterForCars);
             JarUtils.finishUpdatingJar(originalJarFile, outputJarFile, carContext, jarOutputStream, filterForCars,
                     repoManager, options.get(OptionName.VERBOSE) != null, cmrLog);
+            cmrLog.info("created module " + module.getNameAsString() + "/" + module.getVersion());
         }
 
         private void writeMappingJarEntry(Properties previousMapping, JarUtils.JarEntryFilter filter) {
