@@ -875,7 +875,7 @@ public class ClassTransformer extends AbstractTransformer {
                 "$this", 
                 makeJavaType(thisType), 
                 null, false);
-        MethodDefinitionBuilder ctor = companionBuilder.addConstructor();
+        MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
         if(typeParameterList != null)
             ctor.reifiedTypeParameters(typeParameterList.getTypeParameterDeclarations());
         ctor.modifiers(model.isShared() ? PUBLIC : 0);

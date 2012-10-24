@@ -294,7 +294,13 @@ public class ClassDefinitionBuilder {
         this.constructors.append(constructor);
         return constructor;
     }
-    
+
+    public MethodDefinitionBuilder addConstructorWithInitCode() {
+        MethodDefinitionBuilder constructor = addConstructor();
+        constructor.body(init.toList());
+        return constructor;
+    }
+
     /*
      * Builder methods - they transform the inner state before doing the final construction
      */
