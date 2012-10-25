@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -187,7 +189,20 @@ public class Singleton<Element>
     public List<? extends Element> span(@Name("from") Integer from,
     		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     		@Name("to") Integer to) {
-    	return from.longValue()>0 ? (List)empty_.getEmpty$(): this;
+    	long lowest;
+    	long highest;
+    	if (to==null) {
+    		to = Integer.instance(MAX_VALUE);
+    	}
+    	if (from.longValue()<=to.longValue()) {
+    		lowest = from.longValue();
+    		highest = to.longValue();
+    	}
+    	else {
+    		lowest = to.longValue();
+    		highest = from.longValue();
+    	}
+    	return lowest>0 || highest<0 ? (List)empty_.getEmpty$(): this;
     }
 
 	@Override
