@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -180,7 +181,7 @@ public class AbstractTest {
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected,
                                                    Long start, Long count, RepositoryManager manager, long[] pagingInfo) throws Exception {
-        return testSearchResults(q, type, expected, start, count, manager, null, null, null);
+        return testSearchResults(q, type, expected, start, count, manager, pagingInfo, null, null);
     }
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected,
@@ -202,7 +203,7 @@ public class AbstractTest {
     private void compareSearchResults(ModuleDetails[] expected, ModuleSearchResult results) {
         int i = 0;
         Collection<ModuleDetails> resultsList = results.getResults();
-        // Assert.assertEquals(expected.length, resultsList.size());
+        Assert.assertEquals(expected.length, resultsList.size());
         for (ModuleDetails result : resultsList) {
             ModuleDetails expectedResult = expected[i++];
             System.err.println("Testing " + result.getName());
@@ -216,9 +217,7 @@ public class AbstractTest {
 
     protected SortedSet<String> set(String... values) {
         SortedSet<String> ret = new TreeSet<String>();
-        for (String v : values) {
-            ret.add(v);
-        }
+        Collections.addAll(ret, values);
         return ret;
     }
 
