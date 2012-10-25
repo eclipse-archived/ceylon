@@ -154,7 +154,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                     if (!go) return exhausted_.getExhausted$();
                     java.lang.Object result = current;
                     if (((Comparable<Element>)result).compare(getLast()) == larger_.getLarger$()) {
-                        current = Range.this.next((Element) current);
+                        current = ((Element) current).getPredecessor();
                     } else {
                         go = false;
                     }
@@ -199,7 +199,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
                     if (!go) return exhausted_.getExhausted$();
                     java.lang.Object result = current;
                     if (((Comparable<Element>)result).compare(getLast()) == smaller_.getSmaller$()) {
-                        current = Range.this.next((Element) current);
+                        current = ((Element) current).getSuccessor();
                     } else {
                         go = false;
                     }
