@@ -161,7 +161,9 @@ function SequenceBuilder() {
 }
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', IdentifiableObject, Sized);
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
-SequenceBuilder$proto.getSequence = function() { return ArraySequence(this.seq); }
+SequenceBuilder$proto.getSequence = function() {
+    return (this.seq.length > 0) ? ArraySequence(this.seq) : $empty;
+}
 SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
 SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
     if (arr === undefined) return;
