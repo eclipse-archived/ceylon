@@ -416,8 +416,16 @@ public abstract class AbstractTransformer implements Transformation {
         return type.getDeclaration().isAlias() || typeFact.getDefiniteType(type).getDeclaration().isAlias();
     }
 
+    ProducedType resolveFirstLevelAliases(ProducedType type){
+        // only resolve aliases if the type itself is an alias or optional alias, not looking
+        // at its type params or more complex unions/intersections
+        if(isAlias(type))
+            return type.resolveAliases();
+        return type;
+    }
+    
     ProducedType simplifyType(ProducedType orgType) {
-        ProducedType type = orgType;
+        ProducedType type = resolveFirstLevelAliases(orgType);
         if (isOptional(type)) {
             // For an optional type T?:
             //  - The Ceylon type T? results in the Java type T

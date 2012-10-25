@@ -93,10 +93,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     }
 
     private boolean containsRaw(ProducedType type) {
+        // do this on resolved aliases
+        type = type.resolveAliases();
         for(ProducedType typeArg : type.getTypeArguments().values()){
             // skip invalid input
             if(typeArg == null)
                 return false;
+            
             TypeDeclaration typeDeclaration = typeArg.getDeclaration();
             if(typeDeclaration instanceof UnionType){
                 UnionType ut = (UnionType) typeDeclaration;
