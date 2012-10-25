@@ -39,7 +39,7 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.redhat.ceylon.cmr.impl.JDKPackageList;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -568,12 +568,11 @@ public class ModelLoaderTest extends CompilerTest {
                     public Object call() throws Exception {
                         System.err.println("Starting work from thread " + Thread.currentThread().getName());
                         // walk every jdk package
-                        for(Entry<String, Set<String>> packagesByModule : JDKPackageList.getJDKPackagesByModule().entrySet()){
-                            String moduleName = packagesByModule.getKey();
+                        for(String moduleName : JDKUtils.getJDKModuleNames()) {
                             // load the module
                             Module mod = loader.getLoadedModule(moduleName);
                             Assert.assertNotNull(mod);
-                            for(String pkgName : packagesByModule.getValue()){
+                            for (String pkgName : JDKUtils.getJDKPackagesByModule(moduleName)) {
                                 Package p = mod.getDirectPackage(pkgName);
                                 Assert.assertNotNull(p);
                                 for(Declaration decl : p.getMembers()){
@@ -621,12 +620,10 @@ public class ModelLoaderTest extends CompilerTest {
             @Override
             public void test(ModelLoader loader) {
                 // walk every jdk package
-                for(Entry<String, Set<String>> packagesByModule : JDKPackageList.getJDKPackagesByModule().entrySet()){
-                    String moduleName = packagesByModule.getKey();
-                    // load the module
+                for (String moduleName : JDKUtils.getJDKModuleNames()) {
                     Module mod = loader.getLoadedModule(moduleName);
                     Assert.assertNotNull(mod);
-                    for(String pkgName : packagesByModule.getValue()){
+                    for(String pkgName : JDKUtils.getJDKPackagesByModule(moduleName)){
                         Package p = mod.getDirectPackage(pkgName);
                         Assert.assertNotNull(p);
                         for(Declaration decl : p.getMembers()){
