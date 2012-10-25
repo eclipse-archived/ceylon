@@ -25,6 +25,7 @@ shared void strings() {
     check("".size==0, "empty string size 2");
     check(!exists "".lastIndex, "empty string last index");
     check(!exists ""[0], "empty string first element exists");
+    check(!(is Identifiable hello), "string is Identifiable");
     
     check("abcd".size==4, "string size 3");
     
