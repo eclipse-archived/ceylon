@@ -260,8 +260,10 @@ public class JsCompiler {
             File jsart = entry.getValue().close();
             ArtifactContext artifact = new ArtifactContext(moduleName, moduleVersion);
             artifact.setSuffix(".js");
-            if(opts.isVerbose()){
-            	System.err.println("Outputting for "+moduleName);
+            if (entry.getKey().isDefault()) {
+                System.err.println("Created module "+moduleName);
+            } else {
+                System.err.println("Created module "+moduleName+"/"+moduleVersion);
             }
             outRepo.putArtifact(artifact, jsart);
             //js file signature
