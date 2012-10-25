@@ -16,6 +16,8 @@ fi
 
 distrepos="ceylon-compiler \
     ceylon-dist \
+    ceylon-js \
+    ceylon-common \
     ceylon.language \
     ceylon-module-resolver \
     ceylon-runtime \
