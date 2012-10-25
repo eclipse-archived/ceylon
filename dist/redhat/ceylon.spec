@@ -5,8 +5,8 @@
 %define section free
 
 %define major_version 0
-%define minor_version 3
-%define micro_version 1
+%define minor_version 4
+%define micro_version 0
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}
 %define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
 
@@ -45,42 +45,38 @@ export LANG=en_US.UTF-8
 rm -rf $RPM_BUILD_ROOT%{ceylon_home}
 # CEYLON_HOME and subdirs
 mkdir -p $RPM_BUILD_ROOT/usr/bin
-mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,runtime-repo,doc}
+mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,doc,samples,templates}
 
 rm -f bin/*.bat
-install -m 755 bin/ceylonc           $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 bin/ceylond           $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 bin/ceylon            $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 bin/ceylonc-js        $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 bin/ceylon-js         $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 bin/ceylon-import-jar $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 bin/args.sh           $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/ceylon                      $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/ceylon-cp.sh                $RPM_BUILD_ROOT%{ceylon_home}/bin
+install -m 755 bin/ceylon-completion.bash      $RPM_BUILD_ROOT%{ceylon_home}/bin
 cp -pr repo/* $RPM_BUILD_ROOT%{ceylon_home}/repo
-cp -pr runtime-repo/* $RPM_BUILD_ROOT%{ceylon_home}/runtime-repo
 cp -pr lib/* $RPM_BUILD_ROOT%{ceylon_home}/lib
 cp -pr doc/* $RPM_BUILD_ROOT%{ceylon_home}/doc
+cp -pr samples/* $RPM_BUILD_ROOT%{ceylon_home}/samples
+cp -pr templates/* $RPM_BUILD_ROOT%{ceylon_home}/templates
 pushd $RPM_BUILD_ROOT/usr/bin
-ln -s ../..%{ceylon_home}/bin/ceylonc ceylonc
-ln -s ../..%{ceylon_home}/bin/ceylond ceylond
 ln -s ../..%{ceylon_home}/bin/ceylon ceylon
-ln -s ../..%{ceylon_home}/bin/ceylonc-js ceylonc-js
-ln -s ../..%{ceylon_home}/bin/ceylon-js ceylon-js
-ln -s ../..%{ceylon_home}/bin/ceylon-import-jar ceylon-import-jar
 popd
 
 %files
 %defattr(-,root,root)
-%attr(755,root,root) %{ceylon_home}/bin/ceylon*
-%attr(644,root,root) %{ceylon_home}/bin/args.sh
+%attr(755,root,root) %{ceylon_home}/bin/ceylon
+%attr(644,root,root) %{ceylon_home}/bin/ceylon-cp.sh
+%attr(644,root,root) %{ceylon_home}/bin/ceylon-completion.bash
 /usr/bin/ceylon*
 %{ceylon_home}/bin/*
 %{ceylon_home}/repo/*
-%{ceylon_home}/runtime-repo/*
 %{ceylon_home}/lib/*
 %{ceylon_home}/doc/*
+%{ceylon_home}/samples/*
+%{ceylon_home}/templates/*
 
 
 %changelog
+* Thu Oct 25 2012 Stephane Epardaud <separdau@redhat.com> 0.4.0-0
+- Update for 0.4
 * Fri Jul 06 2012 Tako Schotanus <tschotan@redhat.com> 0.3.1-0
 - Update for 0.3.1 and some small changes to simplify updating the version
 * Thu Jun 21 2012 Tako Schotanus <tschotan@redhat.com> 0.3.0-1
