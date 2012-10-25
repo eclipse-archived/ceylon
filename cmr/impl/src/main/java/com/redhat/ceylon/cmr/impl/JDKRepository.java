@@ -23,6 +23,7 @@ import java.util.TreeSet;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -41,16 +42,17 @@ public class JDKRepository extends AbstractRepository {
 
     public static final String JDK_VERSION = "7";
 
-    private static final SortedSet<String> FixedVersionSet = new TreeSet<String>(){{
+    private static final SortedSet<String> FixedVersionSet = new TreeSet<String>() {{
         add(JDK_VERSION);
     }};
     private static final SortedSet<String> EmptySet = new TreeSet<String>();
 
     public static final Set<String> JDK_MODULES = new TreeSet<String>();
-    static{
-        for(String module : JDKPackageList.getJDKModuleNames())
+
+    static {
+        for (String module : JDKUtils.getJDKModuleNames())
             JDK_MODULES.add(module);
-        for(String module : JDKPackageList.getOracleJDKModuleNames())
+        for (String module : JDKUtils.getOracleJDKModuleNames())
             JDK_MODULES.add(module);
     }
 
@@ -62,7 +64,7 @@ public class JDKRepository extends AbstractRepository {
     protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
         return null;
     }
-    
+
     public static class JDKRoot extends DefaultNode implements ContentFinder {
 
         public JDKRoot() {
@@ -73,17 +75,17 @@ public class JDKRepository extends AbstractRepository {
         public String getDisplayString() {
             return "JDK modules repository";
         }
-        
+
         @Override
         public void completeModules(ModuleQuery query, ModuleSearchResult result) {
             // abort if not JVM
-            if(query.getType() != ModuleQuery.Type.JVM)
+            if (query.getType() != ModuleQuery.Type.JVM)
                 return;
             String name = query.getName();
-            if(name == null)
+            if (name == null)
                 name = "";
-            for(String module : JDK_MODULES){
-                if(module.startsWith(name))
+            for (String module : JDK_MODULES) {
+                if (module.startsWith(name))
                     result.addResult(module, doc(module), null, EmptySet, FixedVersionSet);
             }
         }
@@ -95,11 +97,11 @@ public class JDKRepository extends AbstractRepository {
         @Override
         public void completeVersions(ModuleVersionQuery query, ModuleVersionResult result) {
             // abort if not JVM
-            if(query.getType() != ModuleQuery.Type.JVM)
+            if (query.getType() != ModuleQuery.Type.JVM)
                 return;
-            if(query.getName() == null || !JDK_MODULES.contains(query.getName()))
+            if (query.getName() == null || !JDK_MODULES.contains(query.getName()))
                 return;
-            if(query.getVersion() != null && !query.getVersion().equals(JDK_VERSION))
+            if (query.getVersion() != null && !query.getVersion().equals(JDK_VERSION))
                 return;
             final ModuleVersionDetails newVersion = result.addVersion(JDK_VERSION);
             newVersion.setDoc(doc(query.getName()));
@@ -109,17 +111,17 @@ public class JDKRepository extends AbstractRepository {
         @Override
         public void searchModules(ModuleQuery query, ModuleSearchResult result) {
             // abort if not JVM
-            if(query.getType() != ModuleQuery.Type.JVM)
+            if (query.getType() != ModuleQuery.Type.JVM)
                 return;
             String name = query.getName();
-            if(name == null)
+            if (name == null)
                 name = "";
             name = name.toLowerCase();
             boolean stopSearching = false;
             int found = 0;
-            for(String module : JDK_MODULES){
+            for (String module : JDK_MODULES) {
                 // does it match?
-                if(module.contains(name)){
+                if (module.contains(name)) {
                     // check if we were already done but were checking for a next results
                     if (stopSearching) {
                         // we already found enough results but were checking if there

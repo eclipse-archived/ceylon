@@ -21,9 +21,11 @@ import java.io.File;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.spi.Node;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
 
 /**
  * Aether utils.
@@ -71,11 +73,9 @@ public class AetherUtils {
     private File[] fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) {
         final String coordinates = groupId + ":" + artifactId + ":" + version;
         try {
-            final MavenDependencyResolver mdr = getResolver().artifact(coordinates);
-            if (fetchSingleArtifact)
-                mdr.exclusion("*");
-
-            return mdr.resolveAsFiles();
+            final MavenStrategyStage mss = getResolver().resolve(coordinates);
+            final MavenFormatStage mfs = fetchSingleArtifact ? mss.withoutTransitivity() : mss.withTransitivity();
+            return mfs.as(File.class);
         } catch (ResolutionException e) {
             log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
             return null;
@@ -107,7 +107,7 @@ public class AetherUtils {
         return "classpath:settings.xml";
     }
 
-    private MavenDependencyResolver getResolver() {
-        return DependencyResolvers.use(MavenDependencyResolver.class).configureFrom(settingsXml);
+    private MavenResolverSystem getResolver() {
+        return Maven.configureResolver().fromFile(settingsXml);
     }
 }
