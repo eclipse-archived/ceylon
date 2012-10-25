@@ -81,15 +81,10 @@ Array$proto.chain = function(other) {
 Array$proto.getFirst = function() { return this.length>0 ? this[0] : null; }
 Array$proto.getLast = function() { return this.length>0 ? this[this.length-1] : null; }
 Array$proto.segment = function(from, len) {
-    var seq = [];
-    if (len > 0) {
-        var stop = from + len;
-        for (var i=from; i < stop; i++) {
-            var x = this.item(i);
-            if (x !== null) { seq.push(x); }
-        }
-    }
-    return ArraySequence(seq);
+    if (len <= 0) { return $empty; }
+    var stop = from + len;
+    var seq = this.slice((from>=0)?from:0, (stop>=0)?stop:0);
+    return (seq.length > 0) ? ArraySequence(seq) : $empty;
 }
 Array$proto.span = function(from, to) {
     var toIndex = (to===null || to===undefined) ? 0x7fffffff : to;
