@@ -33,6 +33,11 @@
     <property name="ceylon.module-resolver.jar"
               value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
     <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+    <property name="ceylon.maven-support.dir"
+              value="com/redhat/ceylon/maven-support/${module.com.redhat.ceylon.maven-support.version}"/>
+    <property name="ceylon.maven-support.jar"
+              value="${ceylon.maven-support.dir}/com.redhat.ceylon.maven-support-${module.com.redhat.ceylon.maven-support.version}.jar"/>
+    <property name="ceylon.maven-support.lib" location="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
 
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build"/>
@@ -132,6 +137,7 @@
         <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
+        <copy file="${ceylon.maven-support.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal">
