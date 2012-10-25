@@ -14,6 +14,10 @@
     <url>http://ceylon-lang.org</url>
 
     <dependencies>
+        <dependency>
+            <groupId>com.redhat.ceylon</groupId>
+            <artifactId>ceylon-common</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

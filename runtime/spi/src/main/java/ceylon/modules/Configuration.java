@@ -16,16 +16,14 @@
  */
 package ceylon.modules;
 
-import ceylon.modules.spi.Argument;
-import ceylon.modules.spi.ArgumentType;
-import ceylon.modules.spi.Constants;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ceylon.modules.spi.Argument;
+import ceylon.modules.spi.ArgumentType;
 import com.redhat.ceylon.common.Versions;
 
 /**
