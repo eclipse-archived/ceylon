@@ -31,7 +31,9 @@
 
     <dependencies>
         <module name="ceylon.language" slot="0.4"/>
+        <module name="com.redhat.ceylon.common" slot="0.4"/>
         <module name="com.redhat.ceylon.module-resolver" slot="0.4"/>
+        <module name="com.redhat.ceylon.maven-support" services="import" optional="true"/>
         <module name="org.jboss.modules"/>
     </dependencies>
 </module>

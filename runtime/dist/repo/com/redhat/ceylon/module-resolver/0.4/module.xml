@@ -29,7 +29,7 @@
 
     <dependencies>
         <module name="com.redhat.ceylon.common" slot="0.4"/>
-        <module name="com.redhat.ceylon.maven-support"/>
         <module name="org.jboss.jandex"/>
+        <module name="com.redhat.ceylon.maven-support" services="import" optional="true"/>
     </dependencies>
 </module>

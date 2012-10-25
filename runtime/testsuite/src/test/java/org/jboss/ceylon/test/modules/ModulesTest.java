@@ -29,6 +29,7 @@ import java.util.Map;
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Versions;
 import org.jboss.modules.Main;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
@@ -158,7 +159,7 @@ public abstract class ModulesTest {
 
     protected String getBootstrapModules() {
         final String projectHome = System.getProperty("ceylon.runtime.home", System.getProperty("user.dir"));
-        return projectHome + File.separator + "build" + File.separator + "dist" + File.separator + "runtime-repo";
+        return projectHome + File.separator + "build" + File.separator + "dist" + File.separator + "repo";
     }
 
     protected static String toPathString(String name, String version) {
@@ -184,7 +185,7 @@ public abstract class ModulesTest {
         // JBoss Modules args
         args.add(Constants.MODULE_PATH.toString());
         args.add(getBootstrapModules());
-        args.add(Constants.CEYLON_RUNTIME_MODULE.toString());
+        args.add(Constants.CEYLON_RUNTIME_MODULE + ":" + Versions.CEYLON_VERSION_NUMBER);
         // default Ceylon runtime args
         args.add(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString());
         args.add(RUNTIME_IMPL);
