@@ -92,22 +92,11 @@ Array$proto.segment = function(from, len) {
     return ArraySequence(seq);
 }
 Array$proto.span = function(from, to) {
-    var fromIndex = largest(0,from);
-    var toIndex = to === null || to === undefined ? this.getLastIndex() : smallest(to, this.getLastIndex());
-    var seq = [];
-    if (fromIndex == toIndex) {
-        return Singleton(this.item(from));
-    } else if (toIndex > fromIndex) {
-        for (var i = fromIndex; i <= toIndex && this.defines(i); i++) {
-            seq.push(this.item(i));
-        }
-    } else {
-        //Negative span, reverse seq returned
-        for (var i = fromIndex; i >= toIndex && this.defines(i); i--) {
-            seq.push(this.item(i));
-        }
+    var toIndex = (to===null || to===undefined) ? 0x7fffffff : to;
+    if (from > toIndex) {
+        return this.segment(toIndex, from-toIndex+1).getReversed();
     }
-    return ArraySequence(seq);
+    return this.segment(from, toIndex-from+1);
 }
 Array$proto.getRest = function() {
     return this.length<=1 ? $empty : ArraySequence(this.slice(1));
