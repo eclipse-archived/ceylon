@@ -251,6 +251,7 @@ Used with another target such as 'package'">
                 <include name="helloworld/**"/>
                 <include name="no-module/**"/>
                 <include name="interop-java/**"/>
+                <include name="aetherdefault/**"/>
             </fileset>
         </copy>
     </target>
