@@ -51,6 +51,10 @@
     <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
     <property name="ceylon.module-resolver.dist" value="${build.dist}/${ceylon.module-resolver.dir}"/>
 
+    <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.dir}/main/${ceylon.maven-support.module}"/>
+    <property name="ceylon.maven-support.repo" value="${ceylon.repo.dir}/${ceylon.maven-support.dir}"/>
+    <property name="ceylon.maven-support.dist" value="${build.dist}/${ceylon.maven-support.dir}"/>
+
     <property name="ceylon.common.dir"
               value="${module.common.dir}/${module.common.version}"/>
     <property name="ceylon.common.jar"
@@ -144,6 +148,10 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist}/${ceylon.module-resolver.jar}"/>
         </antcall>
+        <copy file="${shrinkwrap-maven-uberjar.lib}" tofile="${build.dist}/${ceylon.maven-support.jar}"/>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist}/${ceylon.maven-support.jar}"/>
+        </antcall>
     </target>
 
     <!-- Repository targets -->
@@ -155,6 +163,9 @@
     <target name="publish-internal">
         <copy todir="${ceylon.module-resolver.repo}">
             <fileset dir="${ceylon.module-resolver.dist}"/>
+        </copy>
+        <copy todir="${ceylon.maven-support.repo}">
+            <fileset dir="${ceylon.maven-support.dist}"/>
         </copy>
     </target>
 
