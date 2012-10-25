@@ -25,7 +25,6 @@ import io.xov.yalp.run_;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -38,7 +37,6 @@ public class AetherInteropTestCase extends ModulesTest {
     // See: io.xov.yalp.module_.java for more details
 
     @Test
-    @Ignore // TODO -- add all Aether CMR deps as modules
     public void testMultiJarUsage() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "io.xov.yalp-11.0.2.Final.car");
         module.addClasses(module_.class, run_.class);

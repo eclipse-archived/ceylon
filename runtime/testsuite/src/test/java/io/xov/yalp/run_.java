@@ -21,6 +21,6 @@ package io.xov.yalp;
  */
 public class run_ {
     public static void main(String[] args) throws Exception {
-        System.err.println(run_.class.getClassLoader().loadClass("org.jboss.logging.Logger"));
+        System.err.println(run_.class.getClassLoader().loadClass("org.jboss.vfs.VFS"));
     }
 }

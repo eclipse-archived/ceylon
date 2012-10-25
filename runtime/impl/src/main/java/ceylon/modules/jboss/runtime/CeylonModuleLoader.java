@@ -25,6 +25,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import ceylon.modules.api.util.ModuleVersion;
+import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
@@ -34,15 +41,6 @@ import org.jboss.modules.ModuleSpec;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
-
-import ceylon.modules.api.util.ModuleVersion;
-import ceylon.modules.jboss.repository.ResourceLoaderProvider;
-
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.impl.JDKPackageList;
 
 /**
  * Ceylon JBoss Module loader.
@@ -260,11 +258,11 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @return new module dependency
      */
     DependencySpec createModuleDependency(ArtifactResult i) {
-        if (JDKPackageList.isJDKModule(i.name())) {
-            Set<String> packages = JDKPackageList.getJDKPackagesByModule().get(i.name());
+        if (JDKUtils.isJDKModule(i.name())) {
+            Set<String> packages = JDKUtils.getJDKPackagesByModule(i.name());
             return DependencySpec.createSystemDependencySpec(packages);
-        } else if (JDKPackageList.isOracleJDKModule(i.name())) {
-            Set<String> packages = JDKPackageList.getOracleJDKPackagesByModule().get(i.name());
+        } else if (JDKUtils.isOracleJDKModule(i.name())) {
+            Set<String> packages = JDKUtils.getOracleJDKPackagesByModule(i.name());
             return DependencySpec.createSystemDependencySpec(packages);
         } else {
             final ModuleIdentifier mi = createModuleIdentifier(i);
