@@ -201,14 +201,13 @@ Singleton$proto.getRest = function() { return $empty; }
 Singleton$proto.defines = function(idx) { return idx.equals(0); }
 Singleton$proto.getKeys = function() { return TypeCategory(this, 'ceylon.language::Integer'); }
 Singleton$proto.span = function(from, to) {
-    if (to === undefined || to === null) to = from;
-    return (from.equals(0) || to.equals(0)) ? this : $empty;
+    if ((to === undefined) || (to === null)) {
+        return (from <= 0) ? this : $empty;
+    }
+    return (((from <= 0) && (to >= 0)) || ((from >= 0) && (to <= 0))) ? this : $empty;
 }
 Singleton$proto.segment = function(idx, len) {
-    if (idx.equals(0) && len.compare(0) === larger) {
-        return this;
-    }
-    return $empty;
+    return ((idx <= 0) && ((idx+len) > 0)) ? this : $empty; 
 }
 Singleton$proto.getIterator = function() { return SingletonIterator(this.elem); }
 Singleton$proto.getReversed = function() { return this; }
