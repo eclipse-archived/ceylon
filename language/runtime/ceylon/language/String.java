@@ -757,23 +757,29 @@ public abstract class String
     @Ignore
     public static java.lang.String span(java.lang.String value, long from, final Integer to) {
         long len = getSize(value);
-        if (len == 0 || from >= len) {
+        if (len == 0) {
             return "";
         }
-        long toIndex = (to == null) ? len - 1 : to.longValue();
-        boolean revert = toIndex < from;
-        if (revert) {
+        long toIndex = to == null ? len - 1 : to.longValue();
+        boolean reverse = toIndex < from;
+        if (reverse) {
             long _tmp = toIndex;
             toIndex = from;
             from = _tmp;
         }
-        if (toIndex >= len) {
-            toIndex = len - 1;
-        }
+    	if (toIndex < 0 || from >= len) {
+    		return "";
+    	}
+    	if (toIndex >= len) {
+    		toIndex = len - 1;
+    	}
+    	if (from < 0) {
+    		from = 0;
+    	}
         int start = value.offsetByCodePoints(0, (int)from);
         int end = value.offsetByCodePoints(start, (int)(toIndex - from + 1));
         java.lang.String result = value.substring(start, end);
-        return revert ? getReversed(result) : result;
+        return reverse ? getReversed(result) : result;
     }
 
     @Override

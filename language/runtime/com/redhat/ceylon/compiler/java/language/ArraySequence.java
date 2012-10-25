@@ -103,29 +103,46 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public List<? extends Element> span(Integer from, Integer to) {
         long fromIndex = from.longValue();
-        if (fromIndex<0) fromIndex=0;
         long toIndex = to==null ? array.length-1 : to.longValue();
         long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex) {
-            return (List)empty_.getEmpty$();
-        }
-        else if (toIndex>lastIndex) {
-            return new ArraySequence<Element>(array, fromIndex);
+        
+        boolean reverse = toIndex<fromIndex;
+        if (reverse) {
+        	if (fromIndex<0 || toIndex>lastIndex) {
+        		return (List)empty_.getEmpty$();
+        	}
+        	if (toIndex<0) {
+        		toIndex=0;
+        	}
+        	if (fromIndex>lastIndex) {
+        		fromIndex = lastIndex;
+        	}
         }
         else {
-            final Element[] sub;
-            if (fromIndex>toIndex) {
-                sub = Arrays.copyOfRange(array,
-                        (int)toIndex, (int)fromIndex+1);
-                for (int i = 0, j=(int)fromIndex; i < sub.length; i++, j--) {
-                    sub[i] = array[j];
-                }
-            } else {
-                sub = Arrays.copyOfRange(array,
-                        (int)fromIndex, (int)toIndex+1);
-            }
-            return new ArraySequence<Element>(sub, 0);
+        	if (toIndex<0 || fromIndex>lastIndex) {
+        		return (List)empty_.getEmpty$();
+        	}
+        	if (fromIndex<0) {
+        		fromIndex=0;
+        	}
+        	if (toIndex>=lastIndex) {
+        		return new ArraySequence<Element>(array, fromIndex);
+        	}
         }
+
+        final Element[] sub;
+        if (reverse) {
+        	sub = Arrays.copyOfRange(array,
+        			(int)toIndex, (int)fromIndex+1);
+        	for (int i = 0, j=(int)fromIndex; i < sub.length; i++, j--) {
+        		sub[i] = array[j];
+        	}
+        } 
+        else {
+        	sub = Arrays.copyOfRange(array,
+        			(int)fromIndex, (int)toIndex+1);
+        }
+        return new ArraySequence<Element>(sub, 0);
     }
 
     @Override
