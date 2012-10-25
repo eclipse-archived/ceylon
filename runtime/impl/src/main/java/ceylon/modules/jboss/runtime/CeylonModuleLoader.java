@@ -50,8 +50,11 @@ import org.jboss.modules.filter.PathFilters;
  */
 public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier LANGUAGE;
+    private static final ModuleIdentifier COMMON;
     private static final ModuleIdentifier CMR;
+    private static final ModuleIdentifier MAVEN;
     private static final ModuleIdentifier MODULES;
+    private static final ModuleIdentifier JANDEX;
     private static final ModuleIdentifier RUNTIME;
 
     private static final String CEYLON_RUNTIME_PATH;
@@ -60,16 +63,22 @@ public class CeylonModuleLoader extends ModuleLoader {
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.4");
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
+        COMMON = ModuleIdentifier.create("com.redhat.ceylon.common", defaultVersion);
         CMR = ModuleIdentifier.create("com.redhat.ceylon.module-resolver", defaultVersion);
+        MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
-        RUNTIME = ModuleIdentifier.create("ceylon.runtime");
+        JANDEX = ModuleIdentifier.create("org.jboss.jandex");
+        RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
 
         BOOTSTRAP = new HashSet<ModuleIdentifier>();
         BOOTSTRAP.add(LANGUAGE);
+        BOOTSTRAP.add(COMMON);
         BOOTSTRAP.add(CMR);
+        BOOTSTRAP.add(MAVEN);
         BOOTSTRAP.add(MODULES);
+        BOOTSTRAP.add(JANDEX);
         BOOTSTRAP.add(RUNTIME);
     }
 
