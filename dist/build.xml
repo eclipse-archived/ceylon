@@ -232,9 +232,6 @@ Used with another target such as 'package'">
             <fileset dir="${ceylon-module-resolver.dir}/lib">
                 <include name="shrinkwrap-maven-uberjar-*.jar"/>
             </fileset>
-            <fileset dir="${ceylon-module-resolver.dir}/build/lib">
-                <include name="cmr-maven-*.jar"/>
-            </fileset>
         </copy>
     </target>
 
