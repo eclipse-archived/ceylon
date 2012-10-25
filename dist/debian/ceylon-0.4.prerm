@@ -4,10 +4,5 @@ VERSION=0.4
 
 if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
 	update-alternatives --remove ceylon /usr/share/ceylon/$VERSION/bin/ceylon
-    update-alternatives --remove ceylon-js /usr/share/ceylon/$VERSION/bin/ceylon-js
-    update-alternatives --remove ceylonc /usr/share/ceylon/$VERSION/bin/ceylonc
-    update-alternatives --remove ceylonc-js /usr/share/ceylon/$VERSION/bin/ceylonc-js
-    update-alternatives --remove ceylond /usr/share/ceylon/$VERSION/bin/ceylond
-    update-alternatives --remove ceylon-import-jar /usr/share/ceylon/$VERSION/bin/ceylon-import-jar
 fi
  
