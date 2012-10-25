@@ -35,7 +35,7 @@ import java.util.Set;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.impl.JDKPackageList;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -269,9 +269,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         typeFactory.setPackage(languagePackage);
         
         // make sure the jdk modules are loaded
-        for(String jdkModule : JDKPackageList.getJDKModuleNames())
+        for(String jdkModule : JDKUtils.getJDKModuleNames())
             findOrCreateModule(jdkModule);
-        for(String jdkOracleModule : JDKPackageList.getOracleJDKModuleNames())
+        for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
             findOrCreateModule(jdkOracleModule);
         
         /*
@@ -701,7 +701,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // special case for the jdk module
         String moduleName = module.getNameAsString();
         if(AbstractModelLoader.isJDKModule(moduleName)){
-            if(JDKPackageList.isJDKPackage(moduleName, pkgName) || JDKPackageList.isOracleJDKPackage(moduleName, pkgName)){
+            if(JDKUtils.isJDKPackage(moduleName, pkgName) || JDKUtils.isOracleJDKPackage(moduleName, pkgName)){
                 return findOrCreatePackage(module, pkgName);
             }
             return null;
@@ -819,7 +819,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(module != null)
             return module;
         
-        if(JDKPackageList.isJDKModule(moduleName) || JDKPackageList.isOracleJDKModule(moduleName)){
+        if(JDKUtils.isJDKModule(moduleName) || JDKUtils.isOracleJDKModule(moduleName)){
             isJava = true;
         }
         
@@ -1237,7 +1237,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private boolean isFromJDK(ClassMirror classMirror) {
         String pkgName = classMirror.getPackage().getQualifiedName();
-        return JDKPackageList.isJDKAnyPackage(pkgName) || JDKPackageList.isOracleJDKAnyPackage(pkgName);
+        return JDKUtils.isJDKAnyPackage(pkgName) || JDKUtils.isOracleJDKAnyPackage(pkgName);
     }
 
     private void setAnnotations(Declaration decl, AnnotatedMirror classMirror) {
@@ -1811,12 +1811,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     klass.getSatisfiedTypes().add(getType(iface, klass, VarianceLocation.INVARIANT));
                 }catch(ModelResolutionException x){
                     PackageMirror classPackage = classMirror.getPackage();
-                    if(JDKPackageList.isJDKAnyPackage(classPackage.getQualifiedName())){
+                    if(JDKUtils.isJDKAnyPackage(classPackage.getQualifiedName())){
                         if(iface.getKind() == TypeKind.DECLARED){
                             // check if it's a JDK thing
                             ClassMirror ifaceClass = iface.getDeclaredClass();
                             PackageMirror ifacePackage = ifaceClass.getPackage();
-                            if(JDKPackageList.isOracleJDKAnyPackage(ifacePackage.getQualifiedName())){
+                            if(JDKUtils.isOracleJDKAnyPackage(ifacePackage.getQualifiedName())){
                                 // just log and ignore it
                                 logMissingOracleType(iface.getQualifiedName());
                                 continue;
@@ -2282,8 +2282,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public static boolean isJDKModule(String name) {
-        return JDKPackageList.isJDKModule(name)
-                || JDKPackageList.isOracleJDKModule(name);
+        return JDKUtils.isJDKModule(name)
+                || JDKUtils.isOracleJDKModule(name);
     }
     
     @Override

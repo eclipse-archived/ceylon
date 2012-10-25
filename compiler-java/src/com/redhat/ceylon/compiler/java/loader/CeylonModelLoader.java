@@ -24,7 +24,7 @@ import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.impl.JDKPackageList;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
@@ -241,7 +241,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     if(classSymbol.classfile == null){
                         PackageSymbol pkg = classSymbol.packge();
                         // do not log an error for missing oracle jdk stuff
-                        if(pkg == null || !JDKPackageList.isOracleJDKAnyPackage(pkg.getQualifiedName().toString())){
+                        if(pkg == null || !JDKUtils.isOracleJDKAnyPackage(pkg.getQualifiedName().toString())){
                             log.error("ceylon", "Unable to find class file for "+name);
                         }
                         return null;
@@ -312,12 +312,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 PackageSymbol methodPackage = method.owner.packge();
                 if(methodPackage != null){
                     String methodPackageName = methodPackage.getQualifiedName().toString();
-                    if(JDKPackageList.isJDKAnyPackage(methodPackageName)){
+                    if(JDKUtils.isJDKAnyPackage(methodPackageName)){
                         if(x.sym != null && x.sym instanceof ClassSymbol){
                             PackageSymbol pkg = ((ClassSymbol)x.sym).packge();
                             if(pkg != null){
                                 String pkgName = pkg.getQualifiedName().toString();
-                                if(JDKPackageList.isOracleJDKAnyPackage(pkgName)){
+                                if(JDKUtils.isOracleJDKAnyPackage(pkgName)){
                                     // the JDK tried to use some Oracle JDK stuff, just log it
                                     logMissingOracleType(x.getMessage());
                                     return null;

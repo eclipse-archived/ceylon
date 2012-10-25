@@ -28,7 +28,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.impl.JDKPackageList;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -166,8 +166,8 @@ public abstract class LazyModule extends Module {
             return Util.isSubPackage(moduleName, pkgName);
         }else{
             // special rules for the JDK which we don't load from the repo
-            if(JDKPackageList.isJDKPackage(moduleName, pkgName)
-                    || JDKPackageList.isOracleJDKPackage(moduleName, pkgName))
+            if(JDKUtils.isJDKPackage(moduleName, pkgName)
+                    || JDKUtils.isOracleJDKPackage(moduleName, pkgName))
                 return true;
             // otherwise we have the list of packages contained in that module jar
             return jarPackages.contains(pkgName);
@@ -176,12 +176,12 @@ public abstract class LazyModule extends Module {
     
     @Override
     protected boolean isJdkModule(String moduleName) {
-        return JDKPackageList.isJDKModule(moduleName) || JDKPackageList.isOracleJDKModule(moduleName);
+        return JDKUtils.isJDKModule(moduleName) || JDKUtils.isOracleJDKModule(moduleName);
     }
     
     @Override
     protected boolean isJdkPackage(String moduleName, String packageName) {
-        return JDKPackageList.isJDKPackage(moduleName, packageName)
-                || JDKPackageList.isOracleJDKPackage(moduleName, packageName);
+        return JDKUtils.isJDKPackage(moduleName, packageName)
+                || JDKUtils.isOracleJDKPackage(moduleName, packageName);
     }
 }
