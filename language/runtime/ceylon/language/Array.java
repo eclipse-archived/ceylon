@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -295,7 +297,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
             @Name("to") @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer") Integer to) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
-        long toIndex = to==null ? getSize()-1 : to.longValue();
+        long toIndex = to==null ? MAX_VALUE : to.longValue();
         long lastIndex = getLastIndex().longValue();
         java.lang.Class<?> typeClass = array.getClass().getComponentType();
         if (fromIndex>lastIndex) {

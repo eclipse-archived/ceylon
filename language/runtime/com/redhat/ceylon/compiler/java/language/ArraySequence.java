@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import java.util.Arrays;
 
 import ceylon.language.Boolean;
@@ -103,7 +105,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public List<? extends Element> span(Integer from, Integer to) {
         long fromIndex = from.longValue();
-        long toIndex = to==null ? array.length-1 : to.longValue();
+        long toIndex = to==null ? MAX_VALUE : to.longValue();
         long lastIndex = getLastIndex().longValue();
         
         boolean reverse = toIndex<fromIndex;

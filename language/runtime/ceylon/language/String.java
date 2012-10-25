@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
@@ -760,7 +762,7 @@ public abstract class String
         if (len == 0) {
             return "";
         }
-        long toIndex = to == null ? len - 1 : to.longValue();
+        long toIndex = to == null ? MAX_VALUE : to.longValue();
         boolean reverse = toIndex < from;
         if (reverse) {
             long _tmp = toIndex;

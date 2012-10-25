@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
@@ -403,7 +405,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     		@Name("to") Integer to) {
         Integer lastIndex = getLastIndex();
-		to = to==null ? lastIndex : to;
+		to = to==null ? Integer.instance(MAX_VALUE) : to;
         if (to.value<0) {
         	if (from.value<0) {
         		return (ceylon.language.List)empty_.getEmpty$();
