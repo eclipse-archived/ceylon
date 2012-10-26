@@ -164,33 +164,19 @@ Used with another target such as 'package'">
     <target name="install-all" 
             depends="install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-jvm-compiler-libraries,
-                     copy-js-compiler-libraries, copy-cmr-libraries,
+                     copy-js-compiler-libraries, copy-cmr-libraries, copy-licenses,
                      install-typechecker, install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
     <target name="zip">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${dist.dir}" prefix="${dist.name}">
-                <include name="bin/**" />
                 <exclude name="bin/ceylon*" />
             </zipfileset>
             <zipfileset dir="${dist.dir}" filemode="755"  prefix="${dist.name}">
                 <include name="bin/ceylon*" />
-            </zipfileset>
-            <zipfileset dir="${dist.dir}" prefix="${dist.name}">
-                <include name="doc/**" />
-                <include name="lib/**" />
-                <include name="repo/**" />
-                <include name="samples/**" />
-            </zipfileset>
-            <zipfileset dir="${basedir}" prefix="${dist.name}">
-                <include name="LICENSE-ASL" />
-                <include name="LICENSE-LGPL" />
-                <include name="LICENSE-GPL-CP" />
-                <include name="NOTICE" />
-                <include name="README.md" />
-                <include name="README-ANT.md" />
             </zipfileset>
         </zip>        
     </target>
@@ -261,6 +247,18 @@ Used with another target such as 'package'">
         <copy todir="${dist.dir}/templates">
             <fileset dir="templates">
                 <include name="**/*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="copy-licenses">
+        <copy todir="${dist.dir}">
+            <fileset dir="${basedir}">
+                <include name="LICENSE-ASL" />
+                <include name="LICENSE-LGPL" />
+                <include name="LICENSE-GPL-CP" />
+                <include name="NOTICE" />
+                <include name="README.md" />
             </fileset>
         </copy>
     </target>
