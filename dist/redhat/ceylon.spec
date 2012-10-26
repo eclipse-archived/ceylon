@@ -8,7 +8,11 @@
 %define minor_version 4
 %define micro_version 0
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}
-%define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
+
+# Use one of the following lines depending if the source zip file
+# is a micro version (like 0.3.1) or not (like 0.4)
+#%define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
+%define name_source %{name}-%{major_version}.%{minor_version}
 
 Name: ceylon
 Epoch: 0
