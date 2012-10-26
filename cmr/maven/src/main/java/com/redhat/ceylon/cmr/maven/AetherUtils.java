@@ -18,14 +18,15 @@ package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Logger;
-import com.redhat.ceylon.cmr.spi.Node;
 import org.jboss.shrinkwrap.resolver.api.ResolutionException;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
+
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.spi.Node;
 
 /**
  * Aether utils.
@@ -108,6 +109,8 @@ public class AetherUtils {
     }
 
     private MavenResolverSystem getResolver() {
+        if(settingsXml.startsWith("classpath:"))
+            return Maven.configureResolver().fromClassloaderResource(settingsXml.substring(10));
         return Maven.configureResolver().fromFile(settingsXml);
     }
 }
