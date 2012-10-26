@@ -27,7 +27,7 @@
 
     ant release            - Does a clean, get-code, local, package
                              using the sources tagged with the name as
-                             defined by ceylon.version in build.properties
+                             defined by ceylon.version.tag in build.properties
                              Use this when doing a release!
 
     ant nightly            - Does a clean, get-code, local, package
@@ -96,7 +96,7 @@ Some more basic ant tasks:
 sources tagged with the name as defined by ceylon.version in 
 build.properties
 Use this when doing a release!">
-        <property name="tag" value="${ceylon.version}"/>
+        <property name="tag" value="${ceylon.version.tag}"/>
         <antcall target="bootstrap" />
     </target>
 
