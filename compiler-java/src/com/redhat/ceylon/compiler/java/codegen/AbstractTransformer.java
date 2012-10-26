@@ -425,6 +425,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     ProducedType simplifyType(ProducedType orgType) {
+        if(orgType == null)
+            return null;
         ProducedType type = resolveFirstLevelAliases(orgType);
         if (isOptional(type)) {
             // For an optional type T?:
@@ -477,6 +479,8 @@ public abstract class AbstractTransformer implements Transformation {
              */
             ProducedType declType = typedReference.getType();
             ProducedType refinedDeclType = refinedTypedReference.getType();
+            if(declType == null || refinedDeclType == null)
+                return typedReference;
             boolean isWidening = isWidening(declType, refinedDeclType);
             
             if(!isWidening){
@@ -717,6 +721,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean willEraseToObjectOrList(ProducedType type) {
+        if(type == null)
+            return false;
         type = simplifyType(type);
         TypeDeclaration decl = type.getDeclaration();
         return decl == typeFact.getObjectDeclaration()
