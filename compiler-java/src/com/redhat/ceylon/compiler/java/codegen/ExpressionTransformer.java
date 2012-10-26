@@ -1803,11 +1803,19 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression end;
             if(range.getUpperBound() != null)
                 end = transformExpression(range.getUpperBound(), BoxingStrategy.BOXED, rightType);
+            else if(range.getLength() != null)
+                end = transformExpression(range.getLength(), BoxingStrategy.UNBOXED, rightType);
             else
                 end = makeNull();
-            // make a "lhs.span(start, end)" call
+            // is this a span or segment?
+            String method;
+            if(range.getLength() == null)
+                method = "span";
+            else
+                method = "segment";
+            // make a "lhs.<method>(start, end)" call
             return at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                    makeSelect(lhs, "span"), List.of(start, end));
+                    makeSelect(lhs, method), List.of(start, end));
         }
     }
 
