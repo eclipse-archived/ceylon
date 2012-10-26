@@ -20,6 +20,6 @@
 import org.apache.camel { CamelContext }
 import org.apache.camel.impl { DefaultCamelContext }
  
-void foo() {
+void run() {
     CamelContext context = DefaultCamelContext();
 }
