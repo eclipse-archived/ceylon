@@ -69,3 +69,8 @@ class SelfTypeEquivalence4() {
     Inv<Self<X>> l3 = l2;
     @error Inv<X> l4 = l1;
 }
+
+interface Aa {}
+@error interface Bb satisfies Comparable<Bb&Aa> {}
+@error interface Cc satisfies Comparable<Cc|Aa> {}
+@error interface Zz satisfies Comparable<Bb|Cc|Aa> {}

@@ -469,6 +469,17 @@ public class ProducedType extends ProducedReference {
                 List<ProducedType> caseTypes = getCaseTypes();
                 if (caseTypes!=null) {
                     for (ProducedType t: caseTypes) {
+                    	boolean already = false;
+                    	for (ProducedType pt: list) {
+                    		if (t.getDeclaration() instanceof UnionType ||
+                    			t.getDeclaration() instanceof IntersectionType ||
+                    			(t.getDeclaration().equals(pt.getDeclaration()) && 
+                    				t.isExactly(pt, true))) {
+                    			already=true;
+                    			break;
+                    		}
+                    	}
+                    	if (already) continue;
                         List<ProducedType> candidates = t.getSupertypes();
                         for (ProducedType st: candidates) {
                             boolean include = true;
