@@ -2916,11 +2916,15 @@ public class GenerateJsVisitor extends Visitor
             ((Element)eor).getExpression().visit(this);
             out(")");
         } else {//range, or spread?
-            out(".span(");
+            Expression sexpr = ((ElementRange)eor).getLength();
+            out(sexpr == null ? ".span(" : ".segment(");
             ((ElementRange)eor).getLowerBound().visit(this);
             if (((ElementRange)eor).getUpperBound() != null) {
                 out(",");
                 ((ElementRange)eor).getUpperBound().visit(this);
+            } else if (sexpr != null) {
+                out(",");
+                sexpr.visit(this);
             }
             out(")");
         }
