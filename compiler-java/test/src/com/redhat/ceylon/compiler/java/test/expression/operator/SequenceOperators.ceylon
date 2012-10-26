@@ -46,6 +46,9 @@ shared class SequenceOperators() {
         subrange := sequence[1..2];
         subrange := this.sequence[1..2];
         subrange := sequence[box(1)..box(2)];
+        subrange := sequence[1:2];
+        subrange := this.sequence[1:2];
+        subrange := sequence[box(1):box(2)];
         variable String[] upperRange;
         upperRange := sequence[1...];
         upperRange := this.sequence[1...];
@@ -67,6 +70,7 @@ shared class SequenceOperators() {
         Character? c = string[0];
         variable String sync;
         sync := string[0..1];
+        sync := string[0:1];
         sync := string[0...];
     }
 }

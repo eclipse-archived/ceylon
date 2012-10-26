@@ -57,6 +57,9 @@ public class SequenceOperators {
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .ceylon.language.String>>)sequence).span(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .ceylon.language.String>>)this.getSequence()).span(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
         subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .ceylon.language.String>>)sequence).span(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)), <.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)));
+        subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .ceylon.language.String>>)sequence).segment(.ceylon.language.Integer.instance(1L), 2L);
+        subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .ceylon.language.String>>)this.getSequence()).segment(.ceylon.language.Integer.instance(1L), 2L);
+        subrange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .ceylon.language.String>>)sequence).segment(<.ceylon.language.Integer>box(.ceylon.language.Integer.instance(1L)), <.ceylon.language.Integer>box(.ceylon.language.Integer.instance(2L)).longValue());
         .ceylon.language.List<? extends .ceylon.language.String> upperRange;
         upperRange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .ceylon.language.String>>)sequence).span(.ceylon.language.Integer.instance(1L), null);
         upperRange = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .ceylon.language.String>>)this.getSequence()).span(.ceylon.language.Integer.instance(1L), null);
@@ -158,6 +161,7 @@ public class SequenceOperators {
         final .ceylon.language.Character c = .ceylon.language.String.instance(string).item(.ceylon.language.Integer.instance(0L));
         .java.lang.String sync;
         sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L)).toString();
+        sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).segment(.ceylon.language.Integer.instance(0L), 1L).toString();
         sync = ((.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance(string)).span(.ceylon.language.Integer.instance(0L), null).toString();
     }
     
