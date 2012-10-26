@@ -268,11 +268,11 @@ public class CeylonModuleLoader extends ModuleLoader {
      */
     DependencySpec createModuleDependency(ArtifactResult i) {
         if (JDKUtils.isJDKModule(i.name())) {
-            Set<String> packages = JDKUtils.getJDKPackagesByModule(i.name());
-            return DependencySpec.createSystemDependencySpec(packages);
+            Set<String> paths = JDKUtils.getJDKPathsByModule(i.name());
+            return DependencySpec.createSystemDependencySpec(paths);
         } else if (JDKUtils.isOracleJDKModule(i.name())) {
-            Set<String> packages = JDKUtils.getOracleJDKPackagesByModule(i.name());
-            return DependencySpec.createSystemDependencySpec(packages);
+            Set<String> paths = JDKUtils.getOracleJDKPathsByModule(i.name());
+            return DependencySpec.createSystemDependencySpec(paths);
         } else {
             final ModuleIdentifier mi = createModuleIdentifier(i);
             final boolean export = (i.importType() == ImportType.EXPORT);
