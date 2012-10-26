@@ -36,8 +36,28 @@ public class JDKUtils {
     private final static String JDK7 = "package-list.jdk7";
     private final static String JDK7_ORACLE = "package-list.oracle.jdk7";
 
-    private static Map<String, Set<String>> jdkModules;
-    private static Map<String, Set<String>> jdkOracleModules;
+    private static Map<String, Tuple> jdkModules;
+    private static Map<String, Tuple> jdkOracleModules;
+
+    private static class Tuple {
+        private Set<String> packages;
+        private Set<String> paths;
+
+        private Tuple() {
+            packages = new HashSet<String>();
+            paths = new HashSet<String>();
+        }
+
+        boolean isEmpty() {
+            return packages.isEmpty();
+        }
+
+        Tuple finish() {
+            packages = Collections.unmodifiableSet(packages);
+            paths = Collections.unmodifiableSet(paths);
+            return this;
+        }
+    }
 
     private static synchronized void loadPackageList() {
         if (jdkModules != null)
@@ -46,16 +66,16 @@ public class JDKUtils {
         jdkOracleModules = loadModularPackageList(JDK7_ORACLE);
     }
 
-    private static Map<String, Set<String>> loadModularPackageList(String file) {
+    private static Map<String, Tuple> loadModularPackageList(String file) {
         try {
             // not thread-safe, but that's OK because the caller is thread-safe
-            Map<String, Set<String>> jdkPackages = new HashMap<String, Set<String>>();
+            Map<String, Tuple> jdkPackages = new HashMap<String, Tuple>();
             InputStream inputStream = JDKUtils.class.getResourceAsStream(file);
             if (inputStream == null) {
                 throw new RuntimeException("Failed to read JDK package list file from " + file + ": your Ceylon installation is broken.");
             }
             BufferedReader bis = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
-            Set<String> module = null;
+            Tuple tuple = null;
             String moduleName = null;
             String pkg;
             while ((pkg = bis.readLine()) != null) {
@@ -74,29 +94,31 @@ public class JDKUtils {
                     if (name.isEmpty())
                         throw new RuntimeException("Failed to read JDK module list file from " + file + ": module has empty name");
                     // close previous module
-                    if (module != null) {
-                        if (module.isEmpty())
+                    if (tuple != null) {
+                        if (tuple.isEmpty())
                             throw new RuntimeException("Failed to read JDK module list file from " + file + ": module " + moduleName + " is empty");
                         // save previous module
-                        jdkPackages.put(moduleName, Collections.unmodifiableSet(module));
+                        jdkPackages.put(moduleName, tuple.finish());
                     }
                     // start the new module
                     moduleName = name;
-                    module = new HashSet<String>();
+                    tuple = new Tuple();
                     continue;
                 }
                 // add a package to the current module
-                if (module == null)
+                if (tuple == null)
                     throw new RuntimeException("Failed to read JDK module list file from " + file + ": adding package to undefined module");
-                module.add(pkg);
+
+                tuple.packages.add(pkg);
+                tuple.paths.add(pkg.replace('.', '/'));
             }
             bis.close();
             // close previous module
-            if (module != null) {
-                if (module.isEmpty())
+            if (tuple != null) {
+                if (tuple.isEmpty())
                     throw new RuntimeException("Failed to read JDK module list file from " + file + ": module " + moduleName + " is empty");
                 // save previous module
-                jdkPackages.put(moduleName, Collections.unmodifiableSet(module));
+                jdkPackages.put(moduleName, tuple.finish());
             }
             // sanity check
             if (jdkPackages.size() == 0)
@@ -114,14 +136,14 @@ public class JDKUtils {
 
     public static boolean isJDKPackage(String mod, String pkg) {
         loadPackageList();
-        Set<String> packages = jdkModules.get(mod);
-        return packages != null && packages.contains(pkg);
+        Tuple tuple = jdkModules.get(mod);
+        return tuple != null && tuple.packages.contains(pkg);
     }
 
     public static boolean isJDKAnyPackage(String pkg) {
         loadPackageList();
-        for (Set<String> packages : jdkModules.values()) {
-            if (packages.contains(pkg))
+        for (Tuple tuple : jdkModules.values()) {
+            if (tuple.packages.contains(pkg))
                 return true;
         }
         return false;
@@ -134,7 +156,14 @@ public class JDKUtils {
 
     public static Set<String> getJDKPackagesByModule(String module) {
         loadPackageList();
-        return jdkModules.get(module);
+        Tuple tuple = jdkModules.get(module);
+        return tuple != null ? tuple.packages : null;
+    }
+
+    public static Set<String> getJDKPathsByModule(String module) {
+        loadPackageList();
+        Tuple tuple = jdkModules.get(module);
+        return tuple != null ? tuple.paths : null;
     }
 
     public static boolean isOracleJDKModule(String pkg) {
@@ -144,14 +173,14 @@ public class JDKUtils {
 
     public static boolean isOracleJDKPackage(String mod, String pkg) {
         loadPackageList();
-        Set<String> packages = jdkOracleModules.get(mod);
-        return packages != null && packages.contains(pkg);
+        Tuple tuple = jdkOracleModules.get(mod);
+        return tuple != null && tuple.packages.contains(pkg);
     }
 
     public static boolean isOracleJDKAnyPackage(String pkg) {
         loadPackageList();
-        for (Set<String> packages : jdkOracleModules.values()) {
-            if (packages.contains(pkg))
+        for (Tuple tuple : jdkOracleModules.values()) {
+            if (tuple.packages.contains(pkg))
                 return true;
         }
         return false;
@@ -164,6 +193,13 @@ public class JDKUtils {
 
     public static Set<String> getOracleJDKPackagesByModule(String module) {
         loadPackageList();
-        return jdkOracleModules.get(module);
+        Tuple tuple = jdkOracleModules.get(module);
+        return tuple != null ? tuple.packages : null;
+    }
+
+    public static Set<String> getOracleJDKPathsByModule(String module) {
+        loadPackageList();
+        Tuple tuple = jdkOracleModules.get(module);
+        return tuple != null ? tuple.paths : null;
     }
 }
