@@ -382,6 +382,13 @@ void testAssignmentOperator() {
     check(o2.x==3, "assignment 12");
 }
 
+void testSegments() {
+    value seq = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+    check(seq[1:2] == {"two", "three" }, "seq[1:2] " seq[1:2] "");
+    check(seq[3:5] == {"four", "five", "six", "seven", "eight"}, "seq[3:5] " seq[3:5] "");
+    check("test"[1:2] == "es", "test[1:2] " ("test"[1:2]) "");
+}
+
 shared void test() {
     testIntegerOperators();
     testFloatOperators();
@@ -393,5 +400,6 @@ shared void test() {
     testIncDecOperators();
     testArithmeticAssignOperators();
     testAssignmentOperator();
+    testSegments();
     results();
 }
