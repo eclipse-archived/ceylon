@@ -316,16 +316,15 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
         boolean checked = false;
         for (Repository repository : repositories) {
-            child = fromRepository(repository, context, addLeaf);
-
-            // not found, cache is not in roots, not checked and repo is remote
-            if (child == null && addCacheAsRoot == false && checked == false && repository.getRoot().isRemote()) {
+            // cache is not in roots, not checked and repo is remote
+            if (addCacheAsRoot == false && checked == false && repository.getRoot().isRemote()) {
                 checked = true;
                 child = fromRepository(cache, context, addLeaf);
                 if (child != null)
                     return child;
             }
 
+            child = fromRepository(repository, context, addLeaf);
             if (child != null)
                 return child;
 
