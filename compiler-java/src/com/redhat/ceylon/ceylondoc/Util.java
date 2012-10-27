@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -157,6 +158,14 @@ public class Util {
         return "";
     }
 
+    public static Annotation getAnnotation(ModuleImport moduleImport, String name) {
+        for (Annotation a : moduleImport.getAnnotations()) {
+            if (a.getName().equals(name))
+                return a;
+        }
+        return null;
+    }
+    
     public static Annotation getAnnotation(Declaration decl, String name) {
         for (Annotation a : decl.getAnnotations()) {
             if (a.getName().equals(name))
