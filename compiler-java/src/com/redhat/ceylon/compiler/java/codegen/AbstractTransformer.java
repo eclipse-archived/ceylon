@@ -1442,13 +1442,24 @@ public abstract class AbstractTransformer implements Transformation {
             if(dependencyModule.getVersion() != null)
                 dependencyVersion = make().Assign(naming.makeUnquotedIdent("version"),
                         make().Literal(dependencyModule.getVersion()));
+            
             List<JCExpression> spec;
             if(dependencyVersion != null)
                 spec = List.<JCExpression>of(dependencyName, dependencyVersion);
             else
                 spec = List.<JCExpression>of(dependencyName);
+            
+            if (Util.getAnnotation(dependency, "export") != null) {
+                JCExpression exported = make().Assign(naming.makeUnquotedIdent("export"), make().Literal(true));
+                spec = spec.append(exported);
+            }
+            
+            if (Util.getAnnotation(dependency, "optional") != null) {
+                JCExpression exported = make().Assign(naming.makeUnquotedIdent("optional"), make().Literal(true));
+                spec = spec.append(exported);
+            }
+            
             JCAnnotation atImport = make().Annotation(makeIdent(syms().ceylonAtImportType), spec);
-            // TODO : add the export & optional annotations also ?
             imports.add(atImport);
         }
 
