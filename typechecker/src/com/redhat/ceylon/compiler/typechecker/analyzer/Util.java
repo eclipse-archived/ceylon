@@ -231,7 +231,7 @@ class Util {
         if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
             addTypeUnknownError(node, message);
         }
-        else if (!type.isSubtypeOf(supertype, td)) {
+        else if (!type.isSubtypeOf(supertype)) {
             node.addError(message + message(type, " is not assignable to ", supertype));
         }
     }

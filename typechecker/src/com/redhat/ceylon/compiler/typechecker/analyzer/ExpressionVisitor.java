@@ -3867,6 +3867,10 @@ public class ExpressionVisitor extends Visitor {
             if (!type.isExactly(supertype)) {
                 TypeDeclaration std = supertype.getDeclaration();
                 if (std.getCaseTypes()!=null && !std.getCaseTypes().isEmpty()) {
+                	if (std.getCaseTypes().size()==1 && 
+                			std.getCaseTypeDeclarations().get(0).isSelfType()) {
+                		continue;
+                	}
                     List<ProducedType> types=new ArrayList<ProducedType>();
                     for (ProducedType ct: std.getCaseTypes()) {
                         ProducedType cst = type.getSupertype(ct.getDeclaration());

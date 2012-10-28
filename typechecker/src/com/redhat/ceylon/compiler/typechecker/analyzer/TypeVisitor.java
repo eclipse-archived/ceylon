@@ -996,18 +996,18 @@ public class TypeVisitor extends Visitor {
                             //TODO: error?!
                         }
                     }
-                    else {
-                        list.add(type);
-                    }
+                    list.add(type);
                     /*if (type.getDeclaration() instanceof Interface) {
                         st.addWarning("interface cases are not yet supported");
                     }*/
                 }
             }
             if (!list.isEmpty()) {
-                if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
-                    that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
-                }
+            	if (list.size()!=1 || !list.get(0).getDeclaration().isSelfType()) {
+            		if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
+            			that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
+            		}
+            	}
                 td.setCaseTypes(list);
             }
         }

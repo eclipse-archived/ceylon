@@ -159,7 +159,8 @@ public class Util {
                                 if (!matches(pdt, sdt, d)) return false;
                             }
                         }
-                    }else if(ellipsis){
+                    }
+                    else if (ellipsis) {
                         // if the method doesn't take sequenced params and we have an ellipsis
                         // let's not use it since we expect a variadic method
                         return false;
@@ -357,15 +358,9 @@ public class Util {
         }
         else if (pt.isWellDefined()) {
             boolean add=true;
-            boolean canonicalize=false;
-            ProducedType toReplace = null;
-            int i=0;
             for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
                 ProducedType t = iter.next();
                 if (pt.isSubtypeOf(t)) {
-                    if (canonicalizeInUnion(pt, t)) {
-                        toReplace=canonicalizeSelfType(t);
-                    }
                     add=false;
                     break;
                 }
@@ -373,42 +368,12 @@ public class Util {
                 //      this can cause stack overflows!
                 else if (pt.isSupertypeOf(t)) {
                     iter.remove();
-                    canonicalize=canonicalizeInUnion(pt, t);
                 }
-                i++;
-            }
-            if (toReplace!=null) {
-                list.set(i,toReplace);
             }
             if (add) {
-                if (canonicalize) {
-                    pt = canonicalizeSelfType(pt);
-                }
                 list.add(pt);
             }
         }
-    }
-
-    private static boolean canonicalizeInUnion(ProducedType pt, ProducedType t) {
-        if (pt.getDeclaration() instanceof ClassOrInterface &&
-                t.getDeclaration() instanceof ClassOrInterface) {
-            return !pt.getDeclaration().equals(t.getDeclaration());
-        }
-        else {
-            return false;
-        }
-    }
-
-    /**
-     * Canonicalize a type with a self type, returning the
-     * argument of the self type
-     */
-    public static ProducedType canonicalizeSelfType(ProducedType pt) {
-        ProducedType selfType = pt.getDeclaration().getSelfType();
-		return selfType==null ? pt :
-        	selfType.substitute(pt.getTypeArguments());
-		    //this version doesn't seem to work for type families:
-		    //pt.getTypeArguments().get(selfType.getDeclaration());
     }
     
     /**
@@ -421,7 +386,6 @@ public class Util {
         if (pt==null) {
             return;
         }
-        pt = canonicalizeSelfType(pt);
         if (pt.getDeclaration() instanceof IntersectionType) {
             for (ProducedType t: pt.getDeclaration().getSatisfiedTypes() ) {
                 addToIntersection(list, t.substitute(pt.getTypeArguments()), unit);
@@ -571,7 +535,7 @@ public class Util {
     static boolean addToSupertypes(List<ProducedType> list, ProducedType st) {
         for (ProducedType et: list) {
             if (st.getDeclaration().equals(et.getDeclaration()) && //return both a type and its self type
-            		st.isExactly(et, true)) {
+            		st.isExactlyInternal(et)) {
                 return false;
             }
         }

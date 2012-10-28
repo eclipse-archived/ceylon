@@ -37,6 +37,10 @@ public abstract class TypeDeclaration extends Declaration
         return !typeParameters.isEmpty();
     }
 
+    public boolean isSelfType() {
+    	return false;
+    }
+
     public List<TypeParameter> getTypeParameters() {
         return typeParameters;
     }

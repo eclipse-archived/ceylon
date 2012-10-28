@@ -37,10 +37,10 @@ public class ProducedType extends ProducedReference {
      * given type? 
      */
     public boolean isExactly(ProducedType type) {
-        return resolveAliases().isExactly(type.resolveAliases(), true);
+        return resolveAliases().isExactlyInternal(type.resolveAliases());
     }
     
-    public boolean isExactly(ProducedType type, boolean selfTypesSame) {
+    public boolean isExactlyInternal(ProducedType type) {
         if (getDeclaration() instanceof BottomType) {
             return type.getDeclaration() instanceof BottomType;
         }
@@ -55,7 +55,7 @@ public class ProducedType extends ProducedReference {
                     for (ProducedType c: cases) {
                         boolean found = false;
                         for (ProducedType oc: otherCases) {
-                            if (c.isExactly(oc, true)) {
+                            if (c.isExactlyInternal(oc)) {
                                 found = true;
                                 break;
                             }
@@ -69,7 +69,7 @@ public class ProducedType extends ProducedReference {
             }
             else if (cases.size()==1) {
                 ProducedType st = cases.get(0);
-                return st.isExactly(type, true);
+                return st.isExactlyInternal(type);
             }
             else {
                 return false;
@@ -86,7 +86,7 @@ public class ProducedType extends ProducedReference {
                     for (ProducedType c: types) {
                         boolean found = false;
                         for (ProducedType oc: otherTypes) {
-                            if (c.isExactly(oc, true)) {
+                            if (c.isExactlyInternal(oc)) {
                                 found = true;
                                 break;
                             }
@@ -100,7 +100,7 @@ public class ProducedType extends ProducedReference {
             }
             else if (types.size()==1) {
                 ProducedType st = types.get(0);
-                return st.isExactly(type, true);
+                return st.isExactlyInternal(type);
             }
             else {
                 return false;
@@ -110,7 +110,7 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> otherCases = type.getCaseTypes();
             if (otherCases.size()==1) {
                 ProducedType st = otherCases.get(0);
-                return this.isExactly(st, true);
+                return this.isExactlyInternal(st);
             }
             else {
                 return false;
@@ -120,7 +120,7 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> otherTypes = type.getSatisfiedTypes();
             if (otherTypes.size()==1) {
                 ProducedType st = otherTypes.get(0);
-                return this.isExactly(st, true);
+                return this.isExactlyInternal(st);
             }
             else {
                 return false;
@@ -128,20 +128,6 @@ public class ProducedType extends ProducedReference {
         }
         else {
             if (!type.getDeclaration().equals(getDeclaration())) {
-                if (selfTypesSame) {
-                    ProducedType selfType = getDeclaration().getSelfType();
-                    if (selfType!=null &&
-                            type.isSubtypeOf(this) &&
-                            type.isExactly(selfType.substitute(getTypeArguments()), true)) {
-                        return true;
-                    }
-                    ProducedType typeSelfType = type.getDeclaration().getSelfType();
-                    if (typeSelfType!=null &&
-                            isSubtypeOf(type) &&
-                            isExactly(typeSelfType.substitute(type.getTypeArguments()), true)) {
-                        return true;
-                    }
-                }
                 return false;
             }
             else {
@@ -163,7 +149,7 @@ public class ProducedType extends ProducedReference {
                         ProducedType tqts = tqt.getSupertype(totd);
                         TypeDeclaration otd = (TypeDeclaration) getDeclaration().getContainer();
                         ProducedType qts = qt.getSupertype(otd);
-                        if ( !qts.isExactly(tqts, true) ) {
+                        if ( !qts.isExactlyInternal(tqts) ) {
                             return false;
                         }
                     }
@@ -178,7 +164,7 @@ public class ProducedType extends ProducedReference {
                                         p.getName() + " of " +
                                         getDeclaration().getName());*/
                     }
-                    else if (!arg.isExactly(otherArg, true)) {
+                    else if (!arg.isExactlyInternal(otherArg)) {
                         return false;
                     }
                 }
@@ -198,14 +184,14 @@ public class ProducedType extends ProducedReference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(ProducedType type) {
-        return type!=null && resolveAliases().isSubtypeOf(type.resolveAliases(), null);
+        return type!=null && resolveAliases().isSubtypeOfInternal(type.resolveAliases());
     }
     
     /**
      * Is this type a subtype of the given type? Ignore
      * a certain self type constraint.
      */
-    public boolean isSubtypeOf(ProducedType type, TypeDeclaration selfTypeToIgnore) {
+    public boolean isSubtypeOfInternal(ProducedType type) {
         if (getDeclaration() instanceof BottomType) {
             return true;
         }
@@ -214,7 +200,7 @@ public class ProducedType extends ProducedReference {
         }
         else if (getDeclaration() instanceof UnionType) {
             for (ProducedType ct: getInternalCaseTypes()) {
-                if (ct==null || !ct.isSubtypeOf(type, selfTypeToIgnore)) {
+                if (ct==null || !ct.isSubtypeOfInternal(type)) {
                     return false;
                 }
             }
@@ -222,7 +208,7 @@ public class ProducedType extends ProducedReference {
         }
         else if (type.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: type.getInternalCaseTypes()) {
-                if (ct!=null && isSubtypeOf(ct, selfTypeToIgnore)) {
+                if (ct!=null && isSubtypeOfInternal(ct)) {
                     return true;
                 }
             }
@@ -230,7 +216,7 @@ public class ProducedType extends ProducedReference {
         }
         else if (type.getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: type.getInternalSatisfiedTypes()) {
-                if (ct!=null && !isSubtypeOf(ct, selfTypeToIgnore)) {
+                if (ct!=null && !isSubtypeOfInternal(ct)) {
                     return false;
                 }
             }
@@ -238,14 +224,14 @@ public class ProducedType extends ProducedReference {
         }
         else if (getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: getInternalSatisfiedTypes()) {
-                if (ct==null || ct.isSubtypeOf(type, selfTypeToIgnore)) {
+                if (ct==null || ct.isSubtypeOfInternal(type)) {
                     return true;
                 }
             }
             return false;
         }
         else {
-            ProducedType st = getSupertype(type.getDeclaration(), selfTypeToIgnore);
+            ProducedType st = getSupertype(type.getDeclaration());
             if (st==null) {
                 return false;
             }
@@ -298,7 +284,7 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                     else {
-                        if (!arg.isExactly(otherArg, true)) {
+                        if (!arg.isExactlyInternal(otherArg)) {
                             return false;
                         }
                     }
@@ -455,12 +441,6 @@ public class ProducedType extends ProducedReference {
             for (ProducedType dst: getSatisfiedTypes()) {
                 dst.getSupertypes(list);
             }
-            ProducedType selfType = getSelfType();
-            if (selfType!=null) {
-                if (!(selfType.getDeclaration() instanceof TypeParameter)) { //TODO: is this really correct???
-                    selfType.getSupertypes(list);
-                }
-            }
             if (getDeclaration() instanceof UnionType) {
                 //trying to infer supertypes of algebraic
                 //types from their cases was resulting in
@@ -469,36 +449,39 @@ public class ProducedType extends ProducedReference {
                 List<ProducedType> caseTypes = getCaseTypes();
                 if (caseTypes!=null) {
                     for (ProducedType t: caseTypes) {
-                    	boolean already = false;
-                    	for (ProducedType pt: list) {
-                    		if (t.getDeclaration() instanceof UnionType ||
-                    			t.getDeclaration() instanceof IntersectionType ||
-                    			(t.getDeclaration().equals(pt.getDeclaration()) && 
-                    				t.isExactly(pt, true))) {
-                    			already=true;
-                    			break;
+                    	if (!alreadyInList(list, t)) {
+                    		List<ProducedType> candidates = t.getSupertypes();
+                    		for (ProducedType st: candidates) {
+                    			boolean include = true;
+                    			for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                    				if (!ct.isSubtypeOf(st)) {
+                    					include = false;
+                    					break;
+                    				}
+                    			}
+                    			if (include) {
+                    				Util.addToSupertypes(list, st);
+                    			}
                     		}
                     	}
-                    	if (already) continue;
-                        List<ProducedType> candidates = t.getSupertypes();
-                        for (ProducedType st: candidates) {
-                            boolean include = true;
-                            for (ProducedType ct: getDeclaration().getCaseTypes()) {
-                                if (!ct.isSubtypeOf(st)) {
-                                    include = false;
-                                    break;
-                                }
-                            }
-                            if (include) {
-                                Util.addToSupertypes(list, st);
-                            }
-                        }
                     }
                 }
             }
         }
         return list;
     }
+
+	private boolean alreadyInList(List<ProducedType> list, ProducedType t) {
+		for (ProducedType pt: list) {
+			if (t.getDeclaration() instanceof UnionType ||
+				t.getDeclaration() instanceof IntersectionType ||
+				(t.getDeclaration().equals(pt.getDeclaration()) && 
+					t.isExactlyInternal(pt))) {
+				return true;
+			}
+		}
+		return false;
+	}
     
     /**
      * Given a type declaration, return a produced type of 
@@ -510,25 +493,7 @@ public class ProducedType extends ProducedReference {
      *         which is a supertype of this type, or null if
      *         there is no such supertype
      */
-    public ProducedType getSupertype(TypeDeclaration dec) {
-        return getSupertype(dec, null);
-    }
-    
-    /**
-     * Given a type declaration, return a produced type of 
-     * which this type is an invariant subtype. Ignore a 
-     * given self type constraint. 
-     * 
-     * @param dec a type declaration
-     * @param selfTypeToIgnore a self type to ignore when 
-     *        searching for supertypes
-     * 
-     * @return a produced type of the given type declaration
-     *         which is a supertype of this type, or null if
-     *         there is no such supertype
-     */
-    private ProducedType getSupertype(final TypeDeclaration dec, 
-            TypeDeclaration selfTypeToIgnore) {
+    public ProducedType getSupertype(final TypeDeclaration dec) {
         Criteria c = new Criteria() {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -537,7 +502,7 @@ public class ProducedType extends ProducedReference {
                        type.equals(dec);
             }
         };
-        return getSupertype(c, new ArrayList<ProducedType>(), selfTypeToIgnore);
+        return getSupertype(c, new ArrayList<ProducedType>());
     }
     
     /**
@@ -546,7 +511,7 @@ public class ProducedType extends ProducedReference {
      * this type is an invariant subtype. 
      */
     ProducedType getSupertype(Criteria c) {
-        return getSupertype(c, new ArrayList<ProducedType>(), null);
+        return getSupertype(c, new ArrayList<ProducedType>());
     }
     
     static interface Criteria {
@@ -557,8 +522,7 @@ public class ProducedType extends ProducedReference {
      * Search for the most-specialized supertype 
      * satisfying the given predicate. 
      */
-    private ProducedType getSupertype(final Criteria c, List<ProducedType> list, 
-            final TypeDeclaration ignoringSelfType) {
+    private ProducedType getSupertype(final Criteria c, List<ProducedType> list) {
         if (c.satisfies(getDeclaration())) {
             return qualifiedByDeclaringType();
         }
@@ -567,10 +531,8 @@ public class ProducedType extends ProducedReference {
                                  Util.addToSupertypes(list, this)) ) {
             //now let's call the two most difficult methods
             //in the whole code base:
-            ProducedType result = getPrincipalInstantiation(c, list,
-                    ignoringSelfType);
-            result = getPrincipalInstantiationFromCases(c, list,
-                    ignoringSelfType, result);
+            ProducedType result = getPrincipalInstantiation(c, list);
+            result = getPrincipalInstantiationFromCases(c, list, result);
             return result;
         }
         else {
@@ -579,8 +541,7 @@ public class ProducedType extends ProducedReference {
     }
     
     private ProducedType getPrincipalInstantiationFromCases(final Criteria c,
-            List<ProducedType> list, final TypeDeclaration ignoringSelfType,
-            ProducedType result) {
+            List<ProducedType> list, ProducedType result) {
         if (getDeclaration() instanceof UnionType) {
             //trying to infer supertypes of algebraic
             //types from their cases was resulting in
@@ -596,7 +557,7 @@ public class ProducedType extends ProducedReference {
                     public boolean satisfies(TypeDeclaration type) {
                         if ( c.satisfies(type) ) {
                             for (ProducedType ct: caseTypes) {
-                                if (ct.getSupertype(type, ignoringSelfType)==null) {
+                                if (ct.getSupertype(type)==null) {
                                     return false;
                                 }
                             }
@@ -607,15 +568,14 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                 };
-                ProducedType stc = caseTypes.get(0).getSupertype(c2, list, 
-                        ignoringSelfType);
+                ProducedType stc = caseTypes.get(0).getSupertype(c2, list);
                 if (stc!=null) {
                     //we found the declaration, now try to construct a 
                     //produced type that is a true common supertype
                     ProducedType candidateResult = getCommonSupertype(caseTypes, 
-                            stc.getDeclaration(), ignoringSelfType);
+                            stc.getDeclaration());
                     if (candidateResult!=null && (result==null || 
-                            candidateResult.isSubtypeOf(result, ignoringSelfType))) {
+                            candidateResult.isSubtypeOfInternal(result))) {
                         result = candidateResult;
                     }
                 }
@@ -625,7 +585,7 @@ public class ProducedType extends ProducedReference {
     }
 
     private ProducedType getPrincipalInstantiation(final Criteria c,
-            List<ProducedType> list, final TypeDeclaration ignoringSelfType) {
+            List<ProducedType> list) {
         //search for the most-specific supertype 
         //for the given declaration
         
@@ -633,21 +593,19 @@ public class ProducedType extends ProducedReference {
         
         ProducedType extendedType = getInternalExtendedType();
         if (extendedType!=null) {
-            ProducedType possibleResult = extendedType.getSupertype(c, list, 
-                            ignoringSelfType);
+            ProducedType possibleResult = extendedType.getSupertype(c, list);
             if (possibleResultIsMeaningful(possibleResult)) {
                 result = possibleResult;
             }
         }
         
         for (ProducedType dst: getInternalSatisfiedTypes()) {
-            ProducedType possibleResult = dst.getSupertype(c, list, 
-                            ignoringSelfType);
+            ProducedType possibleResult = dst.getSupertype(c, list);
             if (possibleResultIsMeaningful(possibleResult)) {
-                if (result==null || possibleResult.isSubtypeOf(result, ignoringSelfType)) {
+                if (result==null || possibleResult.isSubtypeOfInternal(result)) {
                     result = possibleResult;
                 }
-                else if ( !result.isSubtypeOf(possibleResult, ignoringSelfType) ) {
+                else if ( !result.isSubtypeOfInternal(possibleResult) ) {
                     //TODO: this is still needed even though we keep intersections 
                     //      in canonical form because you can have stuff like
                     //      empty of Iterable<String>&Sized
@@ -664,21 +622,6 @@ public class ProducedType extends ProducedReference {
                         //supertypes which both satisfy the criteria
                         result = new UnknownType(getDeclaration().getUnit()).getType();
                     }
-                }
-            }
-        }
-        
-        if (ignoringSelfType==null ||
-                !(getDeclaration() instanceof UnionType) && 
-                !(getDeclaration() instanceof IntersectionType) && 
-                !getDeclaration().equals(ignoringSelfType)) {
-            ProducedType selfType = getInternalSelfType();
-            if (selfType!=null) {
-                ProducedType possibleResult = selfType.getSupertype(c, list, 
-                            ignoringSelfType);
-                if (possibleResultIsMeaningful(possibleResult) && (result==null || 
-                        possibleResult.isSubtypeOf(result, ignoringSelfType))) {
-                    result = possibleResult;
                 }
             }
         }
@@ -728,7 +671,7 @@ public class ProducedType extends ProducedReference {
                 arg = it.canonicalize().getType();
             }
 //                            else {
-//                                if (rta.isExactly(prta)) {
+//                                if (rta.isExactlyInternal(prta)) {
 //                                    arg = rta;
 //                                }
 //                                else {
@@ -761,7 +704,7 @@ public class ProducedType extends ProducedReference {
     }
 
     private ProducedType getCommonSupertype(final List<ProducedType> caseTypes,
-            TypeDeclaration dec, final TypeDeclaration selfTypeToIgnore) {
+            TypeDeclaration dec) {
         //now try to construct a common produced
         //type that is a common supertype by taking
         //the type args and unioning them
@@ -774,7 +717,7 @@ public class ProducedType extends ProducedReference {
                     if (pt==null) {
                         return null;
                     }
-                    ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
+                    ProducedType st = pt.getSupertype(dec);
                     if (st==null) {
                         return null;
                     }
@@ -789,7 +732,7 @@ public class ProducedType extends ProducedReference {
                     if (pt==null) {
                         return null;
                     }
-                    ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
+                    ProducedType st = pt.getSupertype(dec);
                     if (st==null) {
                         return null;
                     }
@@ -821,10 +764,10 @@ public class ProducedType extends ProducedReference {
                 if (pt==null) {
                     return null;
                 }
-                ProducedType st = pt.getQualifyingType().getSupertype(outer, null);
+                ProducedType st = pt.getQualifyingType().getSupertype(outer);
                 list.add(st);
             }
-            outerType = getCommonSupertype(list, outer, null);
+            outerType = getCommonSupertype(list, outer);
         }
         else {
             outerType = null;
@@ -999,11 +942,6 @@ public class ProducedType extends ProducedReference {
         return true;
     }
 
-    private ProducedType getInternalSelfType() {
-        ProducedType selfType = getDeclaration().getSelfType();
-        return selfType==null?null:selfType.substituteInternal(getTypeArguments());
-    }
-
     private List<ProducedType> getInternalSatisfiedTypes() {
         List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
         for (ProducedType st: getDeclaration().getSatisfiedTypes()) {
@@ -1027,17 +965,6 @@ public class ProducedType extends ProducedReference {
                 caseTypes.add(ct.substituteInternal(getTypeArguments()));
             }
             return caseTypes;
-        }
-    }
-
-    private ProducedType getSelfType() {
-        ProducedType selfType = getDeclaration().getSelfType();
-        if (selfType==null) {
-            return null;
-        }
-        else {
-            Map<TypeParameter, ProducedType> args = getTypeArguments();
-            return args.isEmpty() ? selfType : selfType.substitute(args);
         }
     }
 
