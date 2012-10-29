@@ -274,7 +274,7 @@ class Generics() {
     
     interface Self<out T> of T {
         shared default T get {
-            return this;
+            return this of T;
         }
     }
     

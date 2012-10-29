@@ -230,7 +230,7 @@ class Union() {
     case (is String) {}
     case (is String|Nothing) {}
     
-    Comparable<String> elem1 = "hello";
+    /*Comparable<String> elem1 = "hello";
     String elem2 = "world";
     @type["Sequence<String>"] value selfTypeSeq1 = { elem1, elem2 };
     @type["Sequence<String>"] value selfTypeSeq2 = { elem2, elem1 };
@@ -257,6 +257,6 @@ class Union() {
     }
     for (s in {elem2, elem1}) {
         @type["String"] value sss = s;
-    }
+    }*/
     
 }
