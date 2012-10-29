@@ -1890,6 +1890,8 @@ typeOperator returns [TypeOperatorExpression operator]
       { $operator = new Extends($EXTENDS); }
     | SATISFIES
       { $operator = new Satisfies($SATISFIES); }
+    | CASE_TYPES
+      { $operator = new OfOp($CASE_TYPES); }
     ;
 
 existenceEmptinessExpression returns [Term term]

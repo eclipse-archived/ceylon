@@ -2489,6 +2489,27 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(unit.getBooleanDeclaration().getType());
     }
     
+    private void visitOfOperator(Tree.OfOp that) {
+        Tree.Type rt = that.getType();
+        if (rt!=null) {
+            ProducedType t = rt.getTypeModel();
+            if (t!=null) {
+                that.setTypeModel(t);
+                if (that.getTerm()!=null) {
+                    if (that.getTerm()!=null) {
+                        ProducedType pt = that.getTerm().getTypeModel();
+                        if (pt!=null) {
+                            if (!t.covers(pt)) {
+                            	that.addError("specified type does not cover the cases of the operand expression: " +
+                            			t.getProducedTypeName() + " does not cover " + pt.getProducedTypeName());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private void visitIsOperator(Tree.IsOp that) {
         /*checkAssignable( type(that), 
                 getOptionalType(getObjectDeclaration().getType()), 
@@ -2716,6 +2737,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IsOp that) {
         super.visit(that);
         visitIsOperator(that);
+    }
+        
+    @Override public void visit(Tree.OfOp that) {
+        super.visit(that);
+        visitOfOperator(that);
     }
         
     @Override public void visit(Tree.Extends that) {
