@@ -14,11 +14,17 @@
 	  <taskdef name="ceylonc"
 	    classname="com.redhat.ceylon.ant.Ceylonc"
 	    classpathref="ant-tasks"/>
+	  <taskdef name="ceylonc-js"
+	    classname="com.redhat.ceylon.ant.CeyloncJs"
+	    classpathref="ant-tasks"/>
 	  <taskdef name="ceylond"
 	    classname="com.redhat.ceylon.ant.Ceylond"
 	    classpathref="ant-tasks"/>
 	  <taskdef name="ceylon"
 	    classname="com.redhat.ceylon.ant.Ceylon"
+	    classpathref="ant-tasks"/>
+	  <taskdef name="ceylon-js"
+	    classname="com.redhat.ceylon.ant.CeylonJs"
 	    classpathref="ant-tasks"/>
 	</target>
 	
@@ -26,9 +32,15 @@
     </target>
 
     <target name="compile" depends="ceylon-ant-taskdefs">
-    	<ceylonc>
-    		<module name="@[module.name]"/>
-    	</ceylonc>
+        <ceylonc>
+            <module name="@[module.name]"/>
+        </ceylonc>
+    </target>
+
+    <target name="compile-js" depends="ceylon-ant-taskdefs">
+        <ceylonc-js>
+            <module name="@[module.name]"/>
+        </ceylonc-js>
     </target>
 
     <target name="doc" depends="ceylon-ant-taskdefs">
@@ -39,6 +51,10 @@
 
     <target name="run" depends="compile">
         <ceylon module="@[module.name]/@[module.version]"/>
+    </target>
+
+    <target name="run-js" depends="compile-js">
+        <ceylon-js module="@[module.name]/@[module.version]"/>
     </target>
 
 	<target name="clean">
