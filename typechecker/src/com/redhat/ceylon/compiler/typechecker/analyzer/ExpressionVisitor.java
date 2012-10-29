@@ -3859,7 +3859,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkSelfTypes(Node that, TypeDeclaration td, ProducedType type) {
+    private void checkSelfTypes(Tree.StaticType that, TypeDeclaration td, ProducedType type) {
         if (!(td instanceof TypeParameter)) { //TODO: is this really ok?!
             List<TypeParameter> params = type.getDeclaration().getTypeParameters();
             List<ProducedType> args = type.getTypeArgumentList();
@@ -3877,10 +3877,13 @@ public class ExpressionVisitor extends Visitor {
                         TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName(), null, false);
                         at = mtd==null ? null : mtd.getType();
                     }
-                    if (at!=null) {
-                        checkAssignable(at, arg, std, that,
-                                "type argument does not satisfy self type constraint on type parameter " + 
-                                    param.getName() + " of " + type.getDeclaration().getName());
+                    if (at!=null && !at.isSubtypeOf(arg) && 
+                    		!(td.getSelfType()!=null && 
+                    			td.getSelfType().isExactly(arg))) {
+                        that.addError("type argument does not satisfy self type constraint on type parameter " +
+                                param.getName() + " of " + type.getDeclaration().getName() + ": " +
+                        		arg.getProducedTypeName() + " is not a supertype or self type of " + 
+                                td.getName());
                     }
                 }
             }

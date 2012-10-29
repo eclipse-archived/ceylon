@@ -77,3 +77,27 @@ interface Aa {}
 @error interface Bb satisfies Comparable<Bb&Aa> {}
 @error interface Cc satisfies Comparable<Cc|Aa> {}
 @error interface Zz satisfies Comparable<Bb|Cc|Aa> {}
+
+interface A satisfies Comparable<C|A> {}
+interface C satisfies Comparable<C|A> {}
+
+interface Comp<in T> of T
+        given T satisfies Comp<T> {
+    shared formal Comparison compare(T other);
+}
+
+interface Scal<in T> of T
+        satisfies Comp<T> 
+        given T satisfies Scal<T> {}
+
+class CompBar() satisfies Comp<CompBar> {
+    shared actual Comparison compare(CompBar other) {
+        return bottom;
+    }
+}
+
+@error class CompFoo() satisfies Comp<CompBar> {
+    shared actual Comparison compare(CompBar other) {
+        return bottom;
+    }
+}
