@@ -81,6 +81,11 @@ interface Aa {}
 interface A satisfies Comparable<C|A> {}
 interface C satisfies Comparable<C|A> {}
 
+void testOf(Comparable<C|A> comp, Void vd) {
+    A|C ac = comp of C|A;
+    Object? maybe = vd of Object|Nothing;
+}
+
 interface Comp<in T> of T
         given T satisfies Comp<T> {
     shared formal Comparison compare(T other);
