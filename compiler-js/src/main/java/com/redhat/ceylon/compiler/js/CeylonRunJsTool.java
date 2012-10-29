@@ -94,7 +94,7 @@ public class CeylonRunJsTool implements Tool {
         if (path != null && !path.isEmpty() && isExe(path)) {
             return path;
         }
-        String[] paths = { "/usr/bin/node", "/usr/local/bin/node", "/bin/node", "/opt/bin/node",
+        String[] paths = { "/usr/bin/node", "/usr/bin/nodejs", "/usr/local/bin/node", "/bin/node", "/opt/bin/node",
                 "C:\\Program Files\\nodejs\\node.exe", "C:\\Program Files (x86)\\nodejs\\node.exe" };
         for (String p : paths) {
             if (isExe(p)) {
