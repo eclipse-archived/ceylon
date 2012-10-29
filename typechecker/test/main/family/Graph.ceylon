@@ -22,10 +22,7 @@ abstract class Graph<N,E>()
          implementation of the family"
     shared formal class Node() of N {
         shared default Boolean touches(E edge) {
-            value t = this;
-            switch (t) case (is N) {
-                return edge.touches(t);
-            }
+            return edge.touches(this);
         }
     }
 

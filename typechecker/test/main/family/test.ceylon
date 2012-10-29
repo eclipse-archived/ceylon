@@ -27,16 +27,9 @@ void testGraph() {
     Edge method2<Node,Edge>(Graph<Node, Edge> g) 
             given Node satisfies Graph<Node,Edge>.Node 
             given Edge satisfies Graph<Node,Edge>.Edge {
-        value n1 = g.Node();
-        value n2 = g.Node();
-        switch (n1) case (is Node) {
-            switch (n2) case (is Node) {
-                value e = g.Edge(n1,n2);
-                switch (e) case (is Edge) {
-                    return e;
-                }
-            }
-        }
+        Node n1 = g.Node();
+        Node n2 = g.Node();
+        return g.Edge(n1,n2);
     }
     
     OnOffGraph.Edge e2 = method2(OnOffGraph());
@@ -45,16 +38,9 @@ void testGraph() {
             given ActualGraph satisfies Graph<Node,Edge> 
             given Node satisfies ActualGraph.Node 
             given Edge satisfies ActualGraph.Edge {
-        value n1 = g.Node();
-        value n2 = g.Node();
-        switch (n1) case (is Node) {
-            switch (n2) case (is Node) {
-                value e = g.Edge(n1,n2);
-                switch (e) case (is Edge) {
-                    return e;
-                }
-            }
-        }
+    	Node n1 = g.Node();
+    	Node n2 = g.Node();
+        return g.Edge(n1,n2);
     }
 
     OnOffGraph.Edge e3 = method3(OnOffGraph());
@@ -70,40 +56,18 @@ void testGraph() {
     }*/
 
     Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn = BasicGraph().Node();
-    switch (nn) case (is BasicGraph.Node) {
-        BasicGraph.Node nnn1 = nn;
-        switch (nnn1) case (is Graph<BasicGraph.Node, BasicGraph.Edge>.Node) {
-            Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn2 = nnn1;
-        }
-        @error switch (nnn1) case (is Graph<OnOffGraph.Node, OnOffGraph.Edge>.Node) {
-            Graph<OnOffGraph.Node, OnOffGraph.Edge>.Node nn3 = nnn1;
-        }
-    }
-    @error switch (nn) case (is OnOffGraph.Node) {
-        OnOffGraph.Node nnn2 = nn;
-    }
+    BasicGraph.Node nnn1 = nn;
+    @error OnOffGraph.Node nnn2 = nn;
+    @error Graph<OnOffGraph.Node, OnOffGraph.Edge>.Node nn3 = nnn1;
+    Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn2 = nnn1;
     
     Graph<OnOffGraph.Node, OnOffGraph.Edge>.Edge ee = OnOffGraph().Edge(on1, on2);
-    @error switch (ee) case (is BasicGraph.Edge) {
-        BasicGraph.Edge eee1 = ee;
-    }
-    switch (ee) case (is OnOffGraph.Edge) {
-        OnOffGraph.Edge eee2 = ee;
-        switch (eee2) case (is Graph<OnOffGraph.Node, OnOffGraph.Edge>.Edge) {
-            Graph<OnOffGraph.Node, OnOffGraph.Edge>.Edge ee3 = eee2;
-        }
-        @error switch (eee2) case (is Graph<BasicGraph.Node, BasicGraph.Edge>.Edge) {
-            Graph<BasicGraph.Node, BasicGraph.Edge>.Edge ee2 = eee2;
-        }
-    }
+    @error BasicGraph.Edge eee1 = ee;
+    OnOffGraph.Edge eee2 = ee;
+    Graph<OnOffGraph.Node, OnOffGraph.Edge>.Edge ee3 = eee2;
+    @error Graph<BasicGraph.Node, BasicGraph.Edge>.Edge ee2 = eee2;
     
     Graph<BasicGraph.Node, BasicGraph.Edge> gbg = BasicGraph();
-    value gbgn = gbg.Node();
-    switch (gbgn) case (is BasicGraph.Node) {
-        BasicGraph.Node bgn = gbgn;
-        value gbge = gbg.Edge(bgn,bgn);
-        switch (gbge) case (is BasicGraph.Edge) {
-            BasicGraph.Edge bge = gbge;
-        }
-    }
+    BasicGraph.Node bgn = gbg.Node();
+    BasicGraph.Edge bge = gbg.Edge(bgn,bgn);
 }
