@@ -19,8 +19,8 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 - `doc`            - Documentation about Ceylon including the spec in HTML and PDF format
 - `lib`            - Required libraries for the Ceylon commands
 - `repo`           - Required bootstrap Ceylon modules (language, tools)
-- `runtime-repo`   - Required runtime Ceylon modules (module system)
 - `samples`        - Sample Ceylon modules
+- `templates`      - Templates for new Ceylon projects
 - `LICENSE-ASL`    - The Ceylon ASL license
 - `LICENSE-GPL-CP` - The Ceylon GPL/CP license
 - `README.md`      - This file
@@ -28,6 +28,7 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 The command line tools are located in the `bin` directory.
 
 - `bin/ceylon`     - The ceylon tool which provides at least the following subcommands:
+    * `new`        - Creates a new Ceylon project
     * `compile`    - Compile a Ceylon program for the Java backend
     * `compile-js` - Compile a Ceylon program for the JavaScript backend
     * `doc`        - Document a Ceylon program
