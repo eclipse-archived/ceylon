@@ -10,7 +10,7 @@ public class CeylonToolLoader extends ServiceToolLoader {
 
     @Override
     protected String getToolClassName(String toolName) {
-        if (toolName.isEmpty()) {
+        if (toolName == null || toolName.isEmpty()) {
             return CeylonTool.class.getName();
         } else {
             return super.getToolClassName(toolName);
