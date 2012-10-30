@@ -73,7 +73,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
 } else if (typeof window !== "undefined") {
     // parse URL parameters
     var parts = window.location.search.substr(1).replace('+', ' ').split('&');
-    if (parts.length > 0) {
+    if ((parts.length > 1) || ((parts.length > 0) && (parts[0].length > 0))) {
         var argStrings = new Array(parts.length);
         //can't do "for (i in parts)" anymore because of the added stuff to arrays
         var i;
