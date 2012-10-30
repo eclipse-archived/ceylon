@@ -204,7 +204,7 @@ process$proto.getString = function() {
     return processString;
 }
 process$proto.getVm = function() {
-    if (process && process.execPath && process.execPath.match(/node(\.exe)?$/)) {
+    if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(\.exe)?$/)) {
         return String$("node.js", 7);
     } else if (typeof window === 'object') {
         return String$("Browser", 7);
@@ -212,13 +212,13 @@ process$proto.getVm = function() {
     return String$("Unknown JavaScript environment", 30);
 }
 process$proto.getVmVersion = function() {
-    if (process && typeof process.version === 'string') {
+    if (typeof process !== "undefined" && typeof process.version === 'string') {
         return String$(process.version);
     }
     return String$("Unknown");
 }
 process$proto.getOs = function() {
-    if (process && typeof process.platform === 'string') {
+    if (typeof process !== "undefined" && typeof process.platform === 'string') {
         return String$(process.platform);
     }
     return String$("Unknown");
