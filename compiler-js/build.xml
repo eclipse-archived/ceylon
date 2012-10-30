@@ -187,7 +187,7 @@
             description="Copies the JS compiler jar and language module into the ceylon-ide-eclipse project">
         <copy overwrite="true"
               file="${ceylon.js.lib}"
-              tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.js-0.4-ide.jar"/>
+              tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}-ide.jar"/>
         <copy overwrite="true"
               file="${runtime}/${jslangmodule}"
               todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/ceylon/language/${module.com.redhat.ceylon.compiler.js.version}"/>
