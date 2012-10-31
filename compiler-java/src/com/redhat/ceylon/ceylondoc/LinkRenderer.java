@@ -115,7 +115,7 @@ public class LinkRenderer {
             } else if (to instanceof UnionType) {
                 processUnionType((UnionType) to);
             } else if (to instanceof ClassOrInterface) {
-                processClassOrInterface((ClassOrInterface) to);
+                processClassOrInterface((ClassOrInterface) to, null);
             } else if (to instanceof Declaration) {
                 processDeclaration((Declaration) to);
             } else if (to instanceof Module) {
@@ -164,7 +164,7 @@ public class LinkRenderer {
             } else if (typeDeclaration instanceof UnionType) {
                 processUnionType((UnionType) typeDeclaration);
             } else if (typeDeclaration instanceof ClassOrInterface) {
-                processClassOrInterface((ClassOrInterface) typeDeclaration);
+                processClassOrInterface((ClassOrInterface) typeDeclaration, producedType.getTypeArgumentList());
             } else if (typeDeclaration instanceof TypeParameter) {
                 buffer.append("<span class='type-parameter'>").append(typeDeclaration.getName()).append("</span>");
             } else {
@@ -210,7 +210,7 @@ public class LinkRenderer {
         }        
     }
 
-    private void processClassOrInterface(ClassOrInterface clazz) {
+    private void processClassOrInterface(ClassOrInterface clazz, List<ProducedType> typeArguments) {
         String clazzName = clazz.getName();
         if (isInCurrentModule(clazz)) {
             String clazzUrl = getUrl(clazz);
@@ -219,21 +219,44 @@ public class LinkRenderer {
             buffer.append(clazzName);
         }
 
-        if( !skipTypeArguments ) {
-            List<TypeParameter> typeParameters = clazz.getTypeParameters();
-            if( typeParameters != null && !typeParameters.isEmpty() ) {
-                buffer.append("&lt;");
-                boolean first = true;
-                for (TypeParameter typeParam : typeParameters) {
-                    if (first) {
-                        first = false;
-                    } else {
-                        buffer.append(",");
-                    }
-                    processProducedType(typeParam.getType());
-                }
-                buffer.append("&gt;");
+        if (!skipTypeArguments) {
+            if (typeArguments != null) {
+                processTypeArgumentList(typeArguments);
+            } else {
+                processTypeParameterList(clazz.getTypeParameters());
             }
+        }
+    }
+    
+    private void processTypeArgumentList(List<ProducedType> typeArguments) {
+        if (typeArguments != null && !typeArguments.isEmpty()) {
+            buffer.append("&lt;");
+            boolean first = true;
+            for (ProducedType typeArgument : typeArguments) {
+                if (first) {
+                    first = false;
+                } else {
+                    buffer.append(",");
+                }
+                processProducedType(typeArgument);
+            }
+            buffer.append("&gt;");
+        }
+    }
+
+    private void processTypeParameterList(List<TypeParameter> typeParameters) {
+        if (typeParameters != null && !typeParameters.isEmpty()) {
+            buffer.append("&lt;");
+            boolean first = true;
+            for (TypeParameter typeParam : typeParameters) {
+                if (first) {
+                    first = false;
+                } else {
+                    buffer.append(",");
+                }
+                processProducedType(typeParam.getType());
+            }
+            buffer.append("&gt;");
         }
     }
     
@@ -285,7 +308,7 @@ public class LinkRenderer {
         if (currentDecl != null && 
                 !isParameter(currentDecl)) {
             if (currentDecl instanceof ClassOrInterface) {
-                processClassOrInterface((ClassOrInterface) currentDecl);
+                processClassOrInterface((ClassOrInterface) currentDecl, null);
             } else {
                 processDeclaration(currentDecl);
             }

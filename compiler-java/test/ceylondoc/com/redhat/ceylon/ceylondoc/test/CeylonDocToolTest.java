@@ -185,6 +185,7 @@ public class CeylonDocToolTest {
         assertWikiStyleLinkSyntax(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
+        assertBug839(destDir);
     }
 
     @Test
@@ -220,6 +221,7 @@ public class CeylonDocToolTest {
         assertWikiStyleLinkSyntax(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
+        assertBug839(destDir);
     }
 
     @Test
@@ -629,6 +631,11 @@ public class CeylonDocToolTest {
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> String\\? bug691AbbreviatedOptionalType1\\(\\)</div>"));
         assertMatchInFile(destDir, "class_StubClass.html",
                 Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='type-parameter'>Element</span>\\? bug691AbbreviatedOptionalType2&lt;Element&gt;\\(\\)</div>"));
+    }
+    
+    private void assertBug839(File destDir) throws IOException {
+        assertMatchInFile(destDir, "class_StubClass.html",
+                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> Iterable&lt;Entry&lt;Integer,<span class='type-parameter'>Element</span>&amp;Object&gt;&gt; bug839&lt;Element&gt;\\(\\)</div>"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
