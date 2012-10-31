@@ -1,4 +1,5 @@
 <project name="Ceylon Common module" default="publish" basedir=".">
+    <property file="common-build.properties"/>
     <property file="build.properties"/>
 
     <!-- Set build directories for all formats. -->
