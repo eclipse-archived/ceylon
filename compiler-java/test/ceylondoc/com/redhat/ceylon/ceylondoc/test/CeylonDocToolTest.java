@@ -352,7 +352,7 @@ public class CeylonDocToolTest {
         tool.makeDoc();
         
         for(String moduleName : moduleNames){
-            Module module = makeModule("ceylon." + moduleName, "0.4");
+            Module module = makeModule("ceylon." + moduleName, "0.5");
             File destDir = getOutputDir(tool, module);
 
             assertFileExists(destDir, "index.html");
