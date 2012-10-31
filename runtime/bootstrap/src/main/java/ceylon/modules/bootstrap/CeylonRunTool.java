@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -110,7 +111,7 @@ public class CeylonRunTool implements Tool {
         
         argList.addAll(Arrays.asList(new String[]{
                 "-mp", sysRep, 
-                "ceylon.runtime:0.4",
+                "ceylon.runtime:" + Versions.CEYLON_VERSION_NUMBER,
                 "+executable", "ceylon.modules.jboss.runtime.JBossRuntime"}));
         
         if (run != null) {

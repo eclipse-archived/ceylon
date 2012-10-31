@@ -22,11 +22,14 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.language" slot="0.4">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.module-resolver" slot="0.5">
     <resources>
-        <resource-root path="ceylon.language-0.4.car"/>
+        <resource-root path="com.redhat.ceylon.module-resolver-0.5.jar"/>
     </resources>
 
     <dependencies>
+        <module name="com.redhat.ceylon.common" slot="0.5"/>
+        <module name="org.jboss.jandex"/>
+        <module name="com.redhat.ceylon.maven-support" services="import" optional="true"/>
     </dependencies>
 </module>

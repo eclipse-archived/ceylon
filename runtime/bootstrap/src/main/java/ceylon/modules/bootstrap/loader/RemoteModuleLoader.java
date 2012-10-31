@@ -23,6 +23,8 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
 
+import com.redhat.ceylon.common.Versions;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -39,7 +41,7 @@ import java.util.List;
  */
 public class RemoteModuleLoader extends BootstrapModuleLoader {
 
-    private final static String DEFAULT_CEYLON_VERSION = "0.4";
+    private final static String DEFAULT_CEYLON_VERSION = Versions.CEYLON_VERSION_NUMBER;
     private final static String INDEX = ".index";
     private final static String XML = "module.xml";
 
