@@ -41,7 +41,7 @@ shared abstract class Float()
     }
     
     doc "The sign of this value. Produces `1` for a positive 
-         number or `infinity`. Produces `-`` for a negative
+         number or `infinity`. Produces `-1` for a negative
          number or `-infinity`. Produces `0` for `+0`, `-0`, 
          or undefined."
     shared actual formal Integer sign;

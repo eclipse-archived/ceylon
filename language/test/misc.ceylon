@@ -1,3 +1,6 @@
+by()
+see()
+tagged()
 void misc() {
     
     function stringify(Character... chars) {

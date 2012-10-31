@@ -108,6 +108,23 @@ public final class List$impl<Element> {
         return null;
     }
 
+    public Element getFirst(){
+        return List$impl._getFirst($this);
+    }
+
+    public static <Element> Element _getFirst(List<Element> $this){
+        return $this.item(Integer.instance(0));
+    }
+
+    public Element getLast(){
+        return List$impl._getLast($this);
+    }
+
+    public static <Element> Element _getLast(List<Element> $this){
+        Integer lastIndex = $this.getLastIndex();
+        return lastIndex == null ? null : $this.item(lastIndex);
+    }
+
     @SuppressWarnings("rawtypes")
     public <Other> Sequence withLeading(Other element) {
         return List$impl._withLeading($this, element);

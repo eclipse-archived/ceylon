@@ -86,7 +86,7 @@
         <copy 
             overwrite="true"
             file="${build.dist}/${ceylon.language.car}"
-            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/ceylon.language-0.4-ide.jar"/>
+            tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/ceylon.language-${module.ceylon.language.version}-ide.jar"/>
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository/">

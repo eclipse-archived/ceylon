@@ -56,7 +56,7 @@ public class Util {
             return true;
         if ((className.equals("ceylon.language.IdentifiableObject"))
                 && klass!=java.lang.Object.class
-                && !(klass.getName().equals("com.redhat.ceylon.compiler.java.language.StringOfNone") || klass.getName().equals("com.redhat.ceylon.compiler.java.language.StringOfSome"))
+                && !isSubclassOfString(klass)
                 //&& klass!=java.lang.String.class
         		&& !klass.isAnnotationPresent(Class.class)
         		&& (!klass.isInterface() || !klass.isAnnotationPresent(Ceylon.class))) {
@@ -111,6 +111,10 @@ public class Util {
             //      extends a Ceylon class
             return true;
         }
+        if (className.equals("ceylon.language.Identifiable")
+            && isSubclassOfString(klass)) {
+            return false;
+        }
         // try the interfaces
         if(lookForInterface(klass, className, alreadyVisited))
             return true;
@@ -138,6 +142,10 @@ public class Util {
             }
         }
         return classSatisfiesInterface(klass.getSuperclass(), className, alreadyVisited);
+    }
+
+    private static boolean isSubclassOfString(java.lang.Class<?> klass) {
+        return klass.getName().equals("com.redhat.ceylon.compiler.java.language.StringOfNone") || klass.getName().equals("com.redhat.ceylon.compiler.java.language.StringOfSome");
     }
 
     private static boolean lookForInterface(java.lang.Class<?> klass, String className, 
@@ -463,5 +471,11 @@ public class Util {
         @SuppressWarnings("unchecked")
         T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass, list.size());
         return list.toArray(ret);
+    }
+    
+    public static <T> T checkNull(T t){
+        if(t == null)
+            throw new NullPointerException();
+        return t;
     }
 }

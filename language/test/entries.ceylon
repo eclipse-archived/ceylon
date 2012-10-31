@@ -183,6 +183,28 @@ Range<Integer> range {
     check(!nonempty (1..5).span(6,8), "empty range [3]");
     check(!nonempty (1..5).span(8,6), "empty range [4]");
 
+    //non-Integer Ranges
+    class TestRange(Integer number) satisfies Ordinal<TestRange> & Comparable<TestRange> {
+        shared actual Integer distanceFrom(TestRange other) {
+            return other.number-number;
+        }
+        shared actual TestRange predecessor { return TestRange(number-1); }
+        shared actual TestRange successor { return TestRange(number+1); }
+        shared actual Comparison compare(TestRange other) {
+            return number <=> other.number;
+        }
+        shared actual String string { return "TestRange(" number ")"; }
+    }
+    sum:=0;
+    for (t in TestRange(1)..TestRange(5)) {
+        sum++;
+    }
+    check(sum==5, "Range with Ordinal [1]");
+    for (t in (TestRange(1)..TestRange(4)).by(2)) {
+        sum++;
+    }
+    check(sum==7, "Range with Ordinal [2]");
+
     //Test the entries function
     test_entries_function();
     //Test comparisons by Key and Item

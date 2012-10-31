@@ -349,9 +349,14 @@ shared void sequences() {
     test_zip();
     test_exists_nonempty();
     test_max_min();
+    
     check(nonempty emptyOrSingleton(1), "emptyOrSingleton [1]");
     check(!nonempty emptyOrSingleton(null), "emptyOrSingleton [2]");
     
     check({"hello"}.withTrailing("world").first=="hello", "sequence with trailing");
     check({"world"}.withLeading("hello").first=="hello", "sequence with trailing");
+    
+    //collect
+    check({ 1, 2, 3, 4, 5 }.collect((Integer i) i*2) == { 2, 4, 6, 8, 10 }, "Sequence<Integer>.collect");
+    check("hola".collect((Character c) c.uppercased) == {`H`, `O`, `L`, `A`}, "Sequence<String>.collect");    
 }

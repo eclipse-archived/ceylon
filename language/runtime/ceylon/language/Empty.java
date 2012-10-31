@@ -57,6 +57,16 @@ public interface Empty
     @TypeInfo("ceylon.language::Nothing")
     public Integer getLastIndex();
 
+    @Annotations(@Annotation("actual"))
+    @Override
+    @TypeInfo("ceylon.language.Nothing")
+    public java.lang.Object getFirst();
+
+    @Annotations(@Annotation("actual"))
+    @Override
+    @TypeInfo("ceylon.language.Nothing")
+    public java.lang.Object getLast();
+
     @Annotations({@Annotation("actual")})
     @Override
     public Empty getReversed();

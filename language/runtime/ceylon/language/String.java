@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
@@ -36,6 +38,20 @@ public abstract class String
 
     protected String(java.lang.String s) {
         value = s;
+    }
+
+    private Correspondence$impl<Integer,Character> correspondence$impl = new Correspondence$impl<Integer,Character>(this);
+    
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Character> $ceylon$language$Correspondence$impl(){
+        return correspondence$impl;
+    }
+
+    @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Character>.Items Items$new(Sequence<? extends Integer> keys) {
+        return correspondence$impl.Items$new(keys);
     }
 
     @Override
@@ -741,22 +757,31 @@ public abstract class String
     }
 
     @Ignore
-    public static java.lang.String span(java.lang.String value, final long from, final Integer to) {
+    public static java.lang.String span(java.lang.String value, long from, final Integer to) {
         long len = getSize(value);
         if (len == 0) {
             return "";
         }
-        long fromIndex = from;
-        long toIndex = (to == null) ? len - 1 : to.longValue();
-        if (fromIndex >= len || toIndex < fromIndex) {
-            return "";
+        long toIndex = to == null ? MAX_VALUE : to.longValue();
+        boolean reverse = toIndex < from;
+        if (reverse) {
+            long _tmp = toIndex;
+            toIndex = from;
+            from = _tmp;
         }
-        if (toIndex >= len) {
-            toIndex = len - 1;
-        }
-        int start = value.offsetByCodePoints(0, (int)fromIndex);
-        int end = value.offsetByCodePoints(start, (int)(toIndex - fromIndex + 1));
-        return value.substring(start, end);
+    	if (toIndex < 0 || from >= len) {
+    		return "";
+    	}
+    	if (toIndex >= len) {
+    		toIndex = len - 1;
+    	}
+    	if (from < 0) {
+    		from = 0;
+    	}
+        int start = value.offsetByCodePoints(0, (int)from);
+        int end = value.offsetByCodePoints(start, (int)(toIndex - from + 1));
+        java.lang.String result = value.substring(start, end);
+        return reverse ? getReversed(result) : result;
     }
 
     @Override

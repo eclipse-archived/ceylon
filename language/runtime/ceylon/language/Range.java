@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.FilterIterable;
 import com.redhat.ceylon.compiler.java.language.MapIterable;
@@ -34,6 +36,20 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
         this.first = first;
         this.last = last;
         this.size = Math.abs(last.distanceFrom(first))+1;
+    }
+
+    private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
+    
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+        return correspondence$impl;
+    }
+
+    @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
+        return correspondence$impl.Items$new(keys);
     }
 
     @Override
@@ -105,27 +121,97 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language::Iterator<Element>")
 	public Iterator<Element> getIterator() {
-        return new Iterator<Element>() {
-            private java.lang.Object current = first;
-            private boolean go = true;
+        if (getDecreasing()) {
+            if (first instanceof Integer && last instanceof Integer) {
+                return new Iterator<Element>() {
+                    private long current = ((Integer)first).value;
+                    private boolean go = true;
 
-            @TypeInfo("Element|ceylon.language::Finished")
-            public java.lang.Object next() {
-                if (!go) return exhausted_.getExhausted$();
-                java.lang.Object result = current;
-                if (current.equals(getLast())) {
-                    go = false;
-                } else {
-                    current = Range.this.next((Element) current);
+                    @TypeInfo("Element|ceylon.language::Finished")
+                    public java.lang.Object next() {
+                        if (!go) return exhausted_.getExhausted$();
+                        long result = current;
+                        if (result > ((Integer)last).value) {
+                            current--;
+                        } else {
+                            go = false;
+                        }
+                        return Integer.instance(result);
+                    }
+
+                    @Override
+                    public java.lang.String toString() {
+                        return "IntegerRangeIterator";
+                    }
+                };
+            }
+            return new Iterator<Element>() {
+                private java.lang.Object current = first;
+                private boolean go = true;
+
+                @TypeInfo("Element|ceylon.language::Finished")
+                public java.lang.Object next() {
+                    if (!go) return exhausted_.getExhausted$();
+                    java.lang.Object result = current;
+                    if (((Comparable<Element>)result).compare(getLast()) == larger_.getLarger$()) {
+                        current = ((Element) current).getPredecessor();
+                    } else {
+                        go = false;
+                    }
+                    return result;
                 }
-                return result;
-            }
 
-            @Override
-            public java.lang.String toString() {
-                return "RangeIterator";
+                @Override
+                public java.lang.String toString() {
+                    return "RangeIterator";
+                }
+            };
+        } else {
+            if (first instanceof Integer && last instanceof Integer) {
+                return new Iterator<Element>() {
+                    private long current = ((Integer)first).value;
+                    private boolean go = true;
+
+                    @TypeInfo("Element|ceylon.language::Finished")
+                    public java.lang.Object next() {
+                        if (!go) return exhausted_.getExhausted$();
+                        long result = current;
+                        if (result < ((Integer)last).value) {
+                            current++;
+                        } else {
+                            go = false;
+                        }
+                        return Integer.instance(result);
+                    }
+
+                    @Override
+                    public java.lang.String toString() {
+                        return "IntegerRangeIterator";
+                    }
+                };
             }
-        };
+            return new Iterator<Element>() {
+                private java.lang.Object current = first;
+                private boolean go = true;
+
+                @TypeInfo("Element|ceylon.language::Finished")
+                public java.lang.Object next() {
+                    if (!go) return exhausted_.getExhausted$();
+                    java.lang.Object result = current;
+                    if (((Comparable<Element>)result).compare(getLast()) == smaller_.getSmaller$()) {
+                        current = ((Element) current).getSuccessor();
+                    } else {
+                        go = false;
+                    }
+                    return result;
+                }
+
+                @Override
+                public java.lang.String toString() {
+                    return "RangeIterator";
+                }
+            };
+        }
     }
 
     @Override @SuppressWarnings("unchecked")
@@ -319,7 +405,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     		@Name("to") Integer to) {
         Integer lastIndex = getLastIndex();
-		to = to==null ? lastIndex : to;
+		to = to==null ? Integer.instance(MAX_VALUE) : to;
         if (to.value<0) {
         	if (from.value<0) {
         		return (ceylon.language.List)empty_.getEmpty$();

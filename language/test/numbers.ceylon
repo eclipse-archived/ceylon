@@ -435,7 +435,10 @@ shared void numbers() {
         return i;
     }
     check(hex('ff') == 255, "xff value");
+    //TODO test this when supported in typechecker
+    //check(hex('ff_ff') == 65535, "ff_ff");
     check(bin('11111111') == 255, "b11111111 value");
+    //check(bin('1111_1111') == 255, "1111_1111");
 
     if (0.size == 64) {
         check(hex('ff').not == hex('ffffffffffffff00'), "~xff == xffffffffffffff00");

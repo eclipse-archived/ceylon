@@ -18,9 +18,9 @@ void testProcess() {
         fail("process.propertyValue (null)");
     }
     check(process.newline.contains(`\n`), "process.newline");
-    process.write("test write");
+    process.write("write");
     process.writeLine(" and writeLine");
-    process.writeError("test writeError");
+    process.writeError("writeError");
     process.writeErrorLine(" and writeErrorLine");
     print("Process VM " process.vm " version " process.vmVersion " on " process.os " v" process.osVersion "");
     check(process.milliseconds > 0, "process.milliseconds");

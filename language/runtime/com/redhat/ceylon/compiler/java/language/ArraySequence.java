@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import java.util.Arrays;
 
 import ceylon.language.Boolean;
@@ -61,6 +63,20 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.first = 0;
     }
 
+    private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
+    
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+        return correspondence$impl;
+    }
+
+    @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
+        return correspondence$impl.Items$new(keys);
+    }
+
     @Override
     public Element getFirst() {
         return array[(int) first];
@@ -89,19 +105,46 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public List<? extends Element> span(Integer from, Integer to) {
         long fromIndex = from.longValue();
-        if (fromIndex<0) fromIndex=0;
-        long toIndex = to==null ? array.length-1 : to.longValue();
+        long toIndex = to==null ? MAX_VALUE : to.longValue();
         long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||toIndex<fromIndex) {
-            return (List)empty_.getEmpty$();
-        }
-        else if (toIndex>lastIndex) {
-            return new ArraySequence<Element>(array, fromIndex);
+        
+        boolean reverse = toIndex<fromIndex;
+        if (reverse) {
+        	if (fromIndex<0 || toIndex>lastIndex) {
+        		return (List)empty_.getEmpty$();
+        	}
+        	if (toIndex<0) {
+        		toIndex=0;
+        	}
+        	if (fromIndex>lastIndex) {
+        		fromIndex = lastIndex;
+        	}
         }
         else {
-            return new ArraySequence<Element>(Arrays.copyOfRange(array,
-                    (int)fromIndex, (int)toIndex+1), 0);
+        	if (toIndex<0 || fromIndex>lastIndex) {
+        		return (List)empty_.getEmpty$();
+        	}
+        	if (fromIndex<0) {
+        		fromIndex=0;
+        	}
+        	if (toIndex>=lastIndex) {
+        		return new ArraySequence<Element>(array, fromIndex);
+        	}
         }
+
+        final Element[] sub;
+        if (reverse) {
+        	sub = Arrays.copyOfRange(array,
+        			(int)toIndex, (int)fromIndex+1);
+        	for (int i = 0, j=(int)fromIndex; i < sub.length; i++, j--) {
+        		sub[i] = array[j];
+        	}
+        } 
+        else {
+        	sub = Arrays.copyOfRange(array,
+        			(int)fromIndex, (int)toIndex+1);
+        }
+        return new ArraySequence<Element>(sub, 0);
     }
 
     @Override

@@ -486,6 +486,20 @@ public final class Map$impl<Key,Item> {
     static <Key,Item> Map<? extends Item, ? extends Set<? extends Key>> _getInverse(final Map<Key,Item> $this){
         class inverse implements Map<Item, Set<? extends Key>>{
 
+            private Correspondence$impl<java.lang.Object, Set<? extends Key>> correspondence$impl = new Correspondence$impl(this);
+            
+            @Ignore
+            @Override
+            public Correspondence$impl<? super java.lang.Object, ? extends Set<? extends Key>> $ceylon$language$Correspondence$impl(){
+                return correspondence$impl;
+            }
+
+            @Override
+            @Ignore
+            public Correspondence$impl<? super java.lang.Object, ? extends Set<? extends Key>>.Items Items$new(Sequence<? extends java.lang.Object> keys) {
+                return correspondence$impl.Items$new(keys);
+            }
+
             @Override
             public Collection<? extends Entry<? extends Item, ? extends Set<? extends Key>>> getClone() {
                 return this;
@@ -790,6 +804,20 @@ public final class Map$impl<Key,Item> {
     static <Key,Item, Result> Map<? extends Key, ? extends Result> _mapItems(
             final Map<? extends Key, ? extends Item> $this, final Callable<Result> mapping) {
         return new Map<Key, Result>() {
+
+            private Correspondence$impl<java.lang.Object, Result> correspondence$impl = new Correspondence$impl(this);
+            
+            @Ignore
+            @Override
+            public Correspondence$impl<? super java.lang.Object, ? extends Result> $ceylon$language$Correspondence$impl(){
+                return correspondence$impl;
+            }
+
+            @Override
+            @Ignore
+            public Correspondence$impl<? super java.lang.Object, ? extends Result>.Items Items$new(Sequence<? extends java.lang.Object> keys) {
+                return correspondence$impl.Items$new(keys);
+            }
 
             @Override @Ignore
             public Result item(java.lang.Object key) {

@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static java.lang.Long.MAX_VALUE;
+
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -28,7 +30,21 @@ public class Singleton<Element>
 		this.element = element;
 	}
 
-	@Override
+    private Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
+    
+    @Ignore
+    @Override
+    public Correspondence$impl<? super Integer,? extends Element> $ceylon$language$Correspondence$impl(){
+        return correspondence$impl;
+    }
+
+    @Override
+    @Ignore
+    public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
+        return correspondence$impl.Items$new(keys);
+    }
+
+    @Override
 	public Singleton<Element> getClone() {
 		return this;
 	}
@@ -173,7 +189,20 @@ public class Singleton<Element>
     public List<? extends Element> span(@Name("from") Integer from,
     		@TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
     		@Name("to") Integer to) {
-    	return from.longValue()>0 ? (List)empty_.getEmpty$(): this;
+    	long lowest;
+    	long highest;
+    	if (to==null) {
+    		to = Integer.instance(MAX_VALUE);
+    	}
+    	if (from.longValue()<=to.longValue()) {
+    		lowest = from.longValue();
+    		highest = to.longValue();
+    	}
+    	else {
+    		lowest = to.longValue();
+    		highest = from.longValue();
+    	}
+    	return lowest>0 || highest<0 ? (List)empty_.getEmpty$(): this;
     }
 
 	@Override

@@ -103,6 +103,20 @@ public final class Empty$impl {
         return null;
     }
 
+    public Integer getFirst(){
+        return _getFirst($this);
+    }
+    static Integer _getFirst(Empty $this){
+        return null;
+    }
+
+    public Integer getLast(){
+        return _getLast($this);
+    }
+    static Integer _getLast(Empty $this){
+        return null;
+    }
+
     @SuppressWarnings({"rawtypes", "unchecked"})
     public <Other> Sequence withLeading(Other e) {
         return new ArraySequence<Other>(e);

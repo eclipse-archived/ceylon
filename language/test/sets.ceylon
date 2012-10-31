@@ -98,6 +98,7 @@ void testSets() {
     check(s1.complement(emptySet)==s1, "Set.complement 1");
     check(emptySet.complement(s1)==emptySet, "Set.complement 2");
     //LazySet
+    check(LazySet().size==0, "empty LazySet()");
     value s2 = LazySet(3,4,5,"a");
     value s3 = LazySet("a", "b", "c", 5);
     value s4 = SetTest(5);

@@ -25,7 +25,7 @@ void callables() {
   check(ini5(4) == "Some", "higher-class 5");
   check(testCallable(TestCallable("Moar").something) == "M", "higher-class 6");
   value tc = TestCallable("Less").something;
-  check("callable" in className(tc).lowercased, "Callable classname");
+  check("callable" in className(tc).lowercased, "Callable classname is " + className(tc));
   check(testCallable(tc) == "L", "higher-class 7");
   
   TestCallable(String) clazz = TestCallable;

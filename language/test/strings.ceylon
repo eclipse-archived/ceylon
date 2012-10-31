@@ -25,6 +25,7 @@ shared void strings() {
     check("".size==0, "empty string size 2");
     check(!exists "".lastIndex, "empty string last index");
     check(!exists ""[0], "empty string first element exists");
+    check(!(is Identifiable hello), "string is Identifiable");
     
     check("abcd".size==4, "string size 3");
     
@@ -33,7 +34,7 @@ shared void strings() {
     check(hello.span(1,null)=="ello", "string span 2");
     check(hello.span(1,hello.size)=="ello", "string span 3");
     check(hello.span(1,10)=="ello", "string span 4");
-    check(hello.span(2,1)=="", "string span 5");
+    check(hello.span(2,1)=="le", "string span 5");
     check(hello.span(20,10)=="", "string span 6");
     check(hello.segment(1,3)=="ell", "string segment 1");
     check(hello.segment(1,5)=="ello", "string segment 2");

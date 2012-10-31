@@ -13,6 +13,7 @@ import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Collection;
 import ceylon.language.Comparison;
+import ceylon.language.Correspondence$impl;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
@@ -385,4 +386,15 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
         return map$impl.mapItems(mapping);
     }
 
+    @Override
+    @Ignore
+    public Correspondence$impl<java.lang.Object, ? extends Item> $ceylon$language$Correspondence$impl() {
+        return corr$impl;
+    }
+
+    @Override
+    @Ignore
+    public Correspondence$impl<? super java.lang.Object, ? extends Item>.Items Items$new(Sequence<? extends java.lang.Object> keys) {
+        return corr$impl.Items$new(keys);
+    }
 }
