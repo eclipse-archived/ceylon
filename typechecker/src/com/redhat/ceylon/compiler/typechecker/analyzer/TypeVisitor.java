@@ -336,8 +336,8 @@ public class TypeVisitor extends Visitor {
     private boolean isNonimportable(Package pkg, String name) {
         return pkg.getQualifiedNameString().equals("java.lang") &&
         		("Object".equals(name) ||
-                 "Exception".equals(name) /*||
-                 "Throwable".equals(name)*/);
+                 "Throwable".equals(name) /*||
+                 "Exception".equals(name)*/);
     }
 
     private void addImport(Tree.ImportMemberOrType member, ImportList il,
@@ -877,6 +877,8 @@ public class TypeVisitor extends Visitor {
             that.addError("missing types in satisfies");
         }
         boolean foundTypeParam = false;
+        boolean foundClass = false;
+        boolean foundInterface = false;
         for (Tree.StaticType st: that.getTypes()) {
         	if (!(st instanceof Tree.SimpleType)) {
         		st.addError("satisfied type must be an interface");  //actually this case never occurs due to grammar
@@ -899,11 +901,23 @@ public class TypeVisitor extends Visitor {
                     st.addError("directly satisfies Callable");
                 }
                 if (td instanceof TypeParameter) {
-                	if (std instanceof TypeParameter) {
-                		if (foundTypeParam) {
-                            st.addWarning("multiple type parameter upper bounds are not yet supported");
+            		if (foundTypeParam) {
+            			st.addWarning("type parameter upper bounds are not yet supported in combination with other bounds");
+            		}
+            		else if (std instanceof TypeParameter) {
+                		if (foundClass||foundInterface) {
+                			st.addWarning("type parameter upper bounds are not yet supported in combination with other bounds");
                 		}
                 		foundTypeParam = true;
+                	}
+                	if (std instanceof Class) {
+                		if (foundClass) {
+                            st.addWarning("multiple class upper bounds are not yet supported");
+                		}
+                		foundClass = true;
+                	}
+                	if (std instanceof Interface) {
+                		foundInterface = true;
                 	}
                 } 
                 else {
@@ -997,18 +1011,18 @@ public class TypeVisitor extends Visitor {
                             //TODO: error?!
                         }
                     }
-                    else {
-                        list.add(type);
-                    }
+                    list.add(type);
                     /*if (type.getDeclaration() instanceof Interface) {
                         st.addWarning("interface cases are not yet supported");
                     }*/
                 }
             }
             if (!list.isEmpty()) {
-                if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
-                    that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
-                }
+            	if (list.size()!=1 || !list.get(0).getDeclaration().isSelfType()) {
+            		if (td instanceof ClassOrInterface && !((ClassOrInterface) td).isAbstract()) {
+            			that.addError("non-abstract class has enumerated subtypes: " + td.getName(), 905);
+            		}
+            	}
                 td.setCaseTypes(list);
             }
         }

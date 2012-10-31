@@ -37,6 +37,10 @@ public abstract class TypeDeclaration extends Declaration
         return !typeParameters.isEmpty();
     }
 
+    public boolean isSelfType() {
+    	return false;
+    }
+
     public List<TypeParameter> getTypeParameters() {
         return typeParameters;
     }
@@ -46,12 +50,13 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public ClassOrInterface getExtendedTypeDeclaration() {
-        if (getExtendedType()==null || 
-        		getExtendedType().getDeclaration() instanceof UnknownType) {
+        ProducedType et = getExtendedType();
+		if (et==null || 
+        		!(et.getDeclaration() instanceof ClassOrInterface)) {
             return null;
         }
         else {
-            return (ClassOrInterface) getExtendedType().getDeclaration();
+            return (ClassOrInterface) et.getDeclaration();
         }
     }
 

@@ -29,9 +29,9 @@ void testGraph() {
             given Node satisfies Graph<G,Node,Edge>.Node 
             given Edge satisfies Graph<G,Node,Edge>.Edge 
             given G satisfies Graph<G,Node,Edge> {
-        Node n1 = g.Node();
-        Node n2 = g.Node();
-        return g.Edge(n1,n2);
+        Node n1 = g.Node() of Node;
+        Node n2 = g.Node() of Node;
+        return g.Edge(n1,n2) of Edge;
     }
     
     //TODO: get rid of explicit type args once we 
@@ -39,6 +39,6 @@ void testGraph() {
     OnOffGraph.Edge e = method2<OnOffGraph,OnOffGraph.Node,OnOffGraph.Edge>(OnOffGraph());
     
     Graph<BasicGraph, BasicGraph.Node, BasicGraph.Edge>.Node nn = BasicGraph().Node();
-    BasicGraph.Node nnn = nn;
+    BasicGraph.Node nnn = nn of BasicGraph.Node;
     
 }

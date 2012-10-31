@@ -10,7 +10,7 @@ interface Subject<S,O> of S
 
     shared void notify() { 
         for (o in observers) { 
-            o.update(this); 
+            o.update(this of S); 
         }
     }
     

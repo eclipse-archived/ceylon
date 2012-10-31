@@ -22,7 +22,7 @@ abstract class Graph<N,E>()
          implementation of the family"
     shared formal class Node() of N {
         shared default Boolean touches(E edge) {
-            return edge.touches(this);
+            return edge.touches(this of N);
         }
     }
 

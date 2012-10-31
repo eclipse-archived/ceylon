@@ -2,7 +2,9 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactlyOneOf;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static java.util.Collections.singletonMap;
 
@@ -400,17 +402,17 @@ public class RefinementVisitor extends Visitor {
         ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
         if (refinedMember.getDeclaration() instanceof TypedDeclaration &&
                 ((TypedDeclaration) refinedMember.getDeclaration()).isVariable()) {
-            checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
+            checkRefinedMemberTypeExactly(refiningMember, refinedMember, that,
                     "type of member must be exactly the same as type of variable refined member: " + 
-                            message(refined));
+                    message(refined));
         }
         else {
             //note: this version checks return type and parameter types in one shot, but the
             //resulting error messages aren't as friendly, so do it the hard way instead!
             //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
-            checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
+            checkRefinedMemberTypeAssignable(refiningMember, refinedMember, that,
                     "type of member must be assignable to type of refined member: " + 
-                            message(refined));
+                    message(refined));
         }
         if (dec instanceof Functional && refined instanceof Functional) {
            List<ParameterList> refiningParamLists = ((Functional) dec).getParameterLists();
@@ -425,6 +427,35 @@ public class RefinementVisitor extends Visitor {
                        refiningParamLists.get(i), refinedParamLists.get(i));
            }
         }
+    }
+
+    private void checkRefinedMemberTypeAssignable(ProducedReference refiningMember, ProducedReference refinedMember, 
+            Tree.Declaration that, String message) {
+        if(hasUncheckedNullType(refinedMember)){
+            ProducedType optionalRefinedType = refiningMember.getDeclaration().getUnit().getOptionalType(refinedMember.getType());
+            checkAssignableToOneOf(refiningMember.getType(), refinedMember.getType(), optionalRefinedType, that,
+                    message);
+        }else{
+            checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
+                    message);
+        }
+    }
+
+    private void checkRefinedMemberTypeExactly(ProducedReference refiningMember, ProducedReference refinedMember, 
+            Tree.Declaration that, String message) {
+        if(hasUncheckedNullType(refinedMember)){
+            ProducedType optionalRefinedType = refiningMember.getDeclaration().getUnit().getOptionalType(refinedMember.getType());
+            checkIsExactlyOneOf(refiningMember.getType(), refinedMember.getType(), optionalRefinedType, that,
+                    message);
+        }else{
+            checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
+                    message);
+        }
+    }
+
+    private boolean hasUncheckedNullType(ProducedReference member) {
+        return member.getDeclaration() instanceof TypedDeclaration 
+                && ((TypedDeclaration)member.getDeclaration()).hasUncheckedNullType();
     }
 
     private void checkUnshared(Tree.Declaration that, Declaration dec) {
@@ -485,14 +516,29 @@ public class RefinementVisitor extends Visitor {
                         }
                         else {
                             //TODO: consider type parameter substitution!!!
-                            checkIsExactly(parameterType, refinedParameterType, type, "type of parameter " + 
-                                    param.getName() + " is different to type of corresponding parameter " +
-                                    rparam.getName() + " of refined member");
+                            checkIsExactlyForInterop(refinedMember, 
+                                    refinedParams.isNamedParametersSupported(), 
+                                    parameterType, refinedParameterType, type,
+                                    "type of parameter " + 
+                                            param.getName() + " is different to type of corresponding parameter " +
+                                            rparam.getName() + " of refined member");
                         }
                     }
                 }
                 param.setDefaulted(rparam.isDefaulted());
             }
+        }
+    }
+
+    private void checkIsExactlyForInterop(ProducedReference refinedMember, boolean isCeylon,  
+            ProducedType parameterType, ProducedType refinedParameterType, Tree.Type type, String message) {
+        if(isCeylon){
+            // it must be a Ceylon method
+            checkIsExactly(parameterType, refinedParameterType, type, message);
+        }else{
+            // we're refining a Java method
+            ProducedType refinedDefiniteType = refinedMember.getDeclaration().getUnit().getDefiniteType(refinedParameterType);
+            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, type, message);
         }
     }
 

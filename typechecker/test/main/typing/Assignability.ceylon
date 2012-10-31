@@ -384,11 +384,11 @@ class Assignability() {
     
     class Invariant<T>(T t) {}
     Ordinal<Integer> ii1 = +1;
-    Integer ii2 = ii1;
+    Integer ii2 = ii1 of Integer;
     Ordinal<Integer> ii3 = ii2;
     Invariant<Ordinal<Integer>> iii1 = Invariant(ii1);
-    Invariant<Integer> iii2 = iii1;
-    Invariant<Ordinal<Integer>> iii3 = iii2;
+//    Invariant<Integer> iii2 = iii1;
+//    Invariant<Ordinal<Integer>> iii3 = iii2;
     
     Void v = null;
     if (exists v) {

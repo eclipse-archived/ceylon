@@ -91,35 +91,21 @@ public class Module
     
     public Map<String, DeclarationWithProximity> getAvailableDeclarations(String startingWith) {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
-		int jdkResults = 0;
     	for (Package p: getAllPackages()) {
     		String moduleName = p.getModule().getNameAsString();
-			boolean isJdk = isJdkModule(moduleName);
 			boolean isLanguageModule = moduleName.equals("ceylon.language");
 			String packageName = p.getNameAsString();
 			boolean isDefaultPackage = packageName.isEmpty();
-			if ((!isJdk || (jdkResults<10 && isJdkPackage(moduleName, packageName))) && 
-					!isDefaultPackage) {
+			if (!isDefaultPackage) {
     			for (Declaration d: p.getMembers()) {
-    				if (isJdk && jdkResults>=10) break;
     				try {
     					if (isResolvable(d) && d.isShared() && 
     							!isOverloadedVersion(d) &&
     							isNameMatching(startingWith, d)) {
-    						int prox;
-    						if (isJdk) {
-    							prox=500;
-    						}
-    						else if (isLanguageModule) {
-    							prox=200; 
-    						}
-    						else {
-    							prox=250;
-    						}
     						result.put(d.getQualifiedNameString(), 
-    								new DeclarationWithProximity(d, prox, 
+    								new DeclarationWithProximity(d, 
+    										isLanguageModule ? 200 : 250, 
     										!isLanguageModule));
-    						if (isJdk) jdkResults++;
     					}
     				}
     				catch (Exception e) {}

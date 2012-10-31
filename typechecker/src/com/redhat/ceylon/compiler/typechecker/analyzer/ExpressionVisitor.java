@@ -19,6 +19,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Arrays.asList;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -496,20 +497,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private boolean hasUncheckedNulls(Tree.Term term) {
-        if (term instanceof Tree.MemberOrTypeExpression) {
-            Declaration d = ((Tree.MemberOrTypeExpression) term).getDeclaration();
-            return d instanceof TypedDeclaration && 
-                    ((TypedDeclaration) d).hasUncheckedNullType();
-        }
-        else if (term instanceof Tree.InvocationExpression) {
-            return hasUncheckedNulls(((Tree.InvocationExpression) term).getPrimary());
-        }
-        else {
-            return false;
-        }
-    }
-
     private void checkOptional(ProducedType t, Tree.Term term, Node n) {
         /*if (t==null) {
             n.addError("expression must be of optional type: type not known");
@@ -2504,6 +2491,27 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(unit.getBooleanDeclaration().getType());
     }
     
+    private void visitOfOperator(Tree.OfOp that) {
+        Tree.Type rt = that.getType();
+        if (rt!=null) {
+            ProducedType t = rt.getTypeModel();
+            if (t!=null) {
+                that.setTypeModel(t);
+                if (that.getTerm()!=null) {
+                    if (that.getTerm()!=null) {
+                        ProducedType pt = that.getTerm().getTypeModel();
+                        if (pt!=null) {
+                            if (!t.covers(pt)) {
+                            	that.addError("specified type does not cover the cases of the operand expression: " +
+                            			t.getProducedTypeName() + " does not cover " + pt.getProducedTypeName());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private void visitIsOperator(Tree.IsOp that) {
         /*checkAssignable( type(that), 
                 getOptionalType(getObjectDeclaration().getType()), 
@@ -2540,7 +2548,11 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         ProducedType lhst = leftType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkAssignable(rhst, lhst, that.getRightTerm(), 
+            ProducedType leftHandType = lhst;
+            // allow assigning null to java properties that could after all be null
+            if(hasUncheckedNulls(that.getLeftTerm()))
+                leftHandType = unit.getOptionalType(leftHandType);
+            checkAssignable(rhst, leftHandType, that.getRightTerm(), 
                     "assigned expression must be assignable to declared type", 
                     2100);
         }
@@ -2727,6 +2739,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IsOp that) {
         super.visit(that);
         visitIsOperator(that);
+    }
+        
+    @Override public void visit(Tree.OfOp that) {
+        super.visit(that);
+        visitOfOperator(that);
     }
         
     @Override public void visit(Tree.Extends that) {
@@ -3856,7 +3873,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkSelfTypes(Node that, TypeDeclaration td, ProducedType type) {
+    private void checkSelfTypes(Tree.StaticType that, TypeDeclaration td, ProducedType type) {
         if (!(td instanceof TypeParameter)) { //TODO: is this really ok?!
             List<TypeParameter> params = type.getDeclaration().getTypeParameters();
             List<ProducedType> args = type.getTypeArgumentList();
@@ -3874,10 +3891,13 @@ public class ExpressionVisitor extends Visitor {
                         TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName(), null, false);
                         at = mtd==null ? null : mtd.getType();
                     }
-                    if (at!=null) {
-                        checkAssignable(at, arg, std, that,
-                                "type argument does not satisfy self type constraint on type parameter " + 
-                                    param.getName() + " of " + type.getDeclaration().getName());
+                    if (at!=null && !at.isSubtypeOf(arg) && 
+                    		!(td.getSelfType()!=null && 
+                    			td.getSelfType().isExactly(arg))) {
+                        that.addError("type argument does not satisfy self type constraint on type parameter " +
+                                param.getName() + " of " + type.getDeclaration().getName() + ": " +
+                        		arg.getProducedTypeName() + " is not a supertype or self type of " + 
+                                td.getName());
                     }
                 }
             }
@@ -3890,6 +3910,10 @@ public class ExpressionVisitor extends Visitor {
             if (!type.isExactly(supertype)) {
                 TypeDeclaration std = supertype.getDeclaration();
                 if (std.getCaseTypes()!=null && !std.getCaseTypes().isEmpty()) {
+                	if (std.getCaseTypes().size()==1 && 
+                			std.getCaseTypeDeclarations().get(0).isSelfType()) {
+                		continue;
+                	}
                     List<ProducedType> types=new ArrayList<ProducedType>();
                     for (ProducedType ct: std.getCaseTypes()) {
                         ProducedType cst = type.getSupertype(ct.getDeclaration());

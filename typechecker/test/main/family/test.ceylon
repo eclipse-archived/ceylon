@@ -27,9 +27,9 @@ void testGraph() {
     Edge method2<Node,Edge>(Graph<Node, Edge> g) 
             given Node satisfies Graph<Node,Edge>.Node 
             given Edge satisfies Graph<Node,Edge>.Edge {
-        Node n1 = g.Node();
-        Node n2 = g.Node();
-        return g.Edge(n1,n2);
+        Node n1 = g.Node() of Node;
+        Node n2 = g.Node() of Node;
+        return g.Edge(n1,n2) of Edge;
     }
     
     OnOffGraph.Edge e2 = method2(OnOffGraph());
@@ -38,9 +38,9 @@ void testGraph() {
             given ActualGraph satisfies Graph<Node,Edge> 
             given Node satisfies ActualGraph.Node 
             given Edge satisfies ActualGraph.Edge {
-    	Node n1 = g.Node();
-    	Node n2 = g.Node();
-        return g.Edge(n1,n2);
+    	Node n1 = g.Node() of Node;
+    	Node n2 = g.Node() of Node;
+        return g.Edge(n1,n2) of Edge;
     }
 
     OnOffGraph.Edge e3 = method3(OnOffGraph());
@@ -56,18 +56,18 @@ void testGraph() {
     }*/
 
     Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn = BasicGraph().Node();
-    BasicGraph.Node nnn1 = nn;
-    @error OnOffGraph.Node nnn2 = nn;
-    @error Graph<OnOffGraph.Node, OnOffGraph.Edge>.Node nn3 = nnn1;
-    Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn2 = nnn1;
+    BasicGraph.Node nnn1 = nn of BasicGraph.Node;
+    @error OnOffGraph.Node nnn2 = nn of OnOffGraph.Node;
+    @error Graph<OnOffGraph.Node, OnOffGraph.Edge>.Node nn3 = nnn1 of Graph<OnOffGraph.Node, OnOffGraph.Edge>;
+    Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn2 = nnn1 of Graph<BasicGraph.Node, BasicGraph.Edge>.Node;
     
     Graph<OnOffGraph.Node, OnOffGraph.Edge>.Edge ee = OnOffGraph().Edge(on1, on2);
-    @error BasicGraph.Edge eee1 = ee;
-    OnOffGraph.Edge eee2 = ee;
+    @error BasicGraph.Edge eee1 = ee of BasicGraph.Edge;
+    OnOffGraph.Edge eee2 = ee of OnOffGraph.Edge;
     Graph<OnOffGraph.Node, OnOffGraph.Edge>.Edge ee3 = eee2;
     @error Graph<BasicGraph.Node, BasicGraph.Edge>.Edge ee2 = eee2;
     
     Graph<BasicGraph.Node, BasicGraph.Edge> gbg = BasicGraph();
-    BasicGraph.Node bgn = gbg.Node();
-    BasicGraph.Edge bge = gbg.Edge(bgn,bgn);
+    BasicGraph.Node bgn = gbg.Node() of BasicGraph.Node;
+    BasicGraph.Edge bge = gbg.Edge(bgn,bgn) of BasicGraph.Edge;
 }

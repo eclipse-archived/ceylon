@@ -53,6 +53,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     	return false;
     }
     
+    @Override
     public boolean isSelfType() {
         return selfTypedDeclaration!=null;
     }
@@ -131,5 +132,5 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public boolean isDeclaredVoid() {
         return false;
     }
-
+    
 }

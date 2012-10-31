@@ -13,7 +13,7 @@ abstract class Graph<G,N,E>() of G
 
     shared formal class Node() of N {
         shared default Boolean touches(E edge) {
-            return edge.touches(this);
+            return edge.touches(this of N);
         }
     }
 
