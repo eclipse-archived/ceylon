@@ -1,4 +1,5 @@
 <project name="Ceylon module-resolver module" default="publish" basedir=".">
+    <property file="../ceylon-common/common-build.properties"/>
     <property file="build.properties"/>
 
     <!-- Set build directories for all formats. -->
@@ -43,11 +44,11 @@
 
     <!-- module archives -->
     <property name="ceylon.module-resolver.dir"
-              value="${module.module-resolver.dir}/${module.module-resolver.version}"/>
+              value="${module.module-resolver.dir}/${module.com.redhat.ceylon.module-resolver.version}"/>
     <property name="ceylon.module-resolver.src"
-              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.module-resolver.version}.src"/>
+              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.src"/>
     <property name="ceylon.module-resolver.jar"
-              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.module-resolver.version}.jar"/>
+              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
     <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
     <property name="ceylon.module-resolver.dist" value="${build.dist}/${ceylon.module-resolver.dir}"/>
 
@@ -56,9 +57,9 @@
     <property name="ceylon.maven-support.dist" value="${build.dist}/${ceylon.maven-support.dir}"/>
 
     <property name="ceylon.common.dir"
-              value="${module.common.dir}/${module.common.version}"/>
+              value="${module.common.dir}/${module.com.redhat.ceylon.common.version}"/>
     <property name="ceylon.common.jar"
-              value="${ceylon.common.dir}/${module.common.name}-${module.common.version}.jar"/>
+              value="${ceylon.common.dir}/${module.common.name}-${module.com.redhat.ceylon.common.version}.jar"/>
     <property name="ceylon.common.lib" value="${ceylon.repo.dir}/${ceylon.common.jar}"/>
 
     <path id="compiler.classpath">
@@ -111,7 +112,7 @@
         <copy
                 overwrite="true"
                 file="${build.dist}/${ceylon.module-resolver.jar}"
-                tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.module-resolver-${module.module-resolver.version}-ide.jar"/>
+                tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}-ide.jar"/>
     </target>
 
     <target name="dist"
