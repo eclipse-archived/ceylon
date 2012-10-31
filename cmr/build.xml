@@ -111,7 +111,7 @@
         <copy
                 overwrite="true"
                 file="${build.dist}/${ceylon.module-resolver.jar}"
-                tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.module-resolver-0.4-ide.jar"/>
+                tofile="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/lib/com.redhat.ceylon.module-resolver-${module.module-resolver.version}-ide.jar"/>
     </target>
 
     <target name="dist"
