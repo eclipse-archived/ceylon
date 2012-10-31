@@ -81,6 +81,21 @@ shared class StubClass(
          <i>Lorem ipsum dolor sit amet, consectetur...</i>"
     shared void methodWithCodeExamples() {}
     
+    doc "Test automatic syntax highlighter.
+    
+             shared default Boolean subset(Set set) {
+                 for (element in this) {
+                     if (!set.contains(element)) {
+                         return false;
+                     }
+                 }
+                 return true;
+             }
+         
+         <i>Lorem ipsum dolor sit amet, consectetur...</i>"
+    shared void methodWithCodeExamplesAutomaticSyntaxHighlighter() {}
+    
+    
     doc "Wiki-style links:
     
          1. StubClass = [[StubClass]]
