@@ -1,4 +1,16 @@
 /*
+ * AUTOMATIC SYNTAX HIGHLIGHTING FOR PRE TAGS 
+ */
+$(".doc pre").each(function() {
+	var pre = $(this);
+	if( !pre.hasClass("brush:") ) {
+		pre.addClass("brush: ceylon");
+		pre.hide();
+	}
+});
+
+
+/*
  * SYNTAX HIGHLIGHTER
  */
 $(function(){
@@ -30,6 +42,7 @@ $(function(){
 	}
 });
 
+
 /*
  * COLLAPSIBLE TABLE
  */
@@ -50,7 +63,6 @@ $("table").each(function() {
 		tbody.toggle();
 	});
 });
-
 
 
 /*
