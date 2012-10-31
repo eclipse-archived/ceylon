@@ -368,7 +368,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ProducedType selfType = exprType.getDeclaration().getSelfType();
         if (selfType != null) {
             if (selfType.isExactly(exprType) // self-type within its own scope
-                    || !exprType.isExactly(expectedType, false)) { // XXX Is this right?
+                    || !exprType.isExactly(expectedType)) {
                 final ProducedType castType = findTypeArgument(exprType, selfType.getDeclaration());
                 // the fact that the original expr was or not boxed doesn't mean the current result is boxed or not
                 // as boxing transformations occur before this method
