@@ -36,5 +36,10 @@ Tuple$proto.span = function(from, to) {
     return from<=end ? this.segment(from,end-from+1) : this.segment(end,from-end+1).getReversed().getSequence();
 }
 Tuple$proto.getClone = function() { return this; }
+Tuple$proto.getString = function() {
+    var sb = StringBuilder();
+    sb.appendAll("Tuple(", this.f$.getString(), ",", this.r$.getString(), ")");
+    return sb.getString();
+}
 
 exports.Tuple=Tuple;
