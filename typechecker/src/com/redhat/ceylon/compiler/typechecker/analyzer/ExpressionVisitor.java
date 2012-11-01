@@ -3276,12 +3276,14 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Tuple that) {
         super.visit(that);
-        ProducedType result = unit.getUnitDeclaration().getType();
+        ProducedType result = unit.getEmptyDeclaration().getType();
+        ProducedType ut = unit.getBottomDeclaration().getType();
         List<Expression> es = that.getExpressions();
 		for (int i=es.size()-1; i>=0; i--) {
 			ProducedType et = es.get(i).getTypeModel();
+			ut = unionType(ut, et, unit);
 			result = unit.getTupleDeclaration().getProducedType(null, 
-					asList(et, result));
+					asList(ut, et, result));
 		}
         that.setTypeModel(result);
     }

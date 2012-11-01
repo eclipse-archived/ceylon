@@ -7,6 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArgume
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import static java.util.Arrays.asList;
 
@@ -428,12 +429,15 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-        ProducedType result = unit.getUnitDeclaration().getType();
+        ProducedType result = unit.getEmptyDeclaration().getType();
+        ProducedType ut = unit.getBottomDeclaration().getType();
 		List<StaticType> ets = that.getElementTypes();
 		for (int i=ets.size()-1; i>=0; i--) {
 			Tree.StaticType st = ets.get(i);
-            result = unit.getTupleDeclaration().getProducedType(null, 
-            				asList(st.getTypeModel(), result));
+            ProducedType et = st.getTypeModel();
+			ut = unionType(ut, et, unit);
+			result = unit.getTupleDeclaration().getProducedType(null, 
+            				asList(ut, et, result));
         }
         that.setTypeModel(result);
     }

@@ -273,10 +273,6 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Callable");
     }
     
-    public Interface getUnitDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Unit");
-    }
-    
     public Interface getCastableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Castable");
     }
