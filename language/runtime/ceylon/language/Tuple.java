@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -395,7 +396,7 @@ public class Tuple<Element, First, Rest>
 	public List<? extends Element> segment(Integer from, long length) {
 	    long _from = from.value;
         if (_from <= 0) {
-            return length==1 ? new Singleton<Element>(first)
+            return length==1 ? new ArraySequence<Element>(first)
                 : rest.segment(Integer.instance(0),length+_from-1).withLeading(first);
         }
         return rest.segment(from.getPredecessor(),length);

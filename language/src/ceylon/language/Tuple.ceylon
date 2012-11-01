@@ -30,7 +30,7 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
     
     shared actual Element[] segment(Integer from, Integer length) {
         if (from<=0) {
-            return length==1 then Singleton(first)
+            return length==1 then {first}
                 else rest[0:length+from-1].withLeading(first);
         }
         return rest[from-1:length];
