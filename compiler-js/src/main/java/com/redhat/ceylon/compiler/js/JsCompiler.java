@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minidev.json.JSONObject;
+
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
@@ -22,7 +24,6 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.compiler.Options;
-import com.redhat.ceylon.compiler.SimpleJsonEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
@@ -186,10 +187,9 @@ public class JsCompiler {
                 }
             }
             //Then write it out
-            final SimpleJsonEncoder json = new SimpleJsonEncoder();
             for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
                 e.getValue().getWriter().write("var $$metamodel$$=");
-                json.encode(e.getValue().mmg.getModel(), e.getValue().getWriter());
+                e.getValue().getWriter().write(JSONObject.toJSONString(e.getValue().mmg.getModel()));
                 e.getValue().getWriter().write(";\n");
             }
 
