@@ -7,12 +7,12 @@ Float add(<Float,Float> floats=(1.0, 2.0)) {
 }
 
 void test() {
-    @type["Tuple<String,Tuple<Integer,Tuple<Float,Unit>>>"] 
+    @type["Tuple<String|Integer|Float,String,Tuple<Integer|Float,Integer,Tuple<Float,Float,Empty>>>"] 
     value tup = triple("hello", 0, 0.0);
     @type["String"] value first = tup.first;
     @type["Integer"] value second = tup.rest.first;
     @type["Float"] value third = tup.rest.rest.first;
-    @type["Unit"] value nuthin = tup.rest.rest.rest;
+    @type["Empty"] value nuthin = tup.rest.rest.rest;
     
     <String, String> hibye = ("hello", "goodbye");
     <String, String> fun() {
@@ -21,4 +21,5 @@ void test() {
     @type["String"] value hi = hibye.first;
     @type["String"] value bye = hibye.rest.first;
     add((1.0, 2.0));
+    Sequence<String> strings = hibye;
 }
