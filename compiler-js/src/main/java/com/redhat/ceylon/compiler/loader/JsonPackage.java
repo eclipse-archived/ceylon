@@ -479,6 +479,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             for (TypeParameter _tp : tparms) {
                 if (_tp.getName().equals(m.get(MetamodelGenerator.KEY_SELF_TYPE))) {
                     t.setSelfType(_tp.getType());
+                    _tp.setSelfTypedDeclaration(t);
                 }
             }
         }
