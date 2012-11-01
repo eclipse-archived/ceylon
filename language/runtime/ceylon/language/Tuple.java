@@ -1,7 +1,5 @@
 package ceylon.language;
 
-import ceylon.language.Correspondence$impl.Items;
-
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -25,7 +23,13 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @SatisfiedTypes("ceylon.language.Sequence<Element>")
 public class Tuple<Element, First, Rest> 
         implements Sequence<Element> {
-	
+
+    private final Iterable$impl<Element> iterable$impl = new Iterable$impl<Element>(this);
+    private final Sequence$impl<Element> sequence$impl = new Sequence$impl<Element>(this);
+    private final List$impl<Element> list$impl = new List$impl<Element>(this);
+    private final Correspondence$impl<Integer,Element> correspondence$impl = new Correspondence$impl<Integer,Element>(this);
+    private final Category$impl category$impl = new Category$impl(this);
+    private final Collection$impl<Element> collection$impl = new Collection$impl<Element>(this);
 	private final Element first;
 	private final List<Element> rest;
 	
@@ -50,20 +54,25 @@ public class Tuple<Element, First, Rest>
 	@Override
 	@Annotations(@Annotation("actual"))
 	public long getSize() {
-		return 0;
+		return list$impl.getSize();
 	}
 
 	@Override
 	@Annotations(@Annotation("actual"))
 	public boolean defines(Integer key) {
-		// TODO Auto-generated method stub
-		return false;
+		return correspondence$impl.defines(key);
 	}
 
 	@Override
 	@Annotations(@Annotation("actual"))
 	@TypeInfo("ceylon.language::Nothing|Element")
 	public Element item(Integer key) {
+	    final long idx = key.value;
+	    if (idx > 0) {
+            return rest.item(key.getPredecessor());
+	    } else if (idx == 0) {
+	        return first;
+	    }
 		return null;
 	}
 
@@ -71,48 +80,42 @@ public class Tuple<Element, First, Rest>
 	@Annotations(@Annotation("actual"))
 	@TypeInfo("ceylon.language::Iterator<Element>")
 	public Iterator<? extends Element> getIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return list$impl.getIterator();
 	}
 
 	@Override
 	@Annotations(@Annotation("actual"))
 	@TypeInfo("Element|ceylon.language.Nothing")
 	public Element findLast(Callable<? extends Boolean> selecting) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.findLast(selecting);
 	}
 
-	@Override
+	@Override @SuppressWarnings("rawtypes")
 	@Annotations(@Annotation("actual"))
 	@TypeParameters(@TypeParameter("Other"))
 	@TypeInfo("ceylon.language::Sequence<Element|Other>")
 	public <Other> Sequence withLeading(Other element) {
-		// TODO Auto-generated method stub
-		return null;
+		return list$impl.withLeading(element);
 	}
 
-	@Override
+	@Override @SuppressWarnings("rawtypes")
 	@Annotations(@Annotation("actual"))
 	@TypeParameters(@TypeParameter("Other"))
 	@TypeInfo("ceylon.language::Sequence<Element|Other>")
 	public <Other> Sequence withTrailing(Other element) {
-		// TODO Auto-generated method stub
-		return null;
+		return list$impl.withTrailing(element);
 	}
 
 	@Override
 	@Annotations(@Annotation("actual"))
 	public boolean getEmpty() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	@Annotations(@Annotation("actual"))
 	public boolean contains(java.lang.Object element) {
-		// TODO Auto-generated method stub
-		return false;
+		return collection$impl.contains(element);
 	}
 
 	@Override
@@ -121,8 +124,7 @@ public class Tuple<Element, First, Rest>
 	@TypeParameters(@TypeParameter("Result"))
 	public <Result> Iterable<? extends Result> map(
 			Callable<? extends Result> collecting) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.map(collecting);
 	}
 
 	@Override
@@ -130,8 +132,7 @@ public class Tuple<Element, First, Rest>
 	@TypeInfo("ceylon.language::Iterable<Element>")
 	public Iterable<? extends Element> filter(
 			Callable<? extends Boolean> selecting) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.filter(selecting);
 	}
 
 	@Override
@@ -140,97 +141,85 @@ public class Tuple<Element, First, Rest>
 	@TypeParameters(@TypeParameter("Result"))
 	public <Result> Result fold(Result initial,
 			Callable<? extends Result> accumulating) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.fold(initial, accumulating);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("Element|ceylon.language::Nothing")
 	public Element find(Callable<? extends Boolean> selecting) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.find(selecting);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Element>")
 	public List<? extends Element> select(Callable<? extends Boolean> selecting) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.select(selecting);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Boolean")
 	public boolean any(Callable<? extends Boolean> selecting) {
-		// TODO Auto-generated method stub
-		return false;
+		return iterable$impl.any(selecting);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Boolean")
 	public boolean every(Callable<? extends Boolean> selecting) {
-		// TODO Auto-generated method stub
-		return false;
+		return iterable$impl.every(selecting);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<Element>")
 	public Iterable<? extends Element> skipping(long skip) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.skipping(skip);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<Element>")
 	public Iterable<? extends Element> taking(long take) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.taking(take);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<Element>")
 	public Iterable<? extends Element> by(long step) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.by(step);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Integer")
 	public long count(Callable<? extends Boolean> selecting) {
-		// TODO Auto-generated method stub
-		return 0;
+		return iterable$impl.count(selecting);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
 	public Iterable<? extends Element> getCoalesced() {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.getCoalesced();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
 	public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.getIndexed();
 	}
 
-	@Override
+	@Override @SuppressWarnings("rawtypes")
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Iterable<Element|Other>")
 	@TypeParameters(@TypeParameter("Other"))
 	public <Other> Iterable chain(Iterable<? extends Other> other) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.chain(other);
 	}
 
 	@Override
@@ -239,187 +228,172 @@ public class Tuple<Element, First, Rest>
 	@TypeInfo("ceylon.language::Map<Grouping,ceylon.language::Sequence<Element>>")
 	public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(
 			Callable<? extends Key> grouping) {
-		// TODO Auto-generated method stub
-		return null;
+		return iterable$impl.group(grouping);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
-	public boolean containsEvery(
-			@Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsEvery(@Sequenced @Name("elements")
+	        @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
+			Iterable<?> elements) {
+		return category$impl.containsEvery(elements);
 	}
 
 	@Override
 	@Ignore
 	public boolean containsEvery() {
-		// TODO Auto-generated method stub
-		return false;
+		return category$impl.containsEvery();
 	}
 
 	@Override
 	@Ignore
 	public Iterable<?> containsEvery$elements() {
-		// TODO Auto-generated method stub
-		return null;
+		return category$impl.containsEvery$elements();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
-	public boolean containsAny(
-			@Sequenced @Name("elements") @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>") Iterable<?> elements) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsAny(@Sequenced @Name("elements")
+	        @TypeInfo("ceylon.language::Iterable<ceylon.language::Object>")
+	        Iterable<?> elements) {
+		return category$impl.containsAny(elements);
 	}
 
 	@Override
 	@Ignore
 	public boolean containsAny() {
-		// TODO Auto-generated method stub
-		return false;
+		return category$impl.containsAny();
 	}
 
 	@Override
 	@Ignore
 	public Iterable<?> containsAny$elements() {
-		// TODO Auto-generated method stub
-		return null;
+		return category$impl.containsAny$elements();
 	}
 
 	@Override
-	@Annotations(@Annotation("formal"))
+	@Annotations(@Annotation("actual"))
 	public Collection<? extends Element> getClone() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	public Category getKeys() {
-		// TODO Auto-generated method stub
-		return null;
+		return correspondence$impl.getKeys();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	public boolean definesEvery(Iterable<? extends Integer> keys) {
-		// TODO Auto-generated method stub
-		return false;
+		return correspondence$impl.definesEvery(keys);
 	}
 
 	@Override
 	@Ignore
 	public boolean definesEvery() {
-		// TODO Auto-generated method stub
-		return false;
+		return correspondence$impl.definesEvery();
 	}
 
 	@Override
 	@Ignore
 	public Iterable<? extends Integer> definesEvery$keys() {
-		// TODO Auto-generated method stub
-		return null;
+		return correspondence$impl.definesEvery$keys();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	public boolean definesAny(Iterable<? extends Integer> keys) {
-		// TODO Auto-generated method stub
-		return false;
+		return correspondence$impl.definesAny(keys);
 	}
 
 	@Override
 	@Ignore
 	public boolean definesAny() {
-		// TODO Auto-generated method stub
-		return false;
+		return correspondence$impl.definesAny();
 	}
 
 	@Override
 	@Ignore
 	public Iterable<? extends Integer> definesAny$keys() {
-		// TODO Auto-generated method stub
-		return null;
+		return correspondence$impl.definesAny$keys();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	@TypeInfo("ceylon.language::Empty|ceylon.language::Sequence<Item|ceylon.language::Nothing>")
 	public List<? extends Element> items(Iterable<? extends Integer> keys) {
-		// TODO Auto-generated method stub
-		return null;
+		return correspondence$impl.items(keys);
 	}
 
 	@Override
 	@Ignore
 	public Iterable<? extends Element> items() {
-		// TODO Auto-generated method stub
-		return null;
+		return correspondence$impl.items();
 	}
 
 	@Override
 	@Ignore
 	public Iterable<? extends Integer> items$keys() {
-		// TODO Auto-generated method stub
-		return null;
+		return correspondence$impl.items$keys();
 	}
 
 	@Override
 	@Ignore
 	public Correspondence$impl<? super Integer, ? extends Element> $ceylon$language$Correspondence$impl() {
-		// TODO Auto-generated method stub
-		return null;
+		return correspondence$impl;
 	}
 
 	@Override
 	@Ignore
-	public Items Items$new(Sequence<? extends Integer> keys) {
-		// TODO Auto-generated method stub
-		return null;
+	public Correspondence$impl<? super Integer, ? extends Element>.Items Items$new(Sequence<? extends Integer> keys) {
+		return correspondence$impl.Items$new(keys);
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	public List<? extends Element> span(Integer from, Integer to) {
-		// TODO Auto-generated method stub
-		return null;
+	    long end = to==null ? getSize() : to.value;
+	    long _from = from.value;
+        return _from<=end ? this.segment(from,end-_from+1)
+                : this.segment(Integer.instance(end),_from-end+1).getReversed().getSequence();
 	}
 
-	@Override
+    @Override @SuppressWarnings("unchecked")
 	@Annotations(@Annotation("default"))
 	public List<? extends Element> segment(Integer from, long length) {
-		// TODO Auto-generated method stub
-		return null;
+	    long _from = from.value;
+        if (_from <= 0) {
+            return length==1 ? new Singleton<Element>(first)
+                : rest.segment(Integer.instance(0),length+_from-1).withLeading(first);
+        }
+        return rest.segment(from.getPredecessor(),length);
 	}
 
 	@Override
 	@Annotations(@Annotation("actual"))
 	@TypeInfo("ceylon.language::Integer")
 	public Integer getLastIndex() {
-		// TODO Auto-generated method stub
-		return null;
+	    Integer li = rest.getLastIndex();
+		return li == null ? Integer.instance(0) : li.getSuccessor();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
 	public Element getLast() {
-		// TODO Auto-generated method stub
-		return null;
+		return sequence$impl.getLast();
 	}
 
-	@Override
+    @Override @SuppressWarnings("unchecked")
 	@Annotations(@Annotation("actual"))
 	public Sequence<? extends Element> getReversed() {
-		// TODO Auto-generated method stub
-		return null;
+		return rest.getReversed().withTrailing(first);
 	}
 
 	@Override
 	@Annotations(@Annotation("actual"))
 	public Sequence<? extends Element> getSequence() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
 	@Override
@@ -427,8 +401,7 @@ public class Tuple<Element, First, Rest>
 	@TypeInfo("ceylon.language::Sequence<Element>")
 	public Sequence<? extends Element> sort(
 			Callable<? extends Comparison> comparing) {
-		// TODO Auto-generated method stub
-		return null;
+		return sequence$impl.sort(comparing);
 	}
 
 	@Override
@@ -437,8 +410,7 @@ public class Tuple<Element, First, Rest>
 	@TypeInfo("ceylon.language::Sequence<Result>")
 	public <Result> Sequence<? extends Result> collect(
 			Callable<? extends Result> collecting) {
-		// TODO Auto-generated method stub
-		return null;
+	    return sequence$impl.collect(collecting);
 	}
 
 }
