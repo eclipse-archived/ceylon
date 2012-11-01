@@ -1,45 +1,43 @@
-shared interface TupleOrUnit of Unit|Tuple<Void,TupleOrUnit> {}
-
-shared interface Unit of unit satisfies TupleOrUnit {}
-
-shared object unit extends Object() satisfies Unit {
-
-    shared actual String string { 
-        return "()"; 
-    }
-    
-    shared actual Boolean equals(Object that) {
-        return that is Unit;
-    }
-    
-    shared actual Integer hash { 
-        return 0; 
-    }
-    
-}
-
-shared class Tuple<out First, out Rest> (first, rest)
+shared class Tuple<out Element, out First, out Rest>(first, rest)
         extends Object()
-        satisfies TupleOrUnit
-        given Rest satisfies TupleOrUnit {
+        satisfies Sequence<Element>
+        given Rest of Empty|Sequence<Element> {
         
-    shared First first;
-    shared Rest rest;
+    shared actual First&Element first;
+    shared actual Rest&Element[] rest;
     
-    shared actual String string { 
-        return "(" first?.string else "null" ", " rest.string[1...] "";
+    shared actual Element? item(Integer index) {
+        switch (index<=>0)
+        case (smaller) { return null; }
+        case (equal) { return first; }
+        case (larger) { return rest.item(index-1); }
     }
     
-    shared actual Boolean equals(Object that) {
-        throw;
-        //if (is Tuple<Void,TupleOrUnit> that) {
-        //    return first==that.first && rest==that.rest;
-        //}
-        //else {
-        //    return false;
-        //}
+    shared actual Integer lastIndex {
+        if (exists restLastIndex = rest.lastIndex) {
+            return restLastIndex+1;
+        }
+        else {
+            return 0;
+        }
     }
     
-    shared actual Integer hash = 0;//(31 + first.hash) * 31 + rest.hash;
+    shared actual Sequence<Element> reversed {
+        return rest.reversed.withTrailing(first);
+    }
     
+    shared actual Element[] segment(Integer from, Integer length) {
+        return from<=0 then rest[0:length+from-1].withLeading(first) 
+                else rest[from-1:length];
+    }
+    
+    shared actual Element[] span(Integer from, Integer? to) {
+        value end = to else size;
+        return from<=end then this[from:end-from+1] 
+                else this[end:from-end+1].reversed.sequence;
+    }
+    
+    shared actual Sequence<Element> clone { 
+        return this; 
+    }
 }
