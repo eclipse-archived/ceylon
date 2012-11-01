@@ -9,5 +9,6 @@ shared void test() {
   test_concrete_members();
   testMultipleInheritance();
   bug135();
+  testSelfTypes();
   results();
 }
