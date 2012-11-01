@@ -27,7 +27,7 @@ void testProcess() {
     check(process.nanoseconds > 0, "process.milliseconds");
 
     //language object
-    check(language.version=="0.4", "language.version");
+    check(language.version=="0.5", "language.version");
     check(language.majorVersion==0, "language.majorVersion");
     check(language.minorVersion==4, "language.minorVersion");
     check(language.releaseVersion==0, "language.releaseVersion");
