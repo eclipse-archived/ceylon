@@ -1,3 +1,5 @@
+doc "Don't forget to document me"
+by "gavin"
 shared class Tuple<out Element, out First, out Rest>(first, rest)
         extends Object()
         satisfies Sequence<Element>
@@ -27,8 +29,11 @@ shared class Tuple<out Element, out First, out Rest>(first, rest)
     }
     
     shared actual Element[] segment(Integer from, Integer length) {
-        return from<=0 then rest[0:length+from-1].withLeading(first) 
-                else rest[from-1:length];
+        if (from<=0) {
+            return length==1 then Singleton(first)
+                else rest[0:length+from-1].withLeading(first);
+        }
+        return rest[from-1:length];
     }
     
     shared actual Element[] span(Integer from, Integer? to) {
