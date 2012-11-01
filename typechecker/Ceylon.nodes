@@ -230,7 +230,7 @@
     STATIC_TYPE definiteType)
 
 ^(TUPLE_TYPE: STATIC_TYPE
-    STATIC_TYPE* elementType)
+    TYPE* elementType)
 
 ^(FUNCTION_TYPE: STATIC_TYPE
     STATIC_TYPE returnType

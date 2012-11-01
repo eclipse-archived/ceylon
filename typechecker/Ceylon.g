@@ -1616,13 +1616,13 @@ functionOrExpressionOrTuple returns [Expression expression]
             e.setTerm(t); }
     : fe1=functionOrExpression
       { $expression=$fe1.expression;
-        t.getExpressions().add($fe1.expression); }
+        t.addExpression($fe1.expression); }
       (
         c=COMMA 
         { $expression = e;
           t.setEndToken($c); }
         fe2=functionOrExpression
-        { t.getExpressions().add($fe2.expression);
+        { t.addExpression($fe2.expression);
           t.setEndToken(null); }
       )*
     ;
@@ -2171,13 +2171,13 @@ type returns [StaticType type]
 tupleType returns [TupleType type]
     : SMALLER_OP
       { $type = new TupleType($SMALLER_OP); }
-      t1=type 
-      { $type.getElementTypes().add($t1.type); }
+      t1=typeArgument 
+      { $type.addElementType($t1.type); }
       (
         c=COMMA
         { $type.setEndToken($c); }
-        t2=type
-        { $type.getElementTypes().add($t2.type);
+        t2=typeArgument
+        { $type.addElementType($t2.type);
           $type.setEndToken(null); }
       )*
       LARGER_OP

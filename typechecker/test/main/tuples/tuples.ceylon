@@ -22,4 +22,9 @@ void test() {
     @type["String"] value bye = hibye.rest.first;
     add((1.0, 2.0));
     Sequence<String> strings = hibye;
+    @type["Tuple<String,String,Empty|Sequence<String>>"]
+    <String, String...> hibye1 = hibye;
+    @type["Empty|Sequence<String>"]
+    <String...> hibye2 = hibye;
+    <String, Integer, Object...> trip = triple("", 0, 0.0);
 }

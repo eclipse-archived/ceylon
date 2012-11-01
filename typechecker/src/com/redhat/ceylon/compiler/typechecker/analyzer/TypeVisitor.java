@@ -48,7 +48,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SupertypeQualifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -431,13 +430,23 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType result = unit.getEmptyDeclaration().getType();
         ProducedType ut = unit.getBottomDeclaration().getType();
-		List<StaticType> ets = that.getElementTypes();
+		List<Tree.Type> ets = that.getElementTypes();
 		for (int i=ets.size()-1; i>=0; i--) {
-			Tree.StaticType st = ets.get(i);
-            ProducedType et = st.getTypeModel();
-			ut = unionType(ut, et, unit);
-			result = unit.getTupleDeclaration().getProducedType(null, 
-            				asList(ut, et, result));
+			Tree.Type st = ets.get(i);
+			if (st instanceof Tree.SequencedType) {
+				ProducedType et = ((Tree.SequencedType) st).getType().getTypeModel();
+				result = unit.getEmptyType(unit.getSequenceType(et));
+				ut = et;
+				if (i!=ets.size()-1) {
+					st.addError("variant element must occur last in a tuple type");
+				}
+			}
+			else {
+				ProducedType et = st.getTypeModel();
+				ut = unionType(ut, et, unit);
+				result = unit.getTupleDeclaration().getProducedType(null, 
+	            				asList(ut, et, result));
+			}
         }
         that.setTypeModel(result);
     }
