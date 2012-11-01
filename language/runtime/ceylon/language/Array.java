@@ -444,7 +444,7 @@ public abstract class Array<Element> implements List<Element>, FixedSized<Elemen
         } else if (typeClass == float.class) {
             return (Element) Float.instance(((float[])array)[index]);
         } else if (typeClass == double.class) {
-            return (Element) Float.instance(((float[])array)[index]);
+            return (Element) Float.instance(((double[])array)[index]);
         } else if (typeClass == boolean.class) {
             return (Element) Boolean.instance(((boolean[])array)[index]);
         } else if (typeClass == java.lang.String.class) {
