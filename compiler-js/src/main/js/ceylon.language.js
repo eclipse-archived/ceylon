@@ -511,6 +511,7 @@ function getBottom() {
     throw Exception();
 }
 
+//#include tuples.js
 //#include annotations.js
 
 exports.Exception=Exception;
