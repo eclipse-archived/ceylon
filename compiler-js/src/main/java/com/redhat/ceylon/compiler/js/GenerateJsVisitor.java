@@ -3109,6 +3109,28 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
+    public void visit(Tuple that) {
+        int count = 0;
+        for (Expression expr : that.getExpressions()) {
+            if (count > 0) {
+                out(",");
+            }
+            out(clAlias, ".Tuple(");
+            count++;
+            expr.visit(this);
+        }
+        out(",", clAlias, ".empty");
+        for (int i = 0; i < count; i++) {
+            out(")");
+        }
+    }
+    @Override
+    public void visit(TupleType that) {
+        System.out.println("TUPLE type! " + that);
+        super.visit(that);
+    }
+
+    @Override
     public void visit(Assertion that) {
         out("//assert");
         location(that);
