@@ -29,7 +29,10 @@ Tuple$proto.getReversed = function() {
     return this.r$.getReversed().withTrailing(this.f$);
 }
 Tuple$proto.segment = function(from, len) {
-    return from<=0? this.r$.segment(0,len+from-1).withLeading(this.f$) : this.r$.segment(from-1,len);
+    if (from <= 0) {
+        return len===1?Singleton(this.f$):this.r$.segment(0,len+from-1).withLeading(this.f$);
+    }
+    return this.r$.segment(from-1,len);
 }
 Tuple$proto.span = function(from, to) {
     var end = to === null ? this.getSize() : to;
@@ -38,7 +41,7 @@ Tuple$proto.span = function(from, to) {
 Tuple$proto.getClone = function() { return this; }
 Tuple$proto.getString = function() {
     var sb = StringBuilder();
-    sb.appendAll("Tuple(", this.f$.getString(), ",", this.r$.getString(), ")");
+    sb.appendAll(["Tuple(", this.f$.getString(), ",", this.r$.getString(), ")"]);
     return sb.getString();
 }
 
