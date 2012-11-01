@@ -26,7 +26,7 @@ Tuple$proto.getLastIndex = function() {
     return rli === null ? 0 : rli+1;
 }
 Tuple$proto.getReversed = function() {
-    return this.r$.withTrailing(this.f$);
+    return this.r$.getReversed().withTrailing(this.f$);
 }
 Tuple$proto.segment = function(from, len) {
     return from<=0? this.r$.segment(0,len+from-1).withLeading(this.f$) : this.r$.segment(from-1,len);
