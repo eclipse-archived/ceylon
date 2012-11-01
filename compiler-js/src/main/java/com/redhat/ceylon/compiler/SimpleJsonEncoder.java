@@ -10,7 +10,9 @@ import java.util.Map;
  * The top-level object must always be a Map.
  * 
  * @author Enrique Zamudio
+ * @deprecated Use JSONObject from the JSON smart lib instead.
  */
+@Deprecated
 public class SimpleJsonEncoder {
 
     public void encode(Map<String, Object> map, Writer out) throws IOException {
