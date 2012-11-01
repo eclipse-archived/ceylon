@@ -14,7 +14,7 @@ function languageClass() {
 initTypeProto(languageClass, "ceylon.language::language", IdentifiableObject);
 var lang$proto=languageClass.$$.prototype;
 lang$proto.getVersion=function() {
-    return String$("0.4",3);
+    return String$("0.5",3);
 }
 lang$proto.getMajorVersion=function() { return 0; }
 lang$proto.getMinorVersion=function() { return 4; }
