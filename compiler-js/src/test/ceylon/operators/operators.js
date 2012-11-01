@@ -1,6 +1,6 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl1=require('ceylon/language/0.4/ceylon.language');
-var $$$a12=require('default/assert');
+var $$$cl1=require('ceylon/language/0.5/ceylon.language');
+var $$$a12=require('default/check/0.1/check');
 
 //MethodDefinition testIntegerOperators at operators.ceylon (3:0-40:0)
 function testIntegerOperators(){

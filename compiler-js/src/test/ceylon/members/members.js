@@ -1,5 +1,5 @@
 (function(define) { define(function(require, exports, module) {
-var $$$cl1=require('ceylon/language/0.4/ceylon.language');
+var $$$cl1=require('ceylon/language/0.5/ceylon.language');
 var $$$a12=require('default/assert');
 
 //ClassDefinition Counter at members.ceylon (3:0-17:0)
@@ -445,7 +445,7 @@ function test(){
     $$$a12.results();
 }
 exports.test=test;
-var $$$cl1=require('ceylon/language/0.4/ceylon.language');
+var $$$cl1=require('ceylon/language/0.5/ceylon.language');
 var $$$a12=require('default/assert');
 
 //MethodDefinition test_outer_inner_safety at outer.ceylon (3:0-18:0)
