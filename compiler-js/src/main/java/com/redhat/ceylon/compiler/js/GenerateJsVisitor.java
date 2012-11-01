@@ -2665,42 +2665,38 @@ public class GenerateJsVisitor extends Visitor
    }
 
     /** Appends an object with the type's type and list of union/intersection types. */
-    private void getTypeList(StaticType type) {
+    private void getTypeList(TypeDeclaration type) {
         out("{ t:'");
-        if (type instanceof IntersectionType) {
+        final List<TypeDeclaration> subs;
+        if (type instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
             out("i");
+            subs = type.getSatisfiedTypeDeclarations();
         } else {
             out("u");
+            subs = type.getCaseTypeDeclarations();
         }
         out("', l:[");
-        if (type instanceof OptionalType) {
-            out("'ceylon.language::Nothing',");
-            typeNameOrList(((OptionalType) type).getDefiniteType());
-        } else if (type instanceof SequenceType) {
-            out("'ceylon.language::Empty','ceylon.language::Sequence'");
-        } else {
-            List<StaticType> types = type instanceof UnionType
-                        ? ((UnionType)type).getStaticTypes()
-                        : ((IntersectionType)type).getStaticTypes();
-            boolean first = true;
-            for (StaticType t : types) {
-                if (!first) out(",");
-                typeNameOrList(t);
-                first = false;
-            }
+        boolean first = true;
+        for (TypeDeclaration t : subs) {
+            if (!first) out(",");
+            typeNameOrList(t);
+            first = false;
         }
         out("]}");
     }
 
-    private void typeNameOrList(StaticType type) {
-    	if (type instanceof SimpleType) {
-            out("'");
-            out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
-            out("'");
-        } else if (type instanceof EntryType) {
-            out("'ceylon.language::Entry'"); //TODO: type parameters
-        } else {
+    private void typeNameOrList(TypeDeclaration type) {
+        if (type.isAlias()) {
+            type = type.getExtendedTypeDeclaration();
+        }
+        boolean unionIntersection = type instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType
+                || type instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+        if (unionIntersection) {
             getTypeList(type);
+        } else {
+            out("'");
+            out(type.getQualifiedNameString());
+            out("'");
         }
     }
 
@@ -2717,10 +2713,16 @@ public class GenerateJsVisitor extends Visitor
         if (negate) {
             out("!");
         }
-        if ((type instanceof SimpleType) || (type instanceof EntryType))  {
-            out(clAlias, ".isOfType(");
-        } else {
+        TypeDeclaration decl = type.getTypeModel().getDeclaration();
+        if (decl.isAlias()) {
+            decl = decl.getExtendedTypeDeclaration();
+        }
+        boolean unionIntersection = decl instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType
+                || decl instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+        if (unionIntersection)  {
             out(clAlias, ".isOfTypes(");
+        } else {
+            out(clAlias, ".isOfType(");
         }
         if (term != null) {
             conds.specialConditionRHS(term, tmpvar);
@@ -2729,9 +2731,12 @@ public class GenerateJsVisitor extends Visitor
         }
         out(",");
 
-        if (type instanceof SimpleType) {
+        if (unionIntersection) {
+            getTypeList(decl);
+            out(")");
+        } else {
             out("'");
-            out(((SimpleType) type).getDeclarationModel().getQualifiedNameString());
+            out(decl.getQualifiedNameString());
             out("')");
             if (term != null && term.getTypeModel() != null && !term.getTypeModel().getTypeArguments().isEmpty()) {
                 out("/* REIFIED GENERICS SOON!!!");
@@ -2742,11 +2747,6 @@ public class GenerateJsVisitor extends Visitor
                 }
                 out("*/");
             }
-        } else if (type instanceof EntryType) {
-        	out("'ceylon.language::Entry')"); //TODO: type parameters
-        } else {
-            getTypeList((StaticType)type);
-            out(")");
         }
     }
 
@@ -3123,11 +3123,6 @@ public class GenerateJsVisitor extends Visitor
         for (int i = 0; i < count; i++) {
             out(")");
         }
-    }
-    @Override
-    public void visit(TupleType that) {
-        System.out.println("TUPLE type! " + that);
-        super.visit(that);
     }
 
     @Override
