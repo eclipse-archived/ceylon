@@ -31,14 +31,15 @@ shared class Tuple<out First, out Rest> (first, rest)
     }
     
     shared actual Boolean equals(Object that) {
-        if (is Tuple<Void,TupleOrUnit> that) {
-            return first==that.first && rest==that.rest;
-        }
-        else {
-            return false;
-        }
+        throw;
+        //if (is Tuple<Void,TupleOrUnit> that) {
+        //    return first==that.first && rest==that.rest;
+        //}
+        //else {
+        //    return false;
+        //}
     }
     
-    shared actual Integer hash = (31 + first.hash) * 31 + rest.hash;
+    shared actual Integer hash = 0;//(31 + first.hash) * 31 + rest.hash;
     
 }
