@@ -1840,25 +1840,36 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
+        List<ProducedType> types = null;
         List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
         if(caseTypes != null && !caseTypes.isEmpty()){
-            try{
-                klass.setCaseTypes(getTypesList(caseTypes, klass));
-            }catch(TypeParserException x){
-                logError("Invalid type signature for case types of "+klass.getQualifiedNameString()+": "+x.getMessage());
-                throw x;
-            }
+            types = getTypesList(caseTypes, klass);
         }
+        
         String selfType = getSelfTypeFromAnnotations(classMirror);
         if(selfType != null && !selfType.isEmpty()){
             try{
                 ProducedType type = decodeType(selfType, klass);
                 if(!(type.getDeclaration() instanceof TypeParameter)){
                     logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+selfType+" is not a type parameter");
-                }else
+                }else{
                     klass.setSelfType(type);
+                    if (types == null) {
+                        types = new LinkedList<ProducedType>();
+                    }
+                    types.add(type);
+                }
             }catch(TypeParserException x){
                 logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+x.getMessage());
+                throw x;
+            }
+        }
+        
+        if(types != null){
+            try{
+                klass.setCaseTypes(types);
+            }catch(TypeParserException x){
+                logError("Invalid type signature for case types of "+klass.getQualifiedNameString()+": "+x.getMessage());
                 throw x;
             }
         }
