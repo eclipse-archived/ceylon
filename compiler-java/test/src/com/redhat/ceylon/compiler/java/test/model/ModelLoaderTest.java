@@ -203,7 +203,7 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertEquals(name+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
         Assert.assertEquals(name+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         // if they're not shared, stop at making sure they are the same type of object
-        if(!validDeclaration.isShared()){
+        if(!validDeclaration.isShared() && !(validDeclaration instanceof TypeParameter)){
             boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
             // we may replace Getter or Setter with Value, no harm done
             sameType |= validDeclaration instanceof Getter && modelDeclaration instanceof Value;
@@ -287,6 +287,11 @@ public class ModelLoaderTest extends CompilerTest {
         Assert.assertEquals("[Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
         Assert.assertEquals("[Covariant]", validDeclaration.isCovariant(), modelDeclaration.isCovariant());
         Assert.assertEquals("[SelfType]", validDeclaration.isSelfType(), modelDeclaration.isSelfType());
+        if (validDeclaration.getSelfTypedDeclaration() != null && modelDeclaration.getSelfTypedDeclaration() != null) {
+            compareDeclarations(validDeclaration.getSelfTypedDeclaration(), modelDeclaration.getSelfTypedDeclaration());
+        } else if (!(validDeclaration.getSelfTypedDeclaration() == null && modelDeclaration.getSelfTypedDeclaration() == null)) {
+            Assert.fail("[SelfType] one has self typed declaration the other not");
+        }
         compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
     }
 
@@ -305,6 +310,8 @@ public class ModelLoaderTest extends CompilerTest {
         compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
         // case types
         compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
+        // work on type parameters
+        compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
         // tests specific to classes
         if(validDeclaration instanceof Class){
             Assert.assertTrue(name+" [is class]", modelDeclaration instanceof Class);
