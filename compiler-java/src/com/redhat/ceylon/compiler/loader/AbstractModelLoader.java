@@ -1840,26 +1840,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
-        List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
-        if(caseTypes != null && !caseTypes.isEmpty()){
-            try{
-                klass.setCaseTypes(getTypesList(caseTypes, klass));
-            }catch(TypeParserException x){
-                logError("Invalid type signature for case types of "+klass.getQualifiedNameString()+": "+x.getMessage());
-                throw x;
-            }
-        }
         String selfType = getSelfTypeFromAnnotations(classMirror);
         if(selfType != null && !selfType.isEmpty()){
             try{
                 ProducedType type = decodeType(selfType, klass);
                 if(!(type.getDeclaration() instanceof TypeParameter)){
                     logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+selfType+" is not a type parameter");
-                }else
+                }else{
                     klass.setSelfType(type);
+                    List<ProducedType> caseTypes = new LinkedList<ProducedType>();
+                    caseTypes.add(type);
+                    klass.setCaseTypes(caseTypes);
+                }
             }catch(TypeParserException x){
                 logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+x.getMessage());
                 throw x;
+            }
+        } else {
+            List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
+            if(caseTypes != null && !caseTypes.isEmpty()){
+                try{
+                    klass.setCaseTypes(getTypesList(caseTypes, klass));
+                }catch(TypeParserException x){
+                    logError("Invalid type signature for case types of "+klass.getQualifiedNameString()+": "+x.getMessage());
+                    throw x;
+                }
             }
         }
     }
@@ -1882,9 +1887,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     // from our annotation
     @SuppressWarnings("deprecation")
-    private void setTypeParametersFromAnnotations(Scope scope, List<TypeParameter> params, List<AnnotationMirror> typeParameters) {
+    private void setTypeParametersFromAnnotations(Scope scope, List<TypeParameter> params, AnnotatedMirror mirror, List<AnnotationMirror> typeParameters) {
         // We must first add every type param, before we resolve the bounds, which can
         // refer to type params.
+        String selfTypeName = getSelfTypeFromAnnotations(mirror);
         for(AnnotationMirror typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
@@ -1896,7 +1902,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 scope.getMembers().add(param);
             param.setName((String)typeParam.getValue("value"));
             param.setExtendedType(typeFactory.getVoidDeclaration().getType());
-            params.add(param);
             
             String varianceName = (String) typeParam.getValue("variance");
             if(varianceName != null){
@@ -1905,7 +1910,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }else if(varianceName.equals("OUT"))
                     param.setCovariant(true);
             }
+            
+            // If this is a self type param then link it to its type's declaration
+            if (param.getName().equals(selfTypeName)) {
+                param.setSelfTypedDeclaration((TypeDeclaration)scope);
+            }
+            
+            params.add(param);
         }
+        
         // Now all type params have been set, we can resolve the references parts
         Iterator<TypeParameter> paramsIterator = params.iterator();
         for(AnnotationMirror typeParam : typeParameters){
@@ -1969,10 +1982,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         method.setTypeParameters(params);
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(methodMirror);
-        if(typeParameters != null)
-            setTypeParametersFromAnnotations(method, params, typeParameters);
-        else
+        if(typeParameters != null) {
+            setTypeParametersFromAnnotations(method, params, methodMirror, typeParameters);
+        } else {
             setTypeParameters(method, params, methodMirror.getTypeParameters());
+        }
     }
 
     // class
@@ -1980,10 +1994,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         klass.setTypeParameters(params);
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(classMirror);
-        if(typeParameters != null)
-            setTypeParametersFromAnnotations(klass, params, typeParameters);
-        else
+        if(typeParameters != null) {
+            setTypeParametersFromAnnotations(klass, params, classMirror, typeParameters);
+        } else {
             setTypeParameters(klass, params, classMirror.getTypeParameters());
+        }
     }        
 
     //
