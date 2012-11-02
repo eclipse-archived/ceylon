@@ -1565,13 +1565,14 @@ public abstract class AbstractTransformer implements Transformation {
 
     List<JCAnnotation> makeAtCaseTypes(java.util.List<ProducedType> caseTypes, ProducedType ofType) {
         List<JCExpression> attribs = List.nil();
-        if (caseTypes != null && !caseTypes.isEmpty()) {
-            JCExpression casesAttr = makeTypesListAttr(caseTypes);
-            attribs = attribs.append(casesAttr);
-        }
         if (ofType != null) {
             JCExpression ofAttr = makeOfTypeAttr(ofType);
             attribs = attribs.append(ofAttr);
+        } else {
+            if (caseTypes != null && !caseTypes.isEmpty()) {
+                JCExpression casesAttr = makeTypesListAttr(caseTypes);
+                attribs = attribs.append(casesAttr);
+            }
         }
         if (!attribs.isEmpty()) {
             return makeModelAnnotation(syms().ceylonAtCaseTypes, attribs);

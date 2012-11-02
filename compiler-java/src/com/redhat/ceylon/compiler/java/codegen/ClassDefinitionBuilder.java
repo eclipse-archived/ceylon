@@ -27,7 +27,6 @@ import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -80,7 +79,6 @@ public class ClassDefinitionBuilder {
     private ClassOrInterface forDefinition;
 
     private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
-    private final ListBuffer<JCExpression> caseTypes = ListBuffer.lb();
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
     private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
     
@@ -351,9 +349,6 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder caseTypes(java.util.List<ProducedType> caseTypes, ProducedType ofType) {
-        if (caseTypes != null) {
-            this.caseTypes.addAll(transformTypesList(caseTypes));
-        }
         if (caseTypes != null || ofType != null) {
             annotations(gen.makeAtCaseTypes(caseTypes, ofType));
         }
