@@ -434,7 +434,7 @@ public class ExpressionTest2 extends CompilerTest {
     }
     
     @Test
-    public void testInvSelfType(){
+    public void testInvSelfType_fail(){
         compareWithJavaSource("invoke/SelfType");
     }
     

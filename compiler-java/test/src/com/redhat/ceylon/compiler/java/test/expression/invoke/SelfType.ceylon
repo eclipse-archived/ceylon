@@ -46,3 +46,15 @@ abstract class SelfType2<T>() of T {
 void selfType2<X>(SelfType2<X> x, SelfType2<X> y) {
     x.compareTo(y of X);
 }
+@nomodel
+interface A satisfies Comparable<C|A> {}
+@nomodel
+interface C satisfies Comparable<C|A> {}
+@nomodel
+interface D satisfies Comparable<D> {}
+@nomodel
+void selfTypeTest(Comparable<D> d) {
+    value temp = d of D;
+    value v = print("");
+    print(of Object|Nothing v);
+}
