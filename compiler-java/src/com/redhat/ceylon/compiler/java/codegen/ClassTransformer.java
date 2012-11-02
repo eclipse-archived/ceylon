@@ -185,8 +185,7 @@ public class ClassTransformer extends AbstractTransformer {
             .modelAnnotations(model.getAnnotations())
             .modifiers(transformClassDeclFlags(def))
             .satisfies(model.getSatisfiedTypes())
-            .caseTypes(model.getCaseTypes())
-            .of(model.getSelfType())
+            .caseTypes(model.getCaseTypes(), model.getSelfType())
             .init(childDefs)
             .build();
     }

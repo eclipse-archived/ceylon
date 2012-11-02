@@ -350,17 +350,12 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder caseTypes(java.util.List<ProducedType> caseTypes) {
+    public ClassDefinitionBuilder caseTypes(java.util.List<ProducedType> caseTypes, ProducedType ofType) {
         if (caseTypes != null) {
             this.caseTypes.addAll(transformTypesList(caseTypes));
-            annotations(gen.makeAtCaseTypes(caseTypes));
         }
-        return this;
-    }
-
-    public ClassDefinitionBuilder of(ProducedType ofType) {
-        if (ofType != null) {
-            annotations(gen.makeAtCaseTypes(ofType));
+        if (caseTypes != null || ofType != null) {
+            annotations(gen.makeAtCaseTypes(caseTypes, ofType));
         }
         return this;
     }

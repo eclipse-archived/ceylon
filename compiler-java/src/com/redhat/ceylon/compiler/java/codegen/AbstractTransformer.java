@@ -1555,16 +1555,34 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     List<JCAnnotation> makeAtSatisfiedTypes(java.util.List<ProducedType> satisfiedTypes) {
-        return makeTypesListAnnotation(syms().ceylonAtSatisfiedTypes, satisfiedTypes);
-    }
-
-    List<JCAnnotation> makeAtCaseTypes(java.util.List<ProducedType> caseTypes) {
-        return makeTypesListAnnotation(syms().ceylonAtCaseTypes, caseTypes);
-    }
-
-    private List<JCAnnotation> makeTypesListAnnotation(Type annotationType, java.util.List<ProducedType> types) {
-        if(types.isEmpty())
+        JCExpression attrib = makeTypesListAttr(satisfiedTypes);
+        if (attrib != null) {
+            return makeModelAnnotation(syms().ceylonAtSatisfiedTypes, List.of(attrib));
+        } else {
             return List.nil();
+        }
+    }
+
+    List<JCAnnotation> makeAtCaseTypes(java.util.List<ProducedType> caseTypes, ProducedType ofType) {
+        List<JCExpression> attribs = List.nil();
+        if (caseTypes != null && !caseTypes.isEmpty()) {
+            JCExpression casesAttr = makeTypesListAttr(caseTypes);
+            attribs = attribs.append(casesAttr);
+        }
+        if (ofType != null) {
+            JCExpression ofAttr = makeOfTypeAttr(ofType);
+            attribs = attribs.append(ofAttr);
+        }
+        if (!attribs.isEmpty()) {
+            return makeModelAnnotation(syms().ceylonAtCaseTypes, attribs);
+        } else {
+            return List.nil();
+        }
+    }
+
+    private JCExpression makeTypesListAttr(java.util.List<ProducedType> types) {
+        if(types.isEmpty())
+            return null;
         ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
         for(ProducedType type : types){
             String typeSig = serialiseTypeSignature(type);
@@ -1572,18 +1590,17 @@ public abstract class AbstractTransformer implements Transformation {
         }
         JCExpression caseAttribute = make().Assign(naming.makeUnquotedIdent("value"), 
                 make().NewArray(null, null, upperBounds.toList()));
-        
-        return makeModelAnnotation(annotationType, List.of(caseAttribute));
+        return caseAttribute;
     }
 
-    List<JCAnnotation> makeAtCaseTypes(ProducedType ofType) {
+    private JCExpression makeOfTypeAttr(ProducedType ofType) {
         if(ofType == null)
-            return List.nil();
+            return null;
         String typeSig = serialiseTypeSignature(ofType);
-        JCExpression caseAttribute = make().Assign(naming.makeUnquotedIdent("of"), 
+        JCExpression ofAttribute = make().Assign(naming.makeUnquotedIdent("of"), 
                 make().Literal(typeSig));
         
-        return makeModelAnnotation(syms().ceylonAtCaseTypes, List.of(caseAttribute));
+        return ofAttribute;
     }
 
     List<JCAnnotation> makeAtIgnore() {
