@@ -388,7 +388,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug588(){
+    public void testBug588_fail(){
         compareWithJavaSource("bug05xx/Bug588");
     }
     

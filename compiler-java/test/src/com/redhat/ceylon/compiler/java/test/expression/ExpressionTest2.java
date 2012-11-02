@@ -438,12 +438,17 @@ public class ExpressionTest2 extends CompilerTest {
         compareWithJavaSource("invoke/SelfType");
     }
     
-    @Test
+    @Test @Ignore("Functionality not available anymore, keeping it for possible future language enhancement")
     public void testInvSelfTypeGeneric(){
         compareWithJavaSource("invoke/SelfTypeGeneric");
     }
     
     @Test
+    public void testInvTypeFamily(){
+        compareWithJavaSource("invoke/TypeFamily");
+    }
+    
+    @Test @Ignore("Functionality not available anymore, keeping it for possible future language enhancement")
     public void testInvTypeFamilyGeneric(){
         compareWithJavaSource("invoke/TypeFamilyGeneric");
     }

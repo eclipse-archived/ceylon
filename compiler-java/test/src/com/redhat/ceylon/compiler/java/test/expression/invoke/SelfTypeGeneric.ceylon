@@ -30,6 +30,6 @@ interface Inv<T> {}
 void selfTypeGeneric() {
     Inv<Self<X>> l1 { throw; }
     Inv<X> l2 { throw; }
-    Inv<Self<X>> l3 = l2;
-    Inv<X> l4 = l1;
+    Inv<Self<X>> l3 = l2 of Inv<Self<X>>;
+    Inv<X> l4 = l1 of Inv<X>;
 }

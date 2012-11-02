@@ -18,9 +18,29 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-void bug588() {
-    Comparable<String>[] comparables = { "hello" };
-    for (c in comparables) {
-        print(c of String);
+abstract class TypeFamily<N,E>() 
+    given N satisfies Node
+    given E satisfies Edge {
+    shared formal class Edge(n1, n2) of E {
+        shared N n1;
+        shared N n2;
+        shared Boolean touches(N node) {
+            return n1==node || n2==node;
+        }
     }
+    shared formal class Node() of N {
+        shared default Boolean touches(E edge) {
+            return edge.touches(this of N);
+        }
+    }
+}
+@nomodel
+class TypeFamilyBasic() extends TypeFamily<Node,Edge>() {
+    
+    shared actual class Node() 
+            extends super.Node() {}
+    
+    shared actual class Edge(Node n1, Node n2) 
+            extends super.Edge(n1, n2) {}
+    
 }

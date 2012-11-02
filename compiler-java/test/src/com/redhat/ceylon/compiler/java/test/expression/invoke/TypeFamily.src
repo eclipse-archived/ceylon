@@ -1,0 +1,78 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge> {
+    
+    TypeFamily() {
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge Edge$new(final N n1, final N n2);
+    
+    public abstract class Edge {
+        
+        protected Edge(N n1, N n2) {
+            this.n1 = n1;
+            this.n2 = n2;
+        }
+        private final N n1;
+        
+        public final N getN1() {
+            return n1;
+        }
+        private final N n2;
+        
+        public final N getN2() {
+            return n2;
+        }
+        
+        public final boolean touches(final N node) {
+            return getN1().equals(node) || getN2().equals(node);
+        }
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node Node$new();
+    
+    public abstract class Node {
+        
+        protected Node() {
+        }
+        
+        public boolean touches(final E edge) {
+            return edge.touches((N)this);
+        }
+    }
+}
+class TypeFamilyBasic extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge> {
+    
+    TypeFamilyBasic() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node Node$new() {
+        return new Node();
+    }
+    
+    public class Node extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge>.Node {
+        
+        protected Node() {
+            super();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge Edge$new(final .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n1, final .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n2) {
+        return new Edge(n1, n2);
+    }
+    
+    public class Edge extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Edge>.Edge {
+        
+        protected Edge(.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n1, .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic.Node n2) {
+            super(n1, n2);
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyBasic();
+    }
+}

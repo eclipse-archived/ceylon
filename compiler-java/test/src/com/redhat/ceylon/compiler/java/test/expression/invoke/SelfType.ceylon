@@ -21,28 +21,28 @@
 abstract class SelfType<T>() of T given T satisfies SelfType<T> {
     shared formal Integer compareTo(T other);
     shared Integer reverseCompareTo(T other) {
-        return other.compareTo(this);
+        return other.compareTo(this of T);
     }
     shared T self() {
-        T x = this;
-        return this;
+        T x = this of T;
+        return this of T;
     }
 }
 @nomodel
 void selfType<X>(SelfType<X> x, SelfType<X> y) 
         given X satisfies SelfType<X> {
-    x.compareTo(y);
+    x.compareTo(y of X);
 }
 
 @nomodel
 abstract class SelfType2<T>() of T {
     shared formal Integer compareTo(T other);
     shared T self() {
-        T x = this;
-        return this;
+        T x = this of T;
+        return this of T;
     }
 }
 @nomodel
 void selfType2<X>(SelfType2<X> x, SelfType2<X> y) {
-    x.compareTo(y);
+    x.compareTo(y of X);
 }
