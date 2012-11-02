@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -61,7 +63,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -170,7 +171,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ListBuffer<JCTree> prevDefs = v.defs;
         final boolean prevInInitializer = v.inInitializer;
         final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
-        JCExpression result = makeErroneous();
+        JCExpression result;
         try {
             v.defs = new ListBuffer<JCTree>();
             v.inInitializer = false;
@@ -178,6 +179,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             term.visit(v);
             if (v.hasResult()) {
                 result = v.getSingleResult();
+            } else {
+                result = makeErroneous();
             }
         } finally {
             v.classBuilder = prevClassBuilder;

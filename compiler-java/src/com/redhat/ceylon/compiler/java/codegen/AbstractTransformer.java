@@ -923,7 +923,7 @@ public abstract class AbstractTransformer implements Transformation {
             type = typeFact.getBooleanDeclaration().getType();
         }
         
-        JCExpression jt = makeErroneous();
+        JCExpression jt = null;
         
         ProducedType simpleType = simplifyType(type);
         
@@ -954,7 +954,7 @@ public abstract class AbstractTransformer implements Transformation {
             if(Decl.isCeylon(simpleType.getDeclaration())
                     && qualifyingTypes.size() > 1
                     && simpleType.getDeclaration() instanceof Interface){
-                JCExpression baseType = makeErroneous();
+                JCExpression baseType;
                 TypeDeclaration tdecl = simpleType.getDeclaration();
                 // collect all the qualifying type args we'd normally have
                 java.util.List<TypeParameter> qualifyingTypeParameters = new java.util.ArrayList<TypeParameter>();
@@ -1004,7 +1004,7 @@ public abstract class AbstractTransformer implements Transformation {
                 jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
         }
         
-        return jt;
+        return (jt != null) ? jt : makeErroneous();
     }
 
     public JCExpression makeParameterisedType(ProducedType type, ProducedType generalType, final int flags, 
