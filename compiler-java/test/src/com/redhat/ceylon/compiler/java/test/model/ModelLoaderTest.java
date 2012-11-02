@@ -542,6 +542,11 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadCaseTypes(){
         verifyClassLoading("CaseTypes.ceylon");
     }
+
+    @Test
+    public void loadSelfType(){
+        verifyClassLoading("SelfType.ceylon");
+    }
     
     @Test
     public void testTypeParserUsingSourceModel(){
