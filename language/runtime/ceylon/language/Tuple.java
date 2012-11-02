@@ -298,7 +298,8 @@ public class Tuple<Element, First, Rest>
 
 	@Override
 	@Annotations(@Annotation("actual"))
-	public Collection<? extends Element> getClone() {
+	@TypeInfo("ceylon.language::Sequence<Element>")
+	public Sequence<? extends Element> getClone() {
 		return this;
 	}
 
