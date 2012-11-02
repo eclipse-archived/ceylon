@@ -1,4 +1,4 @@
-class ScalarImpl<Other>() satisfies Scalar<Other>
+class ScalarImpl<Other>() of Other satisfies Scalar<Other>
         given Other satisfies Scalar<Other> {
 
     shared actual Other magnitude = bottom;
