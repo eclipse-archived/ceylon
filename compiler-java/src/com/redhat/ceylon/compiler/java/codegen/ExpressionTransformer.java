@@ -703,6 +703,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         return jcu;
     }
 
+    public JCExpression transform(Tree.OfOp op) {
+        ProducedType type = op.getType().getTypeModel();
+        return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), type);
+    }
+
     public JCExpression transform(Tree.IsOp op) {
         // we don't need any erasure type cast for an "is" test
         JCExpression expression = transformExpression(op.getTerm());
