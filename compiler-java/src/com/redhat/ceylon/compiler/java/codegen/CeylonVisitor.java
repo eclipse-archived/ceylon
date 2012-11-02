@@ -531,7 +531,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     @SuppressWarnings("unchecked")
     public <K extends JCTree> K getSingleResult() {
         if (defs.size() != 1) {
-            throw new RuntimeException("Got "+defs.size()+" results instead of 1");
+            return (K) gen.makeErroneous();
         }
         return (K) defs.first();
     }
