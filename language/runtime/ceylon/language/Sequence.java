@@ -13,13 +13,13 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({
-    "ceylon.language::List<Element>",
+    "ceylon.language::Sequential<Element>",
     "ceylon.language::Some<Element>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Empty|ceylon.language::Sequence<Element>>",
     "ceylon.language::Cloneable<ceylon.language::Sequence<Element>>"
 })
 public interface Sequence<Element> 
-        extends List<Element>, Some<Element> {
+        extends Sequential<Element>, Some<Element> {
     
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override

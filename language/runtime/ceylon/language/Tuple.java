@@ -17,12 +17,14 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters({
     @TypeParameter(value = "Element", variance = Variance.OUT),
-    @TypeParameter(value = "First", variance = Variance.OUT),
-    @TypeParameter(value = "Rest", variance = Variance.OUT)
+    @TypeParameter(value = "First", variance = Variance.OUT, 
+            satisfies = "Element"),
+    @TypeParameter(value = "Rest", variance = Variance.OUT, 
+            satisfies = "ceylon.language::Sequential<Element>")
  })
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
-public class Tuple<Element, First, Rest> 
+public class Tuple<Element, First extends Element, Rest extends Sequential<Element>> 
         implements Sequence<Element> {
 
     private final Iterable$impl<Element> iterable$impl = new Iterable$impl<Element>(this);
@@ -34,7 +36,7 @@ public class Tuple<Element, First, Rest>
 	private final Element first;
 	private final List<Element> rest;
 	
-	public Tuple(@TypeInfo("First&Element") 
+	public Tuple(@TypeInfo("First") 
 	             @Name("first") Element first,
 	             @TypeInfo("Rest&Empty|Rest&Sequence<Element>")
 			     @Name("rest") List<Element> rest) {
@@ -42,7 +44,7 @@ public class Tuple<Element, First, Rest>
 		this.rest = rest;
 	}
 	
-	@TypeInfo("First&Element")
+	@TypeInfo("First")
 	public Element getFirst() {
 		return first;
 	}

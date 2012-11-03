@@ -3,9 +3,10 @@ by "gavin"
 shared class Tuple<out Element, out First, out Rest>(first, rest)
         extends Object()
         satisfies Sequence<Element>
-        given Rest of Empty|Sequence<Element> {
+        given First satisfies Element
+        given Rest satisfies Sequential<Element> {
         
-    shared actual First&Element first;
+    shared actual First first;
     shared actual Rest&Element[] rest;
     
     shared actual Element? item(Integer index) {
