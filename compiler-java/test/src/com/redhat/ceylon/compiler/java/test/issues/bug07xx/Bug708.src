@@ -259,7 +259,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Map getInverse() {
+    public .ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Set<? extends .ceylon.language.Integer>> getInverse() {
         return $ceylon$language$Map$this.getInverse();
     }
     
@@ -279,13 +279,13 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Entry getFirst() {
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getFirst() {
         return $ceylon$language$Iterable$this.getFirst();
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Entry getLast() {
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getLast() {
         return $ceylon$language$Iterable$this.getLast();
     }
     
@@ -321,13 +321,13 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Entry find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object> find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Entry findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object> findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this.findLast(selecting);
     }
     
@@ -453,13 +453,13 @@ public class Bug708Map<T> extends .java.lang.Object implements .ceylon.language.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Correspondence$impl $ceylon$language$Correspondence$impl() {
+    public .ceylon.language.Correspondence$impl<? super .java.lang.Object, ? extends .java.lang.Object> $ceylon$language$Correspondence$impl() {
         return $ceylon$language$Correspondence$this;
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final .ceylon.language.Correspondence$impl.Items Items$new(final .ceylon.language.Sequence arg0) {
+    public final .ceylon.language.Correspondence$impl<? super .java.lang.Object, ? extends .java.lang.Object>.Items Items$new(final .ceylon.language.Sequence arg0) {
         return $ceylon$language$Correspondence$this.Items$new(arg0);
     }
     

@@ -396,14 +396,14 @@ class Test {
         final .ceylon.language.Integer n52 = (.ceylon.language.Integer)(
             let
             {
-                .ceylon.language.Correspondence $ceylontmpsafeaccess18 = (.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)naturalsOrNothing;
+                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmpsafeaccess18 = (.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)naturalsOrNothing;
             }
             returning $ceylontmpsafeaccess18 != null ? $ceylontmpsafeaccess18.item((.ceylon.language.Integer)p1) : null;
         );
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top t2 = (.com.redhat.ceylon.compiler.java.test.expression.erasure.Top)(
             let
             {
-                .ceylon.language.Correspondence $ceylontmpsafeaccess19 = (.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)topsOrNothing;
+                .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmpsafeaccess19 = (.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)topsOrNothing;
             }
             returning $ceylontmpsafeaccess19 != null ? $ceylontmpsafeaccess19.item((.ceylon.language.Integer)p1) : null;
         );
