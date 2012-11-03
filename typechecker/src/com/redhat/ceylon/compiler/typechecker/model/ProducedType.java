@@ -1501,9 +1501,9 @@ public class ProducedType extends ProducedReference {
 
     //TODO: we can remove this now!!
     public boolean isCallable() {
-        //TODO: yew, fix this:
-        return getDeclaration().getQualifiedNameString()
-                .equals("ceylon.language::Callable");
+        return getDeclaration() instanceof Interface && 
+        		getDeclaration().getUnit().getCallableDeclaration()
+        			.equals(getDeclaration());
     }
     
     public ProducedType withoutUnderlyingType() {

@@ -29,7 +29,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -255,20 +254,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         ((Generic) declaration).setTypeParameters(getTypeParameters(that));
     }    
-    
-    @Override
-    public void visit(Tree.TypeDeclaration that) {
-        super.visit(that);
-        TypeDeclaration d = that.getDeclarationModel();
-        if (d.isClassOrInterfaceMember()) {
-            for (TypeParameter tp: d.getTypeParameters()) {
-                if (tp.isSequenced()) {
-                    that.addError("sequenced type parameters for nested types not yet supported");
-                }
-            }
-        }
-    }
-    
+        
     @Override
     public void visit(Tree.AnyClass that) {
         Class c = that instanceof Tree.ClassDefinition ?
@@ -330,7 +316,6 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
         TypeParameter p = new TypeParameter();
-        p.setSequenced(that.getSequenced());
         p.setDeclaration(declaration);
         if (that.getTypeVariance()!=null) {
             String v = that.getTypeVariance().getText();
@@ -354,11 +339,6 @@ public class DeclarationVisitor extends Visitor {
         m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("methods may not be declared using the keyword value");
-        }
-        for (TypeParameter tp: m.getTypeParameters()) {
-            if (tp.isSequenced()) {
-                that.addError("sequenced type parameters for methods not yet supported");
-            }
         }
     }
     

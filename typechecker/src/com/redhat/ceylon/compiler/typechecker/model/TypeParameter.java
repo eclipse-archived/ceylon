@@ -7,7 +7,6 @@ public class TypeParameter extends TypeDeclaration implements Functional {
 
     private boolean covariant;
     private boolean contravariant;
-    private boolean sequenced;
     private Declaration declaration;
     private ParameterList parameterList;
     private TypeDeclaration selfTypedDeclaration;
@@ -31,23 +30,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public void setContravariant(boolean contravariant) {
         this.contravariant = contravariant;
     }
-    
-    public boolean isSequenced() {
-    	//TODO: the model loader does not yet support
-    	//      sequenced type parameters, so hack it
-    	//      in here
-    	if (getName().equals("CallableArgument") /*&&
-    			getDeclaration().getQualifiedNameString()
-    			    .equals("ceylon.language.Callable")*/) {
-    		return true;
-    	}
-		return sequenced;
-	}
-    
-    public void setSequenced(boolean sequenced) {
-		this.sequenced = sequenced;
-	}
-    
+        
     @Override
     public boolean isOverloaded() {
     	return false;

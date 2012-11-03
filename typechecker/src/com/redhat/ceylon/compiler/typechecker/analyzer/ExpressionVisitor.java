@@ -1387,11 +1387,9 @@ public class ExpressionVisitor extends Visitor {
         if (!dec.getParameterLists().isEmpty()) {
             ParameterList parameters = dec.getParameterLists().get(0);
             for (TypeParameter tp: dec.getTypeParameters()) {
-                if (!tp.isSequenced()) {
-                    typeArgs.add(constrainInferredType(dec, tp, 
-                            inferTypeArgument(that, that.getPrimary().getTypeModel(), 
-                                    tp, parameters)));
-                }
+            	typeArgs.add(constrainInferredType(dec, tp, 
+            			inferTypeArgument(that, that.getPrimary().getTypeModel(), 
+            					tp, parameters)));
             }
         }
         return typeArgs;

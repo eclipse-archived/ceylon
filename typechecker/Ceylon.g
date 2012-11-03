@@ -954,11 +954,6 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
       )? 
       typeNameDeclaration
       { $typeParameter.setIdentifier($typeNameDeclaration.identifier); } 
-      (
-        ELLIPSIS
-        { $typeParameter.setSequenced(true);
-          $typeParameter.setEndToken($ELLIPSIS); }
-      )?
     //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
     ;
 
@@ -1386,6 +1381,8 @@ typeArgumentsStart
       UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
       ((INTERSECTION_OP|UNION_OP|ENTRY_OP) UIDENTIFIER ('.' UIDENTIFIER)* (DEFAULT_OP|ARRAY)*)*
       (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS|LPAREN|RPAREN)
+    |
+      SMALLER_OP
     | 
       LARGER_OP //for IDE only!
     )

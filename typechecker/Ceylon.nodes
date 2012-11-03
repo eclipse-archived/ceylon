@@ -184,8 +184,7 @@
     TYPE_PARAMETER_DECLARATION*)
 ^(TYPE_PARAMETER_DECLARATION:DECLARATION
     TYPE_VARIANCE?
-    TypeParameter declarationModel;
-    boolean sequenced;)
+    TypeParameter declarationModel;)
 ^(TYPE_VARIANCE)
 
 ^(abstract BODY
