@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.structure.type;
+
+final class triple_ {
+    
+    private triple_() {
+    }
+    
+    static .ceylon.language.Tuple triple(final .java.lang.String s, final long i, final double f) {
+        return new .ceylon.language.Tuple(.ceylon.language.String.instance(s), new .ceylon.language.Tuple(.ceylon.language.Integer.instance(i), new .ceylon.language.Tuple(.ceylon.language.Float.instance(f), .ceylon.language.empty_.getEmpty$())));
+    }
+}
+final class add_ {
+    
+    private add_() {
+    }
+    
+    static final double add() {
+        return (
+            let
+            {
+                .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>> $ceylontmp$floats$1 = .com.redhat.ceylon.compiler.java.test.structure.type.add_.add$floats();
+            }
+            returning add($ceylontmp$floats$1);
+        );
+    }
+    
+    static final .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>> add$floats() {
+        return new .ceylon.language.Tuple(.ceylon.language.Float.instance(1.0), new .ceylon.language.Tuple(.ceylon.language.Float.instance(2.0), .ceylon.language.empty_.getEmpty$()));
+    }
+    
+    static double add(final .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>> floats) {
+        return floats.getFirst().plus(((.ceylon.language.Tuple<? extends .ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Empty>)floats.getRest()).getFirst()).doubleValue();
+    }
+}
+final class tupleTypeTest_ {
+    
+    private tupleTypeTest_() {
+    }
+    
+    static void tupleTypeTest() {
+        final .ceylon.language.Tuple tup = .com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("hello", 0L, 0.0);
+        final .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> hibye = new .ceylon.language.Tuple(.ceylon.language.String.instance("hello"), new .ceylon.language.Tuple(.ceylon.language.String.instance("goodbye"), .ceylon.language.empty_.getEmpty$()));
+        
+        final class fun_ {
+            
+            private fun_() {
+            }
+            
+            .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Empty>> fun() {
+                return hibye;
+            }
+        }
+        final fun_ fun = new fun_();
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> strings = hibye;
+        final .ceylon.language.Tuple<? extends .ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.List<? extends .ceylon.language.String>> hibye1 = hibye;
+        final .ceylon.language.List<? extends .ceylon.language.String> hibye2 = hibye;
+        final .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<? extends .java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.List<? extends .java.lang.Object>>> trip = .com.redhat.ceylon.compiler.java.test.structure.type.triple_.triple("", 0L, 0.0);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.type.tupleTypeTest_.tupleTypeTest();
+    }
+}

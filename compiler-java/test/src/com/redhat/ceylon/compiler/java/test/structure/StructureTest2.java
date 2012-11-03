@@ -102,6 +102,10 @@ public class StructureTest2 extends CompilerTest {
     public void testTypSequenceType(){
         compareWithJavaSource("type/SequenceType");
     }
+    @Test
+    public void testTypTupleType(){
+        compareWithJavaSource("type/TupleType");
+    }
     
     //
     // import
