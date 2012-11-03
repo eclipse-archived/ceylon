@@ -477,6 +477,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.expressionGen().transform(value));
     }
 
+    public void visit(Tree.Tuple value) {
+        append(gen.expressionGen().transform(value));
+    }
+
     // FIXME: port Null?
     // FIXME: port Condition?
     // FIXME: port Subscript?

@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasUncheckedNulls;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
@@ -50,6 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.DefaultArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
@@ -663,6 +665,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
+    public JCExpression transform(Tree.Tuple value) {
+        return makeTuple(value.getExpressions().iterator());
+    }
+
+    private JCExpression makeTuple(Iterator<Expression> iter) {
+        if (iter.hasNext()) {
+            JCExpression first = transformExpression(iter.next());
+            JCExpression rest = makeTuple(iter);
+            ProducedType tupleType = typeFact().getTupleDeclaration().getType();
+            JCExpression typeExpr = makeJavaType(tupleType, CeylonTransformer.JT_CLASS_NEW | CeylonTransformer.JT_RAW);
+            return makeNewClass(typeExpr, List.of(first, rest));
+        } else {
+            return makeEmpty();
+        }
+    }
+    
     public JCTree transform(Tree.This expr) {
         at(expr);
         if (needDollarThis(expr.getScope())) {
