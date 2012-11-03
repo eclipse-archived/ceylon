@@ -175,9 +175,6 @@ public class MetamodelGenerator {
         } else if (tp.getCaseTypes() != null && !tp.getCaseTypes().isEmpty()) {
             encodeTypes(tp.getCaseTypes(), map, "of");
         }
-        if (tp.isSequenced()) {
-            map.put("seq", "1");
-        }
         return map;
     }
 

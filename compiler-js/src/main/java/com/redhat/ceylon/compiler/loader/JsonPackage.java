@@ -268,7 +268,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 if (container instanceof Scope) {
                     tparm.setContainer((Scope)container);
                 }
-                tparm.setSequenced(tp.containsKey("seq"));
                 tparms.add(tparm);
                 allparms.add(tparm);
                 tp.put(MetamodelGenerator.KEY_METATYPE, tparm);
@@ -664,7 +663,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 }
                 TypeParameter _cparm = null;
                 for (Map<String,Object> ptparm : modelParms) {
-                    if (_cparm == null || !_cparm.isSequenced()) _cparm = viter.next();
+                    if (_cparm == null) _cparm = viter.next();
                     if (ptparm.containsKey(MetamodelGenerator.KEY_PACKAGE) || ptparm.containsKey(MetamodelGenerator.KEY_TYPES)) {
                         //Substitute for proper type
                         concretes.put(_cparm, getTypeFromJson(ptparm, typeParams));
